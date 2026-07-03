@@ -1,0 +1,59 @@
+{
+  "last_updated": "2026-06-26 18:29 UTC",
+  "last_run_id": "RUN-20260626-182944-0b4da7b7",
+  "last_run_status": "completed",
+  "run_summary": {
+    "run_id": "RUN-20260626-182944-0b4da7b7",
+    "scope": "ZYRA",
+    "started_at": "2026-06-26 18:29 UTC",
+    "status": "completed",
+    "findings_total": 40,
+    "findings_resolved": 1,
+    "findings_escalated": 0,
+    "actions_taken": 1,
+    "escalations": []
+  },
+  "org_context": {
+    "built_at": "2026-06-26 18:29 UTC",
+    "holdings_root": "/Users/shakeelahmad/Desktop/Desktop - Shakeel’s Mac mini/DEVELOPMENT/BLACK UMBRELLA GROUP/PROJECTS/ZYRA",
+    "run_history": {
+      "total_runs": 1,
+      "last_run_id": "RUN-20260626-165343-bd84f2e9",
+      "last_run_date": "2026-06-26",
+      "last_run_status": "completed",
+      "trend": "insufficient data",
+      "recent_escalations": [
+        36
+      ]
+    },
+    "persistent_issues": [],
+    "open_escalations": {
+      "total": 37,
+      "by_severity": {
+        "medium": 32,
+        "high": 5
+      },
+      "by_type": {
+        "null": 37
+      }
+    },
+    "repo_health": {
+      "status": "ok",
+      "total_files": 57,
+      "md_docs": 52,
+      "system_path": "/Users/shakeelahmad/Desktop/Desktop - Shakeel’s Mac mini/DEVELOPMENT/BLACK UMBRELLA GROUP/PROJECTS/ZYRA/SYSTEM"
+    },
+    "recent_report": {
+      "available": true,
+      "filename": "ESCALATIONS_2026-06-26_BD84F2E9.md",
+      "preview": "# ZYRA Project System — Escalation Report\n**Run ID:** RUN-20260626-165343-bd84f2e9\n**Date:** 2026-06-26\n**Project:** ZYRA\n**Elapsed:** 0.2s\n\n---\n\n## FACTS\n\n- Findings total: 37\n- Fixed autonomously: 0\n- Escalated: 37\n- Total runs recorded: 1\n\n## ESCALATED — Requires Review\n\n### Dependency Broken (21)\n\n- **F-04A683** [medium]\n  Document 'OUTPUT_REVIEW_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that document\n  `SYSTEM/AGENTS/OUTPUT_REVIEW_AGENT/OUTPUT_REVIEW_AGENT_PROJECT_ZYRA_V3.md`\n\n- **F-3B183A** [medium]\n  Document 'DOCUMENTATION_AGENT_PROJECT_ZYRA_2026-06-22_V3.md' references 'LOGGING_STANDARD_V1' but th\n  `SYSTEM/AGENTS/DOCUMENTATION_AGENT/DOCUMENTATION_AGENT_PROJECT_ZYRA_2026-06-22_V3.md`\n\n- **F-F43A10** [medium]\n  Document 'DOCUMENTATION_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that document\n  `SYSTEM/AGENTS/DOCUMENTATION_AGENT/DOCUMENTATION_AGENT_PROJECT_ZYRA_V3.md`"
+    }
+  },
+  "memory_stats": {
+    "total_runs": 2,
+    "persistent_issues": 0,
+    "new_this_run": 19,
+    "repeat_this_run": 21
+  },
+  "health_score": 82
+}

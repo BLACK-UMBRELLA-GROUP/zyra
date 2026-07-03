@@ -1,0 +1,37 @@
+{
+  "last_updated": "2026-06-26 17:04 UTC",
+  "project": "ZYRA",
+  "health_score": 95,
+  "indicator": "\ud83d\udfe2 HEALTHY",
+  "phase": "PRE_LAUNCH",
+  "checks": [
+    {
+      "check": "BUILD_HEALTH",
+      "status": "PASS",
+      "detail": "Flutter project ready. version: 1.0.0+1"
+    },
+    {
+      "check": "DOCS_HEALTH",
+      "status": "WARN",
+      "detail": "5 feature folder(s) have no docs: ['Settings', 'Home', 'Search', 'Messaging', 'Notifications']"
+    },
+    {
+      "check": "TEST_HEALTH",
+      "status": "PASS",
+      "detail": "1 test file(s) found."
+    },
+    {
+      "check": "RELEASE_HEALTH",
+      "status": "PASS",
+      "detail": "App is pre-launch. Release planned but not yet submitted."
+    },
+    {
+      "check": "INCIDENT_HEALTH",
+      "status": "PASS",
+      "detail": "No open incidents."
+    }
+  ],
+  "pass_count": 4,
+  "warn_count": 1,
+  "fail_count": 0
+}

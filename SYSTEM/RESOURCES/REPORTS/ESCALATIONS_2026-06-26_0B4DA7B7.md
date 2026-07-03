@@ -1,0 +1,182 @@
+# ZYRA Project System — Escalation Report
+**Run ID:** RUN-20260626-182944-0b4da7b7
+**Date:** 2026-06-26
+**Project:** ZYRA
+**Elapsed:** 0.0s
+
+---
+
+## FACTS
+
+- Findings total: 40
+- Fixed autonomously: 1
+- Escalated: 39
+- Total runs recorded: 2
+
+## FIXED
+
+- **no_change_needed**: ``
+
+## ESCALATED — Requires Review
+
+### Dependency Broken (22)
+
+- **F-BCEEC7** [medium]
+  Document 'OUTPUT_REVIEW_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that document
+  `SYSTEM/AGENTS/OUTPUT_REVIEW_AGENT/OUTPUT_REVIEW_AGENT_PROJECT_ZYRA_V3.md`
+
+- **F-66C6D4** [medium]
+  Document 'DOCUMENTATION_AGENT_PROJECT_ZYRA_2026-06-22_V3.md' references 'LOGGING_STANDARD_V1' but th
+  `SYSTEM/AGENTS/ARCHIVE/DOCUMENTATION_AGENT/DOCUMENTATION_AGENT_PROJECT_ZYRA_2026-06-22_V3.md`
+
+- **F-F6D5BA** [medium]
+  Document 'DOCUMENTATION_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that document
+  `SYSTEM/AGENTS/ARCHIVE/DOCUMENTATION_AGENT/DOCUMENTATION_AGENT_PROJECT_ZYRA_V3.md`
+
+- **F-044DA6** [medium]
+  Document 'RESOLUTION_CLASSIFIER_PROJECT_ZYRA_2026-06-22_V3.md' references 'LOGGING_STANDARD_V1' but 
+  `SYSTEM/AGENTS/ARCHIVE/RESOLUTION_CLASSIFIER/RESOLUTION_CLASSIFIER_PROJECT_ZYRA_2026-06-22_V3.md`
+
+- **F-80A6F1** [medium]
+  Document 'RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that docume
+  `SYSTEM/AGENTS/ARCHIVE/RESOLUTION_CLASSIFIER/RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V3.md`
+
+- **F-082757** [medium]
+  Document 'REPOSITORY_AGENT_PROJECT_ZYRA_2026-06-22_V3.md' references 'LOGGING_STANDARD_V1' but that 
+  `SYSTEM/AGENTS/ARCHIVE/REPOSITORY_AGENT/REPOSITORY_AGENT_PROJECT_ZYRA_2026-06-22_V3.md`
+
+- **F-13E307** [medium]
+  Document 'REPOSITORY_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that document wa
+  `SYSTEM/AGENTS/ARCHIVE/REPOSITORY_AGENT/REPOSITORY_AGENT_PROJECT_ZYRA_V3.md`
+
+- **F-4C0336** [medium]
+  Document 'REPORTING_AGENT_PROJECT_ZYRA_2026-06-22_V3.md' references 'LOGGING_STANDARD_V1' but that d
+  `SYSTEM/AGENTS/ARCHIVE/REPORTING_AGENT/REPORTING_AGENT_PROJECT_ZYRA_2026-06-22_V3.md`
+
+- **F-25BCB3** [medium]
+  Document 'REPORTING_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that document was
+  `SYSTEM/AGENTS/ARCHIVE/REPORTING_AGENT/REPORTING_AGENT_PROJECT_ZYRA_V3.md`
+
+- **F-9BB12C** [medium]
+  Document 'DOCUMENTATION_AGENT_PROJECT_ZYRA_V4.md' references 'LOGGING_STANDARD_V1' but that document
+  `SYSTEM/AGENTS/DOCUMENTATION_AGENT/DOCUMENTATION_AGENT_PROJECT_ZYRA_V4.md`
+
+- **F-5B8DFF** [medium]
+  Document 'INSPECTION_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that document wa
+  `SYSTEM/AGENTS/INSPECTION_AGENT/INSPECTION_AGENT_PROJECT_ZYRA_V3.md`
+
+- **F-94F62A** [medium]
+  Document 'RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V4.md' references 'LOGGING_STANDARD_V1' but that docume
+  `SYSTEM/AGENTS/RESOLUTION_CLASSIFIER/RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V4.md`
+
+- **F-B3AAC4** [medium]
+  Document 'RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V4.md' references 'GOVERNANCE_V4' but that document was
+  `SYSTEM/AGENTS/RESOLUTION_CLASSIFIER/RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V4.md`
+
+- **F-1E5F73** [medium]
+  Document 'IMPACT_ANALYSIS_AGENT_PROJECT_ZYRA_V3.md' references 'LOGGING_STANDARD_V1' but that docume
+  `SYSTEM/AGENTS/IMPACT_ANALYSIS_AGENT/IMPACT_ANALYSIS_AGENT_PROJECT_ZYRA_V3.md`
+
+- **F-F1FA95** [medium]
+  Document 'PROJECT_READINESS_AGENT_V3.md' references 'LOGGING_STANDARD_V1' but that document was not 
+  `SYSTEM/AGENTS/PROJECT_READINESS_AGENT/PROJECT_READINESS_AGENT_V3.md`
+
+- **F-41A38C** [medium]
+  Document 'REPOSITORY_AGENT_PROJECT_ZYRA_V4.md' references 'LOGGING_STANDARD_V1' but that document wa
+  `SYSTEM/AGENTS/REPOSITORY_AGENT/REPOSITORY_AGENT_PROJECT_ZYRA_V4.md`
+
+- **F-215CDA** [medium]
+  Document 'REPORTING_AGENT_PROJECT_ZYRA_V4.md' references 'LOGGING_STANDARD_V1' but that document was
+  `SYSTEM/AGENTS/REPORTING_AGENT/REPORTING_AGENT_PROJECT_ZYRA_V4.md`
+
+- **F-15B5E0** [medium]
+  Document 'TERMINOLOGY_STANDARDS_V1.md' references 'EXECUTION_V5' but that document was not found in 
+  `SYSTEM/DOCUMENTS/TERMINOLOGY_STANDARDS_V1.md`
+
+- **F-EC6547** [medium]
+  Document 'NAMING_CONVENTIONS_V1.md' references 'REPOSITORY_ARCHITECTURE_V3' but that document was no
+  `SYSTEM/DOCUMENTS/MASTER_STANDARDS/NAMING_CONVENTIONS_V1.md`
+
+- **F-A8298A** [medium]
+  Document 'ZYRA_STANDARDS_LIBRARY_V1.md' references 'REPOSITORY_ARCHITECTURE_V3' but that document wa
+  `SYSTEM/DOCUMENTS/MASTER_STANDARDS/ZYRA_STANDARDS_LIBRARY_V1.md`
+
+### Missing Document (5)
+
+- **F-9A7613** [high]
+  No approved document matching 'GOVERNANCE_V*.md' found in SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/. This 
+  `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/`
+
+- **F-F49E47** [high]
+  No approved document matching 'EXECUTION_V*.md' found in SYSTEM/DOCUMENTS/MASTER_EXECUTION/. This go
+  `SYSTEM/DOCUMENTS/MASTER_EXECUTION/`
+
+- **F-E7785D** [high]
+  No approved document matching 'REPOSITORY_ARCHITECTURE_V*.md' found in SYSTEM/DOCUMENTS/MASTER_ARCHI
+  `SYSTEM/DOCUMENTS/MASTER_ARCHITECTURE/`
+
+- **F-61C2A8** [high]
+  No approved document matching 'LOGGING_STANDARD_V*.md' found in SYSTEM/DOCUMENTS/LOGGING_STANDARD/. 
+  `SYSTEM/DOCUMENTS/LOGGING_STANDARD/`
+
+- **F-28EE5E** [high]
+  No approved document matching 'EVIDENCE_VOCABULARY_V*.md' found in SYSTEM/DOCUMENTS/EVIDENCE_VOCABUL
+  `SYSTEM/DOCUMENTS/EVIDENCE_VOCABULARY/`
+
+### Repo Agent Escalation (1)
+
+- **F-FFF441** [medium]
+  Finding type 'contract_missing_section' belongs to Documentation Agent (not yet built — Level 5).
+  ``
+
+### Version Gap (11)
+
+- **F-CFDF32** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/OUTPUT_REVIEW_AGENT' has duplicate version numbers: [1, 1, 2, 2, 2]. V
+  `SYSTEM/AGENTS/ARCHIVE/OUTPUT_REVIEW_AGENT`
+
+- **F-63D5D7** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/DOCUMENTATION_AGENT' has duplicate version numbers: [1, 1, 2, 2, 2, 3,
+  `SYSTEM/AGENTS/ARCHIVE/DOCUMENTATION_AGENT`
+
+- **F-C0125E** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/INSPECTION_AGENT' has duplicate version numbers: [1, 1, 2, 2, 2]. Vers
+  `SYSTEM/AGENTS/ARCHIVE/INSPECTION_AGENT`
+
+- **F-6F2DFD** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/RESOLUTION_CLASSIFIER' has duplicate version numbers: [1, 1, 2, 2, 2, 
+  `SYSTEM/AGENTS/ARCHIVE/RESOLUTION_CLASSIFIER`
+
+- **F-C6CF82** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/IMPACT_ANALYSIS_AGENT' has duplicate version numbers: [1, 1, 2, 2, 2].
+  `SYSTEM/AGENTS/ARCHIVE/IMPACT_ANALYSIS_AGENT`
+
+- **F-EA56E1** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/PROJECT_READINESS_AGENT' has duplicate version numbers: [1, 1, 2, 2, 2
+  `SYSTEM/AGENTS/ARCHIVE/PROJECT_READINESS_AGENT`
+
+- **F-53AC14** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/REPOSITORY_AGENT' has duplicate version numbers: [1, 1, 2, 2, 2, 3, 3,
+  `SYSTEM/AGENTS/ARCHIVE/REPOSITORY_AGENT`
+
+- **F-DD3297** [medium]
+  Folder 'SYSTEM/AGENTS/ARCHIVE/REPORTING_AGENT' has duplicate version numbers: [1, 1, 2, 2, 2, 3, 3, 
+  `SYSTEM/AGENTS/ARCHIVE/REPORTING_AGENT`
+
+- **F-325090** [medium]
+  Folder 'SYSTEM/OUTSTANDING_ACTIONS' has duplicate version numbers: [1, 1, 2]. Version numbers must n
+  `SYSTEM/OUTSTANDING_ACTIONS`
+
+- **F-33817D** [medium]
+  Folder 'SYSTEM/DOCUMENTS' has duplicate version numbers: [1, 1, 1, 1]. Version numbers must not be r
+  `SYSTEM/DOCUMENTS`
+
+- **F-57E3A7** [medium]
+  Folder 'SYSTEM/DOCUMENTS/MASTER_STANDARDS' has duplicate version numbers: [1, 1]. Version numbers mu
+  `SYSTEM/DOCUMENTS/MASTER_STANDARDS`
+
+---
+
+## RECOMMENDATIONS
+
+*(Add ANTHROPIC_API_KEY for AI recommendations.)*

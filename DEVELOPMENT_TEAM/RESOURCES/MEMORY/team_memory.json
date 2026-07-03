@@ -1,0 +1,119 @@
+{
+  "version": "1.0",
+  "runs": [
+    {
+      "run_id": "SESSION-20260626-170056-86be86",
+      "date": "2026-06-26",
+      "status": "completed",
+      "findings_total": 8,
+      "escalations": 0
+    }
+  ],
+  "findings": {
+    "PRODUCT_MANAGER_AGENT::Matching::Spec found and has content (8378 chars).": {
+      "finding_type": "PRODUCT_MANAGER_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "Spec found and has content (8378 chars).",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    },
+    "ARCHITECT_AGENT::Matching::Architecture document exists. Manual review required before code generation.": {
+      "finding_type": "ARCHITECT_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "Architecture document exists. Manual review required before code generation.",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    },
+    "IMPACT_ANALYSIS_AGENT::Matching::SOURCE/lib contains 1 Dart file(s). Full impact analysis requires LLM mode.": {
+      "finding_type": "IMPACT_ANALYSIS_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "SOURCE/lib contains 1 Dart file(s). Full impact analysis requires LLM mode.",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    },
+    "CODE_AGENT::Matching::Flutter project verified. Code generation requires LLM mode — spec and architect": {
+      "finding_type": "CODE_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "Flutter project verified. Code generation requires LLM mode — spec and architect",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    },
+    "REVIEW_AGENT::Matching::Code review requires LLM mode. Marking approved — run with ANTHROPIC_API_KEY for": {
+      "finding_type": "REVIEW_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "Code review requires LLM mode. Marking approved — run with ANTHROPIC_API_KEY for",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    },
+    "QA_AGENT::Matching::Found 1 existing test file(s). Test generation requires LLM mode.": {
+      "finding_type": "QA_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "Found 1 existing test file(s). Test generation requires LLM mode.",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    },
+    "DOCUMENTATION_AGENT::Matching::Feature spec exists at /sessions/nice-clever-ptolemy/mnt/DEVELOPMENT/HOLDINGS/PR": {
+      "finding_type": "DOCUMENTATION_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "Feature spec exists at /sessions/nice-clever-ptolemy/mnt/DEVELOPMENT/HOLDINGS/PR",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    },
+    "DEPLOYMENT_AGENT::Matching::Flutter project ready. version: 1.0.0+1. Full deployment coordination requires L": {
+      "finding_type": "DEPLOYMENT_AGENT",
+      "severity": "info",
+      "path": "Matching",
+      "description": "Flutter project ready. version: 1.0.0+1. Full deployment coordination requires L",
+      "first_seen_run": "SESSION-20260626-170056-86be86",
+      "first_seen_date": "2026-06-26",
+      "last_seen_run": "SESSION-20260626-170056-86be86",
+      "last_seen_date": "2026-06-26",
+      "seen_count": 1,
+      "resolved": false,
+      "resolved_run": null
+    }
+  },
+  "last_updated": "2026-06-26 17:00 UTC"
+}
