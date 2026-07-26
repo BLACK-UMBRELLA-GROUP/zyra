@@ -64,7 +64,12 @@ Decision Status
 Current Favourite:
 • Zyra
 Approval Status:
-• Not yet officially approved.
+• APPROVED 2026-07-25 (OA-ZYRA-140 item 14, Founder decision:
+  "Ratify 'ZYRA' now"). Formally ratified as the product name —
+  "ZYRA" had already been in exclusive use across every document,
+  the app title, and the folder structure itself; this closes the
+  stale open item rather than leaving a de facto decision
+  undocumented.
 
 ============================================================
 BRAND NAMING PRINCIPLES
@@ -96,11 +101,11 @@ Every future name should be judged against:
 ============================================================
 APPROVED TO-DO LIST
 ============================================================
-□ Continue exploring alternative names.
+□ Continue exploring alternative names. (moot — name ratified)
 □ Compare branding and logo concepts.
 □ Check domain availability.
 □ Check App Store availability.
 □ Check Google Play availability.
 □ Check social media usernames.
 □ Check trademark availability.
-□ Officially approve the final brand name.
+✓ Officially approve the final brand name. RESOLVED 2026-07-25.

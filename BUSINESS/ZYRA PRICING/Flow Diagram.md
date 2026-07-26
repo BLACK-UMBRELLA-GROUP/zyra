@@ -5,101 +5,56 @@ ZYRA PRICING
 FLOW DIAGRAM
 ============================================================
 
-------------------------------------------------------------
-USER PRICING JOURNEY
-------------------------------------------------------------
-
-New User Registers
-        │
-        ▼
-Is user in first 1,000 of their gender?
-        │               │
-       YES              NO
-        │               │
-        ▼               ▼
-  Founder             Is user in next 5,000?
-  Programme               │           │
-  3 months free          YES          NO
-  + Founder pricing       │           │
-  for 9 months            ▼           ▼
-                     Early-Adopter  Standard
-                     Programme      Pricing
-                     12 months
-                     discounted
+Superseded 2026-07-12: previous flows (Wali benefit proration,
+per-Wali billing, multi-account payment ownership) removed —
+retired along with the old subscription structure. See
+Summary.md for the full record of what changed and why.
 
 ------------------------------------------------------------
-FOUNDER & EARLY-ADOPTER WALI BENEFIT FLOW
+ZYRA ONE PURCHASE — LAUNCH PRICING JOURNEY
 ------------------------------------------------------------
 
-Eligible subscriber activates plan
+Account (Seeker or Wali) purchases ZYRA One
         │
         ▼
-Receives 1 Free Wali Pro Subscription (3 months)
-        │
-        ▼
-Assigns to a verified Wali of their choice
-        │
-        ▼
-Up to 3 additional Wali subscriptions at discounted rate
-(Free Wali Pro does not count towards this limit)
+Are they among the first 1,000 people to purchase ZYRA One
+overall? (any role, not gender- or role-restricted)
+        │                       │
+       YES                      NO
+        │                       │
+        ▼                       ▼
+  Founder Members       Are they among the next 5,000
+  50% off for 6 months  people to purchase ZYRA One?
+  then 25% off for            │           │
+  the following 6 months     YES          NO
+                               │           │
+                               ▼           ▼
+                        Early Adopters  Standard
+                        25% off for     Pricing
+                        12 months       £34.99/month
 
 ------------------------------------------------------------
-NEW SUBSCRIBER PROMOTION FLOW
+EXTENDED WALI ENTITLEMENT FLOW
 ------------------------------------------------------------
 
-Founder & Early-Adopter programmes ended?
-        │               │
-       YES              NO
-        │               │
-        ▼               ▼
-  Promotion         Promotion
-  Available         Not Yet Active
-
+Seeker holds ZYRA One
         │
         ▼
-First-time Seeker Pro subscriber?
-→ 1 Month Free Wali Pro
-
-First-time Seeker Premium subscriber?
-→ 2 Months Free Wali Pro
-
+Receives one bundled Extended Wali entitlement
         │
         ▼
-Promotion ends when:
-• 10,000 qualifying customers reached
-OR
-• 1 year after promotion launch
-(whichever comes first)
+Assigns it to one linked Wali
+        │
+        ▼
+That Wali receives Extended Wali capabilities for this
+Seeker's Journey relationships (AD-081)
 
-------------------------------------------------------------
-WALI BILLING FLOW
-------------------------------------------------------------
+Separately:
 
-Wali adds new Seeker relationship mid-cycle
+A Wali who did not receive the bundled entitlement
         │
         ▼
-System calculates remaining days to renewal date
+May purchase Extended Wali independently — £9.99/month
         │
         ▼
-Prorated charge applied immediately
-        │
-        ▼
-New subscription added to existing billing account
-        │
-        ▼
-All subscriptions renew together on same invoice
-
-------------------------------------------------------------
-PAYMENT OWNERSHIP FLOW
-------------------------------------------------------------
-
-Account being paid for
-        │
-        ▼
-Does it belong to a different verified individual?
-        │               │
-       YES              NO
-        │               │
-        ▼               ▼
-  Payment             Rejected
-  permitted           (duplicate account rule)
+Identical capabilities to the bundled route (AD-081)

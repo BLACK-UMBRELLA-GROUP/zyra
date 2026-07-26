@@ -4,7 +4,8 @@ ZYRA PROJECT
 TERMINOLOGY STANDARDS V1
 PROJECT-SPECIFIC TERMINOLOGY AND OVERLAP RULES
 ============================================================
-Version:        V1
+Version:        V1 (corrected in place 2026-07-12 — see
+                Section 5, Version History)
 Status:         Approved — Active Baseline
 Scope:          PROJECTS/ZYRA/ — all ZYRA project documents
 Lead Architect: Claude
@@ -87,14 +88,20 @@ For full definitions and context, consult ZYRA TERMINOLOGY.
   Seeker       Person seeking marriage.
   Wali         Guardian / family representative.
 
-  Profile Decisions
+  Profile Decisions (corrected 2026-07-12, DR-076 —
+  reverses the previous version of this table, which had
+  approved and rejected terms backwards relative to the
+  current Product Spec)
   ─────────────────────────────────────────────────────
   Decline      Skip profile (verb and noun).
-  Review       Save to review later. 50-profile cap.
-               Applies to Review queue only.
-  Consider     Serious interest. No cap.
+  Save         Save to come back to later. 10/day cap on
+               ZYRA Basic, unlimited on ZYRA One.
+               Applies to the Save list only.
+  Like         Serious interest. Same daily cap structure
+               as Save (10/day ZYRA Basic, unlimited
+               ZYRA One).
 
-  Navigation (Seeker Basic)
+  Navigation (Seeker — ZYRA Basic / ZYRA One)
   ─────────────────────────────────────────────────────
   Browse • Connections • Wali • Profile
 
@@ -104,21 +111,23 @@ For full definitions and context, consult ZYRA TERMINOLOGY.
 
   Term          Use instead
   ────────────  ─────────────────────────────────────
-  Considering   Consider
+  Review        Save
+  Consider      Like
+  Considering   Like
   Pass          Decline
-  Save / Saved  Review or Consider (context-dependent)
-  Potentials    Review or Consider (context-dependent)
-  Like          Consider
+  Potentials    Save or Like (context-dependent) —
+                see PROFILE DECISION SYSTEM for Outgoing/
+                Incoming Potential as a separate, later-
+                stage concept (post-Save/Like)
 
 ------------------------------------------------------------
 3.3 Enforcement Rules
 ------------------------------------------------------------
 
-  • The 50-profile cap applies to Review only.
-    Consider has no cap.
-  • Seeker Basic navigation is:
+  • Daily caps apply to both Save and Like (10/day on
+    ZYRA Basic; unlimited on ZYRA One).
+  • Seeker navigation (any entitlement) is:
     Browse • Connections • Wali • Profile.
-    Not "Saved."
   • Every terminology correction made on filing must
     be flagged to the Project Owner.
 
@@ -167,6 +176,19 @@ Version V1
   Content migrated from EXECUTION_V5 Sections 20.2
   and 21.2 per OA-105. Execution Sections 20.2 and
   21.2 now replaced with a pointer to this document.
+
+Version V1 (corrected in place 2026-07-12)
+  Approved/Rejected terminology table was backwards
+  relative to DR-076 (this document rejected Save/Like
+  and approved Review/Consider — the opposite of the
+  current Product Spec). Corrected against
+  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 and DR-076.
+  Navigation entry updated from "Seeker Basic" to
+  "Seeker — ZYRA Basic / ZYRA One" (identical for both
+  entitlements). Found during the 2026-07-12 final
+  consistency audit — this document was not on the
+  original Phase 1-5 correction list because it was not
+  flagged by the initial repository grep pass.
 
 ============================================================
 END OF DOCUMENT

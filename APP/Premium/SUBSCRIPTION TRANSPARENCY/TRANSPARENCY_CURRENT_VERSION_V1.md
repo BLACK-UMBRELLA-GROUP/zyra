@@ -1,25 +1,32 @@
 # ZYRA Subscription Transparency Standard
 **CURRENT_VERSION_V1** | Status: Approved | Authors: Lead Architect + Architectural Reviewer
 
+**Terminology corrected 2026-07-12** against
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 — "Basic/Premium" tier
+names and "Wali Premium" replaced with ZYRA Basic/ZYRA One and
+Extended Wali. The four-touchpoint framework and design rules
+below are unaffected by this correction — only the examples
+used old terminology, not the standard itself.
+
 ---
 
 ## Governing Question
 
 > Was the user clearly informed of any feature prerequisites **before** making a purchase?
 
-This standard applies to every paid feature across the platform. It is not specific to Wali Premium.
+This standard applies to every paid feature across the platform. It is not specific to Extended Wali.
 
 ---
 
 ## The Four-Touchpoint Model
 
 ### Touchpoint 1 — Feature Comparison Screen
-When users compare Basic vs Premium plans, any feature with a prerequisite must state that prerequisite clearly as a secondary line beneath the feature name — not in a footnote at the bottom of the page.
+When users compare ZYRA Basic vs ZYRA One, any feature with a prerequisite must state that prerequisite clearly as a secondary line beneath the feature name — not in a footnote at the bottom of the page.
 
 **Examples:**
 - AI Journey Summaries *(Requires a linked Wali)*
 - Guided Wali Conversations *(Requires a linked Wali)*
-- Incoming Considerations *(Seeker Premium only)*
+- Incoming Potentials shown immediately *(ZYRA One only)*
 
 ### Touchpoint 2 — Subscription Purchase Screen
 Immediately before the purchase confirmation button, include a dependency notice with positive resolution framing.
@@ -34,7 +41,7 @@ The positive framing ("unlocks automatically") reduces anxiety without concealin
 App Store and Google Play descriptions should include a simple disclosure statement where space allows.
 
 **Example:**
-> Certain Premium features require a linked Wali account. Features become available once linking is complete.
+> Certain ZYRA One features require a linked Wali account. Features become available once linking is complete.
 
 This touchpoint is owned by the copywriting and marketing brief.
 
@@ -50,11 +57,11 @@ The same dependency language must appear in the formal subscription terms.
 
 | Feature | Dependency | Touchpoints |
 |---------|-----------|------------|
-| AI Journey Summaries | Linked Premium Wali | 1, 2, 4 |
-| Guided Wali Conversations | Linked Premium Wali | 1, 2, 4 |
-| Incoming Considerations | Seeker Premium | 1 only |
-| Family Involvement Stage | Linked Wali (any tier) | 1 |
-| Wali Premium Questions | Wali Premium subscription assigned | 1, 2, 4 |
+| AI Journey Summaries | Linked Extended Wali | 1, 2, 4 |
+| Guided Wali Conversations | Linked Extended Wali | 1, 2, 4 |
+| Incoming Potentials shown immediately | ZYRA One | 1 only |
+| Family Involvement Stage | Linked Wali (Standard or Extended) | 1 |
+| Extended Wali Questions | Extended Wali entitlement active | 1, 2, 4 |
 
 ---
 

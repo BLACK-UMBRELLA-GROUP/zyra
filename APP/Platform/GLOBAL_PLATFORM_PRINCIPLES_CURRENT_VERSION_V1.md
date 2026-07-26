@@ -20,7 +20,8 @@ The goal is not to make ZYRA as cheap as possible everywhere. The goal is to mak
 
 ### How It Works
 - App Store (Apple) and Google Play use fixed pricing tier brackets per country. ZYRA selects the appropriate tier bracket for each market rather than setting an arbitrary local price.
-- The UK price (£19.99/month Seeker Pro, £9.99/month Wali Pro) is the reference price. Regional prices are independently set based on local market conditions, not derived by formula.
+- The UK price (£34.99/month ZYRA One, £9.99/month independent Extended Wali) is the reference price. Regional prices are independently set based on local market conditions, not derived by formula.
+  (Terminology and pricing corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 / DR-075 — was "£19.99/month Seeker Pro, £9.99/month Wali Pro".)
 - A commercial sustainability floor applies to every market. No regional price may fall below the point where server and operational costs are covered per paying user.
 
 ### Volatility and Review

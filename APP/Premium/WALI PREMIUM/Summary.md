@@ -1,31 +1,45 @@
 FEATURE NAME
-WALI PREMIUM
+EXTENDED WALI
 Group: 4 — Page Responsibilities
+
+Superseded 2026-07-12: this document was previously "WALI
+PREMIUM," describing Wali Premium as a paid tier separate from
+"Seeker Pro." That model doesn't exist under ZYRA One (see
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 1, Section 7 and
+Wali Architecture V5). The behavioural rules below are
+unchanged from the original — connection state, authorisation,
+and revocation logic did not depend on the old tier names —
+only the terminology has been corrected: "Wali Premium" is now
+"Extended Wali" (a capability set, not a subscription tier
+name; AD-081), and "Seeker Pro" is now "ZYRA One."
 
 ============================================================
 SUMMARY
 ============================================================
 
 Purpose:
-Define how Wali Premium works in relation to Seeker Pro,
-seeker authorisation, and the wali network. Establish the
-transparency requirements for wali-dependent premium
-functionality throughout the user journey.
+Define how Extended Wali capabilities work in relation to a
+Seeker's ZYRA One entitlement, seeker authorisation, and the
+wali network. Establish the transparency requirements for
+wali-dependent functionality throughout the user journey.
 
 ------------------------------------------------------------
 CORE DESIGN INTENT
 ------------------------------------------------------------
 
-• Seeker Pro and Wali Premium may coexist independently.
-• Wali Premium does not grant independent matchmaking.
-• Wali Premium improves safeguarding tools.
+• A Seeker's ZYRA One and a Wali's Extended Wali entitlement
+  are granted independently — see ZYRA Journey Capability
+  Grant Rules V3 for how AIOS resolves each account's
+  capabilities.
+• Extended Wali does not grant independent matchmaking.
+• Extended Wali improves safeguarding tools.
 • Walis without a connected seeker remain view-only.
 • Active participation in matchmaking requires an
   authorised seeker connection.
 • Seeker authorisation is mandatory — not optional.
 • Transparency about wali-dependent features is required
   throughout the user journey.
-• Premium access and wali participation are separate
+• Extended Wali access and wali participation are separate
   concepts that interact but do not replace each other.
 
 ------------------------------------------------------------
@@ -86,32 +100,32 @@ Disconnecting or replacing a wali immediately removes:
 Revocation is immediate. No grace period.
 
 ------------------------------------------------------------
-PREMIUM TRANSPARENCY REQUIREMENTS
+EXTENDED WALI TRANSPARENCY REQUIREMENTS
 ------------------------------------------------------------
 
-Certain Wali Premium features require an authorised
+Certain Extended Wali features require an authorised
 seeker connection before they become available.
 
 Users must understand this dependency:
 
 • Before downloading the app
-• Before purchasing Premium
+• Before purchasing Extended Wali (independently, £9.99/month)
 • Before attempting to use a wali-dependent feature
 
 Transparency must appear at:
 
 • App Store Listing
 • Onboarding
-• Premium Upgrade Page
+• Extended Wali Upgrade Page
 • Subscription Terms
 • Feature Lock Screens
 • FAQ
 
-Rationale: Users who reach a wali-dependent premium
-feature without understanding the seeker connection
-requirement experience confusion and potential purchase
-regret. Front-loading transparency reduces support
-burden and App Store review risk.
+Rationale: Users who reach a wali-dependent feature
+without understanding the seeker connection requirement
+experience confusion and potential purchase regret.
+Front-loading transparency reduces support burden and
+App Store review risk.
 
 ============================================================
 APPROVED TO-DO LIST
@@ -120,7 +134,7 @@ APPROVED TO-DO LIST
 • Design the seeker connection flow with full
   authorisation disclosure screens.
 • Define the specific wali safeguarding tools included
-  in Wali Premium.
+  in Extended Wali.
 • Design the Feature Lock Screen shown when a wali
   attempts a seeker-dependent feature without a
   connected seeker.
@@ -128,5 +142,8 @@ APPROVED TO-DO LIST
   wali-dependent features.
 • Define what "account review" looks like when a seeker
   revokes wali access mid-session.
-• Confirm whether Wali Premium has tiered pricing
-  separate from Seeker Pro.
+
+Resolved 2026-07-12 (DR-075): Extended Wali pricing is
+confirmed separate from a Seeker's ZYRA One — £9.99/month
+if purchased independently by the Wali, or included free
+as the one entitlement bundled with a Seeker's ZYRA One.

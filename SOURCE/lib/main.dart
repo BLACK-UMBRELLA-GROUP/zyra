@@ -1,122 +1,103 @@
-import 'package:flutter/material.dart';
+// ZYRA app shell — entry point.
+// Replaces the stock Flutter counter template (resuming ZYRA build,
+// 2026-07-18, OA-AIOS-289). Routes: Welcome -> Sign Up/Sign In ->
+// Role Selection -> Onboarding -> Transition -> Home (Browse/Matches/Profile).
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'config/supabase_config.dart';
+import 'screens/auth_gate.dart';
+import 'screens/welcome_screen.dart';
+import 'theme/zyra_colors.dart';
+import 'widgets/dev_nav_overlay.dart';
+
+/// Global navigator access for DevNavOverlay's Back/Home buttons — lets
+/// them pop routes without needing a BuildContext from wherever they're
+/// drawn (they sit above the whole app, not inside any one screen).
+final GlobalKey<NavigatorState> zyraNavigatorKey = GlobalKey<NavigatorState>();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // OA-101/102: only initialize once lib/config/supabase_config.dart has
+  // real project values — until then every screen keeps using the mock
+  // in-memory AppState exactly as it did before Supabase existed, so the
+  // app is never broken by an unconfigured backend.
+  if (SupabaseConfig.isConfigured) {
+    await Supabase.initialize(
+      url: SupabaseConfig.url,
+      anonKey: SupabaseConfig.anonKey,
+    );
+  }
+  runApp(const ZyraApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+/// Convenience accessor used once real auth/data calls are wired in
+/// (post-OA-102) — `SupabaseConfig.isConfigured` must be checked before
+/// use, since `Supabase.instance` throws if initialize() was skipped.
+SupabaseClient get supabase => Supabase.instance.client;
 
-  // This widget is the root of your application.
+class ZyraApp extends StatelessWidget {
+  const ZyraApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ZYRA',
+      debugShowCheckedModeBanner: false,
+      navigatorKey: zyraNavigatorKey,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.dark,
+        // 2026-07-25, DR-ZYRA-101 audit item 1 (Founder decision:
+        // "switch to gradient"): scaffoldBackgroundColor only accepts a
+        // solid Color, so it can't hold DR-ZYRA-094's gradient directly
+        // — the gradient default is now applied one level up, in
+        // `builder:` below, wrapping every screen. This Color is kept
+        // only as the Scaffold-internal fallback for the rare instant
+        // before that wrapper paints; it matches the gradient's top
+        // stop (Royal Purple) so there's no visible seam.
+        scaffoldBackgroundColor: ZyraColors.royalPurple,
+        useMaterial3: true,
+        // Edge-swipe-to-go-back on iOS (Founder request, 2026-07-19): no
+        // custom pageTransitionsTheme needed here — Flutter's own default
+        // already maps TargetPlatform.iOS to a Cupertino-style page
+        // transition with the standard left-edge swipe-back gesture
+        // built in. (An earlier attempt to make this explicit via a
+        // custom PageTransitionsTheme hit a real build-time error on
+        // this project's Flutter SDK — CupertinoPageTransitionsBuilder
+        // wasn't resolving — so removed rather than fight a toolchain
+        // issue for behaviour that was already correct by default.)
+        // Only works on screens reached via a normal push — screens
+        // reached via pushReplacement/pushAndRemoveUntil (onboarding
+        // steps, the post-sign-in transition) are intentionally
+        // forward-only and won't have this gesture, matching how iOS
+        // itself behaves in similar forward-only flows.
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      // Founder testing aid (2026-07-19) — floating Back/Home buttons,
+      // debug-only (see dev_nav_overlay.dart). Wrapping here via
+      // `builder:` means it sits above every screen regardless of the
+      // navigation stack depth, without needing to touch any individual
+      // screen.
+      // 2026-07-25, DR-ZYRA-101 audit item 1: app-wide gradient default,
+      // wrapping every screen below the ThemeData Color fallback above.
+      // Neutral brandGradient, not gender-matched — this layer is
+      // reached before auth/gender is known (Welcome, Role Selection)
+      // as well as after, so it must stay the same regardless of who's
+      // signed in (a gendered default here would risk showing a stale
+      // colour after sign-out, same reasoning as ZyraColors.
+      // genderGradient()'s doc comment). Individual profile-context
+      // screens already layer their own gender-matched gradient on top
+      // via their own Container/Scaffold body, so this is genuinely
+      // just the base layer, not a competing source of truth.
+      builder: (context, child) => Container(
+        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        child: DevNavOverlay(
+          navigatorKey: zyraNavigatorKey,
+          child: child ?? const SizedBox.shrink(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      // AuthGate calls into Supabase.instance, which throws if
+      // initialize() was skipped — only safe to use once configured.
+      home: SupabaseConfig.isConfigured ? const AuthGate() : const WelcomeScreen(),
     );
   }
 }

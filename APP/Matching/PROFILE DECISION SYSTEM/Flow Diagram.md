@@ -5,11 +5,20 @@ PROFILE DECISION SYSTEM
 FLOW DIAGRAM
 ============================================================
 
+Superseded 2026-07-12: rewritten against
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 and DR-076 alongside
+Summary.md and References.md.
+
+Terminology updated 2026-07-25 (DR-ZYRA-099, caught by the
+DR-ZYRA-101 repository audit): Decline/Save/Like renamed
+Pass/Save/Consider throughout below — underlying mechanics
+unchanged, this file was simply missed in the DR-099 sweep.
+
 ------------------------------------------------------------
 CORE DECISION FLOW
 ------------------------------------------------------------
 
-Seeker views profile in Browser
+Seeker views profile in Browse
             │
             ▼
     ┌───────────────┐
@@ -17,30 +26,30 @@ Seeker views profile in Browser
     └───────────────┘
        │        │        │
        ▼        ▼        ▼
-   Decline   Review   Consider
+    Pass       Save    Consider
        │        │        │
        ▼        ▼        ▼
    Next      Added     Added to
-  Profile   to Review  Considerations
+  Profile   to Saves  Outgoing Potentials
 
 ------------------------------------------------------------
-MATCH CREATION FLOW
+MATCH EVENT FLOW
 ------------------------------------------------------------
 
-Seeker A considers Seeker B
+Seeker A Considers Seeker B
             │
             ▼
-  Does Seeker B consider Seeker A?
+  Does Seeker B Consider Seeker A?
        │               │
       YES              NO
        │               │
        ▼               ▼
-  Mutual              No Match
-  Consideration       Created
-  Created
-       │
-       ▼
-  Match Created
+  Match event         No Match.
+  fires               Seeker A stays in Seeker
+       │              B's Incoming Potentials
+       ▼              (if B is ZYRA One) or
+  Potential Journey    unrevealed (if B is Basic)
+  created
        │
        ▼
   Both Seekers Notified
@@ -48,80 +57,74 @@ Seeker A considers Seeker B
        ▼
   Communication System
   controls next steps
+  (no conversation opens yet —
+  Pre-Journey Ritual required first)
 
 ------------------------------------------------------------
-MUTUAL REVIEW DETECTION FLOW (PREMIUM ONLY)
+MUTUAL SAVE DETECTION FLOW
 ------------------------------------------------------------
 
-Seeker A (Premium) reviews Seeker B
+Seeker A saves Seeker B
             │
             ▼
-  Is Seeker B also Premium?
+  Has Seeker B also saved Seeker A?
        │               │
       YES              NO
        │               │
        ▼               ▼
-  Has Seeker B       No Detection
-  reviewed           No Notification
-  Seeker A?
-       │
-      YES
+  Mutual Save        No Detection
+  exists             No Notification
        │
        ▼
-  Mutual Review Detected
-       │
-       ▼
-  Both Seekers Notified:
-  "A profile you reviewed has also reviewed
-   your profile. Would you like to move this
-   profile to Consideration?"
-       │
-       ▼
-    ┌─────────────────────────┐
-    │     Both choose         │
-    │   Move to Consideration │
-    └─────────────────────────┘
+  Is either Seeker on ZYRA One?
        │               │
-    BOTH YES        ONE/BOTH NO
+      YES              NO — both Basic
        │               │
        ▼               ▼
-  Mutual             No Match
-  Consideration      Profile stays
-  + Match Created    in Review
+  ZYRA One side(s)    Completely private —
+  notified:           neither notified
+  "Mutual Save Detected"
+       │
+       ▼
+  Does NOT create a Match —
+  Match only fires on mutual Consider
 
 ------------------------------------------------------------
-CONSIDERATION REMOVAL FLOW
+OUTGOING POTENTIAL REMOVAL FLOW
 ------------------------------------------------------------
 
-Seeker removes a Consideration
+Seeker removes an Outgoing Potential
             │
             ▼
-  Consideration removed
+  Consider removed
             │
             ▼
-  Other Seeker notified
+  Other Seeker notified (only if they had already
+  received an Incoming Potential — ZYRA One only)
             │
             ▼
-  Event recorded in Relationship Timeline
+  Event recorded in Journey Timeline
             │
             ▼
-  Other Seeker's Consideration remains active
-            │
-            ▼
-  Future reconsideration allowed
+  Future re-Considering allowed
   (unless blocked)
 
 ------------------------------------------------------------
-REVIEW LIST CAPACITY FLOW
+SAVE / CONSIDER DAILY LIMIT FLOW
 ------------------------------------------------------------
 
-Seeker tries to add profile to Review
+Seeker tries to Save or Consider a profile
             │
             ▼
-  Review list below 50?
+  Is Seeker on ZYRA One?
        │               │
-      YES              NO
+      YES              NO — ZYRA Basic
        │               │
        ▼               ▼
-  Profile added     Must remove a profile
-  to Review         before adding new one
+  Unlimited          Under 10 for today?
+  Save/Consider           │        │
+                          YES      NO
+                           │        │
+                           ▼        ▼
+                     Action        Blocked until
+                     allowed       next day

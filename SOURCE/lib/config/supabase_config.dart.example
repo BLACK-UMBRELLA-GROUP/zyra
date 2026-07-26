@@ -1,0 +1,15 @@
+// Template for lib/config/supabase_config.dart — copy this file to
+// supabase_config.dart (without .example) and fill in your project's
+// values from Supabase Dashboard > Project Settings > API.
+//
+// supabase_config.dart is gitignored — never commit real keys.
+// Only the URL and the "anon / public" key go here. NEVER put the
+// service_role key in this file or anywhere in the Flutter app — it
+// bypasses Row Level Security and must stay server-side only.
+
+class SupabaseConfig {
+  SupabaseConfig._();
+
+  static const String url = 'https://YOUR-PROJECT-REF.supabase.co';
+  static const String anonKey = 'YOUR-ANON-PUBLIC-KEY';
+}

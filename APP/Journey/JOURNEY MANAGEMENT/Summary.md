@@ -32,22 +32,30 @@ END JOURNEY
     completely new Journey.
   Purpose: "This chapter has ended."
 
-PAUSE JOURNEY (FURTHER REVIEW)
-  Current concept:
-  • Journey temporarily frozen.
-  • Conversation locked.
-  • Timeline preserved.
-  • Can only resume if both users agree.
-  Purpose: "We're taking a break."
-  Status: Concept — exact behaviour under discussion.
-
-STEP BACK / HOLD
-  Alternative to ending a Journey.
-  Purpose: Preserve the connection and timeline, allow
-  future reconnection, avoid treating every pause as a
-  rejection.
-  Status: Working concept — name and exact behaviour
-  still under discussion.
+PAUSE JOURNEY
+  RESOLVED 2026-07-25 (OA-ZYRA-140 item 7, Founder decision:
+  "build all three now"). Full mechanics are ratified and now
+  built in JOURNEY SUSPENSION/JOURNEY_SUSPENSION_CURRENT_
+  VERSION_V1.md — this section previously duplicated that
+  document with an unresolved "Concept" status and a
+  redundant "STEP BACK / HOLD" alternative naming proposal.
+  SUSPENSION is the governing document for Pause/Resume;
+  this section now simply points to it rather than
+  re-specifying it:
+  • Journey Suspension is a behavioural sub-state of an
+    Active Journey (matches.status stays 'active';
+    suspended_by/suspended_at record who paused it).
+  • Requires ZYRA One (seeker_premium plan).
+  • Conversation locks; Timeline preserved.
+  • Only the suspending Seeker may resume, unless the other
+    party started a new Active Journey in the meantime, in
+    which case the paused Journey Auto-Ends.
+  • The non-suspending party may End Journey instead of
+    waiting.
+  See JOURNEY SUSPENSION/JOURNEY_SUSPENSION_CURRENT_VERSION_
+  V1.md for full detail (sections 1-15) and
+  ZyraJourneyService.suspendJourney/resumeJourney/endJourney
+  for the implementation.
 
 ------------------------------------------------------------
 TIMELINE
@@ -86,9 +94,13 @@ Potential future section within Matches or Settings:
 FUTURE DISCUSSION — SAFETY & MODERATION
 ------------------------------------------------------------
 
-Requires a dedicated future design discussion covering:
-• Block User
-• Report User
+**Update, 2026-07-25:** Block User / Report User for the Browse-
+screen, pre-Journey, Seeker-to-Seeker case is now specified — see
+`APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md` §Profile Actions
+(DR-ZYRA-095). The remaining items below are **not** resolved by
+that filing — it explicitly scopes itself to Browse only.
+
+Still requires a dedicated future design discussion covering:
 • Block Wali
 • Report Wali
 • How blocking affects existing Journeys and Timelines.
@@ -106,4 +118,7 @@ OPEN DISCUSSIONS
   after stepping back.
 • Limits on inactive / held Journeys.
 • How "Journey Ended" milestone appears on Timeline.
-• Full Safety & Moderation design (dedicated session).
+• Safety & Moderation for Wali blocking/reporting, and for
+  blocking/reporting effects within an existing Active Journey
+  (Browse-stage Seeker-to-Seeker case resolved 2026-07-25, see
+  above — this item now covers only the remaining scope).

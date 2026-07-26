@@ -4257,7 +4257,13 @@ OA-101
 Title:       Supabase project setup
 Category:    Infrastructure / Setup
 Priority:    Critical
-Status:      Open
+Status:      Actioned — confirmed 2026-07-25 (DR-ZYRA-101 audit).
+             Live Supabase project genuinely working today: real
+             RLS-backed accounts, real auth sessions, real
+             profiles/subscriptions rows (see Developer Mode
+             Script_V2.md, DR-ZYRA-100). Status was never updated
+             when this was completed — closed here on evidence
+             from live code, not from a new build step.
 Owner:       Shakeel
 Raised:      2026-06-27
 Source:      Development Environment Review 2026-06-27
@@ -4294,7 +4300,12 @@ OA-102
 Title:       Supabase authentication setup
 Category:    Implementation / Authentication
 Priority:    Critical
-Status:      Open
+Status:      RESOLVED 2026-07-25 (OA-ZYRA-140 item 13, Founder
+             decision: "Google/Apple-only is correct"). Scope
+             below rewritten to match live code and the confirmed
+             direction; the pivot itself is now formally ratified
+             as DR-ZYRA-102 (see Decisions Register) rather than
+             left undocumented.
 Owner:       Lead Architect
 Raised:      2026-06-27
 Source:      Development Environment Review 2026-06-27
@@ -4303,27 +4314,31 @@ Description: Implement Supabase Auth in the ZYRA Flutter
              all other features — no feature can be built
              without a confirmed authenticated user.
 
-             Scope:
-               — Email + password sign-up and sign-in
+             Scope (rewritten 2026-07-25 to match ratified
+             direction, DR-ZYRA-102):
+               — Google sign-in (user-facing)
+               — Apple sign-in (user-facing)
                — Session persistence across app restarts
                — Auth state listener wired into app state
                — Sign-out
-               — Basic error handling (wrong password,
-                 email not confirmed, network error)
+               — Email + password retained ONLY as a hidden
+                 Developer Mode test-account path — not exposed
+                 to real users, not part of the Welcome screen
+                 flow.
 
-             Explicitly out of scope for this OA:
-               — Social auth (Google, Apple)
+             Explicitly out of scope:
+               — User-facing email + password sign-up/sign-in
                — Phone auth
                — Magic links
-               These are V2 auth features added after
-               the core flow is working.
 
-             Depends on OA-101 (Supabase project) being
-             complete before implementation begins.
-Target:      Working auth flow in Flutter (sign up,
-             sign in, sign out, session persistence)
-Dependencies: OA-101 (Supabase project setup)
-Automation:  Future (Development Team agent)
+             Depended on OA-101 (Supabase project) being
+             complete before implementation began — satisfied.
+Target:      Working auth flow in Flutter (Google sign-in,
+             Apple sign-in, sign out, session persistence) —
+             ACHIEVED, live in `zyra_auth.dart` / `welcome_
+             screen.dart`.
+Dependencies: OA-101 (Supabase project setup), DR-ZYRA-102
+Automation:  None — implemented directly.
 
 ------------------------------------------------------------
 
@@ -4545,7 +4560,7 @@ Notes:       Conditions approved by Architectural Reviewer
 ============================================================
 
 OA-121
-Title:       Define Google Ads Placement for Basic Seeker Tier
+Title:       Define Google Ads Placement for ZYRA Basic Seeker Tier
 Status:      Open
 Priority:    Medium
 Owner:       Lead Architect
@@ -4563,19 +4578,2083 @@ Description: Basic Seeker accounts should display Google
              — Frequency and capping rules
              — Surfaces that are ad-free regardless of tier
                (e.g. active Journey/messaging screens)
-             — Ad-free upgrade prompt (Premium upsell)
+             — Ad-free upgrade prompt (ZYRA One upsell)
 
-             Ads must not appear for Premium Seeker accounts
-             or any Wali account (Basic or Pro).
+             Ads must not appear for ZYRA One Seeker accounts
+             or any Wali account (Standard or Extended).
 
              Platform policy reference:
              ADVERTISING_STANDARD_CURRENT_VERSION_V1.md
 
 Dependencies: ADVERTISING_STANDARD_CURRENT_VERSION_V1.md
-              ZYRA Seeker subscription tiers
-              Premium upsell design
+              ZYRA Seeker subscription entitlements
+              ZYRA One upsell design
 
 Notes:       Raised from session 2026-06-28.
-             Wali accounts (Basic and Pro) are excluded
+             Wali accounts (Standard and Extended) are excluded
              from ads entirely — ads are a Seeker-tier
              monetisation mechanism only.
+             Corrected 2026-07-12: title and body updated from
+             "Basic Seeker Tier"/"Basic and Pro" (stale — no
+             Pro tier under ZYRA One) to ZYRA Basic/ZYRA One and
+             Standard Wali/Extended Wali, per the Phase 3-5
+             documentation alignment pass.
+
+------------------------------------------------------------
+
+OA-ZYRA-122
+Title:       Login / Welcome Screen — UX Review (Typography,
+             Layout, Platform-Native Sign-In Priority)
+Status:      Awaiting Review — implemented 2026-07-19 per
+             Founder instruction ("fix and run all"). See
+             DR-ZYRA-088 (PROPOSED, not yet ratified). Not yet
+             visually verified on device.
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # ZYRA OA – Login / Welcome Screen Review
+
+             ## Status
+             APPROVED
+
+             ## Background
+             Initial UX review of the ZYRA login/welcome screen
+             identified several areas where the first impression
+             could be improved. The goal is to create a cleaner,
+             more premium, and platform-native experience.
+
+             ## Agreed Improvements
+
+             ### 1. ZYRA Typography
+             The current ZYRA logo/font does not feel premium
+             enough.
+             Action:
+             — Explore alternative typography for the ZYRA
+               wordmark.
+             — Aim for a more elegant, modern, premium identity
+               while remaining simple and readable.
+
+             ### 2. Screen Layout
+             The welcome screen feels too open with excessive
+             empty vertical space.
+             Action:
+             — Reduce unnecessary whitespace.
+             — Improve vertical balance.
+             — Bring the logo, slogan, and sign-in buttons
+               closer together to create a more polished and
+               intentional layout.
+
+             ### 3. Platform-Native Sign-In Priority
+             The primary sign-in option should match the user's
+             device.
+             Apple Devices (iPhone/iPad):
+             — "Continue with Apple" should be the primary and
+               largest sign-in button.
+             — "Continue with Google" should be secondary.
+             Android Devices:
+             — "Continue with Google" should be the primary and
+               largest sign-in button.
+             — "Continue with Apple" should be secondary.
+             This follows each platform's user expectations and
+             creates a more natural onboarding experience.
+
+             ## Design Goals
+             — More premium first impression.
+             — Better use of screen space.
+             — Native platform feel.
+             — Cleaner visual hierarchy.
+             — Stronger ZYRA branding.
+
+             --- Source document ends ---
+
+Dependencies: SOURCE/lib/screens/welcome_screen.dart
+              ZYRA wordmark / brand typography
+              (BUSINESS/BRAND MESSAGING, BUSINESS/COLOUR THEME)
+
+Notes:       Logged per Founder instruction 2026-07-19: a
+             series of ChatGPT-authored UX review items is
+             being batch-logged during a live app walkthrough.
+             Each is filed as Open/Discussion only — none are
+             to be actioned, scoped, or ratified until the
+             Founder reviews them individually in a future
+             session. Item 1 of an open-ended series (OA-ZYRA-123
+             onward reserved for subsequent items in this same
+             review pass).
+
+------------------------------------------------------------
+
+OA-ZYRA-123
+Title:       Theme Consistency During Onboarding — Light Purple
+             Default, Gender Accents Reserved for Profile Only
+Status:      Awaiting Review — implemented 2026-07-19 per
+             Founder instruction, with expanded scope: Founder
+             directed that Luxury Dark Purple be removed from
+             active use app-wide (not just onboarding), Royal
+             Purple as primary. See DR-ZYRA-090 (PROPOSED, not
+             yet ratified) — also directly overrides BUSINESS/
+             COLOUR THEME/Summary.md and Onboarding Rules & UX
+             §COLOUR SYSTEM, flagged there. Not yet visually
+             verified on device.
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # ZYRA OA – Theme Consistency During Onboarding
+
+             ## Status
+             APPROVED
+
+             ## Background
+             During the onboarding flow, the background colour
+             changes from the ZYRA home screen's signature
+             light purple to a much darker purple.
+             This creates an inconsistent visual experience and
+             makes onboarding feel disconnected from the
+             Welcome screen.
+
+             ## Approved Design Rule
+             The default background colour throughout onboarding
+             should remain the same signature ZYRA light purple
+             used on the Welcome screen.
+             Users should feel like they are progressing through
+             one continuous experience, not moving between
+             different themes.
+
+             ## Theme Behaviour
+
+             ### Default Screens
+             Use the standard ZYRA light purple background
+             throughout:
+             — Welcome
+             — Sign In
+             — Sign Up
+             — Onboarding
+             — Profile Creation
+             — General setup screens
+             This should become the default ZYRA brand colour.
+
+             ### Profile Context Only
+             The profile accent colours should only appear once
+             the user is viewing profile-related content.
+             Examples:
+             Male Profile Context — Blue accent theme.
+             Female Profile Context — Pink accent theme.
+             These colours should represent profile identity
+             only and should not replace the main ZYRA brand
+             colour during onboarding or general navigation.
+
+             ## Design Goal
+             Maintain one consistent premium brand identity
+             across the onboarding journey while reserving
+             gender accent colours for profile experiences only.
+             The user should always feel they are inside the
+             ZYRA ecosystem rather than moving between different
+             colour themes.
+
+             --- Source document ends ---
+
+Dependencies: BUSINESS/COLOUR THEME/Summary.md
+              SOURCE/lib/theme/zyra_colors.dart
+              Onboarding screens (SOURCE/lib/screens/onboarding/)
+              main.dart scaffoldBackgroundColor
+              (currently 0xFF3D2A4A — matches the "much darker
+              purple" this item flags)
+
+Notes:       Logged per Founder instruction 2026-07-19 — item 2
+             of an open-ended series of ChatGPT-authored UX
+             review items being batch-logged during a live app
+             walkthrough. Open/Discussion only, not actioned.
+             Potential tension to flag for the future discussion
+             (not resolved now): this item asks for one light
+             purple across onboarding + general nav with gender
+             accents reserved for profile screens, which may
+             interact with existing gendered theming already
+             live elsewhere (e.g. ZyraColors.brandGradientMale
+             used on WaliProfileScreen, per zyra_auth.dart-
+             adjacent files read this session) — worth checking
+             during ratification whether "profile-related
+             content" is meant to include Wali screens too.
+
+------------------------------------------------------------
+
+OA-ZYRA-124
+Title:       Account Types & UX Review — Per-Account Review Plan
+             + Open Question on "Extended Wali"
+Status:      Open — Discussion Item (source document
+             self-labelled "APPROVED" by ChatGPT; logged here
+             for Founder review only — not yet ratified in ZYRA
+             governance, not yet actioned)
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # ZYRA OA – Account Types & UX Review
+
+             ## Status
+             APPROVED
+
+             ## Background
+             Before continuing the UI review, every account
+             type should have its own dedicated review.
+             Each account has different permissions,
+             navigation, and user journeys, so they should be
+             reviewed independently.
+
+             ## Account Types to Review
+             Seeker Basic — Male, Female
+             Seeker One — Male, Female
+             Wali Basic — Male, Female
+             Wali One — Male, Female
+
+             ## Review Process
+             Each account should be reviewed individually to
+             confirm:
+             — Navigation
+             — Available tabs
+             — Feature access
+             — Upgrade prompts
+             — User journey
+             — Permissions
+             — UI consistency
+             — Empty states
+             — Settings
+             — Profile behaviour
+             The goal is to ensure every account type feels
+             complete and intentional.
+
+             ## Outstanding Question
+             The current build includes a navigation/tab
+             labelled:
+             — Wali
+             — Extended Wali
+             Before any design decisions are made, clarification
+             is required on the intended purpose of "Extended
+             Wali."
+             Please explain:
+             — What is Extended Wali?
+             — How does it differ from the primary Wali?
+             — What permissions does it have?
+             — Who can become an Extended Wali?
+             — Is this intended to support multiple family
+               members?
+             — Is the naming final, or should it be
+               reconsidered?
+             No UX changes should be made to this area until
+             its purpose has been clarified and agreed.
+
+             --- Source document ends ---
+
+Dependencies: WALI_ARCHITECTURE_CURRENT_VERSION_V5.md
+              (governs Extended Wali already — see Notes)
+              DeveloperAccessScreen presets (Seeker Basic/One
+              m/f, Wali, Wali+Extended Wali) — DR-ZYRA-087
+
+Notes:       Logged per Founder instruction 2026-07-19 — item 3
+             of an open-ended series of ChatGPT-authored UX
+             review items being batch-logged during a live app
+             walkthrough. Open/Discussion only, not actioned.
+             Flagging for the future discussion (not resolved
+             now, per batch-logging instruction): the "Outstanding
+             Question" on Extended Wali already has an answer on
+             record — WALI_ARCHITECTURE_CURRENT_VERSION_V5.md is
+             cited as governing it directly in DR-ZYRA-087, and
+             DeveloperAccessScreen already ships a distinct
+             "Wali + Extended Wali" preset built against that
+             spec. When this item comes up for discussion, the
+             fastest path may be pointing ChatGPT/Shakeel at
+             that existing document rather than treating it as
+             an open design question from scratch — worth
+             checking whether the naming/scope there still
+             matches what's live in the account-type review
+             once that happens.
+
+------------------------------------------------------------
+
+OA-ZYRA-125
+Title:       Browse Screen UI Refinements — Full-Screen Photos,
+             Floating Glassmorphism Nav, Remove Swipe Counter
+Status:      Awaiting Review — implemented 2026-07-19 per
+             Founder instruction ("fix and run all"). See
+             DR-ZYRA-089 (PROPOSED, not yet ratified). Not yet
+             visually verified on device.
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # ZYRA OA – Browse Screen UI Refinements
+
+             ## Status
+             APPROVED
+
+             ## Background
+             Following the Browse screen review, several UI
+             refinements have been agreed to create a more
+             immersive, premium experience.
+
+             ## 1. Full-Screen Profile Images
+             Profile photos should occupy the full screen. The
+             image should extend behind the navigation controls
+             rather than stopping above a coloured background.
+             The profile image should become the primary visual
+             focus.
+
+             ## 2. Remove Bottom Purple Bar
+             The solid purple bar currently shown at the bottom
+             of the Browse screen should be removed. The image
+             should continue to the bottom edge of the display.
+
+             ## 3. Floating Navigation Bar
+             Replace the current fixed navigation bar with a
+             floating navigation bar.
+             Design goals:
+             — Glassmorphism / transparent appearance.
+             — Rounded container.
+             — Floating above the profile image.
+             — Similar design language to Instagram's modern
+               floating navigation.
+             — Premium and lightweight.
+             Navigation States —
+             Selected: slightly larger icon, higher opacity,
+             clear active state.
+             Not Selected: slightly smaller icon, lower opacity,
+             more subtle appearance.
+             Navigation should remain visible while allowing the
+             profile image to remain the main focus.
+
+             ## 4. Action Buttons
+             For now: Like, Save, Decline (where applicable)
+             should sit directly above the floating navigation
+             bar. These buttons should also use the same
+             transparent glassmorphism styling. Final placement
+             can be revisited during a later UX review.
+
+             ## 5. Remove Swipe Counter
+             The persistent display showing "0/50 Profiles •
+             Reset in 2h" should not appear during normal
+             browsing.
+             Instead: hide this information completely during
+             normal use; only display it if the user reaches
+             their swipe/profile limit. At that point, present a
+             clear modal or popup explaining the daily limit has
+             been reached, when it resets, and available upgrade
+             options (if applicable). The user should not be
+             constantly reminded of remaining limits while
+             browsing.
+
+             ## Design Goals
+             — Full-screen immersive browsing.
+             — Cleaner interface.
+             — Less visual clutter.
+             — Premium glassmorphism styling.
+             — Greater emphasis on profile photography.
+             — Limits communicated only when relevant.
+
+             --- Source document ends ---
+
+Dependencies: SOURCE/lib/screens/ (Browse screen)
+              BUSINESS/COLOUR THEME/Summary.md
+              Swipe/profile daily limit logic (ZYRA Basic vs
+              ZYRA One entitlement — ties to OA-121 Google Ads
+              placement work, same Basic-tier surface)
+
+Notes:       Logged per Founder instruction 2026-07-19 — item 4
+             of an open-ended series of ChatGPT-authored UX
+             review items being batch-logged during a live app
+             walkthrough. Open/Discussion only, not actioned.
+
+------------------------------------------------------------
+
+OA-ZYRA-126
+Title:       Additional Note — Navigation Structure Must Align
+             With Existing Approved Architecture, Not Redesign
+Status:      Open — Discussion Item (source document is a
+             clarifying note, not itself an OA; logged here for
+             Founder review only — not yet ratified in ZYRA
+             governance, not yet actioned)
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # Additional Note – Navigation Structure
+
+             ## Existing OA Decision
+             The bottom navigation has already been designed and
+             agreed previously.
+             Before making any navigation changes, please review
+             the existing OA documentation and previous design
+             documents to ensure this implementation remains
+             consistent.
+             The agreed navigation structure already exists
+             within the project documentation.
+
+             ### Current Navigation
+             For Seeker accounts, the bottom navigation consists
+             of:
+             — Browse
+             — Connections
+             — Wali
+             — Profile
+
+             Please refer to the previous OA documents for the
+             complete behaviour, permissions, and account-specific
+             variations.
+             If anything in the current implementation differs
+             from the previously approved design, please
+             highlight the differences rather than creating a new
+             navigation structure.
+             The goal is to align the current UI with the
+             existing approved architecture, not redesign it from
+             scratch.
+
+             --- Source document ends ---
+
+Dependencies: OA-008 (Create Wali Navigation folder), OA-009
+              (Create Connections folder) — both prior OAs on
+              this exact nav structure, status Blocked as of
+              last read
+              APP/Navigation/ (SEEKER NAVIGATION and related)
+              SOURCE/lib/screens/ (Home/tab shell)
+
+Notes:       Logged per Founder instruction 2026-07-19 — item 5
+             of an open-ended series of ChatGPT-authored UX
+             review items being batch-logged during a live app
+             walkthrough. Open/Discussion only, not actioned —
+             per instruction, not cross-checking this against
+             OA-008/OA-009 or the live nav shell right now; that
+             review is exactly what this item is asking for and
+             belongs in the future discussion session, not this
+             logging pass.
+
+------------------------------------------------------------
+
+OA-ZYRA-127
+Title:       Developer Access Improvements — Male/Female Wali
+             Presets, Test Sign Up Flow, Skip Payment
+Status:      Open — Discussion Item (source document
+             self-labelled "APPROVED" by ChatGPT; logged here
+             for Founder review only — not yet ratified in ZYRA
+             governance, not yet actioned)
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # ZYRA OA – Developer Access Improvements
+
+             ## Status
+             APPROVED
+
+             ## Background
+             The Developer Access area should better reflect
+             the real user journeys available within ZYRA. This
+             allows every account type and onboarding path to
+             be tested without manually creating accounts or
+             modifying the database.
+
+             # 1. Expand Wali Account Options
+             The current Developer Access only provides a
+             generic Wali account. This should be split into
+             two distinct account types.
+             Add: Male Wali, Female Wali.
+             Reason: Wali accounts inherit the same visual
+             identity rules as Seeker accounts — Male Wali ->
+             Male colour theme, Female Wali -> Female colour
+             theme. This allows the UI, profile layouts, accent
+             colours, and navigation to be tested correctly for
+             both experiences.
+
+             # 2. Test Sign Up
+             Add a new Developer Tool called "Test Sign Up."
+             This should simulate a brand new user creating an
+             account from scratch. The goal is to test the
+             complete onboarding flow without needing to create
+             real accounts repeatedly.
+
+             ## Available Options
+             The developer should be able to choose any account
+             type. Examples: Seeker Basic (Male), Seeker Basic
+             (Female), Seeker One (Male), Seeker One (Female),
+             Wali Basic (Male), Wali Basic (Female), Wali One
+             (Male), Wali One (Female).
+
+             # 3. Simulate Real User Journey
+             Selecting an account should launch the normal
+             production onboarding flow exactly as a real user
+             would experience it. This includes: Welcome
+             screens, Account creation, Onboarding, Compatibility
+             questions, Profile creation. The only exception is
+             payment.
+
+             # 4. Subscription Testing
+             If the selected account requires a subscription
+             (e.g. Seeker One or Wali One): display the normal
+             subscription/payment screen. Within Developer Mode
+             only, provide a Skip Payment option. Selecting Skip
+             Payment should bypass payment, grant the chosen
+             subscription, and continue onboarding normally.
+             This allows the full premium onboarding experience
+             to be tested without requiring live payments.
+
+             # 5. Existing Developer Tools
+             The following Developer Mode features should
+             remain available alongside the new additions: Test
+             Accounts, Jump To Screen, Test Sign Up. These serve
+             different purposes — Test Accounts: instantly
+             access preconfigured accounts. Jump To Screen:
+             quickly navigate to any screen for UI testing. Test
+             Sign Up: simulate the complete first-time user
+             experience from account selection through
+             onboarding.
+
+             ## Goal
+             Developer Mode should support both rapid UI testing
+             and complete end-to-end onboarding testing while
+             closely mirroring the production user experience.
+
+             --- Source document ends ---
+
+Dependencies: SOURCE/lib/screens/dev/developer_access_screen.dart
+              SOURCE/supabase/seed_dev_accounts.sql (would need
+              Male/Female Wali seed rows added)
+              DR-ZYRA-087 (existing dev switcher this extends)
+              Subscription/payment screen + entitlement plumbing
+              (Skip Payment needs somewhere real to hook into)
+
+Notes:       Logged per Founder instruction 2026-07-19 — item 6
+             of an open-ended series of ChatGPT-authored UX
+             review items being batch-logged during a live app
+             walkthrough. Open/Discussion only, not actioned.
+             Flagging for the future discussion (not resolved
+             now): §1's "generic Wali account" is already stale
+             relative to DR-ZYRA-087 — the current dev switcher
+             already has 6 presets including a dedicated "Wali +
+             Extended Wali" preset, not just one generic Wali.
+             §2/§3/§4 (Test Sign Up + Skip Payment) describe new
+             functionality, not a fix to something existing.
+
+------------------------------------------------------------
+
+OA-ZYRA-128
+Title:       Fix Theme Selection for Test Accounts — Blue/Purple
+             and Pink/Purple Profile Gradients Not Applying
+Status:      Open — Discussion Item (source document
+             self-labelled "APPROVED" by ChatGPT; logged here
+             for Founder review only — not yet ratified in ZYRA
+             governance, not yet actioned)
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # ZYRA OA – Fix Theme Selection for Test Accounts
+
+             ## Status
+             APPROVED
+
+             ## Background
+             The Test Accounts within Developer Mode are not
+             loading the correct colour themes. The
+             application's theme system has already been
+             defined and documented. Please review the existing
+             theme configuration files before making any
+             changes to ensure the implementation matches the
+             approved design.
+
+             ## Expected Theme Behaviour
+
+             ### Default ZYRA Theme
+             The default application theme is the ZYRA light
+             purple theme. This should be used throughout the
+             app unless a profile-specific theme is required.
+
+             ### Male Profile Theme
+             When the active profile is Male (Seeker or Wali),
+             the interface should use the approved Blue -> Purple
+             gradient/theme. Applies to: Seeker Basic (Male),
+             Seeker One (Male), Wali Basic (Male), Wali One
+             (Male).
+
+             ### Female Profile Theme
+             When the active profile is Female (Seeker or Wali),
+             the interface should use the approved Pink -> Purple
+             gradient/theme. Applies to: Seeker Basic (Female),
+             Seeker One (Female), Wali Basic (Female), Wali One
+             (Female).
+
+             ## Current Issue
+             The Test Accounts are not correctly applying the
+             profile theme after loading. Instead, they appear
+             to be using an incorrect or fallback colour scheme.
+
+             ## Required Action
+             Please review the existing: Theme files, Colour
+             definitions, Design system, Theme provider,
+             Developer Mode account loading logic. The approved
+             colour system already exists within the project
+             documentation and should be used as the source of
+             truth. Do not create a new colour palette unless an
+             issue is identified with the existing implementation.
+             Instead, ensure the correct theme is selected
+             automatically based on: Account type, Profile
+             gender.
+
+             ## Theme Rules
+             Purple = Default ZYRA application theme.
+             Blue -> Purple = Male profile theme.
+             Pink -> Purple = Female profile theme.
+             These themes should be applied consistently across
+             both production accounts and Developer Mode test
+             accounts.
+
+             ## Goal
+             Developer Mode should accurately reflect the visual
+             experience of real user accounts so that UI testing
+             is performed against the correct theme for every
+             account type.
+
+             --- Source document ends ---
+
+Dependencies: SOURCE/lib/theme/zyra_colors.dart
+              SOURCE/lib/screens/dev/developer_access_screen.dart
+              DR-ZYRA-090
+
+Notes:       Logged per Founder instruction 2026-07-19 — item 7
+             of an open-ended series of ChatGPT-authored UX
+             review items being batch-logged during a live app
+             walkthrough. Open/Discussion only, not actioned.
+             DIRECT CONFLICT to flag for the future discussion:
+             this item's "Theme Rules" (Blue -> Purple for Male,
+             Pink -> Purple for Female, gradients ending in
+             Purple) describe the system as it existed BEFORE
+             today's DR-ZYRA-090, not after. DR-ZYRA-090 — applied
+             earlier in this same session, per Founder's own
+             explicit real-time instruction ("the darker shade is
+             not to be present in the app") — changed
+             brandGradientMale/brandGradientFemale from Blue/Pink
+             fading to (Luxury Dark) Purple into flat Blue / flat
+             Pink with no Purple endpoint at all. This ChatGPT
+             review was written from an earlier build/screenshot
+             and wasn't aware of that same-session change. When
+             this item comes up for discussion, the real question
+             isn't "why don't test accounts match production" —
+             production itself no longer uses a Blue/Pink ->
+             Purple gradient as of DR-ZYRA-090. Needs a Founder
+             decision on which description is now correct before
+             any "fix" is made.
+
+------------------------------------------------------------
+
+OA-ZYRA-129
+Title:       Browse Navigation Bar Structure — 5-Tab Order
+             (Browse/Connections/Wali/Network/Profile), Network
+             Premium Lock State
+Status:      Open — Discussion Item (source document
+             self-labelled "APPROVED" by ChatGPT; logged here
+             for Founder review only — not yet ratified in ZYRA
+             governance, not yet actioned)
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed individually in a future session.
+
+             --- Source document begins ---
+
+             # ZYRA OA – Browse Navigation Bar Structure
+
+             ## Status
+             APPROVED
+
+             ## Background
+             The new floating navigation bar is moving in the
+             right direction. However, the navigation items do
+             not yet match the approved ZYRA navigation
+             architecture. Please refer to the existing OA
+             documentation before making changes, as the
+             navigation structure has already been defined.
+
+             ## Approved Navigation Order
+             The Browse navigation bar should contain the
+             following tabs in this order:
+             1. Browse
+             2. Connections
+             3. Wali
+             4. Network
+             5. Profile
+             This should become the standard navigation for
+             Seeker accounts.
+
+             ## Network Tab Behaviour
+             The Network tab is a premium feature.
+
+             ### ZYRA Basic
+             The Network tab should remain visible but appear
+             locked. Examples of acceptable behaviour include:
+             locked icon, reduced opacity, premium badge
+             (optional). Tapping the locked tab should present
+             the normal premium upgrade flow. The tab should not
+             disappear, as its presence helps users discover
+             premium features.
+
+             ### ZYRA One
+             Users with a ZYRA One subscription should have full
+             access to the Network tab. No lock icon should be
+             shown.
+
+             ## Existing Documentation
+             Before implementing these changes, please review
+             the existing OA documents and navigation files. If
+             the current implementation differs from the
+             approved navigation architecture, update it to
+             match the documented behaviour rather than creating
+             a new navigation structure.
+
+             ## Goal
+             Ensure all Seeker accounts use the approved
+             navigation architecture while clearly distinguishing
+             premium features through a consistent locked-state
+             experience for ZYRA Basic users.
+
+             --- Source document ends ---
+
+Dependencies: OA-008 (Create Wali Navigation folder, Blocked),
+              OA-009 (Create Connections folder, Blocked)
+              OA-ZYRA-126 (same topic, logged earlier this batch)
+              SOURCE/lib/screens/home/home_shell.dart
+              ZYRA Seeker subscription entitlements (Network
+              lock state needs to read plan somehow)
+
+Notes:       Logged per Founder instruction 2026-07-19 — item 8
+             of an open-ended series of ChatGPT-authored UX
+             review items being batch-logged during a live app
+             walkthrough. Open/Discussion only, not actioned.
+             Flagging for the future discussion: the live
+             HomeShell today has only 3 tabs (Browse, Matches,
+             Profile) — no Connections, Wali, or Network tab
+             exists in the running app at all, so this isn't a
+             re-order of existing tabs, it's building 2 new tabs
+             from scratch (Connections, Network) plus moving Wali
+             from its own top-level shell (WaliHomeShell) into a
+             tab inside the Seeker shell — a bigger structural
+             question than the wording ("do not yet match")
+             implies. Also inconsistent with OA-ZYRA-126 (logged
+             earlier in this same batch), which described the
+             "current navigation" as 4 tabs (Browse, Connections,
+             Wali, Profile) — no Network. Neither description
+             matches the live 3-tab build, and the two ChatGPT
+             items don't fully agree with each other either.
+             OA-008/OA-009 (this exact Connections/Wali folder
+             work) have been Blocked "awaiting Summary from
+             Shakeel" since before this session — worth resolving
+             those first, since they're prerequisites, not just
+             related.
+
+------------------------------------------------------------
+
+OA-ZYRA-130
+Title:       Profile Photo Display & Cropping — BoxFit.cover,
+             crop editor, safe-area overlay
+Status:      Actioned 2026-07-25 — resolved via DR-ZYRA-096. Manual
+             crop editor filed as an exception path only (low AI
+             crop confidence, or explicit user-initiated adjustment
+             after the fact), not the default flow, per Founder
+             decision. Filed into APP/Standards/IMAGE_HANDLING_
+             CURRENT_VERSION_V2.md §MANUAL CROP ADJUSTMENT.
+Completed:   2026-07-25
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed in a future session, before the
+             ZYRA app-build phase of this session begins.
+
+             --- Source document begins ---
+
+             ## Profile Photo Display & Cropping (Approved
+             Recommendation)
+
+             ### Objective
+             Ensure every uploaded profile photo looks clean,
+             professional, and consistent within ZYRA's full-
+             screen Browse experience, regardless of the device
+             or photo dimensions.
+
+             ### Display Behaviour
+             - Profile photos should always fill the entire
+               Browse screen.
+             - Images must never be stretched or distorted.
+             - Use BoxFit.cover (or equivalent) to maintain the
+               original aspect ratio while filling the available
+               space.
+             - Any excess image outside the display area should
+               be cropped automatically.
+
+             ### Upload & Cropping Flow
+             When a user uploads a profile photo:
+             1. Select photo from device.
+             2. Open a crop editor before saving.
+             3. Display the crop using the exact same aspect
+                ratio as the Browse screen.
+             4. Allow users to:
+                - Pinch to zoom.
+                - Drag the image to reposition it.
+                - Preview exactly how it will appear on their
+                  profile.
+             5. Save the crop settings rather than permanently
+                cropping the original image.
+
+             ### Crop Data
+             Retain the original image and store crop metadata,
+             including:
+             - Zoom level
+             - Horizontal position (X)
+             - Vertical position (Y)
+             This allows the same crop to be recreated whenever
+             the photo is displayed while preserving the original
+             image quality.
+
+             ### Safe Area Overlay
+             The crop editor should include a visual "safe area"
+             indicating where the user's face should ideally be
+             positioned. This accounts for UI elements that
+             overlay the image, such as:
+             - Status bar
+             - Navigation controls
+             - Profile name and age
+             - Action buttons
+             - Bottom navigation bar
+             Users should be able to clearly see which parts of
+             the image are likely to remain visible during
+             browsing.
+
+             ### Benefits
+             - Consistent appearance across all devices.
+             - No stretched or distorted photos.
+             - Users know exactly how their profile will appear
+               before saving.
+             - Maintains a premium, polished browsing experience.
+             - Works seamlessly with photos from iPhone, Android,
+               and other camera sources.
+
+             --- Source document ends ---
+
+Notes:       Logged per Founder instruction 2026-07-19. Open/
+             Discussion only, not actioned.
+
+------------------------------------------------------------
+
+OA-ZYRA-131
+Title:       Profile Photo Moderation & Safety — AI screening,
+             authenticity checks, face detection, manual review
+Status:      Actioned 2026-07-25 — resolved via DR-ZYRA-096. Safety
+             & Authenticity Screening merged into IMAGE_HANDLING_
+             CURRENT_VERSION_V2.md as a new pipeline stage, alongside
+             the existing AI Quality Evaluation; the two previously-
+             parallel review flows merged into one Moderation
+             Decision & Manual Review section. Cost Considerations
+             also filed there.
+Completed:   2026-07-25
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed in a future session, before the
+             ZYRA app-build phase of this session begins.
+
+             --- Source document begins ---
+
+             ## Profile Photo Moderation & Safety (Approved
+             Recommendation)
+
+             ### Objective
+             Ensure all profile photos are safe, authentic,
+             respectful, and appropriate before becoming visible
+             on ZYRA.
+
+             ## Moderation Pipeline
+             Every uploaded photo should pass through an
+             automated moderation pipeline before approval.
+
+             ### Stage 1 – AI Safety Screening
+             Immediately after upload, an AI moderation service
+             checks for:
+             - Nudity or sexually explicit content
+             - Partial nudity
+             - Pornographic material
+             - Suggestive content
+             - Violence or gore
+             - Weapons
+             - Drugs or drug use
+             - Hate symbols or extremist imagery
+             - Illegal content
+             - Offensive gestures
+             - Graphic injuries
+             - Text embedded within images (optional)
+             - Low-quality or corrupted images
+             Photos that clearly violate policy are automatically
+             rejected.
+
+             ### Stage 2 – Authenticity Checks
+             The system should detect whether the uploaded image
+             is likely to be:
+             - AI-generated
+             - A meme
+             - A screenshot
+             - A celebrity
+             - A stock image
+             - A logo
+             - A landscape with no person
+             - A pet-only photo
+             - A cartoon or illustration
+             - Multiple unrelated people
+             - Excessively edited or filtered
+             Depending on confidence, these photos can either:
+             - Be rejected automatically.
+             - Be sent for manual review.
+             - Request the user to upload another photo.
+
+             ### Stage 3 – Face Detection
+             Ensure the primary profile photo contains:
+             - At least one clearly visible human face.
+             - Good image quality.
+             - Adequate lighting.
+             - Face not excessively obscured.
+             - Face occupies a reasonable portion of the image.
+             If no suitable face is detected, prompt the user to
+             upload a different photo.
+
+             ### Stage 4 – Manual Review (Exception Queue)
+             Only uncertain or borderline cases should be
+             reviewed by a human moderator. Examples:
+             - AI confidence below approval threshold.
+             - Possible cultural clothing confusion.
+             - Borderline suggestive images.
+             - Potential impersonation.
+             - User appeals after rejection.
+             This keeps moderation costs low while improving
+             accuracy.
+
+             ## User Experience
+             Users should see a simple status after uploading:
+             - Uploading...
+             - Checking photo...
+             - Approved
+             - Needs another photo
+             - Under review (if required)
+             Most users should receive an approval within a few
+             seconds.
+
+             ## Reporting
+             Even after approval, users should be able to report
+             inappropriate photos. Reported photos can:
+             - Be temporarily hidden.
+             - Enter the moderation queue.
+             - Lead to warnings or account restrictions for
+               repeated violations.
+
+             ## Cost Considerations
+             Modern AI image moderation is relatively
+             inexpensive. Typical commercial moderation APIs
+             generally cost around:
+             - Approximately $0.001–$0.01 USD per image depending
+               on the provider and features used.
+             Example:
+             - 10,000 photo uploads ≈ $10–$100 USD
+             - 100,000 photo uploads ≈ $100–$1,000 USD
+             - 1,000,000 photo uploads ≈ $1,000–$10,000 USD
+             Because only a small percentage of uploads should
+             require human review, the ongoing moderation cost
+             remains manageable even as the platform grows.
+
+             ## Recommended Architecture
+             1. User uploads photo.
+             2. Store the original image securely.
+             3. Run AI moderation.
+             4. Run authenticity detection.
+             5. Run face detection.
+             6. If all checks pass:
+                - Approve automatically.
+                - Save crop metadata.
+                - Make photo visible.
+             7. If confidence is low:
+                - Queue for manual review.
+             8. If policy is violated:
+                - Reject the upload and request a replacement.
+             This layered approach provides strong protection
+             against inappropriate content while keeping
+             operational costs low and maintaining a fast user
+             experience.
+
+             --- Source document ends ---
+
+Notes:       Logged per Founder instruction 2026-07-19. Open/
+             Discussion only, not actioned.
+
+------------------------------------------------------------
+
+OA-ZYRA-132
+Title:       Browse Screen Reporting & Safety Actions — three-
+             dot menu (Report / Hide / Block)
+Status:      Actioned 2026-07-25 — filed into APP/Browse/
+             BROWSE_UX_SPEC_CURRENT_VERSION_V2.md §Profile Actions
+             (DR-ZYRA-095). Checked against existing docs first, no
+             conflicts found. Resolves the Browse-screen/Seeker-to-
+             Seeker portion only of JOURNEY MANAGEMENT/Summary.md's
+             Safety & Moderation Open Discussion — Wali blocking and
+             Active-Journey-stage effects remain open there.
+Completed:   2026-07-25
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed in a future session, before the
+             ZYRA app-build phase of this session begins.
+
+             --- Source document begins ---
+
+             # ZYRA – Browse Screen Reporting & Safety Actions
+             Version: V1
+             Status: Approved
+
+             # Objective
+             Provide users with a simple, discoverable, and
+             scalable way to report, hide, or block profiles
+             without interfering with the primary swipe
+             experience. The reporting system should remain
+             easily accessible while maintaining a clean, premium
+             Browse interface.
+
+             # Recommended UI
+             A small three-dot (•••) menu should be permanently
+             visible in the top-right corner of every Browse
+             profile.
+             This approach is preferred over a dedicated flag
+             icon or hidden long-press gesture.
+
+             # Why Not Long Press?
+             Although a long-press gesture keeps the interface
+             visually cleaner, it introduces several usability
+             issues:
+             - Poor discoverability (many users may never know it
+               exists).
+             - Can conflict with swipe gestures.
+             - Users may accidentally trigger it while pausing
+               before swiping.
+             - Hidden interactions are generally discouraged for
+               critical safety features.
+             For these reasons, reporting should remain a visible
+             action.
+
+             # Why Not a Flag Icon?
+             A flag icon is recognisable for reporting, but has
+             limitations:
+             - Suggests reporting is the only available action.
+             - Leaves no room for future options.
+             - Appears more aggressive on every profile.
+             - Less flexible as the platform evolves.
+
+             # Recommended Action Menu
+             Selecting the three-dot menu should display a bottom
+             sheet or action menu containing:
+             - Report Profile
+             - Hide Profile
+             - Block User
+             - Cancel
+             This design is familiar to users while remaining
+             minimal and scalable.
+
+             # Action Definitions
+
+             ## Report Profile
+             Used when a user believes a profile violates ZYRA's
+             Community Guidelines. Examples include:
+             - Fake profile
+             - Impersonation
+             - Nudity
+             - Violence
+             - Underage user
+             - Harassment
+             - Other policy violations
+             Reports enter the moderation pipeline for automated
+             and/or manual review.
+
+             ## Hide Profile
+             Purpose: "I don't want to see this profile again."
+             Characteristics:
+             - No penalty applied to the reported user.
+             - Removes the profile from future recommendations.
+             - Does not notify the other user.
+             - Reversible via account settings (optional).
+             This option should be encouraged instead of
+             reporting when the user simply is not interested.
+
+             ## Block User
+             Purpose: Prevent any future interaction between two
+             users. Effects:
+             - Both users become invisible to each other.
+             - Existing likes or matches are removed (if
+               applicable).
+             - Messaging is disabled.
+             - No notification is sent.
+             This is intended for unwanted contact rather than
+             policy violations.
+
+             # Report Flow
+             1. User taps the three-dot menu.
+             2. Selects Report Profile.
+             3. Chooses a reporting reason.
+             4. Optionally provides additional details.
+             5. Submits the report.
+             6. The report enters ZYRA's moderation system.
+             7. User receives confirmation that the report has
+                been submitted.
+
+             # Design Principles
+             The reporting system should:
+             - Never interfere with swiping.
+             - Always remain discoverable.
+             - Require as few taps as possible.
+             - Clearly distinguish between: Hide / Block / Report
+             - Scale easily as additional profile actions are
+               introduced.
+
+             # Future Expansion
+             The three-dot menu provides flexibility to introduce
+             additional profile actions without redesigning the
+             Browse screen. Potential future additions include:
+             - Share Profile
+             - Copy Profile Link
+             - Save for Later
+             - Report Specific Photo
+             - Report Specific Prompt
+             - Mute Profile
+             - Export Conversation (where applicable)
+
+             # Approved Recommendation
+             Adopt a permanently visible three-dot (•••) menu in
+             the top-right corner of every Browse profile. This
+             solution offers the best balance of: Discoverability,
+             User safety, Clean UI, Gesture compatibility, Future
+             scalability. It also clearly separates Hide, Block,
+             and Report, reducing false reports while providing
+             users with the appropriate action for each situation.
+
+             --- Source document ends ---
+
+Notes:       Logged per Founder instruction 2026-07-19. Open/
+             Discussion only, not actioned.
+
+------------------------------------------------------------
+
+OA-ZYRA-133
+Title:       Active Journey System Proposal — "One Active
+             Journey" rule retained, Potential Journeys section,
+             availability statuses
+Status:      Actioned 2026-07-25 (partial — see note below) —
+             resolved via DR-ZYRA-097. "One Active Journey" required
+             no new decision (already established). "Potential
+             Journey Statuses" filed as a new "Availability Status"
+             section in APP/Journey/JOURNEY AVAILABILITY/Summary.md,
+             extending the existing Journey Eligibility concept —
+             not a new architecture document. Colour model reduced
+             from 4 statuses to 3, reusing existing traffic-light
+             colours (DR-ZYRA-093). **Not resolved by this action:**
+             whether the source document was genuinely truncated and
+             more content exists — still an open question for the
+             Founder to confirm if/when relevant.
+Priority:    Medium
+Completed:   2026-07-25 (partial, see Status)
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-19
+Completed:   —
+
+Description: Founder is walking through the app with ChatGPT,
+             which is producing UX review items in document
+             form. Logged verbatim below, batch-style, per
+             Founder instruction 2026-07-19 — no action taken,
+             to be discussed in a future session, before the
+             ZYRA app-build phase of this session begins.
+
+             **Update, 2026-07-19:** this item's content (the
+             Active Journey proposal itself) remains undiscussed
+             and unactioned — that has not changed. But this OA
+             was the triggering incident for a separate,
+             now-resolved architectural discussion: the proposal
+             re-derived relationship states (Potential Journey /
+             Active Journey / etc.) already ratified in
+             ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3.md Part 0,
+             because the Master Spec wasn't checked first. That
+             finding led to DR-ZYRA-092 (implementation checklist,
+             citation discipline, ownership test — see Decisions
+             Register), Founder-ratified 2026-07-19 following
+             independent review by Fable (Opus 4). When this OA's
+             actual content is eventually discussed, it should be
+             the first real test of DR-ZYRA-092's checklist:
+             check Product Spec V3 Part 0 against this proposal
+             before treating any of it as new.
+
+             **Logging note:** the pasted source text ends mid-
+             sentence, inside the "Potential Journey Statuses" /
+             example UX mock-up section, after "🟡 Maryam /
+             Currently in an Active Journey" — no closing
+             "Approved Recommendation" or summary section was
+             received, unlike the other three items in this
+             batch. Logged verbatim as received, not completed
+             or paraphrased. Flag for Founder: confirm whether
+             the rest of this document exists and should be
+             pasted separately before this item is discussed.
+
+             **Update, 2026-07-25:** checked against
+             `APP/Journey/JOURNEY AVAILABILITY/Summary.md` per
+             ZYRA_EXECUTION_V3.md §3.2 — that document already
+             covers this ground in more depth (Core Principle
+             matches exactly; "Journey Eligibility" section already
+             expresses eligible/not-eligible per matched user, with
+             reasons). This proposal's 🟢/🟡/⚪/⚫ status-badge model
+             is a plausible user-facing presentation of that
+             existing eligibility concept, not a new architectural
+             state (no Feature-State Covenant conflict, Product
+             Spec V3 Part 0 checked). But it isn't a simple filing:
+             the document is truncated (see Logging note above) and
+             the 4-status model needs reconciling against Journey
+             Availability's existing eligibility language before
+             either is treated as canonical. Raised to ChatGPT
+             2026-07-25 rather than filed unilaterally.
+
+             --- Source document begins (as received, appears
+             incomplete) ---
+
+             # ZYRA – Active Journey System Proposal
+             **Status:** Proposal for Review
+
+             # Overview
+             The current ZYRA philosophy is that users may
+             receive and maintain multiple matches, but can only
+             have one Active Journey at any given time. The
+             intention behind this design is to encourage
+             meaningful, intentional relationships rather than
+             allowing users to divide their attention across
+             multiple conversations. This document evaluates
+             whether that philosophy should remain and proposes
+             improvements to the user experience.
+
+             # Recommendation
+             Retain the "One Active Journey" rule. While users
+             may have many matches, they should only be able to
+             actively pursue one relationship at a time. This
+             should remain one of ZYRA's core differentiators.
+
+             # Why One Active Journey?
+             Unlike traditional dating apps, ZYRA is designed
+             around intentional relationship building. Allowing
+             multiple simultaneous journeys would naturally
+             encourage users to:
+             - Compare multiple people simultaneously.
+             - Split their attention between several
+               conversations.
+             - Treat other matches as backup options.
+             - Create an experience similar to mainstream dating
+               apps.
+             Restricting users to a single Active Journey instead
+             encourages:
+             - Full attention on one potential spouse.
+             - Faster and more meaningful progression.
+             - Greater trust between both individuals.
+             - A clearer signal that both people are genuinely
+               invested.
+             - Greater confidence for families and Walis that the
+               process is serious.
+             The underlying message becomes: "If someone has
+             chosen to begin a Journey with you, they have paused
+             pursuing everyone else." This reinforces ZYRA's
+             identity as a serious marriage platform rather than
+             a dating application.
+
+             # Multiple Matches Should Still Exist
+             Having only one Active Journey does not mean hiding
+             all other matches. Instead, matched users who are
+             not currently in an Active Journey should appear in
+             a dedicated section. Suggested name: Potential
+             Journeys. This allows users to:
+             - See who they have matched with.
+             - Understand who is currently available.
+             - Know who may become available in the future.
+             - Begin another Journey immediately if their current
+               Journey ends.
+             This avoids the feeling that other matches have
+             disappeared.
+
+             # Potential Journey Statuses
+             Rather than using progress bars or percentages, each
+             matched user should display a simple availability
+             status.
+
+             🟢 Available — The user is not currently in an
+             Active Journey. A Journey can be started immediately.
+
+             🟡 In Active Journey — The matched user is currently
+             pursuing another Journey. A new Journey cannot begin
+             until theirs ends.
+
+             ⚪ Paused — The matched user has temporarily paused
+             their account or is otherwise unavailable.
+
+             ⚫ Hidden / Inactive — The account has been hidden,
+             removed or is no longer available.
+
+             # Privacy Considerations
+             Users should never be shown private information
+             regarding another person's Journey. Examples of
+             information that should not be displayed include:
+             - How long they have been in a Journey.
+             - Their Journey stage.
+             - Compatibility progress.
+             - Family discussions.
+             - Proposal status.
+             - Estimated completion.
+             The only information required is whether they are
+             currently available. This preserves privacy while
+             still giving users useful visibility.
+
+             # User Experience
+             Example:
+             Potential Journeys (9)
+             🟢 Aisha — Available
+             🟡 Maryam — Currently in an Active Journey
+
+             --- Source document ends (received text stops here)
+             ---
+
+Notes:       Logged per Founder instruction 2026-07-19. Open/
+             Discussion only, not actioned. Appears truncated —
+             see Logging note above.
+
+------------------------------------------------------------
+
+OA-ZYRA-134
+Title:       ZYRA git repository — no commit since 2026-07-03,
+             91 uncommitted files, no rollback point
+Status:      Open
+Priority:    High
+Owner:       Founder (Shakeel) / Lead Architect
+Raised:      2026-07-19
+Completed:   —
+
+Description: Found 2026-07-19 during Fable (Opus 4)'s final
+             text-check of the ZYRA Documentation Architecture
+             package (DR-ZYRA-092) — flagged as a separate
+             finding, not a defect in that package. Verified
+             directly: `git log` shows a single commit ("Initial
+             commit — independent repository for ZYRA",
+             2026-07-03); `git status --porcelain` shows 91
+             modified/untracked files (excluding .DS_Store) as
+             of 2026-07-19, including 9 modified Summary.md
+             files dating back to at least 2026-07-12 (e.g. the
+             ZYRA PRICING rewrite, 233 deletions).
+
+             This means the ZYRA repository currently has no
+             rollback point and no per-change traceability at
+             the version-control layer for over three weeks of
+             real work — in tension with the project's own
+             Files-Over-Memory discipline and the Level 5
+             rollback intent (OA-024). All governance-register
+             discipline (DR/OA logging, single-current-version
+             archiving) has continued correctly throughout this
+             period — the gap is specifically that none of it is
+             backed by git commits, only by the working-tree
+             files themselves.
+
+             Recommend: commit current state as a checkpoint,
+             then establish a commit cadence (e.g. after each
+             ratified DR, or daily) going forward. Not scoped or
+             actioned here — Founder decision on cadence and
+             whether prior history should be reconstructed or
+             simply start clean from a checkpoint commit.
+
+Related:     DR-ZYRA-092, OA-024 (Level 5 rollback intent),
+             OA-AIOS-274 (BLK-level equivalent finding — no
+             backup mechanism for AIOS operational data — same
+             failure class: real data, zero recovery path)
+
+------------------------------------------------------------
+
+OA-ZYRA-135
+Title:       Browse Page — Gesture-Based Profile Actions (swipe
+             left=Consider, right=Pass, down=Save; removes action
+             buttons)
+Status:      Actioned 2026-07-25 — resolved via DR-ZYRA-099. Founder
+             confirmed directly: swipe gestures adopted, overriding
+             the prior tap-only rule, with terminology renamed
+             Decline→Pass, Like→Consider (Save unchanged). Filed into
+             APP/Navigation/SEEKER NAVIGATION/Summary.md §BROWSE,
+             APP/Matching/PROFILE DECISION SYSTEM/Summary.md, and
+             APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md.
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-25
+Completed:   2026-07-25
+
+Description: --- Source document begins ---
+
+             FEATURE NAME
+             BROWSE PAGE – GESTURE-BASED PROFILE ACTIONS
+
+             Change Type: UX Enhancement
+             Status: Draft
+
+             BACKGROUND
+             The current Browse page displays action buttons
+             (Decline, Save and Like) positioned above the bottom
+             navigation bar. This creates unnecessary visual
+             clutter and occupies valuable screen space that
+             should remain focused on the profile itself. ZYRA
+             already uses gesture-first interactions throughout
+             its premium UX philosophy. The Browse experience
+             should follow the same approach.
+
+             DECISION
+             Remove the floating action buttons above the bottom
+             navigation bar. The primary profile actions will now
+             be performed using swipe gestures.
+
+             GESTURE ACTIONS
+             Swipe Left → Like
+             Swipe Right → Decline
+             Swipe Down → Save
+
+             USER EXPERIENCE
+             The profile should remain clean and distraction-free.
+             The user naturally performs gestures directly on the
+             profile card rather than reaching for separate
+             buttons. Each gesture should include smooth animation
+             and clear visual feedback so the user immediately
+             understands what action has occurred.
+
+             DESIGN GOALS
+             Modern, Natural, Fast, Minimal, Premium. The user's
+             focus should remain on the profile rather than
+             interface controls.
+
+             BOTTOM NAVIGATION
+             The bottom navigation bar must remain dedicated solely
+             to application navigation. No profile-action buttons
+             should appear above or overlap the navigation bar. The
+             navigation bar should continue supporting both tap
+             navigation and horizontal slide navigation (recently
+             approved UX enhancement). These navigation gestures
+             are completely separate from the profile swipe
+             gestures.
+
+             IMPLEMENTATION NOTES
+             Before implementing this change, review all existing
+             Browse documentation within the repository. In
+             particular: Browse feature documentation, Profile
+             Decision System, Journey-related documentation, any
+             specifications governing profile interactions and
+             swipe behaviour. Do not introduce new interaction
+             behaviour if an existing specification already governs
+             it. If any conflict or unresolved decision is
+             identified, stop implementation and raise it before
+             making assumptions. This enhancement should extend the
+             existing Browse architecture rather than replace it.
+
+             EXPECTED RESULT
+             The Browse screen becomes significantly cleaner. Users
+             interact directly with profiles through intuitive
+             gestures. The bottom navigation bar remains exclusively
+             for navigating between application pages.
+
+             --- Source document ends ---
+
+Notes:       Related, non-conflicting existing spec found for
+             completeness: `APP/Navigation/SEEKER NAVIGATION/
+             Script/Script_V2.md` line 257 has "Preferred
+             transition: Swipe Right → Left" for the *animation*
+             shown after a tap-decision (Tinder/Bumble/Instagram-
+             Stories-styled card transition) — this is visual
+             output, not gesture input, and does not conflict with
+             or resolve the tap-vs-swipe-input question above.
+             Also surfaced a smaller, separate, pre-existing
+             terminology drift while checking: BROWSE_UX_SPEC_
+             CURRENT_VERSION_V2.md's User Actions table has no
+             explicit "Decline" action (uses "Skip / Scroll past —
+             implicit dismissal" instead), while PROFILE DECISION
+             SYSTEM/Summary.md and SEEKER NAVIGATION/Summary.md both
+             treat Decline as an explicit, named button/action. Not
+             blocking this item; logged separately below as
+             OA-ZYRA-137.
+
+------------------------------------------------------------
+
+OA-ZYRA-136
+Title:       Bottom Navigation Bar — Slide Gesture Support (drag
+             across nav bar, release to navigate, alongside
+             existing tap navigation)
+Status:      Actioned 2026-07-25 — filed into APP/Navigation/
+             SEEKER NAVIGATION/Summary.md §NAVIGATION UI. Checked
+             against existing documentation: no conflict found —
+             SEEKER NAVIGATION's "tap-only" rule is explicitly
+             scoped to Browse's Decline/Save/Like actions, not
+             bottom-navigation. Complements the already-approved
+             DR-ZYRA-091 Instagram-style motion behaviour (sliding
+             circular highlight between tabs) rather than
+             conflicting with it. Inherits, but does not resolve,
+             SEEKER NAVIGATION's already-flagged 2026-07-19
+             tab-count/naming inconsistency (3 vs 4 tabs; Wali vs
+             Safety) — that remains open, unrelated to this filing.
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-25
+Completed:   2026-07-25
+
+Description: --- Source document begins ---
+
+             FEATURE NAME
+             BOTTOM NAVIGATION BAR – SLIDE GESTURE SUPPORT
+
+             Change Type: UX Enhancement
+             Status: Draft
+
+             BACKGROUND
+             The current bottom navigation bar supports page
+             changes by tapping navigation items only. This
+             enhancement improves usability without changing the
+             existing navigation structure.
+
+             DECISION
+             The bottom navigation bar shall support two navigation
+             methods: Tap Navigation (existing) and Slide Navigation
+             (new). Users should be able to place their finger
+             anywhere on the navigation bar and slide horizontally
+             across the navigation items. As the finger moves, the
+             highlighted navigation item moves in real time with
+             continuous visual feedback and a smoothly animating
+             floating indicator. When the user releases their
+             finger, the currently highlighted item becomes
+             selected and navigation changes immediately.
+
+             BUSINESS RULES
+             The new gesture does not replace tap navigation — both
+             must remain available. Navigation should only occur on
+             release; while sliding, only the visual selection
+             changes.
+
+             IMPLEMENTATION NOTES
+             Detect horizontal drag input; continuously determine
+             which navigation item is beneath the finger; animate
+             the active indicator smoothly; trigger navigation only
+             on release. Must not interfere with vertical scrolling,
+             page swipe gestures, or other application interactions.
+
+             --- Source document ends ---
+
+Notes:       Filed same-day. See APP/Navigation/SEEKER NAVIGATION/
+             Summary.md §NAVIGATION UI for the filed content.
+
+------------------------------------------------------------
+
+OA-ZYRA-137
+Title:       Terminology drift — BROWSE_UX_SPEC_CURRENT_VERSION_V2
+             has no explicit "Decline" action (uses implicit
+             "Skip / Scroll past"), while PROFILE DECISION SYSTEM
+             and SEEKER NAVIGATION both treat Decline as an
+             explicit named action
+Status:      Resolved 2026-07-25 — superseded by DR-ZYRA-099's
+             terminology overhaul (Decline→Pass) and mechanism
+             change (BROWSE_UX_SPEC V2→V3), filed the same day as a
+             side effect of resolving OA-ZYRA-135. Pass is now an
+             explicit swipe-right action in the User Actions table,
+             not an implicit "Skip/Scroll past" — the gap this item
+             identified no longer exists.
+Priority:    Low
+Owner:       Lead Architect
+Raised:      2026-07-25
+Completed:   2026-07-25
+
+Description: Found while checking OA-ZYRA-135 against existing
+             Browse documentation. `BROWSE_UX_SPEC_
+             CURRENT_VERSION_V2.md`'s User Actions table lists
+             Save, Like, and "Skip / Scroll past" (implicit
+             dismissal, no record) — no explicit Decline row.
+             `APP/Matching/PROFILE DECISION SYSTEM/Summary.md`
+             (rewritten 2026-07-12 against Product Spec V3, the
+             canonical owner of this fact per Group 4 — Page
+             Responsibilities) and `APP/Navigation/SEEKER
+             NAVIGATION/Summary.md` both treat 🔴 Decline as an
+             explicit, named, tap-only button — not an implicit
+             scroll-past. Live code (browse_screen.dart) also has
+             an explicit `_onDecline` handler, matching the
+             Decline-as-button model. `BROWSE_UX_SPEC` predates
+             the 2026-07-12 terminology correction (it's dated
+             2026-07-04) and appears to have been missed by that
+             pass. Low priority — doesn't block anything currently
+             filed, but BROWSE_UX_SPEC's Final UI Decisions table
+             should be corrected to show Decline as an explicit
+             button/action, matching the two owning documents,
+             next time that file is meaningfully edited.
+
+Related:     OA-ZYRA-135, APP/Matching/PROFILE DECISION SYSTEM/
+             Summary.md, APP/Navigation/SEEKER NAVIGATION/
+             Summary.md, BROWSE_UX_SPEC_CURRENT_VERSION_V2.md
+
+------------------------------------------------------------
+
+OA-ZYRA-138
+Title:       Master Product Spec still uses "Like" terminology —
+             not updated to Pass/Save/Consider (DR-ZYRA-099)
+Status:      Open
+Priority:    Low
+Owner:       Lead Architect
+Raised:      2026-07-25
+
+Description: `ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3.md` Part 2
+             ("Like Rules") uses the pre-2026-07-25 "Like"
+             terminology. DR-ZYRA-099 renamed Decline→Pass and
+             Like→Consider across `PROFILE DECISION SYSTEM/
+             Summary.md`, `SEEKER NAVIGATION/Summary.md`, and
+             `BROWSE_UX_SPEC_CURRENT_VERSION_V3.md`, but the Master
+             Spec itself — the highest-precedence document, per this
+             project's own ownership rules — was deliberately not
+             edited as part of that filing, since editing the Master
+             Spec is a bigger-consequence action than updating the
+             documents that cite it. `PROFILE DECISION SYSTEM/
+             Summary.md` currently carries a note flagging this
+             gap inline (its Incoming Potentials section). Low
+             priority — doesn't block anything currently filed,
+             the terminology is unambiguous in context either way,
+             but the Master Spec should be updated to match next
+             time it's meaningfully touched, to avoid this being
+             the seed of a future drift finding.
+
+Related:     DR-ZYRA-099, ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3.md
+             Part 2, APP/Matching/PROFILE DECISION SYSTEM/Summary.md
+
+------------------------------------------------------------
+
+# Register Metadata (added 2026-07-12)
+
+------------------------------------------------------------
+
+OA-ZYRA-139
+Title:       Developer Mode — Test Accounts & Test Sign-Up
+             (formalises existing Test Accounts build, adds new
+             Test Sign-Up capability)
+Status:      Actioned 2026-07-25 — resolved via DR-ZYRA-100. No
+             conflict found. Checked against APP/Developer Mode/
+             Script/Script_V1.md (stale terminology, predates the
+             2026-07-19 live rebuild), live code
+             (developer_access_screen.dart — Test Accounts already
+             substantially built), and upgrade_screen.dart (no real
+             payment integration exists yet — flagged as a caveat on
+             the Payment section, not a blocker). Filed as
+             Script_V2.md.
+Priority:    Medium
+Owner:       Founder (Shakeel) — source: ChatGPT UX review
+Raised:      2026-07-25
+Completed:   2026-07-25
+
+Description: --- Source document begins ---
+
+             FEATURE NAME
+             DEVELOPER MODE – TEST ACCOUNTS & TEST SIGN-UP
+
+             Change Type: Developer Tool Enhancement
+             Status: Draft
+
+             BACKGROUND
+             Developer Mode currently provides quick access to
+             testing tools. Developer Mode should support both
+             instant access through predefined accounts and
+             end-to-end testing through the real sign-up flow.
+
+             DECISION
+             Developer Mode shall provide two separate testing
+             methods: Test Accounts and Test Sign-Up. These serve
+             different purposes and should remain independent.
+
+             TEST ACCOUNTS
+             Seekers: Male–Basic, Female–Basic, Male–One,
+             Female–One. Walis: Male–Basic, Female–Basic,
+             Male–One, Female–One. Selecting an account
+             immediately logs the developer in with realistic
+             demo data and correct permissions/navigation/
+             restrictions for that type.
+
+             TEST SIGN-UP
+             A separate Developer Mode option launching the real
+             onboarding flow used by actual users — not a
+             simulation. Uses real validation, required fields,
+             error messages, input checking, navigation, progress
+             tracking, conditional questions, and account creation
+             flow throughout, so developers can verify all of the
+             above plus success states.
+
+             PAYMENT
+             If a One account is selected during Test Sign-Up,
+             show the normal payment step, then provide a
+             developer bypass option — to verify the payment flow
+             appears correctly while still allowing efficient
+             development.
+
+             IMPLEMENTATION NOTES
+             Review existing repository documentation relating to
+             Authentication, Developer Mode, Account Types,
+             Onboarding, Premium subscriptions, and Payment flow
+             before implementing. Do not duplicate existing
+             functionality. If any conflicts or unresolved
+             specifications are found, pause and raise them.
+
+             EXPECTED RESULT
+             Developer Mode provides two powerful testing
+             workflows: Test Accounts (8 predefined account
+             combinations) and Test Sign-Up (full real onboarding
+             journey with developer payment bypass where
+             appropriate).
+
+             --- Source document ends ---
+
+Notes:       Filed same-day. See APP/Developer Mode/Script/
+             Script_V2.md for the filed content, including the
+             Wali-side coverage gap and payment-integration caveat
+             found during filing.
+
+------------------------------------------------------------
+
+OA-ZYRA-140
+Title:       DR-ZYRA-101 Repository Audit — Findings Requiring
+             Founder Decision
+Category:    Governance / Cross-Cutting
+Priority:    Mixed (see items)
+Status:      RESOLVED 2026-07-25 — all 15 items walked through
+             individually with the Founder and closed (items
+             1/2 documentation fixes; 3/4/5/6/7 built for real,
+             "rEAL FULL V1 NOW" — Pre-Journey Ritual, Pause/
+             Resume, End Journey, One-Active-Journey enforcement,
+             doc reconciliation; 8/9/11/14/15 documentation
+             corrections; 12/13 formal ratifications, DR-ZYRA-102
+             logged for item 13).
+Owner:       Founder (Shakeel)
+Raised:      2026-07-25
+Source:      Full repository-vs-code audit run under DR-ZYRA-101
+             ("review all the files for app building and
+             update/change/add anything needed"), six parallel
+             sweeps across Branding/Theme, Auth/Onboarding,
+             Browse/Matching/Navigation, Matches/Journey/
+             Messaging, Profiles/Wali/Standards, and Premium/
+             Developer Mode/remaining areas.
+
+Description: The straightforward findings (stale status notes,
+             terminology sweep-misses, one confirmed-wrong claim)
+             were fixed directly as documentation corrections —
+             see the corrected files themselves for detail. The
+             items below are genuine product/architecture
+             decisions, not documentation accuracy fixes, and are
+             listed here rather than resolved unilaterally, per
+             DR-ZYRA-101's "raise scope, don't assume it" clause.
+
+             1. RESOLVED 2026-07-25 — Founder decision: "switch to
+                gradient." `main.dart` now applies
+                `ZyraColors.brandGradient` app-wide via a wrapper
+                in `builder:` (neutral, not gender-matched — this
+                layer is reached before gender is known);
+                `auth_gate.dart`'s splash state does the same, same
+                reasoning; `browse_screen.dart`'s fallback now uses
+                `ZyraColors.genderGradient(AppState.instance.gender)`
+                since Browse is only ever reached by a signed-in,
+                gender-known Seeker, consistent with every other
+                profile-context screen fixed under DR-ZYRA-101.
+
+             2. RESOLVED 2026-07-25 — Founder decision: keep code's
+                larger sizes. `Onboarding Rules & UX.md §TYPOGRAPHY`
+                rewritten to match `zyra_text.dart` exactly; the
+                unbuilt "Progress %" style removed from spec (the
+                counter it would apply to no longer exists per
+                OA-ZYRA-125 §5) rather than left as a phantom
+                requirement.
+
+             3. RESOLVED 2026-07-25 — Founder decision: "build all
+                three now" (full v1 scope, "rEAL FULL V1 NOW").
+                Pause/Resume Journey built for real: `suspend_
+                journey`/`resume_journey`/`end_journey` Postgres
+                RPCs (migration `20260725183724_pre_journey_ritual_
+                tables`), `ZyraJourneyService.suspendJourney/
+                resumeJourney/endJourney`, and UI in
+                `matches_screen.dart` (Suspended Journeys section)
+                and `journey_flow_screen.dart` (Pause/End app bar
+                actions). Suspension gated on ZYRA One
+                (`seeker_premium`) server-side; Auto-End handled
+                (see item 7's note for detail).
+
+             4. RESOLVED 2026-07-25 — same Founder decision. The
+                Pre-Journey Ritual is built for real in
+                `journey_flow_screen.dart`: Compatibility Reveal,
+                Salam Exchange, Wali Gate, Phases 1-3 (fixed-order
+                questions per `journey_questions.dart`, private
+                ratings, Continue/End checkpoint), and Family Stage
+                (Wali->Seeker direction only — see the file's own
+                header comment for the full, deliberate v1-scope
+                list: no AI-adaptive questions, no push
+                notifications, no 30-day auto-end timer, no
+                Wali-side answering UI). The old stand-in
+                confirmation dialog in `matches_screen.dart:
+                _startJourney` now calls the real `promote_journey_
+                to_active` RPC instead of just navigating straight
+                to Chat.
+
+             5. RESOLVED 2026-07-25 — enforced server-side as part
+                of the same build. `promote_journey_to_active` RPC
+                raises `one_active_journey_limit` if the caller
+                already holds an Active Journey; `MatchesScreen._
+                promote` catches this and shows a blocking message
+                rather than starting a second Active Journey. The
+                old client-side `AppState.startJourney` (no guard)
+                was deleted entirely as part of this fix, not left
+                alongside the new path.
+
+             6. RESOLVED 2026-07-25 — same Founder decision. End
+                Journey is built: `end_journey` RPC, `ZyraJourney
+                Service.endJourney`, wired into `journey_flow_
+                screen.dart`'s app bar with a confirmation dialog.
+                The 24-hour cooling period from JOURNEY
+                AVAILABILITY is not implemented — no code enforces
+                a wait before a new Journey can start with the same
+                or another person; flagged as a real gap, not
+                silently assumed done.
+
+             7. RESOLVED 2026-07-25 — Founder decision confirmed
+                SUSPENSION as the governing document.
+                `JOURNEY MANAGEMENT/Summary.md`'s Pause section
+                rewritten to cite `JOURNEY_SUSPENSION_CURRENT_
+                VERSION_V1.md` directly and point at the real
+                implementation; the redundant "STEP BACK / HOLD"
+                naming proposal removed rather than left dangling
+                alongside a now-built feature.
+
+             8. Direct contradiction: Premium/Profile Unlocks
+                `References.md` states "Wali Account — Can
+                purchase and view unlocks... shares unlock with
+                connected Seeker." `Summary.md` and
+                `Flow Diagram.md` both say "Wali cannot purchase or
+                use Profile Unlocks — Seeker only."
+                `References.md` also still uses pre-2026-07-12
+                Basic/Pro/Premium terminology and 8 compatibility
+                categories vs. Summary.md's corrected 6 — missed
+                in that terminology pass. Which rule is correct:
+                can a Wali purchase Profile Unlocks or not?
+
+             9. Direct contradiction: Chapter 3/4 question
+                structure. `SEEKER ONBOARDING QUESTIONS/Summary.md`
+                and `Flow Diagram.md` (both dated 2026-06-28)
+                describe ~69 questions across a 10-category (5
+                Core + 5 Extended) structure. `Chapter 3
+                Classification — Ch4 Mapping.md` (same date,
+                marked "V3 APPROVED") specifies 174 questions
+                across 9 differently-named categories. Live code
+                (`chapter3_categories.dart`, 105+ question
+                literals, category names matching the
+                Classification doc) implements the Classification
+                doc's structure, not Summary/Flow Diagram's. Is
+                Classification the authoritative version — should
+                Summary.md and Flow Diagram.md be rewritten to
+                match it?
+
+             10. RESOLVED 2026-07-25 — Founder decision: "add it
+                 now." Touchpoint 2 dependency notice built into
+                 `upgrade_screen.dart` (`_WaliDependencyNotice`),
+                 shown immediately before the purchase button
+                 while the user isn't yet on ZYRA One, using the
+                 Transparency Standard's own example wording
+                 verbatim ("Before you subscribe... unlocks
+                 automatically").
+
+             11. RESOLVED 2026-07-25 — Founder decision: "rename
+                 doc folder to 'iOS Widgets'." `APP/WIDGETS/`
+                 renamed to `APP/iOS Widgets/` (content unchanged);
+                 the folder's own Summary.md header updated to
+                 note the rename and its reason. `ZYRA_
+                 DOCUMENTATION_INDEX_V1.md`'s table entry updated
+                 to the new path. `SOURCE/lib/widgets/` (the
+                 Flutter shared-component library) still has no
+                 documentation of its own — not addressed here,
+                 as it wasn't part of the decision asked.
+
+             12. RESOLVED 2026-07-25 — Founder decision: "ratify
+                 as-is." DR-ZYRA-079 (Compatibility Scoring v1)
+                 and DR-ZYRA-084 (its live wiring into Browse) both
+                 formally ratified — bundled together since
+                 ratifying only the algorithm and not its wiring
+                 would leave the same "unratified draft governing
+                 real behaviour" contradiction one level down. No
+                 code changed; the running behaviour is unchanged,
+                 only its ratification status.
+
+             13. RESOLVED 2026-07-25 — Founder decision:
+                 "Google/Apple-only is correct." Logged as
+                 DR-ZYRA-102 (formal ratification of the pivot);
+                 OA-102 rewritten to match live scope.
+
+             14. RESOLVED 2026-07-25 — Founder decision: "Ratify
+                 'ZYRA' now." APP NAME CREATION/Summary.md's
+                 Approval Status and to-do list updated to reflect
+                 formal approval.
+
+             15. RESOLVED 2026-07-25 — Founder decision: "Yes,
+                 rewrite it now." BUSINESS/ZYRA TERMINOLOGY/
+                 Summary.md — the canonical glossary — fully
+                 rewritten: "TERM: Decline" → "TERM: Pass",
+                 "TERM: Like" → "TERM: Consider", plus every
+                 other Decline/Like reference in the same document
+                 (Related Systems lists, Decision Permissions,
+                 Discovery Relationships, Decision Relationships).
+                 Companion References.md also updated to match,
+                 preserving the historical note about the earlier
+                 retired Decline/Review/Consider (pre-2026-07-12)
+                 model.
+
+Target:      ACHIEVED — all 15 items resolved 2026-07-25.
+Dependencies: DR-ZYRA-101, DR-ZYRA-094, DR-ZYRA-099, DR-ZYRA-079,
+             DR-ZYRA-084, DR-ZYRA-088, DR-ZYRA-102, OA-102.
+Automation:  None — resolved directly with the Founder.
+
+------------------------------------------------------------
+
+OA-ZYRA-141
+Title:       Legacy parallel root folders — DEVELOPMENT_TEAM/ and
+             LIVE_OPERATIONS/ duplicate SYSTEM/ structures
+Category:    Repository
+Priority:    Low — flagged, not blocking
+Status:      OPEN — left as an Outstanding Action per Founder
+             instruction, not resolved unilaterally.
+Owner:       Founder (Shakeel)
+Raised:      2026-07-25
+Source:      Discovered while generating SYSTEM/DOCUMENTS/
+             TREEVIEW.md (DR-ZYRA-103) — a literal directory
+             listing surfaced two repo-root folders that were not
+             previously documented anywhere.
+
+Description: `DEVELOPMENT_TEAM/` and `LIVE_OPERATIONS/` sit at
+             repo root alongside `SYSTEM/`. Both contain their own
+             agent contracts, logs, and registers that overlap in
+             purpose with `SYSTEM/AGENTS/`, `SYSTEM/LOGS/`, and
+             `SYSTEM/OUTSTANDING_ACTIONS/`:
+               DEVELOPMENT_TEAM/AGENTS/ — 8 agent contracts
+                 (Architect, Code, Deployment, Documentation,
+                 Impact Analysis, Product Manager, QA, Review)
+               DEVELOPMENT_TEAM/LOGS/OPERATIONAL_LOG_2026-06.md
+               LIVE_OPERATIONS/ — its own governance, index,
+                 incident/release registers, monitoring checks
+             Neither folder is referenced from
+             ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V2.md or any
+             governing SYSTEM/ document found so far.
+
+             Not resolved here because the right answer isn't
+             obvious without Founder input: this could be (a) a
+             genuinely separate, intentional structure (e.g. a
+             different AI-organisation model tried earlier and
+             not yet retired), (b) dead scaffolding from an
+             earlier structural iteration that should be archived,
+             or (c) content that should be consolidated into
+             SYSTEM/ properly. Consolidating or deleting either
+             folder without knowing which of these is true risks
+             losing real content or real intent.
+
+Target:      Founder decision: consolidate into SYSTEM/, formally
+             retire and archive, or confirm both serve a distinct
+             ongoing purpose and document that purpose.
+Dependencies: DR-ZYRA-103, SYSTEM/DOCUMENTS/TREEVIEW.md.
+Automation:  None — awaiting Founder review.
+
+------------------------------------------------------------
+
+# Register Metadata (added 2026-07-12)
+
+TOTAL REGISTERED (this file): 142 (OA-001 through OA-ZYRA-141,
+  Historical Identifiers, permanent — plus this note)
+NEXT IDENTIFIER: OA-ZYRA-142 (Enterprise format, active
+  2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
+  ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
+GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
+  CURRENT_VERSION_V1.md (BLACK UMBRELLA GROUP/SYSTEM/
+  ARCHITECTURE/), active 2026-07-12

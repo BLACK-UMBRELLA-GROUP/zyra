@@ -5,6 +5,18 @@ SCRIPT VERSION: V2
 STATUS: Approved Specification
 SOURCE: Master Script Parts 1, 4, 5, 7
 
+Terminology corrected 2026-07-12 against
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 (DR-076) — Review/Consider
+action and view names replaced with Save/Like throughout. Design,
+animation, and glass-system rules below are unaffected — only the
+labels were stale. Note: this UI script predates the Match-is-
+an-event architecture; the Connections view structure here
+(Declined/Save/Like/Matched) is coarser than the Potential
+Journey model in PROFILE DECISION SYSTEM (Saves/Outgoing
+Potentials/Incoming Potentials/Potential Journeys) — a design
+pass to reconcile the two has not been done and is out of scope
+for this terminology-only correction.
+
 ============================================================
 DESIGN PHILOSOPHY
 ============================================================
@@ -129,13 +141,13 @@ ACTION MODE
 
 Browse:
 • Decline
-• Review
-• Consider
+• Save
+• Like
 
 Connections:
 • Declined
-• Review
-• Consider
+• Save
+• Like
 • Matched
 
 Future pages may define their own Action Bars using the
@@ -195,8 +207,8 @@ DECISION STRIP LAYOUT
 
 Three connected sections:
 • Decline (✕)
-• Review (✓)
-• Consider (✓✓)
+• Save (✓)
+• Like (✓✓)
 
 All sections share:
 • Glass styling
@@ -233,8 +245,8 @@ PROFILE DECISIONS
 ------------------------------------------------------------
 
 • Decline   → Declined
-• Review    → Review
-• Consider  → Consider
+• Save      → Save
+• Like      → Like
 
 ------------------------------------------------------------
 PROFILE TRANSITION
@@ -278,8 +290,8 @@ CONNECTIONS ACTION BAR
 
 When Connections is active, Action Mode displays:
 • Declined
-• Review
-• Consider
+• Save
+• Like
 • Matched
 
 These are views within the Connections page.
@@ -292,8 +304,8 @@ CONNECTION ICONS
 | View     | Icon | Accent       |
 |----------|------|--------------|
 | Declined | ✕    | Soft Red     |
-| Review   | ✓    | Soft Yellow  |
-| Consider | ✓✓   | Soft Green   |
+| Save     | ✓    | Soft Yellow  |
+| Like     | ✓✓   | Soft Green   |
 | Matched  | ♡    | Heart        |
 
 All icons share:
@@ -334,33 +346,33 @@ Each profile contains:
 • Location
 
 Actions:
-• Move to Review
-• Move to Consider
+• Move to Save
+• Move to Like
 
 ------------------------------------------------------------
-REVIEW VIEW
+SAVE VIEW
 ------------------------------------------------------------
 
 Display:
-• Heading: Review
+• Heading: Save
 • Progress: X / 50
 
 Actions:
 • Move to Declined
-• Move to Consider
+• Move to Like
 
-Note: 50 is the Review cap only. Consider has no cap.
+Note: 50 is the Save cap only. Like has no cap.
 
 ------------------------------------------------------------
-CONSIDER VIEW
+LIKE VIEW
 ------------------------------------------------------------
 
 Display:
-• Heading: Consider
+• Heading: Like
 
 Actions:
 • Move to Declined
-• Move to Review
+• Move to Save
 
 ------------------------------------------------------------
 MATCHED VIEW
@@ -411,7 +423,7 @@ Swipe from the left edge to return to the previous view.
 Examples:
 • Timeline → Matched
 • Message → Matched
-• Review → Connections
+• Save → Connections
 
 Animations should match modern iOS navigation.
 

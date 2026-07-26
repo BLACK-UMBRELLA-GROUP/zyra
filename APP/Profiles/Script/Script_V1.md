@@ -5,6 +5,14 @@ SCRIPT VERSION: V1
 STATUS: Approved Specification
 SOURCE: Master Script Part 8 (LOVABLE_CURRENT_VERSION_V1)
 
+Terminology corrected 2026-07-12 against
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 — Seeker Basic/Pro/Premium
+plan labels replaced with ZYRA Basic/ZYRA One; connection
+categories Declined/Review/Consider replaced with
+Declined/Saved/Likes (DR-076). The layout, interaction, and
+reuse-the-Browse-viewer decisions below are unaffected — only
+the labels were stale.
+
 ============================================================
 PROFILE PAGE REWORK
 ============================================================
@@ -39,9 +47,8 @@ PROFILE MEMBERSHIP LABEL
 Replace the generic "Member" label with the Seeker's plan.
 
 Options:
-• Seeker Basic
-• Seeker Pro
-• Seeker Premium
+• ZYRA Basic
+• ZYRA One
 
 Use the existing badge component.
 
@@ -51,8 +58,8 @@ CONNECTION PROFILE EXPANSION
 
 Applies to:
 • Declined
-• Review
-• Consider
+• Saved
+• Likes
 
 ------------------------------------------------------------
 CARD TAP BEHAVIOUR
@@ -90,9 +97,9 @@ EXPANDED ACTION BUTTONS
 
 | Category | Available Actions              |
 |----------|-------------------------------|
-| Declined | Review • Consider • Unlock Profile |
-| Review   | Decline • Consider • Unlock Profile |
-| Consider | Decline • Review • Unlock Profile  |
+| Declined | Save • Like • Unlock Profile   |
+| Saved    | Decline • Like • Unlock Profile |
+| Likes    | Decline • Save • Unlock Profile |
 
 ------------------------------------------------------------
 UNLOCK BUTTON
@@ -124,14 +131,14 @@ PHASE 0 — FEATURE REVIEW RECORD
 ============================================================
 
 Duplicate Existing Feature?  No — expanded card did not
-previously exist in Declined, Review or Consider.
+previously exist in Declined, Saved or Likes.
 
 Overlaps Existing Systems?   Yes
 Affected systems:
 • Profile Page
 • Declined
-• Review
-• Consider
+• Saved
+• Likes
 • Profile Unlock
 • Photo Viewer
 

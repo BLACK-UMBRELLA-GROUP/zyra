@@ -26,6 +26,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ZYRA can save photos back to your library when you download them.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ZYRA uses your photo library so you can add photos to your profile.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

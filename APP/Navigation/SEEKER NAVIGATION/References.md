@@ -15,8 +15,14 @@ Bell Icon
 • Status: Referenced — definition lives elsewhere.
   ⚠️ Bell Icon document not yet created or located.
 
-Decline / Review / Consider (APP/Matching/PROFILE DECISION SYSTEM)
-• Browse displays Decline, Review, and Consider buttons.
+Pass / Save / Consider (APP/Matching/PROFILE DECISION SYSTEM)
+• Browse actions are Pass, Save, and Consider — swipe gestures
+  on the card, not buttons.
+  (Renamed 2026-07-25, DR-ZYRA-099 — was "Decline, Save, Like",
+  itself corrected 2026-07-12, DR-076, from "Decline, Review,
+  Consider". This sweep-miss caught and fixed by the DR-ZYRA-101
+  repository audit — Summary.md had already been updated for
+  DR-099, this References.md file was missed at the time.)
 • Status: Referenced — definition lives in
   APP/Matching/PROFILE DECISION SYSTEM.
 
@@ -34,8 +40,10 @@ Search Filters
 • Status: Future — not yet designed.
 
 ZYRA TERMINOLOGY (BUSINESS/ZYRA TERMINOLOGY)
-• Seeker, Wali, Browse, Decline, Review, Consider
-  definitions used throughout.
+• Seeker, Wali, Browse, Pass, Save, Consider
+  definitions used throughout (renamed 2026-07-25, DR-ZYRA-099
+  — see note above; BUSINESS/ZYRA TERMINOLOGY itself not
+  checked in this pass, flagged separately for the Founder).
 • Status: Referenced — source of truth lives in
   BUSINESS/ZYRA TERMINOLOGY.
 

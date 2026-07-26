@@ -1,17 +1,49 @@
-# app
+# ZYRA — Flutter Source
 
-A new Flutter project.
+Muslim matrimonial platform. Specs live in `../APP/`, decisions in
+`../SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md`, session reports in
+`../REPORTS/CURRENT/`. Read those before changing anything here.
 
-## Getting Started
+## Device testing — THE CONFIRMED, CORRECT WAY (2026-07-19)
 
-This project is a starting point for a Flutter application.
+**Every AI session giving Shakeel run instructions must use this.**
+Confirmed working on his iPhone after a full day of crashes that turned
+out to be debug-mode behaviour, not app bugs.
 
-A few resources to get you started if this is your first Flutter project:
+```
+cd "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE"
+flutter run --profile -d 00008130-001A2C1E26F8001C
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- `00008130-001A2C1E26F8001C` is Shakeel's iPhone (confirm with
+  `flutter devices` if it ever changes).
+- **`--profile` is mandatory for untethered testing.** Plain
+  `flutter run` installs a DEBUG build; iOS kills debug (JIT) apps the
+  moment the cable is unplugged and refuses to cold-launch them from
+  the icon (white screen → instant close, every time, until
+  reinstalled). This looked like a mystery crash for hours on
+  2026-07-19. It is not an app bug. Never diagnose "crash after
+  unplug" or "won't open from icon" without first asking which mode
+  the build was.
+- Profile builds: survive unplugging, launch from the icon like a real
+  app, keep the DevNavOverlay Back/Home buttons (gated `!kReleaseMode`),
+  no hot reload — replug and re-run to pick up code changes.
+- Plain `flutter run` (debug, hot reload) is fine ONLY while the cable
+  stays connected. Avoid iPhone Mirroring during a debug session — the
+  two interfere.
+- Full background: `../REPORTS/CURRENT/ZYRA_FABLE_BUILD_REVIEW_2026-07-19_V1.md` §7.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Developer Mode
+
+In-app test-scenario switcher on the Welcome screen ("Developer
+Access"): one tap signs into seeded real Supabase test accounts
+(`dev.*@zyra.test`, see `supabase/seed_dev_accounts.sql`) and lands
+fully onboarded. No OAuth needed — OAuth client IDs are still
+placeholders in `lib/config/oauth_config.dart` (gitignored).
+
+## Backend
+
+Supabase project `sxoaxonzjqkgajmlagyk`. Config in
+`lib/config/supabase_config.dart` (gitignored, real values in place).
+Migrations source-controlled in `supabase/migrations/` — keep them in
+sync with the live project (`list_migrations`) after any DB change.

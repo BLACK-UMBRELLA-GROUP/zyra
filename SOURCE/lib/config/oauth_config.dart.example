@@ -1,0 +1,29 @@
+// Template for lib/config/oauth_config.dart — copy this file to
+// oauth_config.dart (without .example) and fill in real values.
+//
+// oauth_config.dart is gitignored — never commit real client IDs
+// (they're not secret the way an API key is, but keeping the pattern
+// consistent with supabase_config.dart avoids two different rules).
+//
+// Where these values come from:
+//   googleWebClientId  — Google Cloud Console > APIs & Services >
+//     Credentials > OAuth 2.0 Client IDs > the "Web application" client.
+//     This is the one Supabase's Google provider settings also need.
+//   googleIosClientId  — the "iOS" OAuth client from the same page.
+//     Required by google_sign_in on iOS/macOS specifically.
+//
+// Apple needs no client ID here — sign_in_with_apple talks to Apple
+// directly using your app's bundle ID + the Sign In with Apple
+// capability (see macOS/iOS entitlements), and Supabase's Apple
+// provider is configured separately in the Supabase Dashboard with a
+// Services ID + private key, not anything from this Flutter app.
+
+class OAuthConfig {
+  OAuthConfig._();
+
+  static const String googleWebClientId = 'YOUR-WEB-CLIENT-ID.apps.googleusercontent.com';
+  static const String googleIosClientId = 'YOUR-IOS-CLIENT-ID.apps.googleusercontent.com';
+
+  static bool get isGoogleConfigured =>
+      !googleWebClientId.contains('YOUR-WEB-CLIENT-ID') && !googleIosClientId.contains('YOUR-IOS-CLIENT-ID');
+}

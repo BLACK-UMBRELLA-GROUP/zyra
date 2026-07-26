@@ -24,6 +24,12 @@ Note:
 • Wali Navigation is temporarily documented here.
 • When a Wali Navigation file is created, Wali content
   will be moved out of this file.
+• Terminology corrected 2026-07-12 against
+  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 and
+  WALI_ARCHITECTURE_CURRENT_VERSION_V5 — Seeker Basic/Premium
+  tier names and Wali Basic/Pro/Premium replaced with ZYRA
+  Basic/ZYRA One and Standard Wali/Extended Wali. Browse action
+  terminology (Decline/Save/Like) was already correct.
 
 ------------------------------------------------------------
 USER ROLES
@@ -60,26 +66,26 @@ NAVIGATION PHILOSOPHY
 
 • Seeker navigation reflects the marriage journey.
 • Wali navigation reflects supervision.
-• Premium subscriptions expose additional workflows.
+• ZYRA One and Extended Wali expose additional workflows.
 • Navigation differs by role.
-• Navigation differs by subscription.
-• The Family Network is exclusively for Wali Premium.
-  Seekers at any tier do not have access to Network.
+• Navigation differs by entitlement.
+• The Family Network is exclusively for Extended Wali.
+  Seekers do not have access to Network at any entitlement.
 
 ------------------------------------------------------------
 NAVIGATION STRUCTURE
 ------------------------------------------------------------
 
-| Account        | Tabs                                     |
-|----------------|------------------------------------------|
-| Seeker Basic   | Browse • Connections • Wali • Profile    |
-| Seeker Premium | Browse • Connections • Wali • Profile    |
-| Wali Basic     | Dashboard • Seekers • Profile            |
-| Wali Premium   | Dashboard • Seekers • Browse • Network • Profile |
+| Account                | Tabs                                     |
+|--------------------------|------------------------------------------|
+| Seeker (ZYRA Basic)      | Browse • Connections • Wali • Profile    |
+| Seeker (ZYRA One)        | Browse • Connections • Wali • Profile    |
+| Wali (Standard)          | Dashboard • Seekers • Profile            |
+| Wali (Extended)          | Dashboard • Seekers • Browse • Network • Profile |
 
-Decision: Network is removed from all Seeker tiers.
-Network is available to Wali Premium only.
-Confirmed: 2026-06-27
+Decision: Network is removed from all Seeker entitlements.
+Network is available to Extended Wali only.
+Confirmed: 2026-06-27; terminology corrected 2026-07-12.
 
 ------------------------------------------------------------
 BROWSE
@@ -90,9 +96,9 @@ Primary discovery page for marriage candidates.
 The centrepiece of the Seeker experience.
 
 Available To:
-• Seeker Basic
-• Seeker Premium
-• Wali Premium (browses on behalf of linked Seeker)
+• Seeker (ZYRA Basic)
+• Seeker (ZYRA One)
+• Extended Wali (browses on behalf of linked Seeker)
 
 Design:
 • Full-screen photo experience — photo fills the entire screen
@@ -113,26 +119,52 @@ Visible Information (Browse level only):
 No other profile information is shown at Browse level.
 Additional information revealed only after profile unlock or mutual match.
 
-Actions (bottom of screen):
-Two button groups at the bottom of the Browse screen:
+**Superseded 2026-07-25 (DR-ZYRA-099, Founder decision) — see
+replacement below.** The floating action-button pair described here
+is removed. Kept below, struck through in spirit not in text, as the
+historical record of what this replaces:
 
-Left isolated pill:
-• Gallery / photo icon
-• Opens additional photo options (TBC)
+~~Actions (bottom of screen): two button groups at the bottom of the
+Browse screen. Left isolated pill: gallery/photo icon, opens
+additional photo options (TBC). Right action pill: ✗ (X) = Decline —
+pass on this profile; ✓ (single) = Save — "I'd like to come back to
+this"; ✓✓ (double) = Like — "I'm genuinely interested in this
+person." Note: Swipe gestures are not used for Decline/Save/Like.
+Actions are tap-only. This is intentional — swiping feels casual and
+conflicts with ZYRA's serious marriage philosophy.~~
 
-Right action pill:
-• ✗  (X)         = Decline — pass on this profile
-• ✓  (single)    = Save — "I'd like to come back to this"
-• ✓✓ (double)    = Like — "I'm genuinely interested in this person"
+**Current (2026-07-25) — Gesture-Based Profile Actions:** source:
+ChatGPT UX proposal (OA-ZYRA-135), Founder-ratified same day
+alongside a terminology rename (Pass/Save/Consider — see
+`APP/Matching/PROFILE DECISION SYSTEM/Summary.md`). The floating
+action buttons above the bottom navigation bar are removed entirely.
+Primary profile actions are performed via swipe gestures directly on
+the profile card:
 
-These map to the product spec actions:
-• Decline = X
-• Save    = single tick
-• Like    = double tick
+• Swipe Left  → 🟢 Consider (was: Like)
+• Swipe Right → 🔴 Pass (was: Decline)
+• Swipe Down  → 🟡 Save (unchanged)
 
-Note: Swipe gestures are not used for Decline/Save/Like.
-Actions are tap-only. This is intentional — swiping feels
-casual and conflicts with ZYRA's serious marriage philosophy.
+Each gesture includes smooth animation and clear visual feedback so
+the user immediately understands what action occurred. The bottom
+navigation bar remains dedicated solely to app navigation — no
+profile-action buttons appear above or overlap it. These profile
+swipe gestures are entirely separate from, and must not interfere
+with, the bottom navigation bar's own Slide Navigation gesture
+(§NAVIGATION UI, DR-ZYRA-098) — different screen regions, no overlap
+in practice, but both are gesture-based so this is called out
+explicitly.
+
+**Reversal note:** the "swiping feels casual and conflicts with
+ZYRA's serious marriage philosophy" rule directly above was an
+explicit, deliberate design decision at the time it was written — not
+an oversight. The Founder's 2026-07-25 instruction directly and
+knowingly overrides it: *"we will stick with swiping actions for
+cleaner UI."* The underlying philosophy (deliberate, one-decision-at-
+a-time progression toward marriage, not casual mass-swiping) is
+judged unchanged by this — see `PROFILE DECISION SYSTEM/Summary.md`
+§PHILOSOPHY for the updated reasoning. Only the specific "no swipe
+gestures, ever" implementation rule is reversed.
 
 End of Profiles:
 Displays: "No more profiles right now."
@@ -186,6 +218,45 @@ the X / ✓ / ✓✓ action state.
 Navigation style: Apple-inspired floating pill with
 Instagram-style motion behaviour.
 
+**Slide Navigation (added 2026-07-25, DR-ZYRA-098, from
+OA-ZYRA-136):** the bottom navigation bar supports two input
+methods — Tap (existing) and Slide (new). Both remain available;
+slide does not replace tap. Checked first against this document's
+existing "tap-only" rule (Approved Rules, below) — that rule is
+explicitly scoped to Browse's Decline/Save/Like actions on the
+profile card, not to bottom-navigation, so there is no conflict.
+This also complements, rather than duplicates, the already-approved
+Instagram-style motion behaviour above (DR-ZYRA-091's sliding
+circular highlight) — slide navigation is the natural extension of
+an interface that already animates a highlight moving between tabs.
+**Note added same day, later:** the "tap-only" rule referenced above
+was itself reversed later on 2026-07-25 by DR-ZYRA-099 (see §BROWSE
+above) — that reversal doesn't change this decision's reasoning
+(bottom-nav slide gestures were never in conflict with it either
+way), but the rule this paragraph cites no longer exists in its
+original form.
+
+Behaviour: user places a finger anywhere on the navigation bar and
+slides horizontally across the items. While sliding: the highlighted
+item follows the finger in real time, with continuous visual
+feedback and a smoothly animating floating indicator — but no
+navigation occurs yet. On release: the currently highlighted item
+becomes selected and the app navigates to it immediately, with the
+page transition animation beginning at that point.
+
+Must not interfere with: vertical scrolling, page swipe gestures
+(including the Browse card's own tap-decision transition, Script_V2
+§DECISION FEEDBACK), or any other in-app interaction. Implementation
+detects horizontal drag input, continuously resolves which nav item
+is currently beneath the finger, and only triggers the actual page
+change on gesture release — not during the drag itself.
+
+This inherits, but does not resolve, this document's already-flagged
+2026-07-19 tab-count/naming inconsistency (see FLAGGED section
+below) — slide navigation applies to whatever the final tab set
+turns out to be; it is not itself a decision about tab count or
+naming.
+
 ------------------------------------------------------------
 CONNECTIONS
 ------------------------------------------------------------
@@ -194,17 +265,24 @@ Purpose:
 Relationship management centre for Seekers.
 
 Relationship Journey:
-Save → Like → Match → Conversation → Family Stage
+Save → Consider → Match → Conversation → Family Stage
+(was: Save → Like → Match..., renamed 2026-07-25 with the rest of
+the Pass/Save/Consider terminology change, DR-ZYRA-099)
 
 Sections (in order):
-• Declined
-• Review
+• Passed (was: Declined)
+• Saved
 • Family Introductions
-• Likes
+• Considered (was: Likes)
 • Matches
 
+(Renamed 2026-07-12: "Review" → "Saved", to match the Save
+action and the Saves list defined in PROFILE DECISION SYSTEM.
+Renamed again 2026-07-25: "Declined" → "Passed", "Likes" →
+"Considered" — same DR-ZYRA-099 terminology change.)
+
 Decision: Family Introductions is a dedicated section.
-It is not merged into Review.
+It is not merged into Saved.
 Clarity is more important than reducing one nav item.
 Sections can be merged later if user testing supports it —
 but untangling a merge is much harder than separating cleanly.
@@ -229,7 +307,7 @@ Actions per Match:
 
 Timeline Records:
 • Saves
-• Likes
+• Considers (was: Likes)
 • Matches
 • Conversation activity
 • Wali actions
@@ -239,30 +317,30 @@ Timeline Records:
 WALI NAVIGATION (TEMPORARY — TO BE MOVED)
 ------------------------------------------------------------
 
-All Wali tiers share the same 4-tab navigation structure.
-Browse is not part of the Wali experience.
+Both Wali entitlements share the same 4-tab navigation structure.
+Browse is not part of the Wali experience (except as noted below
+for Extended Wali).
 The Wali's role is guidance and family involvement — not discovery.
 
-Wali Basic
+Standard Wali
 Dashboard • Seekers • Network (locked) • Profile
 
-Wali Pro
+Extended Wali
 Dashboard • Seekers • Network • Profile
-
-Wali Premium
-Dashboard • Seekers • Network • Profile
+(also gains Browse — browses on behalf of linked Seeker; see
+NAVIGATION STRUCTURE table above)
 
 Navigation style:
 Floating glass pill. No Universal Toggle (Seeker-only mechanic).
 4 equal tabs. Active tab highlighted. Same glass design as Seeker nav.
 
-Network (locked — Wali Basic):
-Tapping Network shows a premium feature page explaining what
-Network offers and gives the option to upgrade.
-This keeps the UI consistent across all Wali tiers while
-naturally showcasing premium functionality.
+Network (locked — Standard Wali):
+Tapping Network shows a feature page explaining what Network
+offers and gives the option to upgrade to Extended Wali.
+This keeps the UI consistent across both Wali entitlements while
+naturally showcasing the locked functionality.
 
-Network (unlocked — Wali Pro / Premium):
+Network (unlocked — Extended Wali):
 Family introductions. Wali-to-Wali communication.
 Trusted family connections. Suggested introductions.
 Community referrals. Future networking features.
@@ -275,16 +353,18 @@ Dashboard displays:
 • Recent activity / milestones
 • Notifications
 
-Pending architectural question (deferred):
-Three Wali tiers now identified: Basic, Pro, Premium.
-Previously only Basic and Pro were defined.
-Differences between Pro and Premium to be established separately.
+Resolved 2026-07-12 (was: pending architectural question):
+The Wali tier model is Standard Wali / Extended Wali — two
+entitlements, not three. The earlier "Basic, Pro, Premium"
+three-tier framing was stale; see
+WALI_ARCHITECTURE_CURRENT_VERSION_V5 for the confirmed
+Wali Permissions Model.
 
 Pending T&C work (deferred):
 Clear terms required for features that depend on:
   — Having a linked Seeker
-  — Linked Seeker being on Seeker Premium
-Not all Network/Premium features are available without
+  — Linked Seeker being on ZYRA One
+Not all Network/Extended Wali features are available without
 both conditions being met. To be defined carefully.
 
 ------------------------------------------------------------
@@ -298,7 +378,8 @@ APPROVED RULES
 • Navigation differs by subscription.
 • Walis are never treated as Seekers.
 • Network is never available to Seekers (any tier).
-• Browse actions are tap-only — no swipe gestures.
+• Browse actions are swipe-based (was: tap-only — no swipe
+  gestures; reversed 2026-07-25, DR-ZYRA-099, see §BROWSE above).
 • Photo is always primary. Info is always secondary.
 
 ------------------------------------------------------------
@@ -309,19 +390,66 @@ CURRENT STATUS
 ✅ Navigation structure approved (Network removed from Seekers).
 ✅ Browse approved — full-screen photo-first design.
 ✅ Photo-first philosophy confirmed and rooted in Imam Ahmad.
-✅ Action buttons confirmed: X / single tick / double tick.
-✅ No swipe gestures — tap only.
+❌ Action buttons (X / single tick / double tick) — SUPERSEDED
+   2026-07-25, DR-ZYRA-099. Replaced by swipe gestures directly on
+   the profile card; see §BROWSE above.
+❌ No swipe gestures / tap only — SUPERSEDED 2026-07-25,
+   DR-ZYRA-099, same reversal. Swipe gestures are now the primary
+   mechanism: Swipe Left = Consider, Swipe Right = Pass, Swipe
+   Down = Save.
 ✅ Connections approved.
-✅ Wali navigation approved (Network = Wali Premium only).
-✅ Floating Glass Navigation approved.
-✅ Instagram motion behaviour approved.
-✅ Smooth navigation transitions approved.
+✅ Wali navigation approved (Network = Extended Wali only).
+✅ Floating Glass Navigation approved — BUILT 2026-07-19
+   (DR-ZYRA-089, DR-ZYRA-091), PROPOSED/not yet ratified.
+✅ Instagram motion behaviour approved — BUILT 2026-07-19
+   (DR-ZYRA-091: icon grows on selection, single sliding
+   circular highlight between tabs), PROPOSED/not yet ratified.
+✅ Smooth navigation transitions approved — BUILT 2026-07-19,
+   same DRs.
+
+⚠ FLAGGED 2026-07-19 — implementation gaps found while filing
+  DR-ZYRA-089/091, not resolved, needs a dedicated session:
+    • Live Seeker nav (SOURCE/lib/screens/home/home_shell.dart)
+      has 3 tabs — Browse, Matches, Profile. Neither "Matches"
+      nor a 3-tab count matches this document, which specifies
+      4 tabs (Browse • Connections • Wali • Profile) in the
+      NAVIGATION STRUCTURE table above. No Connections or Wali
+      tab exists in the Seeker shell at all yet.
+    • This document is internally inconsistent about what the
+      4th Seeker tab even is: NAVIGATION STRUCTURE says
+      "Connections • Wali"; the NAVIGATION UI section below
+      describes a "grouped pill: Connections • Safety • Profile"
+      — a different item ("Safety" vs "Wali") and a different
+      visual grouping (isolated Browse + grouped pill, vs 4
+      equal tabs). Needs reconciling before anyone builds
+      against it.
+    • Live Wali nav (wali_home_shell.dart) shows Network as
+      fully unlocked for all Wali accounts — this document
+      specifies Network should be locked/upsell-only for
+      Standard Wali (WALI NAVIGATION section), which isn't
+      implemented. No entitlement check exists in code yet.
+    • Browse's action buttons (browse_screen.dart) are three
+      independent glass circles (Decline/Save/Like), not the
+      "left isolated gallery pill + right X/tick/double-tick
+      pill" grouping this document describes under BROWSE.
+      **Update 2026-07-25:** this gap is now larger, not smaller —
+      §BROWSE above has since moved to swipe gestures and
+      Pass/Save/Consider terminology (DR-ZYRA-099), while the live
+      code still has the three tap-button glass circles under the
+      old Decline/Save/Like names. Not fixed as part of this
+      documentation filing; noted for whenever Browse is next
+      built/rebuilt.
+    • Overlaps with OA-ZYRA-126, OA-ZYRA-128, OA-ZYRA-129
+      (logged 2026-07-19, Outstanding Actions register) —
+      those items raised related/overlapping concerns from a
+      different angle (ChatGPT UX review) without knowing this
+      document already specifies (inconsistently) most of it.
 
 ============================================================
 APPROVED TO-DO LIST
 ============================================================
 • Define behaviour of left isolated gallery button on Browse.
-• Finalise Network functionality for Wali Premium.
+• Finalise Network functionality for Extended Wali.
 • Design Search Filters.
 • Expand Conversation workflow.
 • Expand Timeline workflow.

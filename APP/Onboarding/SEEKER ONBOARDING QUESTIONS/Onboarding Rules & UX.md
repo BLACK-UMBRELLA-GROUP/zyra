@@ -352,6 +352,35 @@ The onboarding flow itself does not change.
 COLOUR SYSTEM
 ------------------------------------------------------------
 
+SUPERSEDED 2026-07-19 — DR-ZYRA-090, itself superseded
+2026-07-25 by DR-ZYRA-094 (see update below). Founder
+instruction overrode the three-variant gender-derived
+background system below: onboarding no longer varies by
+gender at all. Every onboarding screen now uses a single flat
+Royal Purple (#8A6A9E) background, matching the Welcome
+screen and every other "Default Screen" — the gender-derived
+variants (and Luxury Dark Purple generally) are not to appear
+anywhere active in the app for now, though the Founder has
+noted the dark shade may return as primary in future. This
+section is left in place below for historical reference, not
+as current behaviour — do not implement against it.
+See BUSINESS/COLOUR THEME/Summary.md and
+SOURCE/lib/theme/zyra_colors.dart (backgroundFor()) for the
+live implementation.
+
+UPDATE (2026-07-25) — DR-ZYRA-094 ratified the final palette
+and restored the gradient fade (every theme fades into Luxury
+Dark Purple #3D2A4A) for profile-context screens app-wide, via
+ZyraColors.genderGradient() (DR-ZYRA-101). This does NOT
+reverse DR-090's onboarding-specific rule above: onboarding
+still stays flat Royal Purple regardless of gender, per
+OA-ZYRA-123 ("gender accents reserved for profile only") —
+confirmed still true in code (`backgroundFor()` returns
+`brandGradient` for every variant). The two decisions govern
+different scopes: DR-094 is the palette itself and its
+profile-context application; DR-090/OA-123 is the onboarding-
+specific carve-out from that application.
+
 Source of truth: ZYRA/BUSINESS/COLOUR THEME/Summary.md
 Brand palette:   Royal Purple #8A6A9E | Luxury Dark Purple #3D2A4A
                  Royal Blue #3D5A80   | Rose Pink #D4868F
@@ -388,10 +417,23 @@ TYPOGRAPHY
 Font: Jost (Google Fonts)
   Weights: 200 (headings/wordmark), 300 (body/subtext), 400 (buttons)
 
-Question heading:    Jost 200, ~19–20px
-Subtext:             Jost 300, 8.5px
-Option text:         Jost 300, 10px
-Chapter name label:  Jost 300, 7px, letter-spacing 0.8px
-Privacy indicator:   Jost 300, 8px
-Progress %:          Jost 300, 7px
+UPDATED 2026-07-25 (DR-ZYRA-101 audit, Founder decision: keep the
+larger, more readable sizes actually built — this spec's original
+7–8.5px values were superseded, not code). Wordmark is a deliberate
+exception (Playfair Display, not Jost — see zyra_text.dart header,
+2026-07-18 Founder request).
+
+Question heading:    Jost 200, ~20px (ZyraText.heading, default)
+Body text:           Jost 300, 13px (ZyraText.body)
+Subtext:             Jost 300, 12.5px (ZyraText.subtext)
+Option text:         Jost 300, 14px (ZyraText.option)
+Button text:         Jost 400, 15px, letter-spacing 0.5 (ZyraText.button)
+Chapter name label:  Jost 300, 10px, letter-spacing 0.8px (ZyraText.chapterLabel)
+Privacy indicator:   Jost 300, 11px (ZyraText.privacyText)
+Progress %:          no dedicated style built — the "X/50 profiles"-
+                     style counter this would apply to was removed
+                     from Browse per OA-ZYRA-125 §5; not currently
+                     needed anywhere. Removed from spec rather than
+                     left as a phantom requirement — re-add if a
+                     future screen needs it.
 

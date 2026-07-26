@@ -4,5 +4,23 @@
 <dict>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	<!-- Outgoing network (Supabase auth/database/storage calls) and the
+	     user-selected-file picker (image_picker's photo picker) — added
+	     2026-07-18 alongside real Supabase wiring. Without network.client
+	     specifically, every Supabase call fails under App Sandbox even
+	     with correct app code — this was missing entirely before. -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+	<key>com.apple.security.files.user-selected.read-only</key>
+	<true/>
+	<!-- Sign In with Apple (2026-07-18) — required capability for
+	     sign_in_with_apple to function at all. This alone does not
+	     finish Apple Sign-In setup: the "Sign In with Apple" capability
+	     must also be added in Xcode (Runner target > Signing &
+	     Capabilities), which requires an Apple Developer account. -->
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
 </dict>
 </plist>

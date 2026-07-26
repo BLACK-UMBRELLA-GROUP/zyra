@@ -130,8 +130,18 @@ TRANSITION — Private Values (before Chapter 3)
         ▼
 
 ============================================================
-CHAPTER 3 — YOUR VALUES                           (~29 Qs)
+CHAPTER 3 — YOUR VALUES                          (104 Qs)
 ============================================================
+
+RESOLVED 2026-07-25 (OA-ZYRA-140 item 9, Founder decision:
+"Classification doc is authoritative"). The 5-core/5-extended,
+~29-question category walkthrough previously shown here was
+never built. Live code (chapter3_categories.dart) implements
+the 9-category, 104-question structure ratified in "Chapter 3
+Classification — Ch4 Mapping.md" (V3 — APPROVED); that document
+is the authoritative full per-question list. The flow below
+shows the real category sequence with one illustrative example
+question per category rather than duplicating all 104 inline.
 
 Purpose: Teaching ZYRA who you are.
          All answers are private — never shown on profile.
@@ -141,72 +151,48 @@ NOTE: Chapter 3 contains only "About You" answers.
       Compatibility preferences (traffic lights) are
       collected entirely in Chapter 4.
 
-  CATEGORY — FAMILY
-  Previous Marriage Status
-  Do You Have Children?
+  CATEGORY — FAMILY (10 Qs)
+  e.g. Previous Marriage Status, Do You Have Children?
   Category Summary
         │
         ▼
-  CATEGORY — EDUCATION & FINANCES
-  Highest Education Level
-  Employment Status
-  Annual Income
-  Financial Readiness for Marriage
-  Preferred Mahr Budget
+  CATEGORY — EDUCATION & FINANCES (12 Qs)
+  e.g. Highest Education Level, Annual Income
   Category Summary
         │
         ▼
-  CATEGORY — MARRIAGE GOALS
-  Do You Want Children?
-  Marriage Structure
+  CATEGORY — MARRIAGE GOALS (10 Qs)
+  e.g. Marriage Timeline, Views on Polygamy
   Category Summary
         │
         ▼
-  CATEGORY — FAITH
-  How Often Do You Pray?
-  How Often Do You Read The Quran?
-  Quran Memorisation
-  Do You Fast During Ramadan?
-  Do You Pay Zakat?
-  Have You Performed Umrah?
-  Have You Performed Hajj?
-  Approach To Riba Financial Products
+  CATEGORY — FAITH (19 Qs)
+  e.g. Daily Prayers, Zakat, [Men Only] Masjid Attendance
   Category Summary
         │
         ▼
-  CATEGORY — LIFESTYLE
-  Do You Smoke Or Vape?
-  Are You Willing To Relocate?
+  CATEGORY — LIFESTYLE (12 Qs)
+  e.g. Smoking & Vaping, Personality
   Category Summary
         │
         ▼
-  CATEGORY — HOUSING & LIVING
-  Current Living Situation
-  Preferred Post-Marriage Living Arrangement
+  CATEGORY — HOUSEHOLD ROLES & EXPECTATIONS (10 Qs)
+  e.g. Household Responsibilities, Financial Provider
   Category Summary
         │
         ▼
-  CATEGORY — FINANCIAL
-  Current Debt Situation
-  Do You Currently Have A Mortgage?
+  CATEGORY — COMMUNICATION & EMOTIONAL INTELLIGENCE (12 Qs)
+  e.g. Communication Style, Conflict Resolution
   Category Summary
         │
         ▼
-  CATEGORY — FAITH (EXTENDED)
-  Do You Observe Sunnah Fasts?
-  [Men Only] Masjid Attendance For Congregational Prayer
+  CATEGORY — TECHNOLOGY & DIGITAL LIFESTYLE (8 Qs)
+  e.g. Social Media Usage, Mobile Phone Boundaries
   Category Summary
         │
         ▼
-  CATEGORY — MARRIAGE EXPECTATIONS
-  View On Household Finances
-  Category Summary
-        │
-        ▼
-  CATEGORY — ADDITIONAL
-  Do You Own A Car Or Motorbike?
-  How Often Do You Read Surah Al-Baqarah At Home?
-  View On Pictures Or Statues In The Home
+  CATEGORY — HEALTH & WELL-BEING (11 Qs)
+  e.g. Physical Fitness, Dietary Requirements
   Category Summary
         │
         ▼
@@ -235,12 +221,18 @@ TRANSITION — How Preferences Work (before Chapter 4)
         ▼
 
 ============================================================
-CHAPTER 4 — YOUR PREFERENCES                      (~29 Qs)
+CHAPTER 4 — YOUR PREFERENCES                      (70 Qs)
 ============================================================
+
+RESOLVED 2026-07-25 (OA-ZYRA-140 item 9): 70 questions, one per
+Chapter 3 question with a confirmed Chapter 4 mapping (not every
+Chapter 3 question has one — some are descriptive-only; see
+Chapter 3 Classification — Ch4 Mapping.md "CHAPTER 4 CONFIRMED
+LIST" for the exact 70).
 
 Purpose: Teaching ZYRA who you're looking for.
          Based on the answers given in Chapter 3.
-         Each topic from Chapter 3 reappears here as a
+         Each mapped Chapter 3 topic reappears here as a
          preference question using the traffic light system.
 
 Pattern per question:

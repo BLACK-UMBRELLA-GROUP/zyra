@@ -35,6 +35,26 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  # ZYRA UI dependencies (added 2026-07-18, resuming ZYRA — OA-AIOS-289)
+  google_fonts: ^6.2.1   # Jost typeface — per ZYRA typography spec
+
+  # Backend (OA-101/102, DR-073) — added once Supabase project details
+  # are available. Safe to add before the project exists: initialization
+  # is skipped until lib/config/supabase_config.dart has real values.
+  supabase_flutter: ^2.8.0
+
+  # OA-104 — real device photo picking for the Chapter 2 Photos step,
+  # replacing the mock 6-photo picsum pool.
+  image_picker: ^1.1.2
+
+  # Auth (2026-07-18) — Google + Apple native sign-in ONLY, per Founder
+  # instruction: no password, no email login, no phone login. Both
+  # produce an ID token exchanged with Supabase via signInWithIdToken
+  # (lib/services/zyra_auth.dart) rather than a browser OAuth redirect.
+  google_sign_in: ^6.2.2
+  sign_in_with_apple: ^6.1.4
+  crypto: ^3.0.5 # nonce hashing for the Apple Sign-In flow
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,6 +65,53 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+  # Generates real app icons (macOS/iOS/Android/web) from
+  # assets/icon/icon.png, replacing the stock Flutter icon. Added
+  # 2026-07-18 — see flutter_launcher_icons config below and
+  # BUSINESS/APP LOGO/Summary.md (source image is a PLACEHOLDER: two
+  # interlocking rings on purple, per that doc's "Current Leading Logo
+  # Concept" — the doc's own to-do list still says the official logo
+  # isn't finalised, so swap assets/icon/icon.png for the real one
+  # later and rerun `dart run flutter_launcher_icons`).
+  flutter_launcher_icons: ^0.14.3
+
+  # Generates native splash screens (iOS/Android/web) from assets/
+  # splash/ — added 2026-07-18 alongside the Google/Apple-only auth
+  # rework. See flutter_native_splash config below.
+  flutter_native_splash: ^2.4.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  macos:
+    generate: true
+  web:
+    generate: true
+  image_path: "assets/icon/icon.png"
+
+# Native splash screen — added 2026-07-18. Background is the dark end
+# of ZyraColors.brandGradient (0xFF3D2A4A); native splash can only
+# render a solid colour, not a gradient, so this is the closest single
+# colour to that gradient's anchor tone, already used as a solid
+# fallback background elsewhere in the app (e.g. AuthGate's loading
+# state). The image is the "ZYRA" wordmark rendered as a static PNG —
+# see assets/splash/splash_logo.png's own note on the font substitute
+# used (this sandbox has no network access to fetch the real Playfair
+# Display font file the live app uses via google_fonts; Liberation
+# Serif Bold was used as a close local stand-in for this one static
+# asset only — everything else in the running app renders with the
+# real Playfair Display / Jost fonts via google_fonts as normal).
+# Regenerate with the real Playfair Display TTF for a pixel-exact
+# match whenever convenient — not urgent, the difference is minor at
+# splash-flash duration.
+flutter_native_splash:
+  color: "#3D2A4A"
+  image: assets/splash/splash_logo.png
+  android_12:
+    color: "#3D2A4A"
+    image: assets/splash/splash_logo.png
+  web: false
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -58,6 +125,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/icon/icon.png
+    - assets/splash/splash_logo.png
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

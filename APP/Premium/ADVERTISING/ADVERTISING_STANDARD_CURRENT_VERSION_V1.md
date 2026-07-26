@@ -7,22 +7,24 @@ Authors: Lead Architect (Claude) + Architectural Reviewer (ChatGPT)
 
 ## Governing Principle
 
-ZYRA's advertising model exists to keep the platform genuinely free for Basic users — not to monetise their marriage journey. Advertising is a background funding mechanism, never a product experience.
+ZYRA's advertising model exists to keep the platform genuinely free for ZYRA Basic users — not to monetise their marriage journey. Advertising is a background funding mechanism, never a product experience.
 
-**Pro removes interruptions. It does not unlock marriage itself.**
+**ZYRA One removes interruptions. It does not unlock marriage itself.**
 
 Any advertising that conflicts with ZYRA's values, mission, or the trust of its users will be rejected regardless of commercial value.
+
+*Terminology corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 — Seeker Basic/Pro and Wali Basic/Pro replaced with ZYRA Basic/ZYRA One and Standard Wali/Extended Wali. The placement rules below are unaffected.*
 
 ---
 
 ## Model Overview
 
-| Tier | Advertising |
+| Entitlement | Advertising |
 |------|-------------|
-| Seeker Basic | Ad-supported (see placement rules) |
-| Seeker Pro | Completely ad-free |
-| Wali Basic | No ads |
-| Wali Pro | No ads |
+| Seeker (ZYRA Basic) | Ad-supported (see placement rules) |
+| Seeker (ZYRA One) | Completely ad-free |
+| Standard Wali | No ads |
+| Extended Wali | No ads |
 
 ---
 

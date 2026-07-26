@@ -55,9 +55,10 @@ Overlap Flags
 Open Dependencies
 ------------------------------------------------------------
 
-• Option 1 vs Option 2 decision not yet formally approved
-  (Option 1 is current favourite, not yet locked).
 • Exact colour tokens for UI components not yet defined.
 • Typography and spacing not yet documented.
 • Design system document not yet created.
 • Component library not yet created.
+• RESOLVED 2026-07-25 (DR-ZYRA-094): Option 1 vs Option 2 —
+  Option 1 ratified as final palette, Option 2 rejected. See
+  Summary.md (Status: 🟢 Finalised) and DR-ZYRA-094.

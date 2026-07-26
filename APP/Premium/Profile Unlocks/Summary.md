@@ -11,6 +11,13 @@ Provides deeper compatibility insight before progressing
 further with a profile. Helps users make better-informed
 marriage decisions without revealing private answers.
 
+Corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3
+and BUSINESS/ZYRA PRICING/Summary.md — Seeker Basic/Pro/Premium
+replaced with ZYRA Basic/ZYRA One; Review/Consider stages
+replaced with Saved/Liked; pricing "TBC" resolved to Option A,
+which matches Product Spec V3 Part 1 Section 8 exactly (Option B
+was never adopted — see BUSINESS/ZYRA PRICING/Summary.md).
+
 ------------------------------------------------------------
 Feature Name
 ------------------------------------------------------------
@@ -26,7 +33,7 @@ A naming review will determine the final product name.
 Availability
 ------------------------------------------------------------
 
-Seeker Only (Basic, Pro, Premium).
+Seeker Only (ZYRA Basic, ZYRA One).
 Wali cannot purchase or use Profile Unlocks.
 This is a Seeker-only feature.
 
@@ -35,9 +42,11 @@ Usage Rules
 ------------------------------------------------------------
 
 • Cannot be used while swiping.
-• Cannot be used on declined profiles.
-• Profile must first be moved to Review or Consider
+• Cannot be used on passed profiles.
+• Profile must first be Saved or Considered
   before an unlock can be purchased.
+  (UPDATED 2026-07-25, DR-ZYRA-099 terminology sweep-miss:
+  Declined/Liked -> Passed/Considered.)
 • Once purchased and used, the profile remains
   permanently unlocked for that user.
   No repurchase required to view again.
@@ -77,9 +86,7 @@ Privacy Protection:
   • Which specific questions caused Green, Yellow or Red
   Only compatibility outcomes are shown.
 
-Pricing: TBC
-  Option A: 1 Unlock = £0.99   / 5 Unlocks = £2.99
-  Option B: 1 Unlock = £1.99   / 5 Unlocks = £4.99
+Pricing (confirmed 2026-07-12): 1 Unlock = £0.99 / 5 Unlocks = £2.99
 
 ------------------------------------------------------------
 Profile Unlock+
@@ -117,9 +124,7 @@ Privacy Protection:
   • Which specific questions caused incompatibilities
   Only category-level percentages are shown.
 
-Pricing: TBC
-  Option A: 1 Unlock+ = £1.99  / 5 Unlocks+ = £4.99
-  Option B: 1 Unlock+ = £4.99  / 5 Unlocks+ = £9.99
+Pricing (confirmed 2026-07-12): 1 Unlock+ = £1.99 / 5 Unlocks+ = £4.99
 
 ------------------------------------------------------------
 UI Notes
@@ -148,14 +153,12 @@ APPROVED TO-DO LIST
 
 • Decide final feature name (Profile Unlock vs
   Compatibility Preview vs Insight Unlock).
-• Confirm pricing — Option A or Option B for both
-  Unlock and Unlock+.
 • Confirm final compatibility categories for Unlock+
   (current set pending: Lifestyle, Work & Education,
   Family Values, Marriage Goals, Personality, Deen).
 • Define the complete Green / Yellow / Red scoring
   methodology.
-• Define what "Review" and "Consider" stages look like
+• Define what "Saved" and "Liked" stages look like
   in the UI so users understand the unlock trigger.
 • Design the unlock button UI on the profile card.
 • Design the balance display within the profile view.

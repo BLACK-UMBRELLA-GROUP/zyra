@@ -103,6 +103,59 @@ Example:
   • Adam    (available)                 — eligible
 
 ------------------------------------------------------------
+AVAILABILITY STATUS (USER-FACING) — added 2026-07-25, DR-ZYRA-097
+------------------------------------------------------------
+
+Source: OA-ZYRA-133 (ChatGPT UX proposal, 2026-07-19). Resolution:
+Founder and ChatGPT both confirmed this is a UX presentation layer
+over the Journey Eligibility concept above — not a new architectural
+state. No new relationship state introduced; Product Spec V3 Part 0
+(Feature-State Covenant) unaffected. Filed here rather than as a
+separate document, per the same reuse-not-duplicate discipline as
+DR-ZYRA-092/093/095.
+
+**Terminology split** (deliberate, ChatGPT's recommendation):
+  Backend / business logic → "Journey Eligibility" (unchanged, as
+    defined above: eligible / not eligible, with a reason).
+  Frontend / user interface → "Availability Status" (new — the
+    coloured, plain-language presentation of that same eligibility
+    value).
+
+The backend continues to determine eligibility and, if not eligible,
+the reason why. The frontend presents that using ZYRA's existing
+traffic-light colours only — no new colours (white, black, blue, grey)
+are introduced; users already read 🟢 = yes, 🟡 = maybe/depends, 🔴 =
+no from elsewhere in the product.
+
+| Internal Journey Eligibility | User-Facing Availability Status |
+|-------------------------------|----------------------------------|
+| Eligible | 🟢 Available |
+| Not Eligible — Active Journey | 🟡 Currently in an Active Journey |
+| Not Eligible — Account Paused | 🔴 Unavailable |
+| Not Eligible — Account Hidden/Inactive | 🔴 Unavailable |
+
+Example, in the Potential Journeys list:
+  Potential Journeys (9)
+  🟢 Aisha — Available
+  🟡 Maryam — Currently in an Active Journey
+
+**Privacy (carried over from OA-ZYRA-133's source content):** never
+show private information about another user's Journey — no duration,
+stage, compatibility progress, family discussions, proposal status,
+or estimated completion. Availability Status is the only Journey-
+related information ever shown about another user.
+
+**Note on the original 4-status proposal:** OA-ZYRA-133's source
+content proposed four visually distinct statuses (🟢🟡⚪⚫ — Available /
+In Active Journey / Paused / Hidden-Inactive). Resolved to three
+colours: Paused and Hidden/Inactive both collapse to 🔴 Unavailable,
+since introducing new colours (⚪/⚫) beyond ZYRA's existing traffic-
+light system was explicitly rejected in favour of visual consistency.
+The underlying eligibility reasons (Paused vs. Hidden/Inactive) are
+still distinguishable on the backend — only the user-facing colour is
+unified.
+
+------------------------------------------------------------
 AI-CURATED JOURNEY RECOMMENDATIONS
 ------------------------------------------------------------
 

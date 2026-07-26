@@ -151,8 +151,8 @@ Found In:
 • Discovery Journey
 
 Related Systems:
-• Decline
-• Review
+• Pass
+• Save
 • Consider
 • Potentials
 • Notifications
@@ -171,8 +171,13 @@ PROFILE DECISION TERMINOLOGY
 ============================================================
 
 ------------------------------------------------------------
-TERM: Decline
+TERM: Pass
 ------------------------------------------------------------
+
+RESOLVED 2026-07-25 (OA-ZYRA-140 item 15, Founder decision:
+"Yes, rewrite it now"). This is the canonical glossary — the
+last place still using the pre-DR-ZYRA-099 term "Decline",
+renamed "Pass" everywhere else in the app on 2026-07-25.
 
 Definition:
 A decision indicating that a profile is not suitable for
@@ -183,7 +188,7 @@ Allows users to remove unsuitable profiles from their
 discovery process.
 
 User Explanation:
-Decline means "this profile is not suitable for me."
+Pass means "this profile is not suitable for me."
 
 Internal Explanation:
 A negative profile decision that removes the profile from
@@ -200,83 +205,91 @@ Related Systems:
 Notes:
 • Available to Seekers.
 • Not available to Walis.
-• Decline is a final rejection decision.
+• Pass is a final rejection decision.
 
 ------------------------------------------------------------
-TERM: Review
+TERM: Save
 ------------------------------------------------------------
 
 Definition:
-A decision indicating that a profile requires further review
-before a marriage decision is made.
+A private decision indicating the Seeker wants to come back
+to a profile later. Does not indicate romantic interest.
 
 Purpose:
-Allows users to revisit profiles later without placing them
-under consideration.
+Allows Seekers to revisit profiles later without signalling
+interest to the other profile.
 
 User Explanation:
-Review means "I am not ready to decide yet and would like
-to look again later."
+Save means "I would like to come back to this profile later."
 
 Internal Explanation:
-A neutral holding decision that stores a profile for future
-review.
+A private holding decision. Saving is completely private
+between ZYRA Basic users; only a mutual Save between two
+ZYRA One users (or a ZYRA One user matched with a ZYRA Basic
+user) generates a Mutual Save Detected notification, and only
+for the ZYRA One side. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3,
+Part 2, Section 3.
 
 Found In:
 • Browse
 • Profile Page
-• Reviewed Profiles
 
 Related Systems:
 • Browse
-• Reviewed Profiles
+• Mutual Save Detection (ZYRA One)
 
 Notes:
 • Available to Seekers.
-• Available to Walis.
-• Review is neither positive nor negative.
-• Review does not create a Consideration.
-• Review does not create a Match.
+• Does not indicate romantic interest.
+• Save does not create a Match on its own — only a mutual
+  Save can be surfaced as a signal, and only to ZYRA One users.
 
 ------------------------------------------------------------
 TERM: Consider
 ------------------------------------------------------------
 
+RESOLVED 2026-07-25 (OA-ZYRA-140 item 15, Founder decision:
+"Yes, rewrite it now"). This is the canonical glossary — the
+last place still using the pre-DR-ZYRA-099 term "Like",
+renamed "Consider" everywhere else in the app on 2026-07-25.
+
 Definition:
-A decision indicating that a profile may be suitable for
-marriage consideration.
+A decision indicating genuine interest in pursuing this
+person for marriage.
 
 Purpose:
-Allows users to identify profiles worth exploring further
-within the marriage discovery process.
+Allows Seekers to signal interest and initiate the path
+toward a Match.
 
 User Explanation:
-Consider means "this profile may be suitable and I would
-like to keep it under consideration."
+Consider means "I would like to pursue this person."
 
 Internal Explanation:
-A positive profile decision that moves a profile into the
-Considerations system.
+An interest signal. A mutual Consider between two Seekers is
+the Match event — it creates a Potential Journey. Consider is
+not the same as Match: Match is the event, Potential Journey is
+the resulting state. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3,
+Part 0, Section 0.5 and Part 2, Section 4.
 
 Found In:
 • Browse
 • Profile Page
-• Considerations
+• Incoming Potentials
 
 Related Systems:
 • Browse
-• Considerations
-• Matching
-• Connections
+• Potentials
+• Match event
+• Potential Journey
 
 Notes:
 • Available to Seekers.
-• Not available to Walis.
-• Consider does not mean Like.
-• Consider does not mean Love.
-• Consider does not mean Match.
-• Consider means the profile may be suitable for marriage
-  consideration.
+• A single Consider is not revealed to the other profile until
+  reciprocated.
+• Mutual Consider = Match event = Potential Journey created.
+• Considering a profile does not open a conversation and does
+  not consume a Journey slot on its own — see Journey Slot
+  Rules.
 
 ============================================================
 ROLE RELATIONSHIPS
@@ -301,38 +314,38 @@ Usage Rules:
 Decision Permissions:
 
 Seeker:
-• Decline
-• Review
+• Pass
+• Save
 • Consider
 
 Wali:
-• Review
-
-Wali Cannot:
-• Decline
-• Consider
+• Does not participate in Browse profile decisions. The Wali's
+  role is to represent and support their linked Seeker (see
+  Wali Architecture V5), not to browse or decide on profiles
+  for themselves.
 
 ============================================================
 DISCOVERY RELATIONSHIPS
 ============================================================
 
 Browse Available To:
-• Seeker Basic
-• Seeker Pro
-• Seeker Premium
-• Wali Pro
-• Wali Premium
+• Seeker (ZYRA Basic)
+• Seeker (ZYRA One)
+
+Wali accounts do not use Browse — Browse is a Seeker-only
+discovery surface. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3,
+Part 1, Section 3.
 
 Primary Decisions:
-• Decline
-• Review
+• Pass
+• Save
 • Consider
 
 Browse Purpose:
 Browse    → Discovery
-Review    → Review Later
-Consider  → Potentially Suitable
-Decline   → Not Suitable
+Save      → Come Back Later (private)
+Consider  → Interested (may lead to Match)
+Pass      → Not Suitable
 
 Browse Philosophy:
 • First impressions first.
@@ -345,19 +358,22 @@ DECISION RELATIONSHIPS
 ============================================================
 
 Decision Flow:
-Decline  → Not Suitable
-Review   → Review Later / Undecided
-Consider → Potentially Suitable
+Pass     → Not Suitable
+Save     → Come Back Later (private, no interest signal)
+Consider → Interested — mutual Consider triggers the Match event
 
 Important:
-• Consider ≠ Like
-• Consider ≠ Love
-• Consider ≠ Match
-• Consider = Suitable for Marriage Consideration
+• Consider = "I would like to pursue this person"
+• Mutual Consider = Match event = Potential Journey created
+• Match is an event, not a state — it does not open a
+  conversation and does not consume a Journey slot by itself
 
 Role Access:
-• Seeker → Decline, Review, Consider
-• Wali   → Review Only
+• Seeker → Pass, Save, Consider
+• Wali   → Does not participate in Browse decisions
+
+(UPDATED 2026-07-25, OA-ZYRA-140 item 15: Decline/Like renamed
+Pass/Consider throughout this document, per DR-ZYRA-099.)
 
 ============================================================
 APPROVED TO-DO LIST
@@ -372,7 +388,6 @@ Terms still to be defined:
 • Proposal Tracker
 • Profile Unlock
 • Network
-• Saved
 • Incoming Potential
 • Mutual Potential
 • Notifications

@@ -9,14 +9,19 @@ Note:
 This is a living document. Add, remove, and update sections
 as the app evolves.
 
-Terminology corrections applied:
-• Like → Consider
-• Pass → Decline
-• Save → Review
+Corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3
+(DR-076). The action terminology is now:
+• Decline (was: Pass)
+• Save (was: Review — this document previously had Save/Review
+  reversed relative to the current spec)
+• Like (was: Consider)
 
 ⚠️ Potentials section terminology (Sent/Received/Mutual etc.)
-flagged for review — may conflict with Decline/Review/Consider
-system. Pending clarification.
+maps approximately onto the current model as: Sent ≈ Outgoing
+Potentials, Received ≈ Incoming Potentials, Mutual ≈ Match — see
+APP/Matching/PROFILE DECISION SYSTEM/Summary.md for the verified
+current terms and rules. This section has not been rewritten to
+match exactly; treat it as directional only until reviewed.
 
 ------------------------------------------------------------
 
@@ -41,12 +46,15 @@ APP START
         │      ├── View Photos
         │      ├── Filter
         │      ├── Search
-        │      ├── Consider
+        │      ├── Save
+        │      ├── Like
         │      ├── Decline
-        │      ├── Review
         │      ├── Report
         │      ├── Block
-        │      ├── Premium Lock
+        │      ├── ZYRA One Upsell Lock (was "Premium Lock" —
+        │      │     shown when a ZYRA Basic limit is hit,
+        │      │     e.g. daily Save/Like cap; prompts upgrade
+        │      │     to ZYRA One)
         │      ├── No More Profiles
         │      ├── Daily Limit
         │      └── ...

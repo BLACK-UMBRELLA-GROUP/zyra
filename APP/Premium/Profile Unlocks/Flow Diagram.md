@@ -9,13 +9,17 @@ FLOW DIAGRAM
 Entry Points
 ------------------------------------------------------------
 
-Seeker is viewing a profile in Review or Consider
+Seeker is viewing a profile that is Saved or Considered
 → "Unlock" or "Unlock+" button shown on profile card
 
 Blocked entry points:
   • Cannot unlock while swiping
-  • Cannot unlock on declined profiles
-  • Profile must be in Review or Consider first
+  • Cannot unlock on passed profiles
+  • Profile must be Saved or Considered first
+
+(Corrected 2026-07-12, DR-076 — was "Review or Consider". Renamed
+again 2026-07-25, DR-ZYRA-099 terminology sweep-miss — Declined/
+Liked -> Passed/Considered.)
 
 ------------------------------------------------------------
 Purchase Flow
@@ -23,10 +27,8 @@ Purchase Flow
 
 Seeker has no credits
 → Purchase screen shown
-   Pricing TBC — options:
-     Option A: 1 Unlock = £0.99   / 5 Unlocks = £2.99
-     Option B: 1 Unlock = £1.99   / 5 Unlocks = £4.99
-→ Seeker selects option
+   Pricing (confirmed 2026-07-12): 1 Unlock = £0.99 / 5 Unlocks = £2.99
+→ Seeker selects quantity
 → Payment confirmed
 → Credit applied to account
 

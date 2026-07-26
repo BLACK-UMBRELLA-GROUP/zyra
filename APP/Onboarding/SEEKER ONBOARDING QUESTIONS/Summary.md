@@ -10,6 +10,19 @@ Status: Approved
 Last Updated: 2026-06-28
 Change: Restructured from 4-section to 5-chapter model.
 
+RESOLVED 2026-07-25 (OA-ZYRA-140 item 9, Founder decision:
+"Classification doc is authoritative"). This document and Flow
+Diagram.md previously described a ~69-question, 10-category
+structure (5 Core + 5 Extended) that was never actually built.
+"Chapter 3 Classification — Ch4 Mapping.md" (same date, marked
+"V3 — APPROVED") specifies the real structure — 104 Chapter 3
+questions + 70 Chapter 4 preference questions across 9
+categories — and live code (chapter3_categories.dart) already
+implements exactly that. The CATEGORY STRUCTURE and QUESTION
+TOTALS sections below are rewritten to match the Classification
+doc; that document remains the authoritative per-question
+source, this Summary gives the structural overview.
+
 Purpose:
 Owns the Seeker onboarding experience and question flow
 used to build a marriage profile and compatibility engine.
@@ -55,12 +68,16 @@ Chapter 2 — Your Profile
 Chapter 3 — Your Values
   Private answers about the user's own circumstances,
   values and life. Teaching ZYRA who they are.
-  ~29 questions. Private — never shown on profile.
+  104 questions across 9 categories (see Chapter 3
+  Classification — Ch4 Mapping.md). Private — never shown
+  on profile.
 
 Chapter 4 — Your Preferences
   Traffic-light preferences. Teaching ZYRA who they're
-  looking for. One preference question per Chapter 3 topic.
-  ~29 questions. Private — used only by compatibility engine.
+  looking for. One preference question per Chapter 3 topic
+  that has a confirmed Chapter 4 mapping (not every Chapter 3
+  question does — some are descriptive-only).
+  70 questions. Private — used only by compatibility engine.
 
 Chapter 5 — Profile Ready
   Profile review, ID verification, photo check status.
@@ -136,21 +153,18 @@ interest before seeing detailed profile information.
 CATEGORY STRUCTURE
 ------------------------------------------------------------
 
-Chapter 3 & 4 share the same category order:
+Chapter 3 & 4 share the same 9-category order (per Chapter 3
+Classification — Ch4 Mapping.md, matching chapter3_categories.dart):
 
-Core:
-• Family
-• Education & Finances
-• Marriage Goals
-• Faith
-• Lifestyle
-
-Extended:
-• Housing & Living
-• Financial
-• Faith (Extended)
-• Marriage Expectations
-• Additional
+1. Family
+2. Education & Finances
+3. Marriage Goals
+4. Faith
+5. Lifestyle
+6. Household Roles & Expectations
+7. Communication & Emotional Intelligence
+8. Technology & Digital Lifestyle
+9. Health & Well-Being
 
 ------------------------------------------------------------
 CATEGORY SUMMARY
@@ -203,10 +217,16 @@ QUESTION TOTALS
 Pre-Onboarding    Account Creation
 Chapter 1         3 questions    About You
 Chapter 2         8 questions    Your Profile
-Chapter 3        ~29 questions   Your Values
-Chapter 4        ~29 questions   Your Preferences
+Chapter 3       104 questions    Your Values (9 categories)
+Chapter 4        70 questions    Your Preferences (traffic-light,
+                                 one per Ch3 question with a
+                                 confirmed Ch4 mapping)
 ─────────────────────────────────────────────────
-Total            ~69 questions
+Total           185 questions
+
+(Chapter 3 + Chapter 4 combined = 174 questions — see Chapter 3
+Classification — Ch4 Mapping.md "FINAL COUNTS" for the exact
+per-category breakdown and REQUIRED/OPTIONAL split.)
 
 ------------------------------------------------------------
 PHOTO REQUIREMENTS

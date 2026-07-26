@@ -377,10 +377,13 @@ Each intro should answer:
 Keep it to 2–3 sentences. Clear and grounded.
 
 ------------------------------------------------------------
-WALI PREMIUM — OPTIONAL ANSWER RATINGS
+EXTENDED WALI — OPTIONAL ANSWER RATINGS
 ------------------------------------------------------------
 
-Wali Premium can optionally rate each answer using the
+(Corrected 2026-07-12 against WALI_ARCHITECTURE_CURRENT_VERSION_V5
+— was "Wali Premium" / "Wali Basic".)
+
+Extended Wali can optionally rate each answer using the
 same phrase system as the private Seeker ratings:
   "This answer reassured me."
   "I'd like to discuss this further."
@@ -388,7 +391,7 @@ same phrase system as the private Seeker ratings:
 
 VISIBILITY (different from Seeker ratings):
   • Seeker-to-Seeker ratings: private — never shown to anyone.
-  • Wali Premium ratings: visible to the Seeker they
+  • Extended Wali ratings: visible to the Seeker they
     support. Their Seeker sees what their Wali thought.
 
 Purpose:
@@ -396,7 +399,7 @@ Purpose:
   The Seeker can factor in their Wali's perspective.
   The other party and their Wali do NOT see these ratings.
 
-This is a Wali Premium feature only. Wali Basic can
+This is an Extended Wali feature only. Standard Wali can
 observe but cannot rate.
 
 ------------------------------------------------------------

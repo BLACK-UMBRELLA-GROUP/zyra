@@ -2,23 +2,44 @@ FEATURE NAME
 PROFILE DECISION SYSTEM
 Group: 4 — Page Responsibilities
 
+Superseded 2026-07-12: rewritten against
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 (Part 0 Section 0.5, Part
+2 Sections 3-4) and DR-076. The previous version described a
+Decline/Review/Consider model with a 50-profile Review cap and
+a Mutual Consideration match rule — retired. This version
+reflects the actual current model: Decline/Save/Like, Match as
+an event (not a state), Potential Journey as the resulting
+record. Original preserved in
+ZYRA_TERMINOLOGY_PRICING_AUDIT_2026-07-12_V1.md for reference.
+
+**Terminology updated 2026-07-25, DR-ZYRA-099 (Founder decision):**
+Decline → **Pass**, Like → **Consider**. Save is unchanged. Colours
+are unchanged (🔴/🟡/🟢) — this is a label change, not a new
+taxonomy or a reintroduction of the retired 2026-07-12
+Decline/Review/Consider model above (note "Consider" here replaces
+"Like," not "Review" — a different mapping than the retired model
+used, coincidence of wording only). The underlying data model
+(Outgoing/Incoming Potentials, Match event, Mutual Save Detection)
+is entirely unchanged — only the two labels. Interaction mechanism
+(swipe vs. tap) is owned by `APP/Navigation/SEEKER NAVIGATION/
+Summary.md` and `APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md`,
+not this document — see those for the swipe-gesture decision made
+the same day.
+
 ============================================================
 SUMMARY
 ============================================================
 
 Purpose:
-Defines the profile decision system used by Seekers after
-viewing marriage profiles.
+Defines the profile decision system used by Seekers on Browse.
 
 Owns:
-- Decline / Review / Consider
-- Reviewed Profiles
-- Considerations
-- Incoming Considerations
-- Match Creation
-- Mutual Review Detection
-- Review Count Notifications
-- Relationship Timeline
+- Pass / Save / Consider
+- Outgoing Potentials
+- Incoming Potentials
+- Match event / Potential Journey creation
+- Mutual Save Detection
+- Journey Timeline (Browse-stage events)
 
 ------------------------------------------------------------
 TERMINOLOGY
@@ -27,179 +48,145 @@ TERMINOLOGY
 Seeker
 - The person searching for marriage.
 - The primary user making profile decisions.
-- Holds a Seeker subscription (Basic, Pro or Premium).
+- Holds ZYRA Basic (free) or ZYRA One (£34.99/month).
 
 Wali
-- The Seeker's appointed supervisor.
+- The Seeker's supervisor/guardian.
 - Provides guidance and oversight throughout the marriage process.
-- Holds a Wali subscription (Wali, Wali Pro or Wali Gold).
-- May assist with profile discovery depending on their subscription.
-- Does not replace the Seeker's decisions.
+- Does not participate in Browse profile decisions — Browse is
+  Seeker-only (ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 1,
+  Section 3). The Wali's role is oversight of the Seeker's
+  Journey once one exists, not making decisions on Browse.
 
 ------------------------------------------------------------
-BUTTONS
+ACTIONS (renamed 2026-07-25 — was "BUTTONS"; see terminology
+note above. No longer button-only, see interaction mechanism
+note above.)
 ------------------------------------------------------------
 
-🔴 Decline
-- Profile is declined.
+🔴 Pass (was: Decline)
+- Profile is passed on.
 - Discovery moves to the next profile.
+- No notification is sent. No explanation given. The other
+  Seeker is never informed.
 
-🟡 Review
-- Profile is added to Reviewed Profiles.
-- Used for profiles the Seeker wants to review later.
-- Does not create a Consideration.
-- Does not create a Match.
+🟡 Save (unchanged)
+- Added to the Seeker's private Saves.
+- Does not indicate romantic interest — "I would like to come
+  back to this profile later."
+- Does not create an Outgoing Potential.
+- Does not create a Match on its own.
 
-🟢 Consider
-- Profile is added to Considerations.
-- Indicates the profile may be suitable for marriage consideration.
-- Does not mean "like", "love", or "match".
+🟢 Consider (was: Like)
+- Added to the Seeker's Outgoing Potentials.
+- Indicates genuine interest — "I would like to pursue this
+  person."
+- Mutual Consider = Match event = Potential Journey created.
 
 ------------------------------------------------------------
-BUTTON ACCESS
+ACTION ACCESS (renamed 2026-07-25 — was "BUTTON ACCESS")
 ------------------------------------------------------------
 
-Basic Seeker
-- 🔴 Decline
-- 🟡 Review
+Seeker (ZYRA Basic)
+- 🔴 Pass
+- 🟡 Save — up to 10/day
+- 🟢 Consider — up to 10/day
 
-Pro Seeker
-- 🔴 Decline
-- 🟡 Review
-- 🟢 Consider
-
-Premium Seeker
-- 🔴 Decline
-- 🟡 Review
-- 🟢 Consider
+Seeker (ZYRA One)
+- 🔴 Pass
+- 🟡 Save — unlimited
+- 🟢 Consider — unlimited
 
 ------------------------------------------------------------
 LISTS
 ------------------------------------------------------------
 
-Reviewed Profiles
-- Private review list.
-- Profiles the Seeker wants to revisit later.
-- Maximum 50 profiles in Review.
-- Users can remove profiles from Review at any time.
-- Removing a profile immediately frees a Review slot.
-- When the Review list reaches 50 profiles, users must remove
-  a profile before adding another profile to Review.
-- Review counter displayed.
-Examples:
-0/50 In Review
-23/50 In Review
-48/50 In Review
-50/50 In Review
+Saves
+- Private list. Does not indicate romantic interest.
+- Users can remove a Save at any time.
+- No 50-profile cap — Basic is capped at 10 new Saves/day,
+  ZYRA One is unlimited. There is no separate storage limit.
 
-Considerations
-- Profiles the Seeker believes may be suitable for marriage consideration.
-- Separate from Reviewed Profiles.
-- Users can remove profiles from Considerations at any time.
-- Considerations are visible to Premium Seekers through Incoming Considerations.
+Outgoing Potentials
+- Profiles the Seeker has Considered, awaiting reciprocation.
+- Separate from Saves.
+- Users can remove an Outgoing Potential at any time.
 
-Incoming Considerations
-- Shows active Seekers who have placed your profile under Consideration.
-- Removed Considerations no longer appear.
+Incoming Potentials
+- Shows Seekers who have Considered your profile.
+- ZYRA One receives Incoming Potentials immediately. ZYRA
+  Basic does not see who Considered them until they Consider back
+  (at which point the Match event fires) — see Consider Rules
+  (Product Spec still uses "Like" internally as of this writing;
+  cross-reference retained under that name until the Spec itself
+  is updated), ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 2,
+  Section 4.
+- Removed Considers no longer appear.
 
-Matches
-- Created through Mutual Consideration.
-- Match creation does not automatically grant communication access.
-
-------------------------------------------------------------
-REVIEW COUNT FEATURE
-------------------------------------------------------------
-
-Basic
-- Receives Review Count notifications.
-- Cannot see who reviewed them.
-Example: "7 people have added your profile to Review."
-
-Pro
-- Receives Review Count notifications.
-- Cannot see who reviewed them.
-Example: "12 people have added your profile to Review."
-
-Premium
-- Receives Review Count notifications.
-- Can see Incoming Considerations.
-- Does not need to find the profile first.
+Potential Journeys
+- Created by the Match event (mutual Consider).
+- A passive record of mutual interest — no conversation, no
+  Journey slot consumed. Progresses to an Active Journey via
+  the Pre-Journey Ritual.
 
 ------------------------------------------------------------
 MATCH CREATION
 ------------------------------------------------------------
 
-A Match is created when:
-- Seeker A considers Seeker B.
-- Seeker B considers Seeker A.
+A Match event occurs when:
+- Seeker A Considers Seeker B.
+- Seeker B Considers Seeker A.
 
 Result:
-- Mutual Consideration created.
-- Match created.
+- Match event fires (an event, not a lifecycle stage).
+- Potential Journey created.
 - Both Seekers notified.
-- Wali approval is not required for Match creation.
-- Communication permissions are controlled by the Communication System.
+- Wali approval is not required for the Match event.
+- No conversation opens and no Journey slot is consumed at
+  this point — see ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part
+  0, Sections 0.5-0.6.
 
 ------------------------------------------------------------
-PREMIUM FEATURE – MUTUAL REVIEW DETECTION
+MUTUAL SAVE DETECTION
 ------------------------------------------------------------
 
-Premium Seekers receive access to Mutual Review Detection.
+A Mutual Save occurs when:
+- Seeker A saves Seeker B.
+- Seeker B saves Seeker A.
 
-A Mutual Review occurs when:
-- Seeker A reviews Seeker B.
-- Seeker B reviews Seeker A.
+Detection and notification depend on both Seekers' entitlement
+(ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 2, Section 3):
 
-Mutual Review Detection only occurs when BOTH Seekers have
-an active Premium subscription.
+| Combination            | Result |
+|-------------------------|--------|
+| Basic ↔ Basic           | Completely private. Neither notified. |
+| Basic ↔ One             | ZYRA One user receives Mutual Save Detected. Basic user receives nothing. |
+| One ↔ Basic              | Same as above. |
+| One ↔ One                | Both receive Mutual Save Detected. |
 
-Examples:
-Premium + Premium = Mutual Review Detection Active
-Premium + Pro     = No Mutual Review Detection
-Premium + Basic   = No Mutual Review Detection
-Pro + Pro         = No Mutual Review Detection
-Basic + Basic     = No Mutual Review Detection
+A single Save is never revealed. Only a mutual Save can
+generate a notification, and only to the ZYRA One side of the
+pair.
 
-When two Premium Seekers have reviewed each other, ZYRA
-detects the Mutual Review and notifies both Seekers.
-
-Notification:
-"A profile you reviewed has also reviewed your profile.
-Would you like to move this profile to Consideration?"
-
-Options:
-- Move to Consideration
-- Keep in Review
-
-If both Seekers choose Move to Consideration:
-- Mutual Consideration created.
-- Match created.
-
-If one Seeker chooses Move to Consideration and the other
-chooses Keep in Review:
-- No Match is created.
-- The profile remains in Review for the other Seeker.
-
-If either Seeker is Basic or Pro:
-- No Mutual Review Detection occurs.
-- No notification is sent.
-- No prompt is shown.
-- Profiles remain in their respective Review lists.
+A Mutual Save Detected notification does not itself create a
+Match — the Match event only fires on a mutual Consider.
 
 ------------------------------------------------------------
-CONSIDERATION REMOVAL
+OUTGOING POTENTIAL REMOVAL
 ------------------------------------------------------------
 
-When a Seeker removes a Consideration:
-- Their Consideration is removed.
-- The other Seeker receives a notification.
-- The event is recorded in the Relationship Timeline.
-- The other Seeker may keep their own Consideration active.
-- Future reconsideration is allowed unless the Seeker has been blocked.
+When a Seeker removes an Outgoing Potential (un-Considers before
+reciprocation):
+- Their Consider is removed.
+- The other Seeker receives a notification, if they had already
+  received an Incoming Potential (ZYRA One recipients only).
+- The event is recorded in the Journey Timeline.
+- Future re-Considering is allowed unless the Seeker has been
+  blocked.
 - Communication permissions are handled by the Communication System.
 
 ------------------------------------------------------------
-RELATIONSHIP TIMELINE
+JOURNEY TIMELINE (BROWSE-STAGE EVENTS)
 ------------------------------------------------------------
 
 Every profile interaction is recorded in a timeline.
@@ -207,31 +194,32 @@ Every profile interaction is recorded in a timeline.
 Purpose:
 - Relationship history.
 - Transparency.
-- Wali supervision.
+- Wali supervision (once a Journey exists).
 - Support and moderation.
 - Future family introduction tracking.
 
 Example Timeline:
-01 Jun  Seeker A reviewed Seeker B
+01 Jun  Seeker A saved Seeker B
 03 Jun  Seeker B considered Seeker A
 05 Jun  Seeker A considered Seeker B
-05 Jun  Match created
-12 Jun  Seeker B removed consideration
-15 Jun  Seeker B reconsidered Seeker A
-18 Jun  Messages started
-22 Jun  Seeker B removed consideration
+05 Jun  Match event — Potential Journey created
+12 Jun  Seeker B removed their Consider
+15 Jun  Seeker B considered Seeker A again
+18 Jun  Pre-Journey Ritual completed — Active Journey began
 22 Jun  Messaging paused
 
 ------------------------------------------------------------
 TIMELINE EVENTS
 ------------------------------------------------------------
 
-- Review Added
-- Review Removed
-- Consideration Added
-- Consideration Removed
-- Match Created
-- Match Ended
+- Save Added
+- Save Removed
+- Consider Added
+- Consider Removed
+- Match Event
+- Potential Journey Created
+- Active Journey Started
+- Journey Ended
 - Messages Started
 - Messages Paused
 - Wali Added
@@ -243,49 +231,54 @@ TIMELINE EVENTS
 TIMELINE ACCESS
 ------------------------------------------------------------
 
-Seeker  — Can view their own relationship timelines.
-Wali    — Can view timelines they supervise.
+Seeker  — Can view their own Journey timelines.
+Wali    — Can view timelines for Journeys they supervise (once
+          an Active Journey exists — Wali is not involved at
+          the Browse/Potential Journey stage).
 Admin   — Can view timelines for support, moderation and dispute resolution.
 
 ------------------------------------------------------------
 PHILOSOPHY
 ------------------------------------------------------------
 
-🔴 Decline  = This profile is not suitable for me.
-🟡 Review   = I would like to review this profile later.
-🟢 Consider = This profile may be suitable for marriage consideration.
+🔴 Pass     = This profile is not suitable for me.
+🟡 Save     = I would like to come back to this profile later.
+🟢 Consider = I would like to pursue this person.
 
-A Match occurs only when both Seekers choose Consider.
-Reviewing profiles is a private action.
-The system is designed around suitability, consideration and
-progression rather than likes, hearts or dating-style matching.
+A Match event occurs only when both Seekers Consider each other.
+Saving a profile is a private action that does not signal
+interest.
+
+**Updated 2026-07-25:** the system is designed around genuine
+interest and progression toward marriage. The interaction
+mechanism is now swipe-based (see SEEKER NAVIGATION/Summary.md and
+BROWSE_UX_SPEC_CURRENT_VERSION_V3.md, DR-ZYRA-099) — the Founder's
+explicit 2026-07-25 decision was that swipe gestures give a
+cleaner UI without reintroducing dating-app-style casualness, since
+the underlying philosophy (genuine, deliberate, one-decision-at-a-
+time progression toward marriage) is unchanged; only "no swipe
+gestures, ever" as a blanket rule is superseded. The previous
+"rather than dating-style swiping" framing here described the
+button-based mechanism that predated this decision — the
+progression-toward-marriage philosophy itself has not changed.
 
 ------------------------------------------------------------
-SUBSCRIPTION ALIGNMENT
+ENTITLEMENT ALIGNMENT
 ------------------------------------------------------------
 
-Basic
-- Decline
-- Review
-- Review Count Notifications
-- 50 Profiles in Review
+ZYRA Basic
+- Pass
+- Save — up to 10/day
+- Consider — up to 10/day
+- Incoming Potentials not shown until reciprocated
 
-Pro
-- Decline
-- Review
-- Consider
-- Review Count Notifications
-- 50 Profiles in Review
-
-Premium
-- Decline
-- Review
-- Consider
-- Review Count Notifications
-- See Incoming Considerations
-- Mutual Review Detection
-- Family Introduction Features
-- 50 Profiles in Review
+ZYRA One
+- Pass
+- Save — unlimited
+- Consider — unlimited
+- Incoming Potentials shown immediately
+- Mutual Save Detection
+- Profile Unlock Plus on Active Journey creation
 
 ============================================================
 APPROVED TO-DO LIST

@@ -28,11 +28,16 @@ Specific Known References
 ------------------------------------------------------------
 
 APP/Browse
-• Decline, Review, Consider, Browse terminology used.
+• Pass, Save, Consider, Browse terminology used. (Renamed
+  2026-07-25 from Decline/Save/Like — DR-ZYRA-099, OA-ZYRA-140
+  item 15.)
 
 APP/Matching/PROFILE DECISION SYSTEM
-• Decline, Review, Consider, Match, Mutual Consideration
-  terminology used.
+• Superseded by ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 Part 2 —
+  rebuilt around Pass, Save, Consider, Match event, Potential
+  Journey terminology (renamed 2026-07-25 from Decline/Save/
+  Like, DR-ZYRA-099). See archived original for the earlier
+  retired Decline/Review/Consider model (2026-07-12 and before).
 
 APP/Onboarding/SEEKER ONBOARDING QUESTIONS
 • Seeker, Wali, Compatibility terminology used.
@@ -44,10 +49,11 @@ APP/Premium/PROFILE UNLOCKS
   on the to-do list — not yet formally defined here.
 
 BUSINESS/USER FEATURES
-• Seeker, Wali, subscription tier terminology used.
+• Seeker, Wali, ZYRA Basic / ZYRA One terminology used.
 
 BUSINESS/ZYRA PRICING
-• Seeker, Wali, Potentials terminology used.
+• Seeker, Wali, ZYRA Basic / ZYRA One, Extended Wali,
+  Potentials terminology used.
 
 BUSINESS/BRAND MESSAGING
 • ZYRA brand terminology used.
@@ -62,9 +68,11 @@ Overlap Flags
 - Flag any definition conflict when they are added.
 
 ⚠️ PROFILE DECISION SYSTEM (APP/Matching)
-- Contains a user-facing terminology table.
-- That table should align exactly with definitions here.
-- Source of truth for all terms is this document.
+- Rewritten 2026-07-12 as part of the repository alignment pass
+  to match this document's (then) Decline/Save/Like terminology;
+  renamed again 2026-07-25 to Pass/Save/Consider (DR-ZYRA-099,
+  OA-ZYRA-140 item 15).
+- Source of truth for all terms remains this document.
 
 ------------------------------------------------------------
 Open Dependencies

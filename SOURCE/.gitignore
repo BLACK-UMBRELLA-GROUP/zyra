@@ -28,6 +28,16 @@ migrate_working_dir/
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins-dependencies
+
+# Supabase — project URL/anon key (OA-101). Anon key is designed to be
+# public per Supabase's own security model (RLS is the real boundary),
+# but keeping it out of version control anyway is good hygiene, and the
+# service_role key must NEVER be committed or shipped in this app.
+lib/config/supabase_config.dart
+
+# OAuth client IDs (Google) — 2026-07-18, same hygiene reasoning as
+# the Supabase config above.
+lib/config/oauth_config.dart
 .pub-cache/
 .pub/
 /build/

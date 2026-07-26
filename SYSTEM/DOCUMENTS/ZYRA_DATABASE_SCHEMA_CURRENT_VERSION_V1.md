@@ -52,7 +52,7 @@
 | messages | Individual messages within a conversation |
 | timelines | Journey timeline per match |
 | timeline_milestones | Events recorded on the timeline |
-| wali_suggestions | Wali Premium suggestions to their Seeker |
+| wali_suggestions | Extended Wali suggestions to their Seeker |
 
 ---
 
@@ -298,7 +298,7 @@ CREATE TABLE timeline_milestones (
 
 -- ============================================================
 -- WALI SUGGESTIONS
--- Wali Premium: suggest profiles to their linked Seeker
+-- Extended Wali: suggest profiles to their linked Seeker
 -- ============================================================
 CREATE TABLE wali_suggestions (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
