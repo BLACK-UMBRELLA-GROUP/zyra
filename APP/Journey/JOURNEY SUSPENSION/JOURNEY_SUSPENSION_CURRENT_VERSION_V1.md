@@ -83,7 +83,7 @@ On confirmation:
 - The Journey enters Suspended state
 - The conversation closes immediately for both Seekers
 - The Timeline freezes at the current position
-- Both Walis receive a suspension notification (see Section 9)
+- Both Guardians receive a suspension notification (see Section 9)
 
 ---
 
@@ -141,7 +141,7 @@ When both Seekers in a One ↔ One Journey have independently suspended:
 
 Either Seeker may resume at any time. On resume, if the other Seeker's slot is available, the Active Journey reinstates. If the other Seeker has started a new Active Journey, the resuming Seeker is notified and the Journey auto-Ends.
 
-**Full Suspension Auto-End Timer:** A Journey in Full Suspension (both slots freed) that receives no resume action within **30 days** automatically transitions to Ended. Both Seekers and their Walis are notified 7 days before the auto-End.
+**Full Suspension Auto-End Timer:** A Journey in Full Suspension (both slots freed) that receives no resume action within **30 days** automatically transitions to Ended. Both Seekers and their Guardians are notified 7 days before the auto-End.
 
 ---
 
@@ -156,7 +156,7 @@ Properties while suspended:
 - Conversation closed
 - Timeline frozen (no new milestones, no time elapsed)
 - Journey progress preserved exactly
-- Wali Network activities unaffected (Wali's capabilities do not change)
+- Guardian Network activities unaffected (Guardian's capabilities do not change)
 
 ### 6.2 Peer-Suspended State (One ↔ One — only one suspend)
 
@@ -202,33 +202,33 @@ On resume: the full conversation history is visible. A system message appears ma
 
 ---
 
-## 9. Wali Behaviour During Suspension
+## 9. Guardian Behaviour During Suspension
 
 ### 9.1 Notification on Suspension
 
-Both Walis receive a notification when their linked Seeker's Journey suspends:
-- Wali of the initiating Seeker: "Journey paused by [Seeker name]."
-- Wali of the non-initiating Seeker: "Journey paused. Waiting for the other party to resume."
+Both Guardians receive a notification when their linked Seeker's Journey suspends:
+- Guardian of the initiating Seeker: "Journey paused by [Seeker name]."
+- Guardian of the non-initiating Seeker: "Journey paused. Waiting for the other party to resume."
 
-### 9.2 Wali Access While Suspended
+### 9.2 Guardian Access While Suspended
 
 | Capability | During Suspension |
 |-----------|-----------------|
 | View Journey progress | ✓ — suspended state visible |
 | View conversation | ✓ — read-only archive visible; no new messages |
 | Family Review Period actions | N/A — timeline frozen; no new stages to review |
-| Wali Network | Unchanged — Wali's entitlement-based capabilities unaffected by Journey suspension |
+| Guardian Network | Unchanged — Guardian's entitlement-based capabilities unaffected by Journey suspension |
 | Raise concern | ✓ |
 
-Wali capabilities are not revoked by Journey suspension. The Wali's entitlement-based capabilities (per Journey Capability Grant Rules V2) remain active throughout.
+Guardian capabilities are not revoked by Journey suspension. The Guardian's entitlement-based capabilities (per Journey Capability Grant Rules V2) remain active throughout.
 
 ### 9.3 Notification on Resume
 
-Both Walis receive a notification when the Journey resumes.
+Both Guardians receive a notification when the Journey resumes.
 
 ### 9.4 Notification on Auto-End
 
-Both Walis receive the 7-day warning and the auto-End notification alongside the Seekers.
+Both Guardians receive the 7-day warning and the auto-End notification alongside the Seekers.
 
 ---
 
@@ -239,7 +239,7 @@ Both Walis receive the 7-day warning and the auto-End notification alongside the
 | Recommendations | Suspended — no active recommendation generation for this Journey |
 | Insights | Suspended — no new Insights generated |
 | Summaries | Not generated during suspension |
-| Wali AI Summary | Not generated or delivered during suspension |
+| Guardian AI Summary | Not generated or delivered during suspension |
 | Adaptive questions | Not generated during suspension |
 | Topic suggestions | Not available during suspension |
 
@@ -251,14 +251,14 @@ ZYRA Intelligence resumes full operation when the Journey enters Full Activity.
 
 | Event | Notified parties |
 |-------|-----------------|
-| Suspension initiated | Both Seekers, both Walis |
-| Peer-Suspended (Seeker B's slot occupied) | Seeker B, Seeker B's Wali |
-| Seeker B Ends a Peer-Suspended Journey | Seeker A, Seeker A's Wali |
-| Full Suspension (both paused) | Confirmation to both Seekers, both Walis |
-| Auto-End warning (7 days before) | Both Seekers, both Walis |
-| Auto-End | Both Seekers, both Walis |
-| Resume | Both Seekers, both Walis |
-| Resume blocked (other Seeker in new Journey) | Resuming Seeker, resuming Seeker's Wali |
+| Suspension initiated | Both Seekers, both Guardians |
+| Peer-Suspended (Seeker B's slot occupied) | Seeker B, Seeker B's Guardian |
+| Seeker B Ends a Peer-Suspended Journey | Seeker A, Seeker A's Guardian |
+| Full Suspension (both paused) | Confirmation to both Seekers, both Guardians |
+| Auto-End warning (7 days before) | Both Seekers, both Guardians |
+| Auto-End | Both Seekers, both Guardians |
+| Resume | Both Seekers, both Guardians |
+| Resume blocked (other Seeker in new Journey) | Resuming Seeker, resuming Seeker's Guardian |
 
 Notification content, delivery channel, and timing are defined in the ZYRA Notification Specification (separate document — to be specified).
 
@@ -284,7 +284,7 @@ On tapping Resume:
 On successful resume:
 - Conversation reopens with full history
 - Timeline continues from freeze point
-- Both Walis notified
+- Both Guardians notified
 - ZYRA Intelligence resumes
 
 ---
@@ -297,7 +297,7 @@ The suspending Seeker may End the Journey at any time from their Suspended Journ
 
 - Journey transitions to Ended
 - Both Seekers notified
-- Both Walis notified
+- Both Guardians notified
 - Slots freed (initiating Seeker's slot was already freed on suspension; other Seeker's slot is freed on End)
 
 ### 13.2 Non-Initiating Seeker Ends (Peer-Suspended, One ↔ One)
@@ -306,13 +306,13 @@ In Peer-Suspended state (One ↔ One), Seeker B may End the Journey to free thei
 
 - Journey transitions to Ended
 - Seeker A notified (their suspended Journey has ended; resume is no longer possible)
-- Both Walis notified
+- Both Guardians notified
 
 ### 13.3 Auto-End (Full Suspension Timer)
 
 After 30 days of Full Suspension with no resume:
 - Journey auto-transitions to Ended
-- Both Seekers and Walis receive the End notification
+- Both Seekers and Guardians receive the End notification
 - Slots confirmed freed (both were already freed in Full Suspension)
 
 ---

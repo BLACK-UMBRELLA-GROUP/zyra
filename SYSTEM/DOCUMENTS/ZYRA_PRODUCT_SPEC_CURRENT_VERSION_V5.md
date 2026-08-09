@@ -1,9 +1,9 @@
 # ZYRA MASTER PRODUCT SPECIFICATION
 
-**Version:** V3
+**Version:** V5
 **Status:** CURRENT_VERSION
-**Date:** 2026-07-04
-**Supersedes:** ZYRA_PRODUCT_SPEC_2026-07-04_V2.md
+**Date:** 2026-07-26
+**Supersedes:** ZYRA_PRODUCT_SPEC_2026-07-26_V4.md
 **Scope:** Parts 0–3 — Canonical Lifecycle through Active Journey Stage
 **Governing References:** ZYRA Journey Capability Grant Rules V1, AIOS Capability Resolution Rules V1
 **Governing Principles:** AD-081 Capability Independence Principle, AD-082 State Integrity Principle
@@ -36,7 +36,7 @@ Every relationship between two Seekers exists in exactly one of the following st
 
 ```
 No Relationship
-      ↓  [Match event — mutual Like]
+      ↓  [Match event — mutual Consider]
 Potential Journey
       ↓  [Both Seekers begin + Pre-Journey Ritual completes]
 Active Journey
@@ -53,12 +53,12 @@ These are the only architectural relationship states. All other concepts — scr
 ### No Relationship
 
 No connection exists between the two Seekers. Either:
-- Neither has Liked the other, or one has Liked but the other has not yet reciprocated.
+- Neither has Considered the other, or one has Considered but the other has not yet reciprocated.
 - A previous Potential Journey or Active Journey has ended.
 
 ### Potential Journey
 
-A passive record of mutual interest. Created when two Seekers Like each other (the Match event).
+A passive record of mutual interest. Created when two Seekers Consider each other (the Match event).
 
 **Properties:**
 - No Journey slot consumed for either Seeker
@@ -66,7 +66,7 @@ A passive record of mutual interest. Created when two Seekers Like each other (t
 - No obligations exist for either party
 - Duration is indefinite — no expiry timer
 - May coexist with an Active Journey for either or both Seekers
-- A Seeker may hold multiple simultaneous Potential Journeys
+- A Seeker may hold multiple simultaneous Journey Queue
 
 Either Seeker may silently remove a Potential Journey at any time. This returns the relationship to No Relationship.
 
@@ -78,7 +78,7 @@ The live marriage journey between two Seekers. Created when both Seekers choose 
 - One Journey slot consumed per Seeker
 - Conversation is open
 - Timeline is running
-- Wali capabilities are active per each account's ZYRA One entitlement (AIOS grant)
+- Guardian capabilities are active per each account's ZYRA One entitlement (AIOS grant)
 
 An Active Journey may be Paused (ZYRA One), Ended, or progress to completion.
 
@@ -97,7 +97,7 @@ Journey slot freed for both Seekers immediately on entry to this state.
 
 | From | To | Trigger |
 |------|----|---------|
-| No Relationship | Potential Journey | Mutual Like (Match event) |
+| No Relationship | Potential Journey | Mutual Consider (Match event) |
 | Potential Journey | Active Journey | Both Seekers choose to begin + Pre-Journey Ritual completes |
 | Potential Journey | No Relationship | Either Seeker removes the Potential Journey |
 | Active Journey | Paused (sub-state) | ZYRA One Seeker pauses (see Part 3, Section 5) |
@@ -108,7 +108,7 @@ Journey slot freed for both Seekers immediately on entry to this state.
 
 ## 0.5 Match Is an Event, Not a State
 
-A **Match** is the event that occurs when two Seekers have both Liked each other. Match creates a Potential Journey. Match is not a lifecycle stage. Match does not open a conversation. Match does not consume a Journey slot.
+A **Match** is the event that occurs when two Seekers have both Considered each other. Match creates a Potential Journey. Match is not a lifecycle stage. Match does not open a conversation. Match does not consume a Journey slot.
 
 ---
 
@@ -140,7 +140,7 @@ Conversation belongs exclusively to Active Journey. No conversation exists:
 
 The Pre-Journey Ritual is the activation sequence that transitions a Potential Journey into an Active Journey. It is part of the transition mechanism — not an independent relationship state.
 
-On Ritual completion: Active Journey begins. Conversation opens. Timeline starts. Wali capabilities activate.
+On Ritual completion: Active Journey begins. Conversation opens. Timeline starts. Guardian capabilities activate.
 
 Full Ritual specification: see PRE-JOURNEY RITUAL/Summary.md.
 
@@ -171,7 +171,7 @@ A feature that cannot answer these three questions without introducing a new rel
 - Soft Match, Waiting Conversation — these are representations within Potential Journey
 - Any named UI flow or screen sequence — these are transition mechanisms, not states
 
-**Downstream reference rule:** All documents that describe relationship behaviour — Wali Architecture, Journey Availability, AI Tiering, Profile Unlock, Family Stage, screen specifications — must consume the canonical lifecycle defined in this specification rather than maintaining parallel state definitions. If a downstream document needs to describe a new relationship concept, it must reference the relevant canonical state and describe behaviour within it.
+**Downstream reference rule:** All documents that describe relationship behaviour — Guardian Architecture, Journey Availability, AI Tiering, Compatibility Unlock, Family Stage, screen specifications — must consume the canonical lifecycle defined in this specification rather than maintaining parallel state definitions. If a downstream document needs to describe a new relationship concept, it must reference the relevant canonical state and describe behaviour within it.
 
 ---
 
@@ -217,13 +217,13 @@ ZYRA One users are not given multiple simultaneous Active Journeys. Instead, ZYR
 
 Family is a core part of the platform.
 
-Rather than treating Walis as optional observers, ZYRA gradually increases family involvement throughout the marriage journey. The platform is designed so that family participation naturally grows over time.
+Rather than treating Guardians as optional observers, ZYRA gradually increases family involvement throughout the marriage journey. The platform is designed so that family participation naturally grows over time.
 
 ### 2.4 Privacy
 
 Private actions remain private.
 
-Examples include individual Saves, Declines, and Match Actions. Only specifically approved features reveal additional information, and only when mutual interest has been independently established by both parties.
+Examples include individual Saves, Passes, and Match Actions. Only specifically approved features reveal additional information, and only when mutual interest has been independently established by both parties.
 
 ### 2.5 Premium Philosophy
 
@@ -252,13 +252,13 @@ ZYRA currently supports two user roles.
 
 Seekers browse profiles, save profiles, express interest, communicate with matches and progress through the marriage journey.
 
-### 3.2 Wali
+### 3.2 Guardian
 
 **Purpose:** To represent and support their linked Seeker.
 
-A Wali is a male guardian who supports a Seeker through their marriage journey in accordance with Islamic guidance.
+A Guardian is a male guardian who supports a Seeker through their marriage journey in accordance with Islamic guidance.
 
-**Wali capability model:** Wali accounts carry identity only. Wali capabilities are not stored on the Wali account. They are granted by AIOS per Journey relationship, based on the entitlement held by the Wali's own account. A Wali with multiple linked Seekers may simultaneously hold different capability grants for different Journey relationships if their entitlement or the relationship context differs.
+**Guardian capability model:** Guardian accounts carry identity only. Guardian capabilities are not stored on the Guardian account. They are granted by AIOS per Journey relationship, based on the entitlement held by the Guardian's own account. A Guardian with multiple linked Seekers may simultaneously hold different capability grants for different Journey relationships if their entitlement or the relationship context differs.
 
 Governing document: ZYRA Journey Capability Grant Rules V3. See also: AD-081 — Capability Independence Principle.
 
@@ -268,9 +268,9 @@ Governing document: ZYRA Journey Capability Grant Rules V3. See also: AD-081 —
 
 ZYRA operates with two account entitlement tiers, available to any ZYRA account holder:
 - **ZYRA Basic** — Free (default entitlement for all accounts)
-- **ZYRA One** — £34.99 / month (purchasable by any account holder — Seeker or Wali)
+- **ZYRA One** — £34.99 / month (purchasable by any account holder — Seeker or Guardian)
 
-After onboarding, an account operates in its chosen role (Seeker or Wali). AIOS resolves the capabilities granted to that account based on: its entitlement, its current role, its relationship, and the operational context. The same entitlement grants different capabilities to a Seeker account than to a Wali account.
+After onboarding, an account operates in its chosen role (Seeker or Guardian). AIOS resolves the capabilities granted to that account based on: its entitlement, its current role, its relationship, and the operational context. The same entitlement grants different capabilities to a Seeker account than to a Guardian account.
 
 See: ZYRA Journey Capability Grant Rules V2, AD-081 — Capability Independence Principle.
 
@@ -297,22 +297,22 @@ Annual subscriptions use a 10-months-paid, 12-months-received model.
 
 **Purpose:** The default account entitlement for all ZYRA accounts. Provides a complete, genuine marriage experience. ZYRA Basic is not a trial — it is a full product that supports a complete marriage journey.
 
-This section describes the capabilities granted by ZYRA Basic when the account is operating as a Seeker. Wali capabilities under ZYRA Basic are defined in Wali Architecture V4.
+This section describes the capabilities granted by ZYRA Basic when the account is operating as a Seeker. Guardian capabilities under ZYRA Basic are defined in Guardian Architecture V4.
 
 ### Features
 
 - Create profile, upload profile photos
 - Browse up to 50 profiles every 4 hours
 - Save up to 10 profiles per day
-- Like up to 10 profiles per day
-- Unlimited Potential Journeys (passive — no slot consumed)
+- Consider up to 10 profiles per day
+- Unlimited Journey Queue (passive — no slot consumed)
 - One Active Journey slot
 - Pre-Journey Ritual
 - Active Journey: conversation, messaging, read receipts
-- Standard Profile Unlock on Active Journey creation (see Section 8)
+- Standard Compatibility Unlock on Active Journey creation (see Section 8)
 - System intelligence: compatibility calculations, Journey progression, question library, Timeline milestones
 - Timeline
-- Link a Wali
+- Link a Guardian
 - 7-day ZYRA One trial — activates automatically when a Seeker's first Active Journey begins (not on Match)
 
 ### Not Available on ZYRA Basic
@@ -322,64 +322,68 @@ This section describes the capabilities granted by ZYRA Basic when the account i
 - Pause Journey / Resume Journey
 - Priority Discovery
 - Unlimited browsing / saves / likes
-- ZYRA Intelligence: Recommendations, Insights, Summaries, adaptive questions, Wali AI Summary
-- Profile Unlock Plus on Active Journey creation
+- ZYRA Intelligence: Recommendations, Insights, Summaries, adaptive questions, Guardian AI Summary
+- Compatibility Unlock Plus on Active Journey creation
 
 ---
 
 ## 7. ZYRA One
 
-**Purpose:** The paid account entitlement tier. Purchasable by any ZYRA account holder — Seeker or Wali. The account role (chosen during onboarding or at purchase) determines how the entitlement is applied by AIOS.
+**Purpose:** The paid account entitlement tier. Purchasable by any ZYRA account holder — Seeker or Guardian. The account role (chosen during onboarding or at purchase) determines how the entitlement is applied by AIOS.
 
 **Price:** £34.99 / month
 
-This section describes the capabilities granted by ZYRA One when the account is operating as a Seeker. Wali capabilities under ZYRA One are defined in Wali Architecture V5.
+This section describes the capabilities granted by ZYRA One when the account is operating as a Seeker. Guardian capabilities under ZYRA One are defined in Guardian Architecture V6.
 
-### Included Extended Wali Entitlement
+### Included Guardian+ Entitlement
 
-When a Seeker account holds ZYRA One, the subscription includes **one Extended Wali entitlement** at no additional cost. The Seeker may assign this included entitlement to any one of their linked Walis.
+When a Seeker account holds ZYRA One, the subscription includes **one Guardian+ entitlement** at no additional cost. The Seeker may assign this included entitlement to any one of their linked Guardians.
 
-- The included entitlement grants the receiving Wali Extended Wali capabilities for all their Journey relationships with that Seeker.
-- The included entitlement belongs to the Seeker's ZYRA One subscription — it is not permanently attached to one individual Wali. If the Seeker reassigns it, the previous holder's entitlement reverts to ZYRA Basic.
-- A Wali who does not receive the included entitlement may independently purchase Extended Wali capabilities (£9.99/month) — see Wali Architecture V5.
+- The included entitlement grants the receiving Guardian the Guardian+ capability set for all their Journey relationships with that Seeker.
+- The included entitlement belongs to the Seeker's ZYRA One subscription — it is not permanently attached to one individual Guardian. If the Seeker reassigns it, the previous holder's entitlement reverts to Guardian Basic.
+- A Guardian who does not receive the included entitlement may independently purchase Guardian+ capabilities (£9.99/month) — see Guardian Architecture V6.
 
-Once AIOS grants the Extended Wali capability set, behaviour is identical regardless of whether it was received via an included entitlement or an independent purchase. This is an application of AD-081 — Capability Independence Principle.
+Once AIOS grants the Guardian+ capability set, behaviour is identical regardless of whether it was received via an included entitlement or an independent purchase. This is an application of AD-081 — Capability Independence Principle.
 
 ### Includes Everything in ZYRA Basic, Plus
 
 - Unlimited profile browsing
 - Unlimited Saves
-- Unlimited Likes
+- Unlimited Considers
 - Incoming Potentials
 - Mutual Save Detection
 - Pause Journey / Resume Journey
 - Unlimited Paused Journeys
 - Priority Discovery
-- Profile Unlock Plus on Active Journey creation (see Section 8)
-- ZYRA Intelligence: Recommendations, Insights, Summaries, adaptive questions, conversation topic suggestions, Wali AI Summary delivery
+- Compatibility Unlock Plus on Active Journey creation (see Section 8)
+- ZYRA Intelligence: Recommendations, Insights, Summaries, adaptive questions, conversation topic suggestions, Guardian AI Summary delivery
 
 ### Journey Slot Rules (unchanged from ZYRA Basic)
 
 ZYRA One does not grant multiple simultaneous Active Journeys. One Active Journey per Seeker is the invariant of the ZYRA platform. ZYRA One improves the journey experience through Pause rather than concurrency.
 
-### Wali Capabilities Under ZYRA One
+### Guardian Capabilities Under ZYRA One
 
-When a Wali account holds a ZYRA One entitlement, AIOS grants that Wali extended Journey-level capabilities for their Journey relationships. A Seeker holding ZYRA One does not determine the Wali's capability set — each account's capabilities are determined by its own entitlement. See: ZYRA Journey Capability Grant Rules V2, Wali Architecture V4.
+When a Guardian account holds a ZYRA One entitlement, AIOS grants that Guardian extended Journey-level capabilities for their Journey relationships. A Seeker holding ZYRA One does not determine the Guardian's capability set — each account's capabilities are determined by its own entitlement. See: ZYRA Journey Capability Grant Rules V2, Guardian Architecture V4.
 
 ---
 
-## 8. Profile Unlock System
+## 8. Compatibility Unlock System
 
 ### Manual Unlocks (purchasable — all tiers)
 
-The Profile Unlock system allows Seekers to reveal additional compatibility information before a Match. Manual unlocks operate independently of subscription tier.
+The Compatibility Unlock system allows Seekers to reveal additional compatibility information before a Match. Manual unlocks operate independently of subscription tier — a ZYRA Basic and a ZYRA One Seeker can both hold them.
+
+Renamed and repriced 2026-08-03, Founder approved. Was "Compatibility Unlock".
 
 | Product | Quantity | Price |
 |---------|----------|-------|
-| Unlock Profile | 1 profile | £0.99 |
-| Unlock Profile | 5 profiles | £2.99 |
-| Unlock Profile Plus | 1 profile | £1.99 |
-| Unlock Profile Plus | 5 profiles | £4.99 |
+| Compatibility Unlock | 1 profile | £1.99 |
+| Compatibility Unlock | 5 profiles | £7.99 |
+| Compatibility Unlock Plus | 1 profile | £2.99 |
+| Compatibility Unlock Plus | 5 profiles | £9.99 |
+
+An unlock is permanent per profile per tier — revisiting never charges again. A ZYRA One Seeker receives 3 free Compatibility Unlock Plus credits.
 
 *(Unlock Profile Plus additional functionality will be fully specified in a dedicated document.)*
 
@@ -389,10 +393,10 @@ When an Active Journey begins (Pre-Journey Ritual completes), profiles unlock au
 
 | Seeker's Subscription | Automatic Unlock Received |
 |-----------------------|--------------------------|
-| ZYRA Basic | Standard Profile Unlock — overall compatibility % and alignment category counts |
-| ZYRA One | Profile Unlock Plus — overall compatibility % and full category-level breakdown |
+| ZYRA Basic | Standard Compatibility Unlock — overall compatibility % and alignment category counts |
+| ZYRA One | Compatibility Unlock Plus — overall compatibility % and full category-level breakdown |
 
-Each Seeker receives their own tier's unlock, independently of the other Seeker's subscription. A ZYRA One Seeker receives Profile Unlock Plus regardless of whether the other Seeker is on ZYRA Basic. A ZYRA Basic Seeker receives the standard unlock regardless of whether the other Seeker is on ZYRA One.
+Each Seeker receives their own tier's unlock, independently of the other Seeker's subscription. A ZYRA One Seeker receives Compatibility Unlock Plus regardless of whether the other Seeker is on ZYRA Basic. A ZYRA Basic Seeker receives the standard unlock regardless of whether the other Seeker is on ZYRA One.
 
 **Duplicate unlock rule:** If a Seeker paid to manually unlock a profile and later begins an Active Journey with that person, the automatic unlock produces no additional effect. The profile was already unlocked. No separate unlock state is tracked — both paid and automatic unlocks produce the same outcome. Users pay for earlier access, not for the communication right.
 
@@ -416,7 +420,7 @@ Meeting
 Nikah
 ```
 
-A Match event (mutual Like) creates a Potential Journey. The Pre-Journey Ritual transitions a Potential Journey into an Active Journey.
+A Match event (mutual Consider) creates a Potential Journey. The Pre-Journey Ritual transitions a Potential Journey into an Active Journey.
 
 ---
 
@@ -444,7 +448,7 @@ Additional profile information remains hidden until:
 - The profile is manually unlocked (see Part 1, Section 8)
 - An Active Journey begins with that person
 
-### Profile Unlock Philosophy
+### Compatibility Unlock Philosophy
 
 The Browse page intentionally does not display an Unlock button. Users should never feel pressured into purchasing unlocks while simply browsing. Users browse naturally first.
 
@@ -453,7 +457,7 @@ The Browse page intentionally does not display an Unlock button. Users should ne
 ```
 Browse
   ↓
-Save  OR  Like
+Save  OR  Consider
   ↓
 (Optional) Unlock Profile
 ```
@@ -461,7 +465,7 @@ Save  OR  Like
 OR
 
 ```
-Browse → Like → Mutual Like → Match event → Potential Journey created
+Browse → Consider → Mutual Consider → Match event → Potential Journey created
   → [Both begin + Ritual] → Active Journey → Profiles auto-unlock
 ```
 
@@ -486,24 +490,24 @@ A single Save is never revealed. Only mutual Saves may generate a notification, 
 
 ---
 
-## 4. Like
+## 4. Consider
 
-**Purpose:** A Like represents genuine interest. A Like tells the system: *"I would like to pursue this person."*
+**Purpose:** A Consider represents genuine interest. A Consider tells the system: *"I would like to pursue this person."*
 
-### Like Rules
+### Consider Rules
 
 | Group | Combination | Behaviour |
 |-------|-------------|-----------|
-| 1 | ZYRA Basic → ZYRA Basic | Added to sender's Outgoing Potentials. Receiving user gets nothing. If they later Like back, Match event occurs and Potential Journey is created. |
-| 2 | ZYRA Basic → ZYRA One | ZYRA One user immediately receives Incoming Potential. May Like Back, Save, or Decline. |
-| 3 | ZYRA One → ZYRA Basic | ZYRA Basic user receives nothing. Continues browsing. If they later Like back, Match event occurs and Potential Journey is created. |
-| 4 | ZYRA One → ZYRA One | Both receive Incoming Potentials immediately. May Like Back, Save, or Decline. |
+| 1 | ZYRA Basic → ZYRA Basic | Added to sender's Outgoing Potentials. Receiving user gets nothing. If they later Consider back, Match event occurs and Potential Journey is created. |
+| 2 | ZYRA Basic → ZYRA One | ZYRA One user immediately receives Incoming Potential. May Consider Back, Save, or Pass. |
+| 3 | ZYRA One → ZYRA Basic | ZYRA Basic user receives nothing. Continues browsing. If they later Consider back, Match event occurs and Potential Journey is created. |
+| 4 | ZYRA One → ZYRA One | Both receive Incoming Potentials immediately. May Consider Back, Save, or Pass. |
 
 ---
 
 ## 5. Incoming Potentials
 
-ZYRA One feature. ZYRA One Seekers immediately see who has already Liked them.
+ZYRA One feature. ZYRA One Seekers immediately see who has already Considered them.
 
 ZYRA Basic Seekers do not receive Incoming Potentials. They discover potential matches through their own browsing.
 
@@ -511,15 +515,15 @@ ZYRA Basic Seekers do not receive Incoming Potentials. They discover potential m
 
 ## 6. Outgoing Potentials
 
-Whenever a Like is sent, the sender sees that profile in their Outgoing Potentials. Allows Seekers to track profiles they have already expressed interest in. Available to all tiers.
+Whenever a Consider is sent, the sender sees that profile in their Outgoing Potentials. Allows Seekers to track profiles they have already expressed interest in. Available to all tiers.
 
 ---
 
-## 7. Decline
+## 7. Pass
 
-Decline behaves identically for every subscription combination.
+Pass behaves identically for every subscription combination.
 
-When Decline is selected:
+When Pass is selected:
 - No notification is sent
 - No explanation is provided
 - The sender is never informed
@@ -530,7 +534,7 @@ When Decline is selected:
 
 ## 8. Match Event
 
-A **Match** occurs when two Seekers have both Liked each other.
+A **Match** occurs when two Seekers have both Considered each other.
 
 **A Match is an event. A Match creates a Potential Journey. A Match does not create a conversation. A Match does not consume a Journey slot.**
 
@@ -539,7 +543,7 @@ Immediately on Match:
 - The Match appears in each Seeker's Matches section
 - No conversation is created
 - No Journey slot is consumed
-- No Wali involvement begins
+- No Guardian involvement begins
 
 ---
 
@@ -547,7 +551,7 @@ Immediately on Match:
 
 ### State Definition
 
-A Potential Journey is a passive record of mutual interest between two Seekers. It records that both Seekers have Liked each other. Nothing else is implied or activated.
+A Potential Journey is a passive record of mutual interest between two Seekers. It records that both Seekers have Considered each other. Nothing else is implied or activated.
 
 ### Properties
 
@@ -556,14 +560,14 @@ A Potential Journey is a passive record of mutual interest between two Seekers. 
 - No obligations for either party
 - No expiry timer
 - May coexist with an Active Journey for either or both Seekers
-- A Seeker may hold multiple simultaneous Potential Journeys
+- A Seeker may hold multiple simultaneous Journey Queue
 
 ### ZYRA Surfacing Behaviour
 
-ZYRA surfaces Potential Journeys as candidates when a Seeker's Journey slot is available.
+ZYRA surfaces Journey Queue as candidates when a Seeker's Journey slot is available.
 
-- **ZYRA One:** ZYRA Intelligence ranks and recommends Potential Journeys based on compatibility and activity signals.
-- **ZYRA Basic:** Potential Journeys are surfaced without intelligent ranking.
+- **ZYRA One:** ZYRA Intelligence ranks and recommends Journey Queue based on compatibility and activity signals.
+- **ZYRA Basic:** Journey Queue are surfaced without intelligent ranking.
 
 In both cases, the Seeker makes the final decision.
 
@@ -593,7 +597,7 @@ An Active Journey is created when the Pre-Journey Ritual completes. This is the 
 | Conversation | Created and opened |
 | Timeline | Created and begins recording |
 | Journey slot | One slot consumed per Seeker |
-| Wali capabilities | Activated per each Seeker's entitlement (AIOS grant per Journey Capability Grant Rules V1) |
+| Guardian capabilities | Activated per each Seeker's entitlement (AIOS grant per Journey Capability Grant Rules V1) |
 | ZYRA Intelligence | Active for ZYRA One Seekers |
 
 ---
@@ -688,8 +692,8 @@ The 7-day inactivity threshold is subject to review.
 After both Seekers complete a Journey stage, a 48-hour Family Review Period begins before the next stage unlocks.
 
 **During the Review Period:**
-- Both linked Walis receive notification
-- Each Wali may Continue (explicit) or raise a concern (explicit)
+- Both linked Guardians receive notification
+- Each Guardian may Continue (explicit) or raise a concern (explicit)
 - Silence for 48 hours = auto-continue
 
 This is a deliberate pause for family awareness, not a veto mechanism.
@@ -708,7 +712,7 @@ Both Seekers choose to begin a Potential Journey
     ├── Profiles unlock (per tier)
     ├── Conversation opened
     ├── Timeline started
-    └── Wali capabilities activated (AIOS grant)
+    └── Guardian capabilities activated (AIOS grant)
           ↓
     Conversation Stage
           ↓
@@ -731,15 +735,15 @@ Both Seekers choose to begin a Potential Journey
 | State Integrity Principle (AD-082) | Approved |
 | Capability Independence Principle (AD-081) | Approved |
 | Core Philosophy | Approved |
-| User Roles (Seeker, Wali) | Approved |
+| User Roles (Seeker, Guardian) | Approved |
 | Subscription Structure (ZYRA Basic, ZYRA One) | Approved |
 | Pricing | Approved |
-| Wali Capability Model | Approved — governed by Journey Capability Grant Rules V1 |
-| Profile Unlock (manual) | Approved (Plus details deferred) |
-| Profile Unlock on Active Journey creation (tiered) | Approved |
+| Guardian Capability Model | Approved — governed by Journey Capability Grant Rules V1 |
+| Compatibility Unlock (manual) | Approved (Plus details deferred) |
+| Compatibility Unlock on Active Journey creation (tiered) | Approved |
 | Browse Stage | Approved |
 | Save System | Approved |
-| Like System | Approved |
+| Consider System | Approved |
 | Match (event) | Approved |
 | Potential Journey (state) | Approved |
 | Pre-Journey Ritual | Approved — see PRE-JOURNEY RITUAL/Summary.md |
@@ -766,8 +770,8 @@ The following are confirmed design decisions. They are intentional and must not 
 | Conversation belongs exclusively to Active Journey | Separation of lifecycle states |
 | Pre-Journey Ritual gates the Active Journey — it is not optional | Commitment to intentional progression |
 | Profiles unlock on Active Journey creation — not on Match | Users pay for earlier access, not for communication rights |
-| Wali accounts carry identity only — capabilities are AIOS-granted per Journey | AD-081 Capability Independence Principle |
-| Family Network exclusive to Walis with AIOS-granted Journey capabilities | Introductions centred on trusted family representatives |
+| Guardian accounts carry identity only — capabilities are AIOS-granted per Journey | AD-081 Capability Independence Principle |
+| Family Network exclusive to Guardians with AIOS-granted Journey capabilities | Introductions centred on trusted family representatives |
 
 ---
 
@@ -779,8 +783,8 @@ The following are intentionally not yet specified. They must not be implemented 
 |------|--------|
 | Pause behaviour in mixed-tier Journeys (Finding 1/6) | Pending formal resolution |
 | Family Stage | Full specification required |
-| Wali communication rules | Depends on Family Stage specification |
-| Wali ↔ Wali chat | Depends on Family Stage specification |
+| Guardian communication rules | Depends on Family Stage specification |
+| Guardian ↔ Guardian chat | Depends on Family Stage specification |
 | Match Action definitions | Depends on Family Stage specification |
 | Family Network workflow | Depends on Family Stage specification |
 | Unlock Profile Plus — full functionality | Dedicated specification required |
@@ -804,9 +808,11 @@ The following are intentionally not yet specified. They must not be implemented 
 | Version | Date | Changes |
 |---------|------|---------|
 | V1 | 2026-06-27 | Initial baseline — Parts 1–3 |
-| V2 | 2026-06-27 | Clarifications from architectural review: annual pricing confirmed, Wali Basic wording corrected, Profile Unlock duplicate state clarified, soft-delete confirmed, one Active Conversation database enforcement noted, Intentional Design Decisions and Deferred Specifications sections added |
-| V3 | 2026-07-04 | **Major revision.** Part 0 added; Section 0.9 Feature-State Covenant added (every new relationship feature must state which canonical state it applies to, whether it changes state, and whether it consumes/releases a slot); downstream reference rule established
+| V2 | 2026-06-27 | Clarifications from architectural review: annual pricing confirmed, Guardian Basic wording corrected, Compatibility Unlock duplicate state clarified, soft-delete confirmed, one Active Conversation database enforcement noted, Intentional Design Decisions and Deferred Specifications sections added |
+| V3 | 2026-07-04 | **Major revision.** Part 0 added; Section 0.9 Feature-State Covenant added (every new relationship feature must state which canonical state it applies to, whether it changes state, and whether it consumes/releases a slot); downstream reference rule established |
+| V4 | 2026-07-26 | **Terminology only** (resolves OA-ZYRA-138). Applies DR-ZYRA-099 (2026-07-25) to this document: Decline → **Pass**, Like → **Consider**, throughout Parts 0–3 (Section headers "4. Like"/"7. Decline" renamed "4. Consider"/"7. Pass"; "Like Rules" → "Consider Rules"; "Like System" → "Consider System" in Section 10). Save is unchanged. No architectural, lifecycle, rule, or numeric content changed — this document was the last owning/citing document still using the pre-2026-07-25 terminology, per OA-ZYRA-138. Previous version archived as ZYRA_PRODUCT_SPEC_2026-07-26_V3.md |
+| V5 | 2026-07-26 | **Terminology only.** Founder decision: "Extended Guardian" renamed to **Guardian+**, matching the existing "ZYRA One" naming pattern. Section 7's "Included Extended Guardian Entitlement" → "Included Guardian+ Entitlement"; all body references updated; one latent wording slip fixed in passing ("reverts to ZYRA Basic" → "reverts to Guardian Basic," the correct Guardian-tier name). No architectural, lifecycle, rule, or numeric content changed. Previous version archived as ZYRA_PRODUCT_SPEC_2026-07-26_V4.md |
 
 ---
 
-*End of ZYRA Master Product Specification V3 — Parts 0–3*
+*End of ZYRA Master Product Specification V5 — Parts 0–3*

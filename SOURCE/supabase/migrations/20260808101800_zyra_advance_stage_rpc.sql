@@ -1,0 +1,23 @@
+-- APPLIED LIVE 2026-08-08. Version 20260808101800.
+--
+-- HISTORICAL RECORD ONLY — SUPERSEDED 98 SECONDS LATER by
+-- 20260808101938_zyra_advance_stage_qualify_stage_column.sql, which
+-- carries the full and correct definition of zyra_advance_stage().
+-- Kept for the same reason 20260726190100 was kept: the sequence of
+-- what was applied is part of the record.
+--
+-- WHAT WAS WRONG WITH IT: the OUT parameter `stage` and the column
+-- journey_stage_checkpoints.stage share a name, so the checkpoint count
+-- raised 42702 "column reference stage is ambiguous" the first time the
+-- compatibility_reveal gate was exercised. Every reference to that table
+-- is alias-qualified in the superseding migration.
+--
+-- Found by running the verification suite, not by reading the code —
+-- which is the whole argument of CLAUDE.md section 3. The function
+-- created cleanly, granted cleanly, and was broken.
+--
+-- No statement is repeated here: replaying this file as a no-op and then
+-- applying the next one leaves the database in the correct state, since
+-- the next uses CREATE OR REPLACE and re-issues its own grants.
+
+select 'superseded by 20260808101938 — see header' as note;

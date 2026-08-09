@@ -96,16 +96,23 @@ FUTURE DISCUSSION — SAFETY & MODERATION
 
 **Update, 2026-07-25:** Block User / Report User for the Browse-
 screen, pre-Journey, Seeker-to-Seeker case is now specified — see
-`APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md` §Profile Actions
-(DR-ZYRA-095). The remaining items below are **not** resolved by
-that filing — it explicitly scopes itself to Browse only.
+`APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V4.md` §Profile Actions
+(DR-ZYRA-095).
+
+**Update, 2026-07-26 (DR-ZYRA-112):** how blocking affects an
+existing Active Journey/Timeline, and menu contents across every
+other relationship stage, are now also specified — see
+`APP/Standards/PROFILE_ACTIONS_MENU_STANDARD_CURRENT_VERSION_V1.md`.
+Blocking during an Active Journey or Family Stage now also force-ends
+that Journey, in one confirmed action. Post-Journey-end privacy is
+addressed for Report/Block specifically (both remain available after
+a Journey ends); broader post-Journey privacy beyond these two
+actions is not otherwise revisited here.
 
 Still requires a dedicated future design discussion covering:
-• Block Wali
-• Report Wali
-• How blocking affects existing Journeys and Timelines.
+• Block Guardian
+• Report Guardian
 • How reporting interacts with moderation and evidence.
-• Privacy implications after a Journey ends.
 
 ============================================================
 OPEN DISCUSSIONS
@@ -118,7 +125,8 @@ OPEN DISCUSSIONS
   after stepping back.
 • Limits on inactive / held Journeys.
 • How "Journey Ended" milestone appears on Timeline.
-• Safety & Moderation for Wali blocking/reporting, and for
-  blocking/reporting effects within an existing Active Journey
-  (Browse-stage Seeker-to-Seeker case resolved 2026-07-25, see
-  above — this item now covers only the remaining scope).
+• Safety & Moderation for Guardian blocking/reporting specifically
+  (Browse-stage Seeker-to-Seeker case resolved 2026-07-25; per-stage
+  contents and Active-Journey blocking effects resolved 2026-07-26,
+  DR-ZYRA-112 — this item now covers only Guardian block/report, still
+  fully open).

@@ -6,6 +6,7 @@
 // ZyraWaliLinkService's doc comment.
 
 import 'package:flutter/material.dart';
+import '../../data/zyra_reference_data.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
@@ -25,6 +26,24 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
   bool _accepting = false;
   String? _error;
   Map<String, String>? _preview;
+
+  /// The stored CODE, never the label. Null until the preview resolves.
+  ///
+  /// ADDED 2026-08-06. The relationship question is NOT new — Guardian
+  /// onboarding has always asked it. What was missing is a write: the answer
+  /// lived in AppState and was never persisted, so `wali_links.relationship`
+  /// stayed null for every real user while the dev fixtures made the Guardian
+  /// tab look correct. This screen is where the answer finally reaches the
+  /// database, because this is the moment the link exists to hang it on.
+  String? _relationshipCode;
+  bool _changingRelationship = false;
+
+  /// Only a Guardian states a relationship, and only about the Seeker they
+  /// are being linked to. When the inviter is a Guardian the accepter is the
+  /// Seeker, who has nothing to say about themselves.
+  bool get _needsRelationship => _preview?['inviterRole'] == 'seeker';
+
+  bool get _canAccept => !_needsRelationship || _relationshipCode != null;
 
   Future<void> _checkCode() async {
     final code = _controller.text.trim();
@@ -46,6 +65,12 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         _error = 'That code has already been used.';
       } else {
         _preview = preview;
+        // Pre-fill from the answer already given at Guardian onboarding.
+        // AppState holds a LABEL; the database takes a code, so it is
+        // converted here. An unrecognised label yields null rather than
+        // being stored raw — the picker then simply opens unselected.
+        _relationshipCode = zyraRelationshipCode(AppState.instance.waliRelationship);
+        _changingRelationship = _relationshipCode == null;
       }
     });
   }
@@ -55,7 +80,10 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
       _accepting = true;
       _error = null;
     });
-    final error = await ZyraWaliLinkService.acceptInvite(_controller.text.trim());
+    final error = await ZyraWaliLinkService.acceptInvite(
+      _controller.text.trim(),
+      relationship: _needsRelationship ? _relationshipCode : null,
+    );
     if (!mounted) return;
     setState(() => _accepting = false);
     if (error != null) {
@@ -74,6 +102,14 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // FIXED 2026-08-01 (Founder: "there should be no purple at top, it
+      // should blend the pink/purple colour... that should be across all
+      // things"). Same fix notifications_screen.dart got on 2026-07-27:
+      // without this the transparent AppBar shows the Scaffold's own flat
+      // background through, cutting the gender gradient off with a hard
+      // purple strip. Body content compensates with SafeArea, which still
+      // clears the status bar.
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -83,11 +119,14 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
       body: Container(
         // 2026-07-25: gender-matched gradient (DR-ZYRA-094). This screen
         // is only ever reached by an already-signed-in account (Seeker
-        // or Wali) linking the other party, so gender is always known
+        // or Guardian) linking the other party, so gender is always known
         // here — see ZyraColors.genderGradient() doc comment.
         decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
         child: SafeArea(
-          child: Padding(
+          // Scrollable since 2026-08-06: the relationship picker adds up to
+          // seven tiles, which overflows a fixed Column on a small handset
+          // once the keyboard is up.
+          child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,6 +149,8 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                   onChanged: (_) => setState(() {
                     _preview = null;
                     _error = null;
+                    _relationshipCode = null;
+                    _changingRelationship = false;
                   }),
                 ),
                 const SizedBox(height: 16),
@@ -127,6 +168,42 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                       style: ZyraText.body(size: 13, color: Colors.white),
                     ),
                   ),
+                if (_preview != null && _needsRelationship) ...[
+                  const SizedBox(height: 22),
+                  Text(
+                    'How are you related to ${_preview!['inviterFirstName']}?',
+                    style: ZyraText.body(size: 15, color: Colors.white),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'This is shown to Seekers who unlock her profile, so they '
+                    'know who they may be speaking with.',
+                    style: ZyraText.subtext(size: 12.5),
+                  ),
+                  const SizedBox(height: 14),
+                  // Confirm-or-change, not a seventh question. The answer is
+                  // already known from onboarding, so the common path is one
+                  // tap on Confirm Link. Expanding the full list is the
+                  // exception — which is what "confirm or change" means, and
+                  // it keeps a code-entry screen from becoming a form.
+                  if (!_changingRelationship && _relationshipCode != null)
+                    _RelationshipConfirmRow(
+                      label: zyraRelationshipLabel(_relationshipCode) ?? '',
+                      onChange: () => setState(() => _changingRelationship = true),
+                    )
+                  else
+                    ...zyraGuardianRelationships.map((r) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: _RelationshipOption(
+                            label: r.name,
+                            selected: _relationshipCode == r.code,
+                            onTap: () => setState(() {
+                              _relationshipCode = r.code;
+                              _changingRelationship = false;
+                            }),
+                          ),
+                        )),
+                ],
                 if (_error != null) ...[
                   const SizedBox(height: 12),
                   ZyraErrorBanner(message: _error!, onDismiss: () => setState(() => _error = null)),
@@ -137,15 +214,20 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                   height: 50,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: ZyraColors.accentBg,
-                      border: Border.all(color: ZyraColors.accentBorder, width: 1),
+                      color: _canAccept ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
+                      border: Border.all(
+                        color: _canAccept ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder,
+                        width: 1,
+                      ),
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(50),
-                        onTap: _checking || _accepting ? null : (_preview == null ? _checkCode : _accept),
+                        onTap: _checking || _accepting
+                            ? null
+                            : (_preview == null ? _checkCode : (_canAccept ? _accept : null)),
                         child: Center(
                           child: Text(
                             _checking
@@ -163,6 +245,82 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                 const SizedBox(height: 24),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The pre-filled answer, with one tap to change it.
+class _RelationshipConfirmRow extends StatelessWidget {
+  final String label;
+  final VoidCallback onChange;
+  const _RelationshipConfirmRow({required this.label, required this.onChange});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: ZyraColors.accentBg,
+          border: Border.all(color: ZyraColors.accentBorder, width: 1),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(14),
+            onTap: onChange,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              child: Row(
+                children: [
+                  Expanded(child: Text(label, style: ZyraText.option())),
+                  Text('Change', style: ZyraText.subtext(size: 13)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Visually identical to the option tile in `wali_onboarding_flow.dart`.
+/// Duplicated rather than shared because that one is library-private and
+/// Guardian onboarding is explicitly out of scope for this change (Founder,
+/// 2026-08-06). Worth promoting to a shared widget when onboarding is next
+/// opened for its own reasons — noted, not done here.
+class _RelationshipOption extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  const _RelationshipOption({required this.label, required this.selected, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
+          border: Border.all(
+            color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(14),
+            onTap: onTap,
+            child: Center(child: Text(label, style: ZyraText.option())),
           ),
         ),
       ),

@@ -76,6 +76,55 @@ class _WaliSeekersScreenState extends State<WaliSeekersScreen> {
                               ],
                             ),
                           ),
+                        // THE MISSING ENTRY POINT — added 2026-08-07.
+                        //
+                        // "Invite your Seeker" existed ONLY inside
+                        // `linked.isEmpty`, on this screen and the
+                        // Dashboard. So the control vanished the moment it
+                        // succeeded once: a Guardian with one Seeker had no
+                        // way to invite a second, and the Founder could not
+                        // find the flow at all because his test accounts
+                        // already had Seekers linked.
+                        //
+                        // The functionality was complete the whole time —
+                        // accept_wali_invite has always handled both
+                        // directions. Only the door was missing.
+                        //
+                        // Same + pattern the Seeker's Guardian tab uses:
+                        // sitting where the next entry would go, so the
+                        // list reads Seeker → Seeker → +.
+                        const SizedBox(height: 18),
+                        Center(
+                          child: Material(
+                            color: Colors.white.withValues(alpha: 0.10),
+                            shape: const CircleBorder(),
+                            child: InkWell(
+                              customBorder: const CircleBorder(),
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => const WaliInviteSeekerScreen()),
+                              ),
+                              child: Container(
+                                width: 56,
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Colors.white.withValues(alpha: 0.28),
+                                      width: 1),
+                                ),
+                                child: const Icon(Icons.add, size: 26, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: Text('Invite another Seeker',
+                              style: ZyraText.subtext(
+                                  size: 12.5,
+                                  color: Colors.white.withValues(alpha: 0.55))),
+                        ),
                       ],
                     ),
             ),

@@ -97,7 +97,7 @@ Defines how work is executed within ZYRA — from feature idea to deployed code.
     Whichever layer owns a fact, other layers **cite it — they do not
     restate it.** Restating a fact that belongs to a higher layer is
     the specific failure that produced the 2026-06-27 Project Check
-    drift (Wali Premium / Profile Decision System vs. Product Spec V2)
+    drift (Guardian Premium / Profile Decision System vs. Product Spec V2)
     and OA-ZYRA-133 (2026-07-19 — an Active Journey proposal that
     re-derived relationship states already ratified in Product Spec V3
     Part 0, because the Master Spec wasn't checked first).

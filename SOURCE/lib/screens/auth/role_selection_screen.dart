@@ -30,12 +30,12 @@ class RoleSelectionScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 _RoleCard(
                   title: 'Seeker',
-                  description: 'Looking for your own marriage journey, with your Wali involved at the right moments.',
+                  description: 'Looking for your own marriage journey, with your Guardian involved at the right moments.',
                   onTap: () => _proceedAsSeeker(context),
                 ),
                 const SizedBox(height: 16),
                 _RoleCard(
-                  title: 'Wali (Guardian)',
+                  title: 'Guardian (Guardian)',
                   description: 'Supporting and overseeing a Seeker\'s journey as their Islamic guardian.',
                   onTap: () => _proceedAsWali(context),
                 ),

@@ -30,7 +30,7 @@ Auth Loading State
         ▼
 Choose Account Type
   ○ Seeker
-  ○ Wali
+  ○ Guardian
         │
         ▼
 Account Created

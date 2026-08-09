@@ -3,7 +3,7 @@
 // 'seeker_premium', 'wali_basic', 'wali_premium' — a plain TEXT
 // column with a CHECK constraint, not a Postgres enum) and the
 // product-facing names used throughout the UI (ZYRA Basic / ZYRA One
-// for Seekers, Standard Wali / Extended Wali for Walis).
+// for Seekers, Standard Wali / Wali One for Walis).
 //
 // Added 2026-07-26 (DR-ZYRA-101 audit — "plan-name drift" flagged in
 // ZYRA_FABLE_BUILD_REVIEW_2026-07-19_V1.md §Open Decisions item 3).
@@ -27,11 +27,11 @@
 // happens, there is one canonical mapping to use instead of ad hoc
 // strings scattered across screens.
 //
-// wali_premium (Extended Wali) is doubly dormant: unused by any Dart
+// wali_premium (Wali One) is doubly dormant: unused by any Dart
 // code AND never granted by any real purchase flow — Wali's
-// Extended-Wali gate today is a local mock switch
-// (AppState.waliHasExtendedWali via wali_network_screen.dart's "Get
-// Extended Wali" button), not backed by this column at all.
+// Extended-Guardian gate today is a local mock switch
+// (AppState.waliHasWaliOne via wali_network_screen.dart's "Get
+// Guardian+" button), not backed by this column at all.
 
 /// The four real values `subscriptions.plan_type` accepts.
 enum ZyraSubscriptionPlanType {
@@ -51,8 +51,8 @@ enum ZyraSubscriptionPlanType {
   String get displayName => switch (this) {
         ZyraSubscriptionPlanType.seekerBasic => 'ZYRA Basic',
         ZyraSubscriptionPlanType.seekerPremium => 'ZYRA One',
-        ZyraSubscriptionPlanType.waliBasic => 'Standard Wali',
-        ZyraSubscriptionPlanType.waliPremium => 'Extended Wali',
+        ZyraSubscriptionPlanType.waliBasic => 'Standard Guardian',
+        ZyraSubscriptionPlanType.waliPremium => 'Guardian+',
       };
 
   static ZyraSubscriptionPlanType? fromDbValue(String? value) => switch (value) {

@@ -6,14 +6,14 @@ STATUS: Approved Specification
 SOURCE: Master Script Parts 1, 4, 5, 7
 
 Terminology corrected 2026-07-12 against
-ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 (DR-076) — Review/Consider
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4 (DR-076) — Review/Consider
 action and view names replaced with Save/Like throughout. Design,
 animation, and glass-system rules below are unaffected — only the
 labels were stale. Note: this UI script predates the Match-is-
 an-event architecture; the Connections view structure here
 (Declined/Save/Like/Matched) is coarser than the Potential
 Journey model in PROFILE DECISION SYSTEM (Saves/Outgoing
-Potentials/Incoming Potentials/Potential Journeys) — a design
+Potentials/Incoming Potentials/Journey Queue) — a design
 pass to reconcile the two has not been done and is out of scope
 for this terminology-only correction.
 
@@ -59,7 +59,7 @@ Do not display subscription labels:
 • Basic
 • Pro
 • Premium
-• Wali plans
+• Guardian plans
 
 ------------------------------------------------------------
 HEADER CONTROLS
@@ -120,7 +120,7 @@ Toggle Icons:
 |-------------|------------------|
 | Browse      | Magnifying Glass |
 | Connections | Connections Icon |
-| Wali        | Shield Icon      |
+| Guardian        | Shield Icon      |
 | Network     | Network Icon     |
 | Profile     | User Icon        |
 

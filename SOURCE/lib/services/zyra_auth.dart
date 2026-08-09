@@ -16,6 +16,11 @@
 // sign-in or their fifth.
 
 import 'dart:convert';
+import '../state/app_state.dart';
+import 'zyra_app_lock.dart';
+import 'zyra_local_prefs.dart';
+import 'zyra_consent_service.dart';
+import 'zyra_unlock_service.dart';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -122,8 +127,72 @@ class ZyraAuth {
     _signingOut = true;
     try {
       await supabase.auth.signOut();
+      // Drop the cached gender. Without this, the next person to sign in
+      // on this device gets the previous user's gradient for one frame —
+      // visibly wrong, and a small leak of someone else's data.
+      //
+      // This is also what makes the gendered default in main.dart's
+      // `builder:` safe: after sign-out the cache is empty, so
+      // genderGradient(null) returns the neutral gradient it used to
+      // hardcode. Nothing is stale because nothing is kept.
+      await ZyraLocalPrefs.clear();
+      AppState.instance.gender = null;
+      // Unlocks are per-account. Without this the next person to sign in
+      // on this device would see the previous user's profiles marked
+      // "View Compatibility" — someone else's purchases, on their own
+      // screen.
+      ZyraUnlockService.clearForSignOut();
+      // ADDED 2026-08-04 with the Article 9 consent log. Without this the
+      // next account signed in on this device inherits the previous one's
+      // cached consent answer — which would mean writing special-category
+      // data for someone who never agreed to it.
+      ZyraConsentService.clearForSignOut();
+      // ADDED 2026-08-07 with App Lock. ZyraLocalPrefs.clear() above already
+      // removes the stored preference, but the lock also holds it IN MEMORY
+      // — and this session keeps running after sign-out. Without this the
+      // next person to sign in on this device meets a lock screen for a
+      // setting that no longer exists, and worse, one they can pass, which
+      // would read as ZYRA endorsing them.
+      ZyraAppLock.instance.clearForSignOut();
     } finally {
       _signingOut = false;
+    }
+  }
+
+  /// #22 — real account deletion. Cleans up the user's own photo files
+  /// in Storage first (while the session is still valid — the
+  /// `profile-photos` bucket's RLS delete policy is scoped to the
+  /// caller's own folder), then calls delete_own_account(), which
+  /// deletes the auth.users row and cascades through every table that
+  /// references it (profiles, matches, messages, wali_links,
+  /// subscriptions, notifications, etc. — see
+  /// 20260726170000_delete_own_account.sql for the full verified
+  /// list). Signs out locally afterward regardless of RPC outcome,
+  /// since the session is meaningless either way at that point.
+  ///
+  /// Returns true on success. On failure, the account is NOT deleted
+  /// (the RPC's own exception aborts its transaction) — safe to retry.
+  static Future<bool> deleteAccount() async {
+    final user = currentUser;
+    if (user == null) return false;
+    try {
+      try {
+        final rows = await supabase.from('profile_photos').select('storage_path').eq('user_id', user.id) as List;
+        final paths = rows.map((r) => (r as Map<String, dynamic>)['storage_path'] as String).toList();
+        if (paths.isNotEmpty) {
+          await supabase.storage.from('profile-photos').remove(paths);
+        }
+      } catch (_) {
+        // Best-effort — a photo-cleanup failure shouldn't block account
+        // deletion itself; delete_own_account()'s own storage.objects
+        // cleanup by path prefix is a second, server-side attempt at
+        // the same thing.
+      }
+      await supabase.rpc('delete_own_account');
+      await signOut();
+      return true;
+    } catch (_) {
+      return false;
     }
   }
 

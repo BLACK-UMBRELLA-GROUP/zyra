@@ -1,6 +1,12 @@
-// Fixed-order question bank for the Pre-Journey Ritual's Phase 1/2/3
-// and Family Compatibility Stage, per APP/Journey/PRE-JOURNEY RITUAL/
-// Summary.md.
+// Fixed-order question bank for the Pre-Journey Ritual's three
+// sustained phases and the Family Compatibility stage, per
+// APP/Journey/PRE-JOURNEY RITUAL/Summary.md.
+//
+// NAMING, 2026-08-09: `phase1/2/3` here are STORAGE names and match
+// matches.journey_stage's phase_1/phase_2/phase_3. What the member
+// reads is Faith & Values, Building a Life and Navigating Life, and
+// that lives in exactly one place — data/zyra_journey_stages.dart.
+// Do not put a user-facing label in this file.
 //
 // DELIBERATE V1 SIMPLIFICATION (Founder decision, 2026-07-25): the
 // spec calls for "Part A — AI-generated questions (adaptive)" that
@@ -20,8 +26,10 @@ class JourneyQuestion {
 class JourneyQuestions {
   JourneyQuestions._();
 
-  // Phase 1 — Foundations. Guiding question: "Are we fundamentally
-  // compatible?" Topics: practising Islam, marriage intentions, core
+  // phase_1, shown as "Faith & Values". Guiding question: "Are we
+  // fundamentally compatible?" — the question itself now lives on
+  // ZyraJourneyStage.guidingQuestion; this is a pointer, not a copy.
+  // Topics: practising Islam, marriage intentions, core
   // values, non-negotiables, daily lifestyle, personality basics.
   static const List<JourneyQuestion> phase1 = [
     JourneyQuestion(id: 'p1_q1', text: 'How would you describe your relationship with your faith day to day?'),
@@ -34,7 +42,7 @@ class JourneyQuestions {
     JourneyQuestion(id: 'p1_q8', text: 'What role does your family play in your day-to-day decisions?'),
   ];
 
-  // Phase 2 — Building a Life Together. Guiding question: "Could we
+  // phase_2, shown as "Building a Life". Guiding question: "Could we
   // realistically build a life together?" Topics: children, career
   // ambitions, financial expectations, living arrangements, household
   // responsibilities, work-life balance.
@@ -48,8 +56,8 @@ class JourneyQuestions {
     JourneyQuestion(id: 'p2_q7', text: 'Would you expect your spouse to work outside the home, and does that depend on circumstances?'),
   ];
 
-  // Phase 3 — Future & Challenges. Guiding question: "Can we navigate
-  // life together?" Topics: conflict resolution, communication styles,
+  // phase_3, shown as "Navigating Life". Guiding question: "Can we
+  // navigate life together?" Topics: conflict resolution, communication styles,
   // family expectations, long-term goals, health, difficult
   // situations, personal growth.
   static const List<JourneyQuestion> phase3 = [
@@ -69,11 +77,12 @@ class JourneyQuestions {
         _ => const [],
       };
 
-  // Family Compatibility Stage — Seeker<->Wali directions only. Wali
+  // family_stage, shown as "Family Compatibility" — Seeker<->Wali
+  // directions only. Wali
   // <-> Wali engagement is explicitly marked TBC in the source spec
   // ("Exact format and questions: TBC") and is not built here.
 
-  /// Questions the SEEKER asks the OTHER PARTY's Wali.
+  /// Questions the SEEKER asks the OTHER PARTY's Guardian.
   static const List<JourneyQuestion> seekerToWali = [
     JourneyQuestion(id: 'fam_stw_q1', text: 'What are your expectations for this marriage?'),
     JourneyQuestion(id: 'fam_stw_q2', text: 'How involved would you like to be in our life together?'),

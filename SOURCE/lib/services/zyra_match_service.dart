@@ -16,6 +16,7 @@ import '../main.dart';
 import '../models/seeker_profile.dart';
 import 'zyra_auth.dart';
 import 'zyra_photo_service.dart';
+import 'zyra_ages_service.dart';
 
 class ZyraChatMessage {
   final String id;
@@ -99,15 +100,9 @@ class ZyraMatchService {
   /// failure, returns an empty map and callers fall back to age 0
   /// rather than breaking the Matches tab over an age lookup.
   static Future<Map<String, int>> _fetchAges(List<String> ids) async {
-    if (ids.isEmpty) return {};
-    try {
-      final rows = await supabase.rpc('ages_for', params: {'p_ids': ids}) as List;
-      return {
-        for (final r in rows) (r as Map<String, dynamic>)['id'] as String: (r['age'] as num).toInt(),
-      };
-    } catch (_) {
-      return {};
-    }
+    // Delegates since 2026-08-08 — see ZyraAgesService for why four
+    // identical private copies of this became one.
+    return ZyraAgesService.forIds(ids, context: 'matches');
   }
 
   /// Resolves the real conversation id for a match between the

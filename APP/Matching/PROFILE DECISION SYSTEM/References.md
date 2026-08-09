@@ -6,7 +6,7 @@ REFERENCES
 ============================================================
 
 Superseded 2026-07-12: rewritten against
-ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 and DR-076 alongside
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4 and DR-076 alongside
 Summary.md. Decline/Review/Consider and Basic/Pro/Premium
 references replaced with Decline/Save/Like and ZYRA Basic/One.
 
@@ -35,7 +35,7 @@ Entitlement (ZYRA Basic / ZYRA One)
 - Immediate Incoming Potentials and Mutual Save Detection are
   ZYRA One features.
 - Status: Referenced — entitlement definitions live in
-  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 1.
+  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4, Part 1.
 - ⚠️ OVERLAP FLAG: entitlement feature lists exist in both this
   file and BUSINESS/USER FEATURES. Keep in sync.
 
@@ -75,7 +75,7 @@ Notifications
 Timeline
 - Journey Timeline is owned and populated by this system
   (Browse-stage events); Active Journey stage events are
-  owned elsewhere per ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3.
+  owned elsewhere per ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4.
 
 Family Introduction System
 - Uses Match event and Journey status as prerequisites.

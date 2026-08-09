@@ -24,24 +24,24 @@ Browse only      Browse + Consider
 No Matches       View Matches
 No Messaging     │
                  ▼
-            Has Wali?
+            Has Guardian?
            │         │
           YES        NO
            │         │
            ▼         ▼
     Pro/Premium    Pro/Premium
-    (Wali)         (No Wali)
+    (Guardian)         (No Guardian)
     + Messaging    No Messaging
-    + Wali tab     No Wali tab
+    + Guardian tab     No Guardian tab
 
 ------------------------------------------------------------
-WALI TIER PROGRESSION
+GUARDIAN TIER PROGRESSION
 ------------------------------------------------------------
 
-Wali Registers
+Guardian Registers
         │
         ▼
-  Selects Wali Plan
+  Selects Guardian Plan
         │
    ┌────┴────────────┐
    ▼                 ▼
@@ -55,9 +55,9 @@ No browsing      Browse + Suggest
                  │
                  ▼
             Premium only
-            Wali Network
+            Guardian Network
             Family Intros
-            Wali-Wali Chat
+            Guardian-Guardian Chat
 
 ------------------------------------------------------------
 FEATURE ACCESS GATE (GENERAL)

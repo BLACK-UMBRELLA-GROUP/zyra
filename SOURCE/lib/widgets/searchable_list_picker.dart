@@ -41,7 +41,7 @@ class _PickerSheet extends StatefulWidget {
 
 class _PickerSheetState extends State<_PickerSheet> {
   final TextEditingController _search = TextEditingController();
-  late List<String> _selected = List<String>.from(widget.initialSelection);
+  late final List<String> _selected = List<String>.from(widget.initialSelection);
 
   @override
   Widget build(BuildContext context) {

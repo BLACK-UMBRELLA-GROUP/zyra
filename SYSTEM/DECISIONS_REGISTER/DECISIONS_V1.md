@@ -2965,7 +2965,7 @@ Decision:
     in PROJECTS/ZYRA/SYSTEM/OUTSTANDING_ACTIONS/.
     Classification criteria: ZYRA-specific = OAs about
     ZYRA app folders (APP/, BUSINESS/, SOURCE/,
-    Authentication, Wali, Connections, UI language,
+    Authentication, Guardian, Connections, UI language,
     APP Inspection, ZYRA Terminology, session mgmt).
     Note: DRs are all system-level; SYSTEM/DECISIONS_
     REGISTER/ seeded in follow-on step.
@@ -3020,7 +3020,7 @@ Decision:
     OA-005: APP/Authentication/ audit — deferred to
       dedicated audit session.
     OA-007: ZYRA Terminology — PO must supply terms.
-    OA-008/009: Wali Navigation, Connections — blocked
+    OA-008/009: Guardian Navigation, Connections — blocked
       on PO Summaries.
     OA-016: UI design language rule — ChatGPT required.
     OA-018: Summary standard — ChatGPT required.
@@ -3054,7 +3054,7 @@ Decision:
   Rationale:
     PostgreSQL foundation provides a relational model
     appropriate for ZYRA's journey state machine, user
-    relationships, and guardian (Wali) permission model.
+    relationships, and guardian (Guardian) permission model.
 
     Row-level security (RLS) in Supabase PostgreSQL
     aligns with ZYRA's trust and privacy requirements:
@@ -3176,7 +3176,7 @@ Related:
 ------------------------------------------------------------
 
 DR-075
-Title:       Pricing Model Simplification — Retire Per-Wali
+Title:       Pricing Model Simplification — Retire Per-Guardian
              Billing and Family Payment Model, Confirm Launch
              Promotion Terms Under ZYRA One
 Date:        2026-07-12
@@ -3188,20 +3188,20 @@ Approved by: Founder, following Research Office (ChatGPT)
 
 Decision:
   1. Founder Members: first 1,000 people to purchase ZYRA One
-     (any account — Seeker or Wali; not gender- or role-
+     (any account — Seeker or Guardian; not gender- or role-
      restricted, headcount only) receive 50% off ZYRA One for
      6 months, then 25% off for the following 6 months.
   2. Early Adopters: next 5,000 people to purchase ZYRA One
      (same eligibility basis) receive 25% off ZYRA One for
      12 months.
-  3. Per-Wali-relationship billing is retired completely. A
-     Seeker no longer manages multiple priced Wali
-     subscriptions. A ZYRA One Seeker's bundled Extended Wali
-     entitlement goes to one linked Wali; any other Wali
+  3. Per-Guardian-relationship billing is retired completely. A
+     Seeker no longer manages multiple priced Guardian
+     subscriptions. A ZYRA One Seeker's bundled Extended Guardian
+     entitlement goes to one linked Guardian; any other Guardian
      wanting Extended capabilities purchases independently
      (£9.99/month, AD-081).
   4. Family / multi-account billing (one individual paying for
-     several Seeker or Wali accounts) is removed from the
+     several Seeker or Guardian accounts) is removed from the
      current product. Every account manages its own
      subscription. May be reconsidered in a future version if
      genuine demand exists.
@@ -3214,11 +3214,11 @@ Context:
   A repository alignment audit (2026-07-12) found
   BUSINESS/ZYRA PRICING/Summary.md still described the retired
   Basic/Pro/Premium tiered model — Founder/Early-Adopter
-  programmes built around per-Wali subscriptions, a 9-row
+  programmes built around per-Guardian subscriptions, a 9-row
   family pricing matrix, and proration across multiple linked
-  Walis — none of which maps onto the ZYRA One model in
+  Guardians — none of which maps onto the ZYRA One model in
   ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 (single flat membership,
-  one bundled Extended Wali entitlement). This decision
+  one bundled Extended Guardian entitlement). This decision
   confirms the correct terms so the documentation could be
   brought into alignment rather than guessed.
 
@@ -3230,7 +3230,7 @@ Context:
   (Product Spec V3, Part 1, Section 4).
 
 Alternatives:
-  Keep the old per-Wali-relationship billing and family pricing
+  Keep the old per-Guardian-relationship billing and family pricing
   matrix, restructured with new prices. Rejected — adds back
   the complexity the ZYRA One model was designed to remove, for
   no clear benefit at this stage.
@@ -3250,7 +3250,7 @@ Reasoning:
 Impact:
   BUSINESS/ZYRA PRICING/Summary.md — rewritten 2026-07-12.
   BUSINESS/ZYRA PRICING/Flow Diagram.md — rewritten 2026-07-12.
-  Any other document referencing Wali Pro/Premium pricing,
+  Any other document referencing Guardian Pro/Premium pricing,
   family billing, or gender-restricted launch promotions is
   stale as of this decision — see
   ZYRA_TERMINOLOGY_PRICING_AUDIT_2026-07-12_V1.md for the full
@@ -3287,7 +3287,7 @@ Decision:
   this profile later." Does not indicate romantic interest.
   Like is an interest signal — "I would like to pursue this
   person." Mutual Like is the Match event, creating a Potential
-  Journey. Wali accounts do not participate in Browse profile
+  Journey. Guardian accounts do not participate in Browse profile
   decisions — Browse is Seeker-only (Product Spec V3, Part 1,
   Section 3).
 
@@ -3345,7 +3345,7 @@ Approved by: Founder
 
 Decision:
   The "Connector" user role (introduces Seekers, limited
-  profile access) is retired. Only Seeker and Wali are valid
+  profile access) is retired. Only Seeker and Guardian are valid
   ZYRA user roles.
 
 Context:
@@ -3504,15 +3504,16 @@ Related:
 ------------------------------------------------------------
 
 DR-ZYRA-080
-Title:       Error & Empty State Language Standard — v1 Proposal
+Title:       Error & Empty State Language Standard — v1
 Date:        2026-07-18
-Status:      PROPOSED — awaiting Founder review, NOT ratified
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live
 Superseded By: None
 Category:    Product / UX Writing
 Owner:       Founder (Shakeel)
-Approved by: Not yet approved
+Approved by: Founder (Shakeel), batch ratification 2026-07-26 (#24)
 
-Decision (proposed, not yet accepted):
+Decision (ratified):
   A written standard for how ZYRA shows validation errors,
   simulated backend/auth errors, empty states, and disabled
   states, at APP/UX Writing/ERROR_AND_EMPTY_STATE_STANDARD_
@@ -3560,25 +3561,26 @@ Related:
 ------------------------------------------------------------
 
 DR-ZYRA-081
-Title:       Wali Onboarding Content — v1 Draft Proposal
+Title:       Guardian Onboarding Content — v1
 Date:        2026-07-18
-Status:      PROPOSED — awaiting Founder review, NOT ratified
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live
 Superseded By: None
 Category:    Product / Onboarding
 Owner:       Founder (Shakeel)
-Approved by: Not yet approved
+Approved by: Founder (Shakeel), batch ratification 2026-07-26 (#24)
 
-Decision (proposed, not yet accepted):
-  A first-draft Wali onboarding flow, implemented at SOURCE/
-  lib/screens/wali/: name, relationship-to-Seeker selection
+Decision (ratified):
+  A first-draft Guardian onboarding flow, implemented at SOURCE/
+  lib/screens/guardian/: name, relationship-to-Seeker selection
   (Father / Grandfather / Brother / Paternal Uncle / Other, per
-  WALI ARCHITECTURE V5's WHO IS A WALI list), a "support and
+  GUARDIAN ARCHITECTURE V5's WHO IS A GUARDIAN list), a "support and
   guidance, not surveillance" purpose screen (paraphrasing that
   document's DESIGN PRINCIPLE section), then a mocked Invite
-  Seeker step (Path 3 — Wali Starts First). Also built: a 4-tab
-  Wali home shell (Dashboard / Seekers / Network / Profile, per
-  WALI NAVIGATION), with the Network tab correctly gated behind
-  Extended Wali capabilities and a mocked £9.99/month purchase
+  Seeker step (Path 3 — Guardian Starts First). Also built: a 4-tab
+  Guardian home shell (Dashboard / Seekers / Network / Profile, per
+  GUARDIAN NAVIGATION), with the Network tab correctly gated behind
+  Extended Guardian capabilities and a mocked £9.99/month purchase
   path per Path 2A.
 
 Context:
@@ -3586,21 +3588,21 @@ Context:
   detailed architecture — account model, capability grants,
   three entry paths, screen flow diagram, navigation structure —
   but the actual onboarding QUESTION CONTENT is never specified
-  anywhere in it. The WALI SCREEN FLOW section only references a
-  black-box "[ Wali Onboarding ]" node between account creation
-  and the Dashboard. No dedicated "Wali Onboarding Questions"
+  anywhere in it. The GUARDIAN SCREEN FLOW section only references a
+  black-box "[ Guardian Onboarding ]" node between account creation
+  and the Dashboard. No dedicated "Guardian Onboarding Questions"
   document exists (unlike the Seeker's SEEKER ONBOARDING
   QUESTIONS folder). This also surfaced a real bug: Role
-  Selection's "Wali (Guardian)" card was routing into the
+  Selection's "Guardian (Guardian)" card was routing into the
   Seeker's OnboardingFlow (name/gender/DOB, photos, location,
   etc.) — an entirely wrong persona — which is fixed as part of
   this change.
 
 Alternatives considered:
-  (1) Leave Wali selection broken/pointing at Seeker onboarding
+  (1) Leave Guardian selection broken/pointing at Seeker onboarding
   until content is specified — rejected, it's a live bug, not a
   neutral gap. (2) Build all three entry paths (Seeker invites
-  Wali, Wali purchases independently, Wali starts first) —
+  Guardian, Guardian purchases independently, Guardian starts first) —
   rejected for v1; only Path 3 is reachable from this app's
   current Role Selection screen, so Paths 1/2 (which need a
   Seeker-sent invite landing page) are deferred rather than
@@ -3609,23 +3611,23 @@ Alternatives considered:
 Reasoning:
   Same discipline as DR-ZYRA-079/080: a small, honestly-scoped
   v1 beats either leaving a known-wrong flow in place or
-  inventing a large, confident-looking Wali onboarding question
+  inventing a large, confident-looking Guardian onboarding question
   set with no spec basis. Kept intentionally short (2 questions)
   rather than mirroring the Seeker's ~200-question depth, since
-  WALI ARCHITECTURE V5 itself describes Wali accounts as
+  GUARDIAN ARCHITECTURE V5 itself describes Guardian accounts as
   "identity only" — there's no browsable profile to build
   toward.
 
 Impact:
-  Role Selection now correctly branches Seeker vs Wali. Wali
-  Network correctly reflects the Extended Wali gate from spec.
-  Wali Dashboard/Seekers tabs are real screens but functionally
+  Role Selection now correctly branches Seeker vs Guardian. Guardian
+  Network correctly reflects the Extended Guardian gate from spec.
+  Guardian Dashboard/Seekers tabs are real screens but functionally
   empty (no linking backend exists yet, so "0 linked Seekers" is
   permanent until Supabase — OA-101/102 — is connected).
 
 Related:
   APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V5.md,
-  SOURCE/lib/screens/wali/, SOURCE/lib/screens/auth/
+  SOURCE/lib/screens/guardian/, SOURCE/lib/screens/auth/
   role_selection_screen.dart
 
 ------------------------------------------------------------
@@ -3634,13 +3636,14 @@ DR-ZYRA-082
 Title:       Chapter 3/4 Onboarding Answers — JSONB storage,
              not per-question rows
 Date:        2026-07-18
-Status:      PROPOSED — awaiting Founder review, NOT ratified
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live
 Superseded By: None
 Category:    Architecture / Product
 Owner:       Founder (Shakeel)
-Approved by: Not yet approved
+Approved by: Founder (Shakeel), batch ratification 2026-07-26 (#24)
 
-Decision (proposed, not yet accepted):
+Decision (ratified):
   A new table, onboarding_answers, stores each Seeker's Chapter 3
   (Your Values) and Chapter 4 (Your Preferences) answers as three
   JSONB columns keyed by question ID: ch3_answers (single/multi
@@ -3701,28 +3704,29 @@ Related:
 ------------------------------------------------------------
 
 DR-ZYRA-083
-Title:       Wali Account Linking Mechanism — invite-token table
+Title:       Guardian Account Linking Mechanism — invite-token table
              + SECURITY DEFINER accept/preview functions
 Date:        2026-07-18
-Status:      PROPOSED — awaiting Founder review, NOT ratified
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live
 Superseded By: None
 Category:    Architecture / Product
 Owner:       Founder (Shakeel)
-Approved by: Not yet approved
+Approved by: Founder (Shakeel), batch ratification 2026-07-26 (#24)
 
-Decision (proposed, not yet accepted):
+Decision (ratified):
   A new wali_invites table plus two SECURITY DEFINER functions —
   preview_wali_invite() and accept_wali_invite() — implement the
   actual linking mechanism behind wali_links. Either a Seeker or a
-  Wali generates an invite (an 8-character shareable code); the
+  Guardian generates an invite (an 8-character shareable code); the
   other party enters it and accept_wali_invite() creates the
   wali_links row regardless of which side is signed in. One
-  symmetric mechanism covers Path 1/2 (Seeker invites Wali) and
-  Path 3 (Wali invites Seeker) per WALI_ARCHITECTURE_CURRENT_
-  VERSION_V5.md. Wired into the app as: a shared "Link a Wali" /
-  "Link a Seeker" screen (Seeker Profile and Wali Profile settings),
+  symmetric mechanism covers Path 1/2 (Seeker invites Guardian) and
+  Path 3 (Guardian invites Seeker) per WALI_ARCHITECTURE_CURRENT_
+  VERSION_V5.md. Wired into the app as: a shared "Link a Guardian" /
+  "Link a Seeker" screen (Seeker Profile and Guardian Profile settings),
   a shared invite-code entry screen, and a real code generator on
-  the existing Wali-onboarding "Invite your Seeker" step (previously
+  the existing Guardian-onboarding "Invite your Seeker" step (previously
   a mocked placeholder link).
 
 Context:
@@ -3733,7 +3737,7 @@ Context:
   (the RESULT of linking) with an INSERT policy scoped to
   seeker_id = auth.uid() — which only covers a Seeker creating the
   row while signed in as themselves, and cannot support a
-  Wali-initiated link (Path 3) where the Wali isn't the one the
+  Guardian-initiated link (Path 3) where the Guardian isn't the one the
   policy authorizes. This was flagged as an open gap in the original
   schema migration's comments ("wali_links_insert only covers Path
   1/2, explicitly not Path 3") and re-stated to the Founder in this
@@ -3744,12 +3748,12 @@ Alternatives considered:
   rejected: this was explicitly flagged as needing Founder
   confirmation before touching, since it changes who can
   unilaterally create a family-relationship record naming someone
-  else. (2) Build the full Extended Wali capability/entitlement
-  resolution engine (Primary Wali, Path A/B grants) alongside
+  else. (2) Build the full Extended Guardian capability/entitlement
+  resolution engine (Primary Guardian, Path A/B grants) alongside
   linking — rejected for v1: no schema representation exists for it
   anywhere yet (subscriptions.plan_type has no per-relationship
   entitlement concept), it's materially larger scope than "can two
-  accounts find and link to each other", and Extended Wali gating
+  accounts find and link to each other", and Extended Guardian gating
   already has its own mocked purchase flow elsewhere in the app that
   this doesn't need to disturb. (3) Real deep links (tap a link, code
   auto-fills) — rejected for v1: requires iOS/Android universal-link
@@ -3764,7 +3768,7 @@ Reasoning:
   or the Founder-reserved RLS-policy question. A SECURITY DEFINER
   accept function resolves the Path 3 authorization problem without
   loosening the client-facing wali_links_insert policy at all —
-  the function is the only path through which a Wali-initiated link
+  the function is the only path through which a Guardian-initiated link
   is created, mirroring the same pattern already used for match
   creation (create_match_on_mutual_like).
 
@@ -3772,10 +3776,10 @@ Impact:
   New table wali_invites + two RPC-callable functions (deliberately
   exposed to anon/authenticated — reviewed, not a defect, see
   Supabase advisor notes in this session). Seeker Profile screen
-  gains "Link a Wali"; Wali Profile screen gains "Link a Seeker" and
-  a real linked-Seeker count; Wali Dashboard/Seekers tabs show real
+  gains "Link a Guardian"; Guardian Profile screen gains "Link a Seeker" and
+  a real linked-Seeker count; Guardian Dashboard/Seekers tabs show real
   linked names instead of a permanent empty state. Journey/Timeline
-  visibility for a Wali remains unbuilt — linking only confirms the
+  visibility for a Guardian remains unbuilt — linking only confirms the
   relationship exists, per this DR's explicit scope boundary.
 
 Related:
@@ -3861,14 +3865,14 @@ DR-ZYRA-085
 Title:       Profile photo bucket made private; all display URLs
              become signed URLs
 Date:        2026-07-19
-Status:      PROPOSED — applied to keep spec compliance, awaiting
-             Founder ratification
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live
 Superseded By: None
 Category:    Security / Privacy / Storage
 Owner:       Founder (Shakeel)
-Approved by: Not yet approved
+Approved by: Founder (Shakeel), batch ratification 2026-07-26 (#24)
 
-Decision (proposed, applied 2026-07-19):
+Decision (ratified, applied 2026-07-19):
   The profile-photos Storage bucket is now PRIVATE. All photo display
   URLs (own profile, Browse candidates, Matches) are 7-day signed
   URLs generated per fetch. Storage read RLS broadened from
@@ -3908,17 +3912,17 @@ Related:
 ------------------------------------------------------------
 
 DR-ZYRA-086
-Title:       Wali-linking security hardening (column-scoped updates,
+Title:       Guardian-linking security hardening (column-scoped updates,
              anon revocation, secure invite tokens)
 Date:        2026-07-19
-Status:      PROPOSED — applied as security fixes, awaiting Founder
-             ratification
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live
 Superseded By: None
-Category:    Security / Wali System
+Category:    Security / Guardian System
 Owner:       Founder (Shakeel)
-Approved by: Not yet approved
+Approved by: Founder (Shakeel), batch ratification 2026-07-26 (#24)
 
-Decision (proposed, applied 2026-07-19):
+Decision (ratified, applied 2026-07-19):
   Three fixes in migration 20260719080735_security_hardening_wali_
   and_invites.sql (applied): (1) client UPDATE on wali_links
   restricted to the status column only, wali_suggestions to
@@ -3929,7 +3933,7 @@ Decision (proposed, applied 2026-07-19):
 Context:
   The wali_links UPDATE policy had no WITH CHECK and full-row column
   scope. Because the updated row only had to satisfy (seeker_id = me
-  OR wali_id = me), a signed-in Wali could rewrite an existing
+  OR wali_id = me), a signed-in Guardian could rewrite an existing
   link's seeker_id to point at ANY Seeker — creating an active
   guardianship link nobody consented to, bypassing the invite
   mechanism entirely. Separately, preview_wali_invite was callable
@@ -3961,18 +3965,19 @@ DR-ZYRA-087
 Title:       Developer Mode test-scenario switcher with seeded real
              Supabase test accounts (hybrid)
 Date:        2026-07-19
-Status:      PROPOSED — Founder requested the feature and approved
-             the hybrid approach 2026-07-19; implementation details
-             awaiting ratification
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live (implementation details, incl.
+             later #19/#28 refinements, now covered)
 Superseded By: None
 Category:    Developer Tooling
 Owner:       Founder (Shakeel)
-Approved by: Hybrid approach approved by Founder 2026-07-19
+Approved by: Founder (Shakeel); hybrid approach approved 2026-07-19,
+             implementation batch-ratified 2026-07-26 (#24)
 
-Decision (proposed, applied 2026-07-19):
+Decision (ratified, applied 2026-07-19):
   DeveloperAccessScreen upgraded from a jump-menu into a
   test-scenario switcher. Six presets (Seeker Basic male/female,
-  Seeker One male/female, Wali, Wali + Extended Wali) sign into
+  Seeker One male/female, Guardian, Guardian + Extended Guardian) sign into
   seeded REAL Supabase test accounts (password auth, dev.*@zyra.test,
   seeded via SOURCE/supabase/seed_dev_accounts.sql) and apply the
   matching AppState preset, landing directly on a fully-onboarded
@@ -3986,7 +3991,7 @@ Context:
 Reasoning:
   Real sessions exercise real RLS, triggers and backend paths — the
   point of everything built on 2026-07-18. Plan gating and Extended
-  Wali remain local AppState because subscriptions drive no UI yet
+  Guardian remain local AppState because subscriptions drive no UI yet
   and the entitlement engine has no schema. Password sign-in exists
   ONLY for these test accounts via ZyraAuth.signInWithTestAccount —
   Google + Apple remain the only user-facing auth (Founder
@@ -4012,16 +4017,15 @@ DR-ZYRA-088
 Title:       Welcome Screen Refinements — Typography, Layout,
              Platform-Native Sign-In Priority
 Date:        2026-07-19
-Status:      PROPOSED — implemented per Founder instruction
-             ("fix and run all"), awaiting Founder review/
-             ratification, NOT ratified
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live
 Superseded By: None
 Category:    Product / UX
 Owner:       Founder (Shakeel) — source: ChatGPT UX review
-Approved by: Implementation authorised by Founder 2026-07-19;
-             design content not yet individually ratified
+Approved by: Founder (Shakeel); implementation authorised 2026-07-19,
+             design content batch-ratified 2026-07-26 (#24)
 
-Decision (proposed, applied 2026-07-19):
+Decision (ratified, applied 2026-07-19):
   Implements OA-ZYRA-122. ZYRA wordmark letterSpacing widened
   1 -> 3 (zyra_text.dart) for a more premium feel — the
   underlying typeface (Playfair Display) was already changed
@@ -4067,16 +4071,16 @@ DR-ZYRA-089
 Title:       Browse Screen & Bottom Navigation Refinements —
              Floating Glassmorphic Nav, Swipe-Limit Modal
 Date:        2026-07-19
-Status:      PROPOSED — implemented per Founder instruction
-             ("fix and run all"), awaiting Founder review/
-             ratification, NOT ratified
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live (superseded in part by DR-ZYRA-091's
+             nav bar rebuild, itself ratified below)
 Superseded By: None
 Category:    Product / UX
 Owner:       Founder (Shakeel) — source: ChatGPT UX review
-Approved by: Implementation authorised by Founder 2026-07-19;
-             design content not yet individually ratified
+Approved by: Founder (Shakeel); implementation authorised 2026-07-19,
+             design content batch-ratified 2026-07-26 (#24)
 
-Decision (proposed, applied 2026-07-19):
+Decision (ratified, applied 2026-07-19):
   Implements OA-ZYRA-125. HomeShell's (Seeker) fixed solid
   dark-purple bottomNavigationBar replaced with a floating
   glassmorphic pill (BackdropFilter blur, rounded, inset 24px
@@ -4088,7 +4092,7 @@ Decision (proposed, applied 2026-07-19):
   selected state now larger + full opacity, unselected smaller
   + dimmed, per the source review's spec. WaliHomeShell given
   the same treatment — its own code comment already called this
-  out as a known deviation from WALI ARCHITECTURE's spec
+  out as a known deviation from GUARDIAN ARCHITECTURE's spec
   ("floating glass pill: same design as Seeker nav... both
   should move to the floating-pill treatment together if that
   gets confirmed"), confirmed today.
@@ -4116,13 +4120,13 @@ Alternatives considered:
   number.
 
 Reasoning:
-  Matching Wali's nav to Seeker's, rather than just recolouring
-  Wali's existing solid bar, resolves both this item and a
+  Matching Guardian's nav to Seeker's, rather than just recolouring
+  Guardian's existing solid bar, resolves both this item and a
   pre-existing documented spec deviation in one change instead
   of two separate ones.
 
 Impact:
-  screens/home/home_shell.dart, screens/wali/wali_home_shell.dart,
+  screens/home/home_shell.dart, screens/guardian/wali_home_shell.dart,
   screens/browse/browse_screen.dart. New dependency on
   screens/subscription/upgrade_screen.dart from browse_screen.dart
   (already existed, now also referenced here). No schema changes.
@@ -4217,7 +4221,7 @@ Reasoning:
 Impact:
   theme/zyra_colors.dart, main.dart, screens/auth_gate.dart,
   screens/browse/browse_screen.dart, screens/home/home_shell.dart
-  (already touched by DR-089), screens/wali/wali_home_shell.dart
+  (already touched by DR-089), screens/guardian/wali_home_shell.dart
   (already touched by DR-089). Every onboarding screen changes
   appearance without individual code changes, since they all
   route through ZyraColors.backgroundFor() via
@@ -4241,16 +4245,16 @@ Title:       Floating Nav Bar Rebuilt to Match Instagram +
              Lovable Reference Recordings — Shared FloatingNavBar
              Widget
 Date:        2026-07-19
-Status:      PROPOSED — implemented per Founder instruction,
-             awaiting Founder review/ratification, NOT ratified
+Status:      RATIFIED (2026-07-26, #24) — batch-ratified; already
+             implemented and live, since seen running on device
+             across many sessions
 Superseded By: None
 Category:    Product / UX
 Owner:       Founder (Shakeel)
-Approved by: Founder supplied two reference screen recordings
-             and asked for this treatment directly; not yet
-             seen running on device
+Approved by: Founder (Shakeel); supplied the reference recordings
+             and batch-ratified the result 2026-07-26 (#24)
 
-Decision (proposed, applied 2026-07-19):
+Decision (ratified, applied 2026-07-19):
   Extracted frames from two Founder-supplied screen recordings
   (Instagram's own nav bar; an earlier Lovable-built ZYRA
   prototype) and rebuilt the DR-ZYRA-089 floating nav bar to
@@ -4289,7 +4293,7 @@ Reasoning:
 
 Impact:
   New file widgets/floating_nav_bar.dart. screens/home/home_shell.dart
-  and screens/wali/wali_home_shell.dart both simplified to call
+  and screens/guardian/wali_home_shell.dart both simplified to call
   it instead of carrying their own copy of the bar + _NavItem
   class. No behaviour change to which tabs exist or what they do,
   purely visual/animation. Not yet visually verified on device —
@@ -4515,8 +4519,8 @@ Impact:
     next time ZYRA_EXECUTION_V3.md §3.2's checklist is actually run
     against a given feature, not retrofitted in bulk.
   The three-gradient colour decision itself (Purple = Global Brand
-    / Default, Blue = Male Seeker + Male Wali, Pink = Female Seeker
-    + Female Wali) remains discussion only — not recorded by this
+    / Default, Blue = Male Seeker + Male Guardian, Pink = Female Seeker
+    + Female Guardian) remains discussion only — not recorded by this
     decision, awaiting separate explicit Founder instruction to file.
 
 Related:
@@ -4546,11 +4550,11 @@ Decision:
   1. `BUSINESS/COLOUR THEME/Summary.md`'s "Option 1" is ratified
      as the final, locked colour palette:
        Global Brand / Default: #8A6A9E → #3D2A4A
-       Male Theme (Male Seeker + Male Wali): #3D5A80 → #3D2A4A
-       Female Theme (Female Seeker + Female Wali): #D4868F → #3D2A4A
+       Male Theme (Male Seeker + Male Guardian): #3D5A80 → #3D2A4A
+       Female Theme (Female Seeker + Female Guardian): #D4868F → #3D2A4A
      matching the Founder's verbal confirmation ("blue to purple
-     for male seekers and wali, pink to purple for female seekers
-     and wali, purple is default for everything else") and
+     for male seekers and guardian, pink to purple for female seekers
+     and guardian, purple is default for everything else") and
      `Flow Diagram.md`'s COLOUR APPLICATION LOGIC, which already
      specified these exact values.
   2. "Option 2" (no dedicated brand colour, flat two-colour
@@ -4643,7 +4647,7 @@ Decision:
      Seeker portion of the "Full Safety & Moderation design"
      item flagged as an Open Discussion in `APP/Journey/JOURNEY
      MANAGEMENT/Summary.md`. It does NOT resolve: Block/Report
-     Wali, blocking effects on an existing Active Journey/
+     Guardian, blocking effects on an existing Active Journey/
      Timeline, or post-Journey-end privacy — `JOURNEY MANAGEMENT/
      Summary.md` updated 2026-07-25 to reflect partial, not full,
      resolution.
@@ -4823,7 +4827,7 @@ Context:
   Checked 2026-07-25 against Product Spec V3 Part 0 (Feature-State
   Covenant — no new relationship state introduced, so no conflict)
   and against `JOURNEY AVAILABILITY/Summary.md` (already covers "one
-  Active Journey, many Potential Journeys" and an existing
+  Active Journey, many Journey Queue" and an existing
   eligible/not-eligible concept with reasons). Raised to ChatGPT and
   the Founder rather than resolved unilaterally, given the overlap.
   Both independently concluded this is a UX refinement of existing
@@ -5033,8 +5037,8 @@ Decision:
   2. Test Accounts section rewritten to correctly describe what
      already exists in code (`developer_access_screen.dart`, built
      2026-07-19 per direct Founder request): real Supabase-backed
-     Seeker presets (Basic/One × male/female) and Wali presets
-     (currently one persona, Extended Wali as a mock toggle).
+     Seeker presets (Basic/One × male/female) and Guardian presets
+     (currently one persona, Extended Guardian as a mock toggle).
   3. Test Sign-Up (OA-ZYRA-139) added as a new, distinct capability
      — full real onboarding flow, real validation throughout,
      distinct from the existing "Jump to Screen" mock-state flow.
@@ -5069,7 +5073,7 @@ Reasoning:
 Impact:
   APP/Developer Mode/Script/Script_V2.md (new).
   OA-ZYRA-139 marked Actioned.
-  Not yet built: Test Sign-Up itself, the completed Wali-side Test
+  Not yet built: Test Sign-Up itself, the completed Guardian-side Test
   Accounts matrix, and (necessarily) the real payment integration
   the Payment section depends on.
 
@@ -5117,8 +5121,8 @@ Context:
   DR-ZYRA-094 ratified gender-based Blue/Pink/Purple gradients, and
   `zyra_colors.dart` was updated with the correct hex constants —
   but they were not correctly wired into most of the screens that
-  same ratified document said they should govern. Wali screens had
-  Male hardcoded regardless of the signed-in Wali's actual gender,
+  same ratified document said they should govern. Guardian screens had
+  Male hardcoded regardless of the signed-in Guardian's actual gender,
   the Female gradient was defined but referenced nowhere in the
   app, and the Seeker's own Profile screen stayed on the neutral
   gradient. The primary document (`BUSINESS/COLOUR THEME/
@@ -5160,7 +5164,7 @@ Impact:
   and fixed by running exactly this sweep — `ZyraColors.
   genderGradient()` added, and wired into Profile, Matches, Match
   Notification, Journey Timeline, Chat, Upgrade/Subscription, and
-  both Wali link screens (previously hardcoded Male or left
+  both Guardian link screens (previously hardcoded Male or left
   neutral). Welcome, Role Selection, Developer Access, and the
   Profile Ready onboarding screen were deliberately left neutral,
   with reasons stated at the time, rather than swept in by default.
@@ -5319,11 +5323,3242 @@ Related:
 
 ------------------------------------------------------------
 
+DR-ZYRA-104
+Title:       Widen Guardian visibility to Browse-stage activity and full
+             Match history (Saved / Considered / Passed / all Matches)
+             — PROPOSED, conflicts with two ratified documents
+Date:        2026-07-26
+Status:      PROPOSED — awaiting Founder ratification. Do not implement
+             any part of this until decided; the already-ratified
+             Journey/Timeline/Messages visibility (see DR context
+             below) has been built independently under the existing
+             WALI_ARCHITECTURE_CURRENT_VERSION_V5.md baseline and does
+             NOT depend on this DR being approved.
+Superseded By: None
+Category:    Product / Privacy / Guardian Architecture
+Owner:       Founder (Shakeel)
+Approved by: Pending
+
+Decision requested:
+  Whether to override two currently-ratified privacy boundaries so
+  that a Guardian can additionally see, for each linked Seeker:
+    - Saved profiles
+    - Considered (outgoing) profiles
+    - Passed/Declined profiles
+    - The full Match list (not just the single Active Journey a Guardian
+      already supervises) — including archived/ended Journeys as
+      historical record
+    - Compatibility Summaries (the numeric/category score, not the
+      underlying Chapter 3/4 answers)
+    - Journey invitations/requests as a distinct concept from Match
+      events
+
+Context:
+  Raised via a Founder request (2026-07-26 session) for broad Guardian
+  oversight across the entire matching and Journey system, framed as
+  "the Guardian is a trusted guardian... should effectively have a
+  complete view of the Seeker's progression through the matching and
+  Journey system." A repository review (DR-ZYRA-101 discipline) found:
+
+  (1) Most of the REQUEST is already ratified and simply unbuilt.
+  WALI_ARCHITECTURE_CURRENT_VERSION_V5.md's "STANDARD GUARDIAN
+  CAPABILITIES" section already approves (since 2026-07-04): viewing
+  Journey progress, viewing messages between Seeker and match, viewing
+  the Timeline, Family Review Period notifications with Continue/
+  Pause, raising concerns/flags, and safety alerts. This portion has
+  been built in this same session (20260726130000_wali_journey_
+  visibility.sql; screens/guardian/wali_journey_detail_screen.dart;
+  screens/guardian/wali_dashboard_screen.dart) and requires no decision
+  from this DR.
+
+  (2) The Browse/Match-list portion of the request directly conflicts
+  with two independently-ratified documents:
+    - WALI_ARCHITECTURE_CURRENT_VERSION_V5.md, "WHAT THE GUARDIAN CAN
+      NEVER SEE (regardless of Seeker's subscription)": explicitly
+      lists "Match list / Browse activity."
+    - APP/Matching/PROFILE DECISION SYSTEM/Summary.md: "Guardian... Does
+      not participate in Browse profile decisions — Browse is
+      Seeker-only... Guardian's role is oversight of the Seeker's Journey
+      once one exists, not making decisions on Browse," and its
+      TIMELINE ACCESS rule: "Guardian... Can view timelines for Journeys
+      they supervise (once an Active Journey exists — Guardian is not
+      involved at the Browse/Potential Journey stage)."
+
+  (3) A technical constraint independent of privacy policy: Passed/
+  Declined profiles are not persisted server-side for ANYONE, Seeker
+  included ("No notification is sent. No explanation given" — Pass is
+  absent from PROFILE DECISION SYSTEM's own TIMELINE EVENTS list).
+  Showing a Guardian "Declined profiles" would require first reversing
+  this no-record design for all Seekers, not merely adding a Guardian read
+  grant — a materially larger and separate change.
+
+  (4) A documentation contradiction was found while reviewing this:
+  WALI_ARCHITECTURE_CURRENT_VERSION_V5.md has a "CONNECTIONS SECTIONS"
+  heading listing Declined/Review/Family Introductions/Likes/Matches,
+  which contradicts (a) the same document's own "never see" list two
+  sections later, and (b) the same document's ratified Guardian nav
+  (Dashboard/Seekers/Network/Profile — no Connections tab at all).
+  Flagged as a likely copy-paste leftover from the Seeker-side
+  SEEKER_NAVIGATION spec; treat as a documentation defect pending
+  Founder confirmation, not evidence of an intended-but-forgotten
+  Guardian capability.
+
+  Proposal Stage and Nikah Completion (also requested) do not appear
+  as concepts anywhere in the reviewed specs — the built/ratified
+  Journey lifecycle ends at Conversation (Compatibility Reveal ->
+  Salam Exchange -> Guardian Gate -> Phase 1/2/3 -> Family Stage ->
+  Conversation). Adding them would be new product scope, not a
+  visibility question.
+
+Alternatives considered:
+  (a) Build the full request as asked, treating it as an implicit
+  override of the "never see Browse activity" rule — rejected as a
+  unilateral action: two independent ratified documents say the
+  opposite, and Pass isn't even persisted server-side to show.
+  (b) Silently ignore the parts that conflict and only build the
+  already-ratified subset — rejected: the Founder's stated intent
+  (broad Guardian oversight) deserves an explicit yes/no on the record,
+  not a quiet partial delivery with no explanation.
+  (c) [This DR] — build the already-approved subset now, put the
+  conflicting subset to an explicit decision.
+
+Reasoning:
+  DR-ZYRA-101's own discipline: when a request conflicts with ratified
+  documentation, flag the conflict and raise it as a decision rather
+  than assume either the request or the existing doc silently wins.
+  This is exactly that situation, twice over (two separate documents),
+  plus a technical constraint (no Pass persistence) that exists
+  regardless of the privacy question.
+
+Options for the Founder to choose between:
+  1. Reject — keep the current boundary. Guardian oversight begins at
+     Active Journey (already being built); Browse/Match-list/Saved/
+     Considered/Passed activity remains Seeker-only, permanently.
+  2. Accept narrow — grant Guardian visibility into the Seeker's own
+     Match list (Potential + Active + Ended, i.e. "who has this Seeker
+     matched with," not Saves/Considers/Passes), while Browse-stage
+     Save/Consider/Pass activity stays private. Requires new RLS on
+     `matches` allowing Guardian visibility of 'potential' and 'ended'
+     matches (this DR's baseline build already covers non-'potential'
+     matches).
+  3. Accept broad — grant everything requested, including Saves/
+     Considers/Passes. Also requires: reversing the "Pass has no
+     server record" design (a separate, larger technical change
+     affecting every Seeker, not just Guardian-linked ones) and rewriting
+     both WALI_ARCHITECTURE_CURRENT_VERSION_V5.md and PROFILE DECISION
+     SYSTEM/Summary.md's Guardian sections to match.
+
+Impact if approved (options 2 or 3):
+  - New RLS policies (option 2: `matches` only; option 3: also
+    `saves`, `likes` tables currently own-row-only).
+  - If option 3: a new migration adding server-side Pass persistence
+    (new table or column), affecting Browse's "no record, no
+    notification" behaviour for every Seeker.
+  - WALI_ARCHITECTURE_CURRENT_VERSION_V5.md superseded by a V6 with
+    the "never see" list corrected.
+  - PROFILE DECISION SYSTEM/Summary.md's Guardian terminology section and
+    TIMELINE ACCESS rule rewritten to match.
+  - New Guardian-side UI surfacing whichever lists are approved.
+
+Related:
+  APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V5.md,
+  APP/Matching/PROFILE DECISION SYSTEM/Summary.md,
+  SOURCE/supabase/migrations/20260726130000_wali_journey_visibility.sql,
+  SOURCE/lib/screens/guardian/wali_journey_detail_screen.dart,
+  SOURCE/lib/screens/guardian/wali_dashboard_screen.dart,
+  DR-ZYRA-101
+
+------------------------------------------------------------
+
+DR-ZYRA-105
+Title:       Guardian Subscription Entitlement vs. Active Guardian
+             Participation — Named as Two Distinct Concepts
+Date:        2026-07-26
+Status:      PROPOSED — awaiting Founder ratification. The underlying
+             behaviour already exists in code (see Evidence below);
+             this DR formalises it as a named, permanent product rule
+             so it cannot be silently violated by a future feature.
+Superseded By: None
+Category:    Product / Safeguarding / Guardian Architecture
+Owner:       Founder (Shakeel) — raised directly, not routed through
+             ChatGPT
+Approved by: Not yet approved
+
+Decision (proposed):
+  Two concepts are formally distinguished and must never be treated
+  as equivalent anywhere in ZYRA's product, code, or documentation:
+
+  1. GUARDIAN SUBSCRIPTION ENTITLEMENT — a Seeker or Guardian account holding
+     a paid tier that unlocks Guardian-related CAPABILITY (ZYRA One's
+     included Extended Guardian entitlement; a Guardian's own independent
+     £9.99/month Extended Guardian purchase; the forthcoming "Guardian+"
+     naming, see Related below). This governs what a Guardian COULD do
+     if one were linked and active.
+
+  2. ACTIVE GUARDIAN PARTICIPATION — a real, linked, active Main Guardian
+     (a `wali_links` row with `is_main = true, status = 'active'`)
+     actually present in a Seeker's Journey. This governs what is
+     REQUIRED before certain Journey stages may proceed at all.
+
+  Entitlement never substitutes for participation. A Seeker may hold
+  every paid capability ZYRA sells and still be blocked from Journey
+  stages that require a Guardian, if no real Guardian is linked and active.
+  This is intentional: it is a safeguarding/marriage-process control,
+  not a monetisation gate, and purchasing must never be presented or
+  built as a way to bypass genuine Guardian involvement.
+
+  Any feature that requires or reveals Guardian involvement (Journey
+  stage gates, Family Stage progression, Guardian approvals/review
+  workflows, Guardian communication, the not-yet-built Family Review
+  Period §OA-dependency below) MUST check real `wali_links` state
+  (or the server-side equivalent), never subscription/entitlement
+  state, to determine whether the requirement is satisfied. Where a
+  requirement is unmet, the UI must say so plainly and supportively
+  — the Guardian Gate's existing copy ("To begin your journey, you need
+  to link a Guardian") is the standard to match, not a bug-shaped dead
+  end.
+
+Evidence this is already the practice, not a gap to build from
+scratch (audited 2026-07-26):
+  - `ZyraJourneyService.hasActiveMainWali()` (zyra_journey_service.dart)
+    checks the real `wali_links` table (`is_main=true, status='active'`)
+    — not `wali_has_extended_wali()` or any subscription field — and
+    backs the Guardian Gate stage (`journey_flow_screen.dart`,
+    `_WaliGateView`), which blocks progression with exactly the
+    "link a Guardian" messaging this DR requires.
+  - Family Stage (`_FamilyStageView`, journey_flow_screen.dart)
+    requires the linked Guardian's own real answers (via
+    wali_journey_detail_screen.dart), not a subscription check —
+    structurally impossible to satisfy without a real, participating
+    Guardian.
+  - `upgrade_screen.dart` already carries a `_WaliDependencyNotice`
+    widget stating "Some ZYRA One features require a linked Guardian.
+    Once your Guardian accepts their invitation, everything unlocks
+    automatically" — the distinction is already surfaced to the user
+    at the point of purchase, unprompted by this DR.
+
+The actual gap (confirmed by search — zero mentions of "no Guardian
+linked" / "without a Guardian" anywhere in WALI_ARCHITECTURE_CURRENT_
+VERSION_V5.md): this distinction has never been written down as a
+named rule. It exists only as an emergent property of three separate
+implementation decisions, each made independently, with no single
+document a future contributor (human or AI) could check before
+building a new Guardian-adjacent feature the wrong way — e.g. gating a
+future feature on `wali_has_extended_wali()`/subscription tier alone,
+which would silently violate the safeguarding intent this DR exists
+to protect.
+
+Context:
+  Raised directly by the Founder (2026-07-26), alongside a separate
+  performance/efficiency discussion — see SYSTEM/DOCUMENTS/
+  ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_VERSION_V1.md (unrelated
+  topic, same session). The Founder's framing: "Although we
+  introduced ZYRA One to solve the commercial and legal issue of a
+  Seeker paying for premium features independently of their Guardian,
+  this does not remove the requirement to actually have a linked
+  Guardian... The subscription unlocks the capability. It does not
+  satisfy the participation requirement."
+
+Alternatives considered:
+  - Leave undocumented, relying on the existing code being correct by
+    accident. Rejected — "correct today, unenforceable tomorrow" is
+    exactly the failure mode this DR exists to close off, per the
+    Founder's own request to make this "an explicit product rule."
+  - Fold this into WALI_ARCHITECTURE_CURRENT_VERSION_V5.md directly
+    as a V6 revision rather than a standalone DR. Not done in this
+    pass — recommended as the natural follow-up once this DR is
+    ratified (Impact, below), so the rule is ratified once and then
+    propagated into the owning spec, rather than drafting spec
+    language before Founder approval of the underlying rule.
+
+Impact (once ratified):
+  - WALI_ARCHITECTURE_CURRENT_VERSION_V5.md → V6: add an explicit
+    section naming these two concepts and the never-substitutes rule.
+  - APP/Journey/JOURNEY AVAILABILITY/Summary.md and the not-yet-built
+    Family Review Period (48h Continue/Pause gate) must be built
+    checking real `wali_links` participation, never subscription —
+    this DR is the explicit governing rule for that future build.
+  - No code changes required today — the audited behaviour already
+    complies. This DR's effect is documentation/governance, not
+    implementation.
+
+Related:
+  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4.md §7 (Included Extended Guardian
+  Entitlement), APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V5.md,
+  APP/Journey/PRE-JOURNEY RITUAL/Summary.md (Guardian Gate spec),
+  APP/Journey/JOURNEY AVAILABILITY/Summary.md (Family Review Period,
+  not yet built), SOURCE/lib/services/zyra_journey_service.dart,
+  SOURCE/lib/screens/journey/journey_flow_screen.dart,
+  SOURCE/lib/screens/subscription/upgrade_screen.dart.
+  Separately raised in the same discussion, NOT decided by this DR:
+  renaming "Extended Guardian" to "Guardian+" (for symmetry with "ZYRA
+  One") — a naming change, not a scope change, tracked separately
+  pending Founder confirmation of blast radius (touches the ratified
+  Master Spec, WALI_ARCHITECTURE, and multiple code/UI strings).
+
+------------------------------------------------------------
+
+DR-ZYRA-106
+Title:       "Extended Guardian" Renamed to "Guardian+"
+Date:        2026-07-26
+Status:      Approved
+Owner:       Founder (Shakeel)
+Approved by: Founder (Shakeel), 2026-07-26 — direct instruction,
+             relayed alongside the Performance/Guardian Linking
+             discussion: rename it, full sweep, same discipline as
+             DR-ZYRA-099's Pass/Save/Consider rename.
+
+Decision:
+  "Extended Guardian" is renamed to "Guardian+" everywhere — product
+  documentation, code, and UI strings — matching the existing
+  "ZYRA One" naming pattern (Seeker: ZYRA Basic/ZYRA One; Guardian:
+  Guardian Basic/Guardian+). Pure rename: no capability, resolution
+  rule, pricing, or architectural content changed anywhere.
+
+  Scope actually executed (following the same discipline as
+  DR-ZYRA-099 — user-facing terminology and code identifiers
+  renamed together this time, since the surface area was small and
+  contained, unlike DR-099's larger enum/handler-name footprint):
+    - SQL: public.wali_has_extended_wali() renamed to
+      public.wali_has_wali_one() via ALTER FUNCTION ... RENAME TO
+      (20260726180000_rename_wali_has_extended_wali_to_wali_one.sql)
+      — grants verified to survive the rename unchanged (anon
+      false, authenticated true).
+    - Dart: ZyraEntitlementService.hasExtendedWali() →
+      hasWaliOne(); AppState.waliHasExtendedWali → waliHasWaliOne,
+      setWaliExtendedWali() → setWaliOne(); wali_profile_screen.dart's
+      _hasExtendedWali → _hasWaliOne; developer_access_screen.dart's
+      _DevPreset.extendedWali → isWaliOne. All call sites and UI
+      strings (badges, buttons, snackbars, sublabels) updated.
+    - Docs: ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4.md → V5 (§7
+      "Included Extended Guardian Entitlement" → "Included Guardian+
+      Entitlement"; archived as ZYRA_PRODUCT_SPEC_2026-07-26_V4.md).
+      WALI_ARCHITECTURE_CURRENT_VERSION_V5.md → V6 (archived as
+      WALI_ARCHITECTURE_2026-07-26_V5.md). All other live documents
+      citing either filename or the term updated in the same pass.
+    - NOT touched (deliberately, matching this project's standing
+      policy on historical records): migration filenames already
+      applied live (e.g. 20260726160000_wali_extended_wali_real_
+      gating.sql keeps its name — only the function it created was
+      renamed, by a new migration, not the old one edited in place),
+      dated/historical documents (Decisions Register entries other
+      than this one, OUTSTANDING_ACTIONS_V2.md's still-open
+      OA-ZYRA-124 — which itself asks a clarifying question about
+      "Extended Guardian" from 2026-07-19 and is next on the build
+      queue — CHANGELOG, dated audit/handover snapshots).
+
+  Two wording slips caught and fixed while editing, unrelated to the
+  rename itself: the Master Spec's "reverts to ZYRA Basic" corrected
+  to "reverts to Guardian Basic" (the correct Guardian-tier name); two
+  sentences in WALI_ARCHITECTURE that word-wrapped "Extended Guardian"
+  across a line break and one "an Extended Guardian" article-agreement
+  case were missed by the first mechanical pass and fixed by hand
+  before this DR was filed.
+
+Context:
+  Raised in the same message as the Performance/Efficiency
+  discussion and DR-ZYRA-105 (Guardian participation vs. entitlement) —
+  see SYSTEM/DOCUMENTS/ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_
+  VERSION_V1.md and DR-ZYRA-105 for that unrelated thread from the
+  same session.
+
+Related:
+  DR-ZYRA-105 (flagged this rename as separately tracked), DR-ZYRA-099
+  (naming precedent/discipline), ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5.md
+  §7, APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V6.md,
+  SOURCE/lib/services/zyra_entitlement_service.dart,
+  SOURCE/supabase/migrations/20260726180000_rename_wali_has_extended_
+  wali_to_wali_one.sql.
+
+Correction (2026-07-26, found while working OA-ZYRA-124/#31): this
+DR's "all other live documents... updated in the same pass" claim was
+incomplete. The mechanical sed only matched exact title-case "Extended
+Guardian" — it missed ALL-CAPS section headers and lowercase "extended"
+usages in several live documents: WALI_ARCHITECTURE_CURRENT_VERSION_
+V6.md (EXTENDED GUARDIAN / EXTENDED GUARDIAN CAPABILITIES headers, plus 3
+inline lowercase instances, plus one "An Guardian+" article-agreement
+slip), JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V3.md (3
+instances), APP/Premium/GUARDIAN PREMIUM/Summary.md (title itself was
+still "EXTENDED GUARDIAN", plus a section header and stale
+hasExtendedWali()/waliHasExtendedWali code references), APP/Journey/
+PRE-JOURNEY RITUAL/Summary.md and APP/Navigation/SEEKER NAVIGATION/
+Flow Diagram.md (one header each). All fixed by hand this pass;
+archived/historical documents were left untouched per standing policy.
+No further live-document instances remain (verified via a
+case-insensitive repo-wide grep after fixing).
+
+------------------------------------------------------------
+
+DR-ZYRA-107
+Title:       Guardian Account UX Parity Fixes (OA-ZYRA-124)
+Date:        2026-07-26
+Status:      Approved
+Owner:       Founder (Shakeel)
+Approved by: Founder (Shakeel), 2026-07-26 — "dsO CONTINUE",
+             direct instruction to keep working through the
+             task list in order, which reached OA-ZYRA-124 next.
+
+Decision:
+  Four concrete parity gaps between the Guardian account experience
+  and the Seeker account experience are fixed, found while
+  actioning OA-ZYRA-124's per-account-type UX review:
+
+    1. WaliHomeShell had no Dev Access shortcut — a signed-in Guardian
+       test account had no way back to the account switcher without
+       an app restart, unlike Seeker's HomeShell. Added the same
+       GlassIconButton, same position, same behaviour.
+    2. WaliProfileScreen's plan badge ("Guardian+" / "Standard Guardian")
+       was static — Seeker's equivalent badge is tappable through to
+       a purchase surface, this wasn't tappable at all.
+    3. WaliProfileScreen had no "Manage Subscription" settings row —
+       Seeker's ProfileScreen has one.
+    4. WaliProfileScreen's "Notifications" and "Privacy" settings
+       rows had no onTap at all — silently dead taps with nothing
+       behind them.
+
+  Fix chosen deliberately does NOT reuse the Seeker's screens
+  verbatim, since two of them are genuinely Seeker-only concepts:
+  UpgradeScreen sells "ZYRA Basic/ZYRA One" via AppState.plan, a
+  different entitlement than a Guardian's wali_premium; and
+  PrivacySettingsScreen's only control is "Visible in Browse", which
+  doesn't apply to a Guardian account at all (GUARDIAN ARCHITECTURE: "Guardian
+  accounts carry identity only" — no Browse-visible profile exists to
+  toggle).
+
+  Implementation:
+    - WaliHomeShell: added top-right NotificationBell + Dev Access
+      GlassIconButton row (parity with HomeShell); converted the
+      static `_pages` list to a build()-local `pages` list; added
+      `_goToTab(int)`, threaded as `onNavigateToNetwork` into
+      WaliProfileScreen (same pattern as HomeShell's existing
+      `onNavigateToConnections` → BrowseScreen).
+    - WaliProfileScreen: added nullable `onNavigateToNetwork`
+      callback param; plan badge wrapped in GestureDetector calling
+      it; new "Manage Subscription" row calling it; "Notifications"
+      row now opens a new WaliNotificationSettingsScreen; "Privacy"
+      row now opens an honest explanatory dialog instead of a fake
+      toggle.
+    - New file: wali_notification_settings_screen.dart — reuses
+      AppState.notifyNewMessages/notifyWaliRequests (the same fields
+      the Seeker's NotificationSettingsScreen uses — the in-app Bell
+      already delivers 'new_message' and 'wali_request' rows to both
+      account types per zyra_notification_service.dart) with
+      Guardian-appropriate copy; deliberately omits a "New Matches"
+      toggle since a Guardian doesn't Browse or match.
+
+  "Get Guardian+" (the real purchase surface, already live in
+  wali_network_screen.dart) is unchanged by this DR — the badge and
+  new settings row now navigate to it rather than duplicating it.
+
+Context:
+  OA-ZYRA-124 (Account Types & UX Review) asked for a full review of
+  8 account-type/gender variants against 10 criteria. Its own
+  "Outstanding Question" about "Extended Guardian" is superseded by
+  DR-ZYRA-106 (renamed to "Guardian+" the same day). This DR covers
+  the first concrete fixes found while doing that review; the full
+  review write-up is SYSTEM/DOCUMENTS/ZYRA_ACCOUNT_TYPE_UX_REVIEW_
+  CURRENT_VERSION_V1.md, which also lists gaps intentionally NOT
+  fixed here (flagged as Delay/Reject, with reasoning) so this DR
+  doesn't overclaim scope.
+
+Alternatives considered:
+  Point the Guardian's plan badge/"Manage Subscription" straight at the
+  existing (Seeker) UpgradeScreen — rejected: it would silently write
+  to AppState.plan (ZYRA Basic/One), the wrong entitlement field
+  entirely, actively misleading rather than merely incomplete.
+  Reuse PrivacySettingsScreen as-is for the Guardian "Privacy" row —
+  rejected: its only toggle ("Visible in Browse") has no Guardian-side
+  equivalent to control; a fake toggle would be worse than the
+  previous dead tap.
+
+Impact:
+  Guardian account UX only. No entitlement, pricing, or Seeker-side
+  behaviour changed. No migration required (no schema change).
+
+Related:
+  OA-ZYRA-124, DR-ZYRA-106 (Guardian+ rename), DR-ZYRA-094 (gender-
+  gradient parity, same "Guardian screens lag Seeker screens" pattern),
+  SOURCE/lib/screens/guardian/wali_home_shell.dart,
+  SOURCE/lib/screens/guardian/wali_profile_screen.dart,
+  SOURCE/lib/screens/guardian/wali_notification_settings_screen.dart.
+
+------------------------------------------------------------
+
+DR-ZYRA-108
+Title:       Developer Access "Test Sign Up" — Scoped Down from
+             OA-ZYRA-127's Literal Request
+Date:        2026-07-26
+Status:      Approved
+Owner:       Founder (Shakeel)
+Approved by: Founder (Shakeel), 2026-07-26 — "dsO CONTINUE", task
+             list continued in order to OA-ZYRA-127.
+
+Decision:
+  A "Test Sign Up" section is added to DeveloperAccessScreen with
+  two tiles — Seeker and Guardian — each of which resets AppState to a
+  blank slate (`applyDevPreset()` with no arguments) and pushes the
+  REAL onboarding flow (OnboardingFlow / WaliOnboardingFlow), so a
+  developer answers every question themselves exactly as a first-
+  time user would, rather than landing pre-filled on Home like the
+  existing Test Accounts section does.
+
+  This deliberately does NOT build two parts of OA-ZYRA-127's source
+  document literally:
+    - An 8-way account-type/tier picker (Seeker Basic/One,
+      Guardian Basic/One, each male/female). Checked against existing
+      code first: no chapter in the real onboarding flow ever asks
+      "Basic or One" — AppState.plan defaults to ZyraPlan.basic for
+      every new account, and tier is only ever changed afterwards,
+      from the Profile tab (Seeker) or Network tab (Guardian). A picker
+      that asks for a tier during Test Sign Up would therefore test
+      a step that doesn't exist in production — the opposite of
+      OA-127's own stated goal ("closely mirroring the production
+      user experience"). Likewise, no female-Guardian tile is offered:
+      ZyraProfileService.createWaliProfile() always writes
+      gender: 'male' by design, since WALI_ARCHITECTURE_CURRENT_
+      VERSION_V6.md's WHO IS A GUARDIAN section defines a Guardian as a male
+      guardian and explicitly lists "female guardian acting in Guardian
+      capacity" under EXCEPTIONAL CASES (DEFERRED) — real sign-up
+      cannot produce a female Guardian today (the seeded dev.guardian.f@
+      zyra.test / Khadija test account exists purely to exercise the
+      female-gradient UI code path per DR-ZYRA-094, not because
+      production sign-up supports it).
+    - A dev-only "Skip Payment" screen shown mid-onboarding. Checked
+      for overlap first: this build has no real payment integration
+      at all yet (task #20, deferred pending Stripe/App Store/Play
+      Store credentials per earlier Founder instruction) — the
+      existing "purchase" buttons (UpgradeScreen's mock upgrade,
+      WaliNetworkScreen's "Get Guardian+") already grant the tier
+      instantly with zero real payment step to skip. Adding a second,
+      dev-only bypass screen on top of an already-fake purchase flow
+      would be redundant scaffolding, not a fix for anything broken.
+
+  Feature Review Process applied: checked existing docs (WALI_
+  ARCHITECTURE V6, ZYRA_PRODUCT_SPEC V5) and existing code
+  (onboarding chapters, AppState, ZyraProfileService) before deciding
+  — Build (Seeker/Guardian Test Sign Up tiles, real gap), Reject (8-way
+  tier/gender picker, doesn't match real onboarding), Reject (Skip
+  Payment screen, nothing real to skip).
+
+  §1 of OA-ZYRA-127 (Male/Female Guardian presets in the Test Accounts
+  section) required no action — already done 2026-07-25 (dev.guardian.f@
+  zyra.test / Khadija added), predating this DR.
+
+Context:
+  OA-ZYRA-127 (Developer Access Improvements), raised 2026-07-19 by
+  the same ChatGPT UX-review batch as OA-ZYRA-124 and OA-ZYRA-128.
+
+Alternatives considered:
+  Build the literal 8-option picker + Skip Payment screen anyway,
+  purely as a testing convenience even though it doesn't mirror
+  production — rejected: this project's dev tooling has consistently
+  favoured tools that exercise the real flow (Test Accounts hits real
+  RLS; Jump To Screen and now Test Sign Up use real screens) over
+  synthetic shortcuts that could mask real gaps or drift from what
+  ships.
+
+Impact:
+  Developer Mode only. No change to real onboarding, entitlement, or
+  production screens.
+
+Related:
+  OA-ZYRA-127, DR-ZYRA-094 (gender-gradient parity — cited for why
+  the female Guardian dev preset exists despite real sign-up being
+  male-only), APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V6.md
+  (WHO IS A GUARDIAN, EXCEPTIONAL CASES), SOURCE/lib/screens/dev/
+  developer_access_screen.dart, SOURCE/lib/services/
+  zyra_profile_service.dart.
+
+------------------------------------------------------------
+
+DR-ZYRA-109
+Title:       Google Ads Placement Design for ZYRA Basic (OA-121) —
+             Sponsored Card in Browse
+Date:        2026-07-26
+Status:      Approved
+Owner:       Founder (Shakeel)
+Approved by: Founder (Shakeel), 2026-07-26 — "dsO CONTINUE", task
+             list continued in order to OA-121.
+
+Decision:
+  OA-121 asked for 5 design/placement decisions before implementing
+  Google Ads for ZYRA Basic Seekers. Checked against existing
+  documentation first: 4 of the 5 were already fully answered by
+  APP/Premium/ADVERTISING/ADVERTISING_STANDARD_CURRENT_VERSION_V1.md
+  (dated 2026-06-28, predating and already cited by OA-121 itself as
+  "Platform policy reference"):
+    - Where ads appear: Browse/Discovery only, as sponsored cards
+      (rule 1).
+    - Ad format: native sponsored card, not banner/interstitial
+      (rules 1 + 6).
+    - Frequency/capping: ~every 10 profile interactions, reviewed
+      quarterly (rule 5).
+    - Ad-free surfaces: active Journey (all stages), Guardians/Guardian
+      tab, mid-conversation (rules 2-4); ZYRA One and all Guardian tiers
+      entirely ad-free (Model Overview table).
+
+  The 5th — the ad-free upgrade prompt's actual UI mechanic — was not
+  specified anywhere, so this DR adds it: a "Remove ads — upgrade to
+  ZYRA One" text link on the sponsored card itself, styled as plain
+  underlined text below the dismiss button (never as part of the ad
+  creative area, so it can't be mistaken for the sponsor's own CTA —
+  rule 6's "no ambiguity" requirement applies here too, not just to
+  ad-vs-profile confusion).
+
+  Implementation — a design placeholder, not live monetisation (no ad
+  network account exists yet; that's Phase 1 of the Standard's own
+  phase model, gated on selecting a certified network with category
+  blocking):
+    - browse_screen.dart: `_sponsoredCardFrequency = 10` (named
+      constant citing rule 5, same discipline as the existing
+      `_dailyProfileLimit`). `_advance()` sets `_showingSponsoredCard
+      = true` when `_viewed % 10 == 0 && plan == ZyraPlan.basic` —
+      checked at interaction time so a plan change (e.g. via
+      Developer Access) takes effect immediately, not on next
+      rebuild.
+    - New `_SponsoredCard` widget: takes over the same full-bleed
+      card slot a real profile occupies (so the frequency cap reads
+      naturally within this single-card swipe-deck UI — a UI shape
+      the Standard's "profile feed" language predates), but is
+      deliberately NOT swipeable and NOT a photo — flat dark
+      background, explicit "SPONSORED" pill, a single "Continue
+      Browsing" dismiss button. Does not touch _index/_current, so
+      an ad slot is never counted as a viewed candidate and can never
+      write a decline/save/like row.
+    - Placeholder copy is explicit about being a placeholder ("Design
+      placeholder — real sponsor placements begin once a certified
+      ad network... is integrated") rather than simulating a fake
+      branded ad, matching this project's standing honesty discipline
+      for other not-yet-real-money paths (mock Guardian+ purchase,
+      mock subscription upgrade).
+
+Context:
+  OA-121, raised 2026-06-28, predates and is directly answered by
+  ADVERTISING_STANDARD_CURRENT_VERSION_V1.md (also 2026-06-28) — the
+  standard already existed as the answer; this DR is what finally
+  closes the OA against it and fills its one real gap.
+
+Alternatives considered:
+  Leave the ad-free upgrade prompt undesigned until real ad network
+  integration begins — rejected: OA-121 explicitly listed it as a
+  required design decision, and it's cheap to settle now alongside
+  the placement work rather than reopening this file later for one
+  more line.
+  Wire up a real ad SDK now — rejected: no certified network has been
+  selected or contracted (Phase 1 requirement), and doing so
+  speculatively would risk building against the wrong SDK/contract
+  terms.
+
+Impact:
+  Seeker ZYRA Basic Browse only. No change to ZYRA One or any Guardian
+  account (both remain ad-free, unchanged). No real revenue yet — the
+  placeholder is a design/UX artifact, not a monetisation switch.
+
+Related:
+  OA-121, APP/Premium/ADVERTISING/ADVERTISING_STANDARD_CURRENT_
+  VERSION_V1.md, SOURCE/lib/screens/browse/browse_screen.dart,
+  SOURCE/lib/screens/subscription/upgrade_screen.dart.
+
+------------------------------------------------------------
+
+DR-ZYRA-110
+Title:       Family Review Period v1 — Scope, Participants, and
+             Resolution Rules (#31)
+Date:        2026-07-26
+Status:      Approved
+Owner:       Founder (Shakeel)
+Approved by: Founder (Shakeel), 2026-07-26 — "YEH 31 PLEASE", direct
+             instruction to build task #31 next.
+
+Decision:
+  WALI_ARCHITECTURE_CURRENT_VERSION_V6.md's "FAMILY REVIEW PERIOD"
+  section is built for real: "After both Seekers complete a Journey
+  stage, the next stage does not unlock immediately. Instead, the
+  Journey enters a 48-hour Family Review Period... Each Guardian may
+  Continue... or Pause... If neither Guardian raises a concern within 48
+  hours, the Journey automatically continues." The spec leaves several
+  implementation questions open; this DR settles them for v1:
+
+  WHICH TRANSITIONS ARE GATED — the 4 points where journey_flow_
+  screen.dart already treats a milestone as "both Seekers complete a
+  stage": phase_1->phase_2, phase_2->phase_3, phase_3->family_stage,
+  family_stage->conversation. NOT compatibility_reveal->salam_exchange,
+  salam_exchange->wali_gate, or wali_gate->phase_1 — individual
+  ritual/handshake steps, not the enumerated stages the spec section
+  is describing.
+
+  WHO PARTICIPATES — only each Seeker's MAIN Guardian (wali_links.
+  is_main=true, status='active'), matching the existing Guardian Gate
+  precedent (hasActiveMainWali()). "Primary Guardian" (per-Journey
+  authority among several linked Guardian+ holders) isn't modelled anywhere
+  else in this codebase and is out of scope here too.
+
+  RESOLUTION — ANY main Guardian's Pause halts progression immediately (no
+  stage advance). If ALL currently-expected main Guardians have explicitly
+  chosen Continue, the review resolves immediately rather than waiting
+  out the full 48h. Otherwise, resolution is lazy: resolve_family_
+  review_if_due() is polled from the client every ~3-5 seconds (same
+  pattern as every other Ritual stage in this codebase — no server-side
+  scheduled-job infrastructure exists here, per the Journey Suspension
+  migration's own note about the 30-day auto-end timer being deferred
+  for the same reason).
+
+  REOPENING A PAUSE — the spec never specifies how a Pause resolves
+  beyond "the family needs more time" and "ZYRA support is available
+  to assist." Rather than invent a mechanic the spec doesn't describe,
+  v1 ships the minimum needed to keep the feature usable end-to-end:
+  any active main Guardian on the match may reopen a paused review,
+  clearing prior responses and restarting a fresh 48h window once the
+  families have actually spoken.
+
+  NOTIFICATIONS — deliberately NOT built this pass. WALI_ARCHITECTURE
+  lists "Receive notifications at each Family Review Period" as a
+  Standard Guardian capability, but the in-app notifications system
+  (20260726140000_notifications.sql, #16) has a hard CHECK constraint
+  limiting `type` to ('new_match','new_message','wali_request') and
+  that migration's own comment already flagged this exact gap: "Journey-
+  stage-advancement notifications are deliberately NOT included...
+  adding a 4th type/toggle is new scope beyond what Settings already
+  promised. Can be a follow-up." This DR treats that follow-up as still
+  open, not silently dropped — the Guardian and Seeker both see live review
+  state via banners the moment they open the relevant screen (pull, not
+  push), which covers the capability practically even without a Bell
+  notification firing the moment the review opens.
+
+  Implementation:
+    - Migration 20260726190000_family_review_period.sql: tables
+      journey_family_reviews (one 'pending' row per match, enforced by
+      a partial unique index) and journey_family_review_responses;
+      RPCs open_family_review/wali_review_decision/
+      resolve_family_review_if_due/reopen_family_review, all SECURITY
+      DEFINER, same discipline as suspend_journey/resume_journey/
+      end_journey. Anon EXECUTE explicitly revoked (corrected across
+      two follow-up migrations — REVOKE FROM anon alone doesn't remove
+      the implicit PUBLIC grant; PUBLIC must be revoked too, as
+      wali_has_extended_wali()'s migration already showed).
+    - zyra_journey_service.dart: openFamilyReview/fetchFamilyReview/
+      resolveFamilyReviewIfDue. advanceStage() is kept, unchanged, for
+      the 3 ungated ritual steps.
+    - zyra_wali_journey_service.dart: waliReviewDecision/
+      myReviewDecision/reopenFamilyReview.
+    - journey_flow_screen.dart: the 4 gated onAdvance/onContinue
+      callbacks now call _advanceGated() (opens a review) instead of
+      _advance() (direct stage write); a new _FamilyReviewView shows
+      Seeker-facing status only — no Continue/Pause buttons for the
+      Seeker, since the spec makes this a Guardian capability, not a
+      Seeker one.
+    - wali_journey_detail_screen.dart: a Family Review banner with
+      live countdown, Continue/Pause buttons (hidden once this Guardian
+      has already responded), and a Reopen Review button when paused.
+
+Context:
+  Raised as task #31 on the standing build list; the underlying spec
+  (WALI_ARCHITECTURE §FAMILY REVIEW PERIOD) has existed since V1 of
+  that document but was never built.
+
+Alternatives considered:
+  Gate every stage transition including the ritual handshake steps —
+  rejected: those aren't "stages" in the sense the spec section uses,
+  and gating a single Salam or a single Guardian-Gate check for 48 hours
+  would contradict the spec's own "prevents a Journey from moving too
+  fast" purpose by adding friction where none was intended.
+  Require ALL linked Guardian's (not just main) to weigh in — rejected: no
+  multi-Guardian-per-seeker authority model exists elsewhere in this
+  codebase; scoping to main-Guardian-only keeps this consistent with the
+  Guardian Gate precedent rather than inventing new authority rules.
+  Auto-resolve a Pause after some fixed period — rejected: the spec
+  frames Pause as open-ended pending real family communication, not a
+  second timer; a manual Reopen better matches that framing.
+
+Impact:
+  New tables/RPCs, additive only — no existing Journey stage, RLS
+  policy, or entitlement logic changed. Journey_stage still only ever
+  advances through the same two paths as before (advanceStage() for
+  ungated steps, now openFamilyReview()+resolve for gated ones).
+
+Related:
+  WALI_ARCHITECTURE_CURRENT_VERSION_V6.md §FAMILY REVIEW PERIOD,
+  20260726190000_family_review_period.sql (+ two grant-correction
+  follow-ups), zyra_journey_service.dart, zyra_wali_journey_service.dart,
+  journey_flow_screen.dart, wali_journey_detail_screen.dart,
+  20260726140000_notifications.sql (flagged follow-up).
+
+------------------------------------------------------------
+
+DR-ZYRA-111
+Title:       Entitlement-vs-Participation Messaging Standard
+Date:        2026-07-26
+Status:      Approved (rule ratified; implementation not yet built —
+             see Implementation Status below)
+Owner:       Founder (Shakeel)
+Approved by: Founder (Shakeel), 2026-07-26 — "YEH ADD IT COS IT NEED
+             TO BE DONE", in response to a follow-up question on
+             DR-ZYRA-105.
+
+Decision:
+  Extends DR-ZYRA-105 (Guardian Subscription Entitlement vs. Active Guardian
+  Participation) from a backend/product rule into a UI requirement:
+  wherever a user holds a subscription entitlement but the
+  corresponding relationship link is missing, the app must say so
+  explicitly — naming both halves (entitlement confirmed; link
+  missing) — rather than showing a generic gate or empty state that
+  leaves the user unsure whether their subscription "worked."
+
+  Applies in both directions:
+    - Seeker holds ZYRA One, no active Guardian linked: the app should
+      confirm the bundled Guardian+ entitlement exists and is ready to
+      assign, while still requiring a linked Guardian before Journey
+      stages that need one can proceed.
+    - Guardian holds Guardian+ (independent purchase or bundled from a
+      linked Seeker), no linked Seeker at all: the app should confirm
+      the subscription is active and explain that Guardian features
+      activate once a Seeker is linked — never present this as "you
+      need to buy something."
+
+  One nuance carried over from the review that grounded this DR: the
+  Seeker-side Guardian Gate message (journey_flow_screen.dart's
+  _WaliGateView) should NOT become ZYRA-One-specific — linking a Guardian
+  is a baseline requirement for every Seeker regardless of tier. The
+  fix there is additive (surface the entitlement separately, e.g. on
+  Profile), not a rewrite of the Gate's own copy, so Basic-tier Seekers
+  aren't misled into thinking linking is a One-only requirement.
+
+Evidence (from the code review that grounded this DR, 2026-07-26):
+  Seeker side — _WaliGateView (journey_flow_screen.dart) says only "To
+  begin your journey, you need to link a Guardian," no mention of ZYRA One
+  or entitlement anywhere; the sole "Guardian+ entitlement included"
+  line lives on upgrade_screen.dart's plan-comparison bullet list and
+  is never referenced again. Guardian side — wali_seekers_screen.dart and
+  wali_dashboard_screen.dart's empty states ("No Seekers linked yet")
+  are entitlement-blind (acceptable — no false claim). But
+  wali_network_screen.dart's locked state gates ONLY on
+  `hasWaliOne()`, not on link status — so a Guardian who already owns Guardian
+  One but has zero linked Seekers sees "Network access requires Guardian
+  One capabilities... Get Guardian+ — £9.99/month", an upsell to buy
+  something they already own. This is not just missing messaging, it's
+  an active bug: the gate variable can't distinguish "no entitlement"
+  from "entitlement, no link."
+
+Implementation Status:
+  NOT YET BUILT. This DR ratifies the rule; the concrete fixes
+  (Seeker-side Profile surfacing of the bundled entitlement +
+  assignment state; splitting wali_network_screen.dart's gate into
+  entitled-and-linked / entitled-but-unlinked / not-entitled) are
+  queued as follow-up build work, tracked as OA-ZYRA-142 below —
+  deliberately not done in the same pass as this DR since the Founder
+  asked to discuss a separate Terminal/device-trust issue first.
+
+Context:
+  Raised as a direct follow-up question to DR-ZYRA-105, after that
+  DR's own review confirmed the safeguarding LOGIC (Guardian Gate,
+  hasActiveMainWali()) was already correct — this DR is about the
+  user-facing EXPLANATION of that logic, not a change to it.
+
+Related:
+  DR-ZYRA-105, SOURCE/lib/screens/journey/journey_flow_screen.dart
+  (_WaliGateView), SOURCE/lib/screens/profile/profile_screen.dart,
+  SOURCE/lib/screens/subscription/upgrade_screen.dart,
+  SOURCE/lib/screens/guardian/wali_seekers_screen.dart,
+  SOURCE/lib/screens/guardian/wali_dashboard_screen.dart,
+  SOURCE/lib/screens/guardian/wali_network_screen.dart, OA-ZYRA-142.
+
+------------------------------------------------------------
+
+DR-ZYRA-112
+Title:       Profile Actions (⋮) Menu — Cross-Context Standard
+Date:        2026-07-26
+Status:      Approved
+Owner:       Lead Architect
+Approved by: Founder (Shakeel), 2026-07-26 (AskUserQuestion: "Three-
+             dot menu: ratify the existing DR-095 scope?" →
+             "Ratify + resolve 3 gaps").
+
+Decision:
+  1. New standard, `APP/Standards/PROFILE_ACTIONS_MENU_STANDARD_
+     CURRENT_VERSION_V1.md`, resolves the three gaps DR-ZYRA-095
+     left open: Block now requires a confirmation step everywhere
+     (Report/Hide do not); Block during an Active Journey or Family
+     Stage also force-ends that Journey in the same confirmed
+     action; and menu contents vary by relationship stage per a
+     ratified table (Browse/Saved get all 3 actions, Matches onward
+     drop Hide, Active Journey/Family Stage additionally force-end
+     on Block).
+  2. Three governing principles ratified alongside the table: Report
+     + Block are a universal safety floor at every stage; Hide is a
+     Browse-recirculation control that stops applying once a Match
+     exists; stage-specific relationship actions (End Journey,
+     Continue/Pause) always get their own dedicated control and are
+     never folded into this menu, which keeps its size and meaning
+     constant everywhere.
+  3. `APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md` superseded by
+     V4 (archived: BROWSE_UX_SPEC_2026-07-26_V3.md) — pointer added
+     from its §Profile Actions Scope Note to the new standard; no
+     change to that file's own Browse-stage content.
+  4. `APP/Journey/JOURNEY MANAGEMENT/Summary.md`'s Safety & Moderation
+     discussion and Open Discussions list updated — Active-Journey
+     blocking effects and per-stage contents no longer open; Guardian
+     block/report remains the sole open item in that section.
+  5. An "Unmatch" action (lighter than Block, for the pre-Journey
+     Matches stage) was considered and deliberately NOT ratified —
+     flagged in the new standard as a genuinely open future idea
+     requiring its own decision, per this document's own Principle 3
+     (new relationship actions get their own control, not a menu
+     slot by default).
+
+Context:
+  Founder relayed a ChatGPT discussion paper ("Discussion: Three-Dot
+  Profile Menu," sent twice) asking specifically whether menu
+  contents should be identical everywhere or context-aware by
+  relationship stage, and whether design principles for this menu
+  should become a formal standard — explicitly declining to
+  prescribe the answer, asking for engineering/UX judgement instead.
+  Checked existing documentation first (DR-ZYRA-095,
+  BROWSE_UX_SPEC_CURRENT_VERSION_V3.md, JOURNEY MANAGEMENT/
+  Summary.md) before proposing anything, per standing process — this
+  is additive to DR-095, not a redesign of it.
+
+Alternatives:
+  Identical menu contents at every stage — rejected: End Journey/
+  Continue-Pause already have their own dedicated controls, so
+  duplicating them into this menu would violate the "predictable,
+  same meaning everywhere" goal the Founder explicitly asked for,
+  not serve it.
+  Folding a 4th "Unmatch" action into this menu now — rejected for
+  now: not asked for, and Principle 3 argues against adding
+  relationship-management actions into a menu whose whole value is
+  staying safety-scoped and small.
+
+Reasoning:
+  Full principles, resolved-gap reasoning, and per-stage table in
+  PROFILE_ACTIONS_MENU_STANDARD_CURRENT_VERSION_V1.md.
+
+Impact:
+  APP/Standards/PROFILE_ACTIONS_MENU_STANDARD_CURRENT_VERSION_V1.md
+    (new).
+  APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V4.md (new, supersedes
+    V3, archived as BROWSE_UX_SPEC_2026-07-26_V3.md).
+  APP/Journey/JOURNEY MANAGEMENT/Summary.md (Safety & Moderation +
+    Open Discussions updated).
+  Not yet built — SOURCE/ still has no three-dot menu or report/
+    hide/block code anywhere (unchanged from DR-ZYRA-095). This is
+    documentation/design-standard filing only; the eventual build
+    should follow this standard rather than DR-095 alone.
+
+Related:
+  DR-ZYRA-095, APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V4.md,
+  APP/Journey/JOURNEY MANAGEMENT/Summary.md,
+  SOURCE/lib/screens/journey/journey_flow_screen.dart
+  (_JourneyAppBar), SOURCE/lib/screens/guardian/
+  wali_journey_detail_screen.dart (Family Review banner, #31).
+
+------------------------------------------------------------
+
+DR-ZYRA-113
+Title:       Navigation Bar Refinement — Icon Set + Stack Alignment
+             Fix + Haptic Feedback
+Date:        2026-07-26
+Status:      Approved
+Owner:       Lead Architect
+Approved by: Founder (Shakeel) — icon swap: direct instruction
+             ("connections icon is not a hear[t]... use these icons
+             I have from Lovable... just concentrate on the icons,
+             nothing else in this image, and copy those"), 2026-07-26.
+             Alignment fix + tuning: AskUserQuestion ("Nav bar: how do
+             you want to proceed?" → "Fix + mockup first"), 2026-07-26.
+
+Decision:
+  1. `SOURCE/lib/screens/home/home_shell.dart`'s Seeker nav icons
+     changed to match the Founder-supplied Lovable reference image:
+     Browse `Icons.explore_outlined` → `Icons.search`; Connections
+     `Icons.favorite_border` (heart) → `Icons.bookmark_border`; Guardian
+     `Icons.shield_outlined` → `Icons.verified_user_outlined`
+     (shield-check); Profile `Icons.person_outline` unchanged
+     (already matched). Only the icon glyphs were copied from the
+     reference image, not its circle+pill layout, per the Founder's
+     explicit "concentrate on the icons, nothing else" instruction —
+     `WaliHomeShell` (a different Dashboard/Seekers/Network/Profile
+     tab set) was left untouched, since the complaint and reference
+     image were both Seeker-Connections-specific.
+  2. `SOURCE/lib/widgets/floating_nav_bar.dart`'s root-cause bug
+     fixed: its `Stack` never set `alignment:`, defaulting to
+     `topStart` — the icon+label `Row` (a non-`Positioned` Stack
+     child) pinned to the top of the 62px bar instead of centring
+     with the already-correctly-centred highlight circle behind it.
+     Single line fix: `alignment: Alignment.center`. This was the
+     one bug behind all four symptoms in the Founder's brief ("icon
+     too high," "circle sits on top rather than belonging").
+  3. `HapticFeedback.selectionClick()` added on every tab change
+     (tap or drag-scrub crossing into a new cell) — a detail present
+     in the reference apps (Instagram, iOS Control Center, Flutter's
+     own Switch/Radio) but previously entirely missing.
+  4. An interactive mockup (blob glow, `Curves.easeOutBack`
+     spring-overshoot vs. the current `easeOutCubic`, simulated
+     haptic-pulse cue) was shown for comparison before any further
+     tuning beyond items 1-3 is finalised — items 1-3 above were
+     built directly (objectively correct or explicitly instructed,
+     no design ambiguity); the animation curve/blob-opacity tuning
+     shown in the mockup remains open pending Founder reaction.
+
+Context:
+  Founder relayed a ChatGPT discussion paper ("Navigation Bar UI
+  Refinement") critiquing the nav bar's alignment and asking for
+  root-cause investigation rather than a blind restyle, then
+  separately supplied a Lovable reference image and instructed the
+  Connections heart icon be replaced. Both addressed in one pass
+  since both touch the same widget/screen.
+
+Alternatives:
+  Rebuilding the highlight blob from scratch — rejected: the actual
+  defect was a one-line Stack alignment omission, not a flawed blob
+  concept; confirmed by reading the widget in full before proposing
+  any change, per standing process.
+  Applying the icon reference image's split circle+pill layout —
+  rejected per the Founder's own explicit instruction to copy only
+  the icon glyphs, not the layout.
+
+Reasoning:
+  Full root-cause diagnosis in
+  SYSTEM/RESOURCES/TEMPORARY/CHATGPT_REPLY_NAVBAR_PHOTO_MENU_
+  2026-07-26.md §1.
+
+Impact:
+  SOURCE/lib/screens/home/home_shell.dart (icons changed).
+  SOURCE/lib/widgets/floating_nav_bar.dart (alignment fix, haptic
+    feedback added).
+  Interactive mockup shown, 2026-07-26 — tuning beyond this DR's
+    scope awaits Founder reaction.
+
+Related:
+  DR-ZYRA-091 (original FloatingNavBar build), DR-ZYRA-101 (nav bar
+  audit that rebuilt HomeShell to 4 tabs), SYSTEM/RESOURCES/
+  TEMPORARY/CHATGPT_REPLY_NAVBAR_PHOTO_MENU_2026-07-26.md.
+
+Update (2026-07-26, same day): the tuning left open above is now
+  resolved, not by further discussion but by concrete reference —
+  the Founder supplied 3 screen recordings (2 of Instagram's tab
+  bar, 1 of the original Lovable ZYRA prototype in motion) with the
+  instruction "drop the text and copy the video layout... I want the
+  same [shrink-on-deselect motion]." Frames extracted via ffmpeg and
+  reviewed directly (not assumed from the earlier mockup). Findings:
+  the Lovable video shows a solid circular highlight badge behind
+  the active icon only (confirming the blob should NOT be removed —
+  supersedes this session's earlier "drop the blob" mockup
+  recommendation, which the Founder had not yet responded to when
+  this reference arrived) and no text labels at all. Applied to
+  `floating_nav_bar.dart`: `showLabels` now defaults to `false`
+  (was `true`); `_barHeight` 62→58 and `_highlightSize` 44→46 (bar
+  reads slimmer without a label row; badge reads bigger relative to
+  the icon, matching the video); highlight fill 0.20→0.28 and border
+  0.28→0.12 (reads as a solid badge, not an outlined ring, matching
+  the video); both the highlight's `AnimatedPositioned` slide and the
+  icon's `AnimatedScale` changed from `Curves.easeOutCubic` to
+  `Curves.easeOutBack` (slight overshoot-then-settle, addressing the
+  Founder's specific "shrink when deselected shouldn't feel
+  mechanical" note, corroborated by the Instagram clips) with
+  matching durations (320ms / 280ms) so both motions read as one
+  gesture rather than two unrelated animations arriving on different
+  curves. Built directly, not re-mocked — the video reference was
+  concrete enough that a further mockup round would have re-litigated
+  something already answered with evidence rather than resolved a
+  genuinely open question.
+
+------------------------------------------------------------
+
+DR-ZYRA-114
+Title:       Browse Photo Preloading Fix
+Date:        2026-07-26
+Status:      Approved
+Owner:       Lead Architect
+Approved by: Founder (Shakeel), AskUserQuestion ("Photo preloading:
+             build the fix now?" → "Yes, build it now"), 2026-07-26.
+
+Decision:
+  1. `SOURCE/lib/screens/browse/browse_screen.dart` now calls
+     `precacheImage()` for the current candidate's full photo set
+     plus the next candidate's first photo, via a new
+     `_precacheAround(index)` method invoked from `initState`,
+     `_advance()`, and the age-filter apply handler. Directly
+     resolves the reported ~1s tap-to-next-photo stall — every
+     photo of the candidate currently on screen is already
+     fetched+decoded into Flutter's ImageCache by the time any of
+     them could be tapped.
+  2. `SOURCE/lib/services/zyra_discovery_service.dart`'s
+     `fetchCandidates()` no longer signs each candidate's photos in
+     a separate sequential `await` inside a `for` loop — every
+     candidate's storage paths are now batched into exactly one
+     `signedUrlsFor()` call, with results sliced back out per
+     candidate by a running cursor (safe because
+     `createSignedUrls()` returns results in input order). This was
+     a second, compounding bug slowing Browse's overall first paint,
+     separate from the specific tap-to-next-photo symptom reported.
+
+Context:
+  Founder relayed a ChatGPT discussion paper ("Photo Browsing
+  Experience") asking for root-cause investigation (download-on-
+  tap? caching? preloading? decode timing? signed-URL timing?)
+  rather than a masked fix. Root cause confirmed unchanged from the
+  earlier ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_VERSION_V1.md
+  finding: zero image caching anywhere in the codebase, no
+  `precacheImage()` calls, no `cached_network_image` dependency.
+
+Alternatives:
+  Adding `cached_network_image` as a new dependency — not needed:
+  Flutter's own built-in `precacheImage()` + `ImageCache` already
+  solves this exactly, without adding a package.
+  Preloading every photo of the NEXT candidate too, not just its
+  first — rejected: would prefetch photos 2+ of a candidate the user
+  may Pass before ever opening them, wasted network/decode work for
+  no visible benefit.
+
+Reasoning:
+  Full diagnosis in SYSTEM/RESOURCES/TEMPORARY/
+  CHATGPT_REPLY_NAVBAR_PHOTO_MENU_2026-07-26.md §2.
+
+Impact:
+  SOURCE/lib/screens/browse/browse_screen.dart (precacheImage calls
+    added).
+  SOURCE/lib/services/zyra_discovery_service.dart (batched signing).
+  Brace/paren balance verified via bash after edit (browse_screen.dart:
+    66/66 braces, 493/493 parens; zyra_discovery_service.dart: 27/27
+    braces, 104/104 parens) — no Flutter compiler available in this
+    environment, same verification limitation noted under DR-ZYRA-110/
+    the #31 build.
+
+Related:
+  ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_VERSION_V1.md,
+  SYSTEM/RESOURCES/TEMPORARY/CHATGPT_REPLY_NAVBAR_PHOTO_MENU_
+  2026-07-26.md.
+
+------------------------------------------------------------
+
+DR-ZYRA-115
+Title:       Ratify Engineering Standards from Comprehensive Audit
+             (ES-01 through ES-17)
+Date:        2026-07-26
+Status:      Approved
+Owner:       Lead Architect
+Approved by: Founder (Shakeel) and ChatGPT (Architecture & Governance),
+             2026-07-26 — Founder's written response to Claude's
+             independent audit-verification reply explicitly agreed
+             with the standards recommendations ("I also agree with
+             your recommendations regarding the proposed Engineering
+             Standards... Those feel like sensible additions").
+
+Decision:
+  1. ES-01, 02, 03, 05, 06, 07, 08, 09, 10, 11, 12, 13, 15 (as
+     proposed in `ZYRA_ENGINEERING_AUDIT_CURRENT_VERSION_V1.md` §8)
+     ratified as written.
+  2. ES-04 ratified with tightened wording: verification must use the
+     specific privilege-check function for the change made
+     (`has_column_privilege` for column REVOKEs,
+     `has_function_privilege` for EXECUTE REVOKEs, a second-user
+     SELECT test for RLS policies) — not a generic "it ran without
+     error" check.
+  3. ES-14 ratified with softened scope: the pgTAP second-user
+     verification requirement applies to new/changed RLS policies
+     from 2026-07-26 forward. Existing tables are backfilled
+     opportunistically, not gated as a blocker on the very next
+     migration — agreed by both reviewers as the right permanent
+     standard without making it an immediate blocker mid-remediation.
+  4. Two new standards, proposed in Claude's independent review (not
+     in the original audit's §8), ratified alongside the above:
+       ES-16 Credential Hygiene — no real password, API key, or token
+         value may be committed to any tracked file, including dev/
+         seed scripts. Env var or gitignored local config, even for
+         internal-only tooling.
+       ES-17 Controlled Status Vocabulary — Decision Records and
+         Outstanding Actions may only use a fixed, enumerated status
+         set, applied consistently, no free-text variants.
+  5. `ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_VERSION_V1.md` §9's
+     previously-unratified proposed standards are ratified together
+     with the above, per both reviewers' recommendation not to
+     maintain two parallel unratified standards proposals.
+  6. This DR ratifies the STANDARDS only — it is explicitly separate
+     from implementing the audit's specific findings (C1-C4b, R7,
+     H1-H3, etc.). The Founder chose "Discussion only for now" on
+     implementation, same date, via AskUserQuestion — no code or
+     database change is authorised by this DR.
+
+Context:
+  `ZYRA_ENGINEERING_AUDIT_CURRENT_VERSION_V1.md` (independent
+  engineering/security/architecture audit, live-database-verified)
+  proposed ES-01 through ES-15 in its §8 and explicitly asked that
+  they "be ratified as Decision Records before implementing further."
+  Claude's independent re-verification reply
+  (`CHATGPT_REPLY_ENGINEERING_AUDIT_2026-07-26.md`) re-ran the
+  audit's own reproduction queries directly against the live
+  database, confirmed nearly every finding (in one case — DOB
+  exposure to `anon` with no authentication — found the underlying
+  issue worse than originally stated), proposed the ES-04/ES-14
+  modifications and the two additional standards above, and flagged
+  two reprioritisations (picsum.photos severity tied to C3's fix
+  timing; score_candidates() inference-oracle risk considered for a
+  higher priority than assigned). The Founder's response confirmed
+  agreement with all of the above.
+
+Alternatives:
+  Ratifying ES-01 through 15 verbatim with no modification —
+  rejected: ES-14 as originally worded risked becoming a blocker at
+  the wrong moment (mid-remediation of the Critical backlog); the
+  softened version preserves the same end-state standard without
+  that risk.
+  Leaving M2 (credential hygiene) and R33/R34 (status vocabulary)
+  without a governing standard, since the original audit named both
+  problems but proposed no ES for either — rejected, since both are
+  concrete, evidenced gaps with a clear enforceable rule available.
+
+Reasoning:
+  Full reasoning in `ZYRA_ENGINEERING_AUDIT_CURRENT_VERSION_V1.md`
+  §8/§11 and `CHATGPT_REPLY_ENGINEERING_AUDIT_2026-07-26.md` §5.
+
+Impact:
+  SYSTEM/DOCUMENTS/ZYRA_ENGINEERING_AUDIT_CURRENT_VERSION_V1.md
+    (filed from the Founder's upload into the governed document
+    tree — previously only in a temporary uploads location).
+  SYSTEM/RESOURCES/TEMPORARY/CHATGPT_REPLY_ENGINEERING_AUDIT_
+    2026-07-26.md (Claude's independent verification reply).
+  ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_VERSION_V1.md §9
+    (standards therein ratified alongside, per item 5 above).
+  No code or database change. Implementation of C1-C4b, R7, H1-H3
+    and the rest of the risk register remains open, awaiting a
+    separate Founder go-ahead — tracked informally via this session's
+    running task list rather than a new OA at this time, since the
+    full remediation scope is already the audit document itself.
+
+Related:
+  ZYRA_ENGINEERING_AUDIT_CURRENT_VERSION_V1.md,
+  ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_VERSION_V1.md,
+  CHATGPT_REPLY_ENGINEERING_AUDIT_2026-07-26.md.
+
+------------------------------------------------------------
+
+DR-ZYRA-116
+Title:       Browse Page Review Pass — Nav Bar Scale/Centring Fix,
+             Dev Chrome Simplification, Top Chrome Rearrange, Age
+             Filter Removal
+Date:        2026-07-26
+Status:      Approved
+Owner:       Lead Architect
+Approved by: Founder (Shakeel), 2026-07-26 — first page in the
+             announced "go through each page one by one, slowly
+             fixing small errors" review pass, working from a
+             screenshot of the Browse screen plus ChatGPT-relayed
+             clarification on the Instagram scale reference.
+
+Decision:
+  1. `floating_nav_bar.dart` icon scale corrected: previously the
+     icon's own `size` argument (26 selected / 19 unselected) AND
+     `AnimatedScale` (1.0/0.82) both changed together, compounding
+     into roughly a 40% size swing — read as "too small," not
+     Instagram's actual subtle emphasis. Now a single lever: constant
+     base size 22, `AnimatedScale` 1.0 (baseline, all inactive icons
+     rest here) → 1.14 (active only) — inactive icons no longer
+     shrink below their normal size, matching the clarification that
+     Instagram's deselected icon "never becomes noticeably tiny."
+  2. Blob/icon vertical-centring fix: the icon-only cell (the common
+     case now labels are off) renders via `Center` directly instead
+     of a single-child `Column`, removing any layout-side ambiguity.
+     Guardian tab icon swapped `verified_user_outlined` →
+     `gpp_good_outlined` (plain shield-checkmark, no inner figure) —
+     the reported asymmetry (more space below the icon than above,
+     inside the badge) affected only that tab, which points to the
+     glyph's own optical weight rather than a layout bug, since
+     layout math centres all 4 icons identically.
+  3. `dev_nav_overlay.dart` simplified to a single Home button — Back
+     removed per "I don't use it."
+  4. `home_shell.dart` top chrome rearranged: the Dev Access wrench
+     removed entirely (redundant with DevNavOverlay's Home button,
+     which already resets to WelcomeScreen and its own Dev Access
+     entry point); Bell moved to top-left; a new top-right Help/
+     Report overflow menu added, both rows opening the existing
+     `HelpSupportScreen` (there is only one real destination today —
+     "Report a technical issue" is already a row inside it).
+  5. `browse_screen.dart`'s top-left age-range filter icon (#21)
+     removed from the visible chrome. Checked first, per standing
+     process: grepped `onboarding/` and `settings/` for any existing
+     age-range control before removing — there is none anywhere else
+     in the app. This was the ONLY way to set an age range; the
+     Founder's stated premise ("they can change that in setting/
+     onboarding") does not hold today. `_openFilterSheet`/`_minAge`/
+     `_maxAge`/`_filterActive` are kept in the class (unused, lint-
+     suppressed), not deleted, so the capability is cheap to restore
+     via a new entry point rather than rebuilt from nothing. Flagged
+     back to the Founder in the same turn rather than silently
+     dropping a capability based on an incorrect premise.
+  6. `WaliHomeShell`'s equivalent Dev Access wrench was NOT touched
+     in this pass, despite being the identical redundant pattern —
+     that screen hasn't been reached yet in the page-by-page review,
+     so it was deliberately left for when it comes up rather than
+     changed ahead of the Founder's own pacing.
+
+Context:
+  First page of the Founder's announced systematic UI review.
+  Screenshot-driven; a follow-up ChatGPT note clarified the earlier
+  "Instagram reference" instruction specifically meant the AMOUNT of
+  scaling (subtle), not Instagram's overall nav design, which item 1
+  above implements directly.
+
+Alternatives:
+  Silently removing the age filter icon without checking whether an
+  alternative exists — rejected: would have shipped a real capability
+  regression (zero way to set age range) on the strength of an
+  unverified premise.
+  Deleting `_openFilterSheet` and its supporting state outright —
+  rejected: cheaper to keep unused than to rebuild if the Founder
+  wants it moved to Settings, which is the likely next step.
+
+Reasoning:
+  Founder's message this turn; `dev_nav_overlay.dart`'s own header
+  history (already documents the Home-as-hard-reset design Back was
+  redundant against).
+
+Impact:
+  SOURCE/lib/widgets/floating_nav_bar.dart (scale lever, centring).
+  SOURCE/lib/widgets/dev_nav_overlay.dart (Back removed).
+  SOURCE/lib/screens/home/home_shell.dart (chrome rearranged, Guardian
+    icon swapped, Dev Access wrench removed, Help/Report menu added).
+  SOURCE/lib/screens/browse/browse_screen.dart (filter icon removed,
+    unused import removed, `_openFilterSheet` lint-suppressed).
+  Brace/paren balance verified via bash after each edit — all 4 files
+    balanced. No Flutter compiler available in this environment, same
+    limitation noted under prior builds this session.
+  Age-range capability gap flagged to Founder — awaiting a decision
+    on where (if anywhere) it should reappear.
+
+Related:
+  DR-ZYRA-113 (this is a second, video/screenshot-driven refinement
+  pass on the same nav bar, logged separately as its own DR since it
+  now also touches Dev Access chrome and Browse's own top bar, beyond
+  DR-113's scope), OA-ZYRA-134 (git backup — unrelated but same
+  session), task #21 (original Browse age filter build).
+
+------------------------------------------------------------
+
+DR-ZYRA-117 — Browse Page Review Pass 2: Loading Indicator, Anchored
+Cards, Surname Line, Swipe Redesign, Heart-Icon Removal, Nav Bar Shrink
+& Transparency
+
+Date: 2026-07-26
+Status: Actioned
+Owner: Claude (Implementation Lead)
+Approved by: Founder (explicit instruction: "LET EXECUTE THOSE AND ILL
+  SEE HOW IT ALL LOOKS")
+
+Decision:
+  Second Browse-page review pass (three new screenshots supplied),
+  seven changes implemented in one batch per the Founder's explicit
+  "execute those" instruction:
+  1. `Image.network`'s `loadingBuilder` added in `browse_screen.dart` —
+     a small centred spinner shows over the (unchanged, confirmed
+     correct) gender-gradient background while a photo is still
+     fetching, closing the "no feedback during a slow load" gap the
+     Founder reported.
+  2. Bell and the 3-dot Help/Report menu both converted from full-page-
+     push / bottom-sheet to an anchored, tap-outside-to-dismiss "card"
+     via a new shared helper, `widgets/anchored_card_overlay.dart`
+     (`showAnchoredCard()` — positions a card below a `GlobalKey`-
+     tracked anchor inside the nearest `Overlay`, plus a transparent
+     full-screen barrier that dismisses on any outside tap; no
+     `Navigator` route is pushed). Notification rows mark-read in place
+     without closing the card; the Help/Report rows call `close()`
+     before navigating to `HelpSupportScreen`, since an `OverlayEntry`
+     would otherwise keep floating above that pushed route too.
+     `NotificationsScreen` (the old full-page route) is now unreached
+     from the Bell — left in place as dead code rather than deleted,
+     since nothing else links to it either and it's cheap to re-wire
+     later if a "full history" view is wanted.
+  3. `SeekerProfile` gains a nullable `surnameLine` field, rendered as
+     a second line under the first name in Browse's identity block
+     (smaller, lighter weight than the first name). Populated on one
+     mock profile only — Bilal → "Abdul Malik", the Founder's own
+     example. Confirmed first (live SQL + onboarding grep) that neither
+     the real `profiles` table nor onboarding captures a surname today,
+     so this is a mock-data / UI-demo of the layout only, not a real
+     feature end-to-end yet.
+  4. The photo card's drag transform (`Matrix4.identity()..translate()
+     ..rotateZ()`, applied via an `AnimatedContainer` wrapper) removed
+     entirely. The card now stays fixed in place during a swipe; the
+     existing border-glow + top pill (driven by `_dragColor`/
+     `_dragStrength`, untouched) are now the sole direction feedback,
+     per the Founder's "the colour scheme shows the user they are going
+     that way" rather than the photo itself moving.
+  5. All 6 app-wide `Icons.favorite`/`Icons.favorite_border` occurrences
+     replaced with `Icons.check_circle`/`Icons.check_circle_outline`
+     (filled where sibling icons in that same switch/context are also
+     filled — Browse's drag pill and flash; outline everywhere else, to
+     match each site's own sibling icons) — `browse_screen.dart` (×2),
+     `journey_timeline_screen.dart`, `wali_journey_detail_screen.dart`,
+     `notifications_screen.dart`, `connections_screen.dart`.
+  6. `FloatingNavBar`'s icon-scale baseline flipped: selected = 1.0
+     (was 1.14), unselected = 0.78 (was 1.0) — every inactive icon now
+     visibly shrinks, rather than only the active one growing, per
+     "still not showing... I want the WHOLE navigation tab to shrink."
+  7. `FloatingNavBar`'s outer glass `Container` converted to an
+     `AnimatedContainer` whose fill/border opacity now key off touch
+     state (`_touchX != null`) — more transparent idle (0.10 fill /
+     0.18 border), less transparent while touched (0.20 / 0.30).
+     Bell repositioned from top-left to directly under the 3-dot menu
+     (both now top-right, in one `Column`, in `home_shell.dart`); the
+     `DevNavOverlay` Home button moved from `right: 12` to `left: 12`
+     to stay clear of that column.
+
+Context:
+  Second round of the Founder's announced page-by-page UI review,
+  Browse page specifically — three new HEIC screenshots supplied
+  showing the current swipe/tilt behaviour the Founder wants replaced.
+  Direct continuation of DR-ZYRA-116 (first Browse review pass) and
+  DR-ZYRA-113 (nav bar refinement) — same page, same nav bar, next
+  round of feedback on both.
+
+Alternatives:
+  Keeping the full-page NotificationsScreen as the Bell's destination
+  and only changing the 3-dot menu — rejected: the Founder's
+  instruction named both explicitly ("the bell icon and 3 button icon
+  when pressed").
+  Inventing surnames for all 6 mock profiles — rejected: the Founder's
+  own framing ("let's try add surname and see how it looks") reads as
+  exploratory/one example, not a request to backfill the whole mock
+  data set; one example is enough to evaluate the two-line layout.
+  Deleting `NotificationsScreen` outright now that it's unreached —
+  rejected: cheap to keep as a dormant full-history view; deleting
+  working code that might be wanted again is higher-cost than leaving
+  it dead for now.
+
+Reasoning:
+  Founder's message this turn, ending "LET EXECUTE THOSE AND ILL SEE
+  HOW IT ALL LOOKS" — explicit go-ahead to implement all seven in one
+  pass rather than checking in per item.
+
+Impact:
+  SOURCE/lib/widgets/anchored_card_overlay.dart (new).
+  SOURCE/lib/widgets/notification_bell.dart (rewritten: anchored card).
+  SOURCE/lib/screens/home/home_shell.dart (Help/Report card, top-right
+    Bell+3-dot column, `_helpAnchorKey`).
+  SOURCE/lib/widgets/dev_nav_overlay.dart (Home button: right → left).
+  SOURCE/lib/widgets/floating_nav_bar.dart (scale baseline flip,
+    touch-responsive container opacity).
+  SOURCE/lib/models/seeker_profile.dart (`surnameLine` field + Bilal
+    mock data).
+  SOURCE/lib/screens/browse/browse_screen.dart (loadingBuilder, drag
+    transform removed, surname line, 2× icon swap).
+  SOURCE/lib/screens/matches/journey_timeline_screen.dart,
+    guardian/wali_journey_detail_screen.dart,
+    notifications/notifications_screen.dart,
+    connections/connections_screen.dart (1× icon swap each).
+  Brace/paren balance verified via bash across all 11 touched files —
+    all balanced. No Flutter compiler available in this environment to
+    run `flutter analyze`/`flutter build`, same standing limitation
+    noted under every prior build this session — real device build
+    remains the Founder's own next verification step.
+  `NotificationsScreen` (full-page route) now unreached from any entry
+    point — flagged above, not deleted.
+
+Related:
+  DR-ZYRA-116 (first Browse review pass — this is the second),
+  DR-ZYRA-113 (nav bar refinement — items 6-7 continue it),
+  DR-ZYRA-099 (traffic-light swipe colour scheme — item 4 keeps its
+  colour logic, removes only the photo-movement part).
+
+Update (2026-07-26, same day) — Founder tested this batch on-device and
+came back with 5 corrections, all actioned in the same sitting:
+  1. Swipe indicator disliked on sight even with the movement removed,
+     PLUS a real bug: the text+icon pill (`top: 28` hardcoded) was
+     rendering behind the iPhone's Dynamic Island. Replaced with 3
+     small legend dots (Consider/Save/Pass, each in its own
+     `_dragColor`), repositioned using `MediaQuery.of(context).padding.
+     top` (the device's own actual safe-area inset, not a guessed
+     constant — clears the Island on any device shape). Active dot
+     grows + soft-glows with `_dragStrength` via a small
+     `Curves.easeOutBack` AnimatedContainer, addressing "maybe for the
+     swiping action a small animation." `_dragLabel` kept, now feeding
+     a `Semantics` label instead of visible text, so it's still in use
+     rather than orphaned.
+  2. Surnames added to 4 more mock profiles (Maryam→Hussain,
+     Yusuf→Khan, Aisha→Begum, Zainab→Iqbal) — Ibrahim deliberately left
+     without one so the with/without cases both stay visible. Mix of
+     lengths against Bilal's existing two-word "Abdul Malik".
+  3. Both anchored cards (Notification, Help/Report) were a solid
+     `Color(0xFF1A1220)` fill — Founder: "the pop up card or
+     notification gotta be transparent." Converted to the same
+     frosted-glass recipe as `GlassIconButton` (BackdropFilter blur +
+     translucent white tint + white border), matching the rest of the
+     app's glassmorphic chrome instead of reading as a flat opaque box.
+  4. Nav bar container itself still wasn't shrinking — Founder flagged
+     this as repeated across roughly 10 messages without landing,
+     correctly: every earlier pass changed the ICONS' scale or the
+     bar's opacity, never the bar's own width/height. Fixed with an
+     `AnimatedPadding` (shrinks width — wraps the `ClipRRect` so blur,
+     fill, and border all shrink together, not just inner content) plus
+     the existing `AnimatedContainer` now also animating `height`
+     (`_barHeight` full vs `_barHeight * 0.86` idle), both keyed off the
+     same `dragging` flag used for opacity.
+  Brace/paren balance re-verified across all 5 touched files after this
+  round (browse_screen.dart, floating_nav_bar.dart,
+  notification_bell.dart, home_shell.dart, seeker_profile.dart) — all
+  balanced. Same no-Flutter-compiler limitation as above; real device
+  test is next.
+
+Update 2 (2026-07-26, same day) — 3 screenshots from the on-device
+rebuild surfaced 2 real bugs plus 3 more refinements, all actioned:
+  1. REAL BUG — nav bar highlight blob sat off-centre and oversized
+     once idle-shrink landed. Root cause: the badge's own size and
+     vertical centring were still computed against the constant
+     `_barHeight`/`_highlightSize`, never updated when the container's
+     ACTUAL rendered height became `_barHeight * 0.86` while idle.
+     Fixed with `currentBarHeight`/`currentHighlightSize` (both keyed
+     off the same `dragging` flag as the container itself), used
+     everywhere the constants previously were; `_Highlight` converted
+     to `AnimatedContainer` so its size transitions smoothly rather
+     than snapping.
+  2. REAL BUG — the 3-dot Help/Report card rendered as a near-full-
+     screen grey rectangle. Root cause: unlike `_NotificationCard`
+     (which has `constraints: BoxConstraints(maxHeight: 340)` and
+     renders correctly), `_HelpCard`'s Container had no height
+     constraint, so it expanded into the large-but-bounded space the
+     anchored Positioned gives it. Fixed by adding a matching
+     `maxHeight: 140` constraint.
+  3. Swipe dots repositioned from a single centred row to 3 fixed
+     spatial slots — green/Consider at centre-right, red/Pass at
+     centre-left (offset past the existing photo-pagination dots),
+     yellow/Save at centre-top — per explicit Founder positions ("to
+     replicate the swiping action"). Also added a one-shot expanding/
+     fading ring "burst" (`_SwipeBurst`, `TweenAnimationBuilder`) at
+     whichever position matches the committed decision. This is driven
+     by a new, independent `_burstDecision` flag (not `_dragDecision`)
+     specifically because `_advance()` switches `_index` ~280ms into a
+     commit — anything nested inside the swappable per-profile card
+     would be torn down mid-animation; `_burstDecision` lives at the
+     same top level as the existing `_flash` mechanism, which already
+     proves that pattern survives the switch cleanly.
+  4. Surnames completed on the last remaining mock profile (Ibrahim →
+     Rashid) — all 6 now have one, per "add surnames for everyone."
+  5. Investigated two reported issues that turned out NOT to be code
+     bugs: (a) Bilal's surname not appearing in the screenshots despite
+     `surnameLine: 'Abdul Malik'` being correctly set and the render
+     logic verified correct — almost certainly a stale build (Dart
+     hot-reload has known gaps with `const` list/object changes);
+     recommended a full restart, not just hot reload. (b) the yellow/
+     white underline under text in the Notification card — grepped
+     `zyra_text.dart` and the card's own code for any `TextDecoration`;
+     none exists anywhere in that render path. Very likely an iOS
+     accessibility feature (VoiceOver / Speak Screen) active on the
+     test device, not an app styling issue — flagged rather than
+     "fixed" with a change that wouldn't address a device setting.
+  Brace/paren balance re-verified across all 4 touched files
+  (browse_screen.dart, floating_nav_bar.dart, home_shell.dart,
+  seeker_profile.dart) — all balanced.
+
+------------------------------------------------------------
+
+DR-ZYRA-118 — Subscription Continuity Ratified as Product Principle;
+Co-Termed Billing Parked Pending Platform Verification
+
+Date: 2026-07-27
+Status: Approved (principle) / Parked (co-termed billing)
+Owner: Claude (Implementation Lead)
+Approved by: Founder ("I therefore agree this is Build-worthy and
+  should become part of our long-term product philosophy" /
+  "Let's leave co-termed billing as a future discussion")
+
+Decision:
+  Closing decision from a 3-round discussion thread (SYSTEM/RESOURCES/
+  TEMPORARY/CHATGPT_REPLY_MULTIROLE_ACCOUNTS_2026-07-27.md) that began
+  as a multi-role-account proposal and resolved into separate,
+  independently-decided items:
+  1. Multi-role accounts (Rounds 1-2): NOT decided here — discussion
+     paused pending two named product decisions (safeguarding-optics
+     stance; cross-profile notification design for time-bound Guardian
+     alerts). No action taken.
+  2. Subscription Continuity: RATIFIED as a cross-cutting product
+     principle, not a single feature —
+       "Subscriptions determine access to capabilities, not
+        ownership of relationships or data."
+     Applies uniformly to Seeker and Guardian experiences, across every
+     named subscription-state transition: expiry, cancellation, payer
+     change, upgrade, downgrade, temporary lapse. Relationships
+     (`wali_links`), Journey history, conversations, and configuration
+     persist through all of these; only currently-available
+     capabilities change. This directly resolves the "Subscription
+     Transition Rules (to be specified)" placeholder JOURNEY_
+     CAPABILITY_GRANT_RULES_CURRENT_VERSION_V3.md flagged as missing
+     since 2026-07-04 — a scheduled gap, not a new one.
+  3. Co-Termed Billing: PARKED, not rejected. Reopening requires, per
+     the Founder's own stated conditions: confirmed platform
+     capabilities (verified directly against Apple/Google's current
+     developer documentation, not third-party synthesis); confirmed
+     RevenueCat support for whatever mechanism is found; Apple/Google
+     billing limitations fully understood (including any App Store
+     Review Guideline implications); evidence of genuine real-world
+     demand — the same bar DR-075 itself set for reconsidering
+     per-relationship billing. Tracked as OA-ZYRA-144.
+
+Context:
+  Originated as a ChatGPT-authored "Multi-Role Accounts (Seeker +
+  Guardian)" proposal. Independent review (live schema, RLS policies,
+  WALI_ARCHITECTURE V1-V6, client code) found: the proposal's headline
+  example (one Guardian managing multiple Seekers) was already fully
+  supported, nothing to build; true dual-role-per-profile would
+  reverse a rule unchanged across 6 WALI_ARCHITECTURE revisions; a
+  refined "shared login, separate profiles" version was architecturally
+  sound but gated on two unresolved product questions, not
+  engineering. That refinement surfaced Subscription Continuity as a
+  natural adjacent principle which, on examination, applies far more
+  broadly than the discussion that raised it. Co-Termed Billing,
+  proposed alongside it, was found on verification to reopen DR-075
+  (2026-07-12, which explicitly retired per-Guardian-relationship billing
+  and proration) and to depend on platform mechanisms that could not
+  be confirmed to exist on Apple's platform via current documentation
+  — unlike Google Play (native "Subscriptions with Add-ons") or
+  Stripe (native proration support).
+
+Alternatives:
+  Folding both proposals into one decision since they arrived
+  together — rejected: unrelated risk profiles. Subscription
+  Continuity fills an already-anticipated spec gap with no schema
+  conflict; Co-Termed Billing reopens a closed pricing decision and
+  depends on unconfirmed platform capability. One verdict would have
+  been wrong for at least one of them.
+  Rejecting Co-Termed Billing outright rather than parking it —
+  rejected by Founder: DR-075 itself left room for reconsideration
+  "if genuine demand exists," and the platform-capability question
+  has only been researched secondhand so far, not asked of Apple/
+  Google directly — premature to close permanently on that basis.
+
+Reasoning:
+  Founder's message this turn, explicit on both counts — see
+  "Approved by" above for the direct quotes.
+
+Impact:
+  APP/Standards/SUBSCRIPTION_CONTINUITY_PRINCIPLE_CURRENT_VERSION_V1.md
+    — new.
+  APP/Standards/JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md
+    — new, supersedes V3, resolves V3's own flagged placeholder.
+    Previous version archived as JOURNEY_CAPABILITY_GRANT_RULES_
+    2026-07-27_V3.md.
+  OA-ZYRA-144 — new, tracks Co-Termed Billing's reopening conditions.
+  No code changes — no real subscription backend exists yet
+  (upgrade_screen.dart's own header comment confirms purchases are
+  still fully mocked via AppState.setPlan), so this is a governance
+  decision that will inform the real subscription backend's design
+  once payment processing (task #20, blocked on Founder's Stripe/App
+  Store/Play Store credentials) is unblocked — not an implementation
+  one today.
+
+Related:
+  DR-075 (2026-07-12 — retired per-Guardian billing/proration; Co-Termed
+  Billing's reopening target).
+  JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V3.md (superseded by
+  V4 this entry).
+  SYSTEM/RESOURCES/TEMPORARY/CHATGPT_REPLY_MULTIROLE_ACCOUNTS_
+  2026-07-27.md (full 3-round discussion record).
+  Task #20 (real payment processing — where this principle is
+  actually implemented, once unblocked).
+
+------------------------------------------------------------
+
+DR-ZYRA-119
+Title:       Premium Differentiation Direction — Contextual
+             Upgrade Pattern Ratified Platform-Wide, Incoming
+             Potentials Rejected, Profile Unlock+ Credits &
+             Family Conversation Guide Approved for Later Build,
+             AI Differentiation Deferred
+Date:        2026-07-28
+Status:      Approved (with explicit parked/deferred sub-items —
+             see Decision below)
+Owner:       Lead Architect (Claude) — recommendations only
+Approved by: Founder (Shakeel), 2026-07-28, following an
+             extended discussion with Claude and the Founder's
+             own independent review with ChatGPT.
+
+Decision:
+  1. The contextual-upgrade-opportunity pattern (explain the
+     limit → explain what ZYRA One provides → offer Upgrade or
+     dismiss, never a silent or hard block) is ratified as a
+     standing, platform-wide design principle — to be applied
+     wherever appropriate as other features are built. This is
+     not a mandate to retrofit every existing surface
+     immediately; it applies going forward and where it
+     naturally arises.
+  2. Journey Pause is the first concrete application, approved
+     and implemented this session: ZYRA Basic sees the Pause
+     option; selecting it explains the benefit ("pause without
+     ending permanently, resume any time") and offers "Upgrade
+     to ZYRA One" / "Maybe Later" instead of pausing. ZYRA One:
+     unchanged, Pause works normally.
+  3. Incoming Potentials (seeing one-way Likes before liking
+     back) is **rejected**, not merely delayed. Founder's
+     reasoning: despite proven commercial performance on
+     mainstream dating platforms, it risks encouraging passive
+     validation-seeking over intentional discovery, which does
+     not fit the culture the Founder is building. The Basic-side
+     locked tease in connections_screen.dart (advertised this
+     rejected feature) has been removed in the same pass, not
+     left dormant — leaving it live would keep promising
+     something now explicitly rejected.
+  4. Approved future-build direction for ZYRA One (not
+     implemented yet, no immediate build requested):
+       - Monthly Profile Unlock+ credit allowance — 3 included
+         per month, ZYRA Basic gets 0 included, additional
+         credits remain separately purchasable, credits reset
+         each billing cycle and do not roll over. Exact mechanics
+         to be formalised during a dedicated subscription-system
+         review, not decided in full here.
+       - Family Conversation Guide — an AI-assisted tool helping
+         the Seeker prepare their own family for Family Stage
+         conversations. Direction approved; not designed or
+         built.
+     Both logged as Outstanding Actions (OA-ZYRA-147, OA-ZYRA-148)
+     rather than built now, per item 6 below.
+  5. AI-differentiation features (ZYRA Coach, ZYRA Insight, ZYRA
+     Recommendation, AI guidance generally) are explicitly
+     deferred as a category. The Founder does not want these
+     decided piecemeal while the rest of the platform is still
+     evolving, and wants a dedicated product discussion focused
+     entirely on how AI fits the complete user journey, closer to
+     the end of the build. Logged as OA-ZYRA-149.
+  6. Standing instruction: no further unprompted premium-
+     capability design. A new premium-differentiation product
+     question should only be raised if one arises naturally
+     while implementing an already-approved feature.
+  7. NOT decided by this entry: whether the Active Journey count
+     itself should ever be tiered. That question was deliberately
+     paused, not resolved, by the Founder — DR-ZYRA-097's "one
+     Active Journey, no tier exception" ruling and ZYRA_PRODUCT_
+     SPEC_CURRENT_VERSION_V5.md §2.2 therefore remain the current,
+     operative rule. Revisiting it is a distinct, still-open
+     discussion the Founder intends to return to separately and
+     "more deeply."
+
+Context:
+  Follow-on from the Founder's "Discussion Proposal — Active
+  Journey Limits & Upgrade Opportunities" (proposed tiering
+  Active Journey count 1 vs 5, plus a general contextual-upgrade
+  principle). Claude's review found the tiered-count mechanism
+  in direct conflict with a repeatedly-ratified invariant (Journey
+  Philosophy, Journey Availability, Product Spec V5 §2.2 and its
+  slot-enforcement section, DR-ZYRA-097) and recommended against
+  it while endorsing the broader upgrade-opportunity principle.
+  Founder accepted the challenge as valid but asked for a
+  first-principles re-argument, explicitly setting the existing
+  documentation aside, plus a wider exploration of alternative
+  premium capabilities (behavioural/asymmetry/safeguarding
+  lenses). That exploration surfaced Incoming Potentials, Profile
+  Plus, bundled Profile Unlock+ credits, a Family Conversation
+  Guide, and AI-guidance depth as candidates, ranked and evaluated
+  against information-asymmetry and platform-seriousness risk.
+  This entry records where the Founder chose to land, following
+  that discussion and the Founder's own independent ChatGPT
+  review — not a Claude-authored recommendation adopted wholesale.
+
+Alternatives:
+  Building Incoming Potentials given its proven commercial
+    track record elsewhere — rejected per Founder's values-based
+    reasoning above, not a technical or architectural objection.
+  Implementing Profile Unlock+ credits and the Family
+    Conversation Guide immediately — rejected/deferred; Founder
+    wants subscription mechanics formalised together during a
+    dedicated review rather than decided piecemeal alongside this
+    discussion.
+  Resolving AI-tiering placement now, since AI Tiering V1 already
+    exists — rejected; Founder wants one dedicated, complete-
+    picture discussion near the end of the build rather than
+    incremental AI decisions made against a still-evolving
+    platform.
+  Proceeding with multiple Active Journeys for ZYRA One — not
+    decided either way here; explicitly left open per Decision
+    item 7.
+
+Reasoning:
+  Founder's stated principle: premium differentiation should
+  improve the quality of a user's experience, not the quantity of
+  simultaneous relationships or lean on passive-validation
+  dynamics common to mainstream dating apps. Sequencing decisions
+  (subscription mechanics formalised together; AI decided against
+  a complete user-journey picture) preferred over ad hoc,
+  feature-by-feature commitments made while the platform is still
+  taking shape.
+
+Impact:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart —
+    `_pauseJourney()` dialog copy rewritten to explain the benefit
+    and use "Upgrade to ZYRA One" / "Maybe Later" (done this
+    session, prior to this entry).
+  SOURCE/lib/screens/connections/connections_screen.dart —
+    `_showIncomingTease()` and its locked "Incoming Potentials —
+    ZYRA One" row removed outright (Decision item 3); now-unused
+    `upgrade_screen.dart` import removed with it.
+  OA-ZYRA-146 (Notification Specification) — unaffected, remains
+    parked pending the Active Journey discussion per its own
+    Dependencies field.
+  OA-ZYRA-147, OA-ZYRA-148, OA-ZYRA-149 — newly logged, tracking
+    Decision items 4 and 5 respectively.
+
+Related:
+  DR-ZYRA-097 (one Active Journey ruling — still in force,
+    unaffected by this entry), ZYRA_PRODUCT_SPEC_CURRENT_
+    VERSION_V5.md §2.2, JOURNEY_SUSPENSION_CURRENT_VERSION_V1.md,
+    APP/Premium/AI TIERING/TIERING_CURRENT_VERSION_V1.md,
+    APP/Premium/SUBSCRIPTION TRANSPARENCY/TRANSPARENCY_CURRENT_
+    VERSION_V1.md, OA-ZYRA-146/147/148/149.
+
+------------------------------------------------------------
+
+DR-ZYRA-120
+Title:       Muzz Teardown Cross-Review — DR-I Reframed as a
+             Four-Part Behavioural Test, Profile Unlock+
+             Ratified as a Compliant Exception, Build-Approval
+             Gate Restated
+Date:        2026-08-01
+Status:      Approved (principle/direction only — see Decision
+             item 8; no implementation authorised by this entry)
+Owner:       Lead Architect (Claude) — recommendations only
+Approved by: Founder (Shakeel), 2026-08-01, following independent
+             review by Claude (Opus, original teardown author),
+             Claude (Sonnet, this session) and ChatGPT (cross-
+             review), relayed by the Founder between all three.
+
+Decision:
+  1. DR-I as proposed in MUZZ_TEARDOWN_CURRENT_VERSION_V1.md
+     ("No consumable currencies, ever") is superseded by a
+     four-part test. A premium consumable is permitted only if
+     it satisfies all four:
+       a. Does not affect discovery, visibility, ranking, or who
+          sees whom.
+       b. Does not reveal anything the other person hasn't
+          implicitly consented to by using the platform — only
+          derived/computed information, never raw answers or
+          bypassed privacy settings.
+       c. Creates no artificial urgency — no countdowns, no
+          mid-cycle expiry, no decision-moment pressure.
+       d. Does not alter Journey progression or relationship
+          mechanics.
+  2. Profile Unlock+ (APP/Premium/Profile Unlocks/Summary.md) is
+     confirmed against the actual specification (not memory or
+     assumption) to satisfy all four criteria — it never reveals
+     photos, never bypasses privacy settings, never shows raw
+     onboarding answers, is blocked during swiping, and is
+     permanent once purchased. It is documented here as the
+     compliant exception specifically so DR-I (this entry) and
+     DR-ZYRA-119 (which approved Profile Unlock+ direction) are
+     never read as contradictory by a future contributor.
+  3. Profile Unlock+'s open credit-mechanic question (Profile
+     Unlocks Summary.md's to-do list: "decide whether unused
+     purchased unlocks expire") is resolved in the direction that
+     keeps item 2 true: a fixed monthly allocation (3/month for
+     ZYRA One, per DR-ZYRA-119), usable during that billing
+     cycle, with a fresh allocation next cycle — no mid-cycle
+     expiry, countdown, or unlimited rollover/accumulation.
+  4. DR-G (Guardian-unavailable path) and DR-N (publish a Nikah/
+     outcomes metric), both proposed in the Muzz teardown, remain
+     explicitly parked — NOT ratified by this entry. DR-G carries
+     a raised safeguarding concern (any auto-continue-after-
+     timeout is potentially gameable by a Seeker seeking to avoid
+     genuine Guardian oversight) that needs its own discussion. DR-N
+     carries a raised measurement-incentive concern (publishing
+     an outcomes metric risks optimising the number rather than
+     the underlying experience). Both await a dedicated Founder
+     discussion, in the same manner as the Active Journey
+     question (DR-ZYRA-119 item 7).
+  5. DR-O (reconsider the Browse sponsored-card slot, DR-ZYRA-109)
+     is resolved as no change: a clearly-labelled, infrequent,
+     non-manipulative sponsored placement is a different category
+     from a consumable or throttle-and-sell mechanic. The
+     existing slot stands, subject to the same ordinary periodic
+     review as any other feature — not singled out as a
+     philosophical risk.
+  6. The Muzz teardown's swipe-deck critique (§11.1) is narrowed:
+     ZYRA's Browse candidate selection is already values/Hard-
+     Requirement-driven server-side (score_candidates(),
+     DR-ZYRA-079) — a separate question from whether the swipe
+     interaction layer itself should evolve. Whether the
+     interaction layer should change is logged as an open,
+     unscoped Outstanding Action (OA-ZYRA-151), not decided here.
+  7. The Muzz teardown's remaining proposed items (screen-capture
+     protection, banded distance with user-controlled precision,
+     household-safety features [passcode, discreet icon, contact-
+     list blocking], report-in-context, permanent blocks/
+     unmatches, account-level "take a break") are endorsed in
+     direction only. None are build-authorised by this entry —
+     see item 8. Screen-capture protection and household-safety
+     features should be sequenced behind the existing, more
+     urgent open engineering gaps (DOB immutability, the unbuilt
+     photo-moderation pipeline) rather than built in parallel.
+  8. Standing process rule (Founder, 2026-08-01): agreement
+     between AI reviewers on a discussion or documentation-level
+     principle is not, by itself, authorisation to build anything.
+     Before implementing any change arising from this review, or
+     from any future discussion of this kind, Claude must notify
+     the Founder of the specific proposed build and receive
+     explicit approval or denial first — regardless of how much
+     cross-AI agreement already exists on the underlying
+     principle.
+
+Context:
+  Follow-on from MUZZ_TEARDOWN_CURRENT_VERSION_V1.md (Claude/
+  Opus's independent teardown of Muzz, 50/50/50 lists, 15
+  proposed Decision Records DR-A through DR-O). The Founder
+  relayed the document to both ChatGPT and Claude (Sonnet, this
+  session) for independent cross-review. Claude's review raised
+  a direct conflict between the teardown's proposed DR-I ("no
+  consumable currencies, ever") and the already-approved
+  DR-ZYRA-119 (Profile Unlock+ credits, including "additional
+  credits remain separately purchasable"), plus several other
+  refinements (DR-G, DR-N, DR-O, and the swipe-deck framing).
+  ChatGPT proposed reframing DR-I around manipulation/scarcity
+  rather than consumables per se; Claude independently verified
+  the actual Profile Unlocks specification before agreeing, then
+  proposed the four-part test as a reusable, falsifiable
+  standard. ChatGPT's follow-up reply endorsed the four-part test
+  and proposed the fixed-monthly-allocation resolution for the
+  open credit-expiry question. The Founder then ratified this
+  outcome and added the standing build-approval-gate rule.
+
+Alternatives:
+  Keeping DR-I as a flat "no consumable currencies" ban —
+    rejected; would force reopening the already-approved
+    DR-ZYRA-119 Profile Unlock+ direction for no behavioural
+    reason, since Profile Unlock+ does none of the things DR-I
+    is actually trying to prevent.
+  Ratifying DR-G and DR-N inside this same review — rejected;
+    Founder wants each as its own dedicated discussion, given
+    the safeguarding and measurement-incentive concerns raised.
+  Treating AI cross-review convergence as sufficient to begin
+    implementation directly — rejected; Founder introduced an
+    explicit build-approval gate (item 8) specifically to
+    prevent this.
+
+Reasoning:
+  A falsifiable, reusable test (four criteria) is more durable
+  than a one-off carve-out, and keeps DR-I and DR-ZYRA-119
+  mutually consistent for future contributors rather than
+  apparently contradictory. Verifying the actual Profile Unlocks
+  specification (rather than reasoning from memory or the
+  feature's name alone) was decisive — the mechanic's real
+  constraints (never reveals photos, never bypasses privacy,
+  blocked during swiping, permanent once purchased) are what
+  make it compliant, not an assumption. Separating "agreed in
+  discussion" from "authorised to build" preserves the Founder's
+  standing final-decision authority regardless of how much
+  cross-AI agreement exists.
+
+Impact:
+  APP/Premium/Profile Unlocks/Summary.md — its open "decide
+    whether unused unlocks expire" To-Do item should be closed as
+    "no — fixed monthly allocation, no mid-cycle expiry, no
+    rollover" the next time that document is formally revised
+    (not actioned as a standalone document edit by this entry).
+  No code changes made or authorised by this entry — see Decision
+    item 8.
+  OA-ZYRA-150, OA-ZYRA-151 — newly logged, tracking Decision
+    items 4 and 6 respectively.
+
+Related:
+  DR-ZYRA-119 (Profile Unlock+ future-build direction), DR-ZYRA-
+    109 (Browse sponsored-card slot), DR-ZYRA-097 (One Active
+    Journey ruling), DR-ZYRA-079 (compatibility scoring),
+    MUZZ_TEARDOWN_CURRENT_VERSION_V1.md, APP/Premium/Profile
+    Unlocks/Summary.md, OA-ZYRA-150, OA-ZYRA-151.
+
+------------------------------------------------------------
+
 # Register Metadata (added 2026-07-12)
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-103,
+DR-ZYRA-121
+Title:       Journey Lifecycle Architecture — Journey Attempts Beneath a
+             Permanent Pair, Protection Holds, Mutual-Consent Restart,
+             and Pause Retained as Premium
+Date:        2026-08-06
+Status:      Approved — build authorised. One Founder amendment (item
+             12).
+Owner:       Fable (UX & Product Experience Lead) and ChatGPT (Strategic
+             Review) — joint recommendation, no dissent between them
+Approved by: Founder (Shakeel), 2026-08-06, following four rounds of
+             independent challenge between Fable and ChatGPT and
+             verification of every current-state claim against the live
+             database rather than the specifications.
+
+Decision:
+  1.   restart_journey() is treated as a STANDALONE SAFETY
+       DEFECT and corrected independently of the redesign. It
+       currently reopens an ended Journey on one party's
+       request alone and DELETEs six tables of history first,
+       so a person who ended a Journey because they felt
+       unsafe can be returned to it without consent and
+       without record. It also closes the conversation on
+       restart while clearing the timestamp recording the
+       closure. Both fixed. (OA-ZYRA-154.)
+
+  2.   journey_attempts is introduced beneath matches. matches
+       remains the permanent one-row-per-pair record; each
+       attempt carries its own status, stage, timeline and
+       conversation. Nine tables move from match_id to
+       attempt_id, carrying 15 RLS policies. (OA-ZYRA-156.)
+
+  3.   ALL JOURNEY HISTORY IS PRESERVED. Nothing is deleted
+       when a new attempt begins. Deletion destroys the
+       evidence a Guardian or moderator would need if a
+       pattern emerges, and makes GDPR erasure harder rather
+       than easier.
+
+  4.   attempt_visible_to() becomes the SINGLE SOURCE OF TRUTH
+       for authorisation. Every RLS policy, service and future
+       role asks that one question rather than reimplementing
+       visibility logic. Decided now because the 15 policies
+       are being re-pointed anyway; at five participant roles,
+       inline SQL would become seventy-five policies re-
+       deriving identical logic. (OA-ZYRA-156.)
+
+  5.   protection_holds replaces a single protection state.
+       Protection is the result of one or more active holds,
+       which allows holds to coexist, allows an appeal to
+       release one without disturbing another, and makes the
+       table its own audit log. A SAFETY HOLD IS NEVER
+       APPEALABLE, because the barred person must never learn
+       it exists. (OA-ZYRA-157.)
+
+  6.   Journey data is classified as MINE / THEIRS / JOINT
+       BEFORE the migration begins. A journey attempt is a
+       shared object; without field-level classification, a
+       subject access request under Article 15 requires
+       someone to read nine tables by hand under a 30-day
+       statutory clock. (OA-ZYRA-155, blocking OA-ZYRA-156.)
+
+  7.   ended_by, ended_at and end_reason are recorded on every
+       ending, with six reasons and one optional free-text
+       field. Only 'safety concern' is hidden from the other
+       party, and a safety ending places a safety hold on the
+       pair. (OA-ZYRA-158.)
+
+  8.   Restart is replaced by REQUEST NEW JOURNEY, requiring
+       mutual consent. The recipient may Accept, Decline, or
+       Decline and don't ask again; the requester is never
+       told which decline occurred. (OA-ZYRA-159.)
+
+  9.   Per-person opaque reference codes are generated at
+       attempt creation. Opaque rather than sequential, and
+       one code per person rather than one shared code, so
+       neither party holds a handle on the other's support or
+       moderation case. (OA-ZYRA-160.)
+
+  10.  The notification model separates in-app visibility from
+       push, and gives Guardians a digest rather than a
+       stream. Two safety-bearing rules: a safety ending is
+       worded identically to an ordinary one for the other
+       party, and safety reasons are disclosed to nobody
+       automatically — including the ender's own Guardian.
+       (OA-ZYRA-161.)
+
+  11.  Guardian involvement becomes PER ATTEMPT. A new
+       Guardian never inherits a previous Guardian's notes,
+       and Family Review runs fresh for every attempt. (OA-
+       ZYRA-162.)
+
+  12.  FOUNDER AMENDMENT — PAUSE REMAINS PREMIUM. The joint
+       recommendation to make Pause free for all Seekers was
+       NOT approved. Pause stays a ZYRA One capability, to be
+       revisited after beta on evidence rather than argument.
+       Consequences worked through in OA-ZYRA-164: the rule
+       becomes 'anyone may be affected by a pause; only ZYRA
+       One may initiate one', and four guardrails apply —
+       ending is always free for everyone, no upgrade prompt
+       appears on the received-pause screen, that screen
+       offers only wait or end, and Pause is never marketed as
+       a way to hold a person. Instrumentation to answer the
+       question at beta close is OA-ZYRA-165.
+
+  13.  Pause is treated as a BEHAVIOURAL FLAG on an Active
+       Journey, not a lifecycle state. The unreachable
+       'paused' value leaves the matches status CHECK
+       constraint.
+
+  14.  ZYRA NEVER AUTOMATICALLY ENDS A JOURNEY. Reminders at
+       30 and 90 days, then indefinite. This overrides the
+       30-day Full Suspension auto-End timer in
+       JOURNEY_SUSPENSION_CURRENT_VERSION_V1 §5.3, which must
+       be removed. (OA-ZYRA-164.)
+
+  15.  Audit logging is scoped, not comprehensive. Append-only
+       records for protection holds, moderator actions, appeal
+       outcomes and safety endings. Full event sourcing is
+       explicitly rejected as over-engineering. (OA-ZYRA-163.)
+
+  16.  Five questions are recorded as DELIBERATELY UNANSWERED
+       and better settled by real usage than by further
+       architecture discussion: decline cooldown length,
+       request expiry window, pause reminder cadence, Guardian
+       digest frequency, and whether 'don't ask again' earns
+       its complexity. Recorded honestly as guesses rather
+       than presented as design.
+
+Rationale:
+  Every current-state claim underpinning this decision was
+  read from the live database on 2026-08-06, not from the
+  specifications, because the two had drifted. Three beliefs
+  held in the documents proved false: the lifecycle has
+  three usable states rather than four, status is a TEXT
+  column with a CHECK constraint rather than an enum, and
+  the one-Active-Journey rule is not enforced by the schema
+  at all — it holds only because every write path happens to
+  check it.
+
+  TIMING IS THE STRONGEST ARGUMENT FOR ACTING NOW. All ten
+  Journey tables were verified empty on 2026-08-06 — matches
+  holds 0 rows and so do all nine dependants. This is
+  therefore a DDL and code migration with NO DATA MIGRATION.
+  Every day of real usage after launch adds rows, live
+  sessions and backfill risk to a change whose cost today is
+  bounded and testable.
+
+  The single-visibility-helper decision has a live precedent
+  in this codebase. The profile-photos storage read policy
+  resolved visibility through an RLS-bound subquery on
+  profiles, so photo readability silently inherited the
+  gender rule of whoever uploaded each file — emptying
+  Browse, breaking Guardian Suggestion photos and white-
+  screening 'View profile'. Diagnosed and fixed 2026-08-05.
+  Duplicated authorisation logic fails quietly and
+  expensively.
+
+Supersedes:  ZYRA_JOURNEY_LIFECYCLE_2026-08-06_V1.md and _V2.md (both
+             archived, reference only). Governing document is
+             ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md.
+Actions:     OA-ZYRA-154 through OA-ZYRA-165.
+Dependencies:APP/Journey/JOURNEY
+             SUSPENSION/JOURNEY_SUSPENSION_CURRENT_VERSION_V1.md
+             (conflicts, §5.3); APP/Journey/JOURNEY
+             MANAGEMENT/Summary.md; APP/Journey/JOURNEY
+             AVAILABILITY/Summary.md;
+             APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V6.md;
+             SYSTEM/DOCUMENTS/ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5.md;
+             OA-ZYRA-152 (DR-I test, cited by the Pause guardrails).
+
+------------------------------------------------------------
+
+DR-ZYRA-122
+Title:       Journey RPC Migration (Stage 4e) — Five Approvals
+Date:        2026-08-08
+Status:      APPROVED — Founder, 2026-08-08. Build authorised.
+Decided by:  Founder (Shakeel)
+Source:      ZYRA_JOURNEY_RPC_MIGRATION_PLAN_CURRENT_VERSION_V1.md
+             section 10, items 1-5. Put to the Founder verbally
+             2026-08-08 after each item was re-verified against the
+             live database — two had moved since the plan was written.
+
+Decision 1:  FOLD stages 4c and 4d into 4e. Approved.
+             4d drops match_id, which breaks 11 functions unless 4e
+             has re-pointed them first, so running them separately
+             means breaking the database deliberately and repairing
+             it. 4e's own eight steps remain individually
+             verifiable, so the small-stages rule (CLAUDE.md 3c) is
+             preserved where it does the work.
+
+Decision 2:  ENFORCE one Active Journey per person structurally, on
+             whichever table is authoritative. Approved.
+             The platform invariant is currently violable: the two
+             partial indexes guarding it each cover one side of a
+             pair, so a person may be seeker_a on one active Journey
+             and seeker_b on another. Reproduced live 2026-08-06.
+             STATE AT APPROVAL: a correct per-person constraint
+             trigger (journey_attempts_one_active_per_person ->
+             zyra_enforce_one_active_attempt) already exists on
+             journey_attempts, but matches remains authoritative and
+             the write path does not pass through it. Scaffolded,
+             not load-bearing.
+
+Decision 3:  end_journey() records WHY a Journey ended, not only who.
+             Approved.
+             STATE AT APPROVAL: half already built. ended_by has
+             been written since Step 1b (2026-08-08); end_reason has
+             not. Six reasons; safety_concern is already concealed
+             from everyone except the person who raised it by
+             zyra_match_ending(). Approved in principle by
+             DR-ZYRA-121 item 6; this authorises the build.
+
+Decision 4:  matches keeps NO lifecycle state after the migration.
+             Confirmed. journey_attempts owns status and stage
+             outright; matches becomes the permanent pair record.
+             Two tables holding the same truth is how they drift.
+
+Decision 5:  Lazy family-review resolution stays as-is, OUT OF SCOPE
+             for this migration. Confirmed.
+             Noted at approval: a due 48-hour review therefore
+             resolves only when someone next opens the app, so it
+             can sit past its deadline if nobody does. This becomes
+             material when notifications are built (OA-ZYRA-161).
+
+Actions:     Unblocks all eight steps of OA-ZYRA-156 stage 4e.
+Sequencing note recorded at approval: steps 2, 3, 4 and 6 are SQL
+             and independently verifiable. Step 1 and step 7 touch
+             Dart and drop columns respectively, and NEITHER should
+             land while `flutter analyze` cannot be run and the 84
+             live-only migrations are unrecovered — a destructive
+             drop with no schema in version control has no rollback
+             artefact. Raised at approval, not discovered later.
+Dependencies: ZYRA_JOURNEY_RPC_MIGRATION_PLAN (current version);
+             DR-ZYRA-121; OA-ZYRA-156; OA-ZYRA-134 (backup);
+             ZYRA_ENGINEERING_INVARIANTS I1 and I4.
+
+------------------------------------------------------------
+
+DR-ZYRA-123
+Title:       Shared-Guardian Matching Exclusion (Tier-1), and Guardian
+             Ward Count Disclosure
+Date:        2026-08-08
+Status:      APPROVED — Founder, 2026-08-08. Built and verified same day.
+Decided by:  Founder (Shakeel)
+Source:      Fable's dual-role review; adversarial pass 2 finding A1;
+             measured against the live database before the decision.
+
+THE MEASUREMENT THAT FRAMED IT
+             zyra_can_match(brother, sister), with their father as
+             Guardian to both, returned TRUE. A mutual Like would have
+             created a real Journey between siblings.
+             Same-gender co-wards were already refused by segregation,
+             and a Guardian and their own ward by Tier-0 — so Tier-1's
+             only real job is opposite-gender co-wards, which in practice
+             means siblings.
+
+Decision 1:  TIER-1 APPLIES UNIVERSALLY. Two Seekers who share a Guardian
+             may not match. The institutional-guardian exception is
+             deliberately DEFERRED until a real user hits it.
+             Reasoning: the sympathetic institutional case — someone
+             guarding women with no male relatives — has all-female wards,
+             so opposite-gender pairs never arise and the rule costs them
+             nothing. Measured on the seed set: 0 Guardians hold wards of
+             both genders, so Tier-1 blocks 0 of 5,184 opposite-gender
+             pairs today. The only genuine false positive is a
+             mixed-gender community organisation, hypothetical at zero
+             real users. An exception is cheap to add later; siblings
+             matching in the meantime is not undoable.
+             Enforced in zyra_can_match, therefore in the RLS WITH CHECK
+             on likes/saves/passes, per GUARDIAN & ROMANTIC RULES section
+             5 — not at match creation, which a disabled trigger skips.
+
+             IMPLEMENTATION CHOICE, flagged at build time and open to
+             reversal: "shared Guardian" counts links that are 'active'
+             OR 'removed', not active alone. Active-only would be
+             I1-vulnerable — two siblings who each moved to a different
+             Guardian would become matchable, anchoring a permanent
+             consequence on a row the user can retire. 'pending' is
+             excluded: an invitation never accepted is not a bond.
+             COST: two people who each briefly linked the same community
+             Guardian stay permanently unmatchable, silently.
+
+Decision 2:  A GUARDIAN'S WARD COUNT IS DISCLOSED to a Seeker deciding
+             whether to accept them, via preview_wali_invite().
+             Chosen over a hard cap because every cap refuses somebody
+             legitimate: five turns away the uncle with four nieces,
+             fifty is not a cap, and review needs an admin that does not
+             exist. The number costs an honest Guardian nothing and a
+             catalogue-builder everything, and it puts the judgement with
+             the person whose data it is.
+             Active links only — a present-tense disclosure, not a
+             permanent restriction, so I1 does not apply. Deliberately
+             the opposite convention to Tier-1 above, and for a reason.
+
+Not decided: Whether institutional guardianship becomes a distinct class
+             with its own visibility rules. Deferred with Tier-1, not
+             rejected. It remains the lever for the A1 catalogue-builder
+             risk if the count alone proves insufficient.
+Actions:     Closes the Tier-1 half of Q3 from the dual-role review, and
+             the A1 recommendation from adversarial pass 2.
+Dependencies: zyra_can_match; preview_wali_invite; wali_links;
+             ZYRA_ENGINEERING_INVARIANTS I1 and I10; DR-ZYRA-121.
+
+------------------------------------------------------------
+
+DR-ZYRA-124
+Title:       Tier-1 Is a Matching Rule, Not a Dissolution Rule —
+             Grandfathered for Journeys Already Under Way
+Date:        2026-08-08
+Status:      APPROVED — Founder, 2026-08-08. Built and verified same day.
+Decided by:  Founder (Shakeel)
+Source:      OA-ZYRA-174. Found by Claude Opus running
+             zyra_journey_suite.sql end to end for the first time — it
+             threw at assertion 29, in resume_journey().
+
+THE MEASUREMENT THAT FRAMED IT
+             zyra_can_match() is consulted at exactly four gates:
+             the likes / passes / saves RLS insert policies,
+             create_match_on_mutual_like(), promote_journey_to_active(),
+             and resume_journey(). An active, UNPAUSED Journey is not
+             one of them — nothing re-checks at stage advance, at Family
+             Review, or on a trigger over wali_links.
+
+             So when Tier-1 (DR-ZYRA-123) went into zyra_can_match()
+             that morning, it silently acquired a fifth meaning nobody
+             had decided. A pair who acquired a shared Guardian
+             mid-Journey carried on untouched if they never paused, and
+             became PERMANENTLY un-resumable if they paused once — with
+             an error naming a condition they had no way to clear.
+             Enforcement depended on whether they happened to press a
+             button. I3 (one path) and I4 (unskippable layer), both.
+
+             Live exposure at the time: none. Zero matches in status
+             potential or active, measured before the change.
+
+Decision:    GRANDFATHER. Tier-1 governs who may be MATCHED. It does not
+             dissolve a Journey that already exists.
+             Reasoning: Tier-1 is an inference from a THIRD party's
+             action — neither Seeker did anything. A rule that ends
+             other people's Journeys on that basis is a much larger
+             claim than the one DR-ZYRA-123 actually made, and it was
+             never argued for. Blocks and Tier-0 stay, because both are
+             deliberate acts by the two parties themselves.
+
+             The rejected alternative (DISSOLVE — end the Journey when
+             the shared link is created, via a trigger on wali_links) is
+             coherent and follows from I1. It was rejected because it
+             ends a real relationship over a third party's paperwork
+             and would need its own consent and copy design. If Tier-1
+             is ever extended to existing Journeys, it should be that
+             way — deliberately, at the moment the link is created —
+             and never as a side effect of a pause.
+
+Implementation:
+             New internal predicate zyra_can_continue_journey(a,b):
+             blocks and Tier-0 only. EXECUTE revoked from public, anon
+             and authenticated. resume_journey() calls it instead of
+             zyra_can_match() and raises 'not_eligible_to_continue'.
+             zyra_can_match() is UNCHANGED — Tier-1 still blocks new
+             Likes, new matches and promotion.
+             Migration 20260808190911_grandfather_tier1_out_of_
+             resume_journey.sql.
+
+             Role and gender deliberately NOT re-checked at resume.
+             They cannot change without the Journey having been
+             illegitimate at creation, and re-checking role would
+             rebuild this exact trap the day the dual-role work deletes
+             profiles.role.
+
+Found while building:
+             Tier-0 cannot arise mid-Journey at all —
+             zyra_enforce_guardian_link_allowed() already refuses a
+             Guardian link over a live Journey ('romantic_edge_exists').
+             The Tier-0 branch is defence in depth, not the guard.
+
+Not decided: Whether a 'removed' Guardian link should disqualify under
+             Tier-0 as it already does under Tier-1. Raised separately
+             as OA-ZYRA-175 — unreachable while profiles.role exists,
+             and must be settled before it is deleted.
+Actions:     Closes OA-ZYRA-174. Opens OA-ZYRA-175.
+Dependencies: zyra_can_match; zyra_can_continue_journey; resume_journey;
+             zyra_enforce_guardian_link_allowed; DR-ZYRA-123;
+             ZYRA_ENGINEERING_INVARIANTS I1, I2, I3, I4;
+             SOURCE/lib/services/zyra_journey_service.dart;
+             zyra_journey_suite.sql section I (assertions 59-67).
+
+------------------------------------------------------------
+
+DR-ZYRA-125
+Title:       Splash Screen Is Brand Purple, Never Gender-Matched —
+             The Handoff Moves to AuthGate
+Date:        2026-08-08
+Status:      APPROVED — Founder, 2026-08-08. Built same day.
+Decided by:  Founder (Shakeel)
+Source:      Founder, 2026-08-08: "it's got the pink purple colour
+             but it should be the purple colour."
+
+Decision:    The splash uses ZyraColors.brandGradient (#8A6A9E ->
+             #3D2A4A) for its full four seconds, for every user,
+             signed in or not. It is not gender-matched.
+
+             This restores DR-ZYRA-094's ratified palette, which
+             lists "Splash Screen" under GLOBAL BRAND alongside
+             Main Navigation and core branding. The MALE and FEMALE
+             gradients are scoped to "Male/Female Seeker" and
+             "Male/Female Guardian" — profile-context screens. The
+             splash is not one: it is the brand introducing itself,
+             before the app knows or should care who is holding the
+             phone.
+
+REVERSES:    The 2026-08-07 change that made the splash call
+             genderGradient(AppState.instance.gender).
+
+             That change was made to remove a flash the Founder had
+             reported as "a second of purple before it goes pink" —
+             the splash painting neutral, then main.dart's gendered
+             layer taking over beneath it. The diagnosis was right.
+             The fix was aimed at the wrong half: it removed the
+             flash by making the splash the wrong colour for four
+             seconds rather than by softening the one frame where
+             the two colours meet.
+
+             The flash is now handled where it belongs. AuthGate
+             wraps the splash-to-home swap in an AnimatedSwitcher
+             with a 260ms fade — the same duration main.dart
+             already uses when the gendered background changes, so
+             the app has one speed for "the background is
+             changing". Brand purple resolves into the member's own
+             colour instead of being cut to it.
+
+Not changed: The native launch colour stays #3D2A4A (flat; native
+             splash cannot render a gradient), and the rule that
+             the native launch image carries no wordmark stands.
+             genderGradient() itself is untouched and still correct
+             everywhere else it is used.
+Actions:     If a flash reappears, fix it in AuthGate. Do not
+             re-tint the splash. Both files carry that instruction
+             in comments.
+Dependencies: SOURCE/lib/screens/splash_screen.dart;
+             SOURCE/lib/screens/auth_gate.dart;
+             SOURCE/lib/theme/zyra_colors.dart (brandGradient,
+             genderGradient); DR-ZYRA-094 (ratified palette);
+             DR-ZYRA-101; BUSINESS/COLOUR THEME/Summary.md.
+
+------------------------------------------------------------
+
+DR-ZYRA-126
+Title:       Loading Gaps Use ZyraLoading (Four Travelling Dots),
+             Not CircularProgressIndicator — And the Splash Is Not
+             a Loading State
+Date:        2026-08-08
+Status:      APPROVED — Founder, 2026-08-08. Widget built same day;
+             call-site migration NOT started.
+Decided by:  Founder (Shakeel)
+Source:      Founder, 2026-08-08: "the gaps when the app is loading
+             — can you show me an animation we can have for users
+             to see if they experience delay. I'm thinking either
+             the word ZYRA jumping like it's loading, or just the
+             purple background with 4 dots moving left to right."
+             Four options were built and shown running; Founder
+             chose idea 2, the dots.
+
+Decision 1:  THE SPLASH AND A LOADING STATE ARE DIFFERENT THINGS.
+
+               SPLASH   plays once at cold start, owns the screen
+                        for a fixed 3s, is a statement, has its own
+                        orbs-and-letters sequence.
+               LOADING  appears only when there is real waiting,
+                        for an unknown length of time, and should
+                        be forgettable.
+
+             Conflating them is what produced the Developer Access
+             bug fixed the same day — picking a test account played
+             the full brand animation every time. A gap needs
+             something that can appear for 80ms or 8 seconds and be
+             right either way.
+
+Decision 2:  THE STYLE IS FOUR DOTS TRAVELLING LEFT TO RIGHT.
+             ZyraLoadingStyle.slidingDots — the dots physically
+             cross and loop, matching the Founder's own words "4
+             dots MOVING left to right".
+             The other reading of the same idea
+             (ZyraLoadingStyle.travellingDots — dots holding
+             position, the bright one moving through them) is built
+             and is one constant away if the device changes his
+             mind. So are the two wordmark treatments.
+
+Decision 3:  ZyraLoading REPLACES CircularProgressIndicator.
+             Measured 2026-08-08: 38 occurrences across 23 files,
+             22 of them the plain `Center(child:
+             CircularProgressIndicator())` shape that is drop-in.
+             A Material spinner inside a bespoke brand is the
+             visual equivalent of a default ringtone.
+
+             MIGRATE AS FILES ARE TOUCHED, not in one sweep. The
+             remaining ~16 are inside buttons, images and sheets
+             where the 106x10 track may not fit and a judgement is
+             needed per site. A blanket find-and-replace would put
+             a loading animation inside a button, which is the one
+             place it does not belong.
+
+Not decided: Whether the wordmark styles get any use at all. Both
+             are built and neither is wired to anything.
+Actions:     Founder to confirm on device. Call-site migration
+             needs its own OA when it is scheduled.
+Dependencies: SOURCE/lib/widgets/zyra_loading.dart;
+             SOURCE/lib/screens/auth_gate.dart (playSplash: false
+             path); SOURCE/lib/screens/dev/developer_access_screen
+             .dart; DR-ZYRA-094 (palette — the loading background
+             is brand purple, never gender-matched); DR-ZYRA-125.
+
+------------------------------------------------------------
+
+DR-ZYRA-127
+Title:       Settings Gains a LEGAL Section and a Version Footer.
+             ZYRA States "No Cookies, No Tracking" Because It Ships
+             No Tracker — a Claim With an Expiry Condition
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09. Built same day.
+Decided by:  Founder (Shakeel)
+Source:      Founder, from the Muzz teardown: "on Muzz in settings
+             they have a privacy and cookie setting and also at
+             bottom a version number with 8.77.1 (563) — can we add
+             those in reference to our business."
+
+Decision 1:  A LEGAL section in Settings, separate from PRIVACY.
+             PRIVACY is about choices the MEMBER makes (who sees
+             them, who is blocked). LEGAL is about what the COMPANY
+             does. Different questions, different headings.
+             One row today: "Privacy & data". The Privacy Policy
+             and Terms get their own rows when the drafted text
+             exists — a row that opens nothing is worse than no row.
+
+Decision 2:  NOT A COOKIE CONSENT SCREEN, which is what Muzz has.
+             A consent screen exists to switch third-party tracking
+             off. Verified against pubspec.yaml 2026-08-09, the
+             entire dependency list is google_fonts,
+             supabase_flutter, image_picker, google_sign_in,
+             sign_in_with_apple, crypto, shared_preferences,
+             local_auth, package_info_plus, cupertino_icons.
+             No analytics, no crash reporter, no attribution or ad
+             library, no WebView. There is nothing a toggle could
+             turn off, and shipping toggles that control nothing is
+             worse than shipping none — it implies tracking exists
+             and invites the member to believe they disabled it.
+             The screen states the position instead, which is what
+             WEBSITE_IA_AND_LEGAL_PAGES already concluded for the
+             marketing site: "a one-line 'no cookies' statement,
+             which is itself a trust win".
+
+             🔴 THIS CLAIM HAS AN EXPIRY CONDITION. It is true
+             because of the dependency list, not because of a
+             policy. The day any analytics, crash-reporting or
+             attribution SDK is added, the screen is lying, and it
+             is the FIRST thing that must change — before the SDK
+             ships, not after. Written into the file's header.
+
+Decision 3:  Version footer, "1.0.0 (1)" — Muzz's shape, marketing
+             version then build number. Read at runtime via
+             package_info_plus rather than a hand-maintained
+             constant: a version string that lies is worse than
+             none, since its only purpose is being read back to
+             support. SelectableText for the same reason.
+
+Not decided: The formal Privacy Policy, Terms and Cookie Policy.
+             Still blocked on ZYRA_LEGAL_RESEARCH's open questions
+             — Article 9 consent route, retention periods,
+             incorporation details. The new screen is a
+             plain-English description of app behaviour written
+             from the code, and says so; it is not a legal
+             instrument and must not be presented as one.
+Actions:     Re-verify Decision 2 on every dependency addition.
+Dependencies: SOURCE/lib/screens/settings/privacy_and_data_screen
+             .dart; settings_screen.dart (_VersionFooter);
+             pubspec.yaml (package_info_plus ^10.2.1 — SDK floor
+             checked against this project's Dart 3.12.2 / Flutter
+             3.44.0 before adding); ZYRA_LEGAL_RESEARCH;
+             WEBSITE_IA_AND_LEGAL_PAGES; MUZZ_TEARDOWN.
+
+------------------------------------------------------------
+
+DR-ZYRA-128
+Title:       Phone Numbers Are Optional, and "Block My Contacts"
+             Must State Its Own Coverage Limit
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09. Direction only; NOT
+             built. See OA-ZYRA-179.
+Decided by:  Founder (Shakeel)
+Source:      Founder: "they sign in by Apple or Google meaning we
+             don't ask for phone numbers... unless they wanna add
+             phone numbers for log in security. But do we need a
+             button somewhere in settings where they can block
+             phone contacts?"
+
+THE MEASUREMENT THAT FRAMED IT
+             ZYRA holds ZERO phone numbers. Measured 2026-08-09: no
+             phone, contact or mobile column on any table in the
+             public schema, and 0 of 149 auth.users rows carry a
+             phone. Apple and Google sign-in return an email.
+             So contact blocking is not hard today, it is
+             impossible — there is nothing to match against.
+
+             The project's own competitor research rates this the
+             feature that matters most. MUZZ_TEARDOWN: "'Block my
+             phone contacts' is the best single feature in the app.
+             The fear of being seen on a marriage app by your
+             cousin, your student, or your imam is the number one
+             reason practising Muslims avoid these platforms."
+
+Decision:    OPTIONAL, VERIFIED PHONE NUMBER. Members may add one
+             for login security. Contact blocking then works
+             between two members who have BOTH added one.
+             Rejected: requiring a number at sign-up. It would give
+             complete coverage and a feature that is simply true,
+             but it contradicts the Apple/Google-only position, adds
+             friction, and creates a phone-number store — in a
+             community context, the highest-value personal data the
+             app could hold.
+             Rejected: not building it. The fear is real and named
+             in the research.
+
+🔴 THE CONDITION THIS DECISION CARRIES
+             Partial coverage is the whole risk, and it is the
+             failure mode this project hit three times on
+             2026-08-08 alone: blocking that silently did nothing,
+             ages that silently read 0, advanceStage that silently
+             no-opped. A member switches "block my contacts" on,
+             believes they are hidden from their cousin, and is not
+             — because the cousin never added a number.
+
+             So the coverage limit must be stated AT THE POINT OF
+             SWITCHING IT ON, in the control's own copy. Not in a
+             help article, not in a tooltip, not in the Privacy
+             Policy. If that copy is not there, the feature must
+             not ship.
+
+Not decided: Whether a contact-block is terminal (I1/I2) or lifts
+             when the contact is removed from the phone; what the
+             blocked party is told, if anything; whether the number
+             is reusable for 2FA.
+Actions:     Build tracked as OA-ZYRA-179, with the hashing trap
+             recorded there.
+Dependencies: profiles; auth.users; profile_blocks;
+             privacy_settings_screen.dart; MUZZ_TEARDOWN;
+             ZYRA_IDENTITY_AND_SIGNIN_FOR_REVIEW; invariants I1, I2.
+
+------------------------------------------------------------
+
+DR-ZYRA-129
+Title:       One Canonical Journey Stage Map. Stage Labels Name the
+             Subject of the Couple's Attention, Not the Software's
+             Job — and Family Review Overrides the Stage
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09. Built same day.
+Decided by:  Founder (Shakeel)
+Source:      Founder, opening the discussion: "I'm deliberately
+             separating the UX wording from the underlying state
+             machine because I don't want us inventing stage names
+             that don't actually exist in the architecture."
+             And closing it: "if we ever need icons, colours,
+             descriptions, helper text, progress indicators or
+             localisation, I'd rather extend this one shared
+             definition than create separate mappings across
+             different screens."
+
+WHAT WAS FOUND
+             Three screens each carried their own switch over the
+             same eight journey_stage strings, and the three had
+             already drifted:
+
+               wali_journey_detail   'Phase 1 - Foundations'
+               wali_dashboard        'Phase 1'
+               connections           'In the Pre-Journey Ritual'
+                                     for seven of the eight
+
+             The third was not merely inconsistent, it was false.
+             The Pre-Journey Ritual is what turns a POTENTIAL
+             Journey into an Active one; every one of these eight
+             stages runs after it. A Seeker in Family Compatibility
+             was told they were still in the ritual they had
+             finished weeks earlier. A fourth copy was about to be
+             written. That is invariant I3.
+
+Decision 1:  ONE MAP, in SOURCE/lib/data/zyra_journey_stages.dart.
+             No screen writes a stage label. Extension is by adding
+             a FIELD to ZyraJourneyStage — never a second map
+             elsewhere. `icon` and `description` are deliberately
+             absent rather than stubbed: a null field every screen
+             null-checks is worse than one that does not exist yet.
+
+Decision 2:  THE NAMING PHILOSOPHY, recorded in the file itself so
+             the next person adding a stage inherits the reasoning
+             and not just the strings:
+
+             EVERY LABEL NAMES THE SUBJECT OF THE COUPLE'S
+             ATTENTION AT THAT MOMENT. Not what the software is
+             doing, not what the stage is "for".
+
+             The stages are not all one kind of thing, which is why
+             forcing all eight into "topic" or all into "purpose"
+             kept producing one label that felt wrong:
+               THRESHOLD   a mutual act, a door. zyra_advance_stage
+                           moves these directly.
+               SUSTAINED   a subject worked through over weeks,
+                           with a question set and a Family Review
+                           at the end. zyra_advance_stage REFUSES
+                           these with 'gated_transition'.
+               DESTINATION the end of the sequence.
+
+             The grammar is load-bearing. Thresholds and the
+             destination are noun phrases; the long sustained
+             phases are gerunds. A threshold is something you
+             COMPLETE; a phase is something you DO OVER TIME.
+
+Decision 3:  THE APPROVED MAP.
+
+               stored                 label                  kind
+               compatibility_reveal   Compatibility Reveal   threshold
+               salam_exchange         Salam Exchange         threshold
+               wali_gate              Guardian Gate          threshold
+               phase_1                Faith & Values         sustained
+               phase_2                Building a Life        sustained
+               phase_3                Navigating Life        sustained
+               family_stage           Family Compatibility   sustained
+               conversation           Open Conversation      destination
+
+             "Phase 1/2/3" are internal engineering names that had
+             leaked to the surface. They are now stored values
+             only; no member sees them.
+
+             "Open Conversation", not "Conversation". Free
+             messaging genuinely does begin here and nowhere
+             earlier — ChatScreen has one entry point in the whole
+             app and it is gated on this stage — but the Journey is
+             conversational throughout, so the bare word implied
+             talking starts here. "Open" names what actually
+             changes: the structure lifts.
+
+             One known exception, recorded rather than hidden:
+             "Guardian Gate" names a mechanism, not a subject. Kept
+             because it was already approved, already on two
+             screens, and because "gate" is honest that the Journey
+             stops there.
+
+Decision 4:  FAMILY REVIEW IS AN OVERRIDE, NOT A STAGE. There is no
+             family_review value in the database and there must not
+             be — it is the gate between 4-5, 5-6, 6-7 and 7-8. A
+             Journey is never "in" Family Review; it is in phase_2
+             with a review open.
+             It wins the label because it is the only moment an
+             Active Journey is stalled for a reason the Seeker
+             cannot act on. "Building a Life" while two Guardians
+             deliberate explains nothing about why nothing is
+             moving.
+
+Decision 5:  "Current Focus:" prefix on Journey Detail only. On a
+             Connections card the label is obviously the state and
+             the prefix is noise.
+
+🔴 THE TRAP THIS DECISION AVOIDED
+             The override is only honest if it comes from real
+             data. fetchFamilyReview() is PER-MATCH, so a list
+             screen calling it once per card is N+1 — and on the
+             Guardian Dashboard N is the number of Seekers a
+             Guardian looks after. A batched
+             fetchOpenReviewMatchIds() was added instead, one query
+             for the whole list. The alternative was passing a
+             hardcoded false and shipping a parameter that looked
+             live and never fired.
+
+             RLS grants that read to a party to the match or to a
+             MAIN Guardian. An ADDITIONAL Guardian sees the plain
+             stage. That is the existing 2026-07-26 policy, not new
+             here, and it is written into the method's own doc.
+
+Not decided: Icons, colours and descriptions per stage — the field
+             slots are described but nobody has designed the
+             values. Progress indicators: `order` and `count` exist
+             for "step 4 of 8" but no screen draws one yet.
+             Localisation: label becomes a key and the lookup moves
+             behind a delegate; having one map is the precondition
+             for that being a half-day change instead of a hunt.
+
+Deliberately NOT merged: journey_milestones types share the string
+             'family_stage' with a Journey stage. One is a stage of
+             the Journey, the other a real-world event a Guardian
+             records after it happened. Merging them on a matching
+             string would be a false economy — noted in
+             wali_journey_detail_screen so it is not "tidied up"
+             later.
+
+Dependencies: SOURCE/lib/data/zyra_journey_stages.dart (new);
+             zyra_journey_service.dart (fetchOpenReviewMatchIds);
+             connections_screen.dart; wali_dashboard_screen.dart;
+             wali_journey_detail_screen.dart; journey_flow_screen
+             .dart; journey_questions.dart; matches.journey_stage
+             CHECK constraint; 20260726190000_family_review_period
+             .sql; invariant I3.
+
+------------------------------------------------------------
+
+DR-ZYRA-130
+Title:       The Three Release Blockers Are Fixed. Matching Writes Use
+             ignore-duplicates, the Safety Path Uses the RPC That Was
+             Already Written, and accept_wali_invite Stops Trusting a
+             Client-Written Column
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09, from his phone. Applied and
+             verified the same hour.
+Decided by:  Founder (Shakeel)
+Source:      Founder: "ok im on my phone now is there anything we can do
+             and tick off" — presented with four options, chose the three
+             blockers from ZYRA_CONTRADICTION_AUDIT_2026-08-08, and chose
+             "apply + prove, tell me after" for the live database.
+
+HOW EACH ONE WAS PROVEN
+             Every claim below was run as the `authenticated` role against
+             the live database inside a transaction that was rolled back.
+             Nothing in these tests persists. The before-state was
+             re-measured rather than quoted from the audit.
+
+Decision 1:  FINDING 1.1 — matching was dead. FIXED IN THE CLIENT.
+             A bare .upsert() sends Prefer: resolution=merge-duplicates,
+             which PostgREST turns into ON CONFLICT DO UPDATE, and
+             PostgreSQL demands the UPDATE privilege at PLAN time whether
+             or not a row conflicts. `authenticated` holds INSERT on
+             likes / saves / passes / journey_salams /
+             journey_phase_checkpoints and UPDATE on none of them.
+
+             Measured 2026-08-09:
+               ON CONFLICT DO UPDATE  -> 42501 permission denied
+               ON CONFLICT DO NOTHING -> succeeded
+               mutual pair            -> matches row, status='potential'
+
+             Fix: ignoreDuplicates: true at the five broken sites, with
+             onConflict named explicitly because the primary key on
+             likes/saves/passes is a surrogate id, not the pair.
+
+             REJECTED: granting UPDATE. It would work and it would let a
+             user rewrite a row they do not own.
+
+             NOT CHANGED: onboarding_answers and seeker_details also use a
+             bare .upsert(), and `authenticated` HAS update on both. Those
+             genuinely want merge semantics — re-answering a question
+             should overwrite. Checked before touching, not assumed from
+             the shape of the call.
+
+             ONE REAL BEHAVIOURAL CHOICE inside this. Four of the five
+             tables carry no payload, so DO NOTHING is simply the truth —
+             the row IS the fact. journey_phase_checkpoints carries
+             `decision`, so DO NOTHING means FIRST WRITE WINS. Verified
+             against the UI before accepting it: journey_flow_screen
+             renders the Continue / End buttons only when the caller has
+             no checkpoint yet, so there is no path in the app to change
+             one. If a change-your-mind flow is ever added this needs an
+             RPC, and there is a comment at the call site saying so.
+
+Decision 2:  FINDING 1.2 — blocking did nothing and reported success.
+             FIXED BY CALLING WHAT ALREADY EXISTED.
+             `authenticated` has no INSERT, UPDATE or DELETE on
+             profile_blocks; the RLS policies exist with no grant behind
+             them. zyra_block_user / zyra_unblock_user are SECURITY
+             DEFINER, granted, and were called from nowhere in 109 Dart
+             files.
+
+             Measured 2026-08-09: direct INSERT -> 42501; RPC round-trip
+             -> block leaves 1 row, unblock leaves 0.
+
+             REJECTED: adding the missing grants. The RPC does MORE — it
+             also ends any live Journey between the two via
+             zyra_end_match_internal(..., 'safety_concern'). Granting the
+             table would leave two paths that behave differently, and the
+             weaker one is the one already wired. Invariant I3.
+
+             Also fixed: reportAndBlock discarded block()'s return value
+             entirely. The contract is unchanged and still documented —
+             true means the REPORT stored — but a failed block now logs.
+             For a month it returned false every single time and nothing
+             anywhere said so.
+
+Decision 3:  FINDING 2.1 — any Seeker could become another Seeker's MAIN
+             GUARDIAN. FIXED IN THE DATABASE.
+             Migration 20260809150931. accept_wali_invite read the
+             accepter's role from profiles, correctly, but took the
+             inviter's role from wali_invites.inviter_role — a column the
+             client writes.
+
+             EXPLOIT REPRODUCED before the fix, both parties Seekers:
+             attacker inserted an invite claiming inviter_role='wali',
+             victim accepted through the ordinary flow, attacker landed as
+             is_main=true, status=active. That is sect, revert status,
+             ethnicity and nationality — Article 9 special-category data —
+             plus a Family Review vote and the is_main branch of
+             messages_select.
+
+             AFTER the fix, same three tests:
+               exploit (Seeker claims to be a Guardian)  -> REFUSED
+               control (real Guardian invites Seeker)    -> WORKS
+               control (real Seeker invites Guardian)    -> WORKS
+
+             profiles.role was verified NOT client-writable before being
+             trusted: `authenticated` holds SELECT and REFERENCES on that
+             column and nothing else.
+
+             A role mismatch is REFUSED, not silently reinterpreted.
+             Branching on the true role alone would already be safe, but
+             silence hides an attack and confuses the honest case where
+             someone's role changed after they sent an invite.
+
+🔴 WHAT IS NOT PROVEN
+             Two of the three fixes are DART, and there is no Dart
+             toolchain in the Cowork container — pub.dev and the Flutter
+             CDN are both unreachable from it, checked 2026-08-09. The
+             SQL shapes those changes produce were proven against the live
+             database; the Dart itself is hand-verified only. `flutter
+             analyze` and a run on the phone are still outstanding.
+
+             Finding 2.2 (open_family_review accepts any stage pair) is
+             NOT fixed. Still open.
+
+Actions:     Run ./run.sh and flutter analyze. Re-test Like -> match,
+             report-and-block, and a Guardian invite on the device.
+Dependencies: ZYRA_CONTRADICTION_AUDIT_2026-08-08.md §1.1, §1.2, §2.1;
+             migration 20260809150931; zyra_discovery_service.dart;
+             zyra_journey_service.dart; zyra_report_service.dart;
+             oa168_grant_sweep_stages_1_to_3 (the sweep that caused 1.1);
+             invariant I3.
+
+------------------------------------------------------------
+
+DR-ZYRA-131
+Title:       A Block Now Closes the Channel. messages_insert Honours
+             profile_blocks in Both Directions, and Refuses an Ended
+             Journey or a Closed Conversation
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09, from his phone. Applied and
+             verified the same hour.
+Decided by:  Founder (Shakeel)
+Source:      Founder asked "whats next" after DR-ZYRA-130 and chose
+             "finish the safety path" from four options.
+
+WHY THIS AND NOT SOMETHING ELSE NEXT
+             DR-ZYRA-130 made blocking record and end the Journey. It did
+             not close the channel. messages_insert checked exactly two
+             things — you are the sender, and you are a seeker participant
+             — so a blocked person could still send, and
+             notify_new_message still pushed their name and the first 140
+             characters to the phone of the person who blocked them.
+             Shipping half of "blocked" is worse than shipping none of it,
+             because the user stops taking further precautions.
+
+Decision 1:  THREE PREDICATES ADDED to messages_insert. Migration
+             20260809161716.
+               1. NOT zyra_block_exists(counterpart), in EITHER direction.
+                  Blocking is mutual invisibility, not a one-way mute.
+               2. attempt_status = 'active'. No messaging into an ended
+                  Journey.
+               3. conversations.status = 'active'. No messaging into a
+                  closed conversation.
+
+Decision 2:  THE BLOCK CHECK GOES THROUGH zyra_block_exists, NOT an
+             inline EXISTS. This is the subtle part and the reason a
+             naive fix would have failed silently: profile_blocks RLS
+             deliberately stops anyone seeing who blocked them, and a
+             policy subquery is evaluated as the SENDER. An inline EXISTS
+             would therefore read zero rows and pass — for exactly the
+             person it exists to stop. zyra_block_exists is SECURITY
+             DEFINER, already written, already checks both directions,
+             already granted. Invariant I3.
+
+Decision 3:  notify_new_message IS UNCHANGED, deliberately. It is an
+             AFTER INSERT trigger, so a refused insert never fires it.
+             Verified, not assumed: across six test sends, two succeeded
+             and exactly two notifications were created. A second block
+             check inside the trigger would be a second copy of the rule.
+
+PROVEN, all as `authenticated`, rolled back
+             1 control  A -> B, no block                => SENT
+             2 THE BUG  A -> B after B blocked A        => REFUSED
+             3 mutual   B -> A (B is the blocker)       => REFUSED
+             4 unblock  A -> B after unblock            => SENT
+             5 ended    A -> B on an ENDED Journey      => REFUSED
+             6 closed   A -> B on a CLOSED conversation => REFUSED
+
+🔴 A TRAP FOUND AND RECORDED
+             journey_attempts has RLS ENABLED WITH ZERO POLICIES. Every
+             row is invisible to `authenticated`. Joining it inside any
+             RLS policy makes that policy's EXISTS false for everyone and
+             SILENTLY BREAKS the feature — it would have broken ALL
+             messaging here. The lifecycle must be read through
+             zyra_my_attempt_participation, which is SECURITY DEFINER.
+             This is a live landmine for the next policy anyone writes.
+
+MEASURED BEFORE APPLYING, and worth recording on its own
+             The database held 0 messages, 0 conversations, 0 attempts and
+             0 matches — with 149 users. Not one match has ever existed,
+             which is finding 1.1 expressed as a single number. Migration
+             risk for this change was therefore nil.
+
+Not decided: journey_stage = 'conversation' as an insert predicate, and
+             refusing sends on a PAUSED Journey. Both are correct in
+             principle and both are BLOCKED ON THE SAME THING — the
+             participation view exposes neither journey_stage nor
+             paused_by, and journey_attempts cannot be joined (above).
+             Extending that view also changes what messages_select and
+             conversations_select read, which is not a safety fix.
+             Raised rather than guessed, per §3c step 6.
+             conversations.status is currently maintained by nothing, so
+             predicate 3 is dormant today — correct, but not yet load-
+             bearing.
+Actions:     Decide whether to extend zyra_attempt_participant_rows with
+             journey_stage and paused_by, which would let both deferred
+             predicates land. Tracked with finding 2.2.
+Dependencies: ZYRA_CONTRADICTION_AUDIT_2026-08-08.md §2.4; migration
+             20260809161716; DR-ZYRA-130; zyra_block_exists;
+             zyra_my_attempt_participation; journey_attempts RLS gap;
+             invariant I3.
+
+------------------------------------------------------------
+
+DR-ZYRA-132
+Title:       open_family_review Now Validates the Transition. The Door
+             That zyra_advance_stage Redirects To Enforces the Same Rules
+             It Does
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09, from his phone: "DO 2.2
+             NEXT". Applied and verified the same hour.
+Decided by:  Founder (Shakeel)
+
+THE DEFECT
+             zyra_advance_stage refuses the four gated transitions with a
+             hint: "This transition opens a Family Review Period. Call
+             open_family_review() instead." That alternative validated
+             NOTHING — it never referenced journey_stage, and there is no
+             CHECK constraint on from_stage or to_stage.
+
+             One Seeker, alone:
+               open_family_review(match,'compatibility_reveal','conversation')
+               wait 48 hours
+               resolve_family_review_if_due(match)
+             and the pair is in Open Conversation with the chat live,
+             having skipped the Salam Exchange, BOTH Guardian gates, all
+             three phases and the Family Compatibility stage. No Guardian
+             voted. The other Seeker never consented.
+
+Decision 1:  PARITY, NOT NEW RULES. Migration 20260809162503 gives
+             open_family_review the same four tests zyra_advance_stage
+             already applies — FOR UPDATE on the match, status active,
+             not paused, and journey_stage actually equal to
+             p_from_stage — plus the successor map it was refusing on
+             behalf of. Two doors into one state machine should not
+             enforce different rules. The hint now points both ways.
+
+             The map, written out and identical to the one
+             zyra_advance_stage refuses:
+               phase_1 -> phase_2 -> phase_3 -> family_stage -> conversation
+
+Decision 2:  STALENESS GUARD on resolve_family_review_if_due. A review is
+             a decision about one specific moment. If the stage has moved
+             since it was opened, do nothing and leave the row for a
+             human rather than teleporting the Journey to a stale
+             destination. Also refuses to resolve an ended or paused
+             Journey — paused merely defers, the next call after a resume
+             resolves it.
+             KNOWN TRADE-OFF: a stale review stays 'pending', and
+             idempotency means that blocks future reviews on that
+             attempt. Jammed is the correct failure here — better than
+             moved somewhere nobody agreed to — and with Decision 1 in
+             place it is unreachable except by a direct database write.
+
+Decision 3:  🔴 THE CLIENT NOW HEARS THE REFUSAL. This is the part that
+             was nearly missed, and it matters more than the SQL.
+             openFamilyReview returned String? from inside a bare
+             catch (_), and its ONE caller discarded even that. So
+             hardening the server would have made refusals MORE
+             reachable while keeping them completely invisible: tap
+             Continue, see a refresh, nothing moves. That is the exact
+             signature of the 2026-08-07 release blocker.
+             It now returns ZyraReviewOpen — same shape and same
+             vocabulary as ZyraStageAdvance, deliberately, because these
+             are two doors into one machine and a caller should not learn
+             two dialects. journey_flow_screen shows a SnackBar per
+             reason. 'stage_moved' is the one a real user will hit (the
+             other Seeker's client got there first) and is worded as
+             information, not as an error.
+
+PROVEN, all as `authenticated`, rolled back
+             1 EXPLOIT  reveal -> conversation      => REFUSED not_a_gated_transition
+             2 direct   reveal -> salam             => REFUSED not_a_gated_transition
+             3 skip     phase_1 -> conversation     => REFUSED invalid_transition
+             4 lie      claims family_stage         => REFUSED stage_moved
+             5 paused   phase_1 -> phase_2, paused  => REFUSED journey_paused
+             6 CONTROL  phase_1 -> phase_2          => ACCEPTED
+             7 CONTROL  48h elapsed, no objection   => stage moved to phase_2,
+                                                       review 'continued'
+             8 stale    premise changed underneath  => stage untouched,
+                                                       review left pending
+
+Not decided: Whether opening a phase review should require BOTH Seekers
+             to have submitted their answers, and whether it should
+             require a Main Guardian to still exist. Both are product
+             decisions, not bug fixes; the second overlaps OA-ZYRA-173.
+             Note that ONE Seeker opening a review and it auto-continuing
+             after 48 hours is the DESIGN, not a defect — the screen says
+             "unless you or [X]'s other Guardian raises a concern, the
+             Journey continues automatically". Silence is consent. The
+             defect was the skip.
+Actions:     flutter analyze; test the four gated transitions on device.
+Dependencies: ZYRA_CONTRADICTION_AUDIT_2026-08-08.md §2.2; migration
+             20260809162503; zyra_advance_stage; zyra_journey_service
+             .dart (ZyraReviewOpen); journey_flow_screen.dart;
+             OA-ZYRA-173; invariant I3.
+
+------------------------------------------------------------
+
+DR-ZYRA-133
+Title:       Invite Expiry Becomes Real. The Accept Path Checks It, and
+             the Inviter Can No Longer Rewrite the Invite. Finding 2.9
+             Is Rejected as Not a Defect
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09, from his phone. Applied and
+             verified the same hour.
+Decided by:  Founder (Shakeel)
+Source:      Founder chose "Invite + Guardian integrity" from four
+             options after DR-ZYRA-132.
+
+Decision 1:  FINDING 2.6 — accept_wali_invite never looked at expires_at.
+             The only enforcement lived in preview_wali_invite, and the
+             client was trusted to call it first. It does; but the accept
+             RPC is granted to `authenticated` and can be called
+             directly, so the 7-day deadline meant nothing.
+             Now calls expire_wali_invite_if_due() as a predicate, which
+             keeps ONE definition of expired (I3) rather than adding a
+             second inline expires_at test that could drift.
+
+Decision 2:  FINDING 2.7 — WORSE THAN THE AUDIT SAID. It named three
+             columns. Measured 2026-08-09: `authenticated` held UPDATE on
+             EVERY column of wali_invites, and wali_invites_update had a
+             USING clause with no WITH CHECK, so USING doubled as the
+             check and the only rule was "it is mine".
+             Combined with 2.6: revoke an invite, set status back to
+             'pending', push expires_at out a year, and it is live again.
+             That is not a stale invite — it is WITHDRAWN ACCESS THAT
+             STILL WORKS, and the access is Main Guardian, which reads
+             Article 9 special-category data.
+
+             THE GRANT IS REMOVED, NOT NARROWED. Every write path was
+             audited first and none of them need it:
+               create -> plain INSERT (kept)
+               revoke -> zyra_revoke_wali_invite(), SECURITY DEFINER
+               accept -> accept_wali_invite(), SECURITY DEFINER
+               expire -> expire_wali_invite_if_due(), called only from
+                         inside SECURITY DEFINER functions
+               Dart   -> reads only; no .update() on this table in 109
+                         files
+             wali_invites_update was dropped with the grant: a policy
+             behind a revoked grant is dead code that reads as a live
+             rule. Remaining grants are INSERT, REFERENCES, SELECT,
+             TRIGGER — confirmed after applying.
+
+Decision 3:  🔴 FINDING 2.9 IS REJECTED. NOT BUILT.
+             The audit calls zyra_clear_main_guardian defective for
+             lacking the guard zyra_remove_guardian has, on the grounds
+             that it leaves a Seeker with Guardians but no Main.
+             zyra_wali_link_service.dart documents that state as
+             DELIBERATE: "promoting always leaves a valid state, demoting
+             can leave a Seeker with Guardians and no Main. That is
+             reachable and the Guardian page handles it, but the caller
+             must warn first."
+             Two positions disagree. Adding the guard would have removed
+             a documented product capability on the strength of an audit
+             note. Raised instead — CLAUDE.md §3c step 6.
+
+             FOR THE FOUNDER TO DECIDE. If "Guardians but no Main" is a
+             legitimate state, zyra_remove_guardian's guard may be the
+             thing that is wrong. If it is not legitimate, clear_main
+             needs the guard AND the Guardian page needs to stop offering
+             it. Worth knowing before deciding: with no Main Guardian,
+             Family Review has no voter (wali_review_decision is
+             Main-only), resolve_family_review_if_due's Guardian branch
+             stops applying, and messages_select's Guardian read closes.
+             Guardian oversight silently stops.
+
+PROVEN, all as `authenticated`, rolled back
+             1 control  in-date invite accepted            => WORKS
+             2 THE BUG  EXPIRED invite, no preview call    => REFUSED
+                                                              invite_expired
+             3 revoke   zyra_revoke_wali_invite            => revoked
+             4 THE BUG  inviter rewrites it back to pending
+                        => REFUSED, permission denied; still revoked
+             5 control  create then revoke via the RPC     => WORKS
+
+🔴 A COMMENT OF MINE WAS WRONG, AND IS CORRECTED
+             The first migration's comment claimed the expiry check marks
+             the row on the way past. It does not — the RAISE aborts the
+             function and Postgres rolls that UPDATE back. Proven by test
+             2 above, where status was still 'pending' after the refusal.
+             Behaviour is correct either way; the comment was not.
+             Migration 20260809171103 replaces it. Two migrations for one
+             fix is noisier than one, and honest.
+
+Not decided: Finding 2.9, above. Also unchanged: nothing marks stale
+             pending invites in bulk — expiry is lazy, evaluated when
+             preview or accept touches the row. That is adequate today
+             and worth revisiting if invite volume grows.
+Actions:     Decide 2.9.
+Dependencies: ZYRA_CONTRADICTION_AUDIT_2026-08-08.md §2.6, §2.7, §2.9;
+             migrations 20260809170940 and 20260809171103; DR-ZYRA-130
+             (which first hardened this same function); invariant I3.
+
+------------------------------------------------------------
+
+DR-ZYRA-134
+Title:       Account Deletion Works Again. wali_invites.accepted_by Sets
+             Null Instead of Blocking. And a Claim of Mine Was Wrong
+Date:        2026-08-09
+Status:      APPROVED — Founder, 2026-08-09: "DO 2.10 NEXT". Applied and
+             verified the same hour.
+Decided by:  Founder (Shakeel)
+
+Decision:    wali_invites_accepted_by_fkey becomes ON DELETE SET NULL.
+             Migration 20260809171807.
+
+             delete_own_account() removes the caller's photos and then
+             DELETE FROM auth.users, leaving everything else to FK
+             cascades. 68 of 70 FKs cascade or set null.
+             wali_invites.accepted_by was NO ACTION, and that invite row
+             belongs to the INVITER, so it outlives the accepter and pins
+             them in place. Anyone who had accepted a Guardian invite
+             could not delete their account. Right-to-erasure failure,
+             surfaced as an unexplained error.
+
+             SET NULL, not CASCADE: cascade would delete another person's
+             record because this person left. SET NULL keeps the invite
+             and its 'accepted' status and dissociates the departed
+             member — also the correct data-protection outcome. Nothing
+             reads the column (0 references across 109 Dart files, no
+             function or policy depends on it) and it was already
+             nullable.
+
+PROVEN, rolled back
+             before  accepter deletes => FK violation on
+                                         wali_invites_accepted_by_fkey
+             control plain account    => deletes cleanly
+             after   accepter deletes => account gone, profile gone,
+                                         inviter's invite row survives,
+                                         status still 'accepted',
+                                         accepted_by NULL
+
+🔴 A CLAIM OF MINE WAS WRONG, AND IS WITHDRAWN
+             I told the Founder — in conversation, in the session
+             handover and in a decision option — that the audit had
+             MISSED a second blocking FK, matches.suspended_by, and that
+             it would trap anyone who had ever paused a Journey.
+             That was reasoning, not measurement, and it was wrong.
+
+             matches.suspended_by IS declared NO ACTION. But it can only
+             ever point at a party to that same match, and
+             seeker_a_id/seeker_b_id both CASCADE — so the match row is
+             gone before the NO ACTION constraint is checked at end of
+             statement. Tested 2026-08-09: a user who had paused a
+             Journey deleted cleanly. THE AUDIT WAS RIGHT: one blocking
+             FK, not two. Corrected in the handover note and in the
+             commit message prepared for OA-ZYRA-180.
+
+             matches.suspended_by is left alone deliberately. Unreachable
+             today, and SET NULL would mean "silently unpause" if it ever
+             became reachable, since pause IS suspended_by IS NOT NULL.
+             A decision, not cleanup. The inconsistency with
+             journey_attempts.paused_by (which is SET NULL) is therefore
+             a known choice.
+
+🔴 AND A PROCESS FAILURE WORTH RECORDING
+             The first version of the 2.10 before-state test omitted its
+             closing RAISE, so it COMMITTED instead of rolling back. It
+             wrote one wali_invites row to the live database. No user was
+             deleted — the FK violation this finding is about is what
+             stopped it, which is a poor consolation. The row was
+             identified by id and removed within the minute, and the
+             database was re-counted afterwards: 149 users, 149 profiles,
+             22 wali_links, 0 matches, 2 invites (both pre-existing and
+             revoked), 4 likes all dated 26-27 July.
+             Every other test this session ended with RAISE and rolled
+             back. This one is the exception and is recorded rather than
+             quietly cleaned up.
+
+Not decided: matches.suspended_by, above.
+Dependencies: ZYRA_CONTRADICTION_AUDIT_2026-08-08.md §2.10; migration
+             20260809171807; delete_own_account();
+             zyra_auth.dart's deleteAccount() doc comment, which claimed
+             full cascade coverage and is now accurate again.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-134,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-104 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-135 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

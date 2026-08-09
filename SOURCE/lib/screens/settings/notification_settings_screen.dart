@@ -1,24 +1,31 @@
-// Notification settings — real scope defined 2026-07-26 (DR-ZYRA-101
-// audit, Settings/Search/Notifications build-out). APP/Notifications/
-// Summary.md was, until this pass, literally "Placeholder — Approved
-// Application Structure" with no feature definition at all.
+// Notification preferences.
 //
-// Honest current state: there is no push notification system in this
-// build — no delivery mechanism, no backend table, and (per an
-// Evidence-First sweep of this codebase) no Bell icon anywhere yet
-// either, despite APP/Navigation/SEEKER NAVIGATION/Summary.md's own
-// ratified rule ("Notifications use the Bell Icon... not a navigation
-// tab") assuming one exists. Rather than build a toggle screen that
-// implies working notifications, this screen says so plainly and
-// captures preference toggles (AppState.notifyNewMatches/
-// notifyNewMessages/notifyWaliRequests) that are ready to wire up the
-// moment real push infrastructure is built — they don't do anything
-// yet, and the screen says that too.
+// REBUILT 2026-08-06. The previous version's own header said the toggles
+// were "honest" about being local-only: they wrote to AppState and nowhere
+// else, so every choice was lost on restart.
+//
+// That was tolerable for three product notifications. It stopped being
+// tolerable when the Founder's Settings brief added Marketing Emails and
+// Product Updates, because those are not preferences — under UK GDPR and
+// PECR they are records of CONSENT. A consent switch that forgets means the
+// consent was never recorded, a withdrawal is never honoured, and neither
+// can be evidenced.
+//
+// Now backed by `notification_preferences`, which is append-only: every
+// change is a new row and nothing is ever updated or deleted, so opting in,
+// withdrawing and opting in again all survive. A single mutable row could
+// only prove the most recent one.
+//
+// Defaults come from the server, not from here — marketing and product
+// updates default OFF, because a pre-ticked consent box is not consent.
 
 import 'package:flutter/material.dart';
+import '../../services/zyra_notification_prefs_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_loading.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
@@ -28,93 +35,168 @@ class NotificationSettingsScreen extends StatefulWidget {
 }
 
 class _NotificationSettingsScreenState extends State<NotificationSettingsScreen> {
+  Map<ZyraNotifyCategory, bool>? _values;
+  bool _loading = true;
+  String? _error;
+  final Set<ZyraNotifyCategory> _saving = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final v = await ZyraNotificationPrefsService.fetch();
+    if (!mounted) return;
+    setState(() {
+      _values = v;
+      _loading = false;
+      _error = v == null ? "We couldn't load your preferences." : null;
+    });
+  }
+
+  /// Optimistic, but ONLY until the write comes back.
+  ///
+  /// If the save fails the switch goes back and the user is told. Leaving a
+  /// consent switch showing "on" for a consent that was never recorded is
+  /// the one outcome worse than the switch appearing not to work.
+  Future<void> _set(ZyraNotifyCategory c, bool v) async {
+    final previous = _values![c]!;
+    setState(() {
+      _values![c] = v;
+      _saving.add(c);
+      _error = null;
+    });
+
+    final ok = await ZyraNotificationPrefsService.set(c, v);
+    if (!mounted) return;
+    setState(() {
+      _saving.remove(c);
+      if (!ok) {
+        _values![c] = previous;
+        _error = c.isConsent
+            ? "We couldn't record that. Your preference is unchanged — "
+                'please try again.'
+            : "That didn't save. Please try again.";
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final state = AppState.instance;
+    final product = ZyraNotifyCategory.values.where((c) => !c.isConsent);
+    final consent = ZyraNotifyCategory.values.where((c) => c.isConsent);
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         title: Text('Notifications', style: ZyraText.heading(size: 17)),
         iconTheme: const IconThemeData(color: Colors.white70),
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(state.gender)),
+        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
         child: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 40),
-            children: [
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.04),
-                  border: Border.all(color: Colors.white12, width: 0.5),
-                  borderRadius: BorderRadius.circular(12),
+          child: _loading
+              ? const ZyraLoading()
+              : ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 60),
+                  children: [
+                    if (_error != null) ...[
+                      ZyraErrorBanner(
+                        message: _error!,
+                        onRetry: _values == null ? _load : null,
+                        onDismiss: () => setState(() => _error = null),
+                      ),
+                      const SizedBox(height: 18),
+                    ],
+
+                    if (_values != null) ...[
+                      Text('ABOUT YOUR JOURNEY',
+                          style: ZyraText.chapterLabel(color: Colors.white54)),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Things happening on your account.',
+                        style: ZyraText.subtext(size: 11.5, color: Colors.white38),
+                      ),
+                      const SizedBox(height: 12),
+                      ...product.map(_row),
+
+                      const SizedBox(height: 28),
+                      // Separated, and labelled as consent rather than as
+                      // preference. They are a different kind of decision and
+                      // presenting them identically would obscure that.
+                      Text('EMAILS FROM ZYRA',
+                          style: ZyraText.chapterLabel(color: Colors.white54)),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Off unless you turn them on. You can withdraw at any '
+                        'time, and we keep a record of both.',
+                        style: ZyraText.subtext(size: 11.5, color: Colors.white38),
+                      ),
+                      const SizedBox(height: 12),
+                      ...consent.map(_row),
+                    ],
+                  ],
                 ),
-                child: Text(
-                  "Push notifications aren't built yet in this preview — nothing "
-                  "will be sent to your device. The toggles below are saved as your "
-                  "preference now, ready for when notifications are switched on.",
-                  style: ZyraText.subtext(size: 12, color: Colors.white54),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _PreferenceRow(
-                label: 'New Matches',
-                subtitle: "When someone you've Considered matches back",
-                value: state.notifyNewMatches,
-                onChanged: (v) => setState(() => state.setNotificationPreference(newMatches: v)),
-              ),
-              _PreferenceRow(
-                label: 'New Messages',
-                subtitle: 'Conversation activity in an Active Journey',
-                value: state.notifyNewMessages,
-                onChanged: (v) => setState(() => state.setNotificationPreference(newMessages: v)),
-              ),
-              _PreferenceRow(
-                label: 'Wali Requests',
-                subtitle: 'Invite/link activity involving your Wali',
-                value: state.notifyWaliRequests,
-                onChanged: (v) => setState(() => state.setNotificationPreference(waliRequests: v)),
-              ),
-            ],
-          ),
         ),
       ),
     );
   }
+
+  Widget _row(ZyraNotifyCategory c) => Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: _ToggleRow(
+          label: c.label,
+          subtitle: c.hint,
+          value: _values![c]!,
+          busy: _saving.contains(c),
+          onChanged: (v) => _set(c, v),
+        ),
+      );
 }
 
-class _PreferenceRow extends StatelessWidget {
+class _ToggleRow extends StatelessWidget {
   final String label;
   final String subtitle;
   final bool value;
+  final bool busy;
   final ValueChanged<bool> onChanged;
 
-  const _PreferenceRow({
+  const _ToggleRow({
     required this.label,
     required this.subtitle,
     required this.value,
+    required this.busy,
     required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: ZyraText.body(size: 14, color: Colors.white)),
+                Text(label, style: ZyraText.body(size: 15, color: Colors.white)),
                 const SizedBox(height: 2),
-                Text(subtitle, style: ZyraText.subtext(size: 11.5)),
+                Text(subtitle, style: ZyraText.subtext(size: 11.5, color: Colors.white38)),
               ],
             ),
           ),
-          Switch(value: value, onChanged: onChanged, activeColor: ZyraColors.accentBorder),
+          const SizedBox(width: 12),
+          // Disabled while in flight. A switch you can flip again before the
+          // first write lands is how a consent log ends up with events in an
+          // order nobody intended.
+          Switch(
+            value: value,
+            onChanged: busy ? null : onChanged,
+            activeThumbColor: ZyraColors.accentBorder,
+          ),
         ],
       ),
     );

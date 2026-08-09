@@ -5,8 +5,8 @@ ZYRA PRICING
 FLOW DIAGRAM
 ============================================================
 
-Superseded 2026-07-12: previous flows (Wali benefit proration,
-per-Wali billing, multi-account payment ownership) removed —
+Superseded 2026-07-12: previous flows (Guardian benefit proration,
+per-Guardian billing, multi-account payment ownership) removed —
 retired along with the old subscription structure. See
 Summary.md for the full record of what changed and why.
 
@@ -14,7 +14,7 @@ Summary.md for the full record of what changed and why.
 ZYRA ONE PURCHASE — LAUNCH PRICING JOURNEY
 ------------------------------------------------------------
 
-Account (Seeker or Wali) purchases ZYRA One
+Account (Seeker or Guardian) purchases ZYRA One
         │
         ▼
 Are they among the first 1,000 people to purchase ZYRA One
@@ -34,27 +34,27 @@ overall? (any role, not gender- or role-restricted)
                         12 months       £34.99/month
 
 ------------------------------------------------------------
-EXTENDED WALI ENTITLEMENT FLOW
+EXTENDED GUARDIAN ENTITLEMENT FLOW
 ------------------------------------------------------------
 
 Seeker holds ZYRA One
         │
         ▼
-Receives one bundled Extended Wali entitlement
+Receives one bundled Guardian+ entitlement
         │
         ▼
-Assigns it to one linked Wali
+Assigns it to one linked Guardian
         │
         ▼
-That Wali receives Extended Wali capabilities for this
+That Guardian receives Guardian+ capabilities for this
 Seeker's Journey relationships (AD-081)
 
 Separately:
 
-A Wali who did not receive the bundled entitlement
+A Guardian who did not receive the bundled entitlement
         │
         ▼
-May purchase Extended Wali independently — £9.99/month
+May purchase Guardian+ independently — £9.99/month
         │
         ▼
 Identical capabilities to the bundled route (AD-081)

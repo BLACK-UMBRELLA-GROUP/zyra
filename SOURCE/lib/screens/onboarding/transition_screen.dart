@@ -28,7 +28,20 @@ class TransitionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // `constraints` added 2026-08-03 alongside the same fix on the
+      // report screen. SingleChildScrollView sizes to its content, so this
+      // Container could shrink and expose the Scaffold background — which
+      // is now the gender gradient's first stop (Rose Pink for a female
+      // Seeker) rather than the Royal Purple it used to be.
+      //
+      // The ConstrainedBox below already guards this with `screenHeight -
+      // 80`, an estimate of the safe-area insets. On a device where those
+      // insets total more than 80 it is one or two points short, which is
+      // exactly the size of band the Founder spotted on the report screen.
+      // The estimate is left in place — it also centres short content
+      // nicely — but the gradient no longer depends on it being right.
       body: Container(
+        constraints: const BoxConstraints.expand(),
         decoration: BoxDecoration(gradient: ZyraColors.backgroundFor(background)),
         child: SafeArea(
           child: SingleChildScrollView(

@@ -24,13 +24,19 @@
 --   dev.wali@zyra.test            Ibrahim  wali    wali_basic
 --   dev.wali.f@zyra.test          Khadija  wali    wali_basic
 --
--- NOTE: "ZYRA One" Wali presets (Male Wali One / Female Wali One) use
--- these SAME two accounts with a local-only AppState.waliHasExtendedWali
--- override — Extended Wali entitlement gating in the UI is currently
--- mock-only (see developer_access_screen.dart header comment), even
--- though subscriptions.plan_type does have a real 'wali_premium' value
--- in the schema that nothing yet reads. Not wired up as part of this
--- fix — flagged, not silently assumed resolved.
+-- UPDATED 2026-07-26 (#19): Wali One gating is now real —
+-- wali_has_wali_one() (created as wali_has_extended_wali() by
+-- 20260726160000_wali_extended_wali_real_gating.sql, renamed by
+-- 20260726180000_rename_wali_has_extended_wali_to_wali_one.sql when
+-- "Extended Wali" was renamed "Wali One") resolves it from this
+-- table, either the Wali's own wali_premium row or a linked Seeker's
+-- seeker_premium row. Confirms the seed above already exercises both
+-- branches without any extra accounts: Khadija (wali_basic) <-> Yusuf
+-- (seeker_premium) resolves Wali One TRUE via free bundling; Ibrahim
+-- (wali_basic) <-> Maryam (seeker_basic) resolves FALSE.
+-- developer_access_screen.dart's "Wali — One" presets now call
+-- mock_set_wali_plan() to force-write a real wali_premium row on
+-- entry, rather than a local-only flag.
 --
 -- NOTE: these are dev/preview credentials for a database with no real
 -- users. Delete all dev.*@zyra.test accounts before any real launch:

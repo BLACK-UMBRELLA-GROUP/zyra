@@ -64,7 +64,7 @@ BUSINESS RULES — SCOPE
 Areas requiring defined business rules before design begins:
 
   • Account restrictions
-  • Wali requirements
+  • Guardian requirements
   • Verification requirements
   • Matching permissions
   • Messaging permissions
@@ -110,7 +110,7 @@ APPROVED FUTURE WORK
   • Skeleton screen investigation to occur during
     UI/UX phase.
   • User journeys to be documented per user type
-    (Seeker, Wali, Admin).
+    (Seeker, Guardian, Admin).
 
 
 ============================================================

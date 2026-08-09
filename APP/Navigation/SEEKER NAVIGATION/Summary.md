@@ -21,14 +21,14 @@ Owns:
 • Navigation Rules
 
 Note:
-• Wali Navigation is temporarily documented here.
-• When a Wali Navigation file is created, Wali content
+• Guardian Navigation is temporarily documented here.
+• When a Guardian Navigation file is created, Guardian content
   will be moved out of this file.
 • Terminology corrected 2026-07-12 against
-  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 and
-  WALI_ARCHITECTURE_CURRENT_VERSION_V5 — Seeker Basic/Premium
-  tier names and Wali Basic/Pro/Premium replaced with ZYRA
-  Basic/ZYRA One and Standard Wali/Extended Wali. Browse action
+  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5 and
+  WALI_ARCHITECTURE_CURRENT_VERSION_V6 — Seeker Basic/Premium
+  tier names and Guardian Basic/Pro/Premium replaced with ZYRA
+  Basic/ZYRA One and Standard Guardian/Guardian+. Browse action
   terminology (Decline/Save/Like) was already correct.
 
 ------------------------------------------------------------
@@ -40,17 +40,17 @@ The Seeker is the person actively looking for marriage.
 The Seeker is the primary user of ZYRA and manages their
 own marriage journey.
 
-Wali
-The Wali is the supervisor or guardian supporting the
+Guardian
+The Guardian is the supervisor or guardian supporting the
 Seeker throughout the marriage process.
-The Wali is never treated as a Seeker and supervises one
+The Guardian is never treated as a Seeker and supervises one
 or more linked Seekers.
 
 ------------------------------------------------------------
 CORE DIFFERENCE
 ------------------------------------------------------------
 
-| Feature     | Seeker                        | Wali                          |
+| Feature     | Seeker                        | Guardian                          |
 |-------------|-------------------------------|-------------------------------|
 | User Type   | Person looking for marriage   | Supervisor / Guardian         |
 | Primary Goal| Find a spouse                 | Support and supervise Seekers |
@@ -58,18 +58,18 @@ CORE DIFFERENCE
 | Connections | Manages relationship journey  | Not available                 |
 | Seekers     | Not available                 | Manages linked Seekers        |
 | Dashboard   | Not available                 | Main control centre           |
-| Network     | Not available (Wali only)     | Wali & family ecosystem       |
+| Network     | Not available (Guardian only)     | Guardian & family ecosystem       |
 
 ------------------------------------------------------------
 NAVIGATION PHILOSOPHY
 ------------------------------------------------------------
 
 • Seeker navigation reflects the marriage journey.
-• Wali navigation reflects supervision.
-• ZYRA One and Extended Wali expose additional workflows.
+• Guardian navigation reflects supervision.
+• ZYRA One and Guardian+ expose additional workflows.
 • Navigation differs by role.
 • Navigation differs by entitlement.
-• The Family Network is exclusively for Extended Wali.
+• The Family Network is exclusively for Guardian+.
   Seekers do not have access to Network at any entitlement.
 
 ------------------------------------------------------------
@@ -78,13 +78,13 @@ NAVIGATION STRUCTURE
 
 | Account                | Tabs                                     |
 |--------------------------|------------------------------------------|
-| Seeker (ZYRA Basic)      | Browse • Connections • Wali • Profile    |
-| Seeker (ZYRA One)        | Browse • Connections • Wali • Profile    |
-| Wali (Standard)          | Dashboard • Seekers • Profile            |
-| Wali (Extended)          | Dashboard • Seekers • Browse • Network • Profile |
+| Seeker (ZYRA Basic)      | Browse • Connections • Guardian • Profile    |
+| Seeker (ZYRA One)        | Browse • Connections • Guardian • Profile    |
+| Guardian (Standard)          | Dashboard • Seekers • Profile            |
+| Guardian (Extended)          | Dashboard • Seekers • Browse • Network • Profile |
 
 Decision: Network is removed from all Seeker entitlements.
-Network is available to Extended Wali only.
+Network is available to Guardian+ only.
 Confirmed: 2026-06-27; terminology corrected 2026-07-12.
 
 ------------------------------------------------------------
@@ -98,7 +98,7 @@ The centrepiece of the Seeker experience.
 Available To:
 • Seeker (ZYRA Basic)
 • Seeker (ZYRA One)
-• Extended Wali (browses on behalf of linked Seeker)
+• Guardian+ (browses on behalf of linked Seeker)
 
 Design:
 • Full-screen photo experience — photo fills the entire screen
@@ -288,11 +288,11 @@ Sections can be merged later if user testing supports it —
 but untangling a merge is much harder than separating cleanly.
 
 Family Introductions:
-Introductions initiated through the Wali Network.
-Presented to the Seeker only after both Walis have agreed.
+Introductions initiated through the Guardian Network.
+Presented to the Seeker only after both Guardians have agreed.
 Seeker accepts or declines independently.
 If both Seekers accept, the normal ZYRA Journey begins.
-Walis do not accept on behalf of Seekers.
+Guardians do not accept on behalf of Seekers.
 
 Matches — each entry displays:
 • Profile Photo
@@ -303,29 +303,29 @@ Matches — each entry displays:
 Actions per Match:
 • Message
 • Timeline
-• Wali
+• Guardian
 
 Timeline Records:
 • Saves
 • Considers (was: Likes)
 • Matches
 • Conversation activity
-• Wali actions
+• Guardian actions
 • Family introductions
 
 ------------------------------------------------------------
-WALI NAVIGATION (TEMPORARY — TO BE MOVED)
+GUARDIAN NAVIGATION (TEMPORARY — TO BE MOVED)
 ------------------------------------------------------------
 
-Both Wali entitlements share the same 4-tab navigation structure.
-Browse is not part of the Wali experience (except as noted below
-for Extended Wali).
-The Wali's role is guidance and family involvement — not discovery.
+Both Guardian entitlements share the same 4-tab navigation structure.
+Browse is not part of the Guardian experience (except as noted below
+for Guardian+).
+The Guardian's role is guidance and family involvement — not discovery.
 
-Standard Wali
+Standard Guardian
 Dashboard • Seekers • Network (locked) • Profile
 
-Extended Wali
+Guardian+
 Dashboard • Seekers • Network • Profile
 (also gains Browse — browses on behalf of linked Seeker; see
 NAVIGATION STRUCTURE table above)
@@ -334,14 +334,14 @@ Navigation style:
 Floating glass pill. No Universal Toggle (Seeker-only mechanic).
 4 equal tabs. Active tab highlighted. Same glass design as Seeker nav.
 
-Network (locked — Standard Wali):
+Network (locked — Standard Guardian):
 Tapping Network shows a feature page explaining what Network
-offers and gives the option to upgrade to Extended Wali.
-This keeps the UI consistent across both Wali entitlements while
+offers and gives the option to upgrade to Guardian+.
+This keeps the UI consistent across both Guardian entitlements while
 naturally showcasing the locked functionality.
 
-Network (unlocked — Extended Wali):
-Family introductions. Wali-to-Wali communication.
+Network (unlocked — Guardian+):
+Family introductions. Guardian-to-Guardian communication.
 Trusted family connections. Suggested introductions.
 Community referrals. Future networking features.
 Discovery (if added later) lives inside Network — not Browse.
@@ -354,17 +354,17 @@ Dashboard displays:
 • Notifications
 
 Resolved 2026-07-12 (was: pending architectural question):
-The Wali tier model is Standard Wali / Extended Wali — two
+The Guardian tier model is Standard Guardian / Guardian+ — two
 entitlements, not three. The earlier "Basic, Pro, Premium"
 three-tier framing was stale; see
-WALI_ARCHITECTURE_CURRENT_VERSION_V5 for the confirmed
-Wali Permissions Model.
+WALI_ARCHITECTURE_CURRENT_VERSION_V6 for the confirmed
+Guardian Permissions Model.
 
 Pending T&C work (deferred):
 Clear terms required for features that depend on:
   — Having a linked Seeker
   — Linked Seeker being on ZYRA One
-Not all Network/Extended Wali features are available without
+Not all Network/Guardian+ features are available without
 both conditions being met. To be defined carefully.
 
 ------------------------------------------------------------
@@ -376,7 +376,7 @@ APPROVED RULES
 • Notifications are not a navigation tab.
 • Navigation differs by role.
 • Navigation differs by subscription.
-• Walis are never treated as Seekers.
+• Guardians are never treated as Seekers.
 • Network is never available to Seekers (any tier).
 • Browse actions are swipe-based (was: tap-only — no swipe
   gestures; reversed 2026-07-25, DR-ZYRA-099, see §BROWSE above).
@@ -398,7 +398,7 @@ CURRENT STATUS
    mechanism: Swipe Left = Consider, Swipe Right = Pass, Swipe
    Down = Save.
 ✅ Connections approved.
-✅ Wali navigation approved (Network = Extended Wali only).
+✅ Guardian navigation approved (Network = Guardian+ only).
 ✅ Floating Glass Navigation approved — BUILT 2026-07-19
    (DR-ZYRA-089, DR-ZYRA-091), PROPOSED/not yet ratified.
 ✅ Instagram motion behaviour approved — BUILT 2026-07-19
@@ -412,21 +412,21 @@ CURRENT STATUS
     • Live Seeker nav (SOURCE/lib/screens/home/home_shell.dart)
       has 3 tabs — Browse, Matches, Profile. Neither "Matches"
       nor a 3-tab count matches this document, which specifies
-      4 tabs (Browse • Connections • Wali • Profile) in the
-      NAVIGATION STRUCTURE table above. No Connections or Wali
+      4 tabs (Browse • Connections • Guardian • Profile) in the
+      NAVIGATION STRUCTURE table above. No Connections or Guardian
       tab exists in the Seeker shell at all yet.
     • This document is internally inconsistent about what the
       4th Seeker tab even is: NAVIGATION STRUCTURE says
-      "Connections • Wali"; the NAVIGATION UI section below
+      "Connections • Guardian"; the NAVIGATION UI section below
       describes a "grouped pill: Connections • Safety • Profile"
-      — a different item ("Safety" vs "Wali") and a different
+      — a different item ("Safety" vs "Guardian") and a different
       visual grouping (isolated Browse + grouped pill, vs 4
       equal tabs). Needs reconciling before anyone builds
       against it.
-    • Live Wali nav (wali_home_shell.dart) shows Network as
-      fully unlocked for all Wali accounts — this document
+    • Live Guardian nav (wali_home_shell.dart) shows Network as
+      fully unlocked for all Guardian accounts — this document
       specifies Network should be locked/upsell-only for
-      Standard Wali (WALI NAVIGATION section), which isn't
+      Standard Guardian (GUARDIAN NAVIGATION section), which isn't
       implemented. No entitlement check exists in code yet.
     • Browse's action buttons (browse_screen.dart) are three
       independent glass circles (Decline/Save/Like), not the
@@ -449,10 +449,10 @@ CURRENT STATUS
 APPROVED TO-DO LIST
 ============================================================
 • Define behaviour of left isolated gallery button on Browse.
-• Finalise Network functionality for Extended Wali.
+• Finalise Network functionality for Guardian+.
 • Design Search Filters.
 • Expand Conversation workflow.
 • Expand Timeline workflow.
-• Create Wali Navigation file and move Wali content out.
+• Create Guardian Navigation file and move Guardian content out.
 • Confirm placement of Imam Ahmad quote in onboarding flow.
 • Design Connections screen layout.

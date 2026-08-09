@@ -22,10 +22,10 @@ Unlike the previous session, this one has direct access to the live Supabase pro
 `profile-photos` was `public: true`. Public buckets serve objects by URL with no auth/RLS check — so the own-folder read policy restricted only API listing, and any photo was fetchable by anyone, signed out. This directly violates IMAGE_HANDLING_CURRENT_VERSION_V1.md ("Originals never publicly accessible"). Bucket is now private; read RLS mirrors the approved `profile_photos` table policy; all display URLs are 7-day signed URLs. Migration `20260719080749` + code changes in photo/discovery/match services. **DR-ZYRA-085 (PROPOSED).** Needs runtime verification: photo display everywhere on first compiled build.
 
 **2.2 — wali_links UPDATE policy allowed silent link rewriting. FIXED.**
-No WITH CHECK + full-column scope meant a signed-in Wali could rewrite an existing link's `seeker_id` to any Seeker — an unconsented guardianship link, bypassing the invite mechanism. Client UPDATE now restricted to `status` only (wali_suggestions: `status`, `responded_at`). Migration `20260719080735`. **DR-ZYRA-086 (PROPOSED).**
+No WITH CHECK + full-column scope meant a signed-in Guardian could rewrite an existing link's `seeker_id` to any Seeker — an unconsented guardianship link, bypassing the invite mechanism. Client UPDATE now restricted to `status` only (wali_suggestions: `status`, `responded_at`). Migration `20260719080735`. **DR-ZYRA-086 (PROPOSED).**
 
 **2.3 — Browse ignored gender. FIXED.**
-`fetchCandidates()` never filtered by gender, violating the Browse script spec ("Never display same-gender profiles") — the schema even has an index built for that exact query. Also added `role = 'seeker'` (a Wali with photos would have appeared as a candidate). Fixed in `zyra_discovery_service.dart`.
+`fetchCandidates()` never filtered by gender, violating the Browse script spec ("Never display same-gender profiles") — the schema even has an index built for that exact query. Also added `role = 'seeker'` (a Guardian with photos would have appeared as a candidate). Fixed in `zyra_discovery_service.dart`.
 
 **2.4 — Compatibility scoring is dead on arrival under RLS. FLAGGED, not fixed (§5.1).**
 `onboarding_answers` RLS is own-row-only, but `_applyCompatibility()` queries *candidates'* rows — which returns empty for real users. Every real candidate scores neutral 50.0: no Hard Requirement exclusion, no real ordering. The handoff's "real compatibility scoring is now wired in" is true of the code path and false of the effect. This needs a Founder decision (privacy trade-off), so it is documented in a code comment and left graceful, not silently fixed.
@@ -39,7 +39,7 @@ No WITH CHECK + full-column scope meant a signed-in Wali could rewrite an existi
 
 ## 3. Developer Mode — built (Founder request, hybrid approach approved 2026-07-19)
 
-`DeveloperAccessScreen` is now a test-scenario switcher. Six presets — Seeker Basic (male/female), Seeker One (male/female), Wali, Wali + Extended Wali (mock) — each sign into a **real seeded Supabase account** and land on a fully-onboarded Home/WaliHome with AppState pre-populated. The old jump-menu remains below. **DR-ZYRA-087 (PROPOSED).**
+`DeveloperAccessScreen` is now a test-scenario switcher. Six presets — Seeker Basic (male/female), Seeker One (male/female), Guardian, Guardian + Extended Guardian (mock) — each sign into a **real seeded Supabase account** and land on a fully-onboarded Home/WaliHome with AppState pre-populated. The old jump-menu remains below. **DR-ZYRA-087 (PROPOSED).**
 
 Seeded accounts (password `ZyraTest!2026`, seed script at `SOURCE/supabase/seed_dev_accounts.sql`, already applied):
 
@@ -49,9 +49,9 @@ Seeded accounts (password `ZyraTest!2026`, seed script at `SOURCE/supabase/seed_
 | dev.seeker.basic.f@zyra.test | Maryam, 27, Birmingham | seeker | seeker_basic |
 | dev.seeker.one.m@zyra.test | Yusuf, 31, Manchester | seeker | seeker_premium |
 | dev.seeker.one.f@zyra.test | Aisha, 30, Leeds | seeker | seeker_premium |
-| dev.wali@zyra.test | Ibrahim, Birmingham | wali | wali_basic |
+| dev.guardian@zyra.test | Ibrahim, Birmingham | guardian | wali_basic |
 
-Ibrahim ↔ Maryam have a real active `wali_links` row, so the Wali dashboard shows genuine backend data. Password auth exists only via `ZyraAuth.signInWithTestAccount` (dev screen only) — Google + Apple remain the only user-facing auth. Notes: test accounts have no photos, so they don't appear in each other's Browse (Browse falls back to mocks); delete all `dev.*@zyra.test` accounts before any real launch.
+Ibrahim ↔ Maryam have a real active `wali_links` row, so the Guardian dashboard shows genuine backend data. Password auth exists only via `ZyraAuth.signInWithTestAccount` (dev screen only) — Google + Apple remain the only user-facing auth. Notes: test accounts have no photos, so they don't appear in each other's Browse (Browse falls back to mocks); delete all `dev.*@zyra.test` accounts before any real launch.
 
 ## 4. Database changes applied this session
 
@@ -67,8 +67,8 @@ Security advisors after: only the two *intentional* authenticated-callable invit
 
 1. **Compatibility scoring vs RLS (§2.4).** Options: (a) broaden RLS so `ch3_answers` are readable for active+complete profiles — simplest, but exposes personal values answers to all signed-in users; (b) server-side scoring in a SECURITY DEFINER function — keeps answers private, ports the (still unratified DR-079) formula to SQL; (c) leave neutral until the matching engine design matures. My lean: (b), but the formula should be ratified or amended first so the port happens once.
 2. **DOB exposure.** `profiles.date_of_birth` is readable by all signed-in users (the app computes age client-side). Exposing exact birthdate is more than Browse needs — a server-computed age would be tighter. Low urgency, worth a decision before launch.
-3. **Plan naming drift.** Schema: `seeker_basic/seeker_premium/wali_basic/wali_premium`. Product: "ZYRA Basic"/"ZYRA One" + Extended Wali. Reconcile in schema V2 or record the mapping as deliberate.
-4. **Wali read access to Journey/Timeline/messages** — unchanged from the handoff: still deliberately unbuilt, still needs your explicit sign-off on scope before anyone wires it.
+3. **Plan naming drift.** Schema: `seeker_basic/seeker_premium/wali_basic/wali_premium`. Product: "ZYRA Basic"/"ZYRA One" + Extended Guardian. Reconcile in schema V2 or record the mapping as deliberate.
+4. **Guardian read access to Journey/Timeline/messages** — unchanged from the handoff: still deliberately unbuilt, still needs your explicit sign-off on scope before anyone wires it.
 5. **DR ratifications outstanding:** DR-ZYRA-079–084 (previous sessions) and now 085–087. Nine PROPOSED records.
 6. **Invite expiry.** `wali_invites` never expire (a pending code is valid forever). Product call; one line of SQL when decided.
 
@@ -82,7 +82,7 @@ flutter clean
 flutter run -d macos
 ```
 
-Then, in order: sign in via Developer Mode presets (tests password auth + RLS + real data paths, no OAuth needed) → check own photos upload/display (tests §2.1's signed URLs — the highest-risk change of this session) → browse as Adam (should show only female seekers with photos; today that's mocks) → Maryam ↔ Ibrahim Wali dashboard. OAuth still needs Google Cloud credentials + Supabase provider config before "Continue with Google/Apple" work; iOS Sign In with Apple capability still needs adding in Xcode.
+Then, in order: sign in via Developer Mode presets (tests password auth + RLS + real data paths, no OAuth needed) → check own photos upload/display (tests §2.1's signed URLs — the highest-risk change of this session) → browse as Adam (should show only female seekers with photos; today that's mocks) → Maryam ↔ Ibrahim Guardian dashboard. OAuth still needs Google Cloud credentials + Supabase provider config before "Continue with Google/Apple" work; iOS Sign In with Apple capability still needs adding in Xcode.
 
 ---
 

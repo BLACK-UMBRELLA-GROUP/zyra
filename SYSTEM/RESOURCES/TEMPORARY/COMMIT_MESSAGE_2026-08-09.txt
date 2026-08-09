@@ -1,0 +1,62 @@
+Restore matching, close the safety path, harden the Journey state machine
+
+First commit since a6806ad (26 July), 428 files. Everything below was
+verified against the live database as the authenticated role inside
+transactions that were rolled back, except the Dart, which is
+hand-verified only: there is no Flutter toolchain in the Cowork container
+and pub.dev is unreachable from it. flutter analyze has NOT been run
+against this commit.
+
+RELEASE BLOCKERS, DR-ZYRA-130. No match has ever existed: 149 users,
+0 matches, 0 conversations, 0 messages, measured 2026-08-09. Likes were
+being written until the OA-168 grant sweep on 8 August (four survive,
+dated 26-27 July, none mutual); from that sweep onward every Like, Save
+and Pass was refused outright, because a bare upsert sends ON CONFLICT DO
+UPDATE and authenticated holds no UPDATE on those tables, so the 42501 was
+swallowed by a bare catch. Fixed with ignoreDuplicates true at the five
+broken sites. Blocking recorded nothing and reported success; now routed
+through zyra_block_user, which also ends the Journey. accept_wali_invite
+trusted a client-written column, letting any Seeker make themselves
+another Seeker's Main Guardian: exploit reproduced against live, then
+closed by migration 20260809150931.
+
+SAFETY AND STATE MACHINE, DR-ZYRA-131 and DR-ZYRA-132. messages_insert now
+honours profile_blocks in both directions and refuses ended Journeys and
+closed conversations, so a block finally closes the channel and the push
+with it. open_family_review now applies the same lifecycle tests
+zyra_advance_stage does and enforces the successor map it was already
+refusing on behalf of; one Seeker could previously skip the whole Journey
+to Open Conversation. resolve_family_review_if_due gained a staleness
+guard. openFamilyReview now returns a reason instead of swallowing the
+refusal.
+
+INVITES, GUARDIANS AND ERASURE, DR-ZYRA-133 and DR-ZYRA-134. Invite expiry
+was decorative: the accept path never read expires_at, and the inviter
+held UPDATE on every column, so a revoked invite could be set back to
+pending and extended indefinitely. Expiry is now checked on accept and
+UPDATE is revoked entirely. delete_own_account died with a raw FK
+violation for anyone who had accepted a Guardian invite;
+wali_invites.accepted_by is now ON DELETE SET NULL, so the inviter keeps
+their record and the departing member is dissociated.
+
+JOURNEY STAGE NAMING, DR-ZYRA-129. One canonical map in
+lib/data/zyra_journey_stages.dart, nine call sites migrated, three drifted
+copies deleted. Connections had been telling Seekers mid-Journey that they
+were still in the Pre-Journey Ritual. Phase 1, 2 and 3 were internal
+engineering names that had leaked to the surface and are now Faith and
+Values, Building a Life, Navigating Life.
+
+ALSO IN THIS PERIOD. 43 new migrations covering the journey_attempts move
+(OA-ZYRA-156), Family Review, notifications, delete_own_account, Tier-1
+shared-guardian exclusion, and the OA-168 and OA-170 grant sweeps. Splash
+and loading rebuilt around one shared comet rule. App icon rebuilt from
+the Syne wordmark. Settings gained a Legal section and a version footer.
+A 45-finding contradiction audit, seven of whose findings are now closed
+and one rejected, all marked up in place.
+
+OUTSTANDING. flutter analyze and a device run. Audit findings 2.5, 2.8,
+2.11 and 2.12 remain open, plus sections 3 to 5; 2.9 was examined and
+rejected as not a defect. supabase db pull, since live is ahead of the
+repo. No git remote is configured, so this commit is local history only
+and not a backup. See
+SYSTEM/RESOURCES/TEMPORARY/SESSION_HANDOVER_2026-08-09.md.

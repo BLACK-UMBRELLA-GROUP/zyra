@@ -3,7 +3,7 @@ PROFILE DECISION SYSTEM
 Group: 4 — Page Responsibilities
 
 Superseded 2026-07-12: rewritten against
-ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 (Part 0 Section 0.5, Part
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4 (Part 0 Section 0.5, Part
 2 Sections 3-4) and DR-076. The previous version described a
 Decline/Review/Consider model with a 50-profile Review cap and
 a Mutual Consideration match rule — retired. This version
@@ -50,12 +50,12 @@ Seeker
 - The primary user making profile decisions.
 - Holds ZYRA Basic (free) or ZYRA One (£34.99/month).
 
-Wali
+Guardian
 - The Seeker's supervisor/guardian.
 - Provides guidance and oversight throughout the marriage process.
 - Does not participate in Browse profile decisions — Browse is
-  Seeker-only (ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 1,
-  Section 3). The Wali's role is oversight of the Seeker's
+  Seeker-only (ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4, Part 1,
+  Section 3). The Guardian's role is oversight of the Seeker's
   Journey once one exists, not making decisions on Browse.
 
 ------------------------------------------------------------
@@ -116,14 +116,12 @@ Incoming Potentials
 - Shows Seekers who have Considered your profile.
 - ZYRA One receives Incoming Potentials immediately. ZYRA
   Basic does not see who Considered them until they Consider back
-  (at which point the Match event fires) — see Consider Rules
-  (Product Spec still uses "Like" internally as of this writing;
-  cross-reference retained under that name until the Spec itself
-  is updated), ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 2,
-  Section 4.
+  (at which point the Match event fires) — see Consider Rules,
+  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4, Part 2, Section 4 (updated
+  2026-07-26, #25/OA-ZYRA-138, to this same terminology).
 - Removed Considers no longer appear.
 
-Potential Journeys
+Journey Queue
 - Created by the Match event (mutual Consider).
 - A passive record of mutual interest — no conversation, no
   Journey slot consumed. Progresses to an Active Journey via
@@ -141,9 +139,9 @@ Result:
 - Match event fires (an event, not a lifecycle stage).
 - Potential Journey created.
 - Both Seekers notified.
-- Wali approval is not required for the Match event.
+- Guardian approval is not required for the Match event.
 - No conversation opens and no Journey slot is consumed at
-  this point — see ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part
+  this point — see ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4, Part
   0, Sections 0.5-0.6.
 
 ------------------------------------------------------------
@@ -155,7 +153,7 @@ A Mutual Save occurs when:
 - Seeker B saves Seeker A.
 
 Detection and notification depend on both Seekers' entitlement
-(ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3, Part 2, Section 3):
+(ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4, Part 2, Section 3):
 
 | Combination            | Result |
 |-------------------------|--------|
@@ -194,7 +192,7 @@ Every profile interaction is recorded in a timeline.
 Purpose:
 - Relationship history.
 - Transparency.
-- Wali supervision (once a Journey exists).
+- Guardian supervision (once a Journey exists).
 - Support and moderation.
 - Future family introduction tracking.
 
@@ -222,8 +220,8 @@ TIMELINE EVENTS
 - Journey Ended
 - Messages Started
 - Messages Paused
-- Wali Added
-- Wali Removed
+- Guardian Added
+- Guardian Removed
 - Family Introduction Requested
 - Family Introduction Accepted
 
@@ -232,8 +230,8 @@ TIMELINE ACCESS
 ------------------------------------------------------------
 
 Seeker  — Can view their own Journey timelines.
-Wali    — Can view timelines for Journeys they supervise (once
-          an Active Journey exists — Wali is not involved at
+Guardian    — Can view timelines for Journeys they supervise (once
+          an Active Journey exists — Guardian is not involved at
           the Browse/Potential Journey stage).
 Admin   — Can view timelines for support, moderation and dispute resolution.
 

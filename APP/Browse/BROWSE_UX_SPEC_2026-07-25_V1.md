@@ -120,14 +120,14 @@ Priority Discovery does not show scores, labels, or indicators on cards. The ran
 
 ---
 
-## Wali Behaviour
+## Guardian Behaviour
 
 Browse is entirely private to the Seeker.
 
-- Wali has no access to the Browse tab
-- Wali cannot see which profiles the Seeker has browsed
-- Wali cannot see Saves or Likes sent
-- Browse activity is never shared with any linked Wali at any point
+- Guardian has no access to the Browse tab
+- Guardian cannot see which profiles the Seeker has browsed
+- Guardian cannot see Saves or Likes sent
+- Browse activity is never shared with any linked Guardian at any point
 
 This is consistent with the ZYRA privacy principle: family involvement begins at the Journey stage, not at discovery.
 

@@ -55,6 +55,44 @@ dependencies:
   sign_in_with_apple: ^6.1.4
   crypto: ^3.0.5 # nonce hashing for the Apple Sign-In flow
 
+  # 2026-08-01 — promoted from transitive to direct.
+  #
+  # supabase_flutter already depended on this to persist the auth session,
+  # so it was in pubspec.lock and shipping in every build. Declaring it
+  # directly downloads nothing new; it stops lib/services/zyra_local_prefs
+  # .dart relying on another package's transitive tree, which would break
+  # silently on a Supabase version bump.
+  #
+  # Used ONLY to cache the Seeker's gender so the first frame paints the
+  # right gradient without a network round trip (Founder: "I don't want to
+  # see that quick colour change at all"). Not a local database — see that
+  # file's scope rule.
+  shared_preferences: ^2.5.5
+
+  # App Lock — 2026-08-07, Founder: "For ZYRA I think this becomes a
+  # selling point, not just a privacy option."
+  #
+  # Face ID / Touch ID / Android biometrics, with the DEVICE PASSCODE as
+  # the fallback (biometricOnly: false). ZYRA stores no PIN and no secret
+  # of its own — see lib/services/zyra_app_lock.dart for why that matters
+  # more than it sounds. Costs nothing: this is the OS's own
+  # authentication, not a paid service.
+  #
+  # NATIVE CONFIGURATION IS REQUIRED and is easy to miss, because the Dart
+  # side compiles perfectly without it and then fails on a real device:
+  #   iOS      NSFaceIDUsageDescription in ios/Runner/Info.plist, or the
+  #            app is REJECTED at review and crashes on first Face ID use.
+  #   Android  MainActivity must extend FlutterFragmentActivity, not
+  #            FlutterActivity — the biometric prompt is a Fragment and
+  #            throws at runtime otherwise. Both are done.
+  local_auth: ^2.3.0
+  # Reads the app version and build number from the platform bundle so the
+  # footer in Settings cannot drift from pubspec. Added 2026-08-09.
+  # Checked against this project's SDK before adding: package_info_plus
+  # 10.2.1 needs Flutter >=3.38.1 / Dart >=3.10.0; pubspec.lock records
+  # Dart 3.12.2 and Flutter 3.44.0. No tracking, no network.
+  package_info_plus: ^10.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -105,12 +143,27 @@ flutter_launcher_icons:
 # Regenerate with the real Playfair Display TTF for a pixel-exact
 # match whenever convenient — not urgent, the difference is minor at
 # splash-flash duration.
+# NATIVE SPLASH — IMAGE REMOVED 2026-08-07, and it must stay removed.
+#
+# This used to paint the ZYRA wordmark. Now that the in-app splash animates
+# the letters in one at a time (lib/screens/splash_screen.dart, Founder-
+# approved), an assembled wordmark here means the user sees the name whole,
+# then watches it vanish and rebuild itself. The launch image is the ONLY
+# thing on screen before Flutter draws, so it cannot be fixed from Dart.
+#
+# A flat colour instead. It shows for a fraction of a second and hands over
+# to a screen that starts on the same colour, so the join is invisible —
+# which is the whole reason the animation opens on brand purple rather than
+# on black or on one of the gender palettes.
+#
+# assets/splash/splash_logo.png is left in the repo but is NO LONGER
+# REFERENCED. It is the Syne wordmark at 1400x460 on transparent, kept
+# because it is the right asset if a static launch image is ever wanted
+# again — at which point the letter-by-letter animation has to go.
 flutter_native_splash:
   color: "#3D2A4A"
-  image: assets/splash/splash_logo.png
   android_12:
     color: "#3D2A4A"
-    image: assets/splash/splash_logo.png
   web: false
 
 # For information on the generic Dart part of this file, see the

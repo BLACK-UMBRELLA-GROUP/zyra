@@ -23,7 +23,7 @@ implements this ratified specification (`brandGradient`,
 #3D2A4A), and a `ZyraColors.genderGradient()` helper applies
 Male/Female gradients across profile-context screens app-wide
 (Profile, Matches, Match Notification, Journey Timeline, Chat,
-Upgrade, Wali screens — see DR-ZYRA-101). Onboarding correctly
+Upgrade, Guardian screens — see DR-ZYRA-101). Onboarding correctly
 stays flat/neutral throughout, per OA-ZYRA-123, unaffected by
 this.
 
@@ -69,13 +69,13 @@ MALE THEME
 Gradient: #3D5A80 → #3D2A4A
 Used for:
 • Male Seeker
-• Male Wali
+• Male Guardian
 
 FEMALE THEME
 Gradient: #D4868F → #3D2A4A
 Used for:
 • Female Seeker
-• Female Wali
+• Female Guardian
 
 ------------------------------------------------------------
 COLOUR PALETTE

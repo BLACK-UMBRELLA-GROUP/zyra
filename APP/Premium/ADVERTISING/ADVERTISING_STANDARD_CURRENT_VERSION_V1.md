@@ -13,7 +13,7 @@ ZYRA's advertising model exists to keep the platform genuinely free for ZYRA Bas
 
 Any advertising that conflicts with ZYRA's values, mission, or the trust of its users will be rejected regardless of commercial value.
 
-*Terminology corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 — Seeker Basic/Pro and Wali Basic/Pro replaced with ZYRA Basic/ZYRA One and Standard Wali/Extended Wali. The placement rules below are unaffected.*
+*Terminology corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5 — Seeker Basic/Pro and Guardian Basic/Pro replaced with ZYRA Basic/ZYRA One and Standard Guardian/Guardian+. The placement rules below are unaffected.*
 
 ---
 
@@ -23,8 +23,8 @@ Any advertising that conflicts with ZYRA's values, mission, or the trust of its 
 |------|-------------|
 | Seeker (ZYRA Basic) | Ad-supported (see placement rules) |
 | Seeker (ZYRA One) | Completely ad-free |
-| Standard Wali | No ads |
-| Extended Wali | No ads |
+| Standard Guardian | No ads |
+| Guardian+ | No ads |
 
 ---
 
@@ -34,10 +34,12 @@ These are non-negotiable regardless of sponsor tier or commercial arrangement.
 
 1. **Browse and Discovery only.** Ads appear only within the browse/discovery experience — as sponsored cards within the profile feed.
 2. **Never inside an active journey.** Once a journey has begun, no ads appear at any stage — conversation, checkpoints, meeting, or Nikah.
-3. **Never on the Guardians tab.** Wali and family oversight screens are ad-free for all users.
+3. **Never on the Guardians tab.** Guardian and family oversight screens are ad-free for all users.
 4. **Never mid-conversation.** No ads between messages or within any communication surface.
-5. **Frequency cap: approximately every 10 profile interactions.** The exact interval is a governed product rule, not a hardcoded implementation constant. It will be reviewed against retention data and adjusted as needed.
+5. **Frequency cap: approximately every 5 profile interactions.** The exact interval is a governed product rule, not a hardcoded implementation constant. It will be reviewed against retention data and adjusted as needed.
 6. **Sponsored cards must be visually distinct.** A clear "Sponsored" label is required. Card treatment must differ from real profiles. No ambiguity between a match and an advertisement is acceptable — this would be a critical trust violation.
+
+*Frequency corrected 2026-07-27 — was ~10. A separate, non-advertising "upgrade to ZYRA One" interstitial (ZYRA promoting its own subscription, not third-party advertising, so outside this Standard's scope) had been added on a ~5 cadence; showing both back-to-back on the same profile deck read as a bug to users. The two were merged into a single sponsored-card slot, and this Standard's frequency was lowered to match the surviving cadence rather than leaving two competing checkpoints. Placement, category, and labelling rules (1–4, 6) are unaffected.*
 
 ---
 
@@ -143,7 +145,7 @@ This document is a governed business rule. All advertising providers — network
 
 Changes to the Accepted or Rejected categories require review by the Lead Architect and sign-off from the product owner.
 
-The frequency cap (currently: ~10 profile interactions) is a governed product constant reviewed quarterly against retention and engagement data.
+The frequency cap (currently: ~5 profile interactions, corrected 2026-07-27 — was ~10) is a governed product constant reviewed quarterly against retention and engagement data.
 
 ---
 

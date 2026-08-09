@@ -10,7 +10,7 @@
 
 ZYRA is a Flutter-based Islamic matchmaking mobile application. It connects
 Muslim Seekers with compatible matches using a structured compatibility system,
-with guardian (Wali) involvement built into the journey.
+with guardian (Guardian) involvement built into the journey.
 
 ---
 
@@ -31,9 +31,14 @@ BLACK UMBRELLA GROUP/PROJECTS/ZYRA/
 ├── APP/                       ← Feature specifications
 ├── BUSINESS/                  ← Business & brand documents
 ├── SOURCE/                    ← Flutter source code
-├── DEVELOPMENT_TEAM/          ← AI Development Team
-└── LIVE_OPERATIONS/           ← Live ops monitoring
+└── ARCHIVE/                   ← Retired structures (reference only)
 ```
+
+**Note (2026-07-26, OA-ZYRA-141):** `DEVELOPMENT_TEAM/` and
+`LIVE_OPERATIONS/` — an earlier "AI Development Team" / "Live
+Operations" scaffolding tried once on 2026-06-26 and never used
+again — were archived under `ARCHIVE/` and no longer sit at repo
+root. See `ARCHIVE/README.md`.
 
 ---
 
@@ -60,5 +65,5 @@ BLACK UMBRELLA GROUP/PROJECTS/ZYRA/
 | Role | Description |
 |------|-------------|
 | Seeker | Person searching for a match |
-| Wali | Guardian (required for female Seekers) |
+| Guardian | Guardian (required for female Seekers) |
 | Connector | Intermediary who introduces Seekers |

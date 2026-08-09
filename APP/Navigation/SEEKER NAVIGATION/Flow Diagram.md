@@ -7,18 +7,18 @@ FLOW DIAGRAM
 
 Corrected 2026-07-12 against SEEKER NAVIGATION/Summary.md
 (the source of truth for this structure) — Seeker
-Basic/Pro/Premium and Wali Basic/Pro/Premium replaced with
-ZYRA Basic/ZYRA One and Standard Wali/Extended Wali. This also
+Basic/Pro/Premium and Guardian Basic/Pro/Premium replaced with
+ZYRA Basic/ZYRA One and Standard Guardian/Guardian+. This also
 fixes a real conflict: this diagram previously showed "Seeker
 Premium" gaining a Network tab, which contradicts the approved
-decision that Network is Extended-Wali-only and never available
+decision that Network is Extended-Guardian-only and never available
 to Seekers at any entitlement (see Summary.md, confirmed
 2026-06-27).
 
 Terminology updated 2026-07-25 (DR-ZYRA-099, caught by the
 DR-ZYRA-101 repository audit): Decline/Save/Like renamed
 Pass/Save/Consider below. NOT fixed by this pass: the 4-tab
-"Browse • Connections • Wali • Profile" structure and the
+"Browse • Connections • Guardian • Profile" structure and the
 "Connections" page concept shown below are stale against live
 code (3 tabs: Browse/Matches/Profile) — this is the same,
 already-tracked gap recorded in SEEKER NAVIGATION/Summary.md's
@@ -31,19 +31,19 @@ SEEKER NAVIGATION STRUCTURE
 
 SEEKER (ZYRA BASIC / ZYRA ONE)
 ┌─────────────────────────────────────┐
-│  Browse • Connections • Wali • Profile │
+│  Browse • Connections • Guardian • Profile │
 └─────────────────────────────────────┘
 
 ------------------------------------------------------------
-WALI NAVIGATION STRUCTURE (TEMPORARY)
+GUARDIAN NAVIGATION STRUCTURE (TEMPORARY)
 ------------------------------------------------------------
 
-STANDARD WALI
+STANDARD GUARDIAN
 ┌──────────────────────────────┐
 │  Dashboard • Seekers • Profile │
 └──────────────────────────────┘
 
-EXTENDED WALI
+GUARDIAN ONE
 ┌────────────────────────────────────────────────────┐
 │  Dashboard • Seekers • Browse • Network • Profile   │
 └────────────────────────────────────────────────────┘
@@ -56,7 +56,7 @@ User opens app
         │
         ▼
 MAIN NAVIGATION displayed
-(Browse • Connections • Wali • Profile)
+(Browse • Connections • Guardian • Profile)
         │
         ▼
 User taps Connections

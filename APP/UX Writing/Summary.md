@@ -208,7 +208,7 @@ progress rather than a bottom button.
 This applies to:
 • Compatibility Reveal → next step
 • Salam confirmed → next step
-• Meet Their Walis → next step
+• Meet Their Guardians → next step
 • Phase checkpoints → next phase
 • Any screen that marks a shared milestone
 
@@ -232,7 +232,7 @@ WRONG (System → User):
   Salam Exchange
   Stage Complete
   Your Salam was sent.
-  Continue to Wali Gate.
+  Continue to Guardian Gate.
   Begin with Salam.
   Send Salam.
 
@@ -252,7 +252,7 @@ RULE: Before writing any UI copy, ask:
 If the answer is "the system," rewrite it.
 
 NEVER expose internal system names to users:
-  Wali Gate       → just continue naturally into it
+  Guardian Gate       → just continue naturally into it
   Stage 1         → describe what happens next
   Pre-Journey     → invisible to the user
   Profile Unlock  → name TBC, but not this

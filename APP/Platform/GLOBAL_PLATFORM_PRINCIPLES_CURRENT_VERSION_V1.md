@@ -20,8 +20,8 @@ The goal is not to make ZYRA as cheap as possible everywhere. The goal is to mak
 
 ### How It Works
 - App Store (Apple) and Google Play use fixed pricing tier brackets per country. ZYRA selects the appropriate tier bracket for each market rather than setting an arbitrary local price.
-- The UK price (£34.99/month ZYRA One, £9.99/month independent Extended Wali) is the reference price. Regional prices are independently set based on local market conditions, not derived by formula.
-  (Terminology and pricing corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 / DR-075 — was "£19.99/month Seeker Pro, £9.99/month Wali Pro".)
+- The UK price (£34.99/month ZYRA One, £9.99/month independent Guardian+) is the reference price. Regional prices are independently set based on local market conditions, not derived by formula.
+  (Terminology and pricing corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5 / DR-075 — was "£19.99/month Seeker Pro, £9.99/month Guardian Pro".)
 - A commercial sustainability floor applies to every market. No regional price may fall below the point where server and operational costs are covered per paying user.
 
 ### Volatility and Review
@@ -79,8 +79,8 @@ Each user sets a preferred language. When a message is sent, ZYRA detects the so
 
 **Example:**
 - A Seeker writes in English.
-- Their Wali receives and reads the message in Bengali.
-- The Wali replies in Bengali.
+- Their Guardian receives and reads the message in Bengali.
+- The Guardian replies in Bengali.
 - The Seeker receives the reply in English.
 
 Both participants experience a seamless conversation in their own language.
@@ -89,8 +89,8 @@ Both participants experience a seamless conversation in their own language.
 
 | Phase | Scope |
 |-------|-------|
-| Phase 1 | Seeker ↔ Wali communication |
-| Phase 2 | Wali ↔ Wali communication (family-to-family) |
+| Phase 1 | Seeker ↔ Guardian communication |
+| Phase 2 | Guardian ↔ Guardian communication (family-to-family) |
 | Phase 3 | Future expansion as platform grows |
 
 ### User-Facing Language
@@ -102,7 +102,7 @@ No technical explanation. No AI branding. The feature is invisible; the benefit 
 
 ### Data Governance
 - Both the original message and the translated message are stored.
-- The **original message is the source of truth** for any review, dispute, or Wali oversight purpose.
+- The **original message is the source of truth** for any review, dispute, or Guardian oversight purpose.
 - Translated messages are labelled internally as derived content.
 - Users are informed in privacy documentation that messages may be translated for delivery, without exposing implementation detail in the UI.
 

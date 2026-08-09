@@ -83,7 +83,7 @@ state is not an error and should never look like one.
 | Screen | Use |
 |---|---|
 | Browse — no more profiles | "You're all caught up — more members will appear as new people join." |
-| Matches — no Potential Journeys | "Nothing here yet — when you and someone else Like each other, it'll show up here." |
+| Matches — no Journey Queue | "Nothing here yet — when you and someone else Like each other, it'll show up here." |
 | Matches — no Active Journeys | "Once you Start a Journey, it continues here." |
 | Incoming Potentials (Basic tier tease) | "See who's already interested — available with ZYRA One." |
 | Chat — first message | "Say Salam to start your Journey with [Name]." |

@@ -12,7 +12,6 @@ import '../../data/chapter3_categories.dart';
 import '../../models/onboarding_question.dart';
 import '../../services/zyra_onboarding_answers_service.dart';
 import '../../theme/zyra_colors.dart';
-import '../../theme/zyra_text.dart';
 import '../../widgets/onboarding_scaffold.dart';
 import '../../widgets/privacy_indicator.dart';
 import 'category_summary_screen.dart';

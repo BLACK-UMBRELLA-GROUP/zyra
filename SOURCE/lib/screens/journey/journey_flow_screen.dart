@@ -6,6 +6,15 @@
 // formerly MatchesScreen — renamed 2026-07-26 nav bar fix) after
 // ZyraJourneyService.promoteToActive().
 //
+// 2026-07-26 (#31, DR-ZYRA-110): the 4 "both Seekers complete a stage"
+// transitions (phase_1->2, phase_2->3, phase_3->family_stage,
+// family_stage->conversation) no longer advance journey_stage
+// directly — each opens a 48-hour Family Review Period first (WALI_
+// ARCHITECTURE_CURRENT_VERSION_V6.md §FAMILY REVIEW PERIOD), during
+// which either Seeker's main Guardian may Continue or Pause from wali_
+// journey_detail_screen.dart. See _advanceGated()/_FamilyReviewView
+// below, and 20260726190000_family_review_period.sql.
+//
 // REDUCED V1 SCOPE (Founder decision, 2026-07-25, DR-ZYRA-101 audit):
 // - Fixed-order questions stand in for "AI-adaptive question
 //   selection" — no LLM integration exists in this codebase (see
@@ -15,10 +24,10 @@
 // - "Ask More" is not offered as a checkpoint choice this pass — only
 //   Continue / End Journey. The `ask_more` decision value still exists
 //   in the database for future use.
-// - Family Compatibility Stage covers Seeker<->Wali directions only —
-//   Wali<->Wali is explicitly marked TBC in the source spec. There is
-//   no Wali-side screen to answer "seeker_to_wali" questions yet
-//   (Wali app has no Journey visibility built at all — see
+// - Family Compatibility Stage covers Seeker<->Guardian directions only —
+//   Guardian<->Guardian is explicitly marked TBC in the source spec. There is
+//   no Guardian-side screen to answer "seeker_to_wali" questions yet
+//   (Guardian app has no Journey visibility built at all — see
 //   WALI_ARCHITECTURE_CURRENT_VERSION_V5.md's "future dedicated
 //   session" note), so this stage completes once the signed-in Seeker
 //   has answered their own "wali_to_seeker" questions.
@@ -32,6 +41,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../data/journey_questions.dart';
+import '../../data/zyra_journey_stages.dart';
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_journey_service.dart';
@@ -41,6 +51,7 @@ import '../../theme/zyra_text.dart';
 import '../chat/chat_screen.dart';
 import '../subscription/upgrade_screen.dart';
 import '../wali/link_wali_screen.dart';
+import '../../widgets/zyra_loading.dart';
 
 class JourneyFlowScreen extends StatefulWidget {
   final String matchId;
@@ -55,8 +66,24 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   String _status = 'active';
   String? _stage = 'compatibility_reveal';
   String? _suspendedBy;
+  DateTime? _endedAt; // #17 — drives the 24h cooling period / Restart gate
   bool _loading = true;
   Timer? _poll;
+
+  // #31 — Family Review Period. Non-null (pending or paused) means a
+  // gated stage transition (phase_1->2, phase_2->3, phase_3->family_
+  // stage, family_stage->conversation) is currently held, and
+  // _buildStage below shows _FamilyReviewView instead of the next
+  // stage's normal UI. See openFamilyReview()'s own doc comment.
+  ({String id, String status, String toStage, DateTime deadlineAt})? _review;
+
+  // Why the last advance attempt did not move the Journey on, in the
+  // server's own vocabulary (see ZyraStageAdvance). Null means either
+  // "nothing attempted yet" or "it advanced". Rendered by the stage
+  // views so the user is told what is actually being waited on, rather
+  // than pressing Continue into silence — which is exactly what the
+  // 2026-08-07 release blocker looked like from the outside.
+  String? _advanceReason;
 
   @override
   void initState() {
@@ -73,13 +100,41 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
 
   Future<void> _refresh({bool showSpinner = true}) async {
     if (showSpinner && mounted) setState(() => _loading = true);
-    final fresh = await ZyraJourneyService.refetchOne(widget.matchId, widget.profile.id);
+    // #31 — lazy-resolve a due review (48h elapsed, no Pause) before
+    // reading the match's current stage, so a Journey whose review
+    // timed out while nobody had this screen open still advances the
+    // moment either party next opens it, exactly like every other
+    // poll-driven state in this screen.
+    await ZyraJourneyService.resolveFamilyReviewIfDue(widget.matchId);
+    var fresh = await ZyraJourneyService.refetchOne(widget.matchId, widget.profile.id);
+
+    // wali_gate is the one stage with no remaining user action on this
+    // screen: it opens the moment BOTH Seekers hold an active Main
+    // Guardian (Founder-decided 2026-08-08 — previously the client
+    // checked only the acting Seeker's own Guardian and advanced the
+    // SHARED stage, so one party dragged the pair through a gate the
+    // other never saw). Retried here on the poll for the same reason
+    // resolveFamilyReviewIfDue is above it: whoever linked first would
+    // otherwise sit on the gate screen indefinitely after the other
+    // party linked theirs.
+    if (fresh != null && fresh.status == 'active' && fresh.journeyStage == 'wali_gate') {
+      final r = await ZyraJourneyService.advanceStage(widget.matchId, 'wali_gate');
+      _advanceReason = r.advanced ? null : r.reason;
+      if (r.advanced) {
+        fresh = await ZyraJourneyService.refetchOne(widget.matchId, widget.profile.id);
+      }
+    }
+
+    final review = await ZyraJourneyService.fetchFamilyReview(widget.matchId);
     if (!mounted) return;
     if (fresh != null) {
+      final m = fresh;
       setState(() {
-        _status = fresh.status;
-        _stage = fresh.journeyStage;
-        _suspendedBy = fresh.suspendedBy;
+        _status = m.status;
+        _stage = m.journeyStage;
+        _suspendedBy = m.suspendedBy;
+        _endedAt = m.endedAt;
+        _review = review;
         _loading = false;
       });
     } else if (showSpinner) {
@@ -87,10 +142,52 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     }
   }
 
-  Future<void> _advance(String nextStage) async {
-    await ZyraJourneyService.advanceStage(widget.matchId, nextStage);
+  /// [fromStage] is the stage just COMPLETED, not the one wanted next —
+  /// the server owns the map. See ZyraJourneyService.advanceStage.
+  ///
+  /// A false result is normal, not an error: it usually means the other
+  /// party has not acted yet. The reason is held so the stage view can
+  /// say which.
+  Future<void> _advance(String fromStage) async {
+    final r = await ZyraJourneyService.advanceStage(widget.matchId, fromStage);
+    if (!mounted) return;
+    setState(() => _advanceReason = r.advanced ? null : r.reason);
     await _refresh();
   }
+
+  /// #31 — the 4 "both Seekers complete a stage" transitions open a
+  /// Family Review Period instead of advancing journey_stage directly.
+  /// Safe to call from whichever Seeker's client reaches this point
+  /// first (openFamilyReview is idempotent).
+  Future<void> _advanceGated(String fromStage, String toStage) async {
+    final r = await ZyraJourneyService.openFamilyReview(widget.matchId, fromStage, toStage);
+    if (!mounted) return;
+    // SURFACE IT. Since 2026-08-09 the server validates this call (audit
+    // 2.2), so it can refuse — and the return value used to be discarded
+    // entirely, which meant a refusal looked exactly like a success: a
+    // tap, a refresh, and nothing moving. That is the 2026-08-07 release
+    // blocker's signature, and it would have been reintroduced by the
+    // very fix that hardened the server.
+    if (!r.ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_reviewRefusedMessage(r.reason))),
+      );
+    }
+    await _refresh();
+  }
+
+  /// The server's vocabulary turned into something a person can act on.
+  /// 'stage_moved' is the one a real user will actually hit — the other
+  /// Seeker's client opened the same review a moment earlier — and it is
+  /// not an error from their point of view, so it does not read like one.
+  static String _reviewRefusedMessage(String reason) => switch (reason) {
+        'stage_moved' => 'This Journey has already moved on — bringing you up to date.',
+        'journey_paused' => 'This Journey is paused. Resume it to continue.',
+        'journey_not_active' => 'This Journey is no longer active.',
+        'not_a_gated_transition' || 'invalid_transition' =>
+          "That step isn't available from here.",
+        _ => "That didn't go through. Please try again.",
+      };
 
   Future<void> _endJourney() async {
     final confirmed = await showDialog<bool>(
@@ -118,6 +215,19 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     if (mounted) Navigator.of(context).pop();
   }
 
+  // UPDATED 2026-07-28 (Founder, "Journey Pause & Premium
+  // Differentiation" discussion): the menu item itself was already
+  // visible to every plan (see _JourneyAppBar below — no plan check
+  // around its PopupMenuButton items) and this gate already existed —
+  // only the explanation was thin ("Journey Suspension is a ZYRA One
+  // feature.", one dismiss button, one "See ZYRA One" button). Founder
+  // asked specifically for the dialog to explain what Pause actually
+  // does (pause without ending permanently, resumable later), not just
+  // that it's gated, plus named button copy ("Upgrade to ZYRA One" /
+  // "Maybe Later"). Body text reuses _SuspendedView's own established
+  // phrase ("pick up exactly where you left off") below for wording
+  // consistency within this same file rather than inventing new copy
+  // for the same idea.
   Future<void> _pauseJourney() async {
     if (AppState.instance.plan != ZyraPlan.one) {
       showDialog(
@@ -126,15 +236,19 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           backgroundColor: const Color(0xFF1A1220),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Text('Pause needs ZYRA One', style: ZyraText.heading(size: 16)),
-          content: Text('Journey Suspension is a ZYRA One feature.', style: ZyraText.subtext()),
+          content: Text(
+            'ZYRA One lets you pause a Journey without ending it permanently, '
+            'and resume any time — picking up exactly where you left off.',
+            style: ZyraText.subtext(),
+          ),
           actions: [
-            TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text('Not now', style: ZyraText.subtext(size: 13))),
+            TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text('Maybe Later', style: ZyraText.subtext(size: 13))),
             FilledButton(
               onPressed: () {
                 Navigator.of(ctx).pop();
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => const UpgradeScreen()));
               },
-              child: Text('See ZYRA One', style: ZyraText.button(size: 13)),
+              child: Text('Upgrade to ZYRA One', style: ZyraText.button(size: 13)),
             ),
           ],
         ),
@@ -157,7 +271,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
         child: SafeArea(
           child: _loading
-              ? const Center(child: CircularProgressIndicator(color: Colors.white54))
+              ? const ZyraLoading()
               : _buildBody(context),
         ),
       ),
@@ -165,7 +279,13 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    if (_status == 'ended') return _EndedView(profile: widget.profile);
+    if (_status == 'ended') {
+      return _EndedView(
+        matchId: widget.matchId,
+        profile: widget.profile,
+        endedAt: _endedAt,
+      );
+    }
 
     if (_suspendedBy != null) {
       return _SuspendedView(
@@ -175,8 +295,19 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           try {
             await ZyraJourneyService.resumeJourney(widget.matchId);
             await _refresh();
-          } on JourneyAutoEndedException {
-            await _refresh();
+          } on OtherPartyInActiveJourneyException {
+            // OA-ZYRA-164. This used to be JourneyAutoEndedException and a
+            // silent _refresh() — the Journey had already been ended by the
+            // server, so the screen just quietly redrew as "ended" with no
+            // explanation. Nothing is ended now, so there is something to
+            // say and a state worth keeping.
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                "They're in another Journey right now, so this one stays "
+                'paused. You can try again later.',
+              ),
+            ));
           }
         },
         onEnd: _endJourney,
@@ -186,7 +317,14 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     return Column(
       children: [
         _JourneyAppBar(profile: widget.profile, onPause: _pauseJourney, onEnd: _endJourney),
-        Expanded(child: _buildStage(context)),
+        Expanded(
+          // #31 — a live Family Review Period takes over the stage area
+          // regardless of which stage is "current", since journey_stage
+          // deliberately hasn't moved yet while one is pending/paused.
+          child: _review != null
+              ? _FamilyReviewView(review: _review!, onEnd: _endJourney)
+              : _buildStage(context),
+        ),
       ],
     );
   }
@@ -197,35 +335,38 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         return _CompatibilityRevealView(
           matchId: widget.matchId,
           profile: widget.profile,
-          onContinue: () => _advance('salam_exchange'),
+          onContinue: () => _advance('compatibility_reveal'),
           onEnd: _endJourney,
+          waitingReason: _advanceReason,
         );
       case 'salam_exchange':
         return _SalamExchangeView(
           matchId: widget.matchId,
           profile: widget.profile,
-          onContinue: () => _advance('wali_gate'),
+          onContinue: () => _advance('salam_exchange'),
         );
       case 'wali_gate':
         return _WaliGateView(
-          onContinue: () => _advance('phase_1'),
+          otherFirstName: widget.profile.firstName,
+          reason: _advanceReason,
+          onChanged: () => _refresh(),
         );
       case 'phase_1':
-        return _PhaseView(matchId: widget.matchId, profile: widget.profile, phase: 1, onAdvance: () => _advance('phase_2'), onEnd: _endJourney);
+        return _PhaseView(matchId: widget.matchId, profile: widget.profile, phase: 1, onAdvance: () => _advanceGated('phase_1', 'phase_2'), onEnd: _endJourney);
       case 'phase_2':
-        return _PhaseView(matchId: widget.matchId, profile: widget.profile, phase: 2, onAdvance: () => _advance('phase_3'), onEnd: _endJourney);
+        return _PhaseView(matchId: widget.matchId, profile: widget.profile, phase: 2, onAdvance: () => _advanceGated('phase_2', 'phase_3'), onEnd: _endJourney);
       case 'phase_3':
-        return _PhaseView(matchId: widget.matchId, profile: widget.profile, phase: 3, onAdvance: () => _advance('family_stage'), onEnd: _endJourney);
+        return _PhaseView(matchId: widget.matchId, profile: widget.profile, phase: 3, onAdvance: () => _advanceGated('phase_3', 'family_stage'), onEnd: _endJourney);
       case 'family_stage':
-        return _FamilyStageView(matchId: widget.matchId, profile: widget.profile, onContinue: () => _advance('conversation'));
+        return _FamilyStageView(matchId: widget.matchId, profile: widget.profile, onContinue: () => _advanceGated('family_stage', 'conversation'));
       case 'conversation':
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => ChatScreen(withProfile: widget.profile)));
         });
-        return const Center(child: CircularProgressIndicator(color: Colors.white54));
+        return const ZyraLoading();
       default:
-        return const Center(child: CircularProgressIndicator(color: Colors.white54));
+        return const ZyraLoading();
     }
   }
 }
@@ -264,9 +405,28 @@ class _JourneyAppBar extends StatelessWidget {
   }
 }
 
+// The Ended Journey view.
+//
+// REWRITTEN 2026-08-06 — OA-ZYRA-154, DR-ZYRA-121.
+//
+// Was stateful purely to drive a one-second countdown to a "Restart
+// Journey" button. Both are gone: restart_journey() reopened an ended
+// Journey on one person's tap, deleting six tables of history and clearing
+// `ended_at` first, and the server now refuses it.
+//
+// The 24-hour cooling period it counted down to came from APP/Journey/
+// JOURNEY AVAILABILITY/Summary.md "ENDED JOURNEY — RULES". That rule is
+// superseded: under V3 §9 an ended Journey is permanent, and starting again
+// is a new attempt requiring the other person's consent — not a timer
+// expiring. Counting down to a button that no longer exists would be worse
+// than saying nothing.
+//
+// Stateless again, and one Timer.periodic fewer running per ended Journey.
 class _EndedView extends StatelessWidget {
+  final String matchId;
   final SeekerProfile profile;
-  const _EndedView({required this.profile});
+  final DateTime? endedAt;
+  const _EndedView({required this.matchId, required this.profile, required this.endedAt});
 
   @override
   Widget build(BuildContext context) {
@@ -286,6 +446,33 @@ class _EndedView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
+
+            // RESTART RETIRED 2026-08-06 — OA-ZYRA-154, DR-ZYRA-121.
+            //
+            // This button called restart_journey(), which reopened an ended
+            // Journey on ONE person's tap. It deleted six tables of history
+            // first and cleared `ended_at`, so someone who ended a Journey
+            // because they felt unsafe could be returned to it without
+            // consent and without record. The server now refuses; leaving a
+            // button that calls a refusing function would be worse than no
+            // button, so the countdown and the action both go.
+            //
+            // Replaced by Request New Journey (V3 §9, OA-ZYRA-159): one
+            // person asks, the other decides, with Accept / Decline /
+            // Decline-and-don't-ask-again. Not built here because that flow
+            // carries cooldowns, a 14-day expiry and a decline type the
+            // requester must never see — an interim handshake would be
+            // thrown away days later.
+            //
+            // The copy says starting again needs both people, which is now
+            // true, rather than promising a feature that does not exist.
+            Text(
+              'Starting again is something you would both need to agree to. '
+              "We'll add a way to ask ${profile.firstName} soon.",
+              style: ZyraText.subtext(size: 12, color: Colors.white54),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 14),
             OutlinedButton(
               onPressed: () => Navigator.of(context).maybePop(),
               child: Text('Back to Matches', style: ZyraText.button(size: 13)),
@@ -335,6 +522,84 @@ class _SuspendedView extends StatelessWidget {
   }
 }
 
+// --- Family Review Period (#31) ---------------------------------------
+//
+// Seeker-facing view only — per WALI_ARCHITECTURE_CURRENT_VERSION_V6.md,
+// Continue/Pause is a Wali capability, not a Seeker one ("Each WALI
+// may Continue or Pause"). This view is deliberately read-only for the
+// Seeker: no button re-approves their own stage, matching the spec's
+// framing that this gives "Guardians meaningful involvement... not a
+// permission gate" the Seekers themselves operate. End Journey remains
+// available throughout, same as every other stage.
+class _FamilyReviewView extends StatefulWidget {
+  final ({String id, String status, String toStage, DateTime deadlineAt}) review;
+  final VoidCallback onEnd;
+  const _FamilyReviewView({required this.review, required this.onEnd});
+
+  @override
+  State<_FamilyReviewView> createState() => _FamilyReviewViewState();
+}
+
+class _FamilyReviewViewState extends State<_FamilyReviewView> {
+  Timer? _ticker;
+
+  @override
+  void initState() {
+    super.initState();
+    // Redraws the countdown every minute — cheap, no network, purely
+    // cosmetic (the real resolution is server-side via the poll in
+    // _refresh()'s resolveFamilyReviewIfDue call).
+    _ticker = Timer.periodic(const Duration(minutes: 1), (_) => mounted ? setState(() {}) : null);
+  }
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    super.dispose();
+  }
+
+  static String _formatRemaining(Duration d) {
+    if (d.isNegative || d == Duration.zero) return 'less than a minute';
+    final h = d.inHours;
+    final m = d.inMinutes.remainder(60);
+    return h > 0 ? '${h}h ${m}m' : '${m}m';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final paused = widget.review.status == 'paused';
+    final remaining = widget.review.deadlineAt.difference(DateTime.now());
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(paused ? Icons.pause_circle_outline : Icons.hourglass_top, color: Colors.white54, size: 32),
+            const SizedBox(height: 14),
+            Text(
+              paused ? 'Paused for family review' : 'Family Review Period',
+              style: ZyraText.heading(size: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              paused
+                  ? "A Guardian has asked for more time before this Journey continues. This isn't a rejection — it means the family needs a little longer. ZYRA support is available to help if needed."
+                  : "Both families have this stage to review. Unless a Guardian raises a concern, your Journey continues automatically in ${_formatRemaining(remaining)}.",
+              style: ZyraText.subtext(),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            TextButton(onPressed: widget.onEnd, child: Text('End Journey', style: ZyraText.subtext(size: 12, color: const Color(0xFFE08080)))),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 // --- Compatibility Reveal ---------------------------------------------
 
 class _CompatibilityRevealView extends StatefulWidget {
@@ -342,7 +607,14 @@ class _CompatibilityRevealView extends StatefulWidget {
   final SeekerProfile profile;
   final VoidCallback onContinue;
   final VoidCallback onEnd;
-  const _CompatibilityRevealView({required this.matchId, required this.profile, required this.onContinue, required this.onEnd});
+
+  /// Server's reason the pair has not moved on yet. 'waiting_for_continue'
+  /// means this user has pressed Continue and the other has not — the
+  /// checkpoint is recorded, so it is safe to show a wait rather than the
+  /// button. See PRE-JOURNEY RITUAL: "Every checkpoint is a shared decision."
+  final String? waitingReason;
+
+  const _CompatibilityRevealView({required this.matchId, required this.profile, required this.onContinue, required this.onEnd, required this.waitingReason});
 
   @override
   State<_CompatibilityRevealView> createState() => _CompatibilityRevealViewState();
@@ -389,7 +661,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Center(child: CircularProgressIndicator(color: Colors.white54));
+    if (_loading) return const ZyraLoading();
 
     if (_mine && _theirs && _score != null) {
       return Padding(
@@ -414,10 +686,19 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                     ),
                   )),
             const SizedBox(height: 28),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(onPressed: widget.onContinue, child: Text('Continue Journey', style: ZyraText.button(size: 14))),
-            ),
+            if (widget.waitingReason == 'waiting_for_continue') ...[
+              const ZyraLoading(),
+              const SizedBox(height: 12),
+              Text(
+                "You've chosen to continue. Waiting for ${widget.profile.firstName}.",
+                style: ZyraText.subtext(),
+                textAlign: TextAlign.center,
+              ),
+            ] else
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(onPressed: widget.onContinue, child: Text('Continue Journey', style: ZyraText.button(size: 14))),
+              ),
             const SizedBox(height: 10),
             TextButton(onPressed: widget.onEnd, child: Text('End Journey', style: ZyraText.subtext(size: 12, color: const Color(0xFFE08080)))),
           ],
@@ -432,7 +713,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(color: Colors.white54),
+              const ZyraLoading(),
               const SizedBox(height: 16),
               Text('Waiting for ${widget.profile.firstName}', style: ZyraText.heading(size: 16)),
               const SizedBox(height: 6),
@@ -449,7 +730,12 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Compatibility Reveal', style: ZyraText.heading(size: 20)),
+            // Every stage heading on this screen now reads from the one
+            // map (data/zyra_journey_stages.dart) rather than carrying its
+            // own literal. These four happened to agree with it already;
+            // the phase heading below did not, and that is exactly why
+            // agreement should not be left to whoever edits next.
+            Text(ZyraJourneyStages.labelFor('compatibility_reveal'), style: ZyraText.heading(size: 20)),
             const SizedBox(height: 8),
             Text(
               "Neither of you sees the result until you both choose to reveal.",
@@ -515,14 +801,14 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Center(child: CircularProgressIndicator(color: Colors.white54));
+    if (_loading) return const ZyraLoading();
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Salam Exchange', style: ZyraText.heading(size: 20)),
+            Text(ZyraJourneyStages.labelFor('salam_exchange'), style: ZyraText.heading(size: 20)),
             const SizedBox(height: 10),
             Text(
               _mine
@@ -533,7 +819,7 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
             ),
             const SizedBox(height: 24),
             if (_mine)
-              const CircularProgressIndicator(color: Colors.white54)
+              const ZyraLoading()
             else
               FilledButton(onPressed: _send, child: Text('Send Salam', style: ZyraText.button(size: 14))),
           ],
@@ -545,58 +831,83 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
 
 // --- Wali Gate -------------------------------------------------------
 
-class _WaliGateView extends StatefulWidget {
-  final VoidCallback onContinue;
-  const _WaliGateView({required this.onContinue});
+/// Guardian Gate.
+///
+/// REWRITTEN 2026-08-08. It used to read only the ACTING Seeker's own
+/// Guardian and, on finding one, silently advance the SHARED journey_stage
+/// — so a Seeker who had a Guardian pulled the pair past the gate while the
+/// other party had none and never saw this screen. (In practice it advanced
+/// nothing at all, because the write underneath it was being discarded by
+/// RLS; the two defects hid each other.)
+///
+/// Founder-decided 2026-08-08: BOTH Seekers must hold an active Main
+/// Guardian. That check now lives in zyra_advance_stage(), and this widget
+/// only renders which of the two is outstanding. It performs no reads and
+/// holds no state — the parent's poll drives it.
+class _WaliGateView extends StatelessWidget {
+  final String otherFirstName;
 
-  @override
-  State<_WaliGateView> createState() => _WaliGateViewState();
-}
+  /// From zyra_advance_stage(): 'guardian_required_self' — you must link
+  /// one; 'guardian_required_other' — they must. Null while the parent's
+  /// first attempt is in flight.
+  final String? reason;
 
-class _WaliGateViewState extends State<_WaliGateView> {
-  bool _loading = true;
-  bool _hasWali = false;
+  /// Ask the parent to re-poll after the user has linked someone, rather
+  /// than waiting up to three seconds for the timer.
+  final VoidCallback onChanged;
 
-  @override
-  void initState() {
-    super.initState();
-    _check();
-  }
-
-  Future<void> _check() async {
-    final userId = ZyraAuth.currentUser?.id;
-    final hasWali = userId != null && await ZyraJourneyService.hasActiveMainWali(userId);
-    if (!mounted) return;
-    setState(() {
-      _hasWali = hasWali;
-      _loading = false;
-    });
-    if (hasWali) widget.onContinue();
-  }
+  const _WaliGateView({required this.otherFirstName, required this.reason, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Center(child: CircularProgressIndicator(color: Colors.white54));
-    if (_hasWali) return const Center(child: CircularProgressIndicator(color: Colors.white54));
+    if (reason == 'guardian_required_other') {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ZyraLoading(),
+              const SizedBox(height: 16),
+              Text(ZyraJourneyStages.labelFor('wali_gate'), style: ZyraText.heading(size: 20)),
+              const SizedBox(height: 6),
+              Text(
+                'Your Guardian is linked. Waiting for $otherFirstName to link theirs.',
+                style: ZyraText.subtext(),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (reason != 'guardian_required_self') {
+      // Null (first attempt in flight) or a reason this screen does not
+      // own. A spinner is the honest render — never a Continue button
+      // whose gate state is unknown.
+      return const ZyraLoading();
+    }
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Wali Gate', style: ZyraText.heading(size: 20)),
+            Text(ZyraJourneyStages.labelFor('wali_gate'), style: ZyraText.heading(size: 20)),
             const SizedBox(height: 10),
-            Text('To begin your journey, you need to link a Wali.', style: ZyraText.subtext(), textAlign: TextAlign.center),
+            Text('To begin your journey, you need to link a Guardian.', style: ZyraText.subtext(), textAlign: TextAlign.center),
             const SizedBox(height: 24),
             FilledButton(
               onPressed: () async {
                 await Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LinkWaliScreen(asWali: false)));
-                if (mounted) _check();
+                onChanged();
               },
-              child: Text('Link a Wali', style: ZyraText.button(size: 14)),
+              child: Text('Link a Guardian', style: ZyraText.button(size: 14)),
             ),
             const SizedBox(height: 10),
-            TextButton(onPressed: _check, child: Text("I've linked my Wali — check again", style: ZyraText.subtext(size: 12))),
+            TextButton(onPressed: onChanged, child: Text("I've linked my Guardian — check again", style: ZyraText.subtext(size: 12))),
           ],
         ),
       ),
@@ -690,15 +1001,18 @@ class _PhaseViewState extends State<_PhaseView> {
     }
   }
 
-  static const _phaseGuidingQuestion = {
-    1: 'Are we fundamentally compatible?',
-    2: 'Could we realistically build a life together?',
-    3: 'Can we navigate life together?',
-  };
+  // _phaseGuidingQuestion REMOVED 2026-08-09 — the three questions now
+  // live on ZyraJourneyStage.guidingQuestion in
+  // data/zyra_journey_stages.dart, beside the labels that were derived
+  // from them. Keeping them apart meant the heading and the question
+  // under it could be edited independently and end up describing
+  // different things.
+  //
+  // Same copy, moved — not rewritten.
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Center(child: CircularProgressIndicator(color: Colors.white54));
+    if (_loading) return const ZyraLoading();
 
     final myId = ZyraAuth.currentUser?.id;
     final otherId = widget.profile.id;
@@ -712,7 +1026,13 @@ class _PhaseViewState extends State<_PhaseView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Phase ${widget.phase} — Revealed', style: ZyraText.heading(size: 18)),
+            // A sixth stage-label site, missed in this morning's sweep and
+            // found on 2026-08-09 while reading _checkpoint. Same rule:
+            // the label comes from the map, never from a literal here.
+            Text(
+              '${ZyraJourneyStages.phase(widget.phase)?.label ?? 'Phase ${widget.phase}'} — Revealed',
+              style: ZyraText.heading(size: 18),
+            ),
             const SizedBox(height: 16),
             for (final q in _questions) ...[
               Text(q.text, style: ZyraText.body(size: 13, color: Colors.white70)),
@@ -760,7 +1080,7 @@ class _PhaseViewState extends State<_PhaseView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(color: Colors.white54),
+              const ZyraLoading(),
               const SizedBox(height: 16),
               Text('Waiting for ${widget.profile.firstName}\'s answers', style: ZyraText.heading(size: 16), textAlign: TextAlign.center),
               const SizedBox(height: 6),
@@ -776,9 +1096,18 @@ class _PhaseViewState extends State<_PhaseView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Phase ${widget.phase}', style: ZyraText.heading(size: 18)),
+          // WAS 'Phase 1' / 'Phase 2' / 'Phase 3'. Those are internal
+          // engineering names and should never have been on screen
+          // (Founder, 2026-08-09) — the Seeker now reads Faith & Values,
+          // Building a Life, Navigating Life, which is what the Guardian
+          // side reads too. `phase_N` remains the stored value and the
+          // widget's own parameter; only the label changed.
+          Text(
+            ZyraJourneyStages.phase(widget.phase)?.label ?? 'Phase ${widget.phase}',
+            style: ZyraText.heading(size: 18),
+          ),
           const SizedBox(height: 4),
-          Text(_phaseGuidingQuestion[widget.phase] ?? '', style: ZyraText.subtext()),
+          Text(ZyraJourneyStages.phase(widget.phase)?.guidingQuestion ?? '', style: ZyraText.subtext()),
           const SizedBox(height: 18),
           for (final q in _questions) ...[
             Text(q.text, style: ZyraText.body(size: 14)),
@@ -789,7 +1118,7 @@ class _PhaseViewState extends State<_PhaseView> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.06),
+                fillColor: Colors.white.withValues(alpha: 0.06),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                 hintText: 'Your answer…',
                 hintStyle: const TextStyle(color: Colors.white38),
@@ -816,7 +1145,7 @@ class _RatingChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionChip(
       label: Text(label, style: const TextStyle(color: Colors.white, fontSize: 11)),
-      backgroundColor: Colors.white.withOpacity(0.08),
+      backgroundColor: Colors.white.withValues(alpha: 0.08),
       onPressed: onTap,
     );
   }
@@ -838,6 +1167,8 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
   final Map<String, TextEditingController> _controllers = {};
   bool _loading = true;
   bool _submitted = false;
+  bool _waliAnswered = false;
+  Timer? _poll;
 
   @override
   void initState() {
@@ -846,23 +1177,40 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
       _controllers[q.id] = TextEditingController();
     }
     _load();
+    // Polls for the Wali's answers so this screen advances the moment
+    // both sides are done, without the Seeker needing to reopen it.
+    _poll = Timer.periodic(const Duration(seconds: 5), (_) => _load(showSpinner: false));
   }
 
   @override
   void dispose() {
+    _poll?.cancel();
     for (final c in _controllers.values) {
       c.dispose();
     }
     super.dispose();
   }
 
-  Future<void> _load() async {
-    final answers = await ZyraJourneyService.fetchFamilyAnswers(widget.matchId, 'wali_to_seeker');
+  Future<void> _load({bool showSpinner = true}) async {
+    if (showSpinner && mounted) setState(() => _loading = true);
+    final myAnswers = await ZyraJourneyService.fetchFamilyAnswers(widget.matchId, 'wali_to_seeker');
+    final waliAnswers = await ZyraJourneyService.fetchFamilyAnswers(widget.matchId, 'seeker_to_wali');
     if (!mounted) return;
+    final submitted = myAnswers.length >= JourneyQuestions.waliToSeeker.length;
+    final waliAnswered = waliAnswers.length >= JourneyQuestions.seekerToWali.length;
     setState(() {
-      _submitted = answers.length >= JourneyQuestions.waliToSeeker.length;
+      _submitted = submitted;
+      _waliAnswered = waliAnswered;
       _loading = false;
     });
+    // FIXED 2026-07-26 (Founder decision): Family Stage now requires
+    // BOTH the Seeker's waliToSeeker answers AND the linked Guardian's
+    // seekerToWali answers (see screens/wali/wali_journey_detail_
+    // screen.dart) before advancing to Conversation — mirrors Phase
+    // 1/2/3's both-sides pattern, making the Guardian's participation real
+    // rather than cosmetic. Previously advanced as soon as the Seeker
+    // submitted, regardless of the Guardian.
+    if (submitted && waliAnswered) widget.onContinue();
   }
 
   Future<void> _submit() async {
@@ -872,12 +1220,12 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
         await ZyraJourneyService.submitFamilyAnswer(widget.matchId, 'wali_to_seeker', q.id, text);
       }
     }
-    setState(() => _submitted = true);
+    await _load();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) return const Center(child: CircularProgressIndicator(color: Colors.white54));
+    if (_loading) return const ZyraLoading();
 
     if (_submitted) {
       return Center(
@@ -886,16 +1234,21 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Families have been introduced.', style: ZyraText.heading(size: 18), textAlign: TextAlign.center),
+              const ZyraLoading(),
+              const SizedBox(height: 16),
+              Text(
+                _waliAnswered ? 'Families have been introduced.' : "Waiting on your Guardian",
+                style: ZyraText.heading(size: 18),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 8),
               Text(
-                "This is where a Wali's own questions and engagement would normally continue — "
-                "full Wali-side participation in this stage is a future build.",
+                _waliAnswered
+                    ? 'Both sides have answered — continuing to Conversation.'
+                    : "You've answered your Guardian's questions. Your Journey continues once your linked Guardian has answered theirs.",
                 style: ZyraText.subtext(),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
-              FilledButton(onPressed: widget.onContinue, child: Text('Continue to Conversation', style: ZyraText.button(size: 14))),
             ],
           ),
         ),
@@ -907,11 +1260,11 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Family Compatibility Stage', style: ZyraText.heading(size: 18)),
+          Text(ZyraJourneyStages.labelFor('family_stage'), style: ZyraText.heading(size: 18)),
           const SizedBox(height: 6),
           Text('Involve guardians and families.', style: ZyraText.subtext()),
           const SizedBox(height: 18),
-          Text('Questions your Wali might ask you:', style: ZyraText.body(size: 13, color: Colors.white70)),
+          Text('Questions your Guardian might ask you:', style: ZyraText.body(size: 13, color: Colors.white70)),
           const SizedBox(height: 10),
           for (final q in JourneyQuestions.waliToSeeker) ...[
             Text(q.text, style: ZyraText.body(size: 14)),
@@ -922,7 +1275,7 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.06),
+                fillColor: Colors.white.withValues(alpha: 0.06),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                 hintText: 'Your answer…',
                 hintStyle: const TextStyle(color: Colors.white38),

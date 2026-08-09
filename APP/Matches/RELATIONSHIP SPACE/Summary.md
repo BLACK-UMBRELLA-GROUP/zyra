@@ -21,7 +21,7 @@ CONTENTS
 The Relationship Space contains:
 • Timeline
 • Active Journey stage
-• Wali
+• Guardian
 • Profile
 • Chat (when unlocked)
 
@@ -66,7 +66,7 @@ DESIGN PHILOSOPHY
 • Avoid adding complexity until the interface is built
   and tested visually.
 • The simplest version first.
-• Each component (Timeline, Chat, Profile, Wali) to be
+• Each component (Timeline, Chat, Profile, Guardian) to be
   designed and reviewed independently.
 
 ============================================================
@@ -76,7 +76,7 @@ APPROVED TO-DO LIST
 • Design the Relationship Space layout.
 • Design the Timeline component.
 • Design the Journey stage display.
-• Design the Wali section within Relationship Space.
+• Design the Guardian section within Relationship Space.
 • Design the Profile section within Relationship Space.
 • Define Chat unlock conditions and display.
 • Confirm how "Journey Ended" is recorded on Timeline.

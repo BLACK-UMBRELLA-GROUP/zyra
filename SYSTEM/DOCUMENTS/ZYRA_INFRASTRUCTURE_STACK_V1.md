@@ -22,7 +22,7 @@ This document records the approved infrastructure stack for the ZYRA platform. T
 | **Flutter** | App framework — single Dart codebase for iOS, Android, and web (corrected 2026-07-18, DR-ZYRA-078 — this row previously said "Expo + EAS / React Native," a drafting inconsistency with the Architecture doc and the actual project scaffold, neither of which ever moved off Flutter) |
 | **Resend** | Transactional email delivery (invitations, notifications, system emails) |
 | **Vercel** | Web hosting, edge functions, API routes where applicable |
-| **Stripe** | Payment processing — ZYRA One subscriptions, Extended Wali subscriptions |
+| **Stripe** | Payment processing — ZYRA One subscriptions, Guardian+ subscriptions |
 | **RevenueCat** | In-app purchase management — subscription state, entitlement tracking, iOS/Android billing |
 | **Cloudflare** | CDN, DDoS protection, DNS, image delivery |
 | **GitHub** | Source control, CI/CD integration |
@@ -47,13 +47,13 @@ This document records the approved infrastructure stack for the ZYRA platform. T
 
 ### Why Langfuse
 
-Langfuse fills the same role for AI operations that Sentry fills for application crashes. As AI becomes a core platform capability in ZYRA (compatibility scoring, Journey intelligence, Wali AI Summary, adaptive questions), observability over AI behaviour is essential from the start.
+Langfuse fills the same role for AI operations that Sentry fills for application crashes. As AI becomes a core platform capability in ZYRA (compatibility scoring, Journey intelligence, Guardian AI Summary, adaptive questions), observability over AI behaviour is essential from the start.
 
 Langfuse specifically provides:
 - **Prompt versioning** — track prompt changes and their effect on output quality
 - **Token tracking** — monitor consumption per feature and per user segment
 - **Cost analysis** — understand AI cost per Journey, per user, per feature
-- **Trace inspection** — debug multi-step AI chains (e.g. compatibility calculation + recommendation + Wali summary)
+- **Trace inspection** — debug multi-step AI chains (e.g. compatibility calculation + recommendation + Guardian summary)
 - **AI evaluation** — measure output quality over time
 - **Production debugging** — identify and resolve AI regressions without code changes
 

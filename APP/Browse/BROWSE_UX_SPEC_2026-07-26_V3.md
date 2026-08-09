@@ -112,6 +112,20 @@ the user immediately understands what action occurred. No floating
 action buttons are shown above the bottom navigation bar — actions
 are performed directly on the profile card.
 
+**Refined 2026-07-26** (Founder feedback: the swipe interaction "is
+not nice," wanted "traffic light colour" feedback tied to swipe
+direction): the feedback described above is now live during the drag
+itself, not only as a post-commit flash. As the card is dragged past
+a small dead zone, a soft coloured edge glow and a small icon+label
+pill (top of card) appear and grow in intensity toward the matching
+traffic-light colour (🟢 Consider / 🟡 Save / 🔴 Pass) as the drag
+approaches the commit threshold, then the existing post-commit flash
+still plays on release. Deliberately a light edge glow + pill rather
+than a full-photo colour wash, so the photo itself stays fully
+visible throughout — approved via an interactive mockup shown to the
+Founder before implementation. See `SOURCE/lib/screens/browse/
+browse_screen.dart`'s `_dragDecision`/`_dragStrength`.
+
 ---
 
 ## Profile Actions — Report / Hide / Block (new, V2, 2026-07-25)
@@ -122,7 +136,7 @@ no existing Browse-screen reporting/blocking mechanism was found in
 V1 of this document; `APP/Journey/JOURNEY MANAGEMENT/Summary.md`
 explicitly listed "Full Safety & Moderation design (dedicated
 session)" as an Open Discussion, covering Block/Report for both
-Seekers and Walis — this section resolves the Seeker/Browse-screen
+Seekers and Guardians — this section resolves the Seeker/Browse-screen
 portion of that gap only (see Scope Note at the end of this section).
 See DR-ZYRA-095.
 
@@ -180,8 +194,8 @@ only.
 
 This section covers **Browse-screen, pre-Journey, Seeker-to-Seeker**
 report/hide/block only. `JOURNEY MANAGEMENT/Summary.md`'s Open
-Discussion also asked: Block/Report **Wali** (not addressed here — no
-Wali-facing report/block UI is specified anywhere yet); how blocking
+Discussion also asked: Block/Report **Guardian** (not addressed here — no
+Guardian-facing report/block UI is specified anywhere yet); how blocking
 affects an **existing Active Journey and its Timeline** (not
 addressed — this spec is Browse-stage only, before any Journey
 exists); and privacy implications after a Journey has already ended
@@ -211,6 +225,9 @@ Priority Discovery does not show scores, labels, or indicators on cards. The ran
 - No Incoming Potentials (does not see who has Considered them)
 - No Mutual Save Detection
 - No Priority Discovery
+- Sees a Sponsored card roughly every 10 profile interactions, per
+  ADVERTISING_STANDARD_CURRENT_VERSION_V1.md and DR-ZYRA-109 (added
+  2026-07-26 — currently a design placeholder, no live ad network yet)
 
 ---
 
@@ -222,17 +239,18 @@ Priority Discovery does not show scores, labels, or indicators on cards. The ran
 - **Incoming Potentials** — separate section showing all Seekers who have already Considered this account
 - **Mutual Save Detection** — notification when a Saved profile also Saves this account
 - No counter displayed. No limits.
+- Completely ad-free — never sees a Sponsored card (DR-ZYRA-109)
 
 ---
 
-## Wali Behaviour
+## Guardian Behaviour
 
 Browse is entirely private to the Seeker.
 
-- Wali has no access to the Browse tab
-- Wali cannot see which profiles the Seeker has browsed
-- Wali cannot see Saves or Considers sent
-- Browse activity is never shared with any linked Wali at any point
+- Guardian has no access to the Browse tab
+- Guardian cannot see which profiles the Seeker has browsed
+- Guardian cannot see Saves or Considers sent
+- Browse activity is never shared with any linked Guardian at any point
 
 This is consistent with the ZYRA privacy principle: family involvement begins at the Journey stage, not at discovery.
 
@@ -345,7 +363,7 @@ The Mutual Save Detection feature is visible in the ZYRA One upgrade screen as a
 | Version | Date | Changes |
 |---------|------|---------|
 | V1 | 2026-07-04 | Initial Browse UX specification |
-| V2 | 2026-07-25 | Added Profile Actions — Report / Hide / Block (OA-ZYRA-132, DR-ZYRA-095). Checked against JOURNEY MANAGEMENT/Summary.md's Open Discussions first — this section resolves the Browse-screen/Seeker-to-Seeker portion of that item only; Wali blocking, Active-Journey-stage blocking effects, and post-Journey privacy remain open, see Scope Note. |
+| V2 | 2026-07-25 | Added Profile Actions — Report / Hide / Block (OA-ZYRA-132, DR-ZYRA-095). Checked against JOURNEY MANAGEMENT/Summary.md's Open Discussions first — this section resolves the Browse-screen/Seeker-to-Seeker portion of that item only; Guardian blocking, Active-Journey-stage blocking effects, and post-Journey privacy remain open, see Scope Note. |
 | V3 | 2026-07-25 | Terminology renamed Decline/Like → Pass/Consider (Save unchanged); mechanism changed from tap-buttons to swipe gestures (Swipe Left=Consider, Right=Pass, Down=Save), reversing V1's implicit tap-only assumption. Also resolves OA-ZYRA-137 (Pass/Decline was previously only an implicit "Skip/Scroll past," now an explicit named action). Founder decision, OA-ZYRA-135, DR-ZYRA-099. |
 
 ---

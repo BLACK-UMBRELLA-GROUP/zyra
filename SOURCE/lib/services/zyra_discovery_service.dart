@@ -31,17 +31,41 @@
 // unseen score doesn't violate that display rule, but showing the
 // number would — so it stays entirely inside this service.
 
+import 'package:flutter/foundation.dart' show debugPrint;
+
 import '../main.dart';
 import '../models/seeker_profile.dart';
 import 'zyra_auth.dart';
 import 'zyra_photo_service.dart';
+import 'zyra_ages_service.dart';
 
 class ZyraDiscoveryService {
   ZyraDiscoveryService._();
 
+  /// Real candidates only. Returns an EMPTY LIST when there are none.
+  ///
+  /// MOCK FALLBACK REMOVED 2026-08-04 (independent review, H-6). This
+  /// method had FIVE separate `return mockProfiles` paths — not signed in,
+  /// no gender, no rows, no photos, and any exception. Every one of them
+  /// put fabricated people in front of a real user, and every one of them
+  /// made a failure look like success.
+  ///
+  /// That is not hypothetical: it is exactly how the `profile_complete` bug
+  /// survived a month in July. No genuinely-onboarded Seeker could ever
+  /// appear in Browse, and nobody noticed, because Browse always looked
+  /// populated.
+  ///
+  /// An empty list is now an empty list. Browse shows its empty state,
+  /// which is the truth, and every failure path logs its reason.
+  ///
+  /// `mockProfiles` still exists in seeker_profile.dart for widget tests
+  /// and the dev colour deck. It is no longer reachable from the real path.
   static Future<List<SeekerProfile>> fetchCandidates() async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return mockProfiles;
+    if (user == null) {
+      debugPrint('ZYRA: fetchCandidates — not signed in, returning no candidates.');
+      return const [];
+    }
 
     try {
       // Own gender first — Browse must "Never display same-gender
@@ -50,19 +74,35 @@ class ZyraDiscoveryService {
       // profile_complete) index exists for exactly this query.
       final me = await supabase.from('profiles').select('gender').eq('id', user.id).maybeSingle();
       final myGender = me?['gender'] as String?;
-      if (myGender == null) return mockProfiles; // no completed profile yet
+      if (myGender == null) {
+        // No profile row yet — mid-onboarding, or the row failed to write.
+        debugPrint('ZYRA: fetchCandidates — no gender on own profile, so no '
+            'target gender to search for. Returning no candidates.');
+        return const [];
+      }
       final targetGender = myGender == 'male' ? 'female' : 'male';
 
       final rows = await supabase
           .from('profiles')
-          .select('id, first_name, location_text, gender, profile_photos(storage_path, display_order)')
+          // 2026-07-27: surname_line added — see 20260727 migration
+          // add_surname_line_to_profiles + SeekerProfile.surnameLine's
+          // updated doc comment for the full "why wasn't this showing"
+          // root cause. Without this, every real candidate silently
+          // constructed a SeekerProfile with surnameLine == null below,
+          // regardless of what the mockProfiles fallback had.
+          .select('id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)')
           .eq('role', 'seeker') // Wali accounts must never appear as candidates
           .eq('gender', targetGender)
           .eq('is_active', true)
           .eq('profile_complete', true)
           .neq('id', user.id) as List;
 
-      if (rows.isEmpty) return mockProfiles;
+      if (rows.isEmpty) {
+        // A genuinely empty result. Early in a launch this is the normal
+        // state, and saying so is more useful than pretending otherwise.
+        debugPrint('ZYRA: fetchCandidates — 0 $targetGender candidates match.');
+        return const [];
+      }
 
       // Raw date_of_birth is no longer selectable by the client (see
       // 20260726120000_hide_raw_dob_expose_age.sql) — ages are fetched
@@ -71,16 +111,57 @@ class ZyraDiscoveryService {
       final ids = rows.map((r) => (r as Map<String, dynamic>)['id'] as String).toList();
       final ages = await _fetchAges(ids);
 
-      final results = <SeekerProfile>[];
+      // FIXED 2026-07-26 (photo preloading pass — CHATGPT_REPLY_NAVBAR_
+      // PHOTO_MENU_2026-07-26.md §2, second bug named there): this used
+      // to `await ZyraPhotoService.signedUrlsFor(...)` once per
+      // candidate inside this loop — one sequential Supabase Storage
+      // round trip per candidate, when signedUrlsFor() already supports
+      // signing every path in one batched call. Now every candidate's
+      // paths are collected first, signed in exactly one call, then
+      // sliced back out in order (createSignedUrls returns results in
+      // the same order as the input paths, so a running cursor is
+      // sufficient — no per-candidate correlation key needed).
+      final validRows = <Map<String, dynamic>>[];
+      final photoPathsPerRow = <List<String>>[];
       for (final row in rows) {
         final map = row as Map<String, dynamic>;
         final photosRaw = List<Map<String, dynamic>>.from((map['profile_photos'] as List?) ?? const []);
         if (photosRaw.isEmpty) continue; // no photo — not browsable per Browse spec
         photosRaw.sort((a, b) => (a['display_order'] as int).compareTo(b['display_order'] as int));
-        final photos = await ZyraPhotoService.signedUrlsFor(
-          photosRaw.map((p) => p['storage_path'] as String).toList(),
-        );
-        if (photos.isEmpty) continue;
+        validRows.add(map);
+        photoPathsPerRow.add(photosRaw.map((p) => p['storage_path'] as String).toList());
+      }
+
+      // REWRITTEN 2026-08-05 (Founder: "still no profiles showing up…
+      // please do a deep fix").
+      //
+      // This used to sign every path in one call and slice the results back
+      // out BY POSITION, which required the returned list to be exactly as
+      // long as the one sent. It never can be here: the seeded profiles
+      // share a pool of real photos, so a full deck asks for ~284 paths of
+      // which only ~209 are distinct, the lengths disagreed, and the guard
+      // below correctly refused to show anyone — an empty Browse with 69
+      // perfectly good candidates behind it.
+      //
+      // Signing now returns a MAP keyed by path, so nothing depends on
+      // order or count. A photo that fails to resolve is skipped; a person
+      // is dropped only if NONE of their photos resolve. One bad object can
+      // no longer empty the deck.
+      final allPaths = <String>[for (final paths in photoPathsPerRow) ...paths];
+      final signedByPath = await ZyraPhotoService.signedUrlMap(allPaths);
+
+      final results = <SeekerProfile>[];
+      var droppedForPhotos = 0;
+      for (var i = 0; i < validRows.length; i++) {
+        final map = validRows[i];
+        final photos = <String>[
+          for (final path in photoPathsPerRow[i])
+            if (signedByPath[path] != null) signedByPath[path]!,
+        ];
+        if (photos.isEmpty) {
+          droppedForPhotos++;
+          continue; // genuinely no viewable photo — not browsable per spec
+        }
 
         results.add(SeekerProfile(
           id: map['id'] as String,
@@ -89,13 +170,28 @@ class ZyraDiscoveryService {
           city: (map['location_text'] as String?) ?? '—',
           photos: photos,
           gender: map['gender'] as String,
+          surnameLine: map['surname_line'] as String?,
         ));
       }
-      if (results.isEmpty) return mockProfiles;
+
+      if (droppedForPhotos > 0) {
+        debugPrint('ZYRA: fetchCandidates — ${results.length} candidates ready; '
+            '$droppedForPhotos dropped because none of their photos signed.');
+      }
+      if (results.isEmpty) {
+        debugPrint('ZYRA: fetchCandidates — ${rows.length} candidate row(s) '
+            'matched but none survived photo resolution.');
+        return const [];
+      }
 
       return await _applyCompatibility(user.id, results);
-    } catch (_) {
-      return mockProfiles;
+    } catch (e) {
+      // LOGGED 2026-08-04. This was `catch (_) { return mockProfiles; }` —
+      // an exception anywhere above produced a full, plausible-looking
+      // Browse deck of people who do not exist, with no trace in the
+      // console. The single most misleading line in the codebase.
+      debugPrint('ZYRA: fetchCandidates FAILED — showing no candidates. $e');
+      return const [];
     }
   }
 
@@ -139,25 +235,55 @@ class ZyraDiscoveryService {
   /// failure, returns an empty map and callers fall back to age 0
   /// rather than breaking Browse over an age lookup.
   static Future<Map<String, int>> _fetchAges(List<String> ids) async {
-    if (ids.isEmpty) return {};
-    try {
-      final rows = await supabase.rpc('ages_for', params: {'p_ids': ids}) as List;
-      return {
-        for (final r in rows) (r as Map<String, dynamic>)['id'] as String: (r['age'] as num).toInt(),
-      };
-    } catch (_) {
-      return {};
-    }
+    // Delegates since 2026-08-08. Was a private copy that sent every id
+    // in ONE call and swallowed the refusal — with 72 candidates against
+    // ages_for()'s 50-id cap, that is why every age read 0.
+    return ZyraAgesService.forIds(ids, context: 'browse candidates');
   }
 
   /// Best-effort. Mock profile ids aren't real `profiles` rows, so the
   /// FK check fails and the write is silently swallowed — harmless,
   /// since mock candidates have nothing real to persist against.
+  // ═══════════════════════════════════════════════════════════════════
+  // ignoreDuplicates: true — RELEASE BLOCKER FIX, 2026-08-09.
+  // Audit finding 1.1. Do not remove it.
+  // ═══════════════════════════════════════════════════════════════════
+  //
+  // A BARE .upsert() sends `Prefer: resolution=merge-duplicates`, which
+  // PostgREST turns into INSERT … ON CONFLICT DO UPDATE. PostgreSQL
+  // demands the UPDATE privilege at PLAN time — whether or not a row
+  // actually conflicts. `authenticated` holds INSERT on these tables and
+  // UPDATE on none of them, so EVERY Save, Like and Pass was refused with
+  // 42501 and swallowed by the catch below.
+  //
+  // Consequence: no `likes` row was ever written, so
+  // create_match_on_mutual_like never fired and NO USER COULD EVER MATCH.
+  // The app showed a spinner and moved on.
+  //
+  // ignoreDuplicates: true sends `resolution=ignore-duplicates` instead →
+  // ON CONFLICT DO NOTHING, which needs no UPDATE privilege. It is also
+  // the actual intent here: these rows are a bare fact — "A liked B" —
+  // with no payload to merge. Re-liking is a no-op, not an overwrite.
+  //
+  // Verified against the live database 2026-08-09, as `authenticated`,
+  // rolled back:
+  //   ON CONFLICT DO UPDATE  → 42501 permission denied for table likes
+  //   ON CONFLICT DO NOTHING → succeeded; a mutual pair then produced a
+  //                            matches row with status='potential'
+  //
+  // Granting UPDATE would also have worked and was REJECTED: it would let
+  // a user rewrite a row they do not own. onConflict names the pair
+  // explicitly because the primary key on these tables is a surrogate
+  // `id`, not the pair.
   static Future<void> recordSave(String savedId) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
     try {
-      await supabase.from('saves').upsert({'saver_id': user.id, 'saved_id': savedId});
+      await supabase.from('saves').upsert(
+        {'saver_id': user.id, 'saved_id': savedId},
+        onConflict: 'saver_id,saved_id',
+        ignoreDuplicates: true,
+      );
     } catch (_) {}
   }
 
@@ -165,7 +291,193 @@ class ZyraDiscoveryService {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
     try {
-      await supabase.from('likes').upsert({'liker_id': user.id, 'liked_id': likedId});
+      await supabase.from('likes').upsert(
+        {'liker_id': user.id, 'liked_id': likedId},
+        onConflict: 'liker_id,liked_id',
+        ignoreDuplicates: true,
+      );
     } catch (_) {}
+  }
+
+  /// Builds SeekerProfiles for a specific set of ids.
+  ///
+  /// Extracted 2026-08-01 from fetchCandidates so [fetchDecisions] can
+  /// reuse the photo handling rather than reimplement it. That handling is
+  /// not incidental: photo paths are collected across ALL rows and signed
+  /// in ONE batched call, because signing per row was a real performance
+  /// bug once (one sequential Storage round trip per profile).
+  ///
+  /// Deliberately does NOT filter on `is_active` or `profile_complete`.
+  /// Someone you saved last week who has since hidden their profile should
+  /// still appear in your own Saved list — dropping them silently would
+  /// look like data loss, which is the exact complaint this work exists to
+  /// answer. RLS still governs what is readable.
+  /// Made public 2026-08-03 for BlockedUsersScreen, which needs the same
+  /// id-to-profile lookup and must not reimplement the batched photo
+  /// signing that lives here.
+  static Future<List<SeekerProfile>> profilesByIds(List<String> ids) async {
+    if (ids.isEmpty) return const [];
+    try {
+      final rows = await supabase
+          .from('profiles')
+          .select('id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)')
+          .inFilter('id', ids) as List;
+      if (rows.isEmpty) return const [];
+
+      final foundIds = rows.map((r) => (r as Map<String, dynamic>)['id'] as String).toList();
+      final ages = await _fetchAges(foundIds);
+
+      final validRows = <Map<String, dynamic>>[];
+      final photoPathsPerRow = <List<String>>[];
+      for (final row in rows) {
+        final map = row as Map<String, dynamic>;
+        final photosRaw = List<Map<String, dynamic>>.from((map['profile_photos'] as List?) ?? const []);
+        if (photosRaw.isEmpty) continue;
+        photosRaw.sort((a, b) => (a['display_order'] as int).compareTo(b['display_order'] as int));
+        validRows.add(map);
+        photoPathsPerRow.add(photosRaw.map((p) => p['storage_path'] as String).toList());
+      }
+
+      // Map-keyed signing, same reasoning as fetchCandidates above — this
+      // had the identical all-or-nothing length check, so the Connections
+      // lists emptied for exactly the same reason Browse did.
+      final allPaths = <String>[for (final paths in photoPathsPerRow) ...paths];
+      final signedByPath = await ZyraPhotoService.signedUrlMap(allPaths);
+
+      final byId = <String, SeekerProfile>{};
+      for (var i = 0; i < validRows.length; i++) {
+        final map = validRows[i];
+        final photos = <String>[
+          for (final path in photoPathsPerRow[i])
+            if (signedByPath[path] != null) signedByPath[path]!,
+        ];
+        if (photos.isEmpty) continue;
+        final id = map['id'] as String;
+        byId[id] = SeekerProfile(
+          id: id,
+          firstName: map['first_name'] as String,
+          age: ages[id] ?? 0,
+          city: (map['location_text'] as String?) ?? '—',
+          photos: photos,
+          gender: map['gender'] as String,
+          surnameLine: map['surname_line'] as String?,
+        );
+      }
+      // Returned in the caller's order, so "most recently saved last"
+      // survives the round trip.
+      return [for (final id in ids) if (byId[id] != null) byId[id]!];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  /// Reads back this Seeker's own decisions so they survive a restart.
+  ///
+  /// THIS IS THE GAP THE FOUNDER HIT (2026-08-01: "when I close the app
+  /// the data goes... I'm assuming this is temporary in dev mode").
+  ///
+  /// It was not dev mode, and a real user would have hit it identically.
+  /// `saves` and `likes` have been written since they were built, and
+  /// `passes` since earlier today — but nothing ever read any of them back.
+  /// AppState was populated only by acting in Browse during that session,
+  /// so every Connections list emptied on relaunch while the rows sat in
+  /// the database untouched.
+  ///
+  /// Ordered oldest-first by `created_at` so the Passed section's
+  /// "showing last 10" really is the last ten.
+  static Future<({List<SeekerProfile> saved, List<SeekerProfile> considered, List<SeekerProfile> passed})>
+      fetchDecisions() async {
+    final user = ZyraAuth.currentUser;
+    const empty = (saved: <SeekerProfile>[], considered: <SeekerProfile>[], passed: <SeekerProfile>[]);
+    if (user == null) return empty;
+
+    try {
+      final results = await Future.wait([
+        supabase.from('saves').select('saved_id, created_at').eq('saver_id', user.id).order('created_at'),
+        supabase.from('likes').select('liked_id, created_at').eq('liker_id', user.id).order('created_at'),
+        supabase.from('passes').select('passed_id, created_at').eq('passer_id', user.id).order('created_at'),
+      ]);
+
+      List<String> ids(List rows, String key) =>
+          [for (final r in rows) (r as Map<String, dynamic>)[key] as String];
+
+      final savedIds = ids(results[0], 'saved_id');
+      final likedIds = ids(results[1], 'liked_id');
+      final passedIds = ids(results[2], 'passed_id');
+
+      // One profile read for all three lists, not three. A profile can
+      // legitimately appear in two of them — Saved is a bookmark and sits
+      // alongside a decision — so the union is deduplicated first.
+      final all = {...savedIds, ...likedIds, ...passedIds}.toList();
+      if (all.isEmpty) return empty;
+
+      final profiles = await profilesByIds(all);
+      final byId = {for (final p in profiles) p.id: p};
+      List<SeekerProfile> pick(List<String> want) =>
+          [for (final id in want) if (byId[id] != null) byId[id]!];
+
+      return (saved: pick(savedIds), considered: pick(likedIds), passed: pick(passedIds));
+    } catch (_) {
+      return empty;
+    }
+  }
+
+  /// ADDED 2026-08-01 with the `passes` table.
+  ///
+  /// Declines had no table at all before this — they lived only in
+  /// AppState, so every one of them was forgotten on app restart and
+  /// passed-on profiles walked straight back into Browse. That is the
+  /// other half of why the same person could be decided on twice.
+  ///
+  /// The `passes_clear_like` trigger removes any prior Like server-side,
+  /// so a decision stays exclusive even if a client forgets to. It does
+  /// not touch `saves` — a bookmark survives every decision.
+  static Future<void> recordPass(String passedId) async {
+    final user = ZyraAuth.currentUser;
+    if (user == null) return;
+    try {
+      // ignoreDuplicates: see recordSave/recordLike above — finding 1.1.
+      await supabase.from('passes').upsert(
+        {'passer_id': user.id, 'passed_id': passedId},
+        onConflict: 'passer_id,passed_id',
+        ignoreDuplicates: true,
+      );
+    } catch (_) {}
+  }
+
+  /// Removes a bookmark. ADDED 2026-08-01 with the Connections move
+  /// actions (Founder: "there's no way to open the profile card and move
+  /// a user to save or decline").
+  ///
+  /// Saves were write-only until now — every other decision could be
+  /// changed and this one could not, so a bookmark was permanent by
+  /// accident.
+  ///
+  /// Touches `saves` only. Removing a bookmark says nothing about the
+  /// decision: someone you un-save but are still Considering is still
+  /// Considering.
+  static Future<void> removeSave(String savedId) async {
+    final user = ZyraAuth.currentUser;
+    if (user == null) return;
+    try {
+      await supabase.from('saves').delete().eq('saver_id', user.id).eq('saved_id', savedId);
+    } catch (_) {}
+  }
+
+  /// Reset Search — clears Declined ONLY. Considering, Saved, Journeys
+  /// and Matches are deliberately untouched (Founder, 2026-08-01).
+  ///
+  /// Returns how many profiles came back, so the confirmation can say
+  /// something true rather than a generic "done". Null means the call
+  /// failed and the UI must not claim success.
+  static Future<int?> resetSearch() async {
+    final user = ZyraAuth.currentUser;
+    if (user == null) return null;
+    try {
+      final result = await supabase.rpc('zyra_reset_search');
+      return result is int ? result : int.tryParse('$result');
+    } catch (_) {
+      return null;
+    }
   }
 }

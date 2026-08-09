@@ -121,7 +121,7 @@ SERVICE AREAS
   Guidance only — AI does not generate conversations.
   Examples:
     • Conversation has stalled
-    • Appropriate time to involve Wali
+    • Appropriate time to involve Guardian
     • Communication suggestions
 
   Confirmed as future. Not for near-term implementation.

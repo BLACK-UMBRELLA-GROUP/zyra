@@ -31,7 +31,7 @@ The user must never encounter a broken state, a blank screen, or a silently disa
 **Examples:**
 
 > This feature is included with your subscription.
-> It'll become available automatically once your Wali accepts their invitation.
+> It'll become available automatically once your Guardian accepts their invitation.
 
 > This feature is included with your plan.
 > It becomes available when you reach the Family Involvement stage.
@@ -46,7 +46,7 @@ The user must never encounter a broken state, a blank screen, or a silently disa
 - Never silently grey out or hide a feature without explanation.
 - Always confirm the feature **is** included in the user's plan — do not let the interface imply they need to pay again.
 - Always specify the **exact action** required, not a vague "check your settings" message.
-- Where relevant, link directly to the action required (e.g., link to the Guardians tab if the dependency is a missing Wali).
+- Where relevant, link directly to the action required (e.g., link to the Guardians tab if the dependency is a missing Guardian).
 
 ---
 
@@ -54,8 +54,8 @@ The user must never encounter a broken state, a blank screen, or a silently disa
 
 | Dependency Type | Example Feature | Suggested Message Trigger |
 |----------------|----------------|--------------------------|
-| Linked Wali (any tier) | Family Involvement Stage | Wali tab → no Wali connected |
-| Linked Premium Wali | AI Journey Summaries | Wali tab → Wali is Basic |
+| Linked Guardian (any tier) | Family Involvement Stage | Guardian tab → no Guardian connected |
+| Linked Premium Guardian | AI Journey Summaries | Guardian tab → Guardian is Basic |
 | Active journey | Conversation stage features | Journeys tab → no active journey |
 | Journey stage reached | Stage-specific features | Journey screen → stage not yet unlocked |
 | Subscription tier | Premium-only features | Shown to Basic users |

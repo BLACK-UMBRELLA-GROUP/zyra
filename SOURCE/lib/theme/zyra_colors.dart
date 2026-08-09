@@ -32,6 +32,36 @@ class ZyraColors {
   static const Color iconButtonBg = Color(0x12FFFFFF); // rgba(255,255,255,0.07)
   static const Color iconButtonBorder = Color(0x24FFFFFF); // 0.5px rgba(255,255,255,0.14)
 
+  // ---------------------------------------------------------------------
+  // Sheets, dialogs and toasts — ADDED 2026-08-01 (Founder: "why isn't it
+  // following the colour system").
+  //
+  // Every bottom sheet and dialog in the app had `Color(0xE01A1220)`
+  // hardcoded — 19 occurrences across 11 files. That value appears in no
+  // ratified document. It is a near-black plum that predates DR-ZYRA-094
+  // and simply never got revisited when the palette was finalised.
+  //
+  // The correct base is Luxury Dark Purple (#3D2A4A): BUSINESS/COLOUR
+  // THEME/Summary.md ratifies it as the colour EVERY theme fades into, so
+  // a surface anchored to the bottom of the screen sitting in that colour
+  // is continuous with whatever gradient is behind it, instead of
+  // punching a darker hole through it.
+  //
+  // NOTE: only report_profile_sheet, help_report_sheet and the global
+  // SnackBar theme use this so far. The other 9 files still carry the old
+  // literal — deliberately not swept in one pass, since that would change
+  // the look of screens the Founder has not reviewed yet. Migrate each as
+  // its page comes up in the page-by-page review.
+  // ---------------------------------------------------------------------
+
+  /// Bottom sheets and dialogs — Luxury Dark Purple at 88%, so the blur
+  /// behind it still reads through.
+  static const Color sheetSurface = Color(0xE03D2A4A);
+
+  /// Toasts/SnackBars — same family, fully opaque since they sit over
+  /// arbitrary content (often a photo) and must stay legible.
+  static const Color toastSurface = Color(0xF23D2A4A);
+
   // FAB states
   static const Color fabDimmedBg = Color(0x0AFFFFFF);
   static const Color fabDimmedBorder = Color(0x17FFFFFF);
@@ -96,7 +126,7 @@ class ZyraColors {
   /// Falls back to the neutral [brandGradient] when gender isn't known
   /// yet (e.g. account mid-onboarding). `gender` should be the raw
   /// AppState.gender value ('male' | 'female' | null) — same string
-  /// used for both Seeker and Wali accounts (AppState is one signed-in
+  /// used for both Seeker and Guardian accounts (AppState is one signed-in
   /// account, whichever role it is).
   ///
   /// Fixed 2026-07-25: this helper didn't exist before — Wali screens

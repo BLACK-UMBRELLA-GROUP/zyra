@@ -38,7 +38,7 @@ Owns:
 • Onboarding UX rules and principles
 
 Note:
-• Wali onboarding will be developed separately.
+• Guardian onboarding will be developed separately.
 
 ------------------------------------------------------------
 CORE PHILOSOPHY
@@ -277,7 +277,7 @@ APPROVED DESIGN PRINCIPLES
 APPROVED TO-DO LIST
 ============================================================
 
-• Design Wali onboarding flow.
+• Design Guardian onboarding flow.
 • Confirm Chapter 3 detailed question specs per category.
 • Confirm Chapter 4 traffic-light matrix per question.
 • Confirm Hard Requirement support per question.

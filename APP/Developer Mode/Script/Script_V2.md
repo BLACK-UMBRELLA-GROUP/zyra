@@ -9,9 +9,9 @@ rebuild, see SOURCE/lib/screens/dev/developer_access_screen.dart)
 
 Filing note (2026-07-25) — DR-ZYRA-100: this version corrects V1's
 DEVELOPER TESTING section, which used stale terminology (Seeker
-Basic/Pro/Premium, Basic/Pro/Premium Wali) predating the 2026-07-12
+Basic/Pro/Premium, Basic/Pro/Premium Guardian) predating the 2026-07-12
 tier-naming correction applied everywhere else in the repository
-(ZYRA Basic/ZYRA One for Seekers, Standard/Extended Wali). It also
+(ZYRA Basic/ZYRA One for Seekers, Standard/Guardian+). It also
 did not reflect that Test Accounts were substantially rebuilt in code
 on 2026-07-19 (real Supabase-backed accounts, not just UI mock) —
 that work predates this filing and was never written back into this
@@ -32,7 +32,7 @@ It is designed for:
 • UI testing
 • Navigation testing
 • Subscription testing
-• Wali testing
+• Guardian testing
 • Animation testing
 • Feature development
 
@@ -98,25 +98,25 @@ state):
 • Seeker — ZYRA Basic, female
 • Seeker — ZYRA One, male
 • Seeker — ZYRA One, female
-• Wali (one persona — linked to the female Basic Seeker test account)
-• Wali + Extended Wali (same persona, Extended Wali gate opened via
+• Guardian (one persona — linked to the female Basic Seeker test account)
+• Guardian + Guardian+ (same persona, Guardian+ gate opened via
   a local mock toggle — the entitlement engine has no schema
-  representation for Wali tiers yet, per code comment)
+  representation for Guardian tiers yet, per code comment)
 
 Selecting a preset signs the developer into the corresponding real
 account and lands directly on the fully-onboarded Home/WaliHome for
 that scenario.
 
 **Gap identified against the 2026-07-25 proposal:** the proposal
-asks for a full 4-tier-by-2-gender matrix on both Seeker and Wali
+asks for a full 4-tier-by-2-gender matrix on both Seeker and Guardian
 (8 accounts total: Male/Female × Basic/One, for both account types).
-Seeker side already matches this exactly. Wali side does not — only
-one gender (male) and no real tier split exists (Extended Wali is a
+Seeker side already matches this exactly. Guardian side does not — only
+one gender (male) and no real tier split exists (Guardian+ is a
 mock boolean toggle, not a second seeded account on a distinct plan).
 This is a real, additive gap — not a conflict — logged in Approved
-Future Work below, since completing it requires Wali-tier schema
-work not yet built (see WALI_ARCHITECTURE_CURRENT_VERSION_V5 for the
-Standard Wali/Extended Wali entitlement model this would need to
+Future Work below, since completing it requires Guardian-tier schema
+work not yet built (see WALI_ARCHITECTURE_CURRENT_VERSION_V6 for the
+Standard Guardian/Guardian+ entitlement model this would need to
 plug into).
 
 Known live bug (unresolved, tracked separately): OA-ZYRA-128 — Test
@@ -219,10 +219,10 @@ and resolved before either is implemented.
 APPROVED FUTURE WORK
 ============================================================
 
-• Complete the Wali side of Test Accounts to match the Seeker
-  side's full gender × tier matrix (Female Wali persona; a real
-  Standard/Extended Wali tier split rather than a mock toggle) —
-  depends on Wali-tier entitlement schema work not yet built.
+• Complete the Guardian side of Test Accounts to match the Seeker
+  side's full gender × tier matrix (Female Guardian persona; a real
+  Standard/Guardian+ tier split rather than a mock toggle) —
+  depends on Guardian-tier entitlement schema work not yet built.
 • Build Test Sign-Up (this filing is specification only).
 • Wire Test Sign-Up's payment step to real payment integration once
   that exists; until then, it necessarily remains a full bypass.

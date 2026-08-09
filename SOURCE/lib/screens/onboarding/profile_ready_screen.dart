@@ -7,6 +7,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../../services/zyra_profile_service.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
@@ -26,16 +27,50 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
   bool _idVerified = false;
   bool _idFailed = false;
 
+  /// Guards against writing profile_complete more than once — both mock
+  /// checks can settle in either order, and _goLiveIfReady is called from
+  /// both paths.
+  bool _wentLive = false;
+
   @override
   void initState() {
     super.initState();
     // Mock AI photo check running in the background per spec.
     Timer(const Duration(seconds: 2), () {
-      if (mounted) setState(() {
+      if (!mounted) return;
+      setState(() {
         _photosChecking = false;
         _photosApproved = true;
       });
+      _goLiveIfReady();
     });
+  }
+
+  /// FIXED 2026-08-01 (audit finding C3). This screen already computed
+  /// `_liveReady` and told the user "your profile is live" — but nothing
+  /// ever wrote `profile_complete` to the database, so the claim was
+  /// false. The row stayed invisible to profiles_select's RLS, their
+  /// photos stayed invisible to profile_photos_select, and Browse's
+  /// discovery query filtered them out. Every real sign-up was silently
+  /// unreachable, forever.
+  ///
+  /// This is the correct place for the write: the spec (Seeker Onboarding
+  /// Summary.md §PROFILE NOT LIVE — END STATE) says the profile "goes
+  /// live automatically once both checks pass", so going live is exactly
+  /// this condition, not the tap on Continue. A user who leaves via
+  /// "Continue in limited mode" is genuinely not live and correctly stays
+  /// invisible.
+  ///
+  /// NOTE for whoever replaces the mocks with real photo moderation and
+  /// real ID verification: keep the write here, attached to the same
+  /// condition. Do not move it earlier to "make Browse work" — an
+  /// unmoderated profile appearing in Browse is a safeguarding failure,
+  /// not a convenience.
+  Future<void> _goLiveIfReady() async {
+    if (_wentLive || !_liveReady) return;
+    _wentLive = true;
+    final ok = await ZyraProfileService.setProfileComplete(true);
+    if (!ok) _wentLive = false; // allow a retry if the other check settles later
   }
 
   void _startIdVerification() {
@@ -44,10 +79,12 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
       _idFailed = false;
     });
     Timer(const Duration(seconds: 2), () {
-      if (mounted) setState(() {
+      if (!mounted) return;
+      setState(() {
         _idVerifying = false;
         _idVerified = true;
       });
+      _goLiveIfReady();
     });
   }
 

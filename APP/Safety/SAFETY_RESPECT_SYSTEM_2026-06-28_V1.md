@@ -52,13 +52,13 @@ These are behavioural patterns that are inconsistent with ZYRA's purpose. Detect
 **Detected patterns:**
 - Repeated sexual conversations across multiple interactions
 - Pressure for unsupervised private meetings
-- Requests to hide conversations from a Wali
+- Requests to hide conversations from a Guardian
 - Early or pressured attempts to move communication to WhatsApp, Snapchat, or Telegram
 - Requests for intimate photographs
 - Manipulation, gaslighting, or emotional coercion
-- Repeated disengagement from Wali involvement after prompts
+- Repeated disengagement from Guardian involvement after prompts
 
-**Important nuance on contact-sharing:** Families legitimately coordinate logistics outside ZYRA. Sharing contact details is not itself a signal. The signal is *early* contact-sharing combined with other indicators, or active pressure to move before any Wali is involved.
+**Important nuance on contact-sharing:** Families legitimately coordinate logistics outside ZYRA. Sharing contact details is not itself a signal. The signal is *early* contact-sharing combined with other indicators, or active pressure to move before any Guardian is involved.
 
 **Response:** AI nudge (Level 3). Escalation only if pattern persists.
 
@@ -70,11 +70,11 @@ ZYRA's preferred intervention. A gentle, values-aligned prompt before any restri
 
 **Nudge examples:**
 
-> *ZYRA is designed to support respectful conversations focused on marriage. If things feel off, your Wali is here to help.*
+> *ZYRA is designed to support respectful conversations focused on marriage. If things feel off, your Guardian is here to help.*
 
-> *Consider involving your Wali as your journey progresses — their involvement is one of the things that makes ZYRA different.*
+> *Consider involving your Guardian as your journey progresses — their involvement is one of the things that makes ZYRA different.*
 
-> *This kind of conversation is better suited to a supported journey. Would you like to bring your Wali in?*
+> *This kind of conversation is better suited to a supported journey. Would you like to bring your Guardian in?*
 
 **Cooldown rule:** One nudge per conversation thread, not per message. Repeated nudging within a single conversation feels like surveillance and causes users to disengage. If the behaviour continues after one nudge, the system escalates — it does not nudge again.
 
@@ -101,7 +101,7 @@ ZYRA's preferred intervention. A gentle, values-aligned prompt before any restri
 An internal, non-public trust signal that accumulates over a user's time on ZYRA. Never shown to the user or other users. Used by the system to calibrate response — a first-time low-confidence signal is treated differently for a high-trust user than for a low-trust one.
 
 ### Positive signals (increase trust)
-- Wali linked and active
+- Guardian linked and active
 - Journey progressing naturally through stages
 - Consistent respectful language patterns
 - No reports, warnings, or escalations
@@ -112,15 +112,15 @@ An internal, non-public trust signal that accumulates over a user's time on ZYRA
 - Reported by another user
 - Level 1 or Level 2 pattern detected
 - Warning issued
-- Wali removed or blocked
+- Guardian removed or blocked
 - Pressure or coercion patterns detected
 - Attempts to move off-platform early
 
 ### Decay mechanism
 Signals are time-weighted. A negative signal from two years ago carries significantly less weight than a recent one. A user who had early issues but has demonstrated consistent respectful behaviour since should reflect that in their score. The Respect Score is a trust signal, not a permanent record.
 
-### Wali linkage as trust input
-Having an active, linked Wali is a meaningful positive signal. It is a genuine indicator of intent — not just a feature used. The system recognises it as such.
+### Guardian linkage as trust input
+Having an active, linked Guardian is a meaningful positive signal. It is a genuine indicator of intent — not just a feature used. The system recognises it as such.
 
 ### Privacy and GDPR
 The Respect Score is personal data. It must be:

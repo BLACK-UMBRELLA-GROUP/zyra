@@ -1,5 +1,5 @@
-// Shared "Link a Wali" / "Link a Seeker" screen — reachable from both
-// the Seeker's own Profile (asWali: false) and the Wali's own Profile
+// Shared "Link a Guardian" / "Link a Seeker" screen — reachable from both
+// the Seeker's own Profile (asWali: false) and the Guardian's own Profile
 // (asWali: true). Shows existing links, and — when none exist — both
 // directions of the linking mechanism: generate an invite for the
 // other party, or enter a code someone already sent. See
@@ -12,6 +12,7 @@ import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import 'accept_wali_invite_screen.dart';
+import '../../widgets/zyra_loading.dart';
 
 class LinkWaliScreen extends StatefulWidget {
   final bool asWali;
@@ -62,8 +63,16 @@ class _LinkWaliScreenState extends State<LinkWaliScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final otherLabel = widget.asWali ? 'Seeker' : 'Wali';
+    final otherLabel = widget.asWali ? 'Seeker' : 'Guardian';
     return Scaffold(
+      // FIXED 2026-08-01 (Founder: "there should be no purple at top, it
+      // should blend the pink/purple colour... that should be across all
+      // things"). Same fix notifications_screen.dart got on 2026-07-27:
+      // without this the transparent AppBar shows the Scaffold's own flat
+      // background through, cutting the gender gradient off with a hard
+      // purple strip. Body content compensates with SafeArea, which still
+      // clears the status bar.
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -76,7 +85,7 @@ class _LinkWaliScreenState extends State<LinkWaliScreen> {
         decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
         child: SafeArea(
           child: _loading
-              ? const Center(child: CircularProgressIndicator(color: Colors.white54))
+              ? const ZyraLoading()
               : ListView(
                   padding: const EdgeInsets.fromLTRB(24, 8, 24, 40),
                   children: [

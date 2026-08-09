@@ -9,7 +9,7 @@ Note:
 This is a living document. Add, remove, and update sections
 as the app evolves.
 
-Corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3
+Corrected 2026-07-12 against ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4
 (DR-076). The action terminology is now:
 • Decline (was: Pass)
 • Save (was: Review — this document previously had Save/Review
@@ -34,7 +34,7 @@ APP START
 ├── Registration
 ├── Verification
 ├── Profile Setup
-├── Wali Setup
+├── Guardian Setup
 └── Home Dashboard
         │
         ├───────────────────────────────
@@ -104,7 +104,7 @@ APP START
         │
         ├───────────────────────────────
         │
-        ├── WALI
+        ├── GUARDIAN
         │      │
         │      ├── Dashboard
         │      ├── Linked Seekers

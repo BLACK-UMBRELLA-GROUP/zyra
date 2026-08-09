@@ -40,7 +40,7 @@ Search Filters
 • Status: Future — not yet designed.
 
 ZYRA TERMINOLOGY (BUSINESS/ZYRA TERMINOLOGY)
-• Seeker, Wali, Browse, Pass, Save, Consider
+• Seeker, Guardian, Browse, Pass, Save, Consider
   definitions used throughout (renamed 2026-07-25, DR-ZYRA-099
   — see note above; BUSINESS/ZYRA TERMINOLOGY itself not
   checked in this pass, flagged separately for the Founder).
@@ -58,8 +58,8 @@ Connections Page
 • Navigation hosts the Connections tab and the
   Connections Navigation state.
 
-Wali Page
-• Navigation hosts the Wali tab.
+Guardian Page
+• Navigation hosts the Guardian tab.
 
 Profile Page
 • Navigation hosts the Profile tab.
@@ -71,9 +71,9 @@ Master Navigation Blueprint
 Overlap Flags
 ------------------------------------------------------------
 
-⚠️ WALI NAVIGATION
-- Wali navigation is temporarily documented in this file.
-- Must be moved to a dedicated Wali Navigation file when created.
+⚠️ GUARDIAN NAVIGATION
+- Guardian navigation is temporarily documented in this file.
+- Must be moved to a dedicated Guardian Navigation file when created.
 - To-do list item added to Summary.
 
 ------------------------------------------------------------
@@ -85,4 +85,4 @@ Open Dependencies
 • Search Filters not yet designed.
 • Network tab functionality not yet defined.
 • Communication workflow not yet fully expanded.
-• Wali Navigation file not yet created.
+• Guardian Navigation file not yet created.

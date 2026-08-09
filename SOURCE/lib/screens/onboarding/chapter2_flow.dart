@@ -7,10 +7,14 @@
 // preserved for Chapter 2 (only Ch3/Ch4 were separated).
 
 import 'package:flutter/material.dart';
-import '../../data/mock_reference_lists.dart';
+import '../../widgets/zyra_profile_image.dart';
+import '../../data/zyra_reference_data.dart';
 import '../../models/onboarding_question.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_photo_service.dart';
+import '../../services/zyra_profile_service.dart';
+import '../../services/zyra_seeker_details_service.dart';
+import 'article9_consent_screen.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -93,6 +97,65 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     // the "AppState's in-memory copy always works regardless" pattern
     // used throughout this build's Supabase wiring.
     ZyraPhotoService.syncPhotos(_photos);
+    // ADDED 2026-08-04. `saveChapter2` above writes to memory only, so
+    // the city collected on step 1 died with the app. Three services read
+    // `profiles.location_text` and nothing wrote it — every onboarded
+    // Seeker rendered an em-dash where their city belongs.
+    //
+    // Same fire-and-forget shape as syncPhotos, and for the same reason:
+    // a failed write must not trap someone at a chapter boundary. It logs
+    // on failure rather than failing silently.
+    //
+    // NOTE: this is the ONLY Chapter 2 answer that currently persists.
+    // Sect, revert status, country of birth, nationality, ethnicity,
+    // languages and every traffic-light preference are all still
+    // memory-only — there are no columns for them. See
+    // SYSTEM/DOCUMENTS/ZYRA_CHAPTER2_PERSISTENCE_PLAN_CURRENT_VERSION_V1.md,
+    // which is awaiting Founder approval before any migration is written.
+    ZyraProfileService.saveLocation(_location);
+
+    // CHAPTER 2 PERSISTENCE — Founder approved 2026-08-04.
+    //
+    // Everything except the city used to die here. `saveChapter2` above
+    // assigns three fields to an in-memory object; nothing else reached
+    // Postgres, so 30 of the 31 answers were discarded at the chapter
+    // boundary and no compatibility score could ever be computed.
+    //
+    // Labels go in, CODES come out — SeekerDetails.toRow does the
+    // conversion and the database's CHECK constraints reject a label if it
+    // ever slips through.
+    //
+    // The service refuses to write without recorded Article 9 consent. That
+    // check is intentionally duplicated there as well as gated here: this
+    // screen can be reordered or skipped, the service cannot.
+    ZyraSeekerDetailsService.saveDetails(SeekerDetails(
+      sect: _sect == 'Other' ? _sectOther : _sect,
+      revertStatus: _revertStatus == null ? null : _revertStatus == 'Yes',
+      countryOfBirth: _countryOfBirth,
+      nationality: _nationality,
+      ethnicity: _ethnicity,
+      languages: _languages,
+      preferences: ZyraSeekerDetailsService.buildPreferences(
+        distancePref: _distancePref,
+        distanceFlex: _distanceFlex,
+        sectMatrix: _sectMatrix,
+        sectHardReq: _sectHardReq,
+        sectOutsideFlex: _sectOutsideFlex,
+        revertFlex: _revertFlex,
+        countryPrefs: _countryPrefs,
+        countrySkipped: _countrySkipped,
+        countryFlex: _countryFlex,
+        nationalityPrefs: _nationalityPrefs,
+        nationalitySkipped: _nationalitySkipped,
+        nationalityFlex: _nationalityFlex,
+        ethnicityPrefs: _ethnicityPrefs,
+        ethnicitySkipped: _ethnicitySkipped,
+        ethnicityFlex: _ethnicityFlex,
+        languagePrefs: _languagePrefs,
+        languageSkipped: _languageSkipped,
+        languageFlex: _languageFlex,
+      ),
+    ));
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => TransitionScreen(
@@ -112,7 +175,51 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     );
   }
 
+  /// True once the user has been asked for Article 9 consent this session.
+  /// Null means not yet asked.
+  bool? _article9Consent;
+
+  /// Steps 4–17 are the special-category block: sect, revert status,
+  /// country of birth, nationality and ethnicity, with their preference
+  /// and flexibility questions. Step 18 (languages) is NOT special
+  /// category, which is why the decline path lands there rather than
+  /// ending the chapter.
+  static const int _firstArticle9Step = 4;
+  static const int _firstNonArticle9Step = 18;
+
+  /// Shown once, immediately before the first special-category question.
+  ///
+  /// Consent has to precede collection, so this sits between the location
+  /// block and the faith/background block rather than at the end of the
+  /// chapter. Declining is a real path: it skips to languages and the
+  /// chapter completes normally. A decline that dead-ended would make the
+  /// consent not freely given, and therefore not valid consent at all.
+  Future<void> _askArticle9Consent() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Article9ConsentScreen(
+          background: _background,
+          onDecision: (granted) {
+            Navigator.of(context).pop();
+            setState(() {
+              _article9Consent = granted;
+              _step = granted ? _firstArticle9Step : _firstNonArticle9Step;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   void _next() {
+    // Gate on the way IN to the special-category block. Placed here rather
+    // than on a step boundary so any future reordering that lands on step 4
+    // still passes through it.
+    if (_step == _firstArticle9Step - 1 && _article9Consent == null) {
+      _askArticle9Consent();
+      return;
+    }
+
     switch (_step) {
       case 10: // Country compatibility -> skip Flexibility if skipped
         _goto(_countrySkipped ? 12 : 11);
@@ -157,6 +264,15 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         _goto(_nationalitySkipped ? 13 : 14);
         return;
       case 18:
+        // THREE possible predecessors here since 2026-08-04. Someone who
+        // declined Article 9 consent jumped 3 -> 18 and never saw steps
+        // 4–17, so walking them backwards into questions they chose not to
+        // answer would be wrong twice over: it contradicts their decision,
+        // and it is the nagging that stops consent being freely given.
+        if (_article9Consent == false) {
+          _goto(_firstArticle9Step - 1);
+          return;
+        }
         _goto(_ethnicitySkipped ? 16 : 17);
         return;
       default:
@@ -243,20 +359,35 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         privacy = PrivacyLevel.public;
         content = _TextField(hint: 'Search for your city…', value: _location, onChanged: (v) => setState(() => _location = v));
         break;
+      // CHANGED 2026-08-01 (Founder decision): mileage bands replaced by
+      // coarse location preferences.
+      //
+      // The old options — Within 10 / 25 / 50 / 100 miles — could never be
+      // honoured. `_location` above is a free-text field; there is no
+      // geocoding, no latitude, no longitude and no plan for any. A Seeker
+      // answering "Within 10 miles" was giving ZYRA something it had no
+      // way to act on, and free text meant "London", "london" and "Greater
+      // London" were three different places even for exact matching.
+      //
+      // Same city / region / country / anywhere needs no coordinates and
+      // is closer to how families actually think about this.
       case 2:
-        question = 'How far would you ideally like your future spouse to live from you?';
+        question = 'Where would you ideally like your future spouse to live?';
         content = _LargeSelect(
-          options: const ['Within 10 miles', 'Within 25 miles', 'Within 50 miles', 'Within 100 miles', 'Anywhere in the country', 'Anywhere in the world'],
+          options: zyraLocationPreferenceNames,
           value: _distancePref,
           onChanged: (v) => setState(() => _distancePref = v),
         );
         break;
+      // COPY FIXED 2026-08-01 alongside the change above. "Outside your
+      // preferred distance" described mileage bands that no longer exist —
+      // the question now sets a location scope, not a radius.
       case 3:
-        question = 'Would you be happy for ZYRA to introduce people from outside your preferred distance if they appear to be a strong match?';
+        question = 'Would you be happy for ZYRA to introduce people outside your preferred area if they appear to be a strong match?';
         content = FlexibilityChoice(
           greenText: "Yes, I'd be happy to consider them.",
           yellowText: 'Maybe, depending on the person.',
-          redText: "No, I'd prefer to stay within my preferred distance.",
+          redText: "No, I'd prefer to stay within my preferred area.",
           value: _distanceFlex,
           onChanged: (v) => setState(() => _distanceFlex = v),
         );
@@ -316,7 +447,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         question = 'Which country were you born in?';
         privacy = PrivacyLevel.unlock;
         content = _SearchPickButton(label: _countryOfBirth ?? 'Search countries…', onTap: () async {
-          final result = await showSingleSearchPicker(context, mockCountries, current: _countryOfBirth);
+          final result = await showSingleSearchPicker(context, zyraCountryNames, current: _countryOfBirth);
           if (result != null) setState(() => _countryOfBirth = result);
         });
         break;
@@ -325,7 +456,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         content = _MultiPrefPicker(
           selected: _countryPrefs,
           skipped: _countrySkipped,
-          items: mockCountries,
+          items: zyraCountryNames,
           onPick: (v) => setState(() {
             _countryPrefs = v;
             _countrySkipped = false;
@@ -350,7 +481,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         question = 'What is your nationality?';
         privacy = PrivacyLevel.unlock;
         content = _SearchPickButton(label: _nationality ?? 'Search nationalities…', onTap: () async {
-          final result = await showSingleSearchPicker(context, mockCountries, current: _nationality);
+          final result = await showSingleSearchPicker(context, zyraNationalityNames, current: _nationality);
           if (result != null) setState(() => _nationality = result);
         });
         break;
@@ -359,7 +490,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         content = _MultiPrefPicker(
           selected: _nationalityPrefs,
           skipped: _nationalitySkipped,
-          items: mockCountries,
+          items: zyraNationalityNames,
           onPick: (v) => setState(() {
             _nationalityPrefs = v;
             _nationalitySkipped = false;
@@ -384,7 +515,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         question = 'Which ethnic background do you identify with?';
         privacy = PrivacyLevel.unlock;
         content = _SearchPickButton(label: _ethnicity ?? 'Search ethnic backgrounds…', onTap: () async {
-          final result = await showSingleSearchPicker(context, mockEthnicities, current: _ethnicity);
+          final result = await showSingleSearchPicker(context, zyraEthnicityNames, current: _ethnicity);
           if (result != null) setState(() => _ethnicity = result);
         });
         break;
@@ -393,7 +524,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         content = _MultiPrefPicker(
           selected: _ethnicityPrefs,
           skipped: _ethnicitySkipped,
-          items: mockEthnicities,
+          items: zyraEthnicityNames,
           onPick: (v) => setState(() {
             _ethnicityPrefs = v;
             _ethnicitySkipped = false;
@@ -420,7 +551,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         content = _MultiPrefPicker(
           selected: _languages,
           skipped: false,
-          items: mockLanguages,
+          items: zyraLanguageNames,
           onPick: (v) => setState(() => _languages = v),
           onSkip: null,
           label: 'Select languages…',
@@ -431,7 +562,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         content = _MultiPrefPicker(
           selected: _languagePrefs,
           skipped: _languageSkipped,
-          items: mockLanguages,
+          items: zyraLanguageNames,
           onPick: (v) => setState(() {
             _languagePrefs = v;
             _languageSkipped = false;
@@ -678,7 +809,11 @@ class _PhotoGridState extends State<_PhotoGrid> {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.network(url, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const ColoredBox(color: Color(0xFF1A1220))),
+                  // Uses ZyraProfileImage for the shared error fallback, not for
+                  // colour support — these are the user's OWN uploads and are
+                  // always real Storage URLs. Swapped so "one place renders a
+                  // profile photo" is literally true rather than nearly true.
+                  child: ZyraProfileImage(url),
                 ),
                 Positioned(
                   top: 6,

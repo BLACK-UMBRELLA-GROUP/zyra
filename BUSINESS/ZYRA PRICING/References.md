@@ -9,8 +9,8 @@ REFERENCES
 References (depends on)
 ------------------------------------------------------------
 
-Profile Unlocks (APP/Premium/PROFILE UNLOCKS)
-• Profile Unlock pricing (£1.99 / £4.99) is defined here.
+Compatibility Unlock (APP/Premium/Profile Unlocks)
+• Compatibility Unlock pricing (£1.99 / £7.99 and £2.99 / £9.99) is defined here.
 • Full feature behaviour is documented in Profile Unlocks.
 • This document is the source of truth for pricing only.
 • Status: Referenced — feature definition lives in APP/Premium/PROFILE UNLOCKS.
@@ -26,9 +26,9 @@ Billing System
 • Proration rules, renewal alignment, and invoice structure
   defined here.
 
-Wali System
-• Wali Relationship subscription rules defined here.
-• Wali billing structure defined here.
+Guardian System
+• Guardian Relationship subscription rules defined here.
+• Guardian billing structure defined here.
 
 Account System
 • Payment ownership and verification rules defined here.
@@ -48,9 +48,9 @@ Overlap Flags
   tier names and structure.
 
 ⚠️ APP/Premium/PROFILE UNLOCKS
-- Profile Unlock pricing (£1.99 / £4.99) appears in both files.
+- Compatibility Unlock pricing appears in both files.
 - ZYRA PRICING is the source of truth for pricing.
-- Profile Unlocks file should reference this document for prices.
+- Compatibility Unlock file should reference this document for prices.
 
 ------------------------------------------------------------
 Open Dependencies

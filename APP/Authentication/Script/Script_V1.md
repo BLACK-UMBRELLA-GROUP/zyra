@@ -78,12 +78,12 @@ Every account stores a role.
 
 Roles:
 • User
-• Wali
+• Guardian
 • Admin
 
 Default Roles:
 • New Seeker → User
-• New Wali   → Wali
+• New Guardian   → Guardian
 • Owner      → Admin (manually assigned in database)
 
 ------------------------------------------------------------
@@ -94,7 +94,7 @@ DEVELOPER BUTTON VISIBILITY
 |-------|-----------------|
 | Admin | Visible         |
 | User  | Hidden          |
-| Wali  | Hidden          |
+| Guardian  | Hidden          |
 
 Developer tools must never be visible to non-admin users.
 

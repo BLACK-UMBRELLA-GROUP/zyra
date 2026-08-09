@@ -53,7 +53,7 @@ This is the permanent home of the relationship.
 The Relationship Space contains:
 • Timeline
 • Active Journey stage
-• Wali
+• Guardian
 • Profile
 • Chat (when unlocked)
 

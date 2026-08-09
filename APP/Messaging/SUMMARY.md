@@ -35,7 +35,7 @@ WHAT'S BUILT
     screen stays testable in both states.
   • Reachable from an Active Journey in the Connections tab (see
     APP/Navigation/SEEKER NAVIGATION/Summary.md's Matches section:
-    each Match entry has Message/Timeline/Wali actions).
+    each Match entry has Message/Timeline/Guardian actions).
 
 ------------------------------------------------------------
 NOT BUILT
@@ -44,5 +44,5 @@ NOT BUILT
   • Push notifications for new messages (see APP/Notifications/
     Summary.md — no delivery mechanism exists anywhere yet).
   • Read receipts, typing indicators, media/attachments.
-  • Wali visibility into conversations (deliberately unbuilt — see
+  • Guardian visibility into conversations (deliberately unbuilt — see
     ZYRA_FABLE_BUILD_REVIEW_2026-07-19_V1.md §Open Decisions item 4).

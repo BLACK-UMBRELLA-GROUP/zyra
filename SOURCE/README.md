@@ -4,14 +4,25 @@ Muslim matrimonial platform. Specs live in `../APP/`, decisions in
 `../SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md`, session reports in
 `../REPORTS/CURRENT/`. Read those before changing anything here.
 
-## Device testing — THE CONFIRMED, CORRECT WAY (2026-07-19)
+## Device testing — THE CONFIRMED, CORRECT WAY (2026-07-19, hardened 2026-08-01)
 
-**Every AI session giving Shakeel run instructions must use this.**
-Confirmed working on his iPhone after a full day of crashes that turned
-out to be debug-mode behaviour, not app bugs.
+**Every AI session giving Shakeel run instructions must use this — and
+only this:**
 
 ```
 cd "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE"
+./run.sh
+```
+
+`run.sh` defaults to a profile build (safe untethered) and prints what
+to expect. `./run.sh dev` = debug + hot reload, cable must stay in.
+Added 2026-08-01 after the debug-mode trap caught a second session —
+documentation alone didn't prevent recurrence, so the safe mode is now
+the default mechanically.
+
+Raw equivalent, if the script can't be used:
+
+```
 flutter run --profile -d 00008130-001A2C1E26F8001C
 ```
 

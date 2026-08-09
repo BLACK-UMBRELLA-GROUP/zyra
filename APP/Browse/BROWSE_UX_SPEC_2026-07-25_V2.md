@@ -100,7 +100,7 @@ no existing Browse-screen reporting/blocking mechanism was found in
 V1 of this document; `APP/Journey/JOURNEY MANAGEMENT/Summary.md`
 explicitly listed "Full Safety & Moderation design (dedicated
 session)" as an Open Discussion, covering Block/Report for both
-Seekers and Walis — this section resolves the Seeker/Browse-screen
+Seekers and Guardians — this section resolves the Seeker/Browse-screen
 portion of that gap only (see Scope Note at the end of this section).
 See DR-ZYRA-095.
 
@@ -158,8 +158,8 @@ only.
 
 This section covers **Browse-screen, pre-Journey, Seeker-to-Seeker**
 report/hide/block only. `JOURNEY MANAGEMENT/Summary.md`'s Open
-Discussion also asked: Block/Report **Wali** (not addressed here — no
-Wali-facing report/block UI is specified anywhere yet); how blocking
+Discussion also asked: Block/Report **Guardian** (not addressed here — no
+Guardian-facing report/block UI is specified anywhere yet); how blocking
 affects an **existing Active Journey and its Timeline** (not
 addressed — this spec is Browse-stage only, before any Journey
 exists); and privacy implications after a Journey has already ended
@@ -203,14 +203,14 @@ Priority Discovery does not show scores, labels, or indicators on cards. The ran
 
 ---
 
-## Wali Behaviour
+## Guardian Behaviour
 
 Browse is entirely private to the Seeker.
 
-- Wali has no access to the Browse tab
-- Wali cannot see which profiles the Seeker has browsed
-- Wali cannot see Saves or Likes sent
-- Browse activity is never shared with any linked Wali at any point
+- Guardian has no access to the Browse tab
+- Guardian cannot see which profiles the Seeker has browsed
+- Guardian cannot see Saves or Likes sent
+- Browse activity is never shared with any linked Guardian at any point
 
 This is consistent with the ZYRA privacy principle: family involvement begins at the Journey stage, not at discovery.
 
@@ -321,7 +321,7 @@ The Mutual Save Detection feature is visible in the ZYRA One upgrade screen as a
 | Version | Date | Changes |
 |---------|------|---------|
 | V1 | 2026-07-04 | Initial Browse UX specification |
-| V2 | 2026-07-25 | Added Profile Actions — Report / Hide / Block (OA-ZYRA-132, DR-ZYRA-095). Checked against JOURNEY MANAGEMENT/Summary.md's Open Discussions first — this section resolves the Browse-screen/Seeker-to-Seeker portion of that item only; Wali blocking, Active-Journey-stage blocking effects, and post-Journey privacy remain open, see Scope Note. |
+| V2 | 2026-07-25 | Added Profile Actions — Report / Hide / Block (OA-ZYRA-132, DR-ZYRA-095). Checked against JOURNEY MANAGEMENT/Summary.md's Open Discussions first — this section resolves the Browse-screen/Seeker-to-Seeker portion of that item only; Guardian blocking, Active-Journey-stage blocking effects, and post-Journey privacy remain open, see Scope Note. |
 
 ---
 

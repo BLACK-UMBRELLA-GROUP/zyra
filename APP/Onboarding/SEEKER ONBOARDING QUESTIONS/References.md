@@ -43,8 +43,8 @@ Compatibility Engine
 User Profile
 • Public Profile Information is displayed on the user profile.
 
-Wali System
-• Wali may view onboarding data through their supervision role.
+Guardian System
+• Guardian may view onboarding data through their supervision role.
 
 ------------------------------------------------------------
 Overlap Flags
@@ -73,7 +73,7 @@ Open Dependencies
   and its live wiring into `zyra_discovery_service.dart`
   (DR-ZYRA-084) are both now RATIFIED — no longer an unratified
   draft governing live candidate visibility.
-• Wali onboarding not yet designed.
+• Guardian onboarding not yet designed.
 • Which extended questions affect scoring vs informational
   only — not yet decided (depends on DR-ZYRA-079 above).
 • Men-only question logic (conditional display) — RESOLVED,

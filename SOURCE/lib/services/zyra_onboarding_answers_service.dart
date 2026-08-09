@@ -10,6 +10,31 @@
 // for the in-progress session regardless of whether this succeeds, so
 // a Supabase hiccup never blocks onboarding progress.
 
+// VERIFIED AGAINST THE LIVE DATABASE 2026-08-04, because the table had
+// zero rows and it was not obvious whether that meant "broken" or "nobody
+// has got there yet". Everything on the write path checks out:
+//
+//   PRIMARY KEY (user_id)      the upsert below has a real conflict target,
+//                              so a second sync updates rather than
+//                              duplicating or failing.
+//   RLS insert/select/update   all three `user_id = auth.uid()`. An upsert
+//                              needs BOTH insert and update policies to
+//                              exist; both do.
+//   FK -> profiles(id)         satisfied by Chapter 1, which runs first.
+//   Payload shape              a test row carrying all three JSONB
+//                              structures — including the nested
+//                              question -> option -> traffic-light map —
+//                              round-tripped exactly. Test row deleted;
+//                              table confirmed back to zero rows.
+//   Call site                  values_preferences_flow `_next()` fires this
+//                              at every category summary.
+//
+// So the table is empty because no one has walked Chapter 3 while signed
+// in to a real Supabase session — not because this is broken. Recorded so
+// the next person does not re-investigate from scratch.
+
+import 'package:flutter/foundation.dart';
+
 import '../main.dart';
 import '../models/onboarding_question.dart';
 import 'zyra_auth.dart';
@@ -41,8 +66,22 @@ class ZyraOnboardingAnswersService {
         },
         'ch4_hard_requirements': ch4HardRequirements,
       });
-    } catch (_) {
-      // Best-effort — see doc comment above.
+    } catch (e) {
+      // LOGGED 2026-08-04. This was `catch (_) {}` — completely silent.
+      //
+      // Best-effort is the right behaviour: a network hiccup must not trap
+      // someone 90 questions into a 174-question walk. Silent is not. These
+      // answers are the only input the compatibility score will ever have,
+      // so a persistent failure here means the entire premium feature
+      // computes from nothing — and the app would look like it was working
+      // the whole time.
+      //
+      // This is the exact shape of the `profile_complete` bug (audit
+      // finding C3): a write that nobody watched, hidden by a fallback that
+      // made the screen look fine.
+      debugPrint('ZYRA: onboarding answer sync failed — Chapter 3/4 answers '
+          'not saved for this checkpoint. Compatibility cannot be computed '
+          'without them. $e');
     }
   }
 }

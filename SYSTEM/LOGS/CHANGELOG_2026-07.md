@@ -21,14 +21,14 @@ recover everything that happened before it existed.
 ## 2026-07-25
 
 ### Added
-- Full Pre-Journey Ritual screen (`journey_flow_screen.dart`) — Compatibility Reveal, Salam Exchange, Wali Gate, Phases 1–3, Family Stage (Seeker-only).
+- Full Pre-Journey Ritual screen (`journey_flow_screen.dart`) — Compatibility Reveal, Salam Exchange, Guardian Gate, Phases 1–3, Family Stage (Seeker-only).
 - Journey Suspension RPCs and UI (`suspend_journey` / `resume_journey` / `end_journey`), ZYRA One-gated.
 - Migration `20260725183724_pre_journey_ritual_tables.sql` (local mirror of live-applied migration).
 - Migration `20260725183415_add_potential_match_status_and_journey_stage.sql`.
-- 4 Wali dev/test presets (male/female × Basic/One) in Developer Access — previously only 2 male presets existed.
-- Female Wali dev account (`dev.wali.f@zyra.test`, Khadija) in live Supabase + seed script.
+- 4 Guardian dev/test presets (male/female × Basic/One) in Developer Access — previously only 2 male presets existed.
+- Female Guardian dev account (`dev.guardian.f@zyra.test`, Khadija) in live Supabase + seed script.
 - Drag/scrub touch interaction on `FloatingNavBar` (press-and-slide to preview/switch tabs).
-- Subscription Transparency Touchpoint 2 — Wali-dependency notice on the Upgrade screen.
+- Subscription Transparency Touchpoint 2 — Guardian-dependency notice on the Upgrade screen.
 - 20 seeded, fully photographed fake Browse-candidate profiles (10 male, 10 female; 99 of 100 planned photos uploaded — one upload failed on retry, accepted as a harmless gap).
 - `TREEVIEW.md` — generated structural repository map.
 - `ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V2.md` — extended schema (Purpose/Owner/Source of Truth/Dependencies/Related), full content refresh.
@@ -40,7 +40,7 @@ recover everything that happened before it existed.
 - DR-ZYRA-079 and DR-ZYRA-084 — PROPOSED → RATIFIED.
 - Seeker Onboarding Chapter 3/4 — rewritten to 104 + 70 questions across 9 categories, matching `chapter3_categories.dart` and the Classification doc.
 - APP/Journey/JOURNEY MANAGEMENT/Summary.md — Pause section now defers directly to JOURNEY_SUSPENSION_CURRENT_VERSION_V1 rather than describing its own (superseded) proposal.
-- APP/Premium/Profile Unlocks/ — Wali purchase capability corrected (cannot, was wrongly documented as can); subscription terminology corrected (ZYRA Basic/One, not Pro/Premium/Free); compatibility category count corrected (6, not 8).
+- APP/Premium/Profile Unlocks/ — Guardian purchase capability corrected (cannot, was wrongly documented as can); subscription terminology corrected (ZYRA Basic/One, not Pro/Premium/Free); compatibility category count corrected (6, not 8).
 - BUSINESS/ZYRA TERMINOLOGY/ — Decline/Like → Pass/Consider swept across the glossary and every cross-referencing document.
 - BUSINESS/APP NAME CREATION/Summary.md — Approval Status → APPROVED.
 - APP/WIDGETS/ renamed to APP/iOS Widgets/ to disambiguate from `SOURCE/lib/widgets/` (OA-ZYRA-140 item 11).
@@ -76,7 +76,7 @@ recover everything that happened before it existed.
 ## 2026-07-04 *(reconstructed from artefact dates)*
 
 ### Added
-- WALI_ARCHITECTURE (V3, V4 same day) — Wali role architecture formalised.
+- WALI_ARCHITECTURE (V3, V4 same day) — Guardian role architecture formalised.
 - JOURNEY_CAPABILITY_GRANT_RULES (V1, V2 same day).
 - CHAT_ARCHITECTURE_CURRENT_VERSION_V1 (Black Umbrella level — Architectural Extension Principle, Standard Artefact Package, Context A/B routing).
 

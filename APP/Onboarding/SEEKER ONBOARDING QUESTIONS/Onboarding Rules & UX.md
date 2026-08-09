@@ -391,7 +391,7 @@ ZYRA Brand / Gender Neutral (Chapter 1 Q1 only — before gender set):
   linear-gradient(175deg, #2a1840 0%, #160c2e 50%, #080318 100%)
   Hue derived from: Royal Purple #8A6A9E
 
-Male Seeker (Chapter 1 Q2 onwards for male, all Wali screens):
+Male Seeker (Chapter 1 Q2 onwards for male, all Guardian screens):
   linear-gradient(175deg, #111f30 0%, #0a1520 50%, #040b14 100%)
   Hue derived from: Royal Blue #3D5A80
 
@@ -402,7 +402,7 @@ Female Seeker (Chapter 1 Q2 onwards for female):
 Accent (selected options — purple, all themes):
   bg rgba(154,114,190,0.14) / border rgba(154,114,190,0.4)
 
-NOTE: A darker privacy/Wali variant was previously listed.
+NOTE: A darker privacy/Guardian variant was previously listed.
 This variant is REJECTED. All screens use the gender-appropriate
 background above. No additional darkening is applied.
 

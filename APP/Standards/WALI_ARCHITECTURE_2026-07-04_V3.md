@@ -1,9 +1,9 @@
 FEATURE NAME
 ZYRA — Platform Architecture
-Document: Wali Architecture
+Document: Guardian Architecture
 
 ============================================================
-WALI ARCHITECTURE
+GUARDIAN ARCHITECTURE
 ============================================================
 
 Status: CURRENT_VERSION_V3
@@ -11,22 +11,22 @@ Last Updated: 2026-06-28
 
 Change from V2:
   — Compatibility filtering principle added: engine operates
-    at Seeker level only, never at Wali level
+    at Seeker level only, never at Guardian level
   — Each Seeker evaluated independently for compatibility,
     hard requirements, and visibility
-  — Wali Network aligned to Browse architecture: same
+  — Guardian Network aligned to Browse architecture: same
     engine, same rules; only initiator differs
 
 Change from V1:
   — Family Review Period added (new Journey gate mechanic)
   — Pro Seat model clarified: discount follows the existing
-    Pro Wali relationship, not the payer/billing account
-  — Pricing: £9.99 per new Pro Wali (first Seat per Wali),
-    £4.99 per additional Seat on same Pro Wali
+    Pro Guardian relationship, not the payer/billing account
+  — Pricing: £9.99 per new Pro Guardian (first Seat per Guardian),
+    £4.99 per additional Seat on same Pro Guardian
   — Subscription rotation safeguards updated (30-day cooldown,
     max 4 reassignments/year, regardless of who initiates unlink)
-  — Wali Network: confirmed Seeker cards shown to Walis
-  — Wali Network: access requires an active Pro Seat
+  — Guardian Network: confirmed Seeker cards shown to Guardians
+  — Guardian Network: access requires an active Pro Seat
   — Permissions Model: Can Act updated to reflect Review Period
   — Connections sections confirmed
 
@@ -36,90 +36,90 @@ DESIGN PRINCIPLE
 
 Support and guidance — not surveillance.
 
-The Wali's role is to support, guide and safeguard the
-marriage journey. ZYRA treats the Wali as a first-class
+The Guardian's role is to support, guide and safeguard the
+marriage journey. ZYRA treats the Guardian as a first-class
 user with a full account, dedicated onboarding, and their
 own navigation and dashboard.
 
-The Wali experience is not a web portal or add-on.
+The Guardian experience is not a web portal or add-on.
 It is a complete parallel experience within ZYRA.
 
-Neither the Seeker nor the Wali is assumed to start first.
+Neither the Seeker nor the Guardian is assumed to start first.
 Both onboarding directions are fully supported and
 designed as first-class paths.
 
 ------------------------------------------------------------
-WHO IS A WALI
+WHO IS A GUARDIAN
 ------------------------------------------------------------
 
-The Wali is a male guardian who supports a Seeker through
+The Guardian is a male guardian who supports a Seeker through
 their marriage journey in accordance with Islamic guidance.
 
-Eligible Wali relationships include:
+Eligible Guardian relationships include:
   — Father
   — Grandfather
   — Brother
   — Paternal Uncle
   — Other eligible male guardian per Islamic guidance
 
-Exceptional cases (Seeker has no available Wali) are
+Exceptional cases (Seeker has no available Guardian) are
 governed separately under ZYRA's Islamic Governance
-documentation. The core onboarding flow assumes a Wali
+documentation. The core onboarding flow assumes a Guardian
 is available. Edge cases do not live inside onboarding.
 
 ------------------------------------------------------------
-WALI ACCOUNT TYPE
+GUARDIAN ACCOUNT TYPE
 ------------------------------------------------------------
 
 ZYRA has two primary account types at sign-up:
   — Seeker
-  — Wali
+  — Guardian
 
-The Wali account is entirely separate from a Seeker account.
-A person cannot be both a Seeker and a Wali on the same
+The Guardian account is entirely separate from a Seeker account.
+A person cannot be both a Seeker and a Guardian on the same
 account.
 
 ------------------------------------------------------------
 THREE ENTRY PATHS
 ------------------------------------------------------------
 
-PATH 1 — Seeker Invites a Basic Wali
+PATH 1 — Seeker Invites a Basic Guardian
 
-  The Seeker completes onboarding and invites their Wali.
-  The invitation is sent via the Wali's email or mobile.
-  The invitation creates a Basic Wali relationship.
+  The Seeker completes onboarding and invites their Guardian.
+  The invitation is sent via the Guardian's email or mobile.
+  The invitation creates a Basic Guardian relationship.
 
-  If the Wali does not have a ZYRA account:
-    → They create a Wali account and are auto-linked.
+  If the Guardian does not have a ZYRA account:
+    → They create a Guardian account and are auto-linked.
 
-  If the Wali already has a Basic Wali account:
+  If the Guardian already has a Basic Guardian account:
     → Accepting the invitation links them immediately.
-    → The Wali must not already hold an active Basic link.
+    → The Guardian must not already hold an active Basic link.
       If they do, they are prompted to upgrade to Pro.
 
-PATH 2 — Seeker Purchases Wali Pro
+PATH 2 — Seeker Purchases Guardian Pro
 
-  The Seeker purchases a Wali Pro Seat for their Wali.
+  The Seeker purchases a Guardian Pro Seat for their Guardian.
   The invitation explains that a Pro Seat has already been
-  purchased and is waiting for the Wali to activate.
+  purchased and is waiting for the Guardian to activate.
 
-  When the Wali signs in or creates their account:
+  When the Guardian signs in or creates their account:
   ZYRA detects the waiting Seat and prompts:
-    "A Wali Pro licence has already been purchased for you.
+    "A Guardian Pro licence has already been purchased for you.
      Would you like to activate it?"
 
   Once accepted, the Pro Seat is attached to that
-  Wali–Seeker relationship.
+  Guardian–Seeker relationship.
 
-PATH 3 — Wali Starts First
+PATH 3 — Guardian Starts First
 
   A parent or guardian organises everything before the
   Seeker joins. This reflects how many Muslim families
   naturally operate and is a first-class path.
 
-  1. Wali creates a Wali account.
-  2. Wali purchases a Pro Seat — or remains on Basic.
-  3. Wali generates an invitation for their son or daughter.
+  1. Guardian creates a Guardian account.
+  2. Guardian purchases a Pro Seat — or remains on Basic.
+  3. Guardian generates an invitation for their son or daughter.
   4. Seeker joins using that invitation link.
   5. Both accounts are automatically linked.
 
@@ -127,7 +127,7 @@ PATH 3 — Wali Starts First
 LINKING — HOW ACCOUNTS CONNECT
 ------------------------------------------------------------
 
-Whether the Seeker starts or the Wali starts, the end
+Whether the Seeker starts or the Guardian starts, the end
 result is the same linked state.
 
 Accounts are linked using secure identity verification:
@@ -140,17 +140,17 @@ The invitation token ensures the correct accounts
 are linked automatically on account creation or sign-in.
 
 ------------------------------------------------------------
-WALI TIER RULES
+GUARDIAN TIER RULES
 ------------------------------------------------------------
 
-The Wali account does not itself become Pro or Premium.
+The Guardian account does not itself become Pro or Premium.
 Tiers are applied at the relationship level via Pro Seats.
 Each active Pro Seat supports one linked Seeker.
 
-WALI BASIC (Free)
+GUARDIAN BASIC (Free)
 
-  Every Wali account includes one free Basic relationship.
-  A Wali account may only hold one active Basic relationship
+  Every Guardian account includes one free Basic relationship.
+  A Guardian account may only hold one active Basic relationship
   at any time.
 
   Example:
@@ -164,66 +164,66 @@ WALI BASIC (Free)
   This prevents one free Basic account from supporting
   unlimited Seekers.
 
-WALI PRO SEAT (per linked Seeker)
+GUARDIAN PRO SEAT (per linked Seeker)
 
   A Pro Seat is purchased per Seeker relationship.
-  A Wali may purchase as many Pro Seats as required.
+  A Guardian may purchase as many Pro Seats as required.
   Each Seat is independent and supports one Seeker.
 
   PRICING RULE:
-    The discount follows the existing Pro Wali relationship,
+    The discount follows the existing Pro Guardian relationship,
     not the billing account or who is paying.
 
-    First Pro Seat for a given Wali:        £9.99 / month
-    Additional Seats for the SAME Wali:     £4.99 / month each
+    First Pro Seat for a given Guardian:        £9.99 / month
+    Additional Seats for the SAME Guardian:     £4.99 / month each
 
-    A brand-new Pro Wali always costs £9.99.
+    A brand-new Pro Guardian always costs £9.99.
     The £4.99 rate is ONLY available when adding another
-    Seeker to a Wali who already holds an active Pro Seat.
+    Seeker to a Guardian who already holds an active Pro Seat.
 
   This prevents a loophole where a user creates multiple
-  new Pro Walis at the discounted rate. The discount
-  rewards expanding an existing Pro Wali relationship,
+  new Pro Guardians at the discounted rate. The discount
+  rewards expanding an existing Pro Guardian relationship,
   not creating new ones.
 
   EXAMPLES:
 
-  Dad (existing Pro Wali):
+  Dad (existing Pro Guardian):
     Son       → £9.99/month  (first Pro Seat for Dad)
     Daughter  → £4.99/month  (additional Seat — Dad is already Pro)
     Daughter  → £4.99/month  (additional Seat — Dad is already Pro)
 
-  Mum (separate Wali):
-    First Pro Seat → £9.99/month  (Mum is a new Pro Wali)
+  Mum (separate Guardian):
+    First Pro Seat → £9.99/month  (Mum is a new Pro Guardian)
 
   Total (Dad 3 Seekers + Mum 1 Seeker):
     Dad:  £9.99 + £4.99 + £4.99 = £19.97/month
     Mum:  £9.99/month
     Combined: £29.96/month
 
-  SEEKER'S VIEW — MY WALI PAGE:
+  SEEKER'S VIEW — MY GUARDIAN PAGE:
 
   Dad
-  ✓ Wali Pro
+  ✓ Guardian Pro
   [Manage]
   Add another Pro Seat for Dad — £4.99/month
   (Discounted because Dad already has an active Pro Seat)
 
   Mum
-  ✓ Wali Basic
-  Upgrade to Wali Pro — £9.99/month
+  ✓ Guardian Basic
+  Upgrade to Guardian Pro — £9.99/month
   (Full price because Mum has no existing Pro Seat)
 
 WHO PAYS FOR PRO
 
-  Either the Seeker or the Wali can pay for a Pro Seat.
-  The Seat is attached to the Wali–Seeker relationship
+  Either the Seeker or the Guardian can pay for a Pro Seat.
+  The Seat is attached to the Guardian–Seeker relationship
   regardless of who purchased it.
   The pricing tier (£9.99 or £4.99) is determined by the
-  Wali's existing Pro status, not by who pays.
+  Guardian's existing Pro status, not by who pays.
 
 ------------------------------------------------------------
-WALI PERMISSIONS MODEL
+GUARDIAN PERMISSIONS MODEL
 ------------------------------------------------------------
 
 Can See:
@@ -247,7 +247,7 @@ Can Act:
   — Raise a concern or flag to ZYRA support
 
 ------------------------------------------------------------
-WALI RESPONSIBILITIES
+GUARDIAN RESPONSIBILITIES
 ------------------------------------------------------------
 
   ✓ Viewing the progress of each Journey
@@ -260,7 +260,7 @@ WALI RESPONSIBILITIES
   ✓ Helping ensure the process remains respectful
     and family-oriented
 
-The Wali does not:
+The Guardian does not:
   — See Chapter 3 (Values) or Chapter 4 (Preferences) answers
   — Control who the Seeker browses or expresses interest in
   — Accept on behalf of the Seeker
@@ -276,14 +276,14 @@ Instead, the Journey enters a 48-hour Family Review Period.
 
 WHAT HAPPENS DURING THE REVIEW PERIOD
 
-  1. Both Walis receive a notification to review the
+  1. Both Guardians receive a notification to review the
      completed stage.
 
-  2. Each Wali may:
+  2. Each Guardian may:
        ✅ Continue  — explicitly confirms readiness
        ❌ Pause     — halts progression until resolved
 
-  3. If neither Wali raises a concern within 48 hours:
+  3. If neither Guardian raises a concern within 48 hours:
        → The Journey automatically continues.
 
 PURPOSE
@@ -292,7 +292,7 @@ PURPOSE
   It is a deliberate pause that:
 
   — Encourages family awareness at each stage
-  — Gives Walis meaningful involvement without veto power
+  — Gives Guardians meaningful involvement without veto power
     over every micro-decision
   — Prevents a Journey from moving too fast
 
@@ -300,12 +300,12 @@ PURPOSE
   "The family had the opportunity to review this stage."
   It is not an explicit approval.
 
-  This respects the Wali's role while preventing inactive
+  This respects the Guardian's role while preventing inactive
   accounts from blocking progress indefinitely.
 
 PAUSE BEHAVIOUR
 
-  If a Wali selects Pause:
+  If a Guardian selects Pause:
   — The Journey pauses immediately.
   — The matched Seekers are notified that the Journey
     has been paused for family review.
@@ -319,16 +319,16 @@ PAUSE BEHAVIOUR
 SUBSCRIPTION MODEL
 ------------------------------------------------------------
 
-WALI BASIC
+GUARDIAN BASIC
   Cost:      Free
   Limit:     1 active Seeker relationship (hard cap)
 
-WALI PRO SEAT
-  Cost:      £9.99/month — first Pro Seat for a given Wali
-             £4.99/month — each additional Seat, same Wali
+GUARDIAN PRO SEAT
+  Cost:      £9.99/month — first Pro Seat for a given Guardian
+             £4.99/month — each additional Seat, same Guardian
   Limit:     None — purchase as many Seats as needed
-  Who pays:  Either the Seeker or the Wali
-  Discount:  Follows the Wali relationship, not the payer
+  Who pays:  Either the Seeker or the Guardian
+  Discount:  Follows the Guardian relationship, not the payer
 
 PRO SEAT REASSIGNMENT SAFEGUARDS
 
@@ -338,9 +338,9 @@ PRO SEAT REASSIGNMENT SAFEGUARDS
      The safeguards apply whenever a Pro Seat becomes
      unassigned, regardless of who initiated the removal.
      This covers:
-       — Wali removes Seeker
-       — Seeker removes Wali
-       — Seeker changes Wali
+       — Guardian removes Seeker
+       — Seeker removes Guardian
+       — Seeker changes Guardian
        — Mutual unlink
 
   2. Cooldown on reassignment
@@ -369,34 +369,34 @@ PRO SEAT REASSIGNMENT SAFEGUARDS
 
 SEEKER SUBSCRIPTION SPONSORSHIP
 
-  A Wali may optionally pay for the linked Seeker's
-  Seeker subscription. This is separate from the Wali Seat.
+  A Guardian may optionally pay for the linked Seeker's
+  Seeker subscription. This is separate from the Guardian Seat.
 
   Example: A father holds a Pro Seat AND pays for his
   daughter's Seeker Premium subscription.
 
   Two independent billing concepts:
-    1. Wali Pro Seat (£9.99 first / £4.99 additional per month)
-    2. Seeker subscription — paid by Seeker or by Wali
+    1. Guardian Pro Seat (£9.99 first / £4.99 additional per month)
+    2. Seeker subscription — paid by Seeker or by Guardian
 
 ------------------------------------------------------------
-WALI SCREEN FLOW
+GUARDIAN SCREEN FLOW
 ------------------------------------------------------------
 
-Path 1 — Seeker invites Wali (Basic):
-  [ Invite Your Wali ] → ZYRA sends SMS/email (Basic)
-  → [ Wali Invitation Landing ] → [ Create Account ]
-  → [ Wali Onboarding ] → [ Wali Dashboard ]
+Path 1 — Seeker invites Guardian (Basic):
+  [ Invite Your Guardian ] → ZYRA sends SMS/email (Basic)
+  → [ Guardian Invitation Landing ] → [ Create Account ]
+  → [ Guardian Onboarding ] → [ Guardian Dashboard ]
 
-Path 2 — Seeker purchases Wali Pro:
-  [ Invite Your Wali ] → Seeker pays → ZYRA sends SMS/email (Pro)
-  → [ Wali Invitation Landing ] → [ Create / Sign In ]
+Path 2 — Seeker purchases Guardian Pro:
+  [ Invite Your Guardian ] → Seeker pays → ZYRA sends SMS/email (Pro)
+  → [ Guardian Invitation Landing ] → [ Create / Sign In ]
   → Prompt: "A Pro Seat is waiting — activate it?"
-  → [ Wali Onboarding ] → [ Wali Dashboard ]
+  → [ Guardian Onboarding ] → [ Guardian Dashboard ]
 
-Path 3 — Wali starts first:
-  [ Wali Sign Up ] → [ Choose Tier: Basic / Pro ]
-  → [ Wali Onboarding ] → [ Wali Dashboard ]
+Path 3 — Guardian starts first:
+  [ Guardian Sign Up ] → [ Choose Tier: Basic / Pro ]
+  → [ Guardian Onboarding ] → [ Guardian Dashboard ]
   → [ Invite Seeker ] → Seeker receives SMS/email
   → [ Seeker Invitation Landing ] → Seeker onboarding
   → Accounts linked
@@ -419,10 +419,10 @@ Consolidation can be considered once the full app
 is designed and usage patterns are understood.
 
 ------------------------------------------------------------
-WALI NAVIGATION
+GUARDIAN NAVIGATION
 ------------------------------------------------------------
 
-Wali accounts use a fixed 4-tab navigation:
+Guardian accounts use a fixed 4-tab navigation:
   Dashboard · Seekers · Network · Profile
 
   — No Universal Toggle (Seeker-only mechanic)
@@ -431,27 +431,27 @@ Wali accounts use a fixed 4-tab navigation:
 
 Network tab:
   — Only accessible with at least one active Pro Seat
-  — Basic Wali tapping Network → upgrade screen
+  — Basic Guardian tapping Network → upgrade screen
 
 ------------------------------------------------------------
-WALI NETWORK — ARCHITECTURE
+GUARDIAN NETWORK — ARCHITECTURE
 ------------------------------------------------------------
 
 Status: Approved
 Last Updated: 2026-06-28
 
-WHAT THE WALI NETWORK IS
+WHAT THE GUARDIAN NETWORK IS
 
-The Wali Network is not a second Browse page.
+The Guardian Network is not a second Browse page.
 It is a family introduction facilitation layer,
-visible only to verified Walis with an active Pro Seat.
+visible only to verified Guardians with an active Pro Seat.
 
 WHAT IS DISPLAYED
 
 The cards shown in the Network are Seeker profile cards.
-The Wali is browsing on behalf of their linked Seeker.
+The Guardian is browsing on behalf of their linked Seeker.
 
-The Wali cannot edit or customise what is shown.
+The Guardian cannot edit or customise what is shown.
 Cards are 100% system-controlled.
 
 No free-text introductions.
@@ -459,7 +459,7 @@ No biographies.
 No manually added information.
 
 Reason:
-Free text creates a privacy loophole. A Wali could
+Free text creates a privacy loophole. A Guardian could
 reveal information that ZYRA intentionally hides
 through progressive disclosure, including:
   — Occupation
@@ -475,10 +475,10 @@ CARD CONTENTS (system-controlled)
   — Seeker initial (e.g. K.)
   — Age
   — City
-  — Wali relationship ("Guided by his father")
-  — Verified Wali badge
+  — Guardian relationship ("Guided by his father")
+  — Verified Guardian badge
 
-No Wali tier shown on cards.
+No Guardian tier shown on cards.
 Access to Network already requires a Pro Seat.
 
 SEEKER CONSENT
@@ -486,28 +486,28 @@ SEEKER CONSENT
 Because the Network uses the Seeker's profile card,
 explicit consent is required.
 
-When a Seeker links a Wali, they agree to Terms &
+When a Seeker links a Guardian, they agree to Terms &
 Conditions explaining:
-  — What their linked Wali can view
-  — What information is displayed to other verified Walis
+  — What their linked Guardian can view
+  — What information is displayed to other verified Guardians
     in the Network
   — That their profile card becomes visible in the Network
-    once a Wali is linked
+    once a Guardian is linked
 
-Consent is collected during the Wali linking flow.
+Consent is collected during the Guardian linking flow.
 
-WALI NETWORK FLOW
+GUARDIAN NETWORK FLOW
 
-1. Wali A discovers Seeker B's system-controlled card
+1. Guardian A discovers Seeker B's system-controlled card
    in the Network Discover feed.
 
-2. Wali A sends a Family Introduction Request to Wali B.
+2. Guardian A sends a Family Introduction Request to Guardian B.
 
-3. Wali B reviews Seeker A's system-controlled card.
+3. Guardian B reviews Seeker A's system-controlled card.
 
-4. Wali B accepts or declines.
+4. Guardian B accepts or declines.
 
-5. If both Walis agree:
+5. If both Guardians agree:
    The introduction is presented to both Seekers
    independently.
 
@@ -517,76 +517,76 @@ WALI NETWORK FLOW
    The standard ZYRA Journey begins.
 
 Key principle:
-Walis agree that an introduction is worth presenting.
+Guardians agree that an introduction is worth presenting.
 They do not accept on behalf of Seekers.
 Seeker consent is always required before a Journey begins.
 
 INTRODUCTION LOGIC — MULTIPLE SEEKERS
 
-When a Wali taps Introduce from a Seeker card:
+When a Guardian taps Introduce from a Seeker card:
 
-  If the Wali has one eligible Seeker (gender-matched):
+  If the Guardian has one eligible Seeker (gender-matched):
     → Automatically sends the introduction on their behalf.
     → No selection prompt.
     → "This introduction will be sent on behalf of [Name]."
 
-  If the Wali has two or more eligible Seekers:
+  If the Guardian has two or more eligible Seekers:
     → A selection screen appears.
-    → The Wali selects which daughter (or son) this
+    → The Guardian selects which daughter (or son) this
       introduction is for.
     → Maximum one per introduction request.
 
   Gender matching is automatic.
-  A Wali with both a son and a daughter browsing male
+  A Guardian with both a son and a daughter browsing male
   Seeker cards will only see the introduction sent
   on behalf of the daughter.
 
 NETWORK TABS
 
-  Discover  — Wali browses system-controlled Seeker cards
+  Discover  — Guardian browses system-controlled Seeker cards
   Requests  — Incoming Family Introduction Requests
 
 ------------------------------------------------------------
-WALI NETWORK — COMPATIBILITY FILTERING PRINCIPLE
+GUARDIAN NETWORK — COMPATIBILITY FILTERING PRINCIPLE
 ------------------------------------------------------------
 
 RULE: The compatibility engine operates at the Seeker level.
-It never operates at the Wali level.
+It never operates at the Guardian level.
 
-Each Seeker linked to a Wali is evaluated independently
+Each Seeker linked to a Guardian is evaluated independently
 for compatibility, hard requirements, and visibility.
 A Seeker's profile never affects another Seeker's visibility
-simply because they share the same Wali.
+simply because they share the same Guardian.
 
 EXAMPLE
 
-  Wali Ahmed is linked to:
+  Guardian Ahmed is linked to:
     Son A — smokes
     Son B — does not smoke
 
   Another Seeker has a Hard Requirement:
     🚫 Never show anyone who smokes.
 
-  Incorrect (Wali-level filtering):
-    Wali Ahmed disappears from the Network entirely
+  Incorrect (Guardian-level filtering):
+    Guardian Ahmed disappears from the Network entirely
     because Son A does not satisfy the requirement.
 
   Correct (Seeker-level filtering):
     Son A → ❌ Fails Hard Requirement → Not shown.
     Son B → ✅ Passes Hard Requirement → Shown.
-    Wali Ahmed remains visible in the Network,
+    Guardian Ahmed remains visible in the Network,
     showing only Son B's card.
 
 CONSEQUENCES
 
-  — A Wali with multiple Seekers may have different numbers
+  — A Guardian with multiple Seekers may have different numbers
     of Seeker rows visible to different Network viewers.
 
-  — A Wali card may show 2 Seekers to one viewer and
+  — A Guardian card may show 2 Seekers to one viewer and
     1 Seeker to another, depending on compatibility.
 
-  — If none of a Wali's linked Seekers pass compatibility,
-    the Wali card does not appear at all for that viewer.
+  — If none of a Guardian's linked Seekers pass compatibility,
+    the Guardian card does not appear at all for that viewer.
 
   — Each Seeker card in the Network has independent:
       · Compatibility filtering
@@ -596,14 +596,14 @@ CONSEQUENCES
 
 ALIGNMENT WITH BROWSE
 
-  The Wali Network uses the same compatibility engine,
+  The Guardian Network uses the same compatibility engine,
   hard requirement rules, and visibility logic as Browse.
 
   The only architectural difference between Browse and
-  the Wali Network is who initiates the introduction:
+  the Guardian Network is who initiates the introduction:
 
     Browse:        Seeker initiates.
-    Wali Network:  Wali initiates on behalf of their Seeker.
+    Guardian Network:  Guardian initiates on behalf of their Seeker.
 
   The underlying engine is identical.
 
@@ -616,7 +616,7 @@ Deferred to ZYRA's Islamic Governance document:
 
   — Seeker has no living male guardian
   — Seeker is a revert with no Muslim male family member
-  — Dispute over who has Wali authority
-  — Wali becomes unavailable mid-journey
-  — Female guardian acting in Wali capacity in exceptional
+  — Dispute over who has Guardian authority
+  — Guardian becomes unavailable mid-journey
+  — Female guardian acting in Guardian capacity in exceptional
     circumstances

@@ -35,10 +35,27 @@
 // Back also now explains itself when there is genuinely nothing to go
 // back to, instead of silently doing nothing — "silent no-op" and
 // "broken" are indistinguishable to a person testing on a phone.
+//
+// SIMPLIFIED 2026-07-26 (Founder, reviewing the Browse page: "the back
+// button is not needed cos I don't use it, so for dev let's just keep
+// the home button"): Back removed. Home alone is enough to get unstuck
+// (hard reset to WelcomeScreen, which has its own way back into
+// whatever the tester needs) and was already doing most of the real
+// work — Back's own no-op case above came up often enough to need its
+// own explanatory snackbar, which is itself a sign it wasn't pulling
+// its weight as a second control.
+//
+// MOVED 2026-07-26 (Founder: "move the bell icon to right underneath
+// the 3 dots... meaning u might have to move the home button on
+// left"). HomeShell's Bell + Help/Report column now occupies top-right
+// more fully than before, so this button moved from right to left to
+// stay clear of it.
 
-import 'package:flutter/foundation.dart' show kReleaseMode;
+// `kReleaseMode` is no longer imported — it appears only in the history
+// above now. The release guard moved to DevScenarioPanel along with the
+// button that needed it; this wrapper renders nothing of its own, so it
+// has nothing to guard.
 import 'package:flutter/material.dart';
-import '../screens/welcome_screen.dart';
 
 class DevNavOverlay extends StatelessWidget {
   final Widget child;
@@ -46,83 +63,25 @@ class DevNavOverlay extends StatelessWidget {
 
   const DevNavOverlay({super.key, required this.child, required this.navigatorKey});
 
-  void _goBack(BuildContext context) {
-    final nav = navigatorKey.currentState;
-    if (nav != null && nav.canPop()) {
-      nav.pop();
-      return;
-    }
-    // Nothing above this screen in the route stack (screens reached via
-    // pushReplacement/pushAndRemoveUntil, onboarding step-state flows,
-    // or the very first screen). Say so rather than appearing broken.
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Nothing to go back to — use Home to reset.'),
-        duration: Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
-
-  void _goHome() {
-    final nav = navigatorKey.currentState;
-    if (nav == null) return;
-    nav.pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-      (route) => false,
-    );
-  }
-
+  // _goBack removed 2026-08-01 (Fable, analyzer cleanup): the Back button
+  // itself was removed 2026-07-26 per the SIMPLIFIED note above, which
+  // left this method orphaned — flutter analyze flagged it unused.
+  // EMPTIED 2026-08-03 (Founder: "put the home button in the toggle tab
+  // at top"). The floating Home circle moved into DevScenarioPanel —
+  // _goHome and _DevButton went with it.
+  //
+  // It was pinned to the top-left of every screen at a fixed offset, which
+  // put it directly on top of each page's title. That is visible in every
+  // screenshot taken this week: the dark circle covering "Connections".
+  //
+  // This wrapper is kept rather than deleted because main.dart's
+  // `builder:` composes it around every route, and it is the natural place
+  // for the next always-on debug affordance. It currently passes its child
+  // straight through and costs one widget in the tree.
+  //
+  // `navigatorKey` is likewise kept: removing it would change the
+  // constructor and touch main.dart for no behavioural gain, and whatever
+  // replaces the Home button will want it.
   @override
-  Widget build(BuildContext context) {
-    if (kReleaseMode) return child;
-
-    final topOffset = MediaQuery.of(context).padding.top + 90;
-
-    return Stack(
-      children: [
-        child,
-        Positioned(
-          right: 12,
-          top: topOffset,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _DevButton(icon: Icons.arrow_back, label: 'Back', onTap: () => _goBack(context)),
-              const SizedBox(height: 10),
-              _DevButton(icon: Icons.home, label: 'Home', onTap: _goHome),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _DevButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  const _DevButton({required this.icon, required this.label, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 44,
-      height: 44,
-      child: Material(
-        color: Colors.black.withValues(alpha: 0.6),
-        shape: const CircleBorder(),
-        elevation: 4,
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: onTap,
-          child: Center(
-            child: Icon(icon, color: Colors.white, size: 22, semanticLabel: label),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => child;
 }

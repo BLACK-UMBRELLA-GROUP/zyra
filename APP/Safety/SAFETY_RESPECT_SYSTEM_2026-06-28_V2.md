@@ -53,13 +53,13 @@ These are behavioural patterns inconsistent with ZYRA's purpose. Detection at th
 **Detected patterns:**
 - Repeated sexual conversations across multiple interactions
 - Pressure for unsupervised private meetings
-- Requests to hide conversations from a Wali
+- Requests to hide conversations from a Guardian
 - Early or pressured attempts to move communication to WhatsApp, Snapchat, or Telegram
 - Requests for intimate photographs
 - Manipulation, gaslighting, or emotional coercion
-- Repeated disengagement from Wali involvement after prompts
+- Repeated disengagement from Guardian involvement after prompts
 
-**Important nuance on contact-sharing:** Families legitimately coordinate logistics outside ZYRA. The signal is early contact-sharing combined with other indicators, or active pressure to move before any Wali is involved — not contact-sharing alone.
+**Important nuance on contact-sharing:** Families legitimately coordinate logistics outside ZYRA. The signal is early contact-sharing combined with other indicators, or active pressure to move before any Guardian is involved — not contact-sharing alone.
 
 **Response:** AI nudge (Level 3). Escalation only if pattern persists.
 
@@ -71,9 +71,9 @@ ZYRA's preferred first intervention. A gentle, values-aligned prompt before any 
 
 **Nudge examples:**
 
-> *ZYRA is designed to support respectful conversations focused on marriage. If things feel off, your Wali is here to help.*
+> *ZYRA is designed to support respectful conversations focused on marriage. If things feel off, your Guardian is here to help.*
 
-> *Consider involving your Wali as your journey progresses — their involvement is one of the things that makes ZYRA different.*
+> *Consider involving your Guardian as your journey progresses — their involvement is one of the things that makes ZYRA different.*
 
 **Cooldown rule:** One nudge per conversation thread, not per message. If behaviour continues after one nudge, the system escalates — it does not nudge again.
 
@@ -151,7 +151,7 @@ Explainability is not just good UX — it is a legal requirement. Under GDPR Art
 An internal, non-public trust signal that accumulates over a user's time on ZYRA. Never shown to the user or other users. Used by the system to calibrate response thresholds only.
 
 ### Positive signals (increase trust)
-- Wali linked and active
+- Guardian linked and active
 - Journey progressing naturally through stages
 - Consistent respectful language patterns
 - No reports, warnings, or escalations
@@ -162,7 +162,7 @@ An internal, non-public trust signal that accumulates over a user's time on ZYRA
 - Reported by another user
 - Level 1 or Level 2 pattern detected
 - Warning issued
-- Wali removed or blocked
+- Guardian removed or blocked
 - Pressure or coercion patterns detected
 - Attempts to move off-platform early
 

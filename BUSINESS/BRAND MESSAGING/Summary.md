@@ -29,7 +29,7 @@ Connecting Through Trust
 Purpose:
 The tagline represents the entire ZYRA ecosystem rather than
 a single user type. It reflects the relationship between
-Seekers, Walis, families, and the trust-based marriage journey.
+Seekers, Guardians, families, and the trust-based marriage journey.
 
 ------------------------------------------------------------
 BRAND GOALS
@@ -40,7 +40,7 @@ BRAND GOALS
 • Memorable
 • Trust-focused
 • Marriage-first
-• Neutral (not Seeker-only or Wali-only)
+• Neutral (not Seeker-only or Guardian-only)
 
 ------------------------------------------------------------
 BRAND DIRECTION

@@ -35,7 +35,7 @@ class TrafficLightQuestionScreen extends StatefulWidget {
 }
 
 class _TrafficLightQuestionScreenState extends State<TrafficLightQuestionScreen> {
-  late Map<String, TrafficLight> _values = Map<String, TrafficLight>.from(widget.initialValues);
+  late final Map<String, TrafficLight> _values = Map<String, TrafficLight>.from(widget.initialValues);
   late bool _hardRequirement = widget.initialHardRequirement;
 
   bool get _anyRed => _values.values.any((v) => v == TrafficLight.red);

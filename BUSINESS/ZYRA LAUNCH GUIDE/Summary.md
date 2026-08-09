@@ -61,7 +61,7 @@ Purpose:
 • Profiles
 • Photos
 • Messages
-• Wali data
+• Guardian data
 • Notifications
 • Payments
 
@@ -119,7 +119,7 @@ ADMIN / DEVELOPER SYSTEM
 
 User Roles:
 • User
-• Wali
+• Guardian
 • Admin
 
 Stored inside Supabase.
@@ -128,7 +128,7 @@ Developer Button Visibility:
 | Role  | Visible |
 |-------|---------|
 | User  | ❌      |
-| Wali  | ❌      |
+| Guardian  | ❌      |
 | Admin | ✅      |
 
 The App Store version contains the Developer system,
@@ -169,7 +169,7 @@ Users
 ZYRA App
 ├── Lovable
 ├── GitHub
-├── Supabase (Users, Profiles, Photos, Messages, Roles, Walis)
+├── Supabase (Users, Profiles, Photos, Messages, Roles, Guardians)
 ├── Firebase (Notifications)
 ├── Stripe (Payments)
 ├── Business Bank
@@ -384,7 +384,7 @@ APPROVED TO-DO LIST
   - Profiles
   - Photos
   - Messages
-  - Walis
+  - Guardians
   - User Roles
   - Proposal Tracker
   - Referrals

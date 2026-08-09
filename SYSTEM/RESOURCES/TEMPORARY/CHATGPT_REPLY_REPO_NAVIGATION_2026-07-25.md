@@ -58,7 +58,7 @@ entry-point promise, richer content, no collision.
 
 Worth knowing regardless of which way this goes: that document is
 itself stale right now — it's dated 2026-06-26 and has no entries for
-Journey, Journey Suspension, Wali Architecture, or anything from the
+Journey, Journey Suspension, Guardian Architecture, or anything from the
 DR-ZYRA-088 through DR-ZYRA-102 range. Whichever direction you and the
 Founder land on, it needs a full refresh pass, not just a schema
 change.

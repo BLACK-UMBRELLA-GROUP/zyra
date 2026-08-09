@@ -69,7 +69,7 @@ Related Systems:
 • Connections
 • Profile Unlocks
 • Proposal Tracker
-• Wali System
+• Guardian System
 • Subscriptions
 
 Notes:
@@ -79,7 +79,7 @@ Notes:
 • The Seeker is the person paying to find a marriage partner.
 
 ------------------------------------------------------------
-TERM: Wali
+TERM: Guardian
 ------------------------------------------------------------
 
 Definition:
@@ -91,24 +91,24 @@ Provides guidance, oversight, accountability, and involvement
 throughout the marriage journey.
 
 User Explanation:
-A Wali is a guardian or supervisor who helps oversee the
+A Guardian is a guardian or supervisor who helps oversee the
 marriage process.
 
 Internal Explanation:
-The supervisory role within ZYRA. A Wali assists and oversees
+The supervisory role within ZYRA. A Guardian assists and oversees
 Seekers while supporting the marriage journey.
 
 Found In:
 • Sign Up
 • Onboarding
 • Browse
-• Wali Features
+• Guardian Features
 • Connections
 • Proposal Tracker
 • Notifications
 
 Related Systems:
-• Wali System
+• Guardian System
 • Browse
 • Potentials
 • Connections
@@ -116,9 +116,9 @@ Related Systems:
 • Subscriptions
 
 Notes:
-• Wali = Supervisor / Guardian.
-• When "Wali" is used, it always refers to the supervisory role.
-• The Wali is not the marriage candidate.
+• Guardian = Supervisor / Guardian.
+• When "Guardian" is used, it always refers to the supervisory role.
+• The Guardian is not the marriage candidate.
 
 ============================================================
 DISCOVERY TERMINOLOGY
@@ -204,7 +204,7 @@ Related Systems:
 
 Notes:
 • Available to Seekers.
-• Not available to Walis.
+• Not available to Guardians.
 • Pass is a final rejection decision.
 
 ------------------------------------------------------------
@@ -227,7 +227,7 @@ A private holding decision. Saving is completely private
 between ZYRA Basic users; only a mutual Save between two
 ZYRA One users (or a ZYRA One user matched with a ZYRA Basic
 user) generates a Mutual Save Detected notification, and only
-for the ZYRA One side. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3,
+for the ZYRA One side. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4,
 Part 2, Section 3.
 
 Found In:
@@ -268,7 +268,7 @@ Internal Explanation:
 An interest signal. A mutual Consider between two Seekers is
 the Match event — it creates a Potential Journey. Consider is
 not the same as Match: Match is the event, Potential Journey is
-the resulting state. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3,
+the resulting state. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4,
 Part 0, Section 0.5 and Part 2, Section 4.
 
 Found In:
@@ -298,17 +298,17 @@ ROLE RELATIONSHIPS
 | Role   | Meaning                                          |
 |--------|--------------------------------------------------|
 | Seeker | Person actively looking for marriage             |
-| Wali   | Supervisor / Guardian helping oversee the process|
+| Guardian   | Supervisor / Guardian helping oversee the process|
 
 | ZYRA Term | Equivalent Meaning       |
 |-----------|--------------------------|
 | Seeker    | Marriage Candidate       |
-| Wali      | Supervisor / Guardian    |
+| Guardian      | Supervisor / Guardian    |
 
 Usage Rules:
 • "Seeker" always refers to the person seeking marriage.
-• "Wali" always refers to the supervisor or guardian.
-• Seeker and Wali are separate roles with different
+• "Guardian" always refers to the supervisor or guardian.
+• Seeker and Guardian are separate roles with different
   responsibilities.
 
 Decision Permissions:
@@ -318,10 +318,10 @@ Seeker:
 • Save
 • Consider
 
-Wali:
-• Does not participate in Browse profile decisions. The Wali's
+Guardian:
+• Does not participate in Browse profile decisions. The Guardian's
   role is to represent and support their linked Seeker (see
-  Wali Architecture V5), not to browse or decide on profiles
+  Guardian Architecture V5), not to browse or decide on profiles
   for themselves.
 
 ============================================================
@@ -332,8 +332,8 @@ Browse Available To:
 • Seeker (ZYRA Basic)
 • Seeker (ZYRA One)
 
-Wali accounts do not use Browse — Browse is a Seeker-only
-discovery surface. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3,
+Guardian accounts do not use Browse — Browse is a Seeker-only
+discovery surface. See ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4,
 Part 1, Section 3.
 
 Primary Decisions:
@@ -370,7 +370,7 @@ Important:
 
 Role Access:
 • Seeker → Pass, Save, Consider
-• Wali   → Does not participate in Browse decisions
+• Guardian   → Does not participate in Browse decisions
 
 (UPDATED 2026-07-25, OA-ZYRA-140 item 15: Decline/Like renamed
 Pass/Consider throughout this document, per DR-ZYRA-099.)

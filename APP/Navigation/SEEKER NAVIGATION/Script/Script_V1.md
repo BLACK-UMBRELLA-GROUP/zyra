@@ -26,7 +26,7 @@ STATE 1 — MAIN NAVIGATION
 Tabs:
 • Browse
 • Connections
-• Wali
+• Guardian
 • Profile
 
 STATE 2 — CONNECTIONS NAVIGATION
@@ -134,7 +134,7 @@ TOP RIGHT BUTTONS
 Displayed on:
 • Browse
 • Connections
-• Wali
+• Guardian
 • Profile
 
 Production UI:

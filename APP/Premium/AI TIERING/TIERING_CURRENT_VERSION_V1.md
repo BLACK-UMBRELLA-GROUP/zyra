@@ -36,7 +36,7 @@ This keeps the product maintainable, reduces UI divergence, and ensures Basic us
 - Question library and preventing repeated questions
 - Timeline milestones
 - Rules-based journey recommendations
-- Wali read access and participation
+- Guardian read access and participation
 
 **ZYRA intelligence includes:**
 - Reasoning about this specific couple's journey
@@ -86,9 +86,9 @@ Internally these are LLM calls. Externally they are simply how ZYRA helps people
 - **Basic**: Full timeline of journey milestones.
 - **Premium**: ZYRA Insights within the timeline (*"During this stage you both frequently returned to the topic of family and future children."*)
 
-### Wali Summary
-- **Basic**: Wali can read the conversation thread.
-- **Premium**: AI-generated ZYRA Summary delivered to the Wali: *"Maryam and Ahmed appear strongly aligned on Deen. Family expectations may benefit from an early discussion."*
+### Guardian Summary
+- **Basic**: Guardian can read the conversation thread.
+- **Premium**: AI-generated ZYRA Summary delivered to the Guardian: *"Maryam and Ahmed appear strongly aligned on Deen. Family expectations may benefit from an early discussion."*
 
 ### Journey Summary (end of all chapters)
 - **Basic**: Overall Journey Alignment % + chapter-by-chapter breakdown.
@@ -104,7 +104,7 @@ AI outputs are **generated artefacts**, not live services. Generate once, store,
 |--------|---------------|
 | Compatibility summary | Once — after both complete the full journey |
 | Stage summary | Once — at end of each chapter |
-| Wali summary | Once — at end of Family Involvement stage |
+| Guardian summary | Once — at end of Family Involvement stage |
 | Follow-up question recommendations | Once — per chapter, based on ratings at that point |
 | Conversation insights | Once per insight trigger — not regenerated on reopen |
 | Journey summary | Once — at journey completion |

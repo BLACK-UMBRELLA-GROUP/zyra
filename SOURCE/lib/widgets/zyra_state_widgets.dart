@@ -46,9 +46,9 @@ class ZyraErrorBanner extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
           decoration: BoxDecoration(
-            color: ZyraColors.rosePink.withOpacity(0.16),
+            color: ZyraColors.rosePink.withValues(alpha: 0.16),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.white.withOpacity(0.22), width: 1),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.22), width: 1),
           ),
           child: Row(
             children: [
@@ -101,7 +101,7 @@ class ZyraEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.white.withOpacity(0.35), size: 30),
+            Icon(icon, color: Colors.white.withValues(alpha: 0.35), size: 30),
             const SizedBox(height: 14),
             Text(message, style: ZyraText.subtext(size: 13.5), textAlign: TextAlign.center),
             if (ctaLabel != null) ...[
@@ -156,7 +156,7 @@ class ZyraDisabledHint extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10),
       child: Text(
         message,
-        style: ZyraText.subtext(size: 12, color: Colors.white.withOpacity(0.55)),
+        style: ZyraText.subtext(size: 12, color: Colors.white.withValues(alpha: 0.55)),
         textAlign: TextAlign.center,
       ),
     );

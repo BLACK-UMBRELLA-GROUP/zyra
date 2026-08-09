@@ -19,6 +19,7 @@ import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_loading.dart';
 
 class JourneyTimelineScreen extends StatefulWidget {
   final SeekerProfile withProfile;
@@ -56,8 +57,11 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
         _ => type,
       };
 
+  // 2026-07-26: check_circle_outline replaces favorite here (Founder:
+  // "for the whole app I'm tryna avoid any heart icons") — outline
+  // variant matches this switch's other three entries.
   static IconData _iconFor(String type) => switch (type) {
-        'match_created' => Icons.favorite,
+        'match_created' => Icons.check_circle_outline,
         'conversation_started' => Icons.forum_outlined,
         'family_stage' => Icons.family_restroom_outlined,
         'meeting' => Icons.people_outline,
@@ -68,6 +72,14 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // FIXED 2026-08-01 (Founder: "there should be no purple at top, it
+      // should blend the pink/purple colour... that should be across all
+      // things"). Same fix notifications_screen.dart got on 2026-07-27:
+      // without this the transparent AppBar shows the Scaffold's own flat
+      // background through, cutting the gender gradient off with a hard
+      // purple strip. Body content compensates with SafeArea, which still
+      // clears the status bar.
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -80,7 +92,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
         decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
         child: SafeArea(
           child: _loading
-              ? const Center(child: CircularProgressIndicator(color: Colors.white54))
+              ? const ZyraLoading()
               : _milestones.isEmpty
                   ? const Center(
                       child: Padding(

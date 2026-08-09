@@ -26,7 +26,7 @@ V1 was location + status only, and was last refreshed 2026-06-26 —
 before the entire Journey/Ritual/Suspension build, DR-ZYRA-088 through
 DR-ZYRA-102, and the OA-ZYRA-140 audit. V2 adds the richer schema
 (per DR-ZYRA-103) and a full content refresh: Journey, Journey
-Suspension, Wali Architecture, and roughly a dozen other governing
+Suspension, Guardian Architecture, and roughly a dozen other governing
 documents that didn't exist yet in V1 are now listed.
 
 ---
@@ -39,7 +39,7 @@ documents that didn't exist yet in V1 are now listed.
 - **Owner:** Founder
 - **Source of Truth:** Yes, for project framing only (not for feature detail — see Section 4).
 - **Dependencies:** None.
-- **Related:** ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3.
+- **Related:** ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5.
 
 ### ZYRA_DOCUMENTATION_INDEX (this document)
 - **Location:** SYSTEM/DOCUMENTS/
@@ -95,7 +95,7 @@ documents that didn't exist yet in V1 are now listed.
 - **Owner:** Architecture Agent.
 - **Source of Truth:** Yes, for high-level architecture. Feature-level detail lives in APP/.
 - **Dependencies:** ZYRA_DATABASE_SCHEMA_CURRENT_VERSION_V1, ZYRA_INFRASTRUCTURE_STACK_V1.
-- **Related:** APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V5 (Wali-specific architecture, not covered here).
+- **Related:** APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V6 (Guardian-specific architecture, not covered here).
 
 ### ZYRA_DATABASE_SCHEMA_CURRENT_VERSION_V1
 - **Location:** SYSTEM/DOCUMENTS/
@@ -113,7 +113,7 @@ documents that didn't exist yet in V1 are now listed.
 - **Dependencies:** None.
 - **Related:** ZYRA_ARCHITECTURE_CURRENT_VERSION_V2.
 
-### ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3
+### ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5
 - **Location:** SYSTEM/DOCUMENTS/
 - **Purpose:** Top-level product specification.
 - **Owner:** Founder.
@@ -128,6 +128,30 @@ documents that didn't exist yet in V1 are now listed.
 - **Source of Truth:** Yes, cross-referenced with APP/Journey/ specs and `zyra_journey_service.dart`.
 - **Dependencies:** APP/Journey/* (all subfolders), APP/Standards/JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V3.
 - **Related:** APP/Journey/JOURNEY SUSPENSION/JOURNEY_SUSPENSION_CURRENT_VERSION_V1.
+
+### ZYRA_WIDGET_LIBRARY_CURRENT_VERSION_V1 *(new 2026-07-26, #18)*
+- **Location:** SYSTEM/DOCUMENTS/
+- **Purpose:** Reference index of `SOURCE/lib/widgets/` — the shared Flutter component library. Closes the gap this Index itself flagged in Section 7 and in `SESSION_HANDOVER_2026-07-25.md`.
+- **Owner:** Architecture Agent.
+- **Source of Truth:** No — the code in `SOURCE/lib/widgets/` is authoritative; this is a reference document kept in sync with it.
+- **Dependencies:** `SOURCE/lib/widgets/*`.
+- **Related:** ZYRA_ARCHITECTURE_CURRENT_VERSION_V2, APP/iOS Widgets/ (unrelated — disambiguated by name only).
+
+### ZYRA_PERFORMANCE_ENGINEERING_REVIEW_CURRENT_VERSION_V1 *(new 2026-07-26)*
+- **Location:** SYSTEM/DOCUMENTS/
+- **Purpose:** Engineering opinion/discussion paper on performance, battery, memory, network, and scalability — requested by the Founder as a discussion-first review, not an implementation. Grounded in a direct read of `SOURCE/` and the Supabase schema on 2026-07-26 (image handling/caching, polling patterns, state-management rebuild scope, indexing, startup path).
+- **Owner:** Implementation Lead (Claude).
+- **Source of Truth:** Partial — Section 9's "recommended permanent standards" are proposals awaiting separate ratification (as a DR), not yet-binding rules. Everything else is opinion/analysis, not a spec.
+- **Dependencies:** None (a review, not a governing spec) — Related documents may be superseded or extended once specific recommendations are ratified.
+- **Related:** `SOURCE/lib/screens/browse/browse_screen.dart`, `SOURCE/lib/state/app_state.dart`, `SOURCE/lib/services/zyra_journey_service.dart`, `SOURCE/lib/services/zyra_photo_service.dart`.
+
+### ZYRA_ACCOUNT_TYPE_UX_REVIEW_CURRENT_VERSION_V1 *(new 2026-07-26)*
+- **Location:** SYSTEM/DOCUMENTS/
+- **Purpose:** Per-account-type UX review requested by OA-ZYRA-124 — reviews Seeker Basic/One and Guardian Basic/One (Male/Female collapse to 4 functional variants, confirmed in the doc) against the 10 criteria OA-124 specified (Navigation, Available tabs, Feature access, Upgrade prompts, User journey, Permissions, UI consistency, Empty states, Settings, Profile behaviour). Lists every gap found with a Build/Modify/Delay/Reject decision and reasoning per this project's Feature Review Process.
+- **Owner:** Implementation Lead (Claude).
+- **Source of Truth:** Yes, for what was reviewed and what was decided — see DR-ZYRA-107 for the fixes actually implemented from this review.
+- **Dependencies:** DR-ZYRA-107 (fixes), DR-ZYRA-106 ("Extended Guardian" → "Guardian+" rename, referenced), DR-ZYRA-094 (gender-gradient parity, referenced).
+- **Related:** `SOURCE/lib/screens/guardian/wali_home_shell.dart`, `SOURCE/lib/screens/guardian/wali_profile_screen.dart`, `SOURCE/lib/screens/guardian/wali_notification_settings_screen.dart`, `SOURCE/lib/screens/profile/profile_screen.dart`, `SOURCE/lib/screens/home/home_shell.dart`.
 
 ---
 
@@ -169,7 +193,7 @@ for the fuller diagnosis.
 ## 4. Feature Specifications (APP/)
 
 This is the section that was most stale in V1 — it had no entries for
-Journey (beyond a bare folder reference), Journey Suspension, or Wali
+Journey (beyond a bare folder reference), Journey Suspension, or Guardian
 Architecture at all. Rebuilt below.
 
 ### Authentication
@@ -210,7 +234,7 @@ Architecture at all. Rebuilt below.
 - **Owner:** Founder. **SoT:** Yes.
 - **Dependencies:** `journey_flow_screen.dart`, `zyra_journey_service.dart`, `journey_questions.dart`.
 - **Stages:** compatibility_reveal → salam_exchange → wali_gate → phase_1 → phase_2 → phase_3 → family_stage → conversation.
-- **Known gap:** Family Stage is Seeker-only UI; Wali-side answering UI doesn't exist yet.
+- **Known gap:** Family Stage is Seeker-only UI; Guardian-side answering UI doesn't exist yet.
 
 ### Matches Page
 - **Location:** APP/Matches/MATCHES PAGE/Summary.md
@@ -246,18 +270,18 @@ Architecture at all. Rebuilt below.
 ### Profile Unlocks
 - **Location:** APP/Premium/Profile Unlocks/
 - **Owner:** Founder. **SoT:** Yes.
-- **Note:** Terminology corrected 2026-07-25 (Wali cannot purchase — was wrongly documented as "can"; ZYRA Basic/One not Pro/Premium/Free; 6 compatibility categories not 8).
+- **Note:** Terminology corrected 2026-07-25 (Guardian cannot purchase — was wrongly documented as "can"; ZYRA Basic/One not Pro/Premium/Free; 6 compatibility categories not 8).
 
-### Extended Wali ("WALI PREMIUM" — legacy folder name)
-- **Location:** APP/Premium/WALI PREMIUM/Summary.md
+### Guardian+ ("GUARDIAN PREMIUM" — legacy folder name)
+- **Location:** APP/Premium/GUARDIAN PREMIUM/Summary.md
 - **Owner:** Founder. **SoT:** Yes, though folder name is legacy (kept to avoid churn — content is current).
-- **Related:** APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V5, `subscriptions.plan_type = 'wali_premium'` (live schema value, not yet wired to real gating — currently a local mock toggle, `AppState.waliHasExtendedWali`).
+- **Related:** APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V6, `subscriptions.plan_type = 'wali_premium'` — real gating wired 2026-07-26 (#19) via `wali_has_extended_wali()`, replacing the local `AppState.waliHasExtendedWali` mock toggle. The four Guardian+ capabilities themselves (Network browse, Family Introduction Requests, Suggest profiles, AI Summary) remain unbuilt.
 
-### Wali Architecture *(new in V2 — missing entirely from V1)*
-- **Location:** APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V5.md
-- **Owner:** Founder. **SoT:** Yes — the authority on Wali role structure, linking, and gating.
+### Guardian Architecture *(new in V2 — missing entirely from V1)*
+- **Location:** APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V6.md
+- **Owner:** Founder. **SoT:** Yes — the authority on Guardian role structure, linking, and gating.
 - **Dependencies:** `wali_links` table, `zyra_wali_link_service.dart`.
-- **Related:** Extended Wali, DEPENDENCY COMMUNICATION.
+- **Related:** Guardian+, DEPENDENCY COMMUNICATION.
 
 ### Journey Capability Grant Rules *(new in V2)*
 - **Location:** APP/Standards/JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V3.md
@@ -276,7 +300,7 @@ Architecture at all. Rebuilt below.
 ### Subscription Transparency *(new in V2)*
 - **Location:** APP/Premium/SUBSCRIPTION TRANSPARENCY/TRANSPARENCY_CURRENT_VERSION_V1.md
 - **Owner:** Founder. **SoT:** Yes.
-- **Dependencies:** Touchpoint 2 (Wali-dependency notice) implemented 2026-07-25 in `upgrade_screen.dart`.
+- **Dependencies:** Touchpoint 2 (Guardian-dependency notice) implemented 2026-07-25 in `upgrade_screen.dart`.
 
 ### Dependency Communication *(new in V2)*
 - **Location:** APP/Premium/DEPENDENCY COMMUNICATION/DEPENDENCY_CURRENT_VERSION_V1.md
@@ -300,9 +324,9 @@ Architecture at all. Rebuilt below.
 - **Owner:** Founder. **SoT:** Yes.
 
 ### iOS Widgets
-- **Location:** APP/iOS Widgets/ (renamed 2026-07-25 from APP/WIDGETS/, OA-ZYRA-140 item 11, to disambiguate from `SOURCE/lib/widgets/` — the unrelated Flutter shared-component library, which still has no documentation of its own).
+- **Location:** APP/iOS Widgets/ (renamed 2026-07-25 from APP/WIDGETS/, OA-ZYRA-140 item 11, to disambiguate from `SOURCE/lib/widgets/` — the unrelated Flutter shared-component library).
 - **Owner:** Founder. **SoT:** Yes.
-- **Known gap:** `SOURCE/lib/widgets/` remains undocumented — flagged as a next step in the session handover.
+- **Note:** `SOURCE/lib/widgets/` is now documented — see ZYRA_WIDGET_LIBRARY_CURRENT_VERSION_V1 (SYSTEM/DOCUMENTS/), built 2026-07-26 (#18).
 
 ---
 
@@ -346,7 +370,7 @@ wins.
 | SOURCE/lib/main.dart | App entry point | |
 | SOURCE/pubspec.yaml | Flutter dependencies | |
 | SOURCE/supabase/migrations/ | Local mirror of every applied Supabase migration | Must stay in sync with the live project (`sxoaxonzjqkgajmlagyk`) |
-| SOURCE/lib/widgets/ | Shared Flutter component library — **undocumented in APP/, known gap** | |
+| SOURCE/lib/widgets/ | Shared Flutter component library — documented 2026-07-26 in ZYRA_WIDGET_LIBRARY_CURRENT_VERSION_V1 (SYSTEM/DOCUMENTS/) | |
 
 ---
 
@@ -360,16 +384,19 @@ wins.
 
 ---
 
-## 9. Structural Note — Legacy Parallel Folders
+## 9. Structural Note — Legacy Parallel Folders (RESOLVED 2026-07-26)
 
-`DEVELOPMENT_TEAM/` and `LIVE_OPERATIONS/` (repo root, alongside
-`SYSTEM/`) contain their own agent contracts, logs, and registers that
-overlap in purpose with `SYSTEM/AGENTS/`, `SYSTEM/LOGS/`, and
-`SYSTEM/OUTSTANDING_ACTIONS/`. This wasn't previously flagged anywhere
-in the documentation. Surfacing it here per TREEVIEW.md's discovery
-(2026-07-25) — not resolving it unilaterally. Needs a Founder decision:
-consolidate, formally retire one set, or confirm they serve genuinely
-different purposes.
+`DEVELOPMENT_TEAM/` and `LIVE_OPERATIONS/` previously sat at repo root
+alongside `SYSTEM/`, containing their own agent contracts, logs, and
+registers that overlapped in purpose with `SYSTEM/AGENTS/`,
+`SYSTEM/LOGS/`, and `SYSTEM/OUTSTANDING_ACTIONS/`. Flagged here per
+TREEVIEW.md's discovery (2026-07-25) as OA-ZYRA-141, pending Founder
+decision. Resolved 2026-07-26 (#26): both were confirmed dead
+scaffolding from a single 2026-06-26 session, never used again, and
+are now archived under `ARCHIVE/DEVELOPMENT_TEAM_2026-06-26/` and
+`ARCHIVE/LIVE_OPERATIONS_2026-06-26/` — see `ARCHIVE/README.md` and
+OA-ZYRA-141's Resolution note. Repo root no longer carries
+undocumented top-level folders.
 
 ---
 

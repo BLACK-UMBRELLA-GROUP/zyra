@@ -1,7 +1,7 @@
 # Search
 
-**Status:** Scope defined, not yet built
-**Updated:** 2026-07-26 (DR-ZYRA-101 audit)
+**Status:** Age-range filter built. Other attributes not yet — see below.
+**Updated:** 2026-07-26 (#21)
 
 ------------------------------------------------------------
 SCOPE DECISION
@@ -22,23 +22,32 @@ than deleted, since "Search" may still be referenced elsewhere in
 Founder-facing material.
 
 ------------------------------------------------------------
-NOT BUILT YET
+BUILT 2026-07-26 (#21)
 ------------------------------------------------------------
 
-No filter UI exists in Browse today. Candidate age is only known
-client-side after zyra_discovery_service.dart's per-candidate
-ages_for() RPC call (see the DOB/age fix, 2026-07-26) — an age-range
-filter is realistic to add as a client-side filter over that already-
-fetched data without new schema work. Other structured, filterable
-profile attributes (sect, etc.) are not currently persisted to the
-`profiles` table at all, so filtering on them would need schema work
-first.
+Age-range filter — a filter icon (tune icon, top-left of Browse;
+top-right is reserved for the Bell/Dev Access icons HomeShell overlays
+above every tab) opens a bottom sheet with an 18–70 RangeSlider. Purely
+client-side: filters the already-fetched candidate list (age already
+known per-candidate via ages_for(), no new schema/query). Resolves the
+open question this doc previously flagged ("icon on Browse's top bar,
+or a separate sheet/screen") in favour of an icon + bottom sheet, since
+Browse has no persistent top bar today (full-bleed photo, no chrome)
+and a bottom sheet matches the pattern already used elsewhere
+(searchable_list_picker.dart).
+
+Changing the filter doesn't reset the daily 50-profile view limit
+(_dailyProfileLimit) — that's a per-day counter, unrelated to
+narrowing which profiles show. A distinct "No one matches your age
+filter" empty state (with a Clear filter button) appears instead of
+the generic "You're all caught up" state when the filter, not
+genuine exhaustion, is why nothing's showing.
 
 ------------------------------------------------------------
-APPROVED TO-DO LIST
+NOT BUILT
 ------------------------------------------------------------
 
-• Design Search Filters (age range, then evaluate what else is
-  realistic given what's actually persisted server-side).
-• Decide whether filters live behind an icon on Browse's existing top
-  bar, or a separate sheet/screen.
+Other structured, filterable profile attributes (sect, etc.) are not
+currently persisted to the `profiles` table at all, so filtering on
+them would need schema work first — age was the only realistic filter
+without new schema work, per this doc's own prior scoping.

@@ -31,7 +31,7 @@ Per Product Specification V3 (AD-082 — State Integrity Principle):
 - Match does **not** consume a Journey slot
 - The result of a Match event is a **Potential Journey** — passive, no commitment required
 
-The Matches tab houses Potential Journeys. It is not a conversation inbox.
+The Matches tab houses Journey Queue. It is not a conversation inbox.
 
 ---
 
@@ -121,7 +121,7 @@ AI does not generate messaging suggestions at the Match stage. Conversation belo
 
 - Match notification: standard (names, photos, "View match" CTA)
 - Match card: photo, name, age, city, one additional detail line
-- Matches tab: list of all Potential Journeys, newest first
+- Matches tab: list of all Journey Queue, newest first
 - Can start Journey (Pre-Journey Ritual) — subject to slot availability
 - No incoming Potentials visibility (only sees mutual matches)
 - No compatibility signal in notification
@@ -133,22 +133,22 @@ AI does not generate messaging suggestions at the Match stage. Conversation belo
 - Match notification: includes one-line ZYRA Intelligence signal (no %)
 - Match card: same as Basic plus compatibility note
 - **Incoming Potentials tab** visible separately — shows all Seekers who have Liked this account, including non-mutual Likes
-- Matches tab: mutual matches only (Potential Journeys)
+- Matches tab: mutual matches only (Journey Queue)
 - Profile Plus available at Journey start (more profile detail unlocked when Active Journey begins)
-- Unlimited Potential Journeys visible (no cap)
+- Unlimited Journey Queue visible (no cap)
 
 **Incoming Potentials is a separate tab, not mixed into Matches.** Matches = mutual. Incoming Potentials = one-way Likes received.
 
 ---
 
-## Wali Behaviour
+## Guardian Behaviour
 
-Wali has no access to the Matches tab or Match notifications.
+Guardian has no access to the Matches tab or Match notifications.
 
-- Wali cannot see who the Seeker has matched with
-- Wali cannot see Potential Journeys
-- Wali cannot see Incoming Potentials
-- Wali involvement begins only when the Seeker starts an Active Journey (via Pre-Journey Ritual)
+- Guardian cannot see who the Seeker has matched with
+- Guardian cannot see Journey Queue
+- Guardian cannot see Incoming Potentials
+- Guardian involvement begins only when the Seeker starts an Active Journey (via Pre-Journey Ritual)
 
 This is consistent with the ZYRA privacy model: family involvement begins at the Journey stage, not at discovery or matching.
 
@@ -164,7 +164,7 @@ This is consistent with the ZYRA privacy model: family involvement begins at the
 | Match with a Seeker the user later blocks | Potential Journey removed. Match card disappears. |
 | Multiple new matches arrive simultaneously | Each creates its own Potential Journey. Notification shows "You have [n] new matches." Individual match cards in Matches tab. |
 | Seeker dismisses notification, then forgets | Potential Journey remains in Matches tab with "New" indicator for 48 hours. |
-| ZYRA One downgrade with Potential Journeys open | Potential Journeys remain. Incoming Potentials tab hidden. Compatibility signal removed from match cards. |
+| ZYRA One downgrade with Journey Queue open | Journey Queue remain. Incoming Potentials tab hidden. Compatibility signal removed from match cards. |
 
 ---
 
@@ -207,7 +207,7 @@ This is consistent with the ZYRA privacy model: family involvement begins at the
 | "New" indicator | 48-hour badge on unseen match cards |
 | Start Journey CTA position | On expanded match card only — not on collapsed card |
 | Conversation | Not visible at Match stage. Belongs to Active Journey. |
-| Wali | Not present at Match stage. |
+| Guardian | Not present at Match stage. |
 
 ---
 

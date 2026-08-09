@@ -6,7 +6,7 @@ FLOW DIAGRAM
 ============================================================
 
 Superseded 2026-07-12: rewritten against
-ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 and DR-076 alongside
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4 and DR-076 alongside
 Summary.md and References.md.
 
 Terminology updated 2026-07-25 (DR-ZYRA-099, caught by the

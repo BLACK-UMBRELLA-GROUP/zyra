@@ -1,6 +1,6 @@
 # ZYRA — Repository Tree View
 
-**Generated:** 2026-07-25
+**Generated:** 2026-07-26
 **Governing Reference:** DR-ZYRA-103 (repository navigation ratification)
 **Regenerate by:** directory listing, not by hand. Refresh whenever
 top-level folder structure changes; do not add commentary here — see
@@ -13,20 +13,29 @@ folders (`SOURCE/ios`, `SOURCE/android`, `SOURCE/macos`, `SOURCE/linux`,
 `SOURCE/supabase/dev_test_photos/` (100 dev-only portrait PNGs, ~370MB,
 not part of the app or its documentation).
 
+**Note (2026-07-26, OA-ZYRA-141):** The `DEVELOPMENT_TEAM/` and
+`LIVE_OPERATIONS/` root folders previously flagged here as
+undocumented legacy/parallel structures have been resolved — both were
+dead scaffolding from a single 2026-06-26 session, never used again,
+and are now archived under `ARCHIVE/DEVELOPMENT_TEAM_2026-06-26/` and
+`ARCHIVE/LIVE_OPERATIONS_2026-06-26/` (see `ARCHIVE/README.md`). Repo
+root no longer carries undocumented top-level folders.
+
 ---
 
 ```
 ZYRA/
+├── .gitignore
 ├── APP/
 │   ├── Authentication/
 │   │   └── Script/
 │   │       └── Script_V1.md
 │   ├── Browse/
-│   │   ├── Script/
-│   │   │   └── Script_V1.md
 │   │   ├── BROWSE_UX_SPEC_2026-07-25_V1.md
 │   │   ├── BROWSE_UX_SPEC_2026-07-25_V2.md
-│   │   └── BROWSE_UX_SPEC_CURRENT_VERSION_V3.md
+│   │   ├── BROWSE_UX_SPEC_CURRENT_VERSION_V3.md
+│   │   └── Script/
+│   │       └── Script_V1.md
 │   ├── Developer Mode/
 │   │   └── Script/
 │   │       ├── Script_V1.md
@@ -53,19 +62,19 @@ ZYRA/
 │   │   ├── MATCH UX/
 │   │   │   └── MATCH_UX_SPEC_CURRENT_VERSION_V1.md
 │   │   └── PROFILE DECISION SYSTEM/
-│   │       ├── Script/
 │   │       ├── Flow Diagram.md
 │   │       ├── References.md
+│   │       ├── Script/
 │   │       └── Summary.md
 │   ├── Messaging/
 │   │   └── SUMMARY.md
 │   ├── Navigation/
 │   │   └── SEEKER NAVIGATION/
+│   │       ├── Flow Diagram.md
+│   │       ├── References.md
 │   │       ├── Script/
 │   │       │   ├── Script_V1.md
 │   │       │   └── Script_V2.md
-│   │       ├── Flow Diagram.md
-│   │       ├── References.md
 │   │       └── Summary.md
 │   ├── Notifications/
 │   │   └── SUMMARY.md
@@ -73,7 +82,6 @@ ZYRA/
 │   │   ├── PROFILE COMPLETION/
 │   │   │   └── Summary.md
 │   │   └── SEEKER ONBOARDING QUESTIONS/
-│   │       ├── Script/
 │   │       ├── Chapter 3 Classification — Ch4 Mapping.md
 │   │       ├── Flow Diagram.md
 │   │       ├── Onboarding Rules & UX.md
@@ -81,6 +89,7 @@ ZYRA/
 │   │       ├── Questions Section 2 Profile Information.md
 │   │       ├── Questions Section 3 Core Compatibility.md
 │   │       ├── References.md
+│   │       ├── Script/
 │   │       └── Summary.md
 │   ├── Platform/
 │   │   └── GLOBAL_PLATFORM_PRINCIPLES_CURRENT_VERSION_V1.md
@@ -92,13 +101,13 @@ ZYRA/
 │   │   ├── DEPENDENCY COMMUNICATION/
 │   │   │   └── DEPENDENCY_CURRENT_VERSION_V1.md
 │   │   ├── Profile Unlocks/
-│   │   │   ├── Script/
 │   │   │   ├── Flow Diagram.md
 │   │   │   ├── References.md
+│   │   │   ├── Script/
 │   │   │   └── Summary.md
 │   │   ├── SUBSCRIPTION TRANSPARENCY/
 │   │   │   └── TRANSPARENCY_CURRENT_VERSION_V1.md
-│   │   └── WALI PREMIUM/
+│   │   └── GUARDIAN PREMIUM/
 │   │       └── Summary.md
 │   ├── Profiles/
 │   │   ├── Script/
@@ -128,11 +137,74 @@ ZYRA/
 │   │   ├── ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md
 │   │   └── Summary.md
 │   └── iOS Widgets/
-│       ├── Script/
 │       ├── Flow Diagram.md
 │       ├── References.md
+│       ├── Script/
 │       └── Summary.md
 ├── ARCHIVE/
+│   ├── DEVELOPMENT_TEAM_2026-06-26/
+│   │   ├── AGENTS/
+│   │   │   ├── ARCHITECT_AGENT/
+│   │   │   │   └── ARCHITECT_AGENT_CONTRACT_V1.md
+│   │   │   ├── CODE_AGENT/
+│   │   │   │   └── CODE_AGENT_CONTRACT_V1.md
+│   │   │   ├── DEPLOYMENT_AGENT/
+│   │   │   │   └── DEPLOYMENT_AGENT_CONTRACT_V1.md
+│   │   │   ├── DOCUMENTATION_AGENT/
+│   │   │   │   └── DOCUMENTATION_AGENT_CONTRACT_V1.md
+│   │   │   ├── IMPACT_ANALYSIS_AGENT/
+│   │   │   │   └── IMPACT_ANALYSIS_AGENT_CONTRACT_V1.md
+│   │   │   ├── PRODUCT_MANAGER_AGENT/
+│   │   │   │   └── PRODUCT_MANAGER_AGENT_CONTRACT_V1.md
+│   │   │   ├── QA_AGENT/
+│   │   │   │   └── QA_AGENT_CONTRACT_V1.md
+│   │   │   └── REVIEW_AGENT/
+│   │   │       └── REVIEW_AGENT_CONTRACT_V1.md
+│   │   ├── DEVELOPMENT_TEAM_GOVERNANCE_V1.md
+│   │   ├── LOGS/
+│   │   │   └── OPERATIONAL_LOG_2026-06.md
+│   │   ├── RESOURCES/
+│   │   │   ├── MEMORY/
+│   │   │   │   └── team_memory.json
+│   │   │   ├── REPORTS/
+│   │   │   │   ├── SESSION_SESSION-20260626-170013-c4d10c_2026-06-26.md
+│   │   │   │   └── SESSION_SESSION-20260626-170056-86be86_2026-06-26.md
+│   │   │   └── TEAM_STATE.md
+│   │   ├── SESSIONS/
+│   │   │   ├── SESSION-20260626-170013-c4d10c.json
+│   │   │   └── SESSION-20260626-170056-86be86.json
+│   │   ├── TEAM_INDEX_V1.md
+│   │   ├── TEAM_INTEGRATION_GUIDE_V1.md
+│   │   └── TEAM_PLAYBOOK_V1.md
+│   ├── LIVE_OPERATIONS_2026-06-26/
+│   │   ├── INCIDENTS/
+│   │   │   ├── CLOSED/
+│   │   │   ├── OPEN/
+│   │   │   └── POSTMORTEMS/
+│   │   ├── INCIDENT_REGISTER_V1.md
+│   │   ├── LIVE_OPS_GOVERNANCE_V1.md
+│   │   ├── LIVE_OPS_INDEX_V1.md
+│   │   ├── LOGS/
+│   │   │   └── OPERATIONAL_LOG_2026-06.md
+│   │   ├── MONITORING/
+│   │   │   └── CHECKS/
+│   │   │       ├── BUILD_HEALTH_V1.md
+│   │   │       ├── DOCS_HEALTH_V1.md
+│   │   │       ├── INCIDENT_HEALTH_V1.md
+│   │   │       ├── RELEASE_HEALTH_V1.md
+│   │   │       └── TEST_HEALTH_V1.md
+│   │   ├── RELEASES/
+│   │   ├── RELEASE_REGISTER_V1.md
+│   │   ├── RESOURCES/
+│   │   │   ├── LIVE_OPS_STATE.md
+│   │   │   ├── MEMORY/
+│   │   │   │   ├── health_history.json
+│   │   │   │   └── live_ops_state.json
+│   │   │   └── REPORTS/
+│   │   │       └── HEALTH_CHECK_2026-06-26_170406.md
+│   │   └── RUNBOOKS/
+│   │       └── LIVE_OPS_RUNBOOK_V1.md
+│   └── README.md
 ├── BUSINESS/
 │   ├── AI STRATEGY/
 │   │   └── Summary.md
@@ -177,73 +249,17 @@ ZYRA/
 │   └── ZYRA TERMINOLOGY/
 │       ├── References.md
 │       └── Summary.md
-├── DEVELOPMENT_TEAM/
-│   ├── AGENTS/
-│   │   ├── ARCHITECT_AGENT/
-│   │   │   └── ARCHITECT_AGENT_CONTRACT_V1.md
-│   │   ├── CODE_AGENT/
-│   │   │   └── CODE_AGENT_CONTRACT_V1.md
-│   │   ├── DEPLOYMENT_AGENT/
-│   │   │   └── DEPLOYMENT_AGENT_CONTRACT_V1.md
-│   │   ├── DOCUMENTATION_AGENT/
-│   │   │   └── DOCUMENTATION_AGENT_CONTRACT_V1.md
-│   │   ├── IMPACT_ANALYSIS_AGENT/
-│   │   │   └── IMPACT_ANALYSIS_AGENT_CONTRACT_V1.md
-│   │   ├── PRODUCT_MANAGER_AGENT/
-│   │   │   └── PRODUCT_MANAGER_AGENT_CONTRACT_V1.md
-│   │   ├── QA_AGENT/
-│   │   │   └── QA_AGENT_CONTRACT_V1.md
-│   │   └── REVIEW_AGENT/
-│   │       └── REVIEW_AGENT_CONTRACT_V1.md
-│   ├── LOGS/
-│   │   └── OPERATIONAL_LOG_2026-06.md
-│   ├── RESOURCES/
-│   │   ├── MEMORY/
-│   │   │   └── team_memory.json
-│   │   ├── REPORTS/
-│   │   │   ├── SESSION_SESSION-20260626-170013-c4d10c_2026-06-26.md
-│   │   │   └── SESSION_SESSION-20260626-170056-86be86_2026-06-26.md
-│   │   └── TEAM_STATE.md
-│   ├── SESSIONS/
-│   │   ├── SESSION-20260626-170013-c4d10c.json
-│   │   └── SESSION-20260626-170056-86be86.json
-│   ├── DEVELOPMENT_TEAM_GOVERNANCE_V1.md
-│   ├── TEAM_INDEX_V1.md
-│   ├── TEAM_INTEGRATION_GUIDE_V1.md
-│   └── TEAM_PLAYBOOK_V1.md
-├── LIVE_OPERATIONS/
-│   ├── INCIDENTS/
-│   │   ├── CLOSED/
-│   │   ├── OPEN/
-│   │   └── POSTMORTEMS/
-│   ├── LOGS/
-│   │   └── OPERATIONAL_LOG_2026-06.md
-│   ├── MONITORING/
-│   │   └── CHECKS/
-│   │       ├── BUILD_HEALTH_V1.md
-│   │       ├── DOCS_HEALTH_V1.md
-│   │       ├── INCIDENT_HEALTH_V1.md
-│   │       ├── RELEASE_HEALTH_V1.md
-│   │       └── TEST_HEALTH_V1.md
-│   ├── RELEASES/
-│   ├── RESOURCES/
-│   │   ├── MEMORY/
-│   │   │   ├── health_history.json
-│   │   │   └── live_ops_state.json
-│   │   ├── REPORTS/
-│   │   │   └── HEALTH_CHECK_2026-06-26_170406.md
-│   │   └── LIVE_OPS_STATE.md
-│   ├── RUNBOOKS/
-│   │   └── LIVE_OPS_RUNBOOK_V1.md
-│   ├── INCIDENT_REGISTER_V1.md
-│   ├── LIVE_OPS_GOVERNANCE_V1.md
-│   ├── LIVE_OPS_INDEX_V1.md
-│   └── RELEASE_REGISTER_V1.md
 ├── REPORTS/
 │   ├── CURRENT/
 │   │   └── ZYRA_FABLE_BUILD_REVIEW_2026-07-19_V1.md
 │   └── INSPECTION/
 ├── SOURCE/
+│   ├── .flutter-plugins-dependencies
+│   ├── .gitignore
+│   ├── .metadata
+│   ├── README.md
+│   ├── analysis_options.yaml
+│   ├── app.iml
 │   ├── assets/
 │   │   ├── icon/
 │   │   │   └── icon.png
@@ -255,10 +271,13 @@ ZYRA/
 │   │   │   ├── oauth_config.dart.example
 │   │   │   ├── supabase_config.dart
 │   │   │   └── supabase_config.dart.example
+│   │   ├── constants/
+│   │   │   └── zyra_plan_names.dart
 │   │   ├── data/
 │   │   │   ├── chapter3_categories.dart
 │   │   │   ├── journey_questions.dart
 │   │   │   └── mock_reference_lists.dart
+│   │   ├── main.dart
 │   │   ├── models/
 │   │   │   ├── journey_match.dart
 │   │   │   ├── onboarding_question.dart
@@ -266,11 +285,14 @@ ZYRA/
 │   │   ├── screens/
 │   │   │   ├── auth/
 │   │   │   │   └── role_selection_screen.dart
+│   │   │   ├── auth_gate.dart
 │   │   │   ├── browse/
 │   │   │   │   ├── browse_screen.dart
 │   │   │   │   └── match_notification_screen.dart
 │   │   │   ├── chat/
 │   │   │   │   └── chat_screen.dart
+│   │   │   ├── connections/
+│   │   │   │   └── connections_screen.dart
 │   │   │   ├── dev/
 │   │   │   │   └── developer_access_screen.dart
 │   │   │   ├── home/
@@ -278,8 +300,9 @@ ZYRA/
 │   │   │   ├── journey/
 │   │   │   │   └── journey_flow_screen.dart
 │   │   │   ├── matches/
-│   │   │   │   ├── journey_timeline_screen.dart
-│   │   │   │   └── matches_screen.dart
+│   │   │   │   └── journey_timeline_screen.dart
+│   │   │   ├── notifications/
+│   │   │   │   └── notifications_screen.dart
 │   │   │   ├── onboarding/
 │   │   │   │   ├── category_summary_screen.dart
 │   │   │   │   ├── chapter2_flow.dart
@@ -291,49 +314,61 @@ ZYRA/
 │   │   │   │   └── values_preferences_flow.dart
 │   │   │   ├── profile/
 │   │   │   │   └── profile_screen.dart
+│   │   │   ├── settings/
+│   │   │   │   ├── help_support_screen.dart
+│   │   │   │   ├── notification_settings_screen.dart
+│   │   │   │   └── privacy_settings_screen.dart
 │   │   │   ├── subscription/
 │   │   │   │   └── upgrade_screen.dart
-│   │   │   ├── wali/
+│   │   │   ├── guardian/
 │   │   │   │   ├── accept_wali_invite_screen.dart
 │   │   │   │   ├── link_wali_screen.dart
+│   │   │   │   ├── seeker_wali_tab.dart
 │   │   │   │   ├── wali_dashboard_screen.dart
 │   │   │   │   ├── wali_home_shell.dart
 │   │   │   │   ├── wali_invite_seeker_screen.dart
+│   │   │   │   ├── wali_journey_detail_screen.dart
 │   │   │   │   ├── wali_network_screen.dart
 │   │   │   │   ├── wali_onboarding_flow.dart
 │   │   │   │   ├── wali_profile_screen.dart
 │   │   │   │   └── wali_seekers_screen.dart
-│   │   │   ├── auth_gate.dart
 │   │   │   └── welcome_screen.dart
 │   │   ├── services/
 │   │   │   ├── compatibility_scoring.dart
 │   │   │   ├── zyra_auth.dart
 │   │   │   ├── zyra_discovery_service.dart
+│   │   │   ├── zyra_entitlement_service.dart
 │   │   │   ├── zyra_journey_service.dart
 │   │   │   ├── zyra_match_service.dart
+│   │   │   ├── zyra_notification_service.dart
 │   │   │   ├── zyra_onboarding_answers_service.dart
 │   │   │   ├── zyra_photo_service.dart
 │   │   │   ├── zyra_profile_service.dart
 │   │   │   ├── zyra_session_router.dart
+│   │   │   ├── zyra_wali_journey_service.dart
 │   │   │   └── zyra_wali_link_service.dart
 │   │   ├── state/
 │   │   │   └── app_state.dart
 │   │   ├── theme/
 │   │   │   ├── zyra_colors.dart
 │   │   │   └── zyra_text.dart
-│   │   ├── widgets/
-│   │   │   ├── dev_nav_overlay.dart
-│   │   │   ├── fab_continue_button.dart
-│   │   │   ├── flexibility_choice.dart
-│   │   │   ├── floating_nav_bar.dart
-│   │   │   ├── glass_icon_button.dart
-│   │   │   ├── onboarding_scaffold.dart
-│   │   │   ├── onboarding_top_bar.dart
-│   │   │   ├── privacy_indicator.dart
-│   │   │   ├── searchable_list_picker.dart
-│   │   │   └── zyra_state_widgets.dart
-│   │   └── main.dart
+│   │   └── widgets/
+│   │       ├── dev_nav_overlay.dart
+│   │       ├── fab_continue_button.dart
+│   │       ├── flexibility_choice.dart
+│   │       ├── floating_nav_bar.dart
+│   │       ├── glass_icon_button.dart
+│   │       ├── notification_bell.dart
+│   │       ├── onboarding_scaffold.dart
+│   │       ├── onboarding_top_bar.dart
+│   │       ├── privacy_indicator.dart
+│   │       ├── searchable_list_picker.dart
+│   │       └── zyra_state_widgets.dart
+│   ├── pubspec.lock
+│   ├── pubspec.yaml
 │   ├── supabase/
+│   │   ├── insert_dev_photos.sql
+│   │   ├── insert_retry_photos.sql
 │   │   ├── migrations/
 │   │   │   ├── 20260718190011_initial_schema.sql
 │   │   │   ├── 20260718190033_harden_update_updated_at_search_path.sql
@@ -351,33 +386,69 @@ ZYRA/
 │   │   │   ├── 20260719080735_security_hardening_wali_and_invites.sql
 │   │   │   ├── 20260719080749_private_profile_photos_bucket.sql
 │   │   │   ├── 20260725183415_add_potential_match_status_and_journey_stage.sql
-│   │   │   └── 20260725183724_pre_journey_ritual_tables.sql
-│   │   ├── insert_dev_photos.sql
-│   │   ├── insert_retry_photos.sql
+│   │   │   ├── 20260725183724_pre_journey_ritual_tables.sql
+│   │   │   ├── 20260726120000_hide_raw_dob_expose_age.sql
+│   │   │   ├── 20260726120100_wali_invites_expiry.sql
+│   │   │   ├── 20260726120200_compatibility_scoring_security_definer.sql
+│   │   │   ├── 20260726120300_restrict_ages_for_and_score_candidates_to_authenticated.sql
+│   │   │   ├── 20260726120400_fix_expire_wali_invite_search_path.sql
+│   │   │   ├── 20260726130000_wali_journey_visibility.sql
+│   │   │   ├── 20260726140000_notifications.sql
+│   │   │   ├── 20260726140100_lock_down_notification_internal_functions.sql
+│   │   │   ├── 20260726140200_notify_new_message_revoke_public.sql
+│   │   │   ├── 20260726150000_journey_ended_cooling_period_and_restart.sql
+│   │   │   ├── 20260726150100_restart_journey_revoke_anon.sql
+│   │   │   ├── 20260726160000_wali_extended_wali_real_gating.sql
+│   │   │   ├── 20260726160100_mock_set_wali_plan.sql
+│   │   │   └── 20260726170000_delete_own_account.sql
 │   │   ├── retry_failed_photos.sh
 │   │   ├── seed_dev_accounts.sql
 │   │   └── upload_fake_photos.sh
-│   ├── test/
-│   │   └── widget_test.dart
-│   ├── .flutter-plugins-dependencies
-│   ├── .gitignore
-│   ├── .metadata
-│   ├── README.md
-│   ├── analysis_options.yaml
-│   ├── app.iml
-│   ├── pubspec.lock
-│   └── pubspec.yaml
+│   └── test/
+│       └── widget_test.dart
 └── SYSTEM/
     ├── AGENTS/
     │   ├── ARCHIVE/
-    │   │   ├── DOCUMENTATION_AGENT/ (5 archived versions)
-    │   │   ├── IMPACT_ANALYSIS_AGENT/ (3 archived versions)
-    │   │   ├── INSPECTION_AGENT/ (3 archived versions)
-    │   │   ├── OUTPUT_REVIEW_AGENT/ (3 archived versions)
-    │   │   ├── PROJECT_READINESS_AGENT/ (3 archived versions)
-    │   │   ├── REPORTING_AGENT/ (5 archived versions)
-    │   │   ├── REPOSITORY_AGENT/ (5 archived versions)
-    │   │   └── RESOLUTION_CLASSIFIER/ (5 archived versions)
+    │   │   ├── DOCUMENTATION_AGENT/
+    │   │   │   ├── DOCUMENTATION_AGENT_PROJECT_ZYRA_2026-06-22_V1.md
+    │   │   │   ├── DOCUMENTATION_AGENT_PROJECT_ZYRA_2026-06-22_V2.md
+    │   │   │   ├── DOCUMENTATION_AGENT_PROJECT_ZYRA_2026-06-22_V3.md
+    │   │   │   ├── DOCUMENTATION_AGENT_PROJECT_ZYRA_V2.md
+    │   │   │   └── DOCUMENTATION_AGENT_PROJECT_ZYRA_V3.md
+    │   │   ├── IMPACT_ANALYSIS_AGENT/
+    │   │   │   ├── IMPACT_ANALYSIS_AGENT_PROJECT_ZYRA_2026-06-22_V1.md
+    │   │   │   ├── IMPACT_ANALYSIS_AGENT_PROJECT_ZYRA_2026-06-22_V2.md
+    │   │   │   └── IMPACT_ANALYSIS_AGENT_PROJECT_ZYRA_V2.md
+    │   │   ├── INSPECTION_AGENT/
+    │   │   │   ├── INSPECTION_AGENT_PROJECT_ZYRA_2026-06-22_V1.md
+    │   │   │   ├── INSPECTION_AGENT_PROJECT_ZYRA_2026-06-22_V2.md
+    │   │   │   └── INSPECTION_AGENT_PROJECT_ZYRA_V2.md
+    │   │   ├── OUTPUT_REVIEW_AGENT/
+    │   │   │   ├── OUTPUT_REVIEW_AGENT_PROJECT_ZYRA_2026-06-22_V1.md
+    │   │   │   ├── OUTPUT_REVIEW_AGENT_PROJECT_ZYRA_2026-06-22_V2.md
+    │   │   │   └── OUTPUT_REVIEW_AGENT_PROJECT_ZYRA_V2.md
+    │   │   ├── PROJECT_READINESS_AGENT/
+    │   │   │   ├── PROJECT_READINESS_AGENT_2026-06-22_V1.md
+    │   │   │   ├── PROJECT_READINESS_AGENT_2026-06-22_V2.md
+    │   │   │   └── PROJECT_READINESS_AGENT_V2.md
+    │   │   ├── REPORTING_AGENT/
+    │   │   │   ├── REPORTING_AGENT_PROJECT_ZYRA_2026-06-22_V1.md
+    │   │   │   ├── REPORTING_AGENT_PROJECT_ZYRA_2026-06-22_V2.md
+    │   │   │   ├── REPORTING_AGENT_PROJECT_ZYRA_2026-06-22_V3.md
+    │   │   │   ├── REPORTING_AGENT_PROJECT_ZYRA_V2.md
+    │   │   │   └── REPORTING_AGENT_PROJECT_ZYRA_V3.md
+    │   │   ├── REPOSITORY_AGENT/
+    │   │   │   ├── REPOSITORY_AGENT_PROJECT_ZYRA_2026-06-22_V1.md
+    │   │   │   ├── REPOSITORY_AGENT_PROJECT_ZYRA_2026-06-22_V2.md
+    │   │   │   ├── REPOSITORY_AGENT_PROJECT_ZYRA_2026-06-22_V3.md
+    │   │   │   ├── REPOSITORY_AGENT_PROJECT_ZYRA_V2.md
+    │   │   │   └── REPOSITORY_AGENT_PROJECT_ZYRA_V3.md
+    │   │   └── RESOLUTION_CLASSIFIER/
+    │   │       ├── RESOLUTION_CLASSIFIER_PROJECT_ZYRA_2026-06-22_V1.md
+    │   │       ├── RESOLUTION_CLASSIFIER_PROJECT_ZYRA_2026-06-22_V2.md
+    │   │       ├── RESOLUTION_CLASSIFIER_PROJECT_ZYRA_2026-06-22_V3.md
+    │   │       ├── RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V2.md
+    │   │       └── RESOLUTION_CLASSIFIER_PROJECT_ZYRA_V3.md
     │   ├── DOCUMENTATION_AGENT/
     │   │   └── DOCUMENTATION_AGENT_PROJECT_ZYRA_V4.md
     │   ├── IMPACT_ANALYSIS_AGENT/
@@ -397,9 +468,11 @@ ZYRA/
     ├── DECISIONS_REGISTER/
     │   └── DECISIONS_V1.md
     ├── DOCUMENTS/
+    │   ├── ADVANCEMENT_CONDITIONS_CURRENT_VERSION_V1.md
     │   ├── ARCHIVE/
     │   │   ├── SUMMARY_STANDARD_2026-07-19_V1.md
     │   │   ├── SUMMARY_STANDARD_2026-07-19_V2.md
+    │   │   ├── ZYRA_DOCUMENTATION_INDEX_2026-07-25_V1.md
     │   │   ├── ZYRA_EXECUTION_2026-07-19_V1.md
     │   │   ├── ZYRA_EXECUTION_2026-07-19_V2.md
     │   │   ├── ZYRA_PRODUCT_SPEC_2026-06-27_V1.md
@@ -412,43 +485,33 @@ ZYRA/
     │   │   ├── NAMING_CONVENTIONS_V1.md
     │   │   ├── SUMMARY_STANDARD_CURRENT_VERSION_V3.md
     │   │   └── ZYRA_STANDARDS_LIBRARY_V1.md
-    │   ├── ADVANCEMENT_CONDITIONS_CURRENT_VERSION_V1.md
     │   ├── PROJECT_OVERVIEW_V1.md
     │   ├── TERMINOLOGY_STANDARDS_V1.md
-    │   ├── TREEVIEW.md  ← this file
+    │   ├── TREEVIEW.md
     │   ├── ZYRA_ARCHITECTURE_CURRENT_VERSION_V2.md
     │   ├── ZYRA_DATABASE_SCHEMA_CURRENT_VERSION_V1.md
-    │   ├── ZYRA_DOCUMENTATION_INDEX_V1.md
+    │   ├── ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V2.md
     │   ├── ZYRA_INFRASTRUCTURE_STACK_V1.md
-    │   └── ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3.md
+    │   ├── ZYRA_PRODUCT_SPEC_2026-07-26_V3.md
+    │   ├── ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4.md
+    │   └── ZYRA_WIDGET_LIBRARY_CURRENT_VERSION_V1.md
     ├── LOGS/
     │   ├── CHANGELOG_2026-07.md
     │   └── OPERATIONAL_LOG_2026-06.md
     ├── OUTSTANDING_ACTIONS/
     │   ├── OUTSTANDING_ACTIONS_2026-06-20_V1.md
     │   └── OUTSTANDING_ACTIONS_V2.md
-    ├── RESOURCES/
-    │   ├── MEMORY/
-    │   │   ├── org_state.json
-    │   │   └── run_memory.json
-    │   ├── REPORTS/
-    │   │   ├── ESCALATIONS_2026-06-26_0B4DA7B7.md
-    │   │   ├── ESCALATIONS_2026-06-26_BD84F2E9.md
-    │   │   └── ZYRA_TERMINOLOGY_PRICING_AUDIT_2026-07-12_V1.md
-    │   ├── TEMPORARY/
-    │   │   ├── CHATGPT_REPLY_REPO_NAVIGATION_2026-07-25.md
-    │   │   ├── SESSION_HANDOVER_2026-07-25.md
-    │   │   └── ZYRA_PROJECT_CHECK_HANDOVER_2026-06-27.md
-    │   └── ORGANISATION_STATE.md
+    └── RESOURCES/
+        ├── MEMORY/
+        │   ├── org_state.json
+        │   └── run_memory.json
+        ├── ORGANISATION_STATE.md
+        ├── REPORTS/
+        │   ├── ESCALATIONS_2026-06-26_0B4DA7B7.md
+        │   ├── ESCALATIONS_2026-06-26_BD84F2E9.md
+        │   └── ZYRA_TERMINOLOGY_PRICING_AUDIT_2026-07-12_V1.md
+        └── TEMPORARY/
+            ├── CHATGPT_REPLY_REPO_NAVIGATION_2026-07-25.md
+            ├── SESSION_HANDOVER_2026-07-25.md
+            └── ZYRA_PROJECT_CHECK_HANDOVER_2026-06-27.md
 ```
-
----
-
-*Two folders exist at repo root that are legacy/parallel structures,
-not part of the current `SYSTEM/` governance model, and are flagged
-here rather than silently included: `DEVELOPMENT_TEAM/` and
-`LIVE_OPERATIONS/` both contain their own agent contracts, logs, and
-registers that pre-date or duplicate `SYSTEM/AGENTS/`, `SYSTEM/LOGS/`,
-and `SYSTEM/OUTSTANDING_ACTIONS/`. This is exactly the kind of
-structural ambiguity TREEVIEW.md is meant to surface, not resolve —
-flagging for Founder attention, not fixing unilaterally.*

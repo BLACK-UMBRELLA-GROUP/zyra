@@ -246,7 +246,7 @@ Canonical cross-cutting facts (e.g. subscription tiers, relationship
 states) belong in the Master Product Spec or the owning BUSINESS Summary
 (see §5.2, the ownership test) and get **cited** by other Summaries —
 never restated inline. Restating a fact that belongs to a higher layer is
-what allowed the 2026-06-27 Project Check drift (Wali Premium / Profile
+what allowed the 2026-06-27 Project Check drift (Guardian Premium / Profile
 Decision System vs. Product Spec V2) and OA-ZYRA-133 (2026-07-19) to
 happen: each restated a fact instead of citing the document that actually
 owned it, and both drifted out of sync with the source when it changed.

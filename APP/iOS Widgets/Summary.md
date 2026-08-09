@@ -56,7 +56,7 @@ Small Widgets
 Medium Widgets
 ------------------------------------------------------------
   • Activity summary
-  • Wali dashboard
+  • Guardian dashboard
   • Match recommendations
   • Marriage journey progress
 
@@ -100,7 +100,7 @@ RELATED FEATURES
     but do not replace them
   • Profile Decision System — decisions always in-app,
     never from widget
-  • Wali Navigation — Wali dashboard widget depends on
+  • Guardian Navigation — Guardian dashboard widget depends on
     this feature being defined first
 
 
@@ -129,7 +129,7 @@ APPROVED FUTURE WORK
   • Review individual widget designs during UI/UX phase.
   • Define deep link routing from each widget type.
   • Confirm iOS WidgetKit refresh strategy.
-  • Wali dashboard widget requires Wali Navigation feature
+  • Guardian dashboard widget requires Guardian Navigation feature
     to be defined before widget design can begin.
   • Confirm which widgets require user authentication state.
 

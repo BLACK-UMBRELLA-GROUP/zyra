@@ -20,6 +20,7 @@
 // logic today. Worth cleaning up before a real launch.
 
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:image_picker/image_picker.dart';
 import '../main.dart';
 import 'zyra_auth.dart';
@@ -50,15 +51,135 @@ class ZyraPhotoService {
   /// for other users' photos as well as the user's own. Returns an
   /// empty list on any failure — callers already treat "no photos" as
   /// a skip/fallback case, never an error.
+  /// FIXED 2026-08-05 (Founder: "still on Browse page I'm not getting
+  /// profiles… 50 men 50 women, I'm not seeing anything").
+  ///
+  /// ROOT CAUSE. Browse signs every candidate's photos in ONE batched call
+  /// and then slices the results back out by position, so it requires the
+  /// returned list to be exactly as long as the list it sent — if it isn't,
+  /// `fetchCandidates` deliberately shows nothing rather than risk pairing
+  /// the wrong photo with the wrong person.
+  ///
+  /// The 100 seeded test profiles reuse the same ~99 real storage objects,
+  /// so a full deck asks for ~290 paths of which most are DUPLICATES.
+  /// Deduplicating server-side returns fewer rows than were sent, the
+  /// length check fails, and every candidate is dropped — an empty Browse
+  /// with a perfectly healthy database behind it.
+  ///
+  /// The fix belongs here, not in the seed data: a caller asking for the
+  /// same path twice should get the same URL twice. Unique paths are signed
+  /// once, chunked so a large deck cannot exceed a request limit, then
+  /// expanded back to the caller's exact order and length. Still
+  /// all-or-nothing — a missing path returns empty rather than a
+  /// misaligned list.
   static Future<List<String>> signedUrlsFor(List<String> storagePaths) async {
     if (storagePaths.isEmpty) return const [];
     try {
-      final signed = await supabase.storage.from(_bucket).createSignedUrls(storagePaths, _signedUrlExpirySeconds);
-      return signed.map((s) => s.signedUrl).toList();
-    } catch (_) {
+      final unique = storagePaths.toSet().toList();
+      final byPath = <String, String>{};
+      const chunkSize = 80;
+
+      for (var start = 0; start < unique.length; start += chunkSize) {
+        final end = (start + chunkSize) > unique.length ? unique.length : start + chunkSize;
+        final slice = unique.sublist(start, end);
+        // createSignedUrlsResult is the successor and handles missing paths
+        // per-item; adopting it changes this method's error behaviour and
+        // needs a device test with real photos. Tracked for Opus.
+        // ignore: deprecated_member_use
+        final signed = await supabase.storage.from(_bucket).createSignedUrls(slice, _signedUrlExpirySeconds);
+        if (signed.length != slice.length) {
+          debugPrint('ZYRA: signedUrlsFor — asked for ${slice.length} unique '
+              'paths, got ${signed.length}. Returning none.');
+          return const [];
+        }
+        for (var i = 0; i < slice.length; i++) {
+          byPath[slice[i]] = signed[i].signedUrl;
+        }
+      }
+
+      // Only the paths that resolved. A caller wanting positional
+      // correspondence is asking the wrong question — see signedUrlMap().
+      final out = <String>[];
+      for (final p in storagePaths) {
+        final url = byPath[p];
+        if (url != null) out.add(url);
+      }
+      if (out.length != storagePaths.length) {
+        debugPrint('ZYRA: signedUrlsFor — resolved ${out.length} of '
+            '${storagePaths.length} paths; the rest are skipped.');
+      }
+      return out;
+    } catch (e) {
+      debugPrint('ZYRA: signedUrlsFor failed — $e');
       return const [];
     }
   }
+
+  /// Path → signed URL, for callers signing several people's photos at once.
+  ///
+  /// ADDED 2026-08-05 (Founder: "still no profiles showing up… please do a
+  /// deep fix"). The previous design returned a positional LIST, so Browse
+  /// signed every candidate's photos in one call and sliced the results back
+  /// out by index. That only works if the returned list is exactly as long
+  /// as the one sent — and made the whole deck hostage to a single bad path:
+  /// one unresolvable photo, and 69 healthy candidates all disappeared.
+  ///
+  /// Returning a map removes the coupling entirely. Callers look up each
+  /// path by name, a photo that fails to sign is simply not shown, and a
+  /// person is only dropped if NONE of their photos resolve. Failure is now
+  /// proportional to what actually failed.
+  ///
+  /// Never throws and never returns null — an empty map means nothing
+  /// resolved, which callers already treat as "no photos".
+  static Future<Map<String, String>> signedUrlMap(List<String> storagePaths) async {
+    if (storagePaths.isEmpty) return const {};
+    final byPath = <String, String>{};
+    final unique = storagePaths.toSet().toList();
+
+    // 40, not 80, and never a per-path fallback. An earlier version fell
+    // back to signing each path individually when a batch came up short —
+    // which, on a full deck, meant up to 80 separate HTTP calls in a burst.
+    // That is the surest way to get rate-limited, i.e. it made the failure
+    // it was trying to recover from more likely. Two calm attempts per
+    // chunk, with a pause between, is both gentler and more effective.
+    const chunkSize = 40;
+
+    for (var start = 0; start < unique.length; start += chunkSize) {
+      final end = (start + chunkSize) > unique.length ? unique.length : start + chunkSize;
+      final slice = unique.sublist(start, end);
+
+      for (var attempt = 0; attempt < 2; attempt++) {
+        if (attempt > 0) {
+          await Future<void>.delayed(const Duration(milliseconds: 400));
+        }
+        try {
+          // ignore: deprecated_member_use
+          final signed = await supabase.storage.from(_bucket).createSignedUrls(slice, _signedUrlExpirySeconds);
+          // Positional correlation is only safe when every path came back —
+          // the slice is deduplicated, so a short result means something was
+          // dropped and we can no longer say which. Retry rather than guess.
+          if (signed.length == slice.length) {
+            for (var i = 0; i < slice.length; i++) {
+              byPath[slice[i]] = signed[i].signedUrl;
+            }
+            break;
+          }
+          debugPrint('ZYRA: signedUrlMap — asked for ${slice.length}, got '
+              '${signed.length}${attempt == 0 ? ", retrying" : ", giving up on this chunk"}.');
+        } catch (e) {
+          debugPrint('ZYRA: signedUrlMap — chunk failed'
+              '${attempt == 0 ? ", retrying" : ", giving up on this chunk"}. $e');
+        }
+      }
+    }
+
+    if (byPath.length != unique.length) {
+      debugPrint('ZYRA: signedUrlMap — signed ${byPath.length} of '
+          '${unique.length} unique paths.');
+    }
+    return byPath;
+  }
+
 
   /// Opens the device photo library and uploads the chosen image.
   /// Distinguishes "user cancelled picking" from "upload actually

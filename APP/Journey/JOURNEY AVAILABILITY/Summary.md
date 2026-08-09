@@ -8,7 +8,7 @@ SUMMARY
 
 Purpose:
 Defines how Journey slots work, how ZYRA determines which
-Potential Journeys are eligible to begin, and how the AI
+Journey Queue are eligible to begin, and how the AI
 recommends the next Journey.
 
 ------------------------------------------------------------
@@ -18,7 +18,7 @@ CORE PRINCIPLE
 Users may have:
 • Many Likes
 • Many Matches
-• Many Potential Journeys
+• Many Journey Queue
 
 Users may only have:
 • One Active Journey at a time
@@ -36,7 +36,7 @@ While in an Active Journey, users can still:
 • Save profiles
 • Receive Likes
 • Receive Matches
-• Continue building a list of Potential Journeys
+• Continue building a list of Journey Queue
 
 However, users cannot:
 • Start a second Active Journey
@@ -53,7 +53,7 @@ When two users match, they become a Potential Journey.
 A Potential Journey is a mutual match that has not yet
 become an Active Journey.
 
-Potential Journeys remain available until they either:
+Journey Queue remain available until they either:
 • Become an Active Journey
 • Are removed by either user
 • Become temporarily unavailable
@@ -79,7 +79,7 @@ A Journey Slot may become available when:
 • A Journey is stepped back from / placed on hold
 • Other future Journey states free the slot
 
-Once available, ZYRA evaluates which Potential Journeys
+Once available, ZYRA evaluates which Journey Queue
 are currently eligible.
 
 ------------------------------------------------------------
@@ -96,7 +96,7 @@ Eligibility may consider:
 • Future compatibility factors
 
 Example:
-  Potential Journeys:
+  Journey Queue:
   • Yusuf   (currently in a Journey)    — not eligible
   • Ibrahim (available)                 — eligible
   • Omar    (inactive)                  — not eligible
@@ -134,8 +134,8 @@ no from elsewhere in the product.
 | Not Eligible — Account Paused | 🔴 Unavailable |
 | Not Eligible — Account Hidden/Inactive | 🔴 Unavailable |
 
-Example, in the Potential Journeys list:
-  Potential Journeys (9)
+Example, in the Journey Queue list:
+  Journey Queue (9)
   🟢 Aisha — Available
   🟡 Maryam — Currently in an Active Journey
 
@@ -273,6 +273,17 @@ Journey slots. Keeps the pool moving naturally.
 ------------------------------------------------------------
 ENDED JOURNEY — RULES
 ------------------------------------------------------------
+
+**Built 2026-07-26 (#17):** the "no block" path below is real —
+SOURCE/supabase/migrations/20260726150000_journey_ended_cooling_
+period_and_restart.sql (restart_journey RPC, enforces the 24h
+cooling period + one-Active-Journey limit server-side),
+screens/journey/journey_flow_screen.dart's _EndedView (live countdown,
+Restart button once elapsed), and connections_screen.dart's new ENDED
+section (greyed, at the bottom of the Matched list — previously ended
+matches weren't shown anywhere at all). The "ended WITH a block" path
+is NOT built — there is no blocking mechanism anywhere in this schema
+yet (no blocks table, no block flag); that's a separate, larger gap.
 
 When a Journey ends (no block / no report):
 • 24-hour cooling period begins (no actions possible).

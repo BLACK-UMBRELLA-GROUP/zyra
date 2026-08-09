@@ -40,7 +40,7 @@ ZYRA is an Islamic marriage app (Flutter + Supabase). Repo root:
 folder — an independent git repo.
 
 - **Specs / product decisions:** `APP/` (organised by feature area —
-  Onboarding, Browse, Matching, Journey, Wali, Premium, etc.)
+  Onboarding, Browse, Matching, Journey, Guardian, Premium, etc.)
 - **Business/brand docs:** `BUSINESS/` (pricing, terminology glossary,
   naming)
 - **Code:** `SOURCE/` (Flutter app, `lib/`; Supabase migrations,
@@ -79,12 +79,12 @@ folder — an independent git repo.
 | dev.seeker.basic.f@zyra.test | Maryam | seeker | ZYRA Basic (linked to Ibrahim) |
 | dev.seeker.one.m@zyra.test | Yusuf | seeker | ZYRA One (linked to Khadija) |
 | dev.seeker.one.f@zyra.test | Aisha | seeker | ZYRA One |
-| dev.wali@zyra.test | Ibrahim | wali | Basic + One/Extended variant (same account, `extendedWali` local mock toggle) |
-| dev.wali.f@zyra.test | Khadija | wali | Basic + One/Extended variant (same account, same mock toggle) |
+| dev.guardian@zyra.test | Ibrahim | guardian | Basic + One/Extended variant (same account, `extendedWali` local mock toggle) |
+| dev.guardian.f@zyra.test | Khadija | guardian | Basic + One/Extended variant (same account, same mock toggle) |
 
 Switch between these via the in-app **Developer Access** screen
 (reachable pre-auth from Welcome, and via a build icon top-right once
-inside the app). 4 Wali presets (male/female × Basic/One), 4 Seeker
+inside the app). 4 Guardian presets (male/female × Basic/One), 4 Seeker
 presets (male/female × Basic/One).
 
 ### Fake Browse-candidate profiles (password `ZyraFake!2026`)
@@ -131,8 +131,8 @@ sandbox shell directly.
   2026-07-25 so a second mutual Consider is no longer silently
   dropped if the user already has one Active Journey.
 - **Full Pre-Journey Ritual** (`journey_flow_screen.dart`): Compatibility
-  Reveal, Salam Exchange, Wali Gate, Phases 1–3 (fixed-order questions,
-  private ratings, Continue/End checkpoint), Family Stage (Wali→Seeker
+  Reveal, Salam Exchange, Guardian Gate, Phases 1–3 (fixed-order questions,
+  private ratings, Continue/End checkpoint), Family Stage (Guardian→Seeker
   direction only).
 - **Journey Suspension** (Pause/Resume/End): full RPCs
   (`suspend_journey`/`resume_journey`/`end_journey`), ZYRA One-gated,
@@ -143,17 +143,17 @@ sandbox shell directly.
   its live wiring into Browse (DR-ZYRA-084). Neutral 50% fallback when
   scoring data is unavailable.
 - Gender-based theming (Blue/male, Pink/female, neutral Purple
-  pre-auth) wired everywhere a signed-in Seeker/Wali is shown a
+  pre-auth) wired everywhere a signed-in Seeker/Guardian is shown a
   screen.
-- Wali linking (real invite-token flow), Wali dashboard/seekers/
+- Guardian linking (real invite-token flow), Guardian dashboard/seekers/
   network/profile tabs.
 - Floating nav bar: Browse/Matches/Profile (Seeker), Dashboard/
-  Seekers/Network/Profile (Wali) — deliberately different, per spec.
+  Seekers/Network/Profile (Guardian) — deliberately different, per spec.
   **Now drag/scrub-enabled**: press-and-slide across the bar switches
   tabs live, following the finger directly (no animation lag while
   touching).
 - Subscription Transparency Touchpoint 2 (the "Before you subscribe"
-  Wali-dependency notice) built into the Upgrade screen.
+  Guardian-dependency notice) built into the Upgrade screen.
 
 **Known, deliberate gaps (flagged in code/docs, not silently
 skipped):**
@@ -162,8 +162,8 @@ skipped):**
 - No push notification system anywhere in the app.
 - No 30-day Suspension auto-end timer (needs a server-side scheduled
   job).
-- No Wali-side UI for the Family Stage (Seeker only answers their own
-  side; Wali↔Wali is TBC per the source spec itself).
+- No Guardian-side UI for the Family Stage (Seeker only answers their own
+  side; Guardian↔Guardian is TBC per the source spec itself).
 - No 24-hour cooling period after End Journey.
 - No real payment processing — Upgrade screen flips a local mock
   entitlement only.
@@ -171,7 +171,7 @@ skipped):**
 - `SOURCE/lib/widgets/` (shared Flutter component library) has no
   documentation of its own anywhere in `APP/`.
 - `subscriptions.plan_type` has a real `wali_premium` value in the
-  schema that nothing reads yet — Extended Wali gating is still a
+  schema that nothing reads yet — Extended Guardian gating is still a
   local `AppState.waliHasExtendedWali` mock toggle, not server-driven.
 
 ---
@@ -216,13 +216,13 @@ Nothing is mid-flight — the last completed unit of work was the fake
 Browse-candidate photo population. Good next steps, in rough priority
 order, all previously surfaced but not yet built:
 
-1. Wali-side Family Stage answering UI (currently Seeker-only).
+1. Guardian-side Family Stage answering UI (currently Seeker-only).
 2. A real notification system (blocks several Journey/Suspension
    requirements that are currently silently skipped).
 3. The 24-hour cooling period after End Journey.
 4. Documentation for `SOURCE/lib/widgets/`.
 5. Wiring `subscriptions.plan_type = 'wali_premium'` into real
-   Extended Wali gating (replacing the local mock toggle).
+   Extended Guardian gating (replacing the local mock toggle).
 6. Real payment processing (App Store / Play Store IAP, or Stripe for
    web) — currently entirely mocked.
 

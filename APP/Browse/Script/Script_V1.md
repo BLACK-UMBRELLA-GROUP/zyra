@@ -197,7 +197,7 @@ Demo Profiles currently apply only to:
 • Male Seeker
 • Female Seeker
 
-Ignore Wali accounts.
+Ignore Guardian accounts.
 
 ============================================================
 PROFILE IMAGE FAILSAFE

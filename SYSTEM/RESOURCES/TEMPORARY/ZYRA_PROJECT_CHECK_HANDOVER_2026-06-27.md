@@ -30,7 +30,7 @@ This handover gives you the full context for each issue.
 | ZYRA_ARCHITECTURE_CURRENT_VERSION_V2.md | Technical architecture | Approved |
 | ZYRA_DATABASE_SCHEMA_CURRENT_VERSION_V1.md | Database schema | Approved — awaiting Supabase setup |
 | APP/Matching/PROFILE DECISION SYSTEM/Summary.md | Feature spec | Stale — pre-dates Product Spec V2 |
-| APP/Premium/WALI PREMIUM/Summary.md | Feature spec | Stale — pre-dates Product Spec V2 |
+| APP/Premium/GUARDIAN PREMIUM/Summary.md | Feature spec | Stale — pre-dates Product Spec V2 |
 | APP/Matches/MATCHES PAGE/Summary.md | Feature spec | Partially stale |
 | SYSTEM/DOCUMENTS/TERMINOLOGY_STANDARDS_V1.md | Approved vocabulary | Needs audit against Product Spec V2 |
 
@@ -42,7 +42,7 @@ This handover gives you the full context for each issue.
 **What Product Spec V2 says:**
 ZYRA has a 2-tier subscription model:
 - Seeker Basic (Free) / Seeker Premium (£19.99/month)
-- Wali Basic (Free) / Wali Premium (£9.99/month)
+- Guardian Basic (Free) / Guardian Premium (£9.99/month)
 
 Product Spec V2 explicitly states:
 > "The previous three-tier structure (Basic / Pro / Premium)
@@ -51,11 +51,11 @@ Product Spec V2 explicitly states:
 **What the APP folders still say:**
 - PROFILE DECISION SYSTEM Summary references: Seeker Basic, Seeker Pro,
   Seeker Premium as three separate tiers
-- WALI PREMIUM Summary references: Wali, Wali Pro, Wali Gold as
-  the Wali subscription names
+- GUARDIAN PREMIUM Summary references: Guardian, Guardian Pro, Guardian Gold as
+  the Guardian subscription names
 
 **The conflict:**
-The approved subscription model has 4 plans (2 Seeker + 2 Wali).
+The approved subscription model has 4 plans (2 Seeker + 2 Guardian).
 Multiple feature documents still describe 6 plans across 3 tiers.
 Any feature built from the APP folder Summaries will implement
 the wrong subscription model.
@@ -154,11 +154,11 @@ matching feature is implemented.
 **Severity: High**
 
 **What Architecture V2 says:**
-Three user roles: Seeker, Wali, and Connector (Introduces Seekers,
+Three user roles: Seeker, Guardian, and Connector (Introduces Seekers,
 limited profile access).
 
 **What Product Spec V2 says:**
-Two user roles: Seeker and Wali. Connector does not appear.
+Two user roles: Seeker and Guardian. Connector does not appear.
 
 **The conflict:**
 A user role is defined in the architecture with no product

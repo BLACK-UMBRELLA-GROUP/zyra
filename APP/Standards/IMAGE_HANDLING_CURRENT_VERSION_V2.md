@@ -67,7 +67,7 @@ regardless of where it is displayed:
   — Browse (full-screen profile cards)
   — Profile view (own and others)
   — Journey (conversation context)
-  — Wali view (seen by Wali during oversight)
+  — Guardian view (seen by Guardian during oversight)
   — Notifications (thumbnail previews)
   — Admin / moderation tools
   — Any future surface

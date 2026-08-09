@@ -1,7 +1,17 @@
 // ZYRA One upgrade / subscription management screen.
-// Pricing and feature list transcribed verbatim from ZYRA_PRODUCT_SPEC_
-// CURRENT_VERSION_V3.md §4-8 (Status: Approved) — nothing on this
-// screen is invented. No real payment processing exists yet (App
+// Pricing and feature list transcribed from ZYRA_PRODUCT_SPEC §4-8.
+//
+// ⚠ STALE — transcribed against V3, and the spec is now at V5. The ZYRA
+// One prices (£34.99/month, £349.90/year) are unchanged, but EVERY row of
+// the à-la-carte table below is out of date: both products were renamed
+// (Unlock Profile -> Compatibility Unlock) and all four prices raised.
+// This screen currently under-quotes the approved spec. Awaiting the
+// Founder's decision — do not "fix" the numbers without it. Found on
+// 2026-08-08 by the DANGLING DOC REF check, which is the point: the old
+// comment cited a filename that no longer existed, so nobody could open
+// it to notice the figures had moved.
+//
+// No real payment processing exists yet (App
 // Store/Play Store in-app purchase, or Stripe for web, per SYSTEM/
 // OUTSTANDING_ACTIONS — not yet an OA, worth raising); "Upgrade" here
 // flips the local mock entitlement (AppState.setPlan) so tier-gated UI
@@ -32,8 +42,14 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     'Like up to 10 profiles per day',
     'Unlimited Potential Journeys',
     'One Active Journey',
+    // ADDED 2026-08-01. Found via Fable's FAQ review: the FAQ sold an
+    // ad-free tier that this list never mentioned, so a benefit was
+    // discoverable only in the help centre. Sponsored cards are real and
+    // are gated on ZyraPlan.basic (browse_screen.dart) — this is an
+    // accurate benefit, it was simply missing from the place people buy.
+    'No sponsored cards while browsing',
     'Standard Profile Unlock on Active Journey',
-    'Link a Wali',
+    'Link a Guardian',
     '7-day ZYRA One trial on your first Active Journey',
   ];
 
@@ -46,7 +62,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     'Priority Discovery',
     'Profile Unlock Plus on Active Journey creation',
     'ZYRA Intelligence — Recommendations, Insights, Summaries',
-    'One Extended Wali entitlement included',
+    'One Guardian+ entitlement included',
   ];
 
   static const _unlocks = [
@@ -55,6 +71,91 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     ('Unlock Profile Plus', '1 profile', '£1.99'),
     ('Unlock Profile Plus', '5 profiles', '£4.99'),
   ];
+
+  /// Pre-purchase legal disclosure — ADDED 2026-08-01 (Founder: "we need
+  /// warnings when someone subscribes for legal reasons").
+  ///
+  /// Required, not optional polish. Two UK regimes bite here:
+  ///
+  ///   • Consumer Contracts Regulations 2013 — a 14-day right to cancel,
+  ///     and the digital-content carve-out only applies if the consumer
+  ///     ACKNOWLEDGED losing that right before the content is supplied.
+  ///     An unacknowledged carve-out is not a carve-out.
+  ///   • Consumer Protection from Unfair Trading Regs — auto-renewal and
+  ///     the real recurring price must be clear BEFORE purchase, not
+  ///     discoverable afterwards. The CMA has acted on subscription
+  ///     traps repeatedly.
+  ///
+  /// Placed before the purchase completes rather than in the Terms,
+  /// because "it was in clause 9.6" is not a defence if the buying screen
+  /// said nothing. Muzz's Terms draw attention to exactly these points in
+  /// their opening clause for the same reason (see ZYRA_LEGAL_RESEARCH §2).
+  ///
+  /// NOT LEGAL ADVICE and NOT FINAL — the wording below is a considered
+  /// draft that must go to a solicitor with the Terms. The prices are
+  /// taken from BUSINESS/ZYRA PRICING/Summary.md.
+  Future<void> _confirmPurchase() async {
+    final agreed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1A1220),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text('Before you subscribe', style: ZyraText.heading(size: 16)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'ZYRA One is £34.99 a month. It renews automatically each month '
+                'until you cancel, and you can cancel any time through your App '
+                'Store or Google Play subscription settings.\n\n'
+                'You have 14 days to change your mind. If you start using the '
+                'paid features straight away, you agree that this 14-day right '
+                'ends once you do.\n\n'
+                'Cancelling stops the next payment. It does not refund the '
+                'period you are already in, and your ZYRA One features stay '
+                'until that period ends.',
+                style: ZyraText.subtext(size: 13),
+              ),
+              const SizedBox(height: 14),
+              // ADDED 2026-08-01. _WaliDependencyNotice already carries this
+              // warning on the screen itself — but this dialog is the
+              // ACKNOWLEDGEMENT step, and a notice further up the page is
+              // not the same as the last thing someone reads before they
+              // agree. A woman with no linked Wali would otherwise tap "I
+              // understand" having been told the price and the renewal, but
+              // not that part of what she is buying cannot work yet.
+              Text(
+                'Some ZYRA One features need a linked Guardian — including the Guardian '
+                'One entitlement included with your subscription. Subscribing '
+                'does not remove that requirement. Everything unlocks on its own '
+                'once your Guardian accepts.',
+                style: ZyraText.subtext(size: 13),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                'Nothing about your safety is behind this. Blocking, reporting '
+                'and privacy controls are free for everyone, always.',
+                style: ZyraText.body(size: 12.5, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text('Not now', style: ZyraText.subtext(size: 13)),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text('I understand — continue', style: ZyraText.button(size: 13)),
+          ),
+        ],
+      ),
+    );
+    if (agreed == true && mounted) _upgrade();
+  }
 
   void _upgrade() {
     AppState.instance.setPlan(ZyraPlan.one);
@@ -185,7 +286,10 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
                           color: Colors.transparent,
                           child: InkWell(
                             borderRadius: BorderRadius.circular(50),
-                            onTap: isOne ? _downgrade : _upgrade,
+                            // 2026-08-01: routes through _confirmPurchase,
+                            // not straight to _upgrade — the pre-purchase
+                            // disclosure must be seen before money is taken.
+                            onTap: isOne ? _downgrade : _confirmPurchase,
                             child: Center(
                               child: Text(
                                 isOne ? 'Switch back to ZYRA Basic' : 'Upgrade to ZYRA One',
@@ -234,9 +338,9 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
 }
 
 /// Touchpoint 2 dependency notice (TRANSPARENCY_CURRENT_VERSION_V1.md).
-/// "Before you subscribe" — Extended Wali entitlement (bundled with
+/// "Before you subscribe" — Wali One entitlement (bundled with
 /// ZYRA One) requires an actual linked Wali before AI Journey
-/// Summaries, Guided Wali Conversations, and Extended Wali Questions
+/// Summaries, Guided Wali Conversations, and Wali One Questions
 /// activate. Positive framing per the standard's own example wording.
 class _WaliDependencyNotice extends StatelessWidget {
   const _WaliDependencyNotice();
@@ -261,7 +365,7 @@ class _WaliDependencyNotice extends StatelessWidget {
                 children: [
                   TextSpan(text: 'Before you subscribe\n', style: ZyraText.body(size: 12.5).copyWith(fontWeight: FontWeight.w500)),
                   TextSpan(
-                    text: 'Some ZYRA One features require a linked Wali. Once your Wali accepts their invitation, everything unlocks automatically.',
+                    text: 'Some ZYRA One features require a linked Guardian. Once your Guardian accepts their invitation, everything unlocks automatically.',
                     style: ZyraText.subtext(size: 12),
                   ),
                 ],

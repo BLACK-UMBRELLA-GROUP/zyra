@@ -1,5 +1,5 @@
 FEATURE NAME
-Profile Unlocks (Name TBC)
+Compatibility Unlocks (Name TBC)
 
 ============================================================
 FLOW DIAGRAM
@@ -27,7 +27,7 @@ Purchase Flow
 
 Seeker has no credits
 → Purchase screen shown
-   Pricing (confirmed 2026-07-12): 1 Unlock = £0.99 / 5 Unlocks = £2.99
+   Pricing (Founder approved 2026-08-03): 1 Unlock = £1.99 / 5 Unlocks = £7.99
 → Seeker selects quantity
 → Payment confirmed
 → Credit applied to account
@@ -44,12 +44,12 @@ Once used:
 Result Delivery
 ------------------------------------------------------------
 
-Profile Unlock
+Compatibility Unlock
 → High-level overview shown
    - Overall Compatibility %
    - Green / Yellow / Red counts
 
-Profile Unlock+
+Compatibility Unlock+
 → Detailed breakdown shown
    - Overall Compatibility %
    - Green / Yellow / Red counts
@@ -73,7 +73,7 @@ Path B — Post-match (TBC — pending review)
 Boundaries
 ------------------------------------------------------------
 
-• Seeker only — Wali cannot purchase or use unlocks
+• Seeker only — Guardian cannot purchase or use unlocks
 • Never reveals profile photos
 • Never bypasses privacy settings
 • Does not reveal individual questions or answers

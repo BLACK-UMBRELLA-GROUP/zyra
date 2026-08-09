@@ -3,7 +3,7 @@ PROFILE PHOTO — DISPLAY, CROPPING & MODERATION
 Group: 4 — Page Responsibilities
 Summary Version: V2
 Status: 🟢 Finalised
-Governed By: ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 (no relationship-state
+Governed By: ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4 (no relationship-state
              impact — this feature operates entirely within No
              Relationship / Browse behaviour, see Related Features)
 Depends On: IMAGE_HANDLING_CURRENT_VERSION_V2 (canonical pipeline —
@@ -22,7 +22,7 @@ default architecture, treat manual crop as a narrow exception, and
 merge the two moderation pipelines into one. That merge is now filed
 directly into `IMAGE_HANDLING_CURRENT_VERSION_V2.md` (the platform-
 wide owning document — see its Scope section, applying to Browse,
-Profile view, Journey, Wali view, Notifications, and Admin tools, not
+Profile view, Journey, Guardian view, Notifications, and Admin tools, not
 just Profiles). Per the ownership test (SUMMARY_STANDARD_
 CURRENT_VERSION_V3 §5.2 — a fact that more than one APP feature needs
 is owned by the layer above them), this document now cites that

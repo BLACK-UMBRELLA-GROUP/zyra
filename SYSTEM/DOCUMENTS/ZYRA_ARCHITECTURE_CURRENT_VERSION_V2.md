@@ -30,12 +30,12 @@ Built for iOS and Android from a single codebase.
 ## 3. Core User Roles
 
 Corrected 2026-07-12 (DR-077): the Connector role is retired.
-Seeker and Wali are the only valid ZYRA user roles.
+Seeker and Guardian are the only valid ZYRA user roles.
 
 | Role | Description | Key Permissions |
 |------|-------------|----------------|
 | Seeker | Person searching for a match | Browse, journey, messaging |
-| Wali | Guardian (female Seekers) | Journey approval, oversight |
+| Guardian | Guardian (female Seekers) | Journey approval, oversight |
 
 ---
 
@@ -61,15 +61,15 @@ Seeker and Wali are the only valid ZYRA user roles.
 - Relationship Space for accepted matches
 
 ### 4.5 Premium
-- ZYRA One / Extended Wali entitlements (terminology corrected
-  2026-07-12 — was "Wali Premium tier")
+- ZYRA One / Guardian+ entitlements (terminology corrected
+  2026-07-12 — was "Guardian Premium tier")
 - Profile Unlocks
 - Subscription management
 
 ### 4.6 Safety & Trust
 - Safety features
 - Content moderation approach
-- Guardian (Wali) integration
+- Guardian (Guardian) integration
 
 ---
 

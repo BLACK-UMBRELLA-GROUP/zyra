@@ -15,7 +15,7 @@ It is designed for:
 • UI testing
 • Navigation testing
 • Subscription testing
-• Wali testing
+• Guardian testing
 • Animation testing
 • Feature development
 
@@ -70,10 +70,10 @@ Female Seeker:
 • Premium
 
 Test every combination with:
-• No Wali
-• Basic Wali
-• Pro Wali
-• Premium Wali
+• No Guardian
+• Basic Guardian
+• Pro Guardian
+• Premium Guardian
 
 Future subscription combinations should be added without
 changing the production architecture.

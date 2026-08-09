@@ -20,6 +20,7 @@ import '../../services/zyra_profile_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_loading.dart';
 
 class PrivacySettingsScreen extends StatefulWidget {
   const PrivacySettingsScreen({super.key});
@@ -67,6 +68,14 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // FIXED 2026-08-01 (Founder: "there should be no purple at top, it
+      // should blend the pink/purple colour... that should be across all
+      // things"). Same fix notifications_screen.dart got on 2026-07-27:
+      // without this the transparent AppBar shows the Scaffold's own flat
+      // background through, cutting the gender gradient off with a hard
+      // purple strip. Body content compensates with SafeArea, which still
+      // clears the status bar.
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -77,7 +86,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
         decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
         child: SafeArea(
           child: _loading
-              ? const Center(child: CircularProgressIndicator(color: Colors.white54))
+              ? const ZyraLoading()
               : ListView(
                   padding: const EdgeInsets.fromLTRB(24, 8, 24, 40),
                   children: [
@@ -108,7 +117,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                           Switch(
                             value: _visible,
                             onChanged: _saving ? null : _setVisible,
-                            activeColor: ZyraColors.accentBorder,
+                            activeThumbColor: ZyraColors.accentBorder,
                           ),
                         ],
                       ),

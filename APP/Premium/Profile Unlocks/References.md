@@ -42,8 +42,8 @@ Subscriptions (ZYRA Basic / ZYRA One)
   BUSINESS/ZYRA PRICING/Summary.md.
 • Monthly credit allocation is tied to subscription tier.
 • ZYRA Basic: pay-per-unlock only.
-• ZYRA One: monthly credit allocation for Profile Unlock /
-  Profile Unlock+ (exact allocation defined in Summary.md /
+• ZYRA One: monthly credit allocation for Compatibility Unlock /
+  Compatibility Unlock+ (exact allocation defined in Summary.md /
   BUSINESS/ZYRA PRICING/Summary.md).
 • Status: Referenced — subscription definitions live elsewhere.
 
@@ -51,10 +51,10 @@ Seeker Account
 • Can purchase and view unlocks.
 • Status: Referenced — account type definition lives elsewhere.
 
-Wali Account
+Guardian Account
 • RESOLVED 2026-07-25 (OA-ZYRA-140 item 8, Founder decision:
   "Seeker only"). Previously contradicted Summary.md and Flow
-  Diagram.md, which both already said Wali-only was correct —
+  Diagram.md, which both already said Guardian-only was correct —
   this entry was the outlier and is now corrected to match.
 • Cannot purchase or use Profile Unlocks.
 • Status: Referenced — account type definition lives elsewhere.
@@ -91,7 +91,7 @@ Pricing References
 ------------------------------------------------------------
 
 Payment / In-App Purchase System
-• Handles £1.99 and £4.99 transactions.
+• Handles £1.99 / £7.99 and £2.99 / £9.99 transactions. NOT BUILT — no payment SDK exists in the project as of 2026-08-03.
 • Status: Referenced — payment system definition lives elsewhere.
 
 ------------------------------------------------------------
@@ -99,7 +99,7 @@ Open Dependencies (Unresolved)
 ------------------------------------------------------------
 
 • Final feature name not confirmed — impacts all references.
-  Options: Profile Unlock / Compatibility Preview / Insight Unlock.
+  Options: Compatibility Unlock / Compatibility Preview / Insight Unlock.
 
 • Compatibility scoring methodology not yet fully defined.
   Blocked on: Compatibility Review System documentation.

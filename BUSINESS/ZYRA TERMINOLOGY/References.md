@@ -33,14 +33,14 @@ APP/Browse
   item 15.)
 
 APP/Matching/PROFILE DECISION SYSTEM
-• Superseded by ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 Part 2 —
+• Superseded by ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5 Part 2 —
   rebuilt around Pass, Save, Consider, Match event, Potential
   Journey terminology (renamed 2026-07-25 from Decline/Save/
   Like, DR-ZYRA-099). See archived original for the earlier
   retired Decline/Review/Consider model (2026-07-12 and before).
 
 APP/Onboarding/SEEKER ONBOARDING QUESTIONS
-• Seeker, Wali, Compatibility terminology used.
+• Seeker, Guardian, Compatibility terminology used.
 
 APP/Premium/PROFILE UNLOCKS
 • Profile Unlock, Compatibility Preview, Compatibility
@@ -49,10 +49,10 @@ APP/Premium/PROFILE UNLOCKS
   on the to-do list — not yet formally defined here.
 
 BUSINESS/USER FEATURES
-• Seeker, Wali, ZYRA Basic / ZYRA One terminology used.
+• Seeker, Guardian, ZYRA Basic / ZYRA One terminology used.
 
 BUSINESS/ZYRA PRICING
-• Seeker, Wali, ZYRA Basic / ZYRA One, Extended Wali,
+• Seeker, Guardian, ZYRA Basic / ZYRA One, Guardian+,
   Potentials terminology used.
 
 BUSINESS/BRAND MESSAGING

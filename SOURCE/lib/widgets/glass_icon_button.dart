@@ -17,12 +17,23 @@ class GlassIconButton extends StatelessWidget {
   final Color tint;
   final VoidCallback? onTap;
 
+  // FIXED 2026-07-27 (Founder: "check the bell icon transparence. make
+  // it the same as navigation bar so the system looks similar... the
+  // bell icon looks less transparent then the navigation bar"). Tint
+  // was white/15 (0x26) with a 18-sigma blur and a 0.25-opacity border —
+  // all three slightly stronger than FloatingNavBar's own idle-state
+  // glass (white/10, 22-sigma blur, 0.18 border), which read as visibly
+  // more solid sitting right next to it. Now matches that idle state
+  // exactly, since this is the shared glass-button component (also used
+  // by DevNavOverlay's Home button, WaliHomeShell's Dev Access button,
+  // etc.), so the fix is systemic rather than a Bell-only special case —
+  // matching the Founder's own framing ("so the system looks similar").
   const GlassIconButton({
     super.key,
     required this.icon,
     this.iconColor = Colors.white,
     this.size = 40,
-    this.tint = const Color(0x26FFFFFF), // white/15
+    this.tint = const Color(0x1AFFFFFF), // white/10 — FloatingNavBar idle-state match
     this.onTap,
   });
 
@@ -30,7 +41,7 @@ class GlassIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipOval(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
         child: GestureDetector(
           onTap: onTap,
           child: Container(
@@ -39,7 +50,7 @@ class GlassIconButton extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: tint,
-              border: Border.all(color: Colors.white.withOpacity(0.25), width: 1),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.18), width: 1),
               boxShadow: const [
                 BoxShadow(color: Color(0x2EFFFFFF), blurRadius: 0, spreadRadius: 0, offset: Offset(0, 1)),
               ],
@@ -73,7 +84,7 @@ class GlassFlashCircle extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: tint,
-            border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1),
           ),
           child: Icon(icon, color: Colors.white, size: 34),
         ),

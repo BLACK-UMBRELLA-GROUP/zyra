@@ -86,7 +86,7 @@ For full definitions and context, consult ZYRA TERMINOLOGY.
   Roles
   ─────────────────────────────────────────────────────
   Seeker       Person seeking marriage.
-  Wali         Guardian / family representative.
+  Guardian         Guardian / family representative.
 
   Profile Decisions (corrected 2026-07-12, DR-076 —
   reverses the previous version of this table, which had
@@ -103,7 +103,7 @@ For full definitions and context, consult ZYRA TERMINOLOGY.
 
   Navigation (Seeker — ZYRA Basic / ZYRA One)
   ─────────────────────────────────────────────────────
-  Browse • Connections • Wali • Profile
+  Browse • Connections • Guardian • Profile
 
 ------------------------------------------------------------
 3.2 Rejected Terms
@@ -127,7 +127,7 @@ For full definitions and context, consult ZYRA TERMINOLOGY.
   • Daily caps apply to both Save and Like (10/day on
     ZYRA Basic; unlimited on ZYRA One).
   • Seeker navigation (any entitlement) is:
-    Browse • Connections • Wali • Profile.
+    Browse • Connections • Guardian • Profile.
   • Every terminology correction made on filing must
     be flagged to the Project Owner.
 
@@ -182,7 +182,7 @@ Version V1 (corrected in place 2026-07-12)
   relative to DR-076 (this document rejected Save/Like
   and approved Review/Consider — the opposite of the
   current Product Spec). Corrected against
-  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 and DR-076.
+  ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4 and DR-076.
   Navigation entry updated from "Seeker Basic" to
   "Seeker — ZYRA Basic / ZYRA One" (identical for both
   entitlements). Found during the 2026-07-12 final

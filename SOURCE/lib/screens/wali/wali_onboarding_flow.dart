@@ -2,14 +2,14 @@
 // a fully approved, detailed architecture (account model, capability
 // grants, three entry paths, screen flow diagram, navigation), but the
 // actual onboarding QUESTION CONTENT is never specified anywhere in it —
-// the flow diagram only references a black-box "[ Wali Onboarding ]"
+// the flow diagram only references a black-box "[ Guardian Onboarding ]"
 // node between account creation and the Dashboard. This file fills that
 // gap with a reasonable v1, recorded as a proposed decision (DR-ZYRA-081)
 // rather than silently treated as final, same discipline as the
 // compatibility scoring (DR-ZYRA-079) and error-state standard
 // (DR-ZYRA-080) drafts earlier in this build.
 //
-// Scoped to PATH 3 ("Wali Starts First") only — per WALI SCREEN FLOW,
+// Scoped to PATH 3 ("Guardian Starts First") only — per WALI SCREEN FLOW,
 // that's the only entry path reachable from this app's current Role
 // Selection screen (Paths 1/2 require a Seeker-sent invite link/landing
 // page, which doesn't exist as a flow yet). Relationship options and the
@@ -18,9 +18,9 @@
 //
 // Date of birth added 2026-07-18 alongside real Supabase wiring (OA-102
 // follow-on): ZYRA_DATABASE_SCHEMA_CURRENT_VERSION_V1.md's `profiles`
-// table has date_of_birth as NOT NULL for every role, Wali included,
+// table has date_of_birth as NOT NULL for every role, Guardian included,
 // but the original v1 draft (DR-ZYRA-081) only asked name + relationship
-// since nothing else in the Wali UI uses a DOB. Adding the question here
+// since nothing else in the Guardian UI uses a DOB. Adding the question here
 // rather than relaxing the approved schema — small, faithful fix now
 // that a real constraint exists to satisfy.
 
@@ -31,7 +31,6 @@ import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../onboarding/transition_screen.dart';
-import 'wali_home_shell.dart';
 import 'wali_invite_seeker_screen.dart';
 
 class WaliOnboardingFlow extends StatefulWidget {
@@ -112,9 +111,26 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
         builder: (_) => TransitionScreen(
           background: ZyraBackgroundVariant.male,
           title: 'Support and guidance',
+          // CORRECTED 2026-08-01. This screen told every Guardian they would
+          // see progress "without reading their private conversations".
+          // That was false: messages_select's RLS grants an active linked
+          // Guardian full read access to the conversation once a Journey
+          // leaves 'potential'. The claim contradicted the database, the
+          // WALI_ARCHITECTURE permissions table, and the FAQ — three
+          // sources, three different answers.
+          //
+          // Founder decision (2026-08-01): the access is deliberate and
+          // stays. So the wording changes, not the behaviour. "Guidance,
+          // not surveillance" is kept because it is still the honest
+          // framing of the ROLE — it just cannot be used to imply an
+          // access limit that does not exist.
           body: 'ZYRA treats you as a full part of this journey — not as an observer. '
-              "You'll see your linked Seeker's progress at the milestones that matter, "
-              "without reading their private conversations. This is guidance, not surveillance.",
+              "You'll see your linked Seeker's progress, and you can read the "
+              'conversation once a Journey becomes active. Both Seekers are told '
+              'this before they begin.\n\n'
+              'That openness is the point: ZYRA is built for a marriage process '
+              'with family present. It is a trust placed in you — guidance, not '
+              'surveillance.',
           buttonLabel: 'Continue',
           onContinue: () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const WaliInviteSeekerScreen()),
@@ -175,7 +191,7 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
         return _WaliQuestionScaffold(
           progress: 1.0,
           question: 'What is your relationship to the Seeker you support?',
-          subtext: 'Eligible Wali relationships, per Islamic guidance.',
+          subtext: 'Eligible Guardian relationships, per Islamic guidance.',
           fabActive: _fabActive && !_savingProfile,
           onContinue: _next,
           onSwipeBack: _back,
@@ -249,8 +265,8 @@ class _WaliDobPicker extends StatelessWidget {
   }
 }
 
-/// Deliberately not reusing the Seeker's OnboardingScaffold — the Wali
-/// background is always the male-derived gradient (Wali is, per spec, a
+/// Deliberately not reusing the Seeker's OnboardingScaffold — the Guardian
+/// background is always the male-derived gradient (Guardian is, per spec, a
 /// male guardian), and there's no privacy-indicator concept in Wali
 /// onboarding (Wali identity fields aren't part of a Browse-visible
 /// profile), so a lighter dedicated scaffold avoids dragging in Seeker-

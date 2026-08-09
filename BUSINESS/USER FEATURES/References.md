@@ -29,8 +29,8 @@ Timeline System
 - Status: Referenced — definition lives elsewhere.
 
 Family Introduction System
-- Family Introductions require Extended Wali (bundled with a
-  Seeker's ZYRA One, or purchased independently by the Wali).
+- Family Introductions require Guardian+ (bundled with a
+  Seeker's ZYRA One, or purchased independently by the Guardian).
 - Status: Referenced — definition lives elsewhere.
 
 ------------------------------------------------------------
@@ -47,8 +47,8 @@ Profile
 Chats
 - Messaging is available on both ZYRA Basic and ZYRA One once
   an Active Journey begins.
-- Wali visibility into messages applies to both Standard and
-  Extended Wali (see WALI_ARCHITECTURE_CURRENT_VERSION_V5).
+- Guardian visibility into messages applies to both Standard and
+  Guardian+ (see WALI_ARCHITECTURE_CURRENT_VERSION_V6).
 
 Matches
 - Match viewing and creation access defined here.
@@ -75,7 +75,7 @@ Overlap Flags
 - References ZYRA Basic / ZYRA One subscription benefits.
 - Must remain in sync with this document.
 - This document (USER FEATURES) is the source of truth for
-  feature entitlements; ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3
+  feature entitlements; ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5
   is the source of truth for the underlying product model.
 
 ------------------------------------------------------------
@@ -89,5 +89,5 @@ Open Dependencies
   Spec V3, Section 6 (activates on first Active Journey).
 - Upgrade/downgrade rules not defined.
 - Plan cancellation rules not defined.
-- Extended Wali may be purchased by either the Seeker (bundled
-  with ZYRA One) or the Wali independently — see DR-075.
+- Guardian+ may be purchased by either the Seeker (bundled
+  with ZYRA One) or the Guardian independently — see DR-075.

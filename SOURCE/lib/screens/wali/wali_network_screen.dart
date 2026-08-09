@@ -1,15 +1,25 @@
 // Wali Network — WALI ARCHITECTURE §WALI NETWORK — ARCHITECTURE.
-// Gated behind Extended Wali capabilities (via included entitlement from
-// a linked Seeker's ZYRA One, or the Wali's own £9.99/month purchase —
+// Gated behind Wali One capabilities (via included entitlement from
+// a linked Seeker's ZYRA One, or the Guardian's own £9.99/month purchase —
 // Path 2A). A Standard Wali tapping this tab sees the spec's explanation
 // rather than the feature itself. Discover/Requests tabs per spec once
 // unlocked; both start empty since no real Network data exists yet.
+//
+// 2026-07-26 (#19): gating now reads the real entitlement
+// (ZyraEntitlementService.hasWaliOne(), backed by
+// wali_has_extended_wali() — see 20260726160000_wali_extended_wali_
+// real_gating.sql) instead of the local AppState.waliHasWaliOne
+// mock toggle. The mock-purchase button now writes a real subscriptions
+// row via mock_purchase_wali_premium() — still no real payment, but the
+// entitlement it grants is genuinely read back, not just a local flag.
 
 import 'package:flutter/material.dart';
+import '../../services/zyra_entitlement_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_loading.dart';
 
 class WaliNetworkScreen extends StatefulWidget {
   const WaliNetworkScreen({super.key});
@@ -20,11 +30,15 @@ class WaliNetworkScreen extends StatefulWidget {
 
 class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
   int _tab = 0; // 0 = Discover, 1 = Requests
+  bool _loading = true;
+  bool _hasExtended = false;
+  bool _purchasing = false;
 
   @override
   void initState() {
     super.initState();
     AppState.instance.addListener(_onChange);
+    _loadEntitlement();
   }
 
   @override
@@ -35,16 +49,40 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
 
   void _onChange() => setState(() {});
 
-  void _purchaseExtendedWali() {
-    AppState.instance.setWaliExtendedWali(true);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Extended Wali unlocked (preview build — no payment taken).'), duration: Duration(seconds: 2)),
-    );
+  Future<void> _loadEntitlement() async {
+    final has = await ZyraEntitlementService.hasWaliOne();
+    if (mounted) {
+      setState(() {
+        _hasExtended = has;
+        _loading = false;
+      });
+    }
+  }
+
+  Future<void> _purchaseExtendedWali() async {
+    setState(() => _purchasing = true);
+    final ok = await ZyraEntitlementService.mockPurchaseWaliPremium();
+    if (!mounted) return;
+    setState(() => _purchasing = false);
+    if (ok) {
+      await _loadEntitlement();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Guardian+ unlocked (preview build — no payment taken).'), duration: Duration(seconds: 2)),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Couldn't unlock Guardian+ — try again.")),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final hasExtended = AppState.instance.waliHasExtendedWali;
+    if (_loading) {
+      return const ZyraLoading();
+    }
+    final hasExtended = _hasExtended;
     return Container(
       // 2026-07-25: gender-matched gradient, was hardcoded Male — see
       // ZyraColors.genderGradient() doc comment / DR-ZYRA-094.
@@ -68,7 +106,7 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
                         const Icon(Icons.lock_outline, color: Colors.white38, size: 28),
                         const SizedBox(height: 14),
                         Text(
-                          'Network access requires Extended Wali capabilities.',
+                          'Network access requires Guardian+ capabilities.',
                           style: ZyraText.body(size: 14, color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
@@ -92,8 +130,12 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
                               color: Colors.transparent,
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(50),
-                                onTap: _purchaseExtendedWali,
-                                child: Center(child: Text('Get Extended Wali — £9.99/month', style: ZyraText.button(size: 13))),
+                                onTap: _purchasing ? null : _purchaseExtendedWali,
+                                child: Center(
+                                  child: _purchasing
+                                      ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                                      : Text('Get Guardian+ — £9.99/month', style: ZyraText.button(size: 13)),
+                                ),
                               ),
                             ),
                           ),
@@ -127,7 +169,7 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
                   child: ZyraEmptyState(
                     icon: _tab == 0 ? Icons.diversity_3_outlined : Icons.inbox_outlined,
                     message: _tab == 0
-                        ? 'No families to discover yet — this fills in once other Walis with Extended Wali capabilities appear.'
+                        ? 'No families to discover yet — this fills in once other Guardians with Guardian+ capabilities appear.'
                         : 'No Family Introduction Requests yet.',
                   ),
                 ),

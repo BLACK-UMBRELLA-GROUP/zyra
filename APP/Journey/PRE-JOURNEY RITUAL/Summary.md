@@ -25,9 +25,9 @@ Compatibility Reveal
   ↓
 Salam Exchange
   ↓
-Wali Gate
+Guardian Gate
   ↓
-Optional Salam to Wali(s)
+Optional Salam to Guardian(s)
   ↓
 Phase 1 — Foundations
   ↓
@@ -112,7 +112,7 @@ STATE 3 — REVEALED (score visible)
   Summary gives the score meaning — a direction for
   the journey, not just a number.
 
-  Visible to: Both matched parties and their Wali(s).
+  Visible to: Both matched parties and their Guardian(s).
 
 CHECKPOINT ACTIONS (after reveal):
 
@@ -157,41 +157,41 @@ Timeline Milestone: ✓ Salam Exchanged — [date]
 UX: "Send your Salam to [Name] to begin your journey."
 
 ------------------------------------------------------------
-WALI GATE
+GUARDIAN GATE
 ------------------------------------------------------------
 
 After the Salam, before any meaningful discussion begins.
 
-A Seeker must have a linked, active Main Wali to proceed.
+A Seeker must have a linked, active Main Guardian to proceed.
 
-If no Wali linked:
+If no Guardian linked:
   Prompt appears: "To begin your journey, you need
-  to link a Wali."
+  to link a Guardian."
   Match and score are preserved while they sort it.
 
-Main Wali Rules:
-• One Wali must be designated as Main Wali.
-• Main Wali must be active — a ghost Wali blocks progress.
+Main Guardian Rules:
+• One Guardian must be designated as Main Guardian.
+• Main Guardian must be active — a ghost Guardian blocks progress.
 • Exact inactivity threshold: TBC.
 
-Multiple Walis:
-• Seekers may have multiple Walis (including Premium Walis).
-• Open question: if Person B has 5 Premium Walis but
+Multiple Guardians:
+• Seekers may have multiple Guardians (including Premium Guardians).
+• Open question: if Person B has 5 Premium Guardians but
   Person A wants to engage with only one, does the
   Seeker have priority to choose?
-  Risk: conflicts with Premium feature Walis paid for.
+  Risk: conflicts with Premium feature Guardians paid for.
   Decision needed — dedicated discussion.
 
 ------------------------------------------------------------
-OPTIONAL SALAM TO WALI(S)
+OPTIONAL SALAM TO GUARDIAN(S)
 ------------------------------------------------------------
 
-After the Wali Gate, each party may send a Salam
-to the other person's Wali(s).
+After the Guardian Gate, each party may send a Salam
+to the other person's Guardian(s).
 
 • Optional — not required to proceed.
 • Async — no waiting. Response comes whenever it comes.
-• Wali must be reading the phases for the journey
+• Guardian must be reading the phases for the journey
   to continue into the next stage.
 
 ------------------------------------------------------------
@@ -232,7 +232,7 @@ using human phrases — not colours or numbers:
   "This concerns me."
 
 Visibility: PRIVATE — only the rater and the AI.
-Never shown to the other party or the Wali.
+Never shown to the other party or the Guardian.
 
 The AI uses ratings to adapt the next set of questions
 and may recommend:
@@ -240,7 +240,7 @@ and may recommend:
 It speaks in general terms — it never reveals
 who rated what or how.
 
-PUBLIC (visible to both parties + Wali):
+PUBLIC (visible to both parties + Guardian):
   All question answers.
 
 PART A — AI QUESTIONS
@@ -377,13 +377,13 @@ Each intro should answer:
 Keep it to 2–3 sentences. Clear and grounded.
 
 ------------------------------------------------------------
-EXTENDED WALI — OPTIONAL ANSWER RATINGS
+GUARDIAN ONE — OPTIONAL ANSWER RATINGS
 ------------------------------------------------------------
 
-(Corrected 2026-07-12 against WALI_ARCHITECTURE_CURRENT_VERSION_V5
-— was "Wali Premium" / "Wali Basic".)
+(Corrected 2026-07-12 against WALI_ARCHITECTURE_CURRENT_VERSION_V6
+— was "Guardian Premium" / "Guardian Basic".)
 
-Extended Wali can optionally rate each answer using the
+Guardian+ can optionally rate each answer using the
 same phrase system as the private Seeker ratings:
   "This answer reassured me."
   "I'd like to discuss this further."
@@ -391,15 +391,15 @@ same phrase system as the private Seeker ratings:
 
 VISIBILITY (different from Seeker ratings):
   • Seeker-to-Seeker ratings: private — never shown to anyone.
-  • Extended Wali ratings: visible to the Seeker they
-    support. Their Seeker sees what their Wali thought.
+  • Guardian+ ratings: visible to the Seeker they
+    support. Their Seeker sees what their Guardian thought.
 
 Purpose:
-  Gives the Wali an active, visible voice in the journey.
-  The Seeker can factor in their Wali's perspective.
-  The other party and their Wali do NOT see these ratings.
+  Gives the Guardian an active, visible voice in the journey.
+  The Seeker can factor in their Guardian's perspective.
+  The other party and their Guardian do NOT see these ratings.
 
-This is an Extended Wali feature only. Standard Wali can
+This is a Guardian+ feature only. Standard Guardian can
 observe but cannot rate.
 
 ------------------------------------------------------------
@@ -407,7 +407,7 @@ PHASE TRANSITION SCREENS
 ------------------------------------------------------------
 
 CHAPTER CHANGE SCREEN (before any phase begins)
-Shown once, after Meet Their Walis, before Phase 1.
+Shown once, after Meet Their Guardians, before Phase 1.
 
 Purpose: signals to both users that the journey has
 shifted from "getting started" to "understanding each other."
@@ -537,34 +537,34 @@ FAMILY COMPATIBILITY STAGE
 
 Purpose: "Involve guardians and families."
 
-Previously referred to as "Wali & Family Questions."
+Previously referred to as "Guardian & Family Questions."
 Renamed to reflect its true scope — this is about
 family compatibility, not just guardian formalities.
 
 THREE DIRECTIONS OF ENGAGEMENT:
 
-1. SEEKER → WALI (other person's Wali)
-   The Seeker asks the other Wali questions.
+1. SEEKER → GUARDIAN (other person's Guardian)
+   The Seeker asks the other Guardian questions.
    Examples:
    • What are your expectations for this marriage?
    • How involved would you like to be?
    • What are your hopes for your daughter/son?
 
-2. WALI → SEEKER
-   The Wali asks the other Seeker questions.
+2. GUARDIAN → SEEKER
+   The Guardian asks the other Seeker questions.
    Examples:
    • Why do you want to marry?
    • What are your long-term intentions?
    • How will you support a family?
 
-3. WALI ↔ WALI (if both matched parties have a Wali)
-   The two Walis can engage with each other directly.
+3. GUARDIAN ↔ GUARDIAN (if both matched parties have a Guardian)
+   The two Guardians can engage with each other directly.
    This mirrors how families speak to each other in
    traditional Islamic marriage processes.
    Exact format and questions: TBC.
 
 4. OPTIONAL FAMILY INTRODUCTIONS (future)
-   Beyond Walis, broader family introductions may
+   Beyond Guardians, broader family introductions may
    be possible in future. Not yet specified.
 
 Same set structure as Phases 1–3 (sets of ~10/10/5).
@@ -574,9 +574,9 @@ and set checkpoints throughout.
 Timeline Milestone (on Continue):
 Example: "Families have been introduced."
 
-Wali Visibility:
-• Phases 1–3: Wali observes, cannot submit answers.
-• Family Stage: Wali is an active participant.
+Guardian Visibility:
+• Phases 1–3: Guardian observes, cannot submit answers.
+• Family Stage: Guardian is an active participant.
 
 ------------------------------------------------------------
 CONVERSATION STAGE
@@ -598,7 +598,7 @@ What continues alongside it:
   questions to keep the conversation meaningful.
 • Optional: continue asking questions from the library.
 • Timeline continues recording meaningful moments.
-• Wali remains visible to messages and timeline.
+• Guardian remains visible to messages and timeline.
 
 The goal: the conversation is richer because they've
 already covered so much together. The AI continues
@@ -626,10 +626,10 @@ PRIVACY MODEL
 DEFAULT RULE: Everything is PUBLIC.
 Private is the exception and must be explicitly stated.
 
-PUBLIC (both matched parties + linked Wali):
+PUBLIC (both matched parties + linked Guardian):
   • Compatibility score and AI summary
   • All question answers across all phases
-  • Wali hearts / likes on answers
+  • Guardian hearts / likes on answers
   • Timeline milestones
   • Conversation messages
   • Family Compatibility stage content
@@ -642,28 +642,28 @@ NEVER VISIBLE TO ANYONE:
   • Which onboarding questions drove the score
 
 Users are told at each phase:
-"Your answers are shared with [Name] and your Wali.
+"Your answers are shared with [Name] and your Guardian.
  Your ratings are private and used only to guide
  your journey."
 
 ------------------------------------------------------------
-WALI — VISIBILITY AND ENGAGEMENT
+GUARDIAN — VISIBILITY AND ENGAGEMENT
 ------------------------------------------------------------
 
-Wali can see everything across the entire journey:
+Guardian can see everything across the entire journey:
   • Compatibility Reveal score and AI summary
   • All question answers across all phases
   • Family Compatibility stage content
   • Timeline milestones
   • Conversation messages
 
-Wali can heart / like individual answers.
-Hearts are visible to everyone (both parties + Wali).
+Guardian can heart / like individual answers.
+Hearts are visible to everyone (both parties + Guardian).
 
-Phases 1–3: Wali observes only.
-Family Stage: Wali is an active participant.
+Phases 1–3: Guardian observes only.
+Family Stage: Guardian is an active participant.
 
-Note: Full Wali design is a future dedicated session.
+Note: Full Guardian design is a future dedicated session.
 Current focus is the Seeker experience.
 
 ============================================================
@@ -672,10 +672,10 @@ OPEN DISCUSSIONS
 
 • User-facing names for each phase and stage.
 • User-facing name for the Compatibility Reveal feature.
-• Salam to Wali(s) — exact inactivity rules for Wali.
-• Multiple Walis — Seeker priority to choose one vs
-  all Premium Walis having access (Premium conflict).
-• Wali ↔ Wali format and question library.
+• Salam to Guardian(s) — exact inactivity rules for Guardian.
+• Multiple Guardians — Seeker priority to choose one vs
+  all Premium Guardians having access (Premium conflict).
+• Guardian ↔ Guardian format and question library.
 • Optional family introductions (future stage).
 • AI conversation prompt design for Conversation Stage.
 • Voice note format and rules.
@@ -688,7 +688,7 @@ APPROVED TO-DO LIST
 • Design Compatibility Reveal screen with category
   breakdown and AI summary.
 • Design Salam Exchange screen.
-• Design Wali Gate prompt screen.
+• Design Guardian Gate prompt screen.
 • Design Phase question screens (all three phases).
 • Design simultaneous reveal screen.
 • Design set checkpoint screen (3 options).
@@ -697,7 +697,7 @@ APPROVED TO-DO LIST
 • Build AI question library (Phase 1, 2, 3).
 • Build personal question library (searchable).
 • Design Family Compatibility stage screens.
-• Design Wali ↔ Wali engagement.
+• Design Guardian ↔ Guardian engagement.
 • Design Conversation Stage with AI prompts.
 • Define Timeline milestone wording per stage.
-• Draft T&C wording for Wali requirement.
+• Draft T&C wording for Guardian requirement.

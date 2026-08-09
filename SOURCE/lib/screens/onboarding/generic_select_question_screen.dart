@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../../models/onboarding_question.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../../widgets/privacy_indicator.dart';
 
 class GenericSelectQuestionScreen extends StatefulWidget {
   final String prompt;
@@ -31,7 +30,7 @@ class GenericSelectQuestionScreen extends StatefulWidget {
 
 class _GenericSelectQuestionScreenState extends State<GenericSelectQuestionScreen> {
   late String? _single = widget.initialValue is String ? widget.initialValue as String : null;
-  late List<String> _multi =
+  late final List<String> _multi =
       widget.initialValue is List<String> ? List<String>.from(widget.initialValue as List<String>) : <String>[];
 
   @override

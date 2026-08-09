@@ -6,7 +6,7 @@ STATUS: Approved Specification
 SOURCE: Master Script Part 8 (LOVABLE_CURRENT_VERSION_V1)
 
 Terminology corrected 2026-07-12 against
-ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V3 — Seeker Basic/Pro/Premium
+ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V4 — Seeker Basic/Pro/Premium
 plan labels replaced with ZYRA Basic/ZYRA One; connection
 categories Declined/Review/Consider replaced with
 Declined/Saved/Likes (DR-076). The layout, interaction, and

@@ -30,7 +30,7 @@
 
 **Supabase Auth integration.** The `profiles` table extends Supabase's `auth.users` table using the user's UUID as the primary key. All other tables foreign-key to `profiles.id`.
 
-**Roles on profiles, not on auth.** Role (`seeker`, `wali`, `admin`) is stored on the `profiles` table. Admin role is manually assigned at database level — not self-assignable.
+**Roles on profiles, not on auth.** Role (`seeker`, `guardian`, `admin`) is stored on the `profiles` table. Admin role is manually assigned at database level — not self-assignable.
 
 **Ordered match pairs.** To prevent duplicate match records, seeker pairs are always stored with the lesser UUID first (`seeker_a_id < seeker_b_id`). A check constraint enforces this.
 
@@ -40,10 +40,10 @@
 
 | Table | Purpose |
 |-------|---------|
-| profiles | All users — Seekers, Walis, Admins |
+| profiles | All users — Seekers, Guardians, Admins |
 | subscriptions | Current plan for each user |
 | profile_photos | Profile photos stored in Supabase Storage |
-| wali_links | Seeker ↔ Wali guardian relationships |
+| wali_links | Seeker ↔ Guardian relationships |
 | saves | Profile saves (private by default) |
 | likes | Profile likes (interest signals) |
 | profile_unlocks | Paid and automatic unlock records |
@@ -52,7 +52,7 @@
 | messages | Individual messages within a conversation |
 | timelines | Journey timeline per match |
 | timeline_milestones | Events recorded on the timeline |
-| wali_suggestions | Extended Wali suggestions to their Seeker |
+| wali_suggestions | Guardian+ suggestions to their Seeker |
 
 ---
 
@@ -66,7 +66,7 @@
 CREATE TABLE profiles (
   id              UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   role            TEXT NOT NULL DEFAULT 'seeker'
-                  CHECK (role IN ('seeker', 'wali', 'admin')),
+                  CHECK (role IN ('seeker', 'guardian', 'admin')),
   first_name      TEXT NOT NULL,
   date_of_birth   DATE NOT NULL,
   gender          TEXT NOT NULL CHECK (gender IN ('male', 'female')),
@@ -138,8 +138,8 @@ CREATE UNIQUE INDEX profile_photos_primary
 
 
 -- ============================================================
--- WALI LINKS
--- Guardian relationships between Seekers and Walis
+-- GUARDIAN LINKS
+-- Guardian relationships between Seekers and Guardians
 -- ============================================================
 CREATE TABLE wali_links (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -147,9 +147,60 @@ CREATE TABLE wali_links (
   wali_id         UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   status          TEXT NOT NULL DEFAULT 'pending'
                   CHECK (status IN ('pending', 'active', 'removed')),
+  -- ROLE: who acts. Auto-designated on the first active link by
+  -- auto_designate_main_wali(). Exactly one per Seeker.
+  -- Present since the table was built; missing from this document until
+  -- 2026-08-06, when the Relationship dependency review noticed.
+  is_main         BOOLEAN DEFAULT FALSE,
+  -- RELATIONSHIP: who they are. Added 2026-08-06. Distinct from is_main —
+  -- the Main Guardian may be an uncle while a brother is also linked.
+  -- Per LINK, not per Guardian: the same man is father to his daughter and
+  -- paternal uncle to his niece.
+  -- Stored as a CODE. 'uncle' is displayed as "Paternal Uncle".
+  -- Nullable by necessity: links predating the column were never asked, and
+  -- a backfilled guess would be invented data about real people.
+  relationship    TEXT
+                  CHECK (relationship IS NULL OR relationship IN (
+                    'father', 'brother', 'grandfather', 'uncle',
+                    'legal_guardian', 'family_representative', 'other')),
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE (seeker_id, wali_id)
 );
+-- Disclosure: relationship reaches another Seeker ONLY through
+-- guardians_for_unlocked(), which requires a paid_plus_single unlock and
+-- honours blocks. No RLS policy lets one Seeker read another's wali_links.
+
+
+-- ============================================================
+-- Added 2026-08-06 with the Guardian page rebuild
+-- ============================================================
+
+-- wali_invites.label
+--   The SENDER'S private note for who a code was meant for ("Dad", "Uncle
+--   Ibrahim"), max 40 chars, nullable. An invite has no recipient — the
+--   flow is "generate a code, share it however you like" — so without this
+--   the Pending Invitations section could only list 8-character tokens.
+--   NOT an identity claim: whoever redeems the code becomes the Guardian.
+--   Private by construction, verified by impersonation test:
+--     * wali_invites_select is scoped to inviter_id
+--     * preview_wali_invite has a fixed 3-column RETURNS TABLE and cannot
+--       carry it to the recipient
+
+-- wali_suggestions.seen_at
+--   Null means the Seeker has not yet landed on Introductions with this
+--   suggestion present. Drives the BADGE only, per BADGE_STANDARD:
+--     badge      = unseen     clears on arrival at the surface
+--     list count = unresolved clears when the item is resolved
+--   Per-item state, deliberately NOT a last_seen_at bookmark (CLAUDE.md
+--   §3d). Never exposed to the Guardian — they must not learn that a
+--   suggestion has been looked at but not yet answered.
+
+-- profile_unlocks
+--   UNIQUE (unlocker_id, unlocked_id) was DROPPED 2026-08-06. It predated
+--   unlock tiers and contradicted UNIQUE (unlocker_id, unlocked_id,
+--   unlock_type), making it impossible to hold both a standard and a Plus
+--   unlock of the same person. Buying Compatibility+ after a standard
+--   unlock had failed for every user since tiers shipped.
 
 
 -- ============================================================
@@ -297,8 +348,8 @@ CREATE TABLE timeline_milestones (
 
 
 -- ============================================================
--- WALI SUGGESTIONS
--- Extended Wali: suggest profiles to their linked Seeker
+-- GUARDIAN SUGGESTIONS
+-- Guardian+: suggest profiles to their linked Seeker
 -- ============================================================
 CREATE TABLE wali_suggestions (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -362,7 +413,7 @@ CREATE INDEX saves_mutual
 CREATE INDEX likes_liker   ON likes(liker_id, created_at DESC);
 CREATE INDEX likes_liked   ON likes(liked_id, created_at DESC);
 
--- Wali link lookups
+-- Guardian link lookups
 CREATE INDEX wali_links_seeker ON wali_links(seeker_id) WHERE status = 'active';
 CREATE INDEX wali_links_wali   ON wali_links(wali_id)   WHERE status = 'active';
 

@@ -12,6 +12,7 @@
 // Journeys built before real matches existed.
 
 import 'package:flutter/material.dart';
+import '../../widgets/zyra_profile_image.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../main.dart';
 import '../../models/seeker_profile.dart';
@@ -190,8 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(18),
-                      child: Image.network(widget.withProfile.photoUrl, width: 36, height: 36, fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => const SizedBox(width: 36, height: 36)),
+                      child: ZyraProfileImage(widget.withProfile.photoUrl, width: 36, height: 36),
                     ),
                     const SizedBox(width: 10),
                     Expanded(child: Text(widget.withProfile.firstName, style: ZyraText.body(size: 15, color: Colors.white))),
