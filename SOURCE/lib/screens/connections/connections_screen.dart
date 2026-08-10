@@ -63,6 +63,7 @@ import 'dart:ui';
 import '../../widgets/zyra_profile_image.dart';
 
 import 'package:flutter/material.dart';
+import '../../data/zyra_entitlements.dart';
 import '../../data/zyra_journey_stages.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
@@ -367,6 +368,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         ? ZyraDevScenario.fakeJourneys(
             viewerGender: AppState.instance.gender,
             pool: await ZyraDiscoveryService.fetchCandidates(),
+            // 2026-08-09: the generator clamps its counts to the plan's
+            // Journey limits, so it has to be told which plan.
+            viewerPlan: AppState.instance.plan,
           )
         : await ZyraJourneyService.fetchJourneyMatches(
             statuses: const ['potential', 'active', 'ended']);
@@ -591,6 +595,12 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     );
   }
 
+  /// How many Ended Journeys this plan lists, and how many are held back.
+  /// Display only — see the note at the ENDED JOURNEYS section below.
+  int get _endedShown => ZyraEntitlements.of(AppState.instance.plan).ended;
+  int get _endedHidden =>
+      _ended.length <= _endedShown ? 0 : _ended.length - _endedShown;
+
   List<Widget> _journeysChildren({required List<JourneyMatch> active, required List<JourneyMatch> potential}) {
     return [
       // ACTIVE JOURNEY — 2026-08-01 (Founder: "active journey should be
@@ -774,8 +784,21 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             message: 'Journeys that have ended appear here.',
           ),
         )
-      else
-        ..._ended.map((j) => _JourneyTile(
+      else ...[
+        // ── A DISPLAY CAP, AND ONLY A DISPLAY CAP. Founder, 2026-08-09:
+        // "The cap is purely a UI cap, not a data-retention cap. I never
+        // want Journey history deleted automatically."
+        //
+        // 5 on Basic, 10 on ZYRA One — most recent first, since _refresh()
+        // already sorts descending by endedAt. `_ended` keeps every row, so
+        // nothing here loses data and a Journey History screen can read the
+        // full list whenever it is built.
+        //
+        // This is the ONLY one of the four Journey limits the client
+        // enforces, precisely because it is not really a limit. Active,
+        // Potential and Paused are entitlements and belong to the database
+        // — see data/zyra_entitlements.dart.
+        ..._ended.take(_endedShown).map((j) => _JourneyTile(
               profile: j.profile,
               subtitle: j.canRestart ? 'Ended — Restart available' : 'Ended — ${j.restartAvailableIn.toLowerCase()}',
               dimmed: true,
@@ -783,6 +806,19 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                 builder: (_) => JourneyFlowScreen(matchId: j.matchId, profile: j.profile),
               )),
             )),
+        // Said out loud, rather than letting older Journeys vanish — the
+        // disappearing-Journey problem this whole section exists to solve.
+        if (_endedHidden > 0)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(
+              'Showing your $_endedShown most recent. '
+              '$_endedHidden older ${_endedHidden == 1 ? "Journey is" : "Journeys are"} '
+              'kept, just not listed here.',
+              style: ZyraText.subtext(size: 11.5),
+            ),
+          ),
+      ],
     ];
   }
 

@@ -33,9 +33,11 @@
 // test.
 
 import 'package:flutter/foundation.dart';
+import '../data/zyra_entitlements.dart';
 import '../models/journey_match.dart';
 import '../models/seeker_profile.dart';
 import '../services/zyra_wali_link_service.dart';
+import '../state/app_state.dart' show ZyraPlan;
 
 /// Which Seeker plan a control makes sense for.
 enum DevPlan { basic, one }
@@ -452,6 +454,7 @@ class ZyraDevScenario extends ChangeNotifier {
   static List<JourneyMatch> fakeJourneys({
     String? viewerGender,
     List<SeekerProfile> pool = const [],
+    ZyraPlan viewerPlan = ZyraPlan.basic,
   }) {
     final s = ZyraDevScenario.instance;
     final now = DateTime.now();
@@ -483,8 +486,20 @@ class ZyraDevScenario extends ChangeNotifier {
           isMock: true,
         );
 
-    const queuedNames = ['Yusuf', 'Bilal', 'Idris', 'Musa', 'Zaid'];
-    for (var i = 0; i < s.queuedJourneys && i < queuedNames.length; i++) {
+    // ── TEN NAMES PER LIST, 2026-08-09, up from five.
+    //
+    // The dev panel now offers up to 10 for Potential, Paused and Ended
+    // (ZYRA One's caps — see data/zyra_entitlements.dart). With five names
+    // the generator silently produced five rows for a toggle that said ten,
+    // which is a control panel lying about the state it just created — the
+    // exact failure this panel exists to avoid.
+    // One lookup for all four loops below.
+    final limits = ZyraEntitlements.of(viewerPlan);
+
+    const queuedNames = ['Yusuf', 'Bilal', 'Idris', 'Musa', 'Zaid',
+        'Harun', 'Tariq', 'Rayyan', 'Kamal', 'Adnan'];
+    final nQueued = ZyraEntitlements.devClamp(s.queuedJourneys, limits.potential);
+    for (var i = 0; i < nQueued && i < queuedNames.length; i++) {
       out.add(make('dev-q$i', queuedNames[i], 26 + i, 'potential'));
     }
 
@@ -499,19 +514,30 @@ class ZyraDevScenario extends ChangeNotifier {
     // Here `activeJourneys` means RUNNING and `pausedJourneys` means PAUSED,
     // and the two simply add up. Every row is isMock and never reaches the
     // database, so nothing real is violated — production keeps its index.
+    //
+    // 2026-08-09: the counts are CLAMPED TO THE CURRENT PLAN by the same
+    // helper the panel's segments use, so switching ZYRA One -> Basic with
+    // Paused at 8 shows Basic's 5 in both places. Without a shared clamp
+    // the row and the list drift apart on a plan switch, and the panel
+    // stops being the source of truth it claims to be.
     const activeNames = ['Amina', 'Sara', 'Zaynab', 'Maryam', 'Khadija'];
-    const pausedNames = ['Fatima', 'Aisha', 'Safiya', 'Halima', 'Nadia'];
-    for (var i = 0; i < s.activeJourneys && i < activeNames.length; i++) {
+    const pausedNames = ['Fatima', 'Aisha', 'Safiya', 'Halima', 'Nadia',
+        'Rabia', 'Sumaya', 'Zahra', 'Iman', 'Noor'];
+    final nActive = ZyraEntitlements.devClamp(s.activeJourneys, limits.active);
+    for (var i = 0; i < nActive && i < activeNames.length; i++) {
       out.add(make('dev-a$i', activeNames[i], 27 + i, 'active',
           stage: 'conversation'));
     }
-    for (var i = 0; i < s.pausedJourneys && i < pausedNames.length; i++) {
+    final nPaused = ZyraEntitlements.devClamp(s.pausedJourneys, limits.paused);
+    for (var i = 0; i < nPaused && i < pausedNames.length; i++) {
       out.add(make('dev-p$i', pausedNames[i], 26 + i, 'active',
           stage: 'conversation', suspendedBy: 'dev-other'));
     }
 
-    const endedNames = ['Layla', 'Sumaya', 'Hafsa', 'Ruqayya', 'Asma'];
-    for (var i = 0; i < s.endedJourneys && i < endedNames.length; i++) {
+    const endedNames = ['Layla', 'Hafsa', 'Ruqayya', 'Asma', 'Juwayriya',
+        'Umm Kulthum', 'Zaynab bint Ali', 'Ramla', 'Barira', 'Nusayba'];
+    final nEnded = ZyraEntitlements.devClamp(s.endedJourneys, limits.ended);
+    for (var i = 0; i < nEnded && i < endedNames.length; i++) {
       out.add(make('dev-e$i', endedNames[i], 25 + i, 'ended',
           endedAt: now.subtract(Duration(days: 2 + i))));
     }

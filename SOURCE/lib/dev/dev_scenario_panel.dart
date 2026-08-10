@@ -37,6 +37,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 
+import '../data/zyra_entitlements.dart';
 import '../main.dart';
 // The entitlement caps Browse actually enforces, so the panel's hints
 // cannot drift from the product. Made public 2026-08-07 for this — they
@@ -47,6 +48,7 @@ import '../screens/browse/browse_screen.dart'
     show zyraBasicSaveLimit, zyraBasicConsiderLimit, zyraOneSaveLimit;
 import '../screens/welcome_screen.dart';
 import '../services/zyra_auth.dart';
+import '../services/zyra_guardian_suggestion_service.dart';
 import '../services/zyra_unlock_service.dart';
 import '../state/app_state.dart';
 import '../theme/zyra_text.dart';
@@ -250,22 +252,34 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
 
   ZyraDevScenario get _s => ZyraDevScenario.instance;
 
-  /// Refuse a VALUE, using the same red shake the panel already uses to
-  /// refuse a whole control. ADDED 2026-08-07 for the per-plan Active
-  /// Journey cap — a segment that silently clamped would look like it had
-  /// simply not registered the tap.
-  void _refuse(String id, String why) {
-    setState(() => _denied[id] = (_denied[id] ?? 0) + 1);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$why (dev)'), duration: const Duration(seconds: 2)),
-    );
-  }
+  // _refuse REMOVED 2026-08-09. It shook a segment that was over the
+  // per-plan cap, back when every plan shared one row and illegal values
+  // were shown dimmed. The rows are now BUILT from the plan (see _limits),
+  // so an illegal value is never drawn and there is nothing to refuse.
+  // flutter analyze had it as dead code.
+
+  /// The current plan's Journey limits — the single source for every
+  /// segment below. data/zyra_entitlements.dart holds the numbers.
+  ZyraJourneyLimits get _limits => ZyraEntitlements.of(AppState.instance.plan);
 
   @override
   void initState() {
     super.initState();
     _s.addListener(_onChange);
     AppState.instance.addListener(_onChange);
+    _syncIntroductionsCount();
+  }
+
+  /// Bring the Introductions segment in line with the rows that actually
+  /// exist. Best-effort and silent: if it fails the panel simply shows its
+  /// last value, which is no worse than the behaviour this replaces.
+  Future<void> _syncIntroductionsCount() async {
+    try {
+      final pending = await ZyraGuardianSuggestionService.fetchPending();
+      if (!mounted) return;
+      final n = pending.length.clamp(0, 5);
+      if (n != _guardianSuggestions) setState(() => _guardianSuggestions = n);
+    } catch (_) {}
   }
 
   @override
@@ -326,9 +340,18 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
   /// server's count without asking, and asking on open would be a network
   /// call for a cosmetic default.
   int _guardiansOnDecided = 0;
-  /// Index into ['1','3','5','Max'] — NOT a count. Defaults to 0 meaning
-  /// the "1" segment reads selected on open; nothing is written until the
-  /// control is actually tapped.
+  /// How many Introductions exist — a real count, matching the segment
+  /// labels 0-5.
+  ///
+  /// READ FROM THE SERVER ON OPEN, 2026-08-09. It used to default to 0 with
+  /// the note "asking on open would be a network call for a cosmetic
+  /// default". That was wrong twice over. The control writes REAL
+  /// wali_suggestions rows, so after a restart the panel said 0 while
+  /// Connections showed 1 — and because tapping the already-selected 0
+  /// fires no change event, THE ROW COULD NOT BE CLEARED FROM THE PANEL AT
+  /// ALL. Founder hit exactly that on 2026-08-09.
+  ///
+  /// A panel that claims to be the source of truth has to ask.
   int _guardianSuggestions = 0;
 
   void _deny(String id) => setState(() => _denied[id] = (_denied[id] ?? 0) + 1);
@@ -589,39 +612,31 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
                     _Control(
                       id: 'journey_active',
                       label: 'Active Journeys',
-                      hint: 'Running, not paused. One is the maximum, on '
-                          'both plans — same as production.',
+                      hint: 'Running, not paused. '
+                          '${_limits.active} on this plan.',
                       page: DevPage.connections,
                       plans: const {DevPlan.basic, DevPlan.one},
                       state: this,
                       child: _Segment(
-                        // ── CAPPED AT 1 AGAIN, 2026-08-09. Founder: "I'm on
-                        // ZYRA Basic but I managed to select 3 for active
-                        // journey... change it back to 1 only so the option
-                        // for 3 isn't there."
+                        // SUPERSEDED the "capped at 1" note that stood here
+                        // this morning. That note was right about the
+                        // DATABASE and wrong about the PRODUCT, and leaving
+                        // it above a 0-3 row would have been a comment
+                        // arguing with its own code.
                         //
-                        // The 2026-08-07 change that removed the cap was
-                        // solving a real problem — "reaching a paused
-                        // Journey meant creating an active one, pausing it,
-                        // and then being refused when adding another" — but
-                        // it made TWO changes and only one of them was
-                        // needed. Making Paused INDEPENDENT of Active is
-                        // what fixed the workflow; raising the ceiling to 3
-                        // was collateral, and it is what put a state on
-                        // screen that the database will not accept.
-                        // Independence is untouched, so the original
-                        // complaint stays fixed.
+                        // ── PLAN-ADAPTIVE, 2026-08-09. Founder: "0/1/2/3 for
+                        // Active Journey but for ZYRA Basic, 0/1."
                         //
-                        // NOT maxIndex-dimmed, which is this panel's usual
-                        // way of showing a cap. Dimming says "not for your
-                        // tier". Verified 2026-08-09: there is no tier where
-                        // 2 is legal — zyra_enforce_one_active_match carries
-                        // no plan check, and matches_seeker_a_active /
-                        // matches_seeker_b_active are unique partial indexes
-                        // over every Seeker. The value does not exist, so it
-                        // should not be on the row.
-                        options: const ['0', '1'],
-                        index: _s.activeJourneys,
+                        // 🔴 THE DATABASE DOES NOT AGREE YET:
+                        // zyra_enforce_one_active_match refuses any second
+                        // status='active' row with no plan check, and
+                        // matches_seeker_a_active / matches_seeker_b_active
+                        // are unique partial indexes over every Seeker. This
+                        // row shows the AGREED model; the migration is
+                        // pending review.
+                        options: ZyraEntitlements.devOptions(_limits.active),
+                        index: ZyraEntitlements.devClamp(
+                            _s.activeJourneys, _limits.active),
                         onChanged: (i) => _s.set_(() => _s.activeJourneys = i),
                       ),
                     ),
@@ -632,13 +647,22 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
                     _Control(
                       id: 'journeys_potential',
                       label: 'Potential Journeys',
-                      hint: 'A mutual match nobody has opened yet.',
+                      hint: 'A mutual match nobody has opened yet. '
+                          '${_limits.potential == null ? "Unlimited" : "${_limits.potential} max"} '
+                          'on this plan; row stops at '
+                          '${ZyraEntitlements.devSegmentCeiling}.',
                       page: DevPage.connections,
                       plans: const {DevPlan.basic, DevPlan.one},
                       state: this,
                       child: _Segment(
-                        options: const ['0', '1', '2', '3', '4', '5'],
-                        index: _s.queuedJourneys,
+                        // Unlimited on ZYRA One, 25 on Basic — same row,
+                        // because 26 segments does not fit a phone and an
+                        // unlimited one has no end. 🔴 So this cannot stage
+                        // Basic AT its cap of 25, which is the one state the
+                        // "choose one to end" flow needs.
+                        options: ZyraEntitlements.devOptions(_limits.potential),
+                        index: ZyraEntitlements.devClamp(
+                            _s.queuedJourneys, _limits.potential),
                         onChanged: (i) => _s.set_(() => _s.queuedJourneys = i),
                       ),
                     ),
@@ -647,27 +671,22 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
                       id: 'journey_paused',
                       label: 'Paused Journeys',
                       hint: 'Independent of the count above — pick this on '
-                          'its own to jump straight to a paused layout.',
+                          'its own to jump straight to a paused layout. '
+                          '${_limits.paused} max on this plan.',
                       page: DevPage.connections,
                       plans: const {DevPlan.basic, DevPlan.one},
                       state: this,
                       child: _Segment(
-                        // ── ALSO CAPPED AT 1, 2026-08-09, and this one was
-                        // not asked for. Capping Active alone would have
-                        // moved the fiction down one row rather than
-                        // removing it: a paused Journey is not a fourth
-                        // state, it is an ACTIVE row with suspended_by set.
-                        // matches_status_check permits only potential /
-                        // active / ended, and the one-active rule counts
-                        // status='active' — so three paused Journeys are
-                        // three active Journeys, which is exactly the thing
-                        // being removed above.
-                        //
-                        // Independence from Active is kept: Paused 1 with
-                        // Active 0 still jumps straight to a paused layout,
-                        // which is what the 2026-08-07 change existed for.
-                        options: const ['0', '1'],
-                        index: _s.pausedJourneys,
+                        // ── UNCAPPED FROM 1 AND MADE PLAN-ADAPTIVE, 2026-08-09.
+                        // Founder: "you can have more than one paused
+                        // Journey... max 5 for Basic, max 10 for ZYRA One",
+                        // and a paused Journey does NOT consume an active
+                        // slot. That also settles audit finding 4.1, where
+                        // two CURRENT_VERSION documents disagreed on exactly
+                        // this. 🔴 The database still has to catch up.
+                        options: ZyraEntitlements.devOptions(_limits.paused),
+                        index: ZyraEntitlements.devClamp(
+                            _s.pausedJourneys, _limits.paused),
                         onChanged: (i) => _s.set_(() => _s.pausedJourneys = i),
                       ),
                     ),
@@ -676,13 +695,18 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
                       id: 'journeys_ended',
                       label: 'Ended Journeys',
                       hint: 'Ended more than 24h ago, so Restart is reachable '
-                          'rather than inside the cooling period.',
+                          'rather than inside the cooling period. '
+                          '${_limits.ended} shown on this plan.',
                       page: DevPage.connections,
                       plans: const {DevPlan.basic, DevPlan.one},
                       state: this,
                       child: _Segment(
-                        options: const ['0', '1', '2', '3', '4', '5'],
-                        index: _s.endedJourneys,
+                        // A DISPLAY cap, not an entitlement — Founder,
+                        // 2026-08-09: "purely a UI cap... I never want
+                        // Journey history deleted automatically."
+                        options: ZyraEntitlements.devOptions(_limits.ended),
+                        index: ZyraEntitlements.devClamp(
+                            _s.endedJourneys, _limits.ended),
                         onChanged: (i) => _s.set_(() => _s.endedJourneys = i),
                       ),
                     ),

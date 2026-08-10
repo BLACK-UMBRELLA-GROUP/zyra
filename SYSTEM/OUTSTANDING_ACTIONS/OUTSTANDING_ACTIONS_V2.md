@@ -8188,12 +8188,52 @@ Category:    Security / Hardening
 Priority:    Medium — same shape as OA-ZYRA-168 but for functions
              rather than tables, and unlike tables there is no
              RLS backstop behind a function grant
-Status:      Open
+Status:      PARTIALLY APPLIED — Stages A/A' done and verified.
+             Stage B' INCOMPLETE. Acceptance test still red.
+             Parked 2026-08-08 pending Founder decision
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
 Source:      OA-ZYRA-168 Stage 4, deliberately excluded from that
              migration by Founder decision (invariant I7)
+
+Outcome so far: two migrations applied, both Founder-approved —
+             oa170_function_execute_sweep_stages_a_and_b and
+             oa170_function_execute_sweep_stages_a_prime_b_prime.
+
+             DONE: anon EXECUTE on every function that exists
+             today is 0. authenticated unchanged at 56. All three
+             policy-dependent functions (zyra_can_match,
+             zyra_can_view_profile, zyra_can_read_photo_object —
+             the last used by a storage.objects policy) verified
+             still executable.
+
+             NOT DONE: new functions still arrive anon-executable.
+             Probe evidence: a function created after Stage B'
+             carried '{=X/postgres, ...}' — the leading '=X' is
+             PUBLIC, which anon inherits.
+
+             Two revokes were required, not one. Stage A/B removed
+             anon's EXPLICIT grant and removed anon from the
+             default ACL; both worked and neither mattered while
+             PUBLIC still granted it. Stage A' removed PUBLIC from
+             the two existing functions and worked. Stage B'
+             attempted the same on the default ACL and changed
+             nothing, because there was no PUBLIC entry in the
+             array to remove — PostgreSQL's built-in EXECUTE-to-
+             PUBLIC default appears to be applied ON TOP of
+             pg_default_acl rather than replaced by it.
+
+             Fourth time this project has been caught by the
+             PUBLIC/anon/authenticated relationship, and the first
+             in this direction. Effective privilege is the UNION
+             of a role's own grant, PUBLIC's grant and anything
+             inherited; has_function_privilege() reports the union
+             and is the only reliable check.
+
+             CURRENT RISK: none today. anon executes nothing that
+             exists and writes nothing anywhere. The gap applies
+             from the next function-creating migration onward.
 
 Description: The default ACL grants EXECUTE on every new function
              in schema public to 'anon'. OA-ZYRA-168 removed
@@ -8223,13 +8263,31 @@ Description: The default ACL grants EXECUTE on every new function
              anon's explicit grant. Any plan here must revoke from
              anon by name and verify with
              has_function_privilege() — invariant I4 corollary.
-Target:      Enumerate every function in public with its security
-             mode and current anon EXECUTE privilege. Classify
-             each as pre-auth-required or authenticated-only.
-             Revoke anon EXECUTE on the latter, change the
-             function default ACL, and document the pre-auth set
-             as a deliberate, reviewed list. Implementation plan
-             and approval required before any migration.
+Target:      AWAITING FOUNDER DECISION — one experiment, not yet
+             approved, not applied:
+
+               alter default privileges for role postgres
+                 in schema public grant execute on functions to public;
+               -- confirm '=X' now appears in the default ACL
+               alter default privileges for role postgres
+                 in schema public revoke execute on functions from public;
+               -- confirm it disappears, then re-run the probe
+
+             If the array can hold a PUBLIC entry and then drop
+             it, the revoke sticks and B' is achievable. If it
+             cannot, there is no durable default-privileges fix
+             for functions and the fallback is (a) every
+             function-creating migration ends with an explicit
+             'revoke execute ... from public', plus (b) a detector
+             flagging any public function carrying a PUBLIC
+             EXECUTE grant. (b) is a new check and needs approval
+             under invariant I7.
+
+             ACCEPTANCE TEST for closing this OA: a throwaway
+             function created after the change is NOT
+             anon-executable. Founder-defined 2026-08-08. Do not
+             mark complete on catalogue evidence alone — the
+             catalogue read correctly while the probe was red.
 Dependencies: OA-ZYRA-168 (precedent, method and verification
              pattern); ZYRA_ENGINEERING_INVARIANTS I4.
 Automation:  The enumerating query is catalogue-only and cheap.
@@ -9083,11 +9141,157 @@ Dependencies: CLAUDE.md §5 "git cannot write through the Cowork
 
 ------------------------------------------------------------
 
+OA-ZYRA-181
+Title:       Verify OA-168 Stage 3 With a Live Table Probe —
+             Catalogue Evidence Has Since Proved Insufficient
+Category:    Security / Verification
+Priority:    Medium — OA-168 is marked Actioned on evidence of a
+             kind that later failed for functions
+Status:      Open — awaiting Founder approval for the probe
+Owner:       Founder (Shakeel)
+Raised:      2026-08-08
+Completed:   —
+Source:      Raised unprompted during OA-170. Same class of error,
+             one object type across
+
+Description: OA-ZYRA-168 Stage 3 was reported successful because
+             the table default ACL read 'anon=rxtm' — no write
+             bits. NO TEST TABLE WAS EVER CREATED to confirm a new
+             table actually arrives without write grants.
+
+             OA-170 then showed a correct-looking pg_default_acl
+             does not guarantee the resulting object: the function
+             default ACL read correctly while a newly created
+             function was still anon-executable via PUBLIC.
+
+             Tables may genuinely be fine — PostgreSQL's built-in
+             default grants nothing to PUBLIC for tables, so there
+             is no equivalent hidden inheritance. But that is the
+             same reasoning that produced confidence about
+             functions an hour earlier.
+Target:      Create a throwaway table, check anon/authenticated
+             write privileges with has_table_privilege(), drop it.
+             If it arrives writable, reopen OA-168. Approval
+             required before running it.
+Dependencies: OA-ZYRA-168 (claim under test); OA-ZYRA-170
+             (precedent); ZYRA_ENGINEERING_INVARIANTS I5.
+Automation:  None.
+
+------------------------------------------------------------
+
+OA-ZYRA-182
+Title:       Rewrite the I4 Grants Corollary as a Union Statement
+Category:    Governance / Documentation
+Priority:    Medium
+Status:      Open — PARKED by Founder instruction until OA-170 and
+             OA-181 settle, so the invariant is updated once with
+             final wording rather than twice
+Owner:       Founder (Shakeel)
+Raised:      2026-08-08
+Completed:   —
+Source:      OA-ZYRA-170 Stage B/B' failure
+
+Description: The I4 grants corollary says PUBLIC, anon and
+             authenticated are independent and that Supabase
+             grants anon explicitly. True — and it points the
+             reader at revoking from anon, which is how OA-170
+             walked into the mirror-image failure.
+
+             Not wrong; incomplete in a way that caused a failure.
+             Proposed replacement:
+
+               A role's effective privilege is the UNION of its
+               own grant, PUBLIC's grant, and anything it
+               inherits. Revoking one path leaves the others
+               standing. Revoke every path, then verify with
+               has_*_privilege(), which reports the union and is
+               the only thing that answers the real question.
+
+             Four incidents support it — three in the 'revoked
+             PUBLIC, anon still had it' direction, one in reverse.
+Target:      Fold into the next invariants version alongside any
+             wording OA-170 produces. Do not cut V4 for this
+             alone.
+Dependencies: OA-ZYRA-170; OA-ZYRA-181; ZYRA_ENGINEERING_
+             INVARIANTS (current version).
+Automation:  None.
+
+------------------------------------------------------------
+
+OA-ZYRA-183
+Title:       Relationship-State Master Matrix V2 — Consolidation
+             and Dimensional Completeness
+Category:    Product Architecture
+Priority:    HIGH — Founder has gated further Guardian
+             functionality on this
+Status:      Open — Founder-led. Completeness before
+             implementation
+Owner:       Founder (Shakeel)
+Raised:      2026-08-08
+Completed:   —
+Source:      Fable's matrix V1 + Opus completeness audit +
+             ChatGPT review (pending)
+
+Description: V1 models relationship STATES well. The completeness
+             audit found it incomplete on DIMENSIONS rather than
+             rows — 15 named: multiplicity, lateral ward-to-ward
+             edges, transitivity and cycles, principals beyond the
+             four identities, discovery as distinct from
+             visibility, indistinguishability, copies and derived
+             artefacts, joint objects, provenance, concurrency and
+             timers, weaponisation of exclusion rules, legal
+             compulsion (erasure), age and jurisdiction,
+             entitlement state, and the model's own governance.
+
+             Six of the Founder's ten proposed additions are
+             symptoms of missing dimensions, so adding rows alone
+             would leave the model equally incomplete. OA-ZYRA-177
+             is one such case already logged independently
+             (two Seekers sharing a Main Guardian) — evidence the
+             lateral dimension is real and currently handled
+             case-by-case.
+
+             THREE STRUCTURAL FINDINGS for V2:
+             1. V1 mixes architectural intent, current
+                implementation and verified live behaviour in the
+                same cells. The factual half decayed within hours
+                — G-5 was true when written and false when
+                measured the same day. Founder has agreed these
+                must be separated.
+             2. No permanent cell identifiers. Features will cite
+                'G-5'; inserting a row shifts every citation. Same
+                defect class this project closed for document
+                filenames (Naming Conventions rule 5).
+             3. The completeness test cannot fail, and no rule
+                exists for composing two cells that both apply.
+
+             CONSOLIDATION RISK, flagged: agreement between Fable,
+             ChatGPT and Opus is weak evidence of completeness —
+             same class of reasoner, same sources, same priming.
+             Convergent cells pass unexamined; single-source
+             findings are the ones worth arguing. 'Cross-AI
+             agreement is not build authorisation' applies to
+             completeness too.
+Target:      Founder-led consolidation of the three reviews into
+             one master model. No implementation or redesign until
+             the problem space is agreed complete.
+Dependencies: ZYRA_RELATIONSHIP_STATE_MASTER_MATRIX V1 (Fable);
+             ZYRA_RELATIONSHIP_MATRIX_COMPLETENESS_AUDIT_2026-08-08;
+             ChatGPT review (pending); OA-ZYRA-173 to OA-ZYRA-177
+             (Guardian tier findings, same problem space);
+             ZYRA_ENGINEERING_INVARIANTS I1 and the
+             deployed-system-outranks-source corollary.
+Automation:  Factual 'today' claims in any version can be verified
+             against the live database mechanically. Offered, not
+             built — invariant I7.
+
+------------------------------------------------------------
+
 # Register Metadata (added 2026-07-12)
 
-TOTAL REGISTERED (this file): 181 (OA-001 through OA-ZYRA-180,
+TOTAL REGISTERED (this file): 184 (OA-001 through OA-ZYRA-183,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-181 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-184 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
