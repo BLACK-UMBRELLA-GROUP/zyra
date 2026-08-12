@@ -85,6 +85,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_discovery_service.dart';
+import '../../services/zyra_profile_service.dart';
 import '../../services/zyra_guardian_suggestion_service.dart';
 import '../../services/zyra_report_service.dart';
 import '../../dev/zyra_dev_scenario.dart';
@@ -292,6 +293,21 @@ class _BrowseScreenState extends State<BrowseScreen> {
   Offset? _dragStartGlobal;
   bool _dragCommitted = false;
 
+  /// Whether the completeness gate is what is keeping this deck empty
+  /// (OA-ZYRA-193c). Server-answered — see
+  /// ZyraProfileService.fetchOnboardingProgress.
+  bool _gated = false;
+  int _missingCount = 0;
+
+  Future<void> _loadGateState() async {
+    final p = await ZyraProfileService.fetchOnboardingProgress();
+    if (!mounted || p == null) return;
+    setState(() {
+      _gated = !p.complete;
+      _missingCount = p.missing;
+    });
+  }
+
   // Starts EMPTY with a loading flag, and stays empty if there is nothing
   // real to show.
   //
@@ -364,6 +380,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
   @override
   void initState() {
     super.initState();
+    _loadGateState();
     // The 200-profile colour deck short-circuit was removed 2026-08-04 at
     // the Founder's request. The 24 seeded profiles now carry real Chapter 2
     // data, which the synthetic deck never did, so Browse always goes to the
@@ -532,7 +549,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
     int hi = _maxAge ?? 65;
     final result = await showModalBottomSheet<({int? lo, int? hi})>(
       context: context,
-      backgroundColor: const Color(0xFF1A1220),
+      backgroundColor: ZyraColors.luxuryDarkPurple,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheetState) => SafeArea(
@@ -992,19 +1009,26 @@ class _BrowseScreenState extends State<BrowseScreen> {
     // CHANGED BACK TO A CENTRED CARD 2026-08-01 (Founder: "let's see how
     // it looks with this similar centre piece transparent effect").
     //
-    // showDialog, not showModalBottomSheet. barrierColor matches the two
-    // limit modals so all three centred surfaces dim the page by the same
-    // amount — the previous bottom sheet used the framework default, which
-    // is a different black.
+    // BACK TO A BOTTOM SHEET 2026-08-11, stage 7 (Founder was 50/50 on
+    // the centred card; approved Frost UI brief). The full reasoning —
+    // why the centred card read as off (unanchored, sat straight on the
+    // person's face) and why this is not stage 4/5 again — lives in
+    // help_report_sheet.dart's header, beside the history list it
+    // extends.
     //
-    // Barrier dismissal still gives "closed by tapping anywhere else" for
-    // free, exactly as the bottom sheet did.
-    await showDialog<void>(
+    // barrierColor stays the limit-modals' black 55% so every modal
+    // surface on this screen dims the page by the same amount (the
+    // framework's default sheet barrier is a different black). Barrier
+    // dismissal still gives "closed by tapping anywhere else" for free.
+    await showModalBottomSheet<void>(
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.55),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
       builder: (sheetContext) => HelpReportSheet(
-        // Unused by the centred card, passed so the call site does not
-        // need touching if this reverts to an anchored sheet.
+        // Unused by the stage-7 sheet (ratified neutral surface), passed
+        // so the call site does not need touching if a gender-gradient
+        // sheet ever returns.
         gender: AppState.instance.gender,
         onHelp: () {
           Navigator.of(sheetContext).pop();
@@ -1084,7 +1108,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
       // passed on came back on the next launch.
       ZyraDiscoveryService.recordPass(profile.id);
     }
-    Timer(const Duration(milliseconds: 280), _advance);
+    Timer(const Duration(milliseconds: 280), () { if (mounted) _advance(); });
   }
 
   void _onSave() {
@@ -1126,7 +1150,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
     // yellow glass circle above already confirmed the Save (that circle
     // has since been removed too; the border flash now does the job)
     // action; this SnackBar was a redundant second confirmation.
-    Timer(const Duration(milliseconds: 280), _advance);
+    Timer(const Duration(milliseconds: 280), () { if (mounted) _advance(); });
   }
 
   void _onConsider() {
@@ -1151,6 +1175,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final isMatch = AppState.instance.like(profile);
     ZyraDiscoveryService.recordLike(profile.id);
     Timer(const Duration(milliseconds: 280), () {
+      // 2026-08-12: this one-shot outlives the screen if the user leaves
+      // Browse inside the 280ms window; pushing from a dead context threw.
+      if (!mounted) return;
       if (isMatch) {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -1318,26 +1345,54 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // ── THE GATE HAS TO SPEAK FIRST. 2026-08-11,
+                    // OA-ZYRA-193(c). An unfinished Seeker is not shown
+                    // anyone, by design — but "You're all caught up" would
+                    // then be a lie told to the one person who can fix it,
+                    // and "More profiles will appear as new members join"
+                    // would be worse: it blames the population for a door
+                    // they are standing in front of.
                     Icon(
-                      _filterActive ? Icons.filter_alt_off_outlined : Icons.check_circle_outline,
+                      _gated
+                          ? Icons.edit_note_outlined
+                          : _filterActive
+                              ? Icons.filter_alt_off_outlined
+                              : Icons.check_circle_outline,
                       color: Colors.white38,
                       size: 32,
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      _filterActive ? 'No one matches your age filter' : 'You\'re all caught up',
+                      _gated
+                          ? 'A few questions left'
+                          : _filterActive
+                              ? 'No one matches your age filter'
+                              : 'You\'re all caught up',
                       style: ZyraText.heading(size: 18),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      _filterActive
-                          ? 'Try widening the range, or clear it to see everyone again.'
-                          : 'More profiles will appear as new members join.',
+                      _gated
+                          ? (_missingCount == 1
+                              ? 'One question is still unanswered. ZYRA introduces '
+                                  'people on what you have both said, so nobody is '
+                                  'shown until yours is complete.'
+                              : '$_missingCount questions are still unanswered. ZYRA '
+                                  'introduces people on what you have both said, so '
+                                  'nobody is shown until yours is complete.')
+                          : _filterActive
+                              ? 'Try widening the range, or clear it to see everyone again.'
+                              : 'More profiles will appear as new members join.',
                       style: ZyraText.subtext(),
                       textAlign: TextAlign.center,
                     ),
-                    if (_filterActive) ...[
+                    if (_gated) ...[
+                      // No button yet: the onboarding flow has no resume
+                      // entry point to send them to, and a button that goes
+                      // nowhere is worse than none. Raised as its own action
+                      // rather than faked here.
+                    ] else if (_filterActive) ...[
                       const SizedBox(height: 16),
                       OutlinedButton(
                         onPressed: () => setState(() {
@@ -1587,7 +1642,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                     child: Icon(
                                       Icons.play_arrow,
                                       size: 7,
-                                      color: active ? const Color(0xFF1A1220) : Colors.white,
+                                      color: active ? ZyraColors.luxuryDarkPurple : Colors.white,
                                     ),
                                   );
                                 }

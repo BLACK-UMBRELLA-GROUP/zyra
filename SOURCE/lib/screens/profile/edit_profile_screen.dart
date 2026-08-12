@@ -46,7 +46,7 @@ class EditProfileScreen extends StatelessWidget {
 
   void _todo(BuildContext context, String what) =>
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$what — coming next. (dev)')),
+        SnackBar(content: Text('$what — coming next.')),
       );
 
   @override

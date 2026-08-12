@@ -23,6 +23,7 @@ import 'zyra_consent_service.dart';
 import 'zyra_unlock_service.dart';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -191,7 +192,11 @@ class ZyraAuth {
       await supabase.rpc('delete_own_account');
       await signOut();
       return true;
-    } catch (_) {
+    } catch (e) {
+      // 2026-08-12: an erasure failure was indistinguishable from a
+      // refusal, with nothing logged anywhere (CLAUDE.md §3). Still
+      // returns false — the UI copy handles it — but no longer invisible.
+      debugPrint('ZYRA delete_own_account failed: $e');
       return false;
     }
   }

@@ -14,6 +14,43 @@ enum Ch4Status { none, required, optional }
 
 enum GenderVisibility { all, menOnly, womenOnly }
 
+/// Conditional display (H4, Onboarding Direction B, 2026-08-10).
+///
+/// Declarative on purpose. A predicate function would let arbitrary logic hide
+/// questions, and a hidden Chapter 3 question is a hole in the compatibility
+/// data — `score_candidates()` treats an absent answer as neutral, so a wrong
+/// rule silently removes signal rather than failing. This form can be read,
+/// listed and argued about without running the app.
+///
+/// READ THIS BEFORE ADDING ONE. The bar is not "this is probably implied", it
+/// is "the question is incoherent given that answer". The 2026-08-05 UX review
+/// proposed four rules; measured against the real 104 questions, all four
+/// turned out to describe follow-up questions that do not exist in this set
+/// (see OA-ZYRA-188). Only add a rule you can state as: *asking this would be
+/// nonsense, and the answer we would have got is worthless.*
+class ShowIf {
+  /// The Chapter 3 question whose answer controls this one.
+  final String questionId;
+
+  /// Hide when the controlling answer is any of these.
+  final List<String> notAnyOf;
+
+  const ShowIf(this.questionId, {this.notAnyOf = const []});
+
+  /// True when the dependent question should be SHOWN.
+  ///
+  /// An unanswered controlling question shows the dependent one. Onboarding
+  /// runs forward, so this only arises if the order is ever changed — and
+  /// showing a question that could have been skipped is recoverable, whereas
+  /// hiding one that should have been asked is not.
+  bool evaluate(Map<String, dynamic> answers) {
+    final value = answers[questionId];
+    if (value == null) return true;
+    if (value is List) return !value.any((v) => notAnyOf.contains(v));
+    return !notAnyOf.contains(value);
+  }
+}
+
 class OnboardingCategory {
   final String id;
   final String name;
@@ -21,9 +58,12 @@ class OnboardingCategory {
 
   const OnboardingCategory({required this.id, required this.name, required this.questions});
 
-  /// Questions in this category that generate a Chapter 4 preference screen.
-  List<OnboardingQuestion> get ch4Questions =>
-      questions.where((q) => q.ch4Status != Ch4Status.none).toList();
+  // REMOVED 2026-08-10: `ch4Questions`, which filtered on ch4Status alone.
+  // It had no callers and it became a trap the moment conditional display
+  // landed — it ignored BOTH gender visibility and showIf, so anything that
+  // picked it up would have shown women the men-only Masjid question and
+  // asked people who want no children when they would like to start a family.
+  // Use ValuesPreferencesFlow's own _visibleCh4, which applies every gate.
 }
 
 class OnboardingQuestion {
@@ -35,6 +75,10 @@ class OnboardingQuestion {
   final GenderVisibility genderVisibility;
   final bool hardRequirementSupported;
 
+  /// Null means always shown. See [ShowIf] — and read its doc before adding
+  /// one, because a wrong rule removes compatibility signal silently.
+  final ShowIf? showIf;
+
   const OnboardingQuestion({
     required this.id,
     required this.prompt,
@@ -43,7 +87,15 @@ class OnboardingQuestion {
     this.ch4Status = Ch4Status.none,
     this.genderVisibility = GenderVisibility.all,
     this.hardRequirementSupported = true,
+    this.showIf,
   });
+
+  /// Both gates at once: gender, then the conditional rule. Chapter 4 mirrors
+  /// Chapter 3, so a question hidden here is hidden in both chapters — which
+  /// is right: there is no sense asking what you want in a partner on a topic
+  /// the app just decided not to ask you about.
+  bool visibleGiven(String? gender, Map<String, dynamic> answers) =>
+      visibleFor(gender) && (showIf?.evaluate(answers) ?? true);
 
   bool visibleFor(String? gender) {
     switch (genderVisibility) {

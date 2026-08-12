@@ -41,7 +41,14 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
 
   final Map<String, dynamic> _ch3Answers = {};
   final Map<String, Map<String, TrafficLight>> _ch4Preferences = {};
-  final Map<String, bool> _ch4HardRequirement = {};
+
+  /// question id -> the OPTION LABELS this Seeker will never be introduced
+  /// to. Per-option since 2026-08-10 (Onboarding Direction B); was
+  /// `Map<String, bool>`, one flag per question, which could not express
+  /// "never X, but I'd consider Y" on the same question. The database now
+  /// refuses the old shape outright — see
+  /// onboarding_answers_ch4_hard_shape.
+  final Map<String, Set<String>> _ch4HardRequirement = {};
 
   ZyraBackgroundVariant get _background {
     if (widget.gender == 'male') return ZyraBackgroundVariant.male;
@@ -49,8 +56,11 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
     return ZyraBackgroundVariant.neutral;
   }
 
-  List<OnboardingQuestion> _visible(OnboardingCategory c) =>
-      c.questions.where((q) => q.visibleFor(widget.gender)).toList();
+  /// Gender gate AND the conditional gate (H4, 2026-08-10). Chapter 4 derives
+  /// from this, so a branched-away question disappears from both chapters.
+  List<OnboardingQuestion> _visible(OnboardingCategory c) => c.questions
+      .where((q) => q.visibleGiven(widget.gender, _ch3Answers))
+      .toList();
 
   List<OnboardingQuestion> _visibleCh4(OnboardingCategory c) => _visible(c)
       .where((q) => q.ch4Status != Ch4Status.none)
@@ -82,6 +92,68 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
     return steps;
   }
 
+  /// Records a Chapter 3 answer and re-derives the flow from it.
+  ///
+  /// An answer can now HIDE later questions (H4, 2026-08-10). Three things
+  /// must follow, or the flow and the stored data drift apart:
+  ///
+  ///   1. the step list is rebuilt, because a question further down may have
+  ///      just appeared or disappeared;
+  ///   2. `_stepIndex` is re-anchored on the question actually on screen,
+  ///      since its position may have shifted;
+  ///   3. answers to questions that are now hidden are DISCARDED — with their
+  ///      Chapter 4 preferences and hard requirements.
+  ///
+  /// (3) is the one that matters. Someone who says they want children, answers
+  /// the family-timing question, then changes their mind would otherwise leave
+  /// a stored preference behind on a screen they can no longer see or edit,
+  /// and `score_candidates()` would go on matching against it. A hidden
+  /// question must leave no trace. The cost is that toggling back re-asks the
+  /// question — which is the right way round: re-answering is recoverable,
+  /// scoring against invisible data is not.
+  void _recordCh3Answer(String questionId, dynamic value) {
+    setState(() {
+      _ch3Answers[questionId] = value;
+
+      final currentId = _steps[_stepIndex].question?.id;
+      _steps = _buildSteps();
+
+      final stillVisible = <String>{
+        for (final category in chapter3Categories)
+          for (final q in _visible(category)) q.id,
+      };
+      _ch3Answers.removeWhere((id, _) => !stillVisible.contains(id));
+      _ch4Preferences.removeWhere((id, _) => !stillVisible.contains(id));
+      _ch4HardRequirement.removeWhere((id, _) => !stillVisible.contains(id));
+
+      if (currentId != null) {
+        final index = _steps.indexWhere((s) => s.question?.id == currentId);
+        if (index != -1) _stepIndex = index;
+      }
+      if (_stepIndex >= _steps.length) _stepIndex = _steps.length - 1;
+    });
+  }
+
+  /// "Family · 4 of 10" rather than just "Family".
+  ///
+  /// Chapter-level progress alone tells someone they are 30% through 175
+  /// questions, which is a discouraging thing to learn. Category-level
+  /// progress gives them an end they can actually see from where they are
+  /// standing — the categories run 8 to 19 questions, so the next finish line
+  /// is never far.
+  ///
+  /// Counted from the VISIBLE list, so a branched-away question does not
+  /// leave a gap ("3 of 10" followed by "5 of 10") and the total shrinks
+  /// honestly when a question is skipped.
+  String _categoryLabel(_FlowStep step) {
+    final question = step.question;
+    if (question == null) return step.category.name;
+    final questions = _chapter == 3 ? _visible(step.category) : _visibleCh4(step.category);
+    final index = questions.indexWhere((q) => q.id == question.id);
+    if (index == -1 || questions.length <= 1) return step.category.name;
+    return '${step.category.name} · ${index + 1} of ${questions.length}';
+  }
+
   bool get _canContinue {
     final step = _steps[_stepIndex];
     if (step.question == null) return true; // summary screens always continuable
@@ -90,11 +162,23 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       if (v is List) return v.isNotEmpty;
       return v != null;
     } else {
-      final prefs = _ch4Preferences[step.question!.id] ?? {};
-      final allAnswered = step.question!.options.every((o) => prefs.containsKey(o));
-      final allRed = step.question!.options.isNotEmpty &&
-          step.question!.options.every((o) => prefs[o] == TrafficLight.red);
-      return allAnswered && !allRed;
+      // TAP-TO-EXCLUDE, 2026-08-10 (H1, Onboarding Direction B). Continue is
+      // ALWAYS enabled in Chapter 4.
+      //
+      // WAS: `allAnswered && !allRed`, where allAnswered required every option
+      // of every question to be set by hand. That is where the 325 mandatory
+      // traffic-light taps came from — a floor, not an average, because the
+      // Skip control the spec describes has never existed in this build.
+      //
+      // The !allRed half was worse than the tap count: it disabled the FAB
+      // with no explanation, so a Seeker who genuinely wanted to rule out
+      // every answer was stuck on the screen with nothing telling them why.
+      // TrafficLightQuestionScreen now warns instead of blocking.
+      //
+      // 🟢 is the resting state and is seeded when the screen is SHOWN, so by
+      // the time this runs there is always a complete map for a question the
+      // Seeker has actually reached — and nothing at all for one they have not.
+      return true;
     }
   }
 
@@ -149,9 +233,22 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
           builder: (_) => TransitionScreen(
             background: _background,
             title: 'How Preferences Work',
-            body: 'Now, teaching ZYRA who you are looking for. For every topic, mark each option '
-                '🟢 Open, 🟡 Flexible, or 🔴 Not Preferred. Marking anything 🔴 lets you add it as a '
-                'Hard Requirement — ZYRA will never show you a match on that basis.',
+            // Rewritten 2026-08-10 for tap-to-exclude. The old copy told
+            // people to "mark each option", which was literally true and cost
+            // 325 taps. It also described Hard Requirements as applying to the
+            // whole question — exactly the ambiguity the reshape removed.
+            //
+            // Leading with "you don't have to touch anything" is deliberate:
+            // the resting state IS the honest answer for most people, and if
+            // the screen does not say so, the conscientious ones will still
+            // set every light by hand.
+            body: 'Now, teaching ZYRA who you are looking for.\n\n'
+                "Every answer starts 🟢 Open — you don't have to touch a thing. Change only "
+                'what you feel differently about: 🟡 Flexible if it depends on the person, '
+                '🔴 Not Preferred if you would rather not.\n\n'
+                'Anything you mark 🔴 can also be made a Hard Requirement on its own. ZYRA '
+                'will never introduce someone with that particular answer — while your other '
+                '🔴 answers simply count against a match rather than ruling it out.',
             buttonLabel: 'Continue',
             onContinue: () {
               Navigator.of(context).pop();
@@ -221,7 +318,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
         chapterProgress: progress,
         chapterComplete: complete,
         question: q.prompt,
-        subtext: step.category.name,
+        subtext: _categoryLabel(step),
         privacy: PrivacyLevel.private,
         fabActive: _canContinue,
         onContinue: _next,
@@ -232,7 +329,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
           options: q.options,
           selectionType: q.selectionType,
           initialValue: _ch3Answers[q.id],
-          onChanged: (value) => setState(() => _ch3Answers[q.id] = value),
+          onChanged: (value) => _recordCh3Answer(q.id, value),
         ),
       );
     } else {
@@ -242,7 +339,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
         chapterProgress: progress,
         chapterComplete: complete,
         question: 'Who would you be comfortable with?',
-        subtext: step.category.name,
+        subtext: _categoryLabel(step),
         privacy: PrivacyLevel.private,
         fabActive: _canContinue,
         onContinue: _next,
@@ -253,9 +350,18 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
           options: q.options,
           hardRequirementSupported: q.hardRequirementSupported,
           initialValues: _ch4Preferences[q.id] ?? const {},
-          initialHardRequirement: _ch4HardRequirement[q.id] ?? false,
+          greenIsResting: true,
+          initialHardRequirement: _ch4HardRequirement[q.id] ?? const <String>{},
           onChanged: (values) => setState(() => _ch4Preferences[q.id] = values),
-          onHardRequirementChanged: (v) => setState(() => _ch4HardRequirement[q.id] = v),
+          onHardRequirementChanged: (v) => setState(() {
+            // Drop the key entirely rather than storing an empty set, so an
+            // untouched question never appears in the payload at all.
+            if (v.isEmpty) {
+              _ch4HardRequirement.remove(q.id);
+            } else {
+              _ch4HardRequirement[q.id] = v;
+            }
+          }),
         ),
       );
     }

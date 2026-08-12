@@ -6590,10 +6590,26 @@ Title:       Introduce protection_holds as a Table, Not a Single
              Protection State
 Category:    Engineering / Safety / Moderation
 Priority:    High — safety-bearing.
-Status:      Open — approved.
+Status:      COMPLETED 2026-08-10, verified not assumed.
+             protection_holds built, with zyra_hold_blocks() as its
+             only reader. 16 checks passing: safety holds cannot be
+             appealable, cooldowns must expire, permanent holds must
+             not, no self-holds, releases are all-or-nothing, released
+             rows are RETAINED as audit, and the hold is DIRECTIONAL —
+             the person who declines is not restricted in return.
+             RLS on with zero policies DELIBERATELY: a hold must be
+             unreadable by the person it restricts, or a safety hold
+             announces itself (DR-ZYRA-121 item 5).
+             ONE DEFECT FOUND AND FIXED THE SAME SITTING: the first
+             release constraint passed a HALF-released row — released,
+             with a reason, no actor. It ran cleanly and did nothing,
+             which is the failure mode the 2026-07-26 audit named, and
+             it surfaced only because the release path was tested
+             rather than re-read.
+             Migrations 20260810091517 and 20260810091643.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
-Completed:   —
+Completed:   2026-08-10
 Source:      DR-ZYRA-121 / ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md
              (Fable + ChatGPT joint architecture, Founder-approved
              2026-08-06).
@@ -6667,10 +6683,52 @@ Title:       Replace Restart With Request New Journey (Mutual Consent,
              Cooldowns, Hidden Decline Type)
 Category:    Product / Engineering / Safety
 Priority:    High.
-Status:      Open — approved.
+Status:      COMPLETED 2026-08-10, verified not assumed. FIVE
+             STAGES, 62 checks, all passing.
+             1  notification types extended BEFORE the first write —
+                the CHECK permitted four and would have thrown. Same
+                shape as contradiction-audit finding 4.9.
+             2  protection_holds (OA-ZYRA-157).
+             3  journey_requests + RLS, one pending request per pair.
+                Status is COARSE on purpose: which kind of decline,
+                and whether it was a decision or an expiry, lives only
+                in protection_holds, which the requester cannot read.
+             4a conversations and timelines moved from UNIQUE(match_id)
+                to UNIQUE(attempt_id). THE blocker — attempt #2 had
+                nowhere to put its conversation. Both tables were
+                empty, so a constraint swap with nothing to migrate.
+             4b four Dart lookups re-pointed. One was a privacy bug
+                waiting: a GUARDIAN reading by match_id would have been
+                shown the PREVIOUS attempt's messages.
+             4c request_new_journey / respond_to_journey_request /
+                zyra_may_request_new_journey.
+             5  14-day expiry treated as a decline. Notification body
+                asserted BYTE-IDENTICAL to a real decline — if a
+                decline notified while an expiry stayed silent, the
+                requester could tell them apart by watching for
+                silence. An expiry hold is never permanent: silence is
+                not "don't ask again".
+             5b batched may-request lookup — per-row is the N+1 this
+                project has a written rule against.
+             ACCEPT PRESERVES EVERYTHING. Attempt #1 keeps its ending
+             record, matches.ended_at is NOT cleared, the old
+             conversation and its messages survive untouched, and the
+             new conversation is empty. A fresh start is fresh because
+             the NEW conversation is empty, not because the old one was
+             destroyed — precisely where restart_journey went wrong
+             (OA-ZYRA-154).
+             COPY CORRECTED: "Ended — Restart available" removed. It
+             promised from 2026-08-07 a capability that had refused
+             since the 6th (audit 4.2). The row now reads "Ended" and
+             the offer lives in a button that appears only when the
+             server says you may ask.
+             Migrations 20260810091414, 091517, 091643, 092650, 092734,
+             143519, 144418, 150000, 150500.
+             OUTSTANDING: no flutter analyze has run on any of the
+             Dart. That is the one thing not verified.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
-Completed:   —
+Completed:   2026-08-10
 Source:      DR-ZYRA-121 / ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md
              (Fable + ChatGPT joint architecture, Founder-approved
              2026-08-06).
@@ -6925,7 +6983,6 @@ Automation:  None.
 
 ------------------------------------------------------------
 
-# Register Metadata (added 2026-07-12)
 
 ------------------------------------------------------------
 
@@ -7797,8 +7854,12 @@ Title:       Profile Unlock+ Conflicts With "Compatibility % Hidden
 Category:    Product / Premium / Privacy-Values
 Priority:    High — blocks Profile Unlock+ from being built as
              currently spec'd
-Status:      Open — pending Founder decision. Not to be built
-             until resolved.
+Status:      RESOLVED 2026-08-10 by DR-ZYRA-135. Founder decided
+             Profile Unlock+ DOES show the percentage before the
+             other Seeker reveals. Build unblocked; see DR-ZYRA-135
+             for the three consequences that come with it, the first
+             of which (a third state on the Reveal screen) must ship
+             with it, not after.
 Owner:       Founder (Shakeel)
 Raised:      2026-08-01
 Completed:   —
@@ -8364,6 +8425,27 @@ Automation:  A query counting non-'@zyra.test' accounts would turn
              this from a remembered check into a detected one.
              Not built — invariant I7.
 
+
+             UPDATE 2026-08-10: a SEVENTH consumer was added —
+             zyra_dev_set_journey_stage, the Active Journey stage
+             jumper, built at Founder request so a section can be
+             reached for testing without walking the whole Journey
+             to get there.
+
+             It rests on this same guard and does NOT weaken it.
+             What it changes is the cost of the guard being wrong.
+             The other six grant paid entitlements: someone past
+             the guard gets a subscription they did not buy. This
+             one moves an Active Journey to any stage, so someone
+             past the guard walks through the Pre-Journey Ritual,
+             the Guardian Gate and the 48-hour Family Review
+             Period into another person's conversation, with
+             neither family having agreed. The failure stops being
+             commercial and becomes a safety failure.
+
+             Removal of all seven is tracked as OA-ZYRA-184.
+             DO NOT CLOSE THIS OA WITHOUT RE-READING THAT ONE.
+
 ------------------------------------------------------------
 
 OA-ZYRA-172
@@ -8408,7 +8490,12 @@ Title:       Removing Your Last Guardian Mid-Journey Hands Your
              Family's Family Review Vote to the Other Family
 Category:    Correctness / Safety
 Priority:    High
-Status:      Open — TRACKED ONLY, fix not started. The intended
+Status:      DECIDED 2026-08-10 by DR-ZYRA-136 — removal of your
+             last Guardian is BLOCKED while a Journey is live.
+             Build not started. Four consequences listed in the
+             DR, including a Guardian REPLACEMENT flow that may
+             not exist and would need its own OA.
+             [superseded] Open — TRACKED ONLY, fix not started. The intended
              behaviour is a Founder decision, not an engineering one
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
@@ -8808,7 +8895,14 @@ Title:       Two Seekers Sharing a Main Guardian Collapse the Family
 Category:    Correctness / Product
 Priority:    Medium — depends entirely on whether this is judged
              correct behaviour, which it may well be
-Status:      Open — TRACKED ONLY. Genuinely may need no fix
+Status:      OPEN — SCOPE NARROWED 2026-08-10 by DR-ZYRA-137.
+             A Guardian MAY hold many wards (Founder, explicit).
+             The two Seekers in a match may not share one — that
+             is Tier-1, already built. STILL OPEN: the pair who
+             come to share a Guardian AFTER matching, which
+             DR-ZYRA-124 permits by design. Founder deferred the
+             fix behind DR-ZYRA-136.
+             [superseded] Open — TRACKED ONLY. Genuinely may need no fix
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   -
@@ -9287,11 +9381,1537 @@ Automation:  Factual 'today' claims in any version can be verified
 
 ------------------------------------------------------------
 
+OA-ZYRA-184
+Title:       Drop the Developer/Mock RPCs Before Public Launch —
+             Now TEN Functions, Including the Stage Jumper
+Category:    Pre-Launch / Security
+Priority:    BLOCKING for public launch. Zero risk while the
+             database holds only seeded accounts
+Status:      Open — raised 2026-08-10, not started
+Owner:       Opus (Implementation Lead); Founder confirms the
+             launch gate
+Raised:      2026-08-10
+Completed:   —
+Source:      Engineering audit item #20, extended 2026-08-10 when
+             zyra_dev_set_journey_stage was added at Founder
+             request (Active Journey stage jumper)
+
+Description: "Drop the mock RPCs before launch" is now recorded in
+             three places with three different lists. The audit
+             named two. OA-ZYRA-171 enumerated six. There are now
+             seven. A pre-launch checklist that disagrees with
+             itself is the exact failure mode catalogued in
+             contradiction-audit section 5, and it fails in the
+             worst possible week. THIS ENTRY IS THE LIST.
+
+             THE NINE (it was seven when this OA was raised, the same
+             morning — see the note below):
+               1. mock_purchase_wali_premium
+               2. mock_set_wali_plan
+               3. zyra_debug_grant_credits
+               4. zyra_dev_reset_account
+               5. zyra_dev_set_guardian_suggestions
+               6. zyra_dev_set_guardians_on_decided
+               7. zyra_dev_set_journey_stage         <- added 2026-08-10
+               8. zyra_dev_set_counterpart_reveal    <- added 2026-08-10
+               9. zyra_dev_set_plus_unlock           <- added 2026-08-10
+              10. zyra_dev_set_compatibility        <- added 2026-08-10
+                  Forces a Reveal result (both flags + a chosen score) so
+                  the mutual screen can be seen at both ends. Needed because
+                  after the backfills every seeded profile scores 77-100
+                  against every other, so a LOW result was unreachable by
+                  playing the product properly.
+
+             SEVEN AT 09:00, EIGHT BY 10:30, NINE BY 15:00 — all on one
+             day. That is not a criticism of the tools; it is the whole
+             reason this OA exists in one place rather than as a line in
+             three documents. The next person to add one must add it
+             HERE.
+
+             Number eight sets the OTHER Seeker's Compatibility Reveal
+             flag, so one tester can exercise both sides of a two-sided
+             gate. It writes a column that contradiction-audit finding
+             2.5 exists to protect — "either Seeker can set both flags:
+             consent given on someone else's behalf" — and it must not
+             be mistaken for a decision that 2.5 is acceptable. It sits
+             BESIDE that policy behind the @zyra.test guard, so the fix
+             for 2.5 can still be a WITH CHECK. Migration 20260810102417.
+
+             Number nine simulates buying Compatibility Unlock+
+             (DR-ZYRA-135). It writes a profile_unlocks row, which is a
+             record of MONEY — so unlike the others it removes only the
+             simulated 'paid_plus_single' it created, never a real
+             unlock of another type. Migration 20260810150114.
+
+             ALSO DROP, and easy to miss because it is not a dev
+             function: zyra_compatibility_for_plus is production code
+             and STAYS. Do not sweep it out with the nine.
+
+             Number seven is the most consequential of the set and
+             the only one that has nothing to do with money. It
+             moves an Active Journey to any of the eight stages,
+             which means it walks past the Pre-Journey Ritual, the
+             Guardian Gate and the 48-hour Family Review Period.
+             Those three are what make ZYRA a marriage process
+             rather than a chat app.
+
+             It also creates the conversation row on a jump to
+             'conversation', so the destination is usable. That is
+             correct for a dev tool and unacceptable in a shipped
+             one: it manufactures the object the whole Journey
+             exists to earn.
+
+             The tool is worth having WHILE the database holds
+             seed data only — measured 2026-08-10, 149 accounts,
+             all @zyra.test, zero real. It stops being worth
+             having the day that is no longer true, and that day
+             will not announce itself.
+
+Target:      All nine DROPped and their Dart callers removed, in
+             one migration, before the first real signup.
+             VERIFY BY ASSERTION, not by reading this list back:
+             each name absent from pg_proc, and absent from lib/.
+             "The migration ran" is not evidence — 2026-07-26
+             engineering audit.
+Dependencies: OA-ZYRA-171 (the @zyra.test guard, which is what
+             holds until this is done — and which now carries a
+             2026-08-10 note pointing here); engineering audit
+             item #20; ZYRA_ENGINEERING_INVARIANTS I4;
+             migration 20260810093756
+Automation:  One SQL assertion proves all nine are gone. Belongs
+             in the launch checklist, not a scheduled job — there
+             is nothing to watch until launch, and then it is
+             checked once.
+
+------------------------------------------------------------
+
+OA-ZYRA-185
+Title:       Chapter 2's Sect Hard Requirement Is Still
+             Per-Question While Chapter 4 Is Per-Option
+Category:    Onboarding / Compatibility Engine
+Priority:    Medium — nothing is wrong today. The screen and the
+             engine agree. It is consistency debt with a closing
+             cost window
+Status:      ACTIONED 2026-08-10 — Founder said converge. Done
+             and verified 16/16, server and client
+Owner:       Founder (Shakeel) decides scope; Opus implements
+Raised:      2026-08-10
+Completed:   —
+Source:      Found 2026-08-10 while implementing Onboarding
+             Direction B stage 1. TrafficLightQuestionScreen is
+             shared by Chapter 2 and Chapter 4; only Chapter 4
+             moved
+
+Description: Chapter 4's Hard Requirements became per-OPTION on
+             2026-08-10, so a Seeker can now say "Currently
+             Married — never" while leaving "Divorced" a soft
+             red. Chapter 2's sect matrix cannot. It still stores
+             {sect: {hard_requirement: bool}} in
+             seeker_details.preferences and score_candidates()
+             reads it that way: ANY red sect excludes.
+
+             So on the most sensitive question in the app —
+             Islamic sect, UK GDPR Article 9 data — the Seeker
+             gets the coarse control Chapter 4 just retired.
+
+             WHY NOT IN THE SAME PASS. Two reasons, both
+             deliberate:
+
+             1. SCOPE. The Founder approved Direction B for
+                ch4_hard_requirements. The options paper put the
+                Chapter 2 question review explicitly out of
+                scope. Widening a schema change past its
+                authorisation is how registers stop being true.
+
+             2. IT IS NOT FREE THE WAY CHAPTER 4 WAS.
+                onboarding_answers had ZERO rows, so that
+                reshape cost one migration and no backfill.
+                seeker_details has 24 rows, every one carrying a
+                sect preference block, 8 with hard_requirement
+                set. Measured 2026-08-10. They are seeded, so
+                re-seeding is cheap — but it is a decision, not
+                a free move, and it stops being cheap at first
+                real signup exactly as Chapter 4's did.
+
+             WHAT WAS DONE INSTEAD. TrafficLightQuestionScreen
+             gained an explicit HardRequirementScope. Chapter 4
+             passes perOption; Chapter 2 passes perQuestion and
+             keeps its single checkbox and original wording. The
+             alternative — showing the per-option control and
+             collapsing it to a bool on the way out — was
+             rejected: it would let someone exclude Ibadi but not
+             Shia while the engine still excluded both, so the
+             screen would promise precision the server cannot
+             honour. A coarse control is worse than a precise
+             one; a lying control is worse than both.
+
+             FOUNDER DECISION 2026-08-10: converge. Done the same
+             day, migration
+             oa185_chapter2_sect_exclusion_becomes_per_option.
+
+             CONVERTED, NOT RE-SEEDED. All 144 rows moved from
+             boolean to array. A set flag became the list of
+             sects that Seeker had actually marked red — which is
+             exactly what the flag meant — so nothing was
+             invented and nothing lost. Asserted: 0 exclusions
+             name a sect that was not red.
+
+             THE ENGINE now tests the sect exclusion BEFORE the
+             light and independently of it, matching Chapter 4.
+             A CHECK (seeker_details_sect_hard_shape) rejects the
+             boolean form so a stale client cannot silently write
+             an exclusion that reads as "none" — which on Article
+             9 data would fail OPEN on a promise.
+
+             HardRequirementScope IS GONE. It existed for a few
+             hours and had one job: stop Chapter 2 showing a
+             per-option control over per-question storage. With
+             the storage converged it would have been a dormant
+             fork nobody would later remember the reason for, so
+             it was deleted rather than left. A tombstone comment
+             in traffic_light_question_screen.dart records why it
+             ever existed.
+
+             VERIFIED 16/16. Two of those checks are worth noting
+             because the first attempt at them was wrong:
+
+               * "red-but-not-hard survives" could not be tested
+                 against the seeded data at all — the conversion
+                 makes every red sect an exclusion, so no such
+                 pair exists. The first run PASSED TRIVIALLY on a
+                 tautology. Rebuilt by hand: Shia excluded, Other
+                 red but not. Excluded one vanishes, soft one
+                 survives.
+               * "the soft red still penalises" asserted score
+                 < 50 and FAILED — correctly. With ~70 Chapter
+                 3/4 questions now seeded, one red sect moves the
+                 total by 1.71 points, not below the midpoint.
+                 The assertion was written for this morning, when
+                 Chapter 2 was the only scoring input. Re-tested
+                 relatively — same candidate, sect light flipped
+                 — and the red does cost them, by exactly the
+                 ~4% share measured in the backfill findings.
+
+------------------------------------------------------------
+
+OA-ZYRA-186
+Title:       'anon' Holds Table SELECT on 29 Public Tables —
+             the Read-Side Twin of OA-ZYRA-168
+Category:    Security / Hardening
+Priority:    Medium — nothing is exploitable today. All 29 have
+             RLS enabled with policies evaluating
+             user_id = auth.uid(), which is NULL for anon, so
+             every row is already denied
+Status:      ACTIONED 2026-08-10 — swept and verified.
+             0 tables and 0 functions now reachable by anon
+Owner:       Founder (Shakeel)
+Raised:      2026-08-10
+Completed:   2026-08-10
+Source:      Found 2026-08-10 during the six-layer read for
+             Onboarding Direction B stage 1, on noticing
+             onboarding_answers granted SELECT to anon
+
+RESULT:      Migrations oa186_revoke_anon_table_select_sweep and
+             oa186b_revoke_shape_fn_from_public.
+
+             AFTER: anon holds SELECT on 0 tables and EXECUTE on
+             0 functions. `authenticated` untouched — 33 tables,
+             and a 6-check regression confirmed it still reads
+             its own profile, seeker_details, onboarding_answers,
+             photos and notifications, and that score_candidates()
+             still returns a score.
+
+             TWO THINGS THE FIRST MIGRATION GOT WRONG, both found
+             by verifying rather than trusting the success code:
+
+             1. REVOKE EXECUTE ... FROM anon did NOTHING. The
+                function's proacl was NULL, so anon held EXECUTE
+                through PUBLIC rather than directly. Revoking from
+                a role that inherits via PUBLIC succeeds and
+                changes nothing. Fixed in 186b with FROM PUBLIC.
+
+             2. The first verification query reported the default
+                privileges as still broken. It was matching
+                SEQUENCE acls (anon=rwU) rather than table ones.
+                Re-checked against objtype 'r' only: migrations
+                run as `postgres` and that default now excludes
+                anon.
+
+             RESIDUAL, ACCEPTED: supabase_admin keeps its own
+             default ACL granting anon SELECT on tables it
+             creates. That role is not ours to alter. Migrations
+             run as postgres so it does not bite in practice, but
+             anything created as supabase_admin needs revoking by
+             hand.
+
+Description: OA-ZYRA-168 swept WRITE grants to 'authenticated'
+             with no matching policy. OA-ZYRA-170 swept function
+             EXECUTE for 'anon'. Neither covers TABLE SELECT for
+             'anon', and 29 public tables hold it — among them
+             onboarding_answers, seeker_details, messages,
+             notifications, profile_reports and wali_links.
+
+             This is Supabase's default `grant select on all
+             tables in public to anon`, not something anyone
+             wrote deliberately. RLS denies underneath it, so the
+             privilege is inert — the same "currently inert"
+             finding as OA-168, on the read side.
+
+             RAISED, NOT FIXED, AND THE REASON MATTERS. The same
+             pattern WAS fixed in isolation on journey_requests
+             earlier the same day. Correct there: that was
+             completing an incomplete revoke on a table created
+             minutes before. Doing the same one-off here would be
+             wrong — fixing 1 of 29 identical cases makes the
+             register read as resolved while 28 remain. It is one
+             sweep or it is nothing.
+
+             TO CLOSE: revoke in one migration, then assert it.
+             The guard suite already has the right shape for this
+             (checks 48-53). Any table that genuinely needs anon
+             read — none identified — must be named explicitly.
+
+------------------------------------------------------------
+
+OA-ZYRA-187
+Title:       The Guard Regression Suite Could Not Run For Two
+             Days, and CLAUDE.md Told Everyone To Run It
+Category:    Governance / Testing
+Priority:    High when discovered — the suite is named in
+             CLAUDE.md as the gate before and after every
+             migration
+Status:      Actioned 2026-08-10 — both suites fixed and re-run
+             the same day
+Owner:       Opus (Implementation Lead)
+Raised:      2026-08-10
+Completed:   2026-08-10
+Source:      Found 2026-08-10 running the pre-migration baseline
+             for Onboarding Direction B stage 1
+
+Description: zyra_guard_suite.sql failed at check 17 with
+             "permission denied for table zyra_guard_results".
+
+             CAUSE. AREA 4 measures Guardian visibility THROUGH
+             RLS, which requires set_config('role',
+             'authenticated'). Under that role the DO block is no
+             longer the table owner, so its inserts into the
+             results table were refused. The 2026-08-08 hardening
+             pass enabled RLS on that results table and removed
+             the grant as "left over from a set role the suite no
+             longer does" — but the suite does still switch role,
+             in the one area that cannot work any other way.
+
+             The grant was not the fix either. With RLS enabled
+             and zero policies the insert is refused on the
+             policy check regardless of privilege. Verified
+             empirically rather than argued: grant restored,
+             0 rows written.
+
+             So the 55/55 recorded on 2026-08-08 predates the
+             hardening in the same file, and every migration
+             since — thirteen on 2026-08-10 alone — was applied
+             without the gate CLAUDE.md requires. Those thirteen
+             have now been checked retrospectively: both suites
+             pass, so nothing was actually broken. That is luck
+             confirmed, not a reason to relax the gate.
+
+             FIX. AREA 4 measures under the role into local
+             variables and writes results after restoring
+             role=postgres. Same assertions, same roles, same
+             coverage; only the write moves.
+
+             SECOND DEFECT, SAME RUN. Teardown checks asserted
+             whole tables were empty — guard 54/55, journey
+             57/58. So a suite reported failure whenever ANY
+             unrelated row existed, including a developer's own
+             test Journey. They measured the database, not the
+             suite. Now scoped: guard 54 to its own match id, the
+             rest against a baseline captured before the scenario
+             is built.
+
+             RESULT AFTER FIX, 2026-08-10:
+               zyra_guard_suite    52/52
+               zyra_journey_suite  63/63
+
+             LESSON, RECORDED BECAUSE IT WILL RECUR: a hardening
+             pass that touches a test's own scaffolding needs the
+             test RE-RUN, not just re-read. The comment left
+             behind asserted the opposite of what the file did,
+             and it was believed for two days because it was
+             plausible.
+
+------------------------------------------------------------
+
+OA-ZYRA-188
+Title:       H4 Conditional Branching Saves Almost Nothing — All
+             Four Proposed Rules Describe Questions That Do Not
+             Exist
+Category:    Onboarding / Product
+Priority:    Low as a defect, Medium as a decision — it changes
+             what Direction B is worth
+Status:      CLOSED 2026-08-10 — Founder decision: one branch is
+             enough. The two candidate rules are REJECTED, and
+             the reasoning below stands as the record of why
+Owner:       Founder (Shakeel)
+Raised:      2026-08-10
+Completed:   —
+Source:      Found 2026-08-10 implementing Direction B stage 3,
+             on checking the UX review's branching rules against
+             the real 104 questions rather than against the
+             review's description of them
+
+Description: ZYRA_ONBOARDING_UX_REVIEW_2026-08-05_V1.md §H4
+             claimed conditional branching would remove "15-25%
+             of items per user with zero information loss", and
+             listed four rules as "available immediately in the
+             existing data". Checked against
+             chapter3_categories.dart, all four are wrong:
+
+             1. "ch3_q1 = Never Married -> skip divorce/widow
+                follow-ups." THERE ARE NO SUCH FOLLOW-UPS. No
+                question in the set depends on marriage status.
+
+             2. "ch3_q2 = No children -> skip custody and
+                living-arrangement follow-ups." Custody and
+                living arrangement are OPTIONS OF ch3_q2 ITSELF
+                ('Yes, shared custody', 'Yes, living
+                elsewhere'), not separate questions.
+
+             3. "ch3_q17 = Not studying -> skip study-related
+                items." Nothing in Education & Finances depends
+                on ch3_q17.
+
+             4. "ch3_q6 = No preference / Same country ->
+                suppress the in-law proximity follow-up."
+                ch3_q6 is about YOUR parents; ch3_q9 is about
+                living with YOUR IN-LAWS. Different people.
+                Suppressing q9 would lose real signal.
+
+             The review was written against an assumed question
+             set. Its structural argument still stands; this
+             particular saving does not exist.
+
+             WHAT IS ACTUALLY THERE. One rule meets the bar
+             ("asking this would be nonsense"):
+
+               ch3_q3 = No (wants no children)
+                 -> skip ch3_q24, "when would you ideally like
+                    to start a family?"
+
+             Built and shipped 2026-08-10. Saves 2 screens (Ch3
+             + its Ch4 counterpart) for the subset who answer
+             No. Not 15-25%.
+
+             ALSO REJECTED, AND WHY, so nobody re-proposes them:
+             - ch3_q20 'No debt' -> skip ch3_q21 'mortgage?'.
+               Looks implied, is not: q21's third option is
+               'Planning to in the future', which is perfectly
+               compatible with having no debt today.
+             - ch3_q3 = No -> skip ch3_q29 (homeschooling) and
+               ch3_q48 (children's Islamic education). Defensible
+               but NOT mechanical — someone who wants no children
+               of their own may marry someone who has them, and
+               the Chapter 4 counterparts ask what they want in a
+               PARTNER. This is a product judgement, so it is
+               here rather than in the code.
+
+             WHAT WAS BUILT ANYWAY. ShowIf on OnboardingQuestion
+             — declarative (a question id plus the answers that
+             hide it), deliberately not a predicate function, so
+             rules can be listed and argued about without running
+             the app. The flow rebuilds its step list on every
+             Chapter 3 answer and DISCARDS answers, preferences
+             and hard requirements belonging to questions that
+             are no longer visible; otherwise a changed mind
+             leaves a stored preference on a screen the Seeker
+             can no longer see, and score_candidates() goes on
+             matching against it.
+
+             FOUNDER DECISION 2026-08-10: neither rule is added.
+             One branch is all this question set supports. A
+             Seeker who wants no children of their own may still
+             marry someone who has them, and the Chapter 4 side
+             of both questions asks what they want in a PARTNER —
+             so skipping them loses real signal to save four
+             screens. ShowIf stays in place for any future rule
+             that clears the bar in its doc comment.
+
+             HOUSEKEEPING DONE IN THE SAME PASS:
+             OnboardingCategory.ch4Questions was deleted. It had
+             no callers and filtered on ch4Status alone — the
+             moment showIf existed it would have shown women the
+             men-only Masjid question and asked people who want
+             no children when they plan to start a family.
+
+------------------------------------------------------------
+
+OA-ZYRA-189
+Title:       Direction B Quick Wins — Two Built, One Already
+             True, Two Recommended Against With Numbers
+Category:    Onboarding / Product
+Priority:    Low — closes out Direction B. Two items need a
+             Founder yes/no or the list stays half-open
+Status:      Open — awaiting Founder decision on items 3 and 5
+Owner:       Founder (Shakeel)
+Raised:      2026-08-10
+Completed:   —
+Source:      ZYRA_ONBOARDING_UX_REVIEW_2026-08-05_V1.md §4
+             "Quick Wins", worked through 2026-08-10
+
+Description: The review listed five quick wins. Measured against
+             the live flow, they are not five pieces of work.
+
+             1. ENABLE CONTINUE WITH PARTIAL PREFERENCES — DONE,
+                as part of H1. The `allAnswered` gate is gone and
+                all-red warns instead of blocking.
+
+             2. CATEGORY-LEVEL PROGRESS — DONE. The subtext under
+                the question now reads "Family · 4 of 10" rather
+                than "Family". Counted from the VISIBLE list, so
+                a branched-away question neither leaves a gap in
+                the numbering nor inflates the total. Categories
+                run 8 to 19 questions, so the next finish line is
+                always in sight — which is the point, because
+                chapter-level progress alone tells someone they
+                are 30% through 175 questions.
+
+             3. BATCH 4-5 SHORT FACTUAL ITEMS PER SCREEN —
+                RECOMMENDED AGAINST. The review estimated "~40
+                fewer Continue taps". Measured, the real figure
+                is about 8.
+
+                Batching only works within a category, because
+                each category ends in its own summary. The
+                contiguous administrative facts are: Education &
+                Finances 7 (education, income, savings, studying,
+                Mahr, debt, mortgage) -> 2 screens, saves 5;
+                Health 3 (dietary, medical, disabilities) -> 1
+                screen, saves 2; Umrah + Hajj -> 1 screen, saves
+                1. Everything else the review named is a values
+                or attitude question, which it agrees should stay
+                one per screen. Siblings and Mahr sit alone in
+                their categories and batch with nothing.
+
+                Eight taps out of the 193 that remain after H1.
+                Against that: _FlowStep becomes one-to-many, a
+                new batched-question widget appears, and three
+                things in the approved screen anatomy break — the
+                per-screen privacy indicator, the help sheet
+                (which builds "Why do we ask for your
+                {question}?" from the single heading), and the
+                category summary's tap-to-edit, which would land
+                the Seeker on a screen holding four questions
+                instead of the one they wanted to change.
+
+                The taps were worth removing when there were 325
+                of them. At 8, the structural cost is higher than
+                the win. RAISED RATHER THAN BUILT — if the
+                Founder wants it anyway, the Education & Finances
+                block alone is the defensible subset (5 taps, one
+                widget, one call site).
+
+             4. ORDER CATEGORIES CONCRETE-FIRST — ALREADY TRUE.
+                The live order is Family, Education & Finances,
+                Marriage Goals, Faith, Lifestyle, Household
+                Roles, Communication, Technology, Health. The
+                review's recommendation ("Family, Education,
+                Marriage Goals first") is exactly what is built.
+                Its §7 also states that Faith "sits in the back
+                half"; Faith is 4th of 9. No change made, and
+                none needed.
+
+             5. PRE-POPULATE INCOME/EDUCATION PREFERENCE FROM THE
+                OWN ANSWER — RECOMMENDED AGAINST, ON SCOPE. This
+                is H2 in miniature, and H2 is explicitly not
+                approved. It also now conflicts with what shipped:
+                under tap-to-exclude every option rests at 🟢, so
+                pre-populating means machine-authoring 🟡 on
+                bands the Seeker never touched — a stated
+                preference nobody stated. That is the exact
+                dishonesty H1 was built to remove, reintroduced
+                one question later.
+
+                If derive-and-confirm is wanted, it should arrive
+                as H2 with its own spec and DR, where the
+                deviation signal is the point and the pre-fill is
+                presented as ZYRA's proposal rather than as the
+                Seeker's answer.
+
+             TO CLOSE: a yes/no on 3 and 5.
+
+------------------------------------------------------------
+
+OA-ZYRA-190
+Title:       Delete Every is_synthetic Row Before Public Launch
+Category:    Pre-Launch / Data Integrity
+Priority:    BLOCKING for public launch. Harmless while the
+             database holds only seeded accounts
+Status:      Open — raised 2026-08-10
+Owner:       Founder (Shakeel) confirms the launch gate; Opus
+             executes
+Raised:      2026-08-10
+Completed:   —
+Source:      Founder decision 2026-08-10 to seed Chapter 3/4
+             "full synthetic, clearly labelled". This is the
+             other half of that instruction
+
+Description: The database now contains 144 Seekers with complete
+             but INVENTED Chapter 3 and Chapter 4 answers, and
+             144 with invented Chapter 2 details.
+
+             Chapter 2 can at least be checked: it was built to
+             Census 2021 and the Techne/IIFL denominational
+             survey. CHAPTER 3 CANNOT. Those are values — there
+             is no census for "how involved should your parents
+             be during your marriage". The answers and the
+             preference maps came from a deterministic hash and
+             an assortative decay rule that I chose.
+
+             THE RISK IS NOT THE DATA, IT IS WHAT GETS BUILT ON
+             IT. A compatibility engine tuned until these scores
+             "look right" is tuned to an invention. The measured
+             spread — 77 to 100, mean 86.3 — is a property of my
+             decay rule, not of any real population.
+
+             WHAT MARKS IT:
+               onboarding_answers.is_synthetic   (144 rows)
+               seeker_details.is_synthetic       (144 rows)
+             Both default FALSE, so a real Seeker can never be
+             caught by the sweep. Partial index on each.
+
+             ALSO TO DROP: zyra_seed_ch4_questions and
+             zyra_seed_answers — scaffolding tables holding the
+             question catalogue transcribed from
+             chapter3_categories.dart and the intermediate
+             answer picks. Both RLS-enabled with grants revoked.
+
+             NOTE THE STALENESS HAZARD: zyra_seed_ch4_questions
+             is a TRANSCRIPTION of a Dart file. If the questions
+             change and the seed is re-run, it will write answers
+             against option strings that no longer exist, and
+             score_candidates() will silently match nothing —
+             absent answers are neutral, so it fails quiet.
+             Regenerate the catalogue before any re-seed.
+
+             TO CLOSE: delete where is_synthetic, drop the two
+             scaffolding tables, then assert both tables are
+             empty of synthetic rows. Do it in the same sweep as
+             OA-ZYRA-184's nine dev RPCs — same gate, same day.
+
+------------------------------------------------------------
+
+OA-ZYRA-191
+Title:       Build and Verify Direction B on Device — A Full Day
+             of Dart Has Never Been Compiled
+Category:    Verification / Build
+Priority:    HIGH. Nothing after this can be trusted until it is
+             done. Not urgent in the sense of risk to live users
+             — there are none — but every hour of further work
+             stacks on an unverified base
+Status:      Open — raised 2026-08-10, Founder to run
+Owner:       Founder (Shakeel). CANNOT be delegated to Opus —
+             see "why" below
+Raised:      2026-08-10
+Completed:   —
+Source:      Founder request 2026-08-10 to record the build as an
+             action after the tooling proved unreachable
+
+Description: Onboarding Direction B shipped across six Dart files
+             on 2026-08-10 and NONE of it has been through a
+             compiler.
+
+             THE COMMAND (one line, profile mode, per the
+             standing rule — never plain `flutter run`):
+
+               cd "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE" && ./run.sh
+
+             WHY OPUS CANNOT DO THIS, recorded so it is not
+             re-litigated every session:
+               * `device_bash` is an isolated Linux VM with the
+                 DEVELOPMENT folder mounted. No macOS, no Xcode,
+                 no Flutter, no iPhone.
+               * The cloud container has no Flutter and its
+                 network is locked down — storage.googleapis.com,
+                 pub.dev and github all return 403, so the SDK
+                 cannot be installed.
+               * Computer-use resolves Terminal at 'click' tier:
+                 it can see and left-click, but CANNOT type,
+                 press keys or paste. That restriction covers all
+                 terminals and IDEs and is deliberate.
+             Every route to a shell on the Mac is closed. The
+             build is a Founder action, permanently.
+
+             WHAT WAS DONE INSTEAD. A 30-point static
+             cross-check of the six changed files: every
+             construction site of TrafficLightQuestionScreen
+             passes the new API; the Set-typed hard-requirement
+             callback is never handed a bool; Chapter 2's
+             adapter is present and Chapter 2 correctly does NOT
+             opt into tap-to-exclude; the persistence service
+             signature matches what the flow passes; ShowIf is
+             reachable from the question catalogue; the deleted
+             ch4Questions getter has no live callers. 30/30.
+             That is not a compiler and does not claim to be.
+
+             THE TWO LIKELY FAILURE POINTS:
+               1. chapter3_categories.dart ~line 174 —
+                  `showIf: const ShowIf('ch3_q3', notAnyOf:
+                  ['No'])` sits inside a const List. If Dart
+                  objects to the const construction it fails
+                  here, at compile time.
+               2. traffic_light_question_screen.dart ~line 143 —
+                  the addPostFrameCallback that seeds the resting
+                  greens. This will NOT fail to compile; it would
+                  fail at runtime on the first Chapter 4 screen
+                  if the deferral is wrong.
+
+             MANUAL CHECKS ONCE IT RUNS — each maps to something
+             built today that no test covers:
+               a. Walk one Chapter 4 question. Every option
+                  should already be 🟢 and Continue should be
+                  live without touching anything.
+               b. Mark two options 🔴 on the same question. Each
+                  should grow its OWN "Never introduce anyone
+                  who answered X" checkbox. Tick one only. That
+                  pair — one hard, one soft — was impossible
+                  before today and is the whole point of the
+                  reshape.
+               c. Mark EVERY option 🔴. It should warn and still
+                  let you continue. It used to silently disable
+                  the button.
+               d. Answer "No" to wanting children, then look for
+                  the family-timing question. It should be gone,
+                  and the category counter should read one lower.
+               e. SUPERSEDED THE SAME EVENING. This said Chapter
+                  2's sect matrix should still show ONE checkbox,
+                  because the difference was deliberate. OA-ZYRA-185
+                  was then approved and built, so Chapter 2 now
+                  matches Chapter 4: the sect matrix should show
+                  one "Never introduce anyone who answered X" per
+                  🔴 sect, NOT a single question-wide checkbox.
+                  If you see one checkbox, the build is stale.
+               f. Profile Unlock, after unlocking: an amber dot
+                  and "Example figures. The same for every profile
+                  until real scoring is switched on." sits under
+                  the 81% (OA-ZYRA-192).
+               g. Category progress: the line under each question
+                  should read "Family · 4 of 10", not just
+                  "Family" (OA-ZYRA-189).
+
+             THEN COMMIT. Roughly 45 changed files plus three
+             migrations, two documents and seven register
+             entries, none of it under version control.
+
+             NOTE ON GIT, found the hard way 2026-08-10: git run
+             through the Cowork device bridge cannot unlink its
+             own lock files, because the mount forbids deletion.
+             A `git status` from that side leaves a
+             .git/index.lock that blocks every later git command.
+             One sat there from 08:44 to 16:32 and silently broke
+             all committing for eight hours. RUN GIT FROM THE MAC
+             TERMINAL, never through Claude. Two stale locks were
+             moved to `_to_delete/` and that folder can be binned.
+
+------------------------------------------------------------
+
+OA-ZYRA-192
+Title:       Compatibility Unlock Charges a Real Credit and
+             Shows Everyone the Same Invented 81%
+Category:    Product Integrity / Premium
+Priority:    HIGH. No real users today, so no one has been
+             charged for it yet — but this is a PAID screen
+             showing a made-up number with nothing saying so,
+             and the reason it was acceptable expired on
+             2026-08-10
+Status:      Open — step 4 done 2026-08-10 (marker restored),
+             steps 1-3 outstanding
+Owner:       Founder (Shakeel) rules on presentation; Opus wires
+             the number
+Raised:      2026-08-10
+Completed:   —
+Source:      Found 2026-08-10 checking what the Chapter 2/3/4
+             backfill had unblocked, per the persistence audit's
+             dependency list
+
+Description: profile_unlock_screen.dart shows a hardcoded
+             `_Sample.overall = 81` and six hardcoded category
+             bars — Lifestyle 74, Work & Education 78, Family
+             Values 85, Marriage Goals 88, Personality 69,
+             Deen 92 — for EVERY profile, every time. The file
+             never calls score_candidates(); its only async work
+             is balances, Guardian info, and the unlock
+             transaction itself.
+
+             The transaction IS real. zyra_unlock_profile() runs,
+             a credit is spent, a profile_unlocks row is written.
+             So a Seeker pays, and is shown a number that is the
+             same for every person they will ever unlock.
+
+             The on-screen SAMPLE banner was removed 2026-08-03
+             at Founder instruction ("remove the yellow sample
+             banner"). At the time that was reasonable — it was a
+             mockup being reviewed. Nothing now marks it.
+
+             WHY THIS IS NEW TODAY, AND NOT AN OLD KNOWN GAP.
+             ZYRA_ONBOARDING_PERSISTENCE_AUDIT §5 listed Profile
+             Unlock as "cannot produce a real number. Currently
+             shows sample data, marked. KEEP PAUSED." That was
+             correct: onboarding_answers had zero rows. As of
+             2026-08-10 it has 144, seeker_details has 144, and
+             score_candidates() returns real per-pair numbers —
+             ALREADY CONSUMED by two live call sites:
+               zyra_discovery_service.dart:215   (Browse)
+               zyra_journey_service.dart:350     (Journey reveal)
+             So the app computes a real score in two places and
+             shows a constant in the one the Seeker pays for.
+             The pause condition is gone; the pause remains.
+
+             A SECOND MISMATCH, WORTH FIXING IN THE SAME PASS.
+             The sample's own header documents the weighting it
+             was built to satisfy: green=1, amber=0.5, red=0,
+             over 88 counted items. The live engine uses
+             green=2, yellow=1, red=-3, scaled so the output
+             CENTRES ON 50 and runs 0-100. Those are different
+             scales, not just different numbers. Before the
+             screen shows a real figure, someone has to answer
+             what a percentage MEANS to the Seeker — 81% on a
+             0-100 count basis reads very differently from 81%
+             on a scale where 50 is "we know nothing about you".
+
+             Related: the measured distribution after seeding
+             puts real scores between 77 and 100 with a mean of
+             86.3 (see ZYRA_CHAPTER2_BACKFILL_AND_WEIGHT_
+             FINDINGS_2026-08-10.md §6a). If that holds for real
+             users, almost every unlock will read 80-95, and a
+             Seeker who pays twice will see near-identical
+             numbers. That is a pricing and expectation problem
+             as much as an engineering one — but note the caveat
+             in that document: the spread is a property of
+             synthetic preference data, not of real people.
+
+             ALSO STILL UNBUILT: the category breakdown. The six
+             bars are the whole value proposition of Unlock+, and
+             score_candidates() does not expose per-category
+             detail at all — journey_flow_screen.dart:38 already
+             records this. Unlock+ cannot be honest until the
+             function returns a breakdown.
+
+             TO CLOSE, in order:
+               1. Founder rules on what a % means to the Seeker.
+               2. Extend score_candidates() to return per-category
+                  totals (Unlock+ depends on it; Unlock does not).
+               3. Wire the screen to the real number.
+               4. DONE 2026-08-10 — marker restored, Founder chose
+                  option A of three shown.
+
+             STEP 4 AS BUILT. `_SampleMarker` in
+             profile_unlock_screen.dart, rendered inside
+             _OverallResult directly beneath the figure so the
+             number cannot be read without the qualifier:
+
+               "Example figures. The same for every profile until
+                real scoring is switched on."
+
+             The second sentence is the one that matters.
+             "Example figures" alone reads as "not final"; the
+             actual defect is that 81% is IDENTICAL FOR EVERY
+             PROFILE, so without saying so a Seeker takes it as a
+             fact about this particular person.
+
+             Not a banner — the same idiom as the onboarding
+             privacy indicator (6px dot, plain text, no card, no
+             box), reusing ZyraColors.unlockDot / unlockText and
+             ZyraText.privacyText so it moves with the palette.
+             That answers the 2026-08-03 objection to the yellow
+             banner without leaving the screen unmarked.
+
+             STILL OPEN AND NOT COVERED BY THE MARKER: the
+             _Detail section (three tallies + six category rows)
+             is a separate widget further down the page and
+             carries no marker of its own. One marker under the
+             headline was what was approved; if the detail can be
+             scrolled to without the headline in view, it needs
+             its own. Worth checking on device during OA-ZYRA-191.
+
+             THE MARKER IS A HOLDING MEASURE. Delete _SampleMarker
+             when step 3 lands.
+
+------------------------------------------------------------
+
+OA-ZYRA-193
+Title:       The Compatibility Scoring METHOD Has Never Been
+             Agreed — Two Different Ones Are Already Live
+Category:    Product / Compatibility Engine
+Priority:    HIGH as a decision. Nothing is broken, but every
+             number the product shows rests on a method nobody
+             ratified, and two parts of the app disagree about
+             what it is
+Status:      PARTIALLY RESOLVED (a)(a2)(b)(c) 2026-08-11 —
+             Founder decided from his phone. (d) and (e) remain
+             Open. Originally raised because the Founder called
+             for it 2026-08-10: "if you're setting a score system
+             we gotta talk about that soon"
+Owner:       Founder (Shakeel) — this is a product decision, not
+             an implementation one
+Raised:      2026-08-10
+Completed:   —
+Source:      Founder declined to set v_ch2_weight on 2026-08-10,
+             correctly, on the grounds that the weight is a dial
+             on a machine that was never agreed
+
+Description: THE FOUNDER IS RIGHT AND THIS SHOULD HAVE BEEN
+             RAISED FIRST. v_ch2_weight was offered as a
+             decision. It is a parameter of a scoring method
+             that has never been approved — tuning it would have
+             ratified the method by the back door.
+
+             ZYRA_DECISIONS_CURRENT_VERSION_V2 §10 has said
+             "Compatibility scoring. Method undefined." since it
+             was written. That is still true, and meanwhile TWO
+             DIFFERENT METHODS have appeared in the product:
+
+             1. score_candidates(), live and consumed by Browse
+                curation and the Journey reveal:
+                  green +2, yellow +1, red -3
+                  score = (total / max) x 50 + 50
+                So the scale runs 0-100 but CENTRES ON 50, and 50
+                means "we know nothing about you", not "half
+                compatible". A red answer costs more than a green
+                one earns — deliberate, never ratified.
+
+             2. profile_unlock_screen.dart's sample figures,
+                whose own header documents the weighting they
+                were built to satisfy:
+                  green 1, amber 0.5, red 0, over 88 items
+                A plain 0-100 count. No centring, no penalty.
+
+             These are not different numbers, they are different
+             SCALES. 81% under (2) and 81% under (1) describe
+             quite different pairs of people.
+
+             WHAT NEEDS DECIDING, roughly in order:
+
+             a. WHAT DOES THE PERCENTAGE MEAN to a Seeker? Is 50
+                the floor of the scale or its middle? Should a
+                number below 50 be possible at all?
+             a2. WHOSE NUMBER IS IT? Found 2026-08-10 while
+                testing the Reveal on the live seeded pair:
+                score_candidates() is ASYMMETRIC, because each
+                person is scored against the OTHER's
+                preferences. Yusuf scores Aisha 84.5%; Aisha
+                scores Yusuf 88.2%. Same two people, same data,
+                two different numbers.
+
+                The Reveal shows ONE. Which one is an accident
+                of sequence: revealCompatibility() computes and
+                stores the score when the SECOND person reveals,
+                from that person's perspective. So the "shared"
+                compatibility of a couple depends on who happened
+                to press the button last, and the pair sees a
+                number that is true for one of them and not the
+                other.
+
+                Options: show each Seeker their own figure (two
+                private numbers, no shared one); average them;
+                take the lower; or define a genuinely symmetric
+                measure. This is not a bug to patch — it is the
+                same question as (a), asked about a pair rather
+                than a person, and it should be answered with the
+                rest of the method.
+             b. SHOULD A RED COST MORE THAN A GREEN EARNS?
+                Currently -3 against +2. That is a moral position
+                about how much a dealbreaker-adjacent mismatch
+                should hurt, expressed as a constant.
+             c. WHAT COUNTS AS 100%? Today it means every scored
+                answer was green — achievable and, on the seeded
+                data, achieved by 48% of pairs. If nearly half of
+                everyone is "100% compatible", the number stops
+                meaning anything.
+             d. HOW MANY CATEGORIES, AND WHICH? The Unlock+
+                screen shows six (Lifestyle, Work & Education,
+                Family Values, Marriage Goals, Personality, Deen)
+                and onboarding has nine, and they do not map onto
+                each other. score_candidates() returns no
+                category detail at all.
+             e. ONLY THEN v_ch2_weight — how much sect and
+                ethnicity should move a number whose meaning is
+                settled.
+
+             DO NOT TUNE ANY OF THIS ON THE SEEDED DATA. The 144
+             Chapter 3/4 rows are synthetic (OA-ZYRA-190) and the
+             measured spread — 77 to 100, mean 86.3 — is a
+             property of the assortative decay rule used to
+             generate them, not of any real population. Point (c)
+             above is exactly the kind of question that data
+             CANNOT answer.
+
+             BLOCKED (now cleared for a/a2/b/c): OA-ZYRA-192
+             steps 1-3 (wiring the real number into the paid
+             Unlock screen) and the open v_ch2_weight decision in
+             CLAUDE.md.
+
+RESOLVED (a)(a2)(b)(c) 2026-08-11 — Founder, by phone.
+
+             (a) 0-100 PLAIN COUNT. green 1, amber 0.5, red 0,
+                 over the items actually scored. The +50 centring
+                 is retired. It computed something defensible and
+                 communicated something false: nobody reads "50%"
+                 as "no data". This also ends the two-methods
+                 problem in the Founder's favour — the Unlock
+                 screen's figures were always built on exactly
+                 this weighting.
+
+             (b) NO. Settled by (a) rather than decided
+                 separately: a plain count has no penalty term.
+                 The -3 is gone. The moral position it encoded is
+                 not abandoned — it moves to Hard Requirements,
+                 which exclude outright and are already tested
+                 before and independently of the lights. An
+                 exclusion is a promise; a light is a preference.
+
+             (a2) TWO SCORES, ONE EACH. Founder's own words: "I
+                 see my compatibility with her, and she sees her
+                 compatibility with me." No shared number.
+                 Removes the sequencing defect as a side effect:
+                 the single figure used to be computed by
+                 whichever party revealed SECOND, so a couple's
+                 "shared" compatibility depended on who tapped
+                 last.
+
+             (c) NO MINIMUM-ITEMS RULE — the premise was
+                 rejected, correctly. Founder: "No answer is
+                 optional." There is no thin profile to design
+                 around, because a thin profile should not be
+                 matchable. Becomes an ONBOARDING COMPLETENESS
+                 GATE on entering the pool, which composes with
+                 Direction B rather than fighting it: Direction B
+                 says do not invent preferences for screens the
+                 Seeker never saw; this says they must see every
+                 screen. Together — every question is answered,
+                 and every answer is real.
+
+                 THE GATE WAS BUILT THE SAME DAY. See below.
+
+             THE GATE, BUILT 2026-08-11:
+
+               profiles.onboarding_complete, maintained by three
+               triggers and backfilled, required by
+               zyra_can_view_profile clause 4 (browsing, BOTH
+               parties) and zyra_can_match.
+
+               Clauses 1-3 are deliberately NOT gated: yourself
+               (you must be able to see your own profile while
+               fixing it), your Guardian or ward (a family
+               relationship does not lapse over three questions),
+               and the other Seeker in a shared attempt (a
+               running Journey must not half-disappear because a
+               profile changed underneath it).
+
+               MATERIALISED, not computed in the policy:
+               zyra_can_view_profile is the USING clause of
+               profiles_select and runs per row on every profile
+               read in the app. Walking the 72-row question bank
+               there would have been a cost nobody found until
+               Browse got slow for no visible reason.
+
+             ⚠️ THE FIRST ATTEMPT WAS WRONG AND WAS CAUGHT BY
+             MEASURING BEFORE ENFORCING. "Every question in the
+             bank" excluded 38 of 144 seeded Seekers. They were
+             not incomplete: all 38 had answered "No" to ch3_q3
+             (do you want children) and had correctly never been
+             shown ch3_q24 (when). Enforcing it would have
+             removed 26% of the population from Browse for
+             answering honestly.
+
+               ch3_q3 = 'Yes'             68 seekers, 68 answered q24
+               ch3_q3 = 'No'              38 seekers,  0 answered q24
+               ch3_q3 = 'If Allah wills'  30 seekers, 30 answered q24
+               ch3_q3 = 'Unsure'           8 seekers,  8 answered q24
+
+             The cause: applicability is gender AND a conditional
+             rule, and the conditional half (showIf) lived only in
+             Dart. The server held half a rule and did not know
+             it. Both halves are now in
+             zyra_onboarding_questions.
+
+             AFTER THE FIX: 144 of 144 pass, all six dev accounts
+             pass, nobody is locked out. Verified live that an
+             incomplete Seeker drops from 69 browsable men to 1 —
+             their Journey partner, via the clause-3 exemption —
+             and can neither view nor match, while still seeing
+             themselves and their Journey partner.
+
+             BUILT THE SAME DAY (2026-08-11):
+               - zyra_light_weight() replaces zyra_light_points(),
+                 which was dropped rather than left dormant
+               - score_candidates() rewritten to the plain count;
+                 returns NULL rather than a neutral 50 when it
+                 cannot score, and NULL-array guarded
+               - journey_compatibility: seeker_a_score /
+                 seeker_b_score / _categories added,
+                 overall_score and category_scores DROPPED so a
+                 stale client fails closed rather than showing a
+                 retired-scale number
+               - zyra_compatibility_for_plus() and
+                 zyra_dev_set_compatibility() rewritten
+               - revealCompatibility() computes only the caller's
+                 own figure, on their own reveal
+               - Compatibility Unlock shows the real number; the
+                 sample marker MOVED to the category breakdown,
+                 which is still a constant pending (d)
+               - Browse ordering made NULL-tolerant: unscored
+                 candidates rank last rather than crashing the
+                 sort into its catch block
+
+             MEASURED AFTER THE CHANGE, same seeded pool:
+               Yusuf->Aisha  84.5 -> 75.0
+               Aisha->Yusuf  88.2 -> 78.3
+               population    77-100 mean 86.3 -> 70.7-82.7 mean 76.4
+               at 100%       48% of pairs -> NONE
+               unscoreable   0
+
+             The 48%-score-100% worry in (c) above did not
+             survive contact with the real question bank, exactly
+             as predicted: it was an artefact of only ~8 questions
+             being scored. With ~70 Chapter 4 questions in play,
+             no pair in the seeded population is all-green.
+
+             STILL OPEN: (d) categories, (e) v_ch2_weight.
+
+------------------------------------------------------------
+
+OA-ZYRA-194
+Title:       Active Journey — Put "View Full Profile" Inside the
+             Journey Too, and Rename the Enter Pill
+Category:    UX / Active Journey
+Priority:    Medium — small build, but the rename touches a
+             vocabulary that is becoming a set and should be
+             decided as one
+Status:      ACTIONED 2026-08-10 — Founder ruled and it was built
+             the same evening. ONE OBSERVATION LEFT OPEN, below
+Owner:       Founder (Shakeel) rules on wording; Opus builds
+Raised:      2026-08-10
+Completed:   —
+Source:      Founder, 2026-08-10: "in active journey where we put
+             view profile at top timeline put it in the enter
+             section also, and change enter into enter journey or
+             continue journey"
+
+Description: TWO CHANGES, one mechanical and one that needs a
+             wording decision.
+
+             1 · VIEW FULL PROFILE INSIDE THE JOURNEY.
+             journey_timeline_screen.dart line 117 renders a
+             _TimelineBubble labelled "View full profile" that
+             pushes SeekerProfileScreen. It exists only there.
+             journey_flow_screen.dart — the Enter destination —
+             already holds the same SeekerProfile object and
+             passes it to _JourneyAppBar, so the route is a few
+             lines; nothing new needs fetching.
+
+             The open question is WHERE it sits. The Journey flow
+             is a staged ritual and the app bar is the only
+             persistent furniture on it, so the natural home is
+             the app bar rather than a bubble competing with the
+             stage content. That is a judgement, not a
+             requirement — Founder to confirm placement when it
+             is built.
+
+             2 · RENAME THE ENTER PILL.
+             connections_screen.dart line 2332 renders
+             `label: 'Enter'` on the Active Journey card, beside
+             "View timeline" (line 2339). Founder asked for
+             "Enter Journey" or "Continue Journey".
+
+             THIS IS NOT A ONE-WORD CHOICE, and it is why this is
+             an OA rather than a two-minute edit. The pill is one
+             of a set that now reads:
+
+               Potential Journey  ->  "Start Journey"
+               Active Journey     ->  "Enter"
+               Paused Journey     ->  "Resume"
+               Peer-paused        ->  "Waiting"
+               Ended Journey      ->  "Request New Journey"
+
+             Adding "Continue Journey" puts it next to "Resume",
+             and those two are close enough to blur: Resume means
+             un-pause, Continue would mean carry on. A Seeker
+             glancing at Connections should not have to work out
+             the difference.
+
+             OPTIONS:
+               a. "Enter Journey" always. Consistent with "Start
+                  Journey", keeps Resume unambiguous, one string.
+               b. Contextual — "Enter Journey" the first time,
+                  "Continue Journey" afterwards. Warmer, and the
+                  card already carries the stage as a sublabel so
+                  there is precedent for context. Needs a rule
+                  for "first time" — cheapest honest proxy is
+                  whether the Journey has moved past its opening
+                  stage, since there is no per-user "have they
+                  opened this" flag today.
+               c. "Continue Journey" always. Simplest, but wrong
+                  on the very first entry and adjacent to Resume.
+
+             OPUS'S READ, offered not decided: (a). The set gains
+             more from Start/Enter/Resume staying three distinct
+             words than it loses from missing a warmer second
+             label — and (b) buys that warmth with a new piece of
+             state to keep true.
+
+             FOUNDER DECISION 2026-08-10, and it went further
+             than the question asked. As built:
+
+               * Primary pill is CONTEXTUAL — "Begin Journey"
+                 until the Journey moves, "Continue Journey"
+                 after. Neither of the two wordings offered; the
+                 Founder picked "Begin", and contextual over
+                 fixed. No new state: a Journey still on its
+                 opening stage has not begun, so the label reads
+                 off journey_stage and there is no
+                 has-been-opened flag to drift.
+               * The stage SUBLABEL is gone — "I don't want enter
+                 open conversation in smaller text". This
+                 reverses the Timeline spec §12 option C ruling
+                 from earlier the same day, which had put the
+                 stage on the control leading to it. stageLabel
+                 came off _ActiveJourneyCard and sublabel off
+                 _CardPill rather than being left unread.
+               * "View timeline" -> "Timeline".
+               * Pills are 2 : 1, Journey to Timeline. Equal
+                 widths claimed they were equal choices.
+               * THE WHOLE-CARD TAP IS REMOVED. Founder:
+                 "wherever I click goes into enter journey but
+                 that ruins the enter journey button." Correct —
+                 a card-wide tap makes the primary pill
+                 decorative and the secondary one a trap, because
+                 everything around "Timeline" silently does
+                 something else. Only the two pills act now.
+               * View profile sits in the Journey's 3-dot menu,
+                 first, above Pause and End.
+
+             STILL OPEN — A VOCABULARY COLLISION, raised not
+             fixed. The Journey action words now read:
+
+               Potential  ->  "Start Journey"
+               Active, not yet moved  ->  "Begin Journey"
+               Active, moving         ->  "Continue Journey"
+               Paused                 ->  "Resume"
+
+             Start and Begin are synonyms doing two different
+             jobs one section apart. The original worry was that
+             "Continue" would blur with "Resume"; it does not —
+             but Start/Begin does. Options: rename Potential to
+             "Request Journey" or similar, or drop "Begin" and
+             let an unmoved Active Journey say "Enter Journey".
+             Founder's call, and nothing is broken meanwhile.
+
+             VERIFY ON DEVICE (add to OA-ZYRA-191): tapping the
+             card body does nothing; the two pills are the only
+             actions; the primary reads Begin before the Journey
+             moves and Continue after; the 3-dot menu opens the
+             full profile.
+
+------------------------------------------------------------
+
+OA-ZYRA-195
+Title:       ZYRA One Should Allow Three Active Journeys — Which
+             Contradicts a Named Product Principle and Six
+             Enforcement Points
+Category:    Product / Journey Architecture
+Priority:    HIGH as a decision. Nothing is broken; the request
+             simply cannot be built as a data change and must not
+             be done as a quiet loosening
+Status:      Open — Founder stated the intent 2026-08-10 while
+             setting up test accounts
+Owner:       Founder (Shakeel) — product decision; then Opus
+Raised:      2026-08-10
+Completed:   —
+Source:      Founder, 2026-08-10: "1 for basic, one for male one
+             for female, and 3 for ZYRA One, 3 male 3 female",
+             then confirmed when asked: "ZYRA One should allow 3
+             Active"
+
+Description: ONE ACTIVE JOURNEY IS NOT A LIMIT SITTING IN ONE
+             PLACE. It is a named product principle — OA-ZYRA-133,
+             "Active Journey System Proposal: One Active Journey"
+             — and it is enforced in SIX independent places, none
+             of which check the plan:
+
+               promote_journey_to_active
+               zyra_enforce_one_active_match      (trigger)
+               zyra_enforce_one_active_attempt    (trigger)
+               request_new_journey
+               respond_to_journey_request
+               restart_journey                    (retired, but
+                                                   carries the rule
+                                                   in comments)
+
+             The journey regression suite asserts the refusal
+             twice — checks 11 and 12, one for the RPC route and
+             one for a direct UPDATE, because audit R7 found that
+             with ids ordered a < b < c one person could be
+             seeker_a on one Journey and seeker_b on another.
+
+             So this is not a config value. Making it three is a
+             change to what ZYRA IS, and the questions it opens
+             are product ones, not engineering ones:
+
+             a. WHAT IS THE PRINCIPLE NOW? "One Active Journey"
+                was the answer to a real problem: a matrimonial
+                app where people talk to five prospects at once
+                is the thing ZYRA was positioned against. Three
+                is still a cap, but it is a different promise and
+                the marketing and onboarding copy both state the
+                current one.
+             b. WHAT HAPPENS ON DOWNGRADE? A ZYRA One member with
+                three Active Journeys who stops paying. Which two
+                end? Do they choose? Does anyone tell the other
+                party, and what are they told — a downgrade is
+                nobody else's business.
+             c. THE GUARDIAN LOAD. A Main Guardian already sits in
+                the Family Review gate for each Journey, with a
+                48-hour window. Three concurrent Journeys per ward
+                is three times the review burden, and a Guardian
+                with two wards could face six.
+             d. TIER-1 AND THE MATCHING EXCLUSIONS. zyra_can_match
+                and the shared-Guardian rules assume a single
+                live Journey per person in places. Each needs
+                re-reading before the cap moves.
+             e. PAUSE. Journey Suspension is a ZYRA One feature
+                and pauses "the" Journey. With three, pause needs
+                to name one.
+
+             DELIBERATELY NOT DONE TONIGHT. The Founder's actual
+             need was to test the Journey, and that is unblocked
+             another way: all four test accounts now have one real
+             Active Journey each (see below). Loosening a
+             six-point invariant at the end of a long session, to
+             make test data match an expectation, is how a
+             principle gets lost by accident.
+
+             TO CLOSE: answer (a) first — it decides whether the
+             rest is worth costing. If yes, this needs a DR and a
+             staged plan, and the journey suite's checks 11/12
+             must be rewritten to assert the NEW rule rather than
+             deleted.
+
+             WHAT WAS DONE INSTEAD, 2026-08-10: the two Basic test
+             accounts had NO real match at all — dev.seeker.basic.f
+             and dev.seeker.basic.m each had zero rows in
+             `matches`. The Active Journey the Founder was looking
+             at was local AppState mock data, which is why Reveal
+             Compatibility appeared to do nothing:
+             revealCompatibility() resolves the match row, gets
+             null, and returns silently. Real Journeys were created
+             for both, at compatibility_reveal, paired with browse
+             profiles so the four test accounts do not consume each
+             other. All four now have exactly one.
+
+------------------------------------------------------------
+
+OA-ZYRA-196
+Title:       The Chapter 3/4 Question Bank Now Exists Twice
+Category:    Architecture / Onboarding
+Priority:    MEDIUM — nothing is broken, and it will break
+             quietly when it breaks
+Status:      Open
+Owner:       Engineering
+Raised:      2026-08-11
+Source:      Building the OA-ZYRA-193(c) completeness gate
+
+Description: The question bank now lives in BOTH
+             data/chapter3_categories.dart and the
+             zyra_onboarding_questions table. That is the price
+             of a server-side gate — the server cannot enforce
+             "every question answered" without knowing what the
+             questions are.
+
+             THE FAILURE MODE IS SILENT. A question added to
+             Dart and not to the table is a question the gate
+             stops requiring: onboarding asks it, nobody has to
+             answer it, and the pool quietly admits people who
+             skipped it. Nothing errors.
+
+             The same is true of showIf. The gate got this wrong
+             on its first attempt precisely because the condition
+             existed in one place and not the other.
+
+             OPTIONS: (a) generate the Dart from the table at
+             build time; (b) generate the table from the Dart in
+             a migration; (c) a test that fails when the two
+             disagree — cheapest, and catches it at the right
+             moment. (c) is probably the answer, and it needs the
+             Dart bank to be readable from a test harness.
+
+------------------------------------------------------------
+
+OA-ZYRA-197
+Title:       No Way Back Into Onboarding Once You Have Left It
+Category:    Onboarding / UX
+Priority:    MEDIUM, rising to HIGH the day a real user is gated
+Status:      Open
+Owner:       Founder / Engineering
+Raised:      2026-08-11
+Source:      Building the OA-ZYRA-193(c) completeness gate
+
+Description: Browse now tells a gated Seeker how many questions
+             are still unanswered. It offers no way to go and
+             answer them, because there is no resume entry point
+             into the onboarding flow to send them to.
+
+             A button was deliberately NOT added: one that went
+             nowhere would be worse than none.
+
+             Until this exists, a Seeker who leaves onboarding
+             early is told what is wrong and cannot fix it. That
+             is survivable in testing, where the flow is always
+             run start to finish, and it is not survivable with
+             real members.
+
+             NEEDS: an entry point that resumes at the first
+             unanswered question. zyra_onboarding_missing()
+             already returns exactly that list, in bank order,
+             and it is already exposed to the client through
+             zyra_my_onboarding_progress().
+
+------------------------------------------------------------
+
+OA-ZYRA-198
+Title:       Repo/Live Migration Reconciliation — 87 Applied
+             Migrations Have No Repo File
+Category:    Engineering / Governance
+Priority:    HIGH (pairs with OA-ZYRA-134's no-git-remote risk)
+Status:      Open — partially discharged 2026-08-12
+Owner:       Engineering
+Raised:      2026-08-12
+Source:      Stewardship pass. CLAUDE.md §5 recorded "78 migrations
+             exist only in the live database... needs an OA" — this
+             is that OA, re-measured.
+
+Description: The live database holds 178 applied migrations, every
+             one with verbatim statements preserved in
+             supabase_migrations.schema_migrations. The repo holds
+             files for ~91 of them by NAME (several under different
+             version numbers than the live rows — hand-written back
+             on 2026-08-08/11; name is therefore the join key).
+
+             Discharged tonight: the 3 stewardship migrations are in
+             the repo verbatim; the 8-file OA-193 frontier cluster is
+             in the repo as applied-in-remote record files (house
+             precedent: 20260811094513); and
+             tools/export_missing_migrations.sql regenerates any or
+             all missing files verbatim from the schema_migrations
+             rows via the SQL editor.
+
+             Remaining: run the export for the ~84 older rows
+             (2026-07-27 → 2026-08-08 span) and commit. Two live
+             rows are deliberately NOT wanted as files —
+             20260811102840/20260811103056 — the repo carries them
+             hand-split as 20260811110300 + 20260811111500.
+
+Target:      Repo replays the full schema; supabase db reset works
+             from a clean clone.
+Dependencies: OA-ZYRA-134 (git remote); tools/
+             export_missing_migrations.sql
+
+------------------------------------------------------------
+
+OA-ZYRA-199
+Title:       seeker_details.is_synthetic Was Set On Every Row —
+             Scope the Launch Sweep by Account, Not Flag Alone
+Category:    Data Integrity / Launch Blocker
+Priority:    HIGH before launch, harmless today
+Status:      Open
+Owner:       Engineering
+Raised:      2026-08-12
+Source:      Stewardship SQL audit of migration
+             20260810170000_onboarding_answers_mark_synthetic_rows
+
+Description: That migration's UPDATE on seeker_details has NO WHERE
+             clause — all 144 rows are flagged is_synthetic=true,
+             including any dev-entered rows, while the file's own
+             header claims "a real Seeker can never be caught by the
+             launch sweep". Measured 2026-08-12: every flagged row
+             belongs to an @zyra.test account and zero non-test
+             users exist, so nothing is harmed TODAY.
+
+             But the OA-ZYRA-190 pre-launch deletion sweep must not
+             trust this flag alone. Required: the sweep deletes only
+             rows whose OWNING ACCOUNT is @zyra.test (join
+             auth.users), with the flag as a secondary check; and
+             the 20260810170000 header claim needs a correction
+             note.
+
+Target:      Sweep spec updated before OA-ZYRA-190 executes.
+Dependencies: OA-ZYRA-190
+
+------------------------------------------------------------
+
+OA-ZYRA-200
+Title:       Remaining zyra_dev_set_* Functions Still Guard Only
+             the Caller
+Category:    Security / Dev Tooling
+Priority:    MEDIUM (destructive pair already fixed)
+Status:      Open
+Owner:       Engineering
+Raised:      2026-08-12
+Source:      Stewardship pass. Companion to migration
+             20260811233914_dev_functions_guard_all_parties, which
+             fixed the two DESTRUCTIVE functions
+             (zyra_dev_counterpart_complete writes AS the other
+             party; zyra_dev_rewind_journey DELETEs their rows) —
+             both now assert every party of the match is
+             @zyra.test.
+
+Description: zyra_dev_set_journey_stage, zyra_dev_set_compatibility
+             and zyra_dev_set_counterpart_reveal still verify only
+             the CALLER. They mutate only the shared match /
+             journey_compatibility row (no per-person writes, no
+             deletes), so exposure is lower — but the same
+             both-parties guard belongs on them for consistency.
+             The anchor-surgery pattern in 20260811233914 applies
+             directly.
+
+Target:      All zyra_dev_* functions assert every affected party
+             is a seeded account.
+Dependencies: 20260811233914
+
+------------------------------------------------------------
+
+OA-ZYRA-201
+Title:       Reference Stability — Every CURRENT_VERSION Promotion
+             Breaks Every Inbound Link
+Category:    Governance / Documentation
+Priority:    MEDIUM
+Status:      Open
+Owner:       Founder decision on the proposal, then Documentation
+Raised:      2026-08-12
+Source:      Stewardship docs audit: ten dead references fixed by
+             hand tonight, and the same defect class was already
+             diagnosed IN FULL by
+             ZYRA_DOCUMENT_REFERENCE_STABILITY_PROPOSAL_2026-08-08
+             and its implementation plan — neither implemented, no
+             as-applied record.
+
+Description: Live docs cite the mutable CURRENT_VERSION filename,
+             so each promotion orphans every inbound reference
+             (BROWSE V3→V4 and WALI V5→V6 alone accounted for 7 of
+             the 10 fixed tonight). The 2026-08-08 proposal already
+             sets out the fix; it needs a Founder yes/no rather
+             than re-diagnosis. Until then, each promotion should
+             grep for the old filename as a checklist step.
+
+Target:      Proposal decided; references stop rotting.
+Dependencies: ZYRA_DOCUMENT_REFERENCE_STABILITY_PROPOSAL_2026-08-08
+
+------------------------------------------------------------
+
 # Register Metadata (added 2026-07-12)
 
-TOTAL REGISTERED (this file): 184 (OA-001 through OA-ZYRA-183,
+TOTAL REGISTERED (this file): 202 (OA-001 through OA-ZYRA-201,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-184 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-202 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

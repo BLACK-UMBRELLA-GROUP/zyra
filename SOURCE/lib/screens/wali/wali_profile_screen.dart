@@ -98,7 +98,7 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
+        backgroundColor: ZyraColors.luxuryDarkPurple,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Privacy', style: ZyraText.heading(size: 16)),
         content: Text(
@@ -134,7 +134,7 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
+        backgroundColor: ZyraColors.luxuryDarkPurple,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Delete your account?', style: ZyraText.heading(size: 16)),
         content: Text(
@@ -308,10 +308,10 @@ class _SettingsRow extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: ZyraText.body(size: 13.5, color: destructive ? const Color(0xFFE08080) : Colors.white),
+                style: ZyraText.body(size: 13.5, color: destructive ? ZyraColors.destructive : Colors.white),
               ),
             ),
-            Icon(Icons.chevron_right, color: destructive ? const Color(0xFFE08080) : Colors.white24, size: 16),
+            Icon(Icons.chevron_right, color: destructive ? ZyraColors.destructive : Colors.white24, size: 16),
           ],
         ),
       ),

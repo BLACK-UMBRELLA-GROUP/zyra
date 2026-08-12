@@ -52,6 +52,17 @@
 // That work is raised, not silently assumed. Until it lands, treat this
 // file as the specification and the dev panel as the only place the
 // numbers are visible.
+//
+// ── PARTIAL UPDATE 2026-08-11: the PAUSED row of the matrix is now
+// server-enforced. Migration 20260811232500 (Founder: both plans pause,
+// caps are the differentiator) makes suspend_journey raise
+// paused_limit_reached at 5 (Basic) / 10 (One), counted over pauses the
+// caller initiated, reading the plan from subscriptions directly. The
+// rest of the header above still stands: one_active_match still counts
+// a paused row against the single active slot, so the caps cannot be
+// REACHED until that trigger excludes suspended rows — that work
+// remains raised, not built. What changed today is who may pause at
+// all: everyone.
 
 import '../state/app_state.dart' show ZyraPlan;
 

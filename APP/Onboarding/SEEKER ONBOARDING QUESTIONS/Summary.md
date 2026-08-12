@@ -77,7 +77,8 @@ Chapter 4 — Your Preferences
   looking for. One preference question per Chapter 3 topic
   that has a confirmed Chapter 4 mapping (not every Chapter 3
   question does — some are descriptive-only).
-  70 questions. Private — used only by compatibility engine.
+  71 questions. Private — used only by compatibility engine.
+  (70 for a woman: Q39 Masjid Attendance is men-only.)
 
 Chapter 5 — Profile Ready
   Profile review, ID verification, photo check status.
@@ -218,15 +219,21 @@ Pre-Onboarding    Account Creation
 Chapter 1         3 questions    About You
 Chapter 2         8 questions    Your Profile
 Chapter 3       104 questions    Your Values (9 categories)
-Chapter 4        70 questions    Your Preferences (traffic-light,
+Chapter 4        71 questions    Your Preferences (traffic-light,
                                  one per Ch3 question with a
                                  confirmed Ch4 mapping)
 ─────────────────────────────────────────────────
-Total           185 questions
+Total           186 questions
 
-(Chapter 3 + Chapter 4 combined = 174 questions — see Chapter 3
+(Chapter 3 + Chapter 4 combined = 175 questions — see Chapter 3
 Classification — Ch4 Mapping.md "FINAL COUNTS" for the exact
 per-category breakdown and REQUIRED/OPTIONAL split.)
+
+CORRECTED 2026-08-10 (Founder decision, Onboarding Direction B).
+Chapter 4 was stated as 70 here and in the Classification doc; the
+Classification doc's own item list has always contained 71, and the
+code generates 71. A woman walks 70 of them. Counted from
+SOURCE/lib/data/chapter3_categories.dart, not from a document.
 
 ------------------------------------------------------------
 PHOTO REQUIREMENTS

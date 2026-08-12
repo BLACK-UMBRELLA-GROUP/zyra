@@ -159,7 +159,7 @@ This is consistent with the ZYRA privacy model: family involvement begins at the
 | Scenario | Behaviour |
 |---|---|
 | Match notification arrives while app is closed | Push notification sent. Tapping opens app directly to Match notification screen. |
-| Seeker has no available Journey slot | "Start Journey" CTA still visible. Tapping shows: "You have an active Journey. Complete or pause it first." No slot consumed. |
+| Seeker has no available Journey slot | CHANGED 2026-08-12 stewardship pass (Founder 2026-08-11): tapping shows the end-then-start dialog — starting with the new person permanently ENDS the current Journey on confirm (Timeline kept); ZYRA One is offered pause instead. Starting is no longer blocked; it is destructive and says so. |
 | Both Seekers tap "Start Journey" simultaneously | First request creates Active Journey. Second Seeker sees confirmation that Journey has already started. No duplicate Journey created. |
 | Match with a Seeker the user later blocks | Potential Journey removed. Match card disappears. |
 | Multiple new matches arrive simultaneously | Each creates its own Potential Journey. Notification shows "You have [n] new matches." Individual match cards in Matches tab. |

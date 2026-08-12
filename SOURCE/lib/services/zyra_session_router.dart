@@ -12,11 +12,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import '../main.dart';
 import '../screens/auth/role_selection_screen.dart';
 import '../screens/home/home_shell.dart';
 import '../screens/wali/wali_home_shell.dart';
 import '../state/app_state.dart';
+import '../constants/zyra_plan_names.dart';
 import 'zyra_auth.dart';
 import 'zyra_discovery_service.dart';
 import 'zyra_unlock_service.dart';
@@ -74,10 +76,13 @@ class ZyraSessionRouter {
       await _hydrate(user.id, row);
 
       return row['role'] == 'wali' ? const WaliHomeShell() : const HomeShell();
-    } catch (_) {
+    } catch (e) {
       // Network hiccup looking up the profile — fall back to Seeker
       // Home rather than blocking the user out entirely; ProfileScreen/
       // WaliProfileScreen will still work off AppState in the meantime.
+      // 2026-08-12: logged (CLAUDE.md §3) — this fallback routes a
+      // Guardian into the Seeker shell, and unlogged it was invisible.
+      debugPrint('ZYRA resolveHome failed, falling back to HomeShell: $e');
       return const HomeShell();
     }
   }
@@ -136,8 +141,15 @@ class ZyraSessionRouter {
           // Only seeker_premium maps to ZYRA One. wali_premium is the
           // Guardian's own entitlement, resolved separately by
           // ZyraEntitlementService.hasWaliOne(), not through AppState.plan.
-          plan = planType == 'seeker_premium' ? ZyraPlan.one : ZyraPlan.basic;
-        } catch (_) {
+          //
+          // 2026-08-12: compares against the canonical db value from
+          // constants/zyra_plan_names.dart instead of a raw literal — that
+          // file existed precisely for this and had zero importers.
+          plan = planType == ZyraSubscriptionPlanType.seekerPremium.dbValue
+              ? ZyraPlan.one
+              : ZyraPlan.basic;
+        } catch (e) {
+          debugPrint('ZYRA plan fetch failed: $e'); // 2026-08-12, CLAUDE.md §3
           // plan stays null -> hydrateFrom leaves the existing default
         }
       }(),

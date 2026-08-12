@@ -49,6 +49,7 @@ import '../screens/browse/browse_screen.dart'
 import '../screens/welcome_screen.dart';
 import '../services/zyra_auth.dart';
 import '../services/zyra_guardian_suggestion_service.dart';
+import '../services/zyra_journey_service.dart';
 import '../services/zyra_unlock_service.dart';
 import '../state/app_state.dart';
 import '../theme/zyra_text.dart';
@@ -189,9 +190,22 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
       context: context,
       icon: Icons.restart_alt,
       title: 'Reset this account?',
-      body: 'Clears every Save, Consider, Pass, unlock and credit for the '
-          'signed-in account. Keeps your profile, photos, Chapter 2 answers, '
-          'consent and Guardians.',
+      // ── 2026-08-11, SECOND PASS. Founder: "the reset account isn't quite
+      // right, why cos when i pressed reset it started with send salam not
+      // started with start journey again."
+      //
+      // My first answer was to leave this button alone and add a separate one
+      // inside the Journey. That was the wrong call: he pressed RESET, and a
+      // button called Reset that leaves you halfway through a Journey has not
+      // reset anything he can see. The old note said matches were too
+      // expensive to destroy — still true, and still respected: the match,
+      // the Guardian link and how you met all survive. What goes is what the
+      // two of them DID.
+      body: 'Clears every Save, Consider, Pass, unlock and credit, and puts '
+          'every Journey back to its first stage — answers, ratings, Salams, '
+          'reveals and messages cleared.\n\nKeeps your profile, photos, '
+          'Chapter 2 answers, consent, Guardians, your matches and how you '
+          'met them.',
       primaryLabel: 'Reset',
       secondaryLabel: 'Cancel',
     );
@@ -220,6 +234,11 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
     Map<String, dynamic>? counts;
     try {
       final res = await supabase.rpc('zyra_dev_reset_account');
+      // Two calls rather than one function, deliberately: account state and
+      // Journey state are separate concerns with separate blast radii, and
+      // zyra_dev_reset_account() is used elsewhere. The button composes them;
+      // neither RPC grows a second job.
+      await ZyraJourneyService.devRewindJourney();
       counts = (res as Map?)?.cast<String, dynamic>();
     } catch (e) {
       error = '$e';
@@ -241,7 +260,8 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
           : ' Cleared ${counts.values.fold<int>(0, (a, b) => a + ((b as num?)?.toInt() ?? 0))} rows.';
       // No longer "restart the app": clearDecisionsForReset() bumps
       // AppState.deckVersion, which Browse listens for and re-fetches on.
-      message = 'Account reset.$cleared Everyone is back in Browse.';
+      message = 'Account reset.$cleared Everyone is back in Browse, and every '
+          'Journey is at its first stage.';
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
@@ -368,6 +388,47 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
     ZyraDevScenario.instance.requestPopup(popup);
   }
 
+  /// The small Reset beside SCENARIOS.
+  ///
+  /// WAS `() => _s.reset()` — panel toggles only, instant, no confirm. That
+  /// is still what it does by default, and it is still the right default: the
+  /// toggles are local state and clearing them should cost nothing.
+  ///
+  /// But it now OFFERS the Journey rewind too, because "Reset" sitting above
+  /// a Journey stuck at Salam Exchange reads as a promise it was not keeping.
+  /// Asked rather than assumed — this one destroys server data and the other
+  /// one never has.
+  Future<void> _resetScenarios() async {
+    _s.reset();
+    if (!mounted) return;
+    final also = await showZyraGlassChoice(
+      context: context,
+      icon: Icons.restart_alt,
+      title: 'Toggles cleared. Journeys too?',
+      body: 'Every Journey on this account goes back to Compatibility Reveal, '
+          'and what you both did inside it is cleared — answers, ratings, '
+          'Salams, the reveal, messages.\n\nYour matches, your Guardians and '
+          'how you met stay exactly as they are.',
+      primaryLabel: 'Reset Journeys too',
+      secondaryLabel: 'Just the toggles',
+    );
+    if (also != true || !mounted) return;
+    try {
+      final said = await ZyraJourneyService.devRewindJourney();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('$said (dev)')));
+    } catch (e) {
+      debugPrint('ZYRA dev: rewind journeys failed - $e');
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('$e'.contains('dev_only')
+            ? 'Refused — rewinding Journeys is limited to @zyra.test accounts. (dev)'
+            : "That didn't go through (see console). (dev)"),
+      ));
+    }
+  }
+
   /// Hard reset to Welcome, clearing the whole navigation stack.
   ///
   /// Same behaviour as DevNavOverlay's old floating button — deliberately
@@ -439,7 +500,7 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
                       children: [
                         Text('SCENARIOS', style: ZyraText.chapterLabel(color: Colors.white70)),
                         GestureDetector(
-                          onTap: () => _s.reset(),
+                          onTap: _resetScenarios,
                           child: Text('Reset',
                               style: ZyraText.subtext(size: 11, color: const Color(0xFF9AD0FF))),
                         ),
@@ -612,7 +673,13 @@ class _DevScenarioPanelState extends State<DevScenarioPanel> {
                     _Control(
                       id: 'journey_active',
                       label: 'Active Journeys',
-                      hint: 'Running, not paused. '
+                      // 2026-08-11: the hint now says what 0 and 1 DO, because
+                      // this row is the only thing standing between an empty
+                      // Connections page and a testable Journey, and neither
+                      // behaviour is guessable from a number.
+                      hint: '0 hides your real Journey; 1 shows it — the real '
+                          'match, so Reveal and the rest work. Beyond that, '
+                          'stand-ins for layout only. '
                           '${_limits.active} on this plan.',
                       page: DevPage.connections,
                       plans: const {DevPlan.basic, DevPlan.one},

@@ -3,7 +3,7 @@
 **Version:** V4
 **Status:** CURRENT_VERSION
 **Date:** 2026-07-26
-**Supersedes:** BROWSE_UX_SPEC_CURRENT_VERSION_V3.md (archived:
+**Supersedes:** BROWSE_UX_SPEC_2026-07-26_V3.md (archived:
 BROWSE_UX_SPEC_2026-07-26_V3.md, same folder — no ARCHIVE subfolder
 convention exists under APP/, matching APP/Standards precedent)
 **Owner:** ZYRA Product

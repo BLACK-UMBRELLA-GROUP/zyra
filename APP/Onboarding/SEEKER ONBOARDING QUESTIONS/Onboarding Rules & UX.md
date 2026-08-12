@@ -359,7 +359,10 @@ background system below: onboarding no longer varies by
 gender at all. Every onboarding screen now uses a single flat
 Royal Purple (#8A6A9E) background, matching the Welcome
 screen and every other "Default Screen" — the gender-derived
-variants (and Luxury Dark Purple generally) are not to appear
+variants (and Luxury Dark Purple generally) are not to appear as backgrounds or gradients
+(scoped 2026-08-12 stewardship pass: Luxury Dark Purple IS the ratified text colour ON the
+Pastel Grey Lavender primary button, app-wide — see BUSINESS/COLOUR THEME/Summary.md
+§Component colour rules; the prohibition here governs surfaces, not button foregrounds)
 anywhere active in the app for now, though the Founder has
 noted the dark shade may return as primary in future. This
 section is left in place below for historical reference, not

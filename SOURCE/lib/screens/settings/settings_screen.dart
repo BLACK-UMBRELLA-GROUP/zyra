@@ -322,7 +322,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// silently does nothing is worse than one that says so.
   void _todo(BuildContext context, String what) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$what — editor coming next. (dev)')),
+      SnackBar(content: Text('$what — editor coming next.')),
     );
   }
 

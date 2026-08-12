@@ -1,0 +1,12 @@
+-- ⟲ APPLIED-IN-REMOTE RECORD — 2026-08-12 stewardship pass.
+--
+-- This migration was applied straight to the live database via MCP on
+-- 2026-08-11 and existed in no repo file. This record file preserves the
+-- version slot and WHAT IT DID; the verbatim statements live in
+-- supabase_migrations.schema_migrations version 20260811153416 and can be
+-- regenerated with tools/export_missing_migrations.sql (OA-ZYRA-198).
+-- House precedent for a record-not-body file: 20260811094513.
+--
+-- WHAT IT DID:
+-- OA-ZYRA-193(c) part 1 — zyra_seed_ch4_questions RENAMED zyra_onboarding_questions (canonical bank, mirrors chapter3_categories.dart — drift risk raised); + show_if columns; zyra_question_is_due(), zyra_onboarding_missing(), zyra_onboarding_complete(), zyra_my_onboarding_progress(); revokes on the new fns
+SELECT 1; -- applied-in-remote record; replay via the schema_migrations row

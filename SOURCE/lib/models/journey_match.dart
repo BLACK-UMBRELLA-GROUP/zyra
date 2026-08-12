@@ -46,12 +46,19 @@ class JourneyMatch {
 
   bool get canRestart => status == 'ended' && endedAt != null && !isInCoolingPeriod;
 
-  /// "Restart available in 4 hours".
+  /// "You can ask again in 4 hours".
   ///
   /// ADDED 2026-08-07 with the copy review. The Founder asked for "Restart
   /// available in 24 hours" in place of "Ended — cooling period", and the
   /// reasoning was right — users care what happens next, not what the
   /// internal state is called.
+  ///
+  /// REWORDED 2026-08-10, OA-ZYRA-159. The word "Restart" had to go: it names
+  /// a capability that has refused since 2026-08-06 and promises something
+  /// unilateral. What actually becomes available is the right to ASK, which
+  /// the other person may decline. The getter name stays `restartAvailableIn`
+  /// for now — renaming it touches call sites for no behavioural gain, and
+  /// OA-ZYRA-156 step 7 will be through this file anyway.
   ///
   /// But a fixed "24 hours" would be WRONG for all but the first moment of
   /// the period. A Journey ended twenty hours ago has four hours left, and
@@ -63,9 +70,9 @@ class JourneyMatch {
   String get restartAvailableIn {
     if (endedAt == null) return '';
     final left = endedAt!.add(const Duration(hours: 24)).difference(DateTime.now());
-    if (left.inMinutes <= 0) return 'Restart available';
-    if (left.inMinutes < 60) return 'Restart available in under an hour';
+    if (left.inMinutes <= 0) return 'you can ask again';
+    if (left.inMinutes < 60) return 'you can ask again in under an hour';
     final hours = (left.inMinutes / 60).ceil();
-    return 'Restart available in $hours ${hours == 1 ? "hour" : "hours"}';
+    return 'you can ask again in $hours ${hours == 1 ? "hour" : "hours"}';
   }
 }

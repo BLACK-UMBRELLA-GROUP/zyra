@@ -166,6 +166,12 @@ const List<OnboardingCategory> chapter3Categories = [
         ch4Status: Ch4Status.required,
       ),
       OnboardingQuestion(
+        // THE ONLY BRANCH IN THIS FILE, and deliberately so. If someone has
+        // said they do not want children, "when would you like to start a
+        // family?" is not a question, it is a mistake. Every other rule the
+        // 2026-08-05 UX review proposed described follow-up questions that do
+        // not exist in this set — see OA-ZYRA-188.
+        showIf: const ShowIf('ch3_q3', notAnyOf: ['No']),
         id: 'ch3_q24',
         prompt: 'If Allah blesses you with children, when would you ideally like to start a family?',
         options: ['As soon as possible', 'Within 1 year', 'Within 2–3 years', 'After 3 years', "I'll decide together with my spouse", 'If Allah wills'],

@@ -449,8 +449,9 @@ PAUSE BEHAVIOUR
 
   Note: "Pause Journey" as used here refers to the Guardian's
   action within the Family Review Period. This is distinct
-  from the "Pause Journey" feature available to ZYRA One
-  Seekers (which pauses the Active Journey entirely).
+  from the Seeker-side "Pause Journey" feature (both plans,
+  capped 5/10 since DR-ZYRA-138, 2026-08-11 — errata 2026-08-12 stewardship pass),
+  which pauses the Active Journey entirely.
   Both use the same term in their respective contexts.
 
 ------------------------------------------------------------

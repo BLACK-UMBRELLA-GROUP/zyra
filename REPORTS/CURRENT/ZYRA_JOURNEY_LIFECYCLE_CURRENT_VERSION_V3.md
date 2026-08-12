@@ -175,6 +175,14 @@ This is recorded as a reversal of a joint recommendation, not as a disagreement 
 
 **Anyone may be affected by a pause. Only ZYRA One may initiate one.**
 
+> ⚠️ **SUPERSEDED 2026-08-11 (DR-ZYRA-138).** The Founder reversed this
+> amendment: BOTH plans may initiate a pause; the differentiator is the cap
+> (5 Basic / 10 One, per the 2026-08-09 entitlements matrix), counted over
+> pauses the caller initiated and enforced server-side
+> (`paused_limit_reached`; `suspension_requires_one` retired). The paragraph
+> above is preserved as the historical record of the earlier amendment.
+> Authority: JOURNEY_SUSPENSION_CURRENT_VERSION_V2.md.
+
 - A ZYRA One Seeker may pause an Active Journey at any time.
 - A ZYRA Basic Seeker cannot initiate a pause, but is fully subject to one placed by the other party.
 - **The Journey is paused while any pause is active, and resumes when every pause has been lifted.**

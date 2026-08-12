@@ -8,9 +8,24 @@ CHAPTER 3 → CHAPTER 4 CLASSIFICATION
 
 Status: V3 — APPROVED
 Last Updated: 2026-06-28
+Counts corrected 2026-08-10 (Founder decision, Onboarding Direction B).
 
-All 40 OPTIONAL questions confirmed for Chapter 4.
-Chapter 4 total: 70 preference questions.
+All 41 OPTIONAL questions confirmed for Chapter 4.
+Chapter 4 total: 71 preference questions.
+
+COUNT CORRECTION, 2026-08-10. The per-question classification below was
+checked against SOURCE/lib/data/chapter3_categories.dart question by
+question, all 104. It agrees with the code exactly — no question changed
+classification. Only the SUMMARY lines were wrong: three category headers
+in the confirmed list (Education 8, Faith 13, Technology 2) disagreed with
+the items listed beneath them, and the totals inherited the error
+(70 instead of 71, OPTIONAL 40 instead of 41, NONE 34 instead of 33).
+The item lists were right all along; the numbers above them were not.
+
+Per-gender reality, which no total in this document expressed: a man walks
+71 Chapter 4 screens, a woman 70. Q39 (Masjid Attendance) is men-only, and
+Q26 (Views on Polygamy) exists as two gender variants sharing one id — the
+reason a naive count of the code returns 105 questions rather than 104.
 
 ------------------------------------------------------------
 CLASSIFICATION KEY
@@ -172,11 +187,11 @@ Q104 Final Reflection              NONE
 FINAL COUNTS
 ------------------------------------------------------------
 
-CH4 ✓  Total:   70 questions
+CH4 ✓  Total:   71 questions
   — of which REQUIRED:  30
-  — of which OPTIONAL:  40
+  — of which OPTIONAL:  41
 
-NONE Total:      34 questions
+NONE Total:      33 questions
 
 CHAPTER 3 TOTAL: 104 questions
 
@@ -195,7 +210,7 @@ FAMILY (9):
   Q8  Caring for Ageing Parents
   Q9  Living With In-Laws
 
-EDUCATION & FINANCES (8):
+EDUCATION & FINANCES (9):
   Q11 Highest Education Level
   Q12 Annual Income
   Q13 Financial Readiness
@@ -216,7 +231,7 @@ MARRIAGE GOALS (8):
   Q30 Travelling
   Q31 Marriage Pace
 
-FAITH (13):
+FAITH (16):
   Q33 Daily Prayers
   Q34 Qur'an Reading
   Q35 Qur'an Memorisation
@@ -264,7 +279,7 @@ COMMUNICATION & EI (6):
   Q84 Quality Time
   Q85 Privacy
 
-TECHNOLOGY (2):
+TECHNOLOGY (3):
   Q86 Social Media Usage
   Q87 Sharing Marriage Online
   Q90 Mobile Phone Boundaries

@@ -45,7 +45,8 @@ PAUSE JOURNEY
   • Journey Suspension is a behavioural sub-state of an
     Active Journey (matches.status stays 'active';
     suspended_by/suspended_at record who paused it).
-  • Requires ZYRA One (seeker_premium plan).
+  • Both plans (corrected 2026-08-12 stewardship pass, DR-ZYRA-138): caps 5 (Basic) / 10 (ZYRA One)
+    over pauses this Seeker initiated. See JOURNEY_SUSPENSION_CURRENT_VERSION_V2.md.
   • Conversation locks; Timeline preserved.
   • Only the suspending Seeker may resume, unless the other
     party started a new Active Journey in the meantime, in

@@ -2,7 +2,7 @@
 **Version:** V3
 **Status:** CURRENT_VERSION
 **Date:** 2026-07-19
-**Supersedes:** ZYRA_EXECUTION_V2.md (archived: SYSTEM/DOCUMENTS/ARCHIVE/ZYRA_EXECUTION_2026-07-19_V2.md)
+**Supersedes:** ZYRA_EXECUTION_2026-07-19_V2.md (archived: SYSTEM/DOCUMENTS/ARCHIVE/ZYRA_EXECUTION_2026-07-19_V2.md)
 **Contract Type:** PROJECT EXECUTION
 **Governing Reference:** ZYRA_GOVERNANCE_V1
 **Ratified by:** Founder (Shakeel), 2026-07-19. V2 followed joint

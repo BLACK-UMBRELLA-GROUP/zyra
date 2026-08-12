@@ -1,0 +1,12 @@
+-- ⟲ APPLIED-IN-REMOTE RECORD — 2026-08-12 stewardship pass.
+--
+-- This migration was applied straight to the live database via MCP on
+-- 2026-08-11 and existed in no repo file. This record file preserves the
+-- version slot and WHAT IT DID; the verbatim statements live in
+-- supabase_migrations.schema_migrations version 20260811173212 and can be
+-- regenerated with tools/export_missing_migrations.sql (OA-ZYRA-198).
+-- House precedent for a record-not-body file: 20260811094513.
+--
+-- WHAT IT DID:
+-- Bank grows from 72 rows/71 qids to all 104 Chapter 3 questions; ch4_scored + category columns added (nine categories per OA-ZYRA-193(d)); 33 profile-detail questions INSERTed; gate requires an ANSWER for all 104, a PREFERENCE only where ch4_scored
+SELECT 1; -- applied-in-remote record; replay via the schema_migrations row

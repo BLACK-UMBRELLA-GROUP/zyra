@@ -1,0 +1,19 @@
+-- SUPERSEDED WITHIN THE HOUR by 20260811095510_dev_counterpart_complete_
+-- conversation_status_fix.sql, which carries the definitive body.
+--
+-- Kept as a file rather than squashed away because this version number is
+-- recorded in supabase_migrations.schema_migrations on the remote, and a
+-- repo that is missing a version the database has applied reports as drift
+-- on the next push. Deleting the row instead would be editing migration
+-- history to tidy up a mistake, which is the wrong trade.
+--
+-- WHAT IT GOT WRONG: it seeded the conversations row with status 'pending'.
+-- conversations_status_check permits active / paused / closed only, so the
+-- very first call raised 23514. Caught by the end-to-end walk test before
+-- the function was used for anything. The intermediate definition never
+-- reached any environment other than this one and never ran successfully,
+-- so there is nothing here worth replaying.
+--
+-- Intentionally a no-op: CREATE OR REPLACE in the next migration defines the
+-- function completely, and replaying a broken body first would only widen
+-- the window in which it exists.

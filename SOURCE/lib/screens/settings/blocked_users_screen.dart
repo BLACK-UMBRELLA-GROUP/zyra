@@ -80,7 +80,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
+        backgroundColor: ZyraColors.luxuryDarkPurple,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Unblock ${p.firstName}?', style: ZyraText.heading(size: 16)),
         content: Text(

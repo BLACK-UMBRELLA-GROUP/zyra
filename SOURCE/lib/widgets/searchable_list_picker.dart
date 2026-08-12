@@ -11,7 +11,7 @@ import 'zyra_state_widgets.dart';
 Future<String?> showSingleSearchPicker(BuildContext context, List<String> items, {String? current}) {
   return showModalBottomSheet<String>(
     context: context,
-    backgroundColor: const Color(0xFF1A1220),
+    backgroundColor: ZyraColors.luxuryDarkPurple,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
     builder: (context) => _PickerSheet(items: items, multi: false, initialSelection: current == null ? const [] : [current]),
@@ -21,7 +21,7 @@ Future<String?> showSingleSearchPicker(BuildContext context, List<String> items,
 Future<List<String>?> showMultiSearchPicker(BuildContext context, List<String> items, {List<String> current = const []}) {
   return showModalBottomSheet<List<String>>(
     context: context,
-    backgroundColor: const Color(0xFF1A1220),
+    backgroundColor: ZyraColors.luxuryDarkPurple,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
     builder: (context) => _PickerSheet(items: items, multi: true, initialSelection: current),

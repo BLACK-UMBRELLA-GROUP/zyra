@@ -57,7 +57,7 @@ class _AccountAdvancedScreenState extends State<AccountAdvancedScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
+        backgroundColor: ZyraColors.luxuryDarkPurple,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Start fresh?', style: ZyraText.heading(size: 16)),
         content: Text(
@@ -106,7 +106,7 @@ class _AccountAdvancedScreenState extends State<AccountAdvancedScreen> {
         showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            backgroundColor: const Color(0xFF1A1220),
+            backgroundColor: ZyraColors.luxuryDarkPurple,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             title: Text('You have an Active Journey', style: ZyraText.heading(size: 16)),
             content: Text(
@@ -146,7 +146,7 @@ class _AccountAdvancedScreenState extends State<AccountAdvancedScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
+        backgroundColor: ZyraColors.luxuryDarkPurple,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Delete your account?', style: ZyraText.heading(size: 16)),
         content: Text(
@@ -257,7 +257,7 @@ class _DangerRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = destructive ? const Color(0xFFE08080) : Colors.white;
+    final tint = destructive ? ZyraColors.destructive : Colors.white;
     return Material(
       color: Colors.white.withValues(alpha: 0.05),
       borderRadius: BorderRadius.circular(14),
@@ -270,7 +270,7 @@ class _DangerRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: destructive
-                  ? const Color(0xFFE08080).withValues(alpha: 0.30)
+                  ? ZyraColors.destructive.withValues(alpha: 0.30)
                   : Colors.white.withValues(alpha: 0.11),
               width: 0.5,
             ),

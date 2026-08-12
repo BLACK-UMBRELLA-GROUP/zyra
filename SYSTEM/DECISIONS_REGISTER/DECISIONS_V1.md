@@ -7355,7 +7355,7 @@ Decision:
 
   12.  FOUNDER AMENDMENT — PAUSE REMAINS PREMIUM. The joint
        recommendation to make Pause free for all Seekers was
-       NOT approved. Pause stays a ZYRA One capability, to be
+       NOT approved. Pause stays a ZYRA One capability [SUPERSEDED BY DR-ZYRA-138, 2026-08-11], to be
        revisited after beta on evidence rather than argument.
        Consequences worked through in OA-ZYRA-164: the rule
        becomes 'anyone may be affected by a pause; only ZYRA
@@ -8556,9 +8556,230 @@ Dependencies: ZYRA_CONTRADICTION_AUDIT_2026-08-08.md §2.10; migration
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-134,
+DR-ZYRA-135
+Title:       Profile Unlock+ Shows the Compatibility Percentage Before
+             the Other Seeker Has Revealed. OA-ZYRA-152 Resolved.
+Date:        2026-08-10
+Status:      APPROVED — Founder, 2026-08-10, answering a direct question
+Owner:       Founder (Shakeel)
+
+Decision:
+  A Seeker who has bought Profile Unlock+ SEES the compatibility
+  percentage without waiting for the other Seeker to reveal.
+  Mutual reveal remains the rule for everyone who has not bought it.
+
+  This resolves OA-ZYRA-152, open since 2026-08-01 and marked "not to
+  be built until resolved". The conflict it recorded was real: the
+  Compatibility Reveal is built as a consent gate — "neither of you
+  sees the result until you both choose to reveal" — and Profile
+  Unlock+ sells that same number to one person. Both could not be true.
+
+Rationale:
+  Recorded honestly, because the register should not read as though
+  this were free of cost. The Founder has chosen the purchase over the
+  symmetry. The consequence is that the reveal stops being a mutual
+  act for anyone who pays, and the copy that describes it as one is
+  now wrong for those users.
+
+  The narrower reading that makes it coherent: the RESULT is bought,
+  the RELATIONSHIP still is not. Unlock+ buys sight of a number. It
+  does not advance the Journey, does not tell the other person
+  anything, and does not skip a stage. The other Seeker's reveal is
+  still required for the pair to move on.
+
+Consequences:
+  1. The Compatibility Reveal screen needs a THIRD state. Today it has
+     two — waiting, and revealed. A Plus holder who can see the score
+     while the other has not revealed is neither. "Waiting for
+     {name}" is wrong there: they are not waiting to see anything,
+     they are waiting for the other person to continue.
+  2. Scoring must be computable before both flags are true. The score
+     is currently written only in the transaction that completes the
+     pair. This reuses score_candidates() rather than changing it, so
+     it does NOT breach the scoring-engine hold pending the onboarding
+     redesign.
+  3. The purchase becomes visible to the other party by inference. If
+     one Seeker continues instantly on reaching Compatibility Reveal,
+     the other may reasonably conclude they had already seen the
+     number. Not a leak in the data; worth knowing it is one in the
+     behaviour.
+  4. Contradiction-audit finding 3.5 (charging twice for a profile
+     already unlocked at Plus) is unaffected and still open.
+
+Dependencies: OA-ZYRA-152 (closed by this); OA-ZYRA-147 (unlock credit
+             allowance); contradiction audit §3.5; ZYRA_PRODUCT_SPEC V5
+             pricing table; profile_unlocks.unlock_type values
+             'paid_plus_single' and 'paid_plus_bundle'
+
+------------------------------------------------------------
+
+DR-ZYRA-136
+Title:       A Seeker May Not Leave Themselves Without a Main Guardian.
+             OA-ZYRA-173 and Contradiction-Audit 2.9 Resolved Together.
+Date:        2026-08-10
+Status:      APPROVED — Founder, 2026-08-10
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. OA-ZYRA-173 — REMOVAL OF YOUR LAST GUARDIAN IS BLOCKED WHILE A
+     JOURNEY IS LIVE. Removal stays free before a Journey starts and
+     after one ends.
+
+  2. AUDIT 2.9 — THE NO-MAIN-GUARDIAN STATE IS NOT ACCEPTABLE. The
+     Guardian page must stop offering an action that clears your Main
+     Guardian without naming a replacement. The audit was right and
+     zyra_wali_link_service's comment describing the state as
+     deliberate is now wrong and must be corrected.
+
+  These were asked separately and answered the same way, so they are
+  recorded as one decision. The principle underneath both:
+
+     OVERSIGHT THAT CAN BE SWITCHED OFF QUIETLY IS NOT OVERSIGHT.
+
+Rationale:
+  The Guardian Gate requires a Main Guardian on BOTH sides before a
+  Journey can begin (live behaviour, zyra_advance_stage). Both
+  families commit on that basis. Letting one Seeker dissolve their own
+  side of it mid-process hands their family's Family Review vote to
+  the other family — measured, not theorised (OA-ZYRA-173).
+
+  The cost, stated plainly: a Seeker whose Guardian becomes a problem
+  mid-Journey now cannot simply remove him. That is a real harm and it
+  is accepted here on the basis that ENDING or PAUSING the Journey is
+  always available and always free, so nobody is trapped in a process —
+  only in the requirement that the process has a witness. If evidence
+  after beta shows people being kept in Journeys they want out of by
+  this rule, reopen it.
+
+Consequences:
+  1. zyra_remove_guardian needs a guard: refuse when this is the
+     caller's last active Main Guardian AND they are party to a live
+     Journey. Error name to be surfaced in the Dart, not swallowed.
+  2. The Guardian page must not render the action in that state —
+     server refusal and hidden control both, per invariant I4. A
+     refusal the UI never anticipated reads as a broken button.
+  3. zyra_wali_link_service.dart's doc comment must be corrected. It
+     currently documents the no-Main state as intended. Leaving it
+     would leave the codebase arguing with its own register.
+  4. Guardian REPLACEMENT must remain possible mid-Journey — this
+     blocks removal, not substitution. If no replacement flow exists,
+     that is a gap this decision creates and it needs its own OA.
+
+Dependencies: OA-ZYRA-173 (closed by this); contradiction audit §2.9;
+             WALI_ARCHITECTURE_CURRENT_VERSION_V6 §Family Review;
+             zyra_advance_stage's wali_gate; ZYRA_ENGINEERING_
+             INVARIANTS I4. Related but NOT settled: OA-ZYRA-177.
+
+------------------------------------------------------------
+
+DR-ZYRA-137
+Title:       A Guardian May Hold Many Wards. The Two Seekers in a Match
+             May Not Share One. OA-ZYRA-177 Scoped, Not Closed.
+Date:        2026-08-10
+Status:      APPROVED (scope) — Founder, 2026-08-10. The defect itself
+             remains OPEN.
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. ONE GUARDIAN MAY GUARD MANY SEEKERS. Founder, in his own words:
+     "2 seekers can have same guardian for sure, for example 2
+     daughters have one dad on their separate accounts." This is
+     normal in the domain and is explicitly permitted.
+
+  2. THE TWO SEEKERS IN A MATCH MAY NOT SHARE A MAIN GUARDIAN. This
+     is Tier-1 as already built in zyra_can_match (DR-ZYRA-123).
+
+  Recorded because the two readings were nearly opposite and the wrong
+  one would have been catastrophic: a global "one ward per Guardian"
+  rule would forbid a father guarding two daughters, and one Guardian
+  in the LIVE data already holds two active wards.
+
+THIS DOES NOT CLOSE OA-ZYRA-177, and the register must not read as
+though it does:
+
+  The measured defect was wali_review_decision counting DISTINCT
+  wali_id, so a Guardian to both Seekers collapses Family Review to a
+  single vote — one 'continue' advanced phase_1 to phase_2 with no
+  second approval.
+
+  Tier-1 stops such a pair MATCHING. It does not stop them ARRIVING
+  there, and two paths remain open:
+
+    a) MID-JOURNEY ACQUISITION. DR-ZYRA-124 decided Tier-1 is "a
+       matching rule, not a dissolution rule" — a pair who acquire a
+       shared Guardian after matching carry on untouched. That
+       decision stands and was not overridden here.
+    b) TIER-1'S OWN HOLES. OA-ZYRA-175 (retiring a link clears Tier-0
+       but not Tier-1, backwards) and OA-ZYRA-176 (Tier-1 evaporates
+       entirely if the shared Guardian deletes his account — verified
+       chain, 2026-08-08).
+
+  So the vote-collapse is still reachable. OA-ZYRA-177 stays OPEN with
+  its scope narrowed to that question: what should happen when a pair
+  who are ALREADY in a Journey come to share a Main Guardian.
+
+Deferred: the Founder directed that OA-ZYRA-173's fix (DR-ZYRA-136)
+          is built first, and OA-ZYRA-177 revisited after.
+
+Dependencies: DR-ZYRA-123 (Tier-1); DR-ZYRA-124 (matching not
+             dissolution — still in force); OA-ZYRA-175; OA-ZYRA-176;
+             wali_review_decision; measured live data 2026-08-10 —
+             one Guardian with 2 active wards, 10 active main links,
+             no UNIQUE constraint limiting wards per Guardian
+
+------------------------------------------------------------
+
+DR-ZYRA-138
+Title:       Pause Belongs to Both Plans. The Cap Is the
+             Differentiator. Supersedes DR-ZYRA-121 Item 12's
+             Founder Amendment.
+Date:        2026-08-11
+Status:      APPROVED — Founder, 2026-08-11, in his own words: "in
+             zyra basic you can also pause a journey its just how
+             much you pause is different with zyra basic and zyra
+             one" — and, asked to pick the canon explicitly from
+             three options: "Both plans pause, caps 5/10".
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. BOTH plans may initiate Journey Pause. The DR-ZYRA-121
+     Founder amendment ("Pause stays a ZYRA One capability, not
+     free, revisit after beta") is SUPERSEDED — it had come into
+     conflict with the newer Founder-approved entitlements matrix
+     of 2026-08-09 (Basic: 5 paused, One: 10 paused), and the
+     Founder resolved the conflict in the matrix's favour.
+  2. The cap counts pauses the CALLER initiated (suspended_by =
+     caller). Journeys the other party paused never consume it.
+  3. Server-enforced: suspend_journey raises paused_limit_reached
+     at the cap (migration 20260811231149, applied live the same
+     night). suspension_requires_one is retired — nothing raises
+     it.
+  4. Client: no upgrade dialog fronts the tap any more. At the
+     cap, Basic is offered ZYRA One (which holds 10); One gets
+     the honest ceiling with no upsell.
+
+  Caveat recorded honestly: the caps cannot yet be REACHED —
+  zyra_enforce_one_active_match still counts a paused row against
+  the single active slot, so "1 active + N paused" is impossible
+  until that trigger excludes suspended rows (raised, unbuilt —
+  see zyra_entitlements.dart header). What changed on 2026-08-11
+  is who may pause at all: everyone.
+
+Documentation: JOURNEY_SUSPENSION_CURRENT_VERSION_V2.md is the
+             single authority (V1 archived). PRODUCT_SPEC V5 §5,
+             JOURNEY MANAGEMENT Summary, RPC migration plan and
+             WALI_ARCHITECTURE V6 corrected 2026-08-12.
+
+Dependencies: DR-ZYRA-121 (item 12 superseded; the rest stands);
+             entitlements matrix 2026-08-09; migration
+             20260811231149; PausedLimitReachedException in
+             zyra_journey_service.dart
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-138,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-135 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-139 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

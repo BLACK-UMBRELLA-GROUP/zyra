@@ -1,0 +1,12 @@
+-- ⟲ APPLIED-IN-REMOTE RECORD — 2026-08-12 stewardship pass.
+--
+-- This migration was applied straight to the live database via MCP on
+-- 2026-08-11 and existed in no repo file. This record file preserves the
+-- version slot and WHAT IT DID; the verbatim statements live in
+-- supabase_migrations.schema_migrations version 20260811153547 and can be
+-- regenerated with tools/export_missing_migrations.sql (OA-ZYRA-198).
+-- House precedent for a record-not-body file: 20260811094513.
+--
+-- WHAT IT DID:
+-- OA-ZYRA-193(c) part 2 — profiles.onboarding_complete column materialised + maintained by 3 triggers (profiles BEFORE; onboarding_answers + seeker_details AFTER) via zyra_onboarding_data_complete(p_user,p_gender) / zyra_refresh_onboarding_complete(); backfill UPDATE
+SELECT 1; -- applied-in-remote record; replay via the schema_migrations row

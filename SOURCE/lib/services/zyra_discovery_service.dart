@@ -213,20 +213,60 @@ class ZyraDiscoveryService {
     try {
       final candidateIds = candidates.map((c) => c.id).toList();
       final rows = await supabase.rpc('score_candidates', params: {'p_candidate_ids': candidateIds}) as List;
-      final scoreByCandidateId = <String, double>{
-        for (final row in rows) (row as Map<String, dynamic>)['candidate_id'] as String: (row['score'] as num).toDouble(),
+      // NULL-TOLERANT AS OF 2026-08-11 (OA-ZYRA-193). score_candidates used
+      // to return a neutral 50 when it had nothing to go on. On the ratified
+      // plain-count scale there is no neutral value, so it returns NULL —
+      // and `(row['score'] as num)` on a null would have thrown into the
+      // catch below, silently dropping ALL ordering for everyone.
+      //
+      // THREE OUTCOMES NOW, and they are different things:
+      //   absent row   excluded by a Hard Requirement — do not show at all
+      //   NULL score   exists, cannot be scored yet   — show, rank last
+      //   a number     scored                          — rank by it
+      final scoreByCandidateId = <String, double?>{
+        for (final row in rows)
+          (row as Map<String, dynamic>)['candidate_id'] as String:
+              (row['score'] as num?)?.toDouble(),
       };
 
-      // Candidates absent from the result were excluded by a Hard
-      // Requirement violation server-side.
-      final scored = <MapEntry<SeekerProfile, double>>[
+      final scored = <MapEntry<SeekerProfile, double?>>[
         for (final candidate in candidates)
-          if (scoreByCandidateId.containsKey(candidate.id)) MapEntry(candidate, scoreByCandidateId[candidate.id]!),
+          if (scoreByCandidateId.containsKey(candidate.id))
+            MapEntry(candidate, scoreByCandidateId[candidate.id]),
       ];
-      scored.sort((a, b) => b.value.compareTo(a.value));
+      // Unscored last, rather than treated as zero — "we cannot say" is not
+      // the same claim as "nothing matched".
+      scored.sort((a, b) {
+        if (a.value == null && b.value == null) return 0;
+        if (a.value == null) return 1;
+        if (b.value == null) return -1;
+        return b.value!.compareTo(a.value!);
+      });
       return scored.map((e) => e.key).toList();
     } catch (_) {
       return candidates;
+    }
+  }
+
+  /// This Seeker's OWN compatibility figure for one profile: how well THEIR
+  /// answers fit MY stated preferences.
+  ///
+  /// ADDED 2026-08-11 so Compatibility Unlock can show a real number instead
+  /// of a constant. Deliberately the same call Browse curation makes, not a
+  /// second scorer — the price of a credit should not buy a different method.
+  ///
+  /// Null means one of two honest things and the screen says so rather than
+  /// guessing which: nothing scoreable yet, or excluded outright by a Hard
+  /// Requirement (in which case no row comes back at all).
+  static Future<double?> fetchMyScoreFor(String otherId) async {
+    try {
+      final rows = await supabase
+          .rpc('score_candidates', params: {'p_candidate_ids': [otherId]}) as List;
+      if (rows.isEmpty) return null;
+      return ((rows.first as Map<String, dynamic>)['score'] as num?)?.toDouble();
+    } catch (e) {
+      debugPrint('ZYRA: fetchMyScoreFor($otherId) failed - $e');
+      return null;
     }
   }
 
@@ -392,10 +432,16 @@ class ZyraDiscoveryService {
     if (user == null) return empty;
 
     try {
+      // BEHAVIOUR UNCHANGED — `ascending: false` is what a bare .order() has
+      // always meant in postgrest-dart, and most recent decision first is the
+      // right order for these three lists. Written out on 2026-08-11 only
+      // because relying on that default cost four real bugs elsewhere in this
+      // sweep (Timeline, chat history both sides, family answers), and a bare
+      // .order() reads as "chronological" to everyone who has not been bitten.
       final results = await Future.wait([
-        supabase.from('saves').select('saved_id, created_at').eq('saver_id', user.id).order('created_at'),
-        supabase.from('likes').select('liked_id, created_at').eq('liker_id', user.id).order('created_at'),
-        supabase.from('passes').select('passed_id, created_at').eq('passer_id', user.id).order('created_at'),
+        supabase.from('saves').select('saved_id, created_at').eq('saver_id', user.id).order('created_at', ascending: false),
+        supabase.from('likes').select('liked_id, created_at').eq('liker_id', user.id).order('created_at', ascending: false),
+        supabase.from('passes').select('passed_id, created_at').eq('passer_id', user.id).order('created_at', ascending: false),
       ]);
 
       List<String> ids(List rows, String key) =>

@@ -53,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _todo(BuildContext context, String what) =>
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$what — coming next. (dev)')),
+        SnackBar(content: Text('$what — coming next.')),
       );
 
   /// PREVIEW — the Founder's stated highest priority for this page.
@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// widget. Extracting it is the real work, and it is its own piece.
   void _preview(BuildContext context) => ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Profile preview — building this next. (dev)'),
+          content: Text('Profile preview — building this next.'),
         ),
       );
 
@@ -491,7 +491,7 @@ class _SettingsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = destructive ? const Color(0xFFE08080) : Colors.white;
+    final tint = destructive ? ZyraColors.destructive : Colors.white;
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -516,7 +516,7 @@ class _SettingsRow extends StatelessWidget {
               const SizedBox(width: 8),
             ],
             Icon(Icons.chevron_right,
-                color: destructive ? const Color(0xFFE08080) : Colors.white24,
+                color: destructive ? ZyraColors.destructive : Colors.white24,
                 size: 16),
           ],
         ),

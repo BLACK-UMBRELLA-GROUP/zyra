@@ -64,6 +64,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/seeker_profile.dart';
+import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_guardian_info_service.dart';
 import '../../services/zyra_unlock_service.dart';
 import '../../state/app_state.dart';
@@ -176,6 +177,30 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     super.initState();
     _loadBalance();
     _loadGuardians();
+    _loadRealScore();
+  }
+
+  /// THIS SEEKER'S OWN figure for the profile on screen. Null until loaded,
+  /// and null forever if they cannot be scored yet — the screen distinguishes
+  /// those two states, because "still working it out" and "not enough
+  /// answers between you" are different things to be told after paying.
+  double? _realScore;
+  bool _loadingScore = true;
+
+  Future<void> _loadRealScore() async {
+    // The sample profile is a fixture with no onboarding answers behind it,
+    // so it has no score and never will. Asking would just be a round trip
+    // to learn what isSampleProfile already knows.
+    if (ZyraUnlockService.isSampleProfile(widget.profile.id)) {
+      if (mounted) setState(() => _loadingScore = false);
+      return;
+    }
+    final s = await ZyraDiscoveryService.fetchMyScoreFor(widget.profile.id);
+    if (!mounted) return;
+    setState(() {
+      _realScore = s;
+      _loadingScore = false;
+    });
   }
 
   Future<void> _loadBalance() async {
@@ -382,7 +407,11 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                       busy: _busy,
                       onUnlock: () => _unlock(UnlockTier.standard),
                       child: overallUnlocked
-                          ? const _OverallResult()
+                          ? _OverallResult(
+                              score: _realScore,
+                              loading: _loadingScore,
+                              name: name,
+                            )
                           : _OverallLocked(name: name),
                     ),
                     Divider(color: Colors.white.withValues(alpha: 0.14), height: 1, thickness: 1),
@@ -648,18 +677,118 @@ class _OverallLocked extends StatelessWidget {
 /// Plus has more to sell. Compatibility Unlock is now exactly one number,
 /// which is also the easiest thing in the app to explain.
 class _OverallResult extends StatelessWidget {
-  const _OverallResult();
+  /// THE REAL FIGURE, at last — OA-ZYRA-192, unblocked by OA-ZYRA-193 on
+  /// 2026-08-11. This showed `_Sample.overall` — a constant 81% — to every
+  /// Seeker for every profile, while taking a real credit for it. The
+  /// transaction was real and the number was not.
+  ///
+  /// It is the SIGNED-IN Seeker's own figure, per decision (a2): how well
+  /// this person's answers fit what you said you were looking for. The other
+  /// person has their own, and it is not yours to see.
+  final double? score;
+  final bool loading;
+  final String name;
+
+  const _OverallResult({required this.score, required this.loading, required this.name});
 
   @override
   Widget build(BuildContext context) {
+    if (loading) {
+      return Text('Working it out…', style: ZyraText.subtext(size: 13));
+    }
+
+    // NO NUMBER RATHER THAN A MADE-UP ONE. Reachable today because the
+    // onboarding completeness gate (OA-ZYRA-193c) is decided but unbuilt, so
+    // a half-finished profile can still be looked at. When that gate exists
+    // this branch becomes unreachable — and it should STILL be here, because
+    // the alternative is inventing a figure the moment it is.
+    if (score == null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('—', style: ZyraText.heading(size: 44, color: Colors.white38)),
+          const SizedBox(height: 6),
+          Text(
+            'Not enough answers between you yet. This fills in as you and '
+            '$name both cover more ground.',
+            style: ZyraText.subtext(size: 12.5),
+          ),
+        ],
+      );
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
       children: [
-        Text('${_Sample.overall}%', style: ZyraText.heading(size: 44)),
+        Text('${score!.round()}%', style: ZyraText.heading(size: 44)),
         const SizedBox(width: 12),
         Text('overall', style: ZyraText.subtext(size: 13)),
       ],
+    );
+  }
+}
+
+/// Says out loud that the figures above are not this person's score.
+///
+/// RESTORED 2026-08-10 (Founder decision, OA-ZYRA-192). A marker was removed
+/// on 2026-08-03 — "remove the yellow sample banner" — and that was the right
+/// call at the time: the screen was a mockup under review, and a real number
+/// was impossible because `onboarding_answers` held zero rows.
+///
+/// That stopped being true on 2026-08-10. The table now holds 144 rows,
+/// `seeker_details` another 144, and `score_candidates()` returns real
+/// per-pair numbers that TWO live services already consume — Browse curation
+/// (`zyra_discovery_service`) and the Journey reveal (`zyra_journey_service`).
+/// So the app computes a real score in two places and shows a constant in the
+/// one the Seeker pays a credit for. The unlock transaction is real;
+/// `_Sample.overall` is not.
+///
+/// THE SECOND SENTENCE IS THE ONE THAT MATTERS. "Example figures" alone would
+/// read as "not final". The problem is not that 81% is provisional — it is
+/// that it is IDENTICAL FOR EVERY PROFILE, so without saying so a Seeker
+/// reads it as a fact about this particular person.
+///
+/// Deliberately not a banner. This is the same idiom as the onboarding
+/// privacy indicator — a small coloured dot and plain text, no card, no box —
+/// and it borrows that system's amber, which already means "conditional, not
+/// yet". Same tokens, so it stays in step if the palette moves.
+///
+/// STILL LIVE, AND MOVED — 2026-08-11. The overall percentage became real
+/// (OA-ZYRA-192 closed by OA-ZYRA-193), so this came off it and went onto the
+/// category breakdown, which is still a constant and stays one until
+/// OA-ZYRA-193(d) settles what the categories are.
+///
+/// DELETE THIS WIDGET when the BREAKDOWN is real too. Not before: the earlier
+/// instruction said to delete it when the screen showed a real number, which
+/// on the day would have removed the qualifier from six sample figures
+/// because a seventh had been fixed.
+class _SampleMarker extends StatelessWidget {
+  const _SampleMarker();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, right: 24),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 6,
+            height: 6,
+            margin: const EdgeInsets.only(top: 5),
+            decoration: const BoxDecoration(color: ZyraColors.unlockDot, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 7),
+          Expanded(
+            child: Text(
+              'This breakdown is an example — the same for every profile. '
+              'Your overall figure above is real.',
+              style: ZyraText.privacyText(color: ZyraColors.unlockText),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -699,12 +828,23 @@ class _Detail extends StatelessWidget {
           children: [
             _Tally(colour: const Color(0xFF6FBF8A), label: 'Green', value: unlocked ? _Sample.green : null),
             _Tally(colour: const Color(0xFFE0C070), label: 'Amber', value: unlocked ? _Sample.amber : null),
-            _Tally(colour: const Color(0xFFE08080), label: 'Red', value: unlocked ? _Sample.red : null),
+            _Tally(colour: ZyraColors.destructive, label: 'Red', value: unlocked ? _Sample.red : null),
           ],
         ),
         const SizedBox(height: 14),
         for (final row in _Sample.categories)
           _CategoryRow(name: row.$1, value: unlocked ? row.$2 : null),
+        // MOVED HERE 2026-08-11, not deleted. The overall figure above is
+        // real now; THIS breakdown still is not, and cannot be until
+        // OA-ZYRA-193(d) decides how many categories there are and which —
+        // the screen shows six, onboarding has nine, and they do not map.
+        // score_candidates returns no category detail at all.
+        //
+        // Plus charges MORE than Unlock, and what it charges more for is
+        // exactly this. So the marker belongs on the part that is still a
+        // sample, and it would have been quietly deleted along with the 81%
+        // if its own doc comment had been followed literally.
+        if (unlocked) const _SampleMarker(),
         _GuardianSection(
           unlocked: unlocked,
           guardians: guardians,

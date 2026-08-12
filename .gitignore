@@ -1,2 +1,7 @@
 .DS_Store
 **/.DS_Store
+
+# Test seed photos — kept in history by decision (ZYRA_GIT_REMOTE_DECISION
+# 2026-08-09 §5); ignored so the folder does not keep growing.
+SOURCE/supabase/dev_test_photos/
+__pycache__/

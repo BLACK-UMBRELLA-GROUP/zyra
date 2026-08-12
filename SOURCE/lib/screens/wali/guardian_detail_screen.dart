@@ -134,38 +134,14 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
     }
   }
 
-  /// Steps the Main Guardian down to Additional.
-  ///
-  /// Confirmed rather than immediate: it leaves the Seeker with no Main
-  /// Guardian, and Family Review has nobody to ask until one is set. That is
-  /// recoverable in two taps but should not happen by accident.
-  Future<void> _makeAdditional() async {
-    if (_isDev) return _devNotice();
-    final confirmed = await _confirm(
-      title: 'Make ${person.firstName} an Additional Guardian?',
-      body: widget.otherGuardianCount == 0
-          ? "You'll have no Main Guardian. ZYRA asks your Main Guardian to "
-              'act on your Journey, so set one before your Journey needs a '
-              'decision.'
-          : "You'll have no Main Guardian until you choose another. Any of "
-              'your other Guardians can take the role.',
-      action: 'Make Additional',
-    );
-    if (confirmed != true) return;
-
-    setState(() => _busy = true);
-    final ok = await ZyraWaliLinkService.clearMainGuardian(person.id);
-    if (!mounted) return;
-    setState(() => _busy = false);
-    if (ok) {
-      widget.onChanged();
-      Navigator.of(context).pop();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("That didn't go through. Please try again.")),
-      );
-    }
-  }
+  // _makeAdditional() DELETED 2026-08-10 — DR-ZYRA-136, audit 2.9. See the
+  // note where its row used to be rendered, further down this file.
+  //
+  // Deleted rather than left calling a retired method. ZyraWaliLinkService
+  // .clearMainGuardian now throws, and an orphaned caller would have turned a
+  // deliberate refusal into an unhandled StateError the moment anyone tapped
+  // it. That is the shape the 2026-08-09 handover warned about in as many
+  // words: "a tightened server needs a client that can hear no."
 
   /// First tap — arms the inline confirm. The refusal case still uses a
   /// dialog, because it is an explanation rather than a decision and there
@@ -409,26 +385,31 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
                 const SizedBox(height: 10),
               ],
 
-              // DEMOTE — the counterpart, on the Main's own page.
+              // "MAKE ADDITIONAL GUARDIAN" REMOVED 2026-08-10 — DR-ZYRA-136,
+              // contradiction-audit finding 2.9.
               //
-              // Founder, 2026-08-07: "with main guardian we need a button to
-              // make additional guardian."
+              // Added 2026-08-07 at the Founder's request ("with main
+              // guardian we need a button to make additional guardian"), and
+              // the comment here read: "no Main is a legitimate state, just
+              // an unfinished one." The Founder has now ruled the opposite —
+              // that state is not acceptable and the action must stop being
+              // offered.
               //
-              // Leaves nobody Main, which the Guardian tab handles and
-              // prompts about. The warning below is the UI's job, not the
-              // database's — no Main is a legitimate state, just an
-              // unfinished one.
-              if (person.isMain) ...[
-                _ActionRow(
-                  icon: Icons.shield_moon_outlined,
-                  label: 'Make Additional Guardian',
-                  hint: widget.otherGuardianCount == 0
-                      ? "You'll have no Main Guardian until you set one."
-                      : "You'll need to choose a new Main Guardian.",
-                  onTap: _busy ? null : _makeAdditional,
-                ),
-                const SizedBox(height: 10),
-              ],
+              // What it produced: Family Review reads is_main, so with nobody
+              // Main a review has no voter and cannot be resolved at all, and
+              // the Guardian's message access closes in the same moment.
+              // Oversight ending with nothing said.
+              //
+              // NOT REPLACED BY A DISABLED ROW. The capability people wanted —
+              // changing WHICH Guardian is Main — already exists on the other
+              // Guardian's page: "Make Main Guardian" demotes the incumbent
+              // and promotes the replacement in one transaction. So this is a
+              // removal, not a loss; the same outcome is one tap away in a
+              // place where it cannot leave a gap.
+              //
+              // zyra_clear_main_guardian and ZyraWaliLinkService
+              // .clearMainGuardian both refuse now, so nothing can
+              // reintroduce this by accident without failing loudly.
 
               // Two states, same card. Tapping Remove turns the row into the
               // question rather than opening one somewhere else.
@@ -460,10 +441,10 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE08080).withValues(alpha: 0.10),
+                    color: ZyraColors.destructive.withValues(alpha: 0.10),
                     borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
                     border: Border.all(
-                        color: const Color(0xFFE08080).withValues(alpha: 0.34),
+                        color: ZyraColors.destructive.withValues(alpha: 0.34),
                         width: 1),
                   ),
                   child: Column(
@@ -472,7 +453,7 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
                     children: [
                       Text('Remove ${person.firstName}?',
                           style: ZyraText.body(
-                              size: 15, color: const Color(0xFFE08080))),
+                              size: 15, color: ZyraColors.destructive)),
                       const SizedBox(height: 4),
                       Text(
                         widget.otherGuardianCount == 0
@@ -547,10 +528,10 @@ class _SmallAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = destructive ? const Color(0xFFE08080) : Colors.white;
+    final tint = destructive ? ZyraColors.destructive : Colors.white;
     return Material(
       color: destructive
-          ? const Color(0xFFE08080).withValues(alpha: 0.16)
+          ? ZyraColors.destructive.withValues(alpha: 0.16)
           : Colors.white.withValues(alpha: 0.07),
       borderRadius: BorderRadius.circular(50),
       child: InkWell(

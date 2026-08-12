@@ -62,7 +62,7 @@ or nothing is.** Today it is.
 `ZyraProfileService.createWaliProfile` hardcodes `gender: 'male'` for every
 Guardian, with this comment:
 
-> *"Guardian is, per WALI_ARCHITECTURE_CURRENT_VERSION_V5.md, always a male
+> *"Guardian is, per WALI_ARCHITECTURE_CURRENT_VERSION_V6.md, always a male
 > guardian — gender isn't asked in Guardian onboarding, so it's set directly
 > rather than adding a redundant question."*
 

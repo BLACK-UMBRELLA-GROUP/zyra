@@ -13,6 +13,7 @@
 // concern from link management, and this is likely to grow a Seeker-
 // side ZYRA One equivalent once #20 (real payment processing) lands.
 
+import 'package:flutter/foundation.dart' show debugPrint;
 import '../main.dart';
 import 'zyra_auth.dart';
 
@@ -27,7 +28,9 @@ class ZyraEntitlementService {
     try {
       final result = await supabase.rpc('wali_has_wali_one');
       return result == true;
-    } catch (_) {
+    } catch (e) {
+      // 2026-08-12: failed with no trace anywhere (CLAUDE.md §3).
+      debugPrint('ZYRA mock_set_wali_plan failed: $e');
       return false;
     }
   }
@@ -41,7 +44,9 @@ class ZyraEntitlementService {
     try {
       await supabase.rpc('mock_purchase_wali_premium');
       return true;
-    } catch (_) {
+    } catch (e) {
+      // 2026-08-12: failed with no trace anywhere (CLAUDE.md §3).
+      debugPrint('ZYRA mock_purchase_wali_premium failed: $e');
       return false;
     }
   }
@@ -60,7 +65,11 @@ class ZyraEntitlementService {
     try {
       await supabase.rpc('mock_set_wali_plan', params: {'p_plan': premium ? 'wali_premium' : 'wali_basic'});
       return true;
-    } catch (_) {
+    } catch (e) {
+      // 2026-08-12: a paying Guardian was silently downgraded on any
+      // failure, unlogged (CLAUDE.md §3). Behaviour unchanged — fall back
+      // to Basic — but the failure now leaves a trace.
+      debugPrint('ZYRA entitlement check failed: $e');
       return false;
     }
   }

@@ -202,23 +202,37 @@ class ZyraWaliLinkService {
     }
   }
 
-  /// Steps a Guardian down from Main, leaving nobody Main.
+  /// RETIRED 2026-08-10 — DR-ZYRA-136, contradiction-audit finding 2.9.
+  /// Always throws.
   ///
-  /// The counterpart to [setMainGuardian]. Separate rather than a flag,
-  /// because the two differ in consequence: promoting always leaves a valid
-  /// state, demoting can leave a Seeker with Guardians and no Main. That is
+  /// THE DOC COMMENT HERE USED TO SAY THE OPPOSITE. It read: "that is
   /// reachable and the Guardian page handles it, but the caller must warn
-  /// first.
+  /// first" — documenting the no-Main-Guardian state as a legitimate outcome
+  /// the UI merely had to explain. The Founder has ruled it is not one, and
+  /// the codebase must not be left arguing with its own register.
+  ///
+  /// What that state actually did: Family Review reads `is_main`, so with
+  /// nobody Main there is no voter and a review cannot be resolved at all.
+  /// The Guardian's message access closes at the same moment. Oversight ended
+  /// with nothing said — which is why the audit called it a defect, and why
+  /// the fix is to stop offering the action rather than to warn harder.
+  ///
+  /// Reassigning Main is [setMainGuardian], which demotes the incumbent and
+  /// promotes the replacement in one transaction. Clearing WITHOUT a
+  /// replacement is the forbidden act itself, so nothing is left for this to
+  /// do.
+  ///
+  /// Kept rather than deleted, following restartJourney's precedent: a caller
+  /// reappearing later fails here with the reason, instead of getting a bare
+  /// PostgREST error from a server function that also refuses.
+  @Deprecated('A Seeker may not be left without a Main Guardian (DR-ZYRA-136). '
+      'Use setMainGuardian to reassign.')
   static Future<bool> clearMainGuardian(String waliId) async {
-    if (ZyraAuth.currentUser == null) return false;
-    try {
-      final ok = await supabase
-          .rpc('zyra_clear_main_guardian', params: {'p_wali_id': waliId});
-      return ok == true;
-    } catch (e) {
-      debugPrint('ZYRA: clearMainGuardian($waliId) failed — $e');
-      return false;
-    }
+    throw StateError(
+      'clearMainGuardian is retired (DR-ZYRA-136, audit 2.9). It created the '
+      'no-Main-Guardian state, in which Family Review has no voter and the '
+      "Guardian's message access closes. Use setMainGuardian to reassign.",
+    );
   }
 
   /// Unlinks a Guardian.
@@ -244,6 +258,18 @@ class ZyraWaliLinkService {
       }
       if (m.contains('not_your_guardian')) {
         return 'They are no longer linked to you.';
+      }
+      // DR-ZYRA-136 / OA-ZYRA-173, added 2026-08-10. Removing your LAST
+      // Guardian during a live Journey is refused server-side, because it
+      // hands your family's Family Review vote to the other family.
+      //
+      // The message names both ways out on purpose. A refusal that only says
+      // no reads as the app trapping you in a Journey, which is exactly the
+      // harm the Founder accepted this rule's cost against — ending and
+      // pausing are always free, and the copy has to say so.
+      if (m.contains('guardian_required_during_journey')) {
+        return 'Your Journey needs a Guardian on your side. Link someone '
+            'else first, or end or pause the Journey.';
       }
       debugPrint('ZYRA: removeGuardian($waliId) failed — $e');
       return "That didn't go through. Please try again.";

@@ -60,7 +60,7 @@ These read or write `matches.status` / `journey_stage`, which move to
 |---|---|---|
 | `promote_journey_to_active` | potential → active on the **attempt**. Must also enforce one-active-attempt **per person**, which the schema still does not do (§5) | **High** |
 | `end_journey` | Set attempt ended. **Must start recording `ended_by` / `end_reason`** — the columns exist (OA-158) and nothing writes them | **High** |
-| `suspend_journey` | `paused_by`/`paused_at` move to the attempt. Entitlement check unchanged — Pause stays ZYRA One (V3 §7) | Medium |
+| `suspend_journey` | `paused_by`/`paused_at` move to the attempt. Entitlement check CHANGED 2026-08-12 stewardship pass: both plans, per-plan cap 5/10 (`paused_limit_reached`, migration 20260811231149) — DR-ZYRA-138 supersedes V3 §7 | Medium |
 | `resume_journey` | Already corrected in OA-164 (no auto-end). Re-point only | Low |
 | `restart_journey` | Currently refuses (OA-154). Replaced wholesale by Request New Journey, OA-159 | — |
 

@@ -22,7 +22,7 @@ used, coincidence of wording only). The underlying data model
 (Outgoing/Incoming Potentials, Match event, Mutual Save Detection)
 is entirely unchanged — only the two labels. Interaction mechanism
 (swipe vs. tap) is owned by `APP/Navigation/SEEKER NAVIGATION/
-Summary.md` and `APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md`,
+Summary.md` and `APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V4.md`,
 not this document — see those for the swipe-gesture decision made
 the same day.
 
@@ -250,7 +250,7 @@ interest.
 **Updated 2026-07-25:** the system is designed around genuine
 interest and progression toward marriage. The interaction
 mechanism is now swipe-based (see SEEKER NAVIGATION/Summary.md and
-BROWSE_UX_SPEC_CURRENT_VERSION_V3.md, DR-ZYRA-099) — the Founder's
+BROWSE_UX_SPEC_CURRENT_VERSION_V4.md, DR-ZYRA-099) — the Founder's
 explicit 2026-07-25 decision was that swipe gestures give a
 cleaner UI without reintroducing dating-app-style casualness, since
 the underlying philosophy (genuine, deliberate, one-decision-at-a-

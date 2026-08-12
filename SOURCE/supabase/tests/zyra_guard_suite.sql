@@ -26,10 +26,28 @@ create table zyra_guard_results (
 );
 -- RLS on, no policy, no grant. `public` is PostgREST-exposed, so a results
 -- table left here with RLS off is readable by anon over the REST API — the
--- security advisor flagged exactly that on 2026-08-08. The DO block runs as
--- the table owner and bypasses RLS, so no grant is needed; the old
+-- security advisor flagged exactly that on 2026-08-08.
+--
+-- CORRECTED 2026-08-10. The note here used to say "the DO block runs as the
+-- table owner and bypasses RLS, so no grant is needed; the old
 -- `grant insert ... to authenticated` was left over from a `set role` the
--- suite no longer does. Same change made to zyra_journey_suite.sql.
+-- suite no longer does." Both halves were wrong, and together they made this
+-- file unrunnable for two days:
+--
+--   * the suite DOES still switch role — AREA 4 runs
+--     set_config('role','authenticated') to measure Guardian visibility
+--     through RLS, which is the entire point of that area; and
+--   * under that role the owner-bypass is gone, so every insert into this
+--     table was denied. Re-adding the grant does NOT fix it: RLS is enabled
+--     here with zero policies, so the insert is refused on the policy check
+--     regardless of privilege. Measured, not reasoned: with the grant
+--     restored, 0 rows were written.
+--
+-- The 55/55 result recorded on 2026-08-08 predates the RLS line above.
+--
+-- FIX: AREA 4 measures under the role into local variables and writes its
+-- results after restoring role=postgres. Same assertions, same roles, same
+-- coverage — only the write moves.
 alter table zyra_guard_results enable row level security;
 revoke all on zyra_guard_results from anon, authenticated;
 
@@ -45,9 +63,17 @@ declare
   OUTS uuid := '6c84767c-64df-4d24-b17d-c3239848d68e'; -- unrelated Seeker
   v_a uuid; v_b uuid; v_m uuid; v_conv uuid; v_tl uuid;
   n int; c record; r record;
+  -- AREA 4 buffers — see the header note on why these cannot be inserted
+  -- inline while the role is switched.
+  n17 int; n18 int; n19 int; n20 int; n21 int;
+  n22 int; n23 int; n24 int; n25 int; n26 int; n27 int; n28 int;
+  -- Baseline for the teardown assertions. A suite must assert that IT left
+  -- nothing behind, not that the whole database is empty.
+  base_checkpoints int;
 
 begin
   v_a := least(A,B); v_b := greatest(A,B);
+  select count(*) into base_checkpoints from journey_stage_checkpoints;
 
   -- ── scenario ────────────────────────────────────────────────────────
   insert into wali_links (seeker_id, wali_id, status, is_main) values (B, GB, 'active', true);
@@ -106,25 +132,41 @@ begin
   delete from profile_blocks where blocker_id=A and blocked_id=B;
 
   -- ══ AREA 4 · is_main is a privilege boundary, not a label.
+  -- Measure under role=authenticated; write after restoring the role. The
+  -- results table has RLS on with zero policies, so an insert made while the
+  -- role is switched is refused no matter what is granted. See the header.
   perform set_config('role','authenticated',true);
   perform set_config('request.jwt.claims', json_build_object('sub', GA)::text, true);
-  select count(*) into n from conversations         where id=v_conv;              insert into zyra_guard_results values (17,'is_main','MAIN G -> conversation row', n::text,'1');
-  select count(*) into n from messages              where conversation_id=v_conv; insert into zyra_guard_results values (18,'is_main','MAIN G -> messages',         n::text,'1');
-  select count(*) into n from timelines             where id=v_tl;                insert into zyra_guard_results values (19,'is_main','MAIN G -> timeline',         n::text,'1');
-  select count(*) into n from timeline_milestones   where timeline_id=v_tl;       insert into zyra_guard_results values (20,'is_main','MAIN G -> milestones',       n::text,'1');
-  select count(*) into n from journey_family_answers where match_id=v_m;          insert into zyra_guard_results values (21,'is_main','MAIN G -> family answers',   n::text,'1');
+  select count(*) into n17 from conversations          where id=v_conv;
+  select count(*) into n18 from messages               where conversation_id=v_conv;
+  select count(*) into n19 from timelines              where id=v_tl;
+  select count(*) into n20 from timeline_milestones    where timeline_id=v_tl;
+  select count(*) into n21 from journey_family_answers where match_id=v_m;
 
   perform set_config('request.jwt.claims', json_build_object('sub', GA2)::text, true);
-  select count(*) into n from conversations         where id=v_conv;              insert into zyra_guard_results values (22,'is_main','ADDL G -> conversation row', n::text,'0');
-  select count(*) into n from messages              where conversation_id=v_conv; insert into zyra_guard_results values (23,'is_main','ADDL G -> messages',         n::text,'0');
-  select count(*) into n from timelines             where id=v_tl;                insert into zyra_guard_results values (24,'is_main','ADDL G -> timeline',         n::text,'0');
-  select count(*) into n from timeline_milestones   where timeline_id=v_tl;       insert into zyra_guard_results values (25,'is_main','ADDL G -> milestones',       n::text,'0');
-  select count(*) into n from journey_family_answers where match_id=v_m;          insert into zyra_guard_results values (26,'is_main','ADDL G -> family answers',   n::text,'0');
+  select count(*) into n22 from conversations          where id=v_conv;
+  select count(*) into n23 from messages               where conversation_id=v_conv;
+  select count(*) into n24 from timelines              where id=v_tl;
+  select count(*) into n25 from timeline_milestones    where timeline_id=v_tl;
+  select count(*) into n26 from journey_family_answers where match_id=v_m;
 
   perform set_config('request.jwt.claims', json_build_object('sub', A)::text, true);
-  select count(*) into n from messages              where conversation_id=v_conv; insert into zyra_guard_results values (27,'is_main','SEEKER -> own messages unaffected', n::text,'1');
-  select count(*) into n from journey_family_answers where match_id=v_m;          insert into zyra_guard_results values (28,'is_main','SEEKER -> family answers unaffected', n::text,'1');
+  select count(*) into n27 from messages               where conversation_id=v_conv;
+  select count(*) into n28 from journey_family_answers where match_id=v_m;
   perform set_config('role','postgres',true);
+
+  insert into zyra_guard_results values (17,'is_main','MAIN G -> conversation row', n17::text,'1');
+  insert into zyra_guard_results values (18,'is_main','MAIN G -> messages',         n18::text,'1');
+  insert into zyra_guard_results values (19,'is_main','MAIN G -> timeline',         n19::text,'1');
+  insert into zyra_guard_results values (20,'is_main','MAIN G -> milestones',       n20::text,'1');
+  insert into zyra_guard_results values (21,'is_main','MAIN G -> family answers',   n21::text,'1');
+  insert into zyra_guard_results values (22,'is_main','ADDL G -> conversation row', n22::text,'0');
+  insert into zyra_guard_results values (23,'is_main','ADDL G -> messages',         n23::text,'0');
+  insert into zyra_guard_results values (24,'is_main','ADDL G -> timeline',         n24::text,'0');
+  insert into zyra_guard_results values (25,'is_main','ADDL G -> milestones',       n25::text,'0');
+  insert into zyra_guard_results values (26,'is_main','ADDL G -> family answers',   n26::text,'0');
+  insert into zyra_guard_results values (27,'is_main','SEEKER -> own messages unaffected',  n27::text,'1');
+  insert into zyra_guard_results values (28,'is_main','SEEKER -> family answers unaffected',n28::text,'1');
 
   -- ══ AREA 5 · the counterpart card is the ONLY Guardian route to the
   --    other family, and it is Main-only.
@@ -220,8 +262,16 @@ begin
   -- ── teardown ────────────────────────────────────────────────────────
   delete from matches where id=v_m;
   delete from wali_links where (seeker_id=B and wali_id in (GB,GB2)) or (seeker_id=A and wali_id=GA2);
-  insert into zyra_guard_results values (54,'teardown','no matches left behind', (select count(*) from matches)::text, '0');
-  insert into zyra_guard_results values (55,'teardown','no stage checkpoints left behind', (select count(*) from journey_stage_checkpoints)::text, '0');
+  -- SCOPED 2026-08-10. Was `select count(*) from matches` — a global
+  -- assertion, so the suite reported a failure whenever ANY unrelated match
+  -- existed, including a developer's own test Journey. It was measuring the
+  -- database, not the suite. Now it measures what the suite actually created.
+  insert into zyra_guard_results values (54,'teardown','no matches left behind by THIS suite',
+    (select count(*) from matches where id=v_m)::text, '0');
+  -- Same scoping fix as 54: compare against the baseline taken before the
+  -- suite built its scenario, so unrelated rows are not this suite's failure.
+  insert into zyra_guard_results values (55,'teardown','no stage checkpoints left behind',
+    (select count(*) from journey_stage_checkpoints)::text, base_checkpoints::text);
 end $$;
 
 -- ── report ─────────────────────────────────────────────────────────────

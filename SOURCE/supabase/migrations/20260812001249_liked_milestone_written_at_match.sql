@@ -1,0 +1,24 @@
+-- THE 'liked' MILESTONE GETS ITS WRITER — Founder approval 2026-08-12
+-- ("do number 3" on the stewardship report's decision list). Applied live
+-- 2026-08-12 00:12 UTC via MCP; file written back the same session.
+--
+-- The 20260811110300 CHECK constraint allowed 'liked' and the rewind
+-- preserve-list expected it, but nothing wrote it. Now written at MATCH
+-- time, dated at the FIRST like of the pair, so a Timeline reads
+--   You liked each other   <first-like date>
+--   Match                  <mutual date>
+-- One-sided likes still leave no trace anywhere user-visible until they
+-- become mutual — writing at match time is what makes that safe.
+--
+-- WHAT IT DID (verbatim statements: schema_migrations 20260812001249):
+--   1. CREATE OR REPLACE create_match_on_mutual_like() — after creating
+--      the timeline it inserts ('liked', occurred_at = the reciprocal
+--      like's created_at, i.e. the FIRST like; COALESCE(now())) before
+--      the existing 'match_created' insert. Everything else verbatim.
+--   2. Backfill: every existing timeline whose pair has like rows gains
+--      'liked' at MIN(like.created_at); guarded NOT EXISTS; pairs seeded
+--      straight into matches (no like rows) deliberately get nothing —
+--      no invented dates.
+-- Verified live: 3 timelines backfilled, every 'liked' <= its
+-- 'match_created'.
+SELECT 1; -- applied-in-remote record; regenerate verbatim via tools/export_missing_migrations.sql

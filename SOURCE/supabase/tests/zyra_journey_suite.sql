@@ -58,7 +58,15 @@ declare
   gmain2 uuid := '257d6ebc-ccd0-4c16-a878-3c416ad7b530';
   gadd   uuid := '6493a6e6-6fc7-4d7a-b1b5-58b637c08647';  -- ADDITIONAL of male1
   mid uuid; midb uuid; att uuid; conv uuid; tl uuid; rev uuid; card record;
+  -- SCOPED 2026-08-10. Checks 57/58 used to assert the WHOLE table was
+  -- empty, so the suite reported a failure whenever any unrelated row
+  -- existed — including a developer's own test Journey. That measured the
+  -- database, not the suite. Baselines make them assert what they mean:
+  -- this run left nothing behind.
+  base_matches int; base_reviews int;
 begin
+  select count(*) into base_matches from matches;
+  select count(*) into base_reviews from journey_family_reviews;
   delete from likes where (liker_id in (male1,fem1) and liked_id in (male1,fem1));
 
   -- ══ 0 · the scenario itself must be legal ═══════════════════════════
@@ -336,8 +344,10 @@ begin
   delete from matches where id=mid;
   delete from likes where liker_id in (male1,fem1) and liked_id in (male1,fem1);
 
-  insert into zyra_journey_results values (57,'teardown','no matches left',(select count(*) from matches)::text,'0');
-  insert into zyra_journey_results values (58,'teardown','no reviews left',(select count(*) from journey_family_reviews)::text,'0');
+  insert into zyra_journey_results values (57,'teardown','no matches left behind by THIS suite',
+    (select count(*) from matches)::text, base_matches::text);
+  insert into zyra_journey_results values (58,'teardown','no reviews left behind by THIS suite',
+    (select count(*) from journey_family_reviews)::text, base_reviews::text);
   insert into zyra_journey_results values (67,'teardown','no stray Guardian link on fem1',
     (select count(*) from wali_links where seeker_id=fem1)::text,'0');
 end $$;

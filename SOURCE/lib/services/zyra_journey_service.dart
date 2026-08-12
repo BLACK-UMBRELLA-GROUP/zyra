@@ -41,11 +41,21 @@ import 'zyra_ages_service.dart';
 /// case rather than a generic failure.
 class OneActiveJourneyLimitException implements Exception {}
 
-/// Thrown by [ZyraJourneyService.suspendJourney] when the caller
-/// doesn't hold a ZYRA One entitlement (suspend_journey enforces this
-/// server-side; client-side plan checks are UI-only, e.g. graying out
-/// a Pause button).
+/// RETIRED 2026-08-11 (Founder: "in zyra basic you can also pause a
+/// journey its just how much you pause is different") — migration
+/// 20260811232500 removed the One-only gate from suspend_journey, so
+/// the server no longer raises suspension_requires_one. Both plans now
+/// pause; the differentiator is the cap ([PausedLimitReachedException]).
+/// Kept briefly so a client running against an un-migrated database
+/// degrades to the old message instead of an unhandled throw.
 class SuspensionRequiresOneException implements Exception {}
+
+/// Thrown by [ZyraJourneyService.suspendJourney] at the plan's paused
+/// cap — 5 on Basic, 10 on ZYRA One (data/zyra_entitlements.dart, the
+/// 2026-08-09 matrix). The cap counts pauses the CALLER initiated, so
+/// Journeys the other party paused never consume it. Server-enforced in
+/// suspend_journey since 2026-08-11.
+class PausedLimitReachedException implements Exception {}
 
 /// RETIRED 2026-08-06 — OA-ZYRA-164. The server no longer auto-ends, so
 /// this can no longer be thrown. Kept briefly so any caller still catching
@@ -307,10 +317,17 @@ class ZyraJourneyService {
     }
   }
 
-  /// Sets the caller's own reveal flag, and — once both parties have
-  /// revealed — computes and stores the compatibility score exactly
-  /// once (guarded by `overall_score IS NULL`). Callers read the
-  /// result back via [fetchCompatibility]; this returns nothing itself.
+  /// Sets the caller's own reveal flag and computes THEIR OWN compatibility
+  /// figure — how well this other person's answers fit what the caller said
+  /// they were looking for. Callers read it back via [fetchCompatibility].
+  ///
+  /// The doc this replaces described the retired behaviour: wait for both
+  /// parties, then compute one shared number guarded by `overall_score IS
+  /// NULL`. That column no longer exists (OA-ZYRA-193 a2).
+  ///
+  /// The mutual gate has NOT gone away — it moved to where it belongs. Both
+  /// still have to choose to reveal before either is shown anything; that is
+  /// the ritual. What changed is only whose number is behind it.
   static Future<void> revealCompatibility(String matchId, String otherUserId) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
@@ -318,7 +335,9 @@ class ZyraJourneyService {
       final matchRow = await _fetchMatchRow(matchId);
       if (matchRow == null) return;
       final isSeekerA = matchRow['seeker_a_id'] == user.id;
-      final myFlagColumn = isSeekerA ? 'seeker_a_revealed' : 'seeker_b_revealed';
+      final myFlagColumn  = isSeekerA ? 'seeker_a_revealed' : 'seeker_b_revealed';
+      final myScoreColumn = isSeekerA ? 'seeker_a_score'    : 'seeker_b_score';
+      final myCatsColumn  = isSeekerA ? 'seeker_a_categories' : 'seeker_b_categories';
 
       final existing = await supabase.from('journey_compatibility').select('match_id').eq('match_id', matchId).maybeSingle();
       if (existing == null) {
@@ -327,15 +346,23 @@ class ZyraJourneyService {
 
       await supabase.from('journey_compatibility').update({myFlagColumn: true}).eq('match_id', matchId);
 
+      // ── REWRITTEN 2026-08-11, OA-ZYRA-193 (a2).
+      //
+      // WAS: compute ONE score, and only in the transaction that completed
+      // the pair — so whoever revealed SECOND scored it, from their own
+      // perspective, and the couple's "shared" figure depended on who
+      // happened to tap last. The guard was `overall_score IS NULL`.
+      //
+      // NOW: I compute MY figure when I reveal. It is mine, it does not wait
+      // for them, and nothing they do can overwrite it. There is no sequence
+      // left to be at the mercy of.
       final updated = await supabase
           .from('journey_compatibility')
-          .select('seeker_a_revealed, seeker_b_revealed, overall_score')
+          .select('$myScoreColumn')
           .eq('match_id', matchId)
           .maybeSingle();
       if (updated == null) return;
-
-      final bothRevealed = updated['seeker_a_revealed'] == true && updated['seeker_b_revealed'] == true;
-      if (!bothRevealed || updated['overall_score'] != null) return;
+      if (updated[myScoreColumn] != null) return;   // already computed — mine is mine
 
       // FIXED 2026-07-26 (Founder decision — see ZYRA_FABLE_BUILD_REVIEW_
       // 2026-07-19_V1.md §Open Decisions item 1): this used to read
@@ -345,13 +372,18 @@ class ZyraJourneyService {
       // the neutral 50.0 default below. score_candidates() (SECURITY
       // DEFINER, 20260726120200_compatibility_scoring_security_
       // definer.sql) does the read+score server-side instead.
-      double score = 50.0; // neutral fallback if scoring is unavailable
+      // NO NEUTRAL FALLBACK ANY MORE. It used to default to 50.0 when
+      // scoring was unavailable, which was defensible on a centred scale
+      // where 50 meant "no information". On the ratified plain count it
+      // would mean "half of everything matched" — a claim, not an absence.
+      // Null is stored, and the screen says it cannot say yet.
+      double? score;
       try {
         final rows = await supabase.rpc('score_candidates', params: {
           'p_candidate_ids': [otherUserId],
         }) as List;
         if (rows.isNotEmpty) {
-          score = ((rows.first as Map<String, dynamic>)['score'] as num).toDouble();
+          score = ((rows.first as Map<String, dynamic>)['score'] as num?)?.toDouble();
         }
         // If score_candidates() excludes otherUserId (a Hard
         // Requirement violation), rows comes back empty and the
@@ -365,6 +397,12 @@ class ZyraJourneyService {
       // score_candidates() to expose category-level detail, which it
       // doesn't yet — future work. Every category mirrors the overall
       // score for now.
+      if (score == null) return;
+
+      // Still every category mirroring the overall — OA-ZYRA-193(d) is open,
+      // and score_candidates exposes no per-category detail to build a real
+      // breakdown from. Unchanged by this pass, and deliberately so: (d) is
+      // a product decision, not something to invent here.
       final categoryScores = {
         'Deen': score,
         'Marriage Goals': score,
@@ -374,11 +412,15 @@ class ZyraJourneyService {
       };
 
       await supabase.from('journey_compatibility').update({
-        'overall_score': score,
-        'category_scores': categoryScores,
+        myScoreColumn: score,
+        myCatsColumn: categoryScores,
         'revealed_at': DateTime.now().toIso8601String(),
       }).eq('match_id', matchId);
-    } catch (_) {}
+    } catch (e) {
+      // 2026-08-12: the reveal write could fail on every poll with no
+      // trace — the score simply never persisted. Logged (CLAUDE.md §3).
+      debugPrint('ZYRA compatibility write($matchId) failed: $e');
+    }
   }
 
   static Future<({bool mine, bool theirs, double? overallScore, Map<String, dynamic>? categoryScores})> fetchCompatibility(
@@ -393,15 +435,23 @@ class ZyraJourneyService {
 
       final row = await supabase
           .from('journey_compatibility')
-          .select('seeker_a_revealed, seeker_b_revealed, overall_score, category_scores')
+          .select('seeker_a_revealed, seeker_b_revealed, seeker_a_score, '
+              'seeker_b_score, seeker_a_categories, seeker_b_categories')
           .eq('match_id', matchId)
           .maybeSingle();
       if (row == null) return (mine: false, theirs: false, overallScore: null, categoryScores: null);
 
       final mine = isSeekerA ? row['seeker_a_revealed'] == true : row['seeker_b_revealed'] == true;
       final theirs = isSeekerA ? row['seeker_b_revealed'] == true : row['seeker_a_revealed'] == true;
-      final overallScore = (row['overall_score'] as num?)?.toDouble();
-      final categoryScores = row['category_scores'] == null ? null : Map<String, dynamic>.from(row['category_scores'] as Map);
+      // MY column, always. The record field is still called overallScore so
+      // the callers did not all have to change on the same day, but what it
+      // carries is this Seeker's own figure and nobody else's — reading the
+      // other person's would be reading their private preferences back to
+      // someone who never saw them.
+      final overallScore =
+          ((isSeekerA ? row['seeker_a_score'] : row['seeker_b_score']) as num?)?.toDouble();
+      final rawCats = isSeekerA ? row['seeker_a_categories'] : row['seeker_b_categories'];
+      final categoryScores = rawCats == null ? null : Map<String, dynamic>.from(rawCats as Map);
       return (mine: mine, theirs: theirs, overallScore: overallScore, categoryScores: categoryScores);
     } catch (_) {
       return (mine: false, theirs: false, overallScore: null, categoryScores: null);
@@ -680,6 +730,111 @@ class ZyraJourneyService {
     }
   }
 
+  // ── REQUEST NEW JOURNEY — OA-ZYRA-159, DR-ZYRA-121 item 8 ──────────────
+  //
+  // "One person requests; the other decides. Never unilateral, never a
+  //  resurrection — a new attempt starts fresh with its own timeline."
+  //
+  // Replaces restartJourney(), which has thrown since OA-ZYRA-154.
+
+  /// The ended matches on which the signed-in user may request a new Journey.
+  ///
+  /// BATCHED, for the same reason fetchOpenReviewMatchIds is: the Connections
+  /// screen draws every ended Journey at once, and a per-row call is the N+1
+  /// this project has a written rule against.
+  ///
+  /// A MATCH'S ABSENCE CARRIES NO REASON. A 6-month cooldown, a permanent
+  /// "don't ask again", a block, a Tier-1 exclusion, an active Journey
+  /// elsewhere and an already-pending request all look identical from here —
+  /// they are simply not in the set. Do not add a variant of this that
+  /// reports why; the asymmetry is the design (OA-ZYRA-159), not an
+  /// oversight to be helpfully corrected later.
+  ///
+  /// Empty on any failure, which hides the button. Failing closed is right:
+  /// showing an option that will be refused is worse than not showing it.
+  static Future<Set<String>> fetchMayRequestNewJourneyIds() async {
+    try {
+      final rows = await supabase.rpc('zyra_may_request_new_journey_ids') as List;
+      return rows.map((r) => r as String).toSet();
+    } catch (e) {
+      debugPrint('ZYRA: fetchMayRequestNewJourneyIds failed — $e');
+      return {};
+    }
+  }
+
+  /// Expires Journey requests past their 14-day window. Expiry counts as a
+  /// decline (DR-121 item 8) — same cooldown, same notification, deliberately
+  /// indistinguishable.
+  ///
+  /// LAZY, like [resolveFamilyReviewIfDue]. There is no scheduler in this
+  /// database, so a request that lapsed while nobody was looking resolves the
+  /// moment either party next opens the screen. Pass null to sweep all.
+  static Future<void> expireDueJourneyRequests([String? matchId]) async {
+    try {
+      await supabase.rpc('zyra_expire_due_journey_requests',
+          params: {'p_match_id': matchId});
+    } catch (e) {
+      debugPrint('ZYRA: expireDueJourneyRequests($matchId) failed — $e');
+    }
+  }
+
+  /// Asks the other Seeker to begin a new Journey.
+  ///
+  /// Returns null on success, or a user-facing message.
+  ///
+  /// EVERY REFUSAL THE SERVER CAN GIVE MAPS TO THE SAME SENTENCE. `not_available`
+  /// covers a cooldown, a permanent refusal, a block and a Tier-1 exclusion,
+  /// and it must keep covering all of them — the requester learning WHICH is
+  /// the one thing OA-ZYRA-159 exists to prevent. If a future error name
+  /// needs its own copy, check first that it cannot be inferred backwards.
+  static Future<String?> requestNewJourney(String matchId) async {
+    try {
+      await supabase.rpc('request_new_journey', params: {'p_match_id': matchId});
+      return null;
+    } catch (e) {
+      final m = e.toString();
+      if (m.contains('not_available')) {
+        return "You can't begin a new Journey with them right now.";
+      }
+      if (m.contains('one_active_journey_limit')) {
+        return 'You already have an Active Journey. End or pause it first.';
+      }
+      if (m.contains('request_already_pending')) {
+        return "You've already asked. They haven't answered yet.";
+      }
+      if (m.contains('cooling_period_active')) {
+        return 'This Journey ended less than 24 hours ago.';
+      }
+      debugPrint('ZYRA: requestNewJourney($matchId) failed — $e');
+      return "That didn't go through. Please try again.";
+    }
+  }
+
+  /// Answers a request. [decision] is 'accept', 'decline' or 'decline_never'.
+  ///
+  /// The two declines differ ONLY in the hold they leave behind — 6 months
+  /// versus permanent — and the requester is told the same thing either way.
+  static Future<String?> respondToJourneyRequest(
+      String requestId, String decision) async {
+    try {
+      await supabase.rpc('respond_to_journey_request',
+          params: {'p_request_id': requestId, 'p_decision': decision});
+      return null;
+    } catch (e) {
+      final m = e.toString();
+      if (m.contains('request_expired')) return 'That request has expired.';
+      if (m.contains('already_answered')) return 'That request was already answered.';
+      if (m.contains('one_active_journey_limit')) {
+        return 'One of you already has an Active Journey.';
+      }
+      if (m.contains('not_available')) {
+        return "You can't begin a new Journey with them right now.";
+      }
+      debugPrint('ZYRA: respondToJourneyRequest($requestId, $decision) failed — $e');
+      return "That didn't go through. Please try again.";
+    }
+  }
+
   /// Best-effort lazy timeout check — called from the same 3-second
   /// poll journey_flow_screen.dart already runs for every other stage.
   /// No-op server-side if there's nothing due yet.
@@ -705,9 +860,15 @@ class ZyraJourneyService {
     } catch (_) {}
   }
 
-  /// {questionId: answerText}. Ordered by created_at so that if
+  /// {questionId: answerText}. Ordered by created_at ASCENDING so that if
   /// multiple rows ever share a question_id (multiple answerers on
   /// one side), the later insert wins in the returned map.
+  ///
+  /// The `ascending: true` is load-bearing and was missing until 2026-08-11.
+  /// postgrest-dart defaults .order() to DESCENDING, so the map was being
+  /// built newest-to-oldest and the last write to win was the OLDEST answer —
+  /// the exact opposite of what the sentence above promised. The doc was
+  /// right about the intent and the code had never matched it.
   static Future<Map<String, String>> fetchFamilyAnswers(String matchId, String direction) async {
     try {
       final rows = await supabase
@@ -715,7 +876,7 @@ class ZyraJourneyService {
           .select('question_id, answer_text, created_at')
           .eq('match_id', matchId)
           .eq('direction', direction)
-          .order('created_at') as List;
+          .order('created_at', ascending: true) as List;
 
       final result = <String, String>{};
       for (final r in rows) {
@@ -728,13 +889,16 @@ class ZyraJourneyService {
     }
   }
 
-  /// Throws [SuspensionRequiresOneException] if the caller doesn't
-  /// hold ZYRA One; swallows any other error (caller can refetch state
-  /// to see the suspension didn't take effect).
+  /// Throws [PausedLimitReachedException] at the plan's paused cap
+  /// (5 Basic / 10 One — server-enforced since 2026-08-11), or
+  /// [SuspensionRequiresOneException] only against an un-migrated
+  /// database; swallows any other error (caller can refetch state to
+  /// see the suspension didn't take effect).
   static Future<void> suspendJourney(String matchId) async {
     try {
       await supabase.rpc('suspend_journey', params: {'p_match_id': matchId});
     } catch (e) {
+      if (e.toString().contains('paused_limit_reached')) throw PausedLimitReachedException();
       if (e.toString().contains('suspension_requires_one')) throw SuspensionRequiresOneException();
     }
   }
@@ -760,7 +924,13 @@ class ZyraJourneyService {
   static Future<void> endJourney(String matchId) async {
     try {
       await supabase.rpc('end_journey', params: {'p_match_id': matchId});
-    } catch (_) {}
+    } catch (e) {
+      // 2026-08-12 (stewardship pass, CLAUDE.md §3 "never leave a silent
+      // catch"): a failed end used to report success to the UI with no
+      // trace anywhere. Still swallowed — caller refetches state — but no
+      // longer invisible.
+      debugPrint('ZYRA endJourney($matchId) failed: $e');
+    }
   }
 
   /// Plain re-fetch of one match's current status/stage/suspension —
@@ -839,4 +1009,318 @@ class ZyraJourneyService {
       'other party to accept — see Request New Journey, OA-ZYRA-159.',
     );
   }
+
+  /// DEV ONLY — jump an Active Journey straight to any stage.
+  ///
+  /// Founder request 2026-08-10, so a section can be reached for testing
+  /// without walking the whole Journey to get there.
+  ///
+  /// ⚠️ THIS SKIPS EVERY GATE: the Pre-Journey Ritual, the Guardian Gate and
+  /// the 48-hour Family Review Period. Those three are what make ZYRA a
+  /// marriage process rather than a chat app.
+  ///
+  /// ⚠️ THE GUARD IS SERVER-SIDE, in `zyra_dev_set_journey_stage`, which reads
+  /// `auth.users.email` and refuses anything that is not `@zyra.test`. Hiding
+  /// the control in Dart is presentation, not protection — contradiction-audit
+  /// §3.1 is an entire section on this project trusting client-side gates. If
+  /// you are tempted to "just check it in the widget", that finding is why the
+  /// real check is not there.
+  ///
+  /// ⚠️ DROP BEFORE PUBLIC LAUNCH, alongside `mock_purchase_wali_premium()`
+  /// and `mock_set_wali_plan()` — engineering audit item #20. It rests on the
+  /// `@zyra.test` guard, which is OA-ZYRA-171 and still open.
+  ///
+  /// Throws [DevOnlyException] when the signed-in account is not a seeded test
+  /// account, so the caller can say so rather than swallowing it.
+  static Future<String> devSetStage(String matchId, String stage) async {
+    try {
+      final res = await supabase.rpc('zyra_dev_set_journey_stage', params: {
+        'p_match_id': matchId,
+        'p_stage': stage,
+      });
+      return res as String;
+    } catch (e) {
+      // Matches this file's existing convention (suspendJourney,
+      // resumeJourney): string-match the server's error name rather than
+      // catching a typed PostgrestException, which is not imported here.
+      if (e.toString().contains('dev_only')) throw const DevOnlyException();
+      if (e.toString().contains('journey_not_active')) {
+        throw const JourneyNotActiveException();
+      }
+      debugPrint('ZYRA: devSetStage($matchId, $stage) failed — $e');
+      rethrow;
+    }
+  }
+
+  /// DEV ONLY — set the OTHER party's Compatibility Reveal flag.
+  ///
+  /// Founder request 2026-08-10. The reveal is a two-sided gate and one person
+  /// testing alone can only ever see one side of it.
+  ///
+  /// ⚠️ Server-guarded on `@zyra.test`, like [devSetStage]. It sets the
+  /// COUNTERPART's column, never the caller's — verified both ways round
+  /// against the live database on 2026-08-10.
+  ///
+  /// ⚠️ It deliberately does NOT compute the score. Scoring belongs to the
+  /// real reveal path, so the correct test is: set the counterpart revealed,
+  /// then press Reveal and watch the real code run. A dev function that also
+  /// scored would be testing itself.
+  ///
+  /// ⚠️ DROP BEFORE PUBLIC LAUNCH — OA-ZYRA-184, which now covers eight
+  /// functions rather than seven.
+  static Future<bool> devSetCounterpartReveal(String matchId, bool revealed) async {
+    try {
+      final res = await supabase.rpc('zyra_dev_set_counterpart_reveal', params: {
+        'p_match_id': matchId,
+        'p_revealed': revealed,
+      });
+      return res as bool;
+    } catch (e) {
+      if (e.toString().contains('dev_only')) throw const DevOnlyException();
+      debugPrint('ZYRA: devSetCounterpartReveal($matchId, $revealed) failed — $e');
+      rethrow;
+    }
+  }
+
+  /// Whether the OTHER party has revealed. Read back so the dev toggle shows
+  /// the real state rather than whatever it last set — the two diverge the
+  /// moment the other account reveals for real, and a toggle that shows its
+  /// own last write is a toggle that lies.
+  static Future<bool> fetchCounterpartRevealed(String matchId) async {
+    final user = ZyraAuth.currentUser;
+    if (user == null) return false;
+    try {
+      final matchRow = await _fetchMatchRow(matchId);
+      if (matchRow == null) return false;
+      final isSeekerA = matchRow['seeker_a_id'] == user.id;
+      final theirColumn = isSeekerA ? 'seeker_b_revealed' : 'seeker_a_revealed';
+      final row = await supabase
+          .from('journey_compatibility')
+          .select(theirColumn)
+          .eq('match_id', matchId)
+          .maybeSingle();
+      return row?[theirColumn] == true;
+    } catch (e) {
+      debugPrint('ZYRA: fetchCounterpartRevealed($matchId) failed — $e');
+      return false;
+    }
+  }
+
+  // ── PROFILE UNLOCK+ EARLY SIGHT — DR-ZYRA-135, closing OA-ZYRA-152 ─────
+
+  /// The compatibility score for a Plus holder, before the other Seeker has
+  /// revealed. Null if the caller has no Plus unlock on them, or on failure.
+  ///
+  /// DR-ZYRA-135, Founder-approved 2026-08-10. It resolved a real conflict:
+  /// the Reveal is built as a consent gate — "neither of you sees it until you
+  /// both choose" — and Unlock+ sells that number to one person. Both could
+  /// not be true. The Founder chose the purchase.
+  ///
+  /// THE LINE THIS DOES NOT CROSS: the result is bought, the relationship is
+  /// not. It sets no reveal flag, advances no stage, and tells the other
+  /// person nothing — asserted server-side, checks 4–6 of the DR-135 run.
+  /// If you are tempted to have this also mark the caller as revealed
+  /// "since they've seen it anyway", that is the consent gate, and it is
+  /// theirs to open.
+  ///
+  /// The entitlement is checked SERVER-SIDE, in zyra_compatibility_for_plus.
+  /// Contradiction-audit §3.1 is a whole section on this project gating
+  /// entitlements in Dart and believing it.
+  static Future<double?> fetchCompatibilityForPlus(String matchId) async {
+    try {
+      final res = await supabase
+          .rpc('zyra_compatibility_for_plus', params: {'p_match_id': matchId});
+      if (res == null) return null;
+      return (res as num).toDouble();
+    } catch (e) {
+      // plus_required is the ORDINARY case, not a failure: most people have
+      // not bought Plus. Returning null quietly is correct; logging it would
+      // fill the console with the normal path.
+      if (e.toString().contains('plus_required')) return null;
+      debugPrint('ZYRA: fetchCompatibilityForPlus($matchId) failed — $e');
+      return null;
+    }
+  }
+
+  /// DEV ONLY — simulate buying (or refunding) Compatibility Unlock+.
+  ///
+  /// ⚠️ NINTH consumer of the `@zyra.test` guard. OA-ZYRA-184 lists them all;
+  /// it said seven this morning and eight by lunch. DROP BEFORE LAUNCH.
+  ///
+  /// Removing only ever deletes the simulated `paid_plus_single` row, never a
+  /// real unlock of another type — a dev tool that deleted a `paid_single`
+  /// would be destroying a record of money.
+  /// DEV ONLY. Forces a Compatibility Reveal RESULT — both flags set and a
+  /// score of your choosing — so the mutual-reveal screen can be seen at both
+  /// ends of the scale.
+  ///
+  /// WHY THIS EXISTS RATHER THAN REAL DATA. After the 2026-08-10 backfills
+  /// every seeded profile scores 77-100 against every other, because they all
+  /// carry similar synthetic answers. A low score is not reachable by playing
+  /// the product properly, and testing how a bad result READS matters as much
+  /// as testing a good one.
+  ///
+  /// TENTH dev RPC — OA-ZYRA-184 holds the drop list.
+  static Future<double?> devSetCompatibility(String matchId, double score) async {
+    try {
+      final v = await supabase.rpc('zyra_dev_set_compatibility', params: {
+        'p_match_id': matchId,
+        'p_score': score,
+      });
+      return (v as num?)?.toDouble();
+    } catch (e) {
+      debugPrint('ZYRA: devSetCompatibility failed — $e');
+      rethrow;
+    }
+  }
+
+  /// The signed-in Seeker's OWN private ratings for a phase — questionId to
+  /// 'reassured' | 'discuss_further' | 'concerns'.
+  ///
+  /// ADDED 2026-08-11 for the ZYRA intelligence layer, which has nothing to
+  /// say without them. Scoped to the caller on purpose and not by accident of
+  /// RLS: "Your ratings are private and used only to guide your journey"
+  /// (PRE-JOURNEY RITUAL/Summary.md) is a promise made on screen every phase,
+  /// so this must never grow an `otherUserId` parameter.
+  static Future<Map<String, String>> fetchMyRatings(String matchId, int phase) async {
+    final user = ZyraAuth.currentUser;
+    if (user == null) return {};
+    try {
+      final rows = await supabase
+          .from('journey_phase_ratings')
+          .select('question_id, rating')
+          .eq('match_id', matchId)
+          .eq('phase', phase)
+          .eq('rater_id', user.id) as List;
+      return {
+        for (final r in rows)
+          (r as Map<String, dynamic>)['question_id'] as String: r['rating'] as String,
+      };
+    } catch (e) {
+      debugPrint('ZYRA: fetchMyRatings($matchId, $phase) failed - $e');
+      return {};
+    }
+  }
+
+  /// All of this Seeker's private ratings across phases 1-3, merged.
+  /// Open Conversation is where the whole Journey is finally one thing, so
+  /// its topic suggestions read from all of it rather than the last phase.
+  static Future<Map<String, String>> fetchAllMyRatings(String matchId) async {
+    final out = <String, String>{};
+    for (final phase in const [1, 2, 3]) {
+      out.addAll(await fetchMyRatings(matchId, phase));
+    }
+    return out;
+  }
+
+  /// DEV ONLY. Completes the OTHER party's half of whatever stage the Journey
+  /// is standing on, so the flow can be walked alone.
+  ///
+  /// Every stage from the Salam onwards is a mutual act by design, which
+  /// means a single tester stops at the second stage and the remaining six
+  /// have never been seen running. This ends the wait and nothing else: it
+  /// does not advance the stage, does not skip one, and does not touch the
+  /// caller's own half. The server decides what "their half" means from the
+  /// current stage - see zyra_dev_counterpart_complete.
+  ///
+  /// [questionIds] is the current stage's question set, sent because the
+  /// bank lives in data/journey_questions.dart and the database has never
+  /// been told about it. Empty for the stages that have no questions.
+  ///
+  /// ELEVENTH dev RPC - OA-ZYRA-184 holds the drop list.
+  static Future<String> devCounterpartComplete(String matchId,
+      {List<String> questionIds = const []}) async {
+    try {
+      final res = await supabase.rpc('zyra_dev_counterpart_complete', params: {
+        'p_match_id': matchId,
+        'p_question_ids': questionIds,
+      });
+      return res?.toString() ?? 'Done.';
+    } catch (e) {
+      if (e.toString().contains('dev_only')) throw const DevOnlyException();
+      debugPrint('ZYRA: devCounterpartComplete($matchId) failed - $e');
+      rethrow;
+    }
+  }
+
+  /// DEV ONLY, DESTRUCTIVE. Rewinds ONE Journey to Compatibility Reveal and
+  /// clears everything the pair did inside it — answers, ratings, salams,
+  /// reveals, checkpoints, family answers, reviews, messages, milestones.
+  ///
+  /// Founder, 2026-08-11: "the reset button in toggle doesn't reset the
+  /// journey stage.. say if i wanna start again." Neither Reset was ever
+  /// going to: one clears the panel's own toggles and never touches the
+  /// server, and the red account reset deliberately leaves matches alone
+  /// because they are expensive to rebuild. This is the third thing, named
+  /// for what it does.
+  ///
+  /// ⚠️ NOT [restartJourney]. Starting again for real needs both people to
+  /// agree and keeps all history (OA-ZYRA-154 / OA-ZYRA-159). This deletes
+  /// it, and must never be reachable from a member-facing screen.
+  ///
+  /// TWELFTH dev RPC - OA-ZYRA-184 holds the drop list.
+  /// [matchId] null rewinds EVERY Journey on this account — which is what the
+  /// dev panel's Reset needs, since it runs from HomeShell with no Journey in
+  /// front of it.
+  static Future<String> devRewindJourney({String? matchId}) async {
+    try {
+      final res = await supabase
+          .rpc('zyra_dev_rewind_journey', params: {'p_match_id': matchId});
+      return res?.toString() ?? 'Journey rewound.';
+    } catch (e) {
+      if (e.toString().contains('dev_only')) throw const DevOnlyException();
+      debugPrint('ZYRA: devRewindJourney($matchId) failed - $e');
+      rethrow;
+    }
+  }
+
+  static Future<bool> devSetPlusUnlock(String otherId, bool has) async {
+    try {
+      final res = await supabase.rpc('zyra_dev_set_plus_unlock',
+          params: {'p_other_id': otherId, 'p_has': has});
+      return res == true;
+    } catch (e) {
+      if (e.toString().contains('dev_only')) throw const DevOnlyException();
+      debugPrint('ZYRA: devSetPlusUnlock($otherId, $has) failed — $e');
+      rethrow;
+    }
+  }
+
+  /// Whether the signed-in user holds a Plus unlock on [otherId]. Read back
+  /// from the server so the dev switch shows the real state rather than its
+  /// own last write.
+  static Future<bool> fetchHasPlusUnlock(String otherId) async {
+    final user = ZyraAuth.currentUser;
+    if (user == null) return false;
+    try {
+      final rows = await supabase
+          .from('profile_unlocks')
+          .select('unlock_type')
+          .eq('unlocker_id', user.id)
+          .eq('unlocked_id', otherId) as List;
+      return rows.any((r) => (r as Map<String, dynamic>)['unlock_type']
+          .toString()
+          .startsWith('paid_plus'));
+    } catch (e) {
+      debugPrint('ZYRA: fetchHasPlusUnlock($otherId) failed — $e');
+      return false;
+    }
+  }
+}
+
+/// The signed-in account is not a seeded `@zyra.test` account, so a developer
+/// tool refused it. Raised by the server, never inferred on the client.
+class DevOnlyException implements Exception {
+  const DevOnlyException();
+  @override
+  String toString() =>
+      'Stage jumping is limited to seeded @zyra.test accounts.';
+}
+
+/// A stage jump was attempted on a Journey that is not active — an ended or
+/// potential Journey has no stages to move between.
+class JourneyNotActiveException implements Exception {
+  const JourneyNotActiveException();
+  @override
+  String toString() => 'Only an Active Journey has stages to move between.';
 }

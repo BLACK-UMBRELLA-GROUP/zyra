@@ -14,7 +14,7 @@ Depends On: IMAGE_HANDLING_CURRENT_VERSION_V2 (canonical pipeline —
 
 **Resolution note (2026-07-25) — DR-ZYRA-096:** V1 of this document
 flagged a direct conflict between OA-ZYRA-130's manual crop editor
-proposal and `IMAGE_HANDLING_CURRENT_VERSION_V1.md`'s fully-automatic
+proposal and `IMAGE_HANDLING_2026-07-25_V1.md`'s fully-automatic
 philosophy, and held Status at 🔴 rather than filing either as
 settled. Raised to ChatGPT and the Founder; both independently
 recommended the same resolution — keep the automatic pipeline as
@@ -61,7 +61,7 @@ the full processing pipeline (8 steps), Safety & Authenticity
 Screening, and Moderation Decision flow. Profiles-specific behaviour:
 photos display using `BoxFit.cover` or equivalent within this
 feature's screens, consistent with the Browse card display defined in
-`BROWSE_UX_SPEC_CURRENT_VERSION_V3.md`.
+`BROWSE_UX_SPEC_CURRENT_VERSION_V4.md`.
 
 ### Section 4 — Business Rules
 
@@ -78,7 +78,7 @@ feature's screens, consistent with the Browse card display defined in
   (`APP/Standards/IMAGE_HANDLING_CURRENT_VERSION_V2.md`) — owning
   document for the full processing, cropping, and moderation
   pipeline. See Depends On above.
-- **Browse** (`APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md`) —
+- **Browse** (`APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V4.md`) —
   consumes processed photos for the Profile Card; also owns the
   Report/Hide/Block UI that photo reports feed into.
 - **Safety** (`APP/Safety/SAFETY_RESPECT_SYSTEM_CURRENT_VERSION_V3.md`)

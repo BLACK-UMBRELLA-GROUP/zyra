@@ -198,7 +198,11 @@ class ZyraSeekerDetailsService {
     String? distancePref,
     TrafficLight? distanceFlex,
     Map<String, TrafficLight> sectMatrix = const {},
-    bool sectHardReq = false,
+    /// Sect labels this Seeker will never be introduced to. Per-OPTION since
+    /// 2026-08-10 (OA-ZYRA-185); was a single boolean covering every 🔴 sect
+    /// at once. The database CHECK seeker_details_sect_hard_shape now
+    /// REJECTS the boolean form outright.
+    Set<String> sectHard = const {},
     TrafficLight? sectOutsideFlex,
     TrafficLight? revertFlex,
     List<String> countryPrefs = const [],
@@ -226,7 +230,7 @@ class ZyraSeekerDetailsService {
         // Keyed by the on-screen option, which for 'Other' is the user's
         // own words — there is no code for it by definition.
         'matrix': {for (final e in sectMatrix.entries) e.key: e.value.name},
-        'hard_requirement': sectHardReq,
+        'hard_requirement': sectHard.toList(),
         'outside_flexibility': sectOutsideFlex?.name,
       },
       'revert': {'flexibility': revertFlex?.name},

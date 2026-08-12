@@ -78,8 +78,10 @@ import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/report_profile_sheet.dart';
+import '../../widgets/zyra_glass_dialog.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../journey/journey_flow_screen.dart';
+import '../matches/journey_timeline_screen.dart';
 import '../subscription/profile_unlock_screen.dart';
 
 class ConnectionsScreen extends StatefulWidget {
@@ -119,6 +121,19 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// show the underlying stage, which is honest — the Journey really is
   /// in phase_2; the override only adds why it isn't moving.
   Set<String> _openReviews = const {};
+
+  /// Ended matches on which this user may ask to begin again — OA-ZYRA-159.
+  ///
+  /// A match's ABSENCE carries no reason. A 6-month cooldown, a permanent
+  /// "don't ask again", a block, a Tier-1 exclusion, an Active Journey
+  /// elsewhere and an already-pending request are all identical from here.
+  /// That indistinguishability is the design, not a gap: DR-ZYRA-121 item 8
+  /// says "the requester is never told which". Do not enrich this into a
+  /// map of reasons, however helpful that would feel.
+  ///
+  /// Empty until the query returns, and empty forever if it fails — so the
+  /// button is hidden rather than offered and refused.
+  Set<String> _mayRequest = const {};
 
   bool _startingJourney = false;
   String? _startingMatchId;
@@ -364,16 +379,37 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // which Journey is which.
     // Dev Journeys wrap REAL profiles, so the cards render real photos.
     // Synthesised people had empty photo lists, which drew as a white tile.
-    final all = ZyraDevScenario.instance.journeysOverridden
+    //
+    // ── CHANGED 2026-08-11. The real rows are now ALWAYS fetched, even when
+    // the panel is driving the page, because the Active toggle SURFACES a
+    // real Journey instead of inventing one (see fakeJourneys' realActive).
+    // In a release build journeysOverridden is permanently false and
+    // holdsRealActiveJourneys permanently false, so this is the same single
+    // fetch and the same list it has always been.
+    final dev = ZyraDevScenario.instance;
+    final real = await ZyraJourneyService.fetchJourneyMatches(
+        statuses: const ['potential', 'active', 'ended']);
+    // Running and not paused — the set the Active row governs. Written once
+    // and used twice, so "surface it" and "hold it back" cannot come to
+    // disagree about which Journeys they mean.
+    bool isRunning(JourneyMatch j) => j.status == 'active' && !j.isSuspended;
+    final realActive = real.where(isRunning).toList();
+
+    final all = dev.journeysOverridden
         ? ZyraDevScenario.fakeJourneys(
             viewerGender: AppState.instance.gender,
             pool: await ZyraDiscoveryService.fetchCandidates(),
             // 2026-08-09: the generator clamps its counts to the plan's
             // Journey limits, so it has to be told which plan.
             viewerPlan: AppState.instance.plan,
+            realActive: realActive,
           )
-        : await ZyraJourneyService.fetchJourneyMatches(
-            statuses: const ['potential', 'active', 'ended']);
+        // Active row at 0 means NO Active Journeys, including the genuine
+        // one — dev builds only. Paused rows are status 'active' too and are
+        // deliberately left alone: they answer to their own row.
+        : (dev.holdsRealActiveJourneys
+            ? real.where((j) => !isRunning(j)).toList()
+            : real);
     if (!mounted) return;
     final potential = all.where((j) => j.status == 'potential').toList();
     final activeAll = all.where((j) => j.status == 'active').toList();
@@ -394,64 +430,162 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // Dev fakes are skipped rather than queried: their match IDs are not
     // real rows, and Postgres would reject them against a uuid column
     // (22P02) to tell us something we already know.
-    final openReviews = ZyraDevScenario.instance.journeysOverridden
+    //
+    // FILTERED BY ROW, NOT BY FLAG, 2026-08-11. This used to skip the query
+    // whenever ANY Journey toggle was on, which was a proxy for "everything
+    // here is fake" — true until the Active toggle began surfacing the real
+    // Journey. isMock is the property the comment above was always really
+    // describing, so it is now the property being tested.
+    final realActiveIds =
+        active.where((j) => !j.isMock).map((j) => j.matchId).toList();
+    final openReviews = realActiveIds.isEmpty
         ? const <String>{}
-        : await ZyraJourneyService.fetchOpenReviewMatchIds(
-            active.map((j) => j.matchId).toList());
+        : await ZyraJourneyService.fetchOpenReviewMatchIds(realActiveIds);
+
+    // OA-ZYRA-159 stage 5. Expire lapsed requests BEFORE asking which
+    // Journeys may be asked on, or a request that ran out its fourteen days
+    // yesterday would still read as pending and suppress the button.
+    //
+    // Lazy rather than scheduled — there is no cron in this database, and
+    // this is the same shape as resolveFamilyReviewIfDue.
+    // Same rule as openReviews above: asked when there is a real ended row to
+    // ask about, not when a flag says the panel is involved.
+    Set<String> mayRequest = const {};
+    if (ended.any((j) => !j.isMock)) {
+      await ZyraJourneyService.expireDueJourneyRequests();
+      // BATCHED — one call for every ended Journey. A per-row lookup here is
+      // the N+1 this file already has a rule against.
+      mayRequest = await ZyraJourneyService.fetchMayRequestNewJourneyIds();
+    }
     if (!mounted) return;
 
     setState(() {
       _suspended = suspended;
       _ended = ended;
       _openReviews = openReviews;
+      _mayRequest = mayRequest;
     });
   }
 
-  void _startJourney(JourneyMatch j) {
-    showDialog(
+  /// OA-ZYRA-159. Asks the other Seeker to begin again.
+  ///
+  /// CONFIRMED FIRST, because the tap is easy to misread. "Request New
+  /// Journey" is honest about being a request, but someone who ended a
+  /// Journey months ago and taps it on a quiet evening should be told plainly
+  /// that the other person will be notified and may say no — before it
+  /// happens, not after.
+  Future<void> _requestNewJourney(JourneyMatch j) async {
+    // RESTYLED 2026-08-11 (Frost UI full-app pass): the unratified
+    // near-black AlertDialog becomes the ratified glass modal. Copy
+    // unchanged.
+    final confirmed = await showZyraGlassChoice(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Start Journey with ${j.profile.firstName}?', style: ZyraText.heading(size: 16)),
-        // DISCLOSURE ADDED 2026-08-01 (Founder decision, via ChatGPT:
-        // Guardian conversation visibility is deliberate and must be stated
-        // consistently everywhere).
-        //
-        // THIS IS THE MOMENT IT MATTERS. messages_select's RLS grants a
-        // linked Wali read access from the instant matches.status leaves
-        // 'potential' — which is exactly what this button does. Before
-        // today the user tapped it with no idea, and the app elsewhere
-        // actively told them the opposite. This dialog is the last point
-        // at which the choice is still theirs, so the disclosure belongs
-        // here rather than only in the FAQ.
-        //
-        // "and ${firstName}'s" is not a courtesy — the policy grants
-        // access to a Wali linked to EITHER seeker, so the other party's
-        // Guardian reads this conversation too. Saying only "your Guardian" would
-        // be a second, subtler untruth.
-        content: Text(
-          'This starts your Active Journey. It will use your Journey slot and '
-          'begin the Pre-Journey Ritual with Compatibility Reveal.\n\n'
-          'From this point your linked Guardian — and ${j.profile.firstName}\'s — '
-          'can read the conversation between you. That is deliberate: ZYRA is '
-          'built for a marriage process with family present, not for private '
-          'one-to-one messaging.\n\n'
-          'You may only have one Active Journey at a time.',
-          style: ZyraText.subtext(),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text('Not yet', style: ZyraText.subtext(size: 13))),
-          FilledButton(
-            onPressed: () async {
-              Navigator.of(ctx).pop();
-              await _promote(j);
-            },
-            child: Text('Start Journey', style: ZyraText.button(size: 13)),
-          ),
-        ],
-      ),
+      icon: Icons.restart_alt_outlined,
+      title: 'Ask ${j.profile.firstName} to begin again?',
+      body: "They'll be told you asked, and can accept or decline. Nothing "
+          'starts unless they agree.\n\nIf they accept, this is a fresh '
+          'Journey — a new conversation, from the beginning. Everything from '
+          'before is kept, and stays where it is.',
+      primaryLabel: 'Send request',
+      secondaryLabel: 'Not now',
     );
+    if (confirmed != true) return;
+
+    final error = await ZyraJourneyService.requestNewJourney(j.matchId);
+    if (!mounted) return;
+    if (error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Asked ${j.profile.firstName}. You\'ll hear when they answer.'),
+      ));
+    }
+    // Re-read either way: on success the button must disappear (one pending
+    // request per pair), and on failure the server may have refused for a
+    // reason that also changes what this list should show.
+    await _refresh();
+  }
+
+  // THE START MOMENT, REWRITTEN 2026-08-11 (Founder: the start flow
+  // "gotta show it will end current journey if thats the case"). Until
+  // now the one-Active-Journey rule surfaced AFTER the confirm — the
+  // server refused promoteToActive and a snackbar told the person to go
+  // end something, so they learned the cost of the choice only once it
+  // had already bounced. Now the dialog itself carries the cost: when an
+  // Active Journey exists, confirming HERE ends it and starts the new
+  // one, and the copy says exactly that before the tap.
+  //
+  // End-then-start, not start-then-end: promoteToActive refuses while
+  // any Active Journey exists, so the order is forced. If the promote
+  // then fails anyway, nothing is silently lost — the ended Journey
+  // sits in Ended Journeys with its Timeline kept, and _promote's own
+  // error handling says the start itself failed.
+  //
+  // DISCLOSURE PRESERVED from 2026-08-01 (Founder decision, via ChatGPT:
+  // Guardian conversation visibility is deliberate and must be stated
+  // consistently everywhere). THIS IS THE MOMENT IT MATTERS —
+  // messages_select's RLS grants a linked Wali read access from the
+  // instant matches.status leaves 'potential', which is exactly what
+  // this button does. It names BOTH Guardians because the policy grants
+  // access to a Wali linked to EITHER Seeker; saying only "your
+  // Guardian" would be a second, subtler untruth.
+  void _startJourney(JourneyMatch j) async {
+    final blocking = AppState.instance.activeJourneys
+        .where((a) => !a.isMock && a.matchId != j.matchId && !a.isSuspended)
+        .toList();
+
+    final guardianLine =
+        'From this point your linked Guardian — and ${j.profile.firstName}\'s — '
+        'can read the conversation between you. That is deliberate: ZYRA is '
+        'built for a marriage process with family present, not for private '
+        'one-to-one messaging.';
+
+    if (blocking.isEmpty) {
+      final confirmed = await showZyraGlassChoice(
+        context: context,
+        icon: Icons.flag_outlined,
+        title: 'Start Journey with ${j.profile.firstName}?',
+        body: 'This starts your Active Journey. It will use your Journey slot '
+            'and begin the Pre-Journey Ritual with Compatibility Reveal.\n\n'
+            '$guardianLine\n\n'
+            'You may only have one Active Journey at a time.',
+        primaryLabel: 'Start Journey',
+        secondaryLabel: 'Not yet',
+      );
+      if (confirmed == true) await _promote(j);
+      return;
+    }
+
+    // One Active Journey exists — the tap is really a choice BETWEEN two
+    // people, and the dialog must say so. The pause escape route is
+    // offered in copy only when the plan actually has it (Pause is a
+    // ZYRA One capability — Founder amendment on DR-ZYRA-121).
+    final other = blocking.first;
+    final pauseLine = AppState.instance.plan == ZyraPlan.one
+        ? '\n\nIf you want to keep it instead, pause it from inside the '
+            'Journey first, then start this one.'
+        : '';
+    final confirmed = await showZyraGlassChoice(
+      context: context,
+      icon: Icons.swap_horiz,
+      title: 'End your Journey with ${other.profile.firstName}?',
+      body: 'You may only have one Active Journey at a time, and you are in '
+          'one with ${other.profile.firstName} now.\n\n'
+          'Starting with ${j.profile.firstName} will permanently END your '
+          'Journey with ${other.profile.firstName}. Its Timeline is kept '
+          'under Ended Journeys, but beginning again later would need a New '
+          'Journey request that ${other.profile.firstName} accepts.'
+          '$pauseLine\n\n'
+          '$guardianLine',
+      primaryLabel: 'End it & start new Journey',
+      secondaryLabel: 'Keep my Journey',
+    );
+    if (confirmed != true) return;
+
+    await ZyraJourneyService.endJourney(other.matchId);
+    await _refresh();
+    if (!mounted) return;
+    await _promote(j);
   }
 
   Future<void> _promote(JourneyMatch j) async {
@@ -627,32 +761,70 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           ),
         )
       else
-        ...active.map((j) => _JourneyTile(
-              profile: j.profile,
-              // THE CANONICAL STAGE MAP — data/zyra_journey_stages.dart,
-              // Founder-approved 2026-08-09. No stage label is written
-              // here or on any other screen; there is one map.
-              //
-              // REPLACED: `journeyStage == 'conversation' ? 'Conversation
-              // open' : 'In the Pre-Journey Ritual'`. That was wrong for
-              // seven of the eight stages, and not vaguely wrong —
-              // the Pre-Journey Ritual is what turns a POTENTIAL Journey
-              // into this one. Every stage in this list runs after it.
-              // A Seeker in Family Compatibility was being told they were
-              // still in the ritual they finished weeks earlier.
-              //
-              // No "Current Focus:" prefix here, per the Founder: on a
-              // card the label is obviously the state. The prefix is for
-              // Journey Detail, where it has to compete with the content.
-              subtitle: ZyraJourneyStages.labelFor(
-                j.journeyStage,
-                reviewOpen: _openReviews.contains(j.matchId),
-              ),
-              emphasised: true,
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+        ...active.map((j) {
+          // TRAILING ACTION — Founder, 2026-08-10: "active journey should be
+          // enter", styled like POTENTIAL's "Start Journey", so every Journey
+          // row states its action on the right instead of leaving three of the
+          // four sections with a bare chevron.
+          //
+          // THE WHOLE-CARD TAP WAS REMOVED LATER THE SAME DAY, at Founder
+          // instruction: "wherever I click goes into enter journey but that
+          // ruins the enter journey button anyway, so make sure the profile
+          // card clicked does nothing so only the 2 buttons are action
+          // buttons."
+          //
+          // The comment that stood here argued the opposite — that a card
+          // tappable everywhere is better than one with a button that is the
+          // only route. It was wrong for this card. Two labelled pills sit on
+          // it; a card-wide tap makes the primary one decorative, and makes
+          // the secondary one a trap, because everything around "Timeline"
+          // silently does something else.
+          void enter() => Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => JourneyFlowScreen(matchId: j.matchId, profile: j.profile),
-              )),
-            )),
+              ));
+          return _ActiveJourneyCard(
+              profile: j.profile,
+              onEnter: enter,
+              onTimeline: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => JourneyTimelineScreen(withProfile: j.profile),
+                  )),
+              // Same sheet and same source as every other card on this page,
+              // so a report raised from an Active Journey is indistinguishable
+              // from one raised anywhere else — which is what the person
+              // reporting should be able to assume.
+              onReport: () async {
+                await showReportProfileSheet(
+                  context,
+                  profileId: j.profile.id,
+                  firstName: j.profile.firstName,
+                  source: ZyraReportSource.connections,
+                );
+                if (mounted) await _refresh();
+              },
+              // NOT the stage label — that came out on Founder instruction,
+              // 2026-08-10. This is the one Journey state that is waiting on
+              // the member's FAMILY rather than on them, and it holds the
+              // Journey for 48 hours.
+              //
+              // Removing the stage line took it with it, and left
+              // _openReviews written by a batched query and read by nothing —
+              // the shape of the `profile_complete` defect in the 2026-07-26
+              // audit, inverted. Restored as a chip that appears only while a
+              // review is open, so the ordinary card stays as asked.
+              reviewOpen: _openReviews.contains(j.matchId),
+              // BEGIN vs CONTINUE, Founder 2026-08-10: "either begin journey
+              // if user started or continue journey if user is continuing".
+              //
+              // No new state was added for this. A Journey that is still on
+              // its opening stage has not moved yet, whatever the member has
+              // looked at — so "Begin" is true right up until the Journey
+              // itself advances, and "Continue" from then on. Reading it off
+              // the stage keeps one source of truth instead of a
+              // has-been-opened flag that would need maintaining and could
+              // drift.
+              hasBegun: j.journeyStage != ZyraJourneyStages.all.first.value,
+            );
+        }),
 
       const SizedBox(height: 20),
       // RENAMED 2026-08-03, Founder approved: "Potential Journeys"
@@ -720,37 +892,65 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           return _JourneyTile(
             profile: j.profile,
             subtitle: iInitiated ? 'Paused by you' : 'Paused by them — waiting',
-            trailingLabel: iInitiated ? 'Resume' : null,
+            // Founder, 2026-08-10: every Journey row carries text on the right.
+            //
+            // The rows THEY paused say "Waiting", not "Resume". Journey
+            // Suspension §12.1 gives the lift only to the person who paused,
+            // so a Resume button here would fail every time it was pressed —
+            // and the blank that was here before was the rule showing through,
+            // not an omission. "Waiting" states the same rule in a word.
+            //
+            // Rendered as plain text rather than a disabled button; see the
+            // trailing block in _JourneyTile.
+            trailingLabel: iInitiated ? 'Resume' : 'Waiting',
             onTrailingTap: iInitiated ? () => _resumeSuspended(j) : null,
-            onTap: () => showDialog(
+            // RESTYLED 2026-08-11 (Frost UI full-app pass): near-black
+            // AlertDialog -> the ratified glass chrome. Three actions, so
+            // it uses showZyraGlassDialog directly rather than the
+            // two-action showZyraGlassChoice; layout mirrors that
+            // helper's own (icon, title, body, full-width primary,
+            // quiet declines under it). Copy unchanged.
+            onTap: () => showZyraGlassDialog<void>(
               context: context,
-              builder: (ctx) => AlertDialog(
-                backgroundColor: const Color(0xFF1A1220),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                title: Text('Paused with ${j.profile.firstName}', style: ZyraText.heading(size: 16)),
-                content: Text(
-                  iInitiated
-                      ? 'This Journey is currently paused. Resume to continue where you left off, or End it permanently.'
-                      : "${j.profile.firstName} paused this Journey. You can wait for them to resume, or End it permanently — you can't resume it yourself.",
-                  style: ZyraText.subtext(),
-                ),
-                actions: [
-                  TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text('Close', style: ZyraText.subtext(size: 13))),
+              builder: (ctx) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.pause_circle_outline, color: Colors.white, size: 30),
+                  const SizedBox(height: 14),
+                  Text('Paused with ${j.profile.firstName}',
+                      style: ZyraText.heading(size: 18), textAlign: TextAlign.center),
+                  const SizedBox(height: 8),
+                  Text(
+                    iInitiated
+                        ? 'This Journey is currently paused. Resume to continue where you left off, or End it permanently.'
+                        : "${j.profile.firstName} paused this Journey. You can wait for them to resume, or End it permanently — you can't resume it yourself.",
+                    style: ZyraText.subtext(),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  if (iInitiated)
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                          _resumeSuspended(j);
+                        },
+                        child: Text('Resume', style: ZyraText.button(size: 13)),
+                      ),
+                    ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(ctx).pop();
                       _endSuspended(j);
                     },
-                    child: Text('End Journey', style: ZyraText.button(size: 13, color: const Color(0xFFE08080))),
+                    child: Text('End Journey',
+                        style: ZyraText.button(size: 13, color: ZyraColors.destructive)),
                   ),
-                  if (iInitiated)
-                    FilledButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                        _resumeSuspended(j);
-                      },
-                      child: Text('Resume', style: ZyraText.button(size: 13)),
-                    ),
+                  TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    child: Text('Close', style: ZyraText.subtext(size: 13)),
+                  ),
                 ],
               ),
             ),
@@ -798,14 +998,35 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         // enforces, precisely because it is not really a limit. Active,
         // Potential and Paused are entitlements and belong to the database
         // — see data/zyra_entitlements.dart.
-        ..._ended.take(_endedShown).map((j) => _JourneyTile(
+        ..._ended.take(_endedShown).map((j) {
+          final mayAsk = _mayRequest.contains(j.matchId);
+          return _JourneyTile(
               profile: j.profile,
-              subtitle: j.canRestart ? 'Ended — Restart available' : 'Ended — ${j.restartAvailableIn.toLowerCase()}',
+              // THE OLD SUBTITLE PROMISED SOMETHING THAT DID NOT EXIST.
+              // It read "Ended — Restart available", and Restart has refused
+              // since 2026-08-06 (OA-ZYRA-154). Contradiction-audit finding
+              // 4.2 called that the highest-consequence tap in the product.
+              //
+              // Now it says only what is true. During the 24-hour cooling
+              // period it says so; after it, the ROW says "Ended" and the
+              // BUTTON — present only when the server says you may ask —
+              // carries the offer. A subtitle should not make a promise a
+              // button has to keep.
+              subtitle: j.canRestart ? 'Ended' : 'Ended — ${j.restartAvailableIn.toLowerCase()}',
               dimmed: true,
+              // OA-ZYRA-159, Founder-approved wording 2026-08-10. NOT
+              // "Restart": the tap sends a request the other person can
+              // decline, and "Restart" says it is already happening.
+              //
+              // Absent when the server says no — and it never says why. See
+              // _mayRequest.
+              trailingLabel: mayAsk ? 'Request New Journey' : null,
+              onTrailingTap: mayAsk ? () => _requestNewJourney(j) : null,
               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => JourneyFlowScreen(matchId: j.matchId, profile: j.profile),
               )),
-            )),
+            );
+        }),
         // Said out loud, rather than letting older Journeys vanish — the
         // disappearing-Journey problem this whole section exists to solve.
         if (_endedHidden > 0)
@@ -2018,6 +2239,277 @@ class _CardAction extends StatelessWidget {
   }
 }
 
+/// THE ACTIVE JOURNEY CARD. Founder, 2026-08-10: "make that profile card much
+/// larger with the bottom have 2 text, enter and view timeline in bubbles."
+///
+/// Replaces `_JourneyTile(emphasised: true)` for this one section. The
+/// emphasised tile was carrying two jobs badly — it existed to answer the
+/// 2026-08-01 note that "active journey should be more stand out then the
+/// rest" by being a slightly brighter version of a list row, and a slightly
+/// brighter list row is still a list row.
+///
+/// ZYRA allows ONE Active Journey at a time. It is not the first item in a
+/// list; it is the thing the app is for, and the other three sections are
+/// where the rest waits. So it gets its own shape: a 96px portrait, the name
+/// at heading size, the stage underneath, and the two things you actually do
+/// from here as pills across the bottom.
+///
+/// NO NEW ACCENT COLOUR, for the same reason the emphasised tile avoided one:
+/// the gender gradient is already behind this card, and a third colour would
+/// fight it. Emphasis is size, weight and white alpha only.
+///
+/// The pills use circular(20) and ZyraColors.iconButtonBg/Border — the app's
+/// existing pill, unchanged, so this reads as the same product rather than a
+/// new screen. The whole card stays tappable and goes where Enter goes; the
+/// pill names the action rather than owning it.
+class _ActiveJourneyCard extends StatelessWidget {
+  final SeekerProfile profile;
+  final VoidCallback onEnter;
+  final VoidCallback onTimeline;
+  final VoidCallback onReport;
+  final bool reviewOpen;
+
+  /// The current Journey stage, from the canonical map. Rendered on the Enter
+  /// pill, not as a status line — Timeline spec §12 option C, Founder
+  /// 2026-08-10.
+  /// True once the Journey has moved past its opening stage. Drives the
+  /// primary pill's wording — Begin vs Continue — and nothing else.
+  final bool hasBegun;
+
+  const _ActiveJourneyCard({
+    required this.profile,
+    required this.onEnter,
+    required this.onTimeline,
+    required this.onReport,
+    required this.reviewOpen,
+    required this.hasBegun,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.16),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.30)),
+        ),
+        // NOT tappable as a card — see the note at the call site. The two
+        // pills below are the only actions, so there is no invisible third
+        // one behind them.
+        // The Material is kept though its InkWell has gone: descendants may
+        // still want a Material ancestor, and a transparent one costs nothing
+        // where guessing wrong costs a runtime "No Material widget found".
+        child: Material(
+          color: Colors.transparent,
+          child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // PLAIN PHOTO. The expand glyph that briefly sat in this
+                      // corner was rejected by the Founder on 2026-08-10 — a
+                      // small icon on someone's face, doing something the icon
+                      // does not name.
+                      //
+                      // The photo is NOT tappable either. An invisible tap
+                      // target is worse than the glyph was: it is a feature
+                      // only the person who built it knows about. Full profile
+                      // has exactly one entry point now, and it is labelled —
+                      // the bubble at the top of the Timeline.
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: ZyraProfileImage(profile.photoUrl, width: 96, height: 96),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // NAME, SURNAME, AGE, LOCATION — Founder,
+                            // 2026-08-10. This replaced the Journey stage
+                            // label ("Open Conversation" and the seven others
+                            // from the canonical map).
+                            //
+                            // WHAT THAT COSTS, recorded so it is a decision and
+                            // not an accident: the Connections page no longer
+                            // tells you WHERE your Journey is without entering
+                            // it. The stage is still on the Journey itself and
+                            // still comes from the one map (DR-ZYRA-129) — no
+                            // second label was written here to replace it.
+                            Text(profile.firstName, style: ZyraText.heading(size: 19)),
+                            // surnameLine is a display string, not a lastName —
+                            // it may already carry "middle name + surname"
+                            // together (models/seeker_profile.dart). Rendered
+                            // whole, never split.
+                            if ((profile.surnameLine ?? '').trim().isNotEmpty)
+                              Text(profile.surnameLine!.trim(),
+                                  style: ZyraText.heading(
+                                    size: 15,
+                                    color: Colors.white.withValues(alpha: 0.86),
+                                  )),
+                            const SizedBox(height: 6),
+                            Text('${profile.age} · ${profile.city}',
+                                style: ZyraText.subtext(
+                                  size: 12.5,
+                                  color: Colors.white.withValues(alpha: 0.78),
+                                )),
+                            if (reviewOpen) ...[
+                              const SizedBox(height: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 9, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.20),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      color: Colors.white.withValues(alpha: 0.34),
+                                      width: 0.6),
+                                ),
+                                // THE ONE MAP, still. familyReviewOverride is
+                                // the same string the Journey itself shows —
+                                // no second wording was invented here
+                                // (DR-ZYRA-129).
+                                child: Text(
+                                  ZyraJourneyStages.familyReviewOverride,
+                                  style: ZyraText.subtext(
+                                      size: 11, color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      // REPORT, TOP RIGHT. Founder, 2026-08-10: the flag must
+                      // exist at every stage, and on this card it belongs here.
+                      //
+                      // NOT repeated inside Enter or View timeline — the
+                      // Founder's call, and the right one: the flag is about
+                      // the PERSON, and this card is where the person is. A
+                      // flag on every screen of a Journey would read as the app
+                      // expecting something to go wrong.
+                      //
+                      // Same icon, size and alpha as the flag on every other
+                      // card in this file. It opens the same sheet, with
+                      // ZyraReportSource.connections, so reports from here land
+                      // where reports from the other cards land.
+                      GestureDetector(
+                        onTap: onReport,
+                        behavior: HitTestBehavior.opaque,
+                        child: Padding(
+                          // Generous padding, small glyph — the tap target
+                          // needs to clear 44pt without the icon shouting.
+                          padding: const EdgeInsets.only(left: 10, bottom: 10),
+                          child: Icon(
+                            Icons.flag_outlined,
+                            size: 15,
+                            color: Colors.white.withValues(alpha: 0.75),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      // 2 : 1. The Journey is the action; the Timeline is a
+                      // reference. Equal widths said they were equal choices.
+                      Expanded(
+                        flex: 2,
+                        child: _CardPill(
+                          label: hasBegun ? 'Continue Journey' : 'Begin Journey',
+                          onTap: onEnter,
+                          primary: true,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(child: _CardPill(label: 'Timeline', onTap: onTimeline)),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+    );
+  }
+}
+
+/// The app's existing pill — circular(20), iconButtonBg/iconButtonBorder —
+/// with one variant. `primary` fills it so the Journey action reads as the
+/// main one without introducing a colour.
+///
+/// The pills are NO LONGER the same width. Founder, 2026-08-10: the Timeline
+/// pill is smaller than the Journey pill, 1 : 2 — the Journey is the action
+/// and the Timeline is a reference, and equal widths claimed they were equal
+/// choices. Heights stay equal so they still sit level.
+class _CardPill extends StatelessWidget {
+  final String label;
+
+  // SUBLABEL RETIRED 2026-08-10. It carried the Journey stage under the
+  // label — "Enter · Compatibility Reveal" — from an earlier Founder ruling
+  // (Timeline spec §12, option C) that put the stage on the control leading
+  // to it. Reversed the same day: "I don't want enter open conversation in
+  // smaller text." The pill now says one thing.
+  //
+  // Removed rather than left unused, and `stageLabel` came off
+  // _ActiveJourneyCard with it. A parameter written by a caller and read by
+  // nothing is the shape of the `profile_complete` defect in the 2026-07-26
+  // audit — the stage is still shown where it belongs, inside the Journey.
+
+  final VoidCallback onTap;
+  final bool primary;
+
+  const _CardPill({
+    required this.label,
+    required this.onTap,
+    this.primary = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: primary
+          ? Colors.white.withValues(alpha: 0.22)
+          : ZyraColors.iconButtonBg,
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: Container(
+          // 44, down from 46. The taller box existed to fit a second line —
+          // the stage sublabel — which came off on 2026-08-10. Kept fixed and
+          // equal on both pills so the narrow Timeline one still sits level
+          // with the wide Journey one.
+          height: 44,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: primary
+                  ? Colors.white.withValues(alpha: 0.42)
+                  : ZyraColors.iconButtonBorder,
+              width: primary ? 1 : 0.5,
+            ),
+          ),
+          // A Column with one child, left over from the two-line version.
+          child: Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: ZyraText.button(size: 13.5),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _JourneyTile extends StatelessWidget {
   final SeekerProfile profile;
   final String subtitle;
@@ -2093,7 +2585,16 @@ class _JourneyTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (trailingLabel != null)
+                  // A LABEL WITH NO ACTION IS STATUS, NOT A DISABLED CONTROL.
+                  // "Waiting" on a Journey the other person paused, and
+                  // "Starting…" while a request is in flight, are both facts
+                  // about the row rather than things you may do to it. A greyed
+                  // TextButton would still announce itself to VoiceOver as a
+                  // button — inviting a press that was never on offer.
+                  if (trailingLabel != null && onTrailingTap == null)
+                    Text(trailingLabel!,
+                        style: ZyraText.subtext(size: 12.5, color: const Color(0x8AFFFFFF)))
+                  else if (trailingLabel != null)
                     TextButton(
                       onPressed: onTrailingTap,
                       child: Text(trailingLabel!, style: ZyraText.button(size: 12.5)),

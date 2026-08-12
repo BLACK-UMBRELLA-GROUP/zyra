@@ -4,7 +4,7 @@
 **Status:** Approved
 **Owner:** Lead Architect
 **Date:** 2026-07-19
-**Supersedes:** SUMMARY_STANDARD_CURRENT_VERSION_V2.md (archived:
+**Supersedes:** SUMMARY_STANDARD_2026-07-19_V2.md (archived:
 SYSTEM/DOCUMENTS/ARCHIVE/SUMMARY_STANDARD_2026-07-19_V2.md)
 **Source OA:** OA-018 (ZYRA), OA-018 (Black Umbrella Group)
 **Governing:** DR-022; V2 ratified 2026-07-19 following joint architectural

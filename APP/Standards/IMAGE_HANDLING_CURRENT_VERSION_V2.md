@@ -8,7 +8,7 @@ IMAGE HANDLING STANDARD
 
 Status: CURRENT_VERSION_V2
 Last Updated: 2026-07-25
-Supersedes: IMAGE_HANDLING_CURRENT_VERSION_V1.md (archived:
+Supersedes: IMAGE_HANDLING_2026-07-25_V1.md (archived:
   IMAGE_HANDLING_2026-07-25_V1.md, same folder — no ARCHIVE
   subfolder convention exists under APP/, matching APP/Standards
   precedent)
@@ -319,7 +319,7 @@ While photos are under review:
 **Post-approval reporting** (cross-reference, unchanged by this
 merge): even after approval, users can report an inappropriate
 photo via the Browse-screen Report action — see
-`APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V3.md` §Profile Actions
+`APP/Browse/BROWSE_UX_SPEC_CURRENT_VERSION_V4.md` §Profile Actions
 (DR-ZYRA-095). Reported photos can be temporarily hidden, re-enter
 this moderation flow, or lead to warnings/restrictions for repeat
 violations.

@@ -164,6 +164,54 @@ class ZyraApp extends StatelessWidget {
         // behind the first.
         scaffoldBackgroundColor: ZyraColors.genderGradient(AppState.instance.gender).colors.first,
         useMaterial3: true,
+        // ADDED 2026-08-11 (Founder, screenshot review: "some buttons are
+        // one colour and some are another… now the continue journey button
+        // is blue. so why are some blue and some transparent. I want a
+        // clean UI"; Frost UI brief).
+        //
+        // No ColorScheme was ever set, so every colour role fell back to
+        // Material 3's STOCK dark baseline — which is where the "blue"
+        // came from: FilledButtons painted the stock primary #D0BCFF
+        // periwinkle (with, at most call sites, a hardcoded white label at
+        // ~2:1 contrast on it), and chips/menus painted the stock
+        // near-black surface, which is why the phase-reveal rating chips
+        // and the Journey 3-dot menu sat on the gradient like black holes.
+        // None of those colours were ZYRA decisions; they were defaults.
+        //
+        // Set HERE once, same reasoning as appBarTheme/snackBarTheme
+        // above: every current and future button inherits it, instead of
+        // each call site restating (and mis-stating) the brand.
+        //
+        //   primary/onPrimary    Pastel Grey Lavender with Luxury Dark
+        //                        Purple text (5.8:1 — see zyra_colors.dart
+        //                        for why never white-on-lavender)
+        //   surface              Luxury Dark Purple — the ratified sheet/
+        //                        dialog base (zyra_colors.dart 2026-08-01
+        //                        block), so anything Material paints on
+        //                        "surface" lands in the brand family
+        //                        rather than stock near-black
+        //   error                the End Journey coral, tokenised
+        colorScheme: ColorScheme.dark(
+          primary: ZyraColors.primaryAction,
+          onPrimary: ZyraColors.onPrimaryAction,
+          secondary: ZyraColors.primaryAction,
+          onSecondary: ZyraColors.onPrimaryAction,
+          surface: ZyraColors.luxuryDarkPurple,
+          error: ZyraColors.destructive,
+          onError: ZyraColors.luxuryDarkPurple,
+        ),
+        // With colorScheme.primary now lavender, unstyled TextButtons and
+        // OutlinedButtons would tint their labels lavender too. Their
+        // labels have always read as white in this app (ZyraText.button's
+        // old hardcoded default), so pin that at the theme level — call
+        // sites passing explicit colours (End Journey coral, subtext
+        // greys) are unaffected.
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(foregroundColor: Colors.white),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(foregroundColor: Colors.white),
+        ),
         // ADDED 2026-08-01 (Founder: "it shows a white tab at bottom
         // again doesn't match app system"). No snackBarTheme was ever
         // set, so all 14 SnackBars in the app fell back to Material's

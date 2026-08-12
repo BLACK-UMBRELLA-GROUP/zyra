@@ -54,7 +54,7 @@ class OnboardingScaffold extends StatelessWidget {
   void _showHelpSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1A1220),
+      backgroundColor: ZyraColors.luxuryDarkPurple,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

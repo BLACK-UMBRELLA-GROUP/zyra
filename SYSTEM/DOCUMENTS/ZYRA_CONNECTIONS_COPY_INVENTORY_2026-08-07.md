@@ -84,7 +84,7 @@ Accessible label only: `{count} unseen`.
 | **Title** | **Start Journey with {firstName}?** |
 | **Body ¶1** | This begins your Active Journey. A Journey slot is used, and the Pre-Journey Ritual begins with Compatibility Reveal. |
 | **Body ¶2** | From this point your linked Guardian — and {firstName}'s — can read the conversation between you. That is deliberate: ZYRA is built for a marriage process with family present, not for private one-to-one messaging. |
-| **Body ¶3** | You may only have one Active Journey at a time. |
+| **Body ¶3** | You may only have one Active Journey at a time. ⚠️ CORRECTED 2026-08-12 stewardship pass: when an Active Journey exists the dialog is now the end-then-start variant — it names the current Journey, states it will be PERMANENTLY ended (Timeline kept under Ended Journeys), offers the pause alternative to ZYRA One, and the primary reads "End it & start new Journey". Do not regress to this row's original copy; source of truth is connections_screen.dart `_startJourney`. |
 | **Confirm button** | **Start Journey** |
 | **Cancel button** | **Not yet** |
 

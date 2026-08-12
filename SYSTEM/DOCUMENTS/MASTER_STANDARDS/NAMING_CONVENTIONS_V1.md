@@ -86,7 +86,7 @@ rest on names the convention requires to change.
 
 **Measured on 2026-08-08, before the rule existed:** 14 dangling reference
 sites across 6 documents in `SOURCE/lib` — 8 of them pointing at
-`WALI_ARCHITECTURE_CURRENT_VERSION_V5.md`, a file that exists in no form.
+`WALI_ARCHITECTURE_CURRENT_VERSION_V6.md`, a file that exists in no form.
 
 Enforced by the `DANGLING DOC REF` check in `tools/zyra_check.py`, which
 ships with the 13 pre-existing sites as an explicit baseline. **New dangling

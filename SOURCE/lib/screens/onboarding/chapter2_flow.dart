@@ -48,7 +48,9 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   String? _sect;
   String _sectOther = '';
   Map<String, TrafficLight> _sectMatrix = {};
-  bool _sectHardReq = false;
+  /// Sect labels never to be introduced to. Per-OPTION since 2026-08-10
+  /// (OA-ZYRA-185) — Chapter 2 now matches Chapter 4.
+  Set<String> _sectHard = {};
   TrafficLight? _sectOutsideFlex;
 
   String? _revertStatus;
@@ -139,7 +141,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         distancePref: _distancePref,
         distanceFlex: _distanceFlex,
         sectMatrix: _sectMatrix,
-        sectHardReq: _sectHardReq,
+        sectHard: _sectHard,
         sectOutsideFlex: _sectOutsideFlex,
         revertFlex: _revertFlex,
         countryPrefs: _countryPrefs,
@@ -408,14 +410,21 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         break;
       case 5:
         question = 'Which Islamic sects would you be comfortable matching with?';
+        // Per-OPTION since 2026-08-10 (OA-ZYRA-185, Founder decision).
+        // Chapter 4's Hard Requirements went per-option that morning and
+        // Chapter 2 followed the same afternoon, so the temporary
+        // HardRequirementScope carve-out is gone — both chapters use one
+        // model now. seeker_details.preferences stores
+        // {sect: {hard_requirement: ["Shia", ...]}} and score_candidates()
+        // tests it independently of the light, exactly as Chapter 4 does.
         content = TrafficLightQuestionScreen(
           key: const ValueKey('ch2_sect_matrix'),
           yourAnswer: _sect == 'Other' ? _sectOther : (_sect ?? ''),
           options: _sectOptions,
           initialValues: _sectMatrix,
-          initialHardRequirement: _sectHardReq,
+          initialHardRequirement: _sectHard,
           onChanged: (v) => setState(() => _sectMatrix = v),
-          onHardRequirementChanged: (v) => setState(() => _sectHardReq = v),
+          onHardRequirementChanged: (v) => setState(() => _sectHard = v),
         );
         break;
       case 6:
@@ -448,7 +457,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         privacy = PrivacyLevel.unlock;
         content = _SearchPickButton(label: _countryOfBirth ?? 'Search countries…', onTap: () async {
           final result = await showSingleSearchPicker(context, zyraCountryNames, current: _countryOfBirth);
-          if (result != null) setState(() => _countryOfBirth = result);
+          if (result != null && mounted) setState(() => _countryOfBirth = result);
         });
         break;
       case 10:
@@ -482,7 +491,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         privacy = PrivacyLevel.unlock;
         content = _SearchPickButton(label: _nationality ?? 'Search nationalities…', onTap: () async {
           final result = await showSingleSearchPicker(context, zyraNationalityNames, current: _nationality);
-          if (result != null) setState(() => _nationality = result);
+          if (result != null && mounted) setState(() => _nationality = result);
         });
         break;
       case 13:
@@ -516,7 +525,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         privacy = PrivacyLevel.unlock;
         content = _SearchPickButton(label: _ethnicity ?? 'Search ethnic backgrounds…', onTap: () async {
           final result = await showSingleSearchPicker(context, zyraEthnicityNames, current: _ethnicity);
-          if (result != null) setState(() => _ethnicity = result);
+          if (result != null && mounted) setState(() => _ethnicity = result);
         });
         break;
       case 16:

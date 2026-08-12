@@ -5,7 +5,7 @@
 **Date:** 2026-07-26
 **Auditor:** Claude (independent audit pass)
 **Requested by:** Founder (Shakeel)
-**Nature of this document:** Independent engineering audit. **Nothing in this document has been implemented.** No code, migration, or document was changed in producing it. Every finding is grounded in a direct read of `SOURCE/lib` (74 Dart files, 14,708 lines), `SOURCE/supabase/migrations` (35 migrations), the `APP/` and `SYSTEM/` documentation sets, and **live inspection of the production Supabase project** `sxoaxonzjqkgajmlagyk` (eu-west-1, Postgres 17.6).
+**Nature of this document:** Independent engineering audit. **Nothing in this document has been implemented** *as of its 2026-07-26 date — ⚠️ STALE AS A STATUS PAGE: C-1/C-3/C-4/H-1/H-2/H-3/H-5 and others closed 2026-08-01→08, verified; the live findings ledger is `SUB BUSINESS/ZYRA/CLAUDE.md` §5 (banner added 2026-08-12).* No code, migration, or document was changed in producing it. Every finding is grounded in a direct read of `SOURCE/lib` (74 Dart files, 14,708 lines), `SOURCE/supabase/migrations` (35 migrations), the `APP/` and `SYSTEM/` documentation sets, and **live inspection of the production Supabase project** `sxoaxonzjqkgajmlagyk` (eu-west-1, Postgres 17.6).
 **Governing References:** Does not supersede any existing spec. Findings that should become enforced rules are separated into §8 for ratification as Decision Records, not assumed to be in force.
 
 ---

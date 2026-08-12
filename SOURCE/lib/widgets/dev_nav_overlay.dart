@@ -1,8 +1,10 @@
-// Temporary testing aid — floating Back/Home buttons so Shakeel can get
-// unstuck while manually testing flows on a real device, without needing
-// each individual screen to have wired-up navigation yet. Debug-only:
-// gated on `!kReleaseMode`, so this never appears in a release build and
-// needs no separate flag to remember to turn off later.
+// Pass-through wrapper — renders its child unmodified. (HISTORY: this
+// began as a temporary testing aid with floating Back/Home buttons,
+// debug-only behind `!kReleaseMode`; the buttons and the guard moved to
+// DevScenarioPanel — see the notes further down. The wrapper stays only
+// so MaterialApp's `builder:` wiring in main.dart needs no churn.)
+// Retitled 2026-08-12: the old header described the buttons this file no
+// longer contains, contradicting the code 50 lines below it.
 //
 // Sits on top of the whole app via MaterialApp's `builder:` (see
 // main.dart), using a global navigatorKey rather than a local

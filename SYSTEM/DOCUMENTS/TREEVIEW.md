@@ -4,7 +4,7 @@
 **Governing Reference:** DR-ZYRA-103 (repository navigation ratification)
 **Regenerate by:** directory listing, not by hand. Refresh whenever
 top-level folder structure changes; do not add commentary here — see
-`ZYRA_DOCUMENTATION_INDEX_V1.md` for purpose/owner/status per document.
+`ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V2.md` for purpose/owner/status per document.
 
 Excluded from this listing: `.git/`, build/tooling output
 (`SOURCE/.dart_tool`, `SOURCE/.idea`, `SOURCE/build`), platform build
@@ -33,7 +33,7 @@ ZYRA/
 │   ├── Browse/
 │   │   ├── BROWSE_UX_SPEC_2026-07-25_V1.md
 │   │   ├── BROWSE_UX_SPEC_2026-07-25_V2.md
-│   │   ├── BROWSE_UX_SPEC_CURRENT_VERSION_V3.md
+│   │   ├── BROWSE_UX_SPEC_CURRENT_VERSION_V4.md
 │   │   └── Script/
 │   │       └── Script_V1.md
 │   ├── Developer Mode/
@@ -127,12 +127,12 @@ ZYRA/
 │   │   ├── IMAGE_HANDLING_CURRENT_VERSION_V2.md
 │   │   ├── JOURNEY_CAPABILITY_GRANT_RULES_2026-07-04_V1.md
 │   │   ├── JOURNEY_CAPABILITY_GRANT_RULES_2026-07-04_V2.md
-│   │   ├── JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V3.md
+│   │   ├── JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md
 │   │   ├── WALI_ARCHITECTURE_2026-06-28_V1.md
 │   │   ├── WALI_ARCHITECTURE_2026-06-28_V2.md
 │   │   ├── WALI_ARCHITECTURE_2026-07-04_V3.md
 │   │   ├── WALI_ARCHITECTURE_2026-07-04_V4.md
-│   │   └── WALI_ARCHITECTURE_CURRENT_VERSION_V5.md
+│   │   └── WALI_ARCHITECTURE_CURRENT_VERSION_V6.md
 │   ├── UX Writing/
 │   │   ├── ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md
 │   │   └── Summary.md

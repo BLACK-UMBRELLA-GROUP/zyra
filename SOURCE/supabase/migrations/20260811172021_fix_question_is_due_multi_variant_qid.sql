@@ -1,0 +1,12 @@
+-- ⟲ APPLIED-IN-REMOTE RECORD — 2026-08-12 stewardship pass.
+--
+-- This migration was applied straight to the live database via MCP on
+-- 2026-08-11 and existed in no repo file. This record file preserves the
+-- version slot and WHAT IT DID; the verbatim statements live in
+-- supabase_migrations.schema_migrations version 20260811172021 and can be
+-- regenerated with tools/export_missing_migrations.sql (OA-ZYRA-198).
+-- House precedent for a record-not-body file: 20260811094513.
+--
+-- WHAT IT DID:
+-- zyra_question_is_due() assumed one row per qid; ch3_q26 has two gender variants. Rewritten as EXISTS over variants; zyra_onboarding_missing() + zyra_my_onboarding_progress() de-duplicated. Gate itself was never wrong — only the questions-left count
+SELECT 1; -- applied-in-remote record; replay via the schema_migrations row

@@ -284,7 +284,7 @@ Architecture at all. Rebuilt below.
 - **Related:** Guardian+, DEPENDENCY COMMUNICATION.
 
 ### Journey Capability Grant Rules *(new in V2)*
-- **Location:** APP/Standards/JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V3.md
+- **Location:** APP/Standards/JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md
 - **Owner:** Founder. **SoT:** Yes.
 - **Related:** ADVANCEMENT_CONDITIONS_CURRENT_VERSION_V1.
 

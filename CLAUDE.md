@@ -315,7 +315,24 @@ The CURRENT_VERSION document always wins over chat history.
 
 ---
 
-## 5. Current position — 2026-08-08
+## 5. Current position — 2026-08-12
+
+**Rewritten in the 2026-08-12 stewardship pass** (the previous §5 was four
+days stale — the same defect this section's own opening paragraph warns
+about). Shipped since 2026-08-08 and reflected below: the app-wide Frost UI
+consistency pass (2026-08-11 — real ColorScheme, lavender primary
+#CEA2D1/plum text, frosted ⋮ menus, purple-gradient sheets, near-black
+0xFF1A1220 fully swept); **Pause belongs to both plans, caps 5/10**
+(DR-ZYRA-138 — suspend_journey enforces `paused_limit_reached`;
+`suspension_requires_one` retired; JOURNEY_SUSPENSION_CURRENT_VERSION_V2.md
+is the authority); the Start Journey flow now warns it will permanently END
+the current Journey and does end-then-start on confirm; Timeline milestones
+are trigger-written (and the duplicate `journey_ended` bug that shipped with
+the trigger was fixed + deduped, migration 20260811233755); OA-193 scoring
+method ratified (plain count, two per-person scores, onboarding completeness
+gate); function-EXECUTE hygiene re-closed to H-5's zero with default
+privileges hardened (20260811233813); the destructive dev functions now
+guard EVERY party of a match, not just the caller (20260811233914).
 
 **§5 was five days stale until this rewrite.** It listed audit C4, H1 and H3
 as open; all three were closed on 2026-08-04 and verified. A session reading
@@ -346,9 +363,10 @@ the Mac, or by a Cowork task started with "On your computer" rather than
 ### Two milestones, Founder-agreed 2026-08-06
 
 **Milestone 1 — finish OA-ZYRA-156.** In order:
-Family Review RPCs · trigger functions · suspend/resume ·
+Family Review RPCs · trigger functions · ~~suspend/resume~~ (done — and the
+entitlement model changed under it, DR-ZYRA-138: both plans, caps 5/10) ·
 **promote/end (own verification pass)** · Dart migration · final cleanup ·
-120-profile Chapter 2 backfill · documentation.
+~~120-profile Chapter 2 backfill~~ (done 2026-08-10) · documentation.
 
 Spec: `SYSTEM/DOCUMENTS/ZYRA_JOURNEY_RPC_MIGRATION_PLAN_CURRENT_VERSION_V1.md`.
 Already done and verified: stages 4a, 4b, and 4e part 1
@@ -356,8 +374,9 @@ Already done and verified: stages 4a, 4b, and 4e part 1
 the `matches` lifecycle columns are still present and authoritative.
 
 **Milestone 2 — the rest of DR-ZYRA-121.**
-OA-157 protection_holds · **OA-159 Request New Journey (do first)** ·
-OA-160 reference codes · OA-161/162 notifications · OA-163 audit log.
+~~OA-157 protection_holds~~ (built 2026-08-10) · ~~OA-159 Request New
+Journey~~ (built 2026-08-10) · OA-160 reference codes · OA-161/162
+notifications · OA-163 audit log.
 
 Proceed as approved implementation. Raise only: new evidence affecting an
 approved design, behaviour outside approved scope, or a new security,
@@ -369,14 +388,111 @@ privacy or governance concern.
   comments so they cannot be answered by accident: whether messages the
   other party sent appear in a subject access export; whether their ratings
   of you do; whether evidence attached to a report does.
-- **`v_ch2_weight = 1`** in `score_candidates()`. One Chapter 2 attribute
-  counts the same as one Chapter 3 question, so Chapter 2 moves the score by
-  a few percent. Founder decision, deliberately deferred until the
-  120-profile backfill produces a representative distribution. **Bring
-  numbers, not arguments.**
-- **Onboarding redesign** direction. Scoring-engine work is ON HOLD pending
-  it — H2 would change the shape of `ch4_preferences`, which
-  `score_candidates()` reads. The backfill is not engine work and proceeds.
+- **`v_ch2_weight = 1`** in `score_candidates()`. Still open — but the
+  backfill it was waiting on is DONE (2026-08-10, UK-representative, Founder
+  instruction "match the real UK distribution"). See
+  `SYSTEM/DOCUMENTS/ZYRA_CHAPTER2_BACKFILL_AND_WEIGHT_FINDINGS_2026-08-10.md`.
+
+  The numbers, measured over 10,368 pairs: at weight 1 Chapter 2 moves the
+  final score by **5.1%** — the earlier guess of "a few percent" was right.
+
+  **But do not raise it yet, and this is the actual finding.** English is in
+  100% of profiles AND 100% of preference lists, so the `languages` rule —
+  which greens on ANY match — scores green on **every pair measured**. It is
+  26% of Chapter 2's scored mass and it discriminates nothing, while dragging
+  every score toward 100. Dropping that one term raises the spread by 43%
+  (σ 5.95 → 8.54) and drops the floor from 50 to 25, without touching the top
+  of the distribution.
+
+  **Language fix APPLIED** 2026-08-10 (migration
+  `ch2_language_match_excludes_english`): English no longer counts toward the
+  language match, and a preference list containing only English now SKIPS the
+  attribute rather than scoring it as a miss. Spread per viewer 11.4 → 13.2.
+
+  **Chapter 3/4 is now seeded too** — synthetic, 144 Seekers, ~70 answers
+  each, every row flagged `is_synthetic`. With both chapters live the measured
+  answer is: Chapter 3/4 supplies **133** of `v_max`, Chapter 2 supplies **6**,
+  so Chapter 2 is **4.3%** of the score at weight 1.
+
+  `weight ≈ share × 133 / (6 × (1 − share))` — 10% needs 2.5, 20% needs 5.5.
+
+  **METHOD NOW RATIFIED, WEIGHT STILL OPEN — 2026-08-12 amendment.** The
+  Founder ratified the scoring method on 2026-08-11 (OA-193a: 0-100 plain
+  count, green 1 / yellow 0.5 / red 0; two per-person scores; the centred
+  scale and zyra_light_points are gone). The weight — OA-ZYRA-193(e) — is
+  now ANSWERABLE but not yet set; `v_ch2_weight = 1` remains in
+  score_candidates. The paragraph below is the pre-ratification record:
+  *"if you're setting a score system we gotta talk about
+  that soon."* The weight was a dial on a method nobody had ratified, and two
+  different methods were live — `score_candidates()` uses green +2 /
+  yellow +1 / red −3 centred on 50, while the Unlock screen's sample figures
+  assume green 1 / amber 0.5 / red 0 on a flat 0-100. Setting the weight
+  first would ratify a method by the back door.
+
+  CAUTION, and it is the reason this is still open: full-stack scores now land
+  between 77 and 100 with a 10.5-point spread — the engine separates people
+  LESS than Chapter 2 did alone. That is a property of the synthetic preference
+  model, not of real users. **Do not tune the engine on `is_synthetic` data.**
+- **Chapter 2 sect parity** — OA-ZYRA-185. Chapter 4's Hard Requirements are
+  per-option; Chapter 2's sect matrix is still per-question. Founder decides
+  whether they converge. Not free: `seeker_details` has 24 rows, 8 with the
+  flag set.
+
+### Onboarding redesign — RESOLVED 2026-08-10, hold lifted
+
+Founder took **Direction B** (see
+`SYSTEM/DOCUMENTS/ZYRA_ONBOARDING_DIRECTION_OPTIONS_2026-08-10.md`).
+
+**The scoring-engine hold is lifted.** The reason it existed was wrong: the
+note here said H2 (derive-and-confirm) would change the shape of
+`ch4_preferences`. Traced through all six layers, it does not — H2 pre-fills
+the same `{question: {option: light}}` map. The only proposal that moved the
+schema was H3, via `ch4_hard_requirements`, and that reshape is now DONE:
+per-option, with a CHECK constraint refusing the retired `{question: bool}`
+form. Migration `onboarding_b_stage1_hard_requirements_become_per_option`,
+22/22 verified.
+
+Two behavioural changes worth knowing before touching the engine:
+
+1. **Hard exclusions are evaluated BEFORE, and independently of, the lights.**
+   They used to sit inside the `v_light = 'red'` branch, so an exclusion only
+   bound if a matching red light also existed. That would have made the
+   dealbreakers-first screen silently inert.
+2. **A hard-only user is no longer treated as having said nothing.**
+   `v_my_hard` now counts alongside `ch4_preferences` and `seeker_details`
+   on the flat-50 early return.
+
+**Direction B is complete as of 2026-08-10.** H1 tap-to-exclude, H4 `showIf`
+branching and the quick wins all landed the same day. **H2 and H5 remain NOT
+approved** — H2 needs its own spec and DR; H5 was deliberately deferred.
+
+Chapter 4's minimum traffic-light taps went **325 → 0**; total deliberate
+interactions **518 → 193** (male; 511 → 191 female).
+
+Two of the review's proposals did not survive contact with the real question
+set, and both are now measured rather than assumed:
+
+- **H4 saves almost nothing here** — OA-ZYRA-188. All four branching rules the
+  review listed describe follow-up questions that do not exist in this set.
+  Exactly one real branch was found (`ch3_q3 = No` → skip `ch3_q24`). The
+  `ShowIf` mechanism was built anyway because it is small and because it
+  forced the pruning fix: a hidden question's answers, preferences and hard
+  requirements are now discarded, so nothing is scored on a screen the Seeker
+  can no longer see.
+- **Batching factual items saves ~8 taps, not ~40** — OA-ZYRA-189, recommended
+  against and not built. Category ordering was already concrete-first.
+  Pre-populating preferences is H2 in miniature and was refused on scope.
+
+**Before adding any `ShowIf` rule, read its doc comment.** The bar is "asking
+this would be nonsense given that answer", not "this is probably implied" — a
+hidden Chapter 3 question is a hole in the compatibility data, and
+`score_candidates()` treats an absent answer as neutral, so a wrong rule
+removes signal silently instead of failing.
+
+Standing rule from that decision, and it is not optional: **a Chapter 4
+question's lights are written only once its screen has been shown.**
+Pre-seeding all 71 as green on entry would manufacture a complete set of
+stated preferences from someone who answered three.
 
 ### Regression suites — RUN THESE BEFORE AND AFTER ANY MIGRATION
 
@@ -385,8 +501,19 @@ a defect that was real in this database on 2026-08-08.
 
 | File | Covers | Last run |
 |---|---|---|
-| `zyra_guard_suite.sql` | visibility & privacy — clause 3, `is_main`, the counterpart card, block guards, grants | 55/55 |
-| `zyra_journey_suite.sql` | lifecycle — creation, promote, Family Review, pause/resume, endings, one-per-person, **Tier-1**, **ward count**, **OA-174 grandfather** | **63/63 end to end, 2026-08-08** |
+| `zyra_guard_suite.sql` | visibility & privacy — clause 3, `is_main`, the counterpart card, block guards, grants | **52/52, 2026-08-10** |
+| `zyra_journey_suite.sql` | lifecycle — creation, promote, Family Review, pause/resume, endings, one-per-person, **Tier-1**, **ward count**, **OA-174 grandfather** | **63/63, 2026-08-10** |
+
+**The guard suite could not run at all between 2026-08-08 and 2026-08-10** —
+see OA-ZYRA-187. Its AREA 4 writes were denied by the results table's own RLS,
+added by the same hardening pass that removed the grant as "leftover". The
+55/55 above was recorded before that change and was never reproducible. Both
+suites are fixed and green as of 2026-08-10; the thirteen migrations applied
+in between were checked retrospectively and broke nothing.
+
+Teardown checks are now SCOPED to what each suite created. They used to assert
+whole tables were empty, so any unrelated row — a developer's own test Journey
+— read as a suite failure.
 
 Both build their own scenario from seeded `@zyra.test` accounts and tear
 down. **Run the journey suite before and after step 7** — it drops
@@ -454,12 +581,13 @@ reason to run whole files rather than fragments:
 - ~~Steps 0, 1 and 1b~~ — `safety_concern` privacy, clause 3 status guard,
   blocking ends the Journey. Same document, §7b.
 
-### Known gap, intentional
+### Closed since the last rewrite
 
-**A user whose Journey ended cannot start again.** `restart_journey()`
-refuses (OA-154) because it reopened an ended Journey on one party's request
-and deleted six tables of history first. OA-159 restores the capability in
-its approved form and is the first item of Milestone 2.
+**Starting again after an ending now exists in its approved form** —
+OA-159's Request New Journey shipped 2026-08-10 (`restart_journey()` still
+refuses, correctly). And starting a Journey while one is Active is no longer
+a server bounce: since 2026-08-11 the dialog states it will permanently END
+the current Journey and does end-then-start on confirm.
 
 ### Still open
 
@@ -497,13 +625,14 @@ its approved form and is the first item of Milestone 2.
   mid-build, and the OA register gained items 166–172 between two reads of
   it. Re-read a register immediately before appending; assert on the
   anchor rather than trusting an offset. `OUTSTANDING_ACTIONS_V2.md` also
-  contains the "Register Metadata" block **twice** — append before the
-  last one. Flagged, not silently merged.
-- **78 migrations exist only in the live database.** `SOURCE/supabase/`
-  held 35 files, newest 2026-07-26; Supabase holds 116, and 22 RPCs the
-  Dart calls are defined in no file. The schema cannot be rebuilt from the
-  repo. Three files were written back on 2026-08-08 (38 now); the rest is
-  outstanding and needs an OA.
+  contained the "Register Metadata" block **twice**; the empty orphan
+  heading was removed 2026-08-12 — one block remains, at end-of-file;
+  append before it. Flagged, not silently merged.
+- **~87 migrations exist only in the live database** (178 live, ~91 by
+  name in the repo) — now tracked as **OA-ZYRA-198**, partially discharged
+  2026-08-12: tonight's 3 are in-repo verbatim, the 8 OA-193 files are in
+  as applied-in-remote records, and `tools/export_missing_migrations.sql`
+  regenerates any of the rest verbatim from schema_migrations.
 - **Nothing happens when a report is submitted.** Rows are written and
   blocking works, but there is no queue, no triage, no notification, and
   `status` never leaves `'pending'`. Needs its own OA. Do not describe

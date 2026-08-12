@@ -80,7 +80,7 @@ The live marriage journey between two Seekers. Created when both Seekers choose 
 - Timeline is running
 - Guardian capabilities are active per each account's ZYRA One entitlement (AIOS grant)
 
-An Active Journey may be Paused (ZYRA One), Ended, or progress to completion.
+An Active Journey may be Paused (both plans — caps 5 Basic / 10 One, DR-ZYRA-138 2026-08-11), Ended, or progress to completion.
 
 ### Completed / Ended
 
@@ -120,7 +120,7 @@ A **Match** is the event that occurs when two Seekers have both Considered each 
 | Potential Journey | No slot consumed |
 | Ritual in progress | Slot reserved for both Seekers |
 | Active Journey | One slot consumed per Seeker |
-| Paused Active Journey | Slot behaviour in mixed-tier Journeys: pending resolution (Finding 1/6) |
+| Paused Active Journey | Slot behaviour uniform across plan mixes (Findings 1/6 closed — SUSPENSION V2 §5) |
 | Completed / Ended | Slot freed immediately |
 
 Each Seeker's slot is managed independently. A Seeker's slot is freed when their Active Journey ends, regardless of the other Seeker's Journey state.
@@ -607,7 +607,7 @@ An Active Journey is created when the Pre-Journey Ritual completes. This is the 
 | Tier | Active Journey slots | Notes |
 |------|---------------------|-------|
 | ZYRA Basic | 1 | Hard limit — enforced at database layer |
-| ZYRA One | 1 (active) + unlimited paused | Only one may be Active at any time |
+| ZYRA One | 1 (active) + up to 10 paused (matrix 2026-08-09) | Only one may be Active at any time |
 
 Neither tier permits multiple simultaneous Active Journeys. The one-Active-Journey limit is the invariant of the ZYRA platform and is not removed by any subscription.
 
@@ -642,7 +642,7 @@ Timeline milestone behaviour will be specified in a dedicated document.
 
 ---
 
-## 5. Pause Journey (ZYRA One)
+## 5. Pause Journey (both plans, capped — corrected 2026-08-12 stewardship pass, DR-ZYRA-138)
 
 ZYRA One Seekers may Pause their Active Journey.
 
@@ -650,7 +650,7 @@ ZYRA One Seekers may Pause their Active Journey.
 - Journey moves to the Seeker's Paused Journeys
 - Conversation closes temporarily
 - Timeline and all progress are preserved
-- Journey slot behaviour in mixed-tier Journeys: **pending resolution — Outstanding Finding 1/6**
+- Journey slot behaviour in mixed-tier Journeys: resolved — plan mix no longer changes slot behaviour (JOURNEY_SUSPENSION_CURRENT_VERSION_V2.md §5; Findings 1/6 closed)
 
 ### Resume Journey
 
@@ -658,7 +658,7 @@ ZYRA One Seekers may Resume any Paused Journey at any time. Timeline continues f
 
 ### Unlimited Paused Journeys
 
-ZYRA One Seekers may hold unlimited Paused Journeys simultaneously. Only one Journey may be Active at any time.
+Seekers may hold paused Journeys up to their plan's cap — 5 on ZYRA Basic, 10 on ZYRA One (entitlements matrix, Founder 2026-08-09; both-plans pause, Founder 2026-08-11). Only one Journey may be Active at any time.
 
 ---
 

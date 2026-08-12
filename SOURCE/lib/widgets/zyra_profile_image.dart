@@ -38,6 +38,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_colors.dart';
 import 'zyra_loading.dart';
 
 class ZyraProfileImage extends StatelessWidget {
@@ -73,7 +74,7 @@ class ZyraProfileImage extends StatelessWidget {
       return SizedBox(
         width: width,
         height: height,
-        child: const ColoredBox(color: Color(0xFF1A1220)),
+        child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
       );
     }
 
@@ -158,7 +159,7 @@ class ZyraProfileImage extends StatelessWidget {
       errorBuilder: (_, _, _) => SizedBox(
         width: width,
         height: height,
-        child: const ColoredBox(color: Color(0xFF1A1220)),
+        child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
       ),
     );
   }

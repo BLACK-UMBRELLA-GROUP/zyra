@@ -451,10 +451,16 @@ class ZyraDevScenario extends ChangeNotifier {
   /// So the fakes now borrow real seeded profiles and only fabricate the
   /// JOURNEY STATE around them. Everything a card renders is genuine; only
   /// the status is staged.
+  ///
+  /// [realActive] is the Seeker's OWN Active Journeys, as fetched from the
+  /// database. They fill the Active slots BEFORE any fake is generated —
+  /// see the loop below for why that is the only version of this control
+  /// that can be tested with.
   static List<JourneyMatch> fakeJourneys({
     String? viewerGender,
     List<SeekerProfile> pool = const [],
     ZyraPlan viewerPlan = ZyraPlan.basic,
+    List<JourneyMatch> realActive = const [],
   }) {
     final s = ZyraDevScenario.instance;
     final now = DateTime.now();
@@ -523,10 +529,30 @@ class ZyraDevScenario extends ChangeNotifier {
     const activeNames = ['Amina', 'Sara', 'Zaynab', 'Maryam', 'Khadija'];
     const pausedNames = ['Fatima', 'Aisha', 'Safiya', 'Halima', 'Nadia',
         'Rabia', 'Sumaya', 'Zahra', 'Iman', 'Noor'];
+    // ── REAL ROWS FIRST, 2026-08-11. Founder: "make sure the toggle has the
+    // same user that u made be able to do this part… and please make sure
+    // the reveal compatibility works."
+    //
+    // A fabricated Active Journey cannot be tested with. isMock rows exist
+    // only in this process, so every server call the Journey makes —
+    // revealCompatibility, advanceStage, the family review, the dev score
+    // override — is handed a match_id that is not a row and not even a uuid.
+    // The Reveal button therefore did nothing at all: revealCompatibility()
+    // reads the match first, gets null, and returns silently.
+    //
+    // So the toggle now SURFACES the Seeker's real Active Journey rather
+    // than inventing a stand-in for it. Slot 0 is the genuine match with the
+    // genuine profile, and fakes are generated only to top up beyond the
+    // rows that actually exist — which is where the layout question the
+    // fakes answer ("what do three of these look like?") starts anyway.
     final nActive = ZyraEntitlements.devClamp(s.activeJourneys, limits.active);
-    for (var i = 0; i < nActive && i < activeNames.length; i++) {
-      out.add(make('dev-a$i', activeNames[i], 27 + i, 'active',
-          stage: 'conversation'));
+    for (var i = 0; i < nActive; i++) {
+      if (i < realActive.length) {
+        out.add(realActive[i]);
+      } else if (i - realActive.length < activeNames.length) {
+        out.add(make('dev-a$i', activeNames[i - realActive.length], 27 + i,
+            'active', stage: 'conversation'));
+      }
     }
     final nPaused = ZyraEntitlements.devClamp(s.pausedJourneys, limits.paused);
     for (var i = 0; i < nPaused && i < pausedNames.length; i++) {
@@ -548,6 +574,31 @@ class ZyraDevScenario extends ChangeNotifier {
   /// True when any Journey toggle is driving the Connections page.
   bool get journeysOverridden =>
       queuedJourneys > 0 || activeJourneys > 0 || pausedJourneys > 0 || endedJourneys > 0;
+
+  /// True when a DEV BUILD should hold back the Seeker's real Active
+  /// Journeys — the Active row reads 0, so the Active section is empty.
+  ///
+  /// ADDED 2026-08-11. Founder: "when I opened the app I saw a active
+  /// journey there. But remember we said the default is 0… make sure the
+  /// default is 0 and I choose from toggle."
+  ///
+  /// The Active row said 0 and the screen showed one, because 0 did not
+  /// mean "none" — it meant "the panel isn't driving this", and the real
+  /// row came through underneath. A control panel whose zero position
+  /// disagrees with the screen is worse than no panel: it reports a state
+  /// nobody is in.
+  ///
+  /// 0 now means none. The Journey is not touched — nothing is ended,
+  /// suspended or deleted; it is not drawn. Move the row to 1 and it comes
+  /// back, the same Journey with the same match, which is what makes it
+  /// testable rather than merely hidden.
+  ///
+  /// GATED ON !kReleaseMode, deliberately: the same gate home_shell.dart:210
+  /// uses to mount the panel at all. A release build has no way to move this
+  /// row off 0, so without the gate every real Seeker would lose their Active
+  /// Journey to a debug default. In a release build this is always false and
+  /// _refresh() behaves exactly as it did before this change.
+  bool get holdsRealActiveJourneys => !kReleaseMode && activeJourneys == 0;
 
   /// Invitations this Seeker has RECEIVED from a Guardian.
   ///

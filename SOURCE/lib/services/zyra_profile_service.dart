@@ -142,6 +142,38 @@ class ZyraProfileService {
   ///
   /// Returns true only when the server actually published. A false here can
   /// now mean "incomplete" as well as "failed", and the reason is logged.
+  /// How far through onboarding this Seeker is, as the SERVER sees it.
+  ///
+  /// ADDED 2026-08-11 with the completeness gate (OA-ZYRA-193c). The gate is
+  /// enforced in zyra_can_view_profile and zyra_can_match, which means an
+  /// unfinished Seeker sees an empty Browse and is told nothing about why.
+  /// That is the failure this exists to prevent: a refusal with no
+  /// explanation is indistinguishable from a broken app, and this codebase
+  /// has already lost a month to exactly that with `profile_complete`.
+  ///
+  /// Read from the server rather than counted client-side on purpose. The
+  /// client knows which questions it SHOWED; only the server knows which
+  /// ones the gate is actually waiting on, and if the two ever disagree the
+  /// one holding the door is the one worth asking.
+  static Future<({bool complete, int due, int missing, bool hasChapter2, bool basicProfile})?>
+      fetchOnboardingProgress() async {
+    try {
+      final rows = await supabase.rpc('zyra_my_onboarding_progress') as List;
+      if (rows.isEmpty) return null;
+      final r = rows.first as Map<String, dynamic>;
+      return (
+        complete: r['complete'] == true,
+        due: (r['questions_due'] as num?)?.toInt() ?? 0,
+        missing: (r['questions_missing'] as num?)?.toInt() ?? 0,
+        hasChapter2: r['has_chapter_2'] == true,
+        basicProfile: r['basic_profile'] == true,
+      );
+    } catch (e) {
+      debugPrint('ZYRA: fetchOnboardingProgress failed - $e');
+      return null;
+    }
+  }
+
   static Future<bool> setProfileComplete(bool complete) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return false;

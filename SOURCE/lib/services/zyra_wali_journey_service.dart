@@ -186,7 +186,20 @@ class ZyraWaliJourneyService {
   /// any failure or if there's genuinely nothing yet.
   static Future<List<ZyraMilestone>> fetchTimeline(String matchId) async {
     try {
-      final timelineRows = await supabase.from('timelines').select('id').eq('match_id', matchId).limit(1) as List;
+      // OA-ZYRA-159 stage 4b, 2026-08-10. WAS: .eq('match_id', matchId).
+      // timelines belong to an ATTEMPT since stage 4a, so match_id no longer
+      // identifies one row. Resolved through ZyraMatchService.currentAttemptId,
+      // which reads zyra_my_attempt_participation — a Guardian appears in that
+      // view as a participant, so one helper serves both roles and there is a
+      // single implementation to keep in step with the server-side trigger.
+      final attemptId = await ZyraMatchService.currentAttemptId(matchId);
+      if (attemptId == null) return [];
+
+      final timelineRows = await supabase
+          .from('timelines')
+          .select('id')
+          .eq('attempt_id', attemptId)
+          .limit(1) as List;
       if (timelineRows.isEmpty) return [];
       final timelineId = (timelineRows.first as Map<String, dynamic>)['id'] as String;
 
@@ -194,7 +207,11 @@ class ZyraWaliJourneyService {
           .from('timeline_milestones')
           .select('milestone_type, occurred_at')
           .eq('timeline_id', timelineId)
-          .order('occurred_at') as List;
+          // OLDEST FIRST, matching the Seeker's Timeline exactly. These two
+          // queries must move together: a Guardian and the Seeker they support
+          // reading the same Journey in opposite orders is worse than either
+          // order being wrong.
+          .order('occurred_at', ascending: true) as List;
 
       return milestoneRows.map((r) {
         final map = r as Map<String, dynamic>;
@@ -261,15 +278,31 @@ class ZyraWaliJourneyService {
   /// comment). Empty on any failure.
   static Future<List<ZyraChatMessage>> fetchMessages(String matchId) async {
     try {
-      final convRows = await supabase.from('conversations').select('id').eq('match_id', matchId).limit(1) as List;
+      // OA-ZYRA-159 stage 4b, 2026-08-10. WAS: .eq('match_id', matchId).
+      //
+      // This one matters most of the four. A Guardian reading by match_id
+      // after a second Journey with the same person would have been shown
+      // the PREVIOUS attempt's messages — a conversation the current Journey
+      // did not consent to exposing, and DR-ZYRA-121 item 11 makes Guardian
+      // involvement per-attempt precisely so a new Guardian inherits nothing.
+      // Silent, and a privacy failure rather than a display bug.
+      final attemptId = await ZyraMatchService.currentAttemptId(matchId);
+      if (attemptId == null) return [];
+
+      final convRows = await supabase
+          .from('conversations')
+          .select('id')
+          .eq('attempt_id', attemptId)
+          .limit(1) as List;
       if (convRows.isEmpty) return [];
       final conversationId = (convRows.first as Map<String, dynamic>)['id'] as String;
 
       final rows = await supabase
           .from('messages')
           .select('id, sender_id, content, created_at')
+          // OLDEST FIRST, matching the Seeker's chat. Same reason.
           .eq('conversation_id', conversationId)
-          .order('created_at') as List;
+          .order('created_at', ascending: true) as List;
       return rows.map((r) {
         final map = r as Map<String, dynamic>;
         return ZyraChatMessage(

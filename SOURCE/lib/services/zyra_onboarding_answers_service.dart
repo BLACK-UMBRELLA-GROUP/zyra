@@ -49,7 +49,7 @@ class ZyraOnboardingAnswersService {
   static Future<void> syncAnswers({
     required Map<String, dynamic> ch3Answers,
     required Map<String, Map<String, TrafficLight>> ch4Preferences,
-    required Map<String, bool> ch4HardRequirements,
+    required Map<String, Set<String>> ch4HardRequirements,
   }) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
@@ -64,7 +64,21 @@ class ZyraOnboardingAnswersService {
               for (final option in entry.value.entries) option.key: option.value.name,
             },
         },
-        'ch4_hard_requirements': ch4HardRequirements,
+        // PER-OPTION SINCE 2026-08-10 — {question_id: [option_label, ...]}.
+        // WAS {question_id: bool}. The database CHECK constraint
+        // onboarding_answers_ch4_hard_shape now REJECTS the old form, so a
+        // stale build cannot quietly write an exclusion the engine would
+        // then ignore. If this ever starts throwing
+        // "violates check constraint", the shape is wrong — do not widen
+        // the constraint to make it pass.
+        //
+        // Empty sets are dropped rather than written as `[]`: a question
+        // with no exclusions should be absent from the payload, not present
+        // and empty.
+        'ch4_hard_requirements': {
+          for (final entry in ch4HardRequirements.entries)
+            if (entry.value.isNotEmpty) entry.key: entry.value.toList(),
+        },
       });
     } catch (e) {
       // LOGGED 2026-08-04. This was `catch (_) {}` — completely silent.

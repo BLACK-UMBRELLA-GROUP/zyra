@@ -135,3 +135,26 @@ DR-ZYRA-094, SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md.
 APPROVED TO-DO LIST
 ============================================================
 (None listed in source — add as decisions are made.)
+
+---
+
+## Component colour rules — ADDED 2026-08-12 (Frost UI pass, Founder-approved 2026-08-11)
+
+The 2026-08-11 screenshot review ("some buttons are one colour and some are
+another and some dont feel like the app culture… I want a clean UI") ratified an
+app-wide component system, implemented the same night. Recorded here so the
+palette file and the app stop disagreeing; formal re-issue of this document can
+fold these into the tables above.
+
+| Purpose | Value | Rule |
+|---|---|---|
+| Primary action fill | Pastel Grey Lavender `#CEA2D1` | Every primary button, BOTH gender themes. NEW palette entry — pending formal ratification into the table above; it was Founder-approved via the Frost UI brief and is live app-wide. |
+| Text on primary | Luxury Dark Purple `#3D2A4A` | Always. Never white on the lavender fill (~2:1 — fails accessibility; plum is 5.8:1). |
+| Anchored menus (Journey ⋮ etc.) | Luxury Dark Purple @ 92% + blur σ30 | Dark plum glass — anchored menus have no dimming barrier and float over the gradient's palest region, where white glass fails. |
+| Bottom sheets | Royal Purple `#8A6A9E` @ 90% → Luxury Dark Purple @ 96%, vertical, + blur σ30 | Founder 2026-08-11: "pic 2 should be purple." Flat 88% plum over a photo compounded to grey. |
+| Centred dialogs | white 14% fill · white 22% border · blur σ30 · radius 24 | Unchanged ratified glass (zyra_glass_dialog.dart). |
+| Frost pills | white 10% fill · white 18% border; selected 28%/12% | Sampled from the Connections segmented control. |
+| Destructive accents | `#E08080` coral (`ZyraColors.destructive`) | Menus, sheets and dialogs. |
+| Retired | `#1A1220` near-black | Fully swept from the client 2026-08-11; never ratified. |
+
+Tokens live in `SOURCE/lib/theme/zyra_colors.dart` (frost/action block, 2026-08-11).

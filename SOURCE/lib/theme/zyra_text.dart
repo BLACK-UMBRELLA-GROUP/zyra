@@ -101,7 +101,21 @@ class ZyraText {
   static TextStyle option({double size = 14, Color color = Colors.white}) =>
       GoogleFonts.jost(fontSize: size, fontWeight: FontWeight.w300, color: color);
 
-  static TextStyle button({double size = 15, Color color = Colors.white}) =>
+  /// DEFAULT COLOUR REMOVED 2026-08-11 (Frost UI pass). This used to
+  /// default to Colors.white, which every FilledButton call site passed
+  /// through unchanged — so when main.dart gained a real ColorScheme
+  /// (primary = Pastel Grey Lavender, onPrimary = Luxury Dark Purple),
+  /// a hardcoded white here would have sat on the lavender fill at ~2:1
+  /// contrast and silently defeated the theme's onPrimary on all ~30
+  /// FilledButtons at once.
+  ///
+  /// A null colour inherits from the enclosing button's foreground:
+  /// FilledButtons get onPrimary (dark purple), TextButtons/
+  /// OutlinedButtons get their themed white (main.dart), and non-button
+  /// uses fall back to the dark theme's near-white default — visually
+  /// what they showed before. Call sites that pass an explicit colour
+  /// (e.g. End Journey coral) are unaffected.
+  static TextStyle button({double size = 15, Color? color}) =>
       GoogleFonts.jost(fontSize: size, fontWeight: FontWeight.w400, color: color, letterSpacing: 0.5);
 
   static TextStyle chapterLabel({Color color = const Color(0xB3FFFFFF)}) =>

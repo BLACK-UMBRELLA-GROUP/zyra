@@ -98,7 +98,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     final agreed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
+        backgroundColor: ZyraColors.luxuryDarkPurple,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text('Before you subscribe', style: ZyraText.heading(size: 16)),
         content: SingleChildScrollView(
@@ -162,7 +162,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
+        backgroundColor: ZyraColors.luxuryDarkPurple,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text("You're on ZYRA One", style: ZyraText.heading(size: 16)),
         content: Text(

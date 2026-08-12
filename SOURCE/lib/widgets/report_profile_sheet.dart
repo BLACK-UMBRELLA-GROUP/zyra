@@ -43,7 +43,7 @@ import '../theme/zyra_text.dart';
 ///
 /// Now a pushed route, matching HelpSupportScreen exactly — same
 /// MaterialPageRoute, same transparent AppBar over a gender gradient, same
-/// back arrow. The function name is kept so the three call sites do not
+/// back arrow. The function name is kept so the four call sites do not
 /// churn; the return contract is unchanged (true = reported or blocked).
 ///
 /// This also resolves something flagged the same day: the Help/Report menu
@@ -258,7 +258,7 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 22),
                     child: Text(
                       _error!,
-                      style: ZyraText.subtext(size: 12.5, color: const Color(0xFFE08080)),
+                      style: ZyraText.subtext(size: 12.5, color: ZyraColors.destructive),
                       textAlign: TextAlign.center,
                     ),
                   ),

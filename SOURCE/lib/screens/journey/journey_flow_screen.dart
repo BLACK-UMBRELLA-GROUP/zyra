@@ -39,9 +39,14 @@
 //   detail yet) — a real breakdown is future work.
 
 import 'dart:async';
+import 'dart:ui' show ImageFilter;
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import '../../data/journey_questions.dart';
+import '../../data/zyra_entitlements.dart';
+import '../../data/zyra_journey_intelligence.dart';
 import '../../data/zyra_journey_stages.dart';
+import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_journey_service.dart';
@@ -49,8 +54,12 @@ import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../chat/chat_screen.dart';
+import '../profile/seeker_profile_screen.dart';
 import '../subscription/upgrade_screen.dart';
 import '../wali/link_wali_screen.dart';
+import '../../widgets/anchored_card_overlay.dart';
+import '../../widgets/zyra_glass_dialog.dart';
+import '../../widgets/zyra_intelligence_card.dart';
 import '../../widgets/zyra_loading.dart';
 
 class JourneyFlowScreen extends StatefulWidget {
@@ -89,6 +98,8 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   void initState() {
     super.initState();
     _refresh();
+    _loadCounterpartReveal();
+    _loadPlusUnlock();
     _poll = Timer.periodic(const Duration(seconds: 3), (_) => _refresh(showSpinner: false));
   }
 
@@ -108,22 +119,41 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     await ZyraJourneyService.resolveFamilyReviewIfDue(widget.matchId);
     var fresh = await ZyraJourneyService.refetchOne(widget.matchId, widget.profile.id);
 
-    // wali_gate is the one stage with no remaining user action on this
-    // screen: it opens the moment BOTH Seekers hold an active Main
-    // Guardian (Founder-decided 2026-08-08 — previously the client
-    // checked only the acting Seeker's own Guardian and advanced the
-    // SHARED stage, so one party dragged the pair through a gate the
-    // other never saw). Retried here on the poll for the same reason
-    // resolveFamilyReviewIfDue is above it: whoever linked first would
-    // otherwise sit on the gate screen indefinitely after the other
-    // party linked theirs.
-    if (fresh != null && fresh.status == 'active' && fresh.journeyStage == 'wali_gate') {
-      final r = await ZyraJourneyService.advanceStage(widget.matchId, 'wali_gate');
-      _advanceReason = r.advanced ? null : r.reason;
-      if (r.advanced) {
-        fresh = await ZyraJourneyService.refetchOne(widget.matchId, widget.profile.id);
-      }
-    }
+    // ── THE STALLED-TRANSITION RETRY.
+    //
+    // WAS wali_gate ONLY, with a comment giving the exact reason it was
+    // needed: "whoever linked first would otherwise sit on the gate screen
+    // indefinitely after the other party linked theirs." That reasoning was
+    // right and was never applied to the other two two-sided thresholds.
+    //
+    // ── THE BUG, found 2026-08-11. Founder: "on compatibility reveal I'm
+    // stuck on 'you've chosen to continue, waiting for other'."
+    //
+    // He was. Both Seekers had revealed, both had recorded their Continue,
+    // the score was computed — every condition zyra_advance_stage() tests was
+    // satisfied — and the Journey sat at compatibility_reveal because NOTHING
+    // ASKED IT AGAIN. _advance() runs on a button press; the poll re-read the
+    // stage but never re-attempted the move. The screen was waiting on a
+    // question it had stopped asking.
+    //
+    // It is not a dev-tool gap. In production, the second person to press
+    // Continue is what moves the pair on — so if their client dies between
+    // recording the Continue and calling advance, or their half arrives by
+    // any other route, the first person waits for ever, and reopening the app
+    // does not help because the retry never ran for this stage either.
+    //
+    // ── WHY compatibility_reveal IS CONDITIONAL AND wali_gate IS NOT.
+    //
+    // zyra_advance_stage() INSERTS the caller's own stage checkpoint before it
+    // checks anything, so an unconditional retry here would quietly record
+    // "they chose to continue" for someone who has not pressed anything. The
+    // Continue is a deliberate act and the server treats it as one.
+    //
+    // _advanceReason is non-null only after an explicit attempt, so gating on
+    // it means: you pressed it, the server said "waiting for them", and we
+    // keep asking on your behalf. wali_gate has no user action to consent to
+    // — it opens on a fact about both accounts — so it stays unconditional.
+    fresh = await _retryStalledAdvance(fresh);
 
     final review = await ZyraJourneyService.fetchFamilyReview(widget.matchId);
     if (!mounted) return;
@@ -140,6 +170,27 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     } else if (showSpinner) {
       setState(() => _loading = false);
     }
+  }
+
+  /// Re-asks the server to move a two-sided transition that is waiting on the
+  /// other party. Returns the match, re-fetched if it moved.
+  ///
+  /// Threshold stages only. The four gated ones go through a Family Review
+  /// and resolveFamilyReviewIfDue() above already retries those.
+  Future<JourneyMatch?> _retryStalledAdvance(JourneyMatch? fresh) async {
+    if (fresh == null || fresh.status != 'active' || fresh.isSuspended) return fresh;
+    final stage = fresh.journeyStage;
+    if (stage == null) return fresh;
+
+    final retry = stage == 'wali_gate' ||
+        (_advanceReason != null &&
+            (stage == 'compatibility_reveal' || stage == 'salam_exchange'));
+    if (!retry) return fresh;
+
+    final r = await ZyraJourneyService.advanceStage(widget.matchId, stage);
+    _advanceReason = r.advanced ? null : r.reason;
+    if (!r.advanced) return fresh;
+    return await ZyraJourneyService.refetchOne(widget.matchId, widget.profile.id);
   }
 
   /// [fromStage] is the stage just COMPLETED, not the one wanted next —
@@ -189,78 +240,288 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         _ => "That didn't go through. Please try again.",
       };
 
+  // RESTYLED 2026-08-11 (Frost UI pass — Founder: black surfaces "dont
+  // feel like the app culture"). Was an AlertDialog with the unratified
+  // near-black 0xFF1A1220 hardcoded (the same literal zyra_colors.dart's
+  // 2026-08-01 block calls out); now the ratified glass modal every other
+  // centred surface uses. Copy unchanged.
   Future<void> _endJourney() async {
-    final confirmed = await showDialog<bool>(
+    final confirmed = await showZyraGlassChoice(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1220),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('End this Journey?', style: ZyraText.heading(size: 16)),
-        content: Text(
-          "This is a deliberate, final choice. If you want to hold without ending, "
+      icon: Icons.circle_outlined,
+      title: 'End this Journey?',
+      body: "This is a deliberate, final choice. If you want to hold without ending, "
           "use Pause instead. Restarting later means going through the full process again.",
-          style: ZyraText.subtext(),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text('Cancel', style: ZyraText.subtext(size: 13))),
-          FilledButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text('End Journey', style: ZyraText.button(size: 13)),
-          ),
-        ],
-      ),
+      primaryLabel: 'End Journey',
+      secondaryLabel: 'Cancel',
     );
     if (confirmed != true) return;
     await ZyraJourneyService.endJourney(widget.matchId);
     if (mounted) Navigator.of(context).pop();
   }
 
-  // UPDATED 2026-07-28 (Founder, "Journey Pause & Premium
-  // Differentiation" discussion): the menu item itself was already
-  // visible to every plan (see _JourneyAppBar below — no plan check
-  // around its PopupMenuButton items) and this gate already existed —
-  // only the explanation was thin ("Journey Suspension is a ZYRA One
-  // feature.", one dismiss button, one "See ZYRA One" button). Founder
-  // asked specifically for the dialog to explain what Pause actually
-  // does (pause without ending permanently, resumable later), not just
-  // that it's gated, plus named button copy ("Upgrade to ZYRA One" /
-  // "Maybe Later"). Body text reuses _SuspendedView's own established
-  // phrase ("pick up exactly where you left off") below for wording
-  // consistency within this same file rather than inventing new copy
-  // for the same idea.
+  // REWRITTEN 2026-08-11 (Founder, on the "Pause needs ZYRA One" dialog:
+  // "in zyra basic you can also pause a journey its just how much you
+  // pause is different with zyra basic and zyra one" — and, asked to
+  // pick the canon explicitly: both plans pause, caps 5/10).
+  //
+  // This SUPERSEDES the 2026-07-28 "Pause & Premium Differentiation"
+  // gate and the DR-ZYRA-121 Founder amendment ("Pause stays a ZYRA One
+  // capability"), which had come into conflict with the newer
+  // Founder-approved entitlements matrix (2026-08-09,
+  // data/zyra_entitlements.dart): Basic holds 5 paused Journeys, ZYRA
+  // One holds 10. The differentiator is the CAP, not the capability.
+  //
+  // No plan gate fronts the tap any more. suspend_journey (migration
+  // 20260811232500) enforces the cap server-side — counted over pauses
+  // the caller initiated — and this method just renders the refusal, so
+  // there is no pre-fetch and no race with the server's own count. The
+  // upgrade offer appears only where upgrading would actually raise the
+  // number (Basic at 5); ZYRA One at 10 gets the honest ceiling instead.
   Future<void> _pauseJourney() async {
-    if (AppState.instance.plan != ZyraPlan.one) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          backgroundColor: const Color(0xFF1A1220),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text('Pause needs ZYRA One', style: ZyraText.heading(size: 16)),
-          content: Text(
-            'ZYRA One lets you pause a Journey without ending it permanently, '
-            'and resume any time — picking up exactly where you left off.',
-            style: ZyraText.subtext(),
-          ),
-          actions: [
-            TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text('Maybe Later', style: ZyraText.subtext(size: 13))),
-            FilledButton(
-              onPressed: () {
-                Navigator.of(ctx).pop();
-                Navigator.of(context).push(MaterialPageRoute(builder: (_) => const UpgradeScreen()));
-              },
-              child: Text('Upgrade to ZYRA One', style: ZyraText.button(size: 13)),
-            ),
-          ],
-        ),
-      );
-      return;
-    }
     try {
       await ZyraJourneyService.suspendJourney(widget.matchId);
       if (mounted) Navigator.of(context).pop();
+    } on PausedLimitReachedException {
+      if (!mounted) return;
+      final limits = ZyraEntitlements.of(AppState.instance.plan);
+      if (AppState.instance.plan == ZyraPlan.one) {
+        await showZyraGlassDialog<void>(
+          context: context,
+          builder: (ctx) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.pause_circle_outline, color: Colors.white, size: 30),
+              const SizedBox(height: 14),
+              Text('Paused Journeys are full',
+                  style: ZyraText.heading(size: 18), textAlign: TextAlign.center),
+              const SizedBox(height: 8),
+              Text(
+                'ZYRA One holds up to ${limits.paused} paused Journeys, and '
+                "you're at the limit. Resume or end one of them to pause "
+                'this one.',
+                style: ZyraText.subtext(),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: Text('OK', style: ZyraText.button(size: 13)),
+                ),
+              ),
+            ],
+          ),
+        );
+      } else {
+        final upgrade = await showZyraGlassChoice(
+          context: context,
+          icon: Icons.pause_circle_outline,
+          title: 'Paused Journeys are full',
+          body: 'ZYRA Basic holds up to ${limits.paused} paused Journeys, '
+              "and you're at the limit. Resume or end one first — or ZYRA "
+              'One holds ${ZyraEntitlements.one.paused}.',
+          primaryLabel: 'Upgrade to ZYRA One',
+          secondaryLabel: 'Not now',
+        );
+        if (upgrade == true && mounted) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const UpgradeScreen()));
+        }
+      }
     } on SuspensionRequiresOneException {
+      // Only reachable against a database that predates migration
+      // 20260811232500 — degrade to the old refusal rather than crash.
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Journey Suspension requires ZYRA One.')));
+    }
+  }
+
+  /// Whether to DRAW the developer stage jumper. Not a permission check —
+  /// `zyra_dev_set_journey_stage` refuses server-side by reading
+  /// `auth.users.email`, and would refuse this account even if this getter
+  /// were changed to `true`. Contradiction-audit §3.1 is a full section on
+  /// this project shipping client-side gates and believing them.
+  bool get _isDevAccount =>
+      (ZyraAuth.currentUser?.email ?? '').endsWith('@zyra.test');
+
+  bool _jumping = false;
+
+  /// The OTHER party's reveal flag, READ FROM THE SERVER rather than held as
+  /// whatever the toggle last set. The two diverge the moment the other
+  /// account reveals for real, and a debug toggle showing its own last write
+  /// is a debug toggle that lies.
+  bool _counterpartRevealed = false;
+
+  /// DR-ZYRA-135. Whether this account holds a simulated Compatibility
+  /// Unlock+ on the other Seeker. Read from the server, not held locally —
+  /// the same reason as _counterpartRevealed: a switch that shows its own
+  /// last write is a switch that lies.
+  bool _hasPlus = false;
+
+  Future<void> _loadPlusUnlock() async {
+    if (!_isDevAccount) return;
+    final v = await ZyraJourneyService.fetchHasPlusUnlock(widget.profile.id);
+    if (mounted) setState(() => _hasPlus = v);
+  }
+
+  Future<void> _setPlusUnlock(bool value) async {
+    if (_jumping) return;
+    setState(() => _jumping = true);
+    try {
+      await ZyraJourneyService.devSetPlusUnlock(widget.profile.id, value);
+      await _loadPlusUnlock();
+      await _refresh(showSpinner: false);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+    } finally {
+      if (mounted) setState(() => _jumping = false);
+    }
+  }
+
+  Future<void> _loadCounterpartReveal() async {
+    if (!_isDevAccount) return;
+    final v = await ZyraJourneyService.fetchCounterpartRevealed(widget.matchId);
+    if (mounted) setState(() => _counterpartRevealed = v);
+  }
+
+  Future<void> _setCounterpartRevealed(bool value) async {
+    if (_jumping) return;
+    setState(() => _jumping = true);
+    try {
+      await ZyraJourneyService.devSetCounterpartReveal(widget.matchId, value);
+      await _loadCounterpartReveal();
+      await _refresh(showSpinner: false);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+    } finally {
+      if (mounted) setState(() => _jumping = false);
+    }
+  }
+
+  /// DEV ONLY. Forces the reveal result so the mutual screen can be seen at
+  /// both ends. Sets both flags, so it lands on the mutual state rather than
+  /// the Plus-early one.
+  Future<void> _forceCompatibility(double score) async {
+    if (_jumping) return;
+    setState(() => _jumping = true);
+    try {
+      await ZyraJourneyService.devSetCompatibility(widget.matchId, score);
+      await _refresh(showSpinner: false);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+    } finally {
+      if (mounted) setState(() => _jumping = false);
+    }
+  }
+
+  /// DEV ONLY. Does the OTHER party's half of the stage the Journey is
+  /// standing on — their Salam, their answers, their Continue, their
+  /// Guardian's answers — and nothing else.
+  ///
+  /// Founder, 2026-08-11: "make the whole journey process until the message
+  /// stage." It could not be walked at all before this. Every stage from the
+  /// Salam onwards is mutual BY DESIGN, so one person testing alone reaches
+  /// "Waiting for their answers" at stage two and stops; six of the eight
+  /// stages had therefore never been seen running.
+  ///
+  /// This is not a skip. It does not move the Journey on — the tester still
+  /// presses their own buttons, still sees their own waiting states, and the
+  /// real gates still decide. What ends is the wait for a person who is never
+  /// going to open the app.
+  ///
+  /// The question ids travel from here because the bank lives in
+  /// data/journey_questions.dart and the database has never been told about
+  /// it. Sending the wrong set would write answers to questions that are not
+  /// on screen, so it is read from the same [JourneyQuestions] the stage view
+  /// itself renders rather than a second list.
+  Future<void> _counterpartComplete() async {
+    if (_jumping) return;
+    setState(() => _jumping = true);
+    try {
+      final ids = switch (_stage) {
+        'phase_1' => JourneyQuestions.phase1.map((q) => q.id).toList(),
+        'phase_2' => JourneyQuestions.phase2.map((q) => q.id).toList(),
+        'phase_3' => JourneyQuestions.phase3.map((q) => q.id).toList(),
+        'family_stage' => JourneyQuestions.seekerToWali.map((q) => q.id).toList(),
+        _ => const <String>[],
+      };
+      final said = await ZyraJourneyService.devCounterpartComplete(
+          widget.matchId, questionIds: ids);
+      await _refresh(showSpinner: false);
+      await _loadCounterpartReveal();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('$said (dev)')));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+    } finally {
+      if (mounted) setState(() => _jumping = false);
+    }
+  }
+
+  /// DEV ONLY, DESTRUCTIVE. Puts this Journey back to its first stage and
+  /// throws away everything done inside it, so it can be walked again.
+  ///
+  /// CONFIRMED FIRST. It is the only control in this panel that destroys
+  /// anything — the rest move a stage or fill in the other person's half, and
+  /// both are recoverable by carrying on. This is not, and after a long
+  /// walk-through there is real work behind that tap.
+  Future<void> _rewindJourney() async {
+    if (_jumping) return;
+    final ok = await showZyraGlassChoice(
+      context: context,
+      icon: Icons.restart_alt,
+      title: 'Start this Journey again?',
+      body: 'Puts you back at Compatibility Reveal and clears everything you '
+          'both did — answers, ratings, Salams, the reveal, family answers, '
+          'messages and Timeline milestones.\n\nThe match itself stays, and so '
+          'does your Guardian link.',
+      primaryLabel: 'Start again',
+      secondaryLabel: 'Cancel',
+    );
+    if (ok != true || !mounted) return;
+
+    setState(() => _jumping = true);
+    try {
+      final said = await ZyraJourneyService.devRewindJourney(matchId: widget.matchId);
+      await _refresh(showSpinner: false);
+      await _loadCounterpartReveal();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('$said (dev)')));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+    } finally {
+      if (mounted) setState(() => _jumping = false);
+    }
+  }
+
+  /// DEV ONLY. Skips the Pre-Journey Ritual, the Guardian Gate and the
+  /// 48-hour Family Review Period in one tap.
+  Future<void> _jumpToStage(String stage) async {
+    if (_jumping) return;
+    setState(() => _jumping = true);
+    try {
+      await ZyraJourneyService.devSetStage(widget.matchId, stage);
+      // The server is the source of truth for where the Journey now is, so
+      // re-read rather than assuming the jump landed where it was asked to.
+      // A local setState here would show the requested stage even if the
+      // server had quietly done something else — the exact shape of the
+      // 2026-08-07 release blocker, where a no-op looked like a success.
+      await _refresh(showSpinner: false);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('$e')),
+      );
+    } finally {
+      if (mounted) setState(() => _jumping = false);
     }
   }
 
@@ -269,10 +530,37 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
-        child: SafeArea(
-          child: _loading
-              ? const ZyraLoading()
-              : _buildBody(context),
+        child: Stack(
+          children: [
+            SafeArea(
+              child: _loading
+                  ? const ZyraLoading()
+                  : _buildBody(context),
+            ),
+            // DEV ONLY — the right-edge pull-out, matching dev_scenario_panel.
+            //
+            // In the Stack rather than the Column so it floats over the stage
+            // content the way the app's other developer panel floats over
+            // HomeShell. Only on a live Journey: an ended or paused one has no
+            // stages to move between, and the server would refuse anyway.
+            //
+            // The email test here decides only whether to DRAW it. The refusal
+            // that matters is inside zyra_dev_set_journey_stage, which reads
+            // auth.users and raises `dev_only`.
+            if (_isDevAccount && _status == 'active' && _suspendedBy == null)
+              _DevStageJumper(
+                current: _stage,
+                busy: _jumping,
+                onJump: _jumpToStage,
+                counterpartRevealed: _counterpartRevealed,
+                onCounterpartRevealChanged: _setCounterpartRevealed,
+                hasPlus: _hasPlus,
+                onHasPlusChanged: _setPlusUnlock,
+                onForceCompatibility: _forceCompatibility,
+                onCounterpartComplete: _counterpartComplete,
+                onRewind: _rewindJourney,
+              ),
+          ],
         ),
       ),
     );
@@ -336,6 +624,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           matchId: widget.matchId,
           profile: widget.profile,
           onContinue: () => _advance('compatibility_reveal'),
+          onPause: _pauseJourney,
           onEnd: _endJourney,
           waitingReason: _advanceReason,
         );
@@ -360,22 +649,468 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       case 'family_stage':
         return _FamilyStageView(matchId: widget.matchId, profile: widget.profile, onContinue: () => _advanceGated('family_stage', 'conversation'));
       case 'conversation':
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => ChatScreen(withProfile: widget.profile)));
-        });
-        return const ZyraLoading();
+        // WAS an immediate pushReplacement into ChatScreen. The eighth stage
+        // therefore had no screen at all: you arrived at the end of a Journey
+        // and were dropped into a message list with no acknowledgement that
+        // anything had been reached.
+        //
+        // It also made the stage impossible to look at — every visit bounced
+        // straight past it — which is how it went this long without anyone
+        // noticing the conversation row it needs was never created for a
+        // seeded match.
+        //
+        // JOURNEY PHILOSOPHY §2: "structure does not disappear... the
+        // experience does not suddenly become a standard chat app." A door,
+        // then, rather than a trapdoor.
+        return _OpenConversationView(matchId: widget.matchId, profile: widget.profile);
       default:
         return const ZyraLoading();
     }
   }
 }
 
-class _JourneyAppBar extends StatelessWidget {
+/// DEV ONLY — a pull-out tab on the right edge, matching the app's own
+/// developer panel rather than inventing a second convention.
+///
+/// Founder, 2026-08-10: "the toggle in Enter should be the same as it is as
+/// the rest of the app, a little black button on right middle side."
+///
+/// The first version was an amber strip under the app bar. It was legible and
+/// it was wrong: `dev_scenario_panel.dart` already established the pattern on
+/// 2026-08-01 — a 22pt tab, `0xF20E0B12`, chevron when open and a tune glyph
+/// when closed, vertically centred. Two debug conventions in one app is one
+/// too many, and the newer one is always the one that looks like a bug.
+///
+/// IT IS A SEPARATE TAB, NOT THE SAME ONE. JourneyFlowScreen is pushed above
+/// HomeShell, so HomeShell's panel is covered by this route and cannot be
+/// reached from here. They never appear together, so they cannot collide.
+///
+/// ⚠️ IT SKIPS THE THREE THINGS THAT MAKE ZYRA WHAT IT IS: the Pre-Journey
+/// Ritual, the Guardian Gate, and the 48-hour Family Review Period.
+///
+/// RELEASE SAFETY — double-guarded, copying dev_scenario_panel exactly, after
+/// the 2026-07-26 audit found Developer Access shipping in a release build:
+///   1. the caller only builds it for an @zyra.test account
+///   2. build() returns SizedBox.shrink() in a release build regardless
+///
+/// LABELS COME FROM THE CANONICAL MAP (DR-ZYRA-129). No stage name is written
+/// here. Three screens once each kept their own switch over the same eight
+/// strings and all three drifted; a debug tool showing different names from
+/// the product would be a debug tool that lies about what it is debugging.
+class _DevStageJumper extends StatefulWidget {
+  final String? current;
+  final bool busy;
+  final ValueChanged<String> onJump;
+  final bool counterpartRevealed;
+  final ValueChanged<bool> onCounterpartRevealChanged;
+  final bool hasPlus;
+  final ValueChanged<bool> onHasPlusChanged;
+  final ValueChanged<double> onForceCompatibility;
+  final VoidCallback onCounterpartComplete;
+  final VoidCallback onRewind;
+
+  const _DevStageJumper({
+    required this.current,
+    required this.busy,
+    required this.onJump,
+    required this.counterpartRevealed,
+    required this.onCounterpartRevealChanged,
+    required this.hasPlus,
+    required this.onHasPlusChanged,
+    required this.onForceCompatibility,
+    required this.onCounterpartComplete,
+    required this.onRewind,
+  });
+
+  @override
+  State<_DevStageJumper> createState() => _DevStageJumperState();
+}
+
+class _DevStageJumperState extends State<_DevStageJumper> {
+  bool _open = false;
+
+  static const double _tabWidth = 22;
+  static const double _panelWidth = 232;
+
+  // The order the Journey actually runs in. `phase_1/2/3` are stored values
+  // only — the member reads Faith & Values, Building a Life, Navigating Life,
+  // and those words come from the map, not from here.
+  static const _stages = <String>[
+    'compatibility_reveal',
+    'salam_exchange',
+    'wali_gate',
+    'phase_1',
+    'phase_2',
+    'phase_3',
+    'family_stage',
+    'conversation',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    if (kReleaseMode) return const SizedBox.shrink();
+
+    return Positioned(
+      top: 0,
+      bottom: 0,
+      right: _open ? 0 : -_panelWidth,
+      width: _panelWidth + _tabWidth,
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => setState(() => _open = !_open),
+            child: Center(
+              child: Container(
+                width: _tabWidth,
+                height: 92,
+                decoration: BoxDecoration(
+                  color: const Color(0xF20E0B12),
+                  borderRadius:
+                      const BorderRadius.horizontal(left: Radius.circular(8)),
+                  border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.16), width: 0.5),
+                ),
+                child: Center(
+                  child: Icon(
+                    _open ? Icons.chevron_right : Icons.tune,
+                    size: 15,
+                    color: Colors.white.withValues(alpha: 0.75),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Material(
+              color: const Color(0xF20E0B12),
+              child: SafeArea(
+                left: false,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
+                  children: [
+                    // FIRST, because it is the control you reach for at every
+                    // stage — and because it is the honest one. Everything
+                    // below skips something; this waits for nothing.
+                    Text('THE OTHER PERSON',
+                        style: ZyraText.chapterLabel(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed:
+                            widget.busy ? null : widget.onCounterpartComplete,
+                        child: Text('Do their half of this stage',
+                            style: ZyraText.button(size: 12.5)),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Their Salam, their answers, their Continue, their '
+                      "Guardian's replies — whichever this stage is waiting on. "
+                      'The Journey does not move; you still press your own '
+                      'buttons.',
+                      style: ZyraText.subtext(size: 10.5),
+                    ),
+
+                    const SizedBox(height: 14),
+                    Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
+                    const SizedBox(height: 14),
+
+                    Row(
+                      children: [
+                        Text('SKIP TO STAGE',
+                            style: ZyraText.chapterLabel(color: Colors.white70)),
+                        const Spacer(),
+                        if (widget.busy)
+                          const SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 1.6, color: Colors.white70),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    ..._stages.map((s) {
+                      final isCurrent = s == widget.current;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Material(
+                          color: isCurrent
+                              ? Colors.white.withValues(alpha: 0.20)
+                              : Colors.white.withValues(alpha: 0.06),
+                          borderRadius: BorderRadius.circular(8),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(8),
+                            onTap: widget.busy || isCurrent
+                                ? null
+                                : () => widget.onJump(s),
+                            child: Container(
+                              height: 34,
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                // THE CANONICAL MAP. Never a literal.
+                                ZyraJourneyStages.labelFor(s),
+                                style: ZyraText.subtext(
+                                  size: 12,
+                                  color: isCurrent
+                                      ? Colors.white
+                                      : const Color(0xB3FFFFFF),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+
+                    const SizedBox(height: 18),
+                    Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
+                    const SizedBox(height: 14),
+
+                    // THE OTHER SIDE OF A TWO-SIDED GATE.
+                    //
+                    // Founder, 2026-08-10. Compatibility Reveal needs BOTH
+                    // Seekers, so one person testing alone can only ever see
+                    // the waiting half of it. This sets the counterpart's flag
+                    // server-side and leaves the caller's own alone.
+                    //
+                    // It does NOT compute the score. That runs on the real
+                    // reveal path — set this on, then press Reveal, and the
+                    // real code executes. A dev control that also scored would
+                    // be testing itself.
+                    Text('OTHER SEEKER',
+                        style: ZyraText.chapterLabel(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    SwitchListTile.adaptive(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      value: widget.counterpartRevealed,
+                      onChanged:
+                          widget.busy ? null : widget.onCounterpartRevealChanged,
+                      title: Text('Has revealed compatibility',
+                          style: ZyraText.subtext(size: 12, color: Colors.white)),
+                      subtitle: Text(
+                        widget.counterpartRevealed
+                            ? 'They have revealed. Your Reveal completes the gate.'
+                            : "They haven't revealed. You will be left waiting.",
+                        style: ZyraText.subtext(size: 10.5),
+                      ),
+                    ),
+
+                    const SizedBox(height: 14),
+                    Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
+                    const SizedBox(height: 14),
+
+                    // DR-ZYRA-135 / OA-ZYRA-152. Simulates having bought
+                    // Compatibility Unlock+, which lets you see the score
+                    // before the other Seeker reveals.
+                    //
+                    // Combined with the switch above, this reaches the state
+                    // that could not exist before today: you see the number,
+                    // she has not revealed, and she has not been told.
+                    Text('THIS ACCOUNT',
+                        style: ZyraText.chapterLabel(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    SwitchListTile.adaptive(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      value: widget.hasPlus,
+                      onChanged: widget.busy ? null : widget.onHasPlusChanged,
+                      title: Text('Has paid for Compatibility Unlock+',
+                          style: ZyraText.subtext(size: 12, color: Colors.white)),
+                      subtitle: Text(
+                        widget.hasPlus
+                            ? 'You see the score early. They are told nothing.'
+                            : 'Mutual reveal applies — neither sees it first.',
+                        style: ZyraText.subtext(size: 10.5),
+                      ),
+                    ),
+
+                    const SizedBox(height: 14),
+                    Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
+                    const SizedBox(height: 14),
+
+                    // FORCE A RESULT. Founder, 2026-08-10: "you have good
+                    // reveal and bad reveal — one is 21% and one is 92%."
+                    //
+                    // Not reachable by playing properly: every seeded profile
+                    // scores 77-100 against every other, so the low end of
+                    // this screen has never been seen. How a BAD result reads
+                    // matters as much as a good one — arguably more.
+                    //
+                    // Sets both reveal flags, so it lands on the mutual screen
+                    // rather than the Plus-early one. Press Reveal yourself if
+                    // you want the real engine instead; it still works.
+                    Text('FORCE A RESULT',
+                        style: ZyraText.chapterLabel(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: widget.busy ? null : () => widget.onForceCompatibility(21),
+                            child: Text('Low · 21%',
+                                style: ZyraText.subtext(size: 12, color: Colors.white)),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: widget.busy ? null : () => widget.onForceCompatibility(92),
+                            child: Text('High · 92%',
+                                style: ZyraText.subtext(size: 12, color: Colors.white)),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 18),
+                    Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
+                    const SizedBox(height: 14),
+
+                    // LAST, and the only red thing here. Everything above is
+                    // recoverable by carrying on; this is not. Tinted rather
+                    // than hidden — the same treatment the account reset gets
+                    // in dev_scenario_panel, so the two destructive controls
+                    // in this app look alike.
+                    Text('START OVER',
+                        style: ZyraText.chapterLabel(color: Colors.white70)),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: widget.busy ? null : widget.onRewind,
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: ZyraColors.destructiveBorder, width: 0.7),
+                        ),
+                        child: Text('Start this Journey again',
+                            style: ZyraText.subtext(
+                                size: 12, color: ZyraColors.destructive)),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Back to Compatibility Reveal, with everything you both '
+                      'did inside it cleared. The match and your Guardian link '
+                      'stay. Asks first.',
+                      style: ZyraText.subtext(size: 10.5),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// RESTYLED 2026-08-11 (Frost UI pass — Founder, screenshot review of this
+// exact menu: "picture 3 isnt really matching the apps image with black
+// text is it"). The PopupMenuButton painted Material's stock dark menu
+// surface (plus the unratified 0xFF1A1220 override) — an opaque black box
+// sitting on the gradient. Replaced with the app's own anchored-card
+// idiom (anchored_card_overlay.dart — the Founder-ratified interaction
+// already used by the notification bell and HomeShell's Help/Report
+// card: same-screen, no route, dismissed by tapping anywhere else, no
+// dim) wearing the ratified glass recipe (zyra_glass_dialog.dart values:
+// blur σ30, white 14% fill, white 22% border).
+//
+// Stateful only for the GlobalKey — the overlay reads the icon's
+// RenderBox through it at tap time, so it must survive rebuilds.
+class _JourneyAppBar extends StatefulWidget {
   final SeekerProfile profile;
   final VoidCallback onPause;
   final VoidCallback onEnd;
   const _JourneyAppBar({required this.profile, required this.onPause, required this.onEnd});
+
+  @override
+  State<_JourneyAppBar> createState() => _JourneyAppBarState();
+}
+
+class _JourneyAppBarState extends State<_JourneyAppBar> {
+  final GlobalKey _menuKey = GlobalKey();
+
+  // VIEW PROFILE lives here, Founder decision 2026-08-10
+  // (OA-ZYRA-194). Until now the full profile had exactly one
+  // entry point — the bubble at the top of the Timeline — so
+  // someone inside a Journey had to leave it to look at the person
+  // the Journey is about. The menu was the Founder's pick over an
+  // app-bar control: the Journey is a staged ritual and the stage
+  // area should stay the only thing competing for attention.
+  //
+  // First in the list, and deliberately: it is the one harmless
+  // item. Pause and End follow, End last because it is the only
+  // one that cannot be undone. (Order preserved through the
+  // 2026-08-11 restyle — only the surface changed.)
+  void _openMenu() {
+    showAnchoredCard(
+      context: context,
+      anchorKey: _menuKey,
+      cardWidth: 200,
+      // menuSurface, NOT glassFill — corrected same day it shipped
+      // (Founder: "the top right isnt clear"). White glass needs the
+      // dialog barrier's dimming behind it; an anchored menu has none and
+      // sits over the gradient's palest region. See the menuSurface note
+      // in zyra_colors.dart.
+      cardBuilder: (ctx, close) => ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+          child: Container(
+            decoration: BoxDecoration(
+              color: ZyraColors.menuSurface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.18), width: 1),
+            ),
+            child: Material(
+              type: MaterialType.transparency,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _menuRow('View profile', () {
+                    close();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => SeekerProfileScreen(profile: widget.profile),
+                    ));
+                  }),
+                  _menuDivider(),
+                  _menuRow('Pause Journey', () {
+                    close();
+                    widget.onPause();
+                  }),
+                  _menuDivider(),
+                  _menuRow('End Journey', () {
+                    close();
+                    widget.onEnd();
+                  }, color: ZyraColors.destructive),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _menuRow(String label, VoidCallback onTap, {Color color = Colors.white}) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 13),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(label, style: ZyraText.body(size: 14, color: color)),
+        ),
+      ),
+    );
+  }
+
+  Widget _menuDivider() =>
+      Divider(color: Colors.white.withValues(alpha: 0.12), height: 1, indent: 16, endIndent: 16);
 
   @override
   Widget build(BuildContext context) {
@@ -388,16 +1123,12 @@ class _JourneyAppBar extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white70, size: 18),
           ),
           Expanded(
-            child: Text('Journey with ${profile.firstName}', style: ZyraText.heading(size: 16), textAlign: TextAlign.center),
+            child: Text('Journey with ${widget.profile.firstName}', style: ZyraText.heading(size: 16), textAlign: TextAlign.center),
           ),
-          PopupMenuButton<String>(
+          IconButton(
+            key: _menuKey,
+            onPressed: _openMenu,
             icon: const Icon(Icons.more_vert, color: Colors.white70),
-            color: const Color(0xFF1A1220),
-            onSelected: (v) => v == 'pause' ? onPause() : onEnd(),
-            itemBuilder: (ctx) => [
-              const PopupMenuItem(value: 'pause', child: Text('Pause Journey', style: TextStyle(color: Colors.white))),
-              const PopupMenuItem(value: 'end', child: Text('End Journey', style: TextStyle(color: Color(0xFFE08080)))),
-            ],
           ),
         ],
       ),
@@ -514,7 +1245,7 @@ class _SuspendedView extends StatelessWidget {
             if (iInitiated)
               FilledButton(onPressed: onResume, child: Text('Resume', style: ZyraText.button(size: 13))),
             const SizedBox(height: 8),
-            TextButton(onPressed: onEnd, child: Text('End Journey', style: ZyraText.subtext(size: 13, color: const Color(0xFFE08080)))),
+            TextButton(onPressed: onEnd, child: Text('End Journey', style: ZyraText.subtext(size: 13, color: ZyraColors.destructive))),
           ],
         ),
       ),
@@ -592,7 +1323,7 @@ class _FamilyReviewViewState extends State<_FamilyReviewView> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            TextButton(onPressed: widget.onEnd, child: Text('End Journey', style: ZyraText.subtext(size: 12, color: const Color(0xFFE08080)))),
+            TextButton(onPressed: widget.onEnd, child: Text('End Journey', style: ZyraText.subtext(size: 12, color: ZyraColors.destructive))),
           ],
         ),
       ),
@@ -606,6 +1337,7 @@ class _CompatibilityRevealView extends StatefulWidget {
   final String matchId;
   final SeekerProfile profile;
   final VoidCallback onContinue;
+  final VoidCallback onPause;
   final VoidCallback onEnd;
 
   /// Server's reason the pair has not moved on yet. 'waiting_for_continue'
@@ -614,7 +1346,7 @@ class _CompatibilityRevealView extends StatefulWidget {
   /// button. See PRE-JOURNEY RITUAL: "Every checkpoint is a shared decision."
   final String? waitingReason;
 
-  const _CompatibilityRevealView({required this.matchId, required this.profile, required this.onContinue, required this.onEnd, required this.waitingReason});
+  const _CompatibilityRevealView({required this.matchId, required this.profile, required this.onContinue, required this.onPause, required this.onEnd, required this.waitingReason});
 
   @override
   State<_CompatibilityRevealView> createState() => _CompatibilityRevealViewState();
@@ -627,6 +1359,14 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
   Map<String, dynamic>? _categories;
   bool _loading = true;
   Timer? _poll;
+
+  /// The score a Compatibility Unlock+ holder may see before the other Seeker
+  /// reveals — DR-ZYRA-135, closing OA-ZYRA-152.
+  ///
+  /// Null for everyone without Plus, which is nearly everyone, and null is the
+  /// ordinary case rather than a failure. The server refuses with
+  /// `plus_required` and the service turns that into null quietly.
+  double? _plusScore;
 
   @override
   void initState() {
@@ -642,9 +1382,52 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
   }
 
   Future<void> _load() async {
-    final r = await ZyraJourneyService.fetchCompatibility(widget.matchId);
+    var r = await ZyraJourneyService.fetchCompatibility(widget.matchId);
+
+    // LAZY SCORING, the same pattern as resolveFamilyReviewIfDue().
+    //
+    // REASON RESTATED 2026-08-11 (OA-ZYRA-193 a2). The original was: whoever
+    // revealed second computed the pair's single score, so if they revealed
+    // from a path that did not score, both flags ended up true with no number.
+    // That sequencing is gone — each side computes its own on its own reveal.
+    //
+    // The retry is still needed, for a narrower reason: MY reveal can set my
+    // flag and still fail to produce a figure (a transient RPC failure). The
+    // screen would then find mine && theirs && score == null, match none of
+    // its branches, and fall through to the "Reveal" prompt — offering to
+    // reveal something already revealed.
+    //
+    // FOUND WHILE BUILDING THE DEV COUNTERPART TOGGLE, which produces exactly
+    // that state on purpose. But it is NOT a dev-only bug: the same hole is
+    // reachable in production the moment the second reveal happens anywhere
+    // the client is not watching. Fixed here rather than in the dev function,
+    // because a dev tool that quietly patched over a real gap would have
+    // hidden it.
+    //
+    // Calling revealCompatibility again is safe and is the point: it sets an
+    // already-true flag, then runs the REAL scoring path. No second code path
+    // computes a score.
+    if (r.mine && r.theirs && r.overallScore == null) {
+      await ZyraJourneyService.revealCompatibility(widget.matchId, widget.profile.id);
+      r = await ZyraJourneyService.fetchCompatibility(widget.matchId);
+    }
+
+    // DR-ZYRA-135. Only asked in the one state where it changes anything:
+    // this Seeker has revealed and the other has not. Asking earlier would
+    // show the number before they chose to look at it, which is the opposite
+    // of what a Reveal is; asking later is pointless, since both revealing
+    // shows it anyway.
+    //
+    // Returns null for everyone without Plus — the ordinary case, refused
+    // server-side, not inferred here.
+    double? plus;
+    if (r.mine && !r.theirs) {
+      plus = await ZyraJourneyService.fetchCompatibilityForPlus(widget.matchId);
+    }
+
     if (!mounted) return;
     setState(() {
+      _plusScore = plus;
       _mine = r.mine;
       _theirs = r.theirs;
       _score = r.overallScore;
@@ -663,10 +1446,60 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
   Widget build(BuildContext context) {
     if (_loading) return const ZyraLoading();
 
+    // REVEALED, BUT NOT SCOREABLE. Distinct from the retry above, which
+    // covers a figure that failed to compute: this is a figure that cannot
+    // exist yet, because there is not enough between the two of them to score.
+    // Reachable until the onboarding completeness gate (OA-ZYRA-193c) is
+    // built, and worth keeping afterwards — the alternative is inventing a
+    // number the moment the honest branch is deleted.
+    if (_mine && _theirs && _score == null && !_loading) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('You both chose to reveal.', style: ZyraText.subtext()),
+              const SizedBox(height: 10),
+              Text('—', style: ZyraText.heading(size: 44, color: Colors.white38)),
+              const SizedBox(height: 10),
+              Text(
+                'There is not enough between you yet to work out a figure. '
+                'It appears here once you have both covered more ground.',
+                style: ZyraText.subtext(),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              if (widget.waitingReason != 'waiting_for_continue')
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                      onPressed: widget.onContinue,
+                      child: Text('Continue Journey', style: ZyraText.button(size: 14))),
+                ),
+              _JourneyStageActions(onPause: widget.onPause, onEnd: widget.onEnd),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (_mine && _theirs && _score != null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 28),
+      // SCROLLABLE AS OF 2026-08-11. It was a centred Column, which was fine
+      // for a number and five rows and overflows the moment a ZYRA Insight is
+      // added under it on a small phone. Center + SingleChildScrollView keeps
+      // the old centred look whenever it still fits.
+      final intelligence = ZyraJourneyIntelligence.compatibility(
+        plan: AppState.instance.plan,
+        score: _score!,
+        categories: _categories,
+        otherName: widget.profile.firstName,
+      );
+      return Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('You both chose to reveal.', style: ZyraText.subtext()),
@@ -685,7 +1518,13 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                       ],
                     ),
                   )),
-            const SizedBox(height: 28),
+            // ZYRA One reads the number back; ZYRA Basic sees the number and
+            // an invitation, and the screen is complete either way.
+            if (intelligence != null)
+              ZyraIntelligenceCard(intelligence: intelligence)
+            else
+              const ZyraIntelligenceInvitation(kind: ZyraIntelligenceKind.insight),
+            const SizedBox(height: 20),
             if (widget.waitingReason == 'waiting_for_continue') ...[
               const ZyraLoading(),
               const SizedBox(height: 12),
@@ -699,9 +1538,59 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                 width: double.infinity,
                 child: FilledButton(onPressed: widget.onContinue, child: Text('Continue Journey', style: ZyraText.button(size: 14))),
               ),
-            const SizedBox(height: 10),
-            TextButton(onPressed: widget.onEnd, child: Text('End Journey', style: ZyraText.subtext(size: 12, color: const Color(0xFFE08080)))),
+            _JourneyStageActions(onPause: widget.onPause, onEnd: widget.onEnd),
           ],
+        ),
+        ),
+      );
+    }
+
+    // ── THE THIRD STATE — DR-ZYRA-135, closing OA-ZYRA-152 ────────────────
+    //
+    // A Plus holder can see the score while the other Seeker has not revealed.
+    // They are NEITHER waiting-to-see NOR mutually revealed, and the existing
+    // two states are both wrong for them:
+    //
+    //   "Waiting for Aisha"  — they are not waiting to SEE anything.
+    //   "You both chose to reveal." — untrue, and the untrue half is the
+    //                                 half about the other person.
+    //
+    // What they are actually waiting for is her to CONTINUE. So the screen
+    // says that, and nothing else.
+    //
+    // No Continue button here on purpose. The Journey advances when both have
+    // revealed — buying the number does not buy the stage (DR-135: "the
+    // result is bought, the relationship is not"). Offering Continue would
+    // make the purchase look like it moved the Journey, which is the exact
+    // misreading the decision was careful to avoid.
+    if (_mine && !_theirs && _plusScore != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('${_plusScore!.round()}%', style: ZyraText.heading(size: 44)),
+              Text('Overall Compatibility', style: ZyraText.subtext()),
+              const SizedBox(height: 20),
+              // Said plainly, because it is the thing they paid for and the
+              // thing that could otherwise feel like a glitch: you can see it,
+              // they cannot.
+              Text('You unlocked this early.',
+                  style: ZyraText.body(size: 13), textAlign: TextAlign.center),
+              const SizedBox(height: 4),
+              Text(
+                "${widget.profile.firstName} hasn't revealed yet, and hasn't "
+                'been told you have. The Journey moves when she does.',
+                style: ZyraText.subtext(),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              // Pause and End only. Continue stays absent by design — see the
+              // note above: buying the number does not buy the stage.
+              _JourneyStageActions(onPause: widget.onPause, onEnd: widget.onEnd),
+            ],
+          ),
         ),
       );
     }
@@ -718,6 +1607,9 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
               Text('Waiting for ${widget.profile.firstName}', style: ZyraText.heading(size: 16)),
               const SizedBox(height: 6),
               Text('Neither of you sees the result until you both choose to reveal.', style: ZyraText.subtext(), textAlign: TextAlign.center),
+              // No Continue — there is nothing yet to continue to. Pause and
+              // End are Journey-level and stay available at every stage.
+              _JourneyStageActions(onPause: widget.onPause, onEnd: widget.onEnd),
             ],
           ),
         ),
@@ -744,8 +1636,61 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
             ),
             const SizedBox(height: 24),
             FilledButton(onPressed: _reveal, child: Text('Reveal Compatibility', style: ZyraText.button(size: 14))),
+            _JourneyStageActions(onPause: widget.onPause, onEnd: widget.onEnd),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Pause and End, at the foot of a stage.
+///
+/// Founder, 2026-08-10: "it's like a journey so it's gotta be at bottom
+/// continue or end or pause journey."
+///
+/// CONTINUE IS NOT HERE, deliberately. Continue is a STAGE action — it means
+/// something different on every stage and is only offered where the Journey
+/// can actually advance, so each state renders its own. Pause and End are
+/// JOURNEY actions: true at every stage, identical everywhere, and until now
+/// reachable only from the 3-dot menu. A member deciding to stop should not
+/// have to find a menu to do it.
+// RESTYLE ONLY 2026-08-11 (Frost UI pass): the Founder's screenshot note
+// on these ("just sitting there in small text") read as discomfort with
+// the presentation, and the Frost brief's mockup went further and moved
+// them into the 3-dot menu alone. DELIBERATELY NOT DONE HERE: the
+// 2026-08-10 decision above ("gotta be at bottom… a member deciding to
+// stop should not have to find a menu to do it") is one day old and is
+// about reachability, not looks — and easy exit is worth protecting in
+// this app. So they stay, quieter: more air above them so they stop
+// crowding the stage's own button, slightly dimmer, End in the
+// tokenised coral. If the Founder confirms menu-only, delete the
+// _JourneyStageActions call sites — one line each.
+class _JourneyStageActions extends StatelessWidget {
+  final VoidCallback onPause;
+  final VoidCallback onEnd;
+  const _JourneyStageActions({required this.onPause, required this.onEnd});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextButton(
+            onPressed: onPause,
+            child: Text('Pause Journey',
+                style: ZyraText.subtext(size: 12, color: Colors.white60)),
+          ),
+          Text('·', style: ZyraText.subtext(size: 12, color: Colors.white38)),
+          TextButton(
+            onPressed: onEnd,
+            child: Text('End Journey',
+                style: ZyraText.subtext(size: 12, color: ZyraColors.destructive)),
+          ),
+        ],
       ),
     );
   }
@@ -934,6 +1879,14 @@ class _PhaseViewState extends State<_PhaseView> {
   final Map<String, TextEditingController> _controllers = {};
   Map<String, Map<String, String>> _allAnswers = {};
   Map<String, String> _checkpoints = {};
+
+  /// This Seeker's OWN private ratings, questionId -> rating. Read from the
+  /// server on load and kept in step locally as they tap, because from
+  /// 2026-08-11 they are no longer write-only: they select the chip, they
+  /// drive the ZYRA Recommendation under it, and on ZYRA One they decide
+  /// which follow-ups are offered. A rating that vanished on rebuild used to
+  /// be invisible; now it would look broken.
+  Map<String, String> _ratings = {};
   bool _submitted = false;
   bool _loading = true;
   Timer? _poll;
@@ -961,11 +1914,13 @@ class _PhaseViewState extends State<_PhaseView> {
     if (showSpinner && mounted) setState(() => _loading = true);
     final answers = await ZyraJourneyService.fetchPhaseAnswers(widget.matchId, widget.phase);
     final checkpoints = await ZyraJourneyService.fetchCheckpoints(widget.matchId, widget.phase);
+    final ratings = await ZyraJourneyService.fetchMyRatings(widget.matchId, widget.phase);
     if (!mounted) return;
     final myId = ZyraAuth.currentUser?.id;
     setState(() {
       _allAnswers = answers;
       _checkpoints = checkpoints;
+      _ratings = ratings;
       _submitted = myId != null && (answers[myId]?.length ?? 0) >= _questions.length;
       _loading = false;
     });
@@ -980,6 +1935,32 @@ class _PhaseViewState extends State<_PhaseView> {
     return _allAnswers.values.where((a) => a.length >= _questions.length).length >= 2;
   }
 
+  // ── THE ZYRA LAYER. Null on ZYRA Basic, always — see
+  // data/zyra_journey_intelligence.dart. Getters rather than fields so they
+  // recompute the moment a rating chip is tapped, which is the whole point:
+  // the recommendation under the answers should change as you mark them.
+  ZyraIntelligence? get _followUps => ZyraJourneyIntelligence.phaseFollowUps(
+        plan: AppState.instance.plan,
+        questions: _questions,
+        ratings: _ratings,
+        otherName: widget.profile.firstName,
+      );
+
+  ZyraIntelligence? get _checkpointAdvice =>
+      ZyraJourneyIntelligence.phaseCheckpoint(
+        plan: AppState.instance.plan,
+        questions: _questions,
+        ratings: _ratings,
+      );
+
+  ZyraIntelligence? get _summary => ZyraJourneyIntelligence.phaseSummary(
+        plan: AppState.instance.plan,
+        phaseLabel: ZyraJourneyStages.phase(widget.phase)?.label ?? 'this phase',
+        questions: _questions,
+        ratings: _ratings,
+        otherName: widget.profile.firstName,
+      );
+
   Future<void> _submitAll() async {
     for (final q in _questions) {
       final text = _controllers[q.id]!.text.trim();
@@ -990,7 +1971,13 @@ class _PhaseViewState extends State<_PhaseView> {
     await _load();
   }
 
-  Future<void> _rate(String questionId, String rating) => ZyraJourneyService.submitRating(widget.matchId, widget.phase, questionId, rating);
+  Future<void> _rate(String questionId, String rating) async {
+    // Optimistic, then written. The chip has to select instantly — this is a
+    // private note to yourself, and waiting on a round-trip to see it land
+    // reads as the tap having missed.
+    setState(() => _ratings[questionId] = rating);
+    await ZyraJourneyService.submitRating(widget.matchId, widget.phase, questionId, rating);
+  }
 
   Future<void> _checkpoint(String decision) async {
     await ZyraJourneyService.submitCheckpoint(widget.matchId, widget.phase, decision);
@@ -1043,14 +2030,40 @@ class _PhaseViewState extends State<_PhaseView> {
               const SizedBox(height: 6),
               Wrap(
                 spacing: 8,
+                runSpacing: 8,
                 children: [
-                  _RatingChip(label: 'Reassured me', onTap: () => _rate(q.id, 'reassured')),
-                  _RatingChip(label: "I'd like to discuss further", onTap: () => _rate(q.id, 'discuss_further')),
-                  _RatingChip(label: 'This concerns me', onTap: () => _rate(q.id, 'concerns')),
+                  _RatingChip(
+                      label: 'Reassured me',
+                      selected: _ratings[q.id] == 'reassured',
+                      onTap: () => _rate(q.id, 'reassured')),
+                  _RatingChip(
+                      label: "I'd like to discuss further",
+                      selected: _ratings[q.id] == 'discuss_further',
+                      onTap: () => _rate(q.id, 'discuss_further')),
+                  _RatingChip(
+                      label: 'This concerns me',
+                      selected: _ratings[q.id] == 'concerns',
+                      onTap: () => _rate(q.id, 'concerns')),
                 ],
               ),
               const SizedBox(height: 18),
             ],
+            // The privacy line the spec asks for on every phase. It sits
+            // directly under the ratings it is about, not in a footer.
+            Text(
+              'Your answers are shared with ${widget.profile.firstName} and '
+              'your Guardian. Your ratings are private and used only to guide '
+              'your journey.',
+              style: ZyraText.privacyText(),
+            ),
+            const SizedBox(height: 8),
+            if (_summary != null) ZyraIntelligenceCard(intelligence: _summary!),
+            if (_followUps != null) ZyraIntelligenceCard(intelligence: _followUps!),
+            if (_checkpointAdvice != null)
+              ZyraIntelligenceCard(intelligence: _checkpointAdvice!)
+            else if (AppState.instance.plan != ZyraPlan.one)
+              const ZyraIntelligenceInvitation(
+                  kind: ZyraIntelligenceKind.recommendation),
             if (myCheckpoint == null) ...[
               Text('Ready to continue?', style: ZyraText.heading(size: 15)),
               const SizedBox(height: 10),
@@ -1061,7 +2074,7 @@ class _PhaseViewState extends State<_PhaseView> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => _checkpoint('end'),
-                      child: Text('End Journey', style: ZyraText.button(size: 13, color: const Color(0xFFE08080))),
+                      child: Text('End Journey', style: ZyraText.button(size: 13, color: ZyraColors.destructive)),
                     ),
                   ),
                 ],
@@ -1139,14 +2152,49 @@ class _PhaseViewState extends State<_PhaseView> {
 class _RatingChip extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
-  const _RatingChip({required this.label, required this.onTap});
 
+  /// ADDED 2026-08-11. The chips were fire-and-forget: three identical
+  /// buttons, no state, nothing to show which one you picked or that the tap
+  /// registered at all. They are now the input to the ZYRA Recommendation
+  /// below them, so they have to look like a choice that was made.
+  final bool selected;
+
+  const _RatingChip({required this.label, required this.onTap, this.selected = false});
+
+  // RESTYLED 2026-08-11 (Frost UI pass — Founder, screenshot review of
+  // this exact row: "the black doesnt match the app again"). ActionChip
+  // rendered Material 3's stock dark chip surface underneath the white-8%
+  // tint, which is why these sat on the gradient as black pills. Now a
+  // plain frost pill in the Connections segmented control's own sampled
+  // values, with the selected state filling in the brand lavender —
+  // "look like a choice that was made" (the reason `selected` exists,
+  // above) now reads at a glance instead of as a faint border.
+  //
+  // All three ratings stay visually equal when unselected — deliberately
+  // no coral on "This concerns me": it is honesty, not danger, and
+  // colouring it as destructive would tax choosing it.
   @override
   Widget build(BuildContext context) {
-    return ActionChip(
-      label: Text(label, style: const TextStyle(color: Colors.white, fontSize: 11)),
-      backgroundColor: Colors.white.withValues(alpha: 0.08),
-      onPressed: onTap,
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+        decoration: BoxDecoration(
+          color: selected ? ZyraColors.primaryAction : ZyraColors.frostFill,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(
+            color: selected ? Colors.transparent : ZyraColors.frostBorder,
+            width: 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: selected
+              ? ZyraText.button(size: 11.5, color: ZyraColors.onPrimaryAction)
+              : ZyraText.option(size: 11.5, color: Colors.white.withValues(alpha: 0.9)),
+        ),
+      ),
     );
   }
 }
@@ -1169,6 +2217,10 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
   bool _submitted = false;
   bool _waliAnswered = false;
   Timer? _poll;
+
+  /// Ratings from ALL THREE phases, because the summary the Guardian is given
+  /// is about the Journey, not about this stage.
+  Map<String, String> _ratings = {};
 
   @override
   void initState() {
@@ -1195,12 +2247,14 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
     if (showSpinner && mounted) setState(() => _loading = true);
     final myAnswers = await ZyraJourneyService.fetchFamilyAnswers(widget.matchId, 'wali_to_seeker');
     final waliAnswers = await ZyraJourneyService.fetchFamilyAnswers(widget.matchId, 'seeker_to_wali');
+    final ratings = await ZyraJourneyService.fetchAllMyRatings(widget.matchId);
     if (!mounted) return;
     final submitted = myAnswers.length >= JourneyQuestions.waliToSeeker.length;
     final waliAnswered = waliAnswers.length >= JourneyQuestions.seekerToWali.length;
     setState(() {
       _submitted = submitted;
       _waliAnswered = waliAnswered;
+      _ratings = ratings;
       _loading = false;
     });
     // FIXED 2026-07-26 (Founder decision): Family Stage now requires
@@ -1228,9 +2282,19 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
     if (_loading) return const ZyraLoading();
 
     if (_submitted) {
+      final guardianSummary = ZyraJourneyIntelligence.guardianSummary(
+        plan: AppState.instance.plan,
+        otherName: widget.profile.firstName,
+        ratings: _ratings,
+        questions: [
+          ...JourneyQuestions.phase1,
+          ...JourneyQuestions.phase2,
+          ...JourneyQuestions.phase3,
+        ],
+      );
       return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -1249,6 +2313,10 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
                 style: ZyraText.subtext(),
                 textAlign: TextAlign.center,
               ),
+              if (guardianSummary != null)
+                ZyraIntelligenceCard(intelligence: guardianSummary)
+              else
+                const ZyraIntelligenceInvitation(kind: ZyraIntelligenceKind.summary),
             ],
           ),
         ),
@@ -1288,6 +2356,93 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
             child: FilledButton(onPressed: _submit, child: Text('Submit', style: ZyraText.button(size: 14))),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// --- Open Conversation ------------------------------------------------
+//
+// The eighth and final stage. Added 2026-08-11; before this the case simply
+// pushed ChatScreen and the stage had no screen of its own.
+//
+// It is a threshold, not a reward. "This is NOT the reward at the end of a
+// checklist. The structured journey continues — it simply becomes less rigid
+// and more open" (PRE-JOURNEY RITUAL/Summary.md), and JOURNEY PHILOSOPHY §2
+// says the same in stronger words. So this screen marks the change, hands
+// over what was left open along the way, and then gets out of the road.
+class _OpenConversationView extends StatefulWidget {
+  final String matchId;
+  final SeekerProfile profile;
+  const _OpenConversationView({required this.matchId, required this.profile});
+
+  @override
+  State<_OpenConversationView> createState() => _OpenConversationViewState();
+}
+
+class _OpenConversationViewState extends State<_OpenConversationView> {
+  ZyraIntelligence? _topics;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final ratings = await ZyraJourneyService.fetchAllMyRatings(widget.matchId);
+    if (!mounted) return;
+    setState(() {
+      _topics = ZyraJourneyIntelligence.conversationTopics(
+        plan: AppState.instance.plan,
+        ratings: ratings,
+        otherName: widget.profile.firstName,
+      );
+      _loading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) return const ZyraLoading();
+    final name = widget.profile.firstName;
+
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(28, 20, 28, 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              ZyraJourneyStages.labelFor('conversation'),
+              style: ZyraText.heading(size: 22),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'You have been through every stage together. From here you can '
+              'speak freely — the structure lifts, it does not end. Your '
+              'Timeline keeps going, and your Guardian stays part of it.',
+              style: ZyraText.subtext(),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 6),
+            if (_topics != null)
+              ZyraIntelligenceCard(intelligence: _topics!)
+            else if (AppState.instance.plan != ZyraPlan.one)
+              const ZyraIntelligenceInvitation(
+                  kind: ZyraIntelligenceKind.recommendation),
+            const SizedBox(height: 14),
+            FilledButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => ChatScreen(withProfile: widget.profile))),
+              child: Text('Open your conversation with $name',
+                  style: ZyraText.button(size: 14)),
+            ),
+          ],
+        ),
       ),
     );
   }
