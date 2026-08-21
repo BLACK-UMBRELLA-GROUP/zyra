@@ -3,26 +3,47 @@
 // 2026-07-18, OA-AIOS-289). Routes: Welcome -> Sign Up/Sign In ->
 // Role Selection -> Onboarding -> Transition -> Home (Browse/Matches/Profile).
 
+import 'dart:async' show unawaited;
+
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/supabase_config.dart';
+import 'models/zyra_error_state.dart';
 import 'screens/auth_gate.dart';
 import 'services/zyra_app_lock.dart';
+import 'services/zyra_image_cache.dart';
 import 'services/zyra_local_prefs.dart';
 import 'state/app_state.dart';
 import 'screens/welcome_screen.dart';
 import 'theme/zyra_colors.dart';
 import 'theme/zyra_text.dart';
-import 'widgets/dev_nav_overlay.dart';
 import 'widgets/zyra_app_lock_gate.dart';
+import 'widgets/zyra_full_screen_error.dart';
+import 'widgets/zyra_loading.dart';
 
-/// Global navigator access for DevNavOverlay's Back/Home buttons — lets
-/// them pop routes without needing a BuildContext from wherever they're
-/// drawn (they sit above the whole app, not inside any one screen).
+/// Global navigator access for controls that sit above the whole app rather
+/// than inside any one screen — today that is DevScenarioPanel's Home
+/// button (dev_scenario_panel.dart, _goHome), which clears the entire stack
+/// without having a BuildContext inside it. (DevNavOverlay, the original
+/// holder of this key, was deleted 2026-08-12 — see the note at `builder:`.)
 final GlobalKey<NavigatorState> zyraNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // PORTRAIT ONLY — DR-ZYRA-188 (Founder: "lock to portrait"). Every
+  // screen is portrait-composed — the full-bleed Browse photos, the
+  // swipe thresholds, the Journey veil and ribbon — and rotating them
+  // into an undesigned landscape reads as a bug. The category agrees:
+  // matrimonial/dating apps ship portrait-locked. If an iPad build
+  // ever exists, landscape becomes ITS decision, not a free rotate.
+  // unawaited: the lock applies asynchronously; nothing after this
+  // depends on it, and holding the splash for it buys nothing.
+  unawaited(
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+  );
 
   // FIRST, and before Supabase — local disk, single-digit milliseconds.
   // This is what lets frame one paint the right gradient (Founder: "I
@@ -31,6 +52,15 @@ void main() async {
   // the whole point is not to wait on the network to know a colour.
   await ZyraLocalPrefs.init();
   AppState.instance.gender = ZyraLocalPrefs.cachedGender;
+  // Same first-frame contract as the gender (DR-ZYRA-169 Phase 2): the
+  // Profile tab greets by name immediately instead of "Your Profile"
+  // until hydration lands. hydrateFrom() overwrites with the server's
+  // answer moments later — cache paints, server decides.
+  AppState.instance.name = ZyraLocalPrefs.cachedFirstName;
+  // Image-cache schema check (DR-ZYRA-169 Phase 1) — deliberately NOT
+  // awaited: a wipe after an app update can take a beat, and frame one
+  // must never wait on cache housekeeping.
+  unawaited(ZyraImageCache.init());
   // Same reasoning, same frame. If the app lock is on, the lock screen has
   // to be the FIRST thing painted — reading this any later would show the
   // app for a moment first, which is precisely what it exists to prevent.
@@ -76,11 +106,33 @@ void main() async {
       ).timeout(const Duration(seconds: 10));
       _supabaseReady = true;
     } catch (e, stack) {
+      _startupError = e;
       // Deliberately logged, not swallowed (the codebase's 64 silent
       // `catch (_)` blocks are exactly why launch failures have been
       // invisible until now — see the engineering audit, ES-08).
-      debugPrint('ZYRA: Supabase.initialize failed — starting in offline mode.\n$e\n$stack');
+      debugPrint(
+        'ZYRA: Supabase.initialize failed — starting in offline mode.\n$e\n$stack',
+      );
     }
+  }
+
+  // A broken widget must never become Flutter's red diagnostics screen for
+  // a member. Debug/profile builds keep the diagnostics because hiding them
+  // would make device testing weaker; release gets the approved calm page.
+  if (kReleaseMode) {
+    ErrorWidget.builder = (details) {
+      final reference = zyraErrorReference(details.exception);
+      debugPrint(
+        'ZYRA page build failed [$reference]\n'
+        '${details.exception}\n${details.stack}',
+      );
+      return ZyraFullScreenError(
+        kind: ZyraErrorKind.page,
+        referenceCode: reference,
+        onPrimary: () => _restartAfterFatalError(playSplash: false),
+        onSecondary: () => _restartAfterFatalError(playSplash: true),
+      );
+    };
   }
   runApp(const ZyraApp());
 }
@@ -91,6 +143,7 @@ void main() async {
 /// on THIS, because Supabase.instance throws when initialize() was skipped
 /// or failed.
 bool _supabaseReady = false;
+Object? _startupError;
 bool get supabaseReady => _supabaseReady;
 
 /// Convenience accessor used once real auth/data calls are wired in
@@ -162,7 +215,31 @@ class ZyraApp extends StatelessWidget {
         // to Royal Purple, which matched the neutral gradient's top stop
         // and mismatched the female one — a second, smaller flash hiding
         // behind the first.
-        scaffoldBackgroundColor: ZyraColors.genderGradient(AppState.instance.gender).colors.first,
+        // TRANSPARENT — 2026-08-13 (DR-ZYRA-165, closing OA-ZYRA-212).
+        //
+        // This read the gender ONCE, when ZyraApp.build ran, from the
+        // value main() had just loaded out of the disk cache — the
+        // PREVIOUS session's gender. ZyraApp is a StatelessWidget, so
+        // nothing rebuilt the ThemeData afterwards. The live gradient in
+        // `builder:` below tracks gender through a ListenableBuilder;
+        // this did not. After any sign-in or Developer Access switch the
+        // two disagreed for the rest of the process.
+        //
+        // THAT IS THE MALE-SEEKER ASYMMETRY THE FOUNDER REPORTED. Launch
+        // with a female account cached, switch to a male one, and every
+        // gap where a Scaffold shows through paints Rose Pink behind
+        // Royal Blue chrome. Test female-on-female and it is pink on
+        // pink — invisible. The bug was never male-specific; it was
+        // switch-specific, and the female baseline is where it hides.
+        //
+        // Transparent rather than "rebuild the theme on change", which
+        // is the other half of OA-ZYRA-212's target. The `builder:`
+        // wrapper below paints the live gender gradient behind EVERY
+        // route, so there is a correct colour there already and a second
+        // copy of it in the theme can only ever be a copy that goes
+        // stale. This removes the class of bug rather than keeping two
+        // values in step.
+        scaffoldBackgroundColor: Colors.transparent,
         useMaterial3: true,
         // ADDED 2026-08-11 (Founder, screenshot review: "some buttons are
         // one colour and some are another… now the continue journey button
@@ -222,7 +299,9 @@ class ZyraApp extends StatelessWidget {
           backgroundColor: ZyraColors.toastSurface,
           contentTextStyle: ZyraText.body(size: 13.5, color: Colors.white),
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           insetPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
           elevation: 0,
         ),
@@ -241,11 +320,13 @@ class ZyraApp extends StatelessWidget {
         // forward-only and won't have this gesture, matching how iOS
         // itself behaves in similar forward-only flows.
       ),
-      // Founder testing aid (2026-07-19) — floating Back/Home buttons,
-      // debug-only (see dev_nav_overlay.dart). Wrapping here via
-      // `builder:` means it sits above every screen regardless of the
-      // navigation stack depth, without needing to touch any individual
-      // screen.
+      // DevNavOverlay DELETED 2026-08-12 (dev-panel redesign, drift pass).
+      // It began 2026-07-19 as floating Back/Home buttons wrapped here via
+      // `builder:`; the buttons moved into DevScenarioPanel on 2026-08-03
+      // and the wrapper had passed its child through untouched ever since —
+      // kept only as "the natural place for the next always-on debug
+      // affordance", which five weeks did not produce. If one is ever
+      // needed, wrap it here exactly as the old file did.
       // 2026-07-25, DR-ZYRA-101 audit item 1: app-wide gradient default,
       // wrapping every screen below the ThemeData Color fallback above.
       // Neutral brandGradient, not gender-matched — this layer is
@@ -297,10 +378,7 @@ class ZyraApp extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: ZyraColors.genderGradient(AppState.instance.gender),
             ),
-            child: DevNavOverlay(
-              navigatorKey: zyraNavigatorKey,
-              child: child ?? const SizedBox.shrink(),
-            ),
+            child: child ?? const SizedBox.shrink(),
           ),
         ),
       ),
@@ -312,13 +390,79 @@ class ZyraApp extends StatelessWidget {
       // present in the config file, which was still true when initialize()
       // had just failed. AuthGate would then call Supabase.instance and
       // throw inside build(), turning a recoverable backend outage into a
-      // dead app. On failure the user gets Welcome, which is honest: with
-      // no backend there is nothing to sign them into anyway.
-      home: supabaseReady ? const AuthGate() : const WelcomeScreen(),
+      // dead app. The startup gate now presents the approved retryable
+      // connection/service page and keeps Welcome as its safe exit.
+      home: const _ZyraStartupGate(),
     );
   }
 }
 
+void _restartAfterFatalError({required bool playSplash}) {
+  final navigator = zyraNavigatorKey.currentState;
+  if (navigator == null) return;
+  navigator.pushAndRemoveUntil(
+    MaterialPageRoute(
+      builder: (_) => supabaseReady
+          ? AuthGate(playSplash: playSplash)
+          : const _ZyraStartupGate(),
+    ),
+    (route) => false,
+  );
+}
+
+/// Owns the only retryable failure that occurs before normal routing exists.
+/// No navigation or Journey state is cleared: once Supabase is available,
+/// AuthGate reads the same persisted session and resumes normally.
+class _ZyraStartupGate extends StatefulWidget {
+  const _ZyraStartupGate();
+
+  @override
+  State<_ZyraStartupGate> createState() => _ZyraStartupGateState();
+}
+
+class _ZyraStartupGateState extends State<_ZyraStartupGate> {
+  bool _retrying = false;
+  bool _showWelcome = false;
+
+  Future<void> _retry() async {
+    if (_retrying || !SupabaseConfig.isConfigured) return;
+    setState(() {
+      _retrying = true;
+      _showWelcome = false;
+    });
+    try {
+      await Supabase.initialize(
+        url: SupabaseConfig.url,
+        // ignore: deprecated_member_use
+        anonKey: SupabaseConfig.anonKey,
+      ).timeout(const Duration(seconds: 10));
+      _supabaseReady = true;
+      _startupError = null;
+    } catch (error, stack) {
+      _startupError = error;
+      debugPrint('ZYRA startup retry failed.\n$error\n$stack');
+    }
+    if (mounted) setState(() => _retrying = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_retrying) {
+      return const ZyraLoading.fullScreen(label: 'Trying again…');
+    }
+    if (supabaseReady) return const AuthGate();
+    final error = _startupError;
+    if (!_showWelcome && SupabaseConfig.isConfigured && error != null) {
+      return ZyraFullScreenError(
+        kind: zyraErrorKindFor(error),
+        referenceCode: zyraErrorReference(error),
+        onPrimary: _retry,
+        onSecondary: () => setState(() => _showWelcome = true),
+      );
+    }
+    return const WelcomeScreen();
+  }
+}
 
 /// No overscroll indicator, anywhere.
 ///
@@ -330,8 +474,10 @@ class _ZyraScrollBehavior extends MaterialScrollBehavior {
 
   @override
   Widget buildOverscrollIndicator(
-          BuildContext context, Widget child, ScrollableDetails details) =>
-      child;
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) => child;
 
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) =>

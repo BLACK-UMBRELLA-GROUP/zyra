@@ -101,10 +101,22 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       ),
                     ),
                     if (_busy)
+                      // COLOURED 2026-08-13 (DR-ZYRA-165). This was the
+                      // only spinner in the app with no colour set, so it
+                      // painted in Material's theme primary on a gender
+                      // gradient while every other spinner is
+                      // white54/white70.
+                      //
+                      // Colors.white70 rather than white.withValues(0.7):
+                      // identical value (0xB3FFFFFF), but a const, so the
+                      // enclosing const SizedBox survives. withValues() is
+                      // a method call and cannot appear in a const
+                      // expression.
                       const SizedBox(
                         width: 18,
                         height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: CircularProgressIndicator(
+                            strokeWidth: 2, color: Colors.white70),
                       )
                     else
                       Switch(

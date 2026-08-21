@@ -1,6 +1,5 @@
-// Generic traffic-light preference screen — mirrors a question's own option
-// list and lets the Seeker mark 🟢 Open / 🟡 Flexible / 🔴 Not Preferred per
-// option, per Onboarding Flow Diagram.md's Chapter 4 pattern.
+// Generic per-option preference screen. Every possible answer receives its
+// own explicit Prefer this / No preference / Not for me choice.
 //
 // HARD REQUIREMENTS ARE PER-OPTION IN CHAPTER 4 SINCE 2026-08-10 (Onboarding
 // Direction B, Founder decision; migration onboarding_b_stage1_hard_
@@ -21,11 +20,8 @@
 // old-shape write would read as "no hard requirement at all", failing OPEN on
 // a promise the Seeker made.
 //
-// NOTE: the spec's Skip control (Onboarding Rules & UX §Global Traffic Light
-// Rules — "Skip records 🟢 for every option") has never existed in this file,
-// despite the rule being written as though it did. It is not being added
-// here; it is superseded by tap-to-exclude, where 🟢 becomes the resting
-// state and Continue is always enabled.
+// No value is inferred or preselected. A choice here is a stated preference,
+// so every saved light must come from a deliberate tap.
 
 import 'package:flutter/material.dart';
 import '../../models/onboarding_question.dart';
@@ -48,6 +44,7 @@ import '../../theme/zyra_text.dart';
 
 class TrafficLightQuestionScreen extends StatefulWidget {
   final String yourAnswer; // "Your answer: ..." shown at the top
+  final Set<String> yourAnswers;
   final List<String> options;
   final bool hardRequirementSupported;
   final Map<String, TrafficLight> initialValues;
@@ -57,80 +54,40 @@ class TrafficLightQuestionScreen extends StatefulWidget {
   /// empty, or exactly the set of 🔴 options.
   final Set<String> initialHardRequirement;
 
-  /// TAP-TO-EXCLUDE (H1, Onboarding Direction B, 2026-08-10).
-  ///
-  /// When true, every option starts 🟢 and the Seeker touches only what they
-  /// are NOT open to. Chapter 4 required all 325 lights to be set by hand
-  /// before Continue would enable — measured from the live data file, and a
-  /// floor rather than an average, because there was no Skip control despite
-  /// the spec describing one.
-  ///
-  /// Green is the resting state, so most questions now cost zero taps.
-  ///
-  /// **Seeding happens on SHOW, never in advance** — Founder decision
-  /// 2026-08-10. A question whose screen the Seeker never reached records
-  /// nothing at all. Pre-seeding the whole chapter on entry would manufacture
-  /// 71 questions of stated preference from someone who answered three, which
-  /// is the same dishonesty as the old "Skip records green" rule, only larger.
-  ///
-  /// OFF for Chapter 2's sect matrix: five options on one screen is not the
-  /// problem H1 solves, and changing that screen's completion rule was not in
-  /// the approved scope.
-  final bool greenIsResting;
-
   final ValueChanged<Map<String, TrafficLight>> onChanged;
   final ValueChanged<Set<String>> onHardRequirementChanged;
 
   const TrafficLightQuestionScreen({
     super.key,
     required this.yourAnswer,
+    this.yourAnswers = const {},
     required this.options,
     required this.onChanged,
     required this.onHardRequirementChanged,
     this.hardRequirementSupported = true,
     this.initialValues = const {},
     this.initialHardRequirement = const {},
-    this.greenIsResting = false,
   });
 
   @override
-  State<TrafficLightQuestionScreen> createState() => _TrafficLightQuestionScreenState();
+  State<TrafficLightQuestionScreen> createState() =>
+      _TrafficLightQuestionScreenState();
 }
 
-class _TrafficLightQuestionScreenState extends State<TrafficLightQuestionScreen> {
-  late final Map<String, TrafficLight> _values = Map<String, TrafficLight>.from(widget.initialValues);
-  late final Set<String> _hard = Set<String>.from(widget.initialHardRequirement);
+class _TrafficLightQuestionScreenState
+    extends State<TrafficLightQuestionScreen> {
+  late final Map<String, TrafficLight> _values = Map<String, TrafficLight>.from(
+    widget.initialValues,
+  );
+  late final Set<String> _hard = Set<String>.from(
+    widget.initialHardRequirement,
+  );
 
   Set<String> get _redOptions =>
       widget.options.where((o) => _values[o] == TrafficLight.red).toSet();
 
   bool get _allRed =>
       widget.options.isNotEmpty && _redOptions.length == widget.options.length;
-
-  @override
-  void initState() {
-    super.initState();
-    if (!widget.greenIsResting) return;
-
-    // THIS is the moment a Chapter 4 question counts as "shown". The widget
-    // only exists because the Seeker navigated to it, so seeding here — and
-    // nowhere earlier — is exactly the rule the Founder set: a screen they
-    // never reached records nothing.
-    //
-    // Only fills gaps, so coming back to a question does not wipe what they
-    // already said.
-    final missing = widget.options.where((o) => !_values.containsKey(o)).toList();
-    if (missing.isEmpty) return;
-    for (final option in missing) {
-      _values[option] = TrafficLight.green;
-    }
-    // Deferred: initState runs mid-build, and onChanged calls setState on the
-    // parent flow. Calling it inline throws
-    // "setState() or markNeedsBuild() called during build".
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) widget.onChanged(Map<String, TrafficLight>.from(_values));
-    });
-  }
 
   void _set(String option, TrafficLight light) {
     setState(() {
@@ -169,38 +126,95 @@ class _TrafficLightQuestionScreenState extends State<TrafficLightQuestionScreen>
             decoration: BoxDecoration(
               color: ZyraColors.iconButtonBg,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: ZyraColors.iconButtonBorder, width: 0.5),
+              border: Border.all(
+                color: ZyraColors.iconButtonBorder,
+                width: 0.5,
+              ),
             ),
-            child: Text('Your answer: ${widget.yourAnswer}', style: ZyraText.subtext(size: 12.5)),
+            child: Text(
+              'Your answer: ${widget.yourAnswer}',
+              style: ZyraText.subtext(size: 12.5),
+            ),
           ),
           const SizedBox(height: 18),
         ],
         ...widget.options.map((option) {
           final current = _values[option];
           final isRed = current == TrafficLight.red;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+          return Container(
+            key: ValueKey('preference_option_$option'),
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 11),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.035),
+              borderRadius: BorderRadius.circular(13),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.09)),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(child: Text(option, style: ZyraText.option())),
-                    const SizedBox(width: 8),
-                    _LightButton(
-                      light: TrafficLight.green,
-                      active: current == TrafficLight.green,
-                      onTap: () => _set(option, TrafficLight.green),
+                    if (widget.yourAnswers.contains(option)) ...[
+                      const SizedBox(width: 9),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 7,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: ZyraColors.accentBg,
+                          borderRadius: BorderRadius.circular(99),
+                          border: Border.all(
+                            color: ZyraColors.accentBorder,
+                            width: 0.7,
+                          ),
+                        ),
+                        child: Text(
+                          'YOUR ANSWER',
+                          style: ZyraText.chapterLabel(color: Colors.white70),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 11),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _LightButton(
+                        key: ValueKey('preference_${option}_green'),
+                        light: TrafficLight.green,
+                        label: 'Prefer this',
+                        semanticLabel: 'Prefer this for $option',
+                        active: current == TrafficLight.green,
+                        onTap: () => _set(option, TrafficLight.green),
+                      ),
                     ),
-                    _LightButton(
-                      light: TrafficLight.yellow,
-                      active: current == TrafficLight.yellow,
-                      onTap: () => _set(option, TrafficLight.yellow),
+                    const SizedBox(width: 7),
+                    Expanded(
+                      child: _LightButton(
+                        key: ValueKey('preference_${option}_yellow'),
+                        light: TrafficLight.yellow,
+                        label: 'No preference',
+                        semanticLabel: 'No preference for $option',
+                        active: current == TrafficLight.yellow,
+                        onTap: () => _set(option, TrafficLight.yellow),
+                      ),
                     ),
-                    _LightButton(
-                      light: TrafficLight.red,
-                      active: isRed,
-                      onTap: () => _set(option, TrafficLight.red),
+                    const SizedBox(width: 7),
+                    Expanded(
+                      child: _LightButton(
+                        key: ValueKey('preference_${option}_red'),
+                        light: TrafficLight.red,
+                        label: 'Not for me',
+                        semanticLabel: 'Not for me: $option',
+                        active: isRed,
+                        onTap: () => _set(option, TrafficLight.red),
+                      ),
                     ),
                   ],
                 ),
@@ -212,11 +226,17 @@ class _TrafficLightQuestionScreenState extends State<TrafficLightQuestionScreen>
                   InkWell(
                     onTap: () => _toggleHardOption(option),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 2, top: 2, bottom: 2),
+                      padding: const EdgeInsets.only(
+                        left: 2,
+                        top: 2,
+                        bottom: 2,
+                      ),
                       child: Row(
                         children: [
                           Icon(
-                            _hard.contains(option) ? Icons.check_box : Icons.check_box_outline_blank,
+                            _hard.contains(option)
+                                ? Icons.check_box
+                                : Icons.check_box_outline_blank,
                             color: Colors.white54,
                             size: 17,
                           ),
@@ -252,9 +272,9 @@ class _TrafficLightQuestionScreenState extends State<TrafficLightQuestionScreen>
           Text(
             _hard.length == widget.options.length
                 ? 'You have ruled out every answer to this question, so nobody who '
-                    'answers it can be introduced to you.'
+                      'answers it can be introduced to you.'
                 : "You're not open to any answer here. ZYRA can still introduce "
-                    'people, but this question will count against every one of them.',
+                      'people, but this question will count against every one of them.',
             style: ZyraText.subtext(size: 11.5),
           ),
           const SizedBox(height: 4),
@@ -270,7 +290,6 @@ class _TrafficLightQuestionScreenState extends State<TrafficLightQuestionScreen>
             style: ZyraText.subtext(size: 11.5),
           ),
         ],
-
       ],
     );
   }
@@ -278,26 +297,86 @@ class _TrafficLightQuestionScreenState extends State<TrafficLightQuestionScreen>
 
 class _LightButton extends StatelessWidget {
   final TrafficLight light;
+  final String label;
+  final String semanticLabel;
   final bool active;
   final VoidCallback onTap;
 
-  const _LightButton({required this.light, required this.active, required this.onTap});
+  const _LightButton({
+    super.key,
+    required this.light,
+    required this.label,
+    required this.semanticLabel,
+    required this.active,
+    required this.onTap,
+  });
+
+  Color get _color => switch (light) {
+    TrafficLight.green => const Color(0xFF84D0A8),
+    TrafficLight.yellow => const Color(0xFFE8C98A),
+    TrafficLight.red => const Color(0xFFE18A91),
+  };
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(left: 4),
-        width: 34,
-        height: 34,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: active ? ZyraColors.accentBg : Colors.transparent,
-          border: Border.all(color: active ? ZyraColors.accentBorder : Colors.white12, width: 1),
+    return Semantics(
+      button: true,
+      selected: active,
+      label: semanticLabel,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(11),
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            constraints: const BoxConstraints(minHeight: 57),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+            decoration: BoxDecoration(
+              color: active
+                  ? _color.withValues(alpha: 0.14)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(11),
+              border: Border.all(
+                color: active
+                    ? _color.withValues(alpha: 0.82)
+                    : Colors.white.withValues(alpha: 0.13),
+                width: active ? 1.2 : 0.8,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 9,
+                  height: 9,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _color,
+                    boxShadow: active
+                        ? [
+                            BoxShadow(
+                              color: _color.withValues(alpha: 0.32),
+                              blurRadius: 7,
+                            ),
+                          ]
+                        : null,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  label,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: ZyraText.subtext(
+                    size: 10.5,
+                    color: active ? Colors.white : Colors.white60,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        child: Text(light.emoji, style: const TextStyle(fontSize: 14)),
       ),
     );
   }

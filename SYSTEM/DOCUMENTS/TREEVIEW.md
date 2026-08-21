@@ -480,7 +480,7 @@ ZYRA/
     │   ├── MASTER_CONTRACTS/
     │   │   └── ZYRA_EXECUTION_V3.md
     │   ├── MASTER_GOVERNANCE/
-    │   │   └── ZYRA_GOVERNANCE_V1.md
+    │   │   └── ZYRA_GOVERNANCE
     │   ├── MASTER_STANDARDS/
     │   │   ├── NAMING_CONVENTIONS_V1.md
     │   │   ├── SUMMARY_STANDARD_CURRENT_VERSION_V3.md

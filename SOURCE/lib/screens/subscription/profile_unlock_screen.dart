@@ -130,7 +130,6 @@ class UnlockPricing {
 /// scorer knows what these sample numbers were made to satisfy.
 class _Sample {
   _Sample._();
-  static const overall = 81;
   static const green = 62;
   static const amber = 19;
   static const red = 7;
@@ -147,7 +146,22 @@ class _Sample {
 class ProfileUnlockScreen extends StatefulWidget {
   final SeekerProfile profile;
 
-  const ProfileUnlockScreen({super.key, required this.profile});
+  /// THE JOURNEY DOOR — 2026-08-13 (Founder: Paused/Ended cards read
+  /// "View Compatibility", never "Compatibility Unlock", "because they
+  /// already unlocked"). A Journey OPENS with Compatibility Reveal: the
+  /// overall figure was shown to both people as part of the Journey
+  /// itself, so for a pair whose Journey began, this screen must never
+  /// re-lock what the Journey already revealed — asking them to pay to
+  /// see it again would be charging for a memory.
+  ///
+  /// True only when opened from a Journey surface for such a pair (the
+  /// Paused/Ended cards, the Timeline's Compatibility entry). Affects
+  /// the OVERALL section alone; the Plus detail (categories, Guardians)
+  /// stays gated exactly as before — the Journey never revealed those.
+  final bool journeyRevealed;
+
+  const ProfileUnlockScreen(
+      {super.key, required this.profile, this.journeyRevealed = false});
 
   @override
   State<ProfileUnlockScreen> createState() => _ProfileUnlockScreenState();
@@ -341,8 +355,12 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     // again for the part they already bought would break the permanence
     // rule the unique index exists to enforce.
     final detailUnlocked = ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.plus);
-    final overallUnlocked =
-        detailUnlocked || ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.standard);
+    // journeyRevealed opens the overall exactly like a standard unlock —
+    // the Journey already showed both people this number (see the field's
+    // doc). It spends nothing and writes nothing; the ledger is untouched.
+    final overallUnlocked = detailUnlocked ||
+        widget.journeyRevealed ||
+        ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.standard);
 
     final everBought = standardLeft > 0 || plusLeft > 0;
 

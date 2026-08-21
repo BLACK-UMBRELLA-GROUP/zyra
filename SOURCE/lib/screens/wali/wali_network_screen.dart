@@ -13,11 +13,42 @@
 // row via mock_purchase_wali_premium() — still no real payment, but the
 // entitlement it grants is genuinely read back, not just a local flag.
 
+// 2026-08-13 (Founder), THREE CHANGES:
+//
+//  1. THE PINK FLASH IS FIXED. "When I click Network there's a slight
+//     glitch on the male Guardian where for a second I see pink then
+//     blue." Cause: this was the ONLY Guardian screen that returned its
+//     loading state BEFORE painting its gradient —
+//     `if (_loading) return const ZyraLoading();` sat above the
+//     Container. Dashboard, Seekers and Profile all paint the gradient
+//     first and put the spinner inside it.
+//
+//     For that one frame the Scaffold showed through, and
+//     scaffoldBackgroundColor (main.dart) is
+//     `genderGradient(AppState.gender).colors.first` — read ONCE when the
+//     theme is built, from the CACHED gender. Switch from a female
+//     account to a male Guardian and the stale value is female, so the
+//     exposed colour is Rose Pink #D4868F. Then the real gradient paints
+//     Royal Blue over it. Exactly one frame of pink, then blue.
+//
+//     Fixed by painting the gradient first, like every sibling screen.
+//     The stale theme colour is a real second-order bug and is NOT fixed
+//     here — it can no longer show on this screen, and no other screen
+//     exposes it.
+//
+//  2. THE TOP CONTROL IS THE SHARED PILL. Discover/Requests were two
+//     plain rounded buttons; they are now ZyraSegmentedToggle — the same
+//     sliding frosted pill as the Seeker's Connections page.
+//
+//  3. SWIPEABLE, like Connections. The pill tracks the finger through a
+//     PageView rather than snapping at the end of the gesture.
+
 import 'package:flutter/material.dart';
 import '../../services/zyra_entitlement_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_segmented_toggle.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_loading.dart';
 
@@ -29,22 +60,36 @@ class WaliNetworkScreen extends StatefulWidget {
 }
 
 class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
-  int _tab = 0; // 0 = Discover, 1 = Requests
   bool _loading = true;
   bool _hasExtended = false;
   bool _purchasing = false;
+
+  /// Connections' mechanism, verbatim: the pager's live fractional offset,
+  /// not the settled page, so the pill sits 40% across at 40% of a swipe.
+  final PageController _pager = PageController();
+  double _pagerPos = 0;
 
   @override
   void initState() {
     super.initState();
     AppState.instance.addListener(_onChange);
+    _pager.addListener(_onPagerScroll);
     _loadEntitlement();
   }
 
   @override
   void dispose() {
     AppState.instance.removeListener(_onChange);
+    _pager.removeListener(_onPagerScroll);
+    _pager.dispose();
     super.dispose();
+  }
+
+  void _onPagerScroll() {
+    if (!_pager.hasClients || _pager.page == null) return;
+    final p = _pager.page!.clamp(0.0, 1.0);
+    if ((p - _pagerPos).abs() < 0.001) return;
+    setState(() => _pagerPos = p);
   }
 
   void _onChange() => setState(() {});
@@ -79,10 +124,9 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return const ZyraLoading();
-    }
     final hasExtended = _hasExtended;
+    // THE GRADIENT PAINTS FIRST, always — see change 1 in the header. The
+    // loading state lives inside it now, never above it.
     return Container(
       // 2026-07-25: gender-matched gradient, was hardcoded Male — see
       // ZyraColors.genderGradient() doc comment / DR-ZYRA-094.
@@ -93,9 +137,11 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: Text('Network', style: ZyraText.heading(size: 22)),
+              child: Text('Network', style: ZyraText.heading(size: 26)),
             ),
-            if (!hasExtended)
+            if (_loading)
+              const Expanded(child: ZyraLoading())
+            else if (!hasExtended)
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -154,24 +200,42 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
               )
             else ...[
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                child: Row(
-                  children: [
-                    Expanded(child: _NetworkTabButton(label: 'Discover', selected: _tab == 0, onTap: () => setState(() => _tab = 0))),
-                    const SizedBox(width: 10),
-                    Expanded(child: _NetworkTabButton(label: 'Requests', selected: _tab == 1, onTap: () => setState(() => _tab = 1))),
-                  ],
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+                child: ZyraSegmentedToggle(
+                  labels: const ['Discover', 'Requests'],
+                  position: _pagerPos,
+                  // Two segments, so there is room for the fuller size.
+                  labelSize: 13,
+                  onChanged: (i) => _pager.animateToPage(
+                    i,
+                    duration: const Duration(milliseconds: 260),
+                    curve: Curves.easeOutCubic,
+                  ),
                 ),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: ZyraEmptyState(
-                    icon: _tab == 0 ? Icons.diversity_3_outlined : Icons.inbox_outlined,
-                    message: _tab == 0
-                        ? 'No families to discover yet — this fills in once other Guardians with Guardian+ capabilities appear.'
-                        : 'No Family Introduction Requests yet.',
-                  ),
+                child: PageView(
+                  controller: _pager,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(24, 16, 24, 100),
+                      child: ZyraEmptyState(
+                        icon: Icons.diversity_3_outlined,
+                        title: 'Discover families',
+                        message:
+                            'Families appear here once other Guardians with Guardian+ join.',
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(24, 16, 24, 100),
+                      child: ZyraEmptyState(
+                        icon: Icons.inbox_outlined,
+                        title: 'No requests yet',
+                        message:
+                            'Family Introduction Requests will appear here.',
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -182,25 +246,6 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
   }
 }
 
-class _NetworkTabButton extends StatelessWidget {
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-  const _NetworkTabButton({required this.label, required this.selected, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-          borderRadius: BorderRadius.circular(50),
-          border: Border.all(color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder, width: 0.5),
-        ),
-        child: Center(child: Text(label, style: ZyraText.body(size: 12.5, color: Colors.white))),
-      ),
-    );
-  }
-}
+// _NetworkTabButton retired 2026-08-13 — replaced by the shared
+// ZyraSegmentedToggle. It was the Guardian side's private answer to a
+// question the Seeker side had already answered better.

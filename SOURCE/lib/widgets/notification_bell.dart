@@ -1,8 +1,12 @@
-// Bell icon (#16) — per APP/Navigation/SEEKER NAVIGATION/Summary.md's
-// ratified rule: "Notifications use the Bell Icon. Bell Icon is
-// positioned top-right. Notifications are not a navigation tab." Used
-// identically in both HomeShell (Seeker) and WaliHomeShell (Guardian) —
-// the notifications table/service work the same for either role.
+// Bell icon (#16). SEEKER SIDE RETIRED 2026-08-13 (DR-ZYRA-149):
+// Notifications became HomeShell's fifth tab — "left of profile, right
+// of guardian" — superseding the SEEKER NAVIGATION rule this header
+// used to quote ("Notifications are not a navigation tab"; doc update
+// raised as OA-ZYRA-206). The unread badge moved onto that tab.
+//
+// THE WALI SIDE STILL USES THIS WIDGET — WaliHomeShell keeps its
+// top-right Bell, untouched by the ruling — which is why the file
+// stays.
 //
 // CHANGED 2026-07-26 (Founder, Browse review: "when pressed I don't
 // want a new page I want a card to open or expand in the same screen
@@ -53,13 +57,21 @@ class _NotificationBellState extends State<NotificationBell> {
     super.dispose();
   }
 
+  // NOTE 2026-08-15: BOTH shells have now retired this widget —
+  // Seeker's on 2026-08-13 (DR-ZYRA-149) and Wali's the same day
+  // (wali_home_shell.dart's Founder-instructed parity pass). Nothing
+  // imports it any more; it is kept compiling only until its git
+  // deletion, which is the Founder's to make in his Terminal.
   Future<void> _refresh() async {
     final count = await ZyraNotificationService.fetchUnreadCount();
-    if (mounted) setState(() => _unread = count);
+    // Null = the fetch failed (BUG-05, OA-ZYRA-225) — hold the last count.
+    if (mounted && count != null) setState(() => _unread = count);
   }
 
   Future<void> _open() async {
-    await Navigator.of(context).push(MaterialPageRoute(builder: (_) => const NotificationsScreen()));
+    await Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const NotificationsScreen()));
     // Unread count may have changed while the page was open (rows get
     // marked read on tap there) — refresh on return rather than relying
     // on the next 20s poll tick.
@@ -71,10 +83,7 @@ class _NotificationBellState extends State<NotificationBell> {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        GlassIconButton(
-          icon: Icons.notifications_outlined,
-          onTap: _open,
-        ),
+        GlassIconButton(icon: Icons.notifications_outlined, onTap: _open),
         if (_unread > 0)
           Positioned(
             top: -2,
@@ -82,11 +91,18 @@ class _NotificationBellState extends State<NotificationBell> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
               constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-              decoration: const BoxDecoration(color: ZyraColors.rosePink, shape: BoxShape.circle),
+              decoration: const BoxDecoration(
+                color: ZyraColors.unlockDot,
+                shape: BoxShape.circle,
+              ),
               child: Text(
                 _unread > 9 ? '9+' : '$_unread',
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  color: ZyraColors.luxuryDarkPurple,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),

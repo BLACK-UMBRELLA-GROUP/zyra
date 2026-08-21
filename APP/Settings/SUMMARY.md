@@ -1,7 +1,7 @@
 # Settings
 
 **Status:** Partially built
-**Updated:** 2026-07-26 (#22)
+**Updated:** 2026-08-20 (DR-ZYRA-209/210; OA-ZYRA-244/245)
 
 ------------------------------------------------------------
 WHERE IT LIVES
@@ -14,6 +14,7 @@ wali_profile_screen.dart), listing:
 
   • Notifications  → SOURCE/lib/screens/settings/notification_settings_screen.dart
   • Privacy         → SOURCE/lib/screens/settings/privacy_settings_screen.dart
+  • Sign-in & security → SOURCE/lib/screens/settings/sign_in_security_screen.dart
   • Manage Subscription → existing UpgradeScreen
   • Help & Support  → SOURCE/lib/screens/settings/help_support_screen.dart (#22)
   • Sign Out        → built, functional
@@ -65,6 +66,31 @@ Summary.md), so a duplicate entry here would have been a second path
 to the same flow.
 
 ------------------------------------------------------------
+SIGN-IN & SECURITY — APPROVED MODEL
+------------------------------------------------------------
+
+The public app keeps Apple and Google as its two normal sign-in choices.
+Settings shows each connected provider and allows an authenticated member to
+link the missing provider to the same Supabase user id. A separately verified
+recovery email provides six-digit one-time-code recovery with no ZYRA
+password and cannot create an account.
+
+Provider identity, recovery email and contact/notification email are labelled
+separately. Matching email text never causes an automatic account merge.
+
+The Founder's Google Workspace account uses the same Google button as every
+other member. Developer Access depends on an exact-account, protected
+server-issued role and is available only after authentication in non-release
+builds. The Workspace domain alone never grants access; ordinary Google users
+route normally; release builds expose no developer route.
+
+The current pre-auth Developer Access entry and embedded shared test password
+are technical debt. Their protected server-mediated replacement is tracked by
+OA-ZYRA-245. Live Google/Apple/manual-linking/email-template configuration is
+also required before the relevant controls are production-ready. No database
+migration is authorised by this decision.
+
+------------------------------------------------------------
 NOTIFICATIONS SCREEN — REAL SCOPE
 ------------------------------------------------------------
 
@@ -95,3 +121,7 @@ NOT BUILT
     data before/instead of deleting is not)
   • Any privacy control beyond Browse visibility
   • In-app ticketing/chat for Help & Support (email only)
+  • Live OAuth/manual-linking/recovery-email configuration and proof
+    (OA-ZYRA-244)
+  • Protected Google Workspace Founder/developer authorisation and the
+    server-mediated seeded-persona switch (OA-ZYRA-245)

@@ -11,7 +11,7 @@
 //   Active               1                 3
 //   Potential           25             unlimited
 //   Paused               5                10
-//   Ended                5                10
+//   Ended shown          1                 5
 //
 // ── WHY A FILE AND NOT FOUR CONSTANTS. This project has paid three times
 // today for the same mistake: four copies of an age fetch, two copies of
@@ -57,12 +57,39 @@
 // server-enforced. Migration 20260811232500 (Founder: both plans pause,
 // caps are the differentiator) makes suspend_journey raise
 // paused_limit_reached at 5 (Basic) / 10 (One), counted over pauses the
-// caller initiated, reading the plan from subscriptions directly. The
-// rest of the header above still stands: one_active_match still counts
-// a paused row against the single active slot, so the caps cannot be
-// REACHED until that trigger excludes suspended rows — that work
-// remains raised, not built. What changed today is who may pause at
-// all: everyone.
+// caller initiated, reading the plan from subscriptions directly. What
+// changed that day is who may pause at all: everyone.
+//
+// ── PARTIAL UPDATE 2026-08-12: (a) IS BUILT — pause frees the slot.
+// Migrations 20260812144437 + 20260812144851 exclude suspended rows from
+// every active-slot enforcement point: both partial unique indexes, both
+// constraint triggers (matches AND journey_attempts — the second was
+// found by suite check 68 going red), promote_journey_to_active,
+// resume_journey (new self-guard: 'self_in_active_journey'), and the
+// request_new_journey pair. The database now holds "1 active + 5 paused"
+// happily; journey suite section J (checks 68-71) is the proof, and the
+// Connections takeover popup (Founder design B1) offers Pause as a
+// first-class card because of it.
+//
+// ── PARTIAL UPDATE 2026-08-12, later the same day: (b) IS BUILT TOO —
+// the ACTIVE row of the matrix is server-enforced per plan. Migration
+// 20260812152607 (plan_aware_active_journey_limit) adds
+// zyra_active_journey_cap() — 3 on an active seeker_premium
+// subscription, 1 otherwise, THE SAME NUMBERS AS [active] BELOW; change
+// one, change both — and counts each party against their own cap in both
+// constraint triggers, promote, resume and the request pair. The unique
+// indexes matches_seeker_a/_b_active became plain indexes (uniqueness IS
+// cap-one); the advisory-lock triggers are the sole race-proof guard.
+// Journey suite section K (checks 72-76) is the proof, and the
+// Connections C1 chooser popup (Founder-picked) asks WHICH Journey makes
+// room when a full ZYRA One begins another.
+//
+// STILL CLIENT-ONLY: [potential]'s cap-with-choice flow and [ended]'s
+// display cap. Ended is deliberately not a retention limit: Basic lists
+// the most recent 1 and ZYRA One the most recent 5, while every Timeline
+// stays stored. A direct New Journey request is offered only during the
+// Founder's 60-day post-End window; OA-ZYRA-242 owns matching server and
+// Browse enforcement.
 
 import '../state/app_state.dart' show ZyraPlan;
 
@@ -71,6 +98,10 @@ import '../state/app_state.dart' show ZyraPlan;
 /// [potential] is null when unlimited. Every other field is a real cap.
 class ZyraJourneyLimits {
   /// Running Journeys — not paused. The headline entitlement.
+  ///
+  /// Server-enforced per plan since 2026-08-12: these numbers are
+  /// duplicated in zyra_active_journey_cap() (migration
+  /// plan_aware_active_journey_limit) — change one, change both.
   final int active;
 
   /// Mutual matches nobody has opened yet. Null means unlimited.
@@ -83,15 +114,12 @@ class ZyraJourneyLimits {
 
   /// Journeys held with suspended_by set. Independent of [active] by
   /// decision (Founder, 2026-08-09) — a paused Journey does not consume
-  /// an active slot. The database does not yet agree; see the header.
+  /// an active slot. The database agrees since 2026-08-12
+  /// (pause_frees_active_slot migrations); see the header.
   final int paused;
 
-  /// Ended Journeys retained and shown in the Ended section.
-  ///
-  /// What happens AT the cap is deliberately not encoded here, because it
-  /// has not been decided. Ending a Journey cannot be refused, so the cap
-  /// must mean something else — oldest drops off the list, or oldest is
-  /// deleted. Those differ materially under data-protection rules.
+  /// Ended Journeys shown in the Connections section, most recent first.
+  /// This is a display/action cap only: older Journey history is retained.
   final int ended;
 
   const ZyraJourneyLimits({
@@ -109,14 +137,14 @@ class ZyraEntitlements {
     active: 1,
     potential: 25,
     paused: 5,
-    ended: 5,
+    ended: 1,
   );
 
   static const ZyraJourneyLimits one = ZyraJourneyLimits(
     active: 3,
     potential: null, // unlimited
     paused: 10,
-    ended: 10,
+    ended: 5,
   );
 
   static ZyraJourneyLimits of(ZyraPlan plan) =>
@@ -146,15 +174,18 @@ class ZyraEntitlements {
   /// [realCap]. Null (unlimited) and anything above the ceiling both come
   /// back as [devSegmentCeiling].
   static int devMaxFor(int? realCap) {
-    if (realCap == null || realCap > devSegmentCeiling) return devSegmentCeiling;
+    if (realCap == null || realCap > devSegmentCeiling) {
+      return devSegmentCeiling;
+    }
     return realCap;
   }
 
   /// Segment labels '0'..devMaxFor(realCap), inclusive. Always starts at
   /// '0' — Founder, 2026-08-09: "make sure each option have option for 0
   /// also."
-  static List<String> devOptions(int? realCap) =>
-      [for (var i = 0; i <= devMaxFor(realCap); i++) '$i'];
+  static List<String> devOptions(int? realCap) => [
+    for (var i = 0; i <= devMaxFor(realCap); i++) '$i',
+  ];
 
   /// Clamps a stored dev value to what the CURRENT plan allows.
   ///

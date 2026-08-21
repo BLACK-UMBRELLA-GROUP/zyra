@@ -1,21 +1,23 @@
 -- MEETING + NIKAH — BOTH SEEKERS CONFIRM. Founder approval 2026-08-12
 -- ("do number 4"; mechanic as recommended: one proposes, the other
--- confirms, only then does the Timeline gain the milestone). Applied live
--- 2026-08-12 00:13 UTC via MCP; file written back the same session.
+-- confirms, only then does the Timeline gain the milestone).
 --
--- Rules:
+-- These are the two real-world events with no automatic signal in the
+-- data. Rules:
 --   - Either Seeker proposes (type + the date it happened, never future).
 --   - Only the OTHER Seeker can confirm. Confirming writes the Timeline
 --     milestone dated at the attested day (noon UTC, so every viewer
 --     within ±11h of UTC renders the same calendar date).
---   - One of each per attempt: the FIRST meeting is the milestone;
---     routine later meetings are deliberately not logged.
+--   - One of each per attempt: once 'meeting'/'nikah' is on the Timeline,
+--     further proposals of that type are refused. The FIRST meeting is the
+--     milestone; routine later meetings are deliberately not logged.
 --   - Paused or non-active Journeys refuse (a paused Journey is frozen).
 --   - "Not yet" is a client-side dismissal — the proposal stays pending;
 --     the proposer may re-propose (their old pending row is superseded).
 --   - No automatic Journey state change on Nikah — what happens to the
 --     Journey after Nikah is an OPEN product decision (spec says
 --     "progress to completion"; the schema has no 'completed' status).
+--     Raised, not invented here.
 
 CREATE TABLE public.journey_milestone_attestations (
   id             uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -31,18 +33,22 @@ CREATE TABLE public.journey_milestone_attestations (
   created_at     timestamptz NOT NULL DEFAULT now()
 );
 
+-- One live proposal per attempt per type.
 CREATE UNIQUE INDEX journey_milestone_attestations_one_pending
   ON journey_milestone_attestations (attempt_id, milestone_type)
   WHERE status = 'pending';
 CREATE INDEX journey_milestone_attestations_match_idx
   ON journey_milestone_attestations (match_id);
 
+-- RLS on, no table grants: all access goes through the RPCs below
+-- (same lock-shut pattern as the suite results tables).
 ALTER TABLE public.journey_milestone_attestations ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.journey_milestone_attestations FROM PUBLIC, anon, authenticated;
 
 COMMENT ON TABLE public.journey_milestone_attestations IS
   'Meeting/Nikah proposals awaiting the other Seeker''s confirmation (Founder 2026-08-12). Confirmation writes the timeline_milestones row; user-attested, both-party record.';
 
+-- Notification vocabulary grows two entries.
 DO $$
 DECLARE cname text;
 BEGIN
@@ -58,6 +64,7 @@ ALTER TABLE public.notifications ADD CONSTRAINT notifications_type_check
                            'journey_request','journey_request_accepted','journey_request_declined',
                            'milestone_proposed','milestone_confirmed']));
 
+-- ── PROPOSE ────────────────────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION public.zyra_propose_milestone(
   p_match_id uuid, p_type text, p_occurred_on date
 ) RETURNS uuid
@@ -101,6 +108,8 @@ BEGIN
    WHERE attempt_id = v_attempt AND milestone_type = p_type AND status = 'pending';
   IF FOUND THEN
     IF v_pending.proposed_by <> caller THEN
+      -- The other party already proposed this — the right move is to
+      -- confirm theirs, not to race a second proposal.
       RAISE EXCEPTION 'confirm_theirs_instead'
         USING HINT = 'They have already proposed this milestone — confirm or discuss it.';
     END IF;
@@ -123,6 +132,7 @@ BEGIN
   RETURN v_id;
 END; $function$;
 
+-- ── CONFIRM ────────────────────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION public.zyra_confirm_milestone(p_attestation_id uuid)
 RETURNS void
 LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public'
@@ -152,6 +162,8 @@ BEGIN
 
   IF NOT EXISTS (SELECT 1 FROM timeline_milestones
                   WHERE timeline_id = v_timeline AND milestone_type = att.milestone_type) THEN
+    -- Noon UTC: every viewer within ±11h of UTC renders the same calendar
+    -- date the pair attested.
     INSERT INTO timeline_milestones (timeline_id, milestone_type, occurred_at)
     VALUES (v_timeline, att.milestone_type,
             (att.occurred_on::timestamp + interval '12 hours') AT TIME ZONE 'UTC');
@@ -169,6 +181,7 @@ BEGIN
     att.match_id);
 END; $function$;
 
+-- ── STATE (what the Timeline screen needs) ─────────────────────────────
 CREATE OR REPLACE FUNCTION public.zyra_milestone_attestation_state(p_match_id uuid)
 RETURNS TABLE(id uuid, milestone_type text, occurred_on date, proposed_by uuid)
 LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path TO 'public'
@@ -188,6 +201,7 @@ BEGIN
    WHERE t.attempt_id = v_attempt AND t.status = 'pending';
 END; $function$;
 
+-- Grants — explicit, because default privileges no longer hand these out.
 REVOKE ALL ON FUNCTION public.zyra_propose_milestone(uuid, text, date) FROM PUBLIC, anon;
 REVOKE ALL ON FUNCTION public.zyra_confirm_milestone(uuid) FROM PUBLIC, anon;
 REVOKE ALL ON FUNCTION public.zyra_milestone_attestation_state(uuid) FROM PUBLIC, anon;

@@ -16,11 +16,9 @@
 // deleted the first time it goes red. These are pure assertions over the
 // colour system instead: no async, no IO, deterministic.
 //
-// They guard DR-ZYRA-094, which is worth guarding — genderGradient() was
-// added precisely because Guardian screens had hardcoded the male
-// gradient regardless of the signed-in Guardian's actual gender, and
-// brandGradientFemale was defined but referenced nowhere. That was a
-// silent bug for weeks. These fail loudly if it recurs.
+// They guard the Founder's 2026-08-20 direction that ZYRA has one purple
+// background theme. Gender remains account data, but no longer selects a
+// blue or pink presentation layer.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,37 +26,25 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 
 void main() {
-  group('ZyraColors.genderGradient (DR-ZYRA-094)', () {
-    test('female Seekers get the Rose Pink gradient', () {
-      expect(ZyraColors.genderGradient('female'), ZyraColors.brandGradientFemale);
-    });
-
-    test('male Seekers get the Royal Blue gradient', () {
-      expect(ZyraColors.genderGradient('male'), ZyraColors.brandGradientMale);
-    });
-
-    test('unknown gender falls back to the neutral brand gradient', () {
-      // Reachable in real use: an account part-way through onboarding has
-      // no gender yet. Must not throw, and must not pick a side.
-      expect(ZyraColors.genderGradient(null), ZyraColors.brandGradient);
-      expect(ZyraColors.genderGradient(''), ZyraColors.brandGradient);
-      expect(ZyraColors.genderGradient('Female'), ZyraColors.brandGradient);
-    });
-
-    test('every gradient ends in Luxury Dark Purple', () {
-      // The whole point of DR-ZYRA-094: each theme fades from its own
-      // accent into one shared colour. If a future edit breaks this,
-      // sheets and the advert screen stop being continuous with the
-      // screens behind them — the exact bug this decision prevents.
-      for (final g in [
-        ZyraColors.brandGradient,
-        ZyraColors.brandGradientMale,
-        ZyraColors.brandGradientFemale,
-      ]) {
-        expect(g.colors.last, ZyraColors.luxuryDarkPurple);
-        expect(g.begin, Alignment.topCenter);
-        expect(g.end, Alignment.bottomCenter);
+  group('ZyraColors unified purple background', () {
+    test('every gender resolves to the same ZYRA gradient', () {
+      for (final gender in ['female', 'male', null, '', 'Female']) {
+        expect(ZyraColors.genderGradient(gender), ZyraColors.brandGradient);
       }
+    });
+
+    test('every onboarding variant resolves to the same ZYRA gradient', () {
+      for (final variant in ZyraBackgroundVariant.values) {
+        expect(ZyraColors.backgroundFor(variant), ZyraColors.brandGradient);
+      }
+    });
+
+    test('the unified gradient uses the approved purple endpoints', () {
+      final gradient = ZyraColors.brandGradient;
+      expect(gradient.colors.first, ZyraColors.royalPurple);
+      expect(gradient.colors.last, ZyraColors.luxuryDarkPurple);
+      expect(gradient.begin, Alignment.topCenter);
+      expect(gradient.end, Alignment.bottomCenter);
     });
   });
 }

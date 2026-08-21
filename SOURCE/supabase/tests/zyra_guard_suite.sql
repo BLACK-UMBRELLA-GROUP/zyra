@@ -275,17 +275,22 @@ begin
 end $$;
 
 -- ── report ─────────────────────────────────────────────────────────────
-select area,
-       count(*)                                              as checks,
-       count(*) filter (where got = expected)                as passed,
-       count(*) filter (where got is distinct from expected) as failed
-from zyra_guard_results
-group by area
-union all
-select 'TOTAL', count(*), count(*) filter (where got = expected),
-       count(*) filter (where got is distinct from expected)
-from zyra_guard_results
-order by area = 'TOTAL', area;
+-- Wrapped in a subquery 2026-08-12: an ORDER BY attached directly to a
+-- UNION may only name output columns, so `order by area = 'TOTAL'` is an
+-- error (0A000) and the tail refused to run. Discovered the honest way.
+select * from (
+  select area,
+         count(*)                                              as checks,
+         count(*) filter (where got = expected)                as passed,
+         count(*) filter (where got is distinct from expected) as failed
+  from zyra_guard_results
+  group by area
+  union all
+  select 'TOTAL', count(*), count(*) filter (where got = expected),
+         count(*) filter (where got is distinct from expected)
+  from zyra_guard_results
+) t
+order by (t.area = 'TOTAL'), t.area;
 
 -- Failures in detail. Empty result = suite green.
 select n, area, check_name, got, expected

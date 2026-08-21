@@ -34,7 +34,7 @@ import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../connections/connections_screen.dart' show ZyraCardMetrics;
+import '../../theme/zyra_card_metrics.dart';
 import 'accept_guardian_invite_screen.dart';
 import 'guardian_detail_screen.dart';
 import 'link_guardian_panel.dart';
@@ -236,7 +236,11 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
   // because "hiding the only available action behind a tap would be
   // perverse". That was right when the + did not exist. It does now.
   List<Widget> _emptyChildren() => [
-        const SizedBox(height: 8),
+        // 4, NOT 8 — 2026-08-13 (DR-ZYRA-165). The populated branch pads
+        // 4, so "Guardians" jumped 4px the moment a first Guardian was
+        // linked. Two branches of one screen disagreeing about the
+        // position of the same title.
+        const SizedBox(height: 4),
         Text('Guardians', style: ZyraText.heading(size: 26)),
         if (ZyraDevScenario.instance.receivedInviteCount > 0) ...[
           const SizedBox(height: 24),
@@ -327,7 +331,6 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
         _GuardianCard(
           person: main,
           main: true,
-          activity: _activityFor(main),
           onTap: () => _openDetail(main),
         ),
       ] else ...[
@@ -353,7 +356,6 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
         ...additional.map((p) => _GuardianCard(
               person: p,
               main: false,
-              activity: _activityFor(p),
               onTap: () => _openDetail(p),
             )),
       ],
@@ -453,10 +455,10 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
 
     // Dev invites are not real rows — there is nothing to revoke, so the
     // panel just drops one rather than calling a server that has never
-    // heard of them.
+    // heard of them. Through the named method (2026-08-12), not the old
+    // set_() escape hatch, so the scenario knows exactly what changed.
     if (ZyraDevScenario.instance.pendingInviteCount > 0) {
-      ZyraDevScenario.instance.set_(() =>
-          ZyraDevScenario.instance.pendingInviteCount -= 1);
+      ZyraDevScenario.instance.consumePendingInvite();
       return;
     }
 
@@ -470,65 +472,6 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
       );
     }
   }
-}
-
-// ── Summary strip ──────────────────────────────────────────────────────
-class _SummaryStrip extends StatelessWidget {
-  final int main;
-  final int additional;
-  final int pending;
-  const _SummaryStrip({required this.main, required this.additional, required this.pending});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 14),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.07),
-        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.12), width: 0.5),
-      ),
-      child: Row(
-        children: [
-          _stat('$main', 'Main'),
-          _divider(),
-          _stat('$additional', 'Additional'),
-          _divider(),
-          // Pending is dimmed at zero rather than hidden: a strip that
-          // changes shape is harder to read at a glance than one that
-          // always says the same three things.
-          _stat('$pending', 'Pending', dim: pending == 0),
-        ],
-      ),
-    );
-  }
-
-  Widget _stat(String value, String label, {bool dim = false}) => Expanded(
-        child: Column(
-          children: [
-            Text(
-              value,
-              style: ZyraText.heading(size: 20).copyWith(
-                color: Colors.white.withValues(alpha: dim ? 0.35 : 1),
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              label,
-              style: ZyraText.subtext(
-                size: 11,
-                color: Colors.white.withValues(alpha: dim ? 0.3 : 0.6),
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _divider() => Container(
-        width: 0.5,
-        height: 26,
-        color: Colors.white.withValues(alpha: 0.14),
-      );
 }
 
 // ── Guardian card ──────────────────────────────────────────────────────
@@ -547,31 +490,17 @@ class _SummaryStrip extends StatelessWidget {
 class _GuardianCard extends StatelessWidget {
   final WaliLinkedPerson person;
   final bool main;
-  final List<GuardianActivity> activity;
   final VoidCallback onTap;
 
   const _GuardianCard({
     required this.person,
     required this.main,
-    required this.activity,
     required this.onTap,
   });
-
-  /// The most recent thing they did — or the thing still owed, which
-  /// outranks it. A Guardian you are waiting on is the most useful thing
-  /// the card can tell you, even if something newer happened since.
-  GuardianActivity? get _headline {
-    if (activity.isEmpty) return null;
-    for (final a in activity) {
-      if (a.isOutstanding) return a;
-    }
-    return activity.first;
-  }
 
   @override
   Widget build(BuildContext context) {
     final avatar = main ? 62.0 : 48.0;
-    final head = _headline;
 
     return Padding(
       padding: EdgeInsets.only(bottom: main ? 0 : ZyraCardMetrics.spacing),
@@ -697,18 +626,17 @@ class _Monogram extends StatelessWidget {
 
 class _Chip extends StatelessWidget {
   final String label;
-  final bool strong;
-  const _Chip({required this.label, this.strong = false});
+  const _Chip({required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: strong ? 0.20 : 0.10),
+        color: Colors.white.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Colors.white.withValues(alpha: strong ? 0.28 : 0.14),
+          color: Colors.white.withValues(alpha: 0.14),
           width: 0.5,
         ),
       ),
@@ -716,7 +644,7 @@ class _Chip extends StatelessWidget {
         label,
         style: ZyraText.subtext(
           size: 10.5,
-          color: Colors.white.withValues(alpha: strong ? 1 : 0.65),
+          color: Colors.white.withValues(alpha: 0.65),
         ),
       ),
     );

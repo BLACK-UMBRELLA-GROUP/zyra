@@ -16,8 +16,6 @@ class ZyraColors {
   // Brand palette
   static const Color royalPurple = Color(0xFF8A6A9E);
   static const Color luxuryDarkPurple = Color(0xFF3D2A4A);
-  static const Color royalBlue = Color(0xFF3D5A80);
-  static const Color rosePink = Color(0xFFD4868F);
 
   // Accent (selected options — purple, all themes)
   static const Color accentBg = Color(0x249A72BE); // rgba(154,114,190,0.14)
@@ -25,12 +23,18 @@ class ZyraColors {
 
   // Progress bar
   static const Color progressFill = Color(0x47FFFFFF); // rgba(255,255,255,0.28)
-  static const Color progressTrack = Color(0x12FFFFFF); // rgba(255,255,255,0.07)
-  static const Color progressCompleteFill = Color(0x9950B478); // rgba(80,180,120,0.6)
+  static const Color progressTrack = Color(
+    0x12FFFFFF,
+  ); // rgba(255,255,255,0.07)
+  static const Color progressCompleteFill = Color(
+    0x9950B478,
+  ); // rgba(80,180,120,0.6)
 
   // Icon buttons
   static const Color iconButtonBg = Color(0x12FFFFFF); // rgba(255,255,255,0.07)
-  static const Color iconButtonBorder = Color(0x24FFFFFF); // 0.5px rgba(255,255,255,0.14)
+  static const Color iconButtonBorder = Color(
+    0x24FFFFFF,
+  ); // 0.5px rgba(255,255,255,0.14)
 
   // ---------------------------------------------------------------------
   // FROST / ACTION TOKENS — ADDED 2026-08-11 (Founder, screenshot review:
@@ -84,8 +88,12 @@ class ZyraColors {
   // Frost pills — sampled from the Connections segmented control.
   static const Color frostFill = Color(0x1AFFFFFF); // rgba(255,255,255,0.10)
   static const Color frostBorder = Color(0x2EFFFFFF); // rgba(255,255,255,0.18)
-  static const Color frostSelectedFill = Color(0x47FFFFFF); // rgba(255,255,255,0.28)
-  static const Color frostSelectedBorder = Color(0x1FFFFFFF); // rgba(255,255,255,0.12)
+  static const Color frostSelectedFill = Color(
+    0x47FFFFFF,
+  ); // rgba(255,255,255,0.28)
+  static const Color frostSelectedBorder = Color(
+    0x1FFFFFFF,
+  ); // rgba(255,255,255,0.12)
 
   // Glass cards — the ratified zyra_glass_dialog recipe (blur σ30).
   static const Color glassFill = Color(0x24FFFFFF); // rgba(255,255,255,0.14)
@@ -181,79 +189,37 @@ class ZyraColors {
   static const Color privateText = Color(0x73B496D2); // rgba(180,150,210,0.45)
 
   // ---------------------------------------------------------------------
-  // 2026-07-25 — DR-ZYRA-094 (Founder-ratified, supersedes DR-ZYRA-090).
-  // DR-090 (2026-07-19) was an explicit, Founder-flagged "live-testing-
-  // phase" override — flat colours, no fade into Luxury Dark Purple.
-  // DR-094 ratifies the final palette and restores the original fade
-  // design (BUSINESS/COLOUR THEME/Summary.md's "Option 1"): every theme
-  // fades from its accent colour into Luxury Dark Purple. Verified
-  // against the Founder's own reference gradient images pixel-for-pixel
-  // (see DR-ZYRA-094 in SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md).
+  // UNIFIED 2026-08-20 — Founder direction.
   //
-  // Note: onboarding's use of a single flat variant regardless of gender
-  // (backgroundFor(), below) is NOT changed by this — that is a separate,
-  // still-open question (OA-ZYRA-123), not part of DR-094's scope, which
-  // was specifically about the fade/no-fade question for these three
-  // gradients.
+  // ZYRA no longer changes its background palette according to gender.
+  // Every app surface now uses the already-approved Royal Purple →
+  // Luxury Dark Purple gradient below. No new purple was introduced.
+  // Gold, traffic-light states and destructive feedback remain semantic
+  // accents; they are not alternate app themes.
   // ---------------------------------------------------------------------
 
-  /// GLOBAL BRAND background — Royal Purple fading to Luxury Dark Purple.
-  /// Used for Splash, main navigation, auth screens, and (per DR-ZYRA-090,
-  /// unaffected by DR-094) onboarding via backgroundFor() below.
+  /// The single ZYRA background — Royal Purple fading to Luxury Dark Purple.
   static const LinearGradient brandGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [Color(0xFF8A6A9E), Color(0xFF3D2A4A)],
   );
 
-  /// Male-theme accent — Royal Blue fading to Luxury Dark Purple.
-  /// Reserved for profile-context screens only (OA-ZYRA-123).
-  static const LinearGradient brandGradientMale = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFF3D5A80), Color(0xFF3D2A4A)],
-  );
+  /// Compatibility aliases retained while older call sites and documents
+  /// are retired. Both deliberately resolve to the one ZYRA gradient.
+  @Deprecated('Use brandGradient; ZYRA has one unified background theme.')
+  static const LinearGradient brandGradientMale = brandGradient;
 
-  /// Female-theme accent — Rose Pink fading to Luxury Dark Purple.
-  /// Reserved for profile-context screens only (OA-ZYRA-123).
-  static const LinearGradient brandGradientFemale = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFFD4868F), Color(0xFF3D2A4A)],
-  );
+  @Deprecated('Use brandGradient; ZYRA has one unified background theme.')
+  static const LinearGradient brandGradientFemale = brandGradient;
 
-  /// Profile-context background — DR-ZYRA-094 / OA-ZYRA-123 ("gender
-  /// accents reserved for profile only"): Male Seeker/Wali get
-  /// [brandGradientMale], Female Seeker/Wali get [brandGradientFemale].
-  /// Falls back to the neutral [brandGradient] when gender isn't known
-  /// yet (e.g. account mid-onboarding). `gender` should be the raw
-  /// AppState.gender value ('male' | 'female' | null) — same string
-  /// used for both Seeker and Guardian accounts (AppState is one signed-in
-  /// account, whichever role it is).
-  ///
-  /// Fixed 2026-07-25: this helper didn't exist before — Wali screens
-  /// had `brandGradientMale` hardcoded regardless of the signed-in
-  /// Wali's actual gender, [brandGradientFemale] was defined but never
-  /// referenced anywhere, and the Seeker's own Profile screen used the
-  /// neutral brand gradient instead of a gender-matched one. Founder-
-  /// flagged as a gap between the ratified spec and the live app.
-  static LinearGradient genderGradient(String? gender) {
-    switch (gender) {
-      case 'male':
-        return brandGradientMale;
-      case 'female':
-        return brandGradientFemale;
-      default:
-        return brandGradient;
-    }
-  }
+  /// Compatibility helper for existing profile-context call sites.
+  /// [gender] remains accepted so this colour change does not disturb
+  /// identity or onboarding data; it no longer changes presentation.
+  static LinearGradient genderGradient(String? gender) => brandGradient;
 
-  /// Onboarding background — still flat Royal Purple for every variant,
-  /// not gender-derived (DR-ZYRA-090, unaffected by DR-094 — see note
-  /// above; OA-ZYRA-123 is the still-open question about whether this
-  /// should vary by gender). The enum/switch is kept in place so
-  /// gender-derived onboarding backgrounds can come back with a one-line
-  /// change if OA-ZYRA-123 is resolved that way later.
+  /// Onboarding shares the same unified background. The enum remains a flow
+  /// input only so the colour change does not alter navigation or saved data.
   static LinearGradient backgroundFor(ZyraBackgroundVariant variant) {
     switch (variant) {
       case ZyraBackgroundVariant.neutral:

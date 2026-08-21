@@ -66,9 +66,19 @@ many come free, not whether they can be held at all.
 Usage Rules
 ------------------------------------------------------------
 
-• Cannot be used while swiping.
-• Available from any Connections card — Considered, Saved OR
-  Passed.
+• Available from the Browse deck's ⋯ action bar AND from any
+  Connections card — Considered, Saved OR Passed.
+
+  CHANGED 2026-08-20, Founder ruling (OA-ZYRA-221). The previous
+  first line — "Cannot be used while swiping." — is retired.
+  The Founder instructed deck access on 2026-08-13 (DR-ZYRA-156
+  context); when the conflict with this rule was flagged, the
+  Founder ruled: deck access stands, and this document is
+  amended to match rather than the build reverted. The original
+  rule's concern — a paid action inside the fastest-moving
+  surface, one thumb-flick from Pass — is recorded here, not
+  dismissed: it lives on in OA-ZYRA-219's open question about
+  pre-purchase wording on declined profiles.
 
   CHANGED 2026-08-03, Founder approved. The 2026-07-12 version
   said "cannot be used on passed profiles" and required a

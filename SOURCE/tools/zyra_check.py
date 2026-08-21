@@ -249,7 +249,21 @@ class Unit:
             if m:
                 self.top_level.add(m.group(1))
                 continue
-            m = re.match(r"(?:[\w<>?\[\],]+)\s+(\w+)\s*\(", line)
+            # `(?:<>)?` — A GENERIC TOP-LEVEL FUNCTION. collapse_generics
+            # turns `Future<T?> showZyraGlassDialog<T>({` into
+            # `Future<> showZyraGlassDialog<>({`, so the name is followed
+            # by the collapsed generic rather than by `(` and this pattern
+            # missed it. Its non-generic neighbour showZyraGlassChoice
+            # matched fine, which is why only one symbol was invisible.
+            #
+            # The cost was not theoretical: journey_timeline_screen.dart
+            # imports zyra_glass_dialog.dart and calls
+            # showZyraGlassDialog at :249, and this checker reported that
+            # import as unused for weeks. A second audit on 2026-08-14
+            # repeated the finding and recommended deleting the import,
+            # which would have broken the build. A false positive that
+            # survives long enough gets believed.
+            m = re.match(r"(?:[\w<>?\[\],]+)\s+(\w+)\s*(?:<>)?\s*\(", line)
             if m:
                 self.top_level.add(m.group(1))
 

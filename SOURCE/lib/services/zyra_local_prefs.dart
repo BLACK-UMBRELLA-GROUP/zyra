@@ -46,6 +46,29 @@ class ZyraLocalPrefs {
   static const _kGender = 'zyra.cached_gender';
   static const _kAppLock = 'zyra.app_lock_enabled';
 
+  /// The last role this device resolved — 'seeker' or 'wali'.
+  ///
+  /// ADDED 2026-08-14 (DR-ZYRA-166). Cached for exactly one purpose:
+  /// zyra_session_router's failure path. When the profile lookup fails it
+  /// used to send EVERY account to the Seeker shell, so a Guardian on a
+  /// bad connection was handed someone else's app. A remembered role is
+  /// a better guess than a hardcoded one.
+  static const _kRole = 'zyra.cached_role';
+
+  /// ADDED 2026-08-15 (DR-ZYRA-169 Phase 2). Same contract as gender:
+  /// the Profile tab paints the real first name on frame one instead of
+  /// "Your Profile" while hydration is still in flight. A first name is
+  /// already on every card the person shows other Seekers; caching your
+  /// own, on your own device, is within this file's sensitivity rule.
+  static const _kFirstName = 'zyra.cached_first_name';
+
+  /// ADDED 2026-08-15 (DR-ZYRA-169). The image cache's generation
+  /// number — plumbing, not profile data, and the ONE key clear() leaves
+  /// alone: it describes the app's cache format on this device, not the
+  /// person who signed out. See zyra_image_cache.dart, which wipes the
+  /// cache once when this doesn't match its compiled-in version.
+  static const _kCacheSchema = 'zyra.cache_schema_version';
+
   static SharedPreferences? _prefs;
 
   /// Read once in main(), before runApp(). Local disk, no network —
@@ -89,6 +112,42 @@ class ZyraLocalPrefs {
     }
   }
 
+  /// First name for frame one, or null (first launch / signed out /
+  /// storage unavailable) — all of which correctly fall back to the
+  /// generic heading until hydration lands.
+  static String? get cachedFirstName {
+    final v = _prefs?.getString(_kFirstName);
+    return (v == null || v.trim().isEmpty) ? null : v;
+  }
+
+  static void setCachedFirstName(String? name) {
+    if (_prefs == null) return;
+    try {
+      final v = name?.trim();
+      if (v != null && v.isNotEmpty) {
+        _prefs!.setString(_kFirstName, v);
+      } else {
+        _prefs!.remove(_kFirstName);
+      }
+    } catch (_) {
+      // Same cost as a gender miss: one generic heading, once.
+    }
+  }
+
+  /// See [_kCacheSchema]. 0 = never stamped, which always mismatches and
+  /// triggers the one-time wipe — correct for a device upgrading from a
+  /// build that had no image cache at all.
+  static int get cacheSchemaVersion => _prefs?.getInt(_kCacheSchema) ?? 0;
+
+  static Future<void> setCacheSchemaVersion(int version) async {
+    if (_prefs == null) return;
+    try {
+      await _prefs!.setInt(_kCacheSchema, version);
+    } catch (e) {
+      debugPrint('ZYRA: could not stamp the cache schema version.\n$e');
+    }
+  }
+
   // ── App lock ─────────────────────────────────────────────────────────
   //
   // ADDED 2026-08-07 (Founder: treat App Lock as a flagship privacy
@@ -111,6 +170,22 @@ class ZyraLocalPrefs {
   /// Defaults to false — off until deliberately turned on. A lock the user
   /// did not ask for, on an app they may be opening in a hurry, is a way to
   /// lose them.
+  /// The last resolved role, or null on a device that has never signed
+  /// in. See [_kRole].
+  static String? get cachedRole {
+    final v = _prefs?.getString(_kRole);
+    return (v == null || v.isEmpty) ? null : v;
+  }
+
+  static void setCachedRole(String? role) {
+    if (_prefs == null) return;
+    if (role != null && role.isNotEmpty) {
+      _prefs!.setString(_kRole, role);
+    } else {
+      _prefs!.remove(_kRole);
+    }
+  }
+
   static bool get appLockEnabled => _prefs?.getBool(_kAppLock) ?? false;
 
   static Future<void> setAppLockEnabled(bool value) async {
@@ -134,7 +209,14 @@ class ZyraLocalPrefs {
     if (_prefs == null) return;
     try {
       await _prefs!.remove(_kGender);
+      await _prefs!.remove(_kRole);
       await _prefs!.remove(_kAppLock);
+      // Same reasoning as gender: the next person's Profile must not
+      // greet them by the previous person's name, even for one frame.
+      await _prefs!.remove(_kFirstName);
+      // _kCacheSchema deliberately survives — it describes this DEVICE's
+      // cache format, not the account. The cache CONTENTS are emptied by
+      // ZyraImageCache.clearForSignOut() in the same sign-out block.
     } catch (_) {}
   }
 }

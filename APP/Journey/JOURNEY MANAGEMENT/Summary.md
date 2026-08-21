@@ -22,14 +22,25 @@ JOURNEY ACTIONS
 ------------------------------------------------------------
 
 END JOURNEY
-  • Permanently ends the Journey.
+  • Ends the current Journey for both Seekers.
   • Conversation closes.
   • Timeline remains available as a historical record.
-  • Journey cannot be resumed.
-  • Users cannot rematch directly from an ended Journey.
-  • If both users wish to reconnect, they must discover
-    each other again through Browse/Search and begin a
-    completely new Journey.
+  • The ended Journey cannot be resumed. Beginning together
+    again is a new Journey and requires one Seeker to request
+    it and the other to accept.
+  • The other Seeker is notified when the Journey ends.
+  • The existing 24-hour cooling period remains. After it,
+    the direct New Journey request is available until 60 days
+    after ended_at. Its acceptance must also happen inside that
+    window; a pending request cannot extend it.
+  • Connections shows the most recent 1 ended person on ZYRA
+    Basic and the most recent 5 on ZYRA One. This is a UI
+    display/action cap only; it never deletes older history.
+  • After 60 days the direct request is removed. The pair may
+    meet again only through ordinary Browser discovery and
+    eligibility, beginning a completely new Journey.
+  • Client window/caps are built. OA-ZYRA-242 owns matching
+    server enforcement and post-window Browser rediscovery.
   Purpose: "This chapter has ended."
 
 PAUSE JOURNEY
@@ -39,7 +50,7 @@ PAUSE JOURNEY
   VERSION_V1.md — this section previously duplicated that
   document with an unresolved "Concept" status and a
   redundant "STEP BACK / HOLD" alternative naming proposal.
-  SUSPENSION is the governing document for Pause/Resume;
+  SUSPENSION V3 is the governing document for Pause/Resume;
   this section now simply points to it rather than
   re-specifying it:
   • Journey Suspension is a behavioural sub-state of an
@@ -48,13 +59,15 @@ PAUSE JOURNEY
   • Both plans (corrected 2026-08-12 stewardship pass, DR-ZYRA-138): caps 5 (Basic) / 10 (ZYRA One)
     over pauses this Seeker initiated. See JOURNEY_SUSPENSION_CURRENT_VERSION_V2.md.
   • Conversation locks; Timeline preserved.
-  • Only the suspending Seeker may resume, unless the other
-    party started a new Active Journey in the meantime, in
-    which case the paused Journey Auto-Ends.
-  • The non-suspending party may End Journey instead of
-    waiting.
+  • A pause is a personal hold. The other Seeker may Pause
+    too, Request Continue, End Journey, or simply wait.
+  • Each Seeker lifts only their own pause. Nothing
+    Auto-Ends because a Seeker starts another Journey.
+  • Pause and End each open a dedicated confirmation screen;
+    the write occurs only after confirmation. Success receives
+    its own outcome screen and Return to Connections action.
   See JOURNEY SUSPENSION/JOURNEY_SUSPENSION_CURRENT_VERSION_
-  V1.md for full detail (sections 1-15) and
+  V3.md for full detail (sections 1-15) and
   ZyraJourneyService.suspendJourney/resumeJourney/endJourney
   for the implementation.
 
@@ -70,26 +83,22 @@ TIMELINE
   or is paused.
 
 ------------------------------------------------------------
-FUTURE DISCUSSION — ENDED JOURNEYS SECTION
+ENDED JOURNEYS SECTION — BUILT / GOVERNED 2026-08-18
 ------------------------------------------------------------
 
-Potential future section within Matches or Settings:
-
-  Ended Journeys
-
   Users can:
-  • View previous Journey Timeline.
-  • View previous reflections and milestones.
-  • View Journey summary.
+  • View previous Journey Timeline, reflections and milestones.
+  • During the 60-day post-End window, request a completely
+    new Journey after the 24-hour cooling period.
 
   Users cannot:
-  • Continue chatting.
-  • Resume the Journey.
-  • Rematch directly.
+  • Continue chatting in the ended Journey.
+  • Resume the ended Journey.
+  • Begin again without the other Seeker accepting.
 
-  A new connection would require both users to find each
-  other again through Browse/Search, creating a brand-new
-  Journey.
+  Basic lists the most recent 1 ended person and ZYRA One the
+  most recent 5. Older records remain retained even when they
+  are not listed. After day 60, rediscovery is Browser-only.
 
 ------------------------------------------------------------
 FUTURE DISCUSSION — SAFETY & MODERATION
@@ -119,12 +128,6 @@ Still requires a dedicated future design discussion covering:
 OPEN DISCUSSIONS
 ============================================================
 
-• Final name for "Step Back / Hold".
-• Exact behaviour after stepping back.
-• Whether stepping back requires both users to agree.
-• Whether users can immediately begin another Journey
-  after stepping back.
-• Limits on inactive / held Journeys.
 • How "Journey Ended" milestone appears on Timeline.
 • Safety & Moderation for Guardian blocking/reporting specifically
   (Browse-stage Seeker-to-Seeker case resolved 2026-07-25; per-stage

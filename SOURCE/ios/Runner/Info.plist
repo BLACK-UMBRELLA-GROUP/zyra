@@ -7,15 +7,19 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>App</string>
+		<string>ZYRA</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
+		<!-- REL-01 residue (2026-08-15): CFBundleName was still the template's
+		     "app" after DR-ZYRA-166 fixed CFBundleDisplayName. DisplayName wins
+		     wherever both exist, but CFBundleName is what some system surfaces
+		     (Settings storage list, crash logs) fall back to. Max 15 chars. -->
 		<key>CFBundleName</key>
-		<string>app</string>
+		<string>ZYRA</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -66,8 +70,6 @@
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
 		<key>UISupportedInterfaceOrientations~ipad</key>
 		<array>

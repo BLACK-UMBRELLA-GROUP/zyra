@@ -47,10 +47,11 @@ dependencies:
   # replacing the mock 6-photo picsum pool.
   image_picker: ^1.1.2
 
-  # Auth (2026-07-18) — Google + Apple native sign-in ONLY, per Founder
-  # instruction: no password, no email login, no phone login. Both
-  # produce an ID token exchanged with Supabase via signInWithIdToken
-  # (lib/services/zyra_auth.dart) rather than a browser OAuth redirect.
+  # Auth — Apple + Google remain the normal native sign-in methods and both
+  # produce an ID token exchanged with Supabase. Founder decision 2026-08-20
+  # also permits a verified recovery email for passwordless OTP sign-in and
+  # linking the second OAuth provider to the same account. There is still no
+  # ZYRA password and recovery requests never create new users.
   google_sign_in: ^6.2.2
   sign_in_with_apple: ^6.1.4
   crypto: ^3.0.5 # nonce hashing for the Apple Sign-In flow
@@ -68,6 +69,24 @@ dependencies:
   # see that quick colour change at all"). Not a local database — see that
   # file's scope rule.
   shared_preferences: ^2.5.5
+
+  # On-device photo cache — 2026-08-15, Phase 1 of the ratified On-Device
+  # Data & Performance Review (DR-ZYRA-169).
+  #
+  # Photos live in a PRIVATE bucket behind signed URLs that rotate on
+  # every fetch, so Flutter's URL-keyed RAM cache misses even within a
+  # session and every cold start re-downloads every photo. These two give
+  # the bytes a disk home keyed by the URL-sans-token (stable across
+  # re-signing), with TTL + LRU the app manages itself — the user never
+  # clears anything (see services/zyra_image_cache.dart for the wipe
+  # rules: sign-out, account deletion, block, schema bump).
+  #
+  # flutter_cache_manager is cached_network_image's own engine, declared
+  # DIRECTLY for the same reason shared_preferences is above: ZYRA imports
+  # it by name (zyra_image_cache.dart), and reaching it transitively would
+  # break silently on a cached_network_image version bump.
+  cached_network_image: ^3.4.1
+  flutter_cache_manager: ^3.4.1
 
   # App Lock — 2026-08-07, Founder: "For ZYRA I think this becomes a
   # selling point, not just a privacy option."

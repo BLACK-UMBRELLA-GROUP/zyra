@@ -42,6 +42,7 @@ import '../state/app_state.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_comet_rule.dart';
+import 'zyra_meet_and_pass_rule.dart';
 
 /// How far the [ZyraLoadingStyle.slidingDots] dots travel, in logical
 /// pixels. File-level rather than declared inside the switch case: a local
@@ -53,14 +54,24 @@ const double _track = 96.0;
 /// so swapping the default does not change any screen's layout.
 const double _railWidth = 118.0;
 
-/// Loop phases, as fractions of the 1400ms controller. The comets travel
-/// in, hold overlapped for a beat, then clear — leaving the rail alone
-/// briefly before the next pass, which is what stops it reading as a
-/// conveyor belt.
-const Interval _cometTravel = Interval(0.0, 0.66, curve: Cubic(.25, .6, .3, 1));
-const Interval _cometFade = Interval(0.70, 0.94, curve: Curves.easeIn);
+/// The historical comet loop's sweep, as a fraction of its controller — ONE curve,
+/// matching the splash's Pass-through fix (2026-08-12; Founder: "you
+/// changed it for splash but not loading"). The old staged
+/// travel-then-fade had the same frame-measured stall the splash had:
+/// every cycle the lights decelerated to a visible dead stop at the
+/// centre before vanishing. Now each cycle is one unbroken crossing —
+/// enter, meet at speed, carry through, fade while leaving — with the
+/// rail alone for the last ~12% as a breath before the next pass. The
+/// loop boundary is invisible by construction: a cycle ends with the
+/// stage empty, which is exactly how the next one begins.
+const Interval _journeySweep = Interval(0.0, 0.88, curve: Curves.easeInOutSine);
 
 enum ZyraLoadingStyle {
+  /// CURRENT — Founder-selected 2026-08-20 to match the new Trails Meet
+  /// splash language. Two gold dots meet, continue through one another,
+  /// fade beyond the connection, then re-enter invisibly on the next loop.
+  meetAndPass,
+
   /// THE SPLASH RULE, ON A LOOP. Two lights run in along a hairline,
   /// overlap briefly at the centre, fade, and go again.
   ///
@@ -86,12 +97,15 @@ enum ZyraLoadingStyle {
 
 /// THE ONE KNOB. Change this and every loading state in the app follows.
 ///
-/// CHOSEN 2026-08-09 — [ZyraLoadingStyle.cometLoop], to match the splash.
+/// CHOSEN 2026-08-20 — [ZyraLoadingStyle.meetAndPass], after the splash
+/// moved to the gold-dot Trails Meet design. The animation family stays
+/// consistent without making a repeating wait pretend to be a one-time
+/// arrival.
 ///
 /// Was slidingDots for a few hours on 2026-08-08, after the Founder picked
 /// "idea 2, the four dots". The splash then moved from orbs to a comet
 /// rule, and loading followed it so the two screens speak one language.
-const ZyraLoadingStyle kZyraLoadingStyle = ZyraLoadingStyle.cometLoop;
+const ZyraLoadingStyle kZyraLoadingStyle = ZyraLoadingStyle.meetAndPass;
 
 class ZyraLoading extends StatefulWidget {
   /// Overrides [kZyraLoadingStyle] for one call site. Leave null.
@@ -109,7 +123,7 @@ class ZyraLoading extends StatefulWidget {
   const ZyraLoading({super.key, this.style, this.label}) : fullScreen = false;
 
   const ZyraLoading.fullScreen({super.key, this.style, this.label})
-      : fullScreen = true;
+    : fullScreen = true;
 
   @override
   State<ZyraLoading> createState() => _ZyraLoadingState();
@@ -117,14 +131,21 @@ class ZyraLoading extends StatefulWidget {
 
 class _ZyraLoadingState extends State<ZyraLoading>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(
+  AnimationController? _controller;
+
+  AnimationController get _c => _controller ??= AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 1400),
+    // Matches the measured preview for Meet and Pass. The former 1400ms
+    // comet cycle was intentionally busier; the gold-dot language needs a
+    // calmer pace so the meeting remains legible on small inline loaders.
+    duration: const Duration(milliseconds: 2800),
   )..repeat();
 
   @override
   void dispose() {
-    _c.dispose();
+    // Reduced-motion builds never request the controller. Do not create an
+    // animation solely in order to dispose it during unmount.
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -168,9 +189,11 @@ class _ZyraLoadingState extends State<ZyraLoading>
             children: [
               indicator,
               const SizedBox(height: 18),
-              Text(widget.label!,
-                  textAlign: TextAlign.center,
-                  style: ZyraText.subtext(color: Colors.white70)),
+              Text(
+                widget.label!,
+                textAlign: TextAlign.center,
+                style: ZyraText.subtext(color: Colors.white70),
+              ),
             ],
           );
 
@@ -207,18 +230,24 @@ class _ZyraLoadingState extends State<ZyraLoading>
 
   Widget _build(ZyraLoadingStyle style) {
     switch (style) {
+      case ZyraLoadingStyle.meetAndPass:
+        return ZyraMeetAndPassRule(
+          width: _railWidth,
+          progress: Curves.easeInOutSine.transform(_c.value),
+        );
+
       case ZyraLoadingStyle.cometLoop:
-        // The splash's own rule, looped. travel/fade are read off the
-        // repeating controller instead of the splash's one-shot one; the
-        // geometry, the colours and the screen blend are literally the
-        // same widget, so the two can never drift apart.
+        // The splash's own gesture, looped — same widget, same continuous
+        // Pass-through motion (see _journeySweep), so the launch and the
+        // gaps speak one language and can never drift apart.
         //
-        // clip: true — inline in a card this box is ~118px, and an
-        // unclipped comet starts a full half-rule outside it.
+        // clip: true — inline in a card this box is ~118px, and the sweep
+        // deliberately runs from outside one edge to outside the other.
         return ZyraCometRule(
           width: _railWidth,
-          travel: _cometTravel.transform(_c.value),
-          fade: _cometFade.transform(_c.value),
+          travel: 0,
+          ending: ZyraSplashEnding.passThrough,
+          journey: _journeySweep.transform(_c.value),
           clip: true,
         );
 
@@ -238,8 +267,9 @@ class _ZyraLoadingState extends State<ZyraLoading>
                     shape: BoxShape.circle,
                     // Lerp, not two colours — the dot never "switches",
                     // it brightens.
-                    color: Color.lerp(
-                        Colors.white24, Colors.white, p) ?? Colors.white24,
+                    color:
+                        Color.lerp(Colors.white24, Colors.white, p) ??
+                        Colors.white24,
                   ),
                 ),
               ),
@@ -256,9 +286,7 @@ class _ZyraLoadingState extends State<ZyraLoading>
               final t = _phase(i, 0.08);
               // Fade in over the first 14% and out over the last 18%, so
               // dots enter and leave rather than popping at the edges.
-              final o = t < 0.14
-                  ? t / 0.14
-                  : (t > 0.82 ? (1 - t) / 0.18 : 1.0);
+              final o = t < 0.14 ? t / 0.14 : (t > 0.82 ? (1 - t) / 0.18 : 1.0);
               return Positioned(
                 left: Curves.easeInOut.transform(t) * _track,
                 top: 0,
@@ -288,6 +316,11 @@ class _StillFallback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (style == ZyraLoadingStyle.meetAndPass) {
+      // A completed connection, held still: the accessible alternative
+      // communicates waiting without repeatedly separating the dots.
+      return const ZyraMeetAndPassRule(width: _railWidth, progress: 0.44);
+    }
     if (style == ZyraLoadingStyle.cometLoop) {
       // The finished frame: both comets arrived and overlapping. Static,
       // but it is the composition rather than an arbitrary pose.

@@ -1,4 +1,19 @@
 ============================================================
+ZYRA — AI STRATEGY (GOVERNED SUMMARY)
+============================================================
+Version:      V1
+Status:       CURRENT_VERSION — governed (in-place promotion)
+Owner:        Founder (content) · Fable (documentation filing)
+Promoted:     2026-08-20 under OA-ZYRA-209 — Founder standing
+              instruction; recommendation executed: governed
+              headers first, filename renames deferred until the
+              OA-ZYRA-201 reference-stability decision.
+Supersession: This file is the single current version of this
+              system summary. Any prior unversioned copies are
+              superseded in place.
+============================================================
+
+============================================================
 ZYRA PROJECT
 ============================================================
 BUSINESS / AI STRATEGY

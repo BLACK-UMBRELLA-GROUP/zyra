@@ -117,6 +117,18 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         iconTheme: const IconThemeData(color: Colors.white70),
       ),
       body: Container(
+        // FILLS ITS BOX — 2026-08-13 (DR-ZYRA-165). Scaffold lays its
+        // body out with LOOSE constraints and the child below is a
+        // SingleChildScrollView, so without this the gradient Container
+        // shrank to its content height and left a band of bare Scaffold
+        // beneath short content.
+        //
+        // This is verbatim the bug fixed in report_profile_sheet.dart on
+        // 2026-08-03, whose own note warned "every future screen built on
+        // SingleChildScrollView would inherit the same band". This screen
+        // became scrollable on 2026-08-06 — three days later — and did
+        // not get the constraint.
+        constraints: const BoxConstraints.expand(),
         // 2026-07-25: gender-matched gradient (DR-ZYRA-094). This screen
         // is only ever reached by an already-signed-in account (Seeker
         // or Guardian) linking the other party, so gender is always known

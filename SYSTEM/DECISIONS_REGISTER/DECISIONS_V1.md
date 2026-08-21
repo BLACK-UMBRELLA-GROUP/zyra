@@ -8777,9 +8777,4734 @@ Dependencies: DR-ZYRA-121 (item 12 superseded; the rest stands);
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-138,
+DR-ZYRA-139
+Title:       Journey Experience Redesign — Waves 1-3 Built as
+             Recommended (Witness-and-Scribe Model)
+Date:        2026-08-12
+Decided by:  Founder ("make any changes and let me update it in
+             terminal", re-issuing the experience brief after
+             reading JOURNEY_EXPERIENCE_REVIEW_2026-08-12_V1.md)
+Status:      Approved — built 2026-08-12
+
+Decision:
+  The Journey experience redesign proposed by the review is
+  ACCEPTED and BUILT per its own recommendations, on the existing
+  architecture — no stage, checkpoint, or schema change anywhere:
+
+  1. D2/D4 — the Salam auto-advance is gone: the exchange is now
+     witnessed ("Adam has sent you his Salam" / "Return his
+     Salam") and the completed exchange HOLDS until the couple
+     continues. The Family Stage auto-advance is likewise gone:
+     "Both families have spoken with you both" holds.
+  2. D3/D7 — the three chapters open with a cover (chapter
+     ordinal, guiding question, topic chips, privacy covenant)
+     and are answered ONE QUESTION AT A TIME, ending in a
+     review-and-seal step ("Seal my answers", disabled until
+     every question is answered — an improvement over the old
+     silent partial submit).
+  3. D6 — End Journey is out of the chapter checkpoint row; the
+     seal moment leads with "Close this chapter together?" and
+     Pause · End live in the standard quiet stage footer.
+  4. The envelope is NAMED: waiting states say answers are
+     sealed until both finish, offer your own answers to reread,
+     and never show a spinner for a human being.
+  5. The Family Review screen is now the between-chapters SEAL
+     ("Faith & Values — sealed · it is your families' time") and
+     offers the Timeline.
+  6. The Reveal gained the June spec's transitional moment:
+     held line, count-up, categories arriving one by one — once
+     per match, never re-animated.
+  7. D1 — the Journey Map exists (journey_map_screen.dart): the
+     road with places on it, position marked, guiding questions
+     ahead, destination visible from day one; reached from the
+     Journey app bar. Map = road; Timeline = story.
+  8. Open Conversation leads with the earned arrival (the
+     accurate list of what was done) and links the Timeline.
+  9. The start-Journey dialog leads with meaning ("one person at
+     a time, with your families present") rather than slots.
+
+  Deferred by recommendation: D5 religious content (spaces
+  reserved, content is the Founder's + scholarly review); D8
+  edit-answers-while-sealed (needs server upsert semantics —
+  submitPhaseAnswer is insert-only today); the Connections
+  current-position strip (map v2).
+
+Documentation: JOURNEY_EXPERIENCE_REVIEW_2026-08-12_V1.md (the
+             design authority, as-applied note appended);
+             PRE-JOURNEY RITUAL/Summary.md STATE 2 finally built.
+
+Dependencies: DR-ZYRA-129 (canonical stage labels — the map and
+             covers read from it); the Timeline system
+             (20260811 milestones + 20260812 attestations);
+             ZyraStageKind (threshold/sustained/destination).
+
+------------------------------------------------------------
+
+DR-ZYRA-140
+Title:       A Paused Journey Frees the Active Slot — Enforced;
+             the Takeover Popup Becomes Design B1 (Continue /
+             Pause / End, Name-Forward)
+Date:        2026-08-12
+Decided by:  Founder (popup: "yeh lets do option b1 final",
+             after three mockup rounds and eleven designs; the
+             slot rule itself was ratified 2026-08-09 in the
+             suspension state matrix and SUSPENSION V2 §5 — this
+             record is it BECOMING TRUE in the database)
+Status:      Approved — built 2026-08-12
+
+Decision:
+  1. THE RULE, ENFORCED. Migrations 20260812144437
+     (pause_frees_active_slot) + 20260812144851 (…_attempts)
+     exclude suspended rows from every active-slot enforcement
+     point: both partial unique indexes, both constraint
+     triggers (matches AND journey_attempts — the second found
+     by suite check 68 going red on first run), promote,
+     resume_journey, and the request_new_journey pair.
+     resume_journey gains a self-guard, newly reachable:
+     'self_in_active_journey' (mapped in the Dart service),
+     because pause-then-begin is now legal. suspend_journey
+     untouched — its paused-count cap was already right.
+  2. THE POPUP, REDESIGNED (B1). Tapping Start Journey against
+     a full slot now shows: both people as circular photos
+     ("Arif · Active ⇄ Sana · Waiting"), "Begin with Sana?",
+     one-line body, CONTINUE with the active person as the hero
+     button (Founder: respect to the active user; 'continue',
+     never 'stay'), then Pause and End as two square cards with
+     their meaning written inside. Pause card = suspend then
+     promote; End card = end then promote. The Guardian-
+     visibility disclosure (2026-08-01) is COMPRESSED to one
+     quiet footer line, not dropped — this tap is the moment
+     RLS opens to both Guardians.
+  3. The plan-aware paused-cap refusal moved to a shared widget
+     (zyra_paused_limit_refusal.dart) the moment it gained a
+     second caller, so the Journey menu and the popup cannot
+     drift.
+
+Verification: journey suite section J (checks 68-71, new that
+             day): pause → begin elsewhere ALLOWED; resume while
+             active elsewhere refused BY NAME; raw un-pause
+             refused; slot freed → resume clean. Journey suite
+             and guard suite both green after.
+
+Documentation: data/zyra_entitlements.dart header (dated
+             built-note); this register.
+
+Dependencies: suspension state matrix 2026-08-09; SUSPENSION V2
+             §5; DR-ZYRA-138 (both plans pause, caps differ).
+
+------------------------------------------------------------
+
+DR-ZYRA-141
+Title:       The Active Journey Cap Is the Plan's — Basic 1 /
+             ZYRA One 3 Enforced Server-Side; the C1 Chooser
+             Asks Who Makes Room
+Date:        2026-08-12
+Decided by:  Founder ("yeh option c1 please", picking the
+             chooser design and thereby making the matrix's
+             ZYRA One row real; the 3-actives number itself is
+             the 2026-08-09 entitlements matrix)
+Status:      Approved — built 2026-08-12
+
+Decision:
+  1. Migration 20260812152607 (plan_aware_active_journey_limit)
+     adds zyra_active_journey_cap() — 3 on an active
+     seeker_premium subscription, 1 otherwise, the same numbers
+     as ZyraJourneyLimits.active — and
+     zyra_active_journey_count(); both internal, no client
+     EXECUTE. Every enforcement point counts each party against
+     THEIR OWN cap: both constraint triggers, promote, resume
+     (self and other-party guards), request_new_journey and its
+     read-side predicate.
+  2. The unique indexes matches_seeker_a/_b_active became plain
+     partial indexes — uniqueness IS cap-one, and a per-plan cap
+     cannot live in a unique index. The advisory-lock constraint
+     triggers are the sole race-proof guard, as promote's
+     comment always described them.
+  3. Error names unchanged (one_active_journey_limit,
+     self_in_active_journey, other_party_in_active_journey) —
+     the client maps names, not sentences. Hints now say "your
+     plan's Active Journey limit".
+  4. THE CHOOSER (C1, over the two-step C2). When SEVERAL
+     Journeys block (a full ZYRA One), the popup shows the new
+     person waiting at the top, the active people as tappable
+     chips, "Continue as things are" as the hero, and the same
+     B1 square cards re-aiming at whoever is chosen — dim and
+     inert until someone is, and NOBODY pre-selected: pre-
+     picking a person would nudge toward pausing or ending
+     them. One blocking Journey still gets B1 exactly; below
+     the cap there is no takeover at all.
+
+Verification: journey suite section K (checks 72-76): second
+             and third Actives allowed on One, fourth refused,
+             raw UPDATE past the cap refused, and pausing one
+             of three frees the slot (both same-day decisions
+             composed). Sections J and K pin male1's
+             subscription (Basic / Premium) and restore what
+             they found, because the Membership dev panel
+             writes that same row. Journey 72/72, guard 52/52.
+
+Documentation: data/zyra_entitlements.dart (header built-note;
+             active field cross-reference to the SQL helper);
+             this register.
+
+Dependencies: DR-ZYRA-140 (paused rows outside the count);
+             entitlements matrix 2026-08-09; C-round mockups
+             (takeover_zyra_one_flow.html, session artefact).
+
+------------------------------------------------------------
+
+DR-ZYRA-142
+Title:       The Pause Package — One-Shot Nudge, Never-Auto-Ended
+             with Time-Honesty, and the Nameless Timeline Pair
+Date:        2026-08-12
+Decided by:  Founder, via the ChatGPT product consultation he
+             relayed the same evening ("consider all three
+             recommendations approved… happy for them to move
+             forward into the normal governance process")
+Status:      Approved — built 2026-08-12 (reminders excepted,
+             see OA-ZYRA-203)
+
+Decision:
+  The pauser keeps SOLE ownership of the lift (V3 §7 unchanged;
+  no accept/decline machinery anywhere). Around that, three
+  things:
+
+  1. THE ONE-SHOT NUDGE. The waiting person may send "I'm ready
+     when you are" ONCE PER PAUSE EPISODE. One notification to
+     the pauser alone ("<Name> is ready to continue, whenever
+     you are"); no badge, no persistent marker, no
+     delivery/read/response state — the sender's button simply
+     greys to "You let <name> know". Guardian-silent: a whisper,
+     not a family event. A NEW pause is a NEW episode and the
+     one nudge comes back. Server: nudge_paused_journey +
+     matches.pause_nudged_at, cleared by suspend and resume
+     (migration 20260812164117). The pauser cannot nudge —
+     their button is Resume.
+  2. HOW LONG MAY A PAUSE LAST: FOREVER. The system never ends
+     what people haven't (DR-ZYRA-121 item 12 stands — no
+     auto-ending of any age). What guards against zombie limbo:
+     the paused caps' tidiness economy, the freed Active slot
+     (DR-ZYRA-140), End always being available to either party,
+     and TIME-HONESTY — after 30 days the row reads
+     "Paused · 3 months" on both sides, a mirror, never a
+     deadline. Gentle 30/90-day reminders to the PAUSER ONLY
+     are part of this decision but need a scheduler: raised as
+     OA-ZYRA-203, not half-built.
+  3. THE TIMELINE PAIR. journey_paused / journey_continued
+     milestones — dated, NAMELESS, reasonless, deliberately
+     never deduped, rendered QUIET (smaller, dimmed, tighter)
+     so five pauses read as seasons of a relationship rather
+     than a rap sheet. Who paused is never written: the couple
+     already knows operationally, and Main Guardians can read
+     Timelines — the Timeline is the keepsake, not a ledger of
+     responsibility. An end-while-paused writes no "continued";
+     journey_ended closes the chapter.
+
+Verification: journey suite section L (checks 77-82): pauser
+             refused; one nudge lands, to the pauser alone
+             (1/0); second refused; new episode restores it;
+             Timeline pair counts 2/1. Suites 78/78 and 52/52.
+
+Documentation: this register; models/journey_match.dart
+             (pausedFor doc), the migration header.
+
+Dependencies: DR-ZYRA-140 (pause frees the slot), DR-ZYRA-121
+             item 12 / OA-ZYRA-164 (no automatic endings),
+             OA-ZYRA-203 (the reminders).
+
+------------------------------------------------------------
+
+DR-ZYRA-143
+Title:       The Journey Person-Surface, Settled — Expanding
+             Cards (A1 Text), Compatibility on Every Card, the
+             End Pill, and the Inline Takeover (B3)
+Date:        2026-08-12
+Decided by:  Founder, across the five-concepts round, the
+             interactive sheet-vs-rows round, and the final
+             four-section interactive round ("ok so for point 2
+             do option a1… yeh a pill and point 4 do b3")
+Status:      Approved — built 2026-08-12
+
+Decision:
+  Four rulings that together settle how a PERSON in the
+  Journeys section is seen and acted on:
+
+  1. ONE SURFACE: THE EXPANDING CARD. Every Journey row —
+     Potential, Paused, Ended — is _JourneyExpandingCard, an
+     exact copy of the Activity card's expansion model
+     (chevron header; photo pager with dot rail; verbs inside
+     the expansion). The Option-1 sheet and the design toggle
+     that carried it were DELETED — one model, not a setting.
+     ("take the activity section how it expands and copy that
+     model.")
+
+  2. TEXT POSITION A1. Of three text-position variants (A1
+     stacked fact-first, A2 fact-on-scrim, A3 chip+caption),
+     the Founder chose A1: the state sentence in its own line
+     beneath the photo, each action on its own row. Structure
+     over compactness — the words stay off the person.
+
+  3. COMPATIBILITY ON EVERY CARD. Activity's exact button on
+     every Journey card in every state (busy included):
+     "Compatibility Unlock" until unlocked at either tier,
+     "View Compatibility" permanently after, both through
+     ProfileUnlockScreen. This answers both of his questions —
+     the paid person reaching an old Journey's report from a
+     Paused/Ended card, and the Potential person choosing to
+     pay before beginning. The report outlives the Journey.
+
+  4. END IS A PILL; THE TAKEOVER IS THE CARD (B3). "End this
+     Journey" became a full-width quiet-coral OUTLINE pill
+     (never a fill) at the card's foot — findable without
+     competing with Resume. And the at-cap Begin moment left
+     its popup: of B1 (glass dialog), B2 (solid dialog) and B3
+     (card extends inline), he picked B3. _InlineTakeover and
+     _InlineTakeoverChooser render the SAME parts, words and
+     hierarchy as the B1/C1 dialogs they replace — Continue as
+     hero, Pause/End square cards, Guardian disclosure — inside
+     the person's own card; the portrait shortens to a strip
+     while the choice is open (cost shown live in the mock and
+     accepted), and tap-outside dismissal became a written
+     "Not now". SUPERSEDES the dialog PRESENTATION of the B1/C1
+     picks earlier the same day; their content and choice
+     model stand. The below-cap Begin confirm remains a dialog
+     — it was never part of the B1/B2/B3 round.
+
+Verification: flutter analyze on the Founder's machine (the
+             gate for all client work); solo-testable via the
+             dev panel — staged actives extend staged potential
+             cards with the same inline takeover, and settle in
+             the scenario's numbers.
+
+Documentation: this register; the banner over _InlineTakeover
+             and the dated comments in connections_screen.dart.
+
+Dependencies: DR-ZYRA-140/141 (pause frees the slot; ZYRA One
+             cap of 3 and the C1 chooser content), DR-ZYRA-142
+             (pause language on the cards), zyra_unlock_service
+             (either-tier rule, 2026-08-03).
+
+------------------------------------------------------------
+
+DR-ZYRA-144
+Title:       Journey Round Two — the Active Card Carries Its
+             Verbs, the Hero Pill, Compatibility Is Already
+             Theirs, the Timeline Becomes the Keepsake, and
+             Restart Goes Inline
+Date:        2026-08-13
+Decided by:  Founder, via the four-section interactive round
+             ("implement it all and update app" after pressing
+             every button)
+Status:      Approved — built 2026-08-13
+
+Decision:
+  Five rulings, one instruction:
+
+  1. THE ACTIVE CARD CARRIES ITS VERBS; THE ⋮ IS GONE. The
+     Journey screen's anchored management menu (Pause / End /
+     Report) is removed whole. On the Connections Active
+     Journey card — no expansion, "it like main thing" — the
+     verbs are visible: Continue Journey + Timeline (as
+     before), then View Profile | Pause as frost pills, then
+     End Journey as the quiet coral outline pill. Report was
+     already the card's flag and is now the one report point
+     for the person. View Profile joins the card (the
+     Timeline's labelled bubble remains). Pause and End
+     confirm in the ratified glass language and speak
+     identically to every other pause/end in the app;
+     stand-ins settle in the scenario's numbers.
+
+  2. THE VERB IS A DIFFERENT PILL. Begin / Resume / Restart /
+     Request restart render as a FILLED LAVENDER pill
+     (0xFFCEA2D1 on 0xFF3D2A4A — the suggestion bar's ratified
+     pair): "its a more meaningful button so pill should be
+     different". One visual grammar per card: lavender fill
+     moves the Journey, flat rows look at things, coral
+     outline ends things.
+
+  3. COMPATIBILITY IS ALREADY THEIRS ON PAUSED AND ENDED.
+     Those cards always read "View Compatibility" — never
+     "Compatibility Unlock" — because a Journey OPENS with
+     Compatibility Reveal ("they already unlocked").
+     ProfileUnlockScreen gained a journeyRevealed door: the
+     OVERALL section opens as if standard-unlocked, spending
+     nothing, writing nothing; the Plus detail stays gated —
+     the Journey never revealed categories or Guardians.
+     Potential remains the only state that can offer the
+     unlock.
+
+  4. THE TIMELINE IS THE KEEPSAKE, NOT BULLET POINTS. Chapter
+     headers named by the canonical stage map (never
+     duplicated); under each finished phase, the questions
+     BOTH Seekers answered, word for word, YOU first — gated
+     by the same both-sealed rule the phase reveal uses, so
+     the Timeline never outruns the Journey; the
+     Compatibility-revealed entry is a door to the report
+     (journeyRevealed path). Identical from Active, Paused
+     and Ended — the story is kept. Q&A fetch is best-effort:
+     a failed read leaves milestones standing, never an
+     error screen.
+
+  5. RESTART GOES INLINE. The ended card's Restart no longer
+     pops a dialog — the card extends (B3 language: divider,
+     photo strip) with the dialog's exact words and Send
+     request / Not now. No Guardian disclosure at the ask, on
+     purpose: sending opens nothing; RLS widens only if they
+     accept and a Journey begins, and THAT moment carries the
+     disclosure. After sending, the refreshed row shows the
+     pending-request state as before.
+
+Verification: flutter analyze on the Founder's machine; solo
+             rehearsal via the dev panel (staged actives
+             pause/end in scenario numbers; staged ended rows
+             run the inline ask).
+
+Documentation: this register; the dated banners in
+             connections_screen.dart, journey_flow_screen.dart,
+             journey_timeline_screen.dart,
+             profile_unlock_screen.dart.
+
+Dependencies: DR-ZYRA-143 (the card grammar it extends),
+             DR-ZYRA-140/141/142 (pause stack the relocated
+             verbs compose), the 2026-08-03 either-tier
+             unlock rule.
+
+------------------------------------------------------------
+
+DR-ZYRA-145
+Title:       Journey Polish — Active Card Option 1, the Frost
+             Primary Everywhere, "End Journey" and Its
+             Contrast, View Profile on Every Card, the Header
+             Emptied, the Map Into the Timeline, and the Last
+             Popup Retired
+Date:        2026-08-13
+Decided by:  Founder ("a - option 1. and yeh execute it all"),
+             from the three-layout interactive round; Map
+             placement in his words: "map is not needed cos it
+             should live in timeline"
+Status:      Approved — built 2026-08-13
+
+Decision:
+  1. ACTIVE CARD, OPTION 1. Three bands, three jobs: ACT —
+     Continue/Begin Journey full width; LOOK — Timeline ·
+     View Profile; MANAGE — Pause Journey · End Journey. The
+     2:1 Continue/Timeline row is retired.
+  2. ONE PRIMARY, THE FROST PILL. Continue Journey's recipe
+     (white 22% fill, white 42% border) is THE primary for
+     every Journey verb: Begin / Resume / Restart / Request
+     restart on the expanding cards, and the hero buttons
+     inside every inline extension (Continue with <name>,
+     Continue as things are, Send request, Begin with
+     <name>). SUPERSEDES the lavender hero fill of
+     DR-ZYRA-144 §2 after one day — the Founder's call both
+     days. Hierarchy still reads: frost acts, flat rows look,
+     coral outline ends.
+  3. "END JOURNEY", EVERYWHERE, AND VISIBLE. One label on
+     every End control ("End this Journey" retired, including
+     the in-flow confirm title), and the contrast fix: a dark
+     under-fill in the app's dark-chip tone (0x48140C1A)
+     beneath the coral outline, border 0.75, text lifted to
+     0xFFF0A2A0 — legible on the gradient's pink stop, still
+     outline-language destructive, never a solid fill.
+  4. VIEW PROFILE ON EVERY CARD. Potential, Paused and Ended
+     gain a View Profile row — first of the look-at rows:
+     the person, then the fit, then the story. The Timeline's
+     "View full profile" bubble is REMOVED as duplication
+     (its 2026-08-10 rationale ended when the cards gained
+     the action).
+  5. THE JOURNEY HEADER IS BACK AND A NAME. The Map /
+     Timeline / Profile pill row is removed whole. THE MAP
+     LIVES IN THE TIMELINE: a "Journey Map" bubble at the
+     Timeline's top (the profile bubble's old slot), the
+     Map's only entry point in the app; hidden when no stage
+     is known, with a composed-actives fallback so the
+     in-Journey "Read your story so far" links still surface
+     it.
+  6. THE LAST POPUP RETIRED. The below-cap Begin confirm —
+     the popup the Founder was still hitting, because ZYRA
+     One's cap of 3 meant one Active Journey never triggered
+     the takeover — now extends the person's card inline
+     (_InlineBeginConfirm): same words, same "Not yet", same
+     Guardian disclosure at the same moment. The begin flow
+     now contains no dialogs at all: confirm inline under the
+     cap, takeover inline at it, restart ask inline on Ended.
+
+Verification: flutter analyze on the Founder's machine; solo
+             rehearsal via the dev panel (staged begins,
+             takeovers and restarts all run inline and settle
+             in scenario numbers).
+
+Documentation: this register; dated banners in
+             connections_screen.dart, journey_flow_screen.dart,
+             journey_timeline_screen.dart.
+
+Dependencies: DR-ZYRA-143/144 (the card grammar and relocated
+             verbs this round polishes); zyra_entitlements
+             (the cap that explained the "still a popup"
+             report).
+
+------------------------------------------------------------
+
+DR-ZYRA-146
+Title:       Round Four — the Map Dissolves Into the Timeline,
+             Zero Popups on Connections, and the Clean ✕
+             Extension Header
+Date:        2026-08-13
+Decided by:  Founder ("ok execute and update app pelase", after
+             pressing every button in the three-section
+             interactive round)
+Status:      Approved — built 2026-08-13
+
+Decision:
+  1. THE MAP DISSOLVES INTO THE TIMELINE. Timeline was the
+     story behind (dated, unique to the pair); the Map was the
+     road ahead (the fixed stages, identical for all). They are
+     one line's two halves, so they became one rail: the story
+     runs into a glowing YOU ARE HERE · N OF 8 at the pair's
+     current stage, then the remaining stages hollow, dashed
+     and dimmed under a whispered "The road ahead" — all from
+     the ONE canonical stage map, never re-listed. Paused and
+     Ended Journeys show the same road frozen where it
+     stopped; no stage known, no road drawn. The Journey Map
+     bubble (which lived part of one day) and JourneyMapScreen
+     retire from the system — nothing links the screen; its
+     file awaits deletion in git ("the pill journey map has to
+     be removed from the system").
+  2. ZERO POPUPS ON CONNECTIONS — now a standing rule. The
+     audit found three left, all confirms: Pause (Active
+     card), End (Active card), End (Paused card). All three
+     now extend in place: the Active card's pill bands step
+     aside for the confirm (✕ appears, portrait shrinks to
+     56pt), the paused card swaps its rows under the ✕ header.
+     One shared confirm shape (_InlineConfirmBlock): title,
+     one honest body line, frost pill for reversible / dark-
+     coral End pill for permanent, written dismissal beneath.
+     zyra_glass_dialog leaves the file entirely. DELIBERATE
+     EXCEPTIONS, flagged in the mock and accepted: the report
+     flag's app-wide bottom sheet, and the rare server-refusal
+     notices (e.g. pause limit reached) — a refusal after the
+     choice, not a choice.
+  3. THE CLEAN EXTENSION HEADER. Every expanding-card
+     extension (begin confirm, takeover, restart ask, end
+     confirm) opens with ✕ top-left, name · age, 📍 location —
+     NO photo, NO dot rail ("remove the photo at top header
+     along with the dots… but leave name age location"). The
+     one-day 120pt photo strip retires (_PhotoFrame deleted).
+     The ✕ is the reflex exit; the written "Not now / Not yet"
+     stays inside the extension as the read-to-the-end exit —
+     both do the same nothing. The card's header carries the
+     single divider; extensions stopped bringing their own.
+
+Verification: flutter analyze on the Founder's machine; solo
+             rehearsal via the dev panel (staged pause/end/
+             begin/takeover/restart all run inline and settle
+             in scenario numbers).
+
+Documentation: this register; dated banners in
+             connections_screen.dart and
+             journey_timeline_screen.dart; the retirement notes
+             in journey_flow_screen.dart.
+
+Dependencies: DR-ZYRA-143/144/145 (the extension grammar this
+             round completes); DR-ZYRA-129 (the one canonical
+             stage map the road draws from).
+
+------------------------------------------------------------
+
+DR-ZYRA-147
+Title:       Transitional Moments — the Design System for
+             ZYRA's Meaningful Pauses
+Date:        2026-08-13
+Decided by:  Founder ("yeh i like all of it so commit all"),
+             after playing the nine-moment gallery and the
+             deliberate-no cards at real pace
+Status:      Approved — DESIGN ONLY. No code exists; per-stage
+             Active Journey treatments in design; build starts
+             only on explicit instruction.
+
+Decision:
+  The app gains a designed language of transitional moments,
+  governed by APP/Transitional Moments/
+  TRANSITIONAL_MOMENTS_CURRENT_VERSION_V1.md. The ratified
+  core:
+
+  1. THE GRAMMAR. A breath, then words, then a step: dark calm
+     over the gender gradient, lines arriving ~600ms apart,
+     one primary action last. Words carry it (no confetti, no
+     badges, no hearts). ALWAYS TAP-THROUGH — any tap settles
+     the page instantly; a moment you cannot skip is a toll.
+     One accent per moment; coral appears in none. Every
+     moment ends by naming the next step.
+  2. THREE WEIGHTS, so "does this deserve a moment?" resolves
+     into choosing a weight: FULL MOMENT (own page, ~4-6s) ·
+     ONE BREATH (2-3 lines, ~2s) · IN-PLACE BEAT (no page).
+  3. SIX ESSENTIAL: Match Created (upgrade of
+     match_notification_screen; first-ever match carries one
+     extra explainer line), Journey Begins, Open Conversation
+     unlocked, Journey Ended (closure, keepsake promise, never
+     coral), Nikah recorded (the crown, once), Profile ready
+     (upgrade of profile_ready_screen; the "slow on purpose"
+     handshake, once ever).
+  4. EIGHT RECOMMENDED at lighter weights — including the
+     three phase completions as ONE shared design fed by the
+     canonical stage map (label + guiding question + "your
+     answers are open now"), first-Guardian-linked (both
+     audiences), ZYRA One activated, restart accepted, meeting
+     recorded; Journey RESUMED stays an in-place beat so it
+     reads as continuity.
+  5. SEVEN DELIBERATE NO'S, each with recorded reasoning —
+     above all Journey Paused (a page would celebrate what
+     DR-ZYRA-142 chose to whisper), Salam Exchange (the
+     exchange IS the moment), and Unlock purchased (a
+     purchase, not a milestone).
+
+  OPEN (doc §5, unanswered by design): Islamic wording depth
+  (draft stays restrained — "Alhamdulillah" at Nikah only),
+  haptics, the server-side seen_moments store once-ever
+  moments require, and whether the Guardian-side moment joins
+  round one.
+
+Verification: none yet — design artefact. The gallery mock
+             plays every ratified moment at real pace.
+
+Documentation: APP/Transitional Moments/
+             TRANSITIONAL_MOMENTS_CURRENT_VERSION_V1.md (the
+             governing doc); this register.
+
+Dependencies: DR-ZYRA-142 (the quiet-pause philosophy the
+             Paused "no" protects), DR-ZYRA-129 (the one
+             stage map the shared phase design reads),
+             DR-ZYRA-121 item "closure" lineage (Journey
+             Ended's dignity).
+
+------------------------------------------------------------
+
+DR-ZYRA-148
+Title:       The Road's Moments, Ratified and Built — Stage by
+             Stage, One Engine
+Date:        2026-08-13
+Decided by:  Founder ("ok i liek all of it. execute all changes
+             and update app"), after the stage-by-stage gallery
+Status:      Approved — built 2026-08-13
+
+Decision:
+  1. PER-STAGE TREATMENTS RATIFIED as played in the gallery:
+     reveal completion (ONE BREATH, reframe: "where you start,
+     not who you are"); Salam and Guardian Gate as IN-PLACE
+     BEATS; the three phase completions as ONE shared design
+     (label + guiding question + answers-now-open, fed by the
+     canonical map); Family Compatibility's credit and the
+     destination's arrival SHARE one moment — E3 absorbs R3,
+     because one transition earns one page (no-stacking rule).
+  2. BUILT. Engine lib/widgets/zyra_moment.dart enforces the
+     grammar (pacing, tap-through, glow/closure, beats) so no
+     future moment can forget it. Wired: E1 (match screen
+     rewritten; placeholder self-photo retired for the honest
+     frost "You" circle), E2, E3, E4 (all End paths EXCEPT the
+     takeover's end-and-begin — there the new beginning is the
+     story), E5+R7 (confirming side), E6, R1 (mark form; live
+     score ring is a later refinement), R2 x3, R5 (replacing a
+     stock AlertDialog), both beats.
+  3. PENDING, raised as OA-ZYRA-205: R4 (first Guardian linked,
+     both audiences), R6 (restart accepted), proposer-side
+     milestone moments, seen_moments store + first-match extra
+     line, the haptics decision.
+
+Verification: flutter analyze on the Founder's machine; the
+             road is solo-rehearsable via dev stage advances.
+
+Documentation: APP/Transitional Moments/…CURRENT_VERSION_V1.md
+             §7 (build status); this register.
+
+Dependencies: DR-ZYRA-147 (the system this builds),
+             DR-ZYRA-129 (the canonical map feeding R2/E3).
+
+------------------------------------------------------------
+
+DR-ZYRA-149
+Title:       Notifications Becomes the Fifth Tab; the Seeker
+             Bell Retires
+Date:        2026-08-13
+Decided by:  Founder ("yeh change the bell icon so its in nav
+             bar… i said put it left of profile right of
+             guardian.. executre changes"), from the ChatGPT
+             nav brief he relayed and the two-design challenge
+             round
+Status:      Approved — built 2026-08-13
+
+Decision:
+  1. Notifications is a NAVIGATION TAB: Browse · Connections ·
+     Guardian · Notifications · Profile — the Founder's exact
+     placement, left of Profile. Notifications are a
+     destination; destinations get tabs. This SUPERSEDES the
+     SEEKER NAVIGATION rule "Notifications are not a
+     navigation tab" (2026-07-26 lineage); the Summary doc
+     update is OA-ZYRA-206.
+  2. The Seeker Bell overlay is GONE from HomeShell. Its
+     unread badge survives on the tab (FloatingNavItem gained
+     `badge`; the badge sits outside the icon's shrink-scale
+     so an unselected tab's count stays full-size), fed by
+     the same 20s poll the Bell ran, re-read on every tab
+     change so it never lingers after the person has looked.
+     NotificationsScreen gained isTab (no back arrow — popping
+     there would pop HomeShell).
+  3. The Wali side keeps its Bell — not part of this ruling.
+  4. NOT BUILT, awaiting the Founder's pick from the challenge
+     round: what (if anything) replaces the bell top-right on
+     Browse — design A's transforming action bar or design B's
+     flag-on-card + nothing. The corner currently belongs to
+     each page again.
+
+Verification: flutter analyze on the Founder's machine; badge
+             behaviour observable with any unread row.
+
+Documentation: this register; home_shell.dart and
+             notification_bell.dart headers; OA-ZYRA-206.
+
+Dependencies: DR-ZYRA-101 (the 4-tab structure this extends),
+             DR-ZYRA-091 (FloatingNavBar).
+
+------------------------------------------------------------
+
+DR-ZYRA-150
+Title:       Browse's ⋮ and the Transforming Action Bar; the
+             Centre-Hold Retires; Notifications Wears the
+             Shared Header
+Date:        2026-08-13
+Decided by:  Founder ("one thign you didnt do was in browser
+             put 3 dots on top right… the nav bar changes…
+             2 pills… user clciks anywher and the nav bar
+             returns. meaning the hold the middle screen for
+             help and support can go also") — his call over
+             the counter-proposal, and a better bargain than
+             the original brief: the ⋮ replaces a HIDDEN
+             800ms gesture with a visible affordance.
+Status:      Approved — built 2026-08-13
+
+Decision:
+  1. THE ⋮, TOP-RIGHT OF BROWSE, in the corner the Bell
+     vacated (DR-ZYRA-149). Tapping it puts the shell into
+     ACTION MODE: the floating nav pill is replaced, same
+     footprint and glass, by two pills — Report Profile ·
+     Help & Support. Tapping anywhere else restores the nav
+     bar; that tap is deliberately swallowed (dismissing is
+     its whole meaning). Report acts on whoever is on the
+     card RIGHT NOW — Browse hands the shell the action, so
+     the shell never needs to know who is on screen.
+  2. THE CENTRE-HOLD RETIRES, whole: timer, stillness
+     tolerance, fraction bounds, the three handlers, the
+     Help/Report sheet route. Long-press keeps only the
+     photo-dim feedback. The 2026-07-27 "no visible
+     affordance" trade-off is reversed by the Founder's own
+     instruction.
+  3. NOTIFICATIONS SPEAKS THE SHARED HEADER: as a tab it
+     drops its AppBar for the Connections/Guardian language —
+     title top-LEFT, heading 22, same padding — with Mark all
+     read keeping its seat on the row's right. The pushed
+     form (Wali's Bell) keeps its AppBar and back arrow.
+
+Verification: flutter analyze on the Founder's machine; the
+             mode is exercised by tapping ⋮ then anywhere.
+
+Documentation: this register; browse_screen.dart header
+             (retirement note), home_shell.dart
+             (_ActionModeBar), notifications_screen.dart.
+
+Dependencies: DR-ZYRA-149 (the freed corner and fifth tab),
+             DR-ZYRA-109/121 lineage (sponsored takeover
+             chrome rules the ⋮ inherits for free).
+
+------------------------------------------------------------
+
+DR-ZYRA-151
+Title:       Every finding carries an OA number
+Date:        2026-08-13
+Decided by:  Founder, on the Ecosystem Maintenance Review
+Status:      Ratified
+
+Decision:    No finding, recommendation or required decision
+             is complete until it carries an OA number — or
+             until the document states explicitly that no
+             action is being raised, and why.
+
+             Applies equally to audits, architecture reviews,
+             research reports, external reviews and
+             AI-authored findings. A review identifying ten
+             problems leaves behind ten identifiers or ten
+             written refusals. There is no third outcome.
+
+Reasoning:   The registers are not the weak point — anything
+             that enters them gets done. The weak point is
+             that findings have been allowed to live outside
+             them, in documents, where being read and agreed
+             with is indistinguishable from being actioned.
+
+             Measured on 2026-08-13, three separate cases:
+             pricing drift found 2026-08-08 and unfixed five
+             days later; seven company-formation decisions
+             researched 2026-08-01 and unmade twelve days
+             later; a filename migration parked as
+             "scheduled" that grew from 55 files to 98 while
+             waiting. None was forgotten. Each was written
+             down. None had an identifier.
+
+             A document is not a queue. This decision makes
+             the register the only place a finding can rest.
+
+Verification: OA-ZYRA-207 through 210 were raised under this
+             rule as it was ratified, including one for the
+             rule's own enforcement (OA-ZYRA-208). The
+             Ecosystem Maintenance Review that produced it is
+             itself subject to it.
+
+Documentation: this register; OA-ZYRA-208; ZYRA_GOVERNANCE
+             (section to be added); OUTSTANDING_ACTIONS_V2
+             section 4, Document Principles.
+
+Dependencies: None. This constrains every future review.
+
+------------------------------------------------------------
+
+DR-ZYRA-152
+Title:       Guardian Developer Toggle Panel
+Date:        2026-08-13
+Decided by:  Founder, by direct instruction ("build the
+             Guardian equivalent so he can stage Wali states
+             and test alone")
+Status:      Ratified
+
+Decision:    The Guardian shell gets its own pull-out dev
+             panel, mirroring the Seeker one, mounted as the
+             last child of WaliHomeShell's Stack under a
+             kReleaseMode guard.
+
+             ONE STORE, TWO PANELS. The state lives in
+             ZyraDevScenario beside the Seeker fields, under
+             one reset(). Only the widget is duplicated
+             (dev/wali_dev_scenario_panel.dart), because the
+             two shells mount different trees and a Guardian
+             has no plan, no Browse and no popups.
+
+             Staged, each with its reader named:
+               Linked Seekers      composeWaliWards ->
+                                   Seekers, Dashboard
+               Active / Paused /   composeWaliJourneys ->
+               Ended + stage       Dashboard, Journey Detail
+               Family Review       waliOpenReviewIds,
+                                   waliStagedReview
+               Role Main/Additional gates both of the above
+               Invitations sent    composeWaliSentInvites
+               Unread badge        WaliHomeShell nav badge
+
+Reasoning:   THE PANEL'S PRIME RULE HELD, and it cost two of
+             the eight sections in the brief. "Invitations
+             received" and "Introductions sent" were asked
+             for and were NOT built as steppers, because
+             neither has a reader anywhere in the app:
+             wali_invites has no recipient column, and
+             fetchPending() returns suggestions FOR a Seeker
+             with both callers on the Seeker side. A stepper
+             writing into nothing looks exactly like a
+             feature that has been checked, which is the
+             failure the panel exists to prevent. Both are
+             drawn REFUSED, naming the reason and pointing at
+             Developer Access.
+
+             THE RED SHAKE IS REINSTATED, on this side only.
+             dev_scenario_panel deleted its _Deniable on
+             2026-08-12 on the correct grounds that hidden
+             controls had made "shown but refused" an empty
+             set for five weeks. Three members of that set
+             have now arrived. Hiding a control an Additional
+             Guardian cannot use would make the role segment
+             appear to do nothing; the only honest way to
+             show a missing privilege is a control that is
+             present and refuses. HIDE means "does not apply
+             to you"; REFUSE means "applies, and here is why
+             you cannot have it".
+
+             ONE PRODUCT GAP WAS CLOSED to give a control its
+             reader rather than fake one. Outstanding invite
+             codes are now listed on Invite your Seeker,
+             through the existing role-agnostic
+             fetchPendingInvites(). A Guardian could
+             previously mint code after code and never see
+             one again: the token was shown once, in the
+             moment of creation, and was then unrecoverable
+             while still live and still redeemable. The
+             service worked from this side the whole time;
+             only the call was missing — the same shape as
+             the "Invite another Seeker" door missing from
+             wali_seekers_screen until 2026-08-07.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files; the single finding
+             is a pre-existing unused import in
+             journey_timeline_screen.dart, untouched here.
+             Every new field confirmed to reach a screen, and
+             all nine enumerated in reset(). NOT COMPILED —
+             no Flutter toolchain exists in the AI sandbox,
+             so flutter analyze is the Founder's gate and has
+             not yet run.
+
+Findings:    Two raised as OA-ZYRA-213 and OA-ZYRA-214, per
+             DR-ZYRA-151. A third is explicitly NOT raised:
+             that "Invitations received" cannot be staged is
+             a consequence of invites being bearer tokens
+             rather than addressed, which is an existing
+             recorded product decision and not a new finding.
+
+Dependencies: DR-ZYRA-129 (the one stage map — the panel
+             stores an INDEX into it, never a stage name),
+             DR-ZYRA-149 (the Bell is a tab; the staged count
+             drives that badge, not the retired overlay),
+             OA-ZYRA-202 (dev-panel build-list; this
+             delivers the Guardian half of Family Review and
+             timeline staging).
+
+------------------------------------------------------------
+
+DR-ZYRA-153
+Title:       Browse's ⋯ Loses Its Circle; The Action Bar
+             Becomes The Connections Pill
+Date:        2026-08-13
+Decided by:  Founder, by direct instruction
+Status:      Ratified
+
+Decision:    Two changes to Browse, both toward the one visual
+             system.
+
+             1. THE ⋯ HAS NO GLASS CIRCLE. The glyph alone,
+                in a 40pt tap target so the target does not
+                shrink with the circle, carrying a soft dark
+                drop shadow.
+
+             2. THE ACTION BAR IS ZyraSegmentedToggle. The
+                frosted container holding two separate stadium
+                buttons is gone; the bar Browse's ⋯ raises is
+                now the same sliding pill Connections and the
+                Guardian's Network tab draw.
+
+Reasoning:   GlassIconButton was deliberately NOT changed. It
+             is the shared component behind the Bell and the
+             Guardian's buttons, and stripping its circle
+             there would have answered a note about one
+             control by altering three.
+
+             THE SHADOW IS NOT DECORATION. The circle was
+             doing a second job nobody had asked it to: it
+             carried its own contrast, so the glyph stayed
+             legible over a bright photograph. Bare white
+             dots on a pale headshot disappear. A drop shadow
+             buys that contrast back at a fraction of the
+             visual weight.
+
+             THE ACTION BAR HAS NO FILL AT REST, and this is
+             the one place it departs from every other use of
+             that control. Connections is a SELECTOR — one of
+             its segments is always true, so the fill always
+             sits somewhere. These are two ACTIONS, and
+             neither has happened. A fill resting on the left
+             would say "Report Profile" was already selected,
+             on a report control, which is the last place in
+             the app to imply something has been done. So the
+             fill arrives with the gesture: press, it slides
+             under the finger, and the action fires as it
+             lands — the slider effect the Founder asked for,
+             doing the thing it looks like it is doing.
+
+             The shared widget gained two optional fields
+             ([icons], [showFill]) rather than the app
+             gaining a fourth hand-rolled copy of its glass
+             values. That is the convention this codebase
+             already applies to ZyraJourneyStages: extend the
+             one definition by adding a field, never start a
+             second mapping. Both default to the old
+             behaviour, so Connections and Network are
+             untouched.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files; the single finding
+             is a pre-existing unused import in
+             journey_timeline_screen.dart, untouched here.
+             Two now-dead imports removed with the code that
+             used them (dart:ui in home_shell,
+             glass_icon_button in browse_screen). NOT
+             COMPILED — flutter analyze is the Founder's gate.
+
+Dependencies: DR-ZYRA-150 (the ⋯ and the action-mode bar it
+             raises), and the 2026-08-13 extraction of
+             ZyraSegmentedToggle out of connections_screen,
+             which is what made reuse possible at all.
+
+------------------------------------------------------------
+
+DR-ZYRA-154
+Title:       Notification Dots And The Notification Tab Are Two
+             Systems With One Piece Of State
+Date:        2026-08-13
+Decided by:  Founder — brief, plus the read-state decision taken
+             on the same day when the conflict was put to him
+Status:      Ratified
+
+Decision:    THE SPLIT. A nav dot answers "is there anything over
+             there?" and clears when you arrive in that section.
+             The Notifications tab answers "what actually
+             happened?" and clears only when you act. Founder:
+             "the purpose of the dot is navigation awareness, not
+             individual notification tracking."
+
+             ONE PIECE OF STATE, NOT TWO. Both read `read_at`.
+             Opening a section marks that section's notifications
+             read.
+
+             THE TAB IS THE ONE EXCEPTION. Opening it marks
+             nothing.
+
+             A DOT, NOT A NUMBER, on Connections and Guardian.
+             Notifications keeps its count.
+
+             BUILT: sections dots and the tab's Mark all read /
+             Select all. DEFERRED: the "Go" button, as
+             OA-ZYRA-216.
+
+Reasoning:   THE CONFLICT THE BRIEF CONTAINED. If a dot clears on
+             arrival and the dot is unread notifications, then
+             arriving marks them read — and the tab's unread list
+             empties without the person opening it. Both halves
+             of the brief cannot be literally true at once, and
+             the Founder chose: mark them read.
+
+             WHY NOT KEEP THEM BOLD. That needs a second store —
+             a per-section `last_seen_at` — so the dot can clear
+             while the row stays unread. That is a BOOKMARK
+             AGAINST TIME, and the Founder's own 2026-08-06
+             standard rules on it: "if something seems to require
+             a bookmark against time, you have probably framed
+             the problem incorrectly. Look for the item whose
+             state is unresolved instead." A bookmark is a fact
+             about the observer, grows with users multiplied by
+             surfaces, and drifts because nothing else updates
+             it. `read_at` is a fact about the notification and
+             cannot disagree with what it describes, because it
+             is what it describes.
+
+             WHY THE TAB IS EXEMPT, and it is principled rather
+             than convenient: everywhere else the dot POINTS AT
+             something, so arriving is evidence of having seen
+             it. In the tab the notification IS the content —
+             opening it is not reading it. Marking on arrival
+             there would leave Mark all read with nothing to do
+             on the very screen it lives on.
+
+             A DOT, NOT A NUMBER. Already ratified once, on
+             2026-08-06, for the Connections segment badges: "the
+             heading already says how many; the dot only has to
+             answer whether there is anything." A navigation
+             indicator is that question one level up — "3 things
+             happened over there" changes nothing about whether
+             you go and look. Notifications keeps its count
+             because it is an inbox, where the size of the pile
+             is the useful fact.
+
+             DISABLED IS DRAWN, NOT HIDDEN. Founder: "buttons
+             should appear unavailable/non-pressable." The old
+             Mark all read vanished when there was nothing to
+             mark, which teaches nobody it exists. Dimmed, with a
+             null handler rather than a guarded one — a disabled
+             control that still ripples has told the person it
+             worked.
+
+             THE MAP WAS BUILT FROM THE DATABASE, NOT THE REPO,
+             and that turned out to matter: the live constraint
+             permits ten types and this repo's migrations account
+             for seven. Built from the repo, three live types
+             would have had no section and shown no dot. Raised
+             as OA-ZYRA-215.
+
+             ENDINGS AND DECLINES ROUTE WHERE EVERYTHING ELSE
+             DOES. OA-ZYRA-161's first safety rule is that a
+             safety ending must read identically to an ordinary
+             one; OA-ZYRA-159 merged decline and expiry so they
+             cannot be told apart. A destination is a tell in
+             exactly the way wording is. One section for every
+             Journey outcome, structurally — and the finer-grained
+             version of that question is why the "Go" button was
+             deferred rather than built blind.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. The live type
+             constraint and the per-type row counts were read
+             from the database directly. NOT COMPILED — flutter
+             analyze is the Founder's gate.
+
+Findings:    OA-ZYRA-215 (type drift), OA-ZYRA-216 (the deferred
+             Go button), per DR-ZYRA-151.
+
+Dependencies: DR-ZYRA-149 (Notifications is a tab and owns the
+             count), OA-ZYRA-146 (the full notification
+             specification, parked — this decides the dot/tab
+             split only), OA-ZYRA-161, OA-ZYRA-159.
+
+------------------------------------------------------------
+
+DR-ZYRA-155
+Title:       The Nav Bar Transforms — Browse's ⋯ Menu As One
+             Interaction
+Date:        2026-08-13
+Decided by:  Founder, reviewing DR-ZYRA-153 on device
+Status:      Ratified
+
+Decision:    Four changes, reviewed as one experience.
+
+             1. SAME BAR, NEW CONTENTS. The action bar draws the
+                nav bar's own shell — inset, resting height,
+                radius, blur and glass — from a new shared
+                ZyraNavBarMetrics. "It should feel like it
+                transforms, not gets replaced."
+
+             2. THE GESTURE IS SCOPED TO THE BAR. Drag works
+                only where the finger is on the bar. The rest of
+                Browse keeps every gesture it had.
+
+             3. THREE OPTIONS: Report Profile · Help & Support ·
+                Hide Profile.
+
+             4. HIDE PROFILE LEFT THE REPORT SHEET and became its
+                own option with its own confirmation.
+
+             DRAG HIGHLIGHTS, TAP COMMITS. Releasing a drag snaps
+             and fires nothing.
+
+Reasoning:   WHY IT LOOKED SMALLER. DR-ZYRA-153 dropped
+             ZyraSegmentedToggle in whole, which brought that
+             control's shell with it: ~40pt tall inside a 20pt
+             radius, against the nav bar's ~50pt inside 28. Two
+             widgets, two sets of numbers, and no reason for them
+             to agree. ZyraNavBarMetrics now holds one set and
+             both read it — the fix is that the numbers cannot
+             drift again, not that they were retyped correctly
+             once.
+
+             That also reversed DR-ZYRA-153's [icons] and
+             [showFill] on the shared pill: their only caller was
+             this bar, and this bar no longer uses that control.
+             A parameter kept for a user that no longer exists is
+             machinery nothing uses, which this codebase deletes
+             rather than keeps.
+
+             WHY THE GESTURE IS NARROWER THAN CONNECTIONS'.
+             Connections lets you swipe anywhere because the page
+             IS the pager — there is nothing else the horizontal
+             axis could mean. On Browse it already means
+             Pass/Save/Consider. A bar that scrubbed from
+             anywhere would put "Report Profile" one mistimed
+             swipe away on the screen whose whole vocabulary is
+             swiping. Founder: "the browser page has other
+             interactions, so we do not want accidental
+             navigation changes."
+
+             WHY RELEASE DOES NOT COMMIT. Same reasoning one
+             level down, and it is the Founder's own wording read
+             literally — "swipe on the navigation slider → move
+             between options". Moving is not choosing. Three
+             options where the first is a report is not a place
+             to infer intent from a release.
+
+             ICON ABOVE LABEL. Three labels this long do not fit
+             beside a glyph — "Help & Support" ellipsises inside
+             a third of an iPhone SE, and a truncated label on a
+             control this size reads as a bug. Stacked is also
+             the bar's own grammar: FloatingNavBar's showLabels
+             layout is icon, 2pt, caption.
+
+             HIDE PROFILE'S COPY IS DOING REAL WORK. The action
+             underneath is block() — mutual, permanent,
+             RLS-enforced, and it hides YOU from THEM too. Inside
+             the report sheet that was legible, because the row
+             said "hides you both". Promoted to a button called
+             Hide Profile, the name reads one-way and reversible.
+             The confirmation therefore states it plainly rather
+             than asking "Hide this profile?" and leaving the
+             rest unsaid. That the copy has to compensate for the
+             name is itself the finding — OA-ZYRA-217.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. ONE REAL DEFECT CAUGHT
+             IN SELF-REVIEW BEFORE ANALYZE: AnimationController
+             defaults to an upperBound of 1, which was fine at
+             two options and silently wrong at three —
+             animateTo(2) asserts in debug and clamps in release,
+             so Hide Profile's fill would have parked under Help
+             & Support and been unreachable by drag. Bounds are
+             now derived from the option list. NOT COMPILED —
+             flutter analyze is the Founder's gate.
+
+Findings:    OA-ZYRA-217 (Hide is a mutual block — is a one-way
+             hide wanted?), OA-ZYRA-218 (Connections still
+             reaches block through the report sheet), per
+             DR-ZYRA-151.
+
+Dependencies: DR-ZYRA-153 (supersedes its bar; reverses its two
+             additions to ZyraSegmentedToggle), DR-ZYRA-150 (the
+             ⋯ and action mode), DR-ZYRA-149.
+
+------------------------------------------------------------
+
+DR-ZYRA-156
+Title:       The Action Bar Becomes The Nav Bar — Icon-Only, And
+             A Fourth Option
+Date:        2026-08-13
+Decided by:  Founder, via ChatGPT, reviewing DR-ZYRA-155
+Status:      Ratified — with one conflict raised, OA-ZYRA-221
+
+Decision:    1. ICONS ONLY. The four labels are gone. They live
+                on as Semantics labels.
+
+             2. IT IS THE SAME COMPONENT NOW, not a match of it.
+                ZyraNavBarMetrics gained the breath values and
+                the highlight sizes; _Highlight became the public
+                ZyraNavHighlight; the action bar draws that
+                widget, positioned by the same cell arithmetic,
+                and grows and brightens under a finger exactly as
+                the nav bar does.
+
+             3. A FOURTH OPTION — Compatibility Unlock — opening
+                ProfileUnlockScreen for the card on screen. No new
+                screen, no second purchase surface.
+
+             Unchanged from DR-ZYRA-155: the gesture is scoped to
+             the bar, drag highlights, tap commits, and nothing is
+             highlighted until touched.
+
+Reasoning:   WHY IT STILL FELT WRONG AFTER DR-ZYRA-155. That pass
+             matched the shell — inset, height, radius, blur,
+             glass — and stopped there. Two differences remained
+             and they were the two that carry the feeling:
+
+             THE BAR BREATHES AND THE COPY DID NOT. The real nav
+             bar grows wider, taller and brighter under a finger
+             and settles back on release; every value moves on one
+             flag. A bar that holds still under the same touch
+             reads as a photograph of the component rather than
+             the component. Six values now move together, from the
+             same constants.
+
+             IT DREW ITS OWN INDICATOR. A segment-width rounded
+             fill, where the nav bar moves a 46pt circle between
+             cells. Matching a shell while inventing an indicator
+             gets you something that measures the same and looks
+             different. It now uses the actual widget.
+
+             ICON-ONLY IS WHAT MAKES THE SIZE POSSIBLE. Four
+             labels never fit: "Compatibility Unlock" beside a
+             glyph is wider than a quarter of an iPhone SE, and
+             stacking words under 22pt icons is exactly what
+             forced the bar shorter than the one it replaces.
+             Dropping the words is not a separate request from
+             keeping the size — it is how the size is kept.
+
+             THE COST, NAMED: four unlabelled glyphs are harder to
+             learn than four labelled ones, and there is no
+             hover on a phone to recover the words. Every icon
+             carries a Semantics label, so nothing is lost to a
+             screen reader; a sighted first-time user learns by
+             pressing. Accepted on the Founder's instruction.
+
+             THE FOURTH OPTION ADDS NO DESIGN. It is a door onto
+             ProfileUnlockScreen — the same screen the Connections
+             cards push, with the same argument. That screen
+             already reads profile_unlocks and opens to the
+             compatibility rather than a price when one is held,
+             and zyra_unlock_profile() refuses to charge twice
+             regardless. A second purchase surface would have been
+             a second thing to keep in step with the ledger, for
+             nothing.
+
+Conflict:    IT CONTRADICTS AN APPROVED RULE, raised rather than
+             worked around — APP/Premium/Profile Unlocks/
+             Summary.md, Usage Rules: "Cannot be used while
+             swiping." Browse's ⋯ is the deck. The rule keeps a
+             paid action out of the fastest surface in the app,
+             and removing it makes OA-ZYRA-219's pay-then-decline
+             sequence two taps apart rather than awkward to reach.
+             Built as instructed; ruling requested as
+             OA-ZYRA-221. If the rule stands, the fourth option
+             comes back out. If it is reversed, the document moves
+             in the same change as the code.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. The action bar's seven
+             gesture callbacks are wired in the identical
+             arrangement to FloatingNavBar's shipped ones, so the
+             tap-versus-drag arena behaves as it already does in
+             production rather than as this file guesses. NOT
+             COMPILED — flutter analyze is the Founder's gate.
+
+Findings:    OA-ZYRA-221, per DR-ZYRA-151.
+
+Dependencies: DR-ZYRA-155 (supersedes its bar), DR-ZYRA-153,
+             DR-ZYRA-150, OA-ZYRA-219, OA-ZYRA-220.
+
+------------------------------------------------------------
+
+DR-ZYRA-157
+Title:       Introductions Joins The Card System
+Date:        2026-08-13
+Decided by:  Founder
+Status:      Ratified
+
+Decision:    1. THE SUBTITLE IS GONE. "People your Guardian has
+                introduced to you" no longer sits under the
+                header.
+
+             2. THE EMPTY STATE CENTRES, with a title above the
+                message, matching Notifications.
+
+             3. "Add test Introductions" MOVED to the dev panel's
+                Testing alone card, where it is drawn on every
+                page.
+
+             4. _SuggestionCard IS DELETED. Introductions use
+                _ActivityCard with a new `introduction` kind —
+                the same card Considered, Saved and Passed use.
+
+Reasoning:   THE SUBTITLE WAS THE ONLY ONE. No other section on
+             the page explains itself; CONSIDERED, SAVED and
+             PASSED carry a header and nothing else. One line of
+             instruction under one of four headers is what looked
+             out of place, not the wording of it.
+
+             THE EMPTY STATE WAS ALWAYS CENTRED — IT HAD NOTHING
+             TO CENTRE IN. ZyraEmptyState is a Center around a
+             min-height Column. Inside a ListView that takes the
+             height of its own content and sits wherever the
+             previous child left off, so it read as pinned under
+             the header. Notifications puts it in an Expanded,
+             which is what makes Center mean anything. The
+             Introductions page now does the same when empty. The
+             widget did not change; what it sits in did.
+
+             "MISSING" WAS NEVER REMOVED. The Introductions
+             control was narrowed to the Introductions segment on
+             2026-08-12, on the Founder's own instruction ("i
+             gotta be on indroduction to see the introduction
+             optins in toggle"), and then could not be found —
+             which is the same outcome as not existing. Verified
+             working before moving it: zyra_dev_set_guardian_
+             suggestions exists in the live database and
+             authenticated holds EXECUTE. So this is a placement
+             fix, not a rebuild. Testing alone is where it
+             belonged, and that card's own copy already claimed
+             it: "the Guardian card fakes your family;
+             INTRODUCTIONS FAKES WHAT A GUARDIAN SENT." The panel
+             was describing a control it did not draw there.
+
+             THE MERGE NEEDED A BUG FIXED FIRST, and this is the
+             part worth keeping. _SuggestionCard was built
+             separately on 2026-08-05 for two stated reasons, and
+             the first was still live this morning: _ActivityCard
+             called photoUrl (= photos.first) unguarded on the
+             thumb and indexed photos[clamp(0, -1)] on the hero.
+             The first throws on an empty list; the second fails
+             on the clamp before it reaches the index. Merging
+             without fixing that would have re-run the exact
+             screenshot the Founder sent that day.
+
+             Both are guarded now — a shared _cardThumb, and the
+             hero's own branch. That also closes a latent crash
+             in the EXISTING cards, which stayed hidden only
+             because real profiles happen to carry photos, while
+             dev stand-ins and counterpart cards do not.
+
+             THE SECOND REASON STILL STANDS AND IS KEPT. "The
+             others show things you have already decided on; this
+             is someone you have never seen." That is a rule
+             about ACTIONS, not about style. _moveRow gives the
+             introduction kind one button — View Profile — and no
+             Pass, Save or Consider. Deciding from a thumbnail is
+             what ZYRA is not, and the three decisions live on
+             the profile screen that button opens. The card looks
+             like its neighbours and behaves like itself.
+
+             NO `suggestedBy` PARAMETER WAS ADDED. The card
+             already draws "Suggested by X" from AppState, fed by
+             _loadSuggestions, since 2026-08-05. Passing the name
+             in again would have been a second source for one
+             fact.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. The dev RPC was checked
+             against the live database rather than assumed
+             present. NOT COMPILED — flutter analyze is the
+             Founder's gate. Worth looking at on device: an
+             introduction with no photos, which is the case the
+             photo guard exists for and the one the dev panel can
+             now produce.
+
+Findings:    None raised. The photo defect was fixed in the same
+             change rather than logged, because it was the
+             precondition for the work rather than a discovery
+             beside it.
+
+Dependencies: The 2026-08-05 decision this reverses (_Suggestion-
+             Card's separation), the 2026-08-12 rerouting (the
+             profile opens in place with the decisions as its
+             action bar), and the 2026-08-12 narrowing of the dev
+             control that this relocates.
+
+------------------------------------------------------------
+
+DR-ZYRA-158
+Title:       Action Bar Order, And The Icon Treatment That Was
+             Actually Missing
+Date:        2026-08-13
+Decided by:  Founder
+Status:      Ratified
+
+Decision:    1. ORDER, left to right: Compatibility Unlock ·
+                Hide Profile · Help & Support · Report Profile.
+                "Most relevant profile action first, followed by
+                privacy, support, and safety/reporting."
+
+             2. THE ICONS NOW SCALE. Unselected glyphs sit at
+                0.78 and the selected one at 1.0, over 280ms on
+                easeOutBack, with a binary colour — the nav bar's
+                own numbers, curve and duration.
+
+             3. NO PER-ICON BACKGROUND. One shared moving circle,
+                which is the nav bar's indicator; no glyph gets a
+                bubble of its own.
+
+             Glyphs unchanged. Behaviour unchanged.
+
+Reasoning:   THE GLYPHS WERE NEVER THE MISMATCH, and the Founder
+             asked for a review rather than a swap, so this is
+             what the review found.
+
+             The nav bar shrinks its UNSELECTED icons to 0.78 and
+             holds the selected one at 1.0. That was a deliberate
+             2026-07-26 decision taken after on-device testing —
+             "I want the WHOLE navigation tab to shrink, it's as
+             simple as that" — and the previous approach, growing
+             only the active icon, had been measured as too
+             subtle to register on a real screen. The action bar
+             faded its icons and never scaled them, so it read as
+             a flat row where the nav bar reads as a moving one.
+             Same treatment now, copied rather than approximated.
+
+             The continuous alpha fade it had instead was this
+             file's own invention. The nav bar's colour is binary.
+             Two controls sitting in the same place at different
+             moments should not disagree about something that
+             visible.
+
+             GLYPHS CHECKED AND KEPT. All four are outline
+             variants of the same weight family as the bar's own
+             set (search · bookmark_border · gpp_good_outlined ·
+             notifications_none · person_outline). insights_
+             outlined stays in particular because it is already
+             the app's glyph for compatibility on the Connections
+             cards — one idea, one glyph, wherever it is reached
+             from. Changing it here to something lighter would
+             have bought consistency inside this bar at the cost
+             of consistency across the app.
+
+             THE CIRCLE STAYS, AND THE READING IS STATED SO IT
+             CAN BE CORRECTED IN ONE LINE. "Do not add the circle
+             bubble/background around the icons" is taken as: no
+             per-icon chip. The single moving circle behind the
+             active glyph is the nav bar's own selected-state
+             indicator, and the same instruction asked for "clear
+             active/selected states" — removing it would leave
+             none. If the circle itself is what should go, that
+             is a one-line change and the active state becomes
+             scale and colour alone.
+
+             ORDER ALSO MOVES REPORT FURTHEST FROM THE THUMB.
+             Not the stated reason, but a real consequence worth
+             recording: the one irreversible action on this bar
+             is now the hardest to hit by accident, which is the
+             same reasoning the Connections card already applies
+             to Consider.
+
+             EACH OPTION CARRIES ITS OWN ACT. The commit used to
+             switch on the index, so this reorder would have
+             silently rewired all four buttons. It now switches
+             on a tag stored with the row, and the list can be
+             reordered freely — the class of bug is gone rather
+             than avoided once.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. Checked by inspection
+             that no per-icon decoration exists: one BoxDecoration
+             in the bar (its own shell) and one ZyraNavHighlight.
+             NOT COMPILED — flutter analyze is the Founder's gate.
+
+Findings:    None.
+
+Dependencies: DR-ZYRA-156 (the bar this reorders), DR-ZYRA-155,
+             the 2026-07-26 nav bar scale decision.
+
+------------------------------------------------------------
+
+DR-ZYRA-159
+Title:       The Action Bar Stops Being A Replica And Becomes
+             The Nav Bar
+Date:        2026-08-13
+Decided by:  Founder, side-by-side screenshots
+Status:      Ratified
+
+Decision:    _ActionModeBar is DELETED. Browse's ⋯ swaps the
+             ITEMS in the real FloatingNavBar. There is one bar;
+             its contents change.
+
+             Consequences accepted with it:
+
+             · COMMIT ON RELEASE. Scrubbing the bar and lifting
+               runs the action, because that is what the bar
+               does.
+             · A RESTING HIGHLIGHT, on the first option.
+             · Labels return, because FloatingNavBar owns whether
+               labels are drawn and Browse does not get a
+               private answer to that.
+
+Reasoning:   FOUR DECISIONS TRIED TO MAKE A COPY LOOK LIKE THE
+             ORIGINAL. DR-ZYRA-153 dropped in the Connections
+             pill. 155 matched the shell — inset, height, radius,
+             blur, glass — and extracted ZyraNavBarMetrics so the
+             numbers could not drift. 156 added the breath and
+             the real highlight widget. 158 copied the icon
+             scale. Each closed a gap the Founder could see, and
+             each time another one was visible in the next
+             screenshot.
+
+             THAT IS WHAT A REPLICA DOES. It converges and never
+             arrives, because "the same" is not a list of
+             matched values — it is an identity, and every future
+             change to the real bar has to be noticed and
+             mirrored by hand. The Founder's two screenshots were
+             the argument: after four passes the bars still did
+             not read as one component, and no further pass would
+             have been the last one either.
+
+             SO THE COPY IS GONE. Nothing can drift now because
+             there is nothing to keep in step.
+
+             COMMIT-ON-RELEASE WAS THE ONE REAL COST, AND IT WAS
+             CHECKED RATHER THAN ACCEPTED. DR-ZYRA-155 refused it
+             deliberately: Report Profile sat first, and a
+             mistimed scrub on the screen whose whole vocabulary
+             is swiping would have reported someone. Two things
+             have changed. The Founder's 2026-08-13 reorder put
+             Report LAST, furthest from the thumb. And every one
+             of the four actions was checked for what an
+             accidental trigger actually costs: Report opens a
+             sheet that requires a reason; Hide opens a
+             confirmation; Help and Compatibility push a screen
+             you can leave. None is irreversible on its own, so
+             an accidental release costs a dismissal.
+
+             THE RESTING HIGHLIGHT IS NOW SAFE FOR THE SAME
+             REASON. DR-ZYRA-153 refused to show one because a
+             circle resting on Report Profile would have said
+             that option was already chosen. Compatibility
+             Unlock is first now, so the bar can open highlighted
+             like the nav bar always is — and it resets to option
+             0 on every open rather than remembering, so it can
+             never open sitting on Report.
+
+             LABELS COME BACK, reversing DR-ZYRA-156's icon-only
+             ruling. Not by preference: FloatingNavBar decides
+             whether labels are drawn, for every bar, and Browse
+             taking a private answer to that question is the
+             replica returning in miniature. The labels are
+             shortened to one word each so four fit where five
+             tabs already do. If icon-only is wanted, it belongs
+             on FloatingNavBar as a property and applies
+             everywhere — say so and it is a small change in the
+             right place.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. home_shell.dart now
+             declares two classes rather than five; the replica's
+             dart:ui import and its 2370-character doc comment
+             went with it. NOT COMPILED — flutter analyze is the
+             Founder's gate.
+
+Findings:    None. This closes rather than opens.
+
+Dependencies: Supersedes DR-ZYRA-153, 155, 156 and 158's bar (the
+             reorder and the act-tag from 158 survive).
+             ZyraNavBarMetrics and ZyraNavHighlight stay public —
+             extracted for the replica, still correct as the
+             bar's own documented geometry.
+
+------------------------------------------------------------
+
+DR-ZYRA-160
+Title:       The Introduction's Decisions Move To The Card
+Date:        2026-08-13
+Decided by:  Founder
+Status:      Ratified
+
+Decision:    1. THE CARD GETS PASS, SAVE AND CONSIDER, under
+                View Profile.
+
+             2. THE PROFILE SCREEN LOSES ITS ACTION BAR. Those
+                same three left it in the same change.
+
+             3. THE "INTRODUCED BY" CHIP IS GONE, replaced by a
+                "Suggested by X" line under the name.
+
+             4. SWIPE-TO-DECIDE ON THAT SCREEN IS NOT BUILT —
+                OA-ZYRA-222, with the reason recorded there.
+
+Reasoning:   THIS REVERSES THE 2026-08-05 RULE, and the reversal
+             is the Founder's. That rule said the card must offer
+             no decisions, because "you have not seen this person
+             yet, and deciding from a thumbnail is exactly what
+             ZYRA is not" — so the decisions lived on the profile
+             screen instead.
+
+             What makes the reversal coherent rather than a
+             contradiction is that they moved BACK, not that they
+             were added. There is still exactly one place to
+             decide on an introduction from; it is the card now
+             instead of the screen. Having them in both places
+             would have been the same three choices rendered two
+             different ways, one screen apart.
+
+             THE THREE ARE THE SAME THREE. They come from the
+             list Considered, Saved and Passed already build —
+             an introduction is in none of those lists, so all
+             three conditions pass and it gets all three. They
+             cannot drift from their siblings because they are
+             their siblings. _barPill, the second pill style
+             that drew them on the old action bar, is deleted.
+
+             _move() NEEDED NO SPECIAL CASE, which is the sign
+             the merge was right rather than merely possible. It
+             writes through AppState; _undecidedSuggestions
+             filters on exactly the three lists it writes to;
+             this screen listens to AppState. Deciding removes
+             the introduction from the list on the next frame,
+             with nothing refreshed by hand.
+
+             THE CHIP MOVED BECAUSE OF WHERE IT SAT. Top right,
+             it was a label on a photograph, away from the person
+             it described. Under the name it reads as part of who
+             they are, which is what a Guardian's introduction
+             is. Same shield glyph the Connections card uses for
+             the same fact.
+
+             THE SWIPE WAS REFUSED ON THIS MORNING'S OWN
+             REASONING. DR-ZYRA-159 deleted a replica of the nav
+             bar after four passes failed to make a copy match
+             the original. Browse's decision swipe is fifteen
+             entangled members of that screen's state, several
+             tied to the deck itself. Copying it would be the
+             same mistake at a larger size, one day later.
+             Extracting it means refactoring the app's most
+             important screen, which is not a thing to attempt
+             blind alongside three other changes. Nothing is
+             blocked by the absence: the decisions are on the
+             card, and the profile screen is read-only exactly as
+             it was.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. NOT COMPILED — flutter
+             analyze is the Founder's gate.
+
+Findings:    OA-ZYRA-222, per DR-ZYRA-151.
+
+Dependencies: DR-ZYRA-157 (the card merge this builds on),
+             DR-ZYRA-159 (the replica lesson applied), the
+             2026-08-05 rule this reverses.
+
+------------------------------------------------------------
+
+DR-ZYRA-161
+Title:       Actions Wait For The Finger To Lift
+Date:        2026-08-13
+Decided by:  Engineering, on a Founder bug report
+Status:      Ratified — defect fix
+
+Decision:    FloatingNavBar gains `commitOnRelease` (default
+             false). Browse's action bar sets it true; the tabs
+             do not.
+
+             False: onTap fires the moment a scrub crosses into a
+             new cell — unchanged, and it is what makes the bar
+             feel scrubable.
+
+             True: a scrub only moves the highlight, and onTap
+             fires ONCE on release for the cell under the finger.
+             A cancelled gesture fires nothing.
+
+Reasoning:   THE BUG. Founder: "when I slide left to right it
+             auto asks to hide profile even tho my finger didn't
+             let go of screen." Exactly right.
+             _handleTouchAt calls widget.onTap(index) on every
+             drag update that crosses a cell. For tabs that is
+             the intended scrubbing feel — and reversible, since
+             scrubbing onward changes tab again. For actions it
+             ran Hide Profile as the finger passed over it.
+
+             MY OWN NOTE CLAIMED THE OPPOSITE, and that is the
+             more useful half of this entry. DR-ZYRA-159 recorded
+             "commit-on-release is the real bar's behaviour, and
+             adopting it is part of being the same component".
+             It was not the bar's behaviour. The claim was made
+             from the gesture wiring — seven callbacks in the
+             right arrangement — without reading what
+             _handleTouchAt did inside them. Adopting a widget
+             means adopting behaviour that has to be read, not
+             inferred from its surface. The wrong comment has
+             been corrected where it was written rather than
+             left standing.
+
+             A SECOND DEFECT FELL OUT OF THE FIX. The live path
+             only fires when index != currentIndex, so in action
+             mode tapping the option already highlighted — which
+             is option 0, Compatibility Unlock, every time the
+             bar opens — would have done nothing at all. The
+             release path fires regardless of whether the index
+             changed, so it works. Found by tracing the tap path
+             rather than by it being reported.
+
+             THE HAPTIC STILL FIRES ON EVERY CROSSING. Feeling
+             the cells go by is what makes a scrub legible; only
+             the action waits.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. Both gesture paths
+             traced by hand: tap (down → up → one fire) and
+             scrub (many moves, no fire → release → one fire),
+             plus cancel (no fire). Tabs are untouched — the
+             property defaults false and _endTouch returns
+             immediately for them. NOT COMPILED — flutter analyze
+             is the Founder's gate.
+
+Findings:    None raised — one defect reported and one found
+             beside it, both fixed here.
+
+Dependencies: DR-ZYRA-159 (which made the action bar this
+             widget, and whose verification note this corrects).
+
+------------------------------------------------------------
+
+DR-ZYRA-162
+Title:       The Browse Name Block — Two Lines, Left, Middle Dot
+Date:        2026-08-13
+Decided by:  Founder, choosing from five layouts shown before
+             any code was written
+Status:      Ratified
+
+Decision:    Option C of five.
+
+             NAME AND SURNAME ON ONE LINE, left-aligned. The
+             block is two lines instead of three.
+
+             AGE AND LOCATION SEPARATED BY A MIDDLE DOT (·),
+             replacing the drawn 1px rule.
+
+Reasoning:   SHOWN BEFORE BUILT. The Founder asked for options
+             rather than an implementation, and picked from a
+             rendered comparison of five. Worth noting as a
+             pattern: the last four UI passes each shipped, drew
+             a correction, and shipped again. This one cost one
+             render.
+
+             LEFT, NOT CENTRED, and the Founder took C over the
+             centred B he had originally described after seeing
+             both. Two reasons were on the table. Every other
+             screen — Connections, Guardian, Notifications —
+             starts its content at the same x, and Browse
+             centring would have been the only exception. And a
+             long pair like "Zaynab Abdur-Rahman" wraps: a
+             left-aligned wrap reads as a second line, a centred
+             one reads as an accident.
+
+             Text.rich, NOT A ROW. A Row cannot wrap between its
+             children, so a long pair would have ellipsised the
+             surname away rather than moving it down — the exact
+             failure the left alignment was chosen to handle
+             gracefully. As one paragraph the pair wraps and the
+             second line stays left under the first.
+
+             THE SURNAME KEEPS THE TREATMENT IT EARNED. Lighter
+             WEIGHT rather than a dimmer colour, which is the
+             2026-08-01 finding: dimming white on a white photo
+             subtracts from nothing. w300 at 23pt beside w600 at
+             30pt.
+
+             THE DOT REVERSES A 2026-07-27 NOTE, which argued
+             that a drawn 1px Container "reads as an intentional
+             UI element rather than punctuation". The dot IS
+             punctuation and that is now the point: it sits on
+             the baseline, takes the same two-layer shadow as
+             the words either side, and scales with them. The
+             rule could take no shadow at all — its alpha had
+             already been raised to 0.65 in a later pass
+             precisely because 1px of flat white was the least
+             visible thing on a bright photo. Three widgets
+             become one Text.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. NOT COMPILED — flutter
+             analyze is the Founder's gate. Worth checking on
+             device: a long first name and surname together, and
+             a profile with no surname at all (the span is
+             omitted, not blank-padded).
+
+Findings:    None.
+
+Dependencies: The 2026-07-26 two-line surname decision and the
+             2026-07-27 divider decision, both superseded here.
+
+------------------------------------------------------------
+
+DR-ZYRA-163
+Title:       The Name Block Becomes One Widget
+Date:        2026-08-13
+Decided by:  Founder
+Status:      Ratified
+
+Decision:    widgets/zyra_profile_name_block.dart holds the
+             name / surname / age · location block. Four
+             surfaces draw it: Browse, the full profile, the
+             Activity card hero and the Journey card hero.
+
+             Callers pass ONE size. The surname and meta line
+             are derived from it, at Browse's own ratios
+             (30 / 23 / 16).
+
+             The two-layer on-photo shadow moved with it and is
+             public now.
+
+Reasoning:   FOUR VERSIONS OF ONE IDEA EXISTED, and nobody had
+             decided on four. Measured before the change:
+
+               Browse         Arif Iqbal   /  36 · Derby
+               Full profile   Arif / Iqbal /  36 · Derby
+               Card hero      Arif, 36     /  [pin] Derby
+               Journey hero   Arif, 36     /  [pin] Derby
+
+             They accumulated because each was written where it
+             was needed. The comma and the pin icon on the two
+             heroes were never a decision; they were what
+             whoever wrote that card reached for.
+
+             "MAKE IT COPY THE BROWSE STYLE" WAS TAKEN AS A
+             REQUEST FOR ONE DESIGN, NOT FOUR MATCHING ONES.
+             Retyping Browse's block in three more places is
+             what this session already did with the nav bar,
+             four times, before DR-ZYRA-159 deleted the copy.
+             The same argument applies at smaller scale and
+             would come due the next time the block changes —
+             which, on the evidence of the last two days, is
+             soon.
+
+             PROPORTIONS RATHER THAN SIZES. A block at 20pt is
+             the same design as one at 30pt, not a second set of
+             choices. The meta line has a 12pt floor because
+             pure ratio would put it at 10.7 on a card hero,
+             below where this app lets secondary text go.
+
+             THE SHADOW WAS PRIVATE, WHICH IS WHY THE HEROES
+             LOOKED FLAT. _onPhotoTextShadows lived inside
+             browse_screen, so no other surface drawing text on
+             a photo could use it. That is a small, exact
+             example of the cost of keeping a thing where it was
+             first needed.
+
+             TWO THINGS THE WIDGET HANDLES THAT NO CALLER NOW
+             HAS TO: a withheld city — the counterpart card
+             returns '—' by design (clause 3, 2026-08-08), so
+             "36 · —" is suppressed to "36" — and a missing
+             surname, where the span is omitted rather than
+             leaving a trailing space.
+
+             NOT APPLIED to the compact rows beside a thumbnail
+             in Connections. Those are list rows, not profile
+             views, and a wrapping surname would change their
+             height. Say if they should follow too — the widget
+             takes a showSurname flag for exactly that call.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. Four call sites
+             confirmed by grep. NOT COMPILED — flutter analyze
+             is the Founder's gate. Worth checking on device:
+             the two Connections heroes at 20pt, which are the
+             ones whose look actually changes.
+
+Findings:    None.
+
+Dependencies: DR-ZYRA-162 (the design this shares), DR-ZYRA-159
+             (the replica lesson applied at smaller scale),
+             the 2026-07-26 surname-on-its-own-line decision,
+             now superseded everywhere rather than in one place.
+
+------------------------------------------------------------
+
+DR-ZYRA-164
+Title:       Three Lines Again — The Layout Reverts, The Dot
+             Stays
+Date:        2026-08-13
+Decided by:  Founder, after seeing DR-ZYRA-162 on device
+Status:      Ratified
+
+Decision:    The name block returns to three lines:
+
+               1. First name
+               2. Surname
+               3. Age · Location
+
+             The MIDDLE DOT stays. It is the only part of the
+             2026-08-13 layout pass that survives.
+
+             Applies everywhere at once — Browse, the full
+             profile, and both Connections heroes.
+
+Reasoning:   OPTION C LASTED HALF A DAY ON DEVICE, and that is a
+             fine outcome for a design question. It was picked
+             from a rendered comparison rather than built blind,
+             it was cheap to try, and it was cheaper still to
+             undo. The five-option render did its job even
+             though the choice it produced did not survive
+             contact with a real screen — knowing that "name and
+             surname on one line" reads worse than it looks is
+             worth more than the pass cost.
+
+             THE SEPARATOR AND THE LAYOUT WERE TWO DECISIONS
+             WEARING ONE COAT, and the Founder separated them
+             cleanly: "the only small difference is instead of |
+             keep the centre dot". The drawn 1px rule does not
+             come back. It could take no text shadow, so it had
+             needed its own alpha raised to 0.65 to stay visible
+             on a bright photo — a fix for a problem punctuation
+             does not have.
+
+             THE REVERT COST ONE FILE, and that is the whole
+             case for DR-ZYRA-163 arriving one message earlier.
+             Browse, the full profile and both Connections
+             heroes moved together because they are one widget.
+             Reverted the day before, this would have been four
+             edits in three files, with four chances to leave
+             one behind — which is exactly how the block came to
+             have four different versions in the first place.
+
+             The surname returns to its own line at its old
+             treatment: 0.6 of the name's size, w500 against the
+             name's w600, alpha 0.95. Lighter WEIGHT rather than
+             a dimmer colour, per the 2026-08-01 measurement.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 120 files. One file changed; the
+             four call sites are untouched and inherit it. NOT
+             COMPILED — flutter analyze is the Founder's gate.
+
+Findings:    None.
+
+Dependencies: Reverses DR-ZYRA-162's layout and keeps its
+             separator. Restores the 2026-07-26 two-line name
+             decision. Built on DR-ZYRA-163.
+
+------------------------------------------------------------
+
+DR-ZYRA-165
+Title:       Full App Review — The Male-Seeker Asymmetry Was One
+             Frozen Colour
+Date:        2026-08-13
+Decided by:  Founder (review commissioned), Engineering (fixes)
+Status:      Ratified
+
+Decision:    Six defects fixed, one preview built, three
+             findings raised. The full record is
+             REPORTS/ZYRA_APP_REVIEW_2026-08-13.md.
+
+             THE ROOT CAUSE, and it closes OA-ZYRA-212:
+             main.dart built ThemeData ONCE, inside a
+             StatelessWidget, from the gender main() had just
+             read out of the disk cache — the PREVIOUS session's.
+             The live gradient tracked gender through a
+             ListenableBuilder; the theme did not.
+
+             scaffoldBackgroundColor is now Colors.transparent.
+
+Reasoning:   THE PREMISE WAS FALSE AND THAT IS THE USEFUL PART.
+             There is no "older Male Seeker design": one Seeker
+             codebase, and the only gender-conditional UI in the
+             app is genderGradient() across 49 call sites. The
+             database is symmetric too — 72 male and 72 female
+             Seekers, every one with photos, DOB, city and
+             complete details. Checked rather than assumed.
+
+             So the defect is SWITCH-SPECIFIC, not male-specific.
+             Launch with a female account cached, switch to male,
+             and every gap where a Scaffold shows through paints
+             Rose Pink behind Royal Blue chrome. Test female on
+             female and it is pink on pink. THE FEMALE BASELINE
+             IS WHERE THIS CLASS OF BUG HIDES — which is worth
+             more than the fix, because the baseline is being
+             used as the reference for everything else.
+
+             TRANSPARENT RATHER THAN "REBUILD THE THEME". The
+             builder: wrapper already paints the live gradient
+             behind every route, so a second copy of that colour
+             in the theme can only ever be a copy that goes
+             stale. This removes the class of bug instead of
+             keeping two values in step — which is the same
+             argument that deleted the nav-bar replica on
+             DR-ZYRA-159, applied to a colour.
+
+             TWO CONTRIBUTING DEFECTS, both fixed: applyDevPreset
+             was the only gender writer that did not update the
+             disk cache, so a Developer Access switch left the
+             next cold start opening in the previous account's
+             gradient; and accept_wali_invite_screen painted its
+             gradient into an unconstrained Container above a
+             SingleChildScrollView — verbatim the bug fixed in
+             report_profile_sheet on 2026-08-03, whose own note
+             warned that "every future screen built on
+             SingleChildScrollView would inherit the same band".
+             That screen became scrollable three days after the
+             warning was written.
+
+             WHAT WAS DELIBERATELY NOT CHANGED. The Founder asked
+             that the Female Seeker experience not be redesigned
+             without a confirmed bug. Because the Seeker screens
+             are SHARED, most of the audit's findings — the dead
+             GlassIconButton, ten un-migrated AlertDialogs, five
+             competing pill styles, eleven remaining
+             CircularProgressIndicators, ZyraCardMetrics living
+             inside a 4,349-line screen file — would change that
+             baseline. They are real, and they are redesign
+             rather than repair, so they are recommendations.
+
+             Six things were repaired because each is a defect on
+             any account: the frozen theme, the uncached preset
+             gender, the unconstrained gradient, Introductions
+             rendering its empty state before its query returned,
+             the app-lock spinner painting in Material theme
+             primary on a gradient, and the Guardians title
+             jumping 4px between two branches of one screen.
+
+             THE PREVIEW IS NOT A PROMISE. The mock Guardian
+             dashboard marks every section BUILT, DESIGNED or
+             BLOCKED, in words rather than colour alone, and
+             reads the panel's own staged state so it can be
+             argued with rather than admired. The cautionary
+             example is already in the codebase: the Guardian AI
+             Summary is generated and ratified, and renders on
+             the SEEKER's screen captioned "would be shared",
+             because no Guardian surface can receive it.
+
+Verification: python3 tools/zyra_check.py — clean on all four
+             categories across 122 files; the single finding is a
+             pre-existing unused import untouched here. Live
+             database queried directly for the gender symmetry
+             claim. NOT COMPILED — flutter analyze is the
+             Founder's gate. Worth the closest look on device:
+             fix 1 touches every screen in the app, by removing a
+             colour rather than adding one.
+
+Findings:    OA-ZYRA-212 CLOSED. OA-ZYRA-223 (duplicate ch3_q26
+             id — the server was fixed for this, the client was
+             not) and OA-ZYRA-224 (gender correctness sweep)
+             raised, per DR-ZYRA-151.
+
+Dependencies: OA-ZYRA-212, OA-ZYRA-213, OA-ZYRA-214,
+             WALI_ARCHITECTURE_CURRENT_VERSION_V6.
+
+------------------------------------------------------------
+
+DR-ZYRA-166
+Title:       Second-Audit Fixes — And The Static Checker Was
+             Lying
+Date:        2026-08-14
+Decided by:  Founder ("fix any possible issues")
+Status:      Ratified
+
+Decision:    Acted on the 2026-08-14 external audit. Six fixes:
+
+             · zyra_check.py missed GENERIC top-level functions
+             · Guardian no longer routed into the Seeker shell on
+               a failed profile lookup (BUG-01)
+             · wali_seekers and wali_dashboard show a spinner
+               before an empty state (BUG-06)
+             · native display names on iOS, Android and macOS
+               (REL-01)
+             · macOS bundle id and copyright off the template
+             · README's run command matches CLAUDE.md (DOC-03)
+
+Reasoning:   THE CHECKER WAS THE MOST VALUABLE FIND, and it was
+             found by refusing to make a change the audit asked
+             for. BUG-07 said journey_timeline_screen imports
+             zyra_glass_dialog.dart and never uses it — which is
+             what zyra_check.py had reported for weeks. The
+             assertion guarding the deletion refused: the file
+             calls showZyraGlassDialog at :249. Removing that
+             import would have broken the build.
+
+             The cause: _parse_top_level matched
+             `Type name(` but collapse_generics rewrites
+             `Future<T?> showZyraGlassDialog<T>({` to
+             `Future<> showZyraGlassDialog<>({`, putting the
+             collapsed generic between the name and the paren.
+             Its non-generic neighbour showZyraGlassChoice matched
+             fine, so exactly one symbol was invisible.
+
+             TWO LESSONS, AND THE SECOND IS THE EXPENSIVE ONE. A
+             false positive that survives long enough stops being
+             noise and becomes evidence: an independent audit
+             repeated it and recommended the breaking change.
+             Tools that cry wolf do not get ignored — they get
+             believed by the next reader. The checker now reports
+             ZERO findings, for the first time since it was
+             written.
+
+             BUG-01 IS THE WORST OF THE REAL DEFECTS. A Guardian
+             whose profile lookup failed was handed the SEEKER
+             app — Browse, a swipe deck, Connections. Not a
+             degraded Guardian experience; someone else's
+             product. The 2026-08-12 pass logged this and left
+             the behaviour, which made it visible without making
+             it right. The role is now cached on every successful
+             resolve, exactly as the gender already was, and the
+             failure path uses it. A device that has never
+             resolved a role has nothing to go on and keeps the
+             old default.
+
+             BUG-06 WAS AN ORDERING BUG, not a missing feature.
+             wali_dashboard already had a spinner; it tested
+             `linked.isEmpty` before `_loading`, so it never
+             reached it. A Guardian with two wards was told they
+             had none and offered a button to fix it.
+
+             WHAT WAS NOT DONE, and why. BUG-02 to BUG-05 —
+             optimistic writes that swallow errors and report
+             success — are the audit's most important cluster and
+             are NOT fixed here. They touch the four persistence
+             paths in the app's busiest flows, they need
+             rollback or retry semantics designed rather than
+             patched, and they cannot be verified without forcing
+             failures on device. Doing them blind, at the end of
+             a long session, is how a truthful-failure fix
+             becomes a new silent failure. Raised as
+             OA-ZYRA-225.
+
+Verification: python3 tools/zyra_check.py — 0 findings across
+             122 files, the first fully clean run. Every claim
+             acted on was verified against the source first; the
+             one that did not survive verification (BUG-07) was
+             refused and became a tool fix instead. NOT COMPILED
+             — flutter analyze is the Founder's gate.
+
+Findings:    OA-ZYRA-225 raised (truthful failure handling), per
+             DR-ZYRA-151.
+
+Dependencies: The 2026-08-14 external audit; DR-ZYRA-165.
+
+------------------------------------------------------------
+
+DR-ZYRA-167
+Title:       Truthful Persistence — The Four Busiest Write Paths
+             Stop Reporting Success They Didn't Earn
+Date:        2026-08-15
+Decided by:  Founder ("NOT OPUS. YOU ARE TAKING OVER EVEYTHING
+             AGAIN... SO YOU DO WHAT YOU GOTTA DO" — a standing
+             order to execute the 2026-08-14 audit's remaining
+             cluster, BUG-02 to BUG-05 / OA-ZYRA-225)
+Status:      Ratified
+
+Decision:    OA-ZYRA-225's four paths built, one semantics rule
+             per path rather than one patch for all:
+
+             1. SAVE / CONSIDER / PASS (BUG-02).
+                recordSave/recordLike/recordPass return whether
+                the row landed. Browse's three handlers and the
+                Connections move sheet KEEP the optimistic UI —
+                yanking a card back mid-swipe is worse than the
+                failure — but a miss now says so in a snackbar
+                with a Retry, safe because all three writes are
+                idempotent upserts. Demo and dev-scenario ids
+                are guarded off the persistence path entirely
+                (isPersistableId), so a stand-in can never raise
+                a real-looking error.
+
+             2. FAMILY ANSWERS (BUG-03). submitFamilyAnswer
+                returns whether the insert landed. Both submit
+                screens (Seeker family stage, Guardian Journey
+                detail) keep the text in their controllers, say
+                "press Submit again", and keep deriving the
+                submitted state from what the SERVER holds — a
+                failed write can no longer masquerade as a
+                submitted safeguard. Re-submitting is safe:
+                fetchFamilyAnswers' later-insert-wins ordering
+                tolerates duplicate rows. submitPhaseAnswer is
+                DELIBERATELY unchanged — its one expected
+                failure (unique-constraint refusal of a
+                resubmit-after-reveal) is benign by design, and
+                surfacing it would alarm a working case.
+
+             3. PAUSE (BUG-04) — AND END, WHICH HAD THE SAME
+                SHAPE WITH WORSE OPTICS. suspendJourney rethrows
+                unrecognised errors (the two known refusals
+                still throw their named exceptions); all three
+                callers catch and say so. The Connections inline
+                confirm now clears only once the outcome is
+                KNOWN: recognised refusals clear it (the server
+                answered, just with no), an unexpected failure
+                keeps it open — the tap didn't happen.
+                endJourney returns whether the end landed, so
+                the E4 closure moment — "This chapter closes" —
+                can no longer play over a still-running Journey,
+                and a takeover's end-and-begin stops instead of
+                promoting into a slot that was never freed.
+
+             4. NOTIFICATIONS (BUG-05). The three fetches return
+                NULL on failure, distinct from their honest
+                empty shapes. The screen shows "Couldn't load
+                notifications" with Try again — never "All
+                caught up" for a failure — and keeps stale rows
+                over a blank when a refresh fails mid-session.
+                All three badge holders (both shells, plus the
+                orphaned Bell widget) hold the last known count
+                and section dots on a failed poll: a lie in the
+                optimistic direction is still a lie.
+
+             Plus the REL-01 residue DR-ZYRA-166 left:
+             CFBundleName was still the template's "app"
+             (CFBundleDisplayName was already fixed); now ZYRA.
+
+Reasoning:   OPTIMISTIC-WITH-HONESTY BEAT ROLLBACK everywhere a
+             choice existed, for one reason: every write in the
+             cluster is idempotent, so a retry is always safe
+             and a rollback is therefore theatre — it un-does a
+             thing the person meant, to protect against a state
+             a second tap repairs. NULL-VS-EMPTY is the smallest
+             typed result that keeps failure and empty apart; a
+             full result object would have been ceremony for
+             two callers.
+
+             WHAT REMAINS, honestly. OA-ZYRA-225's target asked
+             for tests first; this workflow has no test runner
+             (flutter lives on the Founder's Mac; the device
+             loop runs analyze + run.sh, never flutter test), so
+             failure-path tests stay with TD-02 rather than
+             being shipped unrunnable. OA-ZYRA-225 stays OPEN,
+             narrowed to its last step: forcing each failure on
+             device (airplane mode mid-flow) and watching the
+             new copy appear.
+
+Verification: python delimiter-balance pass over all 11 edited
+             Dart files — clean; every changed call site
+             re-grepped for stale signatures (none found); the
+             plist parsed valid. NOT COMPILED — flutter analyze
+             is the Founder's gate, per standing workflow.
+
+Findings:    notification_bell.dart is now orphaned on BOTH
+             sides (Seeker 2026-08-13, DR-ZYRA-149; Wali the
+             same day by Founder parity instruction) — kept
+             compiling, flagged for the Founder's git deletion
+             alongside journey_map_screen.dart.
+
+Dependencies: DR-ZYRA-166; OA-ZYRA-225; the 2026-08-14 external
+             audit.
+
+------------------------------------------------------------
+
+DR-ZYRA-168
+Title:       Founder Rulings On The Audit's Three Open Decisions
+             (ACC-01 / UX-01 / UX-02)
+Date:        2026-08-15
+Decided by:  Founder (decision round straight after DR-ZYRA-167)
+Status:      Ratified — builds pending
+
+Decision:    1. ACC-01 / OA-ZYRA-213 — an ADDITIONAL Guardian
+                sees the FULL Journey view, same as the Main:
+                dashboard rows, counterpart card, conversation,
+                timeline, family answers. Chosen over status-only
+                and over no-access-with-explanation.
+
+                SCOPE NOTE recorded at decision time: the ruling
+                answered "what should an Additional Guardian
+                SEE?" — it is a VISIBILITY ruling. Family Review
+                DECISIONS remain both-Mains (the ratified
+                quorum); journey-suite check 15 stands unless the
+                Founder widens it explicitly.
+
+                Build requires ONE COORDINATED BATCH — server and
+                client and suite together, never piecemeal, since
+                a half-shipped visibility change is a privacy
+                bug: RLS across the five is_main-gated tables,
+                zyra_counterpart_card, fetchLinkedJourneys, the
+                guard suite's AREA 4 + card expectations
+                REWRITTEN to the new model (checks 22-26 and 32
+                currently assert the OLD behaviour), the Wali dev
+                panel's role segment, and WALI_ARCHITECTURE.
+
+             2. UX-01 — BUILD BOTH: a real "Preview my profile"
+                (own data rendered through the ratified Browse
+                card) and a real photo add/remove/reorder flow.
+                Photos to be mocked in-chat first, per the
+                Founder's standing mock-first pattern for new
+                surfaces.
+
+             3. UX-02 — HIDE every dead-end row in Edit Profile
+                and Settings whose destination is not built. Rows
+                return as they are built.
+
+Reasoning:   Recorded verbatim from the Founder's picks so the
+             next build sessions inherit rulings, not guesses.
+             Sequencing, smallest honest change first: UX-02 hide
+             sweep, then UX-01 preview, then UX-01 photos after
+             its mock, then the ACC-01 batch.
+
+Dependencies: DR-ZYRA-167; OA-ZYRA-213; the 2026-08-14 external
+             audit.
+
+------------------------------------------------------------
+
+DR-ZYRA-169
+Title:       On-Device Data & Performance — Reviewed, Ratified,
+             And All Three Phases Built
+Date:        2026-08-15
+Decided by:  Founder (commissioned the review; ratified "All
+             three phases" on reading it)
+Status:      Ratified — built
+
+Decision:    The On-Device Data & Performance Review is adopted
+             as APP/Performance/ONDEVICE_DATA_CURRENT_VERSION_
+             V1.md — the governing document for what ZYRA keeps
+             on the phone. Its rule in one line: A CACHED VALUE
+             MAY PAINT, NEVER DECIDE. All three phases were
+             built the same day:
+
+             PHASE 1 — DISK IMAGE CACHE. New service
+             zyra_image_cache.dart: bytes keyed by the URL MINUS
+             ITS TOKEN (stable across re-signing — the reason
+             Flutter's URL-keyed cache missed on every refresh),
+             TTL 7 days matching the signed-URL life, LRU cap
+             500 objects, OS cache directory (not backed up,
+             OS-purgeable — both wanted). Rendered through
+             ZyraProfileImage (the one-place-decides widget) and
+             warmed by Browse's precache pass with the SAME
+             provider and key, so prefetch and render can never
+             disagree. Wiped on sign-out and account deletion
+             (zyra_auth.dart), evicted per-person on block
+             (browse_screen.dart's hide path), and wiped once on
+             schema-version mismatch after app updates — no user
+             ever clears a cache by hand. Dependencies:
+             cached_network_image + flutter_cache_manager, both
+             declared directly (the shared_preferences promotion
+             reasoning).
+
+             PHASE 2 — FIRST-FRAME NAME + URL MEMO. zyra.cached_
+             first_name joins gender/role/lock in ZyraLocalPrefs
+             under the same scope rule; ALL THREE name writers
+             cache (hydrateFrom, saveChapter1, applyDevPreset —
+             the DR-ZYRA-165 every-writer-or-the-cache-lies
+             lesson applied on day one); main() seeds it so
+             Profile greets by name on frame one; clear() drops
+             it on sign-out. The photo service gained an
+             IN-MEMORY path→URL memo (6-day refresh against the
+             7-day URL): a refresh now signs only what the
+             session never signed before. In memory DELIBERATELY
+             — a signed URL is a bearer capability and never
+             touches disk (review item N2); cleared on sign-out.
+
+             PHASE 3 — BOUNDED DECODES. ZyraProfileImage decodes
+             at display size when the call site declares a small
+             width (≤160pt), aspect preserved, full-bleed
+             surfaces untouched. RAM and scroll-jank win.
+
+Reasoning:   THREE BUILD-TIME ADJUSTMENTS, recorded rather than
+             silent:
+             1. The review's identity kit listed the own photo's
+                storage path; NOT built. Once Phase 1 exists the
+                avatar disk-hits the moment its URL arrives, so
+                a stored path bought a frame nobody would see.
+                Trimmed, and the governing doc says so.
+             2. Phase 3's bandwidth half needs server-side image
+                transforms — a paid Supabase feature, and the
+                batch signing API takes no transform options.
+                Shipping a guess at both would break avatars on
+                the current plan. Raised as OA-ZYRA-233 instead.
+             3. signedUrlsFor now DELEGATES to signedUrlMap: one
+                signer, one memo, one retry policy. The old copy
+                kept the pre-2026-08-05 all-or-nothing failure
+                shape (one bad path hid a whole person) and one
+                of the two deprecated createSignedUrls call
+                sites. Its callers sign one person's own photo
+                list per call, so proportional results cannot
+                cross-wire anyone's photos.
+
+Verification: python delimiter-balance pass over all 8 edited
+             Dart files — clean; pubspec parsed as YAML with
+             both new dependencies present; no stray
+             Image.network/NetworkImage remains in the swapped
+             paths. NOT COMPILED — and this batch adds
+             dependencies, so the Founder's next analyze must be
+             preceded by `flutter pub get` (the command he was
+             given chains it). Version pins ^3.4.1/^3.4.1 are
+             believed current; if pub get refuses them, that is
+             a one-line pin adjustment, not a design problem.
+
+Findings:    fetchMatches still signs per-profile in a loop (one
+             signing call per matched person, first fetch of a
+             session). The memo absorbs the refresh cost;
+             flattening the first-fetch loop into one batched
+             sign is a small future tidy, noted here rather than
+             smuggled into this batch.
+
+Dependencies: The On-Device review (now APP/Performance/
+             ONDEVICE_DATA_CURRENT_VERSION_V1.md); DR-ZYRA-165;
+             DR-ZYRA-166; OA-ZYRA-233 (raised here).
+
+------------------------------------------------------------
+
+DR-ZYRA-170
+Title:       Shared Pause Holds — A Pause Is A Personal Hold,
+             And Nobody Requests Anything
+Date:        2026-08-15
+Decided by:  Founder (ChatGPT brief: "I want the pause to feel
+             like a shared Journey state, not one person having
+             power over the other"; interactive twin-phone mock
+             reviewed; "OK EXECUTE IT AND UPDATE APP")
+Status:      Ratified — built, server and client, suites green
+
+Decision:    The pause model is rebuilt around one idea: a pause
+             is a PERSONAL HOLD.
+
+             · Either party may hold — the same Pause verb,
+               whoever presses it. A pause on an already-paused
+               Journey is a MIRROR (matches.also_paused_by, with
+               an attempt-side twin and CHECK constraints: never
+               a second hold without a first, never both the
+               same hand).
+             · The Journey rests while ANY hold exists.
+             · resume_journey lifts only YOUR OWN hold —
+               no_hold_to_lift otherwise. When the primary hand
+               lifts first, the second hold is PROMOTED into
+               suspended_by keeping ITS original hold time, so
+               the Timeline trigger (which fires only on
+               NULL↔set transitions) stays correct untouched —
+               verified against the live trigger body, and pinned
+               by suite checks 87/91.
+             · Lifting yours while theirs stands IS your standing
+               "I'm ready" (pause_nudged_at + the existing
+               pause_nudge notification). DR-ZYRA-142's one-shot
+               note survives only for the never-held person.
+             · THE PAUSE LIFECYCLE SPEAKS: journey_paused (being
+               paused on is finally TOLD, not discovered),
+               journey_also_paused ("Resting together"), and
+               journey_continued (the silent re-activation is
+               gone). notifications_type_check now holds 13
+               types; the migration is in the repo
+               (20260815183000_shared_pause_holds.sql), narrowing
+               OA-ZYRA-215.
+             · The cap counts holds you currently hold, either
+               column — a mirror is your hold, refused honestly
+               at 5/10 by the existing dialog.
+             · CLIENT: holder cards say "Resume Journey" and lift
+               only their own hand (the flow screen opens only if
+               the refreshed row is genuinely active); non-holder
+               cards carry the NEUTRAL PAIR — "Also Pause" |
+               "I'm ready" at equal weight, spent note as a quiet
+               fact, waiting always legitimate; subtitles read
+               Paused by you / by ‹name› / by both of you.
+             · Dev scenario: mirrored holds staged positionally
+               by the card's own Also Pause action, reset-covered.
+
+Supersedes:  The 2026-08-13 one-label ruling ("if you or they
+             paused it doesn't matter, the text should be Request
+             Resume"). That fix equalised the BUTTONS while the
+             machinery stayed unequal — one resumed instantly,
+             the other sent a one-shot whose spent state read
+             "Restart requested — she decides." The Founder's own
+             brief identified the imbalance; the audit of current
+             code found that spent-state line naming it out loud.
+             "Request Resume" and "— she decides" are retired
+             product-wide. JOURNEY_SUSPENSION_CURRENT_VERSION_V3
+             is the governing document (V2 archived).
+
+Reasoning:   THE MOCK'S CHALLENGE SURVIVED INTO THE BUILD: the
+             other person is never forced to choose. The pause
+             news asks for nothing; the pair lives on the card;
+             doing nothing is an answer. End stays in its usual
+             place — present, never suggested by the pause.
+             Rejected alternatives, recorded: either-can-resume
+             (tramples the pauser's boundary) and auto-shared
+             pause (forces co-ownership and adds resume friction
+             to gentle pauses — the CHOICE to also pause is the
+             agency).
+
+             FOUNDER DEFAULTS APPLIED (stated at build time):
+             resume is notification-only (no moment); the pauser
+             is NAMED in notifications (pauses are not safety
+             acts; endings' concealment rules are untouched); the
+             cap refusal applies to mirrors.
+
+             DEFERRED, honestly: the pause-received MOMENT
+             (Recommended tier in the ratified gallery) needs the
+             seen-moments store that OA-ZYRA-205's whole tail
+             needs — added to that OA rather than half-built
+             here. The notification carries the news today.
+
+Verification: journey suite extended with section M (12 checks:
+             mirror, attempt twin, notification fan-outs 1/0,
+             milestone silence, second-holder nudge refusal,
+             promotion + ready signal, no_hold_to_lift,
+             constraint refusal) — FULL RUN 90/90 GREEN post-
+             migration, including all 78 prior checks and
+             check 28 rewritten to the new refusal. Guard suite
+             untouched by design (no visibility change). Client:
+             delimiter-balance clean across all 5 edited Dart
+             files; stale-label grep clean. NOT COMPILED —
+             flutter analyze is the Founder's gate.
+
+Findings:    _resumeSuspended had NO stand-in branch — Resume on
+             a staged paused row reached the real RPC (latent
+             crash since DR-ZYRA-167 made the service rethrow).
+             Fixed with the rewrite; noted because it predates
+             this decision.
+
+Dependencies: DR-ZYRA-142; DR-ZYRA-167; OA-ZYRA-174 rulings;
+             migration 20260815183000_shared_pause_holds;
+             JOURNEY_SUSPENSION_CURRENT_VERSION_V3.
+
+------------------------------------------------------------
+
+DR-ZYRA-171
+Title:       The Guardian First Draft — One Product, Two Roles
+Date:        2026-08-15
+Decided by:  Founder ("Take the current Seeker experience as the
+             design baseline and make the Guardian experience
+             feel like the same ZYRA product… Build the complete
+             first-draft ecosystem so I can review it as a whole")
+Status:      Ratified — first draft built
+
+Decision:    1. CARD METRICS HOME (audit UI-03): ZyraCardMetrics
+                moved from connections_screen.dart to
+                theme/zyra_card_metrics.dart, values unchanged;
+                all four cross-screen importers now import the
+                theme file instead of a 4,000-line screen.
+             2. THE WARD CARD FAMILY: new widgets/zyra_ward_card
+                .dart — ZyraWardCard + ZyraWardChip +
+                ZyraStageRail — built on ZyraCardMetrics,
+                ZyraProfileImage and the frost surface, so a
+                Guardian's ward rows are the same component
+                family as every Seeker person-row. Deliberately
+                NOT an extraction of the private
+                _JourneyExpandingCard (the Founder's own rule:
+                never compromise the Seeker baseline to make
+                Guardian easier).
+             3. DASHBOARD AS A HUB: rebuilt around the five
+                questions of the brief — NEEDS YOUR ATTENTION
+                (open Family Reviews + wali_gate Journeys as
+                accent cards; explicit all-clear line when
+                empty), YOUR SEEKERS (ward cards with photo,
+                chapter label from the canonical stage map, the
+                8-stage rail, Main/Additional line, coral
+                attention dot, pipeline chips), RECENTLY (latest
+                Timeline milestone per live Journey, friendly
+                words only). Scales 1..N wards by construction.
+             4. TRUTHFUL FAILURE at the Guardian front door:
+                fetchLinkedJourneys returns null on failure
+                (DR-ZYRA-167's rule); the Dashboard shows an
+                error-with-retry, or a stale banner over rows it
+                already had — never an invite CTA over a network
+                failure.
+             5. SEEKERS TAB: icon rows replaced with ward cards
+                (relationship label + Main/Additional), photos
+                via the Guardian's legitimate own-ward read.
+             6. SWITCH ACCOUNT, BOTH SIDES: a row in the
+                Seeker's Settings › ACCOUNT and the Guardian's
+                profile rows. One Supabase session and one role
+                per account, so the honest v1 IS
+                sign-out-then-sign-in, and the glass dialog says
+                exactly that. Safe because sign-out's wipe chain
+                (DR-167/169) clears everything local.
+             7. DEV PANEL: staged Ward-activity counts
+                (Saved/Considering/Declined) with hints stating
+                they are DESIGN STAND-INS — no Guardian read
+                path for a ward's Browse decisions exists in
+                RLS, and the panel refuses to let a mock read as
+                a feature.
+
+Reasoning:   Honest scope, stated: the ACC-01 batch (Additional
+             Guardian full visibility, DR-ZYRA-168) stays its
+             own coordinated server+suite change and is NOT
+             preempted here — the Dashboard header documents
+             today's behaviour. The real ward-activity read is
+             raised as OA-ZYRA-234 (a privacy decision before an
+             RPC). fetchLinkedPeople keeps its old signature
+             this round (five callers; queued with OA-225's
+             class). WALI_ARCHITECTURE's version bump follows
+             the Founder's review of this draft rather than
+             preceding it.
+
+Verification: delimiter-balance clean across all 13 touched
+             files; ZyraCardMetrics import swap verified at all
+             four sites plus connections itself; no server
+             change, so no suite run. NOT COMPILED — flutter
+             analyze is the Founder's gate.
+
+Dependencies: DR-ZYRA-152; DR-ZYRA-166..170; audit UI-03/ACC-02;
+             OA-ZYRA-234 (raised here).
+
+------------------------------------------------------------
+
+DR-ZYRA-172
+Title:       The Journey Experience Lab — Five Candidates, Felt
+             On Device; And The Begin/Continue Pair
+Date:        2026-08-15
+Decided by:  Founder ("MAKE ALL OPTIONS IN TOGGLE FOR ME TO SEE
+             IN APP AND DECIDE… WHEN THEY FIRST MATCH MAKE SURE
+             ITS BEGIN JOURNEY AND ONCE BEGUN THE PILL SHOWS
+             CONTINUE JOURNEY")
+Status:      Ratified — built (lab is debug/profile only)
+
+Decision:    1. dev/journey_experience_lab.dart renders the
+                Journey's FIRST PAGE (Compatibility Reveal) in
+                the five round-1 experience candidates — Path
+                (the 8 stations, you at #1), Chamber (the veil),
+                Ascent (deepened sky + light rail), Ritual
+                (paced beats with a breath), Table (both
+                presences above everything) — plus Now, today's
+                build. THE LAB'S ONE RULE: every option EMBEDS
+                the real _CompatibilityRevealView. Reveal,
+                scoring, celebration, waiting and continue are
+                never mocked; only the experience around them
+                changes, which is precisely the decision being
+                made.
+             2. The selector lives where the Founder asked: the
+                dev panel gained a JOURNEY card (DevPage.journey;
+                JourneyFlowScreen sets it on entry and returns
+                `connections` on dispose — the only route that
+                pushes it), and the panel itself now rides on
+                the Journey screen's Stack, so the option can be
+                switched while standing inside the stage.
+             3. THE VERB PAIR: the Potential card's hero is
+                'Begin Journey' (superseding 2026-08-13's 'Begin
+                with ‹name›'), completing Begin Journey →
+                Continue Journey — one noun, both moments. The
+                begin CONFIRM still names the person, where the
+                commitment is made. The Active card already
+                carried 'Continue Journey'.
+
+Reasoning:   A direction chosen from a mock is a guess; chosen
+             from the device it is a decision. Options 1-5 are
+             first-draft chrome (entry motion, ambience, pacing)
+             — the chosen one graduates to a real ratified build
+             of the full first page, then stage by stage, per
+             the round structure the Founder set. Release builds
+             construct none of the lab (kReleaseMode at the wrap
+             and at the panel mount — the double-gate rule).
+
+Verification: delimiter-balance clean across all 5 touched Dart
+             files; enum addition checked against every DevPage
+             consumer (no exhaustive switches; the shells' tab
+             maps are their own const lists). NOT COMPILED —
+             flutter analyze is the Founder's gate.
+
+Dependencies: DR-ZYRA-147/148 (moments the lab's grammar echoes);
+             DR-ZYRA-146 (the Timeline rail Path extends);
+             DR-ZYRA-152 (the panel pattern).
+
+------------------------------------------------------------
+
+DR-ZYRA-173
+Title:       Begin/Continue By STATUS, Not Stage — And The
+             Founder's Four-Account Test Matrix, Recorded
+Date:        2026-08-15
+Decided by:  Founder ("IT STILL SAYS CONTINUE JOURNEY BUT SHOULD
+             SAY BEGIN JOURNEY… I USE ZYRA BASIC FEMALE AS BASE
+             BUT IT SHOULD CHANGE ON ZYRA BASIC MALE/FEMALE,
+             ZYRA ONE MALE/FEMALE ALSO")
+Status:      Ratified — built
+
+Decision:    The Active card's hasBegun flag is RETIRED. It read
+             Begin-vs-Continue off the STAGE, so an Active
+             Journey still at Compatibility Reveal offered a
+             second "Begin Journey" after the person had already
+             begun — and dev-staged Actives (which sit at
+             'conversation') skipped Begin entirely, which is
+             the mislabel the Founder hit on device. The pair is
+             by STATUS, completing DR-ZYRA-172's ruling:
+             Potential = Begin Journey · Active = Continue
+             Journey, always, at every stage.
+
+             ALSO RECORDED AS A STANDING VERIFICATION RULE: the
+             Founder tests from ZYRA BASIC FEMALE as the base,
+             and every change must hold identically across the
+             four-account matrix — Basic F / Basic M / One F /
+             One M. Recent batches comply by construction
+             (labels, the lab, panel and cards are plan- and
+             gender-agnostic; gradients derive from gender; plan
+             gates untouched), and future DR entries should
+             state matrix impact explicitly when it is not
+             trivially none.
+
+             Housekeeping in the same commit: the lab's unused
+             _RiseIn.delay parameter removed (analyze noise).
+
+Verification: delimiter-balance clean; hasBegun grep = comment
+             mention only. NOT COMPILED — the Founder's analyze
+             is the gate, and this batch exists partly because
+             the previous one has not yet reached his device.
+
+Dependencies: DR-ZYRA-172.
+
+------------------------------------------------------------
+
+DR-ZYRA-174
+Title:       One Pull-Out Per Screen — The Experience Chips Move
+             Into The Stage Jumper; Begin/Continue Back To Stage
+Date:        2026-08-15
+Decided by:  Founder (device screenshots: the Journey toggle he
+             opened held no options; the Arif card read Continue
+             where he expected Begin)
+Status:      Ratified — built. Supersedes DR-ZYRA-173's label
+             rule; amends DR-ZYRA-172's selector placement.
+
+Decision:    1. THE SELECTOR MOVES INTO THE JUMPER. DR-172
+                mounted the main scenario panel on the Journey
+                screen, which already carries the stage jumper —
+                two right-edge pull-outs stacked their handles,
+                and the Founder's screenshot shows him opening
+                the jumper with the new panel's handle hidden
+                beneath it. The panel mount, DevPage.journey and
+                the panel's Journey card are removed; the five
+                Experience chips (Now · Path · Chamber · Ascent ·
+                Ritual · Table) now sit at the TOP of the stage
+                jumper — the pull-out he already uses on this
+                screen — and the flow listens to the scenario so
+                switching re-wraps the stage in place.
+             2. BEGIN/CONTINUE IS STAGE-DERIVED AGAIN. DR-173
+                (hours old) made the Active pill 'Continue
+                Journey' always; the Founder's Arif screenshot
+                — an Active Journey at Compatibility Reveal he
+                expected to read 'Begin Journey' — settles the
+                intended rule: Begin holds until the Journey
+                itself moves past its first stage, Continue from
+                then on. The original hasBegun logic was right;
+                reinstated verbatim with the clarified rationale.
+                Potential = 'Begin Journey' (DR-172) stands.
+
+Reasoning:   Two lessons recorded. A pull-out's HANDLE is part
+             of its design — mounting a second panel on a screen
+             that has one is a collision even when both work.
+             And a same-day supersession is cheaper than a wrong
+             rule left standing: 173's status-based reading came
+             from my interpretation of one sentence; the
+             screenshot is the Founder's actual intent, and the
+             register now carries both so the back-and-forth is
+             legible.
+
+Verification: delimiter-balance clean across all 4 touched
+             files; stale-reference greps clean (no
+             DevPage.journey, no panel mount, no lab import in
+             the panel); hasBegun grep = 5 legitimate sites.
+             NOT COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-172; DR-ZYRA-173 (superseded).
+
+------------------------------------------------------------
+
+DR-ZYRA-175
+Title:       The Lab Dresses The Whole First Page — Opening View
+             Included
+Date:        2026-08-15
+Decided by:  Founder (on device: "I SEE IT IN TOGGLE BUT NOTHING
+             CHANGES WHEN PRESSED")
+Status:      Ratified — built. Amends DR-ZYRA-172/174.
+
+Decision:    The Experience wrap moves UP from the reveal stage
+             case to a _labWrapped helper around the flow's
+             stage switcher: the Journey's FIRST PAGE is the
+             once-per-process _JourneyOpeningView ("You've both
+             chosen to begin…") PLUS the Compatibility Reveal
+             stage, and the chips now dress both. The Founder
+             was standing on the opening — which DR-172 had left
+             outside the wrap — pressing chips that changed
+             chrome behind a screen that never showed it. Family
+             Review interludes and all later stages pass through
+             untouched; release builds never wrap.
+
+Reasoning:   The lab's own definition was wrong, not its
+             mechanics: "first page" means everything the person
+             sees from entering the Journey until Salam, and the
+             opening beats are its first breath. This also makes
+             the chosen direction's round-2 build scope explicit
+             — it owns the opening too.
+
+Verification: delimiter-balance clean; wrapFirstPage now has
+             exactly one call site, above the switcher. NOT
+             COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-172; DR-ZYRA-174.
+
+------------------------------------------------------------
+
+DR-ZYRA-176
+Title:       Whole-Journey Experience Lab + The Neater Jumper
+             (Auto Counterpart Toggle; Start Over On Top)
+Date:        2026-08-15
+Decided by:  Founder ("LETS CHANGE TOGGLE COMPLETELY TO BE
+             NEATER… DO IT AS THE FULL EXPERIENCE AND ILL TEST
+             ALL OF THEM… MAKE IT A TOGGLE WHEN TURNED ON IT
+             AUTO DOES IT… LEAVE SKIP TO STAGE… REMOVE HAS
+             REVEALED COMPATIBILITY… REMOVE FORCE A RESULT…
+             PUT START OVER AT THE TOP")
+Status:      Ratified — built. Amends DR-ZYRA-172/174/175.
+
+Decision:    Two halves, one panel.
+             (1) THE LAB GOES WHOLE-JOURNEY. wrapFirstPage →
+             wrapJourney(option, profile, stage, isOpening,
+             current): all six options (Now + Path / Chamber /
+             Ascent / Ritual / Table) now dress EVERY stage,
+             opening to Open Conversation. Path lights the
+             current station with walked stations in quiet gold;
+             Chamber re-veils each chapter (number, name,
+             guiding question); Ascent's sky lerps pre-dawn →
+             dawn by chapter and its rail fills order/count;
+             Ritual keeps chapter one's two ratified beats and
+             plays ONE per later chapter; Table adds the chapter
+             line under the orbs. Per-stage replay comes free:
+             the flow's stage switcher keys by stage, so each
+             change REMOUNTS the wrapper. The opening passes
+             through Chamber and Ritual undressed — a veil on a
+             welcome would stack ceremony on ceremony.
+             (2) THE JUMPER, NEATER. Section order now START
+             OVER (top, Founder's word) → JOURNEY EXPERIENCE
+             (the six chips, renamed from FIRST-PAGE EXPERIENCE)
+             → THE OTHER PERSON → SKIP TO STAGE (untouched) →
+             THIS ACCOUNT (Unlock+, untouched). THE OTHER
+             PERSON's button became a TOGGLE: while on, every
+             arrival at a step that waits on the other side runs
+             devCounterpartComplete once (guarded by a
+             step-key so the RPC's own refresh cannot re-fire
+             it; skips while busy WITHOUT marking done, so the
+             3s poll retries; Start Over re-arms it). A pending
+             Family Review counts as its own step — the RPC's
+             closing block was the only fast exit and the button
+             that used to be it is gone; a PAUSED review is left
+             alone (auto simulates absence, not authority).
+             OTHER SEEKER ("Has revealed compatibility") and
+             FORCE A RESULT are REMOVED with their flow methods
+             (_loadCounterpartReveal, _setCounterpartRevealed,
+             _forceCompatibility, _counterpartRevealed field) —
+             the RPC's compatibility_reveal branch sets the
+             counterpart's reveal flag, so the toggle absorbs
+             both controls, exactly the Founder's reasoning.
+
+Reasoning:   Round 1 proved the lab's mechanics; the Founder's
+             verdict was on scope ("the full experience") and on
+             panel ergonomics. An auto counterpart turns a
+             per-stage chore into a preference, which is what
+             walking six full journeys back-to-back needs; the
+             two removed controls were subsets of it.
+
+Verification: live RPC source read back (compatibility_reveal /
+             salam / wali_gate / phases / family / conversation
+             branches + review fast-close confirmed);
+             delimiter-balance clean on both files; stale-symbol
+             sweep clean (counterpartRevealed, force, wrapFirst
+             Page, FIRST-PAGE, OTHER SEEKER, FORCE A RESULT all
+             gone); wrapJourney has exactly one call site. NOT
+             COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-172/174/175; zyra_dev_counterpart_
+             complete; zyra_dev_rewind_journey.
+
+------------------------------------------------------------
+
+DR-ZYRA-177
+Title:       Journey Mode Is Neutral Ground — Default Purple For
+             Both Genders
+Date:        2026-08-15
+Decided by:  Founder ("WHEN IT JOURNEY MODE. REGARDLESS OF MALE
+             OR FEMALE THE COLOUR FOR BOTH IS THE DEFAULT PURPLE
+             COLOUR")
+Status:      Ratified — built. Narrows DR-ZYRA-094 (gender-
+             matched gradients) for Journey-mode surfaces only.
+
+Decision:    JourneyFlowScreen and JourneyTimelineScreen paint
+             ZyraColors.brandGradient — the neutral brand purple
+             — instead of genderGradient(AppState.gender).
+             Inside a Journey two accounts share one place, so
+             neither side's tint paints it. Gender-matched
+             gradients stay everywhere else: Connections, the
+             profile-unlock screen, Wali surfaces, DR-094
+             untouched outside Journey mode. The Ascent
+             experience-lab option keeps its own sky — lab
+             chrome, not app surface.
+
+Reasoning:   The Journey is the one surface both parties stand
+             on at once; a per-gender wash makes the same shared
+             room two different rooms.
+
+Verification: genderGradient call count in the two Journey-mode
+             files is now 0; both files delimiter-balanced. NOT
+             COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-094 (narrowed); DR-ZYRA-176.
+
+------------------------------------------------------------
+
+DR-ZYRA-178
+Title:       The Journey Screen Never Invents A Journey — And
+             Basic Female Gets A Real One (Arif, Seeded)
+Date:        2026-08-15
+Decided by:  Founder instruction ("ENSURE THE JOURNEY WORKS");
+             diagnosis + guardrails by the assistant under it.
+Status:      Ratified — built (guardrails) + seeded (data).
+
+Decision:    THE 2026-08-15 REPORT ("the auto toggle isn't
+             working, I can't get past Compatibility") was not
+             the toggle: ZYRA Basic Female had NO active match
+             row — her only row was the Journey ended 2026-08-11.
+             The "Journey with Arif" card she opened was a
+             staged stand-in (fake id, no server row), pushed
+             into the REAL JourneyFlowScreen, which then rendered
+             its FIELD DEFAULTS ('active', first stage) because
+             the fetch returned nothing — a walkable-looking
+             Journey the server had never heard of. Three parts:
+             (1) SEEDED the real thing: matches + journey_
+             attempts rows for dev.seeker.basic.f (Maryam) ↔
+             dev.browse.m06 (Arif — the same name the stand-in
+             wore), active at compatibility_reveal. The four-
+             account matrix's other bases already had real
+             Journeys (basic.m ↔ browse.f08; one.m ↔ one.f).
+             (2) CONNECTIONS: an Active stand-in's Begin/
+             Continue verb no longer opens JourneyFlowScreen —
+             words in the scenario (snackbar), like every other
+             stand-in action on that screen, matching the
+             scenario's own doctrine ("a fabricated Active
+             Journey cannot be tested with").
+             (3) FLOW SCREEN: until the first fetch has answered
+             (_stageLoaded), _buildBody shows an honest
+             couldn't-load state (ZyraEmptyState, Try again,
+             dev-note for stand-ins) instead of defaults, and
+             the stage jumper does not draw. Truthful-failure
+             rule extended: a cached value may paint, never
+             decide — an INVENTED value may not even paint.
+
+Reasoning:   The auto-counterpart machinery (DR-ZYRA-176) was
+             correct; it had nothing to act on. Every fix here
+             removes a way for the app to look like a Journey
+             where none exists.
+
+Verification: seeded rows read back (match aabd93fe…, attempt 1
+             active); live RPC source confirms the reveal branch
+             covers the seeded stage; all three files delimiter-
+             balanced. REBASED onto freshly staged device copies
+             after detecting a workspace snapshot reversion
+             (stale timeline/connections bases caught BEFORE any
+             commit — post-reversion protocol held). NOT
+             COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-167 (truthful failure); DR-ZYRA-176;
+             zyra_dev_counterpart_complete.
+
+------------------------------------------------------------
+
+DR-ZYRA-179
+Title:       The Invisible Journeys — matches' Column Grant Never
+             Learned The Pause Columns (403 Since 2026-08-12)
+Date:        2026-08-15
+Decided by:  Founder instruction ("ENSURE THE JOURNEY WORKS" /
+             ChatGPT brief: make Active Journey fully testable);
+             root cause found and fixed by the assistant under it.
+Status:      Ratified — fixed live + migrated + client hardened.
+
+Decision:    ROOT CAUSE of every "Journey isn't working" report
+             since 2026-08-12, found in the edge logs: GET
+             /rest/v1/matches -> 403 three times in one screen
+             open while every surrounding call 200'd. matches
+             carries a COLUMN-SCOPED select grant; the migrations
+             that added pause_nudged_at (2026-08-12) and
+             also_paused_by/also_paused_at (2026-08-15) never
+             extended it. The client selects those columns, so
+             PostgREST answered 42501 -> 403, fetchJourney-
+             Matches' naked catch returned [], and the app showed
+             NO real Journeys for anyone — while in dev builds
+             the scenario's stand-ins (which wear REAL browse
+             profiles) topped up over the hole, so the lists
+             LOOKED fine and the DR-178 stand-in guard fired on
+             what everyone believed was the real card. Three
+             fixes: (1) migration 20260815232204 grants the
+             three pause columns (end_reason/end_note stay
+             withheld on purpose; a full column-grant audit found
+             profiles' two withholds intentional and no other
+             gap). (2) fetchJourneyMatches returns null on
+             failure — "a failed fetch is not an empty list" —
+             with the 403 story in the catch's comment.
+             (3) Connections holds the already-shown lists and
+             says "Couldn't refresh Journeys" instead of
+             recomposing fakes over a failure.
+
+Reasoning:   DR-ZYRA-167's rule, met again at the next layer
+             down: the naked catch converted a permission error
+             into "you have no Journeys", and honest-looking
+             stand-ins made the lie invisible. Any table with a
+             column-scoped grant makes every future ALTER TABLE
+             a two-step change; the migration's header says so
+             for the next column.
+
+Verification: exact app query re-run as Basic Female under her
+             own JWT (simulated RLS): 200, both her rows back.
+             Column-grant audit across public: only matches
+             wrong. Live from the founder's device before the
+             fix: 3x 403 at 23:11Z. NOT COMPILED — the
+             Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-167; DR-ZYRA-170 (the columns);
+             DR-ZYRA-178 (whose guard exposed the fake).
+
+------------------------------------------------------------
+
+DR-ZYRA-180
+Title:       Self-Service Journey Seeding — A Real Journey From
+             The Dev Panel, No Hand-Edited Database
+Date:        2026-08-15
+Decided by:  Founder (brief: "I should be able to test the
+             Journey without you needing to manually alter the
+             database every time").
+Status:      Ratified — built (server + panel), tested live.
+
+Decision:    zyra_dev_seed_journey() (migrations 20260815232235/
+             232347): SECURITY DEFINER, @zyra.test callers only.
+             Picks the first FREE seeded browse account of the
+             opposite gender (no live match, never matched with
+             the caller), inserts the match and lets the house
+             triggers do their jobs — zyra_create_first_attempt
+             makes attempt 1, zyra_enforce_one_active_attempt
+             holds the PLAN-AWARE limit, whose refusal comes
+             back as a sentence naming who you're already with.
+             Conversation + timeline shells created idempotently
+             (same shape the counterpart RPC backfills). Panel:
+             "Seed a real Journey" _FireButton under the Active
+             Journeys row (Connections card, Journeys segment),
+             surfacing the server's sentence verbatim; on
+             success it raises the Active row to 1 if it was 0 —
+             the four-rows-absolute rule hides real rows behind
+             a 0 — and otherwise calls the scenario's new public
+             refreshJourneys() nudge, which ConnectionsScreen's
+             existing listener answers with a full re-fetch.
+             Also seeded tonight, by hand, the Journey the
+             Founder is standing on: Basic Female (Maryam) <->
+             dev.browse.m06 (Arif) at Compatibility Reveal —
+             the same name her stand-in wore.
+
+Reasoning:   A staged stand-in has no row, so nothing in it can
+             be walked; the walkable thing must be real rows,
+             created on demand by the panel rather than by
+             anyone in the database. Ended Journeys stay ended —
+             seeding a fresh one is the loop.
+
+Verification: RPC exercised live under the Founder's own test
+             identity, both paths: slots-full ("you're with
+             Arif") and create (rolled-back transaction seeded
+             Adam). Delimiter-balance clean across all four
+             touched Dart files. NOT COMPILED — the Founder's
+             analyze is the gate.
+
+Dependencies: DR-ZYRA-179; zyra_create_first_attempt;
+             zyra_enforce_one_active_attempt; DR-ZYRA-176.
+
+------------------------------------------------------------
+
+DR-ZYRA-181
+Title:       The On-Page "User" Action Replaces The Auto Toggle
+Date:        2026-08-16
+Decided by:  Founder ("add a small button at the bottom of the
+             Journey page: User… it should NOT automatically
+             complete the other user's side before I get to see
+             the waiting state").
+Status:      Ratified — built. Supersedes DR-ZYRA-176's auto
+             toggle (the machinery, not the RPC).
+
+Decision:    The auto-counterpart machinery is REMOVED —
+             _autoCounterpart/_autoDoneStage state, the
+             _maybeAutoCounterpart refresh hook, and the jumper's
+             THE OTHER PERSON section. In their place: a small,
+             subtle "User" pill at the bottom of the Journey page
+             (below the stage area, dev accounts only, never in
+             release, disabled while busy) that runs the same
+             _counterpartComplete on press. It stays visible
+             during a Family Review — its RPC's closing block is
+             the only fast exit from one — and on every stage,
+             the opening included. The intended loop: complete
+             your side, SEE the waiting state, press User, watch
+             the Journey move.
+
+Reasoning:   The auto toggle did its half so promptly the waiting
+             states could never be experienced — and the waiting
+             states are half of what the Journey IS. A button on
+             the page keeps the tester inside the experience
+             instead of inside the panel.
+
+Verification: symbol sweep clean (no autoCounterpart references
+             anywhere); the jumper keeps START OVER / JOURNEY
+             EXPERIENCE / SKIP TO STAGE / THIS ACCOUNT. NOT
+             COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-176 (superseded in part);
+             zyra_dev_counterpart_complete.
+
+------------------------------------------------------------
+
+DR-ZYRA-182
+Title:       Journey Chrome Uses The ZYRA Colour System — No
+             Private Purples, No Bands
+Date:        2026-08-16
+Decided by:  Founder ("use the exact existing ZYRA purple design
+             system. Do not introduce a slightly different
+             purple, gradient, tint or colour layer… I don't
+             want close enough").
+Status:      Ratified — built. Extends DR-ZYRA-177.
+
+Decision:    Three off-system colours and one rendering bug, all
+             in the Experience Lab: (1) the Chamber's veil scrim
+             was 0xFF0E111F — a navy from outside the system —
+             now ZyraColors.luxuryDarkPurple at the same alpha;
+             (2) the Path's station fill was 0xFF120D18, same
+             treatment; (3) the Ascent's private pre-dawn/dawn
+             navy sky sets are GONE ENTIRELY — it paints no
+             background of its own, the Journey screen's
+             brandGradient shows straight through, and the
+             experience's whole voice is its gold light rail.
+             (4) THE BAND in the Founder's screenshot: a
+             BackdropFilter keeps blurring its backdrop even at
+             opacity 0, so the parted veil left a ghost blur
+             rectangle over the stage area. The veil now leaves
+             the tree entirely when its fade completes
+             (AnimatedOpacity.onEnd → removed). The flow and
+             Timeline screens already paint brandGradient
+             (DR-177); nothing else in Journey mode paints any
+             background.
+
+Reasoning:   His two screenshots: the veil read as a different
+             app, and the parted-veil ghost drew a visible line
+             under the header. A lab may experiment with motion
+             and structure; colour belongs to the system.
+
+Verification: no colour literals remain in the lab outside _gold
+             (the lab's own accent, unflagged); delimiter-balance
+             clean. ON-DEVICE COLOUR JUDGEMENT IS HIS. NOT
+             COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-177; DR-ZYRA-094 (unchanged outside
+             Journey mode).
+
+------------------------------------------------------------
+
+DR-ZYRA-183
+Title:       Salam First — The Journey Opens With The Greeting,
+             Then The Number
+Date:        2026-08-16
+Decided by:  Founder ("Send Salam is the first exchange, before
+             Compatibility Reveal. Begin Journey → Send Salam →
+             other user responds → continue into Compatibility
+             Reveal").
+Status:      Ratified — built server + client; suite 90/90.
+
+Decision:    Stage order becomes salam_exchange (1) →
+             compatibility_reveal (2) → wali_gate → phases →
+             family_stage → conversation. SERVER (migrations
+             20260816082700/082800): zyra_advance_stage's
+             successor map flipped — every per-stage gate
+             unchanged (Salam still needs both Salams, Reveal
+             still needs both reveals + both Continues);
+             promote_journey_to_active and respond_to_journey_
+             request enter at salam_exchange; zyra_record_
+             journey_milestone's ordering array mirrors the map;
+             dev rewind/seed target the greeting; data fix moved
+             parked no-progress matches to the new first stage.
+             CLIENT: the canonical map swapped (orders 1/2 — all
+             station rails, chapter numbers, Begin/Continue
+             verbs and jumper chips follow it); the opening
+             beats now precede Salam; Salam completion plays the
+             in-place beat ON the reveal ("Salam received, and
+             returned"); the reveal keeps its full "Compatibility,
+             revealed." moment, now closing with "Next: Guardian
+             Gate"; the Guardian Gate entry carries no stacked
+             beat. The Salam view's own copy already said it:
+             "Every Journey in ZYRA begins the same way — with
+             Salam." The Ritual experience's bespoke reveal beats
+             say their true chapter number now (TWO).
+
+Reasoning:   The greeting before the number is the app's own
+             adab — the first thing said should be Salam, not a
+             score. The state machine's gates made the reorder a
+             map change, not a redesign, exactly as the founder
+             asked ("adjust the ordering cleanly… do not break
+             the state machine, waiting states or developer
+             testing").
+
+Verification: zyra_journey_suite 90/90 green (check 9 asserts
+             the new entry stage); live probe: promote →
+             salam_exchange, both Salams → advance →
+             compatibility_reveal, rolled back; stale-order
+             sweep of lib clean; delimiter-balance clean on all
+             four touched Dart files. NOT COMPILED — the
+             Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-129 (one canonical map); DR-ZYRA-180
+             (seed RPC retargeted); DR-ZYRA-181/182 (same
+             round).
+
+------------------------------------------------------------
+
+DR-ZYRA-184
+Title:       Experience Round 2 — Five Composites Of The Elements
+             The Founder Kept, Plus The Standard Waiting Lines
+Date:        2026-08-16
+Decided by:  Founder (after walking all of round 1: "i like path
+             how theres a side bar… i like veil how its
+             transitional like a book… i like ritual with the tap
+             to continue and dot below it… i like table with the
+             two profile circles at top… when its waiting for
+             other person [show] the standard loading lines we
+             have… show me 5 new options").
+Status:      Ratified elements — round-2 composites built for
+             on-device choice.
+
+Decision:    The lab's five directions are replaced by five
+             COMPOSITES of the four elements that earned their
+             place, every one carrying the waiting treatment:
+             Book (orbs + veil), Trail (rail + breath), Rite
+             (veil then breath, unaccompanied), Duo (orbs + rail,
+             no gates), Full (all of it). The pieces are now
+             single-sourced widgets (_OrbsHeader, _StationRail,
+             _VeilGate, _BeatGate, _WaitingStrip) so a chosen
+             composite graduates by lifting parts, not rewriting
+             them. The waiting treatment IS the app's own
+             ZyraLoading (the comet rule), labelled with the
+             server's reason in words ("Waiting for Arif's
+             Salam"); journey_flow passes _advanceReason through.
+             Chips renamed Now · Book · Trail · Rite · Duo · Full.
+
+             ALSO EXPLAINED, NOT A DEFECT: "jumping from stage 2
+             to stage 4" — the Guardian Gate opens on a FACT
+             (both accounts hold Main Guardians), and both seeded
+             accounts already do, so the gate passes the moment
+             it is reached; the "Both Guardians are present" beat
+             on Faith & Values is its acknowledgement. A first
+             real user without a Guardian would stand at the gate
+             as designed.
+
+Reasoning:   Round 1 asked "which direction"; his answer was a
+             parts list. Round 2 asks the only question left —
+             which composition of those parts — walked on device,
+             like everything else in this redesign.
+
+Verification: delimiter-balance clean on both files; waiting
+             strip uses ZyraLoading verbatim (no re-implemented
+             lines); colours unchanged from DR-ZYRA-182's sweep.
+             NOT COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-176/182/183; ZyraLoading (DR of
+             2026-08-09, cometLoop).
+
+------------------------------------------------------------
+
+DR-ZYRA-185
+Title:       QUIET Is The Journey — The Chosen Experience Ships
+             For Real; The Lab Retires
+Date:        2026-08-16
+Decided by:  Founder ("ok i like quiet lets go with quiet. so it
+             on app"), reached through three rounds of on-device
+             walks (DR-172..176, 181..184) and three rounds of
+             mocks (Book five ways → Ribbon five ways → Named
+             five ways, circles removed).
+Status:      Ratified — built, all builds (not dev-gated).
+
+Decision:    The Journey's real experience is now QUIET:
+             (1) THE RIBBON — a header strip under the app bar:
+             eight quiet marks for the eight chapters, walked
+             ones filled soft gold, the road ahead faint, and
+             the current chapter opened into a gold outline pill
+             carrying its number and name ("2 · Compatibility
+             Reveal"). Labels from the canonical map; during a
+             Family Review the pill carries the override label.
+             The Y–A circles are GONE — the Founder retired them
+             expressly. (2) THE VEIL — every chapter is entered
+             through a parting page: number, name and guiding
+             line floating DIRECTLY on the app's gradient.
+             Nothing is painted behind them — no scrim, no blur,
+             no rectangle — so nothing can draw an edge (the
+             colour ruling from his screenshot with the line
+             across it). Parting fades the words and breathes
+             the page in; the stage switcher's per-stage remount
+             is the page turn. Opening beats and Family Review
+             pass undressed — each is already its own ceremony.
+             (3) THE WAITING LINES — when the server names what
+             the Journey waits on, ZyraLoading (the comet rule)
+             says so under the stage, reason in words; absent
+             otherwise. (4) THE LAB RETIRES — imports, wrap,
+             chips and scenario listener removed from the flow;
+             journey_experience_lab.dart is unreferenced and
+             awaits the Founder's git deletion; the scenario's
+             journeyExperience field stays as inert state.
+
+Reasoning:   The lab's own doctrine: once a direction is chosen
+             it graduates into a ratified build. Three rounds of
+             narrowing ended somewhere none of the original five
+             directions stood: the Founder kept the rail's
+             NUMBERS but not its rail, the veil but not its
+             scrim, the Table's presence but not its circles —
+             and the app's own waiting language over any new one.
+
+Verification: delimiter-balance clean; lab/scenario symbol sweep
+             of the flow = 0 references; ribbon reads labelFor
+             with reviewOpen so the Family Review override
+             carries into the pill. NOT COMPILED — the Founder's
+             analyze is the gate.
+
+Dependencies: DR-ZYRA-129 (canonical map); DR-ZYRA-177/182
+             (colour rulings); DR-ZYRA-183 (Salam first);
+             DR-ZYRA-184 (element picks). Supersedes the lab
+             line DR-ZYRA-172/174/175/176/184 as built UI.
+
+------------------------------------------------------------
+
+DR-ZYRA-186
+Title:       One Button Language For The Journey's Doors — And
+             "Part The Veil" Leaves The Screen
+Date:        2026-08-16
+Decided by:  Founder (two screenshots: the opening's solid
+             Continue beside the veil's frosted pill — "i want
+             the ui to be same and i want it to copy the part
+             the veil design. also the text part the veil gotta
+             change and i dont want it anywhere on journey
+             stage").
+Status:      Ratified — built.
+
+Decision:    A shared _FrostPill (the veil's frosted stadium —
+             white 22% fill, 42% border, button type) is now the
+             ONE button for every door the Journey itself
+             presents: the opening's two beats (Continue /
+             Begin, formerly FilledButton) and each chapter's
+             veil. The veil's label becomes "Enter" — the
+             whisper above it already says YOU ARE ENTERING, and
+             the words "Part the veil" no longer appear anywhere
+             on a Journey screen. Stage CONTENT actions (Reveal
+             Compatibility, Send your Salam, the phase
+             Continues) keep the app-wide FilledButton language:
+             those belong to the product's verbs, not the
+             Journey's doors.
+
+Reasoning:   The two pills sat one stage apart and looked like
+             two different apps. The veil's frost won on his
+             eye; doors dress alike, actions dress alike.
+
+Verification: "Part the veil" grep across lib = code comments
+             and the retired lab only, zero UI strings;
+             delimiter-balance clean. NOT COMPILED — the
+             Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-185.
+
+------------------------------------------------------------
+
+DR-ZYRA-187
+Title:       The Browse Swipe-Feedback Lab — Twelve Treatments,
+             Chosen By Dragging
+Date:        2026-08-16
+Decided by:  Founder ("put all 10 in the browser toggle for me to
+             test while leaving the current version"), after two
+             interactive mock rounds (ten treatments, swipe-only).
+Status:      Ratified — lab built for on-device choice.
+
+Decision:    lib/dev/browse_swipe_lab.dart holds twelve
+             treatments for the live drag-direction feedback:
+             Now (the shipped edge-glow rim, identical maths) ·
+             None (silence, for comparison — makes his twelve) ·
+             Breath · Draw · Edgelight · Halo · Goldfirst (rim
+             family) · Wash · Stamp · Aura · Underglow · Comet
+             (beyond the rim). The dev panel's Browse card gains
+             a chip row (SWIPE FEEDBACK — drag to test) writing
+             scenario.swipeFeedback; browse_screen routes its
+             drag-glow block through the lab in dev builds and
+             paints the shipped rim inline in release. Direction
+             mapping and the traffic-light colours are the app's
+             own (left = Consider, right = Pass, down = Save;
+             _dragColor passed through). The commit flash
+             (_BorderFlash) stays shared by every option.
+             STAMP knowingly re-tests the 2026-08-01 "no centred
+             badge" ruling with a different treatment; if it
+             loses again, that ruling stands twice-ratified.
+
+Reasoning:   The Journey lab's own doctrine, applied to Browse:
+             candidates are walked (here, swiped) in the app, not
+             judged from stills — and the shipped version stands
+             beside them unchanged until a choice is made.
+
+Verification: delimiter-balance clean on all four files; release
+             path byte-identical to the pre-lab rim; option 0
+             duplicates the same maths so dev default looks
+             unchanged. NOT COMPILED — the Founder's analyze is
+             the gate.
+
+Dependencies: DR-ZYRA-099 (swipe mapping + palette);
+             DR-ZYRA-185 (lab-graduation pattern).
+
+------------------------------------------------------------
+
+DR-ZYRA-188
+Title:       Portrait Only — The App Does Not Rotate
+Date:        2026-08-16
+Decided by:  Founder ("ok lock to portrait"), on the assistant's
+             recommendation.
+Status:      Ratified — built, all three platforms' knobs.
+
+Decision:    ZYRA locks to portrait: (1) main() calls
+             SystemChrome.setPreferredOrientations([portraitUp])
+             right after binding init (unawaited — the lock
+             applies asynchronously and nothing downstream
+             depends on it); (2) Info.plist's iPhone
+             UISupportedInterfaceOrientations trims to Portrait
+             alone — the ~ipad block is left untouched, because
+             Apple's iPad multitasking rules make orientation a
+             decision for an actual iPad build, which this is
+             not; (3) AndroidManifest's MainActivity gains
+             android:screenOrientation="portrait".
+
+Reasoning:   Every screen is portrait-composed — the full-bleed
+             Browse photos and their swipe thresholds, the
+             Journey veil, ribbon and chapter pages — and an
+             undesigned landscape reads as a bug, not a feature.
+             The category ships portrait-locked (Muzz, Hinge,
+             Tinder). Supporting landscape properly would mean
+             designing and testing every screen twice for a use
+             case the audience does not have; locking deletes
+             that entire bug class in three small touches.
+
+Verification: main.dart delimiter-balanced; both platform files
+             parse as valid XML; the plist edit matched its
+             tab indentation exactly (the 2026-08-15 lesson).
+             NOT COMPILED — the Founder's analyze is the gate.
+
+Dependencies: none new.
+
+------------------------------------------------------------
+
+DR-ZYRA-189
+Title:       Every Journey Button Is The Frost Pill
+Date:        2026-08-16
+Decided by:  Founder ("why is send your salam button different
+             from the first page enter. i want all buttons to be
+             same replicating the enter clean bubble box. fix it
+             all").
+Status:      Ratified — built. Widens DR-ZYRA-186, whose
+             doors-vs-verbs split he overruled.
+
+Decision:    Fourteen FilledButtons across the Journey's views
+             became _FrostPill: Resume (paused view) · both
+             Continue Journeys on the reveal · Reveal
+             Compatibility · Send/Return Salam and its Continue ·
+             Link a Guardian · the phase checkpoint Continue ·
+             Begin this chapter · Seal my answers · Next/Review
+             my answers · Share my answers · the family-stage
+             Continue · Open your conversation. Full-width
+             SizedBox wrappers became Center — the pill hugs its
+             words like Enter does. _FrostPill learned a
+             disabled state (null onTap renders dimmed at 45%)
+             because "Seal my answers" counts unanswered
+             questions in its label while disabled. Zero
+             FilledButtons remain in the flow file; TextButton
+             quiet links (End Journey, pause/end actions) are
+             links, not buttons, and stay.
+
+Reasoning:   One screen, one button language — his eye caught
+             the seam between the veil's Enter and the Salam
+             CTA one page later. DR-186's "doors dress alike,
+             actions dress alike" distinction did not survive
+             contact with the founder's screenshots, and the
+             frost pill is now simply what a Journey button is.
+
+Verification: FilledButton grep in the flow = comments only;
+             delimiter-balance clean. NOT COMPILED — the
+             Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-185/186.
+
+------------------------------------------------------------
+
+DR-ZYRA-190
+Title:       Chapter One Unfolds — Beginning, Salam, Waiting,
+             Completion As One Sequence
+Date:        2026-08-16
+Decided by:  Founder (ChatGPT-relayed Chapter 1 review: "make it
+             feel like 'This is the beginning of our Journey'
+             rather than 'Complete step 1 of 8'"; simplify to
+             Beginning → Salam → Waiting → Shared completion →
+             Continue; simpler wording; calm, no gimmicks).
+Status:      Ratified — built. Chapter 1 ONLY, per the brief;
+             chapters 2+ reviewed separately, sequentially.
+
+Decision:    (1) THE TITLE CARD DISSOLVES. Chapter One's veil is
+             a transition, not a gate: number and name, one
+             breath (1.6s), then it parts by itself — no guiding
+             line, no Enter. _ChapterVeil gained an `auto` flag,
+             true only for salam_exchange; later chapters keep
+             the gated veil until their own reviews.
+             (2) THE FOUR STATES BECAME ONE UNFOLDING PAGE. The
+             Salam view's states cross-fade in place (480ms fade
+             + rise, the flow's own transition language) instead
+             of swapping like cards.
+             (3) THE WORDS SAY ONE THING EACH. The waiting
+             paragraph became: "<name> will see it when they
+             next open ZYRA. Once you have both exchanged Salam,
+             your Journey continues." Completion dropped its
+             Timeline sentence: "The first thing you ever said
+             to each other is the first line of your story."
+             (4) WAITING SPEAKS THE APP'S LINES. The comet rule
+             renders under the waiting state — which formally
+             retires this view's old "no spinner, a person is
+             simply not here yet" stance, superseded by the
+             Founder's round-2 waiting-lines pick.
+             (5) COMPLETION EARNS A MARK. A 64px gold rule draws
+             itself in above "You began with Salam" — something
+             finished, said without words (_GoldRule).
+
+Reasoning:   His diagnosis, kept whole: the content was right and
+             the presentation was a checklist. Every change here
+             removes a stop or a paragraph rather than adding
+             an animation — "simple but meaningful".
+
+Verification: delimiter-balance clean; the auto veil reuses the
+             existing part animation (no new motion system); the
+             Nikah-flow jump he mentioned is NOTED AND PARKED at
+             his instruction — sequential chapter reviews first.
+             NOT COMPILED — the Founder's analyze is the gate.
+
+Dependencies: DR-ZYRA-185/186/189; DR-ZYRA-184 (waiting lines).
+
+------------------------------------------------------------
+
+DR-ZYRA-191
+Title:       AI Team Restructure applied to ZYRA — Codex Lead Architect;
+             Fable and Claude Executors; Fable Documentation Owner; ZYRA
+             build paused
+Date:        2026-08-17
+Status:      Approved — Founder instruction, 2026-08-17, relayed in
+             session (AI_TEAM_WORKING_PROTOCOL §1.2: the Founder's direct
+             instruction is the approval). Group-level decision of record:
+             AD-AIOS-097.
+Owner:       Fable (Documentation Owner), directed by Codex (Lead
+             Architect)
+Approved by: Founder (Shakeel), 2026-08-17.
+
+Decision:
+  1.  The Group restructure (AD-AIOS-097) applies to ZYRA. Codex is
+      Lead Architect: authors task briefs, defines scope, quality
+      gates and evidence requirements; does not edit files, run git,
+      author or run migrations, or implement.
+  2.  Fable (product/UX + all documentation) and Claude
+      (engineering/database) are the Executors. One named executor
+      per brief. Executors do not change scope or architecture
+      unilaterally and do not approve work.
+  3.  Fable is the single documentation owner: governed documents and
+      both ZYRA registers. Executing agents draft entry text for
+      their own work; Fable files it.
+  4.  Approval law unchanged: the Founder approves every
+      implementation; agreement between AIs is never approval; the
+      Founder's direct instruction is the approval
+      (ZYRA_GOVERNANCE §2 standing rule; ZYRA CLAUDE.md §2).
+  5.  ZYRA feature building remains PAUSED per the Founder's
+      2026-08-17 instruction. Parked work stays parked (Chapter 2+
+      reviews, Nikah-flow jump investigation, OA tails). Nothing in
+      this decision authorises resuming it.
+  6.  ZYRA_GOVERNANCE superseded V2 -> V3 (§2 authority table
+      re-bound; §3 delegation split: brief-level approach to the
+      Lead Architect, code-level detail to the executing agent).
+      ZYRA/CLAUDE.md §2 updated to the same effect. ZYRA/AGENTS.md
+      added as a thin pointer bootstrap for Codex sessions.
+
+Implementation:
+  Documentation only — no source, database, migration or git work.
+  Files: ZYRA_GOVERNANCE_CURRENT_VERSION_V3.md (V2 archived as
+    ZYRA_GOVERNANCE_2026-08-17_V2.md); CLAUDE.md (§2); AGENTS.md
+    (new); this entry; OA-ZYRA-236 (sweep record); Documentation
+    Index regenerated via SYSTEM/tools/generate_doc_index.py.
+
+Verification: all files byte-verified on disk after commit; index
+             regeneration output recorded in OA-ZYRA-236.
+
+Dependencies: AD-AIOS-097 (BLACK UMBRELLA GROUP/SYSTEM/
+             ARCHITECTURE_DECISIONS/); OA-AIOS-298/299;
+             FABLE_GOVERNANCE_REVIEW_2026-08-17_V1 (BLACK UMBRELLA
+             GROUP/REPORTS/CURRENT/).
+
+Related:     DR-ZYRA-151 (findings become actions), OA-ZYRA-236.
+
+------------------------------------------------------------
+
+DR-ZYRA-192
+Title:       Stage 1 Rebuilt as a Plain Exchange — Salam Says One Line,
+             Completion Advances Itself, Failure Tells the Truth
+Date:        2026-08-17
+Status:      Approved — Lead Architect brief (Codex, 2026-08-17), relayed
+             by the Founder in session; the Founder's own finding opened
+             it ("even the Founder is pressing the buttons without
+             reading"). On-device evidence return tracked as OA-ZYRA-238.
+Owner:       Fable (Product/UX Executor) — build; Codex (Lead Architect)
+             — brief and evidence review.
+Approved by: Founder (Shakeel), 2026-08-17, by relay of the brief.
+
+Decision:
+  1.  Stage 1 (Salam Exchange) carries four states with fixed copy and
+      at most one action each: send ("Begin with Salam" / "Send a
+      simple Salam to [name]." / Send Salam), return ("[name] sent you
+      Salam" / "Return the greeting to begin your Journey." / Return
+      Salam), waiting ("Salam sent" / "We'll let you know when [name]
+      replies." / quiet Back to Connections), complete ("Salam
+      exchanged" / "You're ready for the next step.", no button).
+  2.  Completion holds ~1.4s, then advances to Stage 2 by itself — both
+      people already performed the unlocking act; no Continue button.
+      The 2026-08-12 "unwitnessable completion" finding stays answered:
+      the held confirmation is the witnessed state, and an arriving
+      Salam still gets its own return state.
+  3.  Removed from Stage 1: the Journey-opening introduction (both
+      beats), the chapter veil/title card (DR-ZYRA-190 auto mode
+      retired), the eight-mark ribbon (replaced by one small "Stage 1
+      of 8 · Salam Exchange" line), the gold completion rule, the
+      ceremony copy ("first line of your story", "Every Journey in
+      ZYRA begins the same way"), gendered pronouns, and every loading
+      animation — nothing is loading while another human decides when
+      to open ZYRA.
+  4.  Interaction rules: the button disables on first tap (no duplicate
+      submissions); a failed send stays on the same state with the
+      same label plus "Salam wasn't sent. Check your connection and
+      try again."; reopening shows the real server state (no state is
+      guessed before the first read lands); a failed poll HOLDS the
+      last known state rather than flickering; a reply arriving while
+      the page is open cross-fades to complete; arriving while away,
+      the next visit shows completion and proceeds.
+  5.  Truthful failure (service): sendSalam now returns false on
+      failure instead of swallowing; fetchSalamStatus returns null on
+      a failed read instead of (false,false). Same rule as
+      DR-ZYRA-179's fetchJourneyMatches.
+  6.  Scope held: Compatibility Reveal, Guardian Gate, later chapters,
+      questions, scoring, Timeline behaviour, database rules and stage
+      order untouched. Later chapters keep their gated veils, ribbon
+      and waiting lines unchanged.
+  7.  Supersessions, Stage 1 only: DR-ZYRA-190 (opening, auto veil,
+      gold rule, held completion + Continue), DR-ZYRA-184/185 waiting
+      lines and ribbon on this stage, DR-ZYRA-186's veil on this
+      stage. All of them remain in force on later stages. DR-ZYRA-189
+      (one frost button language) still governs the buttons Stage 1
+      kept. The Salam Timeline milestone is unchanged.
+
+Implementation:
+  lib/screens/journey/journey_flow_screen.dart — opening view classes
+    and _welcomedMatches removed; ribbon conditional; veil bypass on
+    salam; auto mode removed from _ChapterVeil; waiting strip gated
+    off salam; _SalamExchangeView rebuilt (states, copy, dedupe,
+    retry, held auto-advance); _GoldRule removed.
+  lib/services/zyra_journey_service.dart — sendSalam -> Future<bool>;
+    fetchSalamStatus -> nullable record; both debugPrint on failure.
+
+Verification: delimiter-balance clean both files; banned strings
+             verified absent; stalled-advance retry confirmed to cover
+             a failed auto-advance (poll re-asks until it moves). NOT
+             COMPILED — the Founder's flutter analyze is the gate.
+             On-device evidence per the brief = OA-ZYRA-238.
+
+Dependencies: DR-ZYRA-191 (team structure this was briefed under);
+             DR-ZYRA-183 (Salam first, unchanged); OA-ZYRA-238.
+
+Related:     Codex brief "Rebuild Active Journey Stage 1 — Salam
+             Exchange only", 2026-08-17.
+
+------------------------------------------------------------
+
+DR-ZYRA-193
+Title:       Browse Swipe-Feedback Lab Retired — the Original Rim Is the
+             Only Treatment Again
+Date:        2026-08-17
+Status:      Approved — direct Founder instruction in session, 2026-08-17
+             ("remove all swipe options and revert back to original also
+             making sure it actually works").
+Owner:       Fable (Product/UX Executor).
+Approved by: Founder (Shakeel), 2026-08-17.
+
+Decision:
+  1.  The DR-ZYRA-187 swipe-feedback lab is retired. Browse paints the
+      original edge rim on every drag, in every build: colour by
+      decision (pass #F47272, save #EED26C, consider #84C88E), alpha
+      0.15 + 0.55x strength, width 3 + 5x strength, corner radius from
+      _deviceCornerRadiusGuess. Identical maths to the pre-lab rim and
+      to the lab's option 0 — no behaviour change for release users,
+      who only ever had this rim.
+  2.  The twelve-option chip row leaves the developer panel's Browse
+      card; swipeFeedback leaves the scenario store and its reset().
+  3.  lib/dev/browse_swipe_lab.dart is unreferenced and moved out of
+      the repo to DEVELOPMENT/_to_delete/ (bridge cannot delete; the
+      Founder's next git commit records the deletion).
+  4.  The commit flash (_BorderFlash) and swipe mapping
+      (DR-ZYRA-099: left=Consider, right=Pass, down=Save) are
+      untouched.
+
+Implementation:
+  lib/screens/browse/browse_screen.dart — kReleaseMode branch replaced
+    by the unconditional rim DecoratedBox; lab import removed;
+    kReleaseMode dropped from the foundation import (no other use).
+  lib/dev/zyra_dev_scenario.dart — swipeFeedback field, setter and
+    reset line removed.
+  lib/dev/dev_scenario_panel.dart — lab import, _fxChip and the
+    "Swipe feedback — drag to test" section removed; Browse card now
+    opens at "Limit popups".
+
+Verification: delimiter-balance clean on all three files; zero
+             BrowseSwipeLab / swipeFeedback references remain in lib/;
+             NOT COMPILED — the Founder's flutter analyze is the gate,
+             and dragging a card in Browse is the working proof.
+
+Dependencies: Supersedes DR-ZYRA-187. DR-ZYRA-099 (mapping) and the
+             2026-07-27 rim lineage unchanged.
+
+Related:     DR-ZYRA-187 (the lab this retires).
+
+------------------------------------------------------------
+
+DR-ZYRA-194
+Title:       Active Journey Becomes One Continuous, Scroll-Led Chapter
+             Experience
+Date:        2026-08-18
+Status:      Approved — direct Founder instruction in session, 2026-08-18
+             ("Every stage should have its own introduction/transition
+             before the actual task begins" and "Arrival → meaning →
+             action → waiting if needed → completion → transition
+             forward"). Built in the same session; on-device evidence is
+             OA-ZYRA-239.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction for this build; Founder — device
+             review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  All eight canonical Journey stages use the same rhythm: arrival,
+      meaning, action, an honest waiting state where the other person or a
+      Guardian is outstanding, an in-place completion beat, then forward
+      transition. The Journey reads as one road through chapters rather
+      than a stack of unrelated screens.
+  2.  Each stage begins at the top of a full-height introduction carrying
+      "Stage n of 8", the canonical stage name, one short introduction and
+      at most one supporting line. The member scrolls naturally into the
+      existing stage interaction. There is no Enter button and scrolling
+      itself never writes, submits, reveals, links, advances or opens a
+      review.
+  3.  Introduction, optional support, completion heading and completion
+      line live on ZyraJourneyStage beside the existing value, label, kind
+      and guiding question. No second presentation map is permitted.
+  4.  The existing eight-stage order, server-owned gates, polling,
+      question sets, scoring, Guardian requirements, Family Review
+      override, Timeline and Open Conversation architecture are unchanged.
+      Family Review remains an override between sustained stages, not a
+      ninth stage.
+  5.  Ordinary forward-transition modals are retired. Completion is shown
+      inside the Journey and the next stage supplies its own arrival. End
+      Journey keeps its closure moment because that is a true ending rather
+      than forward movement.
+  6.  The old vertical "Scroll to continue" gesture is retired because it
+      conflicts with real page scrolling and could make a consequential
+      action ambiguous. Completed stages use the Journey's existing frost
+      button language with the explicit label "Continue Journey".
+  7.  The three sustained phases no longer repeat a second internal chapter
+      cover and "Begin this chapter" gate after the shared arrival. They
+      begin at the first real question, retain one-question-at-a-time
+      authoring, review-and-seal, private ratings and checkpoints.
+  8.  Open Conversation is presented as greater freedom inside the Journey,
+      never as the Journey ending. Its fixed completion line is "The Journey
+      continues with more freedom."
+  9.  Supersessions are presentation-only: DR-ZYRA-185/186/190's gated
+      chapter veil and Enter language are retired; DR-ZYRA-192's Stage 1
+      no-introduction/no-ribbon/automatic-forward presentation is retired;
+      the ordinary road moments in DR-ZYRA-148 are replaced by in-place
+      completion plus the next arrival. Their service, truthful-failure,
+      stage-order and closure rules remain in force.
+
+Canonical stage copy:
+  1.  Salam Exchange — "Let’s begin your Journey by exchanging Salam." /
+      "Salam exchanged." / "Your Journey has begun."
+  2.  Compatibility Reveal — "Now, choose whether to reveal your
+      compatibility." / "Compatibility, revealed." / "You now know where
+      you begin."
+  3.  Guardian Gate — "From here, both families walk with you." / "Both
+      Guardians are present." / "Your families walk with you from here."
+  4.  Faith & Values — "Share how faith, values and family shape your
+      everyday life." / "Faith & Values complete." / "You have both shared
+      what guides you."
+  5.  Building a Life — "Share your hopes for family, work, home and the
+      future." / "Building a Life complete." / "You have both shared the
+      life you hope to build."
+  6.  Navigating Life — "Share how you communicate, handle difficulty and
+      grow." / "Navigating Life complete." / "You have both shared how you
+      face life and grow."
+  7.  Family Compatibility — "Now your families enter the conversation." /
+      "Both families have spoken." / "Each family has been heard."
+  8.  Open Conversation — "The structure now begins to lift." / "Your
+      conversation is open." / "The Journey continues with more freedom."
+
+Implementation:
+  SOURCE/lib/data/zyra_journey_stages.dart — canonical arrival and
+    completion fields and approved copy for all eight stages.
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — shared
+    _JourneyStageScrollShell; all-stage ribbon; gated _ChapterVeil and
+    internal phase cover removed; ordinary stage modals retired; explicit
+    Continue Journey action; canonical in-place completion copy applied.
+  SOURCE/test/journey_stages_test.dart — sequence, copy-completeness,
+    sustained-question and Family Review override assertions.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test --no-pub = 22 passed; tools/zyra_check.py = 0
+             findings. No database, migration, bundle identifier, signing
+             or git operation. Device walk is OA-ZYRA-239.
+
+Dependencies: ZyraJourneyStages canonical model (DR-ZYRA-129); Salam-first
+              order (DR-ZYRA-183); truthful failure rules remain unchanged.
+
+Related:     OA-ZYRA-239; DR-ZYRA-148/185/186/190/192 (presentation
+             supersessions stated above).
+
+------------------------------------------------------------
+
+DR-ZYRA-195
+Title:       Salam Exchange Humanised — One Formal Label, Greeting Gesture,
+             Living Wait and Scroll Completion
+Date:        2026-08-18
+Status:      Approved — direct Founder on-device review, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct feedback on Stage 1.
+
+Decision:
+  1.  The Stage 1 arrival no longer repeats "Salam Exchange" in the ribbon,
+      title and explanation. The formal label remains once in the Journey
+      ribbon; the arrival says "Let’s begin" and "The first words can be
+      simple."
+  2.  Send Salam and Return Salam are exceptions to the shared frost-pill
+      action. A breathing circular hand gesture presents the greeting as a
+      human act rather than another utility button. It retains button
+      semantics, disabled state, tap target and the existing honest failure
+      path; the service write is unchanged.
+  3.  After this Seeker sends and waits, the other person's profile ring is
+      kept bright and gains two restrained breathing rings. Reduced-motion
+      users receive a static midpoint. "Back to Connections" is removed;
+      the route's normal back control remains available.
+  4.  Once both Salams are confirmed, the generic "Continue Journey" pill
+      is removed. A downward-arrow "Scroll to continue" gesture advances
+      only after a deliberate drag. Accessibility keeps a semantic tap.
+      This exception is safe because it appears only after both Salam rows
+      are known; it submits no greeting and only re-asks the idempotent
+      server stage gate to advance.
+  5.  Compatibility Reveal and every later stage retain the explicit
+      "Continue Journey" action from DR-ZYRA-194. This decision does not
+      turn ordinary page scrolling into a write or advance.
+
+Implementation:
+  SOURCE/lib/data/zyra_journey_stages.dart — optional canonical
+    arrivalTitle; Stage 1 copy humanised.
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — arrival title use;
+    _SalamAction; _SalamScrollToContinue; focused waiting-ring treatment;
+    Back to Connections removed from the wait.
+  SOURCE/test/journey_stages_test.dart — Stage 1 non-repetition assertion.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test --no-pub = 23 passed. No service, database,
+             migration or git operation. On-device evidence remains
+             OA-ZYRA-239.
+
+Dependencies: DR-ZYRA-194 (continuous stage shell); DR-ZYRA-192
+              (truthful Salam reads/writes and double-tap guard unchanged).
+
+Related:     OA-ZYRA-239; OA-ZYRA-240 (Meet the Guardians concept raised in
+             the same review, separately bounded).
+
+------------------------------------------------------------
+
+DR-ZYRA-196
+Title:       Completed Journey Chapters Remain Above the Current Stage as
+             Read-Only Endings
+Date:        2026-08-18
+Status:      Approved — direct Founder on-device review, 2026-08-18: a
+             member standing on Stage 2 must be able to scroll upward to
+             Stage 1 without reopening Stage 1's live interaction.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  The Active Journey opens at the current server-owned stage, exactly as
+      before. It does not restart visually at Stage 1 on every visit.
+  2.  Every canonically completed stage remains physically above the current
+      arrival in the same vertical Journey. Pulling upward reveals compact
+      completion sections in sequence; scrolling downward returns through
+      the current arrival into its live action.
+  3.  Previous stages are read-only endings, never reconstructed live
+      screens. Send Salam, Reveal, Guardian linking, answer fields,
+      checkpoints and Continue actions cannot be repeated from history.
+  4.  Threshold history shows the stage identity and its canonical
+      completion heading/line. Compatibility Reveal and sustained stages
+      may also link to their durable Timeline record. Sustained stages keep
+      the canonical guiding question so the completion retains its meaning
+      without replaying every answer.
+  5.  Family Review does not appear as a historical stage. It remains a
+      temporary transition override and never enters the eight-stage map.
+  6.  A quiet "Earlier stages above" cue appears only when history exists.
+      The new stage still receives a full-height arrival and the existing
+      "Scroll to begin" cue below.
+  7.  History is derived only from ZyraJourneyStages order. If the current
+      stage is n, only stages 1 through n-1 may render. An unknown stage
+      yields no history rather than guessed progress.
+
+Implementation:
+  SOURCE/lib/data/zyra_journey_stages.dart — completedBefore(value), derived
+    from the canonical sequence.
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — the shared shell is
+    now stateful, initially positioned at the current arrival, with fixed
+    read-only _JourneyCompletedStage sections above and Timeline navigation
+    for deeper records.
+  SOURCE/test/journey_stages_test.dart — Stage 1/Stage 2/Phase 2/unknown
+    history-boundary assertions.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test --no-pub = 24 passed. No service, database,
+             migration or git operation. Scroll position and feel remain
+             part of OA-ZYRA-239's real-device walk.
+
+Dependencies: DR-ZYRA-194 (continuous stage shell); DR-ZYRA-195 (Stage 1
+              completion gesture); canonical sequence DR-ZYRA-129.
+
+Related:     OA-ZYRA-239.
+
+------------------------------------------------------------
+
+DR-ZYRA-197
+Title:       Journey Sections Settle Gently to Full-Viewport Resting Points
+Date:        2026-08-18
+Status:      Approved — direct Founder on-device refinement, 2026-08-18:
+             a slight released scroll must not leave the page halfway between
+             "Scroll to begin" and the next section, but the correction must
+             not feel like a forced fast animation.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  Every completed ending and current-stage arrival occupies one full
+      available Journey viewport. No deliberately short history panel may
+      expose part of the next chapter underneath it at rest.
+  2.  When a vertical drag ends between header sections, the Journey settles
+      to the nearest valid boundary: an earlier completion, the current
+      arrival or the beginning of the current live action.
+  3.  A slight movement returns to the section the member was reading. A
+      movement carried beyond the midpoint settles forward/backward. The live
+      drag remains directly under the finger; settling begins only on release.
+  4.  Settling is deliberately calm: 440–600ms according to distance, using
+      an ease-out curve. It is not an instant jump or a fast page-fling.
+      Reduced-motion mode uses an immediate boundary placement instead.
+  5.  Once the outer Journey is already resting at the live action, inner
+      question/result scrolling is unchanged; its scroll ending finds the
+      outer shell already on a boundary and triggers no movement.
+  6.  The pure boundary calculation clamps overscroll and unknown geometry;
+      it never produces a resting point before the first section or after the
+      live-action boundary.
+
+Implementation:
+  SOURCE/lib/data/zyra_journey_scroll.dart — pure nearest-boundary rule.
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — full-height history
+    sections; ScrollEndNotification-driven gentle settle; reduced-motion
+    branch.
+  SOURCE/test/journey_scroll_test.dart — slight movement, deliberate
+    movement and overscroll boundary tests.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test --no-pub = 27 passed. No service, database,
+             migration or git operation. Final feel remains part of the
+             OA-ZYRA-239 device walk.
+
+Dependencies: DR-ZYRA-194 (scroll-led stages); DR-ZYRA-196 (completed
+              endings above the current stage).
+
+Related:     OA-ZYRA-239.
+
+------------------------------------------------------------
+
+DR-ZYRA-198
+Title:       Immediate Salam Completion, Stable State Geometry and Complete
+             Timeline Review
+Date:        2026-08-18
+Status:      Approved — direct Founder on-device correction and review-tool
+             instruction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  Once both Salams are server-confirmed, the first deliberate upward
+      finger movement owns Stage 1 completion. A raw pointer-distance listener
+      observes 22 logical pixels without competing with the outer Journey
+      scroll's gesture arena; the member must not repeat the swipe until a
+      later scroll recogniser eventually wins.
+  2.  Reaching the threshold immediately changes the prompt to "Opening Stage
+      2…" and permits only one advance request at a time. If the server call
+      returns without moving the stage, the gesture resets honestly for one
+      retry; the completed page is never left permanently inert.
+  3.  Send, waiting and exchanged states share fixed portrait, heading, body,
+      failure and action slots. Copy and controls change inside those slots;
+      the pair image and message block do not jump vertically between states.
+  4.  Each of the eight canonical Journey stages owns exactly one canonical
+      Timeline completion type. Timeline chapter selection resolves through
+      that map, including the Salam-first ordering; journey_started opens
+      Salam Exchange rather than the old Compatibility-first chapter.
+  5.  In development builds only, Timeline exposes "Review everything". It
+      shows all 17 milestone types supported by the current Timeline contract,
+      the Compatibility report door, open phase-answer cards, quiet pause /
+      continue treatment, YOU ARE HERE and the road ahead. The panel is
+      explicitly marked DEVELOPMENT REVIEW and does not read as real history,
+      write data or ship as a release control.
+  6.  Normal Timeline mode remains factual: it shows only returned milestones
+      and server-revealed content. The review gallery is never used to fill a
+      real member's empty state.
+  7.  The existing Salam-first milestone trigger was source-audited: every
+      completed stage maps to salam_exchanged, compatibility_revealed,
+      guardian_linked, phase_1/2/3_complete, family_stage or
+      conversation_started. No database or migration operation was attempted;
+      deployed-trigger verification remains with the database-enabled main
+      session.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — first-motion pointer
+    threshold, in-flight acknowledgement/retry and fixed Salam state slots.
+  SOURCE/lib/data/zyra_journey_stages.dart — per-stage canonical Timeline
+    milestone contract and reverse lookup.
+  SOURCE/lib/screens/matches/journey_timeline_screen.dart — canonical chapter
+    resolution and development-only complete Timeline review.
+  SOURCE/test/journey_stages_test.dart — uniqueness and reverse-mapping proof
+    for all eight stage milestones.
+  SOURCE/supabase/migrations/20260816082800_salam_first_milestones_and_dev.sql
+    — existing trigger source audited only; unchanged and not executed.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 28 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-183 (Salam first); DR-ZYRA-194/195/197 (continuous
+              Journey, completion gesture and section settling).
+
+Related:     OA-ZYRA-239.
+
+------------------------------------------------------------
+
+DR-ZYRA-199
+Title:       Human Stage Layout and Intent-Based Journey Section Paging
+Date:        2026-08-18
+Status:      Approved — direct Founder Stage 2 device correction and
+             cross-stage consistency instruction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  Stage 1 remains visually unchanged and is the baseline for human pair
+      presentation, stable state geometry and primary threshold actions.
+  2.  The abstract two-circle/line decoration is removed from the Journey
+      atmosphere. It occupied the same centre plane as stage copy and caused
+      text overlap. Decorative relationship symbols may not sit behind live
+      content.
+  3.  SUPERSEDED BY DR-ZYRA-200. Stage arrivals do not carry status-bearing
+      portraits or rings. Real member photos belong to live action and state
+      views where their visual treatment communicates a current fact.
+  4.  Compatibility Reveal uses those real photos in every ready, waiting,
+      early-unlock and revealed result state. The ready and ordinary waiting
+      states share fixed portrait, heading, body and action slots so their
+      content cannot jump vertically as flags change.
+  5.  Reveal Compatibility adopts Stage 1's breathing circular action with a
+      reveal icon. The same primary-action language applies to Link a
+      Guardian, Seal my answers, Share my answers and Open Conversation, each
+      with its own clear icon. SUPERSEDED IN PART BY DR-ZYRA-201: leaving a
+      completed chapter no longer uses a Continue pill. Ordinary Next and
+      Resume navigation remains compact. Every action keeps ordinary button
+      semantics and existing logic; only presentation changes.
+  6.  Legacy in-action completion banners are removed. Completed chapters
+      already live as full sections above the current arrival, so repeating a
+      Salam/Guardian completion inside the next action page duplicated history
+      and reduced usable space.
+  7.  Inline Pause Journey / End Journey footers are removed from active stage
+      content and Family Review. SUPERSEDED IN PART BY DR-ZYRA-202: the new
+      between-stage decision page offers Continue, Pause and End without
+      returning those controls to live action content. Persistent management
+      remains on the Connections Active Journey card.
+  8.  Section settling is intent-based. A deliberate drag of 7% of the current
+      viewport (clamped to 28–48 logical pixels) advances exactly one section
+      in the drag direction, even when it did not cross the old halfway rule.
+      A smaller accidental movement returns to the nearest boundary. One drag
+      cannot skip multiple chapters, and no released position may remain
+      halfway between sections.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — foreground real-photo
+    pair layout, Stage 2 state/action rebuild, shared primary chapter actions,
+    removal of abstract background pair, legacy beats and inline management
+    footers; shared drag tracking.
+  SOURCE/lib/data/zyra_journey_scroll.dart — pure direction-aware one-section
+    settling rule.
+  SOURCE/test/journey_scroll_test.dart — deliberate short forward/backward
+    drags, tiny movement and no-multi-stage-skip coverage.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 31 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-194/197/198 (continuous Journey, section settling and
+              Stage 1 stable geometry).
+
+Related:     OA-ZYRA-239.
+
+------------------------------------------------------------
+
+DR-ZYRA-200
+Title:       Neutral Journey Arrivals and State-Only Pair Rings
+Date:        2026-08-18
+Status:      Approved — direct Founder cross-stage consistency correction,
+             2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  Every real Journey stage begins with the same neutral arrival structure:
+      stage number, stage name, short meaning, supporting line and Scroll to
+      begin. Stage 1 is the visual baseline for that structure.
+  2.  Arrival pages contain no profile photo, connected portrait, ring or
+      completion treatment. They introduce the chapter; they do not report a
+      participant state.
+  3.  Real pair photos and rings appear only after the member scrolls into a
+      live action, waiting, result or completion state where they communicate
+      who has acted and who is still expected to act.
+  4.  A gold ring may be shown only when the corresponding person's action is
+      confirmed complete. An arrival must never imply that either participant
+      has already completed the new stage.
+  5.  This supersedes DR-ZYRA-199 Decision 3 only. DR-ZYRA-199's action-state
+      pair presentation and remaining layout decisions stay in force.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — removed the pair-status
+    component from the shared arrival and removed its now-unused profile input.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 31 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-194/198/199 (continuous Journey, Stage 1 geometry and
+              human action-state presentation).
+
+Related:     OA-ZYRA-239.
+
+------------------------------------------------------------
+
+DR-ZYRA-201
+Title:       Shared Scroll-Forward Endings and Compatibility Result Clarity
+Date:        2026-08-18
+Status:      Approved — direct Founder consistency and device correction,
+             2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  The Journey uses one interaction language throughout: buttons perform
+      the action inside a chapter; a deliberate upward scroll through the
+      ending leaves live content. SUPERSEDED IN PART BY DR-ZYRA-202: that
+      scroll now opens an explicit transition choice before any server write.
+  2.  Compatibility Reveal no longer ends with a Continue Journey button.
+      Its revealed and honest no-score endings show the same Scroll to
+      continue invitation established by Salam Exchange.
+  3.  The three sustained answer chapters and Family Compatibility retire
+      their remaining Continue Journey buttons in favour of the same ending
+      invitation. Existing server checkpoints, shared-decision waiting and
+      Family Review gates remain unchanged.
+  4.  On long result/review pages, the completion gesture is armed only on the
+      invitation at the end of the content. Reading or ordinary scrolling may
+      not accidentally write a checkpoint or advance a stage. SUPERSEDED IN
+      PART BY DR-ZYRA-202: the 22 logical-pixel movement opens the transition
+      decision; only its Continue choice may write. Accessibility retains an
+      equivalent semantic action.
+  5.  Compatibility categories may enter in a quiet stagger, but every row
+      must settle at identical full opacity. Category order may never make the
+      final item — currently Family Expectations — look less important.
+  6.  The temporary Journey purple / My colours comparison toggle is retired
+      from the top of the Journey. Journey mode continues to use the neutral
+      shared brand gradient ratified by DR-ZYRA-177; gender colour treatment
+      elsewhere in the app is unchanged.
+  7.  This supersedes DR-ZYRA-199 Decision 5 only where it retained Continue
+      Journey as a completion pill. DR-ZYRA-199's action controls and compact
+      ordinary navigation decisions remain in force.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — shared completion
+    scroll invitation across Salam, Compatibility, sustained phases and
+    Family Compatibility; corrected category-opacity settling; removed the
+    dev colour toggle and its mutable background state.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 31 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-177/194/199/200 (neutral Journey identity, continuous
+              stage rhythm, action language and neutral arrivals).
+
+Related:     OA-ZYRA-239.
+
+------------------------------------------------------------
+
+DR-ZYRA-202
+Title:       Navigable Completed Chapters, Explicit Transition Choices and
+             Guardian Gate No-Skip
+Date:        2026-08-18
+Status:      Approved — direct Founder Journey navigation and transition
+             correction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  A current-stage arrival names the immediately preceding chapter as
+      "Stage n above". The vague "Earlier stages above" label is retired.
+  2.  Completed gold markers in the Journey ribbon are navigation controls.
+      Tapping one scrolls to that completed stage's read-only full-page ending.
+      The current-stage pill and every faint future marker remain inert; colour
+      and semantics must agree about what is reachable.
+  3.  A completion scroll does not directly advance or write a checkpoint. It
+      opens a calm between-stage page asking the member to Continue, Pause or
+      End. Continue invokes the stage's existing server-owned transition;
+      Pause invokes the real suspension service; End retains the existing
+      deliberate final confirmation. The page names the next stage. The final
+      destination has no false onward choice.
+  4.  Unexpected Pause failures keep the decision page open and show an honest
+      retry message. Existing plan-cap and legacy entitlement refusals retain
+      their recognised handling. No local success state may precede the write.
+  5.  Guardian Gate may never be retried automatically from polling. That old
+      retry advanced an already-satisfied gate during the same refresh that
+      first observed it, causing Compatibility Reveal (Stage 2) to appear to
+      jump directly to Faith & Values (Stage 4). Stage 3 now always renders and
+      exposes its own deliberate forward choice. If either Main Guardian is
+      absent, the existing named server refusal remains on Stage 3.
+  6.  A server-observed stage change clears any stale transition choice and
+      waiting reason. Golden-marker navigation may dismiss a transition choice
+      and return to the continuous completed-stage history without changing
+      server state.
+  7.  This supersedes DR-ZYRA-199 Decision 7 only by adding Pause and End to a
+      dedicated between-stage page, not to live chapter content. It supersedes
+      DR-ZYRA-201 Decisions 1 and 4 only where the completion gesture previously
+      performed the server transition directly.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — exact previous-stage
+    label, tappable completed ribbon markers, between-stage decision page,
+    truthful Pause/End handling, explicit Guardian Gate and no automatic gate
+    retry.
+  SOURCE/lib/data/zyra_journey_advance_policy.dart — testable allow-list for
+    explicit stalled-threshold retries.
+  SOURCE/test/journey_advance_policy_test.dart — Guardian Gate no-retry and
+    Salam/Compatibility explicit-retry regression coverage.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 34 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-170/194/197/201 (truthful Pause handling, continuous
+              Journey history, section settling and scroll-led endings).
+
+Related:     OA-ZYRA-239 and OA-ZYRA-240.
+
+------------------------------------------------------------
+
+DR-ZYRA-203
+Title:       Full-Viewport Cross-Input Completion Scroll
+Date:        2026-08-18
+Status:      Approved — direct Founder Stage 1 device correction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction.
+
+Decision:
+  1.  Once Salam Exchange is complete, its completion gesture covers the full
+      available stage page. It may not be limited to the centred copy/action
+      column; a deliberate movement beginning in surrounding calm space must
+      still open the between-stage choices.
+  2.  Completion intent accepts touch drag, mouse wheel and trackpad input.
+      Forward deltas from those devices are normalised into the same 22
+      logical-pixel threshold and therefore produce the same result.
+  3.  Reverse movement reduces rather than builds forward intent. An incomplete
+      wheel/trackpad movement clears after 450 milliseconds, so unrelated tiny
+      movements cannot accumulate into an accidental transition.
+  4.  The shared ending invitation used by later stages receives the same
+      cross-input support. Accessibility activation remains available and no
+      server write occurs until Continue is chosen on the decision page.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — full-page Stage 1
+    listener, pointer-signal handling and short-lived signal accumulation for
+    all completion invitations.
+  SOURCE/lib/data/zyra_journey_scroll.dart — pure cross-input completion intent
+    accumulator.
+  SOURCE/test/journey_scroll_test.dart — touch plus wheel/trackpad completion
+    threshold and reverse-movement regression coverage.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 36 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-197/201/202 (section settling, shared completion
+              invitation and explicit between-stage decisions).
+
+Related:     OA-ZYRA-239.
+
+------------------------------------------------------------
+
+DR-ZYRA-204
+Title:       Calm Chapter Choice and Shared Pause Response
+Date:        2026-08-18
+Status:      Approved — direct Founder Journey correction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction and prior
+             Fable pause-model ruling restated in this review.
+
+Decision:
+  1.  The between-stage choice is one compact centred glass card, not three
+      disconnected actions floating in empty space. It carries the completed
+      stage, one completion sentence, the named next chapter and a grouped
+      Continue / Pause / End decision hierarchy. Continue is primary; Pause
+      and End are equal compact alternatives, with End retaining its
+      destructive colour and separate final confirmation.
+  2.  Continue is intended to be a mutual chapter decision. The client may
+      show a waiting state only after the signed-in person's checkpoint write
+      is confirmed, and may advance only when the server confirms the other
+      person's checkpoint. Compatibility and the sustained-stage checkpoint
+      paths already provide that contract. Salam and Guardian Gate still need
+      the same server enforcement and are tracked in OA-ZYRA-241; the client
+      must not fake a second person's decision or claim that incomplete work
+      has landed.
+  3.  Pause is not a request for permission and the other person does not
+      merely wait. It is a personal hold under DR-ZYRA-170. The flow screen
+      distinguishes: paused by you, paused by the other person, and paused by
+      both. A non-holder receives the neutral pair `Also pause` / `I'm ready`
+      and may also do nothing. Adding a pause creates the caller's own hold;
+      lifting one hold never lifts the other person's hold.
+  4.  End remains unilateral and deliberate. Requiring the other person's
+      approval to leave could trap someone in a Journey and is therefore not
+      a valid mutual checkpoint. The other person receives the resulting
+      ended state; they do not receive a veto. The existing confirmation,
+      honest failure message and preserved Timeline remain unchanged.
+  5.  The Journey developer panel provides Live / You / Them / Both pause
+      previews. Preview selection and preview actions are display-only and
+      never call pause, resume, ready-nudge or end services. The panel remains
+      reachable on a live paused row, while stage mutation and rewind controls
+      are disabled during a real pause.
+  6.  Live pause, resume and ready actions keep the visible state until their
+      write confirms. Known plan and eligibility refusals retain their exact
+      handling; unexpected failures say that nothing went through and leave
+      the available action in place.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — compact chapter-choice
+    card, three shared-pause ownership experiences, real action handling and
+    display-only pause preview controls.
+  SOURCE/lib/data/zyra_journey_pause_state.dart — one pause-ownership policy
+    shared by live rendering, preview transitions and tests.
+  SOURCE/test/journey_pause_state_test.dart — primary/mirrored hold ownership,
+    unknown-identity safety and preview transition regression coverage.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 45 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-167/170/202/203 (truthful failures, shared personal
+              holds and the between-stage decision boundary).
+
+Related:     OA-ZYRA-239 and OA-ZYRA-241.
+
+------------------------------------------------------------
+
+DR-ZYRA-205
+Title:       Connected Three-Beat Open Rail Between Journey Stages
+Date:        2026-08-18
+Status:      Approved — Founder selected Option 3 from ten open-rail concepts,
+             2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct selection: "option 3".
+
+Decision:
+  1.  The between-stage page is three deliberately separated narrative beats:
+      the completed stage, the named stage ahead, and the member's decision.
+      Completion and next-stage copy may not run together as one paragraph or
+      place the decision before the member has understood both.
+  2.  The transparent glass card and frosted Continue pill from DR-ZYRA-204
+      Decision 1 are superseded. The page is an open rail directly on the
+      Journey background, with no translucent decision surface, filled action
+      tile or floating button group.
+  3.  One fine vertical path connects three small markers: soft gold for the
+      chapter completed, quiet purple for the chapter ahead, and calm green for
+      the decision now available. The path communicates continuity without
+      turning the Journey into a checklist.
+  4.  The third beat is a full-width open action rail. Continue, Pause Journey
+      and End Journey are equal readable rows separated by hairlines. Their
+      green, amber and coral dots carry the existing traffic-light meaning;
+      labels and destructive text ensure meaning never depends on colour alone.
+  5.  Copy follows the same three-part rhythm at every threshold:
+      `Stage n complete` / `Stage n+1 ahead` / `Your decision`. Guardian Gate
+      remains honest before its prerequisites are confirmed, using `Stage n
+      checkpoint` rather than falsely saying it is complete.
+  6.  This is a presentation change only. Continue retains the existing
+      server-owned transition, Pause retains the personal-hold model, End
+      retains its deliberate confirmation, and all failure handling remains
+      unchanged. OA-ZYRA-241 still owns the remaining Salam and Guardian Gate
+      mutual-Continue server work.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — connected decision
+    beats, open action rail and traffic-light decision markers; old glass
+    decision surface removed from this page only.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 45 passed; tools/zyra_check.py = 0 findings.
+             No database, migration or git operation.
+
+Dependencies: DR-ZYRA-202/204 (explicit transition choice and shared pause
+              behavior).
+
+Related:     OA-ZYRA-239 and OA-ZYRA-241.
+
+------------------------------------------------------------
+
+DR-ZYRA-206
+Title:       Deliberate Pause/End Screens and the 60-Day New-Journey Window
+Date:        2026-08-18
+Status:      Approved — direct Founder Journey correction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; database-enabled main session —
+             complete OA-ZYRA-242; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction after reviewing
+             the live paused result.
+
+Decision:
+  1.  Pause Journey, Pause too and End Journey may not write on the first
+      action tap. Each opens a dedicated full-screen confirmation on the solid
+      Journey background; the previous translucent/glass result is retired.
+  2.  The service write occurs while the confirmation screen remains visible.
+      A failed write keeps the decision and its text on screen with an honest
+      retry message. Submitted/paused/ended state appears only after the write
+      confirms.
+  3.  A confirmed Pause opens a calm outcome screen saying the member's place
+      is held and may be resumed at any time. A confirmed End opens a distinct
+      closure outcome. Both finish with Return to Connections rather than
+      dropping the member into an unexplained background state.
+  4.  When the other Seeker paused first, the response rail is Pause too /
+      Request Continue / End Journey. Pause too is separately confirmed and
+      produces Paused by both; each hold remains personal and each person
+      lifts only their own. Waiting without acting remains valid.
+  5.  Request Continue is a one-shot readiness message. It never lifts another
+      person's pause and becomes Continue requested only after its write
+      confirms; the requester waits for the holder's decision.
+  6.  End remains unilateral for safety: the other Seeker is notified but has
+      no veto. The ended attempt and conversation do not resume. Beginning
+      together again is a New Journey, requiring one request and the other
+      person's acceptance; the old Timeline remains historical.
+  7.  The direct New Journey path is bounded to the first 60 days after
+      ended_at, while the existing 24-hour cooling period remains. The direct
+      request and acceptance must complete inside that window; after it, the
+      pair may meet again only through ordinary Browser discovery and
+      eligibility.
+  8.  Connections lists the most recent one ended person for ZYRA Basic and
+      the most recent five for ZYRA One. This is a display/action cap only;
+      older Journey records and Timelines are never deleted automatically.
+  9.  The client window, copy and caps are built in this decision. Matching
+      server refusal, expiry and Browser rediscovery are not claimed as live;
+      OA-ZYRA-242 assigns them to the database-enabled main session.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — full-screen Pause,
+    Pause too and End confirmation/outcome flows; solid paused/ended states;
+    ownership-aware pause response rail and Return to Connections.
+  SOURCE/lib/screens/connections/connections_screen.dart — Request Continue /
+    Pause too language, 60-day action visibility and 1/5 ended display.
+  SOURCE/lib/models/journey_match.dart — 24-hour cooling plus 60-day direct
+    New Journey request boundary.
+  SOURCE/lib/data/zyra_entitlements.dart — Basic 1 / ZYRA One 5 ended display
+    caps, explicitly non-destructive.
+  APP/Journey/JOURNEY MANAGEMENT/Summary.md,
+    APP/Journey/JOURNEY AVAILABILITY/Summary.md and the current Journey
+    Suspension V3 — governing product language aligned.
+  SOURCE/test/journey_ended_policy_test.dart — cooling, 60-day boundary,
+    live-Journey exclusion and plan-cap regression coverage.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 50 passed; tools/zyra_check.py = 0 findings.
+             No database, migration, Supabase SQL or git operation.
+
+Dependencies: DR-ZYRA-121/167/170/205 (attempt history, truthful writes,
+              personal holds and the open decision rail).
+
+Related:     OA-ZYRA-159, OA-ZYRA-241 and OA-ZYRA-242.
+
+------------------------------------------------------------
+
+DR-ZYRA-207
+Title:       Truthful Developer Panel and Direct Navigation Rebuild
+Date:        2026-08-18
+Status:      Approved — direct Founder instruction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction after the
+             developer Active Journey dead end appeared on device.
+
+Decision:
+  1.  The Seeker and Wali developer panels retain two permanent controls:
+      Open and Reset. Open provides direct destinations for the current shell;
+      Reset remains explicit and confirmed. Other controls are contextual to
+      the selected destination instead of forming one undifferentiated toggle
+      list.
+  2.  Developer previews are additive to live account truth. A count of zero
+      means no extra preview cards; it may never hide a real Journey, linked
+      Seeker, notification or other server-backed row.
+  3.  The panel no longer exposes a fake Active Journey count. Open live
+      Journey first uses a real running Journey and, when none exists, uses
+      the existing development seed service, refreshes from the server and
+      opens the confirmed result. A surviving legacy Active preview is
+      defensively resolved to a real row rather than blocked.
+  4.  The bottom message saying a developer stand-in has no Journey behind it
+      is retired. Panel setup, refusal and reset feedback stays inline within
+      the panel and may not cover the product interface with developer
+      snackbars.
+  5.  Legacy hidden axes that could survive hot reload — fake Active count,
+      busy-card mixtures and advertise-on-every-profile — are cleared when
+      the clean Seeker panel mounts. Pause ownership is one mutually exclusive
+      Them / You / Both selector so contradictory preview states cannot be
+      staged.
+  6.  Real product snackbars and service failure moments are outside this
+      cleanup and retain their existing truthful handling. Release-mode double
+      guards remain unchanged; these controls never ship in a release build.
+
+Implementation:
+  SOURCE/lib/dev/dev_scenario_panel_v2.dart — clean Open/Reset panel, direct
+    destinations, contextual preview tools, inline feedback and live Journey
+    resolver.
+  SOURCE/lib/dev/wali_dev_scenario_panel.dart — Wali destinations, permanent
+    Open/Reset controls and inline refusal/reset feedback.
+  SOURCE/lib/screens/home/home_shell.dart and
+    SOURCE/lib/screens/wali/wali_home_shell.dart — shell navigation callbacks.
+  SOURCE/lib/screens/connections/connections_screen.dart — real Journey entry
+    and defensive legacy-preview resolution; obsolete blocking snackbar
+    removed.
+  SOURCE/lib/dev/zyra_dev_scenario.dart — additive composition, clean-panel
+    migration and single pause-ownership policy.
+  SOURCE/test/dev_scenario_panel_policy_test.dart — live-truth preservation,
+    additive previews, legacy migration and ownership regression coverage.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 54 passed; tools/zyra_check.py = 0 findings.
+             No database, migration, Supabase SQL or git operation.
+
+Dependencies: DR-ZYRA-167/204/206 (truthful failure handling, Journey decision
+              controls and deliberate pause/end flows).
+
+------------------------------------------------------------
+
+DR-ZYRA-208
+Title:       One Gesture, One Journey Page
+Date:        2026-08-18
+Status:      Approved — direct Founder correction, 2026-08-18.
+Owner:       Codex — temporary product and engineering executor under the
+             Founder's direct instruction; Founder — device review.
+Approved by: Founder (Shakeel), 2026-08-18, direct instruction after testing
+             Compatibility Reveal and the chapter transitions on device.
+
+Decision:
+  1.  Active Journey navigation is a vertical chapter pager rather than one
+      continuous nested sheet. A gesture always settles onto a complete page;
+      the interface may never remain halfway between two sections.
+  2.  One gesture moves only to an adjacent page. For the current stage those
+      pages are: completed chapter endings above, the current arrival, and the
+      live stage action below. Opening a stage still begins on its arrival.
+  3.  Compatibility Reveal and other tall action content retain their own
+      internal reading scroll. Once that content is back at its top, one more
+      deliberate downward pull returns to the arrival page, then earlier
+      completed stages. An inner result view may not trap Journey navigation.
+  4.  A newly reached stage shows a downward cue that fades into place at the
+      bottom of its arrival. Stage 1 says `Scroll to begin`; later arrivals say
+      `Continue`, making the next gesture clear after the member chose Continue
+      at the previous chapter boundary.
+  5.  The cue does not bypass mutual decisions or server truth. If Continue is
+      waiting on the other Seeker, the member may scroll into the honest waiting
+      state; the app does not show a later stage until the server advances it.
+  6.  Stage order, services, Timeline history, pause/end decisions and the
+      eight-stage Journey architecture remain unchanged.
+
+Implementation:
+  SOURCE/lib/screens/journey/journey_flow_screen.dart — vertical PageView,
+    adjacent completed/arrival/action pages, Compatibility inner-scroll escape
+    and animated post-Continue down cue. This also supersedes the nested-body
+    sizing workaround that produced the earlier pixel-overflow strip.
+
+Verification: dart format clean; flutter analyze --no-pub = no issues;
+             flutter test = 54 passed; tools/zyra_check.py = 0 findings;
+             iOS debug build compiled successfully (wireless Xcode debugger
+             attachment remained an environment issue).
+             No database, migration, Supabase SQL or git operation.
+
+Dependencies: DR-ZYRA-185/202/205 (Journey ribbon, explicit transition choice
+              and connected open decision rail).
+
+------------------------------------------------------------
+
+DR-ZYRA-209
+Title:       One Account, Linked Provider Identities and Passwordless
+             Recovery Email
+Date:        2026-08-20
+Status:      APPROVED — direct Founder instruction, 2026-08-20. App source
+             built locally; live provider/email configuration and end-to-end
+             proof remain open under OA-ZYRA-244.
+Owner:       Founder (Shakeel)
+Approved by: Founder, after reviewing the linked-provider and one-time-code
+             recovery design: “ok i agree add that to documents please then
+             add to app”.
+
+Decision:
+  1. Apple and Google remain ZYRA's only normal public sign-in/sign-up
+     methods. ZYRA stores no account password.
+  2. An authenticated member may link the other Apple/Google provider to the
+     SAME Supabase `auth.users.id`. Linking preserves the profile, Guardians,
+     Journeys and entitlements. Matching provider email text never causes an
+     automatic account merge; provider subject identity is authoritative.
+  3. An authenticated Apple/Google member may add or change a separately
+     verified recovery email. It is private authentication data, distinct
+     from provider identity and contact/notification email.
+  4. `Use recovery email` is passwordless recovery, not open email sign-up.
+     It uses a six-digit one-time code and `shouldCreateUser: false`, so an
+     unknown address or typo cannot create another user/profile.
+  5. Secure Email Change stays enabled; confirmations required by the current
+     Supabase policy must complete. No unlink-last-identity UI is approved.
+  6. Identity linking and recovery must fail neutrally, avoid account
+     enumeration, log no token/credential and never expose service-role
+     authority to the client.
+  7. Live completion requires configured Apple/Google providers, manual
+     identity linking, OTP/email-change templates containing the token, SMTP,
+     expiry/rate limits and same-user-id end-to-end evidence.
+  8. No database migration is authorised or required for this decision.
+
+Implementation recorded:
+  SOURCE/lib/services/zyra_auth.dart;
+  SOURCE/lib/screens/auth/email_recovery_screen.dart;
+  SOURCE/lib/screens/settings/sign_in_security_screen.dart;
+  SOURCE/lib/screens/welcome_screen.dart;
+  SOURCE/test/email_recovery_screen_test.dart.
+
+Documentation:
+  ZYRA_SETTINGS_AND_IDENTITY V2;
+  APP/Authentication/Script/Script_V2.md;
+  APP/Settings/SUMMARY.md.
+
+Evidence at filing:
+  Codex reported 109 Flutter tests, clean Flutter analysis and zero
+  `tools/zyra_check.py` findings for the local implementation. This is source
+  evidence, not live-provider proof. The live public auth settings observed
+  on 2026-08-20 had email enabled and Apple/Google disabled; Google client ids
+  in local source remained placeholders. OA-ZYRA-244 owns the unresolved live
+  work.
+
+Dependencies: DR-073 (Supabase); DR-ZYRA-088 (public provider buttons);
+              ZYRA_SETTINGS_AND_IDENTITY; Supabase Auth provider/linking/email
+              configuration.
+
+------------------------------------------------------------
+
+DR-ZYRA-210
+Title:       Founder Google Workspace Identity Authorises Developer Access
+             Only After Sign-in and Only Outside Release
+Date:        2026-08-20
+Status:      APPROVED — direct Founder instruction, 2026-08-20. Architecture
+             documented; implementation and live configuration remain open
+             under OA-ZYRA-245.
+Owner:       Founder (Shakeel)
+Approved by: Founder, after confirming the new ZYRA address is Google
+             Workspace-hosted and instructing Codex to send the work to
+             Fable: “write to fable to get him to do it”.
+
+Decision:
+  1. There is no third public Founder/staff/developer login. The Founder uses
+     the existing `Continue with Google` button and the approved Google
+     Workspace account.
+  2. Privilege belongs to the exact verified Supabase user and is carried in
+     protected server-controlled `app_metadata` or an equivalent signed
+     custom claim. Domain membership, email suffix, client-side email
+     comparison, editable `user_metadata` and local booleans are never
+     authority.
+  3. Ordinary Google users — including future ZYRA-domain users — follow
+     normal onboarding/home routing unless their exact account was separately
+     authorised.
+  4. Developer Access moves behind normal authentication. The current
+     non-release pre-auth Welcome button is removed. Every developer screen,
+     overlay, route and server action checks the protected role and fails
+     closed.
+  5. Developer Access exists only in non-release/dev builds. Release builds
+     expose no Developer Access route or scenario-switch action, even to an
+     authorised Founder account.
+  6. Adam, Maryam and all seeded Seeker/Guardian personas remain separate
+     `@zyra.test` identities. The Founder is their authorised operator, not a
+     persona, and the accounts are never linked together.
+  7. The current shared `_testPassword` embedded in
+     `developer_access_screen.dart` is technical debt. The target is a
+     protected server-mediated persona switch that verifies the signed role,
+     non-release/dev environment and existing `@zyra.test` persona guard
+     without placing a shared password in the app binary.
+  8. Role assignment/removal occurs only from a trusted server/operator
+     context and takes effect through session/token refresh. No database
+     migration is authorised; the approved protected-metadata/custom-claim
+     approach does not require one.
+
+Live prerequisites/blockers:
+  Real Google web/iOS OAuth clients and redirects; Supabase Google provider
+  enabled with matching credentials; exact Founder user created by real
+  Google sign-in; protected role assigned and refreshed; developer router and
+  destination guards built; server-mediated persona switch built. At filing,
+  source client ids were placeholders, the public live Google provider was
+  disabled, no protected Founder role/route existed, Developer Access was
+  still pre-auth in non-release builds and the shared password remained in
+  source. No claim is made that any credential or live setting is configured.
+
+Documentation:
+  ZYRA_SETTINGS_AND_IDENTITY V2;
+  APP/Authentication/Script/Script_V2.md;
+  APP/Developer Mode/Script/Script_V3.md;
+  APP/Settings/SUMMARY.md.
+
+Verification required:
+  exact Founder allow; second Workspace-account deny; non-Workspace Google
+  deny; release-build deny; direct/deep-link deny; role-removal deny after
+  refresh; protected persona switching with no shared password in the binary;
+  Flutter analysis/tests and `tools/zyra_check.py` clean.
+
+Dependencies: DR-013 (Developer Mode superset); DR-ZYRA-087 (seeded personas);
+              DR-ZYRA-088 (public Google entry); DR-ZYRA-209 (linked sign-in);
+              ZYRA_SETTINGS_AND_IDENTITY; OA-ZYRA-245.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-210,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-139 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-211 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA
@@ -8788,4 +13513,3 @@ NEXT IDENTIFIER: DR-ZYRA-139 (Enterprise format, active
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
   CURRENT_VERSION_V1.md (BLACK UMBRELLA GROUP/SYSTEM/
   ARCHITECTURE/), active 2026-07-12
-

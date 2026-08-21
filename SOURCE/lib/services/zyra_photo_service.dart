@@ -47,6 +47,30 @@ class ZyraPhotoService {
   /// leaked URL expires.
   static const int _signedUrlExpirySeconds = 60 * 60 * 24 * 7;
 
+  // ── SESSION URL MEMO — DR-ZYRA-169 Phase 2, 2026-08-15 ──────────────
+  //
+  // Every list refresh used to re-sign every path it showed — a signing
+  // round trip per fetch for URLs that live SEVEN DAYS. This memo keeps
+  // the session's already-minted URLs so a refresh only signs what it
+  // has never signed before.
+  //
+  // IN MEMORY, DELIBERATELY, and this is a privacy line, not a
+  // convenience: a signed URL is a bearer capability — anyone holding
+  // the string can fetch the photo for 7 days with no auth check — so
+  // it must never be written to disk (the review's NEVER-STORE item N2).
+  // The disk cache stores BYTES keyed by the tokenless URL instead
+  // (zyra_image_cache.dart), which is exactly as fast and carries no
+  // capability.
+  //
+  // Entries older than 6 days re-sign on next use — one day of margin
+  // before the 7-day URL under them dies. Cleared on sign-out
+  // (zyra_auth.dart) with everything else the account minted.
+  static final Map<String, ({String url, DateTime at})> _urlMemo = {};
+  static const Duration _memoMaxAge = Duration(days: 6);
+
+  /// Sign-out hook — see the memo note above.
+  static void clearUrlMemoForSignOut() => _urlMemo.clear();
+
   /// Batch-signs storage paths for display. Used by Browse and Matches
   /// for other users' photos as well as the user's own. Returns an
   /// empty list on any failure — callers already treat "no photos" as
@@ -74,45 +98,27 @@ class ZyraPhotoService {
   /// misaligned list.
   static Future<List<String>> signedUrlsFor(List<String> storagePaths) async {
     if (storagePaths.isEmpty) return const [];
-    try {
-      final unique = storagePaths.toSet().toList();
-      final byPath = <String, String>{};
-      const chunkSize = 80;
-
-      for (var start = 0; start < unique.length; start += chunkSize) {
-        final end = (start + chunkSize) > unique.length ? unique.length : start + chunkSize;
-        final slice = unique.sublist(start, end);
-        // createSignedUrlsResult is the successor and handles missing paths
-        // per-item; adopting it changes this method's error behaviour and
-        // needs a device test with real photos. Tracked for Opus.
-        // ignore: deprecated_member_use
-        final signed = await supabase.storage.from(_bucket).createSignedUrls(slice, _signedUrlExpirySeconds);
-        if (signed.length != slice.length) {
-          debugPrint('ZYRA: signedUrlsFor — asked for ${slice.length} unique '
-              'paths, got ${signed.length}. Returning none.');
-          return const [];
-        }
-        for (var i = 0; i < slice.length; i++) {
-          byPath[slice[i]] = signed[i].signedUrl;
-        }
-      }
-
-      // Only the paths that resolved. A caller wanting positional
-      // correspondence is asking the wrong question — see signedUrlMap().
-      final out = <String>[];
-      for (final p in storagePaths) {
-        final url = byPath[p];
-        if (url != null) out.add(url);
-      }
-      if (out.length != storagePaths.length) {
-        debugPrint('ZYRA: signedUrlsFor — resolved ${out.length} of '
-            '${storagePaths.length} paths; the rest are skipped.');
-      }
-      return out;
-    } catch (e) {
-      debugPrint('ZYRA: signedUrlsFor failed — $e');
-      return const [];
+    // DELEGATES to signedUrlMap since 2026-08-15 (DR-ZYRA-169 Phase 2):
+    // one signing implementation, one memo, one retry policy — this used
+    // to be a second copy of the chunked signer with a harsher failure
+    // mode (any chunk mismatch returned NONE, hiding a whole person over
+    // one bad path — the exact 2026-08-05 failure shape, surviving here
+    // after it was fixed there). Callers of THIS form sign one person's
+    // own photo list per call (order preserved below), so proportional
+    // results cannot misalign anyone's photos with anyone else's face.
+    // This also retires the second of the two deprecated
+    // createSignedUrls call sites.
+    final byPath = await signedUrlMap(storagePaths);
+    final out = <String>[];
+    for (final p in storagePaths) {
+      final url = byPath[p];
+      if (url != null) out.add(url);
     }
+    if (out.length != storagePaths.length) {
+      debugPrint('ZYRA: signedUrlsFor — resolved ${out.length} of '
+          '${storagePaths.length} paths; the rest are skipped.');
+    }
+    return out;
   }
 
   /// Path → signed URL, for callers signing several people's photos at once.
@@ -134,7 +140,21 @@ class ZyraPhotoService {
   static Future<Map<String, String>> signedUrlMap(List<String> storagePaths) async {
     if (storagePaths.isEmpty) return const {};
     final byPath = <String, String>{};
-    final unique = storagePaths.toSet().toList();
+
+    // Memo first (DR-ZYRA-169 Phase 2): anything this session already
+    // minted — and that is younger than 6 of its 7 days — is answered
+    // without a round trip. Only genuine misses go to Storage below.
+    final now = DateTime.now();
+    final unique = <String>[];
+    for (final p in storagePaths.toSet()) {
+      final hit = _urlMemo[p];
+      if (hit != null && now.difference(hit.at) < _memoMaxAge) {
+        byPath[p] = hit.url;
+      } else {
+        unique.add(p);
+      }
+    }
+    if (unique.isEmpty) return byPath;
 
     // 40, not 80, and never a per-path fallback. An earlier version fell
     // back to signing each path individually when a batch came up short —
@@ -161,6 +181,8 @@ class ZyraPhotoService {
           if (signed.length == slice.length) {
             for (var i = 0; i < slice.length; i++) {
               byPath[slice[i]] = signed[i].signedUrl;
+              // Remembered for the rest of the session — see _urlMemo.
+              _urlMemo[slice[i]] = (url: signed[i].signedUrl, at: now);
             }
             break;
           }
@@ -173,9 +195,12 @@ class ZyraPhotoService {
       }
     }
 
-    if (byPath.length != unique.length) {
-      debugPrint('ZYRA: signedUrlMap — signed ${byPath.length} of '
-          '${unique.length} unique paths.');
+    // Against ALL unique paths asked for, not just this round's misses —
+    // `unique` shrank to the memo-miss set above.
+    final wanted = storagePaths.toSet().length;
+    if (byPath.length != wanted) {
+      debugPrint('ZYRA: signedUrlMap — resolved ${byPath.length} of '
+          '$wanted unique paths.');
     }
     return byPath;
   }
@@ -204,6 +229,8 @@ class ZyraPhotoService {
       final path = '${user.id}/${DateTime.now().millisecondsSinceEpoch}.$ext';
       await supabase.storage.from(_bucket).uploadBinary(path, bytes);
       final signedUrl = await supabase.storage.from(_bucket).createSignedUrl(path, _signedUrlExpirySeconds);
+      // A freshly-minted URL is a memo entry like any other.
+      _urlMemo[path] = (url: signedUrl, at: DateTime.now());
       return ZyraPhotoResult.uploaded(signedUrl);
     } catch (_) {
       return const ZyraPhotoResult.error();

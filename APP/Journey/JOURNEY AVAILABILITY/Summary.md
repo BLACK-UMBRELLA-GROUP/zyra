@@ -209,19 +209,13 @@ JOURNEY STATUS OPTIONS
 Current direction — a Journey should support more than
 two outcomes:
 • Continue Journey
-• Step Back / Hold (working name — see Journey Management)
+• Pause Journey
 • End Journey
 
 ============================================================
 OPEN DISCUSSIONS
 ============================================================
 
-• Final name for "Step Back / Hold".
-• Exact behaviour after stepping back.
-• Whether stepping back requires both users to agree.
-• Whether users can immediately begin another Journey
-  after stepping back.
-• Limits on inactive / held Journeys.
 • How AI recommendations should be prioritised
   (compatibility, activity, family preferences, etc.).
 • How long a user should be inactive before being marked
@@ -274,40 +268,38 @@ Journey slots. Keeps the pool moving naturally.
 ENDED JOURNEY — RULES
 ------------------------------------------------------------
 
-**Built 2026-07-26 (#17):** the "no block" path below is real —
-SOURCE/supabase/migrations/20260726150000_journey_ended_cooling_
-period_and_restart.sql (restart_journey RPC, enforces the 24h
-cooling period + one-Active-Journey limit server-side),
-screens/journey/journey_flow_screen.dart's _EndedView (live countdown,
-Restart button once elapsed), and connections_screen.dart's new ENDED
-section (greyed, at the bottom of the Matched list — previously ended
-matches weren't shown anywhere at all). The "ended WITH a block" path
-is NOT built — there is no blocking mechanism anywhere in this schema
-yet (no blocks table, no block flag); that's a separate, larger gap.
+**Current Founder ruling, 2026-08-18 (DR-ZYRA-206):** End closes the
+current Journey. It is never resumed or reopened. A future relationship
+between the same two Seekers is a **New Journey**, initiated by request
+and begun only if the other Seeker accepts.
 
 When a Journey ends (no block / no report):
 • 24-hour cooling period begins (no actions possible).
-• After 24 hours, journey officially disconnects.
 • Journey slot freed for both parties.
-• Match remains visible in Matched list (greyed, at bottom).
+• The other Seeker is notified.
 • Old timeline is preserved as read-only history.
-• Either party may choose to Restart.
+• After cooling, either party may Request New Journey until 60 days
+  after ended_at, subject to the existing request/accept rules. Request
+  and acceptance must both complete inside the window; pending does not
+  extend it.
+• Basic Connections lists the 1 most recent ended person; ZYRA One
+  lists the 5 most recent. This is display/action scope, never deletion.
+• After 60 days, the direct request is no longer available. The two
+  Seekers must encounter one another again through Browser under the
+  ordinary visibility and eligibility rules.
 
-RESTART:
-• Restart = full fresh start from the beginning.
-• Process begins again from Compatibility Reveal.
-• This is intentional — End is a deliberate choice.
-• Pause exists for users who want to hold without ending.
-• Restarting earns the journey again from scratch.
+NEW JOURNEY AFTER END:
+• A request is not a restart and never reopens the old attempt.
+• The other Seeker may accept or decline.
+• If accepted, the new attempt begins from the start of the Journey.
 • Old timeline remains visible as historical record.
-
-Reason:
-"If you ended it and want a free pass back in,
- why didn't you pause?"
+• Client display/window rules are built. OA-ZYRA-242 owns the server
+  60-day refusal and Browser rediscovery behaviour; those are not
+  production-complete until the database-enabled session verifies them.
 
 When a Journey ends WITH a block:
 • Both parties disappear from each other's view entirely.
-• No restart possible.
+• No direct New Journey request is possible.
 • Match is removed.
 • No trace remains in Matched list.
 
@@ -316,12 +308,13 @@ PAUSE vs END — KEY DISTINCTION
 ------------------------------------------------------------
 
 PAUSE:
-• Temporary hold — slot held, journey resumes exactly
+• Temporary personal hold — journey resumes exactly
   where it left off.
 • Use when: not ready right now but still interested.
 
 END:
 • Deliberate, final choice.
-• Restart requires going through the full process again.
+• The ended attempt never resumes. A later accepted request creates
+  a completely new Journey during the 60-day direct-request window;
+  after that, the pair must meet through Browser again.
 • Use when: this journey is no longer right for you.
-

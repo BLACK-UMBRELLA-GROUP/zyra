@@ -9,8 +9,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/zyra_profile_image.dart';
 import '../../services/zyra_auth.dart';
-import '../../services/zyra_wali_link_service.dart';
-import '../wali/wali_home_shell.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -28,19 +26,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  /// The Seekers this user is a Guardian FOR. Empty for almost everyone,
-  /// and — as of 2026-08-07 — empty for absolutely everyone. See
-  /// _switchAccountRow.
-  List<WaliLinkedPerson> _guardianOf = const [];
-
   @override
   void initState() {
     super.initState();
     AppState.instance.addListener(_onChange);
-    ZyraWaliLinkService.fetchLinkedPeople(asWali: true).then((people) {
-      if (!mounted) return;
-      setState(() => _guardianOf = people);
-    });
   }
 
   @override
@@ -51,10 +40,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _onChange() => setState(() {});
 
-  void _todo(BuildContext context, String what) =>
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$what — coming next.')),
-      );
+  void _todo(BuildContext context, String what) => ScaffoldMessenger.of(
+    context,
+  ).showSnackBar(SnackBar(content: Text('$what — coming next.')));
 
   /// PREVIEW — the Founder's stated highest priority for this page.
   ///
@@ -68,10 +56,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// it — honouring unlock tier, gender rules and blocks — and the viewer
   /// currently lives inside browse_screen.dart rather than as a reusable
   /// widget. Extracting it is the real work, and it is its own piece.
-  void _preview(BuildContext context) => ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Profile preview — building this next.'),
-        ),
+  void _preview(BuildContext context) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile preview — building this next.')),
       );
 
   // ── "IMPROVE YOUR PROFILE" — REMOVED 2026-08-07 ─────────────────────
@@ -108,58 +95,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// simply never loads it. One field plus one line in the session router,
   /// alongside `bio` and `surname_line`, and all three arrive together.
   Widget _membershipRow(AppState state) => Padding(
-        padding: const EdgeInsets.only(top: 18),
-        child: _InfoRow(
-          label: 'Membership',
-          value: state.plan == ZyraPlan.one ? 'ZYRA One' : 'ZYRA Basic',
-        ),
-      );
-
-
-  /// SWITCH ACCOUNT — between Settings and Sign Out, Founder 2026-08-07.
-  ///
-  /// GATED ON REAL DATA, and today that means it never appears. Founder
-  /// decision, taken with the blocker in view rather than around it.
-  ///
-  /// THE BLOCKER, precisely. The approved dual-role architecture is "one
-  /// identity, one account, one Seeker profile, zero or more Guardian
-  /// relationships, two application contexts". The database does not
-  /// implement that yet:
-  ///
-  ///   • accept_wali_invite() refuses a Seeker accepting a Seeker's invite
-  ///     outright — "This invite is for a Wali account".
-  ///   • 0 of 149 accounts hold both. Not rare: impossible.
-  ///
-  /// So this reads the real link set and renders nothing, which is the
-  /// correct behaviour for a state that cannot exist. It starts working the
-  /// day the data can, with no further UI work.
-  ///
-  /// WHAT MUST LAND FIRST, and it is not just the RPC. zyra_can_match() —
-  /// the Guardian↔Seeker match exclusion rule — is still unbuilt. Relaxing
-  /// accept_wali_invite() without it would let someone be a Guardian to a
-  /// person they can also be matched with, which is the exact hole that
-  /// rule exists to close. The two ship together or neither does.
-  List<Widget> _switchAccountRow(BuildContext context) {
-    if (_guardianOf.isEmpty) return const [];
-
-    final names = _guardianOf.map((p) => p.firstName).join(' · ');
-    return [
-      _SettingsRow(
-        label: _guardianOf.length == 1
-            ? 'Switch to Guardian'
-            : 'Switch to Guardian (${_guardianOf.length})',
-        // Named, because "switch account" is ambiguous on a platform where
-        // people genuinely have more than one relationship to it. Showing
-        // WHO you would be looking after answers the question the label
-        // raises.
-        value: names,
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const WaliHomeShell()),
-        ),
-      ),
-    ];
-  }
-
+    padding: const EdgeInsets.only(top: 18),
+    child: _InfoRow(
+      label: 'Membership',
+      value: state.plan == ZyraPlan.one ? 'ZYRA One' : 'ZYRA Basic',
+    ),
+  );
   Future<void> _signOut(BuildContext context) async {
     // Real sign-out (OA-102) — only meaningful once Supabase is
     // configured; no-ops harmlessly via ZyraAuth otherwise since
@@ -192,7 +133,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final now = DateTime.now();
       final dob = state.dob!;
       age = now.year - dob.year;
-      final hadBirthdayThisYear = now.month > dob.month || (now.month == dob.month && now.day >= dob.day);
+      final hadBirthdayThisYear =
+          now.month > dob.month ||
+          (now.month == dob.month && now.day >= dob.day);
       if (!hadBirthdayThisYear) age -= 1;
     }
 
@@ -201,7 +144,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // instead of the neutral brand gradient — Blue for male, Pink for
       // female. Was previously hardcoded to the neutral gradient here;
       // see ZyraColors.genderGradient() doc comment.
-      decoration: BoxDecoration(gradient: ZyraColors.genderGradient(state.gender)),
+      decoration: BoxDecoration(
+        gradient: ZyraColors.genderGradient(state.gender),
+      ),
       child: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(24, 20, 24, 100),
@@ -210,12 +155,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 ClipOval(
                   child: state.photos.isNotEmpty
-                      ? ZyraProfileImage(state.photos.first, width: 64, height: 64)
+                      ? ZyraProfileImage(
+                          state.photos.first,
+                          width: 64,
+                          height: 64,
+                        )
                       : Container(
                           width: 64,
                           height: 64,
                           color: ZyraColors.iconButtonBg,
-                          child: const Icon(Icons.person, color: Colors.white38, size: 30),
+                          child: const Icon(
+                            Icons.person,
+                            color: Colors.white38,
+                            size: 30,
+                          ),
                         ),
                 ),
                 const SizedBox(width: 16),
@@ -299,7 +252,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // A real screen as of 2026-08-07 — it now owns the
                     // compatibility answers that used to live in Settings.
                     onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const EditProfileScreen(),
+                      ),
                     ),
                   ),
                 ),
@@ -311,10 +266,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _membershipRow(state),
 
             const SizedBox(height: 26),
-            Text('ABOUT ME', style: ZyraText.chapterLabel(color: Colors.white54)),
+            Text(
+              'ABOUT ME',
+              style: ZyraText.chapterLabel(color: Colors.white54),
+            ),
             const SizedBox(height: 10),
             _InfoRow(label: 'Age', value: age?.toString() ?? '—'),
-            _InfoRow(label: 'Gender', value: state.gender == null ? '—' : (state.gender == 'male' ? 'Brother' : 'Sister')),
+            _InfoRow(
+              label: 'Gender',
+              value: state.gender == null
+                  ? '—'
+                  : (state.gender == 'male' ? 'Brother' : 'Sister'),
+            ),
             _InfoRow(label: 'Location', value: state.location ?? '—'),
             const SizedBox(height: 24),
             // ── PUBLIC INFORMATION — REMOVED 2026-08-06 ───────────────
@@ -353,13 +316,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 8),
             _SettingsRow(
               label: 'Settings',
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              ),
+              onTap: () => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
             ),
-            // Between Settings and Sign Out. Empty for everyone today —
-            // see _switchAccountRow for exactly why, and what unblocks it.
-            ..._switchAccountRow(context),
             _SettingsRow(label: 'Sign Out', onTap: () => _signOut(context)),
           ],
         ),
@@ -405,13 +365,23 @@ class _PrimaryAction extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(label, style: ZyraText.body(size: 16, color: Colors.white)),
+                    Text(
+                      label,
+                      style: ZyraText.body(size: 16, color: Colors.white),
+                    ),
                     const SizedBox(height: 2),
-                    Text(hint, style: ZyraText.subtext(size: 12, color: Colors.white60)),
+                    Text(
+                      hint,
+                      style: ZyraText.subtext(size: 12, color: Colors.white60),
+                    ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, size: 18, color: Colors.white.withValues(alpha: 0.5)),
+              Icon(
+                Icons.chevron_right,
+                size: 18,
+                color: Colors.white.withValues(alpha: 0.5),
+              ),
             ],
           ),
         ),
@@ -426,7 +396,11 @@ class _SecondaryAction extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
-  const _SecondaryAction({required this.icon, required this.label, required this.onTap});
+  const _SecondaryAction({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -440,13 +414,19 @@ class _SecondaryAction extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.13), width: 0.5),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.13),
+              width: 0.5,
+            ),
           ),
           child: Column(
             children: [
               Icon(icon, size: 19, color: Colors.white.withValues(alpha: 0.85)),
               const SizedBox(height: 6),
-              Text(label, style: ZyraText.subtext(size: 12.5, color: Colors.white)),
+              Text(
+                label,
+                style: ZyraText.subtext(size: 12.5, color: Colors.white),
+              ),
             ],
           ),
         ),
@@ -476,22 +456,11 @@ class _InfoRow extends StatelessWidget {
 
 class _SettingsRow extends StatelessWidget {
   final String label;
-  /// Optional trailing detail. Added 2026-08-07 for Switch to Guardian,
-  /// which needs to name WHO — "switch account" is ambiguous on a platform
-  /// where people genuinely hold more than one relationship to it.
-  final String? value;
   final VoidCallback? onTap;
-  final bool destructive;
-  const _SettingsRow({
-    required this.label,
-    this.value,
-    this.onTap,
-    this.destructive = false,
-  });
+  const _SettingsRow({required this.label, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final tint = destructive ? ZyraColors.destructive : Colors.white;
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -499,25 +468,12 @@ class _SettingsRow extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Text(label, style: ZyraText.body(size: 13.5, color: tint)),
-            ),
-            if (value != null) ...[
-              // Flexible, not Expanded: the label keeps its space and this
-              // takes what is left. Two Guardians' names is a long string
-              // and must not push the chevron off the row.
-              Flexible(
-                child: Text(
-                  value!,
-                  textAlign: TextAlign.right,
-                  overflow: TextOverflow.ellipsis,
-                  style: ZyraText.subtext(size: 12.5, color: Colors.white38),
-                ),
+              child: Text(
+                label,
+                style: ZyraText.body(size: 13.5, color: Colors.white),
               ),
-              const SizedBox(width: 8),
-            ],
-            Icon(Icons.chevron_right,
-                color: destructive ? ZyraColors.destructive : Colors.white24,
-                size: 16),
+            ),
+            Icon(Icons.chevron_right, color: Colors.white24, size: 16),
           ],
         ),
       ),

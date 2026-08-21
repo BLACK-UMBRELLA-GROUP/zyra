@@ -1,4 +1,4 @@
-// Chapter 5 — Profile Ready. Per Flow Diagram.md: profile preview, ID
+// Final chapter — Profile Ready. Per Flow Diagram.md: profile preview, ID
 // verification prompt, photo check status; goes live automatically once
 // both pass, otherwise shows the "Your profile isn't live yet" checklist
 // (Seeker Onboarding Summary.md §PROFILE NOT LIVE — END STATE). No real
@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../services/zyra_profile_service.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_moment.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../home/home_shell.dart';
 
@@ -70,7 +71,9 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
     if (_wentLive || !_liveReady) return;
     _wentLive = true;
     final ok = await ZyraProfileService.setProfileComplete(true);
-    if (!ok) _wentLive = false; // allow a retry if the other check settles later
+    if (!ok) {
+      _wentLive = false; // allow a retry if the other check settles later
+    }
   }
 
   void _startIdVerification() {
@@ -102,7 +105,27 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
 
   bool get _liveReady => _photosApproved && _idVerified;
 
-  void _goToHome() {
+  Future<void> _goToHome() async {
+    // E6 (DR-ZYRA-147) — the app's handshake, once ever by nature (this
+    // screen only exists at the end of onboarding). The "slow on
+    // purpose" line lives HERE and never needs repeating anywhere else.
+    await showZyraMoment(
+      context,
+      glow: true,
+      lines: const [
+        ZyraMomentLine.whisper('As-salamu alaykum.'),
+        ZyraMomentLine.heading('Your profile is ready.'),
+        ZyraMomentLine.body(
+          'ZYRA moves slowly on purpose — one person at a time, '
+          'families present from the first word.',
+        ),
+        ZyraMomentLine.quiet(
+          'Nothing here is a swipe. Everything here is a decision.',
+        ),
+      ],
+      ctaLabel: 'Begin',
+    );
+    if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const HomeShell()),
       (route) => false,
@@ -120,7 +143,10 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Your profile is almost ready', style: ZyraText.heading(size: 24)),
+                Text(
+                  'Your profile is almost ready',
+                  style: ZyraText.heading(size: 24),
+                ),
                 const SizedBox(height: 8),
                 Text(
                   'A couple of quick checks, then you can start exploring.',
@@ -140,15 +166,22 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
                   title: 'ID Verification',
                   status: _idVerifying
                       ? 'Verifying…'
-                      : (_idVerified ? 'Verified' : (_idFailed ? 'Needs another attempt' : 'Pending — tap to verify')),
+                      : (_idVerified
+                            ? 'Verified'
+                            : (_idFailed
+                                  ? 'Needs another attempt'
+                                  : 'Pending — tap to verify')),
                   loading: _idVerifying,
                   done: _idVerified,
-                  onTap: (!_idVerified && !_idVerifying) ? _startIdVerification : null,
+                  onTap: (!_idVerified && !_idVerifying)
+                      ? _startIdVerification
+                      : null,
                 ),
                 if (_idFailed) ...[
                   const SizedBox(height: 10),
                   ZyraErrorBanner(
-                    message: "We couldn't confirm this — you can try again, or continue in limited mode for now.",
+                    message:
+                        "We couldn't confirm this — you can try again, or continue in limited mode for now.",
                     onRetry: _startIdVerification,
                     onDismiss: () => setState(() => _idFailed = false),
                   ),
@@ -160,17 +193,26 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
                       onTap: _simulateFailedCheck,
                       child: Text(
                         'Simulate a failed check (test only)',
-                        style: ZyraText.subtext(size: 10.5, color: Colors.white38),
+                        style: ZyraText.subtext(
+                          size: 10.5,
+                          color: Colors.white38,
+                        ),
                       ),
                     ),
                   ),
                 const Spacer(),
                 if (_liveReady) ...[
-                  Text('You are all set — your profile is live.', style: ZyraText.body(size: 14)),
+                  Text(
+                    'You are all set — your profile is live.',
+                    style: ZyraText.body(size: 14),
+                  ),
                   const SizedBox(height: 14),
                   _PillButton(label: 'Start Exploring', onTap: _goToHome),
                 ] else ...[
-                  Text("Your profile isn't live yet.", style: ZyraText.body(size: 14)),
+                  Text(
+                    "Your profile isn't live yet.",
+                    style: ZyraText.body(size: 14),
+                  ),
                   const SizedBox(height: 6),
                   Text(
                     'It will go live automatically once both checks pass. '
@@ -179,7 +221,10 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
                     style: ZyraText.subtext(size: 12),
                   ),
                   const SizedBox(height: 14),
-                  _PillButton(label: 'Continue in limited mode', onTap: _goToHome),
+                  _PillButton(
+                    label: 'Continue in limited mode',
+                    onTap: _goToHome,
+                  ),
                 ],
                 const SizedBox(height: 12),
               ],
@@ -227,7 +272,10 @@ class _CheckRow extends StatelessWidget {
                   const SizedBox(
                     width: 18,
                     height: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white54),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white54,
+                    ),
                   )
                 else
                   Icon(

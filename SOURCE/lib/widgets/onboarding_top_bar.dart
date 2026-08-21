@@ -22,7 +22,9 @@ class OnboardingTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fillColor = chapterComplete ? ZyraColors.progressCompleteFill : ZyraColors.progressFill;
+    final fillColor = chapterComplete
+        ? ZyraColors.progressCompleteFill
+        : ZyraColors.progressFill;
     return SafeArea(
       bottom: false,
       child: Padding(
@@ -37,8 +39,19 @@ class OnboardingTopBar extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(chapterName.toUpperCase(), style: ZyraText.chapterLabel()),
-                      Text('${(chapterProgress * 100).round()}%', style: ZyraText.chapterLabel()),
+                      Expanded(
+                        child: Text(
+                          chapterName.toUpperCase(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: ZyraText.chapterLabel(),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        '${(chapterProgress * 100).round()}%',
+                        style: ZyraText.chapterLabel(),
+                      ),
                     ],
                   ),
                 ),

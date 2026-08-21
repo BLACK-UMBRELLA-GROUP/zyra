@@ -36,8 +36,10 @@
 // place: the indicator now depends on the space it actually gets, not on
 // which widget happens to own it.
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../services/zyra_image_cache.dart';
 import '../theme/zyra_colors.dart';
 import 'zyra_loading.dart';
 
@@ -78,8 +80,38 @@ class ZyraProfileImage extends StatelessWidget {
       );
     }
 
-    return Image.network(
+    // ── DISK-CACHED, 2026-08-15 (DR-ZYRA-169 Phase 1). Was Image.network,
+    // which re-downloaded every photo on every launch AND after every
+    // re-sign (the URL's token changes, so even the RAM cache missed).
+    // The provider swap below keeps this file's entire loading/error
+    // pipeline — Image() with a provider takes the same builders
+    // Image.network does — and adds a disk layer keyed by the URL minus
+    // its token, shared with Browse's precache pass. A disk hit reports
+    // no download progress, so the loader never flashes for a photo the
+    // device already holds — which is exactly the wanted behaviour.
+    final provider = CachedNetworkImageProvider(
       photo,
+      cacheKey: ZyraImageCache.keyFor(photo),
+      cacheManager: ZyraImageCache.manager,
+    );
+    // ── BOUNDED DECODE, same pass (Phase 3). A 56pt avatar was being
+    // decoded at the full original's resolution — wasted RAM and jank on
+    // list scroll. When the call site declares a small width, decode at
+    // that size (aspect preserved; height omitted). Full-bleed surfaces
+    // pass no width and are untouched. Disk still stores the one full
+    // copy either way, so a small render never poisons a big one — the
+    // RAM cache keys resized entries separately.
+    final w = width;
+    final ImageProvider image;
+    if (w != null && w <= 160) {
+      final dpr = MediaQuery.maybeOf(context)?.devicePixelRatio ?? 2.0;
+      image = ResizeImage(provider, width: (w * dpr).round());
+    } else {
+      image = provider;
+    }
+
+    return Image(
+      image: image,
       width: width,
       height: height,
       fit: fit,
@@ -132,7 +164,7 @@ class ZyraProfileImage extends StatelessWidget {
                 // before this switcher was introduced.
                 layoutBuilder: (current, previous) => Stack(
                   fit: StackFit.passthrough,
-                  children: [...previous, if (current != null) current],
+                  children: [...previous, ?current],
                 ),
                 child: progress == null
                     ? KeyedSubtree(key: const ValueKey('photo'), child: child)

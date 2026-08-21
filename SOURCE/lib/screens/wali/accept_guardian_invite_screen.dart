@@ -28,7 +28,7 @@ import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_fade_edges.dart';
-import '../connections/connections_screen.dart' show ZyraCardMetrics;
+import '../../theme/zyra_card_metrics.dart';
 
 class AcceptGuardianInviteScreen extends StatefulWidget {
   final String from;

@@ -2,7 +2,7 @@
 // Spec: APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Onboarding Rules & UX.md.
 //
 // SCOPE NOTE UPDATE (2026-07-25, DR-ZYRA-101 audit): the note below is
-// stale. All 5 chapters are now built — this file pushes into
+// stale. The complete onboarding roadmap is now built — this file pushes into
 // Chapter2Flow (chapter2_flow.dart), which chains into
 // ValuesPreferencesFlow, CategorySummaryScreen, and ProfileReadyScreen.
 // Original 2026-07-18 note, kept for history: "only Chapter 1 of 5 is
@@ -23,16 +23,20 @@ import '../../widgets/onboarding_scaffold.dart';
 import '../../widgets/privacy_indicator.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import 'chapter2_flow.dart';
-import 'transition_screen.dart';
+import 'onboarding_stage_intro_screen.dart';
 
 class OnboardingFlow extends StatefulWidget {
-  const OnboardingFlow({super.key});
+  final String? welcomeName;
+  final bool devPreview;
+
+  const OnboardingFlow({super.key, this.welcomeName, this.devPreview = false});
 
   @override
   State<OnboardingFlow> createState() => _OnboardingFlowState();
 }
 
 class _OnboardingFlowState extends State<OnboardingFlow> {
+  bool _showStageIntroduction = true;
   int _step = 0; // 0 = name, 1 = gender, 2 = dob
   final TextEditingController _nameController = TextEditingController();
   String? _gender; // 'male' | 'female'
@@ -42,6 +46,15 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   String? _saveError;
 
   static const int _totalQuestions = 3;
+
+  @override
+  void initState() {
+    super.initState();
+    final firstName = widget.welcomeName?.trim();
+    if (firstName != null && firstName.isNotEmpty) {
+      _nameController.text = firstName.split(RegExp(r'\s+')).first;
+    }
+  }
 
   ZyraBackgroundVariant get _background {
     if (_gender == 'male') return ZyraBackgroundVariant.male;
@@ -71,6 +84,24 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     if (_step > 0) setState(() => _step--);
   }
 
+  void _devSkipCurrentQuestion() {
+    if (!widget.devPreview) return;
+    final now = DateTime.now();
+    setState(() {
+      if (_step == 0 && _nameController.text.trim().isEmpty) {
+        _nameController.text = widget.welcomeName?.trim().isNotEmpty == true
+            ? widget.welcomeName!.trim().split(RegExp(r'\s+')).first
+            : 'Dev Seeker';
+      } else if (_step == 1) {
+        _gender ??= 'male';
+      } else if (_step == 2) {
+        _dob ??= DateTime(now.year - 30, 1, 1);
+        _dobError = null;
+      }
+    });
+    _next();
+  }
+
   Future<void> _next() async {
     if (_step < _totalQuestions - 1) {
       setState(() => _step++);
@@ -89,34 +120,28 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     // zyra_profile_service.dart) — AppState's in-memory copy above
     // always happens either way, so the rest of this build keeps
     // working exactly as before regardless of backend state.
-    setState(() {
-      _savingProfile = true;
-      _saveError = null;
-    });
-    final error = await ZyraProfileService.createSeekerProfile(
-      firstName: _nameController.text.trim(),
-      gender: _gender!,
-      dob: _dob!,
-    );
-    if (!mounted) return;
-    setState(() => _savingProfile = false);
-    if (error != null) {
-      setState(() => _saveError = error);
-      return;
+    if (!widget.devPreview) {
+      setState(() {
+        _savingProfile = true;
+        _saveError = null;
+      });
+      final error = await ZyraProfileService.createSeekerProfile(
+        firstName: _nameController.text.trim(),
+        gender: _gender!,
+        dob: _dob!,
+      );
+      if (!mounted) return;
+      setState(() => _savingProfile = false);
+      if (error != null) {
+        setState(() => _saveError = error);
+        return;
+      }
     }
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => TransitionScreen(
-          background: _background,
-          title: 'Chapter 1 Complete',
-          body: "Great start. Next, let's build your profile — the photos and "
-              'details other members will see as you begin matching.',
-          buttonLabel: 'Begin Your Profile',
-          onContinue: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => Chapter2Flow(gender: _gender)),
-          ),
-        ),
+        builder: (_) =>
+            Chapter2Flow(gender: _gender, devPreview: widget.devPreview),
       ),
     );
   }
@@ -125,7 +150,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     final now = DateTime.now();
     var age = now.year - picked.year;
     final hadBirthdayThisYear =
-        now.month > picked.month || (now.month == picked.month && now.day >= picked.day);
+        now.month > picked.month ||
+        (now.month == picked.month && now.day >= picked.day);
     if (!hadBirthdayThisYear) age -= 1;
     setState(() {
       _dob = picked;
@@ -141,6 +167,14 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
 
   @override
   Widget build(BuildContext context) {
+    if (_showStageIntroduction) {
+      return OnboardingStageIntroScreen(
+        stage: SeekerOnboardingStage.buildProfile,
+        welcomeName: _nameController.text,
+        onContinue: () => setState(() => _showStageIntroduction = false),
+      );
+    }
+
     switch (_step) {
       case 0:
         return OnboardingScaffold(
@@ -152,6 +186,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           privacy: PrivacyLevel.public,
           fabActive: _fabActive,
           onContinue: _next,
+          devPreview: widget.devPreview,
+          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _step > 0 ? _back : null,
           content: TextField(
             controller: _nameController,
@@ -161,8 +197,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             decoration: InputDecoration(
               hintText: 'First name',
               hintStyle: ZyraText.body(size: 18, color: Colors.white24),
-              enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ZyraColors.royalPurple)),
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white24),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: ZyraColors.royalPurple),
+              ),
             ),
           ),
         );
@@ -175,12 +215,22 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           privacy: PrivacyLevel.public,
           fabActive: _fabActive,
           onContinue: _next,
+          devPreview: widget.devPreview,
+          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           content: Column(
             children: [
-              _GenderOption(label: 'Male', selected: _gender == 'male', onTap: () => setState(() => _gender = 'male')),
+              _GenderOption(
+                label: 'Male',
+                selected: _gender == 'male',
+                onTap: () => setState(() => _gender = 'male'),
+              ),
               const SizedBox(height: 12),
-              _GenderOption(label: 'Female', selected: _gender == 'female', onTap: () => setState(() => _gender = 'female')),
+              _GenderOption(
+                label: 'Female',
+                selected: _gender == 'female',
+                onTap: () => setState(() => _gender = 'female'),
+              ),
             ],
           ),
         );
@@ -196,6 +246,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           privacy: PrivacyLevel.private,
           fabActive: _fabActive && !_savingProfile,
           onContinue: _next,
+          devPreview: widget.devPreview,
+          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +274,11 @@ class _GenderOption extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  const _GenderOption({required this.label, required this.selected, required this.onTap});
+  const _GenderOption({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -232,7 +288,12 @@ class _GenderOption extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-          border: Border.all(color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder, width: 1),
+          border: Border.all(
+            color: selected
+                ? ZyraColors.accentBorder
+                : ZyraColors.iconButtonBorder,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Material(
@@ -283,9 +344,19 @@ class _DobPicker extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
-            const Icon(Icons.calendar_today_outlined, color: Colors.white54, size: 18),
+            const Icon(
+              Icons.calendar_today_outlined,
+              color: Colors.white54,
+              size: 18,
+            ),
             const SizedBox(width: 12),
-            Text(label, style: ZyraText.body(size: 15, color: value == null ? Colors.white38 : Colors.white)),
+            Text(
+              label,
+              style: ZyraText.body(
+                size: 15,
+                color: value == null ? Colors.white38 : Colors.white,
+              ),
+            ),
           ],
         ),
       ),

@@ -1,8 +1,11 @@
 // Welcome Screen — entry point to ZYRA.
 // Spec: APP/Authentication/Script/Script_V1.md §WELCOME SCREEN.
 //
-// Rework (2026-07-18, Founder instruction): Google + Apple sign-in
-// ONLY — no password, no email login, no phone login, no magic link.
+// Rework (2026-07-18, Founder instruction): Google + Apple sign-in as the
+// normal entry methods — no ZYRA password and no open email sign-up.
+// Founder decision 2026-08-20 adds passwordless recovery for an email that
+// was verified from inside an existing Apple/Google account. It is recovery,
+// not sign-up: shouldCreateUser=false prevents duplicate profiles.
 // Sign-up and sign-in collapse into the same action with OAuth (a
 // first-time Google/Apple sign-in has no `profiles` row yet, so
 // ZyraSessionRouter routes it to Role Selection exactly like resuming
@@ -12,13 +15,15 @@
 // Every button still performs a real navigation/auth action, per this
 // screen's own governing rule.
 
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, kReleaseMode, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, kReleaseMode, TargetPlatform;
 import 'package:flutter/material.dart';
 import '../services/zyra_auth.dart';
 import '../services/zyra_session_router.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_state_widgets.dart';
+import 'auth/email_recovery_screen.dart';
 import 'dev/developer_access_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -32,7 +37,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   bool _loading = false;
   String? _error;
 
-  Future<void> _continueWithGoogle() => _continueWith(ZyraAuth.signInWithGoogle);
+  Future<void> _continueWithGoogle() =>
+      _continueWith(ZyraAuth.signInWithGoogle);
   Future<void> _continueWithApple() => _continueWith(ZyraAuth.signInWithApple);
 
   Future<void> _continueWith(Future<ZyraAuthResult> Function() signIn) async {
@@ -86,7 +92,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       loading: _loading,
       onTap: _loading ? null : _continueWithApple,
     );
-    final orderedButtons = isIOS ? [appleButton, googleButton] : [googleButton, appleButton];
+    final orderedButtons = isIOS
+        ? [appleButton, googleButton]
+        : [googleButton, appleButton];
 
     return Scaffold(
       body: Container(
@@ -129,12 +137,30 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 const Spacer(flex: 2),
                 if (_error != null) ...[
-                  ZyraErrorBanner(message: _error!, onDismiss: () => setState(() => _error = null)),
+                  ZyraErrorBanner(
+                    message: _error!,
+                    onDismiss: () => setState(() => _error = null),
+                  ),
                   const SizedBox(height: 14),
                 ],
                 orderedButtons[0],
                 const SizedBox(height: 14),
                 orderedButtons[1],
+                const SizedBox(height: 12),
+                TextButton(
+                  key: const ValueKey('welcome_recovery_email'),
+                  onPressed: _loading
+                      ? null
+                      : () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const EmailRecoveryScreen(),
+                          ),
+                        ),
+                  child: Text(
+                    'Use recovery email',
+                    style: ZyraText.subtext(size: 12.5),
+                  ),
+                ),
                 // FIXED 2026-08-01 (audit finding C1 — Critical). This
                 // button had no build-mode guard, so Developer Access
                 // shipped in release builds: a screen that signs into six
@@ -154,9 +180,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   const SizedBox(height: 22),
                   TextButton(
                     onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const DeveloperAccessScreen()),
+                      MaterialPageRoute(
+                        builder: (_) => const DeveloperAccessScreen(),
+                      ),
                     ),
-                    child: Text('Developer Access', style: ZyraText.subtext(size: 11, color: Colors.white38)),
+                    child: Text(
+                      'Developer Access',
+                      style: ZyraText.subtext(size: 11, color: Colors.white38),
+                    ),
                   ),
                 ],
                 const SizedBox(height: 24),
@@ -180,18 +211,29 @@ class _OAuthButton extends StatelessWidget {
   final bool loading;
   final VoidCallback? onTap;
 
-  const _OAuthButton({required this.icon, required this.label, required this.primary, required this.loading, this.onTap});
+  const _OAuthButton({
+    required this.icon,
+    required this.label,
+    required this.primary,
+    required this.loading,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final textColor = primary ? Colors.white : Colors.white.withValues(alpha: 0.85);
+    final textColor = primary
+        ? Colors.white
+        : Colors.white.withValues(alpha: 0.85);
     return SizedBox(
       width: double.infinity,
       height: primary ? 54 : 46,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: primary ? ZyraColors.accentBg : Colors.transparent,
-          border: Border.all(color: primary ? ZyraColors.accentBorder : Colors.white24, width: 1),
+          border: Border.all(
+            color: primary ? ZyraColors.accentBorder : Colors.white24,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(50),
         ),
         child: Material(
@@ -204,15 +246,32 @@ class _OAuthButton extends StatelessWidget {
                   ? SizedBox(
                       width: primary ? 20 : 17,
                       height: primary ? 20 : 17,
-                      child: const CircularProgressIndicator(strokeWidth: 2, color: Colors.white70),
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white70,
+                      ),
                     )
-                  : Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(icon, color: textColor, size: primary ? 20 : 17),
-                        const SizedBox(width: 10),
-                        Text(label, style: ZyraText.button(size: primary ? 15 : 13.5, color: textColor)),
-                      ],
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(icon, color: textColor, size: primary ? 20 : 17),
+                          const SizedBox(width: 10),
+                          Flexible(
+                            child: Text(
+                              label,
+                              maxLines: 1,
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                              style: ZyraText.button(
+                                size: primary ? 15 : 13.5,
+                                color: textColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
             ),
           ),

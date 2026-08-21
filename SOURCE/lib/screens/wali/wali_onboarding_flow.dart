@@ -24,6 +24,7 @@
 // rather than relaxing the approved schema — small, faithful fix now
 // that a real constraint exists to satisfy.
 
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import '../../services/zyra_profile_service.dart';
 import '../../state/app_state.dart';
@@ -34,7 +35,9 @@ import '../onboarding/transition_screen.dart';
 import 'wali_invite_seeker_screen.dart';
 
 class WaliOnboardingFlow extends StatefulWidget {
-  const WaliOnboardingFlow({super.key});
+  final bool devPreview;
+
+  const WaliOnboardingFlow({super.key, this.devPreview = false});
 
   @override
   State<WaliOnboardingFlow> createState() => _WaliOnboardingFlowState();
@@ -51,7 +54,13 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
 
   static const int _totalQuestions = 3;
 
-  static const _relationships = ['Father', 'Grandfather', 'Brother', 'Paternal Uncle', 'Other'];
+  static const _relationships = [
+    'Father',
+    'Grandfather',
+    'Brother',
+    'Paternal Uncle',
+    'Other',
+  ];
 
   bool get _fabActive {
     switch (_step) {
@@ -69,7 +78,9 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
   void _checkDob(DateTime picked) {
     final now = DateTime.now();
     var age = now.year - picked.year;
-    final hadBirthdayThisYear = now.month > picked.month || (now.month == picked.month && now.day >= picked.day);
+    final hadBirthdayThisYear =
+        now.month > picked.month ||
+        (now.month == picked.month && now.day >= picked.day);
     if (!hadBirthdayThisYear) age -= 1;
     setState(() {
       _dob = picked;
@@ -79,6 +90,22 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
 
   void _back() {
     if (_step > 0) setState(() => _step--);
+  }
+
+  void _devSkipCurrentQuestion() {
+    if (!widget.devPreview) return;
+    final now = DateTime.now();
+    setState(() {
+      if (_step == 0 && _nameController.text.trim().isEmpty) {
+        _nameController.text = 'Dev Guardian';
+      } else if (_step == 1) {
+        _dob ??= DateTime(now.year - 45, 1, 1);
+        _dobError = null;
+      } else if (_step == 2) {
+        _relationship ??= _relationships.first;
+      }
+    });
+    _next();
   }
 
   Future<void> _next() async {
@@ -91,19 +118,21 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
       relationship: _relationship!,
     );
 
-    setState(() {
-      _savingProfile = true;
-      _saveError = null;
-    });
-    final error = await ZyraProfileService.createWaliProfile(
-      firstName: _nameController.text.trim(),
-      dob: _dob!,
-    );
-    if (!mounted) return;
-    setState(() => _savingProfile = false);
-    if (error != null) {
-      setState(() => _saveError = error);
-      return;
+    if (!widget.devPreview) {
+      setState(() {
+        _savingProfile = true;
+        _saveError = null;
+      });
+      final error = await ZyraProfileService.createWaliProfile(
+        firstName: _nameController.text.trim(),
+        dob: _dob!,
+      );
+      if (!mounted) return;
+      setState(() => _savingProfile = false);
+      if (error != null) {
+        setState(() => _saveError = error);
+        return;
+      }
     }
 
     Navigator.of(context).pushReplacement(
@@ -124,7 +153,8 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           // not surveillance" is kept because it is still the honest
           // framing of the ROLE — it just cannot be used to imply an
           // access limit that does not exist.
-          body: 'ZYRA treats you as a full part of this journey — not as an observer. '
+          body:
+              'ZYRA treats you as a full part of this journey — not as an observer. '
               "You'll see your linked Seeker's progress, and you can read the "
               'conversation once a Journey becomes active. Both Seekers are told '
               'this before they begin.\n\n'
@@ -156,17 +186,23 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           subtext: "This is how you'll appear to your linked Seeker.",
           fabActive: _fabActive,
           onContinue: _next,
+          devPreview: widget.devPreview,
+          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: null,
           content: TextField(
             controller: _nameController,
             onChanged: (_) => setState(() {}),
             style: ZyraText.body(size: 18, color: Colors.white),
-            cursorColor: ZyraColors.royalBlue,
+            cursorColor: ZyraColors.unlockDot,
             decoration: InputDecoration(
               hintText: 'First name',
               hintStyle: ZyraText.body(size: 18, color: Colors.white24),
-              enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24)),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: ZyraColors.royalBlue)),
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white24),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: ZyraColors.unlockDot),
+              ),
             ),
           ),
         );
@@ -177,6 +213,8 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           subtext: 'You must be 18 or older to use ZYRA.',
           fabActive: _fabActive,
           onContinue: _next,
+          devPreview: widget.devPreview,
+          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,18 +232,22 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           subtext: 'Eligible Guardian relationships, per Islamic guidance.',
           fabActive: _fabActive && !_savingProfile,
           onContinue: _next,
+          devPreview: widget.devPreview,
+          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ..._relationships.map((r) => Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: _RelationshipOption(
-                      label: r,
-                      selected: _relationship == r,
-                      onTap: () => setState(() => _relationship = r),
-                    ),
-                  )),
+              ..._relationships.map(
+                (r) => Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _RelationshipOption(
+                    label: r,
+                    selected: _relationship == r,
+                    onTap: () => setState(() => _relationship = r),
+                  ),
+                ),
+              ),
               if (_saveError != null) ...[
                 const SizedBox(height: 8),
                 ZyraErrorBanner(
@@ -255,9 +297,19 @@ class _WaliDobPicker extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
-            const Icon(Icons.calendar_today_outlined, color: Colors.white54, size: 18),
+            const Icon(
+              Icons.calendar_today_outlined,
+              color: Colors.white54,
+              size: 18,
+            ),
             const SizedBox(width: 12),
-            Text(label, style: ZyraText.body(size: 15, color: value == null ? Colors.white38 : Colors.white)),
+            Text(
+              label,
+              style: ZyraText.body(
+                size: 15,
+                color: value == null ? Colors.white38 : Colors.white,
+              ),
+            ),
           ],
         ),
       ),
@@ -279,6 +331,8 @@ class _WaliQuestionScaffold extends StatelessWidget {
   final bool fabActive;
   final VoidCallback onContinue;
   final VoidCallback? onSwipeBack;
+  final bool devPreview;
+  final VoidCallback? onDevSkip;
 
   const _WaliQuestionScaffold({
     required this.progress,
@@ -288,6 +342,8 @@ class _WaliQuestionScaffold extends StatelessWidget {
     required this.onContinue,
     this.subtext,
     this.onSwipeBack,
+    this.devPreview = false,
+    this.onDevSkip,
   });
 
   @override
@@ -301,7 +357,9 @@ class _WaliQuestionScaffold extends StatelessWidget {
                 if ((details.primaryVelocity ?? 0) > 250) onSwipeBack!();
               },
         child: Container(
-          decoration: BoxDecoration(gradient: ZyraColors.backgroundFor(ZyraBackgroundVariant.male)),
+          decoration: BoxDecoration(
+            gradient: ZyraColors.backgroundFor(ZyraBackgroundVariant.male),
+          ),
           child: Stack(
             children: [
               SafeArea(
@@ -317,11 +375,35 @@ class _WaliQuestionScaffold extends StatelessWidget {
                           child: LinearProgressIndicator(
                             value: progress.clamp(0.0, 1.0),
                             backgroundColor: ZyraColors.progressTrack,
-                            valueColor: const AlwaysStoppedAnimation<Color>(ZyraColors.progressFill),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              ZyraColors.progressFill,
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 28),
+                      if (!kReleaseMode && devPreview && onDevSkip != null) ...[
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton.icon(
+                            key: const ValueKey('onboarding_dev_skip'),
+                            onPressed: onDevSkip,
+                            icon: const Icon(
+                              Icons.skip_next_rounded,
+                              size: 17,
+                              color: ZyraColors.unlockText,
+                            ),
+                            label: Text(
+                              'Skip question · DEV',
+                              style: ZyraText.subtext(
+                                size: 11.5,
+                                color: ZyraColors.unlockText,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
                       Text(question, style: ZyraText.heading()),
                       if (subtext != null) ...[
                         const SizedBox(height: 8),
@@ -344,10 +426,23 @@ class _WaliQuestionScaffold extends StatelessWidget {
                     height: 52,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: fabActive ? ZyraColors.fabActiveBg : ZyraColors.fabDimmedBg,
-                      border: Border.all(color: fabActive ? ZyraColors.fabActiveBorder : ZyraColors.fabDimmedBorder, width: 0.5),
+                      color: fabActive
+                          ? ZyraColors.fabActiveBg
+                          : ZyraColors.fabDimmedBg,
+                      border: Border.all(
+                        color: fabActive
+                            ? ZyraColors.fabActiveBorder
+                            : ZyraColors.fabDimmedBorder,
+                        width: 0.5,
+                      ),
                     ),
-                    child: Icon(Icons.arrow_forward, size: 20, color: fabActive ? ZyraColors.fabActiveArrow : ZyraColors.fabDimmedArrow),
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 20,
+                      color: fabActive
+                          ? ZyraColors.fabActiveArrow
+                          : ZyraColors.fabDimmedArrow,
+                    ),
                   ),
                 ),
               ),
@@ -363,7 +458,11 @@ class _RelationshipOption extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
-  const _RelationshipOption({required this.label, required this.selected, required this.onTap});
+  const _RelationshipOption({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -373,7 +472,12 @@ class _RelationshipOption extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-          border: Border.all(color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder, width: 1),
+          border: Border.all(
+            color: selected
+                ? ZyraColors.accentBorder
+                : ZyraColors.iconButtonBorder,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Material(

@@ -58,6 +58,18 @@ class WaliJourneyView {
   final String? journeyStage;
   final String? suspendedBy;
 
+  /// A dev-panel stand-in, not a row. ADDED 2026-08-13 with the Guardian
+  /// dev panel (DR-ZYRA-152), and it carries real weight rather than
+  /// being a label: [matchId] on a stand-in is `dev-wj0`, not a uuid, so
+  /// every server call made against it — fetchTimeline, fetchMessages,
+  /// wali_review_decision — is handed something that is not an id. The
+  /// Seeker side learned this the expensive way, where a fabricated
+  /// Active Journey made the Reveal button silently do nothing for a day
+  /// (see JourneyMatch.isMock and composeJourneys' own note).
+  ///
+  /// Screens must branch on this BEFORE calling the server, not after.
+  final bool isMock;
+
   const WaliJourneyView({
     required this.matchId,
     required this.linkedSeekerId,
@@ -68,6 +80,7 @@ class WaliJourneyView {
     required this.status,
     required this.journeyStage,
     required this.suspendedBy,
+    this.isMock = false,
   });
 
   bool get isSuspended => suspendedBy != null;
@@ -77,9 +90,12 @@ class ZyraWaliJourneyService {
   ZyraWaliJourneyService._();
 
   /// Real Journeys (status <> 'potential') for every Seeker linked to
-  /// the signed-in Wali. Empty (not an error) if not signed in, not a
-  /// Wali, no linked Seekers, or no real Journey yet for any of them.
-  static Future<List<WaliJourneyView>> fetchLinkedJourneys() async {
+  /// the signed-in Wali. Empty if not signed in, not a Wali, no linked
+  /// Seekers, or no real Journey yet for any of them — and NULL when the
+  /// fetch FAILED (DR-ZYRA-171, applying DR-ZYRA-167's rule to the
+  /// Guardian's front door): the Dashboard shows an error with Try
+  /// again, never an invite CTA over a network failure.
+  static Future<List<WaliJourneyView>?> fetchLinkedJourneys() async {
     final user = ZyraAuth.currentUser;
     if (user == null) return [];
 
@@ -135,8 +151,9 @@ class ZyraWaliJourneyService {
         ));
       }
       return results;
-    } catch (_) {
-      return [];
+    } catch (e) {
+      debugPrint('ZYRA: fetchLinkedJourneys failed — $e');
+      return null;
     }
   }
 

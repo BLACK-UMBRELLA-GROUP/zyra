@@ -1,7 +1,7 @@
 // Data-driven question model shared by Chapter 3 (Your Values) and
 // Chapter 4 (Your Preferences, auto-derived from Ch3's CH4-flagged
-// questions). Built this way because the real spec is ~174 questions
-// across 9 categories (SEEKER ONBOARDING QUESTIONS/*.md) — far too many
+// questions). Built this way because the real spec is a long data-driven walk
+// across multiple categories (SEEKER ONBOARDING QUESTIONS/*.md) — far too many
 // to hand-write one bespoke screen per question. One generic renderer
 // (generic_select_question_screen.dart / traffic_light_question_screen.dart)
 // + this data covers all of them faithfully.
@@ -56,7 +56,11 @@ class OnboardingCategory {
   final String name;
   final List<OnboardingQuestion> questions;
 
-  const OnboardingCategory({required this.id, required this.name, required this.questions});
+  const OnboardingCategory({
+    required this.id,
+    required this.name,
+    required this.questions,
+  });
 
   // REMOVED 2026-08-10: `ch4Questions`, which filtered on ch4Status alone.
   // It had no callers and it became a trap the moment conditional display
@@ -114,8 +118,8 @@ enum TrafficLight { green, yellow, red }
 
 extension TrafficLightX on TrafficLight {
   String get emoji => switch (this) {
-        TrafficLight.green => '🟢',
-        TrafficLight.yellow => '🟡',
-        TrafficLight.red => '🔴',
-      };
+    TrafficLight.green => '🟢',
+    TrafficLight.yellow => '🟡',
+    TrafficLight.red => '🔴',
+  };
 }

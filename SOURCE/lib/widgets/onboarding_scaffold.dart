@@ -4,10 +4,10 @@
 // No back button on question screens — back navigation is swipe-right,
 // which PageView provides natively.
 
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'fab_continue_button.dart';
 import 'onboarding_top_bar.dart';
 import 'privacy_indicator.dart';
 
@@ -23,6 +23,9 @@ class OnboardingScaffold extends StatelessWidget {
   final String? privacyOverrideText;
   final bool fabActive;
   final VoidCallback? onContinue;
+  final bool devPreview;
+  final VoidCallback? onDevSkip;
+  final String devSkipLabel;
 
   /// Fix (2026-07-18): Onboarding Rules & UX §SCREEN ANATOMY specifies
   /// "No back button — users navigate back by swiping right (iOS
@@ -49,6 +52,9 @@ class OnboardingScaffold extends StatelessWidget {
     this.privacy,
     this.privacyOverrideText,
     this.onSwipeBack,
+    this.devPreview = false,
+    this.onDevSkip,
+    this.devSkipLabel = 'Skip question',
   });
 
   void _showHelpSheet(BuildContext context) {
@@ -67,7 +73,10 @@ class OnboardingScaffold extends StatelessWidget {
             children: [
               Text('Need help?', style: ZyraText.heading(size: 16)),
               const SizedBox(height: 14),
-              _HelpRow('Why do we ask for your ${question.toLowerCase()}?', strong: true),
+              _HelpRow(
+                'Why do we ask for your ${question.toLowerCase()}?',
+                strong: true,
+              ),
               const Divider(color: Colors.white12, height: 24),
               const _HelpRow('Help Centre'),
               const _HelpRow('Report a technical issue'),
@@ -93,41 +102,180 @@ class OnboardingScaffold extends StatelessWidget {
                 if (velocity > 250) onSwipeBack!(); // rightward swipe
               },
         child: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.backgroundFor(background)),
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                OnboardingTopBar(
-                  chapterName: chapterName,
-                  chapterProgress: chapterProgress,
-                  chapterComplete: chapterComplete,
-                  onHelpTap: () => _showHelpSheet(context),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(20, 24, 20, 90),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(question, style: ZyraText.heading()),
-                        if (subtext != null) ...[
-                          const SizedBox(height: 8),
-                          Text(subtext!, style: ZyraText.subtext()),
+          decoration: BoxDecoration(
+            gradient: ZyraColors.backgroundFor(background),
+          ),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  OnboardingTopBar(
+                    chapterName: chapterName,
+                    chapterProgress: chapterProgress,
+                    chapterComplete: chapterComplete,
+                    onHelpTap: () => _showHelpSheet(context),
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 90),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (onSwipeBack != null) ...[
+                            Align(
+                              alignment: Alignment.center,
+                              child: _OnboardingBackCue(
+                                onPressed: onSwipeBack!,
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+                          ],
+                          if (!kReleaseMode &&
+                              devPreview &&
+                              onDevSkip != null) ...[
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: _DevSkipButton(
+                                label: devSkipLabel,
+                                onPressed: onDevSkip!,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                          Text(question, style: ZyraText.heading()),
+                          if (subtext != null) ...[
+                            const SizedBox(height: 8),
+                            Text(subtext!, style: ZyraText.subtext()),
+                          ],
+                          const SizedBox(height: 28),
+                          content,
+                          if (privacy != null)
+                            PrivacyIndicator(
+                              level: privacy!,
+                              overrideText: privacyOverrideText,
+                            ),
                         ],
-                        const SizedBox(height: 28),
-                        content,
-                        if (privacy != null)
-                          PrivacyIndicator(level: privacy!, overrideText: privacyOverrideText),
-                      ],
+                      ),
                     ),
                   ),
+                ],
+              ),
+              Positioned(
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.paddingOf(context).bottom + 14,
+                child: _OnboardingContinueCue(
+                  active: fabActive,
+                  onPressed: onContinue,
                 ),
-              ],
-            ),
-            FabContinueButton(active: fabActive, onPressed: onContinue),
-          ],
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class _DevSkipButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+  const _DevSkipButton({required this.label, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: '$label, developer only',
+      child: TextButton.icon(
+        key: const ValueKey('onboarding_dev_skip'),
+        onPressed: onPressed,
+        icon: const Icon(
+          Icons.skip_next_rounded,
+          size: 17,
+          color: ZyraColors.unlockText,
+        ),
+        label: Text(
+          '$label · DEV',
+          style: ZyraText.subtext(size: 11.5, color: ZyraColors.unlockText),
+        ),
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+          side: BorderSide(color: ZyraColors.unlockDot.withValues(alpha: 0.45)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(999),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OnboardingBackCue extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const _OnboardingBackCue({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Previous page',
+      child: InkWell(
+        key: const ValueKey('onboarding_back'),
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.keyboard_arrow_up_rounded,
+                color: Colors.white70,
+                size: 21,
+              ),
+              Text(
+                'Previous page',
+                style: ZyraText.subtext(size: 9.5, color: Colors.white54),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OnboardingContinueCue extends StatelessWidget {
+  final bool active;
+  final VoidCallback? onPressed;
+
+  const _OnboardingContinueCue({required this.active, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = active ? ZyraColors.unlockText : Colors.white24;
+    return Semantics(
+      button: true,
+      enabled: active,
+      label: 'Continue',
+      child: InkWell(
+        key: const ValueKey('onboarding_continue'),
+        onTap: active ? onPressed : null,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.keyboard_arrow_down_rounded, color: color, size: 25),
+              const SizedBox(height: 3),
+              Text(
+                'Continue',
+                style: ZyraText.subtext(size: 11.5, color: color),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -148,7 +296,9 @@ class _HelpRow extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: strong ? ZyraText.body(size: 14) : ZyraText.subtext(size: 13),
+              style: strong
+                  ? ZyraText.body(size: 14)
+                  : ZyraText.subtext(size: 13),
             ),
           ),
           const Icon(Icons.chevron_right, color: Colors.white38, size: 18),
@@ -157,4 +307,3 @@ class _HelpRow extends StatelessWidget {
     );
   }
 }
-

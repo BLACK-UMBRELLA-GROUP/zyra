@@ -63,6 +63,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
 import '../widgets/zyra_comet_rule.dart';
+import '../widgets/zyra_trails_meet_rule.dart';
 import '../theme/zyra_text.dart';
 
 /// Total time the splash owns the screen.
@@ -111,7 +112,19 @@ class SplashScreen extends StatefulWidget {
   /// Fired once when the animation completes. AuthGate uses it as one of
   /// the two conditions for moving on.
   final VoidCallback? onFinished;
-  const SplashScreen({super.key, this.onFinished});
+
+  /// The final sequence — see ZyraSplashEnding.
+  ///
+  /// TRAILS MEET, Founder-chosen 2026-08-20. Two gold points travel inward
+  /// and each draw one half of the finished connection behind them. This
+  /// replaces Pass Through without changing the approved wordmark,
+  /// typography, purple background, three-second duration or final hold.
+  final ZyraSplashEnding ending;
+  const SplashScreen({
+    super.key,
+    this.onFinished,
+    this.ending = ZyraSplashEnding.trailsMeet,
+  });
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -119,11 +132,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: _total)
-    ..addStatusListener((s) {
-      if (s == AnimationStatus.completed) widget.onFinished?.call();
-    })
-    ..forward();
+  late final AnimationController _c =
+      AnimationController(vsync: this, duration: _total)
+        ..addStatusListener((s) {
+          if (s == AnimationStatus.completed) widget.onFinished?.call();
+        })
+        ..forward();
 
   @override
   void dispose() {
@@ -155,8 +169,36 @@ class _SplashScreenState extends State<SplashScreen>
   // they have gone, so the still second at the end holds a composition
   // rather than floating text.
   static const _railIn = Interval(0.05, 0.22, curve: Curves.easeOut);
-  static const _cometTravel = Interval(0.00, 0.62, curve: Cubic(.25, .6, .3, 1));
+  static const _cometTravel = Interval(
+    0.00,
+    0.62,
+    curve: Cubic(.25, .6, .3, 1),
+  );
   static const _cometFade = Interval(0.62, 0.90, curve: Curves.easeIn);
+
+  // The Pass-through crossing, as ONE curve over nearly the whole
+  // animation — 2026-08-12, after the Founder's recording was measured
+  // frame by frame: _cometTravel's hard deceleration left the line
+  // visually FROZEN from ~0.6s to the hold, over a second of dead stop at
+  // the exact moment every eye is on the meeting point. easeInOutSine has
+  // no flat spot: the lights enter gently (offscreen), cross the centre
+  // near peak speed at ~0.78s, and decelerate only as they leave and
+  // fade. Seamless is a property of the velocity profile, not the length.
+  static const _journeySweep = Interval(
+    0.02,
+    0.96,
+    curve: Curves.easeInOutSine,
+  );
+
+  // Founder-selected 2026-08-20: the dots establish themselves, then draw
+  // their two halves inward as one continuous arrival. Both values pin at
+  // 1 during the still hold, leaving the completed gold connection visible.
+  static const _trailsMeetIn = Interval(0.02, 0.14, curve: Curves.easeOut);
+  static const _trailsMeetTravel = Interval(
+    0.05,
+    0.70,
+    curve: Cubic(.18, .82, .23, 1),
+  );
 
   static const _letterStagger = 0.085; // ~150ms apart
   static const _letterStart = 0.16;
@@ -211,19 +253,31 @@ class _SplashScreenState extends State<SplashScreen>
                       child: Text(
                         'Connecting Through Trust',
                         style: ZyraText.subtext(
-                            size: m.tagline, color: Colors.white70),
+                          size: m.tagline,
+                          color: Colors.white70,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(height: m.ruleGap),
-                  // Shared with ZyraLoading — see widgets/zyra_comet_rule
-                  // .dart. The splash plays it once; loading loops it.
-                  ZyraCometRule(
-                    width: m.ruleWidth,
-                    travel: _at(_cometTravel),
-                    fade: _at(_cometFade),
-                    railOpacity: _at(_railIn),
-                  ),
+                  if (widget.ending == ZyraSplashEnding.trailsMeet)
+                    ZyraTrailsMeetRule(
+                      width: m.ruleWidth,
+                      progress: _at(_trailsMeetTravel),
+                      opacity: _at(_trailsMeetIn),
+                    )
+                  else
+                    // Historical candidates remain available in the dev
+                    // Splash lab. Meet and Pass owns loading independently,
+                    // so previewing an old ending does not change wait states.
+                    ZyraCometRule(
+                      width: m.ruleWidth,
+                      travel: _at(_cometTravel),
+                      fade: _at(_cometFade),
+                      railOpacity: _at(_railIn),
+                      ending: widget.ending,
+                      journey: _at(_journeySweep),
+                    ),
                 ],
               ),
             );
@@ -270,6 +324,7 @@ class _SplashMetrics {
   final double design;
   final double wordmark;
   final double tagline;
+
   /// Wordmark to tagline. TIGHT since 2026-08-09 — they are one block.
   final double gap;
 
@@ -338,7 +393,9 @@ class _Wordmark extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(_letters.length, (i) {
-        final begin = _SplashScreenState._letterStart + i * _SplashScreenState._letterStagger;
+        final begin =
+            _SplashScreenState._letterStart +
+            i * _SplashScreenState._letterStagger;
         final t = Interval(
           begin,
           (begin + _SplashScreenState._letterLen).clamp(0.0, 1.0),
@@ -358,7 +415,9 @@ class _Wordmark extends StatelessWidget {
             offset: Offset(0, 12 * (1 - t)),
             child: Text(
               _letters[i],
-              style: i == _letters.length - 1 ? base.copyWith(letterSpacing: 0) : base,
+              style: i == _letters.length - 1
+                  ? base.copyWith(letterSpacing: 0)
+                  : base,
             ),
           ),
         );

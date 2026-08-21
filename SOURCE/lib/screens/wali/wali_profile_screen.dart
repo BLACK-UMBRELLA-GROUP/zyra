@@ -18,6 +18,7 @@
 // WaliNotificationSettingsScreen/_showPrivacyInfo/onNavigateToNetwork
 // below for what actually does apply.
 
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_entitlement_service.dart';
@@ -25,6 +26,8 @@ import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_account_switch_sheet.dart';
+import '../onboarding/account_path_overview_screen.dart';
 import '../settings/help_support_screen.dart';
 import '../welcome_screen.dart';
 import 'link_wali_screen.dart';
@@ -127,6 +130,47 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
     );
   }
 
+  /// The Guardian-side half of the one-identity context switch.
+  /// Authentication is untouched: selecting Seeker either replaces the
+  /// whole shell (once the context exists) or opens its first-time setup.
+  /// The latter remains preview-gated until the server migration lands.
+  Future<void> _switchAccount(BuildContext context) async {
+    final selection = await showZyraAccountSwitchSheet(
+      context: context,
+      options: const [
+        ZyraAccountSwitchOption(
+          context: ZyraAccountContext.guardian,
+          title: 'Guardian',
+          subtitle: 'The people you support',
+          icon: Icons.shield_outlined,
+          current: true,
+        ),
+        ZyraAccountSwitchOption(
+          context: ZyraAccountContext.seeker,
+          title: 'Seeker',
+          subtitle: 'First-time Seeker setup',
+          icon: Icons.favorite_border,
+          actionLabel: 'SET UP ›',
+        ),
+      ],
+    );
+    if (selection != ZyraAccountContext.seeker || !context.mounted) return;
+
+    // The client shell switch is ready, but the current database cannot yet
+    // say this Guardian also has a Seeker presentation. Keep the user inside
+    // an honest setup preview instead of navigating to a shell whose server
+    // reads would refuse them. This branch is removed when the migration is
+    // explicitly authorised and its availability read is wired.
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => SeekerOnboardingOverviewScreen(
+          gender: AppState.instance.gender,
+          migrationGatedPreview: true,
+        ),
+      ),
+    );
+  }
+
   // #22 — same real deletion as the Seeker side (ZyraAuth.deleteAccount(),
   // delete_own_account()). For a Wali, this also removes their
   // wali_links rows, ending their access to any linked Seeker.
@@ -144,9 +188,14 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
           style: ZyraText.subtext(),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text('Cancel', style: ZyraText.subtext(size: 13))),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text('Cancel', style: ZyraText.subtext(size: 13)),
+          ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: const Color(0xFFB33A3A)),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFB33A3A),
+            ),
             onPressed: () => Navigator.of(ctx).pop(true),
             child: Text('Delete Account', style: ZyraText.button(size: 13)),
           ),
@@ -171,7 +220,11 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Couldn't delete your account — try again, or email support@zyra.app.")),
+        const SnackBar(
+          content: Text(
+            "Couldn't delete your account — try again, or email support@zyra.app.",
+          ),
+        ),
       );
     }
   }
@@ -185,7 +238,9 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
       // now reads the Guardian's own gender like every other profile-context
       // screen. Every current test Wali persona is male, so this is a
       // no-op today but is correct once a female Wali persona exists.
-      decoration: BoxDecoration(gradient: ZyraColors.genderGradient(state.gender)),
+      decoration: BoxDecoration(
+        gradient: ZyraColors.genderGradient(state.gender),
+      ),
       child: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(24, 20, 24, 100),
@@ -195,15 +250,25 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
                 Container(
                   width: 64,
                   height: 64,
-                  decoration: const BoxDecoration(shape: BoxShape.circle, color: ZyraColors.iconButtonBg),
-                  child: const Icon(Icons.shield_outlined, color: Colors.white38, size: 30),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ZyraColors.iconButtonBg,
+                  ),
+                  child: const Icon(
+                    Icons.shield_outlined,
+                    color: Colors.white38,
+                    size: 30,
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(state.waliName ?? 'Your Profile', style: ZyraText.heading(size: 20)),
+                      Text(
+                        state.waliName ?? 'Your Profile',
+                        style: ZyraText.heading(size: 20),
+                      ),
                       const SizedBox(height: 4),
                       // 2026-07-26 (#27): now tappable → Network tab, the
                       // real Wali One purchase surface. Was previously a
@@ -212,15 +277,24 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
                       GestureDetector(
                         onTap: widget.onNavigateToNetwork,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: ZyraColors.accentBg,
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: ZyraColors.accentBorder, width: 0.5),
+                            border: Border.all(
+                              color: ZyraColors.accentBorder,
+                              width: 0.5,
+                            ),
                           ),
                           child: Text(
                             _hasWaliOne ? 'Guardian+' : 'Standard Guardian',
-                            style: ZyraText.subtext(size: 11, color: Colors.white),
+                            style: ZyraText.subtext(
+                              size: 11,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -230,17 +304,28 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
               ],
             ),
             const SizedBox(height: 28),
-            Text('ABOUT YOU', style: ZyraText.chapterLabel(color: Colors.white54)),
+            Text(
+              'ABOUT YOU',
+              style: ZyraText.chapterLabel(color: Colors.white54),
+            ),
             const SizedBox(height: 10),
             _InfoRow(label: 'Relationship', value: _relationshipSummary(state)),
-            _InfoRow(label: 'Linked Seekers', value: '${state.waliRealLinkedSeekers.length}'),
+            _InfoRow(
+              label: 'Linked Seekers',
+              value: '${state.waliRealLinkedSeekers.length}',
+            ),
             const SizedBox(height: 24),
-            Text('SETTINGS', style: ZyraText.chapterLabel(color: Colors.white54)),
+            Text(
+              'SETTINGS',
+              style: ZyraText.chapterLabel(color: Colors.white54),
+            ),
             const SizedBox(height: 10),
             _SettingsRow(
               label: 'Notifications',
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const WaliNotificationSettingsScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const WaliNotificationSettingsScreen(),
+                ),
               ),
             ),
             _SettingsRow(
@@ -253,12 +338,23 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
             ),
             _SettingsRow(
               label: 'Link a Seeker',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LinkWaliScreen(asWali: true))),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const LinkWaliScreen(asWali: true),
+                ),
+              ),
             ),
             _SettingsRow(
               label: 'Help & Support',
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HelpSupportScreen())),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
+              ),
             ),
+            if (!kReleaseMode)
+              _SettingsRow(
+                label: 'Switch Account',
+                onTap: () => _switchAccount(context),
+              ),
             _SettingsRow(label: 'Sign Out', onTap: () => _signOut(context)),
             _SettingsRow(
               label: 'Delete Account',
@@ -295,7 +391,11 @@ class _SettingsRow extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
   final bool destructive;
-  const _SettingsRow({required this.label, this.onTap, this.destructive = false});
+  const _SettingsRow({
+    required this.label,
+    this.onTap,
+    this.destructive = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -308,10 +408,17 @@ class _SettingsRow extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: ZyraText.body(size: 13.5, color: destructive ? ZyraColors.destructive : Colors.white),
+                style: ZyraText.body(
+                  size: 13.5,
+                  color: destructive ? ZyraColors.destructive : Colors.white,
+                ),
               ),
             ),
-            Icon(Icons.chevron_right, color: destructive ? ZyraColors.destructive : Colors.white24, size: 16),
+            Icon(
+              Icons.chevron_right,
+              color: destructive ? ZyraColors.destructive : Colors.white24,
+              size: 16,
+            ),
           ],
         ),
       ),

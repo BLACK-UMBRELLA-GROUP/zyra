@@ -31,11 +31,23 @@
 // switch would happily flip and then nothing would happen, which reads
 // exactly like a bug in the feature rather than a category error in the
 // test.
+//
+// REBUILT 2026-08-12 (Founder-directed dev-panel redesign). Every simulated
+// value is now a PRIVATE field behind a guarded setter: same-value writes do
+// not notify, so re-tapping a segment no longer makes every listening screen
+// re-fetch, and there is exactly one door into each piece of state. The
+// generic set_() escape hatch is gone — it let callers mutate fields this
+// class did not know were changing, which is exactly how reset() came to
+// quietly miss the adverts toggle (found and fixed in the same pass:
+// reset() now covers EVERY axis, enumerated in one place, one notify).
 
 import 'package:flutter/foundation.dart';
 import '../data/zyra_entitlements.dart';
+import '../data/zyra_journey_stages.dart';
 import '../models/journey_match.dart';
 import '../models/seeker_profile.dart';
+import '../services/zyra_auth.dart';
+import '../services/zyra_wali_journey_service.dart';
 import '../services/zyra_wali_link_service.dart';
 import '../state/app_state.dart' show ZyraPlan;
 
@@ -44,7 +56,7 @@ enum DevPlan { basic, one }
 
 /// Which page a control affects. A control is only usable while that page
 /// is the one on screen.
-enum DevPage { browse, connections, guardian, profile }
+enum DevPage { browse, connections, guardian, notifications, profile }
 
 /// The popups the panel can ask Browse to show. Each maps to a modal that
 /// ALREADY EXISTS in browse_screen.dart — nothing here writes its own copy,
@@ -59,11 +71,64 @@ enum DevPopup { saveLimit, considerLimit, dailyLimit, sponsoredCard }
 
 extension DevPageX on DevPage {
   String get label => switch (this) {
-        DevPage.browse => 'Browse',
-        DevPage.connections => 'Connections',
-        DevPage.guardian => 'Guardian',
-        DevPage.profile => 'Profile',
-      };
+    DevPage.browse => 'Browse',
+    DevPage.connections => 'Connections',
+    DevPage.guardian => 'Guardian',
+    DevPage.notifications => 'Notifications',
+    DevPage.profile => 'Profile',
+  };
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// THE GUARDIAN SIDE — added 2026-08-13 (DR-ZYRA-152).
+// ═════════════════════════════════════════════════════════════════════
+//
+// ONE STORE, NOT TWO. These enums and the "— Wali side —" fields further
+// down live in this class alongside the Seeker ones deliberately: one
+// singleton, one reset(), one place a new field can be forgotten from.
+// A second scenario store would have its own reset that drifts, which is
+// the precise failure the 2026-08-12 rebuild was written to end.
+//
+// The panel that drives them is a separate WIDGET
+// (dev/wali_dev_scenario_panel.dart) because the two shells mount
+// different trees — but it reads and writes this object.
+
+/// Which Guardian tab a control affects. The Guardian shell's five tabs,
+/// in nav-bar order (Network sits left of Seekers since 2026-08-13).
+///
+/// Pushed in by WaliHomeShell on every tab change, exactly as HomeShell
+/// pushes [DevPage] — the panel is a sibling of the IndexedStack, not a
+/// child, so it has no other way to know which tab is showing.
+enum WaliPage { dashboard, network, seekers, notifications, profile }
+
+extension WaliPageX on WaliPage {
+  String get label => switch (this) {
+    WaliPage.dashboard => 'Dashboard',
+    WaliPage.network => 'Network',
+    WaliPage.seekers => 'Seekers',
+    WaliPage.notifications => 'Notifications',
+    WaliPage.profile => 'Profile',
+  };
+}
+
+/// Main Guardian or Additional Guardian.
+///
+/// NOT cosmetic, and this is why the Guardian panel needed a refusal
+/// path the Seeker panel had deleted. `wali_links.is_main` is a real
+/// privilege boundary (closed 2026-08-08, GUARDIAN & ROMANTIC RULES
+/// §7d): zyra_counterpart_card() returns nothing to an Additional
+/// Guardian, so ZyraWaliJourneyService.fetchLinkedJourneys() skips the
+/// row entirely, and wali_review_decision() refuses their vote.
+///
+/// An Additional Guardian therefore sees a SMALLER app, not a different
+/// one — and the only way to learn that from a control panel is for the
+/// controls they do not get to be VISIBLE and REFUSED. Hiding them, the
+/// Seeker panel's rule, would make the whole distinction invisible.
+enum WaliRole { main, additional }
+
+extension WaliRoleX on WaliRole {
+  String get label =>
+      this == WaliRole.main ? 'Main Guardian' : 'Additional Guardian';
 }
 
 // The UnlockBalance enum and the `unlocks` / `unlockPlus` fields were
@@ -98,6 +163,148 @@ class ZyraDevScenario extends ChangeNotifier {
     currentPage = page;
     notifyListeners();
   }
+
+  // Which segment of Connections is on screen: 0 Journeys · 1 Activity ·
+  // 2 Introductions. Written by ConnectionsScreen when a swipe settles
+  // (same pushed-in reasoning as currentPage). The panel narrows the
+  // Connections card to the section actually showing — you have to BE on
+  // Introductions to see the Introductions controls.
+  //
+  // ADDED 2026-08-12 (Founder: "i gotta be on indroduction to see the
+  // introduction optins in toggle").
+  //
+  // Context, not scenario: reset() leaves it alone, because where you are
+  // in the app is not staged data.
+
+  int connectionsSection = 0;
+
+  void setConnectionsSection(int section) {
+    final s = section.clamp(0, 2);
+    if (connectionsSection == s) return;
+    connectionsSection = s;
+    notifyListeners();
+  }
+
+  // --- Stand-in interactions that must FEEL real ------------------------
+  // ADDED 2026-08-12 (Founder: "it says stand-in, nudges need a real
+  // paused journey (dev) so please fix and make that"). A dev snackbar
+  // where the product would act is the panel lying about the experience.
+  // Fake matchIds are deterministic (dev-p0, dev-p1…), so marking one
+  // nudged here survives every recompose; composeJourneys reads this set
+  // and stamps pauseNudgedAt, which greys the row's button exactly as a
+  // real nudge would. reset() clears it with everything else.
+  final Set<String> _nudgedFakes = {};
+  bool fakeNudged(String matchId) => _nudgedFakes.contains(matchId);
+  void markFakeNudged(String matchId) {
+    if (!_nudgedFakes.add(matchId)) return;
+    notifyListeners();
+  }
+
+  // How many staged people are ALREADY in a Journey with someone else.
+  //
+  // ONE COUNT PER SECTION since 2026-08-13 (Founder: "in toggle the in
+  // another journey make 3… so i can choose how many people are in a
+  // journey so i can see") — the single potential-first budget of
+  // 2026-08-12 couldn't stage "a busy PAUSED person" without first
+  // making every potential person busy. Each count marks the FIRST N
+  // fakes of its own section (deterministic across recomposes, like the
+  // nudge set); composeJourneys clamps by construction, so lowering a
+  // row count can never leave more busy people than people. Fakes only —
+  // real rows keep whatever the fetch said.
+  int _busyPotential = 0;
+  int get busyPotential => _busyPotential;
+  void setBusyPotential(int v) {
+    final n = v.clamp(0, 30);
+    if (_busyPotential == n) return;
+    _busyPotential = n;
+    notifyListeners();
+  }
+
+  int _busyPaused = 0;
+  int get busyPaused => _busyPaused;
+  void setBusyPaused(int v) {
+    final n = v.clamp(0, 30);
+    if (_busyPaused == n) return;
+    _busyPaused = n;
+    notifyListeners();
+  }
+
+  int _busyEnded = 0;
+  int get busyEnded => _busyEnded;
+  void setBusyEnded(int v) {
+    final n = v.clamp(0, 30);
+    if (_busyEnded == n) return;
+    _busyEnded = n;
+    notifyListeners();
+  }
+
+  // How many staged PAUSED people were paused BY THE TESTER (Founder,
+  // 2026-08-13: "i need a toggle where i can choose paused by them or
+  // paused by you"). The first N paused fakes carry the tester's own id
+  // as suspended_by — so their rows read "Paused by you" and offer
+  // Resume — and the rest stay paused by the other side ("Request
+  // restart" / the one-shot nudge). Both worlds on one screen.
+  int _pausedByYou = 0;
+  int get pausedByYou => _pausedByYou;
+  void setPausedByYou(int v) {
+    final n = v.clamp(0, 30);
+    if (_pausedByYou == n) return;
+    _pausedByYou = n;
+    notifyListeners();
+  }
+
+  // How many of the paused-BY-THEM stand-ins the tester has ALSO paused
+  // (DR-ZYRA-170, shared holds). Not a panel row — this count is driven
+  // by the card's own "Also Pause" action, exactly as takeover settles
+  // drive the section counts. Positional: the first N paused-by-other
+  // fakes read "Paused by both of you" and offer Resume (lifting the
+  // tester's own hand drops them back to paused-by-them).
+  int _mirroredPaused = 0;
+  int get mirroredPaused => _mirroredPaused;
+  void setMirroredPaused(int v) {
+    final n = v.clamp(0, 30);
+    if (_mirroredPaused == n) return;
+    _mirroredPaused = n;
+    notifyListeners();
+  }
+
+  /// The clean panel presents one understandable ownership choice for its
+  /// first Paused preview instead of separate, contradictory counters.
+  /// 0 = paused by them, 1 = paused by you, 2 = paused by both.
+  int get pausePreviewOwner {
+    if (_mirroredPaused > 0) return 2;
+    if (_pausedByYou > 0) return 1;
+    return 0;
+  }
+
+  void setPausePreviewOwner(int owner) {
+    final resolved = owner.clamp(0, 2);
+    final nextPaused = _pausedJourneys == 0 ? 1 : _pausedJourneys;
+    final nextByYou = resolved == 1 ? 1 : 0;
+    final nextMirrored = resolved == 2 ? 1 : 0;
+    if (_pausedJourneys == nextPaused &&
+        _pausedByYou == nextByYou &&
+        _mirroredPaused == nextMirrored) {
+      return;
+    }
+    _pausedJourneys = nextPaused;
+    _pausedByYou = nextByYou;
+    _mirroredPaused = nextMirrored;
+    notifyListeners();
+  }
+
+  // The three-way Connections page-design switcher lived here for a few
+  // hours on 2026-08-12 (A sections · B hero+shelves · C one list) and
+  // was REMOVED the same day: the Founder committed to A — "stop
+  // exploring alternative layouts and instead focus on making Option A
+  // feel polished." Both alternative builders deleted with it; git
+  // history keeps them if a future redesign wants the reference.
+
+  // The Sheet/Rows person-surface switcher (concepts 1 and 4) also lived
+  // and died on 2026-08-12: after testing both live, the Founder kept the
+  // ROWS pattern — the Activity card's expansion model — for every person
+  // on Connections, and the toggle went with the choice. One pattern,
+  // no switch, nothing to configure.
 
   // --- Forced limit states ----------------------------------------------
   // Read by: browse_screen.dart `_onSave` and `_onConsider`.
@@ -170,11 +377,12 @@ class ZyraDevScenario extends ChangeNotifier {
   // Read by browse_screen.dart `_advance()`. Basic only there, because
   // ZYRA One is contractually ad-free and simulating adverts on it would
   // preview a promise being broken.
-  bool adsOnEveryProfile = false;
+  bool _adsOnEveryProfile = false;
+  bool get adsOnEveryProfile => _adsOnEveryProfile;
 
   void setAdsOnEveryProfile(bool v) {
-    if (adsOnEveryProfile == v) return;
-    adsOnEveryProfile = v;
+    if (_adsOnEveryProfile == v) return;
+    _adsOnEveryProfile = v;
     notifyListeners();
   }
 
@@ -216,15 +424,53 @@ class ZyraDevScenario extends ChangeNotifier {
   /// policy must be specified before production." So 5 is a testing
   /// convenience, NOT an implied maximum, and the page must not be built as
   /// though 6 were the ceiling.
-  bool mainGuardian = false;
-  int additionalGuardianCount = 0;
-  int pendingInviteCount = 0;
+  bool _mainGuardian = false;
+  int _additionalGuardianCount = 0;
+  int _pendingInviteCount = 0;
+
+  bool get mainGuardian => _mainGuardian;
+  int get additionalGuardianCount => _additionalGuardianCount;
+  int get pendingInviteCount => _pendingInviteCount;
+
+  void setMainGuardian(bool v) {
+    if (_mainGuardian == v) return;
+    _mainGuardian = v;
+    notifyListeners();
+  }
+
+  void setAdditionalGuardians(int v) {
+    if (_additionalGuardianCount == v) return;
+    _additionalGuardianCount = v;
+    notifyListeners();
+  }
+
+  void setPendingInvites(int v) {
+    if (_pendingInviteCount == v) return;
+    _pendingInviteCount = v;
+    notifyListeners();
+  }
+
+  /// One dev invite was cancelled on the Guardian page. The page calls this
+  /// rather than reaching into the field (the old `set_()` route), so the
+  /// panel's segment and the page always agree on the count.
+  void consumePendingInvite() {
+    if (_pendingInviteCount <= 0) return;
+    _pendingInviteCount -= 1;
+    notifyListeners();
+  }
 
   /// Invitations sent TO this user by a Guardian, awaiting their answer.
   ///
   /// ADDED 2026-08-07 as a PREVIEW. This section cannot exist for real yet —
   /// see ZyraDevScenario.fakeReceived below.
-  int receivedInviteCount = 0;
+  int _receivedInviteCount = 0;
+  int get receivedInviteCount => _receivedInviteCount;
+
+  void setReceivedInvites(int v) {
+    if (_receivedInviteCount == v) return;
+    _receivedInviteCount = v;
+    notifyListeners();
+  }
 
   /// When true the Guardian page reads the DATABASE and ignores the panel.
   ///
@@ -247,10 +493,17 @@ class ZyraDevScenario extends ChangeNotifier {
   ///
   /// A control panel that is only SOMETIMES in charge is a control panel you
   /// cannot trust. It is in charge unless told otherwise.
-  bool useLiveGuardianData = false;
+  bool _useLiveGuardianData = false;
+  bool get useLiveGuardianData => _useLiveGuardianData;
+
+  void setUseLiveGuardianData(bool v) {
+    if (_useLiveGuardianData == v) return;
+    _useLiveGuardianData = v;
+    notifyListeners();
+  }
 
   /// Kept as the inverse so existing readers stay legible.
-  bool get guardianOverride => !useLiveGuardianData;
+  bool get guardianOverride => !_useLiveGuardianData;
 
   // ── Journeys ─────────────────────────────────────────────────────────
   //
@@ -272,8 +525,23 @@ class ZyraDevScenario extends ChangeNotifier {
   // paused Journeys are five active ones. One control with three mutually
   // exclusive values says the truth instead of letting two toggles
   // contradict each other.
-  int queuedJourneys = 0; // status 'potential'
-  int endedJourneys = 0; // status 'ended'
+  int _queuedJourneys = 0; // status 'potential'
+  int _endedJourneys = 0; // status 'ended'
+
+  int get queuedJourneys => _queuedJourneys;
+  int get endedJourneys => _endedJourneys;
+
+  void setQueuedJourneys(int v) {
+    if (_queuedJourneys == v) return;
+    _queuedJourneys = v;
+    notifyListeners();
+  }
+
+  void setEndedJourneys(int v) {
+    if (_endedJourneys == v) return;
+    _endedJourneys = v;
+    notifyListeners();
+  }
 
   /// Active Journeys, and how many of those are paused.
   ///
@@ -314,8 +582,51 @@ class ZyraDevScenario extends ChangeNotifier {
   /// separate rule: a paused Journey is an ACTIVE row with suspended_by
   /// set. matches_status_check permits only potential / active / ended.
   /// Three paused Journeys are three active Journeys.
-  int activeJourneys = 0;
-  int pausedJourneys = 0;
+  int _activeJourneys = 0;
+  int _pausedJourneys = 0;
+
+  int get activeJourneys => _activeJourneys;
+  int get pausedJourneys => _pausedJourneys;
+
+  void setActiveJourneys(int v) {
+    if (_activeJourneys == v) return;
+    _activeJourneys = v;
+    notifyListeners();
+  }
+
+  /// DR-ZYRA-180. A public nudge for dev controls that change SERVER
+  /// rows rather than staged counts — seeding a real Journey changes
+  /// what the real fetch returns, and ConnectionsScreen's scenario
+  /// listener answers a notify with a full re-fetch. Nothing staged
+  /// changes here.
+  void refreshJourneys() => notifyListeners();
+
+  void setPausedJourneys(int v) {
+    if (_pausedJourneys == v) return;
+    _pausedJourneys = v;
+    notifyListeners();
+  }
+
+  /// One-time bridge from the 2026-08-12 control collection to the clean
+  /// 2026-08-18 panel. These axes were removed because they either created a
+  /// dead-end Active stand-in or staged impossible cross-section mixtures.
+  /// Clearing them on the panel's first mount prevents an old hot-reload
+  /// session from carrying invisible switches into the new interface.
+  void migrateToCleanSeekerPanel() {
+    final changed =
+        _adsOnEveryProfile ||
+        _activeJourneys != 0 ||
+        _busyPotential != 0 ||
+        _busyPaused != 0 ||
+        _busyEnded != 0;
+    if (!changed) return;
+    _adsOnEveryProfile = false;
+    _activeJourneys = 0;
+    _busyPotential = 0;
+    _busyPaused = 0;
+    _busyEnded = 0;
+    notifyListeners();
+  }
 
   /// Total linked Guardians. Kept as a getter so every existing
   /// `guardianCount > 0` check still means "the dev panel is driving this
@@ -370,55 +681,55 @@ class ZyraDevScenario extends ChangeNotifier {
     final now = DateTime.now();
     return switch (devId) {
       'dev-guardian-0' => [
-          GuardianActivity(
-            waliId: devId,
-            type: 'review_waiting',
-            occurredAt: now.subtract(const Duration(days: 2)),
-          ),
-          GuardianActivity(
-            waliId: devId,
-            type: 'suggested',
-            occurredAt: now.subtract(const Duration(days: 9)),
-            detail: 'Yusuf',
-          ),
-          GuardianActivity(
-            waliId: devId,
-            type: 'linked',
-            occurredAt: now.subtract(const Duration(days: 61)),
-          ),
-        ],
+        GuardianActivity(
+          waliId: devId,
+          type: 'review_waiting',
+          occurredAt: now.subtract(const Duration(days: 2)),
+        ),
+        GuardianActivity(
+          waliId: devId,
+          type: 'suggested',
+          occurredAt: now.subtract(const Duration(days: 9)),
+          detail: 'Yusuf',
+        ),
+        GuardianActivity(
+          waliId: devId,
+          type: 'linked',
+          occurredAt: now.subtract(const Duration(days: 61)),
+        ),
+      ],
       'dev-guardian-1' => [
-          GuardianActivity(
-            waliId: devId,
-            type: 'review_answered',
-            occurredAt: now.subtract(const Duration(days: 5)),
-            detail: 'approve',
-          ),
-          GuardianActivity(
-            waliId: devId,
-            type: 'linked',
-            occurredAt: now.subtract(const Duration(days: 40)),
-          ),
-        ],
+        GuardianActivity(
+          waliId: devId,
+          type: 'review_answered',
+          occurredAt: now.subtract(const Duration(days: 5)),
+          detail: 'approve',
+        ),
+        GuardianActivity(
+          waliId: devId,
+          type: 'linked',
+          occurredAt: now.subtract(const Duration(days: 40)),
+        ),
+      ],
       'dev-guardian-2' => [
-          GuardianActivity(
-            waliId: devId,
-            type: 'suggested',
-            occurredAt: now.subtract(const Duration(hours: 5)),
-            detail: 'Nuh',
-          ),
-          GuardianActivity(
-            waliId: devId,
-            type: 'suggested',
-            occurredAt: now.subtract(const Duration(days: 3)),
-            detail: 'Zakariya',
-          ),
-          GuardianActivity(
-            waliId: devId,
-            type: 'linked',
-            occurredAt: now.subtract(const Duration(days: 18)),
-          ),
-        ],
+        GuardianActivity(
+          waliId: devId,
+          type: 'suggested',
+          occurredAt: now.subtract(const Duration(hours: 5)),
+          detail: 'Nuh',
+        ),
+        GuardianActivity(
+          waliId: devId,
+          type: 'suggested',
+          occurredAt: now.subtract(const Duration(days: 3)),
+          detail: 'Zakariya',
+        ),
+        GuardianActivity(
+          waliId: devId,
+          type: 'linked',
+          occurredAt: now.subtract(const Duration(days: 18)),
+        ),
+      ],
       // Guardians 3–5 have no activity, on purpose. Someone who has just
       // linked has genuinely done nothing, and the honest empty copy on the
       // detail page needs a case that reaches it.
@@ -452,19 +763,33 @@ class ZyraDevScenario extends ChangeNotifier {
   /// JOURNEY STATE around them. Everything a card renders is genuine; only
   /// the status is staged.
   ///
-  /// [realActive] is the Seeker's OWN Active Journeys, as fetched from the
-  /// database. They fill the Active slots BEFORE any fake is generated —
-  /// see the loop below for why that is the only version of this control
-  /// that can be tested with.
-  static List<JourneyMatch> fakeJourneys({
+  /// Real Journeys are account truth and are always returned. Scenario
+  /// counts add preview cards around them; zero means zero PREVIEWS, not
+  /// zero real people. This supersedes the 2026-08-12 absolute-count model,
+  /// which could hide a working Journey and replace it with a fake Active
+  /// card that could not enter the flow.
+  static List<JourneyMatch> composeJourneys({
     String? viewerGender,
+    String? currentUserId,
     List<SeekerProfile> pool = const [],
     ZyraPlan viewerPlan = ZyraPlan.basic,
     List<JourneyMatch> realActive = const [],
+    List<JourneyMatch> realPotential = const [],
+    List<JourneyMatch> realPaused = const [],
+    List<JourneyMatch> realEnded = const [],
   }) {
     final s = ZyraDevScenario.instance;
     final now = DateTime.now();
-    final out = <JourneyMatch>[];
+    // Real account truth is always present. Scenario counts now mean EXTRA
+    // preview cards; zero removes previews, never real people. The old
+    // absolute-count model could hide a working server Journey and replace it
+    // with a dead-end Active stand-in that looked identical.
+    final out = <JourneyMatch>[
+      ...realPotential,
+      ...realActive,
+      ...realPaused,
+      ...realEnded,
+    ];
     final otherGender = viewerGender == 'female' ? 'male' : 'female';
 
     var next = 0;
@@ -473,24 +798,52 @@ class ZyraDevScenario extends ChangeNotifier {
     SeekerProfile take(String name, int age) {
       if (pool.isEmpty) {
         return SeekerProfile(
-          id: 'dev-$name', firstName: name, age: age,
-          city: 'Birmingham', photos: const [], gender: otherGender,
+          id: 'dev-$name',
+          firstName: name,
+          age: age,
+          city: 'Birmingham',
+          photos: const [],
+          gender: otherGender,
         );
       }
       return pool[next++ % pool.length];
     }
 
-    JourneyMatch make(String id, String name, int age, String status,
-            {String? stage, String? suspendedBy, DateTime? endedAt}) =>
-        JourneyMatch(
-          matchId: id,
-          profile: take(name, age),
-          status: status,
-          journeyStage: stage,
-          suspendedBy: suspendedBy,
-          endedAt: endedAt,
-          isMock: true,
-        );
+    JourneyMatch make(
+      String id,
+      String name,
+      int age,
+      String status, {
+      String? stage,
+      String? suspendedBy,
+      String? alsoPausedBy,
+      DateTime? suspendedAt,
+      DateTime? pauseNudgedAt,
+      DateTime? endedAt,
+      bool inAnotherJourney = false,
+    }) => JourneyMatch(
+      matchId: id,
+      profile: take(name, age),
+      status: status,
+      journeyStage: stage,
+      suspendedBy: suspendedBy,
+      alsoPausedBy: alsoPausedBy,
+      suspendedAt: suspendedAt,
+      pauseNudgedAt: pauseNudgedAt,
+      endedAt: endedAt,
+      inAnotherJourney: inAnotherJourney,
+      isMock: true,
+    );
+
+    // "In another Journey" — PER SECTION since 2026-08-13: the first N
+    // fakes of each section are busy, N being that section's own panel
+    // count. FAKES ONLY (an Active Journey with the tester cannot also
+    // be with someone else, so the active loop has no count). Clamped by
+    // construction: a fake index only exists for a built fake.
+    //
+    // "Paused by you": the first N paused fakes carry the tester's own
+    // id, so iInitiated reads true exactly as on a real row.
+    final me = currentUserId ?? ZyraAuth.currentUser?.id ?? 'dev-me';
 
     // ── TEN NAMES PER LIST, 2026-08-09, up from five.
     //
@@ -502,11 +855,33 @@ class ZyraDevScenario extends ChangeNotifier {
     // One lookup for all four loops below.
     final limits = ZyraEntitlements.of(viewerPlan);
 
-    const queuedNames = ['Yusuf', 'Bilal', 'Idris', 'Musa', 'Zaid',
-        'Harun', 'Tariq', 'Rayyan', 'Kamal', 'Adnan'];
-    final nQueued = ZyraEntitlements.devClamp(s.queuedJourneys, limits.potential);
-    for (var i = 0; i < nQueued && i < queuedNames.length; i++) {
-      out.add(make('dev-q$i', queuedNames[i], 26 + i, 'potential'));
+    const queuedNames = [
+      'Yusuf',
+      'Bilal',
+      'Idris',
+      'Musa',
+      'Zaid',
+      'Harun',
+      'Tariq',
+      'Rayyan',
+      'Kamal',
+      'Adnan',
+    ];
+    final nQueued = ZyraEntitlements.devClamp(
+      s.queuedJourneys,
+      limits.potential,
+    );
+    for (var i = 0; i < nQueued; i++) {
+      if (i >= queuedNames.length) break;
+      out.add(
+        make(
+          'dev-q$i',
+          queuedNames[i],
+          26 + i,
+          'potential',
+          inAnotherJourney: i < s._busyPotential,
+        ),
+      );
     }
 
     // SIMULATION ONLY — the two counts are now INDEPENDENT.
@@ -517,9 +892,9 @@ class ZyraDevScenario extends ChangeNotifier {
     // meant previewing a paused layout required creating an active Journey
     // and pausing it first.
     //
-    // Here `activeJourneys` means RUNNING and `pausedJourneys` means PAUSED,
-    // and the two simply add up. Every row is isMock and never reaches the
-    // database, so nothing real is violated — production keeps its index.
+    // Here `activeJourneys` means extra RUNNING previews and
+    // `pausedJourneys` means extra PAUSED previews. Every preview is isMock
+    // and never reaches the database; real rows above remain untouched.
     //
     // 2026-08-09: the counts are CLAMPED TO THE CURRENT PLAN by the same
     // helper the panel's segments use, so switching ZYRA One -> Basic with
@@ -527,78 +902,119 @@ class ZyraDevScenario extends ChangeNotifier {
     // the row and the list drift apart on a plan switch, and the panel
     // stops being the source of truth it claims to be.
     const activeNames = ['Amina', 'Sara', 'Zaynab', 'Maryam', 'Khadija'];
-    const pausedNames = ['Fatima', 'Aisha', 'Safiya', 'Halima', 'Nadia',
-        'Rabia', 'Sumaya', 'Zahra', 'Iman', 'Noor'];
-    // ── REAL ROWS FIRST, 2026-08-11. Founder: "make sure the toggle has the
-    // same user that u made be able to do this part… and please make sure
-    // the reveal compatibility works."
-    //
-    // A fabricated Active Journey cannot be tested with. isMock rows exist
-    // only in this process, so every server call the Journey makes —
-    // revealCompatibility, advanceStage, the family review, the dev score
-    // override — is handed a match_id that is not a row and not even a uuid.
-    // The Reveal button therefore did nothing at all: revealCompatibility()
-    // reads the match first, gets null, and returns silently.
-    //
-    // So the toggle now SURFACES the Seeker's real Active Journey rather
-    // than inventing a stand-in for it. Slot 0 is the genuine match with the
-    // genuine profile, and fakes are generated only to top up beyond the
-    // rows that actually exist — which is where the layout question the
-    // fakes answer ("what do three of these look like?") starts anyway.
+    const pausedNames = [
+      'Fatima',
+      'Aisha',
+      'Safiya',
+      'Halima',
+      'Nadia',
+      'Rabia',
+      'Sumaya',
+      'Zahra',
+      'Iman',
+      'Noor',
+    ];
+    // Active previews exist only as a defensive bridge for an old hot-reload
+    // session or a preview Potential card promoted locally. The clean panel
+    // never exposes an Active count: its Journey action finds/seeds a real
+    // match. Connections also converts any surviving Active preview into a
+    // real walkable Journey when entered.
     final nActive = ZyraEntitlements.devClamp(s.activeJourneys, limits.active);
     for (var i = 0; i < nActive; i++) {
-      if (i < realActive.length) {
-        out.add(realActive[i]);
-      } else if (i - realActive.length < activeNames.length) {
-        out.add(make('dev-a$i', activeNames[i - realActive.length], 27 + i,
-            'active', stage: 'conversation'));
-      }
+      if (i >= activeNames.length) break;
+      out.add(
+        make(
+          'dev-a$i',
+          activeNames[i],
+          27 + i,
+          'active',
+          stage: 'conversation',
+        ),
+      );
     }
     final nPaused = ZyraEntitlements.devClamp(s.pausedJourneys, limits.paused);
-    for (var i = 0; i < nPaused && i < pausedNames.length; i++) {
-      out.add(make('dev-p$i', pausedNames[i], 26 + i, 'active',
-          stage: 'conversation', suspendedBy: 'dev-other'));
+    for (var i = 0; i < nPaused; i++) {
+      if (i < pausedNames.length) {
+        final fakeId = 'dev-p$i';
+        final f = i;
+        out.add(
+          make(
+            fakeId,
+            pausedNames[f],
+            26 + i,
+            'active',
+            stage: 'conversation',
+            // The first N are paused BY THE TESTER (panel's "Paused by
+            // you" count) — their rows read "Paused by you" and offer
+            // Resume; the rest stay paused by the other side.
+            suspendedBy: f < s._pausedByYou ? me : 'dev-other',
+            // DR-ZYRA-170: the tester's mirrored holds sit on the first
+            // paused-by-other fakes — "Paused by both of you".
+            alsoPausedBy:
+                (f >= s._pausedByYou && f < s._pausedByYou + s._mirroredPaused)
+                ? me
+                : null,
+            inAnotherJourney: f < s._busyPaused,
+            // A stand-in the tester already nudged stays nudged across
+            // recomposes — the ids are deterministic, so the set in the
+            // scenario is enough for the row to grey like a real one.
+            pauseNudgedAt: s._nudgedFakes.contains(fakeId) ? now : null,
+            // The FIRST stand-in carries a 95-day-old pause so the
+            // time-honesty line ("Paused · 3 months", DR-ZYRA-142) is
+            // previewable solo; the rest are fresh pauses with no line.
+            suspendedAt: i == 0
+                ? now.subtract(const Duration(days: 95))
+                : now.subtract(const Duration(days: 3)),
+          ),
+        );
+      }
     }
 
-    const endedNames = ['Layla', 'Hafsa', 'Ruqayya', 'Asma', 'Juwayriya',
-        'Umm Kulthum', 'Zaynab bint Ali', 'Ramla', 'Barira', 'Nusayba'];
+    const endedNames = [
+      'Layla',
+      'Hafsa',
+      'Ruqayya',
+      'Asma',
+      'Juwayriya',
+      'Umm Kulthum',
+      'Zaynab bint Ali',
+      'Ramla',
+      'Barira',
+      'Nusayba',
+    ];
     final nEnded = ZyraEntitlements.devClamp(s.endedJourneys, limits.ended);
-    for (var i = 0; i < nEnded && i < endedNames.length; i++) {
-      out.add(make('dev-e$i', endedNames[i], 25 + i, 'ended',
-          endedAt: now.subtract(Duration(days: 2 + i))));
+    for (var i = 0; i < nEnded; i++) {
+      if (i < endedNames.length) {
+        final f = i;
+        out.add(
+          make(
+            'dev-e$i',
+            endedNames[f],
+            25 + i,
+            'ended',
+            endedAt: now.subtract(Duration(days: 2 + i)),
+            inAnotherJourney: f < s._busyEnded,
+          ),
+        );
+      }
     }
 
     return out;
   }
 
-  /// True when any Journey toggle is driving the Connections page.
-  bool get journeysOverridden =>
-      queuedJourneys > 0 || activeJourneys > 0 || pausedJourneys > 0 || endedJourneys > 0;
+  /// True when any Journey row is above zero — used to skip the candidate
+  /// pool fetch when nothing would be drawn from it.
+  bool get anyJourneysStaged =>
+      _queuedJourneys > 0 ||
+      _activeJourneys > 0 ||
+      _pausedJourneys > 0 ||
+      _endedJourneys > 0;
 
-  /// True when a DEV BUILD should hold back the Seeker's real Active
-  /// Journeys — the Active row reads 0, so the Active section is empty.
-  ///
-  /// ADDED 2026-08-11. Founder: "when I opened the app I saw a active
-  /// journey there. But remember we said the default is 0… make sure the
-  /// default is 0 and I choose from toggle."
-  ///
-  /// The Active row said 0 and the screen showed one, because 0 did not
-  /// mean "none" — it meant "the panel isn't driving this", and the real
-  /// row came through underneath. A control panel whose zero position
-  /// disagrees with the screen is worse than no panel: it reports a state
-  /// nobody is in.
-  ///
-  /// 0 now means none. The Journey is not touched — nothing is ended,
-  /// suspended or deleted; it is not drawn. Move the row to 1 and it comes
-  /// back, the same Journey with the same match, which is what makes it
-  /// testable rather than merely hidden.
-  ///
-  /// GATED ON !kReleaseMode, deliberately: the same gate home_shell.dart:210
-  /// uses to mount the panel at all. A release build has no way to move this
-  /// row off 0, so without the gate every real Seeker would lose their Active
-  /// Journey to a debug default. In a release build this is always false and
-  /// _refresh() behaves exactly as it did before this change.
-  bool get holdsRealActiveJourneys => !kReleaseMode && activeJourneys == 0;
+  // journeysOverridden and holdsRealActiveJourneys REMOVED 2026-08-12: in
+  // dev builds composeJourneys() is now the only source of the Connections
+  // list, so there is no longer an "overridden vs real" fork for either
+  // getter to arbitrate. The rows are always in charge; release builds
+  // never call any of this.
 
   /// Invitations this Seeker has RECEIVED from a Guardian.
   ///
@@ -611,7 +1027,9 @@ class ZyraDevScenario extends ChangeNotifier {
   /// a phone number or an email) rather than bearer tokens. That is a
   /// product decision, not a screen. This exists so the layout can be judged
   /// before that decision is taken.
-  static List<({String from, String relationship, int daysAgo})> fakeReceived(int count) {
+  static List<({String from, String relationship, int daysAgo})> fakeReceived(
+    int count,
+  ) {
     const all = [
       (from: 'Abdul', relationship: 'father', daysAgo: 0),
       (from: 'Hassan', relationship: 'brother', daysAgo: 2),
@@ -631,33 +1049,590 @@ class ZyraDevScenario extends ChangeNotifier {
         PendingInvite(
           // A plausible token, so an unlabelled invite shows what a real
           // one would rather than something obviously fake.
-          token: 'DEV${(i + 1) * 11117 % 100000}'.padRight(8, 'X').substring(0, 8),
+          token: 'DEV${(i + 1) * 11117 % 100000}'
+              .padRight(8, 'X')
+              .substring(0, 8),
           label: fakePendingInvites[i].label,
-          createdAt: now.subtract(Duration(days: 7 - fakePendingInvites[i].daysLeft)),
+          createdAt: now.subtract(
+            Duration(days: 7 - fakePendingInvites[i].daysLeft),
+          ),
           expiresAt: now.add(Duration(days: fakePendingInvites[i].daysLeft)),
         ),
     ];
   }
 
-  // ---------------------------------------------------------------------
+  // ═══════════════════════════════════════════════════════════════════
+  // — Wali side — DR-ZYRA-152, 2026-08-13
+  // ═══════════════════════════════════════════════════════════════════
+  //
+  // Same rule as everything above: A TOGGLE MUST CHANGE SOMETHING REAL,
+  // and every field here names its reader.
+  //
+  // TWO CONTROLS THE BRIEF ASKED FOR ARE DELIBERATELY ABSENT, because a
+  // field nothing renders is the exact failure this file's header rule
+  // exists to prevent. Both appear in the panel as REFUSED rows pointing
+  // at Developer Access, rather than as steppers writing into nothing:
+  //
+  //   Invitations received  `wali_invites` has no recipient column. An
+  //                         invite is a bearer code typed into
+  //                         accept_wali_invite_screen — there is no list
+  //                         to stage, and no screen that renders one.
+  //                         (Same limit the Seeker panel records against
+  //                         its own receivedInviteCount, which survives
+  //                         only because seeker_wali_tab draws a PREVIEW
+  //                         section for it. No Guardian equivalent exists.)
+  //   Introductions sent    ZyraGuardianSuggestionService.fetchPending()
+  //                         reads suggestions FOR a Seeker; both of its
+  //                         callers are Seeker screens. Nothing on the
+  //                         Guardian side shows what this Guardian put
+  //                         forward, so there is nothing to top up.
+  //
+  // Readers for what IS here:
+  //   waliLinkedSeekers  → composeWaliWards() → WaliSeekersScreen,
+  //                        WaliDashboardScreen
+  //   active/stage/      → composeWaliJourneys() → WaliDashboardScreen,
+  //   paused/ended         WaliJourneyDetailScreen
+  //   reviewWaiting      → waliOpenReviewIds() → Dashboard badge;
+  //                        waliStagedReview() → detail screen
+  //   waliRole           → gates BOTH of the above, and is the reason the
+  //                        refusal path came back (see [WaliRole])
+  //   sentInvites        → composeWaliSentInvites() →
+  //                        WaliInviteSeekerScreen
+  //   waliUnread         → WaliHomeShell's Notifications tab badge
 
-  void set_(void Function() change) {
-    change();
+  /// Where the Guardian currently is. Context, not scenario — reset()
+  /// leaves it alone, exactly as it leaves [currentPage] alone.
+  WaliPage currentWaliPage = WaliPage.dashboard;
+
+  void setCurrentWaliPage(WaliPage page) {
+    if (currentWaliPage == page) return;
+    currentWaliPage = page;
     notifyListeners();
   }
 
+  /// Main or Additional. Defaults to Main because that is the role the
+  /// Guardian flows were built for and the one a fresh link receives —
+  /// `wali_links.is_main` auto-designates the first active link.
+  WaliRole _waliRole = WaliRole.main;
+  WaliRole get waliRole => _waliRole;
+  bool get waliIsMain => _waliRole == WaliRole.main;
+
+  void setWaliRole(WaliRole r) {
+    if (_waliRole == r) return;
+    _waliRole = r;
+    notifyListeners();
+  }
+
+  /// Seekers under this Guardian. Real links first, stand-ins topping up.
+  // Staged Browse-activity counts for the Dashboard's ward chips —
+  // DR-ZYRA-171. STAGED ONLY, by design: a ward's Saved/Considered/
+  // Declined lists have no Guardian read path in RLS today, so these
+  // numbers exist purely so the Founder can review the design. The real
+  // read is its own privacy decision, raised in the register.
+  // ── THE JOURNEY EXPERIENCE LAB — DR-ZYRA-172 ─────────────────────
+  // Which of the five candidate first-page experiences the Journey's
+  // Compatibility Reveal wears. 0 = today's build; 1-5 per
+  // JourneyExperienceLab.labels (Path · Chamber · Ascent · Ritual ·
+  // Table). Chrome around the REAL view — never a mock of it.
+  int _journeyExperience = 0;
+  int get journeyExperience => _journeyExperience;
+
+  void setJourneyExperience(int v) {
+    final n = v.clamp(0, 5);
+    if (_journeyExperience == n) return;
+    _journeyExperience = n;
+    notifyListeners();
+  }
+
+  int _wardSaved = 0;
+  int get wardSaved => _wardSaved;
+  void setWardSaved(int v) {
+    final n = v.clamp(0, 99);
+    if (_wardSaved == n) return;
+    _wardSaved = n;
+    notifyListeners();
+  }
+
+  int _wardConsidered = 0;
+  int get wardConsidered => _wardConsidered;
+  void setWardConsidered(int v) {
+    final n = v.clamp(0, 99);
+    if (_wardConsidered == n) return;
+    _wardConsidered = n;
+    notifyListeners();
+  }
+
+  int _wardDeclined = 0;
+  int get wardDeclined => _wardDeclined;
+  void setWardDeclined(int v) {
+    final n = v.clamp(0, 99);
+    if (_wardDeclined == n) return;
+    _wardDeclined = n;
+    notifyListeners();
+  }
+
+  int _waliLinkedSeekers = 0;
+  int get waliLinkedSeekers => _waliLinkedSeekers;
+  void setWaliLinkedSeekers(int v) {
+    final n = v.clamp(0, fakeWards.length);
+    if (_waliLinkedSeekers == n) return;
+    _waliLinkedSeekers = n;
+    notifyListeners();
+  }
+
+  /// Journeys belonging to those Seekers.
+  ///
+  /// ACTIVE + PAUSED IS CAPPED BY THE WARD COUNT, not by a number chosen
+  /// here: one Active Journey per Seeker is the platform invariant
+  /// (UNIQUE partial indexes on matches.seeker_a_id / seeker_b_id WHERE
+  /// status = 'active'), and pausing sets suspended_by while leaving the
+  /// status 'active' — the same slot. Two Journeys for one ward is a
+  /// picture of something the database refuses. Ended rows are history,
+  /// not slots, so they are not capped against it.
+  int _waliActiveJourneys = 0;
+  int _waliPausedJourneys = 0;
+  int _waliEndedJourneys = 0;
+
+  int get waliActiveJourneys => _waliActiveJourneys;
+  int get waliPausedJourneys => _waliPausedJourneys;
+  int get waliEndedJourneys => _waliEndedJourneys;
+
+  void setWaliActiveJourneys(int v) {
+    final n = v.clamp(0, _waliLinkedSeekers);
+    if (_waliActiveJourneys == n) return;
+    _waliActiveJourneys = n;
+    notifyListeners();
+  }
+
+  void setWaliPausedJourneys(int v) {
+    final n = v.clamp(0, _waliLinkedSeekers);
+    if (_waliPausedJourneys == n) return;
+    _waliPausedJourneys = n;
+    notifyListeners();
+  }
+
+  void setWaliEndedJourneys(int v) {
+    final n = v.clamp(0, _waliPartners.length);
+    if (_waliEndedJourneys == n) return;
+    _waliEndedJourneys = n;
+    notifyListeners();
+  }
+
+  /// Which stage the staged Active Journeys sit at — an INDEX into
+  /// [ZyraJourneyStages.all], never a stage name written here. That map
+  /// is the only one (DR-ZYRA-129); this stores a position in it so a
+  /// renamed label reaches the panel without a second edit.
+  int _waliStageIndex = 0;
+  int get waliStageIndex => _waliStageIndex;
+  ZyraJourneyStage get waliStage =>
+      ZyraJourneyStages.all[_waliStageIndex.clamp(
+        0,
+        ZyraJourneyStages.all.length - 1,
+      )];
+
+  void setWaliStageIndex(int v) {
+    final n = v.clamp(0, ZyraJourneyStages.all.length - 1);
+    if (_waliStageIndex == n) return;
+    _waliStageIndex = n;
+    notifyListeners();
+  }
+
+  /// A Family Review waiting on THIS Guardian — the one thing on the
+  /// Guardian's dashboard that is genuinely blocked on them.
+  ///
+  /// Main Guardians only, and that is not a panel rule: wali_review_
+  /// decision() checks the caller is an active MAIN Wali for one of the
+  /// two Seekers, so an Additional Guardian has no vote to cast.
+  bool _waliReviewWaiting = false;
+  bool get waliReviewWaiting => _waliReviewWaiting && waliIsMain;
+
+  void setWaliReviewWaiting(bool v) {
+    if (_waliReviewWaiting == v) return;
+    _waliReviewWaiting = v;
+    // A fresh review has not been answered. Without this, turning the
+    // toggle off and on again would restore a review that still
+    // remembered last round's decision.
+    _waliReviewDecision = null;
+    notifyListeners();
+  }
+
+  /// What this Guardian chose on the staged review — 'continue' or
+  /// 'pause', null until they act.
+  ///
+  /// THIS IS THE POINT OF THE SECTION. The panel's rule is that a dev
+  /// snackbar where the product would act is the panel lying about the
+  /// experience, so the stand-in Continue / Pause buttons write here and
+  /// the screen re-reads it, greying the buttons and showing "You chose
+  /// Continue — waiting on the other family" exactly as a real vote does.
+  String? _waliReviewDecision;
+  String? get waliReviewDecision => _waliReviewDecision;
+
+  void setWaliReviewDecision(String? d) {
+    if (_waliReviewDecision == d) return;
+    _waliReviewDecision = d;
+    notifyListeners();
+  }
+
+  /// Invite codes this Guardian has sent and nobody has redeemed.
+  int _waliSentInvites = 0;
+  int get waliSentInvites => _waliSentInvites;
+  void setWaliSentInvites(int v) {
+    final n = v.clamp(0, fakeWaliInvites.length);
+    if (_waliSentInvites == n) return;
+    _waliSentInvites = n;
+    notifyListeners();
+  }
+
+  /// Unread notifications on the Guardian's Notifications tab badge.
+  ///
+  /// THE BELL IS A TAB, not the top-right overlay it was: WaliHomeShell
+  /// dropped the floating Bell on 2026-08-13 and the unread count now
+  /// feeds FloatingNavItem.badge. This overrides that count when above
+  /// zero, so the badge's own layout (1, 9, 10+) is reachable without
+  /// generating ten real notifications.
+  int _waliUnread = 0;
+  int get waliUnread => _waliUnread;
+  void setWaliUnread(int v) {
+    final n = v.clamp(0, 12);
+    if (_waliUnread == n) return;
+    _waliUnread = n;
+    notifyListeners();
+  }
+
+  /// True when any Guardian-side row is above zero — lets a screen skip
+  /// composition entirely when the panel is at rest.
+  bool get anyWaliStaged =>
+      _waliLinkedSeekers > 0 ||
+      _waliActiveJourneys > 0 ||
+      _waliPausedJourneys > 0 ||
+      _waliEndedJourneys > 0 ||
+      _waliSentInvites > 0 ||
+      _waliUnread > 0 ||
+      _waliReviewWaiting;
+
+  /// The Guardian's stand-in wards. Deterministic, so a Journey staged
+  /// against `dev-ws1` is still against `dev-ws1` after a recompose.
+  ///
+  /// Relationships are the STORED CODES, matching fakeGuardians above —
+  /// dev data and production data go through the same label lookup, which
+  /// is how the 'Paternal uncle' casing bug hid for a week.
+  static const List<({String name, String relationship})> fakeWards = [
+    (name: 'Aaliyah', relationship: 'father'),
+    (name: 'Umar', relationship: 'uncle'),
+    (name: 'Sumayyah', relationship: 'brother'),
+  ];
+
+  /// Counterparts, in the shape zyra_counterpart_card() actually returns:
+  /// first name and age, nothing else.
+  ///
+  /// `city` '—', `photos` empty and `gender` '' are NOT laziness here, and
+  /// this is the one place a stand-in is more honest with an empty photo
+  /// list than with a borrowed real profile: a Guardian is not shown the
+  /// other family's photos, city or gender at all (clause 3, closed
+  /// 2026-08-08). Borrowing a real profile the way composeJourneys does
+  /// for the Seeker would preview a disclosure that does not happen.
+  static const List<({String name, int age, String? guardian, String? surname})>
+  _waliPartners = [
+    (name: 'Bilal', age: 29, guardian: 'Ismail', surname: 'family of Khan'),
+    (name: 'Khadija', age: 26, guardian: 'Nuh', surname: 'family of Patel'),
+    (name: 'Yusuf', age: 31, guardian: null, surname: null),
+    (name: 'Safiya', age: 27, guardian: 'Adnan', surname: 'family of Malik'),
+    (name: 'Idris', age: 33, guardian: 'Tariq', surname: 'family of Sheikh'),
+  ];
+
+  /// Labels for staged sent invites. One is null on purpose — an invite
+  /// with no label is the common case and renders as the raw token, which
+  /// is the outcome the label exists to avoid.
+  static const List<({String? label, int daysLeft})> fakeWaliInvites = [
+    (label: 'Aaliyah', daysLeft: 6),
+    (label: null, daysLeft: 4),
+    (label: 'My nephew', daysLeft: 2),
+    (label: 'Cousin Idris', daysLeft: 0),
+  ];
+
+  /// Seekers under this Guardian — REAL LINKS FIRST, stand-ins topping up.
+  ///
+  /// Real-first for the same reason composeJourneys is: a fabricated ward
+  /// cannot be tested with. Its id is not a uuid, so every Guardian action
+  /// that reaches the server against it is handed something that is not a
+  /// row. Slot 0 is the genuine link when one exists.
+  ///
+  /// 0 MEANS ZERO, real links included — the panel is the source of truth
+  /// while it is driving, which is what makes Reset mean reset.
+  static List<WaliLinkedPerson> composeWaliWards({
+    List<WaliLinkedPerson> real = const [],
+  }) {
+    final s = ZyraDevScenario.instance;
+    final out = <WaliLinkedPerson>[];
+    for (var i = 0; i < s._waliLinkedSeekers; i++) {
+      if (i < real.length) {
+        out.add(real[i]);
+      } else {
+        final f = i - real.length;
+        if (f >= fakeWards.length) break;
+        out.add(
+          WaliLinkedPerson(
+            id: 'dev-ws$i',
+            firstName: fakeWards[f].name,
+            // A Seeker has exactly one Main Guardian, and this Guardian is
+            // either it or not — the role is a property of the LINK, so
+            // every staged ward agrees with the role segment.
+            isMain: s.waliIsMain,
+            relationship: fakeWards[f].relationship,
+          ),
+        );
+      }
+    }
+    return out;
+  }
+
+  /// Journeys for the staged wards, in the shape the Guardian screens read.
+  ///
+  /// AN ADDITIONAL GUARDIAN GETS NOTHING, and that is measured behaviour
+  /// rather than a decision taken here. ZyraWaliJourneyService.
+  /// fetchLinkedJourneys() builds every row through
+  /// zyra_counterpart_card(), which returns null to anyone who is not the
+  /// Journey's MAIN Guardian, and the loop then `continue`s. So today an
+  /// Additional Guardian's Dashboard is empty of Journeys entirely.
+  ///
+  /// (wali_dashboard_screen's own comment says an Additional Guardian
+  /// "sees the plain stage", which was true before the counterpart card
+  /// landed on 2026-08-08 and has been stale since. Raised, not silently
+  /// fixed — see DR-ZYRA-152.)
+  static List<WaliJourneyView> composeWaliJourneys({
+    required List<WaliLinkedPerson> wards,
+    List<WaliJourneyView> real = const [],
+  }) {
+    final s = ZyraDevScenario.instance;
+    if (!s.waliIsMain) return const [];
+
+    final realActive = [
+      for (final j in real)
+        if (j.status != 'ended' && !j.isSuspended) j,
+    ];
+    final realPaused = [
+      for (final j in real)
+        if (j.status != 'ended' && j.isSuspended) j,
+    ];
+    final realEnded = [
+      for (final j in real)
+        if (j.status == 'ended') j,
+    ];
+
+    // One Active Journey per Seeker — see the field comment. Paused takes
+    // what Active left, so the two can never claim the same ward.
+    final slots = wards.length;
+    final nActive = s._waliActiveJourneys.clamp(0, slots);
+    final nPaused = s._waliPausedJourneys.clamp(0, slots - nActive);
+    final nEnded = s._waliEndedJourneys.clamp(0, _waliPartners.length);
+
+    final out = <WaliJourneyView>[];
+    var partner = 0;
+
+    WaliJourneyView make(
+      String id,
+      WaliLinkedPerson ward,
+      String status, {
+      String? stage,
+      String? suspendedBy,
+    }) {
+      final p = _waliPartners[partner++ % _waliPartners.length];
+      return WaliJourneyView(
+        matchId: id,
+        linkedSeekerId: ward.id,
+        linkedSeekerName: ward.firstName,
+        partner: SeekerProfile(
+          id: 'dev-wp$id',
+          firstName: p.name,
+          age: p.age,
+          city: '—', // withheld by the card, not missing
+          photos: const [], // withheld by the card, not missing
+          gender: '', // not disclosed to Guardians
+        ),
+        counterpartGuardianName: p.guardian,
+        counterpartGuardianSurname: p.surname,
+        status: status,
+        journeyStage: stage,
+        suspendedBy: suspendedBy,
+        isMock: true,
+      );
+    }
+
+    final stageValue = s.waliStage.value;
+
+    for (var i = 0; i < nActive; i++) {
+      if (i < realActive.length) {
+        out.add(realActive[i]);
+      } else if (i < wards.length) {
+        out.add(make('dev-wj$i', wards[i], 'active', stage: stageValue));
+      }
+    }
+    for (var i = 0; i < nPaused; i++) {
+      final wardIndex = nActive + i;
+      if (i < realPaused.length) {
+        out.add(realPaused[i]);
+      } else if (wardIndex < wards.length) {
+        out.add(
+          make(
+            'dev-wp$i',
+            wards[wardIndex],
+            'active',
+            stage: stageValue,
+            // Paused BY THE OTHER FAMILY. A Guardian cannot pause a
+            // Journey — suspend_journey() is a Seeker capability — so
+            // staging one paused "by you" would preview a control this
+            // role does not have.
+            suspendedBy: 'dev-other',
+          ),
+        );
+      }
+    }
+    for (var i = 0; i < nEnded; i++) {
+      if (i < realEnded.length) {
+        out.add(realEnded[i]);
+      } else if (wards.isNotEmpty) {
+        // Ended Journeys are history, so they reuse wards freely — the
+        // same Seeker having ended one Journey and started another is
+        // the ordinary case, not an edge one.
+        out.add(make('dev-we$i', wards[i % wards.length], 'ended'));
+      }
+    }
+    // No endedAt is stamped: WaliJourneyView carries no timestamp, and a
+    // Guardian's Journey list shows "Journey ended" with no cooling
+    // period behind it. Nothing to fabricate here.
+    return out;
+  }
+
+  /// Journeys the Dashboard should badge as having a Family Review open.
+  ///
+  /// STAND-INS ONLY. Staging a review against a REAL matchId would put a
+  /// Continue button on screen that then calls wali_review_decision()
+  /// with an id the server has no review row for — the panel showing a
+  /// decision that cannot be taken.
+  static Set<String> waliOpenReviewIds(List<WaliJourneyView> journeys) {
+    final s = ZyraDevScenario.instance;
+    if (!s.waliReviewWaiting) return const {};
+    return {
+      for (final j in journeys)
+        if (j.isMock && j.status != 'ended' && !j.isSuspended) j.matchId,
+    };
+  }
+
+  /// The staged Family Review, in the record shape
+  /// wali_journey_detail_screen already renders. Null is the same "no
+  /// review" the real fetch returns, so the screen needs no new branch.
+  ///
+  /// `toStage` is the NEXT stage in the canonical sequence, derived from
+  /// the one map rather than named here — a review is the gate BETWEEN
+  /// two stages, so the stage it leads to cannot be invented separately.
+  static ({String id, String status, String toStage, DateTime deadlineAt})?
+  waliStagedReview() {
+    final s = ZyraDevScenario.instance;
+    if (!s.waliReviewWaiting) return null;
+    final i = s._waliStageIndex;
+    final next = i + 1 < ZyraJourneyStages.all.length
+        ? ZyraJourneyStages.all[i + 1].value
+        // Open Conversation is terminal — there is no stage after it and
+        // therefore no review that could gate one. Falling back to the
+        // current stage keeps the record well-formed; the panel refuses
+        // the toggle there instead of relying on this.
+        : ZyraJourneyStages.all[i].value;
+    return (
+      id: 'dev-review-0',
+      status: 'pending',
+      toStage: next,
+      // Inside the 48h window and not a round number, so the countdown
+      // renders as "41h 12m" rather than something that reads as a
+      // placeholder.
+      deadlineAt: DateTime.now().add(const Duration(hours: 41, minutes: 12)),
+    );
+  }
+
+  /// Invite codes this Guardian has sent — real rows first, stand-ins
+  /// topping up, same rule as everywhere else.
+  static List<PendingInvite> composeWaliSentInvites({
+    List<PendingInvite> real = const [],
+  }) {
+    final s = ZyraDevScenario.instance;
+    final now = DateTime.now();
+    final out = <PendingInvite>[];
+    for (var i = 0; i < s._waliSentInvites; i++) {
+      if (i < real.length) {
+        out.add(real[i]);
+      } else {
+        final f = i - real.length;
+        if (f >= fakeWaliInvites.length) break;
+        out.add(
+          PendingInvite(
+            token: 'DEVW${(f + 1) * 7919 % 10000}'
+                .padRight(8, 'X')
+                .substring(0, 8),
+            label: fakeWaliInvites[f].label,
+            createdAt: now.subtract(
+              Duration(days: 7 - fakeWaliInvites[f].daysLeft),
+            ),
+            expiresAt: now.add(Duration(days: fakeWaliInvites[f].daysLeft)),
+          ),
+        );
+      }
+    }
+    return out;
+  }
+
+  // ---------------------------------------------------------------------
+
+  // set_() REMOVED 2026-08-12. It ran an arbitrary closure and notified,
+  // which meant state could change without this class knowing WHICH state —
+  // the reason reset() drifted out of step with the fields (adsOnEveryProfile
+  // was resettable by nothing). Every mutation now goes through a named,
+  // guarded setter above.
+
+  /// Everything simulated, back to zero, in one notify. "Zero means zero.
+  /// Every time." (Founder, 2026-08-12.)
+  ///
+  /// Enumerates EVERY simulated axis — when a field is added to this class,
+  /// it is added here in the same change or the panel's Reset silently lies,
+  /// which is the failure this file's header rule exists to prevent.
+  /// `currentPage` is deliberately untouched: it records where the user IS,
+  /// not a simulation. Server-backed dev state (credits, Introductions,
+  /// Guardians-on-decided, the plan row) is the panel's reset flow to clear —
+  /// it lives in the database, not here.
   void reset() {
     pendingPopup = null;
-    // guardianCount is a getter as of 2026-08-06 — clear what feeds it.
-    useLiveGuardianData = false;
-    mainGuardian = false;
-    additionalGuardianCount = 0;
-    pendingInviteCount = 0;
-    receivedInviteCount = 0;
-    queuedJourneys = 0;
-    activeJourneys = 0;
-    pausedJourneys = 0;
-    endedJourneys = 0;
+    _adsOnEveryProfile = false;
+    _useLiveGuardianData = false;
+    _mainGuardian = false;
+    _additionalGuardianCount = 0;
+    _pendingInviteCount = 0;
+    _receivedInviteCount = 0;
+    _queuedJourneys = 0;
+    _activeJourneys = 0;
+    _pausedJourneys = 0;
+    _endedJourneys = 0;
+    _nudgedFakes.clear();
+    _busyPotential = 0;
+    _busyPaused = 0;
+    _busyEnded = 0;
+    _pausedByYou = 0;
+    _mirroredPaused = 0;
+    // — Wali side — DR-ZYRA-152. Enumerated here in the same change that
+    // added them, per this method's own rule. `currentWaliPage` is
+    // deliberately absent for the same reason `currentPage` is: it
+    // records where the Guardian IS, not a simulation.
+    _journeyExperience = 0;
+    _wardSaved = 0;
+    _wardConsidered = 0;
+    _wardDeclined = 0;
+    _waliRole = WaliRole.main;
+    _waliLinkedSeekers = 0;
+    _waliActiveJourneys = 0;
+    _waliPausedJourneys = 0;
+    _waliEndedJourneys = 0;
+    _waliStageIndex = 0;
+    _waliReviewWaiting = false;
+    _waliReviewDecision = null;
+    _waliSentInvites = 0;
+    _waliUnread = 0;
     notifyListeners();
   }
 }

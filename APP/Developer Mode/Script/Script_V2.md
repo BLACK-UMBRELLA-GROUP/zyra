@@ -2,7 +2,7 @@ FEATURE NAME
 DEVELOPER MODE
 
 SCRIPT VERSION: V2
-STATUS: Approved Specification
+STATUS: Superseded 2026-08-20 by Script_V3.md
 SOURCE: Master Script Part 2; ChatGPT UX proposal 2026-07-25
 (OA-ZYRA-139); Founder instruction 2026-07-18/19 (Test Accounts
 rebuild, see SOURCE/lib/screens/dev/developer_access_screen.dart)

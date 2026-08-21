@@ -6,8 +6,8 @@ APPROVED WORK REGISTER
 ============================================================
 Version: V2
 Status: Approved — Active Baseline
-Lead Architect: Claude
-Architectural Reviewer: ChatGPT
+Lead Architect: Codex
+Architectural Reviewer: Claude
 Project Owner: Shakeel
 ============================================================
 
@@ -163,6 +163,21 @@ an approved publication.
 
 Historical changes must remain traceable through the
 normal publication workflow.
+
+------------------------------------------------------------
+4.5 Findings Become Actions (DR-ZYRA-151)
+------------------------------------------------------------
+
+No finding, recommendation or required decision — in any
+audit, review, research report or AI-authored document —
+is complete until it carries an OA number in this
+register, or the document states explicitly that no
+action is being raised and why. The full rule lives in
+ZYRA_GOVERNANCE §6; this register is the queue that rule
+points at.
+
+(Added 2026-08-20 under OA-ZYRA-208, executing
+DR-ZYRA-151.)
 
 ------------------------------------------------------------
 
@@ -732,7 +747,14 @@ OA-008
 Title:       Create Guardian Navigation folder
 Category:    Documentation
 Priority:    Medium
-Status:      Blocked
+Status:      Closed — Obsolete, 2026-08-20 (OA-AIOS-323 evidence
+             sweep, Founder "GO"). The June documentation model this
+             item belonged to was overtaken: Guardian flows are now
+             documented across the built app's feature folders and
+             the governed registers, the awaited Guardian Summary was
+             never produced, and no work in two months needed the
+             planned folder. Nothing stranded — SEEKER NAVIGATION
+             still holds the original material (verified 2026-08-20)
 Owner:       Lead Architect
 Dependencies: None (awaiting Summary from Shakeel)
 Decision:    None
@@ -749,7 +771,13 @@ OA-009
 Title:       Create Connections folder
 Category:    Documentation
 Priority:    Medium
-Status:      Blocked
+Status:      Closed — Obsolete, 2026-08-20 (OA-AIOS-323 evidence
+             sweep, Founder "GO"). Connections is now a built app
+             section (journeys, activity, introductions —
+             DR-ZYRA-143/144), not a documentation-folder plan; the
+             June "migrate the Script" step is dead. Nothing stranded
+             — the original Script remains in SEEKER NAVIGATION
+             Script/ as historical source (verified 2026-08-20)
 Owner:       Lead Architect
 Dependencies: None (awaiting Summary from Shakeel)
 Decision:    None
@@ -4229,7 +4257,14 @@ OA-100
 Title:       Anthropic API key — configure and connect
 Category:    Infrastructure / Setup
 Priority:    Critical
-Status:      Open
+Status:      Completed — 2026-08-20 (OA-AIOS-323 evidence sweep).
+             The Anthropic key is configured and in real use: AIOS
+             loads it via dotenv from the PRIVATE keys folder
+             (AIOS.env) rather than the originally sketched
+             run_config.json, and the AI-usage card shows 27 real
+             measured executions. Full-LLM mode is the working
+             default; --no-llm is no longer a workaround. Key
+             rotation is tracked separately (Founder task, overdue)
 Owner:       Shakeel
 Raised:      2026-06-27
 Source:      Development Environment Review 2026-06-27
@@ -4384,7 +4419,16 @@ OA-104
 Title:       Supabase Storage setup — profile images
 Category:    Implementation / Storage
 Priority:    Medium
-Status:      Open
+Status:      Completed — 2026-08-20 (OA-AIOS-323 evidence sweep).
+             Live in production shape: bucket profile-photos exists
+             with 103 stored objects, 4 RLS policies on
+             storage.objects, and the zyra_can_read_photo_object()
+             guard function present — checked directly against the
+             database 2026-08-20 (security-review context,
+             OA-ZYRA-243). Delta from the original sketch: single
+             bucket named profile-photos (not profile-images); the
+             future documents bucket was never needed — raise a
+             fresh OA if verification documents arrive
 Owner:       Lead Architect
 Raised:      2026-06-27
 Source:      Development Environment Review 2026-06-27
@@ -5013,7 +5057,7 @@ Notes:       Logged per Founder instruction 2026-07-19 — item 4
 OA-ZYRA-126
 Title:       Additional Note — Navigation Structure Must Align
              With Existing Approved Architecture, Not Redesign
-Status:      Open — Discussion Item (source document is a
+Status:      Awaiting Founder review (restamped 2026-08-20, OA-AIOS-326; was Open) — Discussion Item (source document is a
              clarifying note, not itself an OA; logged here for
              Founder review only — not yet ratified in ZYRA
              governance, not yet actioned)
@@ -5341,7 +5385,7 @@ OA-ZYRA-129
 Title:       Browse Navigation Bar Structure — 5-Tab Order
              (Browse/Connections/Guardian/Network/Profile), Network
              Premium Lock State
-Status:      Open — Discussion Item (source document
+Status:      Awaiting Founder review (restamped 2026-08-20, OA-AIOS-326; was Open) — Discussion Item (source document
              self-labelled "APPROVED" by ChatGPT; logged here
              for Founder review only — not yet ratified in ZYRA
              governance, not yet actioned)
@@ -6047,11 +6091,18 @@ Notes:       Logged per Founder instruction 2026-07-19. Open/
 OA-ZYRA-134
 Title:       ZYRA git repository — no commit since 2026-07-03,
              91 uncommitted files, no rollback point
-Status:      Open
+Status:      Completed — 2026-08-12. Founder committed 6f05c05
+             (132 files, the 2026-07-26→08-12 gap) and pushed to
+             a private GitHub remote, ZYRA-APP-LAB/zyra. The
+             name collision revealed the OA-114 publisher's July
+             snapshot of the old workspace layout — preserved as
+             ZYRA-APP-LAB/zyra-archive. Remaining (tracked here,
+             not blocking closure): external-drive local backup
+             per ZYRA_GIT_REMOTE_DECISION_2026-08-09 option B.
 Priority:    High
 Owner:       Founder (Shakeel) / Lead Architect
 Raised:      2026-07-19
-Completed:   —
+Completed:   2026-08-12
 
 Description: Found 2026-07-19 during Fable (Opus 4)'s final
              text-check of the ZYRA Documentation Architecture
@@ -6545,7 +6596,7 @@ Title:       Introduce journey_attempts Beneath matches, and
 Category:    Engineering / Architecture
 Priority:    High — the core migration. Cheapest now; all ten tables are
              empty.
-Status:      Open — approved. Blocked by OA-ZYRA-155.
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — approved. Blocked by OA-ZYRA-155.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
 Completed:   —
@@ -6645,7 +6696,7 @@ Title:       Record ended_by, ended_at and end_reason on Every Journey
 Category:    Engineering / Product / Safety
 Priority:    High — independently valuable; can ship before the full
              restructure.
-Status:      Open — approved.
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
 Completed:   —
@@ -6759,7 +6810,7 @@ Title:       Per-Person Opaque Reference Codes for Journey Attempts
 Category:    Product / Support / Moderation
 Priority:    Medium — must be decided before journey_attempts is created,
              since codes generate at attempt creation.
-Status:      Open — approved.
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
 Completed:   —
@@ -6795,7 +6846,7 @@ Title:       Implement the Journey Notification Map, Including the Two
              Safety Rules
 Category:    Product / UX / Safety
 Priority:    High — contains two safety-bearing rules.
-Status:      Open — approved.
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -6836,7 +6887,7 @@ Title:       Guardian Involvement Becomes Per-Attempt, With Fresh Family
              Review Each Attempt
 Category:    Product / Wali Architecture
 Priority:    High.
-Status:      Open — approved.
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -6872,7 +6923,7 @@ Title:       Append-Only Audit Log, Scoped to Protection, Moderation,
              Appeals and Safety Endings
 Category:    Engineering / Governance / Legal
 Priority:    Medium-High.
-Status:      Open — approved.
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
 Completed:   —
@@ -6900,7 +6951,7 @@ Title:       Pause Remains Premium — Define the Gated Rule, Remove the
              Auto-End Timer, Apply the Guardrails
 Category:    Product / Premium / Safety
 Priority:    High — contains a direct conflict with an approved document.
-Status:      Open — approved as amended by the Founder.
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved as amended by the Founder.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -6952,7 +7003,7 @@ Title:       Instrument the Pause Decision So It Can Be Revisited on
 Category:    Product / Analytics / Governance
 Priority:    Medium — must ship WITH beta, not after, or the evidence
              will not exist when the question is asked.
-Status:      Open — approved.
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead), measurement design by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -7335,7 +7386,7 @@ OA-ZYRA-142
 Title:       Build Entitlement-vs-Participation Messaging (DR-ZYRA-111)
 Category:    Product / UX
 Priority:    Medium
-Status:      Open
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (Shakeel)
 Raised:      2026-07-26
 Completed:   —
@@ -7385,7 +7436,7 @@ OA-ZYRA-143
 Title:       Build Report / Hide / Block Menu (DR-ZYRA-095, DR-ZYRA-112)
 Category:    Product / Safety
 Priority:    Medium
-Status:      Open
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (Shakeel)
 Raised:      2026-07-26
 Completed:   —
@@ -7486,7 +7537,7 @@ OA-ZYRA-145
 Title:       Build Surname Capture UI (Onboarding / Profile Settings)
 Category:    Product / Onboarding
 Priority:    Low
-Status:      Open
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (Shakeel)
 Raised:      2026-07-27
 Completed:   —
@@ -7530,14 +7581,28 @@ Title:       Build ZYRA Notification Specification Document
              Priority, Retention, Safeguarding Edge Cases)
 Category:    Product / Notifications
 Priority:    Medium
-Status:      Parked — deliberately, per Founder: to be resumed
-             after the Active Journey / ZYRA One tiering
-             discussion goes deeper, since that discussion may
-             reshape the Journey-event portion of this scope
-             (see Dependencies).
+Status:      COMPLETE 2026-08-14 — document written and filed as
+             SYSTEM/DOCUMENTS/ZYRA_NOTIFICATION_SPECIFICATION_
+             CURRENT_VERSION_V1.md. Resumed because the Journey
+             portion it was waiting on has since been RATIFIED
+             (OA-ZYRA-161, approved 2026-08-06; the map now lives
+             in ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md §11),
+             so the Journey-event scope no longer needs deriving —
+             the specification reproduces it rather than
+             re-deciding it.
+             The one tiering question that remains genuinely open
+             is carried as D5 in the specification's §10: do ZYRA
+             One and Basic differ in WHAT THEY ARE NOTIFIED ABOUT?
+             The document assumes NOT, and says so — a notification
+             is information about your own account, and rationing
+             it by tier makes the paid tier better informed about
+             their own life. Every other section survives either
+             answer; §5 does not.
+             Live bug found while writing it, raised separately:
+             OA-ZYRA-231.
 Owner:       Founder (Shakeel)
 Raised:      2026-07-28
-Completed:   —
+Completed:   2026-08-14
 Source:      Two linked discussion threads: "Discussion Proposal
              — Active Journey Limits & Upgrade Opportunities"
              (surfaced that JOURNEY_SUSPENSION_CURRENT_VERSION_
@@ -7620,7 +7685,7 @@ Title:       Build Monthly Profile Unlock+ Credit Allowance
              (ZYRA One)
 Category:    Product / Premium / Monetisation
 Priority:    Medium
-Status:      Open — approved direction, not designed or built
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved direction, not designed or built
 Owner:       Founder (Shakeel)
 Raised:      2026-07-28
 Completed:   —
@@ -7668,7 +7733,7 @@ OA-ZYRA-148
 Title:       Design & Build Family Conversation Guide (ZYRA One)
 Category:    Product / Premium / Family Stage
 Priority:    Medium
-Status:      Open — approved direction only, no design work done
+Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved direction only, no design work done
 Owner:       Founder (Shakeel)
 Raised:      2026-07-28
 Completed:   —
@@ -7906,7 +7971,7 @@ Category:    Engineering / Data
 Priority:    Medium — blocks nothing today (no real Seekers
              browsing yet), but must be closed before Browse
              curation can be relied on as a working capability
-Status:      Open — pending real onboarding_answers data and
+Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — pending real onboarding_answers data and
              re-verification
 Owner:       Founder (Shakeel)
 Raised:      2026-08-01
@@ -7952,7 +8017,7 @@ Title:       Upgrade Screen À-La-Carte Pricing and Product Names
 Category:    Product / Commercial
 Priority:    High — must be closed before paid tiers launch. No
              revenue impact today: no payment processing exists
-Status:      Open — blocked on Founder commercial decision
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — blocked on Founder commercial decision
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
@@ -8361,8 +8426,13 @@ Title:       Dev/Mock RPC Guard Depends on the '@zyra.test' Email
              Domain — Auth Configuration Dependency
 Category:    Operational / Pre-Launch Dependency
 Priority:    HIGH before real signups open. Zero risk today
-Status:      Open — must be confirmed before the first real
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — must be confirmed before the first real
              account is created
+             [Re-verified 2026-08-20 (OA-AIOS-325): 149 accounts, 0
+             non-@zyra.test — unchanged since the 2026-08-08
+             measurement. The launch-gate confirmation this item
+             exists for remains with the Founder before first real
+             signups open.]
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
@@ -8453,7 +8523,15 @@ Title:       Audit the 62 SECURITY DEFINER Functions Executable by
              'authenticated'
 Category:    Security / Review
 Priority:    Medium
-Status:      Open — not started, by Founder instruction
+Status:      Closed — Merged into OA-ZYRA-243 item (3), 2026-08-20
+             (OA-AIOS-323 evidence sweep). The full 62-function audit
+             obligation is not dropped: OA-ZYRA-243 (Supabase
+             security triage) explicitly carries the
+             every-remaining-function authorisation pass as its item
+             (3), with three dev functions already source-verified.
+             The 2026-08-08 kept-separate intent is honoured by this
+             pointer — the audit stays tracked, once, where the
+             security work now lives
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
@@ -8972,7 +9050,7 @@ Title:       Browse Selects Every Matching Profile With No Limit —
              Add Paging To fetchCandidates()
 Category:    Performance / Enumeration surface
 Priority:    Medium now, High before any real user volume
-Status:      Open — Founder deferred 2026-08-09: "add paging to an
+Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder deferred 2026-08-09: "add paging to an
              OA and we do it later." Not started
 Owner:       Founder (Shakeel)
 Raised:      2026-08-09
@@ -9156,7 +9234,7 @@ Category:    Governance / Continuity
 Priority:    🔴 DO THIS FIRST. Everything else in this register is
              work to be done; this one is work already done that can
              still be lost
-Status:      Open — the command is written and safety-checked, and it
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — the command is written and safety-checked, and it
              needs 30 seconds in Terminal
 Owner:       Founder (Shakeel) — NOBODY ELSE CAN DO IT (see below)
 Raised:      2026-08-09
@@ -9241,7 +9319,7 @@ Title:       Verify OA-168 Stage 3 With a Live Table Probe —
 Category:    Security / Verification
 Priority:    Medium — OA-168 is marked Actioned on evidence of a
              kind that later failed for functions
-Status:      Open — awaiting Founder approval for the probe
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — awaiting Founder approval for the probe
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
@@ -9277,7 +9355,7 @@ OA-ZYRA-182
 Title:       Rewrite the I4 Grants Corollary as a Union Statement
 Category:    Governance / Documentation
 Priority:    Medium
-Status:      Open — PARKED by Founder instruction until OA-170 and
+Status:      Parked (restamped 2026-08-20, OA-AIOS-326; was Open) — PARKED by Founder instruction until OA-170 and
              OA-181 settle, so the invariant is updated once with
              final wording rather than twice
 Owner:       Founder (Shakeel)
@@ -9318,7 +9396,7 @@ Title:       Relationship-State Master Matrix V2 — Consolidation
 Category:    Product Architecture
 Priority:    HIGH — Founder has gated further Guardian
              functionality on this
-Status:      Open — Founder-led. Completeness before
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder-led. Completeness before
              implementation
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
@@ -9387,7 +9465,7 @@ Title:       Drop the Developer/Mock RPCs Before Public Launch —
 Category:    Pre-Launch / Security
 Priority:    BLOCKING for public launch. Zero risk while the
              database holds only seeded accounts
-Status:      Open — raised 2026-08-10, not started
+Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — raised 2026-08-10, not started
 Owner:       Opus (Implementation Lead); Founder confirms the
              launch gate
 Raised:      2026-08-10
@@ -9851,7 +9929,14 @@ Title:       Direction B Quick Wins — Two Built, One Already
 Category:    Onboarding / Product
 Priority:    Low — closes out Direction B. Two items need a
              Founder yes/no or the list stays half-open
-Status:      Open — awaiting Founder decision on items 3 and 5
+Status:      Closed — 2026-08-20, Founder decision (OA-AIOS-324
+             round). Items 3 and 5 formally REJECTED per this entry's
+             own measured analysis (item 3: ~8 taps saved of 193
+             against a one-to-many _FlowStep rework that breaks the
+             approved screen anatomy; item 5: the same cost/benefit
+             shape). Items 1–2 were already built and the remaining
+             one was already true, so Direction B's quick-wins list
+             is now fully dispositioned
 Owner:       Founder (Shakeel)
 Raised:      2026-08-10
 Completed:   —
@@ -9946,7 +10031,7 @@ Title:       Delete Every is_synthetic Row Before Public Launch
 Category:    Pre-Launch / Data Integrity
 Priority:    BLOCKING for public launch. Harmless while the
              database holds only seeded accounts
-Status:      Open — raised 2026-08-10
+Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — raised 2026-08-10
 Owner:       Founder (Shakeel) confirms the launch gate; Opus
              executes
 Raised:      2026-08-10
@@ -10008,7 +10093,7 @@ Priority:    HIGH. Nothing after this can be trusted until it is
              done. Not urgent in the sense of risk to live users
              — there are none — but every hour of further work
              stacks on an unverified base
-Status:      Open — raised 2026-08-10, Founder to run
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — raised 2026-08-10, Founder to run
 Owner:       Founder (Shakeel). CANNOT be delegated to Opus —
              see "why" below
 Raised:      2026-08-10
@@ -10476,7 +10561,37 @@ RESOLVED (a)(a2)(b)(c) 2026-08-11 — Founder, by phone.
              being scored. With ~70 Chapter 4 questions in play,
              no pair in the seeded population is all-green.
 
-             STILL OPEN: (d) categories, (e) v_ch2_weight.
+             STILL OPEN: (d) categories.
+
+             ── (e) v_ch2_weight — MEASURED 2026-08-14. Not closed,
+             but no longer a question worth spending a decision on
+             first. Whole population, 10,257 pairs:
+
+               weight   lowest  highest    SD   Ch2 % of denominator
+                  1      64.9    87.2    3.17          ~5%
+                  3      63.8    88.1    3.29         ~14%
+                  5      61.6    89.0    3.61         ~21%
+                 10      57.4    90.6    4.68         ~35%
+                 20      51.9    92.7    6.57         ~51%
+
+             Weighting Chapter 2 at TWENTY times each Chapter 3
+             question — over half the entire score — still produces
+             less spread than scoring 20 Chapter 3 questions would
+             (SD 6.20). The weight is a small correction to a
+             denominator of ~70; it is the wrong lever, and every
+             number in that table moves if the question count
+             changes. Pick a value for editorial reasons — sect and
+             language SHOULD outweigh a lifestyle question — but
+             settle OA-ZYRA-227 first.
+
+             ── AND A RE-READING OF THE NOTE ABOVE. "With ~70
+             Chapter 4 questions in play, no pair in the seeded
+             population is all-green" was recorded on 2026-08-11 as
+             reassurance. It is the same 1/sqrt(n) concentration
+             OA-ZYRA-227 measures, seen from the other side. Nobody
+             scores 100 for the same reason nobody scores 40: the
+             average of ~70 bounded terms cannot reach either end.
+             The worry in (c) did not go away — it moved.
 
 ------------------------------------------------------------
 
@@ -10622,7 +10737,7 @@ Category:    Product / Journey Architecture
 Priority:    HIGH as a decision. Nothing is broken; the request
              simply cannot be built as a data change and must not
              be done as a quiet loosening
-Status:      Open — Founder stated the intent 2026-08-10 while
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder stated the intent 2026-08-10 while
              setting up test accounts
 Owner:       Founder (Shakeel) — product decision; then Opus
 Raised:      2026-08-10
@@ -10853,7 +10968,19 @@ Title:       Remaining zyra_dev_set_* Functions Still Guard Only
              the Caller
 Category:    Security / Dev Tooling
 Priority:    MEDIUM (destructive pair already fixed)
-Status:      Open
+Status:      Completed — 2026-08-20 (OA-AIOS-325 solo round,
+             Founder standing instruction "do as much as you can by
+             yourself"). Migration 20260820200633_oa_zyra_200_dev_
+             set_functions_guard_both_parties applied and verified
+             against the live database: all three shared-row setters
+             (journey_stage, compatibility, counterpart_reveal) now
+             carry the both-parties guard — in a stricter form than
+             the 20260811233914 pattern, since count(*) < 2 also
+             treats a missing auth.users row as unseeded. Post-apply
+             check: all 15 zyra_dev_*/zyra_debug_*/mock_* functions
+             guard. The entry's target — every affected party
+             asserted seeded — now holds. Repo migration file
+             written the same day (OA-ZYRA-198 discipline)
 Owner:       Engineering
 Raised:      2026-08-12
 Source:      Stewardship pass. Companion to migration
@@ -10884,7 +11011,7 @@ Title:       Reference Stability — Every CURRENT_VERSION Promotion
              Breaks Every Inbound Link
 Category:    Governance / Documentation
 Priority:    MEDIUM
-Status:      Open
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder decision on the proposal, then Documentation
 Raised:      2026-08-12
 Source:      Stewardship docs audit: ten dead references fixed by
@@ -10907,11 +11034,2372 @@ Dependencies: ZYRA_DOCUMENT_REFERENCE_STABILITY_PROPOSAL_2026-08-08
 
 ------------------------------------------------------------
 
+OA-ZYRA-202
+Title:       Dev Panel — Founder to Pick the Next Batch of Simulated
+             Axes from the 2026-08-12 Build-List
+Category:    Developer Tooling
+Priority:    LOW
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
+Owner:       Founder (selection), then Engineering
+Raised:      2026-08-12
+Source:      Founder-directed Developer Toggle System redesign
+             (ZYRA_DEV_PANEL_REBUILD_2026-08-12.md). The brief
+             listed per-page toggles that do not exist yet;
+             the agreed scope was to make every EXISTING toggle
+             verified-reliable and record the missing ones as a
+             costed build-list rather than invent half-working
+             controls.
+
+Description: The rebuild report ends with a build-list of candidate
+             new simulated axes (verification state, photo count,
+             profile completion, profile visibility, Family Review
+             staging, conversation/timeline staging, wali-side plan
+             on the seeker panel), each annotated with what it
+             needs (client-only vs new dev RPC vs product decision
+             first). None should be built piecemeal in passing —
+             the Founder picks a batch, and each lands with its
+             reader named, per the panel's own prime rule.
+
+Target:      Founder selects; selected axes built with real
+             readers; list re-visited or closed.
+Dependencies: ZYRA_DEV_PANEL_REBUILD_2026-08-12.md (BLACK UMBRELLA
+             GROUP/REPORTS/)
+
+------------------------------------------------------------
+
+OA-ZYRA-203
+Title:       Long-Pause Gentle Reminders (30/90 Days) Need a
+             Scheduler
+Category:    Journey Lifecycle / Infrastructure
+Priority:    LOW
+Status:      Open
+Owner:       Engineering (mechanism decision first: pg_cron vs
+             scheduled Edge Function)
+Raised:      2026-08-12
+Source:      DR-ZYRA-142, part 2. Ratified as part of the pause
+             package: the PAUSER (only) receives a gentle
+             reminder at 30 and 90 days of a pause — "Fatima has
+             been paused for three months. Resume when you're
+             ready, or end it kindly." A mirror, not a deadline;
+             the system still never ends anything itself
+             (DR-ZYRA-121 item 12).
+
+Description: Everything else in DR-ZYRA-142 shipped the same
+             evening (nudge RPC, Timeline pair, row time-honesty,
+             suite section L). The reminders alone need a
+             periodic runner, which the project does not have —
+             building one half-heartedly inside a user-triggered
+             RPC would fire on nobody or on everybody. Decide
+             pg_cron vs a scheduled Edge Function, then: find
+             pauses crossing 30/90 days, one notification each
+             threshold to suspended_by, idempotent per threshold
+             (a reminded_at column or a notifications
+             existence check), and a suite check that a
+             39-day-old pause reminds once, not daily.
+
+Target:      Pauser-only reminders at 30/90 days, idempotent,
+             suite-covered; no reminder to the waiting party.
+Dependencies: DR-ZYRA-142; migration 20260812164117
+             (pause_nudge_and_timeline_pair).
+
+------------------------------------------------------------
+
+OA-ZYRA-204
+Title:       Feed inAnotherJourney on REAL Journey rows
+Raised:      2026-08-13, while building the per-section busy
+             stand-ins and the paused-but-busy fact (Founder:
+             "if they are in a journey with someone else then
+             the notification gotta show")
+Status:      Open
+
+Problem:     JourneyMatch.inAnotherJourney renders honestly —
+             busy Potential/Paused/Ended rows hide their verb
+             and state the fact — but only STAND-INS ever carry
+             true. fetchJourneyMatches never selects or
+             computes the other party's busy state, so on real
+             rows the flag is always false and the first
+             refusal still comes from the server
+             (other_party_in_active_journey) instead of the
+             card. The client UI is DONE; only the feed is
+             missing.
+
+Target:      A server-side computed column or view (other
+             party holds an unsuspended 'active' match with a
+             third person) mapped into fetchJourneyMatches and
+             refetchOne; a journey-suite check that a busy
+             counterpart's row carries the flag; no client
+             changes needed beyond the mapping.
+Dependencies: pause_frees_active_slot migrations (the reason a
+             paused person can be busy at all); DR-ZYRA-146
+             round; matches_seeker_a/_b_active partial indexes
+             (the cheap lookup).
+
+------------------------------------------------------------
+
+OA-ZYRA-205
+Title:       Transitional Moments — the unwired tail
+Raised:      2026-08-13, with the DR-ZYRA-148 build
+Status:      Open
+
+Problem:     Five ratified pieces are designed but not wired:
+             R4 first-Guardian-linked (Seeker side AND the
+             Guardian's own moment), R6 restart-accepted (fires
+             on the accepting surface), the PROPOSER-side
+             Meeting/Nikah moments (today only the confirming
+             Seeker sees E5/R7 — the proposer learns from the
+             Timeline), the seen_moments store (server table,
+             own-row RLS) that once-ever variants need plus the
+             first-match extra explainer line, and the haptics
+             yes/no. R1 could also gain the live score ring
+             once the reveal figure is plumbed to the hook.
+
+Target:      Each wired in the engine's grammar; seen_moments
+             migration + repo file + suite check; Founder
+             answers haptics and Guardian-side inclusion.
+Update 2026-08-15 (DR-ZYRA-170): the PAUSE-RECEIVED moment
+             (Recommended tier in the ratified gallery — "‹Name›
+             has paused your Journey" / "A pause is rest, not an
+             answer") joins this tail. It fires on an ASYNC event
+             like the rest of these, so it needs the same
+             seen_moments store; the journey_paused notification
+             carries the news until then.
+
+Dependencies: DR-ZYRA-147/148; zyra_moment.dart; DR-ZYRA-170
+             (pause-received moment).
+
+------------------------------------------------------------
+
+OA-ZYRA-206
+Title:       SEEKER NAVIGATION Summary contradicts DR-ZYRA-149
+Raised:      2026-08-13, with the fifth-tab build
+Status:      Completed — 2026-08-20 (OA-AIOS-325 solo round).
+             Summary.md brought current to DR-ZYRA-149: the
+             NAVIGATION STRUCTURE Seeker rows now read Browse •
+             Connections • Guardian • Notifications • Profile with a
+             dated note; the three Bell rules in APPROVED RULES are
+             retired for Seekers with a dated CHANGED note (badge on
+             the tab; the Wali side keeps its Bell, outside the
+             ruling); CURRENT STATUS gains the fifth-tab build line;
+             and the 2026-07-19 FLAGGED item's tab-count half is
+             marked resolved (DR-ZYRA-101 four tabs, DR-ZYRA-149
+             fifth) while the Safety-vs-Guardian wording and the
+             Guardian Network entitlement observations stay flagged
+Problem:     APP/Navigation/SEEKER NAVIGATION/Summary.md still
+             carries "Notifications use the Bell Icon. Bell
+             Icon is positioned top-right. Notifications are
+             not a navigation tab" — now false on the Seeker
+             side (DR-ZYRA-149; Wali keeps its Bell). Under
+             the documentation-priority rule the register
+             entry outranks the stale doc, but the doc must be
+             brought current rather than left contradicting
+             the app.
+
+Target:      Update the Summary's NAVIGATION STRUCTURE table
+             to the five-tab layout and the Bell rule to
+             Wali-only; single-CURRENT_VERSION model observed.
+Dependencies: DR-ZYRA-149.
+
+------------------------------------------------------------
+
+OA-ZYRA-207
+Title:       Upgrade screen advertised retired prices and
+             retired product names
+Raised:      2026-08-13, Ecosystem Maintenance Review
+Status:      Closed — fixed 2026-08-13, Founder approved
+
+Problem:     upgrade_screen.dart carried the pre-reprice
+             a-la-carte table: "Unlock Profile" at GBP 0.99 /
+             2.99 and "Unlock Profile Plus" at GBP 1.99 /
+             4.99. profile_unlock_screen.dart carried the
+             ratified figures — GBP 1.99 / 7.99 / 2.99 / 9.99
+             under the names Compatibility Unlock and
+             Compatibility Unlock Plus (Founder approved
+             2026-08-03, BUSINESS/ZYRA PRICING).
+
+             So one app showed two prices for one product,
+             under two names, for ten days. Advertising a
+             price lower than the one charged engages the
+             Consumer Protection from Unfair Trading
+             Regulations. Pre-launch, so no consumer was
+             affected — but it must not survive first sale.
+
+             ROOT CAUSE, and the reason this entry exists at
+             all: the drift was FOUND on 2026-08-08 and
+             written up accurately in ZYRA_PRICING_DRIFT_
+             FINDING_2026-08-08.md. No action ID was raised
+             against it, so nothing carried it forward and it
+             sat for five more days. The document was not the
+             failure; the missing register entry was. See
+             OA-ZYRA-208.
+
+Target:      DONE. Four rows corrected and both feature-list
+             lines renamed. Structural fix applied with them:
+             upgrade_screen.dart no longer types the figures,
+             it imports UnlockPricing — the one ratified
+             definition. Transcription is how the two screens
+             diverged, so the screen can no longer transcribe.
+Dependencies: BUSINESS/ZYRA PRICING (to be promoted to a
+             governed CURRENT_VERSION document, OA-ZYRA-209);
+             ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5 Part 1 s8.
+
+------------------------------------------------------------
+
+OA-ZYRA-208
+Title:       Every finding must carry an OA number
+Raised:      2026-08-13, Ecosystem Maintenance Review
+Status:      Completed — 2026-08-20 (OA-AIOS-325 solo round). Both
+             halves of the target verified or executed: (1)
+             ZYRA_GOVERNANCE already carries the full rule as §6
+             "Findings become actions — DR-ZYRA-151" (added at V2 on
+             2026-08-13, carried through V3 and today's V4); (2)
+             this register's own Document Principles gain §4.5,
+             pointing at governance §6. The rule is now written in
+             both places the entry named
+Problem:     Three of the four critical findings in the
+             2026-08-13 review share one shape: correctly
+             identified, properly written up, then not done.
+
+               - Pricing drift: found 2026-08-08, documented
+                 precisely, no ID, unfixed for five days.
+               - Company formation D1-D7: researched to a
+                 high standard 2026-08-01, presented as seven
+                 named decisions, no register entry, unmade
+                 twelve days later while the report's own
+                 section 3.5 said "buy this week".
+               - Filename rename: designed, tooling built,
+                 parked as "scheduled" with no date; grew
+                 from 55 files to 98 while waiting.
+
+             The registers work. Everything that enters them
+             gets done. The defect is that findings are
+             permitted to live OUTSIDE them, in documents —
+             and a document is not a queue. A report can be
+             read, agreed with, filed, and change nothing.
+
+Target:      Write the rule into ZYRA_GOVERNANCE and the
+             register's own Document Principles:
+
+               No finding, recommendation or required
+               decision is complete until it carries an
+               OA number, or the document states
+               explicitly that no action is being raised
+               and why.
+
+             Applies to audits, reviews, research reports and
+             AI-authored findings equally. A review that
+             identifies ten problems must leave behind ten
+             IDs or ten written refusals.
+Dependencies: DR-ZYRA-151; ZYRA_GOVERNANCE; this register
+             (section 4, Document Principles).
+
+------------------------------------------------------------
+
+OA-ZYRA-209
+Title:       BUSINESS documents are ungoverned
+Raised:      2026-08-13, Ecosystem Maintenance Review
+Status:      Completed — 2026-08-20 (OA-AIOS-326; Founder standing
+             instruction, filed recommendation executed). Every
+             commercially load-bearing BUSINESS system now carries
+             governed status: ZYRA PRICING was already promoted
+             2026-08-13 (ZYRA_PRICING_CURRENT_VERSION_V1.md; its
+             Summary.md is a pointer stub); ZYRA TERMINOLOGY,
+             COMPETITOR RESEARCH and WEBSITE already held
+             CURRENT_VERSION documents; and the remaining EIGHT
+             summaries (AI STRATEGY, APP LOGO, APP NAME CREATION,
+             BRAND MESSAGING, COLOUR THEME, PRODUCT PLANNING, USER
+             FEATURES, ZYRA LAUNCH GUIDE) were promoted IN PLACE
+             today — governed V1 headers (version, status, owner,
+             supersession), filenames unchanged until the OA-ZYRA-201
+             reference-stability decision so inbound links break
+             once, not twice. APP BREAKDOWN has no Summary.md —
+             noted, no action raised (governance §6.3 refusal).
+Problem:     BUSINESS/ holds eleven folders and not one
+             CURRENT_VERSION document. Pricing, terminology,
+             brand and the launch guide all sit in
+             unversioned Summary.md files — no version, no
+             owner, no supersession trail.
+
+             These are the commercially load-bearing
+             documents: the ones a lawyer, an investor or a
+             co-founder asks for first. They are the least
+             governed in the project. OA-ZYRA-207 is the
+             predictable consequence — the pricing document
+             was correct, but nothing obliged the code to
+             follow it, because the document had no governed
+             status to breach.
+
+Target:      Promote in Founder's priority order: ZYRA
+             Pricing, ZYRA Terminology, ZYRA Brand
+             Guidelines, ZYRA Launch Guide. Then the
+             remaining seven.
+Dependencies: NAMING_CONVENTIONS_V1; OA-ZYRA-207.
+
+------------------------------------------------------------
+
+OA-ZYRA-210
+Title:       Black Umbrella Group has no repository of its own
+Raised:      2026-08-13, Ecosystem Maintenance Review
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — awaiting one read-only verification in the
+             Founder's Terminal before any change
+
+Problem:     BLACK UMBRELLA GROUP/.git points at
+             github.com/ZYRA-APP-LAB/Zyra.git. Verified
+             offline 2026-08-13:
+
+               - BUG and ZYRA have UNRELATED root commits
+                 (1e699ae vs 6ca72bd) — separate histories,
+                 never one repo.
+               - BUG's origin reflog shows real pushes to
+                 that URL through July. It was BUG's own
+                 repository, correctly configured at the time.
+               - That repository was renamed to zyra-archive
+                 on 2026-08-12 to free the name for the app.
+                 GitHub drops a rename redirect once a new
+                 repo claims the old name, and repository
+                 names are case-insensitive.
+
+             So the URL in BUG's config now most likely
+             resolves to the ZYRA APP repository. A push would
+             be rejected as non-fast-forward (unrelated
+             histories) rather than silently overwriting — but
+             the configuration is wrong, and worse, BUG's only
+             off-machine copy is now sitting in a repository
+             named zyra-archive where nobody would look for it.
+
+             Meanwhile: 331 files uncommitted, last commit
+             2026-07-03. Six weeks of governance and
+             architecture work — the AD register alone is
+             232KB — exists on one disk.
+
+Target:      Verify what the URL resolves to today, then give
+             BUG its own repository, repoint, commit, push.
+             MITHAQ, SELAH and AI CONSULTANCY TBC have no
+             remote at all and need the same decision.
+Dependencies: ZYRA_GIT_REMOTE_DECISION_2026-08-09.
+
+------------------------------------------------------------
+
+OA-ZYRA-211
+Title:       Eleven contradictions between ZYRA_PRODUCT_SPEC V5
+             and ZYRA_DECISIONS V2
+Raised:      2026-08-13, while building the Feature Catalogue
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder decision needed on each
+
+Problem:     Cataloguing 139 features from the governing
+             documents surfaced eleven places where two
+             CURRENT_VERSION documents state different things.
+             The catalogue records each rather than silently
+             picking one. Sharpest:
+
+               - Save/Consider limits. Spec: Basic 10/day, One
+                 unlimited. Decisions V2: Save Basic 5, One
+                 15; Consider Basic 25.
+               - Can Basic pause? Spec s6 says no. Spec Part
+                 0.3 and Part 3 s5 say yes, capped at 5.
+                 (Register: BOTH plans pause, 5/10 — the
+                 2026-08-11 correction. The Spec has not
+                 caught up.)
+               - "Unlimited Paused Journeys" appears in the
+                 ZYRA One feature list while the same document
+                 caps paused at 10.
+               - Mixed-tier Pause described as resolved in one
+                 section and pending in another, same document.
+               - Standard Compatibility Unlock contents: the
+                 Spec keeps category counts that Decision 8.1
+                 moved to Plus.
+               - Blocking is shipped in one place and Deferred
+                 in another.
+               - Spec V5 carries substantive August corrections
+                 that its own version history never records.
+
+Target:      Founder rules on each; PRODUCT_SPEC goes to V6
+             carrying the outcomes; Feature Catalogue
+             regenerated. Until then the Catalogue's section 2
+             is the honest statement of what is unresolved.
+Dependencies: ZYRA_FEATURE_CATALOGUE_CURRENT_VERSION_V1
+             section 2; DR-ZYRA-151.
+
+------------------------------------------------------------
+
+OA-ZYRA-212
+Title:       scaffoldBackgroundColor is captured once from the
+             cached gender and then goes stale
+Closed:      2026-08-13 — DR-ZYRA-165. Set to Colors.transparent;
+             the ListenableBuilder gradient behind every route is
+             now the only source of that colour. This was the root
+             cause of the Founder's "errors on Male Seeker that do
+             not appear on Female Seeker": the defect is
+             switch-specific, not male-specific, and female-on-
+             female is pink on pink.
+Raised:      2026-08-13, from the Guardian Network pink-flash
+             fix
+Status:      Open
+
+Problem:     main.dart builds two background layers, and only
+             one of them listens.
+
+               LIVE   — the `builder:` wrapper (main.dart
+                        ~line 294) is a ListenableBuilder on
+                        AppState with a 260ms cross-fade. It
+                        follows gender correctly. Fixed
+                        2026-08-05.
+
+               STATIC — `theme: ThemeData(scaffold-
+                        BackgroundColor: genderGradient(
+                        AppState.instance.gender).colors
+                        .first)` (main.dart ~line 166).
+                        ZyraApp is a StatelessWidget and the
+                        theme is built OUTSIDE that listener,
+                        so this Color is read once, from the
+                        cached gender, and never again.
+
+             A Scaffold paints its background colour OPAQUELY,
+             on top of the builder wrapper beneath it. So on
+             any screen that does not paint its own gradient,
+             the stale flat colour is what the user sees.
+
+             THE COMMENT AT main.dart LINE 158 IS WRONG. It
+             says the Color is "kept only as the Scaffold-
+             internal fallback for the rare instant before that
+             wrapper paints". It is not an instant and it is
+             not underneath — it covers the wrapper for the
+             whole life of such a screen. That sentence is why
+             the Network bug was not obvious: the code looked
+             like it had been thought about.
+
+Evidence:    Measured 2026-08-13. Of 40 screens containing a
+             Scaffold, FIVE paint no background of their own
+             and therefore rely on this colour:
+
+               screens/home/home_shell.dart
+               screens/wali/wali_home_shell.dart
+               screens/onboarding/onboarding_flow.dart
+               screens/onboarding/chapter2_flow.dart
+               screens/onboarding/values_preferences_flow.dart
+
+             The two shells are mostly harmless — their
+             children paint their own gradients. That is
+             exactly what failed on 2026-08-13: Guardian
+             Network returned ZyraLoading BEFORE its gradient,
+             the stale colour showed for one frame, and on a
+             male Guardian following a female account it was
+             Rose Pink #D4868F. Fixed at that screen, not here.
+
+             THE THREE ONBOARDING FLOWS ARE THE OPEN QUESTION,
+             and NOT YET VISUALLY CONFIRMED. Onboarding is
+             ratified as flat neutral (DR-ZYRA-090;
+             backgroundFor() returns brandGradient for every
+             variant). A brand-new Seeker has no cached gender,
+             so genderGradient(null) gives #8A6A9E — the
+             correct neutral, by luck rather than by design. A
+             RETURNING Seeker with a cached gender re-entering
+             Chapter 2 or the values flow would instead get a
+             flat blue or pink Scaffold. If that is happening,
+             onboarding is already partially gender-themed by
+             accident — which is the very thing OA-ZYRA-123 is
+             an open question about. Needs a look on device
+             before it is stated as fact.
+
+Target:      1. Move the theme inside the ListenableBuilder, or
+                make ZyraApp stateful, so one source of truth
+                feeds both layers.
+             2. Alternatively set scaffoldBackgroundColor to
+                Colors.transparent and let the live wrapper
+                show through — simpler, and removes the whole
+                class of bug rather than keeping it in sync.
+             3. Correct the false comment at line 158 either
+                way.
+             4. Check the three onboarding flows on device and
+                fold the answer into OA-ZYRA-123.
+Dependencies: DR-ZYRA-090, DR-ZYRA-094, OA-ZYRA-123
+             (gender accents in onboarding).
+
+------------------------------------------------------------
+
+OA-ZYRA-213
+Title:       An Additional Guardian Sees No Journeys At All —
+             Intended, Or A Side Effect Of The Counterpart Card?
+Category:    Guardian / Visibility
+Priority:    MEDIUM
+Status:      Open — DECIDED 2026-08-15 (DR-ZYRA-168): FULL
+             visibility, same as Main; Family Review decisions
+             stay both-Mains. Build pending as one coordinated
+             batch (RLS + card RPC + client + guard-suite
+             rewrite + WALI_ARCHITECTURE).
+Owner:       Engineering (behaviour decided)
+Raised:      2026-08-13
+Source:      DR-ZYRA-152, found while giving the Guardian dev
+             panel's role segment something real to change.
+
+Description: ZyraWaliJourneyService.fetchLinkedJourneys() builds
+             every row through zyra_counterpart_card(), which
+             returns null to anyone who is not that Journey's
+             MAIN Guardian — and the loop then `continue`s. So an
+             Additional Guardian's Dashboard shows no Journeys
+             whatsoever, not a reduced view of them.
+
+             The RLS added by 20260726130000_wali_journey_
+             visibility.sql grants matches to any Wali with an
+             active link, main or not. The rows are visible; the
+             CARD is what is withheld, and the client drops the
+             row rather than rendering what it still has.
+
+             wali_dashboard_screen's own comment says an
+             Additional Guardian "sees the plain stage". That was
+             true until the counterpart card landed on 2026-08-08
+             and has been stale since. It was left in place and
+             flagged rather than edited, because which of the two
+             behaviours is intended is a decision, not a comment.
+
+             Not a privacy hole in either direction — the strict
+             reading errs safe. But a Guardian who was told they
+             are supporting someone and sees an empty Dashboard
+             has no way to tell that from the app being broken.
+
+Target:      1. Founder decides: does an Additional Guardian see
+                a Journey without counterpart details, or nothing?
+             2. Implement, and correct or remove the stale
+                comment in the same change.
+             3. If "nothing" is intended, the empty state needs
+                copy that says why.
+Dependencies: DR-ZYRA-152; GUARDIAN & ROMANTIC RULES section 7d
+             (clause 3, closed 2026-08-08); OA-ZYRA-177 (same
+             is_main line of reasoning, different way in).
+
+------------------------------------------------------------
+
+OA-ZYRA-214
+Title:       A Guardian Cannot See The Introductions They Sent
+Category:    Guardian / Introductions
+Priority:    LOW
+Status:      Open
+Owner:       Engineering (screen), Founder if scope grows
+Raised:      2026-08-13
+Source:      DR-ZYRA-152. Raised because the dev panel refused to
+             stage it, and the refusal is the finding.
+
+Description: ZyraGuardianSuggestionService.fetchPending() returns
+             the suggestions made TO a Seeker. Its only callers
+             are connections_screen and browse_screen — both
+             Seeker surfaces. A Guardian who puts someone forward
+             gets no confirmation, no list, and no way to know
+             whether it was seen or acted on.
+
+             The write half is built and works. Only the
+             Guardian's own view of it does not exist, which is
+             why the panel's "Introductions sent" control is drawn
+             refused rather than given a stepper: there is nothing
+             on that side for a number to change.
+
+Target:      1. Decide whether a Guardian sees what they sent, and
+                whether they see its outcome or only that it was
+                sent.
+             2. Build the reader; the panel's refused control
+                becomes a real one in the same change.
+Dependencies: DR-ZYRA-152; OA-ZYRA-202 (dev-panel build-list).
+
+------------------------------------------------------------
+
+OA-ZYRA-215
+Title:       The Live notifications_type_check Holds Ten Types; The
+             Repo Knows Seven And The Client Renders Three
+Category:    Notifications / Migration Drift
+Priority:    MEDIUM
+Status:      Open
+             [Reconciled 2026-08-20 (OA-AIOS-325), read-only: the
+             live check now holds THIRTEEN types, and the repo
+             MATCHES it exactly — migration 20260815183000
+             (shared_pause_holds) re-stated the full 13-type check
+             two days after this entry was raised, resolving the
+             live-vs-repo drift that raised it. Client:
+             zyra_notification_service.dart knows all 13;
+             notifications_screen.dart renders every type safely —
+             three have dedicated icons and the other ten fall to
+             the switch's default bell icon, so nothing is dropped
+             and nothing crashes. Residual scope, sharply narrowed:
+             per-type icons for the ten defaulted types (cosmetic,
+             build-lane, pause applies) and one on-device look.]
+Owner:       Engineering
+Raised:      2026-08-13
+Source:      DR-ZYRA-154. Found by asking Postgres for the constraint
+             rather than reading the migrations, per the six-layer
+             standard's "ask Postgres rather than remembering".
+
+Description: Measured 2026-08-13 against the live database:
+
+               notifications_type_check permits 10 types.
+               supabase/migrations/ accounts for 7.
+               notifications_screen._iconFor names 3.
+
+             The three types present in the database and absent from
+             this repo are milestone_proposed, milestone_confirmed and
+             pause_nudge — written by migrations that exist only in the
+             live database, which is OA-ZYRA-198's territory showing up
+             somewhere it does damage.
+
+             The client consequence is live now, not theoretical: seven
+             of the ten types fall through _iconFor's default and render
+             the generic bell. A pause nudge and a milestone confirmation
+             are visually identical to each other and to anything else
+             unrecognised.
+
+             The section map added by DR-ZYRA-154 was built from the
+             LIVE constraint for this reason. Had it been built from the
+             repo, three types would have had no section and shown no
+             dot — a silent miss rather than a visible break.
+
+Target:      1. Export the three missing migrations into the repo
+                (tools/export_missing_migrations.sql regenerates them
+                verbatim).
+             2. Give all ten types an icon; consider whether _iconFor's
+                default should be an assert in debug builds, since a
+                type reaching it means the map is behind the database.
+             3. Re-check the map whenever the constraint changes.
+Dependencies: OA-ZYRA-198 (migrations live only in the database),
+             DR-ZYRA-154, OA-ZYRA-159 (added four of the ten).
+
+------------------------------------------------------------
+
+OA-ZYRA-216
+Title:       Actionable Notifications — The "Go" Button, And Why Its
+             Routing Table Is A Safety Question
+Category:    Notifications / UX / Safety
+Priority:    MEDIUM — routing must clear OA-ZYRA-161 before it ships.
+Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — deferred by the Founder on 2026-08-13, deliberately
+             and with the reason recorded below.
+Owner:       Engineering, after the routing table is agreed
+Raised:      2026-08-13
+Source:      Founder's Notification System Improvements brief, section 3.
+
+Description: The ask: a notification carries a "Go" bubble that takes
+             the person straight to the relevant place — match to
+             Connections, Journey update to the Active Journey, Guardian
+             request to the Guardian section — so the tab becomes a
+             navigation centre rather than a message list.
+
+             WHY IT WAS SPLIT OUT rather than built alongside the dots
+             and the tab controls. OA-ZYRA-161 carries two safety rules,
+             the first of which is that a safety ending must be worded
+             IDENTICALLY to an ordinary ending, so that a protection hold
+             does not announce itself. OA-ZYRA-159 applies the same logic
+             to journey_request_declined, which deliberately merges a
+             decline, a permanent "don't ask again" and a 14-day expiry
+             into one indistinguishable type.
+
+             A DESTINATION IS A TELL IN EXACTLY THE WAY WORDING IS. If
+             Go sends an ordinary ending to one screen and a safety
+             ending to another — or is present on one and absent on the
+             other — the button discloses precisely what the copy was
+             written to conceal. The same applies to a decline that
+             routes somewhere an expiry does not.
+
+             The section map built for the dots (DR-ZYRA-154) already
+             holds this line: every Journey outcome routes to
+             Connections, so no dot can be read as a tell. Go needs the
+             same property established deliberately, at a finer grain,
+             because it lands on a specific screen rather than a tab.
+
+Target:      1. Write the routing table, type by type, with the
+                indistinguishability requirement stated per row.
+             2. Confirm against OA-ZYRA-161's two safety rules.
+             3. Build, with any type whose destination would leak
+                falling back to its section rather than its object.
+Dependencies: OA-ZYRA-161 (two safety rules), OA-ZYRA-159 (one decline
+             type), DR-ZYRA-154, OA-ZYRA-146 (parked full spec).
+
+------------------------------------------------------------
+
+OA-ZYRA-217
+Title:       "Hide Profile" Is A Mutual, Permanent Block — Should A
+             One-Way Hide Exist?
+Category:    Privacy / Discovery
+Priority:    MEDIUM
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
+Owner:       Founder (product), then Engineering (schema)
+Raised:      2026-08-13
+Source:      DR-ZYRA-155. Surfaced by promoting Hide Profile out of the
+             report sheet and having to write its confirmation copy.
+
+Description: The Founder's framing draws a clean line: "Report Profile —
+             safety/reporting concerns. Hide Profile — privacy/discovery
+             preference."
+
+             The action underneath is not a discovery preference. It is
+             ZyraReportService.block(), which is MUTUAL and PERMANENT: it
+             hides the two people from each other everywhere, enforced in
+             profiles_select's RLS, and there is no undo on this screen.
+             Hiding someone also makes you invisible to them.
+
+             That was legible while it sat inside the report sheet as a
+             row reading "I just don't want to see X — hides you both.
+             Nothing is reported." Promoted to a top-level button called
+             Hide Profile, the name alone reads one-way and temporary.
+
+             The confirmation built for it says so plainly ("You and X
+             won't see each other again"), so nothing ships misleading.
+             But the copy is compensating for a mismatch between the
+             control's name and its mechanism, and that is worth deciding
+             rather than papering over.
+
+             NO ONE-WAY HIDE EXISTS TODAY. The nearest thing is Pass,
+             which persists via recordPass — but Pass is already the
+             swipe, so it cannot also be a menu item without two controls
+             meaning one thing.
+
+Target:      1. Founder decides: is Hide Profile a mutual block with
+                honest copy, or does a one-way "remove from my deck"
+                need to exist as a separate thing?
+             2. If one-way: it needs its own table or a flag on passes,
+                its own RLS, and a decision on whether the other person
+                can still see you.
+             3. If mutual: consider renaming so the name carries the
+                weight, and confirm whether it belongs in Settings →
+                Blocked users for undo.
+Dependencies: DR-ZYRA-155; blocked_users_screen (the existing undo
+             surface); ZyraReportService.block.
+
+------------------------------------------------------------
+
+OA-ZYRA-218
+Title:       Connections And Guardian Detail Still Reach Block Through
+             The Report Sheet
+Category:    UX Consistency / Privacy
+Priority:    LOW
+Status:      Open
+Owner:       Engineering
+Raised:      2026-08-13
+Source:      DR-ZYRA-155.
+
+Description: Browse's block-only row moved out of the report sheet and
+             became its own action on the transformed nav bar. Two other
+             callers of showReportProfileSheet — connections_screen and
+             guardian_detail_screen — have no action bar to move it to,
+             so they still show the row inside the sheet.
+
+             The result is one capability reached two ways depending on
+             which screen you are standing on: a top-level option with a
+             confirmation on Browse, and a row at the bottom of a report
+             on Connections. Not broken, and the Guardian case is already
+             excluded for its own reason (blocking your own Guardian
+             leaves the link intact while changing what other Seekers
+             see — Remove is the right action there). But it is drift,
+             and it is the kind that gets noticed as an inconsistency
+             rather than reported as a bug.
+
+Target:      1. Decide whether Connections needs its own Hide entry
+                point, or whether the sheet row stays the answer off
+                Browse.
+             2. Fold in whatever OA-ZYRA-217 settles about what Hide
+                means — the two should not be decided separately.
+Dependencies: DR-ZYRA-155, OA-ZYRA-217.
+
+------------------------------------------------------------
+
+OA-ZYRA-219
+Title:       Compatibility Unlock On A Declined Profile — Pre-Purchase
+             Wording, And What "You Keep It" Is Worth If You Cannot
+             Reach It
+Category:    Premium / Consumer Fairness / UX
+Priority:    MEDIUM — no money has changed hands yet (no payment SDK),
+             so this is fixable before it is ever chargeable. It stops
+             being cheap the day payments land.
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — for Founder discussion. Do not build.
+Owner:       Founder (product + wording), then Engineering
+Raised:      2026-08-13
+Source:      Founder brief, "Compatibility Unlock purchases and declined
+             profiles".
+
+Description: TWO OF THE THREE QUESTIONS ARE ALREADY ANSWERED, and by the
+             Founder. Recording that first, because re-deciding a
+             ratified decision is its own cost.
+
+             Question 1 (does the unlock persist) and Question 3
+             (Option A vs Option B) were settled on 2026-08-03 and are
+             built. APP/Premium/Profile Unlocks/Summary.md, PERMANENCE,
+             Founder approved:
+
+               "A profile may only be Compatibility Unlocked ONCE per
+                user, per tier. Once unlocked, that compatibility stays
+                permanently accessible to that user. Returning to the
+                same profile must NEVER consume another unlock."
+
+             It is enforced in the database, not merely intended.
+             zyra_unlock_profile() checks profile_unlocks BEFORE the
+             credit balance and returns 'already_unlocked', charged
+             false — so someone with zero credits still reaches what
+             they paid for, and a double tap on a slow connection cannot
+             charge twice. profile_unlocks has no expiry and no revoke
+             column. Declining writes to `passes` and touches nothing in
+             profile_unlocks.
+
+             So the Founder's stated assumption — "a user should NOT
+             have to pay twice for the same profile unlock" — is already
+             the approved position, already implemented, and Option B is
+             already rejected. That part needs confirming, not deciding.
+
+             WHAT IS ACTUALLY BROKEN IS REACHABILITY, and it is worse
+             than the brief assumed. The brief says the profile "may not
+             appear again unless they encounter them again in Browse in
+             the future". They will not. Measured 2026-08-13:
+
+               · `passes` has no expiry. A pass is permanent.
+               · The only thing that clears passes is
+                 zyra_reset_search(), and its Dart wrapper
+                 ZyraDiscoveryService.resetSearch() HAS NO CALLER —
+                 there is no user-facing route to it at all.
+               · Connections → Passed shows the last 10 only.
+               · A Passed card is denied the Compatibility action
+                 outright — see OA-ZYRA-220, which is the actual defect.
+
+             Put together: pay, then decline, and the unlock row lives
+             forever in a table no surface will ever read on your
+             behalf. "It stays permanently accessible" is true of the
+             data and false of the experience. That is the gap worth
+             discussing, and it is a different gap from the one the
+             brief describes.
+
+             QUESTION 2 IS THE LIVE ONE. Nothing today tells a buyer
+             what a decline costs them, because until OA-ZYRA-220 is
+             fixed it costs them the whole purchase. The Founder's draft
+             wording is close but currently describes behaviour the app
+             does not have ("if you encounter this profile again, your
+             unlock remains available" — they cannot encounter them
+             again).
+
+             Recommendation, for discussion rather than as a decision:
+
+             1. FIX THE DEFECT FIRST (OA-ZYRA-220). Most of the unfairness
+                is a stale rule, not a design. With the Passed card's
+                Compatibility action restored, a declined-but-unlocked
+                profile is reachable for as long as it stays in the last
+                ten — and the wording problem shrinks to an honest,
+                narrow one.
+             2. THEN DECIDE WHAT HAPPENS AFTER TEN. The remaining
+                unfairness is the cap. Options worth weighing: an
+                "Unlocked" filter or section in Connections that ignores
+                the ten-item cap and lists everything you hold; or
+                exempting unlocked profiles from the cap. An unlock is a
+                purchase, and a purchase should not fall off a list
+                because of ten unrelated swipes.
+             3. WORDING, ONLY ONCE 1 AND 2 ARE SETTLED. Placement:
+                INSIDE the purchase confirmation, not before it and not
+                only in Terms — a sentence in a T&C nobody reads does
+                not stop someone feeling cheated, and a warning before
+                purchase suppresses purchases that would have been fine.
+                One line, stating what is true after the fixes.
+             4. DO NOT WRITE THE WORDING TO EXCUSE THE BEHAVIOUR. If the
+                honest sentence is uncomfortable to write, that is
+                evidence about the behaviour, not about the sentence.
+
+             CONSUMER-LAW NOTE, flagged not advised: this is paid digital
+             content sold to UK consumers. Wording that says access is
+             permanent while the app provides no route to it is the
+             shape of problem that attracts complaints and chargebacks.
+             Worth adding to the solicitor questions already open rather
+             than settling in-house.
+
+Target:      1. Founder confirms Option A stands (it is already
+                ratified) and closes Question 1 and 3 formally.
+             2. Founder decides the post-ten-items behaviour.
+             3. Wording agreed, placed in the purchase confirmation.
+             4. A DR is raised recording the outcome; this OA closes to
+                it.
+Dependencies: OA-ZYRA-220 (the defect that causes most of this),
+             APP/Premium/Profile Unlocks/Summary.md (PERMANENCE, Founder
+             approved 2026-08-03), zyra_unlock_profile(), the open
+             solicitor questions.
+
+------------------------------------------------------------
+
+OA-ZYRA-220
+Title:       Passed Cards Are Denied Compatibility Unlock By A Rule The
+             Founder Reversed On 2026-08-03
+Category:    Premium / Defect
+Priority:    MEDIUM
+Status:      Open
+Owner:       Engineering
+Raised:      2026-08-13
+Source:      OA-ZYRA-219. Found by checking the approved document rather
+             than the code comment that cites it.
+
+Description: connections_screen.dart withholds the Compatibility action
+             from Passed cards, at the `widget.kind !=
+             _ActivityKind.passed` guard, and justifies it in a comment
+             that quotes the source document verbatim:
+
+               "Profile Unlocks/Summary.md, Usage Rules: 'Cannot be used
+                on passed profiles.'"
+
+             That sentence is no longer in that document. It was
+             REVERSED on 2026-08-03, Founder approved, and the current
+             text is:
+
+               "Available from any Connections card — Considered, Saved
+                OR Passed. CHANGED 2026-08-03, Founder approved. The
+                2026-07-12 version said 'cannot be used on passed
+                profiles'... Reversed because the card already offers
+                Consider and Save from a Passed state. Someone
+                reconsidering a Pass is exactly who a compatibility
+                score is useful to — offering the reconsideration while
+                withholding the thing that would inform it was
+                backwards."
+
+             The code is enforcing the superseded version and citing it
+             as authority. Approved documentation is the source of
+             truth; this is ten days behind it.
+
+             ONE BUTTON, TWO JOBS, AND THAT IS WHY IT BITES TWICE. The
+             control is a single action whose label flips between
+             "Compatibility Unlock" and "View Compatibility" depending on
+             whether one is already held. So a rule written about BUYING
+             silently removed VIEWING as well — someone who paid before
+             declining lost access to a thing they own, which nobody
+             decided and no document says. That is the mechanism behind
+             most of OA-ZYRA-219.
+
+Target:      1. Remove the guard so Passed cards carry the Compatibility
+                action, per the 2026-08-03 text.
+             2. Delete the stale quotation rather than updating it — a
+                comment citing a document is a copy that will go stale
+                again; cite the section, not the sentence.
+             3. Verify on device that an already-unlocked passed profile
+                reads "View Compatibility" and charges nothing
+                (zyra_unlock_profile already returns already_unlocked,
+                charged false — this is a client-side door, not a
+                server change).
+             4. Separately: ZyraDiscoveryService.resetSearch() has no
+                caller anywhere. Either give it a door or delete it —
+                an unreachable escape hatch is not an escape hatch.
+Dependencies: OA-ZYRA-219; APP/Premium/Profile Unlocks/Summary.md.
+
+------------------------------------------------------------
+
+OA-ZYRA-221
+Title:       Compatibility Unlock Is Now Reachable From The Browse Deck,
+             Which An Approved Rule Forbids — "Cannot Be Used While
+             Swiping"
+Category:    Premium / Governance Conflict
+Priority:    HIGH — built and shipped to the Founder's device on the
+             instruction that created it; needs a ruling, not a queue.
+Status:      Closed — 2026-08-20, Founder ruling (OA-AIOS-324
+             round): deck access STANDS — the written rule is amended
+             to match, not the build reverted. APP/Premium/Profile
+             Unlocks/Summary.md Usage Rules amended same day with a
+             dated CHANGED note citing this OA: "Cannot be used while
+             swiping" retired; the unlock is available from the
+             Browse deck's action bar and any Connections card. The
+             original rule's concern (paid action inside the
+             fastest-moving surface) is recorded there and lives on
+             in OA-ZYRA-219's open pre-purchase wording question
+Owner:       Founder
+Raised:      2026-08-13
+Source:      DR-ZYRA-156. Raised at the moment of building, per the
+             standing rule that approved architecture is authoritative
+             but reviewable on evidence, and never worked around
+             silently.
+
+Description: The Founder instructed that Compatibility Unlock be added
+             as a fourth option on Browse's 3-dot action bar. It has
+             been built as instructed.
+
+             It contradicts an approved rule. APP/Premium/Profile
+             Unlocks/Summary.md, Usage Rules, first line:
+
+               "• Cannot be used while swiping."
+
+             followed immediately by:
+
+               "• Available from any Connections card — Considered,
+                  Saved OR Passed."
+
+             The two lines together say where the purchase belongs: AFTER
+             a decision, from Connections — not from the deck. Browse's
+             ⋯ is the deck. This is the thing that rule names.
+
+             THE RULE WAS NOT ARBITRARY, as far as can be reconstructed
+             from the document: it keeps a paid action out of the
+             fastest-moving surface in the app, where the next card is
+             one thumb-flick away and the decision to spend competes
+             with a swipe reflex.
+
+             IT ALSO MAKES OA-ZYRA-219 MORE LIKELY, NOT LESS, and that
+             is the part worth weighing. That OA is about someone paying
+             for an unlock and then declining the person, stranding the
+             purchase. Until today the only way to buy was from a
+             Connections card — after the decision, deliberately, about
+             someone already Saved, Considered or Passed. Buying from
+             the deck puts the purchase BEFORE the decision, in the same
+             gesture stream as Pass. The exact sequence OA-ZYRA-219
+             worries about — pay, then decline — was previously
+             awkward to reach and is now two taps apart.
+
+             NOTHING HERE SAYS THE FOUNDER IS WRONG. Reaching
+             compatibility from the card you are looking at is an
+             obvious thing to want, and the rule predates the current
+             card design. But it is a reversal of an approved position
+             with a monetisation-ethics edge, and reversing it by
+             implementation rather than by decision is how a register
+             stops being the source of truth.
+
+Target:      1. Founder rules: does "cannot be used while swiping" stand,
+                or is it reversed the way "cannot be used on passed
+                profiles" was reversed on 2026-08-03?
+             2. If it stands: the fourth option comes back out, and the
+                ⋯ returns to three.
+             3. If it is reversed: APP/Premium/Profile Unlocks/Summary.md
+                is updated in the same change — the document moves, not
+                just the code — and OA-ZYRA-219's wording work accounts
+                for buy-then-decline being an easy path rather than a
+                rare one.
+Dependencies: DR-ZYRA-156, OA-ZYRA-219, OA-ZYRA-220, APP/Premium/Profile
+             Unlocks/Summary.md.
+
+------------------------------------------------------------
+
+OA-ZYRA-222
+Title:       Swipe-To-Decide On The Read-Only Profile Needs Browse's
+             Gesture Extracted, Not Copied
+Category:    UX / Refactor
+Priority:    MEDIUM
+Status:      Open — the one part of the 2026-08-13 introductions brief
+             deliberately not built.
+Owner:       Engineering
+Raised:      2026-08-13
+Source:      DR-ZYRA-160. The Founder asked for "the swiping feature of
+             green yellow and red" on the profile opened from an
+             introduction.
+
+Description: NOT BUILT, AND THE REASON IS THE DECISION TAKEN HOURS
+             EARLIER. DR-ZYRA-159 deleted a hand-built replica of
+             FloatingNavBar after four passes failed to make a copy look
+             like the original, and recorded why: a replica converges on
+             the thing it copies and never arrives, because every future
+             change to the original has to be noticed and mirrored by
+             hand.
+
+             Browse's decision swipe is a bigger version of the same
+             trap. It is roughly fifteen members of _BrowseScreenState —
+             pan offsets, the decision-from-direction rule, the
+             distance-to-intensity curve, the live border glow, the
+             commit burst, the fly-off animation, a device-corner-radius
+             guess — and several are entangled with the deck itself
+             (_advance, _index, _allProfiles). A second implementation
+             would be visibly not-quite-the-same within a day, which is
+             exactly the loop just closed.
+
+             The honest options are to extract it properly, or not to
+             have it yet. Extracting it means refactoring the app's most
+             important screen, which is not something to attempt blind
+             in the same pass as three other changes to a different
+             screen.
+
+             NOTHING IS BLOCKED BY THE ABSENCE. The same three decisions
+             are on the introduction card, under View Profile, as of the
+             same change. The profile screen is read-only, which is what
+             it was before.
+
+Target:      1. Extract the gesture, the glow and the commit animation
+                into one widget that wraps a child and reports a
+                decision — colours and thresholds included, since those
+                are the part that must not drift.
+             2. Migrate Browse to it FIRST and verify on device that the
+                deck feels unchanged. If it does not, stop there.
+             3. Then wrap the read-only profile in it.
+Dependencies: DR-ZYRA-160, DR-ZYRA-159 (the replica lesson), browse_
+             screen.dart.
+
+------------------------------------------------------------
+
+OA-ZYRA-223
+Title:       Duplicate Question Id ch3_q26 — The Server Was Fixed,
+             The Client Was Not
+Category:    Onboarding / Data Integrity
+Priority:    HIGH — the strongest remaining candidate for the
+             male-account errors that were not colour.
+Status:      Open — needs verifying on device before a fix.
+Owner:       Engineering
+Raised:      2026-08-13
+Source:      Full app review, 2026-08-13.
+
+Description: chapter3_categories.dart declares TWO questions with
+             id 'ch3_q26' (:187 and :194), differing only by
+             genderVisibility (menOnly / womenOnly) and carrying
+             DIFFERENT option lists. The file's own header
+             acknowledges it.
+
+             The client stores Chapter 3 answers in one flat map
+             keyed by question id (values_preferences_flow.dart:42).
+
+             THE SERVER ALREADY HIT THIS AND WAS FIXED.
+             20260811172021_fix_question_is_due_multi_variant_qid
+             .sql: "zyra_question_is_due() assumed one row per
+             qid; ch3_q26 has two gender variants." The client
+             never got the same treatment.
+
+             Two consequences to check on device:
+             1. A male answers 104 questions, a female 103
+                (ch3_q39 is menOnly). Any completeness gate
+                expecting a fixed count disagrees by gender.
+             2. onboarding_question.dart:100-108 — a NULL gender
+                hides BOTH variants, so a required question
+                silently disappears and the gate can never be
+                satisfied.
+
+Target:      1. Walk a fresh MALE account through Chapter 3 on
+                device and watch for the reported errors.
+             2. If confirmed, give the client the same treatment
+                the server got — key answers by (qid, variant) or
+                make the ids unique.
+             3. Decide what a null gender should do; silently
+                hiding a required question is not it.
+Dependencies: DR-ZYRA-165; migration 20260811172021.
+
+------------------------------------------------------------
+
+OA-ZYRA-224
+Title:       Gender Correctness Sweep — Guardians Written Male,
+             Pronouns Defaulting To One Half
+Category:    Correctness / Copy
+Priority:    MEDIUM
+Status:      Open
+Owner:       Engineering
+Raised:      2026-08-13
+Source:      Full app review, 2026-08-13.
+
+Description: Four related findings, all of which read correctly
+             for one half of users:
+
+             1. zyra_profile_service.dart:116 — every Guardian
+                created in-app is written gender: 'male'
+                regardless of who they are. The seeded Khadija is
+                female, so the dev presets exercise a case the app
+                itself cannot produce.
+             2. Pronoun ternaries fall through to one gender —
+                connections_screen.dart:1018 and :3896,
+                journey_flow_screen.dart:1992,
+                profile_screen.dart:317.
+             3. The one CORRECT implementation already exists and
+                names the trap: profile_unlock_screen.dart:900-921
+                switches to '_ => their' with the comment "it reads
+                correctly for exactly half the users and wrongly
+                for the other half — the kind of bug that survives
+                testing on one account." That fix was applied to
+                one widget and never generalised.
+             4. Two opposite-gender helpers disagree on their
+                default — zyra_discovery_service.dart:83 (unknown →
+                male targets) and zyra_dev_scenario.dart:724
+                (unknown → female counterparts) — and are fed from
+                different sources in one call at
+                connections_screen.dart:452.
+
+Target:      1. Guardians get their real gender at creation.
+             2. Pronouns follow the profile_unlock_screen pattern
+                everywhere.
+             3. One opposite-gender helper, one default.
+Dependencies: DR-ZYRA-165.
+
+------------------------------------------------------------
+
+OA-ZYRA-225
+Title:       Truthful Failure Handling — Four Write Paths Report
+             Success When They Failed
+Category:    Correctness / Data Integrity
+Priority:    HIGH — the most important cluster in the 2026-08-14 audit.
+Status:      Open — NARROWED 2026-08-15: code built
+             (DR-ZYRA-167); remaining scope is on-device
+             forced-failure verification only.
+Owner:       Engineering
+Raised:      2026-08-14
+Source:      External audit 2026-08-14, BUG-02 to BUG-05. Each location
+             verified in source.
+
+Description: Four paths swallow database errors and let the UI report
+             success:
+
+             1. SAVE / CONSIDER / PASS — zyra_discovery_service.dart
+                :318-339, :481-491. Browse mutates AppState first and
+                does not await the write (browse_screen.dart :1127,
+                :1164, :1194). A decision can vanish on relaunch, and a
+                failed Like can silently prevent a match.
+             2. FAMILY ANSWERS — zyra_journey_service.dart :860-872.
+                Both submit screens reload as if it worked. A Seeker or
+                Guardian can believe a family response was recorded when
+                it was not — and that is a Journey safeguard, not a
+                preference.
+             3. PAUSE — zyra_journey_service.dart :908-914 rethrows only
+                two recognised refusals; every other error is swallowed
+                and the sheet closes as if the Journey paused.
+             4. NOTIFICATIONS — zyra_notification_service.dart returns an
+                empty list on failure, so the screen renders "All caught
+                up — No new notifications." The copy is most misleading
+                exactly when the person needs to retry.
+
+             WHY IT WAS NOT FIXED IN THE SAME PASS. These are the four
+             busiest persistence paths in the app. Each needs a decision
+             about semantics — roll back the optimistic state, or keep it
+             and retry? — rather than a patch, and none can be verified
+             without forcing failures on device. Fixing truthful-failure
+             handling blind is how it becomes a new silent failure.
+
+Target:      1. Give each service a typed result (success / failure /
+                empty) instead of a swallowed catch.
+             2. Decide per path: await-then-commit, or optimistic with
+                rollback. Save/Consider/Pass probably differ from Family
+                answers.
+             3. Notifications gets an error state with retry, distinct
+                from the honest empty state.
+             4. Tests FIRST for each — the audit notes only 18 exist and
+                none cover a failure path.
+             5. Verify by forcing each failure on device.
+Dependencies: DR-ZYRA-166; the 2026-08-14 external audit.
+
+Update 2026-08-15: Targets 1-3 built (DR-ZYRA-167) — typed
+             results per service, per-path semantics
+             (optimistic-with-retry for decisions, keep-text-
+             and-say-so for family answers, keep-confirm-open
+             for an unexpected Pause failure, no closure moment
+             for a failed End), and the notifications error
+             state with retry plus hold-last badges. Target 4
+             (tests first) deferred to TD-02's home — this
+             workflow has no test runner. Target 5 (force each
+             failure on device) is the remaining scope.
+
+------------------------------------------------------------
+
+OA-ZYRA-226
+Title:       Chapter 4 Gates On YOUR Gender When It Should Gate On
+             THEIRS — Two Required Questions Score Nothing
+Category:    Compatibility Engine / Onboarding
+Priority:    HIGH — proven in live data. Supersedes the framing of
+             OA-ZYRA-223, which called this an id collision.
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — root cause proven, fix not built.
+Owner:       Founder (one product call), then Engineering
+Raised:      2026-08-14
+Source:      Verification of OA-ZYRA-223 against source and the live
+             database.
+
+Description: THE ROOT CAUSE, in one line: Chapter 3 asks about YOU, so
+             gating it on your own gender is right. Chapter 4 asks what
+             you want in a PARTNER — and it gates on your own gender
+             too. values_preferences_flow.dart:65, _visibleCh4, filters
+             _visible(), which is gender-gated by widget.gender.
+
+             CONSEQUENCE 1 — ch3_q26 (polygamy), required in Chapter 4.
+             Two variants share the id, one menOnly and one womenOnly,
+             with DIFFERENT option lists. Measured across all 144
+             seeded Seekers:
+
+               Chapter 3 answers (about themselves)     CORRECT
+                 females hold women's options
+                 males hold men's options
+
+               Chapter 4 preferences (about a partner)  WRONG
+                 females hold WOMEN'S options
+                 males hold MEN'S options
+
+             So every woman has rated what SHE might be, not what he
+             might be. Sample row, verbatim from the database:
+             {"I would only marry as the only wife": "yellow",
+              "I would consider being an additional wife": "green"}.
+             That is a woman's Chapter 4 PREFERENCE — describing
+             herself.
+
+             And because a female's preference keys are women's strings
+             while every male candidate's answer is a men's string, the
+             lookup can never match. A REQUIRED question on POLYGAMY —
+             one of the most consequential compatibility axes this app
+             has — contributes nothing to a woman's score, ever.
+
+             ── CORRECTION, 2026-08-14 (same day, engine audit). The
+             line above originally read "the two vocabularies do not
+             overlap at all… in either direction." THAT IS TRUE FOR
+             WOMEN AND FALSE FOR MEN. Both option lists contain the
+             string "I'm unsure". Measured:
+
+               female → male   0 of her 4 keys match   contributes zero
+               male → female   1 of his 4 keys matches — "I'm unsure"
+
+               women whose q26 answer is "I'm unsure"        6
+               men holding a light for "I'm unsure"         72
+                 (57 yellow · 9 red · 6 green)
+               pairs currently scoring on this key         432
+
+             In those 432 pairs a man's rating of HIS OWN uncertainty
+             about taking more than one wife is applied as a judgement
+             of HER uncertainty about being an additional wife. Two
+             different propositions that happen to share a label.
+
+             So the defect is asymmetric: for women it is a missing
+             signal, for men it is a WRONG one. That does not change
+             the decision below, but it does make clearing the stored
+             preferences a correctness fix rather than tidying.
+
+             ── SCOPE EXTENSION, same audit. ch4_hard_requirements is
+             evaluated by the identical string lookup, before scoring,
+             and excludes the candidate outright on a hit. All 21 hard
+             requirements in the database today sit on gender-neutral
+             questions (ch3_q1, ch3_q2, ch3_q52), so none is affected —
+             and all 21 are also red in the same person's own matrix,
+             which confirms the exclusion direction is right and the UI
+             is not inverted. But a hard requirement stored under a
+             gendered question would SILENTLY NEVER FIRE. A dealbreaker
+             that does nothing is worse than a score that counts
+             nothing, because the Seeker was told it was absolute.
+             Whatever is decided below must cover hard requirements,
+             not only preferences.
+
+             CONSEQUENCE 2 — ch3_q39 (Masjid attendance), menOnly and
+             also required in Chapter 4. Measured:
+
+               males:   72 state a preference · 72 answer it
+               females:  0 state a preference ·  0 answer it
+
+             The 72 male preferences can never be compared against
+             anything, because only females are candidates and none of
+             them answer it. And the group who would actually want to
+             state this preference — women, about a husband — is never
+             asked.
+
+             NEITHER IS AN ID COLLISION. Within one account only one
+             variant is ever visible, so nothing overwrites anything.
+             OA-ZYRA-223 was looking at the right question for the
+             wrong reason.
+
+Target:      1. FOUNDER CALL FIRST, because the fix changes what is
+                asked: should Chapter 4 gender-gating invert (you state
+                preferences over the COUNTERPART's option set), or
+                should gendered questions be excluded from Chapter 4
+                entirely? Inverting is the smaller change and keeps a
+                real compatibility axis.
+             2. If inverting: _visibleCh4 gates on the opposite gender.
+                ch3_q26 then shows a man the women's options and a
+                woman the men's — which is what each is choosing about.
+                ch3_q39 flips to women stating it about a husband.
+             3. Existing ch4_preferences for both qids are unusable and
+                must be cleared or re-collected — all 144 rows.
+             4. Re-measure the score spread afterwards. Two required
+                questions currently contributing zero means the live
+                spread was measured without them.
+             5. ANSWERED 2026-08-14 — no action needed. score_candidates
+                is SILENTLY NEUTRAL on a no-overlap lookup:
+                  v_light := v_prefs_for_question ->> v_value;
+                  IF v_light IS NULL THEN CONTINUE; END IF;
+                v_max is never incremented, so a miss neither scores
+                nor penalises. Nobody was being penalised; the two
+                questions were simply absent from every denominator,
+                which is exactly why their absence was invisible.
+             6. ADDED 2026-08-14 — the clearing in step 3 must cover
+                ch4_hard_requirements as well as ch4_preferences.
+Dependencies: OA-ZYRA-223 (superseded framing), OA-ZYRA-193(e) (the
+             Chapter 2 weight, measured on a spread that excluded
+             these), OA-ZYRA-227 (the wider spread finding — re-measure
+             after this is fixed), migration 20260811172021 (the
+             server-side half of the same problem, already fixed),
+             REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md.
+
+------------------------------------------------------------
+
+OA-ZYRA-227
+Title:       The Compatibility Score Cannot Separate People — Its
+             Spread Is Set By The QUESTION COUNT, Not By Compatibility
+Category:    Compatibility Engine / Product
+Priority:    HIGH — a paid, user-facing figure is near-constant.
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — DECISION REQUIRED. Engine is correct; the
+             specification it implements is what produces this.
+Owner:       Founder (product call), then Engineering
+Raised:      2026-08-14
+Source:      REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md —
+             score_candidates re-implemented in SQL and run over all
+             10,257 viable pairs in the live database.
+
+Description: MEASURED, whole population, Chapter 3 with hard-
+             requirement exclusions applied:
+
+               lowest score anyone gets            64.3
+               highest score anyone gets           86.6
+               mean                                76.1
+               standard deviation                  3.25
+               pairs between 70 and 82      9,597 of 10,257 (93.5%)
+               pairs rounding to exactly 76        1,296
+
+             THE CAUSE IS ARITHMETIC, NOT PREFERENCES. The same method
+             on fewer questions:
+
+               questions   lowest  highest   SD    in 70–82
+                   5        20.0    100.0   12.62    57.2%
+                  10        40.0    100.0    8.73    61.2%
+                  20        50.0     97.4    6.20    67.8%
+                  40        57.7     89.5    4.50    78.7%
+                ~70 today   64.3     86.6    3.25    93.5%
+
+             SD x sqrt(question count) = 28.2, 27.6, 27.7, 28.5, 27.2.
+             That is 1/sqrt(n) to three significant figures.
+
+             SO EVERY QUESTION ADDED TO CHAPTER 3 MAKES THE SCORE WORSE
+             AT TELLING PEOPLE APART. Question 71 does not add nuance;
+             it divides the signal by a slightly larger number.
+
+             WHERE IT IS FELT — 1, the paid figure.
+             profile_unlock_screen.dart:742 renders the real score at
+             44pt after a credit is spent.
+               best match, average                 82.9
+               gap #1 to #5                         2.35
+               gap #1 to #10                        3.48
+               gap #1 to #20                        4.97
+               gap #1 to last in deck              12.82
+             Five unlocks, five credits: 83, 82, 82, 81, 81.
+
+             WHERE IT IS FELT — 2, deck order. Browse sorts by the
+             score and never shows it. Within one deck there are 2,354
+             groups of candidates holding an IDENTICAL score, averaging
+             3.7 people each. Ties resolve through a comparator that
+             returns 0, and Dart's List.sort is not documented as
+             stable — so three to four people at every score level are
+             ordered by nothing in particular.
+
+             THIS ALSO ANSWERS OA-ZYRA-193(e) — see that entry.
+
+             HONEST LIMIT: the 144 Seekers are seeded, so the constant
+             (sigma ~28 per question) is measured from generated data.
+             The 1/sqrt(n) law is arithmetic and holds regardless. Real
+             preferences correlate, which would raise the constant and
+             widen the spread somewhat — the mechanism does not change,
+             the magnitude might.
+
+Target:      FOUNDER CALL between:
+             A. SCORE ON FEWER QUESTIONS — pick the 15–25 that carry
+                real matrimonial weight; keep the rest as profile
+                content. Restores SD ~6–7 and a ~45-point range.
+                Cost: an editorial judgement only the Founder can make.
+             B. WEIGHT QUESTIONS INSTEAD OF COUNTING THEM — keep all
+                ~70, give each a coefficient. Same judgement, plus a
+                schema change and a heavier scorer.
+             C. STOP SHOWING A PERCENTAGE — keep the flat score for
+                ordering; replace the 44pt number with bands or with
+                the green/amber/red tallies (OA-ZYRA-230). Worth doing
+                whatever happens to the engine.
+             D. STRETCH THE SCALE for display — RECOMMEND AGAINST. It
+                manufactures difference that is not there and goes
+                stale the moment the question set changes.
+
+             SEQUENCING: OA-ZYRA-226 first. Both broken questions
+             currently contribute nothing (and one contributes
+             wrongly), so every figure above was measured with them
+             absent. Fix the gate, clear the 144 stale rows, re-
+             measure, then choose.
+Dependencies: OA-ZYRA-226 (fix first, then re-measure), OA-ZYRA-193(e)
+             (answered by this), OA-ZYRA-230, OA-ZYRA-221 (Compatibility
+             Unlock and declined profiles — same screen).
+
+------------------------------------------------------------
+
+OA-ZYRA-228
+Title:       Multi-Select Answers Put The Score's Denominator In The
+             CANDIDATE's Hands
+Category:    Compatibility Engine
+Priority:    Medium — latent. Invisible in seed data, appears with
+             real users.
+Status:      Open — bug, fix not built.
+Owner:       Engineering
+Raised:      2026-08-14
+Source:      REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md §5.
+
+Description: In score_candidates, an array answer increments v_max ONCE
+             PER SELECTED OPTION:
+
+               FOR v_value IN SELECT jsonb_array_elements_text(v_answer)
+                 v_light := v_prefs_for_question ->> v_value;
+                 IF v_light IS NULL THEN CONTINUE; END IF;
+                 v_max := v_max + 1; ...
+
+             So a multi-select question weighs as much as the candidate
+             chose to select, and two candidates answering the same
+             question are scored against DIFFERENT denominators.
+
+             The bias has a direction: selecting more can only help if
+             everything selected is green. One green option scores
+             100% on that question; three greens and a yellow scores
+             87.5%. THE MORE EXPRESSIVE CANDIDATE IS PENALISED.
+
+             NOT VISIBLE TODAY. Only ch3_q37 and ch3_q97 are multi-
+             select and all 144 profiles selected exactly 2 on each, so
+             the distortion is uniform and cancels. It appears the
+             moment a real user selects 1, or 5. This is precisely the
+             class of defect generated seed data hides — every row
+             identical means every denominator identical.
+Target:      Decide the intended semantics, then make the code say it.
+             Two candidates:
+             (a) One question, one unit: average the lights across the
+                 selected options and add ONE to v_max.
+             (b) Best-match: take the highest light among the selected
+                 options and add ONE to v_max.
+             (a) is the conservative reading of the existing scale.
+             Either way v_max must grow per QUESTION, not per option.
+Dependencies: OA-ZYRA-227 (any change here moves every figure in it).
+
+------------------------------------------------------------
+
+OA-ZYRA-229
+Title:       initcap(sect) Is The Only Thing Joining Two Casing
+             Conventions Neither Side States
+Category:    Compatibility Engine / Data Integrity
+Priority:    Low — works today, fails silently when a value is added.
+Status:      Open.
+Owner:       Engineering
+Raised:      2026-08-14
+Source:      REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md §7a.
+
+Description: seeker_details.sect stores lowercase — sunni (117), shia
+             (15), other (12). The Chapter 2 preference matrix stores
+             Title Case — Sunni, Shia, Other, for all 144 Seekers. One
+             initcap() inside score_candidates bridges them, for both
+             the hard_requirement test and the matrix lookup.
+
+             It holds only because all three values are single words.
+             A sect written "Ahl-e-Hadith" initcaps to "Ahl-E-Hadith",
+             which will not match the matrix key — and, like every
+             other lookup in this function, the miss is silent.
+
+             The client and the database have agreed a casing
+             convention that neither of them states anywhere.
+Target:      Either normalise both sides at write time and drop the
+             initcap, or store the sect code rather than a display
+             string. Whichever is chosen, write it down where the next
+             sect value gets added.
+Dependencies: —
+
+------------------------------------------------------------
+
+OA-ZYRA-230
+Title:       Green / Amber / Red Tallies Can Be Real Today Without
+             Waiting On OA-ZYRA-193(d)
+Category:    Compatibility Engine / Subscription
+Priority:    Medium — three of seven figures on a PAID screen.
+Status:      Open — MODIFY, small, no decision required.
+Owner:       Engineering
+Raised:      2026-08-14
+Source:      REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md §7c.
+
+Description: profile_unlock_screen shows three tallies (Green, Amber,
+             Red) plus six category rows, all from _Sample and all
+             correctly marked as sample by _SampleMarker.
+
+             The CATEGORIES genuinely cannot be computed —
+             score_candidates returns no category detail and
+             OA-ZYRA-193(d) has not settled what the categories are.
+
+             THE TALLIES ARE DIFFERENT. score_candidates already walks
+             every matching light to build v_total. Counting greens,
+             yellows and reds costs three integers and extra columns on
+             the RETURNS TABLE. That makes 3 of the 7 figures on a paid
+             screen real without touching OA-ZYRA-193(d).
+Target:      Add three counters to score_candidates, widen its return,
+             consume them in fetchMyScoreFor and the unlock screen.
+             LEAVE _SampleMarker in place on the category breakdown —
+             its own doc comment already warns against deleting it when
+             only part of the screen becomes real.
+Dependencies: OA-ZYRA-193(d) (categories — deliberately NOT blocked by
+             it), OA-ZYRA-227 option C.
+
+------------------------------------------------------------
+
+OA-ZYRA-231
+Title:       create_notification() Ignores notification_preferences —
+             Two Visible Settings Toggles Gate Nothing
+Category:    Notifications / Consent
+Priority:    HIGH — a switch the user has operated does nothing.
+Status:      Open — bug, fix specified, not built.
+Owner:       Engineering
+Raised:      2026-08-14
+Source:      SYSTEM/DOCUMENTS/ZYRA_NOTIFICATION_SPECIFICATION_CURRENT_
+             VERSION_V1.md §7.
+
+Description: create_notification() is, in full:
+
+               INSERT INTO notifications
+                 (user_id, type, title, body, related_match_id)
+               VALUES (p_user_id, p_type, p_title, p_body,
+                       p_related_match_id);
+
+             It never reads notification_preferences. All TEN callers
+             therefore write unconditionally, and every category toggle
+             governs nothing on the creation path.
+
+             Today's exposure is bounded — no live type maps to
+             marketing_emails or product_updates, so no consent-bearing
+             message is being sent against a withdrawal. But
+             matches_journeys and guardian_activity are already visible
+             in Settings, already persisted append-only for evidential
+             reasons, and already ignored. A switch that does nothing
+             is worse than an absent one, because the user believes
+             they have acted.
+
+             APP/Notifications/SUMMARY.md flagged this on 2026-07-26
+             when the toggles were session-only AppState. The toggles
+             have since become a real, GDPR-grade append-only consent
+             record. The enforcement half never followed.
+Target:      Resolve type -> category inside create_notification, not
+             in each caller — the ten existing callers then need no
+             change and an eleventh cannot forget:
+               category has no toggle (Security/Account) -> INSERT
+               latest preference row is false            -> write nothing
+               otherwise                                 -> INSERT
+             The mapping lives in the database as a table or function.
+             A Dart copy would be a second source of truth for a
+             consent decision.
+Dependencies: OA-ZYRA-146 (the specification this comes from),
+             OA-ZYRA-161 (the approved Journey map).
+
+------------------------------------------------------------
+
+OA-ZYRA-232
+Title:       A Guardian Invite That Nobody Opens Never Expires — So
+             Three Of Its Four Outcomes Are Silent
+Category:    Guardian / Notifications
+Priority:    Medium — not a security hole; a dead end for the sender.
+Status:      Open — raised by the Founder, 2026-08-14: "if you sent a
+             guardian notification and it expired or accepted, ensure
+             that is included in the notification."
+Owner:       Engineering
+Raised:      2026-08-14
+Source:      Founder, reviewing SYSTEM/DOCUMENTS/ZYRA_NOTIFICATION_
+             SPECIFICATION_CURRENT_VERSION_V1.md §5.3.
+
+Description: A wali_invite has FOUR endings. Only ONE notifies.
+
+               accepted   -> 'wali_request' to the inviter    BUILT
+               declined   -> nothing                          no path at all
+               expired    -> nothing                          not an event
+               revoked    -> nothing
+
+             So silence means accepted-and-nobody-told-me, declined,
+             expired and still-waiting all at once. The sender cannot
+             tell which, so the rational move is always to send another
+             code — which is the wrong response in three cases out of
+             four, and in the declined case means repeatedly re-
+             inviting a relative who has already said no.
+
+             ── WHY EXPIRY CANNOT SIMPLY BE NOTIFIED ON. There is no
+             moment at which a wali_invite expires.
+
+             expire_wali_invite_if_due() marks ONE row and runs only
+             when something calls it:
+               · preview_wali_invite — i.e. when the RECIPIENT opens
+                 the link; and
+               · accept_wali_invite, where it is a PREDICATE ONLY —
+                 the RAISE immediately after rolls its UPDATE back.
+                 This was corrected explicitly in migration
+                 20260809171103, whose whole purpose was to delete a
+                 comment claiming the marking survives.
+
+             So an invite NOBODY OPENS stays status='pending' past
+             expires_at indefinitely — and the unopened invite is the
+             commonest expiry case, because not acting is what causes
+             the expiry.
+
+             The Journey side already solved exactly this:
+             zyra_expire_due_journey_requests(UUID) sweeps overdue
+             rows, marks them, and emits the notification, called from
+             zyra_journey_service.dart:785. THE GUARDIAN SIDE HAS NO
+             EQUIVALENT. pg_cron is not installed, so a scheduled
+             sweep is not currently an option either.
+
+             NOT A SECURITY DEFECT. accept_wali_invite refuses an
+             expired invite regardless (audit finding 2.6, fixed
+             2026-08-09), and seeker_wali_tab computes "Expired" from
+             the timestamp for display. The row is simply never
+             transitioned — which is precisely why nothing can hang
+             off the transition.
+
+             ── AND THERE IS NO DECLINE PATH. zyra_revoke_wali_invite
+             is the INVITER withdrawing. A recipient who opens an
+             invite and does not want it has no route in the product:
+             they close the screen, and the sender waits seven days to
+             learn nothing.
+
+Target:      1. BUILD zyra_expire_due_wali_invites, shaped after
+                zyra_expire_due_journey_requests — sweep, mark, notify
+                — invoked on Guardian-surface load the way the Journey
+                one is. Without it, steps 2 and 3 have no trigger.
+             2. ADD 'wali_invite_expired' (Standard, NO push — nothing
+                is waiting on anyone and a lock-screen interruption to
+                say "nothing happened" is what makes people mute the
+                category).
+             3. ADD 'wali_invite_expiring' at day 5 of 7, TIME-
+                SENSITIVE, push. THIS IS THE ONE THAT SAVES THE
+                RELATIONSHIP rather than reporting on it — on day 5 the
+                sender can chase a family member who forgot; on day 8
+                all they can do is start again.
+             4. ADD 'wali_invite_received' to the invitee.
+             5. BUILD A DECLINE ACTION, then 'wali_invite_declined'.
+                Larger than a notification — logged so the
+                notification is not built against a trigger that does
+                not exist.
+             6. EVERY ONE NAMES WHO IT IS ABOUT, from
+                wali_invites.label — the private note that exists so
+                Pending Invitations reads as "Dad" and "Uncle Ibrahim".
+                "Your invite expired" is close to useless to someone
+                with three out.
+             7. FOUNDER CALL (spec §10 D6): are decline and expiry
+                told APART here, or merged as they deliberately are for
+                Journey requests (DR-ZYRA-121 item 8)? RECOMMEND
+                APART. A Journey request is a romantic approach, where
+                hiding which one happened protects the person who said
+                no and no different action follows either way. A
+                Guardian invite is administrative, and the two demand
+                OPPOSITE next moves — expired means send a new code,
+                declined means do not. Counter-argument, and it is
+                real: "a family member declined to be your Guardian"
+                is a sensitivity, and the copy must state the fact and
+                suggest nothing.
+             8. 'wali_request' passes NULL for related_match_id, so it
+                can never navigate anywhere — it needs the generalised
+                subject/deep-link work in spec §6.3.
+Dependencies: OA-ZYRA-146 (the specification), OA-ZYRA-231 (consent
+             enforcement — these new types need category mapping),
+             DR-ZYRA-121 item 8 (the Journey rule this deliberately
+             departs from), migrations 20260726120100,
+             20260809170940, 20260809171103.
+
+------------------------------------------------------------
+
+OA-ZYRA-233
+Title:       Avatar Bandwidth — Server-Side Transform Sizing For
+             Small Renders
+Category:    Performance / Cost
+Priority:    LOW
+Status:      Open
+Owner:       Engineering, after a Founder plan decision
+Raised:      2026-08-15
+Source:      DR-ZYRA-169 Phase 3 — the half of "the diet" that
+             could not be built blind.
+
+Description: Small surfaces (56pt Connections rows, chat
+             headers) download the same full-size original as
+             the full-screen Browse card. Phase 3 bounded the
+             DECODE (RAM and scroll jank), but the BYTES still
+             travel. Supabase Storage image transformations
+             would serve genuinely small files — two blockers,
+             both checkable, neither guessable:
+
+             1. Image Transformations are a paid-tier Supabase
+                feature. Whether project sxoaxonzjqkgajmlagyk's
+                plan includes them decides whether transform
+                URLs work at all.
+             2. The BATCH signing call the photo service depends
+                on (createSignedUrls) takes no transform
+                options; only the single-URL form does. A naive
+                adoption reintroduces one-request-per-photo —
+                the exact burst the 2026-08-05 chunking work
+                exists to prevent.
+
+Target:      Check the plan; if transforms are available, design
+             a second cached size class (the disk cache would
+             key it separately — the tokenless-URL key already
+             differs per transform), batch-sign originals as
+             today and transform only the handful of small
+             surfaces, then verify sharpness on device before
+             adopting. If the plan lacks transforms, close this
+             as not-worth-a-tier-upgrade and let Phase 3's
+             decode bound stand.
+
+Dependencies: DR-ZYRA-169; zyra_image_cache.dart;
+             zyra_photo_service.dart.
+
+------------------------------------------------------------
+
+OA-ZYRA-234
+Title:       Ward Browse-Activity Read — A Privacy Decision
+             Before An RPC
+Category:    Guardian / Privacy / Product
+Priority:    MEDIUM
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
+Owner:       Founder (scope), then Engineering
+Raised:      2026-08-15
+Source:      DR-ZYRA-171 — the Dashboard's Ward-activity chips.
+
+Description: The brief calls ZYRA "an open Seeker–Guardian
+             experience" and asks for ward Browse activity on
+             the Guardian Dashboard (Saved / Considered /
+             Declined). No such read exists: saves, likes and
+             passes are owner-only under RLS. The first draft
+             ships the DESIGN as dev-panel staged counts, with
+             the panel and the code both stating plainly that no
+             server capability exists.
+
+Target:      Founder decision first — counts only, full lists,
+             or nothing; and whether the ward is told what their
+             Guardian can see (the open-experience principle
+             suggests yes, in onboarding copy). Then a
+             SECURITY DEFINER counts RPC scoped to active
+             wali_links (never raw table grants), a guard-suite
+             section, and the chips switched from staged to
+             real. Also queued from the same build: extend
+             DR-167-style nullable failure to fetchLinkedPeople
+             (five callers).
+
+Dependencies: DR-ZYRA-171; DR-ZYRA-168 (the visibility batch it
+             must not contradict); guard suite AREA 1-2.
+
+------------------------------------------------------------
+
+OA-ZYRA-235
+Title:       Check Toonbee Before Marketing Begins
+Category:    Marketing / Brand
+Priority:    Low until marketing starts — then blocking, because the
+             point of it is to be checked BEFORE anything goes out.
+Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — dormant by design. Nothing to do until the
+             marketing phase begins.
+Owner:       Founder (Shakeel)
+Raised:      2026-08-15
+Completed:   —
+Source:      Founder, 2026-08-15: "when i do marketing remind me as oa
+             to check toonbee."
+
+Description: A standing reminder, logged now so it survives the gap
+             between raising it and needing it.
+
+             WHAT TOONBEE IS HAS NOT BEEN RECORDED. The Founder's
+             instruction names it without defining it, and it appears
+             NOWHERE else in ZYRA or BLACK UMBRELLA GROUP — searched
+             2026-08-15, zero matches across both trees. It is
+             therefore written here as his words rather than as an
+             interpretation. Guessing whether it is a competitor, an
+             agency, a tool, a channel or a name to clear would put an
+             invention into the register, and the register is where
+             this project keeps the things that are true.
+
+             FIRST ACTION WHEN THIS FIRES: the Founder says what
+             Toonbee is and what "check" means for it. That one
+             sentence turns this into a real task; without it the OA
+             can only be a reminder.
+
+Target:      Surface this OA at the START of the marketing phase —
+             before any campaign, listing, channel setup or public
+             copy goes out — not partway through. A check that
+             happens after the first thing ships is a check that
+             found out too late.
+
+             Marketing material already exists to be checked against:
+             BUSINESS/BRAND MESSAGING, BUSINESS/COMPETITOR RESEARCH,
+             BUSINESS/APP NAME CREATION, BUSINESS/ZYRA LAUNCH GUIDE,
+             BUSINESS/WEBSITE.
+Dependencies: None. Deliberately standalone — a reminder with
+             dependencies is a reminder that can be blocked.
+
+------------------------------------------------------------
+
+OA-ZYRA-236
+Title:       ZYRA documentation sweep for the AI team restructure
+             (DR-ZYRA-191 / AD-AIOS-097)
+Category:    Governance
+Priority:    High
+Status:      Completed — 2026-08-17, same day as raised
+Owner:       Fable (Documentation Owner)
+Raised:      2026-08-17
+Completed:   2026-08-17
+Source:      Codex (Lead Architect) batch instruction of 2026-08-17,
+             executing the Founder's restructure instruction of the same
+             day (relayed in session).
+
+Description: ZYRA-side documentation for the restructure recorded in
+             DR-ZYRA-191: ZYRA_GOVERNANCE superseded V2 -> V3 (authority
+             table re-bound to Codex as Lead Architect, Fable and Claude
+             as Executors; delegation split between brief-level and
+             code-level decisions; V2 archived as
+             ZYRA_GOVERNANCE_2026-08-17_V2.md); CLAUDE.md §2 updated to
+             name brief authorship (Codex) and the two executor seats;
+             AGENTS.md added at the ZYRA root as a thin pointer bootstrap
+             (rules live in the governed documents, not in it); the
+             Documentation Index regenerated via
+             SYSTEM/tools/generate_doc_index.py after the sweep.
+
+             Documentation only — no source, database, migration or git
+             changes. The ZYRA build pause (Founder, 2026-08-17) is
+             unaffected.
+Target:      Completed 2026-08-17
+Dependencies: DR-ZYRA-191; AD-AIOS-097 and OA-AIOS-298 (BLACK UMBRELLA
+             GROUP registers).
+
+------------------------------------------------------------
+
+OA-ZYRA-237
+Title:       Submitted Reports Have No Moderation Queue, Notification,
+             Ownership or Resolution Path
+Category:    Safety / Moderation
+Priority:    Critical — release blocker for real users
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — awaiting a Founder-approved engineering brief. NOT a
+             UI-only fix.
+Owner:       Codex (Lead Architect) — authors the brief; the brief names
+             its executor; Founder approves before implementation lands.
+Raised:      2026-08-17
+Completed:   —
+Source:      Codex full-app review, 2026-08-17 (relayed by the Founder;
+             REVIEW COMPLETE — FINDINGS PRIORITISED). Confirms the caveat
+             recorded in CLAUDE.md §5: "Nothing happens when a report is
+             submitted."
+
+Description: The app accepts reports and can block profiles, but a
+             submitted report has no triage queue, no reviewer
+             notification, no processing workflow, and no status
+             transition beyond 'pending'. The interface can therefore
+             tell a user their report was submitted without anyone being
+             operationally responsible for acting on it — a safety
+             promise the operation cannot currently keep.
+
+             The eventual brief must require, at minimum:
+             1. A defined moderation owner and response process.
+             2. A secure triage queue.
+             3. Status states and an append-only audit trail.
+             4. Protection against reporters reading internal moderation
+                notes.
+             5. User-facing copy that does not promise review until the
+                process exists.
+             6. Tests proving submission, restricted access, triage,
+                resolution, and safety escalation.
+
+             Evidence for closure (per the Lead Architect's review
+             standard): exact files and database objects changed;
+             before/after behaviour; failure-path evidence, not only
+             success paths; regression-test totals; on-device
+             confirmation; confirmation that no unrelated scope changed.
+Target:      Brief before external testing; operational before any
+             real-user release.
+Dependencies: ZYRA build pause (DR-ZYRA-191 item 5) — implementation
+             cannot start until the Founder approves the brief. Related:
+             OA-ZYRA-163 (audit log), ZYRA_SAFETY_CONCERN_DISCLOSURE_AND_
+             AUTHORITY_MODEL_2026-08-08 (SYSTEM/DOCUMENTS/).
+
+------------------------------------------------------------
+
+OA-ZYRA-238
+Title:       Stage 1 Rebuild — On-Device Evidence Return (DR-ZYRA-192)
+Category:    Verification / Journey
+Priority:    High — the build is not closed from source inspection alone
+Status:      Superseded 2026-08-18 — DR-ZYRA-194 replaced the Stage 1-only
+             presentation and its automatic transition. The still-required
+             device walk is re-scoped across all eight stages in OA-ZYRA-239.
+Owner:       Fable (assembles and returns the evidence); Founder runs
+             the device
+Raised:      2026-08-17
+Completed:   2026-08-18 — superseded, not verified
+Source:      Codex (Lead Architect) brief, 2026-08-17 — "Evidence to
+             return".
+
+Description: The Lead Architect's brief requires, before Founder review
+             closes the Stage 1 rebuild:
+             1. Four on-device screenshots — neither sent / other sent
+                first / sent and waiting / both exchanged.
+             2. A short video of both Salams exchanging and the
+                automatic move to Stage 2.
+             3. Evidence a double-tap creates one submission.
+             4. Evidence a failed send stays retryable with the same
+                label.
+             5. Evidence reopening restores the real server state.
+             6. Confirmation the Salam milestone still writes to the
+                Timeline.
+             7. Confirmation no Stage 2+ behaviour changed.
+             Dev route for the four states, from the ZYRA Basic Female
+             base account: seed or rewind a Journey to Salam via the dev
+             panel; state 1 is the fresh page; Send Salam -> state 3;
+             the on-page User action does the counterpart's half ->
+             state 4 and the auto-advance; for state 2, rewind and press
+             User BEFORE sending. Failure evidence: airplane mode, then
+             Send.
+Target:      Return to the Lead Architect with the Founder's review of
+             the four states.
+Dependencies: DR-ZYRA-192; zyra_journey_suite.sql green run recommended
+             alongside (lifecycle unchanged, checks 9/32 exercise the
+             salam path).
+
+------------------------------------------------------------
+
+OA-ZYRA-239
+Title:       Continuous Active Journey — Eight-Stage On-Device Evidence
+             Return (DR-ZYRA-194)
+Category:    Verification / Journey / UX
+Priority:    High — scroll coordination and stage rhythm require a real
+             device walk; source checks cannot prove the feel
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — implementation, analysis and automated tests complete;
+             device evidence outstanding
+Owner:       Codex assembles the evidence and reviews any correction under
+             the Founder's temporary execution instruction; Founder runs
+             and judges the device experience
+Raised:      2026-08-18
+Completed:   —
+Source:      Direct Founder instruction, 2026-08-18; DR-ZYRA-194.
+
+Description: Close this only after the Founder has walked the real Active
+             Journey from Salam Exchange through Open Conversation and
+             confirmed:
+             1. Every stage opens at its full introduction with the correct
+                "Stage n of 8", name and short meaning copy. Every arrival is
+                neutral like Stage 1: no profile photo, ring or completion
+                state, and no abstract circles or line behind the text. Real
+                pair photos appear only after scrolling into an action or
+                state where they communicate a truthful current status.
+             2. A natural upward scroll reveals the existing action without
+                an Enter gate, jump, accidental action or trapped nested
+                scroll.
+                On Stage 2+, the screen initially lands on the current
+                arrival; pulling downward/upward into earlier content reveals
+                completed-stage endings above it, never old live controls.
+                The arrival names the exact immediately preceding chapter as
+                "Stage n above". Each completed gold ribbon marker navigates
+                to its matching ending; current and future markers do nothing.
+                One deliberate short drag must move exactly one section in
+                either direction; a tiny accidental movement returns cleanly.
+                Neither may leave the screen resting between two sections.
+             3. Intro/action scrolling never sends Salam, reveals
+                compatibility, links a Guardian, submits an answer, closes a
+                checkpoint, opens Family Review or advances a stage. Once a
+                member-controlled chapter ending is genuinely reached, its
+                final Scroll to continue invitation is the deliberate
+                exception: an upward movement on that ending opens the
+                between-stage Continue / Pause / End page without writing.
+                Only Continue invokes the existing stage transition. It must
+                acknowledge the movement immediately, never require repeated
+                swipes and never trigger while reading long content. On Stage
+                1 the full completion viewport accepts the gesture, including
+                calm space around the centred content. Touch, mouse wheel and
+                trackpad input must behave identically. Pause failures keep the
+                choices open; End retains final confirmation.
+             4. The completion beats are visible and calm: Salam;
+                Compatibility; both Guardians; all three sustained phases;
+                Family Compatibility; and Open Conversation. Compatibility's
+                ready, waiting and result states use the real pair photos,
+                never overlap their copy, and keep ready/waiting content on
+                the same visual anchors. Every compatibility category settles
+                at the same full opacity; Family Expectations must not remain
+                faint because it enters last. Reveal Compatibility uses the
+                same circular icon-action language as Send Salam; Link
+                Guardian, Seal/Share Answers and Open Conversation use that
+                same primary action family with stage-appropriate icons.
+                Compatibility Reveal must proceed to the visible Guardian Gate
+                as Stage 3, never jump straight to Faith & Values as Stage 4;
+                even an already-satisfied Guardian Gate waits for its own
+                deliberate Continue choice.
+             5. Human waiting states remain honest and leavable, while real
+                loading/error states remain distinct.
+             6. Family Review still overrides the held stage and shows the
+                completed chapter before the family countdown/pause copy.
+             7. Small and large phone heights show no overflow, clipped
+                action or double-scroll dead zone. Test both text scaling and
+                reduced motion if available. Release several very small
+                drags between arrival/action and between current/earlier
+                sections: each must settle calmly to one full section, never
+                remain halfway; a real stage's inner long scroll must not be
+                pulled to a different section when it stops.
+                Across Send Salam, waiting and Salam exchanged, confirm the
+                paired portraits, heading, body and action area remain centred
+                on the same anchors rather than jumping between states.
+                Repeat that check across Compatibility ready, waiting and
+                revealed states. Confirm no completed stage ends with a
+                Continue Journey button, and the Journey purple / My colours
+                comparison toggle is absent from the top. Confirm Pause and
+                End appear only on the dedicated between-stage choice page,
+                never inside live stage content or Family Review; persistent
+                management remains available from the Active Journey card.
+             8. Each server-observed stage transition resets the new stage
+                to the top of its introduction; revisiting does not replay an
+                old modal road moment. Earlier completion summaries remain
+                reachable above, and returning from Timeline preserves the
+                member's place.
+             9. Open Conversation reads as more freedom inside the Journey,
+                not as an ending; chat and Timeline entry points still work.
+            10. The dev User action can still complete the counterpart's
+                half and the real gates, polling and Family Review logic
+                remain unchanged.
+            11. After each stage completes, its dated milestone appears on the
+                real Timeline. In a development build, "Review everything"
+                must show all supported event, phase-answer and road styles,
+                state plainly that it is a review, change no data, and close
+                back to the factual Timeline.
+
+Evidence:    One continuous screen recording of all eight stages using a
+             real dev Journey, plus screenshots of one arrival, one human
+             waiting state, one sustained-stage completion/Family Review and
+             Open Conversation. Include Stage 2 opening at Stage 2, then the
+             upward reveal of Stage 1's read-only "Salam exchanged" ending;
+             confirm Send Salam is absent there. Record any issue against its
+             exact stage and state before changing code.
+             Include one Timeline capture after several real transitions and
+             one full pass through Review everything. Ask the database-enabled
+             main session to confirm the deployed Salam-first milestone
+             trigger before treating the eight-stage persistence path as
+             production-proven.
+
+Current proof: flutter analyze --no-pub clean; flutter test = 45
+               passed; tools/zyra_check.py = 0 findings; canonical-stage
+               tests cover eight-stage order, copy presence, Stage 1's
+               non-repeating arrival, completed-before history boundaries,
+               unique Timeline milestone mappings, sustained guiding questions
+               and the Family Review non-stage invariant; scroll-maths tests
+               cover nearest-boundary return, deliberate short forward and
+               backward paging, overscroll clamping and the no-multi-stage
+               skip rule. Advance-policy tests prove Guardian Gate is never an
+               automatic stalled-transition retry while explicit Salam and
+               Compatibility waits still are. Completion-intent tests cover
+               touch and wheel/trackpad forward input plus reverse movement;
+               pause-policy tests cover primary and mirrored ownership, both-
+               held lifting and display-only preview transitions.
+               Existing Salam-first trigger source maps every stage; deployed
+               database proof remains outstanding as above.
+
+Target:      Founder device review before the Active Journey redesign is
+             treated as closed.
+Dependencies: DR-ZYRA-194, DR-ZYRA-198, DR-ZYRA-199, DR-ZYRA-200,
+              DR-ZYRA-201, DR-ZYRA-202, DR-ZYRA-203 and DR-ZYRA-204. No SQL
+              was run in this UI batch; deployed milestone-trigger proof
+              belongs with the main database-enabled session.
+
+------------------------------------------------------------
+
+OA-ZYRA-240
+Title:       Meet the Guardians Threshold — Identity, Privacy and One-Way
+             Salam Contract Before Build
+Category:    Product / Journey / Guardian / Security
+Priority:    Medium — strong Journey transition idea; must not be mocked or
+             built on an unreadable link
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder concept captured; narrow product/data contract
+             required before implementation
+Owner:       Codex — recommend and brief; Founder — approve; database-enabled
+             session — verify/apply any eventual guarded read contract
+Raised:      2026-08-18
+Completed:   —
+Source:      Founder on-device Journey review, 2026-08-18: after
+             Compatibility, consider a "Meet the Guardians" transition that
+             shows the other person's Guardians and allows a Salam with no
+             reply gate.
+
+Description: The current app cannot truthfully build this from client data.
+             wali_links RLS allows a Seeker to read only their own links;
+             SeekerProfile carries no Guardian identity; and no Journey
+             Guardian-Salam event, notification or receipt exists. A visual
+             stand-in would either invent a Guardian or display a greeting
+             that was never delivered.
+
+Recommendation:
+             1. Show only each Seeker's active Main Guardian at this Journey
+                threshold. Main is the person who acts in Family Review;
+                exposing Additional Guardians would pre-decide the separate
+                ACC-01 visibility question.
+             2. Show first name, relationship and an approved portrait rule
+                only. Do not expose contact details, private Guardian profile
+                fields or the whole Guardian network.
+             3. The counterpart may send one welcome Salam to the Main
+                Guardian. It is recorded once and can create a Guardian
+                notification/Timeline event, but never blocks stage advance
+                and requires no reply.
+             4. Reveal the identity only to the two Seekers in the same real,
+                active Journey, after mutual Compatibility Reveal and while
+                standing at Guardian Gate. Enforce this server-side through a
+                narrow function rather than widening wali_links SELECT.
+             5. Missing Guardian remains the existing honest link/wait state;
+                a failed identity read or Salam write must surface distinctly
+                and retain retry.
+             6. Decide whether both Main Guardians appear together or each
+                Seeker sees only the other person's Main Guardian before the
+                implementation brief is approved.
+
+Evidence required for closure: approved product ruling; exact server return
+             fields and access predicate; migration + grants/RLS review;
+             service failure-path tests; duplicate-Salam test; notification
+             and Timeline evidence; both sides' UI states; proof that an
+             unrelated user and an ended/paused Journey cannot read the
+             Guardian identity.
+
+Target:      Founder ruling after the Stage 1 experience is accepted; build
+             as its own bounded batch, not inside a cosmetic Salam refinement.
+Dependencies: ACC-01 Additional Guardian Journey visibility (do not pre-empt
+              it); Guardian Gate and Family Review architecture; database
+              verification must run in the database-enabled main session.
+
+------------------------------------------------------------
+
+OA-ZYRA-241
+Title:       Mutual Between-Stage Continue — Complete the Server Checkpoints
+Category:    Journey / Database / Shared Decisions
+Priority:    High — Salam and Guardian Gate still allow one person's Continue
+             to advance once their underlying prerequisites are satisfied
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — product contract approved; database implementation and
+             deployed verification belong to the database-enabled main session
+Owner:       Database-enabled main session — implement and verify; Codex —
+             align client waiting states after the deployed contract exists;
+             Founder — two-account device review
+Raised:      2026-08-18
+Completed:   —
+Source:      Direct Founder Journey review, 2026-08-18; DR-ZYRA-204.
+
+Description: Continue at a chapter boundary is a shared decision. The current
+             server already records both Seekers' explicit Continue choices
+             for Compatibility Reveal, and the sustained stages use their own
+             two-person checkpoints before Family Review. The Salam Exchange
+             branch of `zyra_advance_stage`, however, checks only that both
+             Salams exist; Guardian Gate checks only that both Main Guardians
+             exist. In each branch the first Seeker to press Continue can
+             therefore advance both people. A client-only wait would invent
+             consent and fail across accounts, so none has been added.
+
+Required:
+             1. In the current server-owned `zyra_advance_stage` function,
+                record the caller's idempotent `journey_stage_checkpoints` row
+                for Salam Exchange and Guardian Gate after validating the
+                match, membership, active state, pause state and exact current
+                stage.
+             2. Preserve each branch's existing prerequisites: both Salams for
+                Salam Exchange; both active Main Guardians for Guardian Gate.
+                Once those are true, require two distinct Seeker checkpoint
+                rows before advancing and return `waiting_for_continue`
+                otherwise.
+             3. Update the dev counterpart-complete function so the User
+                action records the counterpart's Continue checkpoint as well
+                as their Salam or Guardian prerequisite. It must still let the
+                tester see their own waiting state before User is pressed.
+             4. Make repeat Continue idempotent, keep stage-moved and paused
+                refusals exact, and ensure a failed write never paints a
+                submitted/waiting state.
+             5. Confirm Timeline milestones are written once only when the
+                server actually advances, never when the first checkpoint is
+                recorded.
+             6. Run the database Journey suite and grant/RLS checks in the
+                database-enabled main session, then walk Salam and Guardian
+                Gate with two accounts. No Supabase SQL is to be run from the
+                present UI session.
+
+Evidence required for closure: migration/function source; current grant and
+             RLS proof; two-account Salam and Guardian Gate captures showing
+             first Continue waits and second Continue advances; repeat-click,
+             failure and stale-stage tests; Journey SQL suite result; client
+             device confirmation that reopening preserves the waiting state.
+
+Target:      Complete before the chapter-choice experience is treated as
+             production mutual across all eight stages.
+Dependencies: DR-ZYRA-167/202/204; journey_stage_checkpoints table and
+              Salam-first server ordering; database-enabled main session.
+
+------------------------------------------------------------
+
+OA-ZYRA-242
+Title:       Enforce the 60-Day Post-End Window and Browser Rediscovery
+Category:    Journey / Database / Discovery / History Integrity
+Priority:    High — the client now hides an expired direct action, but the
+             server must refuse it and Browser must safely own the later path
+Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder contract approved; implementation and deployed
+             verification belong to the database-enabled main session
+Owner:       Database-enabled main session — design, implement and verify;
+             Codex — align client return shapes after deployment; Founder —
+             two-account device review
+Raised:      2026-08-18
+Completed:   —
+Source:      Direct Founder Journey review, 2026-08-18; DR-ZYRA-206.
+
+Description: An ended pair may use the direct Request New Journey path only
+             during the first 60 days after ended_at. Basic lists only the
+             most recent one ended person and ZYRA One the most recent five;
+             those are client display/action caps and must never delete
+             history. After the hard 60-day boundary, the two people may meet
+             again only through ordinary Browser discovery. The present
+             client boundary is built, but current server functions know the
+             24-hour cooling rule and not this upper window, so a crafted RPC
+             could bypass the UI. The existing pair/attempt data model also
+             needs an explicit rediscovery path that preserves the old
+             Timeline rather than overwriting it.
+
+Required:
+             1. Enforce ended_at + 60 days in request_new_journey,
+                zyra_may_request_new_journey and every batched/list helper
+                that supplies request eligibility. Refuse with one stable,
+                named reason the client can map without parsing prose.
+             2. Preserve the existing 24-hour post-End cooling period. The
+                direct request and acceptance must both complete inside the
+                60-day window; expire or close a pending request at the
+                earlier of its normal TTL and day 60 so a day-59 request
+                cannot bypass the Browser rule on day 61.
+             3. After day 60, allow the pair to become ordinary Browser
+                candidates again only when all normal discovery, preference,
+                safety, block, visibility and availability predicates pass.
+                Do not force either profile into the other's deck.
+             4. Define the history-safe data transition when the same pair
+                mutually connects again. The previous journey_attempt,
+                conversation closure and Timeline remain immutable history;
+                no uniqueness workaround may erase or reopen them. Reuse the
+                pair shell or create a new connection row only after proving
+                the chosen model works with current constraints and RLS.
+             5. Keep the Basic 1 / ZYRA One 5 rule as presentation scope, not
+                retention enforcement. Server queries may optimise the list,
+                but must retain and permit authorised historical Timeline
+                access to older ended Journeys.
+             6. Keep the existing End notification and add/align direct-window
+                expiry response copy only where needed. No notification may
+                claim a New Journey exists before request acceptance.
+             7. Extend the database Journey suites for hour 23/day 1, day 59,
+                exact day 60/day 61, pending-at-expiry, blocked/hidden pairs,
+                ordinary rediscovery, duplicate pair protection, old Timeline
+                preservation and two-account grants/RLS.
+             8. Reconcile the deployed migration manifest and run the current
+                Journey and guard suites in the database-enabled main session.
+                The present UI session must not run Supabase SQL or export a
+                migration.
+
+Evidence required for closure: migration/function source; stable refusal
+             contract; current grants and RLS proof; full SQL suite results;
+             two-account captures for pre-60 request/accept, post-60 refusal
+             and later ordinary Browser rediscovery; proof the old Timeline
+             remains readable and unchanged; client refresh showing no stale
+             Request New Journey action.
+
+Target:      Complete before the 60-day End rule is described as production
+             complete or used for a release decision.
+Dependencies: DR-ZYRA-121/206; OA-ZYRA-159 request/accept system; discovery
+              filters; journey_attempts history model; database-enabled main
+              session.
+
+------------------------------------------------------------
+
+OA-ZYRA-243
+Title:       Supabase security-advisor findings — one ERROR view, auth
+             toggle, and an RPC guard-confirmation pass
+Category:    Database / Security
+Priority:    High — the ERROR item is an RLS-bypass class; everything
+             here predates launch and should close before it
+Status:      Assigned (restamped 2026-08-20, OA-AIOS-326; was Open) — findings verified against the live project
+             2026-08-20 during the group security review
+             (BLACK_UMBRELLA_SECURITY_REVIEW_2026-08-20_V1.md, F3)
+Owner:       Codex (implements) with Claude (Architecture Reviewer)
+             per AD-AIOS-099; Founder approves any behavioural change
+Raised:      2026-08-20
+Completed:   —
+Source:      Supabase security advisors on project sxoaxonzjqkgajmlagyk
+             (89 findings), run by Fable via the Supabase connector.
+Detail:      (1) ERROR — view public.zyra_my_attempt_participation is
+             SECURITY DEFINER: it evaluates with its creator's
+             permissions, not the querying user's; convert to
+             security_invoker or document why it is safe. (2) WARN —
+             Auth leaked-password protection is disabled; enable in
+             Authentication settings. (3) Pattern confirmation — the
+             RPC layer is SECURITY DEFINER functions callable by
+             authenticated users (79 flagged); zyra_debug_grant_credits,
+             mock_purchase_wali_premium and zyra_dev_reset_account were
+             source-verified 2026-08-20 to enforce the @zyra.test guard
+             in-function; one pass to confirm EVERY remaining function
+             performs internal authorisation, fixing any that do not.
+             (4) INFO — 8 tables have RLS enabled with no policies
+             (deny-all): confirm intent per table.
+
+Target:      Items 1–2 before any external testing; items 3–4 before
+             launch is declared.
+Dependencies: AD-AIOS-099 seat assignments; Supabase project access;
+              ZYRA feature-pause exception not required (security work,
+              not feature work).
+
+------------------------------------------------------------
+
 # Register Metadata (added 2026-07-12)
 
-TOTAL REGISTERED (this file): 202 (OA-001 through OA-ZYRA-201,
+TOTAL REGISTERED (this file): 243 (OA-001 through OA-ZYRA-243,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-202 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-244 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

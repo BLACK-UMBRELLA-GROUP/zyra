@@ -1,6 +1,6 @@
 # ZYRA — Settings & Identity
 
-**Status:** APPROVED — Founder, 2026-08-07
+**Status:** SUPERSEDED 2026-08-20 by ZYRA_SETTINGS_AND_IDENTITY V2
 **Version:** V1 · **Source of truth** for Settings scope and identity mutability
 **Amended:** 2026-08-07 — Identity Principles added, Identity Correction
 process approved, `first_name` validation built. Amended in place rather

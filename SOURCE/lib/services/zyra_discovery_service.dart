@@ -315,28 +315,45 @@ class ZyraDiscoveryService {
   // a user rewrite a row they do not own. onConflict names the pair
   // explicitly because the primary key on these tables is a surrogate
   // `id`, not the pair.
-  static Future<void> recordSave(String savedId) async {
+  // ALL THREE DECISION WRITES REPORT WHETHER THEY LANDED — BUG-02 of the
+  // 2026-08-14 audit (OA-ZYRA-225 path 1, fixed 2026-08-15). They
+  // swallowed every failure, so a Save/Consider/Pass could vanish on
+  // relaunch and a failed Like could silently prevent a match (the
+  // create_match_on_mutual_like trigger only fires off a row that
+  // exists). Callers keep the optimistic UI — reverting a card
+  // mid-swipe would be worse — but a failure now SAYS SO and offers a
+  // retry, which is safe because all three writes are idempotent
+  // upserts: re-recording an already-recorded decision is a no-op.
+  static Future<bool> recordSave(String savedId) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
     try {
       await supabase.from('saves').upsert(
         {'saver_id': user.id, 'saved_id': savedId},
         onConflict: 'saver_id,saved_id',
         ignoreDuplicates: true,
       );
-    } catch (_) {}
+      return true;
+    } catch (e) {
+      debugPrint('ZYRA: recordSave($savedId) failed — $e');
+      return false;
+    }
   }
 
-  static Future<void> recordLike(String likedId) async {
+  static Future<bool> recordLike(String likedId) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
     try {
       await supabase.from('likes').upsert(
         {'liker_id': user.id, 'liked_id': likedId},
         onConflict: 'liker_id,liked_id',
         ignoreDuplicates: true,
       );
-    } catch (_) {}
+      return true;
+    } catch (e) {
+      debugPrint('ZYRA: recordLike($likedId) failed — $e');
+      return false;
+    }
   }
 
   /// Builds SeekerProfiles for a specific set of ids.
@@ -478,17 +495,22 @@ class ZyraDiscoveryService {
   /// The `passes_clear_like` trigger removes any prior Like server-side,
   /// so a decision stays exclusive even if a client forgets to. It does
   /// not touch `saves` — a bookmark survives every decision.
-  static Future<void> recordPass(String passedId) async {
+  static Future<bool> recordPass(String passedId) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
     try {
       // ignoreDuplicates: see recordSave/recordLike above — finding 1.1.
+      // bool return: see the BUG-02 block above recordSave.
       await supabase.from('passes').upsert(
         {'passer_id': user.id, 'passed_id': passedId},
         onConflict: 'passer_id,passed_id',
         ignoreDuplicates: true,
       );
-    } catch (_) {}
+      return true;
+    } catch (e) {
+      debugPrint('ZYRA: recordPass($passedId) failed — $e');
+      return false;
+    }
   }
 
   /// Removes a bookmark. ADDED 2026-08-01 with the Connections move

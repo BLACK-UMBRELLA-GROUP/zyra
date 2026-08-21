@@ -24,14 +24,20 @@ import '../../widgets/privacy_indicator.dart';
 import '../../widgets/searchable_list_picker.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import 'traffic_light_question_screen.dart';
-import 'transition_screen.dart';
-import 'values_preferences_flow.dart';
+import 'bio_onboarding_flow.dart';
+import 'onboarding_stage_intro_screen.dart';
 
 const int _totalSteps = 21;
 
 class Chapter2Flow extends StatefulWidget {
   final String? gender;
-  const Chapter2Flow({super.key, required this.gender});
+  final bool devPreview;
+
+  const Chapter2Flow({
+    super.key,
+    required this.gender,
+    this.devPreview = false,
+  });
 
   @override
   State<Chapter2Flow> createState() => _Chapter2FlowState();
@@ -48,6 +54,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   String? _sect;
   String _sectOther = '';
   Map<String, TrafficLight> _sectMatrix = {};
+
   /// Sect labels never to be introduced to. Per-OPTION since 2026-08-10
   /// (OA-ZYRA-185) — Chapter 2 now matches Chapter 4.
   Set<String> _sectHard = {};
@@ -82,11 +89,16 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     return ZyraBackgroundVariant.neutral;
   }
 
-  List<String> get _sectOptions => ['Sunni', 'Shia', if (_sect == 'Other' && _sectOther.isNotEmpty) _sectOther else 'Other'];
+  List<String> get _sectOptions => [
+    'Sunni',
+    'Shia',
+    if (_sect == 'Other' && _sectOther.isNotEmpty) _sectOther else 'Other',
+  ];
 
   void _goto(int step) => setState(() => _step = step);
 
-  void _goToChapter3Transition() {
+  void _goToBioTransition() {
+    final gender = widget.gender;
     AppState.instance.saveChapter2(
       photos: _photos,
       location: _location,
@@ -98,7 +110,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     // doesn't block the chapter transition on a non-critical sync, per
     // the "AppState's in-memory copy always works regardless" pattern
     // used throughout this build's Supabase wiring.
-    ZyraPhotoService.syncPhotos(_photos);
+    if (!widget.devPreview) ZyraPhotoService.syncPhotos(_photos);
     // ADDED 2026-08-04. `saveChapter2` above writes to memory only, so
     // the city collected on step 1 died with the app. Three services read
     // `profiles.location_text` and nothing wrote it — every onboarded
@@ -114,7 +126,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     // memory-only — there are no columns for them. See
     // SYSTEM/DOCUMENTS/ZYRA_CHAPTER2_PERSISTENCE_PLAN_CURRENT_VERSION_V1.md,
     // which is awaiting Founder approval before any migration is written.
-    ZyraProfileService.saveLocation(_location);
+    if (!widget.devPreview) ZyraProfileService.saveLocation(_location);
 
     // CHAPTER 2 PERSISTENCE — Founder approved 2026-08-04.
     //
@@ -130,47 +142,49 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     // The service refuses to write without recorded Article 9 consent. That
     // check is intentionally duplicated there as well as gated here: this
     // screen can be reordered or skipped, the service cannot.
-    ZyraSeekerDetailsService.saveDetails(SeekerDetails(
-      sect: _sect == 'Other' ? _sectOther : _sect,
-      revertStatus: _revertStatus == null ? null : _revertStatus == 'Yes',
-      countryOfBirth: _countryOfBirth,
-      nationality: _nationality,
-      ethnicity: _ethnicity,
-      languages: _languages,
-      preferences: ZyraSeekerDetailsService.buildPreferences(
-        distancePref: _distancePref,
-        distanceFlex: _distanceFlex,
-        sectMatrix: _sectMatrix,
-        sectHard: _sectHard,
-        sectOutsideFlex: _sectOutsideFlex,
-        revertFlex: _revertFlex,
-        countryPrefs: _countryPrefs,
-        countrySkipped: _countrySkipped,
-        countryFlex: _countryFlex,
-        nationalityPrefs: _nationalityPrefs,
-        nationalitySkipped: _nationalitySkipped,
-        nationalityFlex: _nationalityFlex,
-        ethnicityPrefs: _ethnicityPrefs,
-        ethnicitySkipped: _ethnicitySkipped,
-        ethnicityFlex: _ethnicityFlex,
-        languagePrefs: _languagePrefs,
-        languageSkipped: _languageSkipped,
-        languageFlex: _languageFlex,
-      ),
-    ));
+    if (!widget.devPreview) {
+      ZyraSeekerDetailsService.saveDetails(
+        SeekerDetails(
+          sect: _sect == 'Other' ? _sectOther : _sect,
+          revertStatus: _revertStatus == null ? null : _revertStatus == 'Yes',
+          countryOfBirth: _countryOfBirth,
+          nationality: _nationality,
+          ethnicity: _ethnicity,
+          languages: _languages,
+          preferences: ZyraSeekerDetailsService.buildPreferences(
+            distancePref: _distancePref,
+            distanceFlex: _distanceFlex,
+            sectMatrix: _sectMatrix,
+            sectHard: _sectHard,
+            sectOutsideFlex: _sectOutsideFlex,
+            revertFlex: _revertFlex,
+            countryPrefs: _countryPrefs,
+            countrySkipped: _countrySkipped,
+            countryFlex: _countryFlex,
+            nationalityPrefs: _nationalityPrefs,
+            nationalitySkipped: _nationalitySkipped,
+            nationalityFlex: _nationalityFlex,
+            ethnicityPrefs: _ethnicityPrefs,
+            ethnicitySkipped: _ethnicitySkipped,
+            ethnicityFlex: _ethnicityFlex,
+            languagePrefs: _languagePrefs,
+            languageSkipped: _languageSkipped,
+            languageFlex: _languageFlex,
+          ),
+        ),
+      );
+    }
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => TransitionScreen(
-          background: _background,
-          title: 'Private Values',
-          body: 'The next chapter asks about your values and how you practise your faith. '
-              'These answers stay private — they help ZYRA match you thoughtfully, and are '
-              'never shown on your public profile.',
-          citation: '"The believers, in their mutual kindness, compassion and sympathy, are just '
-              'one body..." — Sahih al-Bukhari 6069',
-          buttonLabel: 'Continue',
-          onContinue: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => ValuesPreferencesFlow(gender: widget.gender)),
+        builder: (stageContext) => OnboardingStageIntroScreen(
+          stage: SeekerOnboardingStage.journeyBio,
+          onContinue: () => Navigator.of(stageContext).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => BioOnboardingFlow(
+                gender: gender,
+                devPreview: widget.devPreview,
+              ),
+            ),
           ),
         ),
       ),
@@ -234,21 +248,35 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         return;
       case 19: // Languages compatibility
         if (_languageSkipped) {
-          _goToChapter3Transition();
+          _goToBioTransition();
           return;
         }
         _goto(20);
         return;
       case 20:
-        _goToChapter3Transition();
+        _goToBioTransition();
         return;
       default:
         if (_step < _totalSteps - 1) {
           _goto(_step + 1);
         } else {
-          _goToChapter3Transition();
+          _goToBioTransition();
         }
     }
+  }
+
+  void _devSkipCurrentQuestion() {
+    if (!widget.devPreview) return;
+    if (_step == _firstArticle9Step - 1 && _article9Consent == null) {
+      setState(() {
+        // Developer preview never persists these answers, so it may bypass
+        // the consent ceremony while still visiting each question in order.
+        _article9Consent = true;
+        _step = _firstArticle9Step;
+      });
+      return;
+    }
+    _next();
   }
 
   /// Swipe-right-to-go-back — mirrors _next()'s conditional skip jumps
@@ -293,7 +321,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       case 3:
         return _distanceFlex != null;
       case 4:
-        return _sect != null && (_sect != 'Other' || _sectOther.trim().isNotEmpty);
+        return _sect != null &&
+            (_sect != 'Other' || _sectOther.trim().isNotEmpty);
       case 5:
         return _sectOptions.every((o) => _sectMatrix.containsKey(o));
       case 6:
@@ -343,23 +372,35 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     switch (_step) {
       case 0:
         question = 'Add your photos';
-        subtext = 'At least 3 required, up to 6. First photo becomes your main profile photo.';
+        subtext =
+            'At least 3 required, up to 6. First photo becomes your main profile photo.';
         privacy = PrivacyLevel.public;
         content = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _PhotoGrid(photos: _photos, onChanged: (p) => setState(() => _photos
-              ..clear()
-              ..addAll(p))),
+            _PhotoGrid(
+              photos: _photos,
+              onChanged: (p) => setState(
+                () => _photos
+                  ..clear()
+                  ..addAll(p),
+              ),
+            ),
             if (_photos.length < 3)
-              const ZyraDisabledHint('Choose at least 3 photos so others can get to know you.'),
+              const ZyraDisabledHint(
+                'Choose at least 3 photos so others can get to know you.',
+              ),
           ],
         );
         break;
       case 1:
         question = 'Where do you currently live?';
         privacy = PrivacyLevel.public;
-        content = _TextField(hint: 'Search for your city…', value: _location, onChanged: (v) => setState(() => _location = v));
+        content = _TextField(
+          hint: 'Search for your city…',
+          value: _location,
+          onChanged: (v) => setState(() => _location = v),
+        );
         break;
       // CHANGED 2026-08-01 (Founder decision): mileage bands replaced by
       // coarse location preferences.
@@ -385,7 +426,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       // preferred distance" described mileage bands that no longer exist —
       // the question now sets a location scope, not a radius.
       case 3:
-        question = 'Would you be happy for ZYRA to introduce people outside your preferred area if they appear to be a strong match?';
+        question =
+            'Would you be happy for ZYRA to introduce people outside your preferred area if they appear to be a strong match?';
         content = FlexibilityChoice(
           greenText: "Yes, I'd be happy to consider them.",
           yellowText: 'Maybe, depending on the person.',
@@ -400,16 +442,25 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         content = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _LargeSelect(options: const ['Sunni', 'Shia', 'Other'], value: _sect, onChanged: (v) => setState(() => _sect = v)),
+            _LargeSelect(
+              options: const ['Sunni', 'Shia', 'Other'],
+              value: _sect,
+              onChanged: (v) => setState(() => _sect = v),
+            ),
             if (_sect == 'Other') ...[
               const SizedBox(height: 10),
-              _TextField(hint: 'Please specify…', value: _sectOther, onChanged: (v) => setState(() => _sectOther = v)),
+              _TextField(
+                hint: 'Please specify…',
+                value: _sectOther,
+                onChanged: (v) => setState(() => _sectOther = v),
+              ),
             ],
           ],
         );
         break;
       case 5:
-        question = 'Which Islamic sects would you be comfortable matching with?';
+        question =
+            'Which Islamic sects would you be comfortable matching with?';
         // Per-OPTION since 2026-08-10 (OA-ZYRA-185, Founder decision).
         // Chapter 4's Hard Requirements went per-option that morning and
         // Chapter 2 followed the same afternoon, so the temporary
@@ -428,7 +479,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         );
         break;
       case 6:
-        question = 'How would you feel about matching with someone from outside your preferred sect?';
+        question =
+            'How would you feel about matching with someone from outside your preferred sect?';
         content = FlexibilityChoice(
           greenText: "I'd be happy to consider someone from another sect.",
           yellowText: 'It depends on the individual.',
@@ -440,10 +492,15 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       case 7:
         question = 'Have you reverted to Islam?';
         privacy = PrivacyLevel.unlock;
-        content = _LargeSelect(options: const ['Yes', 'No'], value: _revertStatus, onChanged: (v) => setState(() => _revertStatus = v));
+        content = _LargeSelect(
+          options: const ['Yes', 'No'],
+          value: _revertStatus,
+          onChanged: (v) => setState(() => _revertStatus = v),
+        );
         break;
       case 8:
-        question = 'How would you feel about matching with someone who is a revert?';
+        question =
+            'How would you feel about matching with someone who is a revert?';
         content = FlexibilityChoice(
           greenText: "I'd be happy to match with someone who is a revert.",
           yellowText: 'It depends on the individual.',
@@ -455,13 +512,23 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       case 9:
         question = 'Which country were you born in?';
         privacy = PrivacyLevel.unlock;
-        content = _SearchPickButton(label: _countryOfBirth ?? 'Search countries…', onTap: () async {
-          final result = await showSingleSearchPicker(context, zyraCountryNames, current: _countryOfBirth);
-          if (result != null && mounted) setState(() => _countryOfBirth = result);
-        });
+        content = _SearchPickButton(
+          label: _countryOfBirth ?? 'Search countries…',
+          onTap: () async {
+            final result = await showSingleSearchPicker(
+              context,
+              zyraCountryNames,
+              current: _countryOfBirth,
+            );
+            if (result != null && mounted) {
+              setState(() => _countryOfBirth = result);
+            }
+          },
+        );
         break;
       case 10:
-        question = 'Do you have any preferred countries of birth for your future spouse?';
+        question =
+            'Do you have any preferred countries of birth for your future spouse?';
         content = _MultiPrefPicker(
           selected: _countryPrefs,
           skipped: _countrySkipped,
@@ -477,7 +544,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         );
         break;
       case 11:
-        question = 'Would you be happy for ZYRA to introduce people born outside your preferred countries if they appear to be a strong match?';
+        question =
+            'Would you be happy for ZYRA to introduce people born outside your preferred countries if they appear to be a strong match?';
         content = FlexibilityChoice(
           greenText: "Yes, I'd be happy to consider them.",
           yellowText: 'Maybe, depending on the person.',
@@ -489,13 +557,23 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       case 12:
         question = 'What is your nationality?';
         privacy = PrivacyLevel.unlock;
-        content = _SearchPickButton(label: _nationality ?? 'Search nationalities…', onTap: () async {
-          final result = await showSingleSearchPicker(context, zyraNationalityNames, current: _nationality);
-          if (result != null && mounted) setState(() => _nationality = result);
-        });
+        content = _SearchPickButton(
+          label: _nationality ?? 'Search nationalities…',
+          onTap: () async {
+            final result = await showSingleSearchPicker(
+              context,
+              zyraNationalityNames,
+              current: _nationality,
+            );
+            if (result != null && mounted) {
+              setState(() => _nationality = result);
+            }
+          },
+        );
         break;
       case 13:
-        question = 'Do you have any preferred nationalities for your future spouse?';
+        question =
+            'Do you have any preferred nationalities for your future spouse?';
         content = _MultiPrefPicker(
           selected: _nationalityPrefs,
           skipped: _nationalitySkipped,
@@ -511,7 +589,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         );
         break;
       case 14:
-        question = 'Would you be happy for ZYRA to introduce people with other nationalities if they appear to be a strong match?';
+        question =
+            'Would you be happy for ZYRA to introduce people with other nationalities if they appear to be a strong match?';
         content = FlexibilityChoice(
           greenText: "Yes, I'd be happy to consider them.",
           yellowText: 'Maybe, depending on the person.',
@@ -523,13 +602,21 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       case 15:
         question = 'Which ethnic background do you identify with?';
         privacy = PrivacyLevel.unlock;
-        content = _SearchPickButton(label: _ethnicity ?? 'Search ethnic backgrounds…', onTap: () async {
-          final result = await showSingleSearchPicker(context, zyraEthnicityNames, current: _ethnicity);
-          if (result != null && mounted) setState(() => _ethnicity = result);
-        });
+        content = _SearchPickButton(
+          label: _ethnicity ?? 'Search ethnic backgrounds…',
+          onTap: () async {
+            final result = await showSingleSearchPicker(
+              context,
+              zyraEthnicityNames,
+              current: _ethnicity,
+            );
+            if (result != null && mounted) setState(() => _ethnicity = result);
+          },
+        );
         break;
       case 16:
-        question = 'Do you have any preferred ethnic backgrounds for your future spouse?';
+        question =
+            'Do you have any preferred ethnic backgrounds for your future spouse?';
         content = _MultiPrefPicker(
           selected: _ethnicityPrefs,
           skipped: _ethnicitySkipped,
@@ -545,11 +632,13 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         );
         break;
       case 17:
-        question = 'Would you be happy for ZYRA to introduce people from other ethnic backgrounds if they appear to be a strong match?';
+        question =
+            'Would you be happy for ZYRA to introduce people from other ethnic backgrounds if they appear to be a strong match?';
         content = FlexibilityChoice(
           greenText: "Yes, I'd be happy to consider them.",
           yellowText: 'Maybe, depending on the person.',
-          redText: "No, I'd prefer to stay within my preferred ethnic backgrounds.",
+          redText:
+              "No, I'd prefer to stay within my preferred ethnic backgrounds.",
           value: _ethnicityFlex,
           onChanged: (v) => setState(() => _ethnicityFlex = v),
         );
@@ -567,7 +656,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         );
         break;
       case 19:
-        question = 'Do you have any preferred languages for your future spouse?';
+        question =
+            'Do you have any preferred languages for your future spouse?';
         content = _MultiPrefPicker(
           selected: _languagePrefs,
           skipped: _languageSkipped,
@@ -584,7 +674,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         break;
       case 20:
       default:
-        question = "Would you be happy for ZYRA to introduce people who don't speak your preferred languages if they appear to be a strong match?";
+        question =
+            "Would you be happy for ZYRA to introduce people who don't speak your preferred languages if they appear to be a strong match?";
         content = FlexibilityChoice(
           greenText: "Yes, I'd be happy to consider them.",
           yellowText: 'Maybe, depending on the person.',
@@ -605,6 +696,8 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       privacy: privacy,
       fabActive: _canContinue,
       onContinue: _next,
+      devPreview: widget.devPreview,
+      onDevSkip: _devSkipCurrentQuestion,
       onSwipeBack: _step > 0 ? _back : null,
       content: content,
     );
@@ -615,19 +708,28 @@ class _TextField extends StatelessWidget {
   final String hint;
   final String? value;
   final ValueChanged<String> onChanged;
-  const _TextField({required this.hint, required this.value, required this.onChanged});
+  const _TextField({
+    required this.hint,
+    required this.value,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: TextEditingController(text: value)..selection = TextSelection.collapsed(offset: (value ?? '').length),
+      controller: TextEditingController(text: value)
+        ..selection = TextSelection.collapsed(offset: (value ?? '').length),
       onChanged: onChanged,
       style: ZyraText.body(size: 16, color: Colors.white),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: ZyraText.body(size: 16, color: Colors.white24),
-        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white24)),
-        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: ZyraColors.royalPurple)),
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.white24),
+        ),
+        focusedBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: ZyraColors.royalPurple),
+        ),
       ),
     );
   }
@@ -637,7 +739,11 @@ class _LargeSelect extends StatelessWidget {
   final List<String> options;
   final String? value;
   final ValueChanged<String> onChanged;
-  const _LargeSelect({required this.options, required this.value, required this.onChanged});
+  const _LargeSelect({
+    required this.options,
+    required this.value,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -651,7 +757,12 @@ class _LargeSelect extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-                border: Border.all(color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder, width: 1),
+                border: Border.all(
+                  color: selected
+                      ? ZyraColors.accentBorder
+                      : ZyraColors.iconButtonBorder,
+                  width: 1,
+                ),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Material(
@@ -660,7 +771,10 @@ class _LargeSelect extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                   onTap: () => onChanged(o),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                     child: Text(o, style: ZyraText.option()),
                   ),
                 ),
@@ -726,15 +840,27 @@ class _MultiPrefPicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SearchPickButton(
-          label: skipped ? 'No preference' : (selected.isEmpty ? label : selected.join(', ')),
+          label: skipped
+              ? 'No preference'
+              : (selected.isEmpty ? label : selected.join(', ')),
           onTap: () async {
-            final result = await showMultiSearchPicker(context, items, current: selected);
+            final result = await showMultiSearchPicker(
+              context,
+              items,
+              current: selected,
+            );
             if (result != null) onPick(result);
           },
         ),
         if (onSkip != null) ...[
           const SizedBox(height: 10),
-          TextButton(onPressed: onSkip, child: Text('Skip — no preference', style: ZyraText.subtext(size: 12.5))),
+          TextButton(
+            onPressed: onSkip,
+            child: Text(
+              'Skip — no preference',
+              style: ZyraText.subtext(size: 12.5),
+            ),
+          ),
         ],
       ],
     );
@@ -773,7 +899,10 @@ class _PhotoGridState extends State<_PhotoGrid> {
       // testable without a login, same as before real Storage existed.
       if (mounted) {
         setState(() => _uploading = false);
-        widget.onChanged([...widget.photos, 'https://picsum.photos/seed/self${DateTime.now().millisecondsSinceEpoch}/400/400']);
+        widget.onChanged([
+          ...widget.photos,
+          'https://picsum.photos/seed/self${DateTime.now().millisecondsSinceEpoch}/400/400',
+        ]);
       }
       return;
     }
@@ -804,66 +933,100 @@ class _PhotoGridState extends State<_PhotoGrid> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisSpacing: 8, crossAxisSpacing: 8),
-      itemCount: tileCount,
-      itemBuilder: (context, index) {
-        if (index < widget.photos.length) {
-          final url = widget.photos[index];
-          return GestureDetector(
-            onTap: () => _removePhoto(url),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  // Uses ZyraProfileImage for the shared error fallback, not for
-                  // colour support — these are the user's OWN uploads and are
-                  // always real Storage URLs. Swapped so "one place renders a
-                  // profile photo" is literally true rather than nearly true.
-                  child: ZyraProfileImage(url),
-                ),
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: Container(
-                    padding: const EdgeInsets.all(3),
-                    decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
-                    child: const Icon(Icons.close, size: 14, color: Colors.white),
-                  ),
-                ),
-                if (index == 0)
-                  Positioned(
-                    bottom: 6,
-                    left: 6,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(6)),
-                      child: const Text('Main', style: TextStyle(fontSize: 10, color: Colors.white)),
-                    ),
-                  ),
-              ],
-            ),
-          );
-        }
-        // "Add photo" tile.
-        return GestureDetector(
-          onTap: _addPhoto,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: ZyraColors.iconButtonBg,
-              border: Border.all(color: ZyraColors.iconButtonBorder, width: 0.5),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: _uploading
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white54))
-                  : const Icon(Icons.add_photo_alternate_outlined, color: Colors.white54, size: 26),
-            ),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
           ),
-        );
-      },
+          itemCount: tileCount,
+          itemBuilder: (context, index) {
+            if (index < widget.photos.length) {
+              final url = widget.photos[index];
+              return GestureDetector(
+                onTap: () => _removePhoto(url),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      // Uses ZyraProfileImage for the shared error fallback, not for
+                      // colour support — these are the user's OWN uploads and are
+                      // always real Storage URLs. Swapped so "one place renders a
+                      // profile photo" is literally true rather than nearly true.
+                      child: ZyraProfileImage(url),
+                    ),
+                    Positioned(
+                      top: 6,
+                      right: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: const BoxDecoration(
+                          color: Colors.black54,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.close,
+                          size: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    if (index == 0)
+                      Positioned(
+                        bottom: 6,
+                        left: 6,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Text(
+                            'Main',
+                            style: TextStyle(fontSize: 10, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            }
+            // "Add photo" tile.
+            return GestureDetector(
+              onTap: _addPhoto,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: ZyraColors.iconButtonBg,
+                  border: Border.all(
+                    color: ZyraColors.iconButtonBorder,
+                    width: 0.5,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: _uploading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white54,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.add_photo_alternate_outlined,
+                          color: Colors.white54,
+                          size: 26,
+                        ),
+                ),
+              ),
+            );
+          },
         ),
         if (_uploadError != null) ...[
           const SizedBox(height: 10),

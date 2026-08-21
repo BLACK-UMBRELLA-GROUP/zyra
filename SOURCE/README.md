@@ -10,9 +10,16 @@ Muslim matrimonial platform. Specs live in `../APP/`, decisions in
 only this:**
 
 ```
-cd "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE"
-./run.sh
+cd "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE" && ./run.sh
 ```
+
+ONE LINE, joined with `&&` — corrected 2026-08-14. This block gave two
+lines, which is two pastes and two Returns, and directly contradicted
+CLAUDE.md §1, where the Founder confirmed the joined form twice on
+2026-08-08 ("THIS IS THE CORRECT VERSION", then "THIS IS NEW TERMINAL
+CODE"). Two sources of truth for the one instruction that has already
+cost two sessions is exactly the failure CLAUDE.md exists to prevent.
+CLAUDE.md is the source of truth; this file follows it.
 
 `run.sh` defaults to a profile build (safe untethered) and prints what
 to expect. `./run.sh dev` = debug + hot reload, cable must stay in.

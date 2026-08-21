@@ -228,20 +228,33 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
                           onTap: () => setState(() => _selected = reason),
                         ),
 
-                      // HIDDEN for Guardians, 2026-08-06. Blocking your own
-                      // Guardian is not the action anyone wants here — it
-                      // leaves the link intact while silently changing what
-                      // other Seekers see on your profile, because
-                      // guardians_for_unlocked tests zyra_block_exists.
-                      // The Guardian equivalent is Remove, which lives on
-                      // the Guardian's own detail page as its own decision.
-                      if (widget.source != ZyraReportSource.guardian) ...[
+                      // THE BLOCK-ONLY ROW LEFT THIS SHEET on 2026-08-13
+                      // (DR-ZYRA-155, Founder: "remove Hide Profile from
+                      // Report Profile. Make Hide Profile its own
+                      // navigation option").
+                      //
+                      // It was already the odd one out here — its own
+                      // comment said it was "separated from the reasons
+                      // above, because it is not an accusation and
+                      // shouldn't feel like one". Separating it inside
+                      // the sheet could only go so far: reaching a
+                      // privacy preference still meant opening a report.
+                      // It is now a top-level option on Browse's action
+                      // bar with its own confirmation, and this sheet is
+                      // one thing again — reporting.
+                      //
+                      // NOT REMOVED FROM EVERY CALLER: Connections and
+                      // the Guardian detail screen also open this sheet
+                      // and have no action bar to move it to. The block
+                      // path itself is untouched (_blockOnly, below);
+                      // only Browse's copy of the door moved. Whether
+                      // those two surfaces need their own is
+                      // OA-ZYRA-218.
+                      if (widget.source != ZyraReportSource.guardian &&
+                          widget.source != ZyraReportSource.browse) ...[
                         const SizedBox(height: 14),
                         Divider(color: Colors.white.withValues(alpha: 0.10), height: 1),
                         const SizedBox(height: 14),
-
-                        // Separated from the reasons above, because it is
-                        // not an accusation and shouldn't feel like one.
                         _BlockOnlyRow(
                           firstName: widget.firstName,
                           enabled: !_submitting,

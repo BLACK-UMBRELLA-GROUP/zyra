@@ -36,7 +36,9 @@
 import 'package:flutter/foundation.dart';
 
 import '../main.dart';
+import '../models/journey_bio.dart';
 import '../models/onboarding_question.dart';
+import '../state/app_state.dart';
 import 'zyra_auth.dart';
 
 class ZyraOnboardingAnswersService {
@@ -55,13 +57,21 @@ class ZyraOnboardingAnswersService {
     if (user == null) return;
 
     try {
+      // Journey Bio metadata shares this own-row-only JSON store, but is not
+      // a scored question. Always merge it back at a Values checkpoint so
+      // the Chapter 3 write cannot erase the preceding Bio chapter.
+      final completeCh3Answers = <String, dynamic>{
+        ...AppState.instance.journeyBio.toOnboardingAnswers(),
+        ...ch3Answers,
+      };
       await supabase.from('onboarding_answers').upsert({
         'user_id': user.id,
-        'ch3_answers': ch3Answers,
+        'ch3_answers': completeCh3Answers,
         'ch4_preferences': {
           for (final entry in ch4Preferences.entries)
             entry.key: {
-              for (final option in entry.value.entries) option.key: option.value.name,
+              for (final option in entry.value.entries)
+                option.key: option.value.name,
             },
         },
         // PER-OPTION SINCE 2026-08-10 — {question_id: [option_label, ...]}.
@@ -93,9 +103,52 @@ class ZyraOnboardingAnswersService {
       // This is the exact shape of the `profile_complete` bug (audit
       // finding C3): a write that nobody watched, hidden by a fallback that
       // made the screen look fine.
-      debugPrint('ZYRA: onboarding answer sync failed — Chapter 3/4 answers '
-          'not saved for this checkpoint. Compatibility cannot be computed '
-          'without them. $e');
+      debugPrint(
+        'ZYRA: onboarding answer sync failed — Chapter 3/4 answers '
+        'not saved for this checkpoint. Compatibility cannot be computed '
+        'without them. $e',
+      );
+    }
+  }
+
+  /// Saves the optional Journey Bio before Chapter 3 begins, using the
+  /// existing own-row-only onboarding JSON. No schema change is needed and
+  /// the public `profiles.bio` column is deliberately not used: its profile
+  /// visibility is broader than the Founder-approved Journey-only reveal.
+  static Future<bool> syncJourneyBio(JourneyBio bio) async {
+    final user = ZyraAuth.currentUser;
+    if (user == null) return true; // Developer Access / offline preview.
+
+    try {
+      final existing = await supabase
+          .from('onboarding_answers')
+          .select('ch3_answers, ch4_preferences, ch4_hard_requirements')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+      final existingCh3 = Map<String, dynamic>.from(
+        (existing?['ch3_answers'] as Map?) ?? const {},
+      );
+      existingCh3.removeWhere((key, _) => key.startsWith('bio_'));
+      existingCh3.addAll(bio.toOnboardingAnswers());
+
+      await supabase.from('onboarding_answers').upsert({
+        'user_id': user.id,
+        'ch3_answers': existingCh3,
+        'ch4_preferences': Map<String, dynamic>.from(
+          (existing?['ch4_preferences'] as Map?) ?? const {},
+        ),
+        'ch4_hard_requirements': Map<String, dynamic>.from(
+          (existing?['ch4_hard_requirements'] as Map?) ?? const {},
+        ),
+      });
+      return true;
+    } catch (e) {
+      debugPrint(
+        'ZYRA: Journey Bio sync failed — the draft remains available in '
+        'this onboarding session. $e',
+      );
+      return false;
     }
   }
 }

@@ -1,6 +1,6 @@
 // Pre-Journey Ritual + Journey Suspension data/service layer, per
 // APP/Journey/PRE-JOURNEY RITUAL/Summary.md and APP/Journey/JOURNEY
-// SUSPENSION/JOURNEY_SUSPENSION_CURRENT_VERSION_V1.md.
+// SUSPENSION/JOURNEY_SUSPENSION (CURRENT_VERSION).
 //
 // Replaces the old client-only Potential/Active Journey stand-in in
 // AppState (a synchronous SeekerProfile-list move with no backend
@@ -28,6 +28,7 @@
 
 import 'package:flutter/foundation.dart' show debugPrint;
 
+import '../data/journey_questions.dart';
 import '../main.dart';
 import '../models/journey_match.dart';
 import '../models/seeker_profile.dart';
@@ -60,8 +61,10 @@ class PausedLimitReachedException implements Exception {}
 /// RETIRED 2026-08-06 — OA-ZYRA-164. The server no longer auto-ends, so
 /// this can no longer be thrown. Kept briefly so any caller still catching
 /// it is found by the analyzer rather than by a user.
-@Deprecated('The platform no longer ends Journeys automatically (DR-ZYRA-121 '
-    'item 12). Catch OtherPartyInActiveJourneyException instead.')
+@Deprecated(
+  'The platform no longer ends Journeys automatically (DR-ZYRA-121 '
+  'item 12). Catch OtherPartyInActiveJourneyException instead.',
+)
 class JourneyAutoEndedException implements Exception {}
 
 /// Resume refused: the other Seeker currently holds an Active Journey.
@@ -84,6 +87,11 @@ class OtherPartyInActiveJourneyException implements Exception {}
 /// is now grandfathered for Journeys already under way; only blocks and
 /// Tier-0 refuse a resume, and both are visible to the two parties.
 class NotEligibleToContinueException implements Exception {}
+
+/// resume_journey: the CALLER is in another live Journey, so this
+/// paused one cannot come back until that one ends or pauses — pause
+/// frees the slot (2026-08-12), and this refusal is its other half.
+class SelfInActiveJourneyException implements Exception {}
 
 /// Unreferenced since 2026-08-06 (OA-ZYRA-154) — the 24-hour restart
 /// cooling period it reported no longer exists.
@@ -156,16 +164,25 @@ class ZyraJourneyService {
   /// Real matches for the signed-in user in any of [statuses], mapped
   /// to JourneyMatch with the OTHER party's profile attached. Empty on
   /// any failure or if not signed in.
-  static Future<List<JourneyMatch>> fetchJourneyMatches({required List<String> statuses}) async {
+  /// Null = the fetch FAILED; [] = the server answered "none". The
+  /// distinction is DR-ZYRA-179's whole lesson — see the catch below.
+  static Future<List<JourneyMatch>?> fetchJourneyMatches({
+    required List<String> statuses,
+  }) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return [];
 
     try {
-      final rows = await supabase
-          .from('matches')
-          .select('id, seeker_a_id, seeker_b_id, status, journey_stage, suspended_by, ended_at')
-          .inFilter('status', statuses)
-          .or('seeker_a_id.eq.${user.id},seeker_b_id.eq.${user.id}') as List;
+      final rows =
+          await supabase
+                  .from('matches')
+                  .select(
+                    'id, seeker_a_id, seeker_b_id, status, journey_stage, '
+                    'suspended_by, also_paused_by, suspended_at, pause_nudged_at, ended_at',
+                  )
+                  .inFilter('status', statuses)
+                  .or('seeker_a_id.eq.${user.id},seeker_b_id.eq.${user.id}')
+              as List;
 
       if (rows.isEmpty) return [];
 
@@ -181,10 +198,14 @@ class ZyraJourneyService {
       final otherIds = matchByOtherId.keys.toList();
       if (otherIds.isEmpty) return [];
 
-      final profileRows = await supabase
-          .from('profiles')
-          .select('id, first_name, location_text, gender, profile_photos(storage_path, display_order)')
-          .inFilter('id', otherIds) as List;
+      final profileRows =
+          await supabase
+                  .from('profiles')
+                  .select(
+                    'id, first_name, location_text, gender, profile_photos(storage_path, display_order)',
+                  )
+                  .inFilter('id', otherIds)
+              as List;
 
       // Raw date_of_birth is no longer selectable by the client — see
       // 20260726120000_hide_raw_dob_expose_age.sql. Ages come from the
@@ -198,8 +219,13 @@ class ZyraJourneyService {
         final matchRow = matchByOtherId[otherId];
         if (matchRow == null) continue;
 
-        final photosRaw = List<Map<String, dynamic>>.from((map['profile_photos'] as List?) ?? const []);
-        photosRaw.sort((a, b) => (a['display_order'] as int).compareTo(b['display_order'] as int));
+        final photosRaw = List<Map<String, dynamic>>.from(
+          (map['profile_photos'] as List?) ?? const [],
+        );
+        photosRaw.sort(
+          (a, b) =>
+              (a['display_order'] as int).compareTo(b['display_order'] as int),
+        );
         final photos = await ZyraPhotoService.signedUrlsFor(
           photosRaw.map((p) => p['storage_path'] as String).toList(),
         );
@@ -209,22 +235,42 @@ class ZyraJourneyService {
           firstName: map['first_name'] as String,
           age: ages[otherId] ?? 0,
           city: (map['location_text'] as String?) ?? '—',
-          photos: photos.isEmpty ? ['https://picsum.photos/seed/$otherId/700/1000'] : photos,
+          photos: photos.isEmpty
+              ? ['https://picsum.photos/seed/$otherId/700/1000']
+              : photos,
           gender: map['gender'] as String,
         );
 
-        results.add(JourneyMatch(
-          matchId: matchRow['id'] as String,
-          profile: profile,
-          status: matchRow['status'] as String,
-          journeyStage: matchRow['journey_stage'] as String?,
-          suspendedBy: matchRow['suspended_by'] as String?,
-          endedAt: matchRow['ended_at'] == null ? null : DateTime.parse(matchRow['ended_at'] as String),
-        ));
+        results.add(
+          JourneyMatch(
+            matchId: matchRow['id'] as String,
+            profile: profile,
+            status: matchRow['status'] as String,
+            journeyStage: matchRow['journey_stage'] as String?,
+            suspendedBy: matchRow['suspended_by'] as String?,
+            alsoPausedBy: matchRow['also_paused_by'] as String?,
+            suspendedAt: matchRow['suspended_at'] == null
+                ? null
+                : DateTime.parse(matchRow['suspended_at'] as String),
+            pauseNudgedAt: matchRow['pause_nudged_at'] == null
+                ? null
+                : DateTime.parse(matchRow['pause_nudged_at'] as String),
+            endedAt: matchRow['ended_at'] == null
+                ? null
+                : DateTime.parse(matchRow['ended_at'] as String),
+          ),
+        );
       }
       return results;
-    } catch (_) {
-      return [];
+    } catch (e) {
+      // DR-ZYRA-179. This catch used to return [] — which is how a 403
+      // (matches' column-scoped grant missing the new pause columns)
+      // spent three days reading as "you have no Journeys" while the
+      // dev panel's stand-ins painted over the hole. A failed fetch is
+      // not an empty list; callers hold their last-known list on null
+      // and say so.
+      debugPrint('ZYRA: fetchJourneyMatches failed - $e');
+      return null;
     }
   }
 
@@ -238,9 +284,42 @@ class ZyraJourneyService {
     return ZyraAgesService.forIds(ids, context: 'journeys');
   }
 
+  /// One ask per pause episode (DR-ZYRA-142). True when the nudge
+  /// landed; false covers both refusals and failures — the card's copy
+  /// stays honest either way and the next refresh redraws the truth.
+  static Future<bool> nudgePausedJourney(String matchId) async {
+    try {
+      await supabase.rpc(
+        'nudge_paused_journey',
+        params: {'p_match_id': matchId},
+      );
+      return true;
+    } catch (e) {
+      debugPrint('ZYRA: nudgePausedJourney($matchId) failed - $e');
+      return false;
+    }
+  }
+
+  /// DEV ONLY (DR-ZYRA-180). Creates a REAL Journey — live match row,
+  /// attempt, conversation and timeline shells — between this seeded
+  /// account and the first free seeded browse account of the opposite
+  /// gender. Returns the server's own sentence about what it did:
+  /// seeded with whom, or slots full and with whom you already are.
+  /// Guarded server-side to @zyra.test accounts on both sides; throws
+  /// on refusal so the panel shows the truth rather than pretending.
+  /// (Since DR-ZYRA-183 the seeded Journey starts at Salam Exchange.)
+  static Future<String> devSeedJourney() async {
+    final res = await supabase.rpc('zyra_dev_seed_journey');
+    return res as String;
+  }
+
   static Future<Map<String, dynamic>?> _fetchMatchRow(String matchId) async {
     try {
-      return await supabase.from('matches').select('seeker_a_id, seeker_b_id').eq('id', matchId).maybeSingle();
+      return await supabase
+          .from('matches')
+          .select('seeker_a_id, seeker_b_id')
+          .eq('id', matchId)
+          .maybeSingle();
     } catch (_) {
       return null;
     }
@@ -251,19 +330,29 @@ class ZyraJourneyService {
   /// throws) for any other failure.
   static Future<bool> promoteToActive(String matchId) async {
     try {
-      await supabase.rpc('promote_journey_to_active', params: {'p_match_id': matchId});
+      await supabase.rpc(
+        'promote_journey_to_active',
+        params: {'p_match_id': matchId},
+      );
       return true;
     } catch (e) {
-      if (e.toString().contains('one_active_journey_limit')) throw OneActiveJourneyLimitException();
+      if (e.toString().contains('one_active_journey_limit')) {
+        throw OneActiveJourneyLimitException();
+      }
       return false;
     }
   }
 
   /// Best-effort. Swallows errors — the Salam Exchange screen re-reads
   /// state via fetchSalamStatus rather than trusting this call succeeded.
-  static Future<void> sendSalam(String matchId) async {
+  /// True when the Salam is on the server (a duplicate send counts —
+  /// the state it asked for exists). False means IT DID NOT HAPPEN, and
+  /// the page says so — DR-ZYRA-192 retired the silent catch here: a
+  /// swallowed failure left the button looking pressed and the Salam
+  /// unsent, indistinguishable from success.
+  static Future<bool> sendSalam(String matchId) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
     try {
       // ignoreDuplicates: true — RELEASE BLOCKER FIX 2026-08-09, audit
       // finding 1.1. A bare .upsert() sends ON CONFLICT DO UPDATE, which
@@ -277,23 +366,46 @@ class ZyraJourneyService {
       // DO NOTHING is also the right semantics: the primary key IS
       // (match_id, seeker_id) and there is no payload. A Salam is sent
       // once; sending it again is a no-op, not an overwrite.
-      await supabase.from('journey_salams').upsert(
-        {'match_id': matchId, 'seeker_id': user.id},
-        onConflict: 'match_id,seeker_id',
-        ignoreDuplicates: true,
-      );
-    } catch (_) {}
+      await supabase
+          .from('journey_salams')
+          .upsert(
+            {'match_id': matchId, 'seeker_id': user.id},
+            onConflict: 'match_id,seeker_id',
+            ignoreDuplicates: true,
+          );
+      return true;
+    } catch (e) {
+      debugPrint('ZYRA: sendSalam($matchId) failed - $e');
+      return false;
+    }
   }
 
-  static Future<({bool mine, bool theirs})> fetchSalamStatus(String matchId, String otherUserId) async {
+  /// Null means THE READ FAILED — the caller holds its last known state.
+  /// It used to return (false, false) on error, which flickered a
+  /// waiting user back to the send state on any transient failure and
+  /// made "you have sent no Salam" indistinguishable from "the network
+  /// dropped" (DR-ZYRA-192; the same truthful-failure rule as
+  /// fetchJourneyMatches).
+  static Future<({bool mine, bool theirs})?> fetchSalamStatus(
+    String matchId,
+    String otherUserId,
+  ) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return (mine: false, theirs: false);
+    if (user == null) return null;
     try {
-      final rows = await supabase.from('journey_salams').select('seeker_id').eq('match_id', matchId) as List;
-      final ids = rows.map((r) => (r as Map<String, dynamic>)['seeker_id'] as String).toSet();
+      final rows =
+          await supabase
+                  .from('journey_salams')
+                  .select('seeker_id')
+                  .eq('match_id', matchId)
+              as List;
+      final ids = rows
+          .map((r) => (r as Map<String, dynamic>)['seeker_id'] as String)
+          .toSet();
       return (mine: ids.contains(user.id), theirs: ids.contains(otherUserId));
-    } catch (_) {
-      return (mine: false, theirs: false);
+    } catch (e) {
+      debugPrint('ZYRA: fetchSalamStatus($matchId) failed - $e');
+      return null;
     }
   }
 
@@ -304,13 +416,15 @@ class ZyraJourneyService {
   /// proceed" (their own Wali, not the other party's).
   static Future<bool> hasActiveMainWali(String userId) async {
     try {
-      final rows = await supabase
-          .from('wali_links')
-          .select('id')
-          .eq('seeker_id', userId)
-          .eq('is_main', true)
-          .eq('status', 'active')
-          .limit(1) as List;
+      final rows =
+          await supabase
+                  .from('wali_links')
+                  .select('id')
+                  .eq('seeker_id', userId)
+                  .eq('is_main', true)
+                  .eq('status', 'active')
+                  .limit(1)
+              as List;
       return rows.isNotEmpty;
     } catch (_) {
       return false;
@@ -328,23 +442,39 @@ class ZyraJourneyService {
   /// The mutual gate has NOT gone away — it moved to where it belongs. Both
   /// still have to choose to reveal before either is shown anything; that is
   /// the ritual. What changed is only whose number is behind it.
-  static Future<void> revealCompatibility(String matchId, String otherUserId) async {
+  static Future<void> revealCompatibility(
+    String matchId,
+    String otherUserId,
+  ) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
     try {
       final matchRow = await _fetchMatchRow(matchId);
       if (matchRow == null) return;
       final isSeekerA = matchRow['seeker_a_id'] == user.id;
-      final myFlagColumn  = isSeekerA ? 'seeker_a_revealed' : 'seeker_b_revealed';
-      final myScoreColumn = isSeekerA ? 'seeker_a_score'    : 'seeker_b_score';
-      final myCatsColumn  = isSeekerA ? 'seeker_a_categories' : 'seeker_b_categories';
+      final myFlagColumn = isSeekerA
+          ? 'seeker_a_revealed'
+          : 'seeker_b_revealed';
+      final myScoreColumn = isSeekerA ? 'seeker_a_score' : 'seeker_b_score';
+      final myCatsColumn = isSeekerA
+          ? 'seeker_a_categories'
+          : 'seeker_b_categories';
 
-      final existing = await supabase.from('journey_compatibility').select('match_id').eq('match_id', matchId).maybeSingle();
+      final existing = await supabase
+          .from('journey_compatibility')
+          .select('match_id')
+          .eq('match_id', matchId)
+          .maybeSingle();
       if (existing == null) {
-        await supabase.from('journey_compatibility').insert({'match_id': matchId});
+        await supabase.from('journey_compatibility').insert({
+          'match_id': matchId,
+        });
       }
 
-      await supabase.from('journey_compatibility').update({myFlagColumn: true}).eq('match_id', matchId);
+      await supabase
+          .from('journey_compatibility')
+          .update({myFlagColumn: true})
+          .eq('match_id', matchId);
 
       // ── REWRITTEN 2026-08-11, OA-ZYRA-193 (a2).
       //
@@ -358,11 +488,13 @@ class ZyraJourneyService {
       // left to be at the mercy of.
       final updated = await supabase
           .from('journey_compatibility')
-          .select('$myScoreColumn')
+          .select(myScoreColumn)
           .eq('match_id', matchId)
           .maybeSingle();
       if (updated == null) return;
-      if (updated[myScoreColumn] != null) return;   // already computed — mine is mine
+      if (updated[myScoreColumn] != null) {
+        return; // already computed — mine is mine
+      }
 
       // FIXED 2026-07-26 (Founder decision — see ZYRA_FABLE_BUILD_REVIEW_
       // 2026-07-19_V1.md §Open Decisions item 1): this used to read
@@ -379,11 +511,17 @@ class ZyraJourneyService {
       // Null is stored, and the screen says it cannot say yet.
       double? score;
       try {
-        final rows = await supabase.rpc('score_candidates', params: {
-          'p_candidate_ids': [otherUserId],
-        }) as List;
+        final rows =
+            await supabase.rpc(
+                  'score_candidates',
+                  params: {
+                    'p_candidate_ids': [otherUserId],
+                  },
+                )
+                as List;
         if (rows.isNotEmpty) {
-          score = ((rows.first as Map<String, dynamic>)['score'] as num?)?.toDouble();
+          score = ((rows.first as Map<String, dynamic>)['score'] as num?)
+              ?.toDouble();
         }
         // If score_candidates() excludes otherUserId (a Hard
         // Requirement violation), rows comes back empty and the
@@ -411,11 +549,14 @@ class ZyraJourneyService {
         'Family Expectations': score,
       };
 
-      await supabase.from('journey_compatibility').update({
-        myScoreColumn: score,
-        myCatsColumn: categoryScores,
-        'revealed_at': DateTime.now().toIso8601String(),
-      }).eq('match_id', matchId);
+      await supabase
+          .from('journey_compatibility')
+          .update({
+            myScoreColumn: score,
+            myCatsColumn: categoryScores,
+            'revealed_at': DateTime.now().toIso8601String(),
+          })
+          .eq('match_id', matchId);
     } catch (e) {
       // 2026-08-12: the reveal write could fail on every poll with no
       // trace — the score simply never persisted. Logged (CLAUDE.md §3).
@@ -423,38 +564,86 @@ class ZyraJourneyService {
     }
   }
 
-  static Future<({bool mine, bool theirs, double? overallScore, Map<String, dynamic>? categoryScores})> fetchCompatibility(
-    String matchId,
-  ) async {
+  static Future<
+    ({
+      bool mine,
+      bool theirs,
+      double? overallScore,
+      Map<String, dynamic>? categoryScores,
+    })
+  >
+  fetchCompatibility(String matchId) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return (mine: false, theirs: false, overallScore: null, categoryScores: null);
+    if (user == null) {
+      return (
+        mine: false,
+        theirs: false,
+        overallScore: null,
+        categoryScores: null,
+      );
+    }
     try {
       final matchRow = await _fetchMatchRow(matchId);
-      if (matchRow == null) return (mine: false, theirs: false, overallScore: null, categoryScores: null);
+      if (matchRow == null) {
+        return (
+          mine: false,
+          theirs: false,
+          overallScore: null,
+          categoryScores: null,
+        );
+      }
       final isSeekerA = matchRow['seeker_a_id'] == user.id;
 
       final row = await supabase
           .from('journey_compatibility')
-          .select('seeker_a_revealed, seeker_b_revealed, seeker_a_score, '
-              'seeker_b_score, seeker_a_categories, seeker_b_categories')
+          .select(
+            'seeker_a_revealed, seeker_b_revealed, seeker_a_score, '
+            'seeker_b_score, seeker_a_categories, seeker_b_categories',
+          )
           .eq('match_id', matchId)
           .maybeSingle();
-      if (row == null) return (mine: false, theirs: false, overallScore: null, categoryScores: null);
+      if (row == null) {
+        return (
+          mine: false,
+          theirs: false,
+          overallScore: null,
+          categoryScores: null,
+        );
+      }
 
-      final mine = isSeekerA ? row['seeker_a_revealed'] == true : row['seeker_b_revealed'] == true;
-      final theirs = isSeekerA ? row['seeker_b_revealed'] == true : row['seeker_a_revealed'] == true;
+      final mine = isSeekerA
+          ? row['seeker_a_revealed'] == true
+          : row['seeker_b_revealed'] == true;
+      final theirs = isSeekerA
+          ? row['seeker_b_revealed'] == true
+          : row['seeker_a_revealed'] == true;
       // MY column, always. The record field is still called overallScore so
       // the callers did not all have to change on the same day, but what it
       // carries is this Seeker's own figure and nobody else's — reading the
       // other person's would be reading their private preferences back to
       // someone who never saw them.
       final overallScore =
-          ((isSeekerA ? row['seeker_a_score'] : row['seeker_b_score']) as num?)?.toDouble();
-      final rawCats = isSeekerA ? row['seeker_a_categories'] : row['seeker_b_categories'];
-      final categoryScores = rawCats == null ? null : Map<String, dynamic>.from(rawCats as Map);
-      return (mine: mine, theirs: theirs, overallScore: overallScore, categoryScores: categoryScores);
+          ((isSeekerA ? row['seeker_a_score'] : row['seeker_b_score']) as num?)
+              ?.toDouble();
+      final rawCats = isSeekerA
+          ? row['seeker_a_categories']
+          : row['seeker_b_categories'];
+      final categoryScores = rawCats == null
+          ? null
+          : Map<String, dynamic>.from(rawCats as Map);
+      return (
+        mine: mine,
+        theirs: theirs,
+        overallScore: overallScore,
+        categoryScores: categoryScores,
+      );
     } catch (_) {
-      return (mine: false, theirs: false, overallScore: null, categoryScores: null);
+      return (
+        mine: false,
+        theirs: false,
+        overallScore: null,
+        categoryScores: null,
+      );
     }
   }
 
@@ -462,9 +651,18 @@ class ZyraJourneyService {
   /// resubmitting the same question after the phase reveals will fail
   /// against the unique constraint and be silently swallowed, which is
   /// fine: answers aren't editable after submission in this v1.
-  static Future<void> submitPhaseAnswer(String matchId, int phase, String questionId, String answerText) async {
+  static Future<void> submitPhaseAnswer(
+    String matchId,
+    int phase,
+    String questionId,
+    String answerText,
+  ) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
+    // The field formatter is the first boundary. Keep the same rule here so
+    // another caller cannot bypass the Faith & Values cap by invoking the
+    // service directly.
+    if (!JourneyQuestions.answerFitsCharacterLimit(phase, answerText)) return;
     try {
       await supabase.from('journey_phase_answers').insert({
         'match_id': matchId,
@@ -479,13 +677,18 @@ class ZyraJourneyService {
   /// {otherPartyOrMineUserId: {questionId: answerText}} for both
   /// seekers in this phase — used both to check "have both submitted
   /// everything" and to render the simultaneous reveal.
-  static Future<Map<String, Map<String, String>>> fetchPhaseAnswers(String matchId, int phase) async {
+  static Future<Map<String, Map<String, String>>> fetchPhaseAnswers(
+    String matchId,
+    int phase,
+  ) async {
     try {
-      final rows = await supabase
-          .from('journey_phase_answers')
-          .select('seeker_id, question_id, answer_text')
-          .eq('match_id', matchId)
-          .eq('phase', phase) as List;
+      final rows =
+          await supabase
+                  .from('journey_phase_answers')
+                  .select('seeker_id, question_id, answer_text')
+                  .eq('match_id', matchId)
+                  .eq('phase', phase)
+              as List;
 
       final result = <String, Map<String, String>>{};
       for (final r in rows) {
@@ -504,7 +707,12 @@ class ZyraJourneyService {
   /// [rating] is one of 'reassured' / 'discuss_further' / 'concerns'
   /// (Summary.md's private rating phrases). Private to the rater by
   /// RLS — never shown to the other party or the Wali.
-  static Future<void> submitRating(String matchId, int phase, String questionId, String rating) async {
+  static Future<void> submitRating(
+    String matchId,
+    int phase,
+    String questionId,
+    String rating,
+  ) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
     try {
@@ -519,7 +727,11 @@ class ZyraJourneyService {
   }
 
   /// [decision] is one of 'continue' / 'ask_more' / 'end'.
-  static Future<void> submitCheckpoint(String matchId, int phase, String decision) async {
+  static Future<void> submitCheckpoint(
+    String matchId,
+    int phase,
+    String decision,
+  ) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
     try {
@@ -537,28 +749,37 @@ class ZyraJourneyService {
       // If a "change your mind" flow is ever added, this needs an RPC or
       // a self-scoped UPDATE grant — not a bare upsert. Leaving that note
       // here rather than discovering it as a silent no-op later.
-      await supabase.from('journey_phase_checkpoints').upsert(
-        {
-          'match_id': matchId,
-          'phase': phase,
-          'seeker_id': user.id,
-          'decision': decision,
-        },
-        onConflict: 'match_id,phase,seeker_id',
-        ignoreDuplicates: true,
-      );
+      await supabase
+          .from('journey_phase_checkpoints')
+          .upsert(
+            {
+              'match_id': matchId,
+              'phase': phase,
+              'seeker_id': user.id,
+              'decision': decision,
+            },
+            onConflict: 'match_id,phase,seeker_id',
+            ignoreDuplicates: true,
+          );
     } catch (_) {}
   }
 
-  static Future<Map<String, String>> fetchCheckpoints(String matchId, int phase) async {
+  static Future<Map<String, String>> fetchCheckpoints(
+    String matchId,
+    int phase,
+  ) async {
     try {
-      final rows = await supabase
-          .from('journey_phase_checkpoints')
-          .select('seeker_id, decision')
-          .eq('match_id', matchId)
-          .eq('phase', phase) as List;
+      final rows =
+          await supabase
+                  .from('journey_phase_checkpoints')
+                  .select('seeker_id, decision')
+                  .eq('match_id', matchId)
+                  .eq('phase', phase)
+              as List;
       return {
-        for (final r in rows) (r as Map<String, dynamic>)['seeker_id'] as String: r['decision'] as String,
+        for (final r in rows)
+          (r as Map<String, dynamic>)['seeker_id'] as String:
+              r['decision'] as String,
       };
     } catch (_) {
       return {};
@@ -566,7 +787,8 @@ class ZyraJourneyService {
   }
 
   /// Advances one of the THREE ungated Pre-Journey Ritual transitions:
-  /// compatibility_reveal -> salam_exchange -> wali_gate -> phase_1.
+  /// salam_exchange -> compatibility_reveal -> wali_gate -> phase_1
+  /// (Salam first since DR-ZYRA-183; the server owns this map).
   ///
   /// Takes the stage the caller believes it has COMPLETED, not the one
   /// it wants next. The server owns the map, so a client cannot name a
@@ -589,14 +811,19 @@ class ZyraJourneyService {
   /// The 'conversation' branch is gone with it: that stage is reachable
   /// only via the gated path, and resolve_family_review_if_due() /
   /// wali_review_decision() already open the conversation row server-side.
-  static Future<ZyraStageAdvance> advanceStage(String matchId, String fromStage) async {
+  static Future<ZyraStageAdvance> advanceStage(
+    String matchId,
+    String fromStage,
+  ) async {
     try {
-      final rows = await supabase.rpc('zyra_advance_stage', params: {
-        'p_match_id': matchId,
-        'p_from_stage': fromStage,
-      });
+      final rows = await supabase.rpc(
+        'zyra_advance_stage',
+        params: {'p_match_id': matchId, 'p_from_stage': fromStage},
+      );
       if (rows is! List || rows.isEmpty) {
-        debugPrint('[ZyraJourneyService.advanceStage] $matchId from=$fromStage returned no row');
+        debugPrint(
+          '[ZyraJourneyService.advanceStage] $matchId from=$fromStage returned no row',
+        );
         return ZyraStageAdvance.failed;
       }
       final r = rows.first as Map<String, dynamic>;
@@ -608,7 +835,9 @@ class ZyraJourneyService {
     } catch (e) {
       // ES-08. Never silent again — this is the exact call site whose
       // silence hid the blocker.
-      debugPrint('[ZyraJourneyService.advanceStage] $matchId from=$fromStage failed: $e');
+      debugPrint(
+        '[ZyraJourneyService.advanceStage] $matchId from=$fromStage failed: $e',
+      );
       return ZyraStageAdvance.failed;
     }
   }
@@ -639,16 +868,25 @@ class ZyraJourneyService {
   /// wrong — most realistically `stage_moved`, when the other Seeker's
   /// client opened the review a moment earlier. So it returns a reason
   /// instead of null. See [ZyraReviewOpen].
-  static Future<ZyraReviewOpen> openFamilyReview(String matchId, String fromStage, String toStage) async {
+  static Future<ZyraReviewOpen> openFamilyReview(
+    String matchId,
+    String fromStage,
+    String toStage,
+  ) async {
     try {
-      final id = await supabase.rpc('open_family_review', params: {
-        'p_match_id': matchId,
-        'p_from_stage': fromStage,
-        'p_to_stage': toStage,
-      });
+      final id = await supabase.rpc(
+        'open_family_review',
+        params: {
+          'p_match_id': matchId,
+          'p_from_stage': fromStage,
+          'p_to_stage': toStage,
+        },
+      );
       if (id == null) {
-        debugPrint('[ZyraJourneyService.openFamilyReview] $matchId '
-            '$fromStage->$toStage returned null');
+        debugPrint(
+          '[ZyraJourneyService.openFamilyReview] $matchId '
+          '$fromStage->$toStage returned null',
+        );
         return ZyraReviewOpen.failed;
       }
       return ZyraReviewOpen(id as String, 'opened');
@@ -656,15 +894,29 @@ class ZyraJourneyService {
       // Named server errors are matched on the message, which is the
       // idiom already used for one_active_journey_limit,
       // suspension_requires_one and not_eligible_to_continue above.
-      debugPrint('[ZyraJourneyService.openFamilyReview] $matchId '
-          '$fromStage->$toStage refused: $e');
+      debugPrint(
+        '[ZyraJourneyService.openFamilyReview] $matchId '
+        '$fromStage->$toStage refused: $e',
+      );
       final s = e.toString();
-      if (s.contains('stage_moved')) return const ZyraReviewOpen(null, 'stage_moved');
-      if (s.contains('journey_paused')) return const ZyraReviewOpen(null, 'journey_paused');
-      if (s.contains('journey_not_active')) return const ZyraReviewOpen(null, 'journey_not_active');
-      if (s.contains('not_a_gated_transition')) return const ZyraReviewOpen(null, 'not_a_gated_transition');
-      if (s.contains('invalid_transition')) return const ZyraReviewOpen(null, 'invalid_transition');
-      if (s.contains('not a party')) return const ZyraReviewOpen(null, 'not_a_party');
+      if (s.contains('stage_moved')) {
+        return const ZyraReviewOpen(null, 'stage_moved');
+      }
+      if (s.contains('journey_paused')) {
+        return const ZyraReviewOpen(null, 'journey_paused');
+      }
+      if (s.contains('journey_not_active')) {
+        return const ZyraReviewOpen(null, 'journey_not_active');
+      }
+      if (s.contains('not_a_gated_transition')) {
+        return const ZyraReviewOpen(null, 'not_a_gated_transition');
+      }
+      if (s.contains('invalid_transition')) {
+        return const ZyraReviewOpen(null, 'invalid_transition');
+      }
+      if (s.contains('not a party')) {
+        return const ZyraReviewOpen(null, 'not_a_party');
+      }
       return ZyraReviewOpen.failed;
     }
   }
@@ -672,7 +924,10 @@ class ZyraJourneyService {
   /// Current review for [matchId] (pending OR paused — resolved/
   /// 'continued' reviews are historical and not returned once the
   /// stage has actually moved on). Null if there's no live review.
-  static Future<({String id, String status, String toStage, DateTime deadlineAt})?> fetchFamilyReview(String matchId) async {
+  static Future<
+    ({String id, String status, String toStage, DateTime deadlineAt})?
+  >
+  fetchFamilyReview(String matchId) async {
     try {
       final row = await supabase
           .from('journey_family_reviews')
@@ -714,14 +969,18 @@ class ZyraJourneyService {
   ///
   /// Empty on any failure, which degrades to showing the underlying
   /// stage. That is never wrong, only less specific.
-  static Future<Set<String>> fetchOpenReviewMatchIds(List<String> matchIds) async {
+  static Future<Set<String>> fetchOpenReviewMatchIds(
+    List<String> matchIds,
+  ) async {
     if (matchIds.isEmpty) return {};
     try {
-      final rows = await supabase
-          .from('journey_family_reviews')
-          .select('match_id')
-          .inFilter('match_id', matchIds)
-          .inFilter('status', ['pending', 'paused']) as List;
+      final rows =
+          await supabase
+                  .from('journey_family_reviews')
+                  .select('match_id')
+                  .inFilter('match_id', matchIds)
+                  .inFilter('status', ['pending', 'paused'])
+              as List;
       return {
         for (final r in rows) (r as Map<String, dynamic>)['match_id'] as String,
       };
@@ -754,7 +1013,8 @@ class ZyraJourneyService {
   /// showing an option that will be refused is worse than not showing it.
   static Future<Set<String>> fetchMayRequestNewJourneyIds() async {
     try {
-      final rows = await supabase.rpc('zyra_may_request_new_journey_ids') as List;
+      final rows =
+          await supabase.rpc('zyra_may_request_new_journey_ids') as List;
       return rows.map((r) => r as String).toSet();
     } catch (e) {
       debugPrint('ZYRA: fetchMayRequestNewJourneyIds failed — $e');
@@ -771,8 +1031,10 @@ class ZyraJourneyService {
   /// moment either party next opens the screen. Pass null to sweep all.
   static Future<void> expireDueJourneyRequests([String? matchId]) async {
     try {
-      await supabase.rpc('zyra_expire_due_journey_requests',
-          params: {'p_match_id': matchId});
+      await supabase.rpc(
+        'zyra_expire_due_journey_requests',
+        params: {'p_match_id': matchId},
+      );
     } catch (e) {
       debugPrint('ZYRA: expireDueJourneyRequests($matchId) failed — $e');
     }
@@ -789,7 +1051,10 @@ class ZyraJourneyService {
   /// needs its own copy, check first that it cannot be inferred backwards.
   static Future<String?> requestNewJourney(String matchId) async {
     try {
-      await supabase.rpc('request_new_journey', params: {'p_match_id': matchId});
+      await supabase.rpc(
+        'request_new_journey',
+        params: {'p_match_id': matchId},
+      );
       return null;
     } catch (e) {
       final m = e.toString();
@@ -815,22 +1080,30 @@ class ZyraJourneyService {
   /// The two declines differ ONLY in the hold they leave behind — 6 months
   /// versus permanent — and the requester is told the same thing either way.
   static Future<String?> respondToJourneyRequest(
-      String requestId, String decision) async {
+    String requestId,
+    String decision,
+  ) async {
     try {
-      await supabase.rpc('respond_to_journey_request',
-          params: {'p_request_id': requestId, 'p_decision': decision});
+      await supabase.rpc(
+        'respond_to_journey_request',
+        params: {'p_request_id': requestId, 'p_decision': decision},
+      );
       return null;
     } catch (e) {
       final m = e.toString();
       if (m.contains('request_expired')) return 'That request has expired.';
-      if (m.contains('already_answered')) return 'That request was already answered.';
+      if (m.contains('already_answered')) {
+        return 'That request was already answered.';
+      }
       if (m.contains('one_active_journey_limit')) {
         return 'One of you already has an Active Journey.';
       }
       if (m.contains('not_available')) {
         return "You can't begin a new Journey with them right now.";
       }
-      debugPrint('ZYRA: respondToJourneyRequest($requestId, $decision) failed — $e');
+      debugPrint(
+        'ZYRA: respondToJourneyRequest($requestId, $decision) failed — $e',
+      );
       return "That didn't go through. Please try again.";
     }
   }
@@ -840,15 +1113,26 @@ class ZyraJourneyService {
   /// No-op server-side if there's nothing due yet.
   static Future<void> resolveFamilyReviewIfDue(String matchId) async {
     try {
-      await supabase.rpc('resolve_family_review_if_due', params: {'p_match_id': matchId});
+      await supabase.rpc(
+        'resolve_family_review_if_due',
+        params: {'p_match_id': matchId},
+      );
     } catch (_) {}
   }
 
   /// [direction] is 'seeker_to_wali' or 'wali_to_seeker'. Plain
   /// insert, same reasoning as submitPhaseAnswer.
-  static Future<void> submitFamilyAnswer(String matchId, String direction, String questionId, String answerText) async {
+  /// DR-ZYRA-167: true when the answer is ON THE SERVER — including the
+  /// duplicate-key case, which means a retry of an insert that already
+  /// landed. False is a real failure the caller must SAY, not swallow.
+  static Future<bool> submitFamilyAnswer(
+    String matchId,
+    String direction,
+    String questionId,
+    String answerText,
+  ) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
     try {
       await supabase.from('journey_family_answers').insert({
         'match_id': matchId,
@@ -857,7 +1141,12 @@ class ZyraJourneyService {
         'answerer_id': user.id,
         'answer_text': answerText,
       });
-    } catch (_) {}
+      return true;
+    } catch (e) {
+      if (e.toString().contains('duplicate key')) return true;
+      debugPrint('ZYRA: submitFamilyAnswer($matchId/$questionId) failed - $e');
+      return false;
+    }
   }
 
   /// {questionId: answerText}. Ordered by created_at ASCENDING so that if
@@ -869,14 +1158,19 @@ class ZyraJourneyService {
   /// built newest-to-oldest and the last write to win was the OLDEST answer —
   /// the exact opposite of what the sentence above promised. The doc was
   /// right about the intent and the code had never matched it.
-  static Future<Map<String, String>> fetchFamilyAnswers(String matchId, String direction) async {
+  static Future<Map<String, String>> fetchFamilyAnswers(
+    String matchId,
+    String direction,
+  ) async {
     try {
-      final rows = await supabase
-          .from('journey_family_answers')
-          .select('question_id, answer_text, created_at')
-          .eq('match_id', matchId)
-          .eq('direction', direction)
-          .order('created_at', ascending: true) as List;
+      final rows =
+          await supabase
+                  .from('journey_family_answers')
+                  .select('question_id, answer_text, created_at')
+                  .eq('match_id', matchId)
+                  .eq('direction', direction)
+                  .order('created_at', ascending: true)
+              as List;
 
       final result = <String, String>{};
       for (final r in rows) {
@@ -898,8 +1192,15 @@ class ZyraJourneyService {
     try {
       await supabase.rpc('suspend_journey', params: {'p_match_id': matchId});
     } catch (e) {
-      if (e.toString().contains('paused_limit_reached')) throw PausedLimitReachedException();
-      if (e.toString().contains('suspension_requires_one')) throw SuspensionRequiresOneException();
+      if (e.toString().contains('paused_limit_reached')) {
+        throw PausedLimitReachedException();
+      }
+      if (e.toString().contains('suspension_requires_one')) {
+        throw SuspensionRequiresOneException();
+      }
+      // DR-ZYRA-170: an unknown failure must not read as a successful
+      // pause — the caller keeps its confirm open and says so.
+      rethrow;
     }
   }
 
@@ -909,6 +1210,9 @@ class ZyraJourneyService {
     } catch (e) {
       if (e.toString().contains('other_party_in_active_journey')) {
         throw OtherPartyInActiveJourneyException();
+      }
+      if (e.toString().contains('self_in_active_journey')) {
+        throw SelfInActiveJourneyException();
       }
       // OA-ZYRA-174, 2026-08-08. Was `not_eligible_to_match`, raised off the
       // whole zyra_can_match() predicate; now the narrower blocks-and-Tier-0
@@ -921,15 +1225,15 @@ class ZyraJourneyService {
     }
   }
 
-  static Future<void> endJourney(String matchId) async {
+  /// DR-ZYRA-167: true only when the server accepted the end. A failed
+  /// end must not play the ended moment — the caller gates on this.
+  static Future<bool> endJourney(String matchId) async {
     try {
       await supabase.rpc('end_journey', params: {'p_match_id': matchId});
+      return true;
     } catch (e) {
-      // 2026-08-12 (stewardship pass, CLAUDE.md §3 "never leave a silent
-      // catch"): a failed end used to report success to the UI with no
-      // trace anywhere. Still swallowed — caller refetches state — but no
-      // longer invisible.
       debugPrint('ZYRA endJourney($matchId) failed: $e');
+      return false;
     }
   }
 
@@ -938,20 +1242,28 @@ class ZyraJourneyService {
   /// while the UI waits on the other party, rather than a Realtime
   /// channel subscription (out of scope for this pass). Null on any
   /// failure or if the match/profile can no longer be found.
-  static Future<JourneyMatch?> refetchOne(String matchId, String otherUserId) async {
+  static Future<JourneyMatch?> refetchOne(
+    String matchId,
+    String otherUserId,
+  ) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return null;
     try {
       final matchRow = await supabase
           .from('matches')
-          .select('id, status, journey_stage, suspended_by, ended_at')
+          .select(
+            'id, status, journey_stage, suspended_by, also_paused_by, '
+            'suspended_at, pause_nudged_at, ended_at',
+          )
           .eq('id', matchId)
           .maybeSingle();
       if (matchRow == null) return null;
 
       final profileRow = await supabase
           .from('profiles')
-          .select('id, first_name, location_text, gender, profile_photos(storage_path, display_order)')
+          .select(
+            'id, first_name, location_text, gender, profile_photos(storage_path, display_order)',
+          )
           .eq('id', otherUserId)
           .maybeSingle();
       if (profileRow == null) return null;
@@ -960,8 +1272,13 @@ class ZyraJourneyService {
       // 20260726120000_hide_raw_dob_expose_age.sql.
       final ages = await _fetchAges([otherUserId]);
 
-      final photosRaw = List<Map<String, dynamic>>.from((profileRow['profile_photos'] as List?) ?? const []);
-      photosRaw.sort((a, b) => (a['display_order'] as int).compareTo(b['display_order'] as int));
+      final photosRaw = List<Map<String, dynamic>>.from(
+        (profileRow['profile_photos'] as List?) ?? const [],
+      );
+      photosRaw.sort(
+        (a, b) =>
+            (a['display_order'] as int).compareTo(b['display_order'] as int),
+      );
       final photos = await ZyraPhotoService.signedUrlsFor(
         photosRaw.map((p) => p['storage_path'] as String).toList(),
       );
@@ -971,7 +1288,9 @@ class ZyraJourneyService {
         firstName: profileRow['first_name'] as String,
         age: ages[otherUserId] ?? 0,
         city: (profileRow['location_text'] as String?) ?? '—',
-        photos: photos.isEmpty ? ['https://picsum.photos/seed/${profileRow['id']}/700/1000'] : photos,
+        photos: photos.isEmpty
+            ? ['https://picsum.photos/seed/${profileRow['id']}/700/1000']
+            : photos,
         gender: profileRow['gender'] as String,
       );
 
@@ -981,9 +1300,19 @@ class ZyraJourneyService {
         status: matchRow['status'] as String,
         journeyStage: matchRow['journey_stage'] as String?,
         suspendedBy: matchRow['suspended_by'] as String?,
-        endedAt: matchRow['ended_at'] == null ? null : DateTime.parse(matchRow['ended_at'] as String),
+        alsoPausedBy: matchRow['also_paused_by'] as String?,
+        suspendedAt: matchRow['suspended_at'] == null
+            ? null
+            : DateTime.parse(matchRow['suspended_at'] as String),
+        pauseNudgedAt: matchRow['pause_nudged_at'] == null
+            ? null
+            : DateTime.parse(matchRow['pause_nudged_at'] as String),
+        endedAt: matchRow['ended_at'] == null
+            ? null
+            : DateTime.parse(matchRow['ended_at'] as String),
       );
-    } catch (_) {
+    } catch (e) {
+      debugPrint('ZYRA: refetchOne($matchId) failed - $e');
       return null;
     }
   }
@@ -1001,8 +1330,10 @@ class ZyraJourneyService {
   /// bare Postgres error from the RPC.
   ///
   /// Replaced by Request New Journey — V3 §9, OA-ZYRA-159.
-  @Deprecated('Use Request New Journey (OA-ZYRA-159). Restart is not permitted: '
-      'a Journey cannot be reopened without the other person agreeing.')
+  @Deprecated(
+    'Use Request New Journey (OA-ZYRA-159). Restart is not permitted: '
+    'a Journey cannot be reopened without the other person agreeing.',
+  )
   static Future<void> restartJourney(String matchId) async {
     throw StateError(
       'restart_journey is retired (OA-ZYRA-154). Starting again requires the '
@@ -1034,10 +1365,10 @@ class ZyraJourneyService {
   /// account, so the caller can say so rather than swallowing it.
   static Future<String> devSetStage(String matchId, String stage) async {
     try {
-      final res = await supabase.rpc('zyra_dev_set_journey_stage', params: {
-        'p_match_id': matchId,
-        'p_stage': stage,
-      });
+      final res = await supabase.rpc(
+        'zyra_dev_set_journey_stage',
+        params: {'p_match_id': matchId, 'p_stage': stage},
+      );
       return res as String;
     } catch (e) {
       // Matches this file's existing convention (suspendJourney,
@@ -1068,16 +1399,21 @@ class ZyraJourneyService {
   ///
   /// ⚠️ DROP BEFORE PUBLIC LAUNCH — OA-ZYRA-184, which now covers eight
   /// functions rather than seven.
-  static Future<bool> devSetCounterpartReveal(String matchId, bool revealed) async {
+  static Future<bool> devSetCounterpartReveal(
+    String matchId,
+    bool revealed,
+  ) async {
     try {
-      final res = await supabase.rpc('zyra_dev_set_counterpart_reveal', params: {
-        'p_match_id': matchId,
-        'p_revealed': revealed,
-      });
+      final res = await supabase.rpc(
+        'zyra_dev_set_counterpart_reveal',
+        params: {'p_match_id': matchId, 'p_revealed': revealed},
+      );
       return res as bool;
     } catch (e) {
       if (e.toString().contains('dev_only')) throw const DevOnlyException();
-      debugPrint('ZYRA: devSetCounterpartReveal($matchId, $revealed) failed — $e');
+      debugPrint(
+        'ZYRA: devSetCounterpartReveal($matchId, $revealed) failed — $e',
+      );
       rethrow;
     }
   }
@@ -1128,8 +1464,10 @@ class ZyraJourneyService {
   /// entitlements in Dart and believing it.
   static Future<double?> fetchCompatibilityForPlus(String matchId) async {
     try {
-      final res = await supabase
-          .rpc('zyra_compatibility_for_plus', params: {'p_match_id': matchId});
+      final res = await supabase.rpc(
+        'zyra_compatibility_for_plus',
+        params: {'p_match_id': matchId},
+      );
       if (res == null) return null;
       return (res as num).toDouble();
     } catch (e) {
@@ -1161,12 +1499,15 @@ class ZyraJourneyService {
   /// as testing a good one.
   ///
   /// TENTH dev RPC — OA-ZYRA-184 holds the drop list.
-  static Future<double?> devSetCompatibility(String matchId, double score) async {
+  static Future<double?> devSetCompatibility(
+    String matchId,
+    double score,
+  ) async {
     try {
-      final v = await supabase.rpc('zyra_dev_set_compatibility', params: {
-        'p_match_id': matchId,
-        'p_score': score,
-      });
+      final v = await supabase.rpc(
+        'zyra_dev_set_compatibility',
+        params: {'p_match_id': matchId, 'p_score': score},
+      );
       return (v as num?)?.toDouble();
     } catch (e) {
       debugPrint('ZYRA: devSetCompatibility failed — $e');
@@ -1182,19 +1523,25 @@ class ZyraJourneyService {
   /// RLS: "Your ratings are private and used only to guide your journey"
   /// (PRE-JOURNEY RITUAL/Summary.md) is a promise made on screen every phase,
   /// so this must never grow an `otherUserId` parameter.
-  static Future<Map<String, String>> fetchMyRatings(String matchId, int phase) async {
+  static Future<Map<String, String>> fetchMyRatings(
+    String matchId,
+    int phase,
+  ) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return {};
     try {
-      final rows = await supabase
-          .from('journey_phase_ratings')
-          .select('question_id, rating')
-          .eq('match_id', matchId)
-          .eq('phase', phase)
-          .eq('rater_id', user.id) as List;
+      final rows =
+          await supabase
+                  .from('journey_phase_ratings')
+                  .select('question_id, rating')
+                  .eq('match_id', matchId)
+                  .eq('phase', phase)
+                  .eq('rater_id', user.id)
+              as List;
       return {
         for (final r in rows)
-          (r as Map<String, dynamic>)['question_id'] as String: r['rating'] as String,
+          (r as Map<String, dynamic>)['question_id'] as String:
+              r['rating'] as String,
       };
     } catch (e) {
       debugPrint('ZYRA: fetchMyRatings($matchId, $phase) failed - $e');
@@ -1228,13 +1575,15 @@ class ZyraJourneyService {
   /// been told about it. Empty for the stages that have no questions.
   ///
   /// ELEVENTH dev RPC - OA-ZYRA-184 holds the drop list.
-  static Future<String> devCounterpartComplete(String matchId,
-      {List<String> questionIds = const []}) async {
+  static Future<String> devCounterpartComplete(
+    String matchId, {
+    List<String> questionIds = const [],
+  }) async {
     try {
-      final res = await supabase.rpc('zyra_dev_counterpart_complete', params: {
-        'p_match_id': matchId,
-        'p_question_ids': questionIds,
-      });
+      final res = await supabase.rpc(
+        'zyra_dev_counterpart_complete',
+        params: {'p_match_id': matchId, 'p_question_ids': questionIds},
+      );
       return res?.toString() ?? 'Done.';
     } catch (e) {
       if (e.toString().contains('dev_only')) throw const DevOnlyException();
@@ -1264,8 +1613,10 @@ class ZyraJourneyService {
   /// front of it.
   static Future<String> devRewindJourney({String? matchId}) async {
     try {
-      final res = await supabase
-          .rpc('zyra_dev_rewind_journey', params: {'p_match_id': matchId});
+      final res = await supabase.rpc(
+        'zyra_dev_rewind_journey',
+        params: {'p_match_id': matchId},
+      );
       return res?.toString() ?? 'Journey rewound.';
     } catch (e) {
       if (e.toString().contains('dev_only')) throw const DevOnlyException();
@@ -1276,8 +1627,10 @@ class ZyraJourneyService {
 
   static Future<bool> devSetPlusUnlock(String otherId, bool has) async {
     try {
-      final res = await supabase.rpc('zyra_dev_set_plus_unlock',
-          params: {'p_other_id': otherId, 'p_has': has});
+      final res = await supabase.rpc(
+        'zyra_dev_set_plus_unlock',
+        params: {'p_other_id': otherId, 'p_has': has},
+      );
       return res == true;
     } catch (e) {
       if (e.toString().contains('dev_only')) throw const DevOnlyException();
@@ -1293,14 +1646,18 @@ class ZyraJourneyService {
     final user = ZyraAuth.currentUser;
     if (user == null) return false;
     try {
-      final rows = await supabase
-          .from('profile_unlocks')
-          .select('unlock_type')
-          .eq('unlocker_id', user.id)
-          .eq('unlocked_id', otherId) as List;
-      return rows.any((r) => (r as Map<String, dynamic>)['unlock_type']
-          .toString()
-          .startsWith('paid_plus'));
+      final rows =
+          await supabase
+                  .from('profile_unlocks')
+                  .select('unlock_type')
+                  .eq('unlocker_id', user.id)
+                  .eq('unlocked_id', otherId)
+              as List;
+      return rows.any(
+        (r) => (r as Map<String, dynamic>)['unlock_type'].toString().startsWith(
+          'paid_plus',
+        ),
+      );
     } catch (e) {
       debugPrint('ZYRA: fetchHasPlusUnlock($otherId) failed — $e');
       return false;

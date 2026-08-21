@@ -77,12 +77,23 @@
 // taken literally: a hold that turns into a drag does not open the menu.
 // See _onCentreLongPressStart / _onCentreLongPressMoveUpdate /
 // _onCentreLongPressEnd / _openHelpReportCentred below.
+//
+// ALL OF THE ABOVE RETIRED 2026-08-13 (DR-ZYRA-150). The hidden hold
+// never earned its invisibility; with the Bell gone to the nav bar
+// (DR-ZYRA-149) the top-right corner was free again, and the Founder
+// put a visible ⋮ there. Tapping it asks HomeShell to transform the nav
+// bar into the two action pills (Report Profile / Help & Support) —
+// see the ⋮ overlay in this build and _ActionModeBar in home_shell.dart.
+// Long-press keeps only the photo-dim feedback; the paragraphs above
+// stay as the history of how this corner earned its button back.
 
 import 'dart:async';
 import '../../widgets/zyra_profile_image.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show HapticFeedback;
+// services/HapticFeedback import left with the centre-hold (DR-ZYRA-150)
+// — its mediumImpact on menu-open was the file's only haptic.
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_profile_service.dart';
@@ -92,13 +103,17 @@ import '../../dev/zyra_dev_scenario.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../../widgets/help_report_sheet.dart';
+import '../subscription/profile_unlock_screen.dart';
+import '../../widgets/zyra_profile_name_block.dart';
 import '../../widgets/report_profile_sheet.dart';
 import '../../widgets/zyra_glass_dialog.dart';
-import '../settings/help_support_screen.dart';
 import '../subscription/upgrade_screen.dart';
 import 'match_notification_screen.dart';
 import '../../widgets/zyra_loading.dart';
+// DR-ZYRA-169 Phase 1 (2026-08-15): the precache pass and the block path
+// both talk to the shared disk image cache now.
+import 'package:cached_network_image/cached_network_image.dart';
+import '../../services/zyra_image_cache.dart';
 
 // 50 profiles per 4 HOURS on ZYRA Basic (Founder, 2026-08-07). The name
 // says "daily" from an earlier reading of the rule and is left alone here
@@ -219,10 +234,16 @@ const int zyraOneSaveLimit = 50;
 /// The scrim still moved (see the bottom gradient), just modestly: 17% → 32%
 /// at the name, which is real improvement without the wash. Belt and braces,
 /// with the braces doing most of the work.
-const List<Shadow> _onPhotoTextShadows = [
-  Shadow(color: Color(0xCC000000), blurRadius: 3, offset: Offset(0, 1)),
-  Shadow(color: Color(0x99000000), blurRadius: 14),
-];
+// _onPhotoTextShadows MOVED 2026-08-13 (DR-ZYRA-163) to
+// widgets/zyra_profile_name_block.dart, as kZyraOnPhotoTextShadows. It
+// was private here, so every other screen drawing text on a photo did
+// without it — which is why the Connections heroes read flatter than
+// this one.
+//
+// It was briefly left behind as an alias, on a note claiming "~20 call
+// sites in this file". That number was written without counting: the
+// name block was the ONLY consumer, and it moved out with the shadow.
+// Alias deleted.
 
 enum _Decision { pass, save, consider }
 
@@ -242,7 +263,28 @@ class BrowseScreen extends StatefulWidget {
   /// Browse cannot fix that from inside itself; it has to tell the shell.
   final ValueChanged<bool>? onFullScreenTakeover;
 
-  const BrowseScreen({super.key, this.onNavigateToConnections, this.onFullScreenTakeover});
+  /// THE ⋮'S DOOR — 2026-08-13 (DR-ZYRA-150): tapping the three dots
+  /// asks the SHELL to enter action mode (the nav bar becomes the
+  /// Report Profile / Help & Support pills), handing it what Report
+  /// should do — report whoever is on the card right now. The shell
+  /// owns the bar; this screen owns the person. Null in contexts with
+  /// no shell (none today).
+  /// CARRIES TWO ACTIONS SINCE 2026-08-13 (DR-ZYRA-155). Hide Profile
+  /// left the report sheet and became its own option on the bar, so the
+  /// card hands over both things the bar can do to whoever is on it.
+  /// The shell owns the bar; this screen owns the person.
+  final void Function(
+    ({VoidCallback report, VoidCallback hide, VoidCallback compatibility})
+    actions,
+  )?
+  onOpenActions;
+
+  const BrowseScreen({
+    super.key,
+    this.onNavigateToConnections,
+    this.onFullScreenTakeover,
+    this.onOpenActions,
+  });
 
   @override
   State<BrowseScreen> createState() => _BrowseScreenState();
@@ -265,12 +307,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
   // `_flash` was deleted 2026-08-01 — see _onPass's note.)
   _Decision? _burstDecision;
 
-  // 2026-07-27 (Founder: long-press-centre replaces the "..." icon —
-  // see this file's header comment). Set in onLongPressStart, cancelled
-  // in onLongPressEnd/onLongPressMoveUpdate; only fires
-  // _openHelpReportCentred if it survives the full hold untouched.
-  Timer? _centreHoldTimer;
-  Offset? _centreHoldOrigin;
+  // The centre-hold machinery (2026-07-27 -> 2026-08-13) is GONE:
+  // timer, origin, fraction/stillness constants, the three handlers and
+  // _openHelpReportSheet all retired with DR-ZYRA-150 — the ⋮ top-right
+  // is Help/Report's visible door now, and the shell's action bar is
+  // its surface. Long-press keeps only the photo-dim feedback.
 
   // 2026-07-26 (OA-ZYRA-121, DR-ZYRA-109) — Sponsored card slot. NOT a
   // real candidate: doesn't consume _index/_current, isn't Pass/Save/
@@ -476,8 +517,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
         // Same call _onSave makes at the cap, including the plan-correct
         // limit and copy — Basic caps at 5, ZYRA One at 15 with a different
         // sentence.
-        final saveLimit =
-            AppState.instance.plan == ZyraPlan.one ? zyraOneSaveLimit : zyraBasicSaveLimit;
+        final saveLimit = AppState.instance.plan == ZyraPlan.one
+            ? zyraOneSaveLimit
+            : zyraBasicSaveLimit;
         _showCapReachedModal(
           action: 'Save',
           limit: saveLimit,
@@ -501,7 +543,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
   void dispose() {
     AppState.instance.removeListener(_onAppStateChanged);
     ZyraDevScenario.instance.removeListener(_onDevPopupRequested);
-    _centreHoldTimer?.cancel();
     super.dispose();
   }
 
@@ -517,16 +558,38 @@ class _BrowseScreenState extends State<BrowseScreen> {
   // time any of them is tapped) plus the NEXT candidate's first photo
   // only (covers swipe-to-next-profile, without wastefully prefetching
   // photos 2+ of a candidate the user may Pass before ever opening).
+  // SWITCHED to the shared cached provider 2026-08-15 (DR-ZYRA-169
+  // Phase 1). NetworkImage warmed only the RAM cache, and by URL — so a
+  // re-signed URL missed, and nothing survived an app close. The same
+  // provider ZyraProfileImage renders with (same manager, same
+  // URL-sans-token key) means this prefetch now warms disk AND RAM, and
+  // warms the exact entries the render will look up.
   void _precacheAround(int index) {
     final profiles = _profiles;
     if (index >= 0 && index < profiles.length) {
       for (final url in profiles[index].photos) {
-        precacheImage(NetworkImage(url), context);
+        precacheImage(
+          CachedNetworkImageProvider(
+            url,
+            cacheKey: ZyraImageCache.keyFor(url),
+            cacheManager: ZyraImageCache.manager,
+          ),
+          context,
+        );
       }
     }
     if (index + 1 < profiles.length) {
       final nextPhotos = profiles[index + 1].photos;
-      if (nextPhotos.isNotEmpty) precacheImage(NetworkImage(nextPhotos.first), context);
+      if (nextPhotos.isNotEmpty) {
+        precacheImage(
+          CachedNetworkImageProvider(
+            nextPhotos.first,
+            cacheKey: ZyraImageCache.keyFor(nextPhotos.first),
+            cacheManager: ZyraImageCache.manager,
+          ),
+          context,
+        );
+      }
     }
   }
 
@@ -550,7 +613,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final result = await showModalBottomSheet<({int? lo, int? hi})>(
       context: context,
       backgroundColor: ZyraColors.luxuryDarkPurple,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setSheetState) => SafeArea(
           child: Padding(
@@ -561,9 +626,15 @@ class _BrowseScreenState extends State<BrowseScreen> {
               children: [
                 Text('Age range', style: ZyraText.heading(size: 17)),
                 const SizedBox(height: 4),
-                Text('Only affects who appears in Browse for you.', style: ZyraText.subtext(size: 12.5)),
+                Text(
+                  'Only affects who appears in Browse for you.',
+                  style: ZyraText.subtext(size: 12.5),
+                ),
                 const SizedBox(height: 8),
-                Text('$lo – $hi', style: ZyraText.body(size: 15, color: Colors.white)),
+                Text(
+                  '$lo – $hi',
+                  style: ZyraText.body(size: 15, color: Colors.white),
+                ),
                 RangeSlider(
                   values: RangeValues(lo.toDouble(), hi.toDouble()),
                   min: 18,
@@ -582,14 +653,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () => Navigator.of(ctx).pop((lo: null, hi: null)),
+                        onPressed: () =>
+                            Navigator.of(ctx).pop((lo: null, hi: null)),
                         child: Text('Clear', style: ZyraText.button(size: 13)),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: FilledButton(
-                        onPressed: () => Navigator.of(ctx).pop((lo: lo, hi: hi)),
+                        onPressed: () =>
+                            Navigator.of(ctx).pop((lo: lo, hi: hi)),
                         child: Text('Apply', style: ZyraText.button(size: 13)),
                       ),
                     ),
@@ -614,7 +687,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
     _precacheAround(0);
   }
 
-  SeekerProfile? get _current => _index < _profiles.length ? _profiles[_index] : null;
+  SeekerProfile? get _current =>
+      _index < _profiles.length ? _profiles[_index] : null;
 
   // OA-ZYRA-125 §5: the "0/50 Profiles" counter is hidden during normal
   // browsing entirely. This is the only place the limit surfaces — a
@@ -682,51 +756,55 @@ class _BrowseScreenState extends State<BrowseScreen> {
       // Padding now sits OUTSIDE the ClipRRect. Blur, clip and border all
       // describe exactly the same rectangle.
       builder: (dialogContext) => ZyraGlassCard(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.hourglass_bottom, color: Colors.white, size: 30),
-                  const SizedBox(height: 14),
-                  // COPY CORRECTED 2026-08-07. The Founder stated the rule
-                  // plainly — "a basic user can browse 50 profiles every 4
-                  // hours" — and this modal said something else twice over:
-                  // "today's limit" (it is not a day, it is four hours) and
-                  // "New profiles unlock in 2h 30m", which was a hardcoded
-                  // string counting down from nothing. Anyone who waited
-                  // 2h 30m and found themselves still capped would have
-                  // been told a specific, checkable, wrong thing.
-                  //
-                  // No countdown now, because there is nothing to count
-                  // from — see _viewed's own note. Better to say the rule
-                  // than to invent a number that looks precise.
-                  Text("You've reached your browsing limit",
-                      style: ZyraText.heading(size: 18),
-                      textAlign: TextAlign.center),
-                  const SizedBox(height: 8),
-                  Text(
-                    "You've viewed $_dailyProfileLimit profiles. ZYRA Basic "
-                    'includes $_dailyProfileLimit every 4 hours — check back '
-                    'shortly, or upgrade to ZYRA One for unlimited browsing.',
-                    style: ZyraText.subtext(),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: () {
-                        Navigator.of(dialogContext).pop();
-                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => const UpgradeScreen()));
-                      },
-                      child: const Text('Upgrade to ZYRA One'),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(),
-                    child: Text('Not now', style: ZyraText.subtext()),
-                  ),
-                ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.hourglass_bottom, color: Colors.white, size: 30),
+            const SizedBox(height: 14),
+            // COPY CORRECTED 2026-08-07. The Founder stated the rule
+            // plainly — "a basic user can browse 50 profiles every 4
+            // hours" — and this modal said something else twice over:
+            // "today's limit" (it is not a day, it is four hours) and
+            // "New profiles unlock in 2h 30m", which was a hardcoded
+            // string counting down from nothing. Anyone who waited
+            // 2h 30m and found themselves still capped would have
+            // been told a specific, checkable, wrong thing.
+            //
+            // No countdown now, because there is nothing to count
+            // from — see _viewed's own note. Better to say the rule
+            // than to invent a number that looks precise.
+            Text(
+              "You've reached your browsing limit",
+              style: ZyraText.heading(size: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "You've viewed $_dailyProfileLimit profiles. ZYRA Basic "
+              'includes $_dailyProfileLimit every 4 hours — check back '
+              'shortly, or upgrade to ZYRA One for unlimited browsing.',
+              style: ZyraText.subtext(),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const UpgradeScreen()),
+                  );
+                },
+                child: const Text('Upgrade to ZYRA One'),
               ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text('Not now', style: ZyraText.subtext()),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -735,7 +813,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
   // zyraBasicConsiderLimit/zyraOneSaveLimit doc comments above). Same visual
   // language as _showLimitReachedModal but distinct copy — this isn't a
   // daily reset, it's a standing cap until upgrade.
-  Future<void> _showCapReachedModal({required String action, required int limit, required String upgradeText}) async {
+  Future<void> _showCapReachedModal({
+    required String action,
+    required int limit,
+    required String upgradeText,
+  }) async {
     if (!mounted) return;
     await showDialog<void>(
       context: context,
@@ -753,89 +835,96 @@ class _BrowseScreenState extends State<BrowseScreen> {
       // Padding now sits OUTSIDE the ClipRRect. Blur, clip and border all
       // describe exactly the same rectangle.
       builder: (dialogContext) => ZyraGlassCard(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // REWRITTEN 2026-08-01 (Founder: "for ZYRA One Seeker
-                  // users show me how the message will appear since they
-                  // don't have to upgrade").
-                  //
-                  // A padlock is the wrong icon for someone already on the
-                  // top tier — it promises something purchasable behind
-                  // it, and there is nothing. They get the bookmark
-                  // instead: this is a full shortlist, not a locked door.
-                  Icon(
-                    AppState.instance.plan == ZyraPlan.one ? Icons.bookmark_outline : Icons.lock_outline,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  const SizedBox(height: 14),
-                  Text(
-                    AppState.instance.plan == ZyraPlan.one
-                        ? 'Your $action list is full'
-                        : "You've reached your $action limit",
-                    style: ZyraText.heading(size: 18),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    // FIXED 2026-07-27: this used to always say "ZYRA
-                    // Basic allows up to $limit" even when a ZYRA One
-                    // account hit ITS (higher) limit — wrong plan name
-                    // in that case. Now names whichever plan the limit
-                    // actually belongs to.
-                    //
-                    // FIXED AGAIN 2026-08-01: for a ZYRA One account the
-                    // two halves said the same thing twice — "ZYRA One
-                    // allows up to 15. That's the maximum for ZYRA One."
-                    // Worse, it was a dead end: it stated a rule and gave
-                    // no way forward. A Basic user has an action (upgrade);
-                    // a ZYRA One user had none, so the sentence has to
-                    // supply one. They can remove a Save — the cap is on
-                    // how many you hold, not how many you may ever make.
-                    // REWORDED 2026-08-01 (Founder, both branches).
-                    //
-                    // Basic: the number 15 is gone. Naming ZYRA One's exact
-                    // cap in an upgrade prompt turns a benefit into a
-                    // ceiling — the reader's next thought is "only 15?"
-                    // rather than "more". It also hard-couples marketing
-                    // copy to a constant that has already changed once
-                    // today (50 -> 15).
-                    //
-                    // ZYRA One: the old line led with the count and the
-                    // rule. It now leads with what the person actually
-                    // wants — keeping this profile — and treats the
-                    // removal as the means, not the punishment. No number,
-                    // because they cannot change it and it isn't the point.
-                    AppState.instance.plan == ZyraPlan.one
-                        ? 'To keep this profile, make space by removing a '
-                          'Save in Connections.'
-                        : "ZYRA Basic allows up to $limit. $upgradeText",
-                    style: ZyraText.subtext(),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  // ZYRA One accounts can also hit their (much higher)
-                  // cap — showing "Upgrade to ZYRA One" when they
-                  // already hold it would be nonsensical, so that
-                  // button only appears for Basic.
-                  if (AppState.instance.plan == ZyraPlan.basic)
-                    SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: () {
-                          Navigator.of(dialogContext).pop();
-                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const UpgradeScreen()));
-                        },
-                        child: const Text('Upgrade to ZYRA One'),
-                      ),
-                    ),
-                  TextButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(),
-                    child: Text(AppState.instance.plan == ZyraPlan.basic ? 'Not now' : 'OK', style: ZyraText.subtext()),
-                  ),
-                ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // REWRITTEN 2026-08-01 (Founder: "for ZYRA One Seeker
+            // users show me how the message will appear since they
+            // don't have to upgrade").
+            //
+            // A padlock is the wrong icon for someone already on the
+            // top tier — it promises something purchasable behind
+            // it, and there is nothing. They get the bookmark
+            // instead: this is a full shortlist, not a locked door.
+            Icon(
+              AppState.instance.plan == ZyraPlan.one
+                  ? Icons.bookmark_outline
+                  : Icons.lock_outline,
+              color: Colors.white,
+              size: 30,
+            ),
+            const SizedBox(height: 14),
+            Text(
+              AppState.instance.plan == ZyraPlan.one
+                  ? 'Your $action list is full'
+                  : "You've reached your $action limit",
+              style: ZyraText.heading(size: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              // FIXED 2026-07-27: this used to always say "ZYRA
+              // Basic allows up to $limit" even when a ZYRA One
+              // account hit ITS (higher) limit — wrong plan name
+              // in that case. Now names whichever plan the limit
+              // actually belongs to.
+              //
+              // FIXED AGAIN 2026-08-01: for a ZYRA One account the
+              // two halves said the same thing twice — "ZYRA One
+              // allows up to 15. That's the maximum for ZYRA One."
+              // Worse, it was a dead end: it stated a rule and gave
+              // no way forward. A Basic user has an action (upgrade);
+              // a ZYRA One user had none, so the sentence has to
+              // supply one. They can remove a Save — the cap is on
+              // how many you hold, not how many you may ever make.
+              // REWORDED 2026-08-01 (Founder, both branches).
+              //
+              // Basic: the number 15 is gone. Naming ZYRA One's exact
+              // cap in an upgrade prompt turns a benefit into a
+              // ceiling — the reader's next thought is "only 15?"
+              // rather than "more". It also hard-couples marketing
+              // copy to a constant that has already changed once
+              // today (50 -> 15).
+              //
+              // ZYRA One: the old line led with the count and the
+              // rule. It now leads with what the person actually
+              // wants — keeping this profile — and treats the
+              // removal as the means, not the punishment. No number,
+              // because they cannot change it and it isn't the point.
+              AppState.instance.plan == ZyraPlan.one
+                  ? 'To keep this profile, make space by removing a '
+                        'Save in Connections.'
+                  : "ZYRA Basic allows up to $limit. $upgradeText",
+              style: ZyraText.subtext(),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            // ZYRA One accounts can also hit their (much higher)
+            // cap — showing "Upgrade to ZYRA One" when they
+            // already hold it would be nonsensical, so that
+            // button only appears for Basic.
+            if (AppState.instance.plan == ZyraPlan.basic)
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () {
+                    Navigator.of(dialogContext).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const UpgradeScreen()),
+                    );
+                  },
+                  child: const Text('Upgrade to ZYRA One'),
+                ),
               ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(
+                AppState.instance.plan == ZyraPlan.basic ? 'Not now' : 'OK',
+                style: ZyraText.subtext(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -879,10 +968,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
   // 🔴🟡🟢 palette) — full opacity here since callers apply their own
   // .withValues(alpha: ) on top for the border-glow/pill intensity.
   Color _dragColor(_Decision d) => switch (d) {
-        _Decision.pass => const Color(0xFFF47272),
-        _Decision.save => const Color(0xFFEED26C),
-        _Decision.consider => const Color(0xFF84C88E),
-      };
+    _Decision.pass => const Color(0xFFF47272),
+    _Decision.save => const Color(0xFFEED26C),
+    _Decision.consider => const Color(0xFF84C88E),
+  };
 
   // DELETED 2026-08-01: _dragIcon(). It supplied the icon for the centred
   // decision badge, which the Founder removed ("I don't want the green
@@ -891,10 +980,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
   // stands and is recorded in the UX docs, not here.
 
   String _dragLabel(_Decision d) => switch (d) {
-        _Decision.pass => 'Pass',
-        _Decision.save => 'Save',
-        _Decision.consider => 'Consider',
-      };
+    _Decision.pass => 'Pass',
+    _Decision.save => 'Save',
+    _Decision.consider => 'Consider',
+  };
 
   // DELETED 2026-08-01: _showFlash() and the _flash field it drove.
   //
@@ -919,133 +1008,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
     });
   }
 
-  // --- Long-press-centre Help/Report menu (2026-07-27) -----------------
-  //
-  // See this file's header comment for the full Founder-decision context.
-  //
-  // UPDATED 2026-07-27 (Founder, 2nd pass): "the time is too long, lets
-  // try 2.2 seconds" — was 3500ms. "I need the space you can hold to
-  // expand way more. doesn't just have to be dead centre... it mainly
-  // takes the centre stage not top left or right side" — widened from
-  // the middle 40% of the photo's width to the middle 76%, leaving only
-  // a 12%-per-side margin near the true edges. "if the user is swiping
-  // and the system detect the colour dots showing... it know not to
-  // open the help button" — the timer callback below now also checks
-  // `_dragDecision` right before opening, as a defensive second gate on
-  // top of the existing stillness-tolerance cancellation.
-  static const double _centreHoldMinFraction = 0.12;
-  static const double _centreHoldMaxFraction = 0.88;
-  // FIXED 2026-08-01, second pass (Founder: "the 0.8 second still seems
-  // long. it feels like there's a delay. I'm counting 2 seconds once my
-  // finger touches the screen").
-  //
-  // He was right and the earlier fix was wrong. This timer does NOT start
-  // when the finger lands — it starts in onLongPressStart, which Flutter
-  // only fires after its own LongPressGestureRecognizer deadline of
-  // kLongPressTimeout = 500ms. So the real wait from touch to menu was:
-  //
-  //     500ms (Flutter's recogniser) + 800ms (this timer) = 1300ms
-  //
-  // and 1400ms before that pass = 1900ms, which is almost exactly the
-  // "2 seconds" he counted. Every previous tuning pass adjusted this
-  // number while measuring from the wrong starting point, which is why
-  // it kept feeling slower than whatever value was written here.
-  //
-  // 300ms here gives 800ms total from actual finger-down — the number
-  // that was asked for two passes ago.
-  //
-  // Do NOT read this constant as "the hold duration". It is the extra
-  // hold ON TOP of Flutter's 500ms. If you want a total of N, set this to
-  // N - 500. Anything at or below zero means the menu opens the instant
-  // Flutter recognises a long press, with no stillness window at all.
-  static const Duration _centreHoldDuration = Duration(milliseconds: 300);
-  // "without swiping" taken literally — more than this much drift from
-  // where the hold started cancels the pending menu (still counts as a
-  // normal long-press for _interacting's dim feedback, just no longer
-  // eligible to open the menu).
-  static const double _centreHoldStillnessTolerance = 12;
-
-  void _onCentreLongPressStart(LongPressStartDetails details, double width) {
-    setState(() => _interacting = true);
-    final x = details.localPosition.dx;
-    final isCentre = x > width * _centreHoldMinFraction && x < width * _centreHoldMaxFraction;
-    if (!isCentre) return;
-    _centreHoldOrigin = details.localPosition;
-    _centreHoldTimer = Timer(_centreHoldDuration, () {
-      _centreHoldTimer = null;
-      if (!mounted) return;
-      setState(() => _interacting = false);
-      // Defensive: don't open mid-swipe even if somehow both gestures
-      // are live at once (see comment above).
-      if (_dragDecision != null) return;
-      HapticFeedback.mediumImpact();
-      _openHelpReportSheet();
-    });
-  }
-
-  void _onCentreLongPressMoveUpdate(LongPressMoveUpdateDetails details) {
-    if (_centreHoldOrigin == null) return;
-    if (details.offsetFromOrigin.distance > _centreHoldStillnessTolerance) {
-      _centreHoldTimer?.cancel();
-      _centreHoldTimer = null;
-      _centreHoldOrigin = null;
-    }
-  }
-
-  void _onCentreLongPressEnd(LongPressEndDetails details) {
-    setState(() => _interacting = false);
-    _centreHoldTimer?.cancel();
-    _centreHoldTimer = null;
-    _centreHoldOrigin = null;
-  }
-
-  // CHANGED 2026-07-27 (Founder, 2nd pass): "lets remove it showing a
-  // placeholder card and the help section pops up at the bottom
-  // instead taking the purple colour theme" — was a centred showDialog
-  // card with a dark-glass tint; now a bottom sheet in the app's own
-  // purple brand gradient (ZyraColors.brandGradient), matching auth/nav
-  // chrome rather than the dark glassmorphic card style used elsewhere.
-  Future<void> _openHelpReportSheet() async {
-    // CHANGED BACK TO A CENTRED CARD 2026-08-01 (Founder: "let's see how
-    // it looks with this similar centre piece transparent effect").
-    //
-    // BACK TO A BOTTOM SHEET 2026-08-11, stage 7 (Founder was 50/50 on
-    // the centred card; approved Frost UI brief). The full reasoning —
-    // why the centred card read as off (unanchored, sat straight on the
-    // person's face) and why this is not stage 4/5 again — lives in
-    // help_report_sheet.dart's header, beside the history list it
-    // extends.
-    //
-    // barrierColor stays the limit-modals' black 55% so every modal
-    // surface on this screen dims the page by the same amount (the
-    // framework's default sheet barrier is a different black). Barrier
-    // dismissal still gives "closed by tapping anywhere else" for free.
-    await showModalBottomSheet<void>(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.55),
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      builder: (sheetContext) => HelpReportSheet(
-        // Unused by the stage-7 sheet (ratified neutral surface), passed
-        // so the call site does not need touching if a gender-gradient
-        // sheet ever returns.
-        gender: AppState.instance.gender,
-        onHelp: () {
-          Navigator.of(sheetContext).pop();
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HelpSupportScreen()));
-        },
-        // FIXED 2026-08-01 (Founder: "the 2 options... open the same
-        // thing"). This branch used to push HelpSupportScreen too, so
-        // there was no way to report anyone in ZYRA at all. Now opens the
-        // real reason picker for the profile currently on screen.
-        onReport: () {
-          Navigator.of(sheetContext).pop();
-          _reportCurrentProfile();
-        },
-      ),
-    );
-  }
-
   /// Reports/blocks whoever is currently on the card. Advances past them
   /// on success — having just reported someone, seeing them still sitting
   /// there would be its own small failure.
@@ -1061,7 +1023,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     if (!ZyraReportService.isPersistableId(profile.id)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('This is a demo profile — reporting works on real profiles.'),
+          content: Text(
+            'This is a demo profile — reporting works on real profiles.',
+          ),
           duration: Duration(seconds: 2),
         ),
       );
@@ -1093,6 +1057,165 @@ class _BrowseScreenState extends State<BrowseScreen> {
     );
   }
 
+  /// Hides whoever is on the card, after a confirmation.
+  ///
+  /// ITS OWN ACTION SINCE 2026-08-13 (DR-ZYRA-155, Founder): it used to
+  /// be a row at the bottom of the report sheet, which meant reaching a
+  /// privacy preference by opening an accusation. "Keep the difference
+  /// clear: Report Profile — safety/reporting concerns. Hide Profile —
+  /// privacy/discovery preference."
+  ///
+  /// THE CONFIRMATION SAYS WHAT IT ACTUALLY DOES, and this is the part
+  /// worth reading. The underlying call is ZyraReportService.block(),
+  /// which is MUTUAL and permanent: it hides the two of you from each
+  /// other everywhere, enforced in profiles_select's RLS. The sheet row
+  /// it replaces said so — "hides you both" — and dropping that line
+  /// while promoting the action to a top-level button would quietly
+  /// turn a two-way, permanent block into something that reads like
+  /// "don't show me this one". Whether a genuine one-way hide should
+  /// exist is a real question and a schema change; raised as
+  /// OA-ZYRA-217 rather than guessed at here.
+  Future<void> _hideCurrentProfile() async {
+    final profile = _current;
+    if (profile == null) return;
+
+    // Same demo-profile guard the report path carries, and for the same
+    // reason: ids '1','2','3' have no profiles row, so the block would
+    // fail on a uuid cast.
+    if (!ZyraReportService.isPersistableId(profile.id)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'This is a demo profile — hiding works on real profiles.',
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    final confirmed = await showZyraGlassChoice(
+      context: context,
+      icon: Icons.visibility_off_outlined,
+      title: 'Hide this profile?',
+      body:
+          "You and ${profile.firstName} won't see each other again. "
+          'Nothing is reported and nobody is told.',
+      primaryLabel: 'Hide Profile',
+      secondaryLabel: 'Cancel',
+    );
+    if (confirmed != true || !mounted) return;
+
+    final ok = await ZyraReportService.block(profile.id);
+    if (!mounted) return;
+    if (!ok) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("That didn't go through — try again.")),
+      );
+      return;
+    }
+
+    // Out of the deck now, not on the next fetch. The RLS block means
+    // they will not return either, but waiting for a refetch to stop
+    // seeing someone you just hid is its own small failure.
+    setState(() {
+      _allProfiles = _allProfiles.where((p) => p.id != profile.id).toList();
+      if (_index >= _profiles.length) _index = _profiles.length;
+      _photoIndex = 0;
+    });
+    // And out of the disk cache (DR-ZYRA-169): the server stops signing
+    // their URLs from this moment; the cached bytes die with the
+    // relationship instead of with the 7-day TTL. Fire-and-forget — an
+    // eviction miss costs nothing a TTL doesn't already bound.
+    ZyraImageCache.evictUrls(profile.photos);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Hidden. You won't see ${profile.firstName} again."),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  /// Opens the Compatibility Unlock page for whoever is on the card.
+  ///
+  /// ADDED 2026-08-13 (DR-ZYRA-156). NOTHING NEW WAS DESIGNED: this is a
+  /// door onto ProfileUnlockScreen, the same screen the Connections
+  /// cards have always pushed, with the same profile argument. The
+  /// screen already knows how to be both halves of itself — it reads
+  /// profile_unlocks and shows what is held, so a profile already
+  /// unlocked opens straight to the compatibility rather than to a
+  /// price, and zyra_unlock_profile() refuses to charge twice
+  /// regardless (it checks profile_unlocks BEFORE the credit balance).
+  /// A second purchase surface here would have been a second thing to
+  /// keep in step with the ledger, for no gain.
+  ///
+  /// `journeyRevealed` is deliberately left false. It is true only for
+  /// a pair whose Journey already revealed the overall figure, which by
+  /// definition cannot be someone still sitting in Browse.
+  Future<void> _openCompatibilityForCurrent() async {
+    final profile = _current;
+    if (profile == null) return;
+
+    // Same demo guard the report and hide paths carry: ids '1','2','3'
+    // have no profiles row, so the unlock RPC would fail on a uuid cast
+    // and show a generic error for something that could never work.
+    if (!ZyraReportService.isPersistableId(profile.id)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'This is a demo profile — compatibility works on real profiles.',
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    await Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => ProfileUnlockScreen(profile: profile)),
+    );
+  }
+
+  /// BUG-02 (2026-08-14 audit, OA-ZYRA-225 — fixed 2026-08-15): the
+  /// three decision writes below were fire-and-forget, so a failed
+  /// insert meant the card advanced, the UI said done, and the decision
+  /// was gone on next launch — a failed Like could silently prevent a
+  /// match. The advance STAYS optimistic (yanking a card back
+  /// mid-swipe would be worse than the failure); what changes is that
+  /// a failure now says so and offers a retry, which is safe because
+  /// all three writes are idempotent upserts.
+  ///
+  /// Demo and dev-scenario profiles never had a row to write and never
+  /// will — the isPersistableId guard at each call site keeps them off
+  /// this path entirely, exactly as the report/hide/unlock paths
+  /// already do, so a stand-in can never trigger a real-looking error.
+  void _decisionSaveFailed(String what, Future<bool> Function() retry) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Your $what didn't save — check your connection."),
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            final ok = await retry();
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  ok
+                      ? '$what saved.'
+                      : "Still couldn't save — please try again later.",
+                ),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   void _onPass() {
     if (_limitReached) {
       _showLimitReachedModal();
@@ -1106,9 +1229,20 @@ class _BrowseScreenState extends State<BrowseScreen> {
       // because there was no `passes` table to write to. So a decline
       // survived exactly as long as the app stayed open, and everyone
       // passed on came back on the next launch.
-      ZyraDiscoveryService.recordPass(profile.id);
+      if (ZyraReportService.isPersistableId(profile.id)) {
+        ZyraDiscoveryService.recordPass(profile.id).then((ok) {
+          if (!ok) {
+            _decisionSaveFailed(
+              'Pass',
+              () => ZyraDiscoveryService.recordPass(profile.id),
+            );
+          }
+        });
+      }
     }
-    Timer(const Duration(milliseconds: 280), () { if (mounted) _advance(); });
+    Timer(const Duration(milliseconds: 280), () {
+      if (mounted) _advance();
+    });
   }
 
   void _onSave() {
@@ -1120,7 +1254,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     // count before adding — AppState.save() itself is a no-op if the
     // profile's already saved, so this only ever blocks genuinely new
     // saves once at the cap, not re-saves.
-    final saveLimit = AppState.instance.plan == ZyraPlan.one ? zyraOneSaveLimit : zyraBasicSaveLimit;
+    final saveLimit = AppState.instance.plan == ZyraPlan.one
+        ? zyraOneSaveLimit
+        : zyraBasicSaveLimit;
     // The dev panel no longer forces this branch — it requests the modal
     // directly (see _onDevPopupRequested). A sticky force flag here meant
     // every Save for the rest of the session hit the cap.
@@ -1143,14 +1279,26 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final profile = _current;
     if (profile != null) {
       AppState.instance.save(profile);
-      ZyraDiscoveryService.recordSave(profile.id);
+      // BUG-02: failure surfaces with a retry — see _decisionSaveFailed.
+      if (ZyraReportService.isPersistableId(profile.id)) {
+        ZyraDiscoveryService.recordSave(profile.id).then((ok) {
+          if (!ok) {
+            _decisionSaveFailed(
+              'Save',
+              () => ZyraDiscoveryService.recordSave(profile.id),
+            );
+          }
+        });
+      }
     }
     // REMOVED 2026-07-27 (Founder screenshot: "when we do the save action
     // a message at bottom appears which does not need to be there") — the
     // yellow glass circle above already confirmed the Save (that circle
     // has since been removed too; the border flash now does the job)
     // action; this SnackBar was a redundant second confirmation.
-    Timer(const Duration(milliseconds: 280), () { if (mounted) _advance(); });
+    Timer(const Duration(milliseconds: 280), () {
+      if (mounted) _advance();
+    });
   }
 
   void _onConsider() {
@@ -1171,9 +1319,23 @@ class _BrowseScreenState extends State<BrowseScreen> {
       return;
     }
     final profile = _current;
-    if (profile == null) return;
+    if (profile == null) {
+      return;
+    }
     final isMatch = AppState.instance.like(profile);
-    ZyraDiscoveryService.recordLike(profile.id);
+    // BUG-02: this is the write that makes matches exist —
+    // create_match_on_mutual_like only fires off a row that lands. A
+    // failure surfaces with a retry; see _decisionSaveFailed.
+    if (ZyraReportService.isPersistableId(profile.id)) {
+      ZyraDiscoveryService.recordLike(profile.id).then((ok) {
+        if (!ok) {
+          _decisionSaveFailed(
+            'Consider',
+            () => ZyraDiscoveryService.recordLike(profile.id),
+          );
+        }
+      });
+    }
     Timer(const Duration(milliseconds: 280), () {
       // 2026-08-12: this one-shot outlives the screen if the user leaves
       // Browse inside the 280ms window; pushing from a dead context threw.
@@ -1201,7 +1363,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     final goRight = details.localPosition.dx > width / 2;
     setState(() {
       if (goRight) {
-        _photoIndex = _photoIndex >= profile.photos.length - 1 ? 0 : _photoIndex + 1;
+        _photoIndex = _photoIndex >= profile.photos.length - 1
+            ? 0
+            : _photoIndex + 1;
       } else {
         _photoIndex = _photoIndex <= 0 ? 0 : _photoIndex - 1;
       }
@@ -1255,7 +1419,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
   double get _dragStrength {
     final decision = _dragDecision;
     if (decision == null) return 0;
-    final distance = decision == _Decision.save ? _dragOffset.dy : _dragOffset.dx.abs();
+    final distance = decision == _Decision.save
+        ? _dragOffset.dy
+        : _dragOffset.dx.abs();
     return (distance / _swipeCommitThreshold).clamp(0.0, 1.0);
   }
 
@@ -1322,7 +1488,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     // shown mid-fetch.
     if (_loadingCandidates) {
       return Container(
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: BoxDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: const ZyraLoading(),
       );
     }
@@ -1333,7 +1501,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
     // always known here, same as every other profile-context screen
     // fixed under DR-ZYRA-101 (ZyraColors.genderGradient()).
     return Container(
-      decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+      decoration: BoxDecoration(
+        gradient: ZyraColors.genderGradient(AppState.instance.gender),
+      ),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -1356,8 +1526,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
                       _gated
                           ? Icons.edit_note_outlined
                           : _filterActive
-                              ? Icons.filter_alt_off_outlined
-                              : Icons.check_circle_outline,
+                          ? Icons.filter_alt_off_outlined
+                          : Icons.check_circle_outline,
                       color: Colors.white38,
                       size: 32,
                     ),
@@ -1366,8 +1536,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
                       _gated
                           ? 'A few questions left'
                           : _filterActive
-                              ? 'No one matches your age filter'
-                              : 'You\'re all caught up',
+                          ? 'No one matches your age filter'
+                          : 'You\'re all caught up',
                       style: ZyraText.heading(size: 18),
                       textAlign: TextAlign.center,
                     ),
@@ -1375,15 +1545,15 @@ class _BrowseScreenState extends State<BrowseScreen> {
                     Text(
                       _gated
                           ? (_missingCount == 1
-                              ? 'One question is still unanswered. ZYRA introduces '
-                                  'people on what you have both said, so nobody is '
-                                  'shown until yours is complete.'
-                              : '$_missingCount questions are still unanswered. ZYRA '
-                                  'introduces people on what you have both said, so '
-                                  'nobody is shown until yours is complete.')
+                                ? 'One question is still unanswered. ZYRA introduces '
+                                      'people on what you have both said, so nobody is '
+                                      'shown until yours is complete.'
+                                : '$_missingCount questions are still unanswered. ZYRA '
+                                      'introduces people on what you have both said, so '
+                                      'nobody is shown until yours is complete.')
                           : _filterActive
-                              ? 'Try widening the range, or clear it to see everyone again.'
-                              : 'More profiles will appear as new members join.',
+                          ? 'Try widening the range, or clear it to see everyone again.'
+                          : 'More profiles will appear as new members join.',
                       style: ZyraText.subtext(),
                       textAlign: TextAlign.center,
                     ),
@@ -1401,7 +1571,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
                           _index = 0;
                           _photoIndex = 0;
                         }),
-                        child: Text('Clear filter', style: ZyraText.button(size: 13)),
+                        child: Text(
+                          'Clear filter',
+                          style: ZyraText.button(size: 13),
+                        ),
                       ),
                     ] else ...[
                       // 2026-07-27 (Founder: "when it says your all
@@ -1425,7 +1598,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
                           _index = 0;
                           _photoIndex = 0;
                         }),
-                        child: Text('Reset search', style: ZyraText.button(size: 13)),
+                        child: Text(
+                          'Reset search',
+                          style: ZyraText.button(size: 13),
+                        ),
                       ),
                     ],
                   ],
@@ -1436,9 +1612,12 @@ class _BrowseScreenState extends State<BrowseScreen> {
             LayoutBuilder(
               builder: (context, constraints) => GestureDetector(
                 onTapUp: (d) => _tapPhoto(d, constraints.maxWidth),
-                onLongPressStart: (details) => _onCentreLongPressStart(details, constraints.maxWidth),
-                onLongPressMoveUpdate: _onCentreLongPressMoveUpdate,
-                onLongPressEnd: _onCentreLongPressEnd,
+                // Long-press keeps ONLY the photo-dim feedback since
+                // 2026-08-13 (DR-ZYRA-150): the centre-hold menu it
+                // used to open retired with the ⋮ — a visible button
+                // beat a hidden 800ms gesture, the Founder's call.
+                onLongPressStart: (_) => setState(() => _interacting = true),
+                onLongPressEnd: (_) => setState(() => _interacting = false),
                 // Swipe gestures (DR-ZYRA-099) — left = Consider, right =
                 // Pass, down = Save. Coexists with the tap/long-press
                 // recognisers above: a plain tap has no meaningful pan
@@ -1499,8 +1678,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
                     ZyraProfileImage(
                       profile.photos.isEmpty
                           ? ''
-                          : profile.photos[
-                              _photoIndex < profile.photos.length ? _photoIndex : 0],
+                          : profile.photos[_photoIndex < profile.photos.length
+                                ? _photoIndex
+                                : 0],
                       showLoader: true,
                     ),
                     // Top gradient — status bar / glass button legibility.
@@ -1528,7 +1708,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                     // Getting there by scrim alone needs 42% black at the
                     // name's height and washes out the bottom third of every
                     // photo on the platform. The shadows carry the rest —
-                    // see _onPhotoTextShadows for the measurements and the
+                    // see kZyraOnPhotoTextShadows for the measurements and
                     // reasoning. This half just stops the small text having
                     // to do it alone.
                     //
@@ -1542,7 +1722,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [Colors.transparent, Color(0x4D000000), Color(0xB3000000)],
+                            colors: [
+                              Colors.transparent,
+                              Color(0x4D000000),
+                              Color(0xB3000000),
+                            ],
                             stops: [0.0, 0.32, 1.0],
                           ),
                         ),
@@ -1569,16 +1753,25 @@ class _BrowseScreenState extends State<BrowseScreen> {
                       Semantics(
                         label: _dragLabel(_dragDecision!),
                         child: IgnorePointer(
+                          // THE SHIPPED RIM — restored as the only
+                          // treatment, every build (DR-ZYRA-193; the
+                          // Founder retired the DR-ZYRA-187 lab after
+                          // testing its twelve options: "revert back to
+                          // original"). The commit flash (_BorderFlash)
+                          // is separate and untouched.
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              // 2026-07-27: rounded to approximate this
-                              // device's physical corner shape — see
-                              // _deviceCornerRadiusGuess's doc comment for
-                              // why this is a heuristic, not per-model
-                              // precision.
-                              borderRadius: BorderRadius.circular(_deviceCornerRadiusGuess(context)),
+                              // 2026-07-27: rounded to approximate
+                              // this device's physical corner shape
+                              // — see _deviceCornerRadiusGuess's
+                              // doc comment.
+                              borderRadius: BorderRadius.circular(
+                                _deviceCornerRadiusGuess(context),
+                              ),
                               border: Border.all(
-                                color: _dragColor(_dragDecision!).withValues(alpha: 0.15 + _dragStrength * 0.55),
+                                color: _dragColor(_dragDecision!).withValues(
+                                  alpha: 0.15 + _dragStrength * 0.55,
+                                ),
                                 width: 3 + _dragStrength * 5,
                               ),
                             ),
@@ -1612,7 +1805,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
                             duration: const Duration(milliseconds: 200),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
-                              children: List.generate(profile.photos.length, (i) {
+                              children: List.generate(profile.photos.length, (
+                                i,
+                              ) {
                                 final active = i == _photoIndex;
                                 // 2026-07-27 (Founder: "zyra one account
                                 // users can upload a video... on the left
@@ -1630,30 +1825,52 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                 // fill) so it stays legible in both states.
                                 if (profile.videoPhotoIndex == i) {
                                   return Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 3),
+                                    margin: const EdgeInsets.symmetric(
+                                      vertical: 3,
+                                    ),
                                     width: 9,
                                     height: 9,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 0.5),
-                                      color: active ? Colors.white : Colors.white.withValues(alpha: 0.32),
+                                      border: Border.all(
+                                        color: Colors.white.withValues(
+                                          alpha: 0.3,
+                                        ),
+                                        width: 0.5,
+                                      ),
+                                      color: active
+                                          ? Colors.white
+                                          : Colors.white.withValues(
+                                              alpha: 0.32,
+                                            ),
                                     ),
                                     child: Icon(
                                       Icons.play_arrow,
                                       size: 7,
-                                      color: active ? ZyraColors.luxuryDarkPurple : Colors.white,
+                                      color: active
+                                          ? ZyraColors.luxuryDarkPurple
+                                          : Colors.white,
                                     ),
                                   );
                                 }
                                 return Container(
-                                  margin: const EdgeInsets.symmetric(vertical: 3),
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 3,
+                                  ),
                                   width: 7,
                                   height: 7,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 0.5),
-                                    color: active ? Colors.white : Colors.white.withValues(alpha: 0.32),
+                                    border: Border.all(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.3,
+                                      ),
+                                      width: 0.5,
+                                    ),
+                                    color: active
+                                        ? Colors.white
+                                        : Colors.white.withValues(alpha: 0.32),
                                   ),
                                 );
                               }),
@@ -1704,9 +1921,13 @@ class _BrowseScreenState extends State<BrowseScreen> {
                             // Sits directly above the name rather than
                             // floating over the photo, so it reads as part
                             // of who they are rather than an alert.
-                            if (AppState.instance.suggestedBy(profile.id) != null) ...[
+                            if (AppState.instance.suggestedBy(profile.id) !=
+                                null) ...[
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.black.withValues(alpha: 0.28),
                                   border: Border.all(
@@ -1718,85 +1939,31 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(Icons.shield_outlined, size: 13, color: Colors.white),
+                                    const Icon(
+                                      Icons.shield_outlined,
+                                      size: 13,
+                                      color: Colors.white,
+                                    ),
                                     const SizedBox(width: 6),
                                     Text(
                                       'Suggested by ${AppState.instance.suggestedBy(profile.id)}',
-                                      style: ZyraText.subtext(size: 11.5, color: Colors.white),
+                                      style: ZyraText.subtext(
+                                        size: 11.5,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                               const SizedBox(height: 8),
                             ],
-                            Text(
-                              profile.firstName,
-                              style: ZyraText.heading(size: 30).copyWith(
-                                fontWeight: FontWeight.w600,
-                                shadows: _onPhotoTextShadows,
-                              ),
-                            ),
-                            // 2026-07-26 (Founder: "first line is Bilal,
-                            // second line is Abdul Malik") — second
-                            // line, only when a profile has one (see
-                            // SeekerProfile.surnameLine's doc comment for
-                            // the mock-data-only scope note). Smaller and
-                            // lighter than the first name so it reads as
-                            // secondary, not equal emphasis.
-                            if (profile.surnameLine != null && profile.surnameLine!.isNotEmpty) ...[
-                              const SizedBox(height: 2),
-                              Text(
-                                profile.surnameLine!,
-                                style: ZyraText.heading(size: 18).copyWith(
-                                  // 0.85 -> 0.95. The surname was already
-                                  // the weakest line on the card by design
-                                  // (secondary, not equal emphasis), and
-                                  // dimming white on a white photo is
-                                  // subtracting from nothing. It keeps its
-                                  // lighter WEIGHT, which is what actually
-                                  // made it read as secondary.
-                                  color: Colors.white.withValues(alpha: 0.95),
-                                  fontWeight: FontWeight.w500,
-                                  shadows: _onPhotoTextShadows,
-                                ),
-                              ),
-                            ],
-                            // CHANGED 2026-07-27 (Founder: "lets put age
-                            // and location on same line now so it would
-                            // be for example 30 | London with the line
-                            // inbetween") — was two separate stacked
-                            // lines. Divider is a drawn 1px line (not a
-                            // typed "|" glyph) so it reads as an
-                            // intentional UI element rather than
-                            // punctuation.
-                            const SizedBox(height: 4),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text('${profile.age}',
-                                    style: ZyraText.body(size: 16, color: Colors.white)
-                                        .copyWith(shadows: _onPhotoTextShadows)),
-                                // The divider is a drawn Container, so it
-                                // cannot take a text shadow — it gets alpha
-                                // instead, 0.4 -> 0.65. At 1px wide on a
-                                // bright photo the old value was the single
-                                // least visible thing on the card.
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                                  width: 1,
-                                  height: 14,
-                                  color: Colors.white.withValues(alpha: 0.65),
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    profile.city,
-                                    style: ZyraText.body(size: 16, color: Colors.white)
-                                        .copyWith(shadows: _onPhotoTextShadows),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // THE SHARED BLOCK — DR-ZYRA-163. Browse
+                            // is where this design was decided
+                            // (DR-ZYRA-162, option C of five), and it is
+                            // now one widget so the three Connections
+                            // surfaces draw the same thing rather than
+                            // three approximations of it.
+                            ZyraProfileNameBlock(profile: profile),
                           ],
                         ),
                       ),
@@ -1878,6 +2045,60 @@ class _BrowseScreenState extends State<BrowseScreen> {
           // stacked top-right as anchored cards (see home_shell.dart,
           // widgets/notification_bell.dart) — not in this top-left slot
           // any more as of the 2026-07-26 Bell/3-dot reposition pass.
+          // THE ⋮ — 2026-08-13 (DR-ZYRA-150, Founder: "put 3 dots on
+          // top right. if click the nav bar changes… becomes 2 pills").
+          // The visible door that replaced the centre-hold: it hands
+          // the shell what Report should mean right now — whoever is
+          // on the card — and the shell's action bar does the rest.
+          // Sponsored takeovers return before this Stack builds, so
+          // the ⋮ hides with the rest of the chrome for free. Last
+          // child on purpose: it must sit above every layer of card
+          // chrome.
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8, right: 16),
+                // NO GLASS CIRCLE — 2026-08-13 (DR-ZYRA-153, Founder:
+                // "you see in Browse we have 3 dots with outer circle,
+                // remove the outer circle"). GlassIconButton is left
+                // alone: it is the shared component behind the Bell and
+                // the Guardian's buttons, and removing its circle there
+                // would strip three controls to answer a note about one.
+                //
+                // THE SHADOW IS NOT DECORATION. The circle was doing a
+                // second job nobody asked it to — it carried its own
+                // contrast, so the glyph stayed legible over a bright
+                // photo. Bare white dots on a pale headshot disappear.
+                // A soft dark drop shadow buys that contrast back at a
+                // fraction of the visual weight.
+                //
+                // Sized to a 40pt box, matching what GlassIconButton
+                // occupied, so the tap target does not shrink with the
+                // circle — the icon is 24pt inside it.
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => widget.onOpenActions?.call((
+                    report: _reportCurrentProfile,
+                    hide: _hideCurrentProfile,
+                    compatibility: _openCompatibilityForCurrent,
+                  )),
+                  child: const SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Icons.more_horiz,
+                      size: 24,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(color: Color(0x8C000000), blurRadius: 6),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -2006,7 +2227,10 @@ class _AdBenefit extends StatelessWidget {
         const Icon(Icons.check_circle, size: 15, color: Color(0xFFC9A227)),
         const SizedBox(width: 8),
         Flexible(
-          child: Text(text, style: ZyraText.body(size: 12.5, color: const Color(0xE6FFFFFF))),
+          child: Text(
+            text,
+            style: ZyraText.body(size: 12.5, color: const Color(0xE6FFFFFF)),
+          ),
         ),
       ],
     );
@@ -2068,7 +2292,10 @@ class _SponsoredCard extends StatelessWidget {
                 children: [
                   Text(
                     'SPONSORED',
-                    style: ZyraText.subtext(size: 11, color: Colors.white54).copyWith(letterSpacing: 1.2),
+                    style: ZyraText.subtext(
+                      size: 11,
+                      color: Colors.white54,
+                    ).copyWith(letterSpacing: 1.2),
                   ),
                   // Skip is a real, always-visible exit — not buried in
                   // the buttons at the bottom. An ad you cannot leave
@@ -2078,12 +2305,20 @@ class _SponsoredCard extends StatelessWidget {
                     onPressed: onDismiss,
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.white.withValues(alpha: 0.12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 6,
+                      ),
                       minimumSize: Size.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    child: Text('Skip', style: ZyraText.body(size: 13, color: Colors.white)),
+                    child: Text(
+                      'Skip',
+                      style: ZyraText.body(size: 13, color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -2094,10 +2329,10 @@ class _SponsoredCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-              // 2026-07-27: example-creative mock-up (see class doc
-              // comment) — a small "app icon" tile instead of the old
-              // generic megaphone, so it reads as a specific advert
-              // rather than an abstract ad-slot placeholder.
+                    // 2026-07-27: example-creative mock-up (see class doc
+                    // comment) — a small "app icon" tile instead of the old
+                    // generic megaphone, so it reads as a specific advert
+                    // rather than an abstract ad-slot placeholder.
                     // CREATIVE REBUILT 2026-08-01 (Founder: "please show
                     // the advert like it's an advert — make a mock-up
                     // advert like how an advertiser will show it").
@@ -2132,7 +2367,12 @@ class _SponsoredCard extends StatelessWidget {
                           end: Alignment.bottomRight,
                           colors: [Color(0xFF0F4A3C), Color(0xFF06231D)],
                         ),
-                        border: Border.all(color: const Color(0xFFC9A227).withValues(alpha: 0.35), width: 1),
+                        border: Border.all(
+                          color: const Color(
+                            0xFFC9A227,
+                          ).withValues(alpha: 0.35),
+                          width: 1,
+                        ),
                       ),
                       child: Column(
                         children: [
@@ -2146,26 +2386,38 @@ class _SponsoredCard extends StatelessWidget {
                                   color: const Color(0xFFC9A227),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(Icons.balance, color: Color(0xFF06231D), size: 18),
+                                child: const Icon(
+                                  Icons.balance,
+                                  color: Color(0xFF06231D),
+                                  size: 18,
+                                ),
                               ),
                               const SizedBox(width: 9),
                               Text(
                                 'Aman Wills',
-                                style: ZyraText.heading(size: 15, color: const Color(0xFFF3E4B8)),
+                                style: ZyraText.heading(
+                                  size: 15,
+                                  color: const Color(0xFFF3E4B8),
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 22),
                           Text(
                             'Your family,\nprotected properly.',
-                            style: ZyraText.heading(size: 25).copyWith(height: 1.25),
+                            style: ZyraText.heading(
+                              size: 25,
+                            ).copyWith(height: 1.25),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 12),
                           Text(
                             'A Shariah-compliant will, written with you in under '
                             '20 minutes. Reviewed by scholars and UK solicitors.',
-                            style: ZyraText.subtext(size: 13, color: const Color(0xCCFFFFFF)),
+                            style: ZyraText.subtext(
+                              size: 13,
+                              color: const Color(0xCCFFFFFF),
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 20),
@@ -2180,7 +2432,10 @@ class _SponsoredCard extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(
                       'Example creative — design mock-up only, not a live sponsor.',
-                      style: ZyraText.subtext(size: 10.5, color: Colors.white38),
+                      style: ZyraText.subtext(
+                        size: 10.5,
+                        color: Colors.white38,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
@@ -2216,7 +2471,11 @@ class _SponsoredCard extends StatelessWidget {
                       child: OutlinedButton(
                         onPressed: () {
                           onDismiss();
-                          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const UpgradeScreen()));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const UpgradeScreen(),
+                            ),
+                          );
                         },
                         child: FittedBox(
                           fit: BoxFit.scaleDown,

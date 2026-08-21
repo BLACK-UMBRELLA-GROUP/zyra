@@ -1,8 +1,8 @@
 // The onboarding "continue" FAB.
 // Spec: Onboarding Rules & UX §SCREEN ANATOMY — FAB.
 // Always visible, never hidden. Dimmed when the current answer is
-// invalid/missing, active once valid. Bottom right, 14px from bottom,
-// 16px from right, 26px circle.
+// invalid/missing, active once valid. It sits inside the bottom-right
+// corner with enough breathing room and respects the device safe area.
 
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
@@ -11,13 +11,19 @@ class FabContinueButton extends StatelessWidget {
   final bool active;
   final VoidCallback? onPressed;
 
-  const FabContinueButton({super.key, required this.active, required this.onPressed});
+  const FabContinueButton({
+    super.key,
+    required this.active,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final safeBottom = MediaQuery.paddingOf(context).bottom;
+
     return Positioned(
-      bottom: 14,
-      right: 16,
+      bottom: safeBottom + 22,
+      right: 28,
       child: GestureDetector(
         onTap: active ? onPressed : null,
         child: AnimatedContainer(
@@ -28,14 +34,18 @@ class FabContinueButton extends StatelessWidget {
             shape: BoxShape.circle,
             color: active ? ZyraColors.fabActiveBg : ZyraColors.fabDimmedBg,
             border: Border.all(
-              color: active ? ZyraColors.fabActiveBorder : ZyraColors.fabDimmedBorder,
+              color: active
+                  ? ZyraColors.fabActiveBorder
+                  : ZyraColors.fabDimmedBorder,
               width: 0.5,
             ),
           ),
           child: Icon(
             Icons.arrow_forward,
             size: 20,
-            color: active ? ZyraColors.fabActiveArrow : ZyraColors.fabDimmedArrow,
+            color: active
+                ? ZyraColors.fabActiveArrow
+                : ZyraColors.fabDimmedArrow,
           ),
         ),
       ),

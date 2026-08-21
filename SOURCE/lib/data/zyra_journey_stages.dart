@@ -104,13 +104,57 @@ class ZyraJourneyStage {
   /// never say different things.
   final String? guidingQuestion;
 
+  /// Short arrival copy shown before the member scrolls into the stage.
+  final String introduction;
+
+  /// Optional human title for the arrival page where repeating the formal
+  /// stage label would make the page sound mechanical. The ribbon still
+  /// carries [label], so the member never loses their place.
+  final String? arrivalTitle;
+
+  /// Optional second arrival line. Sustained phases use
+  /// [guidingQuestion] here instead.
+  final String? supportingLine;
+
+  /// The two-line completion beat shown before the Journey moves forward.
+  final String completionHeading;
+  final String completionLine;
+
+  /// The durable Timeline event written when this stage is completed. The
+  /// destination's event is written when it is reached. Kept here so the
+  /// stage order, Journey history and Timeline cannot silently name
+  /// different chapters.
+  final String timelineMilestoneType;
+
   const ZyraJourneyStage({
     required this.value,
     required this.label,
     required this.kind,
     required this.order,
+    required this.introduction,
+    required this.completionHeading,
+    required this.completionLine,
+    required this.timelineMilestoneType,
+    this.arrivalTitle,
     this.guidingQuestion,
+    this.supportingLine,
   });
+
+  /// Display-only renumbering used by the nine-stage Life Snapshot mock.
+  /// The stored [value] and every piece of copy remain canonical.
+  ZyraJourneyStage withOrder(int displayOrder) => ZyraJourneyStage(
+    value: value,
+    label: label,
+    kind: kind,
+    order: displayOrder,
+    introduction: introduction,
+    completionHeading: completionHeading,
+    completionLine: completionLine,
+    timelineMilestoneType: timelineMilestoneType,
+    arrivalTitle: arrivalTitle,
+    guidingQuestion: guidingQuestion,
+    supportingLine: supportingLine,
+  );
 }
 
 class ZyraJourneyStages {
@@ -131,50 +175,87 @@ class ZyraJourneyStages {
   /// In order. This IS the successor sequence — index n advances to
   /// index n+1, and `conversation` is terminal.
   static const List<ZyraJourneyStage> all = [
-    ZyraJourneyStage(
-      value: 'compatibility_reveal',
-      label: 'Compatibility Reveal',
-      kind: ZyraStageKind.threshold,
-      order: 1,
-    ),
+    // SALAM FIRST — DR-ZYRA-183, 2026-08-16 (Founder: "Send Salam is
+    // the first exchange, before Compatibility Reveal"). The greeting,
+    // then the number. The server's map moved in the same migration
+    // (salam_first_stage_order); every per-stage gate is unchanged.
     ZyraJourneyStage(
       value: 'salam_exchange',
       label: 'Salam Exchange',
       kind: ZyraStageKind.threshold,
+      order: 1,
+      arrivalTitle: 'Let’s begin',
+      introduction: 'The first words can be simple.',
+      completionHeading: 'Salam exchanged.',
+      completionLine: 'Your Journey has begun.',
+      timelineMilestoneType: 'salam_exchanged',
+    ),
+    ZyraJourneyStage(
+      value: 'compatibility_reveal',
+      label: 'Compatibility Reveal',
+      kind: ZyraStageKind.threshold,
       order: 2,
+      introduction: 'Now, choose whether to reveal your compatibility.',
+      completionHeading: 'Compatibility, revealed.',
+      completionLine: 'You now know where you begin.',
+      timelineMilestoneType: 'compatibility_revealed',
     ),
     ZyraJourneyStage(
       value: 'wali_gate',
       label: 'Guardian Gate',
       kind: ZyraStageKind.threshold,
       order: 3,
+      introduction: 'From here, both families walk with you.',
+      supportingLine:
+          'Each of you needs a Guardian beside you before the Journey continues.',
+      completionHeading: 'Both Guardians are present.',
+      completionLine: 'Your families walk with you from here.',
+      timelineMilestoneType: 'guardian_linked',
     ),
     ZyraJourneyStage(
       value: 'phase_1',
       label: 'Faith & Values',
       kind: ZyraStageKind.sustained,
       order: 4,
+      introduction:
+          'Share how faith, values and family shape your everyday life.',
       guidingQuestion: 'Are we fundamentally compatible?',
+      completionHeading: 'Faith & Values complete.',
+      completionLine: 'You have both shared what guides you.',
+      timelineMilestoneType: 'phase_1_complete',
     ),
     ZyraJourneyStage(
       value: 'phase_2',
       label: 'Building a Life',
       kind: ZyraStageKind.sustained,
       order: 5,
+      introduction: 'Share your hopes for family, work, home and the future.',
       guidingQuestion: 'Could we realistically build a life together?',
+      completionHeading: 'Building a Life complete.',
+      completionLine: 'You have both shared the life you hope to build.',
+      timelineMilestoneType: 'phase_2_complete',
     ),
     ZyraJourneyStage(
       value: 'phase_3',
       label: 'Navigating Life',
       kind: ZyraStageKind.sustained,
       order: 6,
+      introduction: 'Share how you communicate, handle difficulty and grow.',
       guidingQuestion: 'Can we navigate life together?',
+      completionHeading: 'Navigating Life complete.',
+      completionLine: 'You have both shared how you face life and grow.',
+      timelineMilestoneType: 'phase_3_complete',
     ),
     ZyraJourneyStage(
       value: 'family_stage',
       label: 'Family Compatibility',
       kind: ZyraStageKind.sustained,
       order: 7,
+      introduction: 'Now your families enter the conversation.',
+      supportingLine: 'Answer openly, as though you were sitting together.',
+      completionHeading: 'Both families have spoken.',
+      completionLine: 'Each family has been heard.',
+      timelineMilestoneType: 'family_stage',
     ),
     // "Open Conversation", not "Conversation" — Founder, 2026-08-09.
     //
@@ -189,11 +270,69 @@ class ZyraJourneyStages {
       label: 'Open Conversation',
       kind: ZyraStageKind.destination,
       order: 8,
+      introduction: 'The structure now begins to lift.',
+      supportingLine:
+          'You can speak freely, while your Timeline and Guardians remain part of the Journey.',
+      completionHeading: 'Your conversation is open.',
+      completionLine: 'The Journey continues with more freedom.',
+      timelineMilestoneType: 'conversation_started',
     ),
   ];
 
+  /// Founder-requested Journey-only Bio mock (2026-08-18).
+  ///
+  /// This is deliberately NOT in [all]: `life_snapshot_preview` is not yet a
+  /// database stage and must never be sent to `zyra_advance_stage()`. The
+  /// Active Journey inserts it between the two real server stages while the
+  /// experience and per-field sharing choices are tested. Once approved and
+  /// persisted, it can become a real stored value in one migration.
+  static const ZyraJourneyStage lifeSnapshotPreview = ZyraJourneyStage(
+    value: 'life_snapshot_preview',
+    label: 'Life Snapshot',
+    kind: ZyraStageKind.threshold,
+    order: 3,
+    arrivalTitle: 'Beyond the score',
+    introduction: 'Meet the person in their own words.',
+    supportingLine:
+        'Only the biography and life details they chose to share appear here.',
+    completionHeading: 'You have seen their story.',
+    completionLine: 'You can now decide whether to bring your families in.',
+    timelineMilestoneType: 'life_snapshot_preview',
+  );
+
+  /// Nine-stage visual sequence used by the Active Journey mock. The real
+  /// server stages after Compatibility keep their stored values and are
+  /// shifted by one only for numbering and the ribbon.
+  static final List<ZyraJourneyStage> previewAll = List.unmodifiable([
+    all[0],
+    all[1],
+    lifeSnapshotPreview,
+    for (final stage in all.skip(2)) stage.withOrder(stage.order + 1),
+  ]);
+
+  static ZyraJourneyStage? previewOf(String? value) {
+    if (value == null) return null;
+    for (final stage in previewAll) {
+      if (stage.value == value) return stage;
+    }
+    return null;
+  }
+
+  static String previewLabelFor(
+    String? value, {
+    bool reviewOpen = false,
+    String fallback = 'Journey in progress',
+  }) {
+    if (reviewOpen) return familyReviewOverride;
+    return previewOf(value)?.label ?? fallback;
+  }
+
   static final Map<String, ZyraJourneyStage> _byValue = {
     for (final s in all) s.value: s,
+  };
+
+  static final Map<String, ZyraJourneyStage> _byTimelineMilestone = {
+    for (final s in all) s.timelineMilestoneType: s,
   };
 
   /// Total stages, for "step 4 of 8". Derived, never written down twice.
@@ -204,6 +343,10 @@ class ZyraJourneyStages {
   static ZyraJourneyStage? of(String? value) =>
       value == null ? null : _byValue[value];
 
+  /// The stage completed/reached by a durable Timeline milestone.
+  static ZyraJourneyStage? ofTimelineMilestone(String type) =>
+      _byTimelineMilestone[type];
+
   /// The `phase_N` stage for a 1-based phase number.
   ///
   /// journey_flow_screen carries the phase as an int — its three phase
@@ -212,6 +355,15 @@ class ZyraJourneyStages {
   /// rather than there so the `phase_$n` naming convention sits with the
   /// values it names.
   static ZyraJourneyStage? phase(int n) => of('phase_$n');
+
+  /// Stages that the server sequence proves are complete before [value].
+  /// Used by the Active Journey's upward history: it may render completion
+  /// summaries for these stages, but must never recreate their old controls.
+  static List<ZyraJourneyStage> completedBefore(String? value) {
+    final current = of(value);
+    if (current == null || current.order <= 1) return const [];
+    return List.unmodifiable(all.take(current.order - 1));
+  }
 
   /// The label for a stage, with the Family Review override applied.
   ///
@@ -222,8 +374,11 @@ class ZyraJourneyStages {
   ///
   /// [fallback] covers a stage the app does not recognise, which can only
   /// happen if the database gains a value this file has not been taught.
-  static String labelFor(String? value, {bool reviewOpen = false,
-      String fallback = 'Journey in progress'}) {
+  static String labelFor(
+    String? value, {
+    bool reviewOpen = false,
+    String fallback = 'Journey in progress',
+  }) {
     if (reviewOpen) return familyReviewOverride;
     return of(value)?.label ?? fallback;
   }

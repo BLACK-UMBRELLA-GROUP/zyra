@@ -9,11 +9,12 @@
 // mid-flow) -> RoleSelectionScreen, so they resume rather than land on
 // a broken/empty Home.
 
+import 'zyra_local_prefs.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 import '../main.dart';
+import '../models/zyra_error_state.dart';
 import '../screens/auth/role_selection_screen.dart';
 import '../screens/home/home_shell.dart';
 import '../screens/wali/wali_home_shell.dart';
@@ -28,7 +29,9 @@ class ZyraSessionRouter {
 
   static Future<Widget> resolveHome() async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return const RoleSelectionScreen(); // shouldn't be reached without a session; safe fallback
+    if (user == null) {
+      return const RoleSelectionScreen(); // shouldn't be reached without a session; safe fallback
+    }
 
     try {
       // FIXED 2026-08-01 (Founder: "the first time it loads it loads the
@@ -71,19 +74,44 @@ class ZyraSessionRouter {
           .select('role, first_name, surname_line, gender, location_text')
           .eq('id', user.id)
           .maybeSingle();
-      if (row == null) return const RoleSelectionScreen(); // signed up, onboarding never finished
+      if (row == null) {
+        return const RoleSelectionScreen(); // signed up, onboarding never finished
+      }
 
       await _hydrate(user.id, row);
 
-      return row['role'] == 'wali' ? const WaliHomeShell() : const HomeShell();
+      final role = row['role'] as String?;
+      // Remembered for the failure path below — see there for why.
+      ZyraLocalPrefs.setCachedRole(role);
+      return role == 'wali' ? const WaliHomeShell() : const HomeShell();
     } catch (e) {
-      // Network hiccup looking up the profile — fall back to Seeker
-      // Home rather than blocking the user out entirely; ProfileScreen/
-      // WaliProfileScreen will still work off AppState in the meantime.
-      // 2026-08-12: logged (CLAUDE.md §3) — this fallback routes a
-      // Guardian into the Seeker shell, and unlogged it was invisible.
-      debugPrint('ZYRA resolveHome failed, falling back to HomeShell: $e');
-      return const HomeShell();
+      // FALLS BACK TO THE REMEMBERED ROLE — 2026-08-14 (DR-ZYRA-166).
+      //
+      // This returned HomeShell unconditionally. A Guardian whose profile
+      // lookup failed — a network hiccup, an RLS change, a cold start on
+      // a bad connection — was handed the SEEKER app: Browse, a swipe
+      // deck, Connections. Not a degraded Guardian experience; someone
+      // else's product. The 2026-08-12 pass logged this and left the
+      // behaviour, which made it visible without making it right.
+      //
+      // The cache is written on every successful resolve, so any device
+      // that has signed in once knows what it is. A remembered role is a
+      // strictly better guess than a hardcoded one, and on a device that
+      // has never resolved a role there is nothing to go on and the old
+      // default stands.
+      final remembered = ZyraLocalPrefs.cachedRole;
+      // A remembered role can safely open its own shell through an ordinary
+      // connection hiccup. With no remembered role, guessing "Seeker" can
+      // expose the wrong product to a Guardian; and an expired session must
+      // always return to sign-in rather than opening a cached shell. Let
+      // AuthGate present the approved full-screen recovery in both cases.
+      if (remembered == null ||
+          zyraErrorKindFor(e) == ZyraErrorKind.sessionExpired) {
+        debugPrint('ZYRA resolveHome failed ($e) — recovery page required.');
+        rethrow;
+      }
+      debugPrint('ZYRA resolveHome failed ($e) — falling back to $remembered.');
+      return remembered == 'wali' ? const WaliHomeShell() : const HomeShell();
     }
   }
 
@@ -121,7 +149,10 @@ class ZyraSessionRouter {
           // ages_for_one, not ages_for — one id, one visibility
           // hypothesis (I10, 2026-08-08). The batch form is now capped at
           // 50 and reserved for callers that genuinely have a page of ids.
-          final one = await supabase.rpc('ages_for_one', params: {'p_id': userId});
+          final one = await supabase.rpc(
+            'ages_for_one',
+            params: {'p_id': userId},
+          );
           if (one != null) age = (one as num).toInt();
         } catch (_) {
           // age stays null — Profile hides the row, nothing else needs it

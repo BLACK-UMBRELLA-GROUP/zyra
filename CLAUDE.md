@@ -128,12 +128,30 @@ So the order is: add a payment SDK → declare products in App Store Connect
 
 ---
 
-## 2. Approval
+## 2. Approval — and who does what (2026-08-17)
+
+**Team structure since AD-AIOS-099 (Founder instruction, 2026-08-19,
+amending DR-ZYRA-191 / AD-AIOS-097):** **Codex is Lead Architect and
+implements** — designs, briefs, edits app files and produces evidence for
+its own work (still: no git, no migrations without explicit Founder
+authorisation, no self-approval). **Claude is Architecture Reviewer** —
+reviews Codex's designs and implementations and reports to the Founder;
+implements only Founder-authorised review fixes. **Fable** (product/UX,
+and Documentation Owner — it files every governed-document and register
+change) is unchanged. A session reading this file builds or reviews what
+the Founder authorised, produces the evidence demanded, and
+stops-and-raises anything that contradicts it.
+**ZYRA feature building is PAUSED** (Founder, 2026-08-17, DR-ZYRA-191 item
+5), with one Founder-authorised exception (2026-08-19): the guided handoff
+across the three question chapters (Faith & Values, Building a Life,
+Navigating Life) + full-flow test, implemented by Codex. Other feature
+work still needs a fresh Founder instruction.
 
 **Cross-model agreement is not build authorization.** Standing Founder rule:
 any implementation gets flagged to Shakeel for approve/deny first, however
-settled a discussion appears. Discuss and propose freely; do not ship
-unasked.
+settled a discussion appears — and his direct instruction in conversation
+(including a brief he relays himself) IS that approval; do not ask twice.
+Discuss and propose freely; do not ship unasked.
 
 ### Approval is not "stop thinking"
 
@@ -591,10 +609,15 @@ the current Journey and does end-then-start on confirm.
 
 ### Still open
 
-- **No git remote, and now 345 uncommitted files.** **A disk failure ends
-  the project.** Worse than the register says (OA-ZYRA-134 records 91).
-  Blocked by the bridge defect above, not by anyone forgetting — see the
-  🔴 box at the top of this section. Shakeel's action, in Terminal.
+- ~~**No git remote / uncommitted files**~~ — **CLOSED 2026-08-12**
+  (OA-ZYRA-134). Founder committed in Terminal (`6f05c05`, 132 files) and
+  pushed to a **private GitHub remote: ZYRA-APP-LAB/zyra** (377MB first
+  push). Bonus finding: the name collided because the OA-114 automation
+  publisher had pushed a snapshot of the OLD workspace layout back in
+  July — preserved, renamed **zyra-archive**. The 🔴 bridge box above
+  remains true: commits still cannot run through the bridge; future
+  commits are a Terminal paste. Outstanding half: the external-drive
+  local backup (GIT_REMOTE_DECISION option B) once a drive is named.
 - **OA-ZYRA-173** — removing your last Guardian mid-Journey hands your
   family's Family Review vote to the other family. Raised, not fixed:
   the intended behaviour is a Founder call.
@@ -635,8 +658,10 @@ the current Journey and does end-then-start on confirm.
   regenerates any of the rest verbatim from schema_migrations.
 - **Nothing happens when a report is submitted.** Rows are written and
   blocking works, but there is no queue, no triage, no notification, and
-  `status` never leaves `'pending'`. Needs its own OA. Do not describe
-  reporting as "working" without this caveat.
+  `status` never leaves `'pending'`. Raised as **OA-ZYRA-237** (Critical,
+  2026-08-17, from Codex's full-app review) — awaits a Founder-approved
+  engineering brief. Do not describe reporting as "working" without this
+  caveat.
 - **120 of 144 seeded Seekers have no Chapter 2 data**, so they all score a
   flat 50. Milestone 1 fixes this. Until then, pick test actors that hold
   `seeker_details` or your test measures nothing — this already produced one

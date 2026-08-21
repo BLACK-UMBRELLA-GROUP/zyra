@@ -8,6 +8,7 @@
 
 import 'package:flutter/foundation.dart';
 import '../models/journey_match.dart';
+import '../models/journey_bio.dart';
 import '../models/seeker_profile.dart';
 import '../services/zyra_local_prefs.dart';
 import '../services/zyra_wali_link_service.dart';
@@ -53,6 +54,10 @@ class AppState extends ChangeNotifier {
   String? sect;
   ZyraPlan plan = ZyraPlan.basic;
 
+  /// Optional, Journey-only biography assembled during Seeker onboarding.
+  /// It is intentionally separate from the scored Chapter 3/4 answers.
+  JourneyBio journeyBio = const JourneyBio();
+
   /// Server-computed age, from ages_for(). Separate from [dob] because
   /// `profiles.date_of_birth` is no longer selectable by the client
   /// (audit finding C2 — the column-level SELECT was revoked on
@@ -78,7 +83,13 @@ class AppState extends ChangeNotifier {
     int? age,
     ZyraPlan? plan,
   }) {
-    if (name != null) this.name = name;
+    if (name != null) {
+      this.name = name;
+      // Cached for the NEXT launch's first frame, same contract as the
+      // gender line below (DR-ZYRA-169 Phase 2): Profile paints the real
+      // name instead of "Your Profile" while hydration is in flight.
+      ZyraLocalPrefs.setCachedFirstName(name);
+    }
     if (surnameLine != null) this.surnameLine = surnameLine;
     if (gender != null) {
       this.gender = gender;
@@ -105,7 +116,11 @@ class AppState extends ChangeNotifier {
   bool notifyNewMessages = true;
   bool notifyWaliRequests = true;
 
-  void setNotificationPreference({bool? newMatches, bool? newMessages, bool? waliRequests}) {
+  void setNotificationPreference({
+    bool? newMatches,
+    bool? newMessages,
+    bool? waliRequests,
+  }) {
     if (newMatches != null) notifyNewMatches = newMatches;
     if (newMessages != null) notifyNewMessages = newMessages;
     if (waliRequests != null) notifyWaliRequests = waliRequests;
@@ -118,6 +133,7 @@ class AppState extends ChangeNotifier {
   // person cannot be both on the same account). Kept minimal since the
   // onboarding content itself is a v1 draft — see DR-ZYRA-081.
   String? waliName;
+
   /// DEMOTED 2026-08-06 — **not authoritative**. A display LABEL captured at
   /// Guardian onboarding, held in memory, never persisted.
   ///
@@ -135,7 +151,8 @@ class AppState extends ChangeNotifier {
   /// If you are about to read this field to render something, you want
   /// `WaliLinkedPerson.relationshipLabel` instead.
   String? waliRelationship; // Label, e.g. 'Father'. Prefill only.
-  bool waliHasWaliOne = false; // Path 2A mock — £9.99/month independent purchase
+  bool waliHasWaliOne =
+      false; // Path 2A mock — £9.99/month independent purchase
 
   // Superseded by waliRealLinkedSeekers below (2026-07-18, real Guardian
   // linking) — kept to avoid touching any other reference, but no
@@ -154,7 +171,10 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveWaliOnboarding({required String name, required String relationship}) {
+  void saveWaliOnboarding({
+    required String name,
+    required String relationship,
+  }) {
     waliName = name;
     waliRelationship = relationship;
     notifyListeners();
@@ -205,10 +225,10 @@ class AppState extends ChangeNotifier {
   /// the deck like anything else, and the Browse "Saved" badge that
   /// existed to explain their reappearance is gone with it.
   Set<String> get decidedProfileIds => {
-        for (final p in declined) p.id,
-        for (final p in outgoingLikes) p.id,
-        for (final p in saved) p.id,
-      };
+    for (final p in declined) p.id,
+    for (final p in outgoingLikes) p.id,
+    for (final p in saved) p.id,
+  };
 
   bool isSaved(String profileId) => saved.any((p) => p.id == profileId);
 
@@ -236,14 +256,25 @@ class AppState extends ChangeNotifier {
   /// refresh Journey state after any promote/suspend/resume/end call,
   /// now that Journey lifecycle is real backend state rather than a
   /// local synchronous mutation.
-  void setJourneyMatches({required List<JourneyMatch> potential, required List<JourneyMatch> active}) {
+  void setJourneyMatches({
+    required List<JourneyMatch> potential,
+    required List<JourneyMatch> active,
+  }) {
     potentialJourneys = potential;
     activeJourneys = active;
     notifyListeners();
   }
 
-  void saveChapter1({required String name, required String gender, required DateTime dob}) {
+  void saveChapter1({
+    required String name,
+    required String gender,
+    required DateTime dob,
+  }) {
     this.name = name;
+    // First moment a new Seeker's name exists — cached for the same
+    // launch-after-onboarding reason as the gender line below
+    // (DR-ZYRA-169 Phase 2).
+    ZyraLocalPrefs.setCachedFirstName(name);
     this.gender = gender;
     // First moment a new Seeker's gender exists. Without this the launch
     // straight after onboarding would still flash.
@@ -252,10 +283,19 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveChapter2({required List<String> photos, String? location, String? sect}) {
+  void saveChapter2({
+    required List<String> photos,
+    String? location,
+    String? sect,
+  }) {
     this.photos = photos;
     this.location = location;
     this.sect = sect;
+    notifyListeners();
+  }
+
+  void saveJourneyBio(JourneyBio value) {
+    journeyBio = value;
     notifyListeners();
   }
 
@@ -350,7 +390,19 @@ class AppState extends ChangeNotifier {
     bool waliHasWaliOne = false,
   }) {
     this.name = name;
+    // Same DR-ZYRA-165 lesson applied to the name on day one
+    // (DR-ZYRA-169 Phase 2): every writer caches, or the cache lies
+    // after a Developer Access switch. A null name clears the key.
+    ZyraLocalPrefs.setCachedFirstName(name);
     this.gender = gender;
+    // CACHES IT TOO — 2026-08-13 (DR-ZYRA-165). This was the only gender
+    // writer in the class that did not, so a Developer Access switch
+    // changed the live gender and left the disk cache holding whoever
+    // was signed in before. main() reads that cache on the next launch
+    // to pick the first colour painted, so the next cold start opened in
+    // the previous account's gradient. Compare hydrateFrom and
+    // saveChapter1, which have always written both.
+    ZyraLocalPrefs.setCachedGender(gender);
     this.dob = dob;
     this.plan = plan;
     this.location = location;

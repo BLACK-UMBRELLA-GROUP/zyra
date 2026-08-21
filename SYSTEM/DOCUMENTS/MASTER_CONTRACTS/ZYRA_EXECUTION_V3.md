@@ -4,7 +4,7 @@
 **Date:** 2026-07-19
 **Supersedes:** ZYRA_EXECUTION_2026-07-19_V2.md (archived: SYSTEM/DOCUMENTS/ARCHIVE/ZYRA_EXECUTION_2026-07-19_V2.md)
 **Contract Type:** PROJECT EXECUTION
-**Governing Reference:** ZYRA_GOVERNANCE_V1
+**Governing Reference:** ZYRA_GOVERNANCE
 **Ratified by:** Founder (Shakeel), 2026-07-19. V2 followed joint
 architectural review (Claude + ChatGPT) and independent review (Fable /
 Opus 4, two cycles). V3 followed same-day, from a live test of V2's

@@ -21,7 +21,7 @@ class ZyraFieldError extends StatelessWidget {
       padding: const EdgeInsets.only(top: 6, left: 4),
       child: Text(
         message!,
-        style: ZyraText.subtext(size: 12, color: ZyraColors.rosePink),
+        style: ZyraText.subtext(size: 12, color: ZyraColors.destructive),
       ),
     );
   }
@@ -35,7 +35,12 @@ class ZyraErrorBanner extends StatelessWidget {
   final VoidCallback? onRetry;
   final VoidCallback? onDismiss;
 
-  const ZyraErrorBanner({super.key, required this.message, this.onRetry, this.onDismiss});
+  const ZyraErrorBanner({
+    super.key,
+    required this.message,
+    this.onRetry,
+    this.onDismiss,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +51,12 @@ class ZyraErrorBanner extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
           decoration: BoxDecoration(
-            color: ZyraColors.rosePink.withValues(alpha: 0.16),
+            color: ZyraColors.destructive.withValues(alpha: 0.16),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.22), width: 1),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.22),
+              width: 1,
+            ),
           ),
           child: Row(
             children: [
@@ -58,8 +66,15 @@ class ZyraErrorBanner extends StatelessWidget {
               if (onRetry != null)
                 TextButton(
                   onPressed: onRetry,
-                  style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8)),
-                  child: Text('Try again', style: ZyraText.body(size: 13).copyWith(fontWeight: FontWeight.w500)),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                  ),
+                  child: Text(
+                    'Try again',
+                    style: ZyraText.body(
+                      size: 13,
+                    ).copyWith(fontWeight: FontWeight.w500),
+                  ),
                 ),
               if (onDismiss != null)
                 GestureDetector(
@@ -81,6 +96,12 @@ class ZyraErrorBanner extends StatelessWidget {
 /// error. Centred icon + one line of copy + optional single CTA.
 class ZyraEmptyState extends StatelessWidget {
   final IconData icon;
+
+  /// Optional heading above the message (2026-08-13). Null on every
+  /// existing empty state — those stay exactly as they were, one line
+  /// under the icon. Supplied only where the empty state names the
+  /// thing that is empty before saying what will fill it.
+  final String? title;
   final String message;
   final String? ctaLabel;
   final VoidCallback? onCta;
@@ -89,6 +110,7 @@ class ZyraEmptyState extends StatelessWidget {
     super.key,
     required this.icon,
     required this.message,
+    this.title,
     this.ctaLabel,
     this.onCta,
   });
@@ -103,19 +125,42 @@ class ZyraEmptyState extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.white.withValues(alpha: 0.35), size: 30),
             const SizedBox(height: 14),
-            Text(message, style: ZyraText.subtext(size: 13.5), textAlign: TextAlign.center),
+            if (title != null) ...[
+              Text(
+                title!,
+                style: ZyraText.heading(size: 15),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 6),
+            ],
+            Text(
+              message,
+              style: ZyraText.subtext(size: 13.5),
+              textAlign: TextAlign.center,
+            ),
             if (ctaLabel != null) ...[
               const SizedBox(height: 16),
               GestureDetector(
                 onTap: onCta,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: ZyraColors.accentBg,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: ZyraColors.accentBorder, width: 1),
+                    border: Border.all(
+                      color: ZyraColors.accentBorder,
+                      width: 1,
+                    ),
                   ),
-                  child: Text(ctaLabel!, style: ZyraText.body(size: 13).copyWith(fontWeight: FontWeight.w500)),
+                  child: Text(
+                    ctaLabel!,
+                    style: ZyraText.body(
+                      size: 13,
+                    ).copyWith(fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
             ],
@@ -136,7 +181,8 @@ class ZyraUnknownErrorState extends StatelessWidget {
   Widget build(BuildContext context) {
     return ZyraEmptyState(
       icon: Icons.refresh,
-      message: "Something didn't quite work. Please try again — and if it keeps happening, let us know.",
+      message:
+          "Something didn't quite work. Please try again — and if it keeps happening, let us know.",
       ctaLabel: onRetry != null ? 'Try again' : null,
       onCta: onRetry,
     );
@@ -156,7 +202,10 @@ class ZyraDisabledHint extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10),
       child: Text(
         message,
-        style: ZyraText.subtext(size: 12, color: Colors.white.withValues(alpha: 0.55)),
+        style: ZyraText.subtext(
+          size: 12,
+          color: Colors.white.withValues(alpha: 0.55),
+        ),
         textAlign: TextAlign.center,
       ),
     );

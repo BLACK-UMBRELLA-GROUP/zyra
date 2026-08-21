@@ -2,7 +2,7 @@
 **Version:** V2
 **Status:** CURRENT_VERSION
 **Date:** 2026-06-26
-**Governing Reference:** ZYRA_GOVERNANCE_V1, ZYRA_EXECUTION_V1
+**Governing Reference:** ZYRA_GOVERNANCE, ZYRA_EXECUTION_V1
 
 ---
 
@@ -109,6 +109,6 @@ These will be captured in SYSTEM/DECISIONS_REGISTER/ when resolved.
 
 ## 8. Governing References
 
-- ZYRA_GOVERNANCE_V1 — Project governance
+- ZYRA_GOVERNANCE — Project governance
 - ZYRA_EXECUTION_V1 — Feature workflow
 - TERMINOLOGY_STANDARDS_V1 — Product language

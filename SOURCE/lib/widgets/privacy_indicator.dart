@@ -23,17 +23,17 @@ class PrivacyIndicator extends StatelessWidget {
       case PrivacyLevel.public:
         dot = ZyraColors.publicDot;
         textColor = ZyraColors.publicText;
-        label = 'Visible when people browse your profile.';
+        label = 'Shown on your profile.';
         break;
       case PrivacyLevel.unlock:
         dot = ZyraColors.unlockDot;
         textColor = ZyraColors.unlockText;
-        label = 'Visible only after a mutual match.';
+        label = 'Shown inside a mutual Journey.';
         break;
       case PrivacyLevel.private:
         dot = ZyraColors.privateDot;
         textColor = ZyraColors.privateText;
-        label = 'Only you and ZYRA can see this answer.';
+        label = 'Private. Used only by ZYRA.';
         break;
     }
     return Padding(
@@ -41,9 +41,18 @@ class PrivacyIndicator extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(width: 6, height: 6, decoration: BoxDecoration(color: dot, shape: BoxShape.circle)),
+          Container(
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(color: dot, shape: BoxShape.circle),
+          ),
           const SizedBox(width: 6),
-          Flexible(child: Text(overrideText ?? label, style: ZyraText.privacyText(color: textColor))),
+          Flexible(
+            child: Text(
+              overrideText ?? label,
+              style: ZyraText.privacyText(color: textColor),
+            ),
+          ),
         ],
       ),
     );

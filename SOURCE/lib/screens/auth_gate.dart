@@ -7,8 +7,10 @@
 // session persistence existing at all.
 
 import 'package:flutter/material.dart';
+import '../models/zyra_error_state.dart';
 import '../services/zyra_auth.dart';
 import '../services/zyra_session_router.dart';
+import '../widgets/zyra_full_screen_error.dart';
 import '../widgets/zyra_loading.dart';
 import 'splash_screen.dart';
 import 'welcome_screen.dart';
@@ -41,7 +43,9 @@ class AuthGate extends StatefulWidget {
 }
 
 class _AuthGateState extends State<AuthGate> {
-  late final Future<Widget> _resolved = _resolve();
+  late Future<Widget> _resolved;
+  bool _didRetry = false;
+  final Set<String> _loggedErrorReferences = {};
 
   /// When [AuthGate.playSplash], the splash ALWAYS plays in full —
   /// Founder, 2026-08-07: "every time I open the app I want to start with
@@ -61,9 +65,57 @@ class _AuthGateState extends State<AuthGate> {
   /// condition is the session resolving.
   late bool _animationDone = !widget.playSplash;
 
+  @override
+  void initState() {
+    super.initState();
+    _resolved = _resolve();
+  }
+
   Future<Widget> _resolve() async {
     if (!ZyraAuth.isSignedIn) return const WelcomeScreen();
     return ZyraSessionRouter.resolveHome();
+  }
+
+  void _retry() {
+    setState(() {
+      _didRetry = true;
+      _resolved = _resolve();
+    });
+  }
+
+  void _returnToWelcome() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+      (route) => false,
+    );
+  }
+
+  Future<void> _signInAgain() async {
+    try {
+      await ZyraAuth.signOut();
+    } catch (error) {
+      // An expired server session can make remote sign-out fail. The member
+      // still needs a usable exit instead of being trapped on this page.
+      debugPrint('ZYRA expired-session sign-out failed: $error');
+    }
+    if (mounted) _returnToWelcome();
+  }
+
+  Widget _errorScreen(Object error) {
+    final kind = zyraErrorKindFor(error);
+    final reference = zyraErrorReference(error);
+    if (_loggedErrorReferences.add(reference)) {
+      debugPrint('ZYRA route failed [$reference]: $error');
+    }
+    return ZyraFullScreenError(
+      key: ValueKey('route_error_${kind.name}'),
+      kind: kind,
+      referenceCode: reference,
+      onPrimary: kind == ZyraErrorKind.sessionExpired ? _signInAgain : _retry,
+      onSecondary: kind == ZyraErrorKind.sessionExpired
+          ? _signInAgain
+          : _returnToWelcome,
+    );
   }
 
   /// How long brand purple takes to resolve into the member's own colour.
@@ -116,36 +168,29 @@ class _AuthGateState extends State<AuthGate> {
           // one screen becoming another, not a push.
           transitionBuilder: (child, animation) =>
               FadeTransition(opacity: animation, child: child),
-          child: (!snapshot.hasData || !_animationDone)
-              // WAITING. Two different things depending on why.
-              //
-              // Cold start: the splash, which is a statement and owns a
-              // fixed 3s. Re-entry (Developer Access): ZyraLoading, which
-              // is forgettable and lasts exactly as long as the profile
-              // read — usually a few hundred milliseconds, often invisible.
-              ? (widget.playSplash
-                  ? SplashScreen(
-                      // Keyed so AnimatedSwitcher treats splash and home as
-                      // different children. Without a key it compares by
-                      // runtime type alone, and the resolved screen's type
-                      // varies by route, which would make the transition
-                      // fire inconsistently.
-                      key: const ValueKey('splash'),
-                      // setState only on the first fire. The controller
-                      // emits `completed` once, but a rebuild mid-animation
-                      // would recreate the widget and re-run it — guarding
-                      // here keeps the flag monotonic either way.
-                      onFinished: () {
-                        if (mounted && !_animationDone) {
-                          setState(() => _animationDone = true);
-                        }
-                      },
-                    )
-                  : const ZyraLoading.fullScreen(key: ValueKey('loading')))
-              : KeyedSubtree(
+          child: !_animationDone
+              ? SplashScreen(
+                  key: const ValueKey('splash'),
+                  onFinished: () {
+                    if (mounted && !_animationDone) {
+                      setState(() => _animationDone = true);
+                    }
+                  },
+                )
+              : snapshot.hasError
+              ? _errorScreen(snapshot.error!)
+              : snapshot.hasData
+              ? KeyedSubtree(
                   key: const ValueKey('resolved'),
                   child: snapshot.data!,
-                ),
+                )
+              // The cold-start splash holds on its finished frame if session
+              // routing takes longer than its three-second performance. A
+              // manual retry is different: show the quiet shared loader and
+              // never replay the brand entrance.
+              : widget.playSplash && !_didRetry
+              ? SplashScreen(key: const ValueKey('splash'), onFinished: () {})
+              : const ZyraLoading.fullScreen(key: ValueKey('loading')),
         );
       },
     );

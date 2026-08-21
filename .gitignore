@@ -5,3 +5,12 @@
 # 2026-08-09 §5); ignored so the folder does not keep growing.
 SOURCE/supabase/dev_test_photos/
 __pycache__/
+
+# Secrets — never commit (OA-AIOS-307 Finding 2, 2026-08-18)
+*.env
+*.key
+*.pem
+*.secret
+
+# Website lives in its own repo (SITE/.git) — see SITE/README.md
+SITE/

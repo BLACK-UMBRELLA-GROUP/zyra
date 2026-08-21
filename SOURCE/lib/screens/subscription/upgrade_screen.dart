@@ -1,15 +1,23 @@
 // ZYRA One upgrade / subscription management screen.
 // Pricing and feature list transcribed from ZYRA_PRODUCT_SPEC §4-8.
 //
-// ⚠ STALE — transcribed against V3, and the spec is now at V5. The ZYRA
-// One prices (£34.99/month, £349.90/year) are unchanged, but EVERY row of
-// the à-la-carte table below is out of date: both products were renamed
-// (Unlock Profile -> Compatibility Unlock) and all four prices raised.
-// This screen currently under-quotes the approved spec. Awaiting the
-// Founder's decision — do not "fix" the numbers without it. Found on
-// 2026-08-08 by the DANGLING DOC REF check, which is the point: the old
-// comment cited a filename that no longer existed, so nobody could open
-// it to notice the figures had moved.
+// PRICING CORRECTED 2026-08-13 (Founder approved) — OA-ZYRA-207.
+//
+// This table was transcribed against PRODUCT_SPEC V3 and never updated
+// when the 2026-08-03 reprice landed. For ten days the app ADVERTISED
+// £0.99/£2.99/£1.99/£4.99 here while CHARGING £1.99/£7.99/£2.99/£9.99 on
+// the unlock screen — two prices for one product, in one app, under the
+// retired product names ("Unlock Profile").
+//
+// Found 2026-08-08 by the DANGLING DOC REF check, written up the same
+// day, and then not fixed for five more days because the finding was
+// recorded in a document instead of the action register. That is the
+// reason OA-ZYRA-208 now requires every finding to carry an OA number.
+//
+// THE STRUCTURAL FIX, not just the text one: the four figures are no
+// longer typed here. They are read from UnlockPricing, which is the one
+// ratified definition. Retyping them from memory is how this happened —
+// so this file can no longer retype them.
 //
 // No real payment processing exists yet (App
 // Store/Play Store in-app purchase, or Stripe for web, per SYSTEM/
@@ -21,7 +29,11 @@
 import 'package:flutter/material.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
+import '../../widgets/zyra_moment.dart';
 import '../../theme/zyra_text.dart';
+// The single ratified definition of unlock pricing (Founder 2026-08-03).
+// Imported, never transcribed — see the header note.
+import 'profile_unlock_screen.dart' show UnlockPricing;
 
 enum _BillingCycle { monthly, annual }
 
@@ -48,7 +60,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     // are gated on ZyraPlan.basic (browse_screen.dart) — this is an
     // accurate benefit, it was simply missing from the place people buy.
     'No sponsored cards while browsing',
-    'Standard Profile Unlock on Active Journey',
+    'Standard Compatibility Unlock on Active Journey',
     'Link a Guardian',
     '7-day ZYRA One trial on your first Active Journey',
   ];
@@ -60,16 +72,16 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     'Mutual Save Detection',
     'Pause / Resume Journey, unlimited Paused Journeys',
     'Priority Discovery',
-    'Profile Unlock Plus on Active Journey creation',
+    'Compatibility Unlock Plus on Active Journey creation',
     'ZYRA Intelligence — Recommendations, Insights, Summaries',
     'One Guardian+ entitlement included',
   ];
 
   static const _unlocks = [
-    ('Unlock Profile', '1 profile', '£0.99'),
-    ('Unlock Profile', '5 profiles', '£2.99'),
-    ('Unlock Profile Plus', '1 profile', '£1.99'),
-    ('Unlock Profile Plus', '5 profiles', '£4.99'),
+    ('Compatibility Unlock', '1 profile', UnlockPricing.single),
+    ('Compatibility Unlock', '5 profiles', UnlockPricing.bundle),
+    ('Compatibility Unlock Plus', '1 profile', UnlockPricing.singlePlus),
+    ('Compatibility Unlock Plus', '5 profiles', UnlockPricing.bundlePlus),
   ];
 
   /// Pre-purchase legal disclosure — ADDED 2026-08-01 (Founder: "we need
@@ -157,29 +169,24 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
     if (agreed == true && mounted) _upgrade();
   }
 
-  void _upgrade() {
+  Future<void> _upgrade() async {
     AppState.instance.setPlan(ZyraPlan.one);
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: ZyraColors.luxuryDarkPurple,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text("You're on ZYRA One", style: ZyraText.heading(size: 16)),
-        content: Text(
-          'Unlimited browsing, Incoming Potentials, and everything else are unlocked now.',
-          style: ZyraText.subtext(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              Navigator.of(context).pop();
-            },
-            child: Text('Done', style: ZyraText.button(size: 13)),
-          ),
-        ],
-      ),
+    // R5 (DR-ZYRA-147/148) — the quiet premium welcome: what changed,
+    // not a sales page. Replaces the stock AlertDialog that congratulated
+    // in Material's voice instead of ZYRA's.
+    await showZyraMoment(
+      context,
+      mark: Icons.workspace_premium_outlined,
+      lines: const [
+        ZyraMomentLine.heading('ZYRA One, active.'),
+        ZyraMomentLine.body('Three Journeys may run at once.'),
+        ZyraMomentLine.body('Pauses hold their place.'),
+        ZyraMomentLine.body('Unlocks are included.'),
+        ZyraMomentLine.quiet('Same seriousness. More room.'),
+      ],
+      ctaLabel: 'Continue',
     );
+    if (mounted) Navigator.of(context).pop();
   }
 
   void _downgrade() {

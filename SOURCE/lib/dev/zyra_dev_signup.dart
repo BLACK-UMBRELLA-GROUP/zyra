@@ -10,7 +10,7 @@
 // That reasoning was right and the move was still wrong, because the panel
 // is mounted in exactly one place:
 //
-//     home_shell.dart:210   if (!kReleaseMode) const DevScenarioPanel(),
+//     home_shell.dart       if (!kReleaseMode) DevScenarioPanelV2(...),
 //
 // Not WaliHomeShell. Not Welcome. Not Developer Access. So the action
 // "test signing up as a brand new user" ended up reachable only from
@@ -23,13 +23,14 @@
 //   Toggle panel, signed in        "jump into onboarding from where I am"
 //
 // The original worry about drift is answered by this file rather than by
-// picking one location: both call start(), so there is one behaviour and
-// nowhere for a second copy to rot.
+// picking one location: Developer Access and the toggle panel both call
+// start(), so there is one behaviour and nowhere for a second copy to rot.
 
 import 'package:flutter/material.dart';
 
 import '../screens/onboarding/onboarding_flow.dart';
 import '../screens/wali/wali_onboarding_flow.dart';
+import '../services/zyra_auth.dart';
 import '../state/app_state.dart';
 
 class ZyraDevSignUp {
@@ -38,10 +39,11 @@ class ZyraDevSignUp {
   /// Resets AppState to a blank slate and pushes the REAL onboarding flow.
   ///
   /// Deliberately NOT applyDevPreset's usual pre-filled-persona use: the
-  /// point is to answer every question exactly as a first-time user would,
-  /// so the FLOW gets tested rather than the outcome. No tier picker
-  /// either — every account starts on Basic and upgrades afterwards from
-  /// Profile or Network, same as production.
+  /// questions and validation stay identical to production. The explicit
+  /// DEV skip control is the only shortcut: it advances without persisting
+  /// placeholder answers. No tier picker either — every account starts on
+  /// Basic and upgrades afterwards from Profile or Network, same as
+  /// production.
   ///
   /// A plain push, not pushAndRemoveUntil: backing out returns you where
   /// you were, so an abandoned trial costs nothing. Developer Access used
@@ -49,8 +51,13 @@ class ZyraDevSignUp {
   /// and wrong from inside a live session.
   static void start(BuildContext context, {required bool isWali}) {
     AppState.instance.applyDevPreset();
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => isWali ? const WaliOnboardingFlow() : const OnboardingFlow(),
-    ));
+    final previewName = ZyraAuth.onboardingFirstName ?? 'Shakeel';
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => isWali
+            ? const WaliOnboardingFlow(devPreview: true)
+            : OnboardingFlow(welcomeName: previewName, devPreview: true),
+      ),
+    );
   }
 }

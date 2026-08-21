@@ -66,7 +66,6 @@ import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import '../../main.dart' show supabaseReady;
 import '../../services/zyra_auth.dart';
-import '../../services/zyra_entitlement_service.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
@@ -80,6 +79,7 @@ import '../../widgets/zyra_state_widgets.dart';
 // Neither shell is named here any more — 2026-08-07. This screen used to
 // choose between them from a hand-set preset flag; it now pushes AuthGate
 // and lets ZyraSessionRouter decide from the profile row. See _enterAs.
+import '../../dev/dev_splash_lab.dart';
 import '../../dev/zyra_dev_signup.dart';
 import '../auth_gate.dart';
 
@@ -95,20 +95,19 @@ class _DevPreset {
   final String sublabel;
   final String email;
   final bool isWali;
-  final ZyraPlan plan;
-  final bool isWaliOne;
   final String name;
   final String gender;
   final DateTime dob;
   final String location;
 
+  // `plan` and `isWaliOne` REMOVED 2026-08-12 with the plan presets —
+  // membership is live state now (the panel's Membership control + the
+  // wali shell's own mock purchase), not an identity chosen at sign-in.
   const _DevPreset({
     required this.label,
     required this.sublabel,
     required this.email,
     required this.isWali,
-    required this.plan,
-    this.isWaliOne = false,
     required this.name,
     required this.gender,
     required this.dob,
@@ -123,98 +122,71 @@ class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {
   // real data.
   static const String _testPassword = 'ZyraTest!2026';
 
+  // COLLAPSED FROM EIGHT TO FOUR — 2026-08-12 (Founder: "the homepage
+  // should answer one question: which experience do I want to test? Not:
+  // which subscription combination do I want.")
+  //
+  // The plan variants are gone because the plan is no longer an identity:
+  // the dev panel's Membership control switches it live, client AND server,
+  // and zyra_session_router reads the row back on entry — so a "ZYRA One
+  // preset" was just the Basic account plus a step the panel now does
+  // better. The wali One presets' force-write (#19) went with them: entry
+  // no longer stomps the account's subscription row in either direction;
+  // whatever you set last is what you get, which is the point of a switch.
+  //
+  // Gender stays, as one small selector rather than doubled rows — a male
+  // and a female Seeker are genuinely different experiences (gradient,
+  // deck, the whole segregation model), which is exactly the question this
+  // screen exists to ask.
   static final List<_DevPreset> _presets = [
     _DevPreset(
-      label: 'Seeker — ZYRA Basic, male',
+      label: 'Seeker Account',
       sublabel: 'Adam, 29, London',
       email: 'dev.seeker.basic.m@zyra.test',
       isWali: false,
-      plan: ZyraPlan.basic,
       name: 'Adam',
       gender: 'male',
       dob: DateTime(1997, 3, 14),
       location: 'London',
     ),
     _DevPreset(
-      label: 'Seeker — ZYRA Basic, female',
+      label: 'Seeker Account',
       sublabel: 'Maryam, 27, Birmingham — has a linked Guardian (Ibrahim)',
       email: 'dev.seeker.basic.f@zyra.test',
       isWali: false,
-      plan: ZyraPlan.basic,
       name: 'Maryam',
       gender: 'female',
       dob: DateTime(1998, 7, 22),
       location: 'Birmingham',
     ),
     _DevPreset(
-      label: 'Seeker — ZYRA One, male',
-      sublabel: 'Yusuf, 31, Manchester',
-      email: 'dev.seeker.one.m@zyra.test',
-      isWali: false,
-      plan: ZyraPlan.one,
-      name: 'Yusuf',
-      gender: 'male',
-      dob: DateTime(1994, 11, 2),
-      location: 'Manchester',
-    ),
-    _DevPreset(
-      label: 'Seeker — ZYRA One, female',
-      sublabel: 'Aisha, 30, Leeds',
-      email: 'dev.seeker.one.f@zyra.test',
-      isWali: false,
-      plan: ZyraPlan.one,
-      name: 'Aisha',
-      gender: 'female',
-      dob: DateTime(1996, 5, 9),
-      location: 'Leeds',
-    ),
-    _DevPreset(
-      label: 'Guardian — Basic, male',
+      label: 'Guardian Account',
       sublabel: 'Ibrahim — linked to Maryam',
       email: 'dev.wali@zyra.test',
       isWali: true,
-      plan: ZyraPlan.basic,
       name: 'Ibrahim',
       gender: 'male',
       dob: DateTime(1968, 1, 15),
       location: 'Birmingham',
     ),
     _DevPreset(
-      label: 'Guardian — Basic, female',
-      sublabel: 'Khadija — linked to Yusuf (ZYRA One), so she resolves as Guardian+ anyway via free bundling (#19) — this is correct, not a bug',
+      label: 'Guardian Account',
+      sublabel:
+          'Khadija — Guardian+ via Yusuf\'s ZYRA One (free bundling, #19)',
       email: 'dev.wali.f@zyra.test',
       isWali: true,
-      plan: ZyraPlan.basic,
-      name: 'Khadija',
-      gender: 'female',
-      dob: DateTime(1970, 4, 2),
-      location: 'Manchester',
-    ),
-    _DevPreset(
-      label: 'Guardian — One, male',
-      sublabel: 'Ibrahim, same account — real wali_premium row written on entry (#19)',
-      email: 'dev.wali@zyra.test',
-      isWali: true,
-      plan: ZyraPlan.basic,
-      isWaliOne: true,
-      name: 'Ibrahim',
-      gender: 'male',
-      dob: DateTime(1968, 1, 15),
-      location: 'Birmingham',
-    ),
-    _DevPreset(
-      label: 'Guardian — One, female',
-      sublabel: 'Khadija, same account — already has it for free via Yusuf\'s ZYRA One (#19); this preset also force-writes a real row',
-      email: 'dev.guardian.f@zyra.test',
-      isWali: true,
-      plan: ZyraPlan.basic,
-      isWaliOne: true,
       name: 'Khadija',
       gender: 'female',
       dob: DateTime(1970, 4, 2),
       location: 'Manchester',
     ),
   ];
+
+  /// Which gender's pair of accounts the two rows sign into.
+  String _gender = 'male';
+
+  _DevPreset _presetFor({required bool isWali}) =>
+      _presets.firstWhere((p) => p.isWali == isWali && p.gender == _gender);
 
   String? _busyEmailLabel;
   String? _error;
@@ -240,7 +212,10 @@ class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {
       _error = null;
     });
 
-    final result = await ZyraAuth.signInWithTestAccount(preset.email, _testPassword);
+    final result = await ZyraAuth.signInWithTestAccount(
+      preset.email,
+      _testPassword,
+    );
     _switching = false;
     if (!mounted) return;
 
@@ -270,30 +245,26 @@ class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {
         // Kept set here only so `AppState.waliHasWaliOne` doesn't
         // silently go stale for any other reader that might exist;
         // the actual entitlement below is written for real.
-        waliHasWaliOne: preset.isWaliOne,
       );
       // Real linked Seekers from the live wali_links table, so the
       // Dashboard/Seekers tabs show genuine backend data immediately.
       final linked = await ZyraWaliLinkService.fetchLinkedPeople(asWali: true);
       app.setWaliRealLinkedSeekers(linked);
-      // #19 — deterministically set this account's OWN subscription
-      // row to match the preset (wali_basic for "Basic", wali_premium
-      // for "One"). Necessary because Ibrahim/Khadija are the SAME
-      // real accounts shared between the Basic and One presets — since
-      // gating is now real and persistent, switching presets must
-      // actually flip the row each time, not just a local flag. Note:
-      // Khadija's "Basic" preset will still resolve as Wali One
-      // in the UI regardless, because she's genuinely, correctly
-      // entitled for free via Yusuf's real ZYRA One subscription
-      // (wali_has_wali_one()'s bundling branch) — that's the
-      // bundling feature working as intended, not a leftover mock.
-      await ZyraEntitlementService.mockSetWaliPlan(premium: preset.isWaliOne);
+      // The #19 mockSetWaliPlan force-write is GONE (2026-08-12): it
+      // existed so the Basic and One presets could share one account, and
+      // there are no plan presets any more. The row is whatever the app's
+      // own mock purchase (or bundling) last made it — entry reads, never
+      // writes.
     } else {
+      // No `plan:` on purpose — zyra_session_router reads
+      // subscriptions.plan_type on the way in and hydrates AppState.plan
+      // from the row the Membership control maintains. One source of truth;
+      // passing a preset plan here would stomp it for the first frames and
+      // then be corrected, which is a flicker pretending to be a fact.
       app.applyDevPreset(
         name: preset.name,
         gender: preset.gender,
         dob: preset.dob,
-        plan: preset.plan,
         location: preset.location,
       );
     }
@@ -397,7 +368,9 @@ class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {
                 Text('Developer Access', style: ZyraText.heading(size: 22)),
                 const SizedBox(height: 6),
                 Text(
-                  'Enter the app as a preset test account (real backend), or jump straight to a screen (mock state).',
+                  'Which experience do you want to test? Membership, scenarios '
+                  'and everything else switch live inside the panel once you '
+                  'are in.',
                   style: ZyraText.subtext(),
                 ),
                 const SizedBox(height: 20),
@@ -405,39 +378,70 @@ class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {
                   child: ListView(
                     children: [
                       if (_error != null) ...[
-                        ZyraErrorBanner(message: _error!, onDismiss: () => setState(() => _error = null)),
+                        ZyraErrorBanner(
+                          message: _error!,
+                          onDismiss: () => setState(() => _error = null),
+                        ),
                         const SizedBox(height: 14),
                       ],
-                      Text('TEST ACCOUNTS — REAL BACKEND', style: ZyraText.chapterLabel(color: Colors.white54)),
+                      Row(
+                        children: [
+                          Text(
+                            'TEST ACCOUNTS — REAL BACKEND',
+                            style: ZyraText.chapterLabel(color: Colors.white54),
+                          ),
+                          const Spacer(),
+                          _GenderSwitch(
+                            gender: _gender,
+                            onChanged: (g) => setState(() => _gender = g),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 10),
                       if (!backendAvailable)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16),
                           child: Text(
                             'Supabase isn\'t configured in this build — test accounts unavailable. The jump-menu below still works on mock state.',
-                            style: ZyraText.subtext(size: 12, color: Colors.white38),
+                            style: ZyraText.subtext(
+                              size: 12,
+                              color: Colors.white38,
+                            ),
                           ),
                         )
                       else ...[
-                        ..._presets.map(
-                          (p) => _DevTile(
-                            label: _busyEmailLabel == p.label ? 'Signing in…' : p.label,
+                        for (final p in [
+                          _presetFor(isWali: false),
+                          _presetFor(isWali: true),
+                        ])
+                          _DevTile(
+                            label: _busyEmailLabel == p.label
+                                ? 'Signing in…'
+                                : p.label,
                             sublabel: p.sublabel,
-                            icon: p.isWali ? Icons.family_restroom_outlined : Icons.person_outline,
-                            onTap: _busyEmailLabel != null ? null : () => _enterAs(p),
+                            icon: p.isWali
+                                ? Icons.family_restroom_outlined
+                                : Icons.person_outline,
+                            onTap: _busyEmailLabel != null
+                                ? null
+                                : () => _enterAs(p),
                           ),
-                        ),
                         if (ZyraAuth.isSignedIn)
                           _DevTile(
                             label: 'Sign out current test account',
                             sublabel: ZyraAuth.currentUser?.email ?? '',
                             icon: Icons.logout,
-                            onTap: _busyEmailLabel != null ? null : _signOutTestAccount,
+                            onTap: _busyEmailLabel != null
+                                ? null
+                                : _signOutTestAccount,
                           ),
                         const SizedBox(height: 8),
                         Text(
                           'Test accounts are seeded rows in the dev database (no photos yet, so they don\'t appear in each other\'s Browse — Browse falls back to mock profiles). Sign-ins here are real Supabase sessions and exercise real RLS.',
-                          style: ZyraText.subtext(size: 11, color: Colors.white38),
+                          style: ZyraText.subtext(
+                            size: 11,
+                            color: Colors.white38,
+                          ),
                         ),
                       ],
                       // ── TEST SIGN UP — RESTORED 2026-08-07 ───────────
@@ -451,38 +455,74 @@ class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {
                       // home — the one state you cannot be in when you want
                       // to test signing up.
                       //
-                      // Both places now, because they are two different
-                      // moments: here, signed out, starting from scratch;
-                      // in the panel, signed in, jumping into onboarding
-                      // from wherever you are.
-                      //
-                      // The original worry — "two copies of a dev entry
-                      // point is how one of them quietly stops matching the
-                      // flow it launches" — is answered by both calling
-                      // ZyraDevSignUp.start() rather than by picking one
-                      // location.
+                      // Also available in the in-app toggle since
+                      // 2026-08-19, at the Founder's request. Both doors call
+                      // ZyraDevSignUp.start(), so their behaviour cannot drift.
                       const SizedBox(height: 24),
-                      Text('TEST SIGN UP — MOCK STATE',
-                          style: ZyraText.chapterLabel(color: Colors.white54)),
+                      Text(
+                        'TEST SIGN UP — MOCK STATE',
+                        style: ZyraText.chapterLabel(color: Colors.white54),
+                      ),
                       const SizedBox(height: 4),
                       Text(
                         'Real onboarding questions from a blank slate — answer them yourself, '
                         'exactly like a first-time user. No tier picker: every account starts '
                         'on Basic; upgrade afterwards from Profile/Network, same as production.',
-                        style: ZyraText.subtext(size: 11, color: Colors.white38),
+                        style: ZyraText.subtext(
+                          size: 11,
+                          color: Colors.white38,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       _DevTile(
-                        label: 'Seeker — Test Sign Up',
-                        sublabel: 'Chapter 1 through Profile Ready, in your own answers',
+                        label: 'Sign Up — Seeker',
+                        sublabel:
+                            'Chapter 1 through Profile Ready, in your own answers',
                         icon: Icons.person_add_alt_outlined,
-                        onTap: () => ZyraDevSignUp.start(context, isWali: false),
+                        onTap: () =>
+                            ZyraDevSignUp.start(context, isWali: false),
                       ),
                       _DevTile(
-                        label: 'Guardian — Test Sign Up',
-                        sublabel: 'Name, date of birth, relationship, then Invite a Seeker',
+                        label: 'Sign Up — Guardian',
+                        sublabel:
+                            'Name, date of birth, relationship, then Invite a Seeker',
                         icon: Icons.person_add_alt_outlined,
                         onTap: () => ZyraDevSignUp.start(context, isWali: true),
+                      ),
+
+                      // ── LABS — moved here 2026-08-12 ──────────────────
+                      //
+                      // The Splash lab lived as a card in the toggle panel
+                      // from the morning it was built. The evening toggle
+                      // review (Founder: per-page controls only) evicted
+                      // it: the splash is not a page, so it had no card to
+                      // live under — and like the sign-ups above, a global
+                      // dev destination belongs on this door.
+                      const SizedBox(height: 24),
+                      Text(
+                        'LABS',
+                        style: ZyraText.chapterLabel(color: Colors.white54),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Full-screen comparisons that are about the app itself rather than '
+                        'any one page of it.',
+                        style: ZyraText.subtext(
+                          size: 11,
+                          color: Colors.white38,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      _DevTile(
+                        label: 'Splash lab',
+                        sublabel:
+                            'The five candidate endings, played for real — Pass through is the chosen one',
+                        icon: Icons.auto_awesome_outlined,
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const DevSplashLabMenu(),
+                          ),
+                        ),
                       ),
 
                       // ── JUMP TO SCREEN — REMOVED 2026-08-07 ───────────
@@ -528,6 +568,54 @@ class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {
   // _push REMOVED 2026-08-07 — Jump to Screen was its only caller.
 }
 
+/// Male / Female, one small selector beside the section heading — the two
+/// account rows below sign into that gender's pair. Doubling the rows was
+/// the old answer; four rows that are really two choices is exactly the
+/// clutter the 2026-08-12 simplification removed.
+class _GenderSwitch extends StatelessWidget {
+  final String gender;
+  final ValueChanged<String> onChanged;
+  const _GenderSwitch({required this.gender, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget seg(String value, String label) {
+      final on = gender == value;
+      return GestureDetector(
+        onTap: () => onChanged(value),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          decoration: BoxDecoration(
+            color: on
+                ? Colors.white.withValues(alpha: 0.20)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Text(
+            label,
+            style: ZyraText.subtext(
+              size: 11,
+              color: Colors.white.withValues(alpha: on ? 1 : 0.45),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(9),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [seg('male', 'Male'), seg('female', 'Female')],
+      ),
+    );
+  }
+}
+
 class _DevTile extends StatelessWidget {
   final String label;
   final String? sublabel;
@@ -565,12 +653,22 @@ class _DevTile extends StatelessWidget {
                         Text(label, style: ZyraText.body(size: 14)),
                         if (sublabel != null && sublabel!.isNotEmpty) ...[
                           const SizedBox(height: 2),
-                          Text(sublabel!, style: ZyraText.subtext(size: 11, color: Colors.white38)),
+                          Text(
+                            sublabel!,
+                            style: ZyraText.subtext(
+                              size: 11,
+                              color: Colors.white38,
+                            ),
+                          ),
                         ],
                       ],
                     ),
                   ),
-                  const Icon(Icons.chevron_right, color: Colors.white38, size: 18),
+                  const Icon(
+                    Icons.chevron_right,
+                    color: Colors.white38,
+                    size: 18,
+                  ),
                 ],
               ),
             ),

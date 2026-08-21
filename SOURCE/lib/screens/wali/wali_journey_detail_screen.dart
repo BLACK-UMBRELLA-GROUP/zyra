@@ -25,7 +25,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../data/journey_questions.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import '../../data/zyra_journey_stages.dart';
+import '../../dev/zyra_dev_scenario.dart';
 import '../../services/zyra_journey_service.dart';
 // ZyraMilestone/ZyraChatMessage are defined in zyra_match_service.dart,
 // not zyra_wali_journey_service.dart (which only imports them to shape
@@ -87,7 +89,63 @@ class _WaliJourneyDetailScreenState extends State<WaliJourneyDetailScreen> {
 
   bool get _atFamilyStage => widget.journey.journeyStage == 'family_stage';
 
+  /// A dev-panel stand-in. BRANCHED ON BEFORE ANY SERVER CALL, not after:
+  /// its matchId is `dev-wj0`, not a uuid, so fetchTimeline,
+  /// fetchMessages, fetchFamilyReview and wali_review_decision would each
+  /// be handed something that is not an id — and every one of them
+  /// swallows its failure and returns null or empty. The screen would
+  /// have looked like a Journey with nothing in it rather than like a
+  /// mistake, which is precisely how the Seeker side's Reveal button
+  /// silently did nothing for a day (composeJourneys, 2026-08-11).
+  bool get _isMock => !kReleaseMode && widget.journey.isMock;
+
+  /// The staged Timeline for a stand-in Journey.
+  ///
+  /// Derived from the staged STAGE rather than listed as its own toggle:
+  /// a Journey at Open Conversation has necessarily started a
+  /// conversation, and one that has not reached Family Compatibility
+  /// cannot have a family_stage milestone. Two controls that could
+  /// disagree with each other would let the panel draw a Journey that
+  /// cannot exist.
+  ///
+  /// Milestone types are the ones _milestoneLabel already knows — this
+  /// invents no new vocabulary.
+  List<ZyraMilestone> get _stagedMilestones {
+    final order = ZyraJourneyStages.of(widget.journey.journeyStage)?.order ?? 1;
+    final now = DateTime.now();
+    return [
+      ZyraMilestone(
+          type: 'match_created', occurredAt: now.subtract(const Duration(days: 34))),
+      if (order >= 7)
+        ZyraMilestone(
+            type: 'family_stage', occurredAt: now.subtract(const Duration(days: 6))),
+      if (order >= 8)
+        ZyraMilestone(
+            type: 'conversation_started',
+            occurredAt: now.subtract(const Duration(days: 2))),
+    ];
+  }
+
   Future<void> _load({bool showSpinner = true}) async {
+    // STAND-IN: no server call is made at all, and the staged review is
+    // read straight back so a Continue tapped a moment ago is still
+    // recorded when the 5s poll comes round.
+    if (_isMock) {
+      if (!mounted) return;
+      setState(() {
+        _milestones = _stagedMilestones;
+        // Messages stay EMPTY on a stand-in, deliberately. A Guardian's
+        // message view is a real privacy surface (per-attempt since
+        // 2026-08-10, so a new Journey inherits nothing), and inventing a
+        // conversation would preview a disclosure rather than a layout.
+        _messages = const [];
+        _myAnswers = const {};
+        _review = ZyraDevScenario.waliStagedReview();
+        _myDecision = ZyraDevScenario.instance.waliReviewDecision;
+        _loading = false;
+      });
+      return;
+    }
     if (showSpinner && mounted) setState(() => _loading = true);
     final milestones = await ZyraWaliJourneyService.fetchTimeline(widget.journey.matchId);
     final messages = await ZyraWaliJourneyService.fetchMessages(widget.journey.matchId);
@@ -112,11 +170,29 @@ class _WaliJourneyDetailScreenState extends State<WaliJourneyDetailScreen> {
   }
 
   Future<void> _submitFamilyAnswers() async {
+    // A stand-in has no journey_family_answers row to write to. Answers
+    // are kept in the controllers and simply not submitted — the panel
+    // does not claim to stage this half.
+    if (_isMock) {
+      await _load();
+      return;
+    }
+    // BUG-03 (2026-08-14 audit, OA-ZYRA-225 — fixed 2026-08-15): same
+    // truthful-submit rule as the Seeker side. A Guardian's family
+    // answers are a Journey safeguard; a failed write now says so, the
+    // text stays in the controllers, and pressing Submit again re-sends
+    // safely (dup rows are tolerated by later-insert-wins ordering).
+    var allSaved = true;
     for (final q in JourneyQuestions.seekerToWali) {
       final text = _controllers[q.id]!.text.trim();
       if (text.isNotEmpty) {
-        await ZyraJourneyService.submitFamilyAnswer(widget.journey.matchId, 'seeker_to_wali', q.id, text);
+        final ok = await ZyraJourneyService.submitFamilyAnswer(widget.journey.matchId, 'seeker_to_wali', q.id, text);
+        if (!ok) allSaved = false;
       }
+    }
+    if (!allSaved && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Some answers didn't save — check your connection and press Submit again.")));
     }
     await _load();
   }
@@ -124,6 +200,16 @@ class _WaliJourneyDetailScreenState extends State<WaliJourneyDetailScreen> {
   Future<void> _reviewDecision(String decision) async {
     final review = _review;
     if (review == null || _reviewActionBusy) return;
+    // THE STAND-IN ACTUALLY DECIDES. Writing the choice into the scenario
+    // and re-reading it is what makes this rehearsable: the buttons grey,
+    // the card switches to "You chose … — waiting on the other family",
+    // and it survives the 5s poll. A snackbar here would be the panel
+    // announcing an outcome instead of producing one.
+    if (_isMock) {
+      ZyraDevScenario.instance.setWaliReviewDecision(decision);
+      await _load(showSpinner: false);
+      return;
+    }
     setState(() => _reviewActionBusy = true);
     await ZyraWaliJourneyService.waliReviewDecision(review.id, decision);
     if (!mounted) return;
@@ -134,6 +220,13 @@ class _WaliJourneyDetailScreenState extends State<WaliJourneyDetailScreen> {
   Future<void> _reopenReview() async {
     final review = _review;
     if (review == null || _reviewActionBusy) return;
+    if (_isMock) {
+      // Reopening clears the decision and starts the window again —
+      // the same shape reopen_family_review() produces.
+      ZyraDevScenario.instance.setWaliReviewDecision(null);
+      await _load(showSpinner: false);
+      return;
+    }
     setState(() => _reviewActionBusy = true);
     await ZyraWaliJourneyService.reopenFamilyReview(review.id);
     if (!mounted) return;

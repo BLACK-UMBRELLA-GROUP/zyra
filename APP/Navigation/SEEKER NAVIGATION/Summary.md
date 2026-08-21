@@ -78,14 +78,19 @@ NAVIGATION STRUCTURE
 
 | Account                | Tabs                                     |
 |--------------------------|------------------------------------------|
-| Seeker (ZYRA Basic)      | Browse • Connections • Guardian • Profile    |
-| Seeker (ZYRA One)        | Browse • Connections • Guardian • Profile    |
+| Seeker (ZYRA Basic)      | Browse • Connections • Guardian • Notifications • Profile |
+| Seeker (ZYRA One)        | Browse • Connections • Guardian • Notifications • Profile |
 | Guardian (Standard)          | Dashboard • Seekers • Profile            |
 | Guardian (Extended)          | Dashboard • Seekers • Browse • Network • Profile |
 
 Decision: Network is removed from all Seeker entitlements.
 Network is available to Guardian+ only.
 Confirmed: 2026-06-27; terminology corrected 2026-07-12.
+
+CHANGED 2026-08-13 (DR-ZYRA-149, built same day; doc synced
+2026-08-20 under OA-ZYRA-206): Notifications is the fifth
+Seeker tab, placed left of Profile at the Founder's exact
+instruction. The Guardian rows are untouched by that ruling.
 
 ------------------------------------------------------------
 BROWSE
@@ -371,9 +376,14 @@ both conditions being met. To be defined carefully.
 APPROVED RULES
 ------------------------------------------------------------
 
-• Notifications use the Bell Icon.
-• Bell Icon is positioned top-right.
-• Notifications are not a navigation tab.
+• Notifications is the fifth Seeker navigation tab: Browse •
+  Connections • Guardian • Notifications • Profile — CHANGED
+  2026-08-13, DR-ZYRA-149 (built same day). The former rules
+  "Notifications use the Bell Icon / Bell Icon is positioned
+  top-right / Notifications are not a navigation tab" are
+  RETIRED on the Seeker side; the unread badge lives on the
+  tab itself. The Wali side keeps its Bell — explicitly
+  outside DR-ZYRA-149's ruling.
 • Navigation differs by role.
 • Navigation differs by subscription.
 • Guardians are never treated as Seekers.
@@ -406,6 +416,8 @@ CURRENT STATUS
    circular highlight between tabs), PROPOSED/not yet ratified.
 ✅ Smooth navigation transitions approved — BUILT 2026-07-19,
    same DRs.
+✅ Notifications fifth tab — BUILT 2026-08-13 (DR-ZYRA-149);
+   Seeker Bell retired, unread badge on the tab, Wali Bell kept.
 
 ⚠ FLAGGED 2026-07-19 — implementation gaps found while filing
   DR-ZYRA-089/091, not resolved, needs a dedicated session:
@@ -415,6 +427,12 @@ CURRENT STATUS
       4 tabs (Browse • Connections • Guardian • Profile) in the
       NAVIGATION STRUCTURE table above. No Connections or Guardian
       tab exists in the Seeker shell at all yet.
+      [RESOLVED for the tab-count half — noted 2026-08-20,
+       OA-ZYRA-206 filing: the Seeker shell now carries five
+       tabs (DR-ZYRA-101 built the 4-tab structure;
+       DR-ZYRA-149 added Notifications, 2026-08-13). The
+       Safety-vs-Guardian wording point below and the Guardian
+       Network entitlement gap remain open observations.]
     • This document is internally inconsistent about what the
       4th Seeker tab even is: NAVIGATION STRUCTURE says
       "Connections • Guardian"; the NAVIGATION UI section below

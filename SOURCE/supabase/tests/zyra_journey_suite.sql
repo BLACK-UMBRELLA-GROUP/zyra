@@ -27,6 +27,36 @@
 -- the pair unmatchable and resume_journey's re-check threw. Assertion 0
 -- now guards against that choice being made again. See OA-ZYRA-174 for
 -- the product question this exposed.
+--
+-- EXTENDED 2026-08-12 with section J (checks 68-71): pause frees the
+-- Active slot. The 2026-08-09 matrix and SUSPENSION V2 §5 ratified it; the
+-- pause_frees_active_slot migration built it; these four checks are the
+-- behaviour. Extended again the same day with section K (checks 72-76):
+-- the Active cap is plan-aware — Basic 1, ZYRA One 3
+-- (plan_aware_active_journey_limit). J and K pin male1's subscription
+-- (Basic and Premium respectively) and restore what they found, because
+-- the developer's Membership panel writes that same row. Extended a third
+-- time the same evening with section L (checks 77-82): the pause package —
+-- one-shot nudge per pause episode + the nameless journey_paused /
+-- journey_continued Timeline pair (DR-ZYRA-142,
+-- pause_nudge_and_timeline_pair). Extended 2026-08-15 with section M
+-- (checks 83-94): SHARED PAUSE HOLDS — DR-ZYRA-170. A pause became a
+-- personal hold (either party may hold; you lift only your own; the
+-- primary lifting first PROMOTES the second hold; three notification
+-- types tell people what used to happen silently). 90 checks total.
+--
+-- END-TO-END RUN 2026-08-12: 63/63 green. That day's first attempt failed
+-- at the FIRST promote ("match not found") — the same premise class
+-- assertion 0 exists for, in a new costume: OA-ZYRA-193(c) had added an
+-- onboarding_complete gate to zyra_can_match on 2026-08-11, and the seed
+-- predated it, so every @zyra.test seeker still carried the flag false and
+-- the mutual Likes silently created no match. Fixed in the DATA (flag set
+-- true for all 144 synthetic seekers, each of which holds a full synthetic
+-- answer sheet), never by weakening the gate. If assertion 0 reports false
+-- again, audit the seed against every gate zyra_can_match has grown since.
+--
+-- END-TO-END RUN 2026-08-16: 90/90 green under SALAM FIRST (DR-ZYRA-183
+-- — salam_exchange is stage one; check 9 asserts the new entry stage).
 -- ═══════════════════════════════════════════════════════════════════════
 
 drop table if exists zyra_journey_results;
@@ -57,7 +87,18 @@ declare
   -- and resume_journey re-checks zyra_can_match. Assertion 0 enforces it.
   gmain2 uuid := '257d6ebc-ccd0-4c16-a878-3c416ad7b530';
   gadd   uuid := '6493a6e6-6fc7-4d7a-b1b5-58b637c08647';  -- ADDITIONAL of male1
-  mid uuid; midb uuid; att uuid; conv uuid; tl uuid; rev uuid; card record;
+  -- Sections J/K need male1 matchable with FOUR women. fem3/fem4 chosen
+  -- from the seed the same way as the others (female, @zyra.test,
+  -- onboarding complete, no Guardian overlap with male1, no matches).
+  fem3   uuid := '01c7caa4-56c1-481b-8557-de901d3e7d99';  -- Rahma
+  fem4   uuid := '03752c3d-0396-4f38-b234-84d93b724b00';  -- Khadija
+  mid uuid; midb uuid; midc uuid; midd uuid;
+  att uuid; conv uuid; tl uuid; rev uuid; card record;
+  -- Sections J and K are CAP-SENSITIVE and the developer's Membership
+  -- panel writes male1's real subscriptions row, so neither may assume a
+  -- plan: J pins Basic (its resume-refusals need cap 1), K pins Premium
+  -- (its whole point is cap 3), and whatever was found is restored after.
+  base_plan text; base_sub_status text;
   -- SCOPED 2026-08-10. Checks 57/58 used to assert the WHOLE table was
   -- empty, so the suite reported a failure whenever any unrelated row
   -- existed — including a developer's own test Journey. That measured the
@@ -105,7 +146,7 @@ begin
   perform promote_journey_to_active(mid);
   insert into zyra_journey_results values (7,'promote','match active',(select status from matches where id=mid),'active');
   insert into zyra_journey_results values (8,'promote','ATTEMPT active too',(select status from journey_attempts where id=att),'active');
-  insert into zyra_journey_results values (9,'promote','attempt stage mirrored',(select journey_stage from journey_attempts where id=att),'compatibility_reveal');
+  insert into zyra_journey_results values (9,'promote','attempt stage mirrored (Salam first, DR-183)',(select journey_stage from journey_attempts where id=att),'salam_exchange');
   insert into zyra_journey_results values (10,'promote','attempt started_at set',(select (started_at is not null)::text from journey_attempts where id=att),'true');
 
   -- audit R7: with ids ordered a < b < c one person could be seeker_a on
@@ -181,9 +222,12 @@ begin
   perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
   begin
     perform resume_journey(mid);
-    insert into zyra_journey_results values (28,'pause','only the pauser may resume','ALLOWED','only the suspending Seeker may resume');
+    -- REWORDED 2026-08-15 (DR-ZYRA-170): under shared holds nobody
+    -- "resumes" anybody — you lift your own hold or you have nothing to
+    -- lift. fem1 holds nothing here, so the refusal is by that name.
+    insert into zyra_journey_results values (28,'pause','only your own hold is yours to lift','ALLOWED','no_hold_to_lift');
   exception when others then
-    insert into zyra_journey_results values (28,'pause','only the pauser may resume', sqlerrm,'only the suspending Seeker may resume');
+    insert into zyra_journey_results values (28,'pause','only your own hold is yours to lift', sqlerrm,'no_hold_to_lift');
   end;
   perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
   perform resume_journey(mid);
@@ -344,6 +388,286 @@ begin
   delete from matches where id=mid;
   delete from likes where liker_id in (male1,fem1) and liked_id in (male1,fem1);
 
+  -- ══ J · pause frees the Active slot (2026-08-12) ════════════════════
+  -- The matrix promise, expressed as behaviour: pause with one person,
+  -- BEGIN with another. Before the pause_frees_active_slot migration,
+  -- check 68 raised one_active_journey_limit — a paused row still counted.
+  --
+  -- Pinned to BASIC: 69 and 70 assert a resume/un-pause is refused while
+  -- ONE other Journey runs, which is only true at cap 1. On ZYRA One
+  -- (cap 3, section K) that resume would legitimately succeed.
+  select plan_type, status into base_plan, base_sub_status
+    from subscriptions where user_id = male1;
+  if base_plan is not null then
+    update subscriptions set plan_type='seeker_basic', status='active'
+     where user_id = male1;
+  end if;  -- no row at all already means Basic (the cap helper's ELSE arm)
+
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  insert into likes (liker_id, liked_id) values (male1, fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  insert into likes (liker_id, liked_id) values (fem1, male1);
+  select id into mid from matches where seeker_a_id=least(male1,fem1) and seeker_b_id=greatest(male1,fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  perform promote_journey_to_active(mid);
+  perform suspend_journey(mid);
+  insert into likes (liker_id, liked_id) values (male1, fem2);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem2)::text, true);
+  insert into likes (liker_id, liked_id) values (fem2, male1);
+  select id into midb from matches where seeker_a_id=least(male1,fem2) and seeker_b_id=greatest(male1,fem2);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  begin
+    perform promote_journey_to_active(midb);
+    insert into zyra_journey_results values (68,'pause-frees','begin while paused elsewhere ALLOWED',
+      (select status from matches where id=midb),'active');
+  exception when others then
+    insert into zyra_journey_results values (68,'pause-frees','begin while paused elsewhere ALLOWED','REFUSED: '||sqlerrm,'active');
+  end;
+  -- resuming the paused one while the second is live: refused, by name
+  begin
+    perform resume_journey(mid);
+    insert into zyra_journey_results values (69,'pause-frees','resume while active elsewhere refused','ALLOWED — DEFECT','self_in_active_journey');
+  exception when others then
+    insert into zyra_journey_results values (69,'pause-frees','resume while active elsewhere refused', sqlerrm,'self_in_active_journey');
+  end;
+  -- and the raw route is refused with no function in the way. TWO guards
+  -- can fire and which one wins is an implementation detail: the partial
+  -- unique index catches it when the person sits in the SAME column of
+  -- both rows (with these seeded uuids male1 is seeker_b in both — the
+  -- index answered on the first live run), and the re-armed constraint
+  -- trigger covers the cross-column case the single-column indexes cannot
+  -- see. Either is a pass; anything else surfaces verbatim as a failure.
+  begin
+    update matches set suspended_by=null, suspended_at=null where id=mid;
+    insert into zyra_journey_results values (70,'pause-frees','direct un-pause also refused (index or trigger)','ALLOWED — DEFECT','refused');
+  exception when others then
+    insert into zyra_journey_results values (70,'pause-frees','direct un-pause also refused (index or trigger)',
+      case when sqlerrm = 'one_active_journey_limit'
+             or sqlerrm like '%matches_seeker_%_active%'
+           then 'refused' else sqlerrm end,'refused');
+  end;
+  -- end the second and the paused one resumes cleanly
+  perform end_journey(midb);
+  perform resume_journey(mid);
+  insert into zyra_journey_results values (71,'pause-frees','slot freed, the paused Journey resumes',
+    (select (suspended_by is null)::text from matches where id=mid),'true');
+  delete from notifications where related_match_id in (mid, midb);
+  delete from matches where id in (mid, midb);
+  delete from likes where (liker_id=male1 and liked_id in (fem1,fem2))
+                       or (liker_id in (fem1,fem2) and liked_id=male1);
+
+  -- ══ K · the Active cap is the PLAN's, not the number one (2026-08-12) ═
+  -- plan_aware_active_journey_limit made the entitlements matrix real:
+  -- Basic 1 / ZYRA One 3, per party, via zyra_active_journey_cap(). The
+  -- unique indexes became plain indexes that day — the constraint
+  -- triggers (advisory-lock serialised) are the sole race-proof guard —
+  -- so 75 is the assertion that the raw route STILL cannot pass the cap.
+  -- Basic's own cap of 1 is already held above by checks 11/12.
+  --
+  -- Pinned to PREMIUM, restored (with J's capture) right after.
+  if base_plan is not null then
+    update subscriptions set plan_type='seeker_premium', status='active'
+     where user_id = male1;
+  else
+    insert into subscriptions (user_id, plan_type, status)
+    values (male1, 'seeker_premium', 'active');
+  end if;
+
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  insert into likes (liker_id, liked_id) values (male1, fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  insert into likes (liker_id, liked_id) values (fem1, male1);
+  select id into mid from matches where seeker_a_id=least(male1,fem1) and seeker_b_id=greatest(male1,fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  perform promote_journey_to_active(mid);
+
+  insert into likes (liker_id, liked_id) values (male1, fem2);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem2)::text, true);
+  insert into likes (liker_id, liked_id) values (fem2, male1);
+  select id into midb from matches where seeker_a_id=least(male1,fem2) and seeker_b_id=greatest(male1,fem2);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  begin
+    perform promote_journey_to_active(midb);
+    insert into zyra_journey_results values (72,'plan cap','One holds a SECOND Active Journey',(select status from matches where id=midb),'active');
+  exception when others then
+    insert into zyra_journey_results values (72,'plan cap','One holds a SECOND Active Journey','REFUSED: '||sqlerrm,'active');
+  end;
+
+  insert into likes (liker_id, liked_id) values (male1, fem3);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem3)::text, true);
+  insert into likes (liker_id, liked_id) values (fem3, male1);
+  select id into midc from matches where seeker_a_id=least(male1,fem3) and seeker_b_id=greatest(male1,fem3);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  begin
+    perform promote_journey_to_active(midc);
+    insert into zyra_journey_results values (73,'plan cap','and a THIRD',(select status from matches where id=midc),'active');
+  exception when others then
+    insert into zyra_journey_results values (73,'plan cap','and a THIRD','REFUSED: '||sqlerrm,'active');
+  end;
+
+  insert into likes (liker_id, liked_id) values (male1, fem4);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem4)::text, true);
+  insert into likes (liker_id, liked_id) values (fem4, male1);
+  select id into midd from matches where seeker_a_id=least(male1,fem4) and seeker_b_id=greatest(male1,fem4);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  begin
+    perform promote_journey_to_active(midd);
+    insert into zyra_journey_results values (74,'plan cap','a FOURTH is refused','ALLOWED — DEFECT','one_active_journey_limit');
+  exception when others then
+    insert into zyra_journey_results values (74,'plan cap','a FOURTH is refused', sqlerrm,'one_active_journey_limit');
+  end;
+  begin
+    update matches set status='active' where id=midd;
+    insert into zyra_journey_results values (75,'plan cap','direct UPDATE past the cap also refused','ALLOWED — DEFECT','one_active_journey_limit');
+  exception when others then
+    insert into zyra_journey_results values (75,'plan cap','direct UPDATE past the cap also refused', sqlerrm,'one_active_journey_limit');
+  end;
+
+  -- both of today's decisions, composed: pausing one of THREE frees the
+  -- third slot exactly as pausing one of one freed the only slot in J
+  perform suspend_journey(midb);
+  begin
+    perform promote_journey_to_active(midd);
+    insert into zyra_journey_results values (76,'plan cap','pause frees a slot at ANY cap',(select status from matches where id=midd),'active');
+  exception when others then
+    insert into zyra_journey_results values (76,'plan cap','pause frees a slot at ANY cap','REFUSED: '||sqlerrm,'active');
+  end;
+
+  delete from notifications where related_match_id in (mid, midb, midc, midd);
+  delete from matches where id in (mid, midb, midc, midd);
+  delete from likes where (liker_id=male1 and liked_id in (fem1,fem2,fem3,fem4))
+                       or (liker_id in (fem1,fem2,fem3,fem4) and liked_id=male1);
+  if base_plan is not null then
+    update subscriptions set plan_type = base_plan, status = base_sub_status
+     where user_id = male1;
+  else
+    delete from subscriptions where user_id = male1;
+  end if;
+
+  -- ══ L · the pause package — nudge + Timeline pair (DR-ZYRA-142) ═════
+  -- One voice for the waiting person, once per pause episode; the
+  -- Timeline records the pair, nameless. Probed green before being
+  -- written here, 2026-08-12 evening.
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  insert into likes (liker_id, liked_id) values (male1, fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  insert into likes (liker_id, liked_id) values (fem1, male1);
+  select id into mid from matches where seeker_a_id=least(male1,fem1) and seeker_b_id=greatest(male1,fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  perform promote_journey_to_active(mid);
+  perform suspend_journey(mid);
+  begin
+    perform nudge_paused_journey(mid);
+    insert into zyra_journey_results values (77,'nudge','the pauser cannot nudge (their button is Resume)','ALLOWED — DEFECT','pauser_cannot_nudge');
+  exception when others then
+    insert into zyra_journey_results values (77,'nudge','the pauser cannot nudge (their button is Resume)', sqlerrm,'pauser_cannot_nudge');
+  end;
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  begin
+    perform nudge_paused_journey(mid);
+    insert into zyra_journey_results values (78,'nudge','the waiting person nudges once','ok','ok');
+  exception when others then
+    insert into zyra_journey_results values (78,'nudge','the waiting person nudges once', sqlerrm,'ok');
+  end;
+  insert into zyra_journey_results values (79,'nudge','one notification, to the pauser ALONE',
+    (select count(*) from notifications where related_match_id=mid and type='pause_nudge' and user_id=male1)::text
+     || '/' || (select count(*) from notifications where related_match_id=mid and type='pause_nudge' and user_id<>male1)::text,'1/0');
+  begin
+    perform nudge_paused_journey(mid);
+    insert into zyra_journey_results values (80,'nudge','a second nudge is refused','ALLOWED — DEFECT','already_nudged');
+  exception when others then
+    insert into zyra_journey_results values (80,'nudge','a second nudge is refused', sqlerrm,'already_nudged');
+  end;
+  -- a NEW pause is a NEW episode: the one nudge comes back
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  perform resume_journey(mid);
+  perform suspend_journey(mid);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  begin
+    perform nudge_paused_journey(mid);
+    insert into zyra_journey_results values (81,'nudge','a new pause episode restores the nudge','ok','ok');
+  exception when others then
+    insert into zyra_journey_results values (81,'nudge','a new pause episode restores the nudge', sqlerrm,'ok');
+  end;
+  -- the Timeline pair: paused twice, continued once at this point —
+  -- dated, nameless (the milestone row carries type and time only)
+  insert into zyra_journey_results values (82,'nudge','Timeline holds the nameless pair (paused/continued)',
+    (select count(*) filter (where milestone_type='journey_paused')::text || '/' ||
+            count(*) filter (where milestone_type='journey_continued')::text
+       from timeline_milestones tm join timelines t on t.id = tm.timeline_id
+      where t.match_id = mid),'2/1');
+  delete from notifications where related_match_id=mid;
+  delete from matches where id=mid;
+  delete from likes where liker_id in (male1,fem1) and liked_id in (male1,fem1);
+
+  -- ══ M · shared pause holds (DR-ZYRA-170, 2026-08-15) ════════════════
+  -- A pause is a personal hold: either party may hold, the Journey rests
+  -- while any hold exists, you lift only your own, and the primary hand
+  -- lifting first PROMOTES the second hold. The milestone trigger writes
+  -- nothing for mirrors and promotions (suspended_by never touches NULL)
+  -- — checks 87 and 91 pin exactly that.
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  insert into likes (liker_id, liked_id) values (male1, fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  insert into likes (liker_id, liked_id) values (fem1, male1);
+  select id into mid from matches where seeker_a_id=least(male1,fem1) and seeker_b_id=greatest(male1,fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  perform promote_journey_to_active(mid);
+  perform suspend_journey(mid);
+  insert into zyra_journey_results values (83,'shared-pause','the other person is TOLD about a pause now',
+    (select count(*) from notifications where related_match_id=mid and type='journey_paused' and user_id=fem1)::text || '/' ||
+    (select count(*) from notifications where related_match_id=mid and type='journey_paused' and user_id=male1)::text,'1/0');
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  perform suspend_journey(mid);
+  insert into zyra_journey_results values (84,'shared-pause','mirror lands in also_paused_by',
+    (select (also_paused_by=fem1)::text from matches where id=mid),'true');
+  insert into zyra_journey_results values (85,'shared-pause','...and on the attempt',
+    (select (also_paused_by=fem1)::text from journey_attempts where match_id=mid),'true');
+  insert into zyra_journey_results values (86,'shared-pause','first pauser told "also paused", alone',
+    (select count(*) from notifications where related_match_id=mid and type='journey_also_paused' and user_id=male1)::text || '/' ||
+    (select count(*) from notifications where related_match_id=mid and type='journey_also_paused' and user_id=fem1)::text,'1/0');
+  insert into zyra_journey_results values (87,'shared-pause','mirror writes NO second Timeline pause',
+    (select count(*) from timeline_milestones tm join timelines t on t.id=tm.timeline_id
+      where t.match_id=mid and tm.milestone_type='journey_paused')::text,'1');
+  begin
+    perform nudge_paused_journey(mid);
+    insert into zyra_journey_results values (88,'shared-pause','a second holder cannot nudge','ALLOWED — DEFECT','pauser_cannot_nudge');
+  exception when others then
+    insert into zyra_journey_results values (88,'shared-pause','a second holder cannot nudge', sqlerrm,'pauser_cannot_nudge');
+  end;
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  perform resume_journey(mid);
+  insert into zyra_journey_results values (89,'shared-pause','primary lift PROMOTES the second hold',
+    (select (suspended_by=fem1)::text || '/' || (also_paused_by is null)::text from matches where id=mid),'true/true');
+  insert into zyra_journey_results values (90,'shared-pause','the lift IS the ready signal',
+    (select (pause_nudged_at is not null)::text from matches where id=mid) || '/' ||
+    (select count(*) from notifications where related_match_id=mid and type='pause_nudge' and user_id=fem1)::text,'true/1');
+  insert into zyra_journey_results values (91,'shared-pause','promotion writes NO Timeline continued',
+    (select count(*) from timeline_milestones tm join timelines t on t.id=tm.timeline_id
+      where t.match_id=mid and tm.milestone_type='journey_continued')::text,'0');
+  begin
+    perform resume_journey(mid);
+    insert into zyra_journey_results values (92,'shared-pause','no hold, nothing to lift','ALLOWED — DEFECT','no_hold_to_lift');
+  exception when others then
+    insert into zyra_journey_results values (92,'shared-pause','no hold, nothing to lift', sqlerrm,'no_hold_to_lift');
+  end;
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  perform resume_journey(mid);
+  insert into zyra_journey_results values (93,'shared-pause','last lift activates + tells the other, alone',
+    (select status from matches where id=mid) || '/' ||
+    (select (suspended_by is null and also_paused_by is null)::text from matches where id=mid) || '/' ||
+    (select count(*) from notifications where related_match_id=mid and type='journey_continued' and user_id=male1)::text,'active/true/1');
+  begin
+    update matches set also_paused_by=fem1 where id=mid;
+    insert into zyra_journey_results values (94,'shared-pause','a second hold cannot exist without a first','ALLOWED — DEFECT','refused');
+  exception when others then
+    insert into zyra_journey_results values (94,'shared-pause','a second hold cannot exist without a first',
+      case when sqlerrm like '%also_pause_requires_primary%' then 'refused' else sqlerrm end,'refused');
+  end;
+  delete from notifications where related_match_id=mid;
+  delete from matches where id=mid;
+  delete from likes where liker_id in (male1,fem1) and liked_id in (male1,fem1);
+
   insert into zyra_journey_results values (57,'teardown','no matches left behind by THIS suite',
     (select count(*) from matches)::text, base_matches::text);
   insert into zyra_journey_results values (58,'teardown','no reviews left behind by THIS suite',
@@ -352,12 +676,17 @@ begin
     (select count(*) from wali_links where seeker_id=fem1)::text,'0');
 end $$;
 
-select area, count(*) as checks, count(*) filter (where got=expected) as passed,
-       count(*) filter (where got is distinct from expected) as failed
-from zyra_journey_results group by area
-union all select 'TOTAL', count(*), count(*) filter (where got=expected),
-       count(*) filter (where got is distinct from expected) from zyra_journey_results
-order by area='TOTAL', area;
+-- Wrapped in a subquery 2026-08-12: an ORDER BY attached directly to a
+-- UNION may only name output columns, so `order by area='TOTAL'` is an
+-- error (0A000) and the tail refused to run. Same fix in the guard suite.
+select * from (
+  select area, count(*) as checks, count(*) filter (where got=expected) as passed,
+         count(*) filter (where got is distinct from expected) as failed
+  from zyra_journey_results group by area
+  union all select 'TOTAL', count(*), count(*) filter (where got=expected),
+         count(*) filter (where got is distinct from expected) from zyra_journey_results
+) t
+order by (t.area='TOTAL'), t.area;
 
 -- Failures in detail. Empty = suite green.
 select n, area, check_name, got, expected

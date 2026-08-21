@@ -12,20 +12,23 @@
 // The naming mismatch itself is intentional and not a bug: the DB
 // identifiers are internal/stable, the product names are what users
 // see, and that's a completely normal separation. The REAL gap this
-// audit found is that nothing in the Flutter app ever reads or writes
-// `subscriptions.plan_type` at all — it's seeded directly in
-// supabase/seed_dev_accounts.sql and otherwise untouched. AppState's
-// `ZyraPlan` enum (basic/one) is a fully separate, local-only mock
-// entitlement flag with no connection to the real subscriptions table
-// — flipping it (UpgradeScreen, DeveloperAccessScreen) never writes
-// to `subscriptions`, and nothing ever reads `subscriptions.plan_type`
-// back into AppState.plan. This mirrors the well-known "no real
-// payment processing" gap (Founder handover, Immediate Next Steps
-// item 6) — wiring plan_type <-> ZyraPlan for real only matters once
-// there's an actual purchase flow to drive it, so it's deliberately
-// NOT faked here. This file exists so that whenever that wiring
-// happens, there is one canonical mapping to use instead of ad hoc
-// strings scattered across screens.
+// audit found was that nothing in the Flutter app ever read or wrote
+// `subscriptions.plan_type` at all — AppState's `ZyraPlan` enum
+// (basic/one) was a fully separate, local-only mock entitlement flag.
+//
+// PARTIALLY CLOSED SINCE. Two things now cross the gap, both through
+// this file's mapping:
+//   READ   zyra_session_router.dart (2026-08-12) reads plan_type back
+//          into AppState.plan on every sign-in and cold start.
+//   WRITE  the dev panel's Membership control (2026-08-12) writes it
+//          for @zyra.test accounts via zyra_dev_set_seeker_plan(), so
+//          server-enforced entitlements (pause caps) test against the
+//          plan being simulated.
+// What remains deliberately unwired is REAL purchasing — UpgradeScreen
+// still flips only the mock, matching the known "no real payment
+// processing" gap (Founder handover, Immediate Next Steps item 6).
+// When IAP arrives, it drives the same column through this same
+// mapping.
 //
 // wali_premium (Wali One) is doubly dormant: unused by any Dart
 // code AND never granted by any real purchase flow — Wali's

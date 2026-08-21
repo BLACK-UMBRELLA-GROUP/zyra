@@ -26,7 +26,7 @@ import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/report_profile_sheet.dart';
 import '../../widgets/zyra_fade_edges.dart';
-import '../connections/connections_screen.dart' show ZyraCardMetrics;
+import '../../theme/zyra_card_metrics.dart';
 
 class GuardianDetailScreen extends StatefulWidget {
   final WaliLinkedPerson person;
@@ -709,34 +709,6 @@ class _Row extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  final String label;
-  final bool strong;
-  const _Chip({required this.label, this.strong = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: strong ? 0.20 : 0.09),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: strong ? 0.30 : 0.14),
-          width: 0.5,
-        ),
-      ),
-      child: Text(
-        label,
-        style: ZyraText.subtext(
-          size: 11.5,
-          color: Colors.white.withValues(alpha: strong ? 1 : 0.65),
-        ),
       ),
     );
   }

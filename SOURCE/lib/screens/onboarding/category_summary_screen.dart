@@ -1,13 +1,11 @@
-// Category Summary — shown after each Chapter 3/4 category per Onboarding
-// Rules & UX / Seeker Onboarding Summary.md §CATEGORY SUMMARY. Chapter 3
-// summary shows only "Your Answer"; Chapter 4 summary shows the traffic
-// light per option, expandable. Only one card expands at a time.
+// Combined compatibility category summary. Every card keeps the Seeker's own
+// answer visible; scored questions can expand to show the traffic lights set
+// immediately after that answer. Only one card expands at a time.
 
 import 'package:flutter/material.dart';
 import '../../models/onboarding_question.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../../widgets/fab_continue_button.dart';
 
 class CategorySummaryScreen extends StatefulWidget {
   final ZyraBackgroundVariant background;
@@ -16,6 +14,7 @@ class CategorySummaryScreen extends StatefulWidget {
   final Map<String, dynamic> answers; // question id -> String or List<String>
   final Map<String, Map<String, TrafficLight>>? preferences; // Ch4 only
   final VoidCallback onContinue;
+  final VoidCallback? onBack;
   final void Function(String questionId)? onEdit;
 
   const CategorySummaryScreen({
@@ -26,6 +25,7 @@ class CategorySummaryScreen extends StatefulWidget {
     required this.answers,
     required this.onContinue,
     this.preferences,
+    this.onBack,
     this.onEdit,
   });
 
@@ -45,43 +45,77 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isPreferences = widget.preferences != null;
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.backgroundFor(widget.background)),
+        decoration: BoxDecoration(
+          gradient: ZyraColors.backgroundFor(widget.background),
+        ),
         child: Stack(
           children: [
             SafeArea(
               child: Column(
                 children: [
+                  if (widget.onBack != null)
+                    _SummaryUpCue(onTap: widget.onBack!),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
                     child: Row(
                       children: [
-                        const Icon(Icons.check_circle, color: Color(0xFF50B478), size: 20),
+                        const Icon(
+                          Icons.check_circle,
+                          color: Color(0xFF50B478),
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: Text('${widget.categoryName} Complete', style: ZyraText.heading(size: 18)),
+                          child: Text(
+                            '${widget.categoryName} Complete',
+                            key: const ValueKey(
+                              'compatibility_category_complete',
+                            ),
+                            style: ZyraText.heading(size: 18),
+                          ),
                         ),
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.preferences == null
+                            ? 'Review your About You answers before continuing.'
+                            : 'Review your answers. Open a scored question to check its traffic lights.',
+                        style: ZyraText.subtext(
+                          size: 11.5,
+                          color: Colors.white54,
+                        ),
+                      ),
+                    ),
+                  ),
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 104),
                       itemCount: widget.questions.length,
                       itemBuilder: (context, index) {
                         final q = widget.questions[index];
                         final expanded = _expandedId == q.id;
+                        final hasPreferences =
+                            widget.preferences?[q.id] != null;
                         return _SummaryCard(
                           question: q,
-                          expanded: expanded && isPreferences,
-                          expandable: isPreferences,
+                          expanded: expanded && hasPreferences,
+                          expandable: hasPreferences,
                           answerText: _answerText(q),
                           preferences: widget.preferences?[q.id],
-                          onTap: isPreferences
-                              ? () => setState(() => _expandedId = expanded ? null : q.id)
-                              : (widget.onEdit != null ? () => widget.onEdit!(q.id) : null),
+                          onTap: hasPreferences
+                              ? () => setState(
+                                  () => _expandedId = expanded ? null : q.id,
+                                )
+                              : (widget.onEdit != null
+                                    ? () => widget.onEdit!(q.id)
+                                    : null),
                         );
                       },
                     ),
@@ -89,8 +123,87 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
                 ],
               ),
             ),
-            FabContinueButton(active: true, onPressed: widget.onContinue),
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: 20,
+              child: SafeArea(
+                top: false,
+                child: _SummaryDownCue(onTap: widget.onContinue),
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SummaryUpCue extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _SummaryUpCue({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Return to the previous compatibility question',
+      child: InkWell(
+        key: const ValueKey('compatibility_summary_back'),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 1),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.keyboard_arrow_up_rounded,
+                color: Colors.white70,
+                size: 21,
+              ),
+              Text(
+                'Previous question',
+                style: ZyraText.subtext(size: 9.5, color: Colors.white54),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SummaryDownCue extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _SummaryDownCue({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Continue to the next compatibility section',
+      child: InkWell(
+        key: const ValueKey('compatibility_summary_continue'),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: ZyraColors.unlockText,
+                size: 25,
+              ),
+              const SizedBox(height: 3),
+              Text(
+                'Continue',
+                style: ZyraText.subtext(size: 11.5, color: Colors.white70),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -136,8 +249,17 @@ class _SummaryCard extends StatelessWidget {
                 Row(
                   children: [
                     if (expandable)
-                      Icon(expanded ? Icons.expand_more : Icons.chevron_right, color: Colors.white54, size: 18),
-                    Expanded(child: Text(question.prompt, style: ZyraText.body(size: 13.5))),
+                      Icon(
+                        expanded ? Icons.expand_more : Icons.chevron_right,
+                        color: Colors.white54,
+                        size: 18,
+                      ),
+                    Expanded(
+                      child: Text(
+                        question.prompt,
+                        style: ZyraText.body(size: 13.5),
+                      ),
+                    ),
                   ],
                 ),
                 if (expanded && preferences != null) ...[
@@ -148,8 +270,16 @@ class _SummaryCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 3),
                       child: Row(
                         children: [
-                          Expanded(child: Text(option, style: ZyraText.subtext(size: 12))),
-                          Text(light?.emoji ?? '—', style: const TextStyle(fontSize: 13)),
+                          Expanded(
+                            child: Text(
+                              option,
+                              style: ZyraText.subtext(size: 12),
+                            ),
+                          ),
+                          Text(
+                            light?.emoji ?? '—',
+                            style: const TextStyle(fontSize: 13),
+                          ),
                         ],
                       ),
                     );
@@ -159,7 +289,13 @@ class _SummaryCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    Text('Your Answer', style: ZyraText.subtext(size: 11.5, color: Colors.white38)),
+                    Text(
+                      'Your Answer',
+                      style: ZyraText.subtext(
+                        size: 11.5,
+                        color: Colors.white38,
+                      ),
+                    ),
                     const Spacer(),
                     Text(answerText, style: ZyraText.body(size: 12.5)),
                   ],

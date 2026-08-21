@@ -40,8 +40,11 @@ import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../connections/connections_screen.dart' show ZyraCardMetrics;
+import '../../theme/zyra_card_metrics.dart';
+import '../../widgets/zyra_account_switch_sheet.dart';
+import '../onboarding/account_path_overview_screen.dart';
 import '../subscription/upgrade_screen.dart';
+import '../wali/wali_home_shell.dart';
 import '../../services/zyra_app_lock.dart';
 import 'account_advanced_screen.dart';
 import 'app_lock_screen.dart';
@@ -51,6 +54,7 @@ import 'help_support_screen.dart';
 import 'notification_settings_screen.dart';
 import 'privacy_and_data_screen.dart';
 import 'privacy_settings_screen.dart';
+import 'sign_in_security_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -62,6 +66,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   int _guardians = 0;
   bool _hasMain = false;
+  List<WaliLinkedPerson> _guardianOf = const [];
 
   @override
   void initState() {
@@ -72,6 +77,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _guardians = people.length;
         _hasMain = people.any((p) => p.isMain);
       });
+    });
+    // The server cannot create this state until the account-context
+    // migration lands, but reading it is safe and makes the client ready:
+    // once an active wali_link exists with this identity as wali_id, the
+    // Guardian option becomes a real full-shell switch with no sign-out.
+    ZyraWaliLinkService.fetchLinkedPeople(asWali: true).then((people) {
+      if (!mounted) return;
+      setState(() => _guardianOf = people);
     });
   }
 
@@ -95,37 +108,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// "Signed in with Your provider" for its entire life and looking
   /// deliberate while doing it. A fallback that produces a plausible
   /// string is how a display bug survives to launch.
-  String get _provider => switch (_providerRaw) {
-        'google' => 'Google',
-        'apple' => 'Apple',
-        'email' => kReleaseMode ? 'Email' : 'Test account',
-        null => kReleaseMode ? 'Unknown' : 'NOT SET',
-        _ => _providerRaw ?? 'Unknown',
-      };
-
-  /// Non-null only when something is wrong. Shown in the dialog, loudly,
-  /// and never in release — a real user cannot act on any of this.
-  String? get _providerWarning {
-    if (kReleaseMode) return null;
+  String get _provider {
+    if (_providerRaw == 'email' && ZyraAuth.hasLinkedOAuth) {
+      return 'Recovery email';
+    }
     return switch (_providerRaw) {
-      'google' || 'apple' => null,
-      'email' =>
-        'DEV: signed in through the email/password provider, not OAuth. '
-            'This is a seeded test account. Real builds must use Google or '
-            'Apple — if you are seeing this on a device, OAuth is not '
-            'configured.',
-      null => 'DEV: no provider on the session at all. Check OAuth setup.',
-      _ => 'DEV: unexpected provider "$_providerRaw".',
+      'google' => 'Google',
+      'apple' => 'Apple',
+      'email' => kReleaseMode ? 'Email' : 'Test account',
+      null => kReleaseMode ? 'Unknown' : 'NOT SET',
+      _ => _providerRaw ?? 'Unknown',
     };
   }
 
-  String get _email => ZyraAuth.currentUser?.email ?? '—';
+  /// One identity, two application contexts — Founder, 2026-08-19.
+  ///
+  /// No authentication call occurs here. A context selection replaces the
+  /// whole application shell. In profile builds, when the server cannot yet
+  /// express the Guardian context, the same row opens the approved first-time
+  /// setup preview instead of signing the user out or pretending activation
+  /// succeeded.
+  Future<void> _switchAccount(BuildContext context) async {
+    final names = _guardianOf.map((person) => person.firstName).join(' · ');
+    final selection = await showZyraAccountSwitchSheet(
+      context: context,
+      options: [
+        const ZyraAccountSwitchOption(
+          context: ZyraAccountContext.seeker,
+          title: 'Seeker',
+          subtitle: 'Your marriage journey',
+          icon: Icons.favorite_border,
+          current: true,
+        ),
+        ZyraAccountSwitchOption(
+          context: ZyraAccountContext.guardian,
+          title: 'Guardian',
+          subtitle: _guardianOf.isEmpty
+              ? 'First-time Guardian setup'
+              : 'Supporting $names',
+          icon: Icons.shield_outlined,
+          actionLabel: _guardianOf.isEmpty ? 'SET UP ›' : 'SWITCH ›',
+        ),
+      ],
+    );
+    if (selection != ZyraAccountContext.guardian || !context.mounted) return;
 
-  /// Apple's Hide My Email mints a random forwarding address. It is the
-  /// only address ZYRA ever receives, and shown without explanation it
-  /// reads as an error — the user concludes we have the wrong address and
-  /// goes looking for a way to correct it, which does not exist.
-  bool get _isAppleRelay => _email.endsWith('@privaterelay.appleid.com');
+    if (_guardianOf.isEmpty) {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => const GuardianOnboardingOverviewScreen(
+            migrationGatedPreview: true,
+          ),
+        ),
+      );
+      return;
+    }
+
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const WaliHomeShell()),
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,10 +182,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         iconTheme: const IconThemeData(color: Colors.white70),
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(state.gender)),
+        decoration: BoxDecoration(
+          gradient: ZyraColors.genderGradient(state.gender),
+        ),
         child: SafeArea(
           child: ListView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
             children: [
               // §1 — the page answers "what can I control?" before it offers
@@ -153,8 +200,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 guardians: _guardians == 0
                     ? 'None linked'
                     : _hasMain
-                        ? '$_guardians linked · 1 Main'
-                        : '$_guardians linked · no Main',
+                    ? '$_guardians linked · 1 Main'
+                    : '$_guardians linked · no Main',
                 signedInWith: _provider,
               ),
 
@@ -170,8 +217,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _Row(
                     label: 'Sign-in & security',
                     value: _provider,
-                    onTap: () => _showSignIn(context),
+                    onTap: () async {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SignInSecurityScreen(),
+                        ),
+                      );
+                      if (mounted) setState(() {});
+                    },
                   ),
+                  // Preview-gated until the account-context migration is
+                  // explicitly authorised. Profile builds are what the
+                  // Founder tests on device; release builds must not expose
+                  // a second context the current server cannot create yet.
+                  if (!kReleaseMode)
+                    _Row(
+                      label: 'Switch Account',
+                      value: 'Seeker · Guardian',
+                      onTap: () => _switchAccount(context),
+                    ),
                   // ADDED 2026-08-07. Sits in ACCOUNT rather than PRIVACY
                   // deliberately: it protects the account as a whole, not
                   // one aspect of what other people can see, and it is the
@@ -181,18 +245,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     label: 'App lock',
                     value: ZyraAppLock.instance.enabled ? 'On' : 'Off',
                     onTap: () async {
-                      await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => const AppLockScreen(),
-                      ));
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AppLockScreen(),
+                        ),
+                      );
                       if (mounted) setState(() {}); // the row shows On/Off
                     },
                   ),
                   // §5 — Delete is two levels down, never in the main list.
                   _Row(
                     label: 'Advanced',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const AccountAdvancedScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const AccountAdvancedScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -216,21 +284,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               //
               // This supersedes the division of responsibility in this
               // file's header, which gave compatibility to Settings.
-
               _Section(
                 title: 'PRIVACY',
                 children: [
                   _Row(
                     label: 'Discovery & visibility',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const PrivacySettingsScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const PrivacySettingsScreen(),
+                      ),
+                    ),
                   ),
                   _Row(
                     label: 'Blocked users',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const BlockedUsersScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const BlockedUsersScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -240,9 +311,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   _Row(
                     label: 'Notifications & emails',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const NotificationSettingsScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const NotificationSettingsScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -253,9 +326,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _Row(
                     label: 'Manage subscription',
                     value: state.plan == ZyraPlan.basic ? 'Free' : 'ZYRA One',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const UpgradeScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const UpgradeScreen()),
+                    ),
                   ),
                 ],
               ),
@@ -265,9 +338,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   _Row(
                     label: 'Help & support',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const HelpSupportScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const HelpSupportScreen(),
+                      ),
+                    ),
                   ),
                   // ADDED 2026-08-07 (Founder: "a feedback section where we
                   // can improve the app from users requests").
@@ -279,9 +354,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // door marked "problem".
                   _Row(
                     label: 'Send feedback',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const FeedbackScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const FeedbackScreen()),
+                    ),
                   ),
                 ],
               ),
@@ -301,9 +376,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   _Row(
                     label: 'Privacy & data',
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const PrivacyAndDataScreen(),
-                    )),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const PrivacyAndDataScreen(),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -321,92 +398,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// are here because the structure is the deliverable — but a row that
   /// silently does nothing is worse than one that says so.
   void _todo(BuildContext context, String what) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$what — editor coming next.')),
-    );
-  }
-
-  /// ZYRA holds no password and does not own the email address. Rather than
-  /// offer controls that cannot work, this says what is true.
-  /// Sign-in & security.
-  ///
-  /// Founder-approved content, 2026-08-07: provider, email, an Apple relay
-  /// explanation ONLY when the address is actually a relay, and an honest
-  /// statement about recovery. Nothing here is invented — the section says
-  /// what is true and stops.
-  void _showSignIn(BuildContext context) {
-    final warning = _providerWarning;
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: const Color(0xFF2A1F33),
-        title: Text('Sign-in & security', style: ZyraText.heading(size: 17)),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Signed in with $_provider',
-                  style: ZyraText.body(size: 15, color: Colors.white)),
-              const SizedBox(height: 4),
-              Text(_email,
-                  style: ZyraText.subtext(size: 13, color: Colors.white54)),
-
-              // Only when it IS a relay. One row, two meanings — the copy
-              // should not pretend otherwise.
-              if (_isAppleRelay) ...[
-                const SizedBox(height: 16),
-                Text(
-                  'Apple is hiding your real address. Email from ZYRA is '
-                  'forwarded to you by Apple, and you can stop that at any '
-                  'time in your Apple ID settings.',
-                  style: ZyraText.subtext(size: 12.5, color: Colors.white54),
-                ),
-              ],
-
-              const SizedBox(height: 16),
-              Text(
-                'ZYRA never stores a password, and cannot change your email '
-                'address — $_provider manages both.',
-                style: ZyraText.subtext(size: 12.5, color: Colors.white38),
-              ),
-
-              // The largest support burden OAuth-only apps carry. Said once,
-              // calmly, here — rather than discovered by someone in distress.
-              const SizedBox(height: 12),
-              Text(
-                'Because there is no ZYRA password, access to your account '
-                'is access to your $_provider account. If you lose that, we '
-                'have no way to let you back in.',
-                style: ZyraText.subtext(size: 12.5, color: Colors.white38),
-              ),
-
-              if (warning != null) ...[
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF8A65).withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                        color: const Color(0xFFFF8A65).withValues(alpha: 0.4)),
-                  ),
-                  child: Text(warning,
-                      style: ZyraText.subtext(
-                          size: 12, color: const Color(0xFFFFAB91))),
-                ),
-              ],
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Close', style: ZyraText.body(size: 14, color: Colors.white70)),
-          ),
-        ],
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$what — editor coming next.')));
   }
 }
 
@@ -429,7 +423,10 @@ class _SummaryCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.09),
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.14), width: 0.5),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.14),
+          width: 0.5,
+        ),
       ),
       child: Column(
         children: [
@@ -444,20 +441,25 @@ class _SummaryCard extends StatelessWidget {
   }
 
   Widget _line(String k, String v) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7),
-        child: Row(
-          children: [
-            Expanded(child: Text(k, style: ZyraText.subtext(size: 13, color: Colors.white54))),
-            Text(v, style: ZyraText.body(size: 14, color: Colors.white)),
-          ],
+    padding: const EdgeInsets.symmetric(vertical: 7),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            k,
+            style: ZyraText.subtext(size: 13, color: Colors.white54),
+          ),
         ),
-      );
+        Text(v, style: ZyraText.body(size: 14, color: Colors.white)),
+      ],
+    ),
+  );
 
   Widget _divider() => Container(
-        height: 0.5,
-        margin: const EdgeInsets.symmetric(vertical: 3),
-        color: Colors.white.withValues(alpha: 0.08),
-      );
+    height: 0.5,
+    margin: const EdgeInsets.symmetric(vertical: 3),
+    color: Colors.white.withValues(alpha: 0.08),
+  );
 }
 
 // ── Section ────────────────────────────────────────────────────────────
@@ -507,27 +509,26 @@ class _VersionFooterState extends State<_VersionFooter> {
 
   @override
   Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('ZYRA', style: ZyraText.subtext(size: 11, color: Colors.white24)),
-          if (_line != null) ...[
-            const SizedBox(height: 3),
-            // SelectableText, not Text: the one thing anybody ever does
-            // with a version number is send it to support.
-            SelectableText(
-              _line!,
-              style: ZyraText.subtext(size: 11, color: Colors.white24),
-            ),
-          ],
-        ],
-      );
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Text('ZYRA', style: ZyraText.subtext(size: 11, color: Colors.white24)),
+      if (_line != null) ...[
+        const SizedBox(height: 3),
+        // SelectableText, not Text: the one thing anybody ever does
+        // with a version number is send it to support.
+        SelectableText(
+          _line!,
+          style: ZyraText.subtext(size: 11, color: Colors.white24),
+        ),
+      ],
+    ],
+  );
 }
 
 class _Section extends StatelessWidget {
   final String title;
-  final String? subtitle;
   final List<Widget> children;
-  const _Section({required this.title, required this.children, this.subtitle});
+  const _Section({required this.title, required this.children});
 
   @override
   Widget build(BuildContext context) {
@@ -537,16 +538,15 @@ class _Section extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title, style: ZyraText.chapterLabel(color: Colors.white54)),
-          if (subtitle != null) ...[
-            const SizedBox(height: 4),
-            Text(subtitle!, style: ZyraText.subtext(size: 11.5, color: Colors.white38)),
-          ],
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.10), width: 0.5),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.10),
+                width: 0.5,
+              ),
             ),
             child: Column(children: children),
           ),
@@ -564,18 +564,11 @@ class _Row extends StatelessWidget {
   final String label;
   final String? value;
   final VoidCallback onTap;
-  final bool destructive;
 
-  const _Row({
-    required this.label,
-    required this.onTap,
-    this.value,
-    this.destructive = false,
-  });
+  const _Row({required this.label, required this.onTap, this.value});
 
   @override
   Widget build(BuildContext context) {
-    final tint = destructive ? Colors.redAccent.shade100 : Colors.white;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -584,7 +577,12 @@ class _Row extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           child: Row(
             children: [
-              Expanded(child: Text(label, style: ZyraText.body(size: 15, color: tint))),
+              Expanded(
+                child: Text(
+                  label,
+                  style: ZyraText.body(size: 15, color: Colors.white),
+                ),
+              ),
               if (value != null && value!.isNotEmpty) ...[
                 Flexible(
                   child: Text(
@@ -596,7 +594,11 @@ class _Row extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
               ],
-              Icon(Icons.chevron_right, size: 18, color: Colors.white.withValues(alpha: 0.3)),
+              Icon(
+                Icons.chevron_right,
+                size: 18,
+                color: Colors.white.withValues(alpha: 0.3),
+              ),
             ],
           ),
         ),

@@ -1,0 +1,11 @@
+-- SELF-SERVICE JOURNEY SEEDING v1 — DR-ZYRA-180, 2026-08-15.
+-- Superseded within the hour by 20260815232347 (v2): this version
+-- inserted journey_attempts itself, not knowing zyra_create_first_
+-- attempt() already does that on every matches insert, and it
+-- pre-checked "one active" itself where zyra_enforce_one_active_
+-- attempt() already holds the PLAN-AWARE limit. Kept as applied;
+-- see v2 for the living function body.
+-- (Body identical to v2 except: explicit journey_attempts insert,
+-- and an any-active early return instead of the limit-exception
+-- translation. The create-or-replace in v2 is authoritative.)
+select 1; -- applied live 2026-08-15 23:22 UTC; v2 replaced the function

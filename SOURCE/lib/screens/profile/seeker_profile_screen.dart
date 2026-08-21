@@ -16,6 +16,16 @@
 //
 // So: no actions on this screen. It is a place to look, not to choose.
 //
+// AMENDED 2026-08-12 (Founder, Option A of the row-tap mockups: "the row
+// IS the person… execute all of it"): the JOURNEY LIST rows now open this
+// screen for Potential, Paused and Ended people, and those states carry
+// their actions WITH them — an optional [actionBar] rendered at the foot,
+// and an optional [stateLabel] chip at the top right. The screen itself
+// stays action-agnostic: it renders what it is handed and never decides.
+// The Journey header's own "Profile" pill passes neither, so mid-Journey
+// viewing is exactly the no-actions place it always was. Browse remains
+// the only deciding surface for people you are NOT yet matched with.
+//
 // PHOTO NAVIGATION MATCHES BROWSE — Founder, 2026-08-10. This was briefly a
 // swipeable PageView with dots across the top, which is a second convention
 // for the one gesture people use most in this app. Browse settled it long ago:
@@ -38,11 +48,43 @@
 import 'package:flutter/material.dart';
 import '../../models/seeker_profile.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_profile_name_block.dart';
 import '../../widgets/zyra_profile_image.dart';
 
 class SeekerProfileScreen extends StatefulWidget {
   final SeekerProfile profile;
-  const SeekerProfileScreen({super.key, required this.profile});
+
+  /// Small chip at the top right — "Paused by Aisha · 3 months",
+  /// "Potential", "Ended in June". Null (the Journey header's use) shows
+  /// nothing.
+  final String? stateLabel;
+
+  /// The state's actions, rendered at the foot over the photo. The
+  /// CALLER owns every button in it (what they say, what they pop, what
+  /// they push) — this screen only makes room. Null = the original
+  /// look-only screen, unchanged.
+  final Widget? actionBar;
+
+  /// A line under the name — who put this person forward.
+  ///
+  /// ADDED 2026-08-13 (DR-ZYRA-160, Founder: "when profile card is
+  /// opened show somewhere the text suggested by (then user)"). It
+  /// replaces the [stateLabel] chip the introduction flow used to pass,
+  /// and the position is the point of the change: a chip in the top
+  /// right sat on the photo, away from the person it describes. Under
+  /// the name it reads as part of who they are — which is what a
+  /// Guardian's introduction is.
+  ///
+  /// Same shield glyph the Connections card uses for the same fact, so
+  /// the two surfaces say it the same way.
+  final String? suggestedBy;
+
+  const SeekerProfileScreen(
+      {super.key,
+      required this.profile,
+      this.stateLabel,
+      this.actionBar,
+      this.suggestedBy});
 
   @override
   State<SeekerProfileScreen> createState() => _SeekerProfileScreenState();
@@ -149,28 +191,46 @@ class _SeekerProfileScreenState extends State<SeekerProfileScreen> {
                 ),
 
               Positioned(
-                left: 20, right: 20, bottom: 32,
+                // The name block lifts to make room when a state's action
+                // bar rides along (journey rows); look-only callers keep
+                // the original resting place.
+                left: 20, right: 20,
+                bottom: widget.actionBar == null ? 32 : 132,
                 child: IgnorePointer(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(p.firstName, style: ZyraText.heading(size: 30)),
-                      // Surname on its own line, per the Founder's 2026-07-26
-                      // Browse review — "put surname under first name".
-                      // surnameLine is a display string, not a lastName: it may
-                      // already hold "middle name + surname" together.
-                      if ((p.surnameLine ?? '').trim().isNotEmpty) ...[
-                        const SizedBox(height: 2),
-                        Text(p.surnameLine!.trim(),
-                            style: ZyraText.heading(
-                                size: 20,
-                                color: Colors.white.withValues(alpha: 0.88))),
+                      // THE SHARED BLOCK — DR-ZYRA-163. The surname
+                      // had its own line here, per the 2026-07-26 Browse
+                      // review; Browse itself moved it inline on
+                      // 2026-08-13 (DR-ZYRA-162) and this followed it,
+                      // by using the same widget rather than by being
+                      // edited to match. It also gains the two-layer
+                      // photo shadow, which was private to Browse and so
+                      // never reached this screen at all.
+                      ZyraProfileNameBlock(profile: p),
+                      if ((widget.suggestedBy ?? '').trim().isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.shield_outlined,
+                                size: 13,
+                                color: Colors.white.withValues(alpha: 0.75)),
+                            const SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                'Suggested by ${widget.suggestedBy!.trim()}',
+                                style: ZyraText.subtext(
+                                    size: 12.5,
+                                    color:
+                                        Colors.white.withValues(alpha: 0.85)),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
-                      const SizedBox(height: 8),
-                      Text('${p.age} · ${p.city}',
-                          style: ZyraText.body(
-                              size: 15,
-                              color: Colors.white.withValues(alpha: 0.85))),
                     ],
                   ),
                 ),
@@ -186,6 +246,39 @@ class _SeekerProfileScreenState extends State<SeekerProfileScreen> {
                   ),
                 ),
               ),
+
+              if (widget.stateLabel != null)
+                Positioned(
+                  top: 8, right: 16,
+                  child: SafeArea(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 11, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0x59140C1A),
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.22)),
+                      ),
+                      child: Text(widget.stateLabel!,
+                          style: ZyraText.subtext(
+                              size: 10.5,
+                              color: Colors.white.withValues(alpha: 0.9))),
+                    ),
+                  ),
+                ),
+
+              if (widget.actionBar != null)
+                Positioned(
+                  left: 16, right: 16, bottom: 0,
+                  child: SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 14),
+                      child: widget.actionBar!,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
