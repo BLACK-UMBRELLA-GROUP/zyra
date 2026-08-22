@@ -37,6 +37,7 @@
 
 import 'package:flutter/material.dart';
 
+import '../../models/zyra_gender.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -44,10 +45,9 @@ import '../../theme/zyra_text.dart';
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
 
-  void _todo(BuildContext context, String what) =>
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$what — coming next.')),
-      );
+  void _todo(BuildContext context, String what) => ScaffoldMessenger.of(
+    context,
+  ).showSnackBar(SnackBar(content: Text('$what — coming next.')));
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +61,14 @@ class EditProfileScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white70),
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(state.gender)),
+        decoration: BoxDecoration(
+          gradient: ZyraColors.genderGradient(state.gender),
+        ),
         child: SafeArea(
           child: ListView(
             physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
             children: [
               Text(
@@ -75,10 +78,19 @@ class EditProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 22),
 
-              Text('COMPATIBILITY', style: ZyraText.chapterLabel(color: Colors.white54)),
+              Text(
+                'COMPATIBILITY',
+                style: ZyraText.chapterLabel(color: Colors.white54),
+              ),
               const SizedBox(height: 10),
-              _Row(label: 'About you', onTap: () => _todo(context, 'About you')),
-              _Row(label: 'Lifestyle', onTap: () => _todo(context, 'Lifestyle')),
+              _Row(
+                label: 'About you',
+                onTap: () => _todo(context, 'About you'),
+              ),
+              _Row(
+                label: 'Lifestyle',
+                onTap: () => _todo(context, 'Lifestyle'),
+              ),
               _Row(
                 label: 'Marriage preferences',
                 onTap: () => _todo(context, 'Marriage preferences'),
@@ -97,7 +109,10 @@ class EditProfileScreen extends StatelessWidget {
               // person who wants to correct their birth year opens Edit
               // Profile, not Settings, and finding nothing is worse than
               // finding a plain explanation.
-              Text('FIXED', style: ZyraText.chapterLabel(color: Colors.white54)),
+              Text(
+                'FIXED',
+                style: ZyraText.chapterLabel(color: Colors.white54),
+              ),
               const SizedBox(height: 10),
               _FixedRow(
                 label: 'Date of birth',
@@ -105,9 +120,7 @@ class EditProfileScreen extends StatelessWidget {
               ),
               _FixedRow(
                 label: 'Gender',
-                value: state.gender == null
-                    ? '—'
-                    : (state.gender == 'male' ? 'Brother' : 'Sister'),
+                value: ZyraGender.profileLabel(state.gender),
               ),
               const SizedBox(height: 10),
               Text(
@@ -132,19 +145,22 @@ class _Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(label, style: ZyraText.body(size: 15, color: Colors.white)),
-              ),
-              const Icon(Icons.chevron_right, size: 19, color: Colors.white30),
-            ],
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: ZyraText.body(size: 15, color: Colors.white),
+            ),
           ),
-        ),
-      );
+          const Icon(Icons.chevron_right, size: 19, color: Colors.white30),
+        ],
+      ),
+    ),
+  );
 }
 
 class _FixedRow extends StatelessWidget {
@@ -154,16 +170,19 @@ class _FixedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 13),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(label, style: ZyraText.body(size: 15, color: Colors.white54)),
-            ),
-            Text(value, style: ZyraText.subtext(size: 13.5, color: Colors.white38)),
-            const SizedBox(width: 8),
-            const Icon(Icons.lock_outline, size: 15, color: Colors.white24),
-          ],
+    padding: const EdgeInsets.symmetric(vertical: 13),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            label,
+            style: ZyraText.body(size: 15, color: Colors.white54),
+          ),
         ),
-      );
+        Text(value, style: ZyraText.subtext(size: 13.5, color: Colors.white38)),
+        const SizedBox(width: 8),
+        const Icon(Icons.lock_outline, size: 15, color: Colors.white24),
+      ],
+    ),
+  );
 }

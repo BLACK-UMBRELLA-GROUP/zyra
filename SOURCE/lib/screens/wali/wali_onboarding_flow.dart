@@ -44,23 +44,35 @@ class WaliOnboardingFlow extends StatefulWidget {
 }
 
 class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
-  int _step = 0; // 0 = name, 1 = date of birth, 2 = relationship
+  int _step = 0; // 0 = name, 1 = date of birth, 2 = gender, 3 = relationship
   final TextEditingController _nameController = TextEditingController();
   DateTime? _dob;
   String? _dobError;
+  String? _gender;
   String? _relationship;
   bool _savingProfile = false;
   String? _saveError;
 
-  static const int _totalQuestions = 3;
+  static const int _totalQuestions = 4;
 
-  static const _relationships = [
+  static const _maleRelationships = [
     'Father',
     'Grandfather',
     'Brother',
     'Paternal Uncle',
     'Other',
   ];
+
+  static const _femaleRelationships = [
+    'Mother',
+    'Grandmother',
+    'Sister',
+    'Paternal Aunt',
+    'Other',
+  ];
+
+  List<String> get _relationships =>
+      _gender == 'female' ? _femaleRelationships : _maleRelationships;
 
   bool get _fabActive {
     switch (_step) {
@@ -69,6 +81,8 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
       case 1:
         return _dob != null && _dobError == null;
       case 2:
+        return _gender != null;
+      case 3:
         return _relationship != null;
       default:
         return false;
@@ -102,6 +116,8 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
         _dob ??= DateTime(now.year - 45, 1, 1);
         _dobError = null;
       } else if (_step == 2) {
+        _gender ??= 'male';
+      } else if (_step == 3) {
         _relationship ??= _relationships.first;
       }
     });
@@ -116,6 +132,7 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
     AppState.instance.saveWaliOnboarding(
       name: _nameController.text.trim(),
       relationship: _relationship!,
+      gender: _gender!,
     );
 
     if (!widget.devPreview) {
@@ -125,6 +142,7 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
       });
       final error = await ZyraProfileService.createWaliProfile(
         firstName: _nameController.text.trim(),
+        gender: _gender!,
         dob: _dob!,
       );
       if (!mounted) return;
@@ -138,7 +156,9 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => TransitionScreen(
-          background: ZyraBackgroundVariant.male,
+          background: _gender == 'female'
+              ? ZyraBackgroundVariant.female
+              : ZyraBackgroundVariant.male,
           title: 'Support and guidance',
           // CORRECTED 2026-08-01. This screen told every Guardian they would
           // see progress "without reading their private conversations".
@@ -225,9 +245,40 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           ),
         );
       case 2:
+        return _WaliQuestionScaffold(
+          progress: 3 / _totalQuestions,
+          question: 'Gender',
+          subtext: 'This keeps identity details and profile wording correct.',
+          fabActive: _fabActive,
+          onContinue: _next,
+          devPreview: widget.devPreview,
+          onDevSkip: _devSkipCurrentQuestion,
+          onSwipeBack: _back,
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final option in const [
+                ('Male', 'male'),
+                ('Female', 'female'),
+              ])
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _RelationshipOption(
+                    label: option.$1,
+                    selected: _gender == option.$2,
+                    onTap: () => setState(() {
+                      _gender = option.$2;
+                      _relationship = null;
+                    }),
+                  ),
+                ),
+            ],
+          ),
+        );
+      case 3:
       default:
         return _WaliQuestionScaffold(
-          progress: 1.0,
+          progress: 4 / _totalQuestions,
           question: 'What is your relationship to the Seeker you support?',
           subtext: 'Eligible Guardian relationships, per Islamic guidance.',
           fabActive: _fabActive && !_savingProfile,
@@ -303,11 +354,15 @@ class _WaliDobPicker extends StatelessWidget {
               size: 18,
             ),
             const SizedBox(width: 12),
-            Text(
-              label,
-              style: ZyraText.body(
-                size: 15,
-                color: value == null ? Colors.white38 : Colors.white,
+            Expanded(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: ZyraText.body(
+                  size: 15,
+                  color: value == null ? Colors.white38 : Colors.white,
+                ),
               ),
             ),
           ],
@@ -317,12 +372,9 @@ class _WaliDobPicker extends StatelessWidget {
   }
 }
 
-/// Deliberately not reusing the Seeker's OnboardingScaffold — the Guardian
-/// background is always the male-derived gradient (Guardian is, per spec, a
-/// male guardian), and there's no privacy-indicator concept in Wali
-/// onboarding (Wali identity fields aren't part of a Browse-visible
-/// profile), so a lighter dedicated scaffold avoids dragging in Seeker-
-/// only concepts that don't apply here.
+/// Deliberately not reusing the Seeker's OnboardingScaffold: Guardian
+/// identity fields are not part of a Browse-visible profile, so the Seeker-
+/// only privacy indicator and chapter framing do not apply here.
 class _WaliQuestionScaffold extends StatelessWidget {
   final double progress;
   final String question;
@@ -394,7 +446,7 @@ class _WaliQuestionScaffold extends StatelessWidget {
                               color: ZyraColors.unlockText,
                             ),
                             label: Text(
-                              'Skip question · DEV',
+                              'Skip · DEV',
                               style: ZyraText.subtext(
                                 size: 11.5,
                                 color: ZyraColors.unlockText,
@@ -419,6 +471,7 @@ class _WaliQuestionScaffold extends StatelessWidget {
                 bottom: 14,
                 right: 16,
                 child: GestureDetector(
+                  key: const ValueKey('wali_onboarding_continue'),
                   onTap: fabActive ? onContinue : null,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),

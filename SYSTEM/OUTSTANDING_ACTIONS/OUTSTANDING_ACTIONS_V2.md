@@ -8272,7 +8272,13 @@ Category:    Engineering / Observability
 Priority:    Medium — no known defect behind any of them, but
              this is the exact construct that concealed a release
              blocker for a month
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             2; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
@@ -8794,7 +8800,13 @@ Title:       Tier-0 Is Clearable By Retiring the Link and Tier-1 Is
 Category:    Correctness / Invariants (I1)
 Priority:    High — but CONDITIONAL. Unreachable today; becomes
              reachable the moment the dual-role work lands
-Status:      Open — TRACKED ONLY, fix not started
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — TRACKED ONLY, fix not started
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   -
@@ -8881,7 +8893,13 @@ Title:       Tier-1 Evaporates If the Shared Guardian Deletes His
              Depends On
 Category:    Correctness / Invariants (I1)
 Priority:    High
-Status:      Open — TRACKED ONLY, fix not started
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — TRACKED ONLY, fix not started
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   -
@@ -8973,7 +8991,13 @@ Title:       Two Seekers Sharing a Main Guardian Collapse the Family
 Category:    Correctness / Product
 Priority:    Medium — depends entirely on whether this is judged
              correct behaviour, which it may well be
-Status:      OPEN — SCOPE NARROWED 2026-08-10 by DR-ZYRA-137.
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: OPEN — SCOPE NARROWED 2026-08-10 by DR-ZYRA-137.
              A Guardian MAY hold many wards (Founder, explicit).
              The two Seekers in a match may not share one — that
              is Tier-1, already built. STILL OPEN: the pair who
@@ -9131,7 +9155,13 @@ Title:       Build "Block My Phone Contacts" — Optional Verified
 Category:    Feature / Safety / Privacy
 Priority:    High value, not urgent. Nothing is broken; this is the
              feature the competitor research rates highest
-Status:      Open — direction approved (DR-ZYRA-128), NOT started
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — direction approved (DR-ZYRA-128), NOT started
 Owner:       Founder (Shakeel)
 Raised:      2026-08-09
 Completed:   -
@@ -9234,8 +9264,16 @@ Category:    Governance / Continuity
 Priority:    🔴 DO THIS FIRST. Everything else in this register is
              work to be done; this one is work already done that can
              still be lost
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — the command is written and safety-checked, and it
-             needs 30 seconds in Terminal
+Status:      Completed — 2026-08-21, in the Founder's Terminal
+             (guided). The uncommitted tree (424 files when raised;
+             203 after the 2026-08-12 commit banked part of it) is
+             committed as 28f2a51 — 198 files, +50,573/−8,490:
+             registers, ZYRA_GOVERNANCE V4, nav spec sync, BUSINESS
+             promotions, dev-guard migration file. Pre-commit
+             sensitive-path scan came back clean. Repo-local
+             anonymous identity set (GH007 resolved by amend, same
+             fix as zyra-site), and the commit is PUSHED to
+             ZYRA-APP-LAB/zyra.git — the work now exists off-machine
 Owner:       Founder (Shakeel) — NOBODY ELSE CAN DO IT (see below)
 Raised:      2026-08-09
 Completed:   -
@@ -9319,7 +9357,21 @@ Title:       Verify OA-168 Stage 3 With a Live Table Probe —
 Category:    Security / Verification
 Priority:    Medium — OA-168 is marked Actioned on evidence of a
              kind that later failed for functions
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — awaiting Founder approval for the probe
+Status:      Completed — 2026-08-21, probe run with Founder
+             approval (given in the OA-AIOS-327 decision round) and
+             results verified live. A throwaway table was created,
+             probed with has_table_privilege(), and dropped:
+             anon arrived with NOTHING (no SELECT/INSERT/UPDATE/
+             DELETE); authenticated arrived with SELECT only and no
+             write privileges. The OA-ZYRA-168 Stage 3 claim —
+             new tables do not arrive writable — is CONFIRMED with
+             live evidence, closing the catalogue-evidence gap this
+             entry existed for. Observation, no action raised
+             (§6.3): authenticated's default-ACL SELECT persists
+             until RLS is enabled on a new table — the known posture
+             that every new table enables RLS before use; rls was
+             (correctly) not yet enabled on the probe table at
+             creation
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
@@ -10208,7 +10260,13 @@ Priority:    HIGH. No real users today, so no one has been
              showing a made-up number with nothing saying so,
              and the reason it was acceptable expired on
              2026-08-10
-Status:      Open — step 4 done 2026-08-10 (marker restored),
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — step 4 done 2026-08-10 (marker restored),
              steps 1-3 outstanding
 Owner:       Founder (Shakeel) rules on presentation; Opus wires
              the number
@@ -10830,7 +10888,18 @@ Title:       The Chapter 3/4 Question Bank Now Exists Twice
 Category:    Architecture / Onboarding
 Priority:    MEDIUM — nothing is broken, and it will break
              quietly when it breaks
-Status:      Open
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). drift
+             detector generates the SQL expectation from the
+             Dart bank and exact-compares
+             zyra_onboarding_questions: live run 105/105
+             matched incl. both ch3_q26 variants; a
+             simulated one-sided removal fails the detector
+             — one-sided drift is now loud. Trail: Open →
+             Assigned — Codex 2026-08-21 (handoff pack Batch
+             1) → Completed on evidence.
 Owner:       Engineering
 Raised:      2026-08-11
 Source:      Building the OA-ZYRA-193(c) completeness gate
@@ -10865,7 +10934,13 @@ OA-ZYRA-197
 Title:       No Way Back Into Onboarding Once You Have Left It
 Category:    Onboarding / UX
 Priority:    MEDIUM, rising to HIGH the day a real user is gated
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             3; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Owner:       Founder / Engineering
 Raised:      2026-08-11
 Source:      Building the OA-ZYRA-193(c) completeness gate
@@ -10897,7 +10972,25 @@ Title:       Repo/Live Migration Reconciliation — 87 Applied
              Migrations Have No Repo File
 Category:    Engineering / Governance
 Priority:    HIGH (pairs with OA-ZYRA-134's no-git-remote risk)
-Status:      Open — partially discharged 2026-08-12
+Status:      Completed — 2026-08-21 (OA-AIOS-329 solo round,
+             Founder standing instruction). Full reconciliation run
+             against the live project: 195 applied migrations, 111
+             repo files. Result: 82 exact version matches; 27
+             name-matched with hand-rounded July/August timestamps
+             (present, version drifted — left alone, noted); 86
+             TRULY MISSING — the 2026-08-01..08 window before the
+             repo-file discipline existed. All 86 regenerated
+             verbatim from supabase_migrations.schema_migrations
+             statements, each with a provenance header ("applied
+             via API... do not re-run"), and committed to
+             SOURCE/supabase/migrations/ — the repo now holds 197
+             files and every applied migration has a repo file by
+             version or by name. Two repo-only orphans noted
+             (20260811110300_journey_timeline_milestones,
+             20260811111500_dev_rewind_journey_account_wide) —
+             their live equivalents exist under different names
+             (…102840_…and_rewind_all, …103056_…); no action
+             raised (§6.3)
 Owner:       Engineering
 Raised:      2026-08-12
 Source:      Stewardship pass. CLAUDE.md §5 recorded "78 migrations
@@ -10937,7 +11030,13 @@ Title:       seeker_details.is_synthetic Was Set On Every Row —
              Scope the Launch Sweep by Account, Not Flag Alone
 Category:    Data Integrity / Launch Blocker
 Priority:    HIGH before launch, harmless today
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Owner:       Engineering
 Raised:      2026-08-12
 Source:      Stewardship SQL audit of migration
@@ -11072,7 +11171,13 @@ Title:       Long-Pause Gentle Reminders (30/90 Days) Need a
              Scheduler
 Category:    Journey Lifecycle / Infrastructure
 Priority:    LOW
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Owner:       Engineering (mechanism decision first: pg_cron vs
              scheduled Edge Function)
 Raised:      2026-08-12
@@ -11110,8 +11215,19 @@ Raised:      2026-08-13, while building the per-section busy
              stand-ins and the paused-but-busy fact (Founder:
              "if they are in a journey with someone else then
              the notification gotta show")
-Status:      Open
-
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). server-owned
+             caller-relative inAnotherJourney signal (true
+             only when the counterpart holds another
+             unsuspended active Journey with a third
+             person); LIVE DB verified the function present;
+             Journey suite 94/94 + new 4/4; authenticated
+             true / anonymous false; migration
+             20260821121000 applied + repo file same-change.
+             Trail: Open → Assigned — Codex 2026-08-21
+             (handoff pack Batch 1) → Completed on evidence.
 Problem:     JourneyMatch.inAnotherJourney renders honestly —
              busy Potential/Paused/Ended rows hide their verb
              and state the fact — but only STAND-INS ever carry
@@ -11139,8 +11255,13 @@ Dependencies: pause_frees_active_slot migrations (the reason a
 OA-ZYRA-205
 Title:       Transitional Moments — the unwired tail
 Raised:      2026-08-13, with the DR-ZYRA-148 build
-Status:      Open
-
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Problem:     Five ratified pieces are designed but not wired:
              R4 first-Guardian-linked (Seeker side AND the
              Guardian's own moment), R6 restart-accepted (fires
@@ -11339,9 +11460,24 @@ Dependencies: NAMING_CONVENTIONS_V1; OA-ZYRA-207.
 OA-ZYRA-210
 Title:       Black Umbrella Group has no repository of its own
 Raised:      2026-08-13, Ecosystem Maintenance Review
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — awaiting one read-only verification in the
-             Founder's Terminal before any change
-
+Status:      Completed — 2026-08-21, in the Founder's Terminal
+             (guided). The awaited read-only verification ran:
+             git ls-remote resolves the old URL to a live repo whose
+             HEAD (6f05c05) is NOT in BUG's local object database —
+             confirming the URL now points at the ZYRA app
+             repository, exactly as diagnosed. Remediation done the
+             same sitting: the abandoned July mass-deletion was
+             unstaged (stale index.lock cleared), .gitignore
+             hardened (OA-AIOS-276 lines), the honest current tree
+             committed as 6d3b484 (250 files, +74,889/−8,301,
+             runtime data excluded), origin repointed to the new
+             PRIVATE repository ZYRA-APP-LAB/BLACK-UMBRELLA-GROUP,
+             and main pushed. Black Umbrella Group has its own
+             repository, off-machine, for the first time since the
+             July restructure. MITHAQ / SELAH / AI CONSULTANCY TBC
+             still have no remotes — deferred until those entities
+             hold content worth protecting; recorded in OA-AIOS-327,
+             no separate OA raised (refusal per governance §6.3)
 Problem:     BLACK UMBRELLA GROUP/.git points at
              github.com/ZYRA-APP-LAB/Zyra.git. Verified
              offline 2026-08-13:
@@ -11433,8 +11569,16 @@ Closed:      2026-08-13 — DR-ZYRA-165. Set to Colors.transparent;
              female is pink on pink.
 Raised:      2026-08-13, from the Guardian Network pink-flash
              fix
-Status:      Open
-
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). scaffold
+             verified transparent under the live
+             ListenableBuilder gradient; regression coverage
+             added; zero analysis issues; iOS build launched
+             with no white layer. Trail: Open → Assigned —
+             Codex 2026-08-21 (handoff pack Batch 1) →
+             Completed on evidence.
 Problem:     main.dart builds two background layers, and only
              one of them listens.
 
@@ -11521,7 +11665,13 @@ Title:       An Additional Guardian Sees No Journeys At All —
              Intended, Or A Side Effect Of The Counterpart Card?
 Category:    Guardian / Visibility
 Priority:    MEDIUM
-Status:      Open — DECIDED 2026-08-15 (DR-ZYRA-168): FULL
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             3; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — DECIDED 2026-08-15 (DR-ZYRA-168): FULL
              visibility, same as Main; Family Review decisions
              stay both-Mains. Build pending as one coordinated
              batch (RLS + card RPC + client + guard-suite
@@ -11572,7 +11722,13 @@ OA-ZYRA-214
 Title:       A Guardian Cannot See The Introductions They Sent
 Category:    Guardian / Introductions
 Priority:    LOW
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             3; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Owner:       Engineering (screen), Founder if scope grows
 Raised:      2026-08-13
 Source:      DR-ZYRA-152. Raised because the dev panel refused to
@@ -11605,7 +11761,13 @@ Title:       The Live notifications_type_check Holds Ten Types; The
              Repo Knows Seven And The Client Renders Three
 Category:    Notifications / Migration Drift
 Priority:    MEDIUM
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             3; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
              [Reconciled 2026-08-20 (OA-AIOS-325), read-only: the
              live check now holds THIRTEEN types, and the repo
              MATCHES it exactly — migration 20260815183000
@@ -11765,7 +11927,13 @@ Title:       Connections And Guardian Detail Still Reach Block Through
              The Report Sheet
 Category:    UX Consistency / Privacy
 Priority:    LOW
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             3; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Owner:       Engineering
 Raised:      2026-08-13
 Source:      DR-ZYRA-155.
@@ -11916,7 +12084,17 @@ Title:       Passed Cards Are Denied Compatibility Unlock By A Rule The
              Founder Reversed On 2026-08-03
 Category:    Premium / Defect
 Priority:    MEDIUM
-Status:      Open
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). Passed cards
+             regained View/Unlock Compatibility; the
+             reversed guard is gone while the Pass-action
+             guard rightly remains (verified in source, the
+             Founder's ruling documented inline); 133/133
+             suite green. Trail: Open → Assigned — Codex
+             2026-08-21 (handoff pack Batch 1) → Completed
+             on evidence.
 Owner:       Engineering
 Raised:      2026-08-13
 Source:      OA-ZYRA-219. Found by checking the approved document rather
@@ -12061,7 +12239,13 @@ Title:       Swipe-To-Decide On The Read-Only Profile Needs Browse's
              Gesture Extracted, Not Copied
 Category:    UX / Refactor
 Priority:    MEDIUM
-Status:      Open — the one part of the 2026-08-13 introductions brief
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — the one part of the 2026-08-13 introductions brief
              deliberately not built.
 Owner:       Engineering
 Raised:      2026-08-13
@@ -12116,7 +12300,19 @@ Title:       Duplicate Question Id ch3_q26 — The Server Was Fixed,
 Category:    Onboarding / Data Integrity
 Priority:    HIGH — the strongest remaining candidate for the
              male-account errors that were not colour.
-Status:      Open — needs verifying on device before a fix.
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). client
+             answers keyed (qid,variant) via responseKey
+             '$id::male'/'::female' with the canonical qid
+             restored at the server boundary (mechanism
+             verified in source + comment). Honest
+             limitation kept on record: destructive fresh-
+             male on-device walkthrough not performed —
+             optional follow-up, not a blocker. Trail: Open
+             → Assigned — Codex 2026-08-21 (handoff pack
+             Batch 1) → Completed on evidence.
 Owner:       Engineering
 Raised:      2026-08-13
 Source:      Full app review, 2026-08-13.
@@ -12161,7 +12357,18 @@ Title:       Gender Correctness Sweep — Guardians Written Male,
              Pronouns Defaulting To One Half
 Category:    Correctness / Copy
 Priority:    MEDIUM
-Status:      Open
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). ZyraGender
+             model added; Guardian creation captures real
+             gender (female Guardian flow measured end-to-
+             end, profile RPC carried gender: female);
+             hardcoded 'male' gone (verified); one shared
+             opposite-gender/pronoun helper; zyra_gender +
+             wali_onboarding_gender tests added. Trail: Open
+             → Assigned — Codex 2026-08-21 (handoff pack
+             Batch 1) → Completed on evidence.
 Owner:       Engineering
 Raised:      2026-08-13
 Source:      Full app review, 2026-08-13.
@@ -12205,7 +12412,13 @@ Title:       Truthful Failure Handling — Four Write Paths Report
              Success When They Failed
 Category:    Correctness / Data Integrity
 Priority:    HIGH — the most important cluster in the 2026-08-14 audit.
-Status:      Open — NARROWED 2026-08-15: code built
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             2; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — NARROWED 2026-08-15: code built
              (DR-ZYRA-167); remaining scope is on-device
              forced-failure verification only.
 Owner:       Engineering
@@ -12499,7 +12712,22 @@ Title:       Multi-Select Answers Put The Score's Denominator In The
 Category:    Compatibility Engine
 Priority:    Medium — latent. Invisible in seed data, appears with
              real users.
-Status:      Open — bug, fix not built.
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). option (a)
+             built — selected-option lights averaged, ONE
+             denominator unit per question: measured 100.0,
+             then 75.0 with a red option added (old per-
+             option denominator would say 66.7); migration
+             20260821122000 applied + repo file; fixtures
+             rolled back. NOTE: the pack asked for the
+             (a)/(b) one-liner to reach the Founder BEFORE
+             building; Codex built recommended (a) directly
+             — flagged for the Founder's one-word
+             ratification. Trail: Open → Assigned — Codex
+             2026-08-21 (handoff pack Batch 1) → Completed
+             on evidence.
 Owner:       Engineering
 Raised:      2026-08-14
 Source:      REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md §5.
@@ -12544,7 +12772,18 @@ Title:       initcap(sect) Is The Only Thing Joining Two Casing
              Conventions Neither Side States
 Category:    Compatibility Engine / Data Integrity
 Priority:    Low — works today, fails silently when a value is added.
-Status:      Open.
+Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
+             Batch 1 evidence returned through the Founder
+             and verified by Fable (source greps on the live
+             checkout + live Supabase probes). lowercase-
+             hyphen canonical sect codes on both sides; the
+             initcap(v_cand.sect) bridge removed — LIVE DB
+             verified 0 occurrences across public functions;
+             migration 20260821120000 applied (history row
+             live) with the repo file in the same change;
+             'Ahl-e-Hadith' scores 100.0. Trail: Open →
+             Assigned — Codex 2026-08-21 (handoff pack Batch
+             1) → Completed on evidence.
 Owner:       Engineering
 Raised:      2026-08-14
 Source:      REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md §7a.
@@ -12575,7 +12814,13 @@ Title:       Green / Amber / Red Tallies Can Be Real Today Without
              Waiting On OA-ZYRA-193(d)
 Category:    Compatibility Engine / Subscription
 Priority:    Medium — three of seven figures on a PAID screen.
-Status:      Open — MODIFY, small, no decision required.
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             3; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — MODIFY, small, no decision required.
 Owner:       Engineering
 Raised:      2026-08-14
 Source:      REPORTS/ZYRA_COMPATIBILITY_ENGINE_AUDIT_2026-08-14.md §7c.
@@ -12608,7 +12853,13 @@ Title:       create_notification() Ignores notification_preferences —
              Two Visible Settings Toggles Gate Nothing
 Category:    Notifications / Consent
 Priority:    HIGH — a switch the user has operated does nothing.
-Status:      Open — bug, fix specified, not built.
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             2; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — bug, fix specified, not built.
 Owner:       Engineering
 Raised:      2026-08-14
 Source:      SYSTEM/DOCUMENTS/ZYRA_NOTIFICATION_SPECIFICATION_CURRENT_
@@ -12657,7 +12908,13 @@ Title:       A Guardian Invite That Nobody Opens Never Expires — So
              Three Of Its Four Outcomes Are Silent
 Category:    Guardian / Notifications
 Priority:    Medium — not a security hole; a dead end for the sender.
-Status:      Open — raised by the Founder, 2026-08-14: "if you sent a
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             2; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open — raised by the Founder, 2026-08-14: "if you sent a
              guardian notification and it expired or accepted, ensure
              that is included in the notification."
 Owner:       Engineering
@@ -12768,7 +13025,13 @@ Title:       Avatar Bandwidth — Server-Side Transform Sizing For
              Small Renders
 Category:    Performance / Cost
 Priority:    LOW
-Status:      Open
+Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+             dispatched 2026-08-21 in the Founder-approved
+             handoff pack
+             CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
+             4; Codex implements and returns evidence
+             through the Founder; Fable files the closure.
+             Was: Open
 Owner:       Engineering, after a Founder plan decision
 Raised:      2026-08-15
 Source:      DR-ZYRA-169 Phase 3 — the half of "the diet" that

@@ -7,6 +7,7 @@
 // the full reused-Browse-viewer expansion, which is a larger follow-up).
 
 import 'package:flutter/material.dart';
+import '../../models/zyra_gender.dart';
 import '../../widgets/zyra_profile_image.dart';
 import '../../services/zyra_auth.dart';
 import '../../state/app_state.dart';
@@ -274,9 +275,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _InfoRow(label: 'Age', value: age?.toString() ?? '—'),
             _InfoRow(
               label: 'Gender',
-              value: state.gender == null
-                  ? '—'
-                  : (state.gender == 'male' ? 'Brother' : 'Sister'),
+              value: ZyraGender.profileLabel(state.gender),
             ),
             _InfoRow(label: 'Location', value: state.location ?? '—'),
             const SizedBox(height: 24),

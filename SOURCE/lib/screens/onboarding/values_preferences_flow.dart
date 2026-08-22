@@ -41,7 +41,7 @@ class _FlowStep {
 
   String get anchor => switch (kind) {
     _FlowStepKind.categoryIntro => 'intro:${category!.id}',
-    _FlowStepKind.answer => 'answer:${question!.id}',
+    _FlowStepKind.answer => 'answer:${question!.responseKey}',
     _FlowStepKind.summary => 'summary:${category!.id}',
     _FlowStepKind.aboutYouComplete => 'about-complete',
     _FlowStepKind.preferencesIntro => 'preferences-intro',
@@ -51,7 +51,10 @@ class _FlowStep {
 }
 
 class ValuesPreferencesFlow extends StatefulWidget {
-  final String? gender;
+  /// Non-null by construction: Gender is a mandatory Essentials answer.
+  /// Making that contract explicit prevents both `ch3_q26` variants from
+  /// silently disappearing when Compatibility is entered with no gender.
+  final String gender;
   final bool devPreview;
 
   const ValuesPreferencesFlow({
@@ -79,8 +82,24 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
 
   List<OnboardingQuestion> _visible(OnboardingCategory category) => category
       .questions
-      .where((question) => question.visibleGiven(widget.gender, _ch3Answers))
+      .where(
+        (question) =>
+            question.visibleGiven(widget.gender, _answersByQuestionId),
+      )
       .toList(growable: false);
+
+  Map<String, dynamic> get _answersByQuestionId {
+    final answers = <String, dynamic>{};
+    for (final category in chapter3Categories) {
+      for (final question in category.questions) {
+        final key = question.responseKey;
+        if (_ch3Answers.containsKey(key)) {
+          answers[question.id] = _ch3Answers[key];
+        }
+      }
+    }
+    return answers;
+  }
 
   List<OnboardingQuestion> _preferenceQuestions(OnboardingCategory category) =>
       _visible(category)
@@ -120,16 +139,16 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
     return steps;
   }
 
-  void _recordCh3Answer(String questionId, dynamic value) {
+  void _recordCh3Answer(OnboardingQuestion question, dynamic value) {
     setState(() {
-      _ch3Answers[questionId] = value;
+      _ch3Answers[question.responseKey] = value;
 
       final anchor = _steps[_stepIndex].anchor;
       _steps = _buildSteps();
 
       final stillVisible = <String>{
         for (final category in chapter3Categories)
-          for (final question in _visible(category)) question.id,
+          for (final question in _visible(category)) question.responseKey,
       };
       _ch3Answers.removeWhere((id, _) => !stillVisible.contains(id));
       _ch4Preferences.removeWhere((id, _) => !stillVisible.contains(id));
@@ -179,7 +198,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
   }
 
   Set<String> _answerOptions(OnboardingQuestion question) {
-    final answer = _ch3Answers[question.id];
+    final answer = _ch3Answers[question.responseKey];
     if (answer == null) return const {};
     if (answer is List) {
       return answer.map((value) => value.toString()).toSet();
@@ -188,14 +207,14 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
   }
 
   bool _answerComplete(OnboardingQuestion question) {
-    final value = _ch3Answers[question.id];
+    final value = _ch3Answers[question.responseKey];
     if (value is List) return value.isNotEmpty;
     return value != null;
   }
 
   bool _preferenceSectionComplete(OnboardingCategory category) =>
       _preferenceQuestions(category).every((question) {
-        final values = _ch4Preferences[question.id];
+        final values = _ch4Preferences[question.responseKey];
         return values != null && question.options.every(values.containsKey);
       });
 
@@ -245,16 +264,18 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
               position: index + 1,
               total: questions.length,
               yourAnswers: _answerOptions(questions[index]),
-              initialValues: _ch4Preferences[questions[index].id] ?? const {},
+              initialValues:
+                  _ch4Preferences[questions[index].responseKey] ?? const {},
               initialHardRequirement:
-                  _ch4HardRequirement[questions[index].id] ?? const {},
-              onChanged: (values) =>
-                  setState(() => _ch4Preferences[questions[index].id] = values),
+                  _ch4HardRequirement[questions[index].responseKey] ?? const {},
+              onChanged: (values) => setState(
+                () => _ch4Preferences[questions[index].responseKey] = values,
+              ),
               onHardRequirementChanged: (values) => setState(() {
                 if (values.isEmpty) {
-                  _ch4HardRequirement.remove(questions[index].id);
+                  _ch4HardRequirement.remove(questions[index].responseKey);
                 } else {
-                  _ch4HardRequirement[questions[index].id] = values;
+                  _ch4HardRequirement[questions[index].responseKey] = values;
                 }
               }),
             ),
@@ -299,7 +320,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
         title: 'About You saved.',
         description:
             'Your private answers across all 11 sections are complete.',
-        count: '104',
+        count: chapter3Categories.expand(_visible).length.toString(),
         countLabel: 'about-you answers',
         continueLabel: 'Continue',
         onContinue: _next,
@@ -333,7 +354,10 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
     final category = step.category!;
     final visibleQuestions = _visible(category);
     final questionIndex =
-        visibleQuestions.indexWhere((item) => item.id == question.id) + 1;
+        visibleQuestions.indexWhere(
+          (item) => item.responseKey == question.responseKey,
+        ) +
+        1;
     final sectionIndex = _sectionIndex(category);
 
     return OnboardingScaffold(
@@ -356,12 +380,12 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       onDevSkip: _next,
       onSwipeBack: _stepIndex > 0 ? _back : null,
       content: GenericSelectQuestionScreen(
-        key: ValueKey('ch3_${question.id}_${widget.gender}'),
+        key: ValueKey('ch3_${question.responseKey}_${widget.gender}'),
         prompt: question.prompt,
         options: question.options,
         selectionType: question.selectionType,
-        initialValue: _ch3Answers[question.id],
-        onChanged: (value) => _recordCh3Answer(question.id, value),
+        initialValue: _ch3Answers[question.responseKey],
+        onChanged: (value) => _recordCh3Answer(question, value),
       ),
     );
   }

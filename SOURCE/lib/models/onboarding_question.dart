@@ -94,6 +94,19 @@ class OnboardingQuestion {
     this.showIf,
   });
 
+  /// Client-side response identity.
+  ///
+  /// Most questions are identified by [id]. The two `ch3_q26` variants
+  /// deliberately share a server qid but have different answer vocabularies,
+  /// so using only [id] in a client map lets one variant overwrite the other.
+  /// The server already evaluates that qid by gender variant; the client must
+  /// preserve the same distinction while the flow is in memory.
+  String get responseKey => switch (genderVisibility) {
+    GenderVisibility.menOnly => '$id::male',
+    GenderVisibility.womenOnly => '$id::female',
+    GenderVisibility.all => id,
+  };
+
   /// Both gates at once: gender, then the conditional rule. Chapter 4 mirrors
   /// Chapter 3, so a question hidden here is hidden in both chapters — which
   /// is right: there is no sense asking what you want in a partner on a topic

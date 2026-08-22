@@ -46,6 +46,7 @@ import '../data/zyra_entitlements.dart';
 import '../data/zyra_journey_stages.dart';
 import '../models/journey_match.dart';
 import '../models/seeker_profile.dart';
+import '../models/zyra_gender.dart';
 import '../services/zyra_auth.dart';
 import '../services/zyra_wali_journey_service.dart';
 import '../services/zyra_wali_link_service.dart';
@@ -790,7 +791,7 @@ class ZyraDevScenario extends ChangeNotifier {
       ...realPaused,
       ...realEnded,
     ];
-    final otherGender = viewerGender == 'female' ? 'male' : 'female';
+    final otherGender = ZyraGender.oppositeCode(viewerGender);
 
     var next = 0;
     // Falls back to a synthesised profile only when no real pool arrived —

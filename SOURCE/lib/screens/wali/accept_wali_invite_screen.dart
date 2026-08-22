@@ -69,7 +69,9 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         // AppState holds a LABEL; the database takes a code, so it is
         // converted here. An unrecognised label yields null rather than
         // being stored raw — the picker then simply opens unselected.
-        _relationshipCode = zyraRelationshipCode(AppState.instance.waliRelationship);
+        _relationshipCode = zyraRelationshipCode(
+          AppState.instance.waliRelationship,
+        );
         _changingRelationship = _relationshipCode == null;
       }
     });
@@ -133,7 +135,9 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         // is only ever reached by an already-signed-in account (Seeker
         // or Guardian) linking the other party, so gender is always known
         // here — see ZyraColors.genderGradient() doc comment.
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: BoxDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: SafeArea(
           // Scrollable since 2026-08-06: the relationship picker adds up to
           // seven tiles, which overflows a fixed Column on a small handset
@@ -144,7 +148,10 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 24),
-                Text("Enter the code they shared with you.", style: ZyraText.subtext()),
+                Text(
+                  "Enter the code they shared with you.",
+                  style: ZyraText.subtext(),
+                ),
                 const SizedBox(height: 20),
                 TextField(
                   controller: _controller,
@@ -155,8 +162,14 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                     hintStyle: ZyraText.subtext(size: 20),
                     filled: true,
                     fillColor: ZyraColors.iconButtonBg,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                   onChanged: (_) => setState(() {
                     _preview = null;
@@ -171,7 +184,10 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       color: ZyraColors.iconButtonBg,
-                      border: Border.all(color: ZyraColors.iconButtonBorder, width: 0.5),
+                      border: Border.all(
+                        color: ZyraColors.iconButtonBorder,
+                        width: 0.5,
+                      ),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -188,7 +204,7 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'This is shown to Seekers who unlock her profile, so they '
+                    'This is shown to Seekers who unlock their profile, so they '
                     'know who they may be speaking with.',
                     style: ZyraText.subtext(size: 12.5),
                   ),
@@ -201,24 +217,30 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                   if (!_changingRelationship && _relationshipCode != null)
                     _RelationshipConfirmRow(
                       label: zyraRelationshipLabel(_relationshipCode) ?? '',
-                      onChange: () => setState(() => _changingRelationship = true),
+                      onChange: () =>
+                          setState(() => _changingRelationship = true),
                     )
                   else
-                    ...zyraGuardianRelationships.map((r) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: _RelationshipOption(
-                            label: r.name,
-                            selected: _relationshipCode == r.code,
-                            onTap: () => setState(() {
-                              _relationshipCode = r.code;
-                              _changingRelationship = false;
-                            }),
-                          ),
-                        )),
+                    ...zyraGuardianRelationships.map(
+                      (r) => Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: _RelationshipOption(
+                          label: r.name,
+                          selected: _relationshipCode == r.code,
+                          onTap: () => setState(() {
+                            _relationshipCode = r.code;
+                            _changingRelationship = false;
+                          }),
+                        ),
+                      ),
+                    ),
                 ],
                 if (_error != null) ...[
                   const SizedBox(height: 12),
-                  ZyraErrorBanner(message: _error!, onDismiss: () => setState(() => _error = null)),
+                  ZyraErrorBanner(
+                    message: _error!,
+                    onDismiss: () => setState(() => _error = null),
+                  ),
                 ],
                 const SizedBox(height: 20),
                 SizedBox(
@@ -226,9 +248,13 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                   height: 50,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: _canAccept ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
+                      color: _canAccept
+                          ? ZyraColors.accentBg
+                          : ZyraColors.iconButtonBg,
                       border: Border.all(
-                        color: _canAccept ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder,
+                        color: _canAccept
+                            ? ZyraColors.accentBorder
+                            : ZyraColors.iconButtonBorder,
                         width: 1,
                       ),
                       borderRadius: BorderRadius.circular(50),
@@ -239,14 +265,18 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                         borderRadius: BorderRadius.circular(50),
                         onTap: _checking || _accepting
                             ? null
-                            : (_preview == null ? _checkCode : (_canAccept ? _accept : null)),
+                            : (_preview == null
+                                  ? _checkCode
+                                  : (_canAccept ? _accept : null)),
                         child: Center(
                           child: Text(
                             _checking
                                 ? 'Checking…'
                                 : _accepting
-                                    ? 'Linking…'
-                                    : (_preview == null ? 'Check Code' : 'Confirm Link'),
+                                ? 'Linking…'
+                                : (_preview == null
+                                      ? 'Check Code'
+                                      : 'Confirm Link'),
                             style: ZyraText.button(),
                           ),
                         ),
@@ -311,7 +341,11 @@ class _RelationshipOption extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
-  const _RelationshipOption({required this.label, required this.selected, required this.onTap});
+  const _RelationshipOption({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -322,7 +356,9 @@ class _RelationshipOption extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
           border: Border.all(
-            color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder,
+            color: selected
+                ? ZyraColors.accentBorder
+                : ZyraColors.iconButtonBorder,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(14),

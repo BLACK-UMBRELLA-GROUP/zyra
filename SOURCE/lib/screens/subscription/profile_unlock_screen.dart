@@ -64,6 +64,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/seeker_profile.dart';
+import '../../models/zyra_gender.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_guardian_info_service.dart';
 import '../../services/zyra_unlock_service.dart';
@@ -160,8 +161,11 @@ class ProfileUnlockScreen extends StatefulWidget {
   /// stays gated exactly as before — the Journey never revealed those.
   final bool journeyRevealed;
 
-  const ProfileUnlockScreen(
-      {super.key, required this.profile, this.journeyRevealed = false});
+  const ProfileUnlockScreen({
+    super.key,
+    required this.profile,
+    this.journeyRevealed = false,
+  });
 
   @override
   State<ProfileUnlockScreen> createState() => _ProfileUnlockScreenState();
@@ -230,7 +234,9 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   /// return nothing otherwise, and asking anyway would make "no Guardian"
   /// and "not unlocked" indistinguishable in the logs.
   Future<void> _loadGuardians() async {
-    if (!ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.plus)) return;
+    if (!ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.plus)) {
+      return;
+    }
     if (ZyraUnlockService.isSampleProfile(widget.profile.id)) return;
     final g = await ZyraGuardianInfoService.fetchUnlocked(widget.profile.id);
     if (!mounted) return;
@@ -268,7 +274,8 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       // the thing they just tapped.
       icon: Icons.lock_open_outlined,
       title: 'Use an Unlock+ instead?',
-      body: "For the same tap you'd also see the Green, Amber and Red "
+      body:
+          "For the same tap you'd also see the Green, Amber and Red "
           'tallies and all six category scores.',
       // The one question the prompt cannot answer by itself is "can I
       // afford to be generous with the better one". One line settles it.
@@ -280,7 +287,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       secondaryLabel: 'No, just the overall',
     );
 
-    if (usePlus == null) return null;              // dismissed
+    if (usePlus == null) return null; // dismissed
     return usePlus ? UnlockTier.plus : UnlockTier.standard;
   }
 
@@ -303,7 +310,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     switch (outcome) {
       case UnlockOutcome.unlocked:
       case UnlockOutcome.alreadyUnlocked:
-        _loadBalance();   // a credit may have gone; re-read rather than guess
+        _loadBalance(); // a credit may have gone; re-read rather than guess
         _loadGuardians(); // Plus reveals Guardians — fetch them now it's open
       case UnlockOutcome.sampleProfile:
         // Opened for the session so the screen can be seen, but say plainly
@@ -311,24 +318,32 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
         // wrong thing about a feature that costs money in production.
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Sample profile — opened for preview. No unlock used.'),
+            content: Text(
+              'Sample profile — opened for preview. No unlock used.',
+            ),
           ),
         );
       case UnlockOutcome.insufficientCredits:
-        _loadBalance();   // our count was stale if we got here at all
+        _loadBalance(); // our count was stale if we got here at all
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("You don't have an unlock left for this.")),
+          const SnackBar(
+            content: Text("You don't have an unlock left for this."),
+          ),
         );
       case UnlockOutcome.failed:
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("That didn't go through. Please try again.")),
+          const SnackBar(
+            content: Text("That didn't go through. Please try again."),
+          ),
         );
     }
   }
 
   void _buy() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Payments are not built yet — nothing has been charged.')),
+      const SnackBar(
+        content: Text('Payments are not built yet — nothing has been charged.'),
+      ),
     );
   }
 
@@ -354,11 +369,15 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     // in Compatibility Unlock, plus a category breakdown", and charging
     // again for the part they already bought would break the permanence
     // rule the unique index exists to enforce.
-    final detailUnlocked = ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.plus);
+    final detailUnlocked = ZyraUnlockService.isUnlocked(
+      widget.profile.id,
+      UnlockTier.plus,
+    );
     // journeyRevealed opens the overall exactly like a standard unlock —
     // the Journey already showed both people this number (see the field's
     // doc). It spends nothing and writes nothing; the ledger is untouched.
-    final overallUnlocked = detailUnlocked ||
+    final overallUnlocked =
+        detailUnlocked ||
         widget.journeyRevealed ||
         ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.standard);
 
@@ -378,7 +397,9 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
         // gradient's first stop, so a short page would show a band of flat
         // Rose Pink under the content.
         constraints: const BoxConstraints.expand(),
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: BoxDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: SafeArea(
           top: false,
           child: ListView(
@@ -406,7 +427,10 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.16), width: 1),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.16),
+                    width: 1,
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -432,7 +456,11 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                             )
                           : _OverallLocked(name: name),
                     ),
-                    Divider(color: Colors.white.withValues(alpha: 0.14), height: 1, thickness: 1),
+                    Divider(
+                      color: Colors.white.withValues(alpha: 0.14),
+                      height: 1,
+                      thickness: 1,
+                    ),
                     _Section(
                       label: 'THE DETAIL',
                       left: _loadingBalance ? null : plusLeft,
@@ -483,15 +511,25 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                     borderRadius: BorderRadius.circular(50),
                     onTap: _buy,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 26,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        border: Border.all(color: ZyraColors.accentBorder, width: 1),
+                        border: Border.all(
+                          color: ZyraColors.accentBorder,
+                          width: 1,
+                        ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.add, size: 16, color: Colors.white.withValues(alpha: 0.85)),
+                          Icon(
+                            Icons.add,
+                            size: 16,
+                            color: Colors.white.withValues(alpha: 0.85),
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             everBought ? 'Buy more unlocks' : 'Buy unlocks',
@@ -559,11 +597,11 @@ class _Section extends StatelessWidget {
   /// null renders NOTHING, not "none left" — the balance is still loading
   /// and claiming zero would be a lie the user has already caught once.
   String? get _balance => switch (left) {
-        null => null,
-        0 => 'none left',
-        1 => '1 left',
-        final n => '$n left',
-      };
+    null => null,
+    0 => 'none left',
+    1 => '1 left',
+    final n => '$n left',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -574,7 +612,12 @@ class _Section extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: Text(label, style: ZyraText.chapterLabel(color: Colors.white))),
+              Expanded(
+                child: Text(
+                  label,
+                  style: ZyraText.chapterLabel(color: Colors.white),
+                ),
+              ),
               // The count disappears once unlocked. It answers "can I
               // afford this", and there is nothing left to afford.
               if (!unlocked && _balance != null)
@@ -582,7 +625,9 @@ class _Section extends StatelessWidget {
                   _balance!,
                   style: ZyraText.subtext(
                     size: 11.5,
-                    color: Colors.white.withValues(alpha: left == 0 ? 0.40 : 0.75),
+                    color: Colors.white.withValues(
+                      alpha: left == 0 ? 0.40 : 0.75,
+                    ),
                   ),
                 ),
             ],
@@ -594,7 +639,11 @@ class _Section extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.lock_open_outlined, size: 14, color: Colors.white.withValues(alpha: 0.6)),
+                Icon(
+                  Icons.lock_open_outlined,
+                  size: 14,
+                  color: Colors.white.withValues(alpha: 0.6),
+                ),
                 const SizedBox(width: 7),
                 Text('Unlocked', style: ZyraText.subtext(size: 12.5)),
               ],
@@ -610,10 +659,14 @@ class _Section extends StatelessWidget {
                 // `left == null` means the balance has not arrived yet.
                 // Disabled until it does — an enabled button whose result
                 // we cannot predict is worse than a brief dim one.
-                onPressed: (left == null || left == 0 || busy) ? null : onUnlock,
+                onPressed: (left == null || left == 0 || busy)
+                    ? null
+                    : onUnlock,
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 13),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
                 ),
                 child: Text(
                   buttonLabel,
@@ -641,18 +694,29 @@ class _BalanceLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget part(String label, int n) => RichText(
-          text: TextSpan(children: [
-            TextSpan(text: '$label  ', style: ZyraText.subtext(size: 11.5, color: Colors.white54)),
-            TextSpan(text: '$n', style: ZyraText.body(size: 12.5, color: Colors.white)),
-          ]),
-        );
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: '$label  ',
+            style: ZyraText.subtext(size: 11.5, color: Colors.white54),
+          ),
+          TextSpan(
+            text: '$n',
+            style: ZyraText.body(size: 12.5, color: Colors.white),
+          ),
+        ],
+      ),
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         part('Unlock', standard),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text('|', style: ZyraText.subtext(size: 11.5, color: Colors.white24)),
+          child: Text(
+            '|',
+            style: ZyraText.subtext(size: 11.5, color: Colors.white24),
+          ),
         ),
         part('Unlock+', plus),
       ],
@@ -675,7 +739,11 @@ class _OverallLocked extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.lock_outline, size: 20, color: Colors.white.withValues(alpha: 0.45)),
+        Icon(
+          Icons.lock_outline,
+          size: 20,
+          color: Colors.white.withValues(alpha: 0.45),
+        ),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
@@ -707,7 +775,11 @@ class _OverallResult extends StatelessWidget {
   final bool loading;
   final String name;
 
-  const _OverallResult({required this.score, required this.loading, required this.name});
+  const _OverallResult({
+    required this.score,
+    required this.loading,
+    required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -795,7 +867,10 @@ class _SampleMarker extends StatelessWidget {
             width: 6,
             height: 6,
             margin: const EdgeInsets.only(top: 5),
-            decoration: const BoxDecoration(color: ZyraColors.unlockDot, shape: BoxShape.circle),
+            decoration: const BoxDecoration(
+              color: ZyraColors.unlockDot,
+              shape: BoxShape.circle,
+            ),
           ),
           const SizedBox(width: 7),
           Expanded(
@@ -844,9 +919,21 @@ class _Detail extends StatelessWidget {
       children: [
         Row(
           children: [
-            _Tally(colour: const Color(0xFF6FBF8A), label: 'Green', value: unlocked ? _Sample.green : null),
-            _Tally(colour: const Color(0xFFE0C070), label: 'Amber', value: unlocked ? _Sample.amber : null),
-            _Tally(colour: ZyraColors.destructive, label: 'Red', value: unlocked ? _Sample.red : null),
+            _Tally(
+              colour: const Color(0xFF6FBF8A),
+              label: 'Green',
+              value: unlocked ? _Sample.green : null,
+            ),
+            _Tally(
+              colour: const Color(0xFFE0C070),
+              label: 'Amber',
+              value: unlocked ? _Sample.amber : null,
+            ),
+            _Tally(
+              colour: ZyraColors.destructive,
+              label: 'Red',
+              value: unlocked ? _Sample.red : null,
+            ),
           ],
         ),
         const SizedBox(height: 14),
@@ -914,11 +1001,7 @@ class _GuardianSection extends StatelessWidget {
 
   /// his / her / their. Falls back to "their" rather than guessing — an
   /// unknown gender is not a reason to misgender someone.
-  String get _possessive => switch (gender) {
-        'male' => 'his',
-        'female' => 'her',
-        _ => 'their',
-      };
+  String get _possessive => ZyraGender.possessive(gender);
 
   @override
   Widget build(BuildContext context) {
@@ -948,7 +1031,11 @@ class _GuardianSection extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Icon(Icons.lock_outline, size: 14, color: Colors.white.withValues(alpha: 0.35)),
+                Icon(
+                  Icons.lock_outline,
+                  size: 14,
+                  color: Colors.white.withValues(alpha: 0.35),
+                ),
               ],
             )
           else if (list.isEmpty)
@@ -956,7 +1043,10 @@ class _GuardianSection extends StatelessWidget {
             // hidden, and not inferred from silence.
             Text(
               'No Guardian linked.',
-              style: ZyraText.body(size: 14, color: Colors.white.withValues(alpha: 0.85)),
+              style: ZyraText.body(
+                size: 14,
+                color: Colors.white.withValues(alpha: 0.85),
+              ),
             )
           else ...[
             for (final g in list)
@@ -1002,7 +1092,11 @@ class _Tally extends StatelessWidget {
   /// null = locked, and a padlock stands where the count would.
   final int? value;
 
-  const _Tally({required this.colour, required this.label, required this.value});
+  const _Tally({
+    required this.colour,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1019,7 +1113,11 @@ class _Tally extends StatelessWidget {
           ),
           const SizedBox(width: 7),
           if (value == null)
-            Icon(Icons.lock_outline, size: 13, color: Colors.white.withValues(alpha: 0.35))
+            Icon(
+              Icons.lock_outline,
+              size: 13,
+              color: Colors.white.withValues(alpha: 0.35),
+            )
           else
             Text('$value', style: ZyraText.body(size: 15, color: Colors.white)),
           const SizedBox(width: 5),
@@ -1078,7 +1176,9 @@ class _CategoryRow extends StatelessWidget {
                 value: locked ? 0.0 : value! / 100,
                 minHeight: 5,
                 backgroundColor: Colors.white.withValues(alpha: 0.10),
-                valueColor: AlwaysStoppedAnimation(Colors.white.withValues(alpha: 0.55)),
+                valueColor: AlwaysStoppedAnimation(
+                  Colors.white.withValues(alpha: 0.55),
+                ),
               ),
             ),
           ),

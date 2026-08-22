@@ -174,9 +174,12 @@ class AppState extends ChangeNotifier {
   void saveWaliOnboarding({
     required String name,
     required String relationship,
+    required String gender,
   }) {
     waliName = name;
     waliRelationship = relationship;
+    this.gender = gender;
+    ZyraLocalPrefs.setCachedGender(gender);
     notifyListeners();
   }
 

@@ -37,7 +37,7 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
   String? _expandedId;
 
   String _answerText(OnboardingQuestion q) {
-    final value = widget.answers[q.id];
+    final value = widget.answers[q.responseKey];
     if (value == null) return '—';
     if (value is List) return value.isEmpty ? '—' : value.join(', ');
     return value.toString();
@@ -100,18 +100,20 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
                       itemCount: widget.questions.length,
                       itemBuilder: (context, index) {
                         final q = widget.questions[index];
-                        final expanded = _expandedId == q.id;
+                        final expanded = _expandedId == q.responseKey;
                         final hasPreferences =
-                            widget.preferences?[q.id] != null;
+                            widget.preferences?[q.responseKey] != null;
                         return _SummaryCard(
                           question: q,
                           expanded: expanded && hasPreferences,
                           expandable: hasPreferences,
                           answerText: _answerText(q),
-                          preferences: widget.preferences?[q.id],
+                          preferences: widget.preferences?[q.responseKey],
                           onTap: hasPreferences
                               ? () => setState(
-                                  () => _expandedId = expanded ? null : q.id,
+                                  () => _expandedId = expanded
+                                      ? null
+                                      : q.responseKey,
                                 )
                               : (widget.onEdit != null
                                     ? () => widget.onEdit!(q.id)

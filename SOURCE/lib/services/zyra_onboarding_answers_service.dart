@@ -44,6 +44,13 @@ import 'zyra_auth.dart';
 class ZyraOnboardingAnswersService {
   ZyraOnboardingAnswersService._();
 
+  /// `ch3_q26` has male and female client variants, but the persisted bank
+  /// deliberately has one canonical qid. Strip only the explicit variant
+  /// suffix at the persistence boundary; ordinary qids and Journey Bio keys
+  /// pass through unchanged.
+  static String persistedQuestionId(String responseKey) =>
+      responseKey.split('::').first;
+
   /// Upserts the full current answer state for the signed-in user.
   /// Called at category-summary checkpoints (not per-question) to
   /// keep call volume reasonable across a ~174-question walk while
@@ -62,14 +69,15 @@ class ZyraOnboardingAnswersService {
       // the Chapter 3 write cannot erase the preceding Bio chapter.
       final completeCh3Answers = <String, dynamic>{
         ...AppState.instance.journeyBio.toOnboardingAnswers(),
-        ...ch3Answers,
+        for (final entry in ch3Answers.entries)
+          persistedQuestionId(entry.key): entry.value,
       };
       await supabase.from('onboarding_answers').upsert({
         'user_id': user.id,
         'ch3_answers': completeCh3Answers,
         'ch4_preferences': {
           for (final entry in ch4Preferences.entries)
-            entry.key: {
+            persistedQuestionId(entry.key): {
               for (final option in entry.value.entries)
                 option.key: option.value.name,
             },
@@ -87,7 +95,8 @@ class ZyraOnboardingAnswersService {
         // and empty.
         'ch4_hard_requirements': {
           for (final entry in ch4HardRequirements.entries)
-            if (entry.value.isNotEmpty) entry.key: entry.value.toList(),
+            if (entry.value.isNotEmpty)
+              persistedQuestionId(entry.key): entry.value.toList(),
         },
       });
     } catch (e) {

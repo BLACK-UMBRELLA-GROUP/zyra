@@ -43,7 +43,9 @@
 -- (checks 83-94): SHARED PAUSE HOLDS — DR-ZYRA-170. A pause became a
 -- personal hold (either party may hold; you lift only your own; the
 -- primary lifting first PROMOTES the second hold; three notification
--- types tell people what used to happen silently). 90 checks total.
+-- types tell people what used to happen silently). Extended 2026-08-21
+-- with section N (checks 95-98): OA-ZYRA-204's caller-scoped, server-owned
+-- counterpart-busy signal. 94 checks total.
 --
 -- END-TO-END RUN 2026-08-12: 63/63 green. That day's first attempt failed
 -- at the FIRST promote ("match not found") — the same premise class
@@ -105,9 +107,19 @@ declare
   -- database, not the suite. Baselines make them assert what they mean:
   -- this run left nothing behind.
   base_matches int; base_reviews int;
+  base_onboarding jsonb;
 begin
   select count(*) into base_matches from matches;
   select count(*) into base_reviews from journey_family_reviews;
+  select jsonb_object_agg(id::text, onboarding_complete)
+    into base_onboarding
+    from profiles
+   where id = any(array[male1,male2,fem1,fem2,fem3,fem4]);
+  -- These are synthetic @zyra.test actors. Keep the suite independent from
+  -- whether a developer has reset their onboarding flag between test runs.
+  update profiles
+     set onboarding_complete = true
+   where id = any(array[male1,male2,fem1,fem2,fem3,fem4]);
   delete from likes where (liker_id in (male1,fem1) and liked_id in (male1,fem1));
 
   -- ══ 0 · the scenario itself must be legal ═══════════════════════════
@@ -667,6 +679,56 @@ begin
   delete from notifications where related_match_id=mid;
   delete from matches where id=mid;
   delete from likes where liker_id in (male1,fem1) and liked_id in (male1,fem1);
+
+  -- ══ N · counterpart busy signal (OA-ZYRA-204, 2026-08-21) ═══════════
+  -- male1↔fem1 rests; fem1↔male2 is live. From male1's card fem1 is busy;
+  -- from fem1's card male1 is not. A non-party learns nothing, and pausing
+  -- the third-party Journey removes the signal immediately.
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  insert into likes (liker_id, liked_id) values (male1, fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  insert into likes (liker_id, liked_id) values (fem1, male1);
+  select id into mid from matches
+   where seeker_a_id=least(male1,fem1) and seeker_b_id=greatest(male1,fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  perform promote_journey_to_active(mid);
+  perform suspend_journey(mid);
+
+  perform set_config('request.jwt.claims', json_build_object('sub', male2)::text, true);
+  insert into likes (liker_id, liked_id) values (male2, fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  insert into likes (liker_id, liked_id) values (fem1, male2);
+  select id into midb from matches
+   where seeker_a_id=least(male2,fem1) and seeker_b_id=greatest(male2,fem1);
+  perform set_config('request.jwt.claims', json_build_object('sub', male2)::text, true);
+  perform promote_journey_to_active(midb);
+
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  insert into zyra_journey_results values (95,'busy-signal','counterpart active with a third person is true',
+    (select in_another_journey::text from zyra_journey_busy_flags(array[mid])),'true');
+
+  perform set_config('request.jwt.claims', json_build_object('sub', fem1)::text, true);
+  insert into zyra_journey_results values (96,'busy-signal','signal is caller-relative, not a match flag',
+    (select in_another_journey::text from zyra_journey_busy_flags(array[mid])),'false');
+
+  perform set_config('request.jwt.claims', json_build_object('sub', male2)::text, true);
+  insert into zyra_journey_results values (97,'busy-signal','a non-party receives no requested row',
+    (select count(*)::text from zyra_journey_busy_flags(array[mid])),'0');
+  perform suspend_journey(midb);
+
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
+  insert into zyra_journey_results values (98,'busy-signal','a paused third-party Journey is not busy',
+    (select in_another_journey::text from zyra_journey_busy_flags(array[mid])),'false');
+
+  delete from notifications where related_match_id in (mid, midb);
+  delete from matches where id in (mid, midb);
+  delete from likes where (liker_id in (male1,male2) and liked_id=fem1)
+                       or (liker_id=fem1 and liked_id in (male1,male2));
+
+  update profiles p
+     set onboarding_complete = saved.value::boolean
+    from jsonb_each_text(base_onboarding) as saved(key, value)
+   where p.id = saved.key::uuid;
 
   insert into zyra_journey_results values (57,'teardown','no matches left behind by THIS suite',
     (select count(*) from matches)::text, base_matches::text);

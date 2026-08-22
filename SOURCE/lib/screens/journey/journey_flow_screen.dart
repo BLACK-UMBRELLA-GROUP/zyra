@@ -58,6 +58,7 @@ import '../../data/zyra_reference_data.dart';
 import '../../dev/zyra_dev_scenario.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
+import '../../models/zyra_gender.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_guardian_info_service.dart';
 import '../../services/zyra_image_cache.dart';
@@ -5674,7 +5675,8 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
               const SizedBox(height: 4),
               Text(
                 "${widget.profile.firstName} hasn't revealed yet, and hasn't "
-                'been told you have. The Journey moves when she does.',
+                'been told you have. The Journey moves when '
+                '${ZyraGender.subject(widget.profile.gender)} does.',
                 style: ZyraText.subtext(),
                 textAlign: TextAlign.center,
               ),

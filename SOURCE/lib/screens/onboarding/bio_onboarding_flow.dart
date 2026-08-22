@@ -108,6 +108,16 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
     }
 
     final gender = widget.gender;
+    if (gender == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Complete Gender in Essentials before starting Compatibility.',
+          ),
+        ),
+      );
+      return;
+    }
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (stageContext) => OnboardingStageIntroScreen(

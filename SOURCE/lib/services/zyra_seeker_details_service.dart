@@ -41,6 +41,21 @@ import '../models/onboarding_question.dart';
 import 'zyra_auth.dart';
 import 'zyra_consent_service.dart';
 
+/// Canonical persisted code for a sect label.
+///
+/// This rule is shared by the Seeker's own answer and every preference-map
+/// key. Add a new sect by adding its human label to the picker; this boundary
+/// produces the stable lowercase hyphenated code used by Postgres. Never add
+/// a second title-case representation to the scoring engine.
+String zyraSectCodeFor(String label) {
+  final code = label
+      .trim()
+      .toLowerCase()
+      .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
+      .replaceAll(RegExp(r'^-+|-+$'), '');
+  return code.isEmpty ? 'other' : code;
+}
+
 /// One Seeker's Chapter 2 answers, in DISPLAY form.
 ///
 /// Codes live in the database; this object holds labels, because that is
@@ -48,10 +63,10 @@ import 'zyra_consent_service.dart';
 /// happens at the boundary — [toRow] on the way down, [fromRow] on the way
 /// up — so no screen ever has to know a code exists.
 class SeekerDetails {
-  final String? sect;          // 'Sunni' | 'Shia' | free text when Other
+  final String? sect; // 'Sunni' | 'Shia' | free text when Other
   final bool? revertStatus;
   final String? countryOfBirth;
-  final String? nationality;   // demonym, e.g. 'Pakistani'
+  final String? nationality; // demonym, e.g. 'Pakistani'
   final String? ethnicity;
   final List<String> languages;
   final Map<String, dynamic> preferences;
@@ -79,22 +94,19 @@ class SeekerDetails {
       if (label == null) return null;
       final c = zyraCodeFor(list, label);
       if (c == null) {
-        debugPrint('ZYRA: no reference code for $field="$label" — NOT SAVED. '
-            'A picker and zyra_reference_data have drifted apart.');
+        debugPrint(
+          'ZYRA: no reference code for $field="$label" — NOT SAVED. '
+          'A picker and zyra_reference_data have drifted apart.',
+        );
       }
       return c;
     }
 
     // Sect is a fixed three-value list, not a reference list. 'Other'
     // carries the user's own words in sect_other.
-    final isOther = sect != null && sect != 'Sunni' && sect != 'Shia';
-    final sectCode = sect == null
-        ? null
-        : sect == 'Sunni'
-            ? 'sunni'
-            : sect == 'Shia'
-                ? 'shia'
-                : 'other';
+    final sectCode = sect == null ? null : zyraSectCodeFor(sect!);
+    final isOther =
+        sectCode != null && !const {'sunni', 'shia'}.contains(sectCode);
 
     final countryCode = countryOfBirth == null
         ? null
@@ -103,10 +115,14 @@ class SeekerDetails {
         ? null
         : zyraNationalityCodeFor(nationality);
     if (countryOfBirth != null && countryCode == null) {
-      debugPrint('ZYRA: no ISO code for country_of_birth="$countryOfBirth" — NOT SAVED.');
+      debugPrint(
+        'ZYRA: no ISO code for country_of_birth="$countryOfBirth" — NOT SAVED.',
+      );
     }
     if (nationality != null && natCode == null) {
-      debugPrint('ZYRA: no ISO code for nationality="$nationality" — NOT SAVED.');
+      debugPrint(
+        'ZYRA: no ISO code for nationality="$nationality" — NOT SAVED.',
+      );
     }
 
     final langCodes = <String>[];
@@ -145,8 +161,10 @@ class SeekerDetails {
       }
       // A code with no label means the reference list dropped an entry
       // that users already hold. Surfaced rather than rendered blank.
-      debugPrint('ZYRA: stored code "$code" has no label in the current '
-          'reference list — an entry was removed without a migration.');
+      debugPrint(
+        'ZYRA: stored code "$code" has no label in the current '
+        'reference list — an entry was removed without a migration.',
+      );
       return null;
     }
 
@@ -156,7 +174,7 @@ class SeekerDetails {
         'sunni' => 'Sunni',
         'shia' => 'Shia',
         'other' => r['sect_other'] as String?,
-        _ => null,
+        _ => (r['sect_other'] as String?) ?? sectCode,
       },
       revertStatus: r['revert_status'] as bool?,
       countryOfBirth: () {
@@ -180,7 +198,9 @@ class SeekerDetails {
         for (final c in (r['languages'] as List? ?? const []))
           ?label(zyraLanguages, c),
       ],
-      preferences: Map<String, dynamic>.from(r['preferences'] as Map? ?? const {}),
+      preferences: Map<String, dynamic>.from(
+        r['preferences'] as Map? ?? const {},
+      ),
     );
   }
 }
@@ -198,6 +218,7 @@ class ZyraSeekerDetailsService {
     String? distancePref,
     TrafficLight? distanceFlex,
     Map<String, TrafficLight> sectMatrix = const {},
+
     /// Sect labels this Seeker will never be introduced to. Per-OPTION since
     /// 2026-08-10 (OA-ZYRA-185); was a single boolean covering every 🔴 sect
     /// at once. The database CHECK seeker_details_sect_hard_shape now
@@ -218,8 +239,9 @@ class ZyraSeekerDetailsService {
     bool languageSkipped = false,
     TrafficLight? languageFlex,
   }) {
-    List<String> codes(List<ZyraRefItem> list, List<String> labels) =>
-        [for (final l in labels) ?zyraCodeFor(list, l)];
+    List<String> codes(List<ZyraRefItem> list, List<String> labels) => [
+      for (final l in labels) ?zyraCodeFor(list, l),
+    ];
 
     return {
       'location': {
@@ -227,18 +249,22 @@ class ZyraSeekerDetailsService {
         'flexibility': distanceFlex?.name,
       },
       'sect': {
-        // Keyed by the on-screen option, which for 'Other' is the user's
-        // own words — there is no code for it by definition.
-        'matrix': {for (final e in sectMatrix.entries) e.key: e.value.name},
-        'hard_requirement': sectHard.toList(),
+        // Codes on BOTH sides. score_candidates reads seeker_details.sect
+        // directly; no initcap/display-label bridge is allowed here.
+        'matrix': {
+          for (final e in sectMatrix.entries)
+            zyraSectCodeFor(e.key): e.value.name,
+        },
+        'hard_requirement': [
+          for (final label in sectHard) zyraSectCodeFor(label),
+        ],
         'outside_flexibility': sectOutsideFlex?.name,
       },
       'revert': {'flexibility': revertFlex?.name},
       'country_of_birth': {
-        'preferred': codes(
-          [for (final c in zyraCountries) ZyraRefItem(c.code, c.name)],
-          countryPrefs,
-        ),
+        'preferred': codes([
+          for (final c in zyraCountries) ZyraRefItem(c.code, c.name),
+        ], countryPrefs),
         'skipped': countrySkipped,
         'flexibility': countryFlex?.name,
       },
@@ -270,12 +296,14 @@ class ZyraSeekerDetailsService {
   /// place every write passes through.
   static Future<bool> saveDetails(SeekerDetails d) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return false;   // mock/offline session — nothing to write
+    if (user == null) return false; // mock/offline session — nothing to write
 
     if (!await ZyraConsentService.hasArticle9Consent()) {
-      debugPrint('ZYRA: refusing to save Chapter 2 — no Article 9 consent on '
-          'record for this user. Special-category data (religious belief, '
-          'ethnic origin) must not be stored without it.');
+      debugPrint(
+        'ZYRA: refusing to save Chapter 2 — no Article 9 consent on '
+        'record for this user. Special-category data (religious belief, '
+        'ethnic origin) must not be stored without it.',
+      );
       return false;
     }
 
@@ -286,7 +314,9 @@ class ZyraSeekerDetailsService {
       // Logged, never silent (ES-08). These answers are half the input the
       // compatibility score will ever have; a persistent failure here makes
       // the premium feature compute from nothing while the app looks fine.
-      debugPrint('ZYRA: saveDetails failed — Chapter 2 answers not persisted. $e');
+      debugPrint(
+        'ZYRA: saveDetails failed — Chapter 2 answers not persisted. $e',
+      );
       return false;
     }
   }
@@ -322,10 +352,16 @@ class ZyraSeekerDetailsService {
   static Future<SeekerDetails?> fetchUnlocked(String profileId) async {
     if (ZyraAuth.currentUser == null) return null;
     try {
-      final rows = await supabase
-          .rpc('seeker_details_for_unlocked', params: {'p_target': profileId}) as List?;
+      final rows =
+          await supabase.rpc(
+                'seeker_details_for_unlocked',
+                params: {'p_target': profileId},
+              )
+              as List?;
       if (rows == null || rows.isEmpty) return null;
-      return SeekerDetails.fromRow(Map<String, dynamic>.from(rows.first as Map));
+      return SeekerDetails.fromRow(
+        Map<String, dynamic>.from(rows.first as Map),
+      );
     } catch (e) {
       debugPrint('ZYRA: fetchUnlocked($profileId) failed — $e');
       return null;

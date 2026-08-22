@@ -51,10 +51,9 @@ class JourneyMatch {
   /// The OTHER person is currently in an Active Journey with someone else,
   /// so beginning (or restarting) with them would be refused right now —
   /// the server's one_active_journey_limit / other_party guards are the
-  /// truth behind this flag. Set today ONLY on dev stand-ins (the panel's
-  /// "In another Journey" count, Founder 2026-08-12) so the busy states
-  /// are designable; real rows stay false because the client has no
-  /// counterpart-availability read yet — the act-time refusal carries it.
+  /// truth behind this flag. Real rows receive the server-computed signal
+  /// from zyra_journey_busy_flags; dev stand-ins use the same field so the
+  /// busy card can still be exercised without remote data.
   final bool inAnotherJourney;
   final bool isMock; // true for demo/mock entries with no real backing row
 

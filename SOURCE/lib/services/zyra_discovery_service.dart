@@ -35,6 +35,7 @@ import 'package:flutter/foundation.dart' show debugPrint;
 
 import '../main.dart';
 import '../models/seeker_profile.dart';
+import '../models/zyra_gender.dart';
 import 'zyra_auth.dart';
 import 'zyra_photo_service.dart';
 import 'zyra_ages_service.dart';
@@ -63,7 +64,9 @@ class ZyraDiscoveryService {
   static Future<List<SeekerProfile>> fetchCandidates() async {
     final user = ZyraAuth.currentUser;
     if (user == null) {
-      debugPrint('ZYRA: fetchCandidates — not signed in, returning no candidates.');
+      debugPrint(
+        'ZYRA: fetchCandidates — not signed in, returning no candidates.',
+      );
       return const [];
     }
 
@@ -72,30 +75,43 @@ class ZyraDiscoveryService {
       // profiles" (APP/Browse/Script/Script_V1.md), which the original
       // wiring missed. The schema's (gender, is_active,
       // profile_complete) index exists for exactly this query.
-      final me = await supabase.from('profiles').select('gender').eq('id', user.id).maybeSingle();
+      final me = await supabase
+          .from('profiles')
+          .select('gender')
+          .eq('id', user.id)
+          .maybeSingle();
       final myGender = me?['gender'] as String?;
       if (myGender == null) {
         // No profile row yet — mid-onboarding, or the row failed to write.
-        debugPrint('ZYRA: fetchCandidates — no gender on own profile, so no '
-            'target gender to search for. Returning no candidates.');
+        debugPrint(
+          'ZYRA: fetchCandidates — no gender on own profile, so no '
+          'target gender to search for. Returning no candidates.',
+        );
         return const [];
       }
-      final targetGender = myGender == 'male' ? 'female' : 'male';
+      final targetGender = ZyraGender.oppositeCode(myGender);
 
-      final rows = await supabase
-          .from('profiles')
-          // 2026-07-27: surname_line added — see 20260727 migration
-          // add_surname_line_to_profiles + SeekerProfile.surnameLine's
-          // updated doc comment for the full "why wasn't this showing"
-          // root cause. Without this, every real candidate silently
-          // constructed a SeekerProfile with surnameLine == null below,
-          // regardless of what the mockProfiles fallback had.
-          .select('id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)')
-          .eq('role', 'seeker') // Wali accounts must never appear as candidates
-          .eq('gender', targetGender)
-          .eq('is_active', true)
-          .eq('profile_complete', true)
-          .neq('id', user.id) as List;
+      final rows =
+          await supabase
+                  .from('profiles')
+                  // 2026-07-27: surname_line added — see 20260727 migration
+                  // add_surname_line_to_profiles + SeekerProfile.surnameLine's
+                  // updated doc comment for the full "why wasn't this showing"
+                  // root cause. Without this, every real candidate silently
+                  // constructed a SeekerProfile with surnameLine == null below,
+                  // regardless of what the mockProfiles fallback had.
+                  .select(
+                    'id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)',
+                  )
+                  .eq(
+                    'role',
+                    'seeker',
+                  ) // Wali accounts must never appear as candidates
+                  .eq('gender', targetGender)
+                  .eq('is_active', true)
+                  .eq('profile_complete', true)
+                  .neq('id', user.id)
+              as List;
 
       if (rows.isEmpty) {
         // A genuinely empty result. Early in a launch this is the normal
@@ -108,7 +124,9 @@ class ZyraDiscoveryService {
       // 20260726120000_hide_raw_dob_expose_age.sql) — ages are fetched
       // in one batch call to the ages_for() SECURITY DEFINER function
       // instead, which returns only the derived age.
-      final ids = rows.map((r) => (r as Map<String, dynamic>)['id'] as String).toList();
+      final ids = rows
+          .map((r) => (r as Map<String, dynamic>)['id'] as String)
+          .toList();
       final ages = await _fetchAges(ids);
 
       // FIXED 2026-07-26 (photo preloading pass — CHATGPT_REPLY_NAVBAR_
@@ -125,11 +143,20 @@ class ZyraDiscoveryService {
       final photoPathsPerRow = <List<String>>[];
       for (final row in rows) {
         final map = row as Map<String, dynamic>;
-        final photosRaw = List<Map<String, dynamic>>.from((map['profile_photos'] as List?) ?? const []);
-        if (photosRaw.isEmpty) continue; // no photo — not browsable per Browse spec
-        photosRaw.sort((a, b) => (a['display_order'] as int).compareTo(b['display_order'] as int));
+        final photosRaw = List<Map<String, dynamic>>.from(
+          (map['profile_photos'] as List?) ?? const [],
+        );
+        if (photosRaw.isEmpty) {
+          continue; // no photo — not browsable per Browse spec
+        }
+        photosRaw.sort(
+          (a, b) =>
+              (a['display_order'] as int).compareTo(b['display_order'] as int),
+        );
         validRows.add(map);
-        photoPathsPerRow.add(photosRaw.map((p) => p['storage_path'] as String).toList());
+        photoPathsPerRow.add(
+          photosRaw.map((p) => p['storage_path'] as String).toList(),
+        );
       }
 
       // REWRITTEN 2026-08-05 (Founder: "still no profiles showing up…
@@ -163,24 +190,30 @@ class ZyraDiscoveryService {
           continue; // genuinely no viewable photo — not browsable per spec
         }
 
-        results.add(SeekerProfile(
-          id: map['id'] as String,
-          firstName: map['first_name'] as String,
-          age: ages[map['id'] as String] ?? 0,
-          city: (map['location_text'] as String?) ?? '—',
-          photos: photos,
-          gender: map['gender'] as String,
-          surnameLine: map['surname_line'] as String?,
-        ));
+        results.add(
+          SeekerProfile(
+            id: map['id'] as String,
+            firstName: map['first_name'] as String,
+            age: ages[map['id'] as String] ?? 0,
+            city: (map['location_text'] as String?) ?? '—',
+            photos: photos,
+            gender: map['gender'] as String,
+            surnameLine: map['surname_line'] as String?,
+          ),
+        );
       }
 
       if (droppedForPhotos > 0) {
-        debugPrint('ZYRA: fetchCandidates — ${results.length} candidates ready; '
-            '$droppedForPhotos dropped because none of their photos signed.');
+        debugPrint(
+          'ZYRA: fetchCandidates — ${results.length} candidates ready; '
+          '$droppedForPhotos dropped because none of their photos signed.',
+        );
       }
       if (results.isEmpty) {
-        debugPrint('ZYRA: fetchCandidates — ${rows.length} candidate row(s) '
-            'matched but none survived photo resolution.');
+        debugPrint(
+          'ZYRA: fetchCandidates — ${rows.length} candidate row(s) '
+          'matched but none survived photo resolution.',
+        );
         return const [];
       }
 
@@ -209,10 +242,18 @@ class ZyraDiscoveryService {
   /// own-row-only RLS on onboarding_answers, which stays exactly as
   /// restrictive as before for direct table reads. The client never
   /// sees another user's raw answers, only the returned score.
-  static Future<List<SeekerProfile>> _applyCompatibility(String userId, List<SeekerProfile> candidates) async {
+  static Future<List<SeekerProfile>> _applyCompatibility(
+    String userId,
+    List<SeekerProfile> candidates,
+  ) async {
     try {
       final candidateIds = candidates.map((c) => c.id).toList();
-      final rows = await supabase.rpc('score_candidates', params: {'p_candidate_ids': candidateIds}) as List;
+      final rows =
+          await supabase.rpc(
+                'score_candidates',
+                params: {'p_candidate_ids': candidateIds},
+              )
+              as List;
       // NULL-TOLERANT AS OF 2026-08-11 (OA-ZYRA-193). score_candidates used
       // to return a neutral 50 when it had nothing to go on. On the ratified
       // plain-count scale there is no neutral value, so it returns NULL —
@@ -260,10 +301,17 @@ class ZyraDiscoveryService {
   /// Requirement (in which case no row comes back at all).
   static Future<double?> fetchMyScoreFor(String otherId) async {
     try {
-      final rows = await supabase
-          .rpc('score_candidates', params: {'p_candidate_ids': [otherId]}) as List;
+      final rows =
+          await supabase.rpc(
+                'score_candidates',
+                params: {
+                  'p_candidate_ids': [otherId],
+                },
+              )
+              as List;
       if (rows.isEmpty) return null;
-      return ((rows.first as Map<String, dynamic>)['score'] as num?)?.toDouble();
+      return ((rows.first as Map<String, dynamic>)['score'] as num?)
+          ?.toDouble();
     } catch (e) {
       debugPrint('ZYRA: fetchMyScoreFor($otherId) failed - $e');
       return null;
@@ -328,11 +376,13 @@ class ZyraDiscoveryService {
     final user = ZyraAuth.currentUser;
     if (user == null) return false;
     try {
-      await supabase.from('saves').upsert(
-        {'saver_id': user.id, 'saved_id': savedId},
-        onConflict: 'saver_id,saved_id',
-        ignoreDuplicates: true,
-      );
+      await supabase
+          .from('saves')
+          .upsert(
+            {'saver_id': user.id, 'saved_id': savedId},
+            onConflict: 'saver_id,saved_id',
+            ignoreDuplicates: true,
+          );
       return true;
     } catch (e) {
       debugPrint('ZYRA: recordSave($savedId) failed — $e');
@@ -344,11 +394,13 @@ class ZyraDiscoveryService {
     final user = ZyraAuth.currentUser;
     if (user == null) return false;
     try {
-      await supabase.from('likes').upsert(
-        {'liker_id': user.id, 'liked_id': likedId},
-        onConflict: 'liker_id,liked_id',
-        ignoreDuplicates: true,
-      );
+      await supabase
+          .from('likes')
+          .upsert(
+            {'liker_id': user.id, 'liked_id': likedId},
+            onConflict: 'liker_id,liked_id',
+            ignoreDuplicates: true,
+          );
       return true;
     } catch (e) {
       debugPrint('ZYRA: recordLike($likedId) failed — $e');
@@ -375,24 +427,37 @@ class ZyraDiscoveryService {
   static Future<List<SeekerProfile>> profilesByIds(List<String> ids) async {
     if (ids.isEmpty) return const [];
     try {
-      final rows = await supabase
-          .from('profiles')
-          .select('id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)')
-          .inFilter('id', ids) as List;
+      final rows =
+          await supabase
+                  .from('profiles')
+                  .select(
+                    'id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)',
+                  )
+                  .inFilter('id', ids)
+              as List;
       if (rows.isEmpty) return const [];
 
-      final foundIds = rows.map((r) => (r as Map<String, dynamic>)['id'] as String).toList();
+      final foundIds = rows
+          .map((r) => (r as Map<String, dynamic>)['id'] as String)
+          .toList();
       final ages = await _fetchAges(foundIds);
 
       final validRows = <Map<String, dynamic>>[];
       final photoPathsPerRow = <List<String>>[];
       for (final row in rows) {
         final map = row as Map<String, dynamic>;
-        final photosRaw = List<Map<String, dynamic>>.from((map['profile_photos'] as List?) ?? const []);
+        final photosRaw = List<Map<String, dynamic>>.from(
+          (map['profile_photos'] as List?) ?? const [],
+        );
         if (photosRaw.isEmpty) continue;
-        photosRaw.sort((a, b) => (a['display_order'] as int).compareTo(b['display_order'] as int));
+        photosRaw.sort(
+          (a, b) =>
+              (a['display_order'] as int).compareTo(b['display_order'] as int),
+        );
         validRows.add(map);
-        photoPathsPerRow.add(photosRaw.map((p) => p['storage_path'] as String).toList());
+        photoPathsPerRow.add(
+          photosRaw.map((p) => p['storage_path'] as String).toList(),
+        );
       }
 
       // Map-keyed signing, same reasoning as fetchCandidates above — this
@@ -422,7 +487,10 @@ class ZyraDiscoveryService {
       }
       // Returned in the caller's order, so "most recently saved last"
       // survives the round trip.
-      return [for (final id in ids) if (byId[id] != null) byId[id]!];
+      return [
+        for (final id in ids)
+          if (byId[id] != null) byId[id]!,
+      ];
     } catch (_) {
       return const [];
     }
@@ -442,10 +510,20 @@ class ZyraDiscoveryService {
   ///
   /// Ordered oldest-first by `created_at` so the Passed section's
   /// "showing last 10" really is the last ten.
-  static Future<({List<SeekerProfile> saved, List<SeekerProfile> considered, List<SeekerProfile> passed})>
-      fetchDecisions() async {
+  static Future<
+    ({
+      List<SeekerProfile> saved,
+      List<SeekerProfile> considered,
+      List<SeekerProfile> passed,
+    })
+  >
+  fetchDecisions() async {
     final user = ZyraAuth.currentUser;
-    const empty = (saved: <SeekerProfile>[], considered: <SeekerProfile>[], passed: <SeekerProfile>[]);
+    const empty = (
+      saved: <SeekerProfile>[],
+      considered: <SeekerProfile>[],
+      passed: <SeekerProfile>[],
+    );
     if (user == null) return empty;
 
     try {
@@ -456,13 +534,26 @@ class ZyraDiscoveryService {
       // sweep (Timeline, chat history both sides, family answers), and a bare
       // .order() reads as "chronological" to everyone who has not been bitten.
       final results = await Future.wait([
-        supabase.from('saves').select('saved_id, created_at').eq('saver_id', user.id).order('created_at', ascending: false),
-        supabase.from('likes').select('liked_id, created_at').eq('liker_id', user.id).order('created_at', ascending: false),
-        supabase.from('passes').select('passed_id, created_at').eq('passer_id', user.id).order('created_at', ascending: false),
+        supabase
+            .from('saves')
+            .select('saved_id, created_at')
+            .eq('saver_id', user.id)
+            .order('created_at', ascending: false),
+        supabase
+            .from('likes')
+            .select('liked_id, created_at')
+            .eq('liker_id', user.id)
+            .order('created_at', ascending: false),
+        supabase
+            .from('passes')
+            .select('passed_id, created_at')
+            .eq('passer_id', user.id)
+            .order('created_at', ascending: false),
       ]);
 
-      List<String> ids(List rows, String key) =>
-          [for (final r in rows) (r as Map<String, dynamic>)[key] as String];
+      List<String> ids(List rows, String key) => [
+        for (final r in rows) (r as Map<String, dynamic>)[key] as String,
+      ];
 
       final savedIds = ids(results[0], 'saved_id');
       final likedIds = ids(results[1], 'liked_id');
@@ -476,10 +567,16 @@ class ZyraDiscoveryService {
 
       final profiles = await profilesByIds(all);
       final byId = {for (final p in profiles) p.id: p};
-      List<SeekerProfile> pick(List<String> want) =>
-          [for (final id in want) if (byId[id] != null) byId[id]!];
+      List<SeekerProfile> pick(List<String> want) => [
+        for (final id in want)
+          if (byId[id] != null) byId[id]!,
+      ];
 
-      return (saved: pick(savedIds), considered: pick(likedIds), passed: pick(passedIds));
+      return (
+        saved: pick(savedIds),
+        considered: pick(likedIds),
+        passed: pick(passedIds),
+      );
     } catch (_) {
       return empty;
     }
@@ -501,11 +598,13 @@ class ZyraDiscoveryService {
     try {
       // ignoreDuplicates: see recordSave/recordLike above — finding 1.1.
       // bool return: see the BUG-02 block above recordSave.
-      await supabase.from('passes').upsert(
-        {'passer_id': user.id, 'passed_id': passedId},
-        onConflict: 'passer_id,passed_id',
-        ignoreDuplicates: true,
-      );
+      await supabase
+          .from('passes')
+          .upsert(
+            {'passer_id': user.id, 'passed_id': passedId},
+            onConflict: 'passer_id,passed_id',
+            ignoreDuplicates: true,
+          );
       return true;
     } catch (e) {
       debugPrint('ZYRA: recordPass($passedId) failed — $e');
@@ -528,7 +627,11 @@ class ZyraDiscoveryService {
     final user = ZyraAuth.currentUser;
     if (user == null) return;
     try {
-      await supabase.from('saves').delete().eq('saver_id', user.id).eq('saved_id', savedId);
+      await supabase
+          .from('saves')
+          .delete()
+          .eq('saver_id', user.id)
+          .eq('saved_id', savedId);
     } catch (_) {}
   }
 

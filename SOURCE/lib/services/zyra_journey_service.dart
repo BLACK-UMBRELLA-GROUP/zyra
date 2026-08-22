@@ -26,7 +26,7 @@
 // else yet but simpler and safer than standing up a new Realtime
 // channel subscription for this task.
 
-import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/foundation.dart' show debugPrint, visibleForTesting;
 
 import '../data/journey_questions.dart';
 import '../main.dart';
@@ -186,6 +186,10 @@ class ZyraJourneyService {
 
       if (rows.isEmpty) return [];
 
+      final busyByMatchId = await _fetchBusyFlags([
+        for (final row in rows) (row as Map<String, dynamic>)['id'] as String,
+      ]);
+
       final matchByOtherId = <String, Map<String, dynamic>>{};
       for (final r in rows) {
         final map = r as Map<String, dynamic>;
@@ -258,6 +262,7 @@ class ZyraJourneyService {
             endedAt: matchRow['ended_at'] == null
                 ? null
                 : DateTime.parse(matchRow['ended_at'] as String),
+            inAnotherJourney: busyByMatchId[matchRow['id'] as String] ?? false,
           ),
         );
       }
@@ -282,6 +287,36 @@ class ZyraJourneyService {
     // Delegates since 2026-08-08 — see ZyraAgesService for why four
     // identical private copies of this became one.
     return ZyraAgesService.forIds(ids, context: 'journeys');
+  }
+
+  /// Server-computed availability of the other party for each Journey row.
+  ///
+  /// This call is deliberately not best-effort. Returning false after a
+  /// failed availability read would tell the Seeker that a busy person is
+  /// ready. Its exception therefore reaches fetchJourneyMatches/refetchOne,
+  /// whose truthful failure contract keeps the last-known UI instead.
+  static Future<Map<String, bool>> _fetchBusyFlags(
+    List<String> matchIds,
+  ) async {
+    if (matchIds.isEmpty) return const {};
+    final rows = await supabase.rpc(
+      'zyra_journey_busy_flags',
+      params: {'p_match_ids': matchIds},
+    );
+    return busyFlagsFromRows(rows);
+  }
+
+  @visibleForTesting
+  static Map<String, bool> busyFlagsFromRows(Object? value) {
+    final result = <String, bool>{};
+    for (final raw in (value as List? ?? const [])) {
+      final row = Map<String, dynamic>.from(raw as Map);
+      final matchId = row['match_id'] as String?;
+      if (matchId != null) {
+        result[matchId] = row['in_another_journey'] == true;
+      }
+    }
+    return result;
   }
 
   /// One ask per pause episode (DR-ZYRA-142). True when the nudge
@@ -1271,6 +1306,7 @@ class ZyraJourneyService {
       // Raw date_of_birth is no longer selectable by the client — see
       // 20260726120000_hide_raw_dob_expose_age.sql.
       final ages = await _fetchAges([otherUserId]);
+      final busyByMatchId = await _fetchBusyFlags([matchId]);
 
       final photosRaw = List<Map<String, dynamic>>.from(
         (profileRow['profile_photos'] as List?) ?? const [],
@@ -1310,6 +1346,7 @@ class ZyraJourneyService {
         endedAt: matchRow['ended_at'] == null
             ? null
             : DateTime.parse(matchRow['ended_at'] as String),
+        inAnotherJourney: busyByMatchId[matchId] ?? false,
       );
     } catch (e) {
       debugPrint('ZYRA: refetchOne($matchId) failed - $e');

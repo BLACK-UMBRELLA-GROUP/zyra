@@ -73,6 +73,7 @@ import '../../data/zyra_entitlements.dart';
 import '../../data/zyra_journey_stages.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
+import '../../models/zyra_gender.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_guardian_suggestion_service.dart';
@@ -1255,7 +1256,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       title: 'Pause with ${j.profile.firstName}?',
       body:
           '${_keepsPlaceLine(j.profile)} '
-          '${j.profile.gender == 'male' ? "He'll" : "She'll"} see the '
+          "${ZyraGender.subject(j.profile.gender, capitalized: true)}'ll see the "
           'Journey is paused.',
       actionLabel: 'Pause Journey',
       danger: false,
@@ -1480,7 +1481,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // nobody's favour.
     if (j.isSuspended && !j.inAnotherJourney) {
       final name = j.profile.firstName;
-      final heShe = j.profile.gender == 'male' ? 'he' : 'she';
+      final subject = ZyraGender.subject(j.profile.gender, capitalized: true);
       if (j.pausedByBoth) {
         return 'Paused by both of you — continues when you’ve both resumed.';
       }
@@ -1490,7 +1491,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             : 'Your pause is yours — resuming continues for you both.';
       }
       return j.pauseNudgedAt != null
-          ? '${heShe == 'he' ? 'He' : 'She'} knows you’re ready — or rest too, or simply wait.'
+          ? '$subject knows you’re ready — or rest too, or simply wait.'
           : 'How you answer — or whether you answer — is yours.';
     }
     return null;
@@ -2250,9 +2251,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                   ),
                 )
               else
-                // Passed cards expand too, but get no Unlock buttons —
-                // Profile Unlocks/Summary.md, Usage Rules: "Cannot be used
-                // on passed profiles." Report stays available on all three.
+                // Passed cards use the same expanded compatibility action as
+                // Considered and Saved. See APP/Premium/Profile Unlocks/
+                // Summary.md; the older prohibition was reversed.
                 ...recentPassed.map(
                   (p) => _ActivityCard(profile: p, kind: _ActivityKind.passed),
                 ),
@@ -4624,9 +4625,7 @@ Widget _takeoverChoiceCard({
 /// "He keeps his place" / "She keeps her place" — gender is
 /// server-segregated (H1), so the counterpart's is always set; the pronoun
 /// keeps the card personal the way the approved mock was.
-String _keepsPlaceLine(SeekerProfile p) => p.gender == 'male'
-    ? "He keeps his place — return when you're ready."
-    : "She keeps her place — return when you're ready.";
+String _keepsPlaceLine(SeekerProfile p) => ZyraGender.keepsPlaceLine(p.gender);
 
 /// COMPRESSED, NOT DROPPED. The Guardian-visibility disclosure is a
 /// 2026-08-01 Founder decision ("stated consistently everywhere"), and
