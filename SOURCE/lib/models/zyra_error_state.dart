@@ -8,7 +8,22 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-enum ZyraErrorKind { page, offline, serviceUnavailable, sessionExpired }
+enum ZyraErrorKind {
+  page,
+  offline,
+  serviceUnavailable,
+  sessionExpired,
+  previewAccess,
+}
+
+/// A protected preview must never fall through to ordinary member data when
+/// fresh authorization is unavailable. This error offers an explicit recovery.
+class ZyraPreviewAuthorizationException implements Exception {
+  const ZyraPreviewAuthorizationException();
+
+  @override
+  String toString() => 'Local preview authorization could not be verified.';
+}
 
 @immutable
 class ZyraErrorContent {
@@ -34,10 +49,10 @@ extension ZyraErrorKindContent on ZyraErrorKind {
       secondaryLabel: 'Return home',
     ),
     ZyraErrorKind.offline => const ZyraErrorContent(
-      title: 'You appear to be offline.',
-      message: 'Check your connection, then try again.',
+      title: 'We couldn’t connect to ZYRA.',
+      message: 'Check your connection, or try again shortly.',
       primaryLabel: 'Try again',
-      secondaryLabel: 'Return home',
+      secondaryLabel: 'Return to welcome',
     ),
     ZyraErrorKind.serviceUnavailable => const ZyraErrorContent(
       title: 'ZYRA is taking a moment.',
@@ -51,17 +66,40 @@ extension ZyraErrorKindContent on ZyraErrorKind {
       primaryLabel: 'Sign in again',
       secondaryLabel: 'Return to welcome',
     ),
+    ZyraErrorKind.previewAccess => const ZyraErrorContent(
+      title: 'Couldn’t open this page.',
+      message: 'Please try again, or sign out to return to the welcome page.',
+      primaryLabel: 'Try again',
+      secondaryLabel: 'Sign out',
+    ),
   };
 }
 
 /// Maps an internal failure to one of the four user-facing states without
 /// ever putting the raw exception on screen.
 ZyraErrorKind zyraErrorKindFor(Object error) {
-  if (error is TimeoutException) return ZyraErrorKind.offline;
+  if (error is ZyraPreviewAuthorizationException) {
+    return ZyraErrorKind.previewAccess;
+  }
+  // A timed-out operation can be local storage or a slow service. It is not
+  // evidence that the member's device is offline.
+  if (error is TimeoutException) return ZyraErrorKind.serviceUnavailable;
 
   final text = '${error.runtimeType}: $error'.toLowerCase();
   if (_containsAny(text, const [
-    'refresh token',
+    'invalid refresh token',
+    'refresh token is invalid',
+    'refresh token has expired',
+    'refresh token is expired',
+    'refresh token expired',
+    'refresh token not found',
+    'refresh token was not found',
+    'refresh token already used',
+    'refresh token has already been used',
+    'refresh token has been reused',
+    'refresh_token_not_found',
+    'refresh_token_already_used',
+    'refresh_token_invalid',
     'invalid jwt',
     'jwt expired',
     'token has expired',
@@ -72,6 +110,22 @@ ZyraErrorKind zyraErrorKindFor(Object error) {
     return ZyraErrorKind.sessionExpired;
   }
   if (_containsAny(text, const [
+    'service unavailable',
+    'bad gateway',
+    'gateway timeout',
+    'internal server error',
+    'statuscode: 500',
+    'statuscode: 502',
+    'statuscode: 503',
+    'statuscode: 504',
+    'status: 500',
+    'status: 502',
+    'status: 503',
+    'status: 504',
+  ])) {
+    return ZyraErrorKind.serviceUnavailable;
+  }
+  if (_containsAny(text, const [
     'socketexception',
     'failed host lookup',
     'network is unreachable',
@@ -80,23 +134,8 @@ ZyraErrorKind zyraErrorKindFor(Object error) {
     'connection reset',
     'connection closed',
     'no address associated',
-    'clientexception',
   ])) {
     return ZyraErrorKind.offline;
-  }
-  if (_containsAny(text, const [
-    'service unavailable',
-    'bad gateway',
-    'gateway timeout',
-    'internal server error',
-    'statuscode: 502',
-    'statuscode: 503',
-    'statuscode: 504',
-    'status: 502',
-    'status: 503',
-    'status: 504',
-  ])) {
-    return ZyraErrorKind.serviceUnavailable;
   }
   return ZyraErrorKind.page;
 }

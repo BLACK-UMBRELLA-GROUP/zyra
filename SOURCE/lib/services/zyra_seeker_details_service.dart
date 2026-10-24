@@ -33,11 +33,14 @@
 // Privacy Policy, Terms and the Compatibility Unlock flow before public
 // launch. NOT LEGAL ADVICE.
 
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import '../data/zyra_reference_data.dart';
 import '../main.dart';
 import '../models/onboarding_question.dart';
+import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
 import 'zyra_consent_service.dart';
 
@@ -95,7 +98,7 @@ class SeekerDetails {
       final c = zyraCodeFor(list, label);
       if (c == null) {
         debugPrint(
-          'ZYRA: no reference code for $field="$label" — NOT SAVED. '
+          'ZYRA: no reference code for $field — NOT SAVED. '
           'A picker and zyra_reference_data have drifted apart.',
         );
       }
@@ -115,21 +118,17 @@ class SeekerDetails {
         ? null
         : zyraNationalityCodeFor(nationality);
     if (countryOfBirth != null && countryCode == null) {
-      debugPrint(
-        'ZYRA: no ISO code for country_of_birth="$countryOfBirth" — NOT SAVED.',
-      );
+      debugPrint('ZYRA: no ISO code for country_of_birth — NOT SAVED.');
     }
     if (nationality != null && natCode == null) {
-      debugPrint(
-        'ZYRA: no ISO code for nationality="$nationality" — NOT SAVED.',
-      );
+      debugPrint('ZYRA: no ISO code for nationality — NOT SAVED.');
     }
 
     final langCodes = <String>[];
     for (final l in languages) {
       final c = zyraCodeFor(zyraLanguages, l);
       if (c == null) {
-        debugPrint('ZYRA: no ISO 639-1 code for language="$l" — NOT SAVED.');
+        debugPrint('ZYRA: no ISO 639-1 code for language — NOT SAVED.');
       } else {
         langCodes.add(c);
       }
@@ -162,7 +161,7 @@ class SeekerDetails {
       // A code with no label means the reference list dropped an entry
       // that users already hold. Surfaced rather than rendered blank.
       debugPrint(
-        'ZYRA: stored code "$code" has no label in the current '
+        'ZYRA: stored reference code has no label in the current '
         'reference list — an entry was removed without a migration.',
       );
       return null;
@@ -294,46 +293,87 @@ class ZyraSeekerDetailsService {
   /// recorded. That is not belt-and-braces: a UI gate can be skipped by a
   /// deep link, a reordered flow or a future refactor, and this is the one
   /// place every write passes through.
-  static Future<bool> saveDetails(SeekerDetails d) async {
-    final user = ZyraAuth.currentUser;
-    if (user == null) return false; // mock/offline session — nothing to write
-
-    if (!await ZyraConsentService.hasArticle9Consent()) {
-      debugPrint(
-        'ZYRA: refusing to save Chapter 2 — no Article 9 consent on '
-        'record for this user. Special-category data (religious belief, '
-        'ethnic origin) must not be stored without it.',
-      );
-      return false;
-    }
-
+  static Future<bool> saveDetails(
+    SeekerDetails d, {
+    String? expectedUserId,
+  }) async {
     try {
-      await supabase.from('seeker_details').upsert(d.toRow(user.id));
-      return true;
+      final user = ZyraAuth.currentUser;
+      final generation = ZyraAccountState.generation;
+      if (user == null ||
+          ZyraAccountState.isSigningOut ||
+          (expectedUserId != null && user.id != expectedUserId)) {
+        return false;
+      }
+      // Preferences and languages can be mutable. Capture the submitted
+      // draft before the consent read yields, not when that read completes.
+      final payload = Map<String, dynamic>.from(
+        jsonDecode(jsonEncode(d.toRow(user.id))),
+      );
+      if (!await ZyraConsentService.hasArticle9Consent()) {
+        debugPrint(
+          'ZYRA: refusing to save Chapter 2 — no Article 9 consent on '
+          'record for this user. Special-category data (religious belief, '
+          'ethnic origin) must not be stored without it.',
+        );
+        return false;
+      }
+
+      if (ZyraAccountState.isSigningOut ||
+          ZyraAccountState.generation != generation ||
+          ZyraAuth.currentUser?.id != user.id) {
+        return false;
+      }
+      final saved = await supabase
+          .from('seeker_details')
+          .upsert(payload)
+          .select('user_id')
+          .maybeSingle();
+      return saved?['user_id'] == user.id &&
+          !ZyraAccountState.isSigningOut &&
+          ZyraAccountState.generation == generation &&
+          ZyraAuth.currentUser?.id == user.id;
     } catch (e) {
       // Logged, never silent (ES-08). These answers are half the input the
       // compatibility score will ever have; a persistent failure here makes
       // the premium feature compute from nothing while the app looks fine.
       debugPrint(
-        'ZYRA: saveDetails failed — Chapter 2 answers not persisted. $e',
+        'ZYRA: saveDetails failed — Chapter 2 answers not persisted (${e.runtimeType}).',
       );
       return false;
     }
   }
 
   /// The signed-in Seeker's own answers, for re-entering Chapter 2.
-  static Future<SeekerDetails?> fetchOwn() async {
-    final user = ZyraAuth.currentUser;
-    if (user == null) return null;
+  static Future<SeekerDetails?> fetchOwn({
+    String? expectedUserId,
+    bool throwOnError = false,
+  }) async {
     try {
+      final user = ZyraAuth.currentUser;
+      final generation = ZyraAccountState.generation;
+      if (user == null ||
+          ZyraAccountState.isSigningOut ||
+          (expectedUserId != null && user.id != expectedUserId)) {
+        throw StateError('Account changed.');
+      }
       final row = await supabase
           .from('seeker_details')
           .select()
           .eq('user_id', user.id)
           .maybeSingle();
+      if (ZyraAuth.currentUser?.id != user.id ||
+          ZyraAccountState.isSigningOut ||
+          ZyraAccountState.generation != generation) {
+        throw StateError('Account changed.');
+      }
+      if (row != null && row['user_id'] != user.id) {
+        throw StateError('Saved profile details unavailable.');
+      }
       return row == null ? null : SeekerDetails.fromRow(row);
     } catch (e) {
-      debugPrint('ZYRA: fetchOwn seeker_details failed — $e');
+      debugPrint('ZYRA: fetchOwn seeker_details failed (${e.runtimeType}).');
+      if (throwOnError) rethrow;
       return null;
     }
   }

@@ -3,19 +3,71 @@
 # female, 5 photos each) to Supabase Storage, then writes the matching
 # profile_photos SQL insert to run afterward.
 #
-# Run this ON YOUR MAC — it needs real network access to reach
-# Supabase's Storage API.
+# HISTORICAL UTILITY. Its former production-era use is not authority to run it
+# against production again. It may target only the separately approved ZYRA
+# Test staging project, and is deliberately inert while that pin is unassigned.
 #
 # Usage:
-#   chmod +x upload_fake_photos.sh
-#   ./upload_fake_photos.sh
+#   Supply ZYRA_STAGING_PROJECT_REF,
+#   ZYRA_STAGING_SUPABASE_PUBLISHABLE_KEY, and
+#   ZYRA_DEV_ACCOUNT_PASSWORD in the caller environment, then run this file.
+# Never save those values in this repository or shell history.
 
-set -u
-BASE="https://sxoaxonzjqkgajmlagyk.supabase.co"
-ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4b2F4b256anFrZ2FqbWxhZ3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzOTEyOTUsImV4cCI6MjA5OTk2NzI5NX0.wPgj5yuDZGig_ESE4hTzLD6Ec2X-gz8NPW1qyztGu3U"
-PASS="ZyraFake!2026"
-PHOTO_DIR="/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/supabase/dev_test_photos"
-OUT_SQL="/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/supabase/insert_dev_photos.sql"
+set -euo pipefail
+
+readonly APPROVED_STAGING_PROJECT_REF="UNASSIGNED_STAGING_PROJECT_REF"
+readonly PRODUCTION_PROJECT_REF="sxoaxonzjqkgajmlagyk"
+
+fail() {
+  printf 'ERROR: %s\n' "$1" >&2
+  exit 1
+}
+
+: "${ZYRA_STAGING_PROJECT_REF:?ZYRA_STAGING_PROJECT_REF is required}"
+: "${ZYRA_STAGING_SUPABASE_PUBLISHABLE_KEY:?ZYRA_STAGING_SUPABASE_PUBLISHABLE_KEY is required}"
+: "${ZYRA_DEV_ACCOUNT_PASSWORD:?ZYRA_DEV_ACCOUNT_PASSWORD is required}"
+
+[[ "$APPROVED_STAGING_PROJECT_REF" != "UNASSIGNED_STAGING_PROJECT_REF" ]] || \
+  fail "photo upload is disabled until the approved staging project ref is pinned"
+[[ "$APPROVED_STAGING_PROJECT_REF" != "$PRODUCTION_PROJECT_REF" ]] || \
+  fail "the compiled staging pin must never be production"
+[[ "$ZYRA_STAGING_PROJECT_REF" != "$PRODUCTION_PROJECT_REF" ]] || \
+  fail "photo upload refuses the production project"
+[[ "$ZYRA_STAGING_PROJECT_REF" == "$APPROVED_STAGING_PROJECT_REF" ]] || \
+  fail "target project ref does not match the separately approved staging pin"
+[[ "$ZYRA_STAGING_PROJECT_REF" =~ ^[a-z0-9]{20}$ ]] || \
+  fail "target project ref is malformed"
+[[ "$ZYRA_STAGING_SUPABASE_PUBLISHABLE_KEY" != "UNASSIGNED" ]] || \
+  fail "staging publishable key is unassigned"
+[[ ${#ZYRA_DEV_ACCOUNT_PASSWORD} -ge 16 ]] || \
+  fail "developer account password must be at least 16 characters"
+command -v curl >/dev/null 2>&1 || fail "curl is required"
+command -v python3 >/dev/null 2>&1 || fail "python3 is required"
+
+readonly BASE="https://${ZYRA_STAGING_PROJECT_REF}.supabase.co"
+readonly PUBLISHABLE_KEY="$ZYRA_STAGING_SUPABASE_PUBLISHABLE_KEY"
+readonly DEV_ACCOUNT_PASSWORD="$ZYRA_DEV_ACCOUNT_PASSWORD"
+unset ZYRA_DEV_ACCOUNT_PASSWORD
+
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly PHOTO_DIR="${ZYRA_DEV_PHOTO_DIR:-$SCRIPT_DIR/dev_test_photos}"
+readonly OUT_SQL="${ZYRA_DEV_PHOTO_SQL_OUTPUT:-$SCRIPT_DIR/insert_dev_photos.sql}"
+
+sign_in() {
+  local email="$1"
+
+  # JSON is encoded without placing the credential in a process argument.
+  printf '%s\0%s' "$email" "$DEV_ACCOUNT_PASSWORD" |
+    python3 -c 'import json, sys; email, password = sys.stdin.buffer.read().split(b"\0", 1); sys.stdout.write(json.dumps({"email": email.decode(), "password": password.decode()}))' |
+    curl -sS -X POST "$BASE/auth/v1/token?grant_type=password" \
+      -H "apikey: $PUBLISHABLE_KEY" \
+      -H "Content-Type: application/json" \
+      --data-binary @-
+}
+
+read_access_token() {
+  python3 -c 'import json, sys; value = json.load(sys.stdin).get("access_token"); valid = isinstance(value, str) and len(value) >= 20; sys.stdout.write(value if valid else ""); raise SystemExit(0 if valid else 1)'
+}
 
 # email:user_id:GenderWord:PortraitNumber
 USERS=(
@@ -49,13 +101,8 @@ FAIL_COUNT=0
 for entry in "${USERS[@]}"; do
   IFS=':' read -r email uid gender n <<< "$entry"
 
-  resp=$(curl -s -X POST "$BASE/auth/v1/token?grant_type=password" \
-    -H "apikey: $ANON" -H "Content-Type: application/json" \
-    -d "{\"email\":\"$email\",\"password\":\"$PASS\"}")
-  token=$(echo "$resp" | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p')
-
-  if [ -z "$token" ]; then
-    echo "FAILED sign-in: $email -> $resp"
+  if ! token="$(sign_in "$email" | read_access_token)"; then
+    echo "FAILED sign-in: $email"
     FAIL_COUNT=$((FAIL_COUNT+1))
     continue
   fi
@@ -72,7 +119,7 @@ for entry in "${USERS[@]}"; do
     fi
     code=$(curl -s -o /dev/null -w "%{http_code}" -X PUT \
       "$BASE/storage/v1/object/profile-photos/$uid/$order.png" \
-      -H "apikey: $ANON" -H "Authorization: Bearer $token" \
+      -H "apikey: $PUBLISHABLE_KEY" -H "Authorization: Bearer $token" \
       -H "Content-Type: image/png" -H "x-upsert: true" \
       --data-binary "@$fpath")
     if [ "$code" = "200" ] || [ "$code" = "201" ]; then
@@ -93,4 +140,4 @@ echo ";" >> "$OUT_SQL"
 echo ""
 echo "Done. Uploaded: $OK_COUNT, Failed: $FAIL_COUNT"
 echo "SQL written to: $OUT_SQL"
-echo "Tell Claude it's done — it can read that file directly."
+echo "The generated SQL remains staging-only and requires separate review before use."

@@ -500,8 +500,8 @@ is designed and usage patterns are understood.
 GUARDIAN NAVIGATION
 ------------------------------------------------------------
 
-Guardian accounts use a fixed 4-tab navigation:
-  Dashboard · Seekers · Network · Profile
+Guardian accounts use a fixed 5-tab navigation:
+  Dashboard · Network · Seekers · Notifications · Profile
 
   — No Universal Toggle (Seeker-only mechanic)
   — All tabs equal size, all icons 18px
@@ -720,4 +720,3 @@ The following items require formal resolution:
   GUARDIAN ↔ GUARDIAN COMMUNICATION
   Private Guardian-to-Guardian communication rules depend on the
   Family Stage specification.
-

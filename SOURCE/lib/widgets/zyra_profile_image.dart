@@ -36,6 +36,8 @@
 // place: the indicator now depends on the space it actually gets, not on
 // which widget happens to own it.
 
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +50,7 @@ class ZyraProfileImage extends StatelessWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
+  final AlignmentGeometry alignment;
 
   /// Shows a spinner while the image loads.
   final bool showLoader;
@@ -58,6 +61,7 @@ class ZyraProfileImage extends StatelessWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.alignment = Alignment.center,
     this.showLoader = false,
   });
 
@@ -78,6 +82,36 @@ class ZyraProfileImage extends StatelessWidget {
         height: height,
         child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
       );
+    }
+
+    // Developer Preview photos are selected from this device but must never
+    // reach live Storage. They are kept in memory as a data URL and rendered
+    // locally, so neither the network provider nor the disk cache sees them.
+    if (photo.startsWith('data:image/')) {
+      try {
+        final comma = photo.indexOf(',');
+        if (comma < 0) throw const FormatException('missing data separator');
+        final bytes = base64Decode(photo.substring(comma + 1));
+        return Image.memory(
+          bytes,
+          width: width,
+          height: height,
+          fit: fit,
+          alignment: alignment,
+          gaplessPlayback: true,
+          errorBuilder: (_, _, _) => SizedBox(
+            width: width,
+            height: height,
+            child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
+          ),
+        );
+      } on FormatException {
+        return SizedBox(
+          width: width,
+          height: height,
+          child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
+        );
+      }
     }
 
     // ── DISK-CACHED, 2026-08-15 (DR-ZYRA-169 Phase 1). Was Image.network,
@@ -115,6 +149,7 @@ class ZyraProfileImage extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
+      alignment: alignment,
       loadingBuilder: !showLoader
           ? null
           // ── SEAMLESS, 2026-08-08 (second pass). Founder, on the screen
@@ -141,57 +176,104 @@ class ZyraProfileImage extends StatelessWidget {
           // has a frame and the fade never plays. Doing it here means the
           // switch happens where both states actually exist.
           : (context, child, progress) => AnimatedSwitcher(
-                duration: const Duration(milliseconds: 320),
-                // ── StackFit.passthrough IS LOAD-BEARING. Founder,
-                // 2026-08-08: "the photo in browse page isn't taking up
-                // the whole screen."
-                //
-                // That was this AnimatedSwitcher, added minutes earlier.
-                // Its DEFAULT layoutBuilder is a Stack with LOOSE
-                // constraints; the code it replaced returned `child`
-                // untouched, so the image inherited the TIGHT constraints
-                // Browse's `Stack(fit: StackFit.expand)` hands down. An
-                // Image with `fit: BoxFit.cover` and no explicit width or
-                // height fills tight constraints and letterboxes itself
-                // inside loose ones — so the card gained a border of
-                // background on all four sides.
-                //
-                // passthrough, not expand: expand would force tight
-                // constraints even where the parent gave unbounded ones
-                // (a scrollable, an intrinsic-height row) and throw.
-                // passthrough hands the parent's own constraints down
-                // unchanged, which is exactly the behaviour that existed
-                // before this switcher was introduced.
-                layoutBuilder: (current, previous) => Stack(
-                  fit: StackFit.passthrough,
-                  children: [...previous, ?current],
-                ),
-                child: progress == null
-                    ? KeyedSubtree(key: const ValueKey('photo'), child: child)
-                    : SizedBox(
-                        key: const ValueKey('placeholder'),
-                        width: width,
-                        height: height,
-                        // LayoutBuilder, not the width/height fields: both
-                        // are usually null here (the image fills its
-                        // parent), so the fields say nothing about the
-                        // space this actually gets. The constraints do.
-                        child: LayoutBuilder(
-                          builder: (context, c) {
-                            final roomy = c.maxWidth >= 120 && c.maxHeight >= 60;
-                            // On a small avatar, nothing at all. A loading
-                            // animation inside a 40px circle is noise.
-                            return roomy
-                                ? const ZyraLoading()
-                                : const SizedBox.shrink();
-                          },
-                        ),
-                      ),
+              duration: const Duration(milliseconds: 320),
+              // ── StackFit.passthrough IS LOAD-BEARING. Founder,
+              // 2026-08-08: "the photo in browse page isn't taking up
+              // the whole screen."
+              //
+              // That was this AnimatedSwitcher, added minutes earlier.
+              // Its DEFAULT layoutBuilder is a Stack with LOOSE
+              // constraints; the code it replaced returned `child`
+              // untouched, so the image inherited the TIGHT constraints
+              // Browse's `Stack(fit: StackFit.expand)` hands down. An
+              // Image with `fit: BoxFit.cover` and no explicit width or
+              // height fills tight constraints and letterboxes itself
+              // inside loose ones — so the card gained a border of
+              // background on all four sides.
+              //
+              // passthrough, not expand: expand would force tight
+              // constraints even where the parent gave unbounded ones
+              // (a scrollable, an intrinsic-height row) and throw.
+              // passthrough hands the parent's own constraints down
+              // unchanged, which is exactly the behaviour that existed
+              // before this switcher was introduced.
+              layoutBuilder: (current, previous) => Stack(
+                fit: StackFit.passthrough,
+                children: [...previous, ?current],
               ),
+              child: progress == null
+                  ? KeyedSubtree(key: const ValueKey('photo'), child: child)
+                  : SizedBox(
+                      key: const ValueKey('placeholder'),
+                      width: width,
+                      height: height,
+                      // LayoutBuilder, not the width/height fields: both
+                      // are usually null here (the image fills its
+                      // parent), so the fields say nothing about the
+                      // space this actually gets. The constraints do.
+                      child: LayoutBuilder(
+                        builder: (context, c) {
+                          final roomy = c.maxWidth >= 120 && c.maxHeight >= 60;
+                          // On a small avatar, nothing at all. A loading
+                          // animation inside a 40px circle is noise.
+                          return roomy
+                              ? const ZyraLoading()
+                              : const SizedBox.shrink();
+                        },
+                      ),
+                    ),
+            ),
       errorBuilder: (_, _, _) => SizedBox(
         width: width,
         height: height,
         child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
+      ),
+    );
+  }
+}
+
+/// The member-controlled crop used anywhere their circular avatar is shown.
+///
+/// Profile photos are stored at 3:4, so a plain `BoxFit.cover` circle has no
+/// horizontal overflow and an X alignment appears to do nothing. The quiet
+/// fixed crop zoom creates enough room for genuine two-axis positioning while
+/// keeping the saved avatar treatment identical between the editor and Profile.
+class ZyraAvatarImage extends StatelessWidget {
+  const ZyraAvatarImage(
+    this.photo, {
+    super.key,
+    required this.alignmentX,
+    required this.alignmentY,
+    this.width,
+    this.height,
+    this.showLoader = false,
+  });
+
+  static const double cropScale = 1.12;
+
+  final String photo;
+  final double alignmentX;
+  final double alignmentY;
+  final double? width;
+  final double? height;
+  final bool showLoader;
+
+  @override
+  Widget build(BuildContext context) {
+    final alignment = Alignment(
+      alignmentX.clamp(-1.0, 1.0).toDouble(),
+      alignmentY.clamp(-1.0, 1.0).toDouble(),
+    );
+    return Transform.scale(
+      scale: cropScale,
+      alignment: alignment,
+      child: ZyraProfileImage(
+        photo,
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+        alignment: alignment,
+        showLoader: showLoader,
       ),
     );
   }

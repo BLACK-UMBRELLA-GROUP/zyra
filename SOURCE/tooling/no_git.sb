@@ -1,0 +1,8 @@
+(version 1)
+(allow default)
+; Inherited by the entire Dart / Flutter / Xcode subprocess tree.
+; No fake Git, metadata forging, package-signature or signing bypass.
+(deny process-exec
+  (regex #"/[Gg][Ii][Tt]([^/]*)?$")
+  (literal "/opt/homebrew/share/flutter/bin/flutter")
+  (literal "/opt/homebrew/share/flutter/bin/dart"))

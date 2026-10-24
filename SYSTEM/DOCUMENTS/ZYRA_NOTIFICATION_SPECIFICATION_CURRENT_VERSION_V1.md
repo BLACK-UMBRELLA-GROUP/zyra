@@ -329,7 +329,7 @@ No time-based pruning exists. The cascades are correct — delete a profile or a
 | `notifications` table, RLS (select own · update own `read_at` · **no client INSERT at all**) | ✅ |
 | `create_notification` SECURITY DEFINER, ten callers | ✅ |
 | **Ten** live types in the CHECK constraint | ✅ |
-| Bell icon top-right on both shells, unread badge, 20s poll | ✅ |
+| Guardian Notifications tab plus Seeker Dashboard notification entry, unread badge, 20s poll | ✅ |
 | Feed screen, mark-read, Mark All as Read, Select All | ✅ |
 | Section dots and `markSectionRead` / `markManyRead` | ✅ |
 | `notification_preferences` — append-only, five categories, DB-side defaults | ✅ |

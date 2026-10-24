@@ -13,11 +13,11 @@
 // this needs no new policy and no SECURITY DEFINER function — the suggested
 // profiles themselves come through the same `profiles_select` Browse uses.
 //
-// The Guardian-side UI for CREATING a suggestion is still unbuilt. Until it
-// exists, rows come from the dev panel's Guardian Suggestions control
-// (zyra_dev_set_guardian_suggestions). Nothing here is dev-only: the read
-// path is the real one and will keep working unchanged the day a Guardian
-// can make a suggestion for real.
+// The Guardian-side UI for CREATING a suggestion is still unbuilt. Seeded
+// server rows may still exist, but the visual developer control now uses
+// deterministic local-only cards so testing this read path never mutates the
+// signed-in account. Nothing here is dev-only: the read path is the real one
+// and will keep working unchanged the day a Guardian can suggest for real.
 
 import 'package:flutter/foundation.dart';
 import '../main.dart';
@@ -25,6 +25,7 @@ import '../models/seeker_profile.dart';
 import 'zyra_auth.dart';
 import 'zyra_photo_service.dart';
 import 'zyra_ages_service.dart';
+import 'zyra_wali_link_service.dart' show ZyraSourceFailure, ZyraSourceResult;
 
 class GuardianSuggestion {
   /// The suggested Seeker, ready to render with the same card as everything
@@ -61,20 +62,29 @@ class ZyraGuardianSuggestionService {
 
   /// Pending suggestions for the signed-in Seeker, newest first.
   ///
-  /// Empty on any failure — Connections already has an honest empty state,
-  /// and a half-loaded list would be worse than none.
+  /// Legacy collection adapter. User-visible truth states consume the typed
+  /// result so failed refreshes cannot clear an already-known introduction.
   static Future<List<GuardianSuggestion>> fetchPending() async {
+    return (await fetchPendingResult()).valueOr(const []);
+  }
+
+  static Future<ZyraSourceResult<List<GuardianSuggestion>>>
+  fetchPendingResult() async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return const [];
+    if (user == null) {
+      return const ZyraSourceResult.unavailable(ZyraSourceFailure.signedOut);
+    }
 
     try {
-      final rows = await supabase
-          .from('wali_suggestions')
-          .select('suggested_id, wali_id, created_at, seen_at')
-          .eq('seeker_id', user.id)
-          .eq('status', 'pending')
-          .order('created_at', ascending: false) as List;
-      if (rows.isEmpty) return const [];
+      final rows =
+          await supabase
+                  .from('wali_suggestions')
+                  .select('suggested_id, wali_id, created_at, seen_at')
+                  .eq('seeker_id', user.id)
+                  .eq('status', 'pending')
+                  .order('created_at', ascending: false)
+              as List;
+      if (rows.isEmpty) return const ZyraSourceResult.available([]);
 
       final suggestedIds = <String>[];
       final waliIds = <String>{};
@@ -85,14 +95,20 @@ class ZyraGuardianSuggestionService {
       }
 
       // One read for the suggested profiles, one for the Guardians' names.
-      final profileRows = await supabase
-          .from('profiles')
-          .select('id, first_name, gender, location_text, profile_photos(storage_path, display_order)')
-          .inFilter('id', suggestedIds) as List;
-      final waliRows = await supabase
-          .from('profiles')
-          .select('id, first_name')
-          .inFilter('id', waliIds.toList()) as List;
+      final profileRows =
+          await supabase
+                  .from('profiles')
+                  .select(
+                    'id, first_name, gender, location_text, profile_photos(storage_path, display_order)',
+                  )
+                  .inFilter('id', suggestedIds)
+              as List;
+      final waliRows =
+          await supabase
+                  .from('profiles')
+                  .select('id, first_name')
+                  .inFilter('id', waliIds.toList())
+              as List;
 
       final waliNames = <String, String>{
         for (final r in waliRows)
@@ -126,11 +142,16 @@ class ZyraGuardianSuggestionService {
       final pathsById = <String, List<String>>{};
       for (final r in profileRows) {
         final map = Map<String, dynamic>.from(r as Map);
-        final photosRaw =
-            List<Map<String, dynamic>>.from((map['profile_photos'] as List?) ?? const []);
-        photosRaw.sort((a, b) =>
-            (a['display_order'] as int).compareTo(b['display_order'] as int));
-        final paths = photosRaw.map((p) => p['storage_path'] as String).toList();
+        final photosRaw = List<Map<String, dynamic>>.from(
+          (map['profile_photos'] as List?) ?? const [],
+        );
+        photosRaw.sort(
+          (a, b) =>
+              (a['display_order'] as int).compareTo(b['display_order'] as int),
+        );
+        final paths = photosRaw
+            .map((p) => p['storage_path'] as String)
+            .toList();
         pathsById[map['id'] as String] = paths;
         allPaths.addAll(paths);
       }
@@ -161,16 +182,20 @@ class ZyraGuardianSuggestionService {
         final m = Map<String, dynamic>.from(r as Map);
         final p = byId[m['suggested_id'] as String];
         if (p == null) continue;
-        out.add(GuardianSuggestion(
-          profile: p,
-          suggestedBy: waliNames[m['wali_id'] as String] ?? 'your Guardian',
-          unseen: m['seen_at'] == null,
-        ));
+        out.add(
+          GuardianSuggestion(
+            profile: p,
+            suggestedBy: waliNames[m['wali_id'] as String] ?? 'your Guardian',
+            unseen: m['seen_at'] == null,
+          ),
+        );
       }
-      return out;
+      return ZyraSourceResult.available(out);
     } catch (e) {
-      debugPrint('ZYRA: fetchPending guardian suggestions failed — $e');
-      return const [];
+      debugPrint('ZYRA: guardian suggestions unavailable (${e.runtimeType}).');
+      return const ZyraSourceResult.unavailable(
+        ZyraSourceFailure.requestFailed,
+      );
     }
   }
 

@@ -37,27 +37,186 @@
 // not notify, so re-tapping a segment no longer makes every listening screen
 // re-fetch, and there is exactly one door into each piece of state. The
 // generic set_() escape hatch is gone — it let callers mutate fields this
-// class did not know were changing, which is exactly how reset() came to
-// quietly miss the adverts toggle (found and fixed in the same pass:
-// reset() now covers EVERY axis, enumerated in one place, one notify).
+// class did not know were changing. Reset now covers EVERY axis,
+// enumerated in one place, with one notify.
 
 import 'package:flutter/foundation.dart';
 import '../data/zyra_entitlements.dart';
+import '../data/zyra_journey_pause_state.dart';
 import '../data/zyra_journey_stages.dart';
 import '../models/journey_match.dart';
 import '../models/seeker_profile.dart';
+import '../models/zyra_dashboard_lab.dart';
 import '../models/zyra_gender.dart';
 import '../services/zyra_auth.dart';
+import '../services/zyra_developer_access.dart';
 import '../services/zyra_wali_journey_service.dart';
 import '../services/zyra_wali_link_service.dart';
 import '../state/app_state.dart' show ZyraPlan;
+import '../theme/zyra_colors.dart';
 
 /// Which Seeker plan a control makes sense for.
 enum DevPlan { basic, one }
 
 /// Which page a control affects. A control is only usable while that page
 /// is the one on screen.
-enum DevPage { browse, connections, guardian, notifications, profile }
+enum DevPage {
+  browse,
+  connections,
+  dashboard,
+  guardian,
+  profile,
+
+  /// Pushed route context, not a root destination. This lets the app-wide
+  /// developer control follow the live Journey instead of continuing to show
+  /// the Connections controls underneath it.
+  activeJourney,
+}
+
+/// Founder-facing Connections card presentation lab.
+///
+/// [compactChips] is the current testing default. The other five values are
+/// live comparisons of the same actions and information; they never alter
+/// Journey or profile state. Release builds continue to use [unifiedRail]
+/// until the Founder selects a production direction.
+enum ZyraConnectionsCardStyle {
+  unifiedRail,
+  splitPills,
+  iconDock,
+  stackedRows,
+  compactChips,
+  framedGrid,
+}
+
+extension ZyraConnectionsCardStyleX on ZyraConnectionsCardStyle {
+  String get label => switch (this) {
+    ZyraConnectionsCardStyle.unifiedRail => 'Unified rail',
+    ZyraConnectionsCardStyle.splitPills => 'Split pills',
+    ZyraConnectionsCardStyle.iconDock => 'Icon dock',
+    ZyraConnectionsCardStyle.stackedRows => 'Stacked rows',
+    ZyraConnectionsCardStyle.compactChips => 'Compact chips',
+    ZyraConnectionsCardStyle.framedGrid => 'Framed grid',
+  };
+
+  String get description => switch (this) {
+    ZyraConnectionsCardStyle.unifiedRail =>
+      'Active Journey style: one primary action and a quiet action rail.',
+    ZyraConnectionsCardStyle.splitPills =>
+      'Rounded two-column actions with a stronger button rhythm.',
+    ZyraConnectionsCardStyle.iconDock =>
+      'Compact icon-and-label dock beneath the main action.',
+    ZyraConnectionsCardStyle.stackedRows =>
+      'Calm full-width rows with clear direction cues.',
+    ZyraConnectionsCardStyle.compactChips =>
+      'Three equal controls spanning the full card width.',
+    ZyraConnectionsCardStyle.framedGrid =>
+      'Structured two-column cells inside one subtle frame.',
+  };
+}
+
+/// Independent section-title comparisons for Active, Potential, Paused,
+/// Ended, Considered, Saved and Passed. Introductions deliberately has no
+/// repeated in-page title because the segment itself already names the page.
+enum ZyraConnectionsHeadingStyle {
+  chapterLeft,
+  titleLeft,
+  centredRule,
+  accentMarker,
+  countSplit,
+}
+
+extension ZyraConnectionsHeadingStyleX on ZyraConnectionsHeadingStyle {
+  String get label => switch (this) {
+    ZyraConnectionsHeadingStyle.chapterLeft => 'Chapter left',
+    ZyraConnectionsHeadingStyle.titleLeft => 'Title left',
+    ZyraConnectionsHeadingStyle.centredRule => 'Centred rule',
+    ZyraConnectionsHeadingStyle.accentMarker => 'Accent marker',
+    ZyraConnectionsHeadingStyle.countSplit => 'Right rule',
+  };
+
+  String get description => switch (this) {
+    ZyraConnectionsHeadingStyle.chapterLeft =>
+      'Current compact uppercase chapter label.',
+    ZyraConnectionsHeadingStyle.titleLeft =>
+      'Larger title-case heading aligned with the cards.',
+    ZyraConnectionsHeadingStyle.centredRule =>
+      'Centred heading held between two quiet divider lines.',
+    ZyraConnectionsHeadingStyle.accentMarker =>
+      'Left marker with a medium title and no numeric badge.',
+    ZyraConnectionsHeadingStyle.countSplit =>
+      'Title on the left and a short quiet rule on the right.',
+  };
+}
+
+/// Session-only visual comparisons for Browse's live swipe response.
+///
+/// [fullAura] is the current shipped/default response. The other ten are the
+/// Founder-approved 3D photo-motion comparisons. They change presentation
+/// only: the shared Browse policy still owns left=Consider, down=Save and
+/// right=Pass, and no option adds action buttons or changes a decision write.
+enum ZyraBrowseSwipeFeedbackStyle {
+  fullAura,
+  layeredParallax,
+  edgePeek,
+  floatingDeck,
+  carousel3d,
+  doorHinge,
+  pageCurl,
+  depthTunnel,
+  subjectSplit,
+  magneticTilt,
+  horizonLift,
+}
+
+extension ZyraBrowseSwipeFeedbackStyleX on ZyraBrowseSwipeFeedbackStyle {
+  String get label => switch (this) {
+    ZyraBrowseSwipeFeedbackStyle.fullAura => 'Full aura',
+    ZyraBrowseSwipeFeedbackStyle.layeredParallax => '1 · Layered parallax',
+    ZyraBrowseSwipeFeedbackStyle.edgePeek => '2 · Edge peek',
+    ZyraBrowseSwipeFeedbackStyle.floatingDeck => '3 · Floating deck',
+    ZyraBrowseSwipeFeedbackStyle.carousel3d => '4 · 3D carousel',
+    ZyraBrowseSwipeFeedbackStyle.doorHinge => '5 · Door hinge',
+    ZyraBrowseSwipeFeedbackStyle.pageCurl => '6 · Page curl',
+    ZyraBrowseSwipeFeedbackStyle.depthTunnel => '7 · Depth tunnel',
+    ZyraBrowseSwipeFeedbackStyle.subjectSplit => '8 · Subject split',
+    ZyraBrowseSwipeFeedbackStyle.magneticTilt => '9 · Magnetic tilt',
+    ZyraBrowseSwipeFeedbackStyle.horizonLift => '10 · Horizon lift',
+  };
+
+  String get description => switch (this) {
+    ZyraBrowseSwipeFeedbackStyle.fullAura =>
+      'Current default: traffic-light colour surrounds the full screen.',
+    ZyraBrowseSwipeFeedbackStyle.layeredParallax =>
+      'Photo, identity and the next profile move at different depths.',
+    ZyraBrowseSwipeFeedbackStyle.edgePeek =>
+      'The current profile clears quickly to expose the next profile edge.',
+    ZyraBrowseSwipeFeedbackStyle.floatingDeck =>
+      'The active profile lifts above a stacked next-profile layer.',
+    ZyraBrowseSwipeFeedbackStyle.carousel3d =>
+      'Profiles rotate through depth like a restrained 3D carousel.',
+    ZyraBrowseSwipeFeedbackStyle.doorHinge =>
+      'The profile pivots from the opposite edge as the next one appears.',
+    ZyraBrowseSwipeFeedbackStyle.pageCurl =>
+      'A softer perspective fold suggests turning to the next profile.',
+    ZyraBrowseSwipeFeedbackStyle.depthTunnel =>
+      'The current profile recedes while the next profile comes forward.',
+    ZyraBrowseSwipeFeedbackStyle.subjectSplit =>
+      'The profile and its identity details separate into layered motion.',
+    ZyraBrowseSwipeFeedbackStyle.magneticTilt =>
+      'The profile is pulled towards the gesture with stronger 3D tilt.',
+    ZyraBrowseSwipeFeedbackStyle.horizonLift =>
+      'The profile lifts forward while the next profile rises beneath it.',
+  };
+
+  String get groupLabel => switch (this) {
+    ZyraBrowseSwipeFeedbackStyle.fullAura => 'Current default',
+    _ => '3D photo movement',
+  };
+
+  bool get movesPhoto => this != ZyraBrowseSwipeFeedbackStyle.fullAura;
+
+  bool get previewsNextProfile => movesPhoto;
+}
 
 /// The popups the panel can ask Browse to show. Each maps to a modal that
 /// ALREADY EXISTS in browse_screen.dart — nothing here writes its own copy,
@@ -67,16 +226,16 @@ enum DevPage { browse, connections, guardian, notifications, profile }
 ///   saveLimit      -> _showCapReachedModal(action: 'Save', …)
 ///   considerLimit  -> _showCapReachedModal(action: 'Consider', …)
 ///   dailyLimit     -> _showLimitReachedModal()
-///   sponsoredCard  -> the real sponsored card interstitial
-enum DevPopup { saveLimit, considerLimit, dailyLimit, sponsoredCard }
+enum DevPopup { saveLimit, considerLimit, dailyLimit }
 
 extension DevPageX on DevPage {
   String get label => switch (this) {
-    DevPage.browse => 'Browse',
+    DevPage.browse => 'Profiles',
     DevPage.connections => 'Connections',
+    DevPage.dashboard => 'Dashboard',
     DevPage.guardian => 'Guardian',
-    DevPage.notifications => 'Notifications',
     DevPage.profile => 'Profile',
+    DevPage.activeJourney => 'Active Journey',
   };
 }
 
@@ -145,6 +304,22 @@ extension WaliRoleX on WaliRole {
 //
 // The panel now calls zyra_debug_grant_credits() and grants real credits.
 
+/// The three production Activity destinations available to a local test
+/// profile. This state lives here rather than in [AppState]: developer-toggle
+/// people must be able to move between real-looking cards without ever
+/// becoming account decisions or reaching Supabase.
+enum ZyraActivityTestState { considered, saved, passed }
+
+const String kZyraActivityTestProfilePrefix = 'zyra-local-activity-preview-';
+const String kZyraIntroductionTestProfilePrefix =
+    'zyra-local-introduction-preview-';
+
+String zyraActivityTestProfileId(ZyraActivityTestState origin, int index) =>
+    '$kZyraActivityTestProfilePrefix${origin.name}-$index';
+
+String zyraIntroductionTestProfileId(int index) =>
+    '$kZyraIntroductionTestProfilePrefix$index';
+
 class ZyraDevScenario extends ChangeNotifier {
   ZyraDevScenario._();
   static final ZyraDevScenario instance = ZyraDevScenario._();
@@ -158,6 +333,686 @@ class ZyraDevScenario extends ChangeNotifier {
   // way to know which tab is showing.
 
   DevPage currentPage = DevPage.browse;
+
+  // ── DASHBOARD LAB — Founder comparison build, 2026-08-24 ────────────
+  // One shared store serves both account shells. The role preview is an
+  // override, not an account mutation; Current account is the honest default.
+  // Every field is session-only and ignored unless developer access is live.
+  bool _dashboardLabEnabled = true;
+  ZyraDashboardConcept _dashboardConcept = ZyraDashboardConcept.nowJourneyYou;
+  ZyraDashboardContextPreset? _dashboardContextPreset =
+      ZyraDashboardContextPreset.activeJourney;
+  ZyraDashboardAudiencePreview _dashboardAudience =
+      ZyraDashboardAudiencePreview.current;
+  ZyraDashboardActivityState _dashboardActivityState =
+      ZyraDashboardActivityState.normal;
+  ZyraDashboardJourneyPreview _dashboardJourneyPreview =
+      ZyraDashboardJourneyPreview.active;
+  bool _dashboardNewActivity = true;
+  bool _dashboardPendingApproval = false;
+  ZyraDashboardInsightState _dashboardInsightState =
+      ZyraDashboardInsightState.positive;
+  ZyraDashboardInsightPlan _dashboardInsightPlan =
+      ZyraDashboardInsightPlan.basic;
+  bool _dashboardLearningOnCurrentHub = true;
+  bool _dashboardOnboardingComplete = false;
+  int _dashboardOnboardingAnswered = 35;
+  static const int dashboardOnboardingTotal = 68;
+  int _dashboardFamilyProgress = 2;
+  int _dashboardSupportedSeekers = 3;
+  int _dashboardPotentialJourneys = 0;
+  int _dashboardSavedProfiles = 2;
+  bool _dashboardHasGuardian = true;
+  bool _dashboardGuardianActivity = false;
+  bool _dashboardFamilyIntroductionActive = false;
+  ZyraDashboardTab _dashboardTab = ZyraDashboardTab.now;
+  ZyraSeekerDashboardTodayState _dashboardSeekerTodayState =
+      ZyraSeekerDashboardTodayState.calm;
+  ZyraGuardianDashboardTodayState _dashboardGuardianTodayState =
+      ZyraGuardianDashboardTodayState.noSeekers;
+  ZyraDashboardUpdatesState _dashboardUpdatesState =
+      ZyraDashboardUpdatesState.none;
+  ZyraSeekerDashboardInsightsState _dashboardSeekerInsightsState =
+      ZyraSeekerDashboardInsightsState.insufficient;
+  ZyraGuardianDashboardInsightsState _dashboardGuardianInsightsState =
+      ZyraGuardianDashboardInsightsState.insufficient;
+  bool _dashboardGuardianPremium = false;
+  bool _dashboardGuardianNowOptionSelected = false;
+  bool _dashboardGuardianInsightsOptionSelected = false;
+  bool _dashboardGuardianJourneyDecisionPending = false;
+  final Set<ZyraDashboardModule> _dashboardModules = {
+    ...zyraDashboardDefaultModules,
+  };
+  final List<ZyraDashboardModule> _dashboardOrder = [
+    ...zyraDashboardDefaultOrder,
+  ];
+
+  bool get dashboardLabEnabled => _dashboardLabEnabled;
+  ZyraDashboardConcept get dashboardConcept => _dashboardConcept;
+  ZyraDashboardContextPreset? get dashboardContextPreset =>
+      _dashboardContextPreset;
+  ZyraDashboardAudiencePreview get dashboardAudience => _dashboardAudience;
+  ZyraDashboardActivityState get dashboardActivityState =>
+      _dashboardActivityState;
+  ZyraDashboardJourneyPreview get dashboardJourneyPreview =>
+      _dashboardJourneyPreview;
+  bool get dashboardNewActivity => _dashboardNewActivity;
+  bool get dashboardPendingApproval => _dashboardPendingApproval;
+  ZyraDashboardInsightState get dashboardInsightState => _dashboardInsightState;
+  ZyraDashboardInsightPlan get dashboardInsightPlan => _dashboardInsightPlan;
+  bool get dashboardLearningOnCurrentHub => _dashboardLearningOnCurrentHub;
+  bool get dashboardOnboardingComplete => _dashboardOnboardingComplete;
+  int get dashboardOnboardingAnswered => _dashboardOnboardingAnswered;
+  int get dashboardFamilyProgress => _dashboardFamilyProgress;
+  int get dashboardSupportedSeekers => _dashboardSupportedSeekers;
+  int get dashboardPotentialJourneys => _dashboardPotentialJourneys;
+  int get dashboardSavedProfiles => _dashboardSavedProfiles;
+  bool get dashboardHasGuardian => _dashboardHasGuardian;
+  bool get dashboardGuardianActivity => _dashboardGuardianActivity;
+  bool get dashboardFamilyIntroductionActive =>
+      _dashboardFamilyIntroductionActive;
+  ZyraDashboardTab get dashboardTab => _dashboardTab;
+  ZyraSeekerDashboardTodayState get dashboardSeekerTodayState =>
+      _dashboardSeekerTodayState;
+  ZyraGuardianDashboardTodayState get dashboardGuardianTodayState =>
+      _dashboardGuardianTodayState;
+  ZyraDashboardUpdatesState get dashboardUpdatesState => _dashboardUpdatesState;
+  ZyraSeekerDashboardInsightsState get dashboardSeekerInsightsState =>
+      _dashboardSeekerInsightsState;
+  ZyraGuardianDashboardInsightsState get dashboardGuardianInsightsState =>
+      _dashboardGuardianInsightsState;
+  bool get dashboardGuardianPremium => _dashboardGuardianPremium;
+  bool dashboardGuardianOptionSelected(ZyraDashboardTab tab) => switch (tab) {
+    ZyraDashboardTab.now => _dashboardGuardianNowOptionSelected,
+    ZyraDashboardTab.insights => _dashboardGuardianInsightsOptionSelected,
+  };
+  Set<ZyraDashboardModule> get dashboardModules =>
+      Set.unmodifiable(_dashboardModules);
+  List<ZyraDashboardModule> get dashboardOrder =>
+      List.unmodifiable(_dashboardOrder);
+
+  ZyraDashboardViewConfig dashboardConfigFor(ZyraDashboardRole hostRole) =>
+      ZyraDashboardViewConfig(
+        concept: _dashboardConcept,
+        role: resolveDashboardRole(
+          preview: _dashboardAudience,
+          hostRole: hostRole,
+        ),
+        surfaceStyle: ZyraColors.appSurfaceStyle,
+        activityState: _dashboardActivityState,
+        journeyPreview: _dashboardJourneyPreview,
+        newActivity: _dashboardNewActivity,
+        pendingApproval: _dashboardPendingApproval,
+        insightState: _dashboardInsightState,
+        insightPlan: _dashboardInsightPlan,
+        onboardingComplete: _dashboardOnboardingComplete,
+        onboardingAnswered: _dashboardOnboardingComplete
+            ? dashboardOnboardingTotal
+            : _dashboardOnboardingAnswered,
+        onboardingTotal: dashboardOnboardingTotal,
+        familyProgress: _dashboardFamilyProgress,
+        supportedSeekers: _dashboardSupportedSeekers,
+        potentialJourneys: _dashboardPotentialJourneys,
+        savedProfiles: _dashboardSavedProfiles,
+        hasGuardian: _dashboardHasGuardian,
+        guardianActivity: _dashboardGuardianActivity,
+        familyIntroductionActive: _dashboardFamilyIntroductionActive,
+        contextPreset: _dashboardContextPreset,
+        enabledModules: Set.unmodifiable(_dashboardModules),
+        moduleOrder: List.unmodifiable(_dashboardOrder),
+      );
+
+  void setDashboardLabEnabled(bool value) {
+    if (_dashboardLabEnabled == value) return;
+    _dashboardLabEnabled = value;
+    notifyListeners();
+  }
+
+  /// Records an explicit Founder choice in the Guardian Dashboard dropdown.
+  /// Defaults remain stored for deterministic fixtures, but they must not
+  /// render as though the Founder selected them on a fresh preview.
+  void markDashboardGuardianOptionSelected(ZyraDashboardTab tab) {
+    final alreadySelected = dashboardGuardianOptionSelected(tab);
+    if (alreadySelected) return;
+    switch (tab) {
+      case ZyraDashboardTab.now:
+        _dashboardGuardianNowOptionSelected = true;
+      case ZyraDashboardTab.insights:
+        _dashboardGuardianInsightsOptionSelected = true;
+    }
+    notifyListeners();
+  }
+
+  void setDashboardConcept(ZyraDashboardConcept value) {
+    if (_dashboardConcept == value) return;
+    _dashboardConcept = value;
+    notifyListeners();
+  }
+
+  /// Stages one deterministic Founder-review story across every layout.
+  ///
+  /// These values only feed the developer Dashboard adapter. Invitation
+  /// counts deliberately reuse the existing invitation preview store so the
+  /// real Review/Accept/Decline/Cancel interactions are exercised rather than
+  /// copied into a decorative Dashboard card.
+  void setDashboardContextPreset(ZyraDashboardContextPreset value) {
+    _dashboardAudience = ZyraDashboardAudiencePreview.seeker;
+    _dashboardContextPreset = value;
+    _applyDashboardContextPreset(value);
+    notifyListeners();
+  }
+
+  void _applyDashboardContextPreset(ZyraDashboardContextPreset value) {
+    _dashboardModules
+      ..clear()
+      ..addAll(zyraDashboardDefaultModules);
+    _receivedInviteCount = 0;
+    _pendingInviteCount = 0;
+    _mainGuardian = true;
+    _dashboardHasGuardian = true;
+    _dashboardGuardianActivity = false;
+    _dashboardFamilyIntroductionActive = false;
+    _dashboardPotentialJourneys = 0;
+    _dashboardSavedProfiles = 2;
+    _dashboardOnboardingComplete = true;
+    _dashboardOnboardingAnswered = dashboardOnboardingTotal;
+    _dashboardJourneyPreview = ZyraDashboardJourneyPreview.none;
+    _dashboardActivityState = ZyraDashboardActivityState.normal;
+    _dashboardNewActivity = false;
+    _dashboardPendingApproval = false;
+    _dashboardInsightState = ZyraDashboardInsightState.positive;
+    _dashboardInsightPlan = ZyraDashboardInsightPlan.basic;
+    _dashboardFamilyProgress = 2;
+
+    switch (value) {
+      case ZyraDashboardContextPreset.newSeeker:
+        _mainGuardian = false;
+        _dashboardHasGuardian = false;
+        _dashboardSavedProfiles = 0;
+        _dashboardOnboardingComplete = false;
+        _dashboardOnboardingAnswered = 14;
+        _dashboardActivityState = ZyraDashboardActivityState.empty;
+        _dashboardInsightState = ZyraDashboardInsightState.insufficientData;
+        _dashboardFamilyProgress = 0;
+      case ZyraDashboardContextPreset.guardianInvitation:
+        _mainGuardian = false;
+        _dashboardHasGuardian = false;
+        _receivedInviteCount = 1;
+        _dashboardNewActivity = true;
+      case ZyraDashboardContextPreset.potentialJourneys:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.potentials;
+        _dashboardPotentialJourneys = 3;
+        _dashboardSavedProfiles = 5;
+      case ZyraDashboardContextPreset.activeJourney:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.active;
+        _dashboardNewActivity = true;
+      case ZyraDashboardContextPreset.activeWithGuardian:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.active;
+        _dashboardGuardianActivity = true;
+        _dashboardNewActivity = true;
+        _dashboardFamilyProgress = 3;
+      case ZyraDashboardContextPreset.decisionRequired:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.active;
+        _dashboardActivityState = ZyraDashboardActivityState.urgent;
+        _dashboardNewActivity = true;
+        _dashboardPendingApproval = true;
+      case ZyraDashboardContextPreset.pausedJourney:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.paused;
+        _dashboardInsightState = ZyraDashboardInsightState.neutral;
+      case ZyraDashboardContextPreset.zyraOneInsights:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.active;
+        _dashboardActivityState = ZyraDashboardActivityState.busy;
+        _dashboardNewActivity = true;
+        _dashboardInsightPlan = ZyraDashboardInsightPlan.one;
+        _dashboardInsightState = ZyraDashboardInsightState.preferenceReview;
+        _dashboardSavedProfiles = 7;
+    }
+  }
+
+  void _markDashboardContextCustom() {
+    _dashboardContextPreset = null;
+  }
+
+  void setDashboardAudience(ZyraDashboardAudiencePreview value) {
+    if (_dashboardAudience == value &&
+        (value == ZyraDashboardAudiencePreview.seeker ||
+            _dashboardContextPreset == null)) {
+      return;
+    }
+    _dashboardAudience = value;
+    if (value != ZyraDashboardAudiencePreview.seeker) {
+      _dashboardContextPreset = null;
+    }
+    notifyListeners();
+  }
+
+  void setDashboardTab(ZyraDashboardTab value) {
+    if (_dashboardTab == value) return;
+    _dashboardTab = value;
+    notifyListeners();
+  }
+
+  void setDashboardSeekerTodayState(ZyraSeekerDashboardTodayState value) {
+    _dashboardSeekerTodayState = value;
+    _dashboardContextPreset = null;
+    _dashboardOnboardingComplete = true;
+    _dashboardOnboardingAnswered = dashboardOnboardingTotal;
+    _dashboardJourneyPreview = ZyraDashboardJourneyPreview.none;
+    _dashboardNewActivity = false;
+    _dashboardPendingApproval = false;
+    _dashboardActivityState = ZyraDashboardActivityState.empty;
+    _dashboardHasGuardian = false;
+    _dashboardGuardianActivity = false;
+    _dashboardFamilyIntroductionActive = false;
+    _dashboardPotentialJourneys = 0;
+    _dashboardSavedProfiles = 0;
+    _receivedInviteCount = 0;
+    switch (value) {
+      case ZyraSeekerDashboardTodayState.newSeeker:
+        _dashboardOnboardingComplete = false;
+        _dashboardOnboardingAnswered = 14;
+      case ZyraSeekerDashboardTodayState.noGuardian:
+      case ZyraSeekerDashboardTodayState.noJourney:
+      case ZyraSeekerDashboardTodayState.calm:
+      case ZyraSeekerDashboardTodayState.loading:
+      case ZyraSeekerDashboardTodayState.partialFailure:
+      case ZyraSeekerDashboardTodayState.fullFailure:
+        break;
+      case ZyraSeekerDashboardTodayState.guardianConnected:
+        _dashboardHasGuardian = true;
+      case ZyraSeekerDashboardTodayState.guardianInvitationPending:
+        _receivedInviteCount = 1;
+      case ZyraSeekerDashboardTodayState.potentialJourneys:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.potentials;
+        _dashboardPotentialJourneys = 3;
+      case ZyraSeekerDashboardTodayState.activeJourney:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.active;
+      case ZyraSeekerDashboardTodayState.journeyPaused:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.paused;
+      case ZyraSeekerDashboardTodayState.journeyDecisionPending:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.active;
+        _dashboardPendingApproval = true;
+        _dashboardActivityState = ZyraDashboardActivityState.urgent;
+      case ZyraSeekerDashboardTodayState.recentMovement:
+        _dashboardJourneyPreview = ZyraDashboardJourneyPreview.active;
+        _dashboardNewActivity = true;
+        _dashboardActivityState = ZyraDashboardActivityState.normal;
+    }
+    notifyListeners();
+  }
+
+  void setDashboardGuardianTodayState(ZyraGuardianDashboardTodayState value) {
+    _dashboardGuardianNowOptionSelected = true;
+    _dashboardGuardianTodayState = value;
+    _dashboardContextPreset = null;
+    _waliRole = WaliRole.main;
+    _waliLinkedSeekers = 1;
+    _waliActiveJourneys = 0;
+    _waliPausedJourneys = 0;
+    _waliEndedJourneys = 0;
+    _waliReviewWaiting = false;
+    _waliReviewDecision = null;
+    _waliSentInvites = 0;
+    _dashboardGuardianPremium = false;
+    _dashboardGuardianJourneyDecisionPending = false;
+    switch (value) {
+      case ZyraGuardianDashboardTodayState.noSeekers:
+        _waliLinkedSeekers = 0;
+      case ZyraGuardianDashboardTodayState.oneSeeker:
+      case ZyraGuardianDashboardTodayState.mainGuardian:
+      case ZyraGuardianDashboardTodayState.noJourney:
+      case ZyraGuardianDashboardTodayState.calm:
+      case ZyraGuardianDashboardTodayState.loading:
+      case ZyraGuardianDashboardTodayState.partialFailure:
+      case ZyraGuardianDashboardTodayState.fullFailure:
+        break;
+      case ZyraGuardianDashboardTodayState.multipleSeekers:
+        _waliLinkedSeekers = 3;
+        _waliActiveJourneys = 1;
+        _waliPausedJourneys = 1;
+      case ZyraGuardianDashboardTodayState.additionalGuardian:
+        _waliRole = WaliRole.additional;
+      case ZyraGuardianDashboardTodayState.activeJourney:
+        _waliActiveJourneys = 1;
+      case ZyraGuardianDashboardTodayState.pausedJourney:
+        _waliPausedJourneys = 1;
+      case ZyraGuardianDashboardTodayState.journeyDecisionPending:
+        _waliActiveJourneys = 1;
+        _dashboardGuardianJourneyDecisionPending = true;
+      case ZyraGuardianDashboardTodayState.familyReviewWaiting:
+        _waliActiveJourneys = 1;
+        _waliReviewWaiting = true;
+      case ZyraGuardianDashboardTodayState.guardianGateWaiting:
+        _waliActiveJourneys = 1;
+        final gate = ZyraJourneyStages.all.indexWhere(
+          (stage) => stage.value == 'wali_gate',
+        );
+        if (gate >= 0) _waliStageIndex = gate;
+      case ZyraGuardianDashboardTodayState.pendingInvitation:
+        _waliLinkedSeekers = 0;
+        _waliSentInvites = 1;
+      case ZyraGuardianDashboardTodayState.networkBasicLocked:
+        break;
+      case ZyraGuardianDashboardTodayState.networkPremiumActive:
+        _dashboardGuardianPremium = true;
+    }
+    notifyListeners();
+  }
+
+  void setDashboardUpdatesState(ZyraDashboardUpdatesState value) {
+    if (_dashboardUpdatesState == value) return;
+    _dashboardUpdatesState = value;
+    _dashboardNewActivity = switch (value) {
+      ZyraDashboardUpdatesState.none ||
+      ZyraDashboardUpdatesState.allRead => false,
+      _ => true,
+    };
+    notifyListeners();
+  }
+
+  void setDashboardSeekerInsightsState(ZyraSeekerDashboardInsightsState value) {
+    _dashboardSeekerInsightsState = value;
+    _dashboardInsightState = switch (value) {
+      ZyraSeekerDashboardInsightsState.insufficient =>
+        ZyraDashboardInsightState.insufficientData,
+      ZyraSeekerDashboardInsightsState.preferenceReview =>
+        ZyraDashboardInsightState.preferenceReview,
+      ZyraSeekerDashboardInsightsState.discoveryHealth =>
+        ZyraDashboardInsightState.neutral,
+      _ => ZyraDashboardInsightState.positive,
+    };
+    _dashboardInsightPlan =
+        value == ZyraSeekerDashboardInsightsState.one ||
+            value == ZyraSeekerDashboardInsightsState.aiExplanation
+        ? ZyraDashboardInsightPlan.one
+        : ZyraDashboardInsightPlan.basic;
+    notifyListeners();
+  }
+
+  void setDashboardGuardianInsightsState(
+    ZyraGuardianDashboardInsightsState value,
+  ) {
+    final selectionChanged = !_dashboardGuardianInsightsOptionSelected;
+    _dashboardGuardianInsightsOptionSelected = true;
+    if (_dashboardGuardianInsightsState == value) {
+      if (selectionChanged) notifyListeners();
+      return;
+    }
+    _dashboardGuardianInsightsState = value;
+    if (value == ZyraGuardianDashboardInsightsState.premium) {
+      _dashboardGuardianPremium = true;
+    }
+    notifyListeners();
+  }
+
+  void setDashboardGuardianPremium(bool value) {
+    if (_dashboardGuardianPremium == value) return;
+    _dashboardGuardianPremium = value;
+    notifyListeners();
+  }
+
+  void setDashboardActivityState(ZyraDashboardActivityState value) {
+    if (_dashboardActivityState == value && _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardActivityState = value;
+    if (value == ZyraDashboardActivityState.empty) {
+      _dashboardNewActivity = false;
+      _dashboardPendingApproval = false;
+    } else if (value == ZyraDashboardActivityState.urgent) {
+      _dashboardPendingApproval = true;
+      _dashboardNewActivity = true;
+    }
+    notifyListeners();
+  }
+
+  void setDashboardJourneyPreview(ZyraDashboardJourneyPreview value) {
+    if (_dashboardJourneyPreview == value && _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardJourneyPreview = value;
+    notifyListeners();
+  }
+
+  void setDashboardNewActivity(bool value) {
+    if (_dashboardNewActivity == value && _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardNewActivity = value;
+    notifyListeners();
+  }
+
+  void setDashboardPendingApproval(bool value) {
+    if (_dashboardPendingApproval == value && _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardPendingApproval = value;
+    if (value) {
+      _dashboardModules.add(ZyraDashboardModule.nextStep);
+    }
+    notifyListeners();
+  }
+
+  void setDashboardInsightState(ZyraDashboardInsightState value) {
+    if (_dashboardInsightState == value && _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardInsightState = value;
+    _dashboardModules.add(ZyraDashboardModule.learning);
+    notifyListeners();
+  }
+
+  void setDashboardInsightPlan(ZyraDashboardInsightPlan value) {
+    if (_dashboardInsightPlan == value && _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardInsightPlan = value;
+    _dashboardModules.add(ZyraDashboardModule.learning);
+    notifyListeners();
+  }
+
+  void setDashboardLearningOnCurrentHub(bool value) {
+    if (_dashboardLearningOnCurrentHub == value) return;
+    _dashboardLearningOnCurrentHub = value;
+    notifyListeners();
+  }
+
+  void setDashboardOnboardingComplete(bool value) {
+    if (_dashboardOnboardingComplete == value &&
+        _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardOnboardingComplete = value;
+    if (value) {
+      _dashboardModules.remove(ZyraDashboardModule.onboarding);
+    } else {
+      _dashboardModules.add(ZyraDashboardModule.onboarding);
+    }
+    notifyListeners();
+  }
+
+  void setDashboardOnboardingAnswered(int value) {
+    final resolved = value.clamp(0, dashboardOnboardingTotal - 1);
+    if (_dashboardOnboardingAnswered == resolved &&
+        !_dashboardOnboardingComplete &&
+        _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardOnboardingAnswered = resolved;
+    _dashboardOnboardingComplete = false;
+    _dashboardModules.add(ZyraDashboardModule.onboarding);
+    notifyListeners();
+  }
+
+  void setDashboardFamilyProgress(int value) {
+    final resolved = value.clamp(0, 4);
+    if (_dashboardFamilyProgress == resolved &&
+        _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardFamilyProgress = resolved;
+    _dashboardFamilyIntroductionActive = true;
+    notifyListeners();
+  }
+
+  void setDashboardFamilyIntroductionActive(bool value) {
+    if (_dashboardFamilyIntroductionActive == value &&
+        _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardFamilyIntroductionActive = value;
+    notifyListeners();
+  }
+
+  void setDashboardHasGuardian(bool value) {
+    if (_dashboardHasGuardian == value && _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardHasGuardian = value;
+    if (!value) _dashboardGuardianActivity = false;
+    notifyListeners();
+  }
+
+  void setDashboardGuardianActivity(bool value) {
+    if (_dashboardGuardianActivity == value &&
+        _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardGuardianActivity = value;
+    if (value) _dashboardHasGuardian = true;
+    notifyListeners();
+  }
+
+  void setDashboardPotentialJourneys(int value) {
+    final resolved = value.clamp(0, 5);
+    if (_dashboardPotentialJourneys == resolved &&
+        _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardPotentialJourneys = resolved;
+    notifyListeners();
+  }
+
+  void setDashboardSavedProfiles(int value) {
+    final resolved = value.clamp(0, 10);
+    if (_dashboardSavedProfiles == resolved &&
+        _dashboardContextPreset == null) {
+      return;
+    }
+    _markDashboardContextCustom();
+    _dashboardSavedProfiles = resolved;
+    notifyListeners();
+  }
+
+  void setDashboardSupportedSeekers(int value) {
+    final resolved = value.clamp(0, 6);
+    if (_dashboardSupportedSeekers == resolved) return;
+    _markDashboardContextCustom();
+    _dashboardSupportedSeekers = resolved;
+    notifyListeners();
+  }
+
+  void setDashboardModuleEnabled(ZyraDashboardModule module, bool enabled) {
+    final changed = enabled
+        ? _dashboardModules.add(module)
+        : _dashboardModules.remove(module);
+    if (!changed) return;
+    notifyListeners();
+  }
+
+  void moveDashboardModule(ZyraDashboardModule module, int delta) {
+    final from = _dashboardOrder.indexOf(module);
+    final to = (from + delta).clamp(0, _dashboardOrder.length - 1);
+    if (from < 0 || from == to) return;
+    _dashboardOrder.removeAt(from);
+    _dashboardOrder.insert(to, module);
+    notifyListeners();
+  }
+
+  /// Moves a module only against neighbours owned by the same Dashboard tab.
+  void moveDashboardModuleWithin(
+    ZyraDashboardModule module,
+    int delta,
+    Set<ZyraDashboardModule> sectionModules,
+  ) {
+    final sectionOrder = _dashboardOrder
+        .where(sectionModules.contains)
+        .toList();
+    final sectionFrom = sectionOrder.indexOf(module);
+    final sectionTo = (sectionFrom + delta).clamp(0, sectionOrder.length - 1);
+    if (sectionFrom < 0 || sectionFrom == sectionTo) return;
+    final other = sectionOrder[sectionTo];
+    final from = _dashboardOrder.indexOf(module);
+    final to = _dashboardOrder.indexOf(other);
+    _dashboardOrder[from] = other;
+    _dashboardOrder[to] = module;
+    notifyListeners();
+  }
+
+  void resetDashboardLab({bool notify = true}) {
+    _dashboardLabEnabled = true;
+    _dashboardConcept = ZyraDashboardConcept.nowJourneyYou;
+    _dashboardAudience = ZyraDashboardAudiencePreview.current;
+    _dashboardContextPreset = null;
+    _dashboardTab = ZyraDashboardTab.now;
+    _dashboardSeekerTodayState = ZyraSeekerDashboardTodayState.calm;
+    _dashboardGuardianTodayState = ZyraGuardianDashboardTodayState.noSeekers;
+    _dashboardUpdatesState = ZyraDashboardUpdatesState.none;
+    _dashboardSeekerInsightsState =
+        ZyraSeekerDashboardInsightsState.insufficient;
+    _dashboardGuardianInsightsState =
+        ZyraGuardianDashboardInsightsState.insufficient;
+    _dashboardGuardianPremium = false;
+    _dashboardGuardianNowOptionSelected = false;
+    _dashboardGuardianInsightsOptionSelected = false;
+    _dashboardGuardianJourneyDecisionPending = false;
+    _dashboardLearningOnCurrentHub = false;
+    _dashboardSupportedSeekers = 0;
+    _dashboardOrder
+      ..clear()
+      ..addAll(zyraDashboardDefaultOrder);
+    _dashboardModules
+      ..clear()
+      ..addAll(zyraDashboardDefaultModules);
+    _dashboardOnboardingComplete = true;
+    _dashboardOnboardingAnswered = dashboardOnboardingTotal;
+    _dashboardJourneyPreview = ZyraDashboardJourneyPreview.none;
+    _dashboardNewActivity = false;
+    _dashboardPendingApproval = false;
+    _dashboardActivityState = ZyraDashboardActivityState.empty;
+    _dashboardInsightState = ZyraDashboardInsightState.insufficientData;
+    _dashboardInsightPlan = ZyraDashboardInsightPlan.basic;
+    _dashboardHasGuardian = false;
+    _dashboardGuardianActivity = false;
+    _dashboardFamilyIntroductionActive = false;
+    _dashboardPotentialJourneys = 0;
+    _dashboardSavedProfiles = 0;
+    _receivedInviteCount = 0;
+    _pendingInviteCount = 0;
+    _waliRole = WaliRole.main;
+    _waliLinkedSeekers = 0;
+    _waliActiveJourneys = 0;
+    _waliPausedJourneys = 0;
+    _waliEndedJourneys = 0;
+    _waliReviewWaiting = false;
+    _waliReviewDecision = null;
+    _waliSentInvites = 0;
+    _waliUnread = 0;
+    if (notify) notifyListeners();
+  }
 
   void setCurrentPage(DevPage page) {
     if (currentPage == page) return;
@@ -179,25 +1034,190 @@ class ZyraDevScenario extends ChangeNotifier {
 
   int connectionsSection = 0;
 
+  /// Local-only rows used to exercise the three Activity groups without
+  /// changing the signed-in account's real decisions. Their controls live in
+  /// the developer panel; the cards themselves deliberately use production
+  /// presentation so the Founder is reviewing the real interface.
+  int _consideredPreviewCount = 0;
+  int _savedPreviewCount = 0;
+  int _passedPreviewCount = 0;
+
+  /// A fixture begins in the group which created it. Once an action is tapped,
+  /// this map becomes its one local destination. Keeping this out of AppState
+  /// prevents a deterministic fixture being regenerated in its old group and
+  /// duplicated in the new one.
+  final Map<String, ZyraActivityTestState> _localProfileDestinations = {};
+  final Set<String> _hiddenLocalProfileIds = {};
+
+  int get consideredPreviewCount => _consideredPreviewCount;
+  int get savedPreviewCount => _savedPreviewCount;
+  int get passedPreviewCount => _passedPreviewCount;
+
+  ZyraActivityTestState? localProfileDestination(String profileId) =>
+      _localProfileDestinations[profileId];
+
+  bool isLocalProfileHidden(String profileId) =>
+      _hiddenLocalProfileIds.contains(profileId);
+
+  void moveLocalProfile(String profileId, ZyraActivityTestState destination) {
+    if (_localProfileDestinations[profileId] == destination &&
+        !_hiddenLocalProfileIds.contains(profileId)) {
+      return;
+    }
+    _hiddenLocalProfileIds.remove(profileId);
+    _localProfileDestinations[profileId] = destination;
+    notifyListeners();
+  }
+
+  void hideLocalProfile(String profileId) {
+    if (!_hiddenLocalProfileIds.add(profileId)) return;
+    _localProfileDestinations.remove(profileId);
+    notifyListeners();
+  }
+
+  void _pruneActivitySlots(ZyraActivityTestState origin, int retained) {
+    for (var index = retained; index < 5; index++) {
+      final id = zyraActivityTestProfileId(origin, index);
+      _localProfileDestinations.remove(id);
+      _hiddenLocalProfileIds.remove(id);
+    }
+  }
+
+  void _pruneIntroductionSlots(int retained) {
+    for (var index = retained; index < 5; index++) {
+      final id = zyraIntroductionTestProfileId(index);
+      _localProfileDestinations.remove(id);
+      _hiddenLocalProfileIds.remove(id);
+    }
+  }
+
+  void setConsideredPreviewCount(int count) {
+    final next = count.clamp(0, 5);
+    if (_consideredPreviewCount == next) return;
+    _pruneActivitySlots(ZyraActivityTestState.considered, next);
+    _consideredPreviewCount = next;
+    notifyListeners();
+  }
+
+  void setSavedPreviewCount(int count) {
+    final next = count.clamp(0, 5);
+    if (_savedPreviewCount == next) return;
+    _pruneActivitySlots(ZyraActivityTestState.saved, next);
+    _savedPreviewCount = next;
+    notifyListeners();
+  }
+
+  void setPassedPreviewCount(int count) {
+    final next = count.clamp(0, 5);
+    if (_passedPreviewCount == next) return;
+    _pruneActivitySlots(ZyraActivityTestState.passed, next);
+    _passedPreviewCount = next;
+    notifyListeners();
+  }
+
+  /// Extra production-style Introduction cards used only when the guarded
+  /// server developer RPC refuses a non-`@zyra.test` developer account.
+  ///
+  /// Zero means no fallback rows. Real server suggestions are never removed
+  /// or replaced; Connections adds these deterministic rows in non-release
+  /// builds only. The developer panel, not the customer card, identifies the
+  /// state as a test fixture.
+  int _introductionPreviewCount = 0;
+  int get introductionPreviewCount => _introductionPreviewCount;
+
+  void setIntroductionPreviewCount(int count) {
+    final next = count.clamp(0, 5);
+    if (_introductionPreviewCount == next) return;
+    _pruneIntroductionSlots(next);
+    _introductionPreviewCount = next;
+    notifyListeners();
+  }
+
+  ZyraBrowseSwipeFeedbackStyle _browseSwipeFeedbackStyle =
+      ZyraBrowseSwipeFeedbackStyle.fullAura;
+
+  ZyraBrowseSwipeFeedbackStyle get browseSwipeFeedbackStyle =>
+      _browseSwipeFeedbackStyle;
+
+  void setBrowseSwipeFeedbackStyle(ZyraBrowseSwipeFeedbackStyle value) {
+    if (_browseSwipeFeedbackStyle == value) return;
+    _browseSwipeFeedbackStyle = value;
+    notifyListeners();
+  }
+
+  /// Adds five local Browse cards behind the account's genuine candidates so
+  /// the Founder can test the 3D next-profile handoff as a sequence rather
+  /// than against a one-card deck.
+  ///
+  /// This helper is deliberately passive: [BrowseScreen] calls it only after
+  /// [ZyraDeveloperAccess.canUseDeveloperTools] has authorised the session.
+  /// The generated ids are non-UUIDs, so the existing Browse write guards
+  /// keep Save, Consider, Pass, report, hide and unlock away from Supabase.
+  /// The anchor photo is reused on purpose; these cards test motion and deck
+  /// continuity, not identity or image variety.
+  static List<SeekerProfile> composeBrowsePreviewProfiles({
+    required List<SeekerProfile> real,
+    required String? viewerGender,
+    int extraCount = 5,
+  }) {
+    final count = extraCount.clamp(0, 5);
+    if (count == 0) return List<SeekerProfile>.of(real);
+
+    final targetGender = ZyraGender.oppositeCode(viewerGender);
+    var anchor = mockProfiles.firstWhere(
+      (profile) => profile.gender == targetGender,
+    );
+    for (final profile in real) {
+      if (profile.gender == targetGender && profile.photos.isNotEmpty) {
+        anchor = profile;
+        break;
+      }
+    }
+
+    const femaleIdentities = [
+      (firstName: 'Amira', surnameLine: 'Rahman', age: 28, city: 'Manchester'),
+      (firstName: 'Hana', surnameLine: 'Siddiqui', age: 31, city: 'Birmingham'),
+      (firstName: 'Safiya', surnameLine: 'Ali', age: 26, city: 'Leicester'),
+      (firstName: 'Noor', surnameLine: 'Mahmood', age: 30, city: 'Glasgow'),
+      (firstName: 'Layla', surnameLine: 'Ahmed', age: 29, city: 'Leeds'),
+    ];
+    const maleIdentities = [
+      (firstName: 'Adam', surnameLine: 'Rahman', age: 30, city: 'Manchester'),
+      (
+        firstName: 'Hamza',
+        surnameLine: 'Siddiqui',
+        age: 28,
+        city: 'Birmingham',
+      ),
+      (firstName: 'Zayd', surnameLine: 'Ali', age: 32, city: 'Leicester'),
+      (firstName: 'Idris', surnameLine: 'Mahmood', age: 27, city: 'Glasgow'),
+      (firstName: 'Omar', surnameLine: 'Ahmed', age: 31, city: 'Leeds'),
+    ];
+    final identities = targetGender == 'male'
+        ? maleIdentities
+        : femaleIdentities;
+    final preview = <SeekerProfile>[];
+    for (var i = 0; i < count; i++) {
+      final identity = identities[i];
+      preview.add(
+        SeekerProfile(
+          id: 'dev-browse-preview-${targetGender[0]}-$i',
+          firstName: identity.firstName,
+          surnameLine: identity.surnameLine,
+          age: identity.age,
+          city: identity.city,
+          photos: anchor.photos,
+          gender: targetGender,
+        ),
+      );
+    }
+    return [...real, ...preview];
+  }
+
   void setConnectionsSection(int section) {
     final s = section.clamp(0, 2);
     if (connectionsSection == s) return;
     connectionsSection = s;
-    notifyListeners();
-  }
-
-  // --- Stand-in interactions that must FEEL real ------------------------
-  // ADDED 2026-08-12 (Founder: "it says stand-in, nudges need a real
-  // paused journey (dev) so please fix and make that"). A dev snackbar
-  // where the product would act is the panel lying about the experience.
-  // Fake matchIds are deterministic (dev-p0, dev-p1…), so marking one
-  // nudged here survives every recompose; composeJourneys reads this set
-  // and stamps pauseNudgedAt, which greys the row's button exactly as a
-  // real nudge would. reset() clears it with everything else.
-  final Set<String> _nudgedFakes = {};
-  bool fakeNudged(String matchId) => _nudgedFakes.contains(matchId);
-  void markFakeNudged(String matchId) {
-    if (!_nudgedFakes.add(matchId)) return;
     notifyListeners();
   }
 
@@ -239,58 +1259,17 @@ class ZyraDevScenario extends ChangeNotifier {
     notifyListeners();
   }
 
-  // How many staged PAUSED people were paused BY THE TESTER (Founder,
-  // 2026-08-13: "i need a toggle where i can choose paused by them or
-  // paused by you"). The first N paused fakes carry the tester's own id
-  // as suspended_by — so their rows read "Paused by you" and offer
-  // Resume — and the rest stay paused by the other side ("Request
-  // restart" / the one-shot nudge). Both worlds on one screen.
-  int _pausedByYou = 0;
-  int get pausedByYou => _pausedByYou;
-  void setPausedByYou(int v) {
-    final n = v.clamp(0, 30);
-    if (_pausedByYou == n) return;
-    _pausedByYou = n;
-    notifyListeners();
-  }
+  // The shared decision flow's complete preview axis. Plan is deliberately
+  // separate, allowing every state to be reviewed as Basic and ZYRA One.
+  ZyraPauseDevScenario _pauseScenario = ZyraPauseDevScenario.active;
+  ZyraPauseDevScenario get pauseScenario => _pauseScenario;
 
-  // How many of the paused-BY-THEM stand-ins the tester has ALSO paused
-  // (DR-ZYRA-170, shared holds). Not a panel row — this count is driven
-  // by the card's own "Also Pause" action, exactly as takeover settles
-  // drive the section counts. Positional: the first N paused-by-other
-  // fakes read "Paused by both of you" and offer Resume (lifting the
-  // tester's own hand drops them back to paused-by-them).
-  int _mirroredPaused = 0;
-  int get mirroredPaused => _mirroredPaused;
-  void setMirroredPaused(int v) {
-    final n = v.clamp(0, 30);
-    if (_mirroredPaused == n) return;
-    _mirroredPaused = n;
-    notifyListeners();
-  }
-
-  /// The clean panel presents one understandable ownership choice for its
-  /// first Paused preview instead of separate, contradictory counters.
-  /// 0 = paused by them, 1 = paused by you, 2 = paused by both.
-  int get pausePreviewOwner {
-    if (_mirroredPaused > 0) return 2;
-    if (_pausedByYou > 0) return 1;
-    return 0;
-  }
-
-  void setPausePreviewOwner(int owner) {
-    final resolved = owner.clamp(0, 2);
-    final nextPaused = _pausedJourneys == 0 ? 1 : _pausedJourneys;
-    final nextByYou = resolved == 1 ? 1 : 0;
-    final nextMirrored = resolved == 2 ? 1 : 0;
-    if (_pausedJourneys == nextPaused &&
-        _pausedByYou == nextByYou &&
-        _mirroredPaused == nextMirrored) {
-      return;
-    }
-    _pausedJourneys = nextPaused;
-    _pausedByYou = nextByYou;
-    _mirroredPaused = nextMirrored;
+  void setPauseScenario(ZyraPauseDevScenario scenario) {
+    final nextCount = _pausedJourneys == 0 ? 1 : _pausedJourneys;
+    if (_pauseScenario == scenario && _pausedJourneys == nextCount) return;
+    _connectionsPreviewIsolated = true;
+    _pauseScenario = scenario;
+    _pausedJourneys = nextCount;
     notifyListeners();
   }
 
@@ -349,44 +1328,6 @@ class ZyraDevScenario extends ChangeNotifier {
     return p;
   }
 
-  // The sponsored card and the daily cap are requested the same way — both
-  // were already built and both were otherwise unreachable in testing: the
-  // advert needs five profile views, the daily cap needs fifty.
-
-  // --- Adverts: a STATE, not an event -----------------------------------
-  //
-  // ADDED 2026-08-07 (Founder: "create a toggle button to show
-  // advertisements for the zyra basic user").
-  //
-  // This sits alongside the one-shot "Show advert" button rather than
-  // replacing it, because the two answer different questions and this file
-  // previously argued only the first was worth having:
-  //
-  //   BUTTON  "what does the advert card look like?"      — one, now
-  //   TOGGLE  "what is Browse LIKE with adverts in it?"   — every profile
-  //
-  // The earlier note said "an advert that fires on every swipe is not a
-  // real scenario", and as a description of production that is true. But
-  // the thing worth reviewing is not the card in isolation — it is the
-  // rhythm of being interrupted, whether the Continue button lands where
-  // your thumb already is, whether it breaks a run of browsing. One firing
-  // never shows that, and 24 seeded profiles give you four in a whole deck.
-  //
-  // So this IS a deliberate preview state the product would never produce,
-  // which the panel's own rule permits as long as it is stated. Stated.
-  //
-  // Read by browse_screen.dart `_advance()`. Basic only there, because
-  // ZYRA One is contractually ad-free and simulating adverts on it would
-  // preview a promise being broken.
-  bool _adsOnEveryProfile = false;
-  bool get adsOnEveryProfile => _adsOnEveryProfile;
-
-  void setAdsOnEveryProfile(bool v) {
-    if (_adsOnEveryProfile == v) return;
-    _adsOnEveryProfile = v;
-    notifyListeners();
-  }
-
   // --- Test deck ---------------------------------------------------------
   // REMOVED 2026-08-04, Founder: "remove the 200 colour profile block
   // profiles, I don't want that no more."
@@ -428,10 +1369,13 @@ class ZyraDevScenario extends ChangeNotifier {
   bool _mainGuardian = false;
   int _additionalGuardianCount = 0;
   int _pendingInviteCount = 0;
+  int _guardianPreviewActiveJourneyCount = 1;
 
   bool get mainGuardian => _mainGuardian;
   int get additionalGuardianCount => _additionalGuardianCount;
   int get pendingInviteCount => _pendingInviteCount;
+  int get guardianPreviewActiveJourneyCount =>
+      _guardianPreviewActiveJourneyCount;
 
   void setMainGuardian(bool v) {
     if (_mainGuardian == v) return;
@@ -448,6 +1392,15 @@ class ZyraDevScenario extends ChangeNotifier {
   void setPendingInvites(int v) {
     if (_pendingInviteCount == v) return;
     _pendingInviteCount = v;
+    notifyListeners();
+  }
+
+  /// Founder-only layout preview for the Seeker's Guardian page. It changes
+  /// only the local Main/Additional Guardian access rows, never Journey truth.
+  void setGuardianPreviewActiveJourneyCount(int value) {
+    final next = value.clamp(0, 3).toInt();
+    if (_guardianPreviewActiveJourneyCount == next) return;
+    _guardianPreviewActiveJourneyCount = next;
     notifyListeners();
   }
 
@@ -470,6 +1423,12 @@ class ZyraDevScenario extends ChangeNotifier {
   void setReceivedInvites(int v) {
     if (_receivedInviteCount == v) return;
     _receivedInviteCount = v;
+    notifyListeners();
+  }
+
+  void consumeReceivedInvite() {
+    if (_receivedInviteCount <= 0) return;
+    _receivedInviteCount -= 1;
     notifyListeners();
   }
 
@@ -503,8 +1462,10 @@ class ZyraDevScenario extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Kept as the inverse so existing readers stay legible.
-  bool get guardianOverride => !_useLiveGuardianData;
+  /// Fixture data is never an ordinary member's fallback. The stored panel
+  /// preference applies only while the protected developer authority is live.
+  bool get guardianOverride =>
+      ZyraDeveloperAccess.canUseDeveloperTools && !_useLiveGuardianData;
 
   // ── Journeys ─────────────────────────────────────────────────────────
   //
@@ -512,20 +1473,20 @@ class ZyraDevScenario extends ChangeNotifier {
   // paused journeys, ended journey, and I'm assuming we only have option
   // for 1 active journey so make that 0/1").
   //
-  // The assumption is right, and the database enforces it — `matches` has
-  // UNIQUE partial indexes on seeker_a_id and seeker_b_id WHERE
-  // status = 'active'. One Active Journey per person, structurally.
-  //
-  // BUT PAUSED IS NOT A FOURTH STATE. `suspend_journey()` sets suspended_by
-  // and leaves the status 'active' — pausing is a FLAG on an Active
-  // Journey, and 'paused' was removed from the status CHECK entirely on
-  // 2026-08-06 because it had always been unreachable.
-  //
-  // So Active and Paused are the SAME slot. Separate 0/1 and 0–5 controls
-  // would let the panel produce a state the database cannot hold: five
-  // paused Journeys are five active ones. One control with three mutually
-  // exclusive values says the truth instead of letting two toggles
-  // contradict each other.
+  // Active and Paused are capacity categories over status='active' match
+  // rows. A pending Pause/Continue decision stays in Active; only mutual
+  // Pause and its pending resume live in Paused. The scenario below mirrors
+  // that model instead of simulating ownership by one Seeker.
+  // False on a fresh app launch so developer access never hides live rows
+  // merely by existing. Reset and the Connections controls turn this on:
+  // from that point the page is an isolated preview and zero genuinely means
+  // no cards, while the server rows remain untouched.
+  bool _connectionsPreviewIsolated = false;
+  bool get connectionsPreviewIsolated => _connectionsPreviewIsolated;
+
+  List<T> connectionsRealRows<T>(List<T> rows) =>
+      _connectionsPreviewIsolated ? <T>[] : rows;
+
   int _queuedJourneys = 0; // status 'potential'
   int _endedJourneys = 0; // status 'ended'
 
@@ -533,56 +1494,22 @@ class ZyraDevScenario extends ChangeNotifier {
   int get endedJourneys => _endedJourneys;
 
   void setQueuedJourneys(int v) {
-    if (_queuedJourneys == v) return;
+    if (_queuedJourneys == v && _connectionsPreviewIsolated) return;
+    _connectionsPreviewIsolated = true;
     _queuedJourneys = v;
     notifyListeners();
   }
 
   void setEndedJourneys(int v) {
-    if (_endedJourneys == v) return;
+    if (_endedJourneys == v && _connectionsPreviewIsolated) return;
+    _connectionsPreviewIsolated = true;
     _endedJourneys = v;
     notifyListeners();
   }
 
-  /// Active Journeys, and how many of those are paused.
-  ///
-  /// SPLIT AGAIN 2026-08-07 (Founder: "I don't see paused journey options,
-  /// add that"). The Connections page genuinely renders ACTIVE JOURNEY and
-  /// PAUSED JOURNEYS as separate sections, so the panel needs to drive both.
-  ///
-  /// `pausedJourneys` is a SUBSET of `activeJourneys`, never a fourth state
-  /// — suspend_journey() sets suspended_by and leaves status 'active'. So
-  /// paused can never exceed active, and the panel clamps rather than
-  /// letting the two disagree.
-  ///
-  /// CAP: ONE, on both plans, and the panel now agrees with that.
-  ///
-  /// ── CHANGED 2026-08-09. Founder: "I'm on ZYRA Basic but I managed to
-  /// select 3 for active journey... change it back to 1 only."
-  ///
-  /// This used to allow up to 3 on the grounds that
-  /// ZYRA_JOURNEY_ENTITLEMENT_DECISION leaves the number "deliberately open
-  /// pending Islamic review". That reasoning confused two different things:
-  ///
-  ///   OPEN means nobody has decided whether ZYRA One should ever get 2 or
-  ///   3. It is a live question, held for religious guidance.
-  ///
-  ///   TODAY'S ANSWER is 1, for both plans, and it is not soft. Verified
-  ///   2026-08-09: zyra_enforce_one_active_match carries no plan check, and
-  ///   matches_seeker_a_active / matches_seeker_b_active are UNIQUE partial
-  ///   indexes over every Seeker. Two triggers and two indexes.
-  ///
-  /// A preview tool may exaggerate quantities — Potential and Ended still
-  /// go to 5 — but it should not render a state the server refuses. This
-  /// panel showed three Active Journeys on a Basic account, which is not a
-  /// preview of an undecided rule; it is a picture of something that cannot
-  /// happen. If the number is ever raised, raise it here in the same change
-  /// that raises it in the database, not before.
-  ///
-  /// [pausedJourneys] is capped for the same reason and it is not a
-  /// separate rule: a paused Journey is an ACTIVE row with suspended_by
-  /// set. matches_status_check permits only potential / active / ended.
-  /// Three paused Journeys are three active Journeys.
+  /// Extra Running and mutually Paused preview rows. Counts are clamped by
+  /// the current plan. [pauseScenario] controls the first row's precise
+  /// decision state, including pending states that remain in Active.
   int _activeJourneys = 0;
   int _pausedJourneys = 0;
 
@@ -590,7 +1517,8 @@ class ZyraDevScenario extends ChangeNotifier {
   int get pausedJourneys => _pausedJourneys;
 
   void setActiveJourneys(int v) {
-    if (_activeJourneys == v) return;
+    if (_activeJourneys == v && _connectionsPreviewIsolated) return;
+    _connectionsPreviewIsolated = true;
     _activeJourneys = v;
     notifyListeners();
   }
@@ -603,26 +1531,28 @@ class ZyraDevScenario extends ChangeNotifier {
   void refreshJourneys() => notifyListeners();
 
   void setPausedJourneys(int v) {
-    if (_pausedJourneys == v) return;
+    final nextScenario = v > 0 && _pauseScenario == ZyraPauseDevScenario.active
+        ? ZyraPauseDevScenario.mutuallyPaused
+        : _pauseScenario;
+    if (_pausedJourneys == v &&
+        _pauseScenario == nextScenario &&
+        _connectionsPreviewIsolated) {
+      return;
+    }
+    _connectionsPreviewIsolated = true;
     _pausedJourneys = v;
+    _pauseScenario = nextScenario;
     notifyListeners();
   }
 
   /// One-time bridge from the 2026-08-12 control collection to the clean
-  /// 2026-08-18 panel. These axes were removed because they either created a
-  /// dead-end Active stand-in or staged impossible cross-section mixtures.
-  /// Clearing them on the panel's first mount prevents an old hot-reload
-  /// session from carrying invisible switches into the new interface.
+  /// 2026-08-18 panel. The busy counters were removed because
+  /// they staged impossible or retired states. Active Journey is intentionally
+  /// retained: the Connections panel exposes it again as a plan-aware preview
+  /// count (legacy inactive fixture 0-1 / ZYRA One 0-3).
   void migrateToCleanSeekerPanel() {
-    final changed =
-        _adsOnEveryProfile ||
-        _activeJourneys != 0 ||
-        _busyPotential != 0 ||
-        _busyPaused != 0 ||
-        _busyEnded != 0;
+    final changed = _busyPotential != 0 || _busyPaused != 0 || _busyEnded != 0;
     if (!changed) return;
-    _adsOnEveryProfile = false;
-    _activeJourneys = 0;
     _busyPotential = 0;
     _busyPaused = 0;
     _busyEnded = 0;
@@ -816,10 +1746,8 @@ class ZyraDevScenario extends ChangeNotifier {
       int age,
       String status, {
       String? stage,
-      String? suspendedBy,
-      String? alsoPausedBy,
+      ZyraJourneyPauseState pause = ZyraJourneyPauseState.active,
       DateTime? suspendedAt,
-      DateTime? pauseNudgedAt,
       DateTime? endedAt,
       bool inAnotherJourney = false,
     }) => JourneyMatch(
@@ -827,10 +1755,8 @@ class ZyraDevScenario extends ChangeNotifier {
       profile: take(name, age),
       status: status,
       journeyStage: stage,
-      suspendedBy: suspendedBy,
-      alsoPausedBy: alsoPausedBy,
+      pause: pause,
       suspendedAt: suspendedAt,
-      pauseNudgedAt: pauseNudgedAt,
       endedAt: endedAt,
       inAnotherJourney: inAnotherJourney,
       isMock: true,
@@ -842,8 +1768,6 @@ class ZyraDevScenario extends ChangeNotifier {
     // be with someone else, so the active loop has no count). Clamped by
     // construction: a fake index only exists for a built fake.
     //
-    // "Paused by you": the first N paused fakes carry the tester's own
-    // id, so iInitiated reads true exactly as on a real row.
     final me = currentUserId ?? ZyraAuth.currentUser?.id ?? 'dev-me';
 
     // ── TEN NAMES PER LIST, 2026-08-09, up from five.
@@ -887,11 +1811,8 @@ class ZyraDevScenario extends ChangeNotifier {
 
     // SIMULATION ONLY — the two counts are now INDEPENDENT.
     //
-    // In production, paused is a subset of active: suspend_journey() sets
-    // suspended_by and leaves the status 'active', and a unique index allows
-    // one active Journey per person. The panel used to enforce that, which
-    // meant previewing a paused layout required creating an active Journey
-    // and pausing it first.
+    // Both categories are stored as status='active' match rows, while the
+    // shared pause_state determines which capacity and section they occupy.
     //
     // Here `activeJourneys` means extra RUNNING previews and
     // `pausedJourneys` means extra PAUSED previews. Every preview is isMock
@@ -938,34 +1859,27 @@ class ZyraDevScenario extends ChangeNotifier {
       if (i < pausedNames.length) {
         final fakeId = 'dev-p$i';
         final f = i;
+        final scenario = i == 0
+            ? s._pauseScenario
+            : ZyraPauseDevScenario.mutuallyPaused;
+        final pause = scenario.stateFor(
+          viewerId: me,
+          otherId: 'dev-other-$i',
+          now: now,
+        );
         out.add(
           make(
             fakeId,
             pausedNames[f],
             26 + i,
-            'active',
+            scenario.isEnded ? 'ended' : 'active',
             stage: 'conversation',
-            // The first N are paused BY THE TESTER (panel's "Paused by
-            // you" count) — their rows read "Paused by you" and offer
-            // Resume; the rest stay paused by the other side.
-            suspendedBy: f < s._pausedByYou ? me : 'dev-other',
-            // DR-ZYRA-170: the tester's mirrored holds sit on the first
-            // paused-by-other fakes — "Paused by both of you".
-            alsoPausedBy:
-                (f >= s._pausedByYou && f < s._pausedByYou + s._mirroredPaused)
-                ? me
-                : null,
+            pause: pause,
             inAnotherJourney: f < s._busyPaused,
-            // A stand-in the tester already nudged stays nudged across
-            // recomposes — the ids are deterministic, so the set in the
-            // scenario is enough for the row to grey like a real one.
-            pauseNudgedAt: s._nudgedFakes.contains(fakeId) ? now : null,
-            // The FIRST stand-in carries a 95-day-old pause so the
-            // time-honesty line ("Paused · 3 months", DR-ZYRA-142) is
-            // previewable solo; the rest are fresh pauses with no line.
             suspendedAt: i == 0
                 ? now.subtract(const Duration(days: 95))
                 : now.subtract(const Duration(days: 3)),
+            endedAt: scenario.isEnded ? now : null,
           ),
         );
       }
@@ -1099,7 +2013,7 @@ class ZyraDevScenario extends ChangeNotifier {
   //                        refusal path came back (see [WaliRole])
   //   sentInvites        → composeWaliSentInvites() →
   //                        WaliInviteSeekerScreen
-  //   waliUnread         → WaliHomeShell's Notifications tab badge
+  //   waliUnread         → WaliHomeShell's My ZYRA tab badge
 
   /// Where the Guardian currently is. Context, not scenario — reset()
   /// leaves it alone, exactly as it leaves [currentPage] alone.
@@ -1284,7 +2198,7 @@ class ZyraDevScenario extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Unread notifications on the Guardian's Notifications tab badge.
+  /// Unread notifications on the Guardian's My ZYRA tab badge.
   ///
   /// THE BELL IS A TAB, not the top-right overlay it was: WaliHomeShell
   /// dropped the floating Bell on 2026-08-13 and the unread count now
@@ -1299,6 +2213,17 @@ class ZyraDevScenario extends ChangeNotifier {
     _waliUnread = n;
     notifyListeners();
   }
+
+  // GUARDIAN NETWORK PREVIEW CONTROLS RETIRED — 2026-08-23 (OA-ZYRA-251).
+  // The first-draft plan/scene state that lived here drove the retired
+  // 2026-08-22 preview model (dev/guardian_network_preview.dart, archived
+  // in SYSTEM/RESOURCES/OVERNIGHT_GN_2026-08-23/ARCHIVE_RETIRED_PREVIEW/
+  // with its test). The current Guardian Network (D14, GN Draft 3.x)
+  // keeps ALL of its staging in GNContext — lib/screens/wali/
+  // wali_gn_shared.dart — behind the DEV chip on the Network and
+  // Dashboard pages. This store still composes the WARDS the Network
+  // works on behalf of (waliLinkedSeekers above); that control remains
+  // real and current.
 
   /// True when any Guardian-side row is above zero — lets a screen skip
   /// composition entirely when the panel is at rest.
@@ -1321,6 +2246,13 @@ class ZyraDevScenario extends ChangeNotifier {
     (name: 'Aaliyah', relationship: 'father'),
     (name: 'Umar', relationship: 'uncle'),
     (name: 'Sumayyah', relationship: 'brother'),
+    (name: 'Maryam', relationship: 'grandfather'),
+    (name: 'Yusuf', relationship: 'legal_guardian'),
+    (name: 'Zaynab', relationship: 'family_representative'),
+    (name: 'Hamza', relationship: 'uncle'),
+    (name: 'Safiya', relationship: 'other'),
+    (name: 'Idris', relationship: 'brother'),
+    (name: 'Khadija', relationship: 'father'),
   ];
 
   /// Counterparts, in the shape zyra_counterpart_card() actually returns:
@@ -1389,22 +2321,16 @@ class ZyraDevScenario extends ChangeNotifier {
 
   /// Journeys for the staged wards, in the shape the Guardian screens read.
   ///
-  /// AN ADDITIONAL GUARDIAN GETS NOTHING, and that is measured behaviour
-  /// rather than a decision taken here. ZyraWaliJourneyService.
-  /// fetchLinkedJourneys() builds every row through
-  /// zyra_counterpart_card(), which returns null to anyone who is not the
-  /// Journey's MAIN Guardian, and the loop then `continue`s. So today an
-  /// Additional Guardian's Dashboard is empty of Journeys entirely.
-  ///
-  /// (wali_dashboard_screen's own comment says an Additional Guardian
-  /// "sees the plain stage", which was true before the counterpart card
-  /// landed on 2026-08-08 and has been stale since. Raised, not silently
-  /// fixed — see DR-ZYRA-152.)
+  /// This composes the richer Journey view used by Main-only surfaces.
+  /// Additional Guardians receive their separate four-field summary inside
+  /// the Seeker workspace, so they still do not enter this counterpart/stage
+  /// path.
   static List<WaliJourneyView> composeWaliJourneys({
     required List<WaliLinkedPerson> wards,
     List<WaliJourneyView> real = const [],
   }) {
     final s = ZyraDevScenario.instance;
+    final now = DateTime.now();
     if (!s.waliIsMain) return const [];
 
     final realActive = [
@@ -1435,7 +2361,7 @@ class ZyraDevScenario extends ChangeNotifier {
       WaliLinkedPerson ward,
       String status, {
       String? stage,
-      String? suspendedBy,
+      ZyraJourneyPauseState pause = ZyraJourneyPauseState.active,
     }) {
       final p = _waliPartners[partner++ % _waliPartners.length];
       return WaliJourneyView(
@@ -1454,7 +2380,7 @@ class ZyraDevScenario extends ChangeNotifier {
         counterpartGuardianSurname: p.surname,
         status: status,
         journeyStage: stage,
-        suspendedBy: suspendedBy,
+        pause: pause,
         isMock: true,
       );
     }
@@ -1465,7 +2391,23 @@ class ZyraDevScenario extends ChangeNotifier {
       if (i < realActive.length) {
         out.add(realActive[i]);
       } else if (i < wards.length) {
-        out.add(make('dev-wj$i', wards[i], 'active', stage: stageValue));
+        out.add(
+          make(
+            'dev-wj$i',
+            wards[i],
+            'active',
+            stage: stageValue,
+            pause: i == 0 && s._dashboardGuardianJourneyDecisionPending
+                ? ZyraJourneyPauseState(
+                    phase: ZyraPausePhase.pauseDecisionPending,
+                    initiatedBy: wards[i].id,
+                    requestedBy: wards[i].id,
+                    requestedAt: now,
+                    version: 1,
+                  )
+                : ZyraJourneyPauseState.active,
+          ),
+        );
       }
     }
     for (var i = 0; i < nPaused; i++) {
@@ -1479,11 +2421,13 @@ class ZyraDevScenario extends ChangeNotifier {
             wards[wardIndex],
             'active',
             stage: stageValue,
-            // Paused BY THE OTHER FAMILY. A Guardian cannot pause a
-            // Journey — suspend_journey() is a Seeker capability — so
-            // staging one paused "by you" would preview a control this
-            // role does not have.
-            suspendedBy: 'dev-other',
+            // Guardian wording is neutral: it sees the Journey state,
+            // never which Seeker opened the decision.
+            pause: const ZyraJourneyPauseState(
+              phase: ZyraPausePhase.paused,
+              initiatedBy: 'dev-seeker',
+              version: 2,
+            ),
           ),
         );
       }
@@ -1584,8 +2528,8 @@ class ZyraDevScenario extends ChangeNotifier {
 
   // set_() REMOVED 2026-08-12. It ran an arbitrary closure and notified,
   // which meant state could change without this class knowing WHICH state —
-  // the reason reset() drifted out of step with the fields (adsOnEveryProfile
-  // was resettable by nothing). Every mutation now goes through a named,
+  // the reason reset() drifted out of step with the fields. Every mutation
+  // now goes through a named,
   // guarded setter above.
 
   /// Everything simulated, back to zero, in one notify. "Zero means zero.
@@ -1600,22 +2544,30 @@ class ZyraDevScenario extends ChangeNotifier {
   /// it lives in the database, not here.
   void reset() {
     pendingPopup = null;
-    _adsOnEveryProfile = false;
     _useLiveGuardianData = false;
     _mainGuardian = false;
     _additionalGuardianCount = 0;
     _pendingInviteCount = 0;
     _receivedInviteCount = 0;
+    _guardianPreviewActiveJourneyCount = 1;
+    _connectionsPreviewIsolated = true;
     _queuedJourneys = 0;
     _activeJourneys = 0;
     _pausedJourneys = 0;
     _endedJourneys = 0;
-    _nudgedFakes.clear();
     _busyPotential = 0;
     _busyPaused = 0;
     _busyEnded = 0;
-    _pausedByYou = 0;
-    _mirroredPaused = 0;
+    _pauseScenario = ZyraPauseDevScenario.active;
+    _browseSwipeFeedbackStyle = ZyraBrowseSwipeFeedbackStyle.fullAura;
+    _introductionPreviewCount = 0;
+    _consideredPreviewCount = 0;
+    _savedPreviewCount = 0;
+    _passedPreviewCount = 0;
+    _localProfileDestinations.clear();
+    _hiddenLocalProfileIds.clear();
+    resetDashboardLab(notify: false);
+    ZyraColors.selectAppSurfaceStyle(ZyraColors.currentDefaultSurfaceStyle);
     // — Wali side — DR-ZYRA-152. Enumerated here in the same change that
     // added them, per this method's own rule. `currentWaliPage` is
     // deliberately absent for the same reason `currentPage` is: it

@@ -1,0 +1,1416 @@
+{
+  "authority_note": "Current/retired statuses come only from ui_gate_config.json; unknown widgets remain observed.",
+  "components": [
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "304fbc56bee9316a49f83e0122740907679576d902b45b37d4e263c968a2ee9b",
+      "implementation": "lib/widgets/anchored_card_overlay.dart",
+      "name": "anchored_card_overlay",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": "journey-navigation",
+      "file_sha256": "c74830c157938059f968209dbff5f0290ef2c51efe7227a4fe809693c93e5f23",
+      "implementation": "lib/widgets/fab_continue_button.dart",
+      "name": "FabContinueButton",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": "current in-flow Journey continuation control",
+      "status": "retired-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "350cd5efcaeecad02ae91470568da091c19a7a6d7da73382f8d999f690d9ab53",
+      "implementation": "lib/widgets/flexibility_choice.dart",
+      "name": "FlexibilityChoice",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/onboarding/chapter2_flow.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "556737efef8e95e2751ddf05166ca2d32de7d70f9ae9d827a77174ad23f5063b",
+      "implementation": "lib/widgets/floating_nav_bar.dart",
+      "name": "ZyraNavHighlight",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/home/home_shell.dart",
+        "lib/screens/wali/wali_home_shell.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "seeker",
+        "guardian",
+        "action-mode"
+      ],
+      "decision": null,
+      "family": "navigation",
+      "file_sha256": "556737efef8e95e2751ddf05166ca2d32de7d70f9ae9d827a77174ad23f5063b",
+      "implementation": "lib/widgets/floating_nav_bar.dart",
+      "name": "FloatingNavBar",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/home/home_shell.dart",
+        "lib/screens/wali/wali_home_shell.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "556737efef8e95e2751ddf05166ca2d32de7d70f9ae9d827a77174ad23f5063b",
+      "implementation": "lib/widgets/floating_nav_bar.dart",
+      "name": "FloatingNavConfirmationBar",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/home/home_shell.dart",
+        "lib/screens/wali/wali_home_shell.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "0e2b32df4a6d1202bec8e5794a53908d90ccaf52f11ca97e0ee00c9289f99eb4",
+      "implementation": "lib/widgets/glass_icon_button.dart",
+      "name": "GlassIconButton",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "0e2b32df4a6d1202bec8e5794a53908d90ccaf52f11ca97e0ee00c9289f99eb4",
+      "implementation": "lib/widgets/glass_icon_button.dart",
+      "name": "GlassFlashCircle",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "179c7a8a11c73a62db7334a59a931982a2049264e7916a1281a9c44f177a0cd3",
+      "implementation": "lib/widgets/help_report_sheet.dart",
+      "name": "HelpReportSheet",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": "DR-ZYRA-149",
+      "family": "navigation",
+      "file_sha256": "933cb8d33e2b449e5bdcbcfb32fc4ce3399c4398a45dc582746966ee6fa75a2d",
+      "implementation": "lib/widgets/notification_bell.dart",
+      "name": "NotificationBell",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": "Dashboard notification card and nav badge",
+      "status": "retired-candidate"
+    },
+    {
+      "approved_variants": [
+        "question",
+        "transition"
+      ],
+      "decision": null,
+      "family": "onboarding",
+      "file_sha256": "ce7d2bd5edb9f4884f64a3f6973eec7844a7a56e3f2c3ec5dd8a2c4b6dbae432",
+      "implementation": "lib/widgets/onboarding_scaffold.dart",
+      "name": "OnboardingScaffold",
+      "observed_use_count": 6,
+      "observed_use_files": [
+        "lib/screens/onboarding/bio_onboarding_flow.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/onboarding/signup_membership_choice_screen.dart",
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "48091ba07a6dc6e00fc76b324ba4512734999add432fef5c6e06947c3d3b8614",
+      "implementation": "lib/widgets/onboarding_top_bar.dart",
+      "name": "OnboardingTopBar",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/widgets/onboarding_scaffold.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "60b40d2cc46479c4da41505bf53ed1b5ce138befdd2bb13e1c6742f1beb21b73",
+      "implementation": "lib/widgets/privacy_indicator.dart",
+      "name": "PrivacyIndicator",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/widgets/onboarding_scaffold.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "2760af8a9c884c08c748187e947e8b34e25a3403bb6cf74f6568e07d48756106",
+      "implementation": "lib/widgets/report_profile_sheet.dart",
+      "name": "report_profile_sheet",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "befa5872a9740793efe32733e5500ae6fa31df74074eb76d6713d83799a472b6",
+      "implementation": "lib/widgets/searchable_list_picker.dart",
+      "name": "searchable_list_picker",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "6b43be73a1b75a08a5a5e27bf3bf3eefb7af4cb7bcebdc67e0e8f690a3e0a377",
+      "implementation": "lib/widgets/zyra_account_switch_sheet.dart",
+      "name": "ZyraAccountSwitchScreen",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/profile/profile_screen.dart",
+        "lib/screens/wali/wali_profile_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "6b43be73a1b75a08a5a5e27bf3bf3eefb7af4cb7bcebdc67e0e8f690a3e0a377",
+      "implementation": "lib/widgets/zyra_account_switch_sheet.dart",
+      "name": "ZyraAccountSwitchButton",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/profile/profile_screen.dart",
+        "lib/screens/wali/wali_profile_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "a256c3ed593d4689ac23e0e5ca17d61f47086410ae96a786ccaf3b32dd8ad158",
+      "implementation": "lib/widgets/zyra_app_lock_gate.dart",
+      "name": "ZyraAppLockGate",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/main.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "notification-permission",
+        "upgrade"
+      ],
+      "decision": null,
+      "family": "promotion",
+      "file_sha256": "e02c0922ce8ebdfc56f421e7443d13a0deda385886c851ae2756b4e129338d4e",
+      "implementation": "lib/widgets/zyra_bottom_promotion.dart",
+      "name": "ZyraBottomPromotion",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/home/home_shell.dart",
+        "lib/screens/wali/wali_home_shell.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "04d2506583accf1688927ac1146142b35b98fca52fb728bf7874f34f0a221177",
+      "implementation": "lib/widgets/zyra_comet_rule.dart",
+      "name": "ZyraCometRule",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/widgets/zyra_loading.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "f561464a297faf14d83f485c0bef26c72b445d1e2e0203082bcf695298fb5294",
+      "implementation": "lib/widgets/zyra_dashboard_experience.dart",
+      "name": "ZyraDashboardExperience",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "f561464a297faf14d83f485c0bef26c72b445d1e2e0203082bcf695298fb5294",
+      "implementation": "lib/widgets/zyra_dashboard_experience.dart",
+      "name": "ZyraDashboardLearningPreviewCard",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "49bda76cb827e3ae40d990d4af0689706ee771b3904c4b7138b6288f3b3149ed",
+      "implementation": "lib/widgets/zyra_fade_edges.dart",
+      "name": "ZyraFadeEdges",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/wali/accept_guardian_invite_screen.dart",
+        "lib/screens/wali/guardian_detail_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "5a50e7d01379481b62c5022a6875d6a32dbabd6c880a7411c1e714c5adeec35a",
+      "implementation": "lib/widgets/zyra_family_pricing_card.dart",
+      "name": "ZyraFamilyPricingCard",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/subscription/upgrade_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "network",
+        "service",
+        "session"
+      ],
+      "decision": null,
+      "family": "state",
+      "file_sha256": "8f15c0fab4d1e5ca100a039fb449951990f37fa514204d180059beb796474619",
+      "implementation": "lib/widgets/zyra_full_screen_error.dart",
+      "name": "ZyraFullScreenError",
+      "observed_use_count": 3,
+      "observed_use_files": [
+        "lib/dev/dev_scenario_panel_v2.dart",
+        "lib/main.dart",
+        "lib/screens/auth_gate.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "c4448739dafcaa2d0b2fb83ece3ad8d4bff04e414fb4d42537b520421dd2b611",
+      "implementation": "lib/widgets/zyra_glass_dialog.dart",
+      "name": "ZyraGlassCard",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/browse/browse_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "4f6b78319aeccb31937258de036e7170722aa49f770dd11002b04c5e3aa682b9",
+      "implementation": "lib/widgets/zyra_gold_action_pill.dart",
+      "name": "ZyraGoldActionPill",
+      "observed_use_count": 4,
+      "observed_use_files": [
+        "lib/screens/subscription/profile_unlock_screen.dart",
+        "lib/widgets/zyra_intelligence_card.dart",
+        "lib/widgets/zyra_quiet_dashboard.dart",
+        "lib/widgets/zyra_resolved_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "347388aa936c234301e7bf35466aa8168912dc70d3f0c2de76b8e425264e88a7",
+      "implementation": "lib/widgets/zyra_guardian_capacity_notice.dart",
+      "name": "zyra_guardian_capacity_notice",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "aa3122b3ee865583588d4f3e1c4abbaddcdc60f02e2307e8f50e32ce99bdb7e8",
+      "implementation": "lib/widgets/zyra_guardian_dashboard_profile_card.dart",
+      "name": "GuardianDashboardProfileCard",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/wali/wali_dashboard_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "6fe4a0ffac1cfb685927ec3c2722672e76e0f90fd244dbbdc8192e3e00052ed6",
+      "implementation": "lib/widgets/zyra_guardian_invitation_dashboard.dart",
+      "name": "ZyraGuardianInvitationDashboard",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/wali/seeker_guardian_designs.dart",
+        "lib/widgets/zyra_dashboard_experience.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "278378c1d6ce99e02a4d85e4ba25df38a26771a065745b626f3257782375b72e",
+      "implementation": "lib/widgets/zyra_intelligence_card.dart",
+      "name": "ZyraIntelligenceCard",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/journey/journey_flow_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "278378c1d6ce99e02a4d85e4ba25df38a26771a065745b626f3257782375b72e",
+      "implementation": "lib/widgets/zyra_intelligence_card.dart",
+      "name": "ZyraIntelligenceInvitation",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/journey/journey_flow_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "c59f2b8443ef175a3229c0d5b10414d26b0c329cfb3aab91671af5032cbe680b",
+      "implementation": "lib/widgets/zyra_keyboard_dismiss_scope.dart",
+      "name": "ZyraKeyboardDismissScope",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/main.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "inline",
+        "full-screen"
+      ],
+      "decision": null,
+      "family": "state",
+      "file_sha256": "f067adad9d783ce8f2d4446a668d2c5086f3c25fb74689d1e0ce6c81c2e41e42",
+      "implementation": "lib/widgets/zyra_loading.dart",
+      "name": "ZyraLoading",
+      "observed_use_count": 28,
+      "observed_use_files": [
+        "lib/dev/journey_experience_lab.dart",
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/matches/journey_timeline_screen.dart",
+        "lib/screens/notifications/notifications_screen.dart",
+        "lib/screens/onboarding/profile_ready_screen.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/edit_profile_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/profile/photo_crop_review_screen.dart",
+        "lib/screens/settings/account_advanced_screen.dart",
+        "lib/screens/settings/hidden_profiles_screen.dart",
+        "lib/screens/settings/notification_settings_screen.dart",
+        "lib/screens/settings/privacy_settings_screen.dart",
+        "lib/screens/settings/safety_case_status_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart",
+        "lib/screens/wali/seeker_wali_tab.dart",
+        "lib/screens/wali/wali_dashboard_screen.dart",
+        "lib/screens/wali/wali_journey_detail_screen.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/widgets/zyra_my_zyra_design_kit.dart",
+        "lib/widgets/zyra_profile_image.dart",
+        "lib/widgets/zyra_supportive_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "afff4bff1c1d0e915bc56c5b480f9aca8b61601be14814f741b25154a28c42d9",
+      "implementation": "lib/widgets/zyra_locked_feature_upgrade.dart",
+      "name": "zyra_locked_feature_upgrade",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "a742c6fff337720b20b204454c514060f9176d7ebac0b48e1240f42692f6efde",
+      "implementation": "lib/widgets/zyra_meet_and_pass_rule.dart",
+      "name": "ZyraMeetAndPassRule",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/widgets/zyra_loading.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "a68a58a05e0292b7df36594bec038a41c8f8f083edf2cd06c749e27357588a3f",
+      "implementation": "lib/widgets/zyra_membership_history_lock.dart",
+      "name": "ZyraMembershipHistoryLock",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/connections/connections_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "d45930b093777cbb71c24654d7c48e9879e7342c4abb32fd74a5b15b636d57e5",
+      "implementation": "lib/widgets/zyra_message_receipt.dart",
+      "name": "ZyraMessageReceipt",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "d45930b093777cbb71c24654d7c48e9879e7342c4abb32fd74a5b15b636d57e5",
+      "implementation": "lib/widgets/zyra_message_receipt.dart",
+      "name": "ZyraUnreadMessagesDivider",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "dbbb5990a6f1a60ba862d73e1264eff6c9426cabd1cb9da28903eed00598d8a3",
+      "implementation": "lib/widgets/zyra_moment.dart",
+      "name": "ZyraMomentScreen",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/browse/match_notification_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "dbbb5990a6f1a60ba862d73e1264eff6c9426cabd1cb9da28903eed00598d8a3",
+      "implementation": "lib/widgets/zyra_moment.dart",
+      "name": "ZyraStageBeat",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/browse/match_notification_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "b0ef8735fb38a0e5cbb8fa56a569c145a65e8e3e0c4c0ac3294b853356f598b0",
+      "implementation": "lib/widgets/zyra_my_zyra_design_kit.dart",
+      "name": "zyra_my_zyra_design_kit",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "e43c2390ee75f01296d28a12789abf584d33ca422d6576f9b59f33fdb879c629",
+      "implementation": "lib/widgets/zyra_onboarding_account_exit.dart",
+      "name": "ZyraOnboardingAccountExit",
+      "observed_use_count": 4,
+      "observed_use_files": [
+        "lib/screens/auth/role_selection_screen.dart",
+        "lib/screens/onboarding/account_path_overview_screen.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/widgets/onboarding_scaffold.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "254240881bfe807f3664944d3ab08410f60b1dcfce104f67d52f9af34c74f3bc",
+      "implementation": "lib/widgets/zyra_onboarding_continue_action.dart",
+      "name": "ZyraOnboardingArrowAction",
+      "observed_use_count": 10,
+      "observed_use_files": [
+        "lib/dev/dev_onboarding_lab.dart",
+        "lib/dev/dev_onboarding_opening.dart",
+        "lib/screens/auth/role_selection_screen.dart",
+        "lib/screens/onboarding/account_path_overview_screen.dart",
+        "lib/screens/onboarding/category_summary_screen.dart",
+        "lib/screens/onboarding/compatibility_category_intro_screen.dart",
+        "lib/screens/onboarding/identity_verification_screen.dart",
+        "lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+        "lib/screens/onboarding/transition_screen.dart",
+        "lib/widgets/onboarding_scaffold.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "51ea1cb85ec6610209c01ed5917d621e02c085c8dcbf8f1f71976b18712edc89",
+      "implementation": "lib/widgets/zyra_onboarding_direction_style.dart",
+      "name": "OnboardingPreviewAccent",
+      "observed_use_count": 9,
+      "observed_use_files": [
+        "lib/screens/auth/role_selection_screen.dart",
+        "lib/screens/onboarding/account_path_overview_screen.dart",
+        "lib/screens/onboarding/identity_verification_screen.dart",
+        "lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+        "lib/screens/onboarding/profile_ready_screen.dart",
+        "lib/screens/onboarding/transition_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/widgets/onboarding_scaffold.dart",
+        "lib/widgets/onboarding_top_bar.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "51ea1cb85ec6610209c01ed5917d621e02c085c8dcbf8f1f71976b18712edc89",
+      "implementation": "lib/widgets/zyra_onboarding_direction_style.dart",
+      "name": "OnboardingPreviewProgress",
+      "observed_use_count": 9,
+      "observed_use_files": [
+        "lib/screens/auth/role_selection_screen.dart",
+        "lib/screens/onboarding/account_path_overview_screen.dart",
+        "lib/screens/onboarding/identity_verification_screen.dart",
+        "lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+        "lib/screens/onboarding/profile_ready_screen.dart",
+        "lib/screens/onboarding/transition_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/widgets/onboarding_scaffold.dart",
+        "lib/widgets/onboarding_top_bar.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "51ea1cb85ec6610209c01ed5917d621e02c085c8dcbf8f1f71976b18712edc89",
+      "implementation": "lib/widgets/zyra_onboarding_direction_style.dart",
+      "name": "OnboardingStageProgress",
+      "observed_use_count": 9,
+      "observed_use_files": [
+        "lib/screens/auth/role_selection_screen.dart",
+        "lib/screens/onboarding/account_path_overview_screen.dart",
+        "lib/screens/onboarding/identity_verification_screen.dart",
+        "lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+        "lib/screens/onboarding/profile_ready_screen.dart",
+        "lib/screens/onboarding/transition_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/widgets/onboarding_scaffold.dart",
+        "lib/widgets/onboarding_top_bar.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "475ba462e3c45ac89f7349bf205de7fa6a232ade4f2dabed8d484178fb3d399e",
+      "implementation": "lib/widgets/zyra_onboarding_edge_swipe.dart",
+      "name": "ZyraOnboardingEdgeSwipe",
+      "observed_use_count": 4,
+      "observed_use_files": [
+        "lib/dev/dev_onboarding_lab.dart",
+        "lib/dev/dev_onboarding_opening.dart",
+        "lib/screens/auth/role_selection_screen.dart",
+        "lib/screens/onboarding/onboarding_stage_intro_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "475ba462e3c45ac89f7349bf205de7fa6a232ade4f2dabed8d484178fb3d399e",
+      "implementation": "lib/widgets/zyra_onboarding_edge_swipe.dart",
+      "name": "ZyraOnboardingHorizontalSwipe",
+      "observed_use_count": 4,
+      "observed_use_files": [
+        "lib/dev/dev_onboarding_lab.dart",
+        "lib/dev/dev_onboarding_opening.dart",
+        "lib/screens/auth/role_selection_screen.dart",
+        "lib/screens/onboarding/onboarding_stage_intro_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "e2353391dd02460a08187cf21feec17aae37f9572daeff28bbe9454ebb395777",
+      "implementation": "lib/widgets/zyra_onboarding_name_field.dart",
+      "name": "ZyraOnboardingNameField",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "213ec7bbf9e8bfbb6cd4e02beed5f15bfa2e6fb4d2861d5a054af8f33aad63e5",
+      "implementation": "lib/widgets/zyra_onboarding_study.dart",
+      "name": "ZyraOnboardingStudy",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/dev/dev_onboarding_lab.dart",
+        "lib/dev/dev_onboarding_opening.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "213ec7bbf9e8bfbb6cd4e02beed5f15bfa2e6fb4d2861d5a054af8f33aad63e5",
+      "implementation": "lib/widgets/zyra_onboarding_study.dart",
+      "name": "ZyraOnboardingStoryArtwork",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/dev/dev_onboarding_lab.dart",
+        "lib/dev/dev_onboarding_opening.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "9bcff48a10a81d960d4552b128305792ad1c3fab9fd7a038c02c6de64edb9354",
+      "implementation": "lib/widgets/zyra_one_profile_avatar.dart",
+      "name": "ZyraOneProfileAvatar",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/profile/profile_screen.dart",
+        "lib/screens/wali/wali_profile_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "9b07642d2728b21a8074a0d76eee4076627ddcb886da3f57a009e552e8c34650",
+      "implementation": "lib/widgets/zyra_paused_limit_refusal.dart",
+      "name": "zyra_paused_limit_refusal",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [
+        "network",
+        "file",
+        "fallback"
+      ],
+      "decision": null,
+      "family": "profile",
+      "file_sha256": "41f12c35b74432db75c309c5fd179ffb1f1224103a6ed45b5a3edb712efabc53",
+      "implementation": "lib/widgets/zyra_profile_image.dart",
+      "name": "ZyraProfileImage",
+      "observed_use_count": 18,
+      "observed_use_files": [
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/dev/moderation_review_queue_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/profile/avatar_adjust_screen.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/profile/profile_screen.dart",
+        "lib/screens/profile/seeker_profile_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/widgets/zyra_guardian_dashboard_profile_card.dart",
+        "lib/widgets/zyra_moment.dart",
+        "lib/widgets/zyra_ward_card.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "41f12c35b74432db75c309c5fd179ffb1f1224103a6ed45b5a3edb712efabc53",
+      "implementation": "lib/widgets/zyra_profile_image.dart",
+      "name": "ZyraAvatarImage",
+      "observed_use_count": 18,
+      "observed_use_files": [
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/dev/moderation_review_queue_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/profile/avatar_adjust_screen.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/profile/profile_screen.dart",
+        "lib/screens/profile/seeker_profile_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/widgets/zyra_guardian_dashboard_profile_card.dart",
+        "lib/widgets/zyra_moment.dart",
+        "lib/widgets/zyra_ward_card.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "594f1266725139acc72a32ff318ff24cbc9e1eb55f34d6ceb4b0351473a2b87f",
+      "implementation": "lib/widgets/zyra_profile_membership_row.dart",
+      "name": "ZyraProfileMembershipRow",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/profile/profile_screen.dart",
+        "lib/screens/wali/wali_profile_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "compact",
+        "full"
+      ],
+      "decision": null,
+      "family": "profile",
+      "file_sha256": "742a41bd0be93a3382835a6c5b32c8bc64c52cccbfd6e9ad24a51166bae896a6",
+      "implementation": "lib/widgets/zyra_profile_name_block.dart",
+      "name": "ZyraProfileNameBlock",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/profile/seeker_profile_screen.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "beacd88f55f8a31e07806c5b8be6f5fbc42a8bfc72db93328d32976f3fd1a784",
+      "implementation": "lib/widgets/zyra_quiet_dashboard.dart",
+      "name": "ZyraQuietDashboard",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/home/seeker_dashboard_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "9d02ac301fc1d9588c15385ab57636e3001c103e060f4b8941a172b024b8ecdc",
+      "implementation": "lib/widgets/zyra_resolved_dashboard.dart",
+      "name": "ZyraResolvedDashboard",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "81226101fe8f65b20c0e0ca856d6da49146783b499e5a9227365debd70bc39bd",
+      "implementation": "lib/widgets/zyra_scrollable_seeker_selector.dart",
+      "name": "ZyraScrollableSeekerSelector",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/wali/wali_dashboard_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "settled",
+        "dragging",
+        "unseen-dot"
+      ],
+      "decision": null,
+      "family": "selection",
+      "file_sha256": "9edf32b596b39ab82f312501760a5481ee5ecb4518faba9e3756bb2dc3cdb1fa",
+      "implementation": "lib/widgets/zyra_segmented_toggle.dart",
+      "name": "ZyraSegmentedToggle",
+      "observed_use_count": 8,
+      "observed_use_files": [
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/widgets/zyra_dashboard_experience.dart",
+        "lib/widgets/zyra_quiet_dashboard.dart",
+        "lib/widgets/zyra_resolved_dashboard.dart",
+        "lib/widgets/zyra_supportive_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "7c79d08b417b249f73f5619b9ab37ed6530af78cda9ce9198105517a73002f86",
+      "implementation": "lib/widgets/zyra_splash_artwork.dart",
+      "name": "ZyraSplashStudy",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/dev/dev_splash_directions.dart",
+        "lib/screens/splash_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "7c79d08b417b249f73f5619b9ab37ed6530af78cda9ce9198105517a73002f86",
+      "implementation": "lib/widgets/zyra_splash_artwork.dart",
+      "name": "ZyraSplashArtworkFrame",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/dev/dev_splash_directions.dart",
+        "lib/screens/splash_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "ec9b54df89986c1fe83cddd70b3608145a038c915082168eb51a16de0e7c1c3f",
+      "implementation": "lib/widgets/zyra_splash_motion.dart",
+      "name": "ZyraSplashBloom",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/splash_screen.dart",
+        "lib/widgets/zyra_splash_artwork.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "ec9b54df89986c1fe83cddd70b3608145a038c915082168eb51a16de0e7c1c3f",
+      "implementation": "lib/widgets/zyra_splash_motion.dart",
+      "name": "ZyraSplashDrawRule",
+      "observed_use_count": 2,
+      "observed_use_files": [
+        "lib/screens/splash_screen.dart",
+        "lib/widgets/zyra_splash_artwork.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "742ae5341d95de75c5f4bf192a0911888158f5538277a2733535c93443be82cd",
+      "implementation": "lib/widgets/zyra_state_widgets.dart",
+      "name": "ZyraFieldError",
+      "observed_use_count": 32,
+      "observed_use_files": [
+        "lib/screens/auth/email_recovery_screen.dart",
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/browse/find_by_zyra_code_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/matches/journey_timeline_screen.dart",
+        "lib/screens/notifications/notifications_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/settings/hidden_profiles_screen.dart",
+        "lib/screens/settings/notification_settings_screen.dart",
+        "lib/screens/settings/safety_case_status_screen.dart",
+        "lib/screens/settings/sign_in_security_screen.dart",
+        "lib/screens/wali/accept_wali_invite_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart",
+        "lib/screens/wali/guardian_detail_screen.dart",
+        "lib/screens/wali/seeker_guardian_designs.dart",
+        "lib/screens/wali/wali_dashboard_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_journey_detail_screen.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/screens/welcome_screen.dart",
+        "lib/widgets/searchable_list_picker.dart",
+        "lib/widgets/zyra_guardian_invitation_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "742ae5341d95de75c5f4bf192a0911888158f5538277a2733535c93443be82cd",
+      "implementation": "lib/widgets/zyra_state_widgets.dart",
+      "name": "ZyraErrorBanner",
+      "observed_use_count": 32,
+      "observed_use_files": [
+        "lib/screens/auth/email_recovery_screen.dart",
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/browse/find_by_zyra_code_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/matches/journey_timeline_screen.dart",
+        "lib/screens/notifications/notifications_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/settings/hidden_profiles_screen.dart",
+        "lib/screens/settings/notification_settings_screen.dart",
+        "lib/screens/settings/safety_case_status_screen.dart",
+        "lib/screens/settings/sign_in_security_screen.dart",
+        "lib/screens/wali/accept_wali_invite_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart",
+        "lib/screens/wali/guardian_detail_screen.dart",
+        "lib/screens/wali/seeker_guardian_designs.dart",
+        "lib/screens/wali/wali_dashboard_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_journey_detail_screen.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/screens/welcome_screen.dart",
+        "lib/widgets/searchable_list_picker.dart",
+        "lib/widgets/zyra_guardian_invitation_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "message",
+        "title-message",
+        "cta"
+      ],
+      "decision": null,
+      "family": "state",
+      "file_sha256": "742ae5341d95de75c5f4bf192a0911888158f5538277a2733535c93443be82cd",
+      "implementation": "lib/widgets/zyra_state_widgets.dart",
+      "name": "ZyraEmptyState",
+      "observed_use_count": 32,
+      "observed_use_files": [
+        "lib/screens/auth/email_recovery_screen.dart",
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/browse/find_by_zyra_code_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/matches/journey_timeline_screen.dart",
+        "lib/screens/notifications/notifications_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/settings/hidden_profiles_screen.dart",
+        "lib/screens/settings/notification_settings_screen.dart",
+        "lib/screens/settings/safety_case_status_screen.dart",
+        "lib/screens/settings/sign_in_security_screen.dart",
+        "lib/screens/wali/accept_wali_invite_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart",
+        "lib/screens/wali/guardian_detail_screen.dart",
+        "lib/screens/wali/seeker_guardian_designs.dart",
+        "lib/screens/wali/wali_dashboard_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_journey_detail_screen.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/screens/welcome_screen.dart",
+        "lib/widgets/searchable_list_picker.dart",
+        "lib/widgets/zyra_guardian_invitation_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "742ae5341d95de75c5f4bf192a0911888158f5538277a2733535c93443be82cd",
+      "implementation": "lib/widgets/zyra_state_widgets.dart",
+      "name": "ZyraUnknownErrorState",
+      "observed_use_count": 32,
+      "observed_use_files": [
+        "lib/screens/auth/email_recovery_screen.dart",
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/browse/find_by_zyra_code_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/matches/journey_timeline_screen.dart",
+        "lib/screens/notifications/notifications_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/settings/hidden_profiles_screen.dart",
+        "lib/screens/settings/notification_settings_screen.dart",
+        "lib/screens/settings/safety_case_status_screen.dart",
+        "lib/screens/settings/sign_in_security_screen.dart",
+        "lib/screens/wali/accept_wali_invite_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart",
+        "lib/screens/wali/guardian_detail_screen.dart",
+        "lib/screens/wali/seeker_guardian_designs.dart",
+        "lib/screens/wali/wali_dashboard_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_journey_detail_screen.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/screens/welcome_screen.dart",
+        "lib/widgets/searchable_list_picker.dart",
+        "lib/widgets/zyra_guardian_invitation_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "742ae5341d95de75c5f4bf192a0911888158f5538277a2733535c93443be82cd",
+      "implementation": "lib/widgets/zyra_state_widgets.dart",
+      "name": "ZyraDisabledHint",
+      "observed_use_count": 32,
+      "observed_use_files": [
+        "lib/screens/auth/email_recovery_screen.dart",
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/browse/find_by_zyra_code_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/matches/journey_timeline_screen.dart",
+        "lib/screens/notifications/notifications_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/settings/hidden_profiles_screen.dart",
+        "lib/screens/settings/notification_settings_screen.dart",
+        "lib/screens/settings/safety_case_status_screen.dart",
+        "lib/screens/settings/sign_in_security_screen.dart",
+        "lib/screens/wali/accept_wali_invite_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart",
+        "lib/screens/wali/guardian_detail_screen.dart",
+        "lib/screens/wali/seeker_guardian_designs.dart",
+        "lib/screens/wali/wali_dashboard_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_journey_detail_screen.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/screens/welcome_screen.dart",
+        "lib/widgets/searchable_list_picker.dart",
+        "lib/widgets/zyra_guardian_invitation_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "742ae5341d95de75c5f4bf192a0911888158f5538277a2733535c93443be82cd",
+      "implementation": "lib/widgets/zyra_state_widgets.dart",
+      "name": "ZyraAddCircle",
+      "observed_use_count": 32,
+      "observed_use_files": [
+        "lib/screens/auth/email_recovery_screen.dart",
+        "lib/screens/browse/browse_screen.dart",
+        "lib/screens/browse/find_by_zyra_code_screen.dart",
+        "lib/screens/chat/chat_screen.dart",
+        "lib/screens/connections/connections_screen.dart",
+        "lib/screens/journey/journey_flow_screen.dart",
+        "lib/screens/matches/journey_timeline_screen.dart",
+        "lib/screens/notifications/notifications_screen.dart",
+        "lib/screens/onboarding/chapter2_flow.dart",
+        "lib/screens/onboarding/onboarding_flow.dart",
+        "lib/screens/onboarding/values_preferences_flow.dart",
+        "lib/screens/profile/edit_photos_screen.dart",
+        "lib/screens/profile/past_journeys_screen.dart",
+        "lib/screens/settings/hidden_profiles_screen.dart",
+        "lib/screens/settings/notification_settings_screen.dart",
+        "lib/screens/settings/safety_case_status_screen.dart",
+        "lib/screens/settings/sign_in_security_screen.dart",
+        "lib/screens/wali/accept_wali_invite_screen.dart",
+        "lib/screens/wali/family_messaging_screens.dart",
+        "lib/screens/wali/guardian_detail_screen.dart",
+        "lib/screens/wali/seeker_guardian_designs.dart",
+        "lib/screens/wali/wali_dashboard_screen.dart",
+        "lib/screens/wali/wali_gn_shared.dart",
+        "lib/screens/wali/wali_journey_detail_screen.dart",
+        "lib/screens/wali/wali_network_screen.dart",
+        "lib/screens/wali/wali_onboarding_flow.dart",
+        "lib/screens/wali/wali_seeker_workspace_screen.dart",
+        "lib/screens/wali/wali_seekers_screen.dart",
+        "lib/screens/wali/zyra_code_screen.dart",
+        "lib/screens/welcome_screen.dart",
+        "lib/widgets/searchable_list_picker.dart",
+        "lib/widgets/zyra_guardian_invitation_dashboard.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "a9c3cc24badb246ba47fe7c7e4662f7b919fb2b1112436a64e926956b9cb8afc",
+      "implementation": "lib/widgets/zyra_supportive_dashboard.dart",
+      "name": "ZyraSupportiveDashboard",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "9511c9513e891ea9406588d72a4e19272e71a7d9efbdb1ab2e07df62338511b1",
+      "implementation": "lib/widgets/zyra_ward_card.dart",
+      "name": "ZyraWardChip",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/wali/wali_seeker_workspace_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "9511c9513e891ea9406588d72a4e19272e71a7d9efbdb1ab2e07df62338511b1",
+      "implementation": "lib/widgets/zyra_ward_card.dart",
+      "name": "ZyraStageRail",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/wali/wali_seeker_workspace_screen.dart"
+      ],
+      "replacement": null,
+      "status": "observed-active"
+    },
+    {
+      "approved_variants": [
+        "main",
+        "additional",
+        "journey"
+      ],
+      "decision": null,
+      "family": "guardian-card",
+      "file_sha256": "9511c9513e891ea9406588d72a4e19272e71a7d9efbdb1ab2e07df62338511b1",
+      "implementation": "lib/widgets/zyra_ward_card.dart",
+      "name": "ZyraWardCard",
+      "observed_use_count": 1,
+      "observed_use_files": [
+        "lib/screens/wali/wali_seeker_workspace_screen.dart"
+      ],
+      "replacement": null,
+      "status": "current"
+    },
+    {
+      "approved_variants": [],
+      "decision": null,
+      "family": null,
+      "file_sha256": "b2693d1074c11d4bb12b82a7a653d5f5ba26a501be32517f36c7b130b576078e",
+      "implementation": "lib/widgets/zyra_write_feedback.dart",
+      "name": "zyra_write_feedback",
+      "observed_use_count": 0,
+      "observed_use_files": [],
+      "replacement": null,
+      "status": "unreferenced-candidate"
+    }
+  ],
+  "duplicate_widget_names": [],
+  "generated": "2026-10-03T14:49:28.914635+00:00",
+  "programme": "OA-ZYRA-257",
+  "schema_version": 1
+}

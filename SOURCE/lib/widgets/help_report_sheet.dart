@@ -71,21 +71,19 @@ class HelpReportSheet extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
         child: Container(
           width: double.infinity,
-          // sheetGradient, NOT sheetSurface — corrected the same day
-          // stage 7 shipped (Founder, over a dark photo: "pic 2 should
-          // be purple"). The flat 88% plum compounded with the photo
-          // into a grey; the Royal→Luxury purple fade reads as ZYRA
-          // wherever the sheet rises. See sheetGradient's note in
-          // zyra_colors.dart.
+          // Uses the same opaque modal surface as every other bottom sheet,
+          // so the background beneath it cannot alter the perceived colour.
           decoration: BoxDecoration(
-            gradient: ZyraColors.sheetGradient,
+            color: ZyraColors.modalSheetSurface,
             border: Border(
-              top: BorderSide(color: Colors.white.withValues(alpha: 0.14), width: 1),
+              top: BorderSide(color: ZyraColors.ink(0.14), width: 1),
             ),
           ),
           // Clears the home indicator; the rows keep their own touch
           // padding.
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 8),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).padding.bottom + 8,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -96,7 +94,7 @@ class HelpReportSheet extends StatelessWidget {
                 height: 4,
                 margin: const EdgeInsets.only(top: 10, bottom: 8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.35),
+                  color: ZyraColors.ink(0.35),
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),
@@ -122,7 +120,7 @@ class HelpReportSheet extends StatelessWidget {
                 onTap: onReport,
               ),
               Divider(
-                color: Colors.white.withValues(alpha: 0.12),
+                color: ZyraColors.ink(0.12),
                 height: 1,
                 indent: 16,
                 endIndent: 16,
@@ -156,9 +154,12 @@ class _Row extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: Row(
             children: [
-              Icon(icon, color: Colors.white.withValues(alpha: 0.8), size: 20),
+              Icon(icon, color: ZyraColors.ink(0.8), size: 20),
               const SizedBox(width: 14),
-              Text(label, style: ZyraText.body(size: 15, color: Colors.white)),
+              Text(
+                label,
+                style: ZyraText.body(size: 15, color: ZyraColors.foreground),
+              ),
             ],
           ),
         ),

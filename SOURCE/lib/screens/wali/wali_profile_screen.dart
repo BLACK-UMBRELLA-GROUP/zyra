@@ -1,76 +1,181 @@
-// Wali Profile tab — own identity + settings. Deliberately much
-// smaller than the Seeker's ProfileScreen: per WALI ARCHITECTURE,
-// "Guardian accounts carry identity only" — there's no Browse-visible
-// profile, no connections list, no compatibility data to show here.
-//
-// 2026-07-26 (OA-ZYRA-124 per-account-type UX review, #27): four
-// parity gaps with the Seeker ProfileScreen fixed. (1) The plan badge
-// was static — Seeker's is tappable to the purchase screen, this
-// wasn't. (2) There was no "Manage Subscription" settings row at all.
-// (3+4) The "Notifications" and "Privacy" rows were `const
-// _SettingsRow(label: ...)` with no `onTap` — silently dead taps, not
-// wired to anything, which fails this project's own ERROR_AND_EMPTY_
-// STATE_STANDARD ("never feel like a bug"). Fixed honestly rather
-// than by copying the Seeker's screens verbatim: Seeker's
-// PrivacySettingsScreen ("Visible in Browse") and UpgradeScreen (sells
-// ZYRA Basic/One via AppState.plan) are both genuinely Seeker-only
-// concepts that don't apply to a Guardian account — see this file's
-// WaliNotificationSettingsScreen/_showPrivacyInfo/onNavigateToNetwork
-// below for what actually does apply.
+// Guardian Profile follows the same ownership rule as Seeker Profile:
+// identity and role-specific information live here; account controls live
+// in Settings. Guardian remains intentionally smaller because it has no
+// Browse-visible profile, photos, compatibility balance or Journey History.
 
-import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
+import '../../dev/zyra_dev_local_preview.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_app_invite.dart';
+import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_entitlement_service.dart';
+import '../../services/zyra_notification_prefs_service.dart';
 import '../../services/zyra_wali_link_service.dart';
+import '../../services/zyra_promotion_engine.dart';
+import '../../services/zyra_product_telemetry.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_account_switch_sheet.dart';
+import '../../widgets/zyra_one_profile_avatar.dart';
+import '../../widgets/zyra_profile_membership_row.dart';
 import '../onboarding/account_path_overview_screen.dart';
 import '../settings/help_support_screen.dart';
+import '../settings/personalisation_screen.dart';
+import '../settings/settings_screen.dart';
+import '../subscription/upgrade_screen.dart';
 import '../welcome_screen.dart';
-import 'link_wali_screen.dart';
-import 'wali_notification_settings_screen.dart';
-import '../../widgets/zyra_loading.dart';
 
 class WaliProfileScreen extends StatefulWidget {
-  // Jumps to the Network tab (the real Guardian+ purchase surface —
-  // wali_network_screen.dart's "Get Guardian+" button), since that's
-  // where entitlement is actually granted/purchased for a Guardian, unlike
-  // the Seeker-only UpgradeScreen. Nullable/optional so this screen
-  // still works if ever reached without a shell around it (matches
-  // BrowseScreen.onNavigateToConnections' own nullable pattern).
+  // Retained for shell compatibility. Membership opens the shared plan page.
   final VoidCallback? onNavigateToNetwork;
-  const WaliProfileScreen({super.key, this.onNavigateToNetwork});
+  final Future<Map<ZyraNotifyCategory, bool>?> Function()?
+  loadNotificationPreferences;
+  final Future<bool> Function(ZyraNotifyCategory, bool)?
+  saveNotificationPreference;
+  final Future<ZyraSourceResult<List<WaliLinkedPerson>>> Function()?
+  loadLinkedSeekers;
+
+  const WaliProfileScreen({
+    super.key,
+    this.onNavigateToNetwork,
+    this.loadNotificationPreferences,
+    this.saveNotificationPreference,
+    this.loadLinkedSeekers,
+  });
 
   @override
   State<WaliProfileScreen> createState() => _WaliProfileScreenState();
 }
 
 class _WaliProfileScreenState extends State<WaliProfileScreen> {
-  // 2026-07-26 (#19): real entitlement, not AppState.waliHasWaliOne.
-  bool _hasWaliOne = false;
+  // A failed read is not a confirmed membership loss. Keep the rendered
+  // result bound to the same account lifetime, separately from paid access.
+  ZyraSourceResult<bool>? _membershipAccess;
+  String? _membershipOwner;
+  int? _membershipGeneration;
+  final _membershipDisplay = ValueNotifier<String>('Checking…');
+  late final String? _linksOwner;
+  late final int _linksGeneration;
+  late final bool _linksPreview;
+  bool _linksLoading = true;
+  bool _linksUnavailable = false;
+
+  bool get _linksCurrent {
+    final owner = _linksOwner;
+    return owner != null &&
+        _ownerId() == owner &&
+        ZyraAccountState.isCurrent(owner, _linksGeneration);
+  }
+
+  bool get _membershipCurrent {
+    final owner = _membershipOwner;
+    final generation = _membershipGeneration;
+    return owner != null &&
+        generation != null &&
+        _ownerId() == owner &&
+        ZyraAccountState.isCurrent(owner, generation);
+  }
+
+  bool get _hasWaliOne => ZyraDeveloperAccess.isMainAppFounderPreview
+      ? AppState.instance.waliHasWaliOne
+      : _membershipCurrent &&
+            _membershipAccess?.isAvailable == true &&
+            AppState.instance.waliHasWaliOne;
+
+  String get _membershipLabel {
+    if (!ZyraDeveloperAccess.isMainAppFounderPreview) {
+      if (!_membershipCurrent || _membershipAccess?.isUnavailable == true) {
+        return 'Unavailable';
+      }
+      if (_membershipAccess == null) return 'Checking…';
+    }
+    return _hasWaliOne
+        ? 'Guardian One'
+        : (ZyraDevLocalPreview.basicMembershipPreviewLabel(guardian: true) ??
+              'No active membership');
+  }
 
   @override
   void initState() {
     super.initState();
+    _linksOwner = _ownerId();
+    _linksGeneration = ZyraAccountState.generation;
+    _linksPreview = ZyraDeveloperAccess.isMainAppFounderPreview;
     AppState.instance.addListener(_onChange);
-    ZyraWaliLinkService.fetchLinkedPeople(asWali: true).then((people) {
-      if (mounted) AppState.instance.setWaliRealLinkedSeekers(people);
-    });
-    ZyraEntitlementService.hasWaliOne().then((has) {
-      if (mounted) setState(() => _hasWaliOne = has);
-    });
+    _loadLinkedSeekers();
+    if (!ZyraDeveloperAccess.isMainAppFounderPreview) _loadMembership();
+    _membershipDisplay.value = _membershipLabel;
+  }
+
+  Future<void> _loadMembership() async {
+    _membershipOwner = _ownerId();
+    _membershipGeneration = ZyraAccountState.generation;
+    final access = await ZyraEntitlementService.resolveGuardianPaidAccess();
+    if (!mounted ||
+        !_membershipCurrent ||
+        ZyraDeveloperAccess.isMainAppFounderPreview) {
+      return;
+    }
+    setState(() => _membershipAccess = access);
+    _membershipDisplay.value = _membershipLabel;
   }
 
   @override
   void dispose() {
     AppState.instance.removeListener(_onChange);
+    _membershipDisplay.dispose();
     super.dispose();
   }
 
-  void _onChange() => setState(() {});
+  void _onChange() {
+    _membershipDisplay.value = _membershipLabel;
+    setState(() {});
+  }
+
+  String? _ownerId() {
+    try {
+      return ZyraAuth.currentUser?.id;
+    } catch (_) {
+      return null; // Local preview or widget test without a client.
+    }
+  }
+
+  Future<void> _loadLinkedSeekers() async {
+    final owner = _ownerId();
+    final generation = ZyraAccountState.generation;
+    ZyraSourceResult<List<WaliLinkedPerson>> result;
+    try {
+      result =
+          await (widget.loadLinkedSeekers?.call() ??
+              ZyraWaliLinkService.fetchLinkedPeopleResult(asWali: true));
+    } catch (_) {
+      result = const ZyraSourceResult.unavailable(
+        ZyraSourceFailure.requestFailed,
+      );
+    }
+    if (!mounted) return;
+    final sameOwner =
+        !ZyraAccountState.isSigningOut &&
+        ZyraAccountState.generation == generation &&
+        _ownerId() == owner;
+    if (sameOwner && result.isAvailable) {
+      AppState.instance.setWaliRealLinkedSeekers(result.valueOrNull!);
+    }
+    setState(() {
+      _linksLoading = false;
+      _linksUnavailable = !sameOwner || result.isUnavailable;
+    });
+  }
+
+  void _openMembership(BuildContext context) => Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) =>
+          const UpgradeScreen(telemetrySurface: ZyraTelemetrySurface.guardian),
+    ),
+  );
 
   /// CHANGED 2026-08-06. This row read `AppState.waliRelationship` — the
   /// answer given at Guardian onboarding, held in memory and never written
@@ -83,42 +188,25 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
   /// the links genuinely differ, all of them are named rather than one being
   /// picked to stand for the rest.
   String _relationshipSummary(AppState state) {
+    if (!_linksPreview && !_linksCurrent) return 'Unavailable';
     final labels = <String>{
       for (final p in state.waliRealLinkedSeekers)
         if (p.relationshipLabel != null) p.relationshipLabel!,
     };
-    if (labels.isEmpty) return '—';
+    if (labels.isEmpty) {
+      if (_linksLoading) return 'Checking…';
+      return _linksUnavailable ? 'Unavailable' : '—';
+    }
     return labels.join(', ');
   }
 
-  // 2026-07-26 (#27): the "Privacy" row was previously dead (no onTap
-  // at all). Rather than repurpose the Seeker's PrivacySettingsScreen —
-  // its only toggle is "Visible in Browse", which is a genuinely
-  // Seeker-only concept, since per WALI ARCHITECTURE a Guardian account has
-  // no Browse-visible profile at all, so there's nothing to toggle —
-  // this gives an honest explanation instead of a fake setting.
-  void _showPrivacyInfo(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: ZyraColors.luxuryDarkPurple,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Privacy', style: ZyraText.heading(size: 16)),
-        content: Text(
-          "Guardian accounts don't appear in Browse and have no discoverability "
-          "setting to control. Your identity is only ever shared with a Seeker "
-          "who has linked you as their Guardian, and with any other Guardian they've "
-          "also linked as part of the same Journey.",
-          style: ZyraText.subtext(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text('Got it', style: ZyraText.subtext(size: 13)),
-          ),
-        ],
-      ),
-    );
+  String _linkedSeekerCount(AppState state) {
+    if (!_linksPreview && !_linksCurrent) return 'Unavailable';
+    if (state.waliRealLinkedSeekers.isNotEmpty) {
+      return '${state.waliRealLinkedSeekers.length}';
+    }
+    if (_linksLoading) return 'Checking…';
+    return _linksUnavailable ? 'Unavailable' : '0';
   }
 
   Future<void> _signOut(BuildContext context) async {
@@ -135,26 +223,65 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
   /// whole shell (once the context exists) or opens its first-time setup.
   /// The latter remains preview-gated until the server migration lands.
   Future<void> _switchAccount(BuildContext context) async {
-    final selection = await showZyraAccountSwitchSheet(
+    // Revoked preview callbacks must not reopen the account picker.
+    if (!context.mounted ||
+        !ZyraDeveloperAccess.isMainAppFounderPreview ||
+        ZyraAccountState.isSigningOut ||
+        ModalRoute.of(context)?.isCurrent == false) {
+      return;
+    }
+    final owner = _ownerId();
+    final generation = ZyraAccountState.generation;
+    bool canContinue() =>
+        context.mounted &&
+        ZyraDeveloperAccess.isMainAppFounderPreview &&
+        !ZyraAccountState.isSigningOut &&
+        ZyraAccountState.generation == generation &&
+        _ownerId() == owner &&
+        ModalRoute.of(context)?.isCurrent != false;
+
+    final founderPreview = ZyraDeveloperAccess.isMainAppFounderPreview;
+    final selection = await showZyraAccountSwitchPage(
       context: context,
-      options: const [
+      options: [
         ZyraAccountSwitchOption(
           context: ZyraAccountContext.guardian,
-          title: 'Guardian',
-          subtitle: 'The people you support',
+          title: 'Guardian Account',
+          subtitle: founderPreview
+              ? ZyraDevLocalPreview.guardianMembershipLabel
+              : _membershipLabel,
           icon: Icons.shield_outlined,
           current: true,
         ),
         ZyraAccountSwitchOption(
           context: ZyraAccountContext.seeker,
-          title: 'Seeker',
-          subtitle: 'First-time Seeker setup',
-          icon: Icons.favorite_border,
-          actionLabel: 'SET UP ›',
+          title: 'Seeker Account',
+          subtitle: founderPreview
+              ? ZyraDevLocalPreview.seekerMembershipLabel
+              : 'Set up separately · identity check reused',
+          icon: Icons.person_outline,
+          actionLabel: founderPreview ? 'SWITCH ›' : 'SET UP ›',
         ),
       ],
     );
-    if (selection != ZyraAccountContext.seeker || !context.mounted) return;
+    if (!context.mounted ||
+        !canContinue() ||
+        selection != ZyraAccountContext.seeker) {
+      return;
+    }
+
+    if (founderPreview) {
+      await ZyraDevLocalPreview.switchAccountContext(
+        context,
+        toGuardian: false,
+      );
+      return;
+    }
+
+    await ZyraPromotionEngine.instance.clearForAccountSwitch();
+    if (!context.mounted || !canContinue()) return;
+    await ZyraPromotionEngine.instance.initialize();
+    if (!context.mounted || !canContinue()) return;
 
     // The client shell switch is ready, but the current database cannot yet
     // say this Guardian also has a Seeker presentation. Keep the user inside
@@ -171,64 +298,6 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
     );
   }
 
-  // #22 — same real deletion as the Seeker side (ZyraAuth.deleteAccount(),
-  // delete_own_account()). For a Wali, this also removes their
-  // wali_links rows, ending their access to any linked Seeker.
-  Future<void> _deleteAccount(BuildContext context) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: ZyraColors.luxuryDarkPurple,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Delete your account?', style: ZyraText.heading(size: 16)),
-        content: Text(
-          'This permanently deletes your profile and ends your link to any '
-          'Seeker you supervise. If you\'re a Seeker\'s only linked Guardian, they '
-          'will need to link a new one. This cannot be undone.',
-          style: ZyraText.subtext(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text('Cancel', style: ZyraText.subtext(size: 13)),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFFB33A3A),
-            ),
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text('Delete Account', style: ZyraText.button(size: 13)),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true || !context.mounted) return;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const ZyraLoading(),
-    );
-    final ok = await ZyraAuth.deleteAccount();
-    if (!context.mounted) return;
-    Navigator.of(context).pop();
-
-    if (ok) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-        (route) => false,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Couldn't delete your account — try again, or email support@zyra.app.",
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = AppState.instance;
@@ -238,7 +307,7 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
       // now reads the Guardian's own gender like every other profile-context
       // screen. Every current test Wali persona is male, so this is a
       // no-op today but is correct once a female Wali persona exists.
-      decoration: BoxDecoration(
+      decoration: ZyraAppGoldDecoration(
         gradient: ZyraColors.genderGradient(state.gender),
       ),
       child: SafeArea(
@@ -247,120 +316,112 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
           children: [
             Row(
               children: [
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
+                ZyraOneProfileAvatar(
+                  isOne: _hasWaliOne,
+                  guardian: true,
+                  child: Container(
                     color: ZyraColors.iconButtonBg,
-                  ),
-                  child: const Icon(
-                    Icons.shield_outlined,
-                    color: Colors.white38,
-                    size: 30,
+                    child: Icon(
+                      Icons.shield_outlined,
+                      color: ZyraColors.ink(0.38),
+                      size: 30,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        state.waliName ?? 'Your Profile',
-                        style: ZyraText.heading(size: 20),
-                      ),
-                      const SizedBox(height: 4),
-                      // 2026-07-26 (#27): now tappable → Network tab, the
-                      // real Wali One purchase surface. Was previously a
-                      // static, non-tappable badge (parity gap vs. the
-                      // Seeker ProfileScreen's own tappable plan badge).
-                      GestureDetector(
-                        onTap: widget.onNavigateToNetwork,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 3,
-                          ),
-                          decoration: BoxDecoration(
-                            color: ZyraColors.accentBg,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: ZyraColors.accentBorder,
-                              width: 0.5,
-                            ),
-                          ),
-                          child: Text(
-                            _hasWaliOne ? 'Guardian+' : 'Standard Guardian',
-                            style: ZyraText.subtext(
-                              size: 11,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    state.waliName ?? 'Your Profile',
+                    style: ZyraText.heading(size: 20),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if (ZyraDeveloperAccess.isMainAppFounderPreview) ...[
+                  SizedBox(width: 10),
+                  ZyraAccountSwitchButton(
+                    onPressed: () => _switchAccount(context),
+                  ),
+                ],
               ],
             ),
+            // Follow the Seeker Profile hierarchy while keeping Guardian-only
+            // content honest: Guardian has no Browse profile/photo gallery,
+            // compatibility balance or Journey History section.
             const SizedBox(height: 28),
             Text(
-              'ABOUT YOU',
-              style: ZyraText.chapterLabel(color: Colors.white54),
+              'MEMBERSHIP',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
             ),
-            const SizedBox(height: 10),
-            _InfoRow(label: 'Relationship', value: _relationshipSummary(state)),
-            _InfoRow(
-              label: 'Linked Seekers',
-              value: '${state.waliRealLinkedSeekers.length}',
+            ZyraProfileMembershipRow(
+              key: const ValueKey('guardian-profile-membership'),
+              value: _membershipLabel,
+              isOne: _hasWaliOne,
+              onTap: () => _openMembership(context),
             ),
             const SizedBox(height: 24),
             Text(
-              'SETTINGS',
-              style: ZyraText.chapterLabel(color: Colors.white54),
+              'ABOUT ME',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
             ),
             const SizedBox(height: 10),
+            _InfoRow(label: 'Relationship', value: _relationshipSummary(state)),
+            _InfoRow(label: 'Linked Seekers', value: _linkedSeekerCount(state)),
+            const SizedBox(height: 24),
+            Text(
+              'SAFETY & SHARING',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            ),
+            const SizedBox(height: 6),
             _SettingsRow(
-              label: 'Notifications',
+              label: 'Safety & advice',
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => const WaliNotificationSettingsScreen(),
+                  builder: (_) => const HelpSupportScreen(
+                    telemetrySurface: ZyraTelemetrySurface.guardian,
+                    initialQuery: 'Safety and reporting',
+                  ),
                 ),
               ),
             ),
-            _SettingsRow(
-              label: 'Privacy',
-              onTap: () => _showPrivacyInfo(context),
+            Builder(
+              builder: (inviteContext) => _SettingsRow(
+                label: 'Invite someone to ZYRA',
+                onTap: () => ZyraAppInvite.share(inviteContext),
+              ),
             ),
-            _SettingsRow(
-              label: 'Manage Subscription',
-              onTap: widget.onNavigateToNetwork,
+            const SizedBox(height: 24),
+            Text(
+              'PERSONALISATION',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
             ),
+            const SizedBox(height: 6),
             _SettingsRow(
-              label: 'Link a Seeker',
+              label: 'Appearance & haptics',
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => const LinkWaliScreen(asWali: true),
+                  builder: (_) => const PersonalisationScreen(),
                 ),
               ),
             ),
+            const SizedBox(height: 14),
             _SettingsRow(
-              label: 'Help & Support',
+              label: 'Settings',
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const HelpSupportScreen()),
+                MaterialPageRoute(
+                  builder: (_) => SettingsScreen(
+                    guardian: true,
+                    guardianHasOne: _hasWaliOne,
+                    guardianMembershipDisplay: _membershipDisplay,
+                    loadNotificationPreferences:
+                        widget.loadNotificationPreferences,
+                    saveNotificationPreference:
+                        widget.saveNotificationPreference,
+                  ),
+                ),
               ),
             ),
-            if (!kReleaseMode)
-              _SettingsRow(
-                label: 'Switch Account',
-                onTap: () => _switchAccount(context),
-              ),
             _SettingsRow(label: 'Sign Out', onTap: () => _signOut(context)),
-            _SettingsRow(
-              label: 'Delete Account',
-              destructive: true,
-              onTap: () => _deleteAccount(context),
-            ),
           ],
         ),
       ),
@@ -379,8 +440,19 @@ class _InfoRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Expanded(child: Text(label, style: ZyraText.subtext(size: 13))),
-          Text(value, style: ZyraText.body(size: 13, color: Colors.white)),
+          Expanded(
+            flex: 2,
+            child: Text(label, style: ZyraText.subtext(size: 13)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: ZyraText.body(size: 13, color: ZyraColors.foreground),
+            ),
+          ),
         ],
       ),
     );
@@ -390,12 +462,7 @@ class _InfoRow extends StatelessWidget {
 class _SettingsRow extends StatelessWidget {
   final String label;
   final VoidCallback? onTap;
-  final bool destructive;
-  const _SettingsRow({
-    required this.label,
-    this.onTap,
-    this.destructive = false,
-  });
+  const _SettingsRow({required this.label, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -408,17 +475,10 @@ class _SettingsRow extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: ZyraText.body(
-                  size: 13.5,
-                  color: destructive ? ZyraColors.destructive : Colors.white,
-                ),
+                style: ZyraText.body(size: 13.5, color: Colors.white),
               ),
             ),
-            Icon(
-              Icons.chevron_right,
-              color: destructive ? ZyraColors.destructive : Colors.white24,
-              size: 16,
-            ),
+            Icon(Icons.chevron_right, color: ZyraColors.ink(0.24), size: 16),
           ],
         ),
       ),

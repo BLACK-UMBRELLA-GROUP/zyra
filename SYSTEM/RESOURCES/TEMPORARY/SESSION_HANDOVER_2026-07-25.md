@@ -71,7 +71,7 @@ folder — an independent git repo.
 - **Storage:** `profile-photos` bucket, PRIVATE. All display URLs are
   7-day signed URLs. Storage path convention: `{user_id}/{n}.{ext}`.
 
-### Dev/test accounts (password `ZyraTest!2026`)
+### Dev/test accounts (password `[REDACTED — legacy test credential]`)
 
 | Email | Name | Role | Plan |
 |---|---|---|---|
@@ -87,7 +87,7 @@ Switch between these via the in-app **Developer Access** screen
 inside the app). 4 Guardian presets (male/female × Basic/One), 4 Seeker
 presets (male/female × Basic/One).
 
-### Fake Browse-candidate profiles (password `ZyraFake!2026`)
+### Fake Browse-candidate profiles (password `[REDACTED — legacy test credential]`)
 
 20 seeded, fully photographed Seeker profiles exist purely to populate
 Browse/Matches with realistic candidates when testing as any of the

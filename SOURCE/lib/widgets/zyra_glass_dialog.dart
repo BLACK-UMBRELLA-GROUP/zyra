@@ -1,4 +1,7 @@
-// ZYRA's centred glass dialog — the one modal shape the app uses.
+// ZYRA's shared centred dialog. The historical Glass API names stay stable
+// so all existing notices and confirmations use the same current chrome.
+// Founder full-app consistency review, 2026-10-03: opaque plum like the
+// approved sheets/toasts, a quiet gold edge, and scroll-safe large text.
 //
 // EXTRACTED 2026-08-04. The exact same fourteen lines of chrome appeared in
 // browse_screen twice (daily limit, save/consider cap) and was about to be
@@ -24,7 +27,7 @@
 // paragraph first.
 // ======================================================================
 //
-// Values are the ratified ones, unchanged from the modals this replaces:
+// Historical 2026-08 glass values (superseded by the current opaque chrome):
 //   barrier   black 55%
 //   inset     36pt horizontal
 //   radius    24
@@ -32,13 +35,12 @@
 //   fill      white 14%
 //   border    white 22%, 1px
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
-/// The glass card itself, without the `showDialog` call.
+/// The shared modal card itself, without the `showDialog` call.
 ///
 /// Exposed separately because browse_screen's two modals already call
 /// `showDialog` with their own barrier and their own `dialogContext`
@@ -51,22 +53,37 @@ class ZyraGlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      // OUTSIDE the ClipRRect. See the trap at the top of this file.
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.14),
+    return AnimatedPadding(
+      padding: MediaQuery.viewInsetsOf(context),
+      duration: const Duration(milliseconds: 160),
+      child: SafeArea(
+        child: Center(
+          // OUTSIDE the clip. The old blur/frame nesting trap remains avoided.
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 480),
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.22), width: 1),
+                child: DecoratedBox(
+                  key: const ValueKey('zyra_modal_surface'),
+                  decoration: BoxDecoration(
+                    color: ZyraColors.modalSheetSurface,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: ZyraColors.journeyGold.withValues(alpha: 0.28),
+                      width: 1,
+                    ),
+                  ),
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
+                      child: child,
+                    ),
+                  ),
+                ),
               ),
-              child: Material(type: MaterialType.transparency, child: child),
             ),
           ),
         ),
@@ -75,7 +92,7 @@ class ZyraGlassCard extends StatelessWidget {
   }
 }
 
-/// Chrome only. The caller supplies the contents, so a dialog with
+/// Shared opaque chrome. The caller supplies the contents, so a dialog with
 /// conditional icons or two-branch copy keeps its own logic rather than
 /// being forced through a parameter list that cannot express it.
 Future<T?> showZyraGlassDialog<T>({
@@ -102,6 +119,13 @@ Future<bool?> showZyraGlassChoice({
   required String primaryLabel,
   required String secondaryLabel,
 
+  /// Destructive choices keep the same modal chrome, but use the app's
+  /// restrained destructive colour for the committed action.
+  bool destructivePrimary = false,
+  TextAlign bodyTextAlign = TextAlign.center,
+  Key? primaryKey,
+  Key? secondaryKey,
+
   /// Optional line between body and buttons — used by the Unlock+ prompt to
   /// show both credit balances without turning the dialog into a shop.
   Widget? detail,
@@ -111,26 +135,85 @@ Future<bool?> showZyraGlassChoice({
     builder: (ctx) => Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: Colors.white, size: 30),
+        Icon(icon, color: ZyraColors.foreground, size: 30),
         const SizedBox(height: 14),
-        Text(title, style: ZyraText.heading(size: 18), textAlign: TextAlign.center),
+        Text(
+          title,
+          style: ZyraText.heading(size: 18),
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 8),
-        Text(body, style: ZyraText.subtext(), textAlign: TextAlign.center),
-        if (detail != null) ...[
-          const SizedBox(height: 14),
-          detail,
-        ],
+        Text(body, style: ZyraText.subtext(), textAlign: bodyTextAlign),
+        if (detail != null) ...[const SizedBox(height: 14), detail],
         const SizedBox(height: 20),
         SizedBox(
           width: double.infinity,
           child: FilledButton(
+            key: primaryKey,
+            style: destructivePrimary
+                ? FilledButton.styleFrom(
+                    backgroundColor: ZyraColors.destructive,
+                    foregroundColor: ZyraColors.onPrimaryAction,
+                  )
+                : null,
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(primaryLabel, textAlign: TextAlign.center),
+            child: Text(
+              primaryLabel,
+              textAlign: TextAlign.center,
+              style: ZyraText.button(
+                color: destructivePrimary
+                    ? ZyraColors.onPrimaryAction
+                    : ZyraColors.foreground,
+              ),
+            ),
           ),
         ),
         TextButton(
+          key: secondaryKey,
           onPressed: () => Navigator.of(ctx).pop(false),
           child: Text(secondaryLabel, style: ZyraText.subtext()),
+        ),
+      ],
+    ),
+  );
+}
+
+/// The one-action counterpart to [showZyraGlassChoice]. Information and
+/// blocked-state messages use the same opaque plum chrome as confirmations,
+/// instead of falling back to an unrelated platform dialog.
+Future<void> showZyraGlassNotice({
+  required BuildContext context,
+  required IconData icon,
+  required String title,
+  required String body,
+  String buttonLabel = 'OK',
+  TextAlign bodyTextAlign = TextAlign.center,
+}) {
+  return showZyraGlassDialog<void>(
+    context: context,
+    builder: (ctx) => Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: ZyraColors.foreground, size: 30),
+        const SizedBox(height: 14),
+        Text(
+          title,
+          style: ZyraText.heading(size: 18),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 8),
+        Text(body, style: ZyraText.subtext(), textAlign: bodyTextAlign),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: double.infinity,
+          child: FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(
+              buttonLabel,
+              textAlign: TextAlign.center,
+              style: ZyraText.button(),
+            ),
+          ),
         ),
       ],
     ),

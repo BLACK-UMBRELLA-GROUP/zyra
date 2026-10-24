@@ -11,6 +11,7 @@ import '../models/journey_match.dart';
 import '../models/journey_bio.dart';
 import '../models/seeker_profile.dart';
 import '../services/zyra_local_prefs.dart';
+import '../services/zyra_internal_preview_client.dart';
 import '../services/zyra_wali_link_service.dart';
 
 enum ZyraPlan { basic, one }
@@ -50,6 +51,8 @@ class AppState extends ChangeNotifier {
   String? gender;
   DateTime? dob;
   List<String> photos = [];
+  double avatarAlignmentX = 0;
+  double avatarAlignmentY = 0;
   String? location;
   String? sect;
   ZyraPlan plan = ZyraPlan.basic;
@@ -73,6 +76,43 @@ class AppState extends ChangeNotifier {
   /// that made the null-gender bug hard to spot.
   bool hydrated = false;
 
+  /// A principal change is a new member session, including when the next
+  /// principal opens the Founder landing without choosing a sample persona.
+  /// This is deliberately independent of developer mode and never persists.
+  void resetForAccountChange() {
+    name = null;
+    surnameLine = null;
+    gender = null;
+    dob = null;
+    photos = [];
+    avatarAlignmentX = 0;
+    avatarAlignmentY = 0;
+    location = null;
+    sect = null;
+    plan = ZyraPlan.basic;
+    journeyBio = const JourneyBio();
+    age = null;
+    hydrated = false;
+    notifyNewMatches = true;
+    notifyNewMessages = true;
+    notifyWaliRequests = true;
+    waliName = null;
+    waliRelationship = null;
+    waliHasWaliOne = false;
+    waliLinkedSeekers.clear();
+    waliRealLinkedSeekers = [];
+    declined.clear();
+    saved.clear();
+    outgoingLikes.clear();
+    potentialJourneys = [];
+    activeJourneys = [];
+    pendingBrowseProfile = null;
+    guardianSuggestedBy = const {};
+    deckVersion++;
+    suggestionsVersion++;
+    notifyListeners();
+  }
+
   /// Populates this singleton from the signed-in user's real rows.
   /// Called once per cold start by ZyraSessionRouter.
   void hydrateFrom({
@@ -83,25 +123,22 @@ class AppState extends ChangeNotifier {
     int? age,
     ZyraPlan? plan,
   }) {
-    if (name != null) {
-      this.name = name;
-      // Cached for the NEXT launch's first frame, same contract as the
-      // gender line below (DR-ZYRA-169 Phase 2): Profile paints the real
-      // name instead of "Your Profile" while hydration is in flight.
+    this.name = name;
+    // Replace missing fields too: a missing row value never means that a
+    // preceding member's value remains valid. Preview identity stays local.
+    if (!ZyraInternalPreviewClient.isActive) {
       ZyraLocalPrefs.setCachedFirstName(name);
     }
-    if (surnameLine != null) this.surnameLine = surnameLine;
-    if (gender != null) {
-      this.gender = gender;
-      // Cached for the NEXT launch's first frame — see
-      // zyra_local_prefs.dart. Written here rather than at the call
-      // site because this is the one place a real gender arrives, so
-      // the cache cannot drift from AppState.
+    this.surnameLine = surnameLine;
+    this.gender = gender;
+    if (!ZyraInternalPreviewClient.isActive) {
       ZyraLocalPrefs.setCachedGender(gender);
     }
-    if (location != null) this.location = location;
-    if (age != null) this.age = age;
-    if (plan != null) this.plan = plan;
+    this.location = location;
+    this.age = age;
+    this.plan = plan ?? ZyraPlan.basic;
+    avatarAlignmentX = ZyraLocalPrefs.cachedAvatarAlignmentX;
+    avatarAlignmentY = ZyraLocalPrefs.cachedAvatarAlignmentY;
     hydrated = true;
     notifyListeners();
   }
@@ -152,7 +189,7 @@ class AppState extends ChangeNotifier {
   /// `WaliLinkedPerson.relationshipLabel` instead.
   String? waliRelationship; // Label, e.g. 'Father'. Prefill only.
   bool waliHasWaliOne =
-      false; // Path 2A mock — £9.99/month independent purchase
+      false; // Legacy local seam for ZYRA One — Guardian (£19.99/month).
 
   // Superseded by waliRealLinkedSeekers below (2026-07-18, real Guardian
   // linking) — kept to avoid touching any other reference, but no
@@ -175,11 +212,16 @@ class AppState extends ChangeNotifier {
     required String name,
     required String relationship,
     required String gender,
+    String? surnameLine,
   }) {
     waliName = name;
+    this.name = name;
+    this.surnameLine = surnameLine;
     waliRelationship = relationship;
     this.gender = gender;
-    ZyraLocalPrefs.setCachedGender(gender);
+    if (!ZyraInternalPreviewClient.isActive) {
+      ZyraLocalPrefs.setCachedGender(gender);
+    }
     notifyListeners();
   }
 
@@ -272,16 +314,22 @@ class AppState extends ChangeNotifier {
     required String name,
     required String gender,
     required DateTime dob,
+    String? surnameLine,
   }) {
     this.name = name;
+    this.surnameLine = surnameLine;
     // First moment a new Seeker's name exists — cached for the same
     // launch-after-onboarding reason as the gender line below
     // (DR-ZYRA-169 Phase 2).
-    ZyraLocalPrefs.setCachedFirstName(name);
+    if (!ZyraInternalPreviewClient.isActive) {
+      ZyraLocalPrefs.setCachedFirstName(name);
+    }
     this.gender = gender;
     // First moment a new Seeker's gender exists. Without this the launch
     // straight after onboarding would still flash.
-    ZyraLocalPrefs.setCachedGender(gender);
+    if (!ZyraInternalPreviewClient.isActive) {
+      ZyraLocalPrefs.setCachedGender(gender);
+    }
     this.dob = dob;
     notifyListeners();
   }
@@ -297,6 +345,32 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Updates only the ordered profile-photo projection after Edit Photos.
+  /// The first entry is the main photo; persistence remains owned by
+  /// ZyraPhotoService rather than this in-memory state object.
+  void setProfilePhotos(List<String> value) {
+    photos = List<String>.of(value);
+    notifyListeners();
+  }
+
+  void setAvatarAlignmentY(double value) {
+    avatarAlignmentY = value.clamp(-1.0, 1.0).toDouble();
+    if (!ZyraInternalPreviewClient.isActive) {
+      ZyraLocalPrefs.setAvatarAlignmentY(avatarAlignmentY);
+    }
+    notifyListeners();
+  }
+
+  void setAvatarAlignment({required double x, required double y}) {
+    avatarAlignmentX = x.clamp(-1.0, 1.0).toDouble();
+    avatarAlignmentY = y.clamp(-1.0, 1.0).toDouble();
+    if (!ZyraInternalPreviewClient.isActive) {
+      ZyraLocalPrefs.setAvatarAlignmentX(avatarAlignmentX);
+      ZyraLocalPrefs.setAvatarAlignmentY(avatarAlignmentY);
+    }
+    notifyListeners();
+  }
+
   void saveJourneyBio(JourneyBio value) {
     journeyBio = value;
     notifyListeners();
@@ -304,8 +378,13 @@ class AppState extends ChangeNotifier {
 
   /// Decline. Clears any other state first — see the note above.
   void decline(SeekerProfile p) {
+    // recordPass is an idempotent insert: re-passing an existing Pass does
+    // not change its server timestamp. Keep that same recency locally.
+    if (declined.any((existing) => existing.id == p.id)) return;
     _clearState(p.id);
-    declined.add(p);
+    // Match fetchDecisions' created_at DESC order. A new Pass goes first;
+    // membership display windows never trim this list.
+    declined.insert(0, p);
     notifyListeners();
   }
 
@@ -392,11 +471,29 @@ class AppState extends ChangeNotifier {
     String? waliRelationship,
     bool waliHasWaliOne = false,
   }) {
+    if (ZyraInternalPreviewClient.isActive) {
+      // A main-account preview must not inherit real identity/context, and
+      // the same reset runs before leaving the latched preview at sign-out.
+      surnameLine = null;
+      age = null;
+      hydrated = false;
+      journeyBio = const JourneyBio();
+      pendingBrowseProfile = null;
+      guardianSuggestedBy = const {};
+      waliLinkedSeekers.clear();
+      notifyNewMatches = true;
+      notifyNewMessages = true;
+      notifyWaliRequests = true;
+      deckVersion++;
+      suggestionsVersion++;
+    }
     this.name = name;
     // Same DR-ZYRA-165 lesson applied to the name on day one
     // (DR-ZYRA-169 Phase 2): every writer caches, or the cache lies
     // after a Developer Access switch. A null name clears the key.
-    ZyraLocalPrefs.setCachedFirstName(name);
+    if (!ZyraInternalPreviewClient.isActive) {
+      ZyraLocalPrefs.setCachedFirstName(name);
+    }
     this.gender = gender;
     // CACHES IT TOO — 2026-08-13 (DR-ZYRA-165). This was the only gender
     // writer in the class that did not, so a Developer Access switch
@@ -405,11 +502,15 @@ class AppState extends ChangeNotifier {
     // to pick the first colour painted, so the next cold start opened in
     // the previous account's gradient. Compare hydrateFrom and
     // saveChapter1, which have always written both.
-    ZyraLocalPrefs.setCachedGender(gender);
+    if (!ZyraInternalPreviewClient.isActive) {
+      ZyraLocalPrefs.setCachedGender(gender);
+    }
     this.dob = dob;
     this.plan = plan;
     this.location = location;
     photos = [];
+    avatarAlignmentX = 0;
+    avatarAlignmentY = 0;
     sect = null;
     this.waliName = waliName;
     this.waliRelationship = waliRelationship;
@@ -502,6 +603,29 @@ class AppState extends ChangeNotifier {
     potentialJourneys.clear();
     activeJourneys.clear();
     deckVersion++;
+    notifyListeners();
+  }
+
+  /// Requests a clean Browse fetch without changing any decision state.
+  /// Used when a profile is unhidden: the server may return that person
+  /// again, while developer-preview hides are resolved from local storage.
+  void refreshBrowseDeck() {
+    deckVersion++;
+    notifyListeners();
+  }
+
+  /// Removes a newly hidden person from every account-local surface now.
+  /// The server/RLS owns the durable boundary for real accounts; this avoids
+  /// leaving a stale card visible until each kept-alive tab happens to fetch.
+  void removeHiddenProfileFromSession(String profileId) {
+    _clearState(profileId);
+    potentialJourneys.removeWhere((journey) => journey.profile.id == profileId);
+    activeJourneys.removeWhere((journey) => journey.profile.id == profileId);
+    if (pendingBrowseProfile?.id == profileId) pendingBrowseProfile = null;
+    if (guardianSuggestedBy.containsKey(profileId)) {
+      guardianSuggestedBy = Map<String, String>.from(guardianSuggestedBy)
+        ..remove(profileId);
+    }
     notifyListeners();
   }
 

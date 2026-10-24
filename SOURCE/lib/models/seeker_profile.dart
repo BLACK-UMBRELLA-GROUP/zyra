@@ -16,7 +16,8 @@ class SeekerProfile {
   final int age;
   final String city;
   final List<String> photos;
-  final String gender; // drives ZyraBackgroundVariant on their own onboarding, not used in Browse UI directly
+  final String
+  gender; // drives ZyraBackgroundVariant on their own onboarding, not used in Browse UI directly
 
   /// 2026-07-26 (Founder, Browse review: "let's try add surname and see
   /// how it looks... put surname under first name, that includes middle
@@ -40,6 +41,13 @@ class SeekerProfile {
   /// Action rather than built silently here, since that's an onboarding
   /// UX addition, not a bug fix.
   final String? surnameLine;
+
+  /// Separately disclosed public labels, never copied from private
+  /// compatibility answers. Only invented developer fixtures currently
+  /// supply these; ordinary discovery leaves them null until a consent-backed
+  /// production capture/projection exists.
+  final String? publicNationality;
+  final String? publicEthnicity;
 
   /// 2026-07-27 (Founder: "zyra one account users can upload a video...
   /// maybe for on account show how the video will look and on the left
@@ -69,13 +77,17 @@ class SeekerProfile {
     required this.photos,
     required this.gender,
     this.surnameLine,
+    this.publicNationality,
+    this.publicEthnicity,
     this.videoPhotoIndex,
     this.alreadyLikedYou = false,
   });
 
   /// Convenience getter for screens that only ever show one photo
   /// (Matches list tiles, Chat header) — avoids touching every call site.
-  String get photoUrl => photos.first;
+  // A privacy-filtered or not-yet-uploaded photo list is valid. The shared
+  // image widget uses an empty URL for its neutral placeholder.
+  String get photoUrl => photos.isEmpty ? '' : photos.first;
 }
 
 /// Placeholder profile photos (public placeholder image service) so the
@@ -89,27 +101,56 @@ final List<SeekerProfile> mockProfiles = [
   // example, to see how the identity block's second line reads across
   // different cases.
   const SeekerProfile(
-    id: '1', firstName: 'Maryam', age: 27, city: 'London', gender: 'female', alreadyLikedYou: true,
+    id: '1',
+    firstName: 'Maryam',
+    age: 27,
+    city: 'London',
+    gender: 'female',
+    alreadyLikedYou: true,
     surnameLine: 'Hussain',
     // 2026-07-27 — demonstrates the ZYRA One video-slot play-button dot
     // treatment (see SeekerProfile.videoPhotoIndex's doc comment). Photo
     // index 1 (the middle of these 3) is the mock "video" slot; it's
     // still a static image underneath — this is a visual mockup only.
     videoPhotoIndex: 1,
-    photos: ['https://picsum.photos/seed/zyra1a/700/1000', 'https://picsum.photos/seed/zyra1b/700/1000', 'https://picsum.photos/seed/zyra1c/700/1000'],
+    photos: [
+      'https://picsum.photos/seed/zyra1a/700/1000',
+      'https://picsum.photos/seed/zyra1b/700/1000',
+      'https://picsum.photos/seed/zyra1c/700/1000',
+    ],
   ),
   const SeekerProfile(
-    id: '2', firstName: 'Yusuf', age: 30, city: 'Birmingham', gender: 'male',
+    id: '2',
+    firstName: 'Yusuf',
+    age: 30,
+    city: 'Birmingham',
+    gender: 'male',
     surnameLine: 'Khan',
-    photos: ['https://picsum.photos/seed/zyra2a/700/1000', 'https://picsum.photos/seed/zyra2b/700/1000'],
+    photos: [
+      'https://picsum.photos/seed/zyra2a/700/1000',
+      'https://picsum.photos/seed/zyra2b/700/1000',
+    ],
   ),
   const SeekerProfile(
-    id: '3', firstName: 'Aisha', age: 25, city: 'Manchester', gender: 'female', alreadyLikedYou: true,
+    id: '3',
+    firstName: 'Aisha',
+    age: 25,
+    city: 'Manchester',
+    gender: 'female',
+    alreadyLikedYou: true,
     surnameLine: 'Begum',
-    photos: ['https://picsum.photos/seed/zyra3a/700/1000', 'https://picsum.photos/seed/zyra3b/700/1000', 'https://picsum.photos/seed/zyra3c/700/1000'],
+    photos: [
+      'https://picsum.photos/seed/zyra3a/700/1000',
+      'https://picsum.photos/seed/zyra3b/700/1000',
+      'https://picsum.photos/seed/zyra3c/700/1000',
+    ],
   ),
   const SeekerProfile(
-    id: '4', firstName: 'Ibrahim', age: 29, city: 'Leeds', gender: 'male',
+    id: '4',
+    firstName: 'Ibrahim',
+    age: 29,
+    city: 'Leeds',
+    gender: 'male',
     // 2026-07-26 (Founder: "add surnames for everyone please") — this
     // was the one profile deliberately left without one last round, for
     // with/without contrast; completed now that the layout's been seen.
@@ -117,12 +158,23 @@ final List<SeekerProfile> mockProfiles = [
     photos: ['https://picsum.photos/seed/zyra4a/700/1000'],
   ),
   const SeekerProfile(
-    id: '5', firstName: 'Zainab', age: 26, city: 'Bristol', gender: 'female',
+    id: '5',
+    firstName: 'Zainab',
+    age: 26,
+    city: 'Bristol',
+    gender: 'female',
     surnameLine: 'Iqbal',
-    photos: ['https://picsum.photos/seed/zyra5a/700/1000', 'https://picsum.photos/seed/zyra5b/700/1000'],
+    photos: [
+      'https://picsum.photos/seed/zyra5a/700/1000',
+      'https://picsum.photos/seed/zyra5b/700/1000',
+    ],
   ),
   const SeekerProfile(
-    id: '6', firstName: 'Bilal', age: 31, city: 'Glasgow', gender: 'male',
+    id: '6',
+    firstName: 'Bilal',
+    age: 31,
+    city: 'Glasgow',
+    gender: 'male',
     surnameLine: 'Abdul Malik',
     photos: ['https://picsum.photos/seed/zyra6a/700/1000'],
   ),

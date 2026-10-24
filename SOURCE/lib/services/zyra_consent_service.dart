@@ -26,6 +26,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../main.dart';
+import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
 
 /// The consent text currently in force.
@@ -73,6 +74,27 @@ class ZyraConsentService {
   /// Not a permanent cache: [record] updates it, so a withdrawal takes
   /// effect immediately rather than at next launch.
   static bool? _cached;
+  static String? _owner;
+  static int _ownerGeneration = -1;
+  static int _epoch = 0;
+  static int _revision = 0;
+  static int? _pendingWriteRevision;
+
+  static void _synchronizeOwner() {
+    final owner = ZyraAuth.currentUser?.id;
+    final generation = ZyraAccountState.generation;
+    if (_owner == owner && _ownerGeneration == generation) return;
+    clearForSignOut();
+    _owner = owner;
+    _ownerGeneration = generation;
+  }
+
+  static bool _isCurrent(String owner, int epoch) =>
+      !ZyraAccountState.isSigningOut &&
+      _ownerGeneration == ZyraAccountState.generation &&
+      epoch == _epoch &&
+      owner == _owner &&
+      owner == ZyraAuth.currentUser?.id;
 
   /// Whether the signed-in user currently consents.
   ///
@@ -83,12 +105,23 @@ class ZyraConsentService {
   /// being wrong is asymmetric — a lost answer is an inconvenience, an
   /// unlawfully stored one is not.
   static Future<bool> hasArticle9Consent() async {
+    _synchronizeOwner();
+    // A pending decision is not consent. In particular, a withdrawal must
+    // close the local write gate immediately, not after its acknowledgement.
+    if (ZyraAccountState.isSigningOut || _pendingWriteRevision != null) {
+      return false;
+    }
     if (_cached != null) return _cached!;
     final user = ZyraAuth.currentUser;
     if (user == null) return false;
+    final epoch = _epoch;
+    final revision = ++_revision;
     try {
       final v = await supabase.rpc('has_article9_consent');
-      _cached = v == true;
+      if (!_isCurrent(user.id, epoch) || revision != _revision || v is! bool) {
+        return false;
+      }
+      _cached = v;
       return _cached!;
     } catch (e) {
       debugPrint('ZYRA: consent check failed — treating as NOT consented. $e');
@@ -98,37 +131,93 @@ class ZyraConsentService {
 
   /// Records a grant or a withdrawal. Both are inserts.
   static Future<bool> record({required bool granted}) async {
+    _synchronizeOwner();
     final user = ZyraAuth.currentUser;
-    if (user == null) return false;
+    if (user == null ||
+        ZyraAccountState.isSigningOut ||
+        _pendingWriteRevision != null) {
+      return false;
+    }
+    final epoch = _epoch;
+    final session = supabase.auth.currentSession;
+    bool sessionValid() =>
+        session?.user.id == user.id &&
+        session?.expiresAt != null &&
+        !session!.isExpired;
+    if (!sessionValid() || !_isCurrent(user.id, epoch)) {
+      return false;
+    }
+    final revision = ++_revision;
+    _pendingWriteRevision = revision;
+    // Invalidate older reads and the previous memo before the write yields.
+    // A rejected/lost acknowledgement remains unknown and needs a fresh read.
+    _cached = null;
     try {
-      await supabase.from('consents').insert({
-        'user_id': user.id,
-        'consent_type': _type,
-        'granted': granted,
-        'policy_version': kArticle9PolicyVersion,
-      });
+      await supabase
+          .from('consents')
+          .insert({
+            'user_id': user.id,
+            'consent_type': _type,
+            'granted': granted,
+            'policy_version': kArticle9PolicyVersion,
+          })
+          // Keep this operation on its captured principal if Auth changes
+          // before the SDK dispatches. The token stays in memory only.
+          .setHeader('Authorization', 'Bearer ${session!.accessToken}');
+      if (!_isCurrent(user.id, epoch) ||
+          revision != _revision ||
+          !sessionValid()) {
+        return false;
+      }
       _cached = granted;
       return true;
     } catch (e) {
       // Loud, because a consent that the user gave and we failed to record
       // is a consent we cannot later evidence.
-      debugPrint('ZYRA: FAILED to record Article 9 consent (granted=$granted). '
-          'Chapter 2 answers will not be saved without it. $e');
+      debugPrint(
+        'ZYRA: FAILED to record Article 9 consent (granted=$granted). '
+        'Chapter 2 answers will not be saved without it. $e',
+      );
       return false;
+    } finally {
+      // An old account's completion cannot release a newer owner's write.
+      if (_pendingWriteRevision == revision) _pendingWriteRevision = null;
     }
   }
 
   /// The user's own consent history, newest first — for Settings, and for
   /// answering a subject access request without a database console.
-  static Future<List<({bool granted, String version, DateTime at})>> history() async {
-    final user = ZyraAuth.currentUser;
-    if (user == null) return const [];
+  ///
+  /// Onboarding restore opts into [throwOnError] so an unreadable decision
+  /// is not mistaken for a user who has never been asked. Default read-only
+  /// consumers retain the original empty-list failure behavior.
+  static Future<List<({bool granted, String version, DateTime at})>> history({
+    String? expectedUserId,
+    bool throwOnError = false,
+  }) async {
     try {
-      final rows = await supabase
-          .from('consents')
-          .select('granted, policy_version, recorded_at')
-          .eq('consent_type', _type)
-          .order('recorded_at', ascending: false) as List;
+      _synchronizeOwner();
+      final owner = _owner;
+      final epoch = _epoch;
+      final generation = ZyraAccountState.generation;
+      if (owner == null ||
+          ZyraAccountState.isSigningOut ||
+          (expectedUserId != null && expectedUserId != owner)) {
+        throw StateError('The consent account is no longer available.');
+      }
+      final rows =
+          await supabase
+                  .from('consents')
+                  .select('granted, policy_version, recorded_at')
+                  .eq('user_id', owner)
+                  .eq('consent_type', _type)
+                  .order('recorded_at', ascending: false)
+              as List;
+      if (!_isCurrent(owner, epoch) ||
+          ZyraAccountState.isSigningOut ||
+          ZyraAccountState.generation != generation) {
+        throw StateError('The consent account changed.');
+      }
       return [
         for (final r in rows)
           (
@@ -138,12 +227,51 @@ class ZyraConsentService {
           ),
       ];
     } catch (e) {
-      debugPrint('ZYRA: consent history fetch failed — $e');
+      debugPrint('ZYRA: consent history fetch failed (${e.runtimeType}).');
+      if (throwOnError) rethrow;
       return const [];
+    }
+  }
+
+  /// Latest explicit decision, preserving the difference between "declined"
+  /// and "not asked yet" when deferred onboarding is resumed.
+  /// In strict mode, null means no recorded decision, never a failed read.
+  static Future<bool?> currentArticle9Decision({
+    String? expectedUserId,
+    bool throwOnError = false,
+  }) async {
+    try {
+      _synchronizeOwner();
+      final owner = _owner;
+      final epoch = _epoch;
+      final generation = ZyraAccountState.generation;
+      if (owner == null ||
+          ZyraAccountState.isSigningOut ||
+          (expectedUserId != null && expectedUserId != owner)) {
+        throw StateError('The consent account is no longer available.');
+      }
+      final rows = await history(expectedUserId: owner, throwOnError: true);
+      if (!_isCurrent(owner, epoch) ||
+          ZyraAccountState.isSigningOut ||
+          ZyraAccountState.generation != generation) {
+        throw StateError('The consent account changed.');
+      }
+      return rows.isEmpty ? null : rows.first.granted;
+    } catch (e) {
+      debugPrint('ZYRA: consent decision restore failed (${e.runtimeType}).');
+      if (throwOnError) rethrow;
+      return null;
     }
   }
 
   /// Sign-out must drop the cache, or the next account inherits this one's
   /// answer. Same failure shape as ZyraUnlockService.clearForSignOut.
-  static void clearForSignOut() => _cached = null;
+  static void clearForSignOut() {
+    _epoch++;
+    _revision++;
+    _pendingWriteRevision = null;
+    _owner = null;
+    _ownerGeneration = -1;
+    _cached = null;
+  }
 }

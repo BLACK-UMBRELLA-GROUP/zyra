@@ -19,17 +19,26 @@ import '../models/seeker_profile.dart';
 import 'zyra_auth.dart';
 import 'zyra_photo_service.dart';
 import 'zyra_ages_service.dart';
+import 'zyra_wali_link_service.dart' show ZyraSourceFailure, ZyraSourceResult;
 
 class ZyraChatMessage {
   final String id;
   final String text;
   final bool fromMe;
   final DateTime createdAt;
-  const ZyraChatMessage({required this.id, required this.text, required this.fromMe, required this.createdAt});
+  final DateTime? readAt;
+  const ZyraChatMessage({
+    required this.id,
+    required this.text,
+    required this.fromMe,
+    required this.createdAt,
+    this.readAt,
+  });
 }
 
 class ZyraMilestone {
-  final String type; // match_created / conversation_started / family_stage / meeting / nikah
+  final String
+  type; // match_created / conversation_started / family_stage / meeting / nikah
   final DateTime occurredAt;
   const ZyraMilestone({required this.type, required this.occurredAt});
 }
@@ -42,8 +51,12 @@ class ZyraMilestoneAttestation {
   final String type; // 'meeting' | 'nikah'
   final DateTime occurredOn;
   final String proposedBy;
-  const ZyraMilestoneAttestation(
-      {required this.id, required this.type, required this.occurredOn, required this.proposedBy});
+  const ZyraMilestoneAttestation({
+    required this.id,
+    required this.type,
+    required this.occurredOn,
+    required this.proposedBy,
+  });
 }
 
 /// What the Timeline screen needs beyond the milestones themselves:
@@ -54,7 +67,12 @@ class ZyraTimelineContext {
   final bool active;
   final bool paused;
   final ZyraMilestoneAttestation? pending;
-  const ZyraTimelineContext({this.matchId, this.active = false, this.paused = false, this.pending});
+  const ZyraTimelineContext({
+    this.matchId,
+    this.active = false,
+    this.paused = false,
+    this.pending,
+  });
 }
 
 class ZyraMatchService {
@@ -70,27 +88,36 @@ class ZyraMatchService {
     if (user == null) return [];
 
     try {
-      final rows = await supabase
-          .from('matches')
-          .select('seeker_a_id, seeker_b_id')
-          .eq('status', 'active')
-          .or('seeker_a_id.eq.${user.id},seeker_b_id.eq.${user.id}') as List;
+      final rows =
+          await supabase
+                  .from('matches')
+                  .select('seeker_a_id, seeker_b_id')
+                  .eq('status', 'active')
+                  .or('seeker_a_id.eq.${user.id},seeker_b_id.eq.${user.id}')
+              as List;
 
       if (rows.isEmpty) return [];
 
-      final otherIds = rows.map((r) {
-        final map = r as Map<String, dynamic>;
-        final a = map['seeker_a_id'] as String;
-        final b = map['seeker_b_id'] as String;
-        return a == user.id ? b : a;
-      }).toSet().toList();
+      final otherIds = rows
+          .map((r) {
+            final map = r as Map<String, dynamic>;
+            final a = map['seeker_a_id'] as String;
+            final b = map['seeker_b_id'] as String;
+            return a == user.id ? b : a;
+          })
+          .toSet()
+          .toList();
 
       if (otherIds.isEmpty) return [];
 
-      final profileRows = await supabase
-          .from('profiles')
-          .select('id, first_name, location_text, gender, profile_photos(storage_path, display_order)')
-          .inFilter('id', otherIds) as List;
+      final profileRows =
+          await supabase
+                  .from('profiles')
+                  .select(
+                    'id, first_name, location_text, gender, profile_photos(storage_path, display_order)',
+                  )
+                  .inFilter('id', otherIds)
+              as List;
 
       // Raw date_of_birth is no longer selectable by the client — see
       // 20260726120000_hide_raw_dob_expose_age.sql. Ages come from the
@@ -100,19 +127,26 @@ class ZyraMatchService {
       final results = <SeekerProfile>[];
       for (final row in profileRows) {
         final map = row as Map<String, dynamic>;
-        final photosRaw = List<Map<String, dynamic>>.from((map['profile_photos'] as List?) ?? const []);
-        photosRaw.sort((a, b) => (a['display_order'] as int).compareTo(b['display_order'] as int));
+        final photosRaw = List<Map<String, dynamic>>.from(
+          (map['profile_photos'] as List?) ?? const [],
+        );
+        photosRaw.sort(
+          (a, b) =>
+              (a['display_order'] as int).compareTo(b['display_order'] as int),
+        );
         final photos = await ZyraPhotoService.signedUrlsFor(
           photosRaw.map((p) => p['storage_path'] as String).toList(),
         );
-        results.add(SeekerProfile(
-          id: map['id'] as String,
-          firstName: map['first_name'] as String,
-          age: ages[map['id'] as String] ?? 0,
-          city: (map['location_text'] as String?) ?? '—',
-          photos: photos.isEmpty ? ['https://picsum.photos/seed/${map['id']}/700/1000'] : photos,
-          gender: map['gender'] as String,
-        ));
+        results.add(
+          SeekerProfile(
+            id: map['id'] as String,
+            firstName: map['first_name'] as String,
+            age: ages[map['id'] as String] ?? 0,
+            city: (map['location_text'] as String?) ?? '—',
+            photos: photos,
+            gender: map['gender'] as String,
+          ),
+        );
       }
       return results;
     } catch (_) {
@@ -148,42 +182,58 @@ class ZyraMatchService {
   /// server-side `zyra_set_attempt_from_match` trigger exactly — if either
   /// changes, change both, or the client and the database will disagree
   /// about which conversation is "the" conversation.
-  static Future<String?> currentAttemptId(String matchId) async {
+  /// Typed form used by summary surfaces that must distinguish a genuine
+  /// no-attempt result from a failed read.
+  static Future<({String? attemptId, bool failed})> currentAttemptIdResult(
+    String matchId,
+  ) async {
     try {
-      final rows = await supabase
-          .from('zyra_my_attempt_participation')
-          .select('attempt_id, attempt_status')
-          .eq('match_id', matchId) as List;
-      if (rows.isEmpty) return null;
+      final rows =
+          await supabase
+                  .from('zyra_my_attempt_participation')
+                  .select('attempt_id, attempt_status')
+                  .eq('match_id', matchId)
+              as List;
+      if (rows.isEmpty) return (attemptId: null, failed: false);
 
       final maps = rows.cast<Map<String, dynamic>>().toList();
       final active = maps.where((r) => r['attempt_status'] == 'active');
-      if (active.isNotEmpty) return active.first['attempt_id'] as String?;
-      return maps.last['attempt_id'] as String?;
+      final attemptId = active.isNotEmpty
+          ? active.first['attempt_id'] as String?
+          : maps.last['attempt_id'] as String?;
+      return (attemptId: attemptId, failed: false);
     } catch (e) {
       debugPrint('ZYRA: currentAttemptId($matchId) failed — $e');
-      return null;
+      return (attemptId: null, failed: true);
     }
+  }
+
+  /// Compatibility boundary for existing detail/chat consumers where null
+  /// already means either unavailable or absent.
+  static Future<String?> currentAttemptId(String matchId) async {
+    final result = await currentAttemptIdResult(matchId);
+    return result.attemptId;
   }
 
   /// Resolves the real conversation id for a match between the
   /// signed-in user and [otherUserId], or null if none exists (a
-  /// mock Browse candidate, no real match yet, or not signed in) —
-  /// ChatScreen falls back to its existing local-only mock behaviour
-  /// whenever this returns null.
+  /// preview candidate, no real match yet, or not signed in). Null is never
+  /// permission to simulate a successful conversation for a real member.
   static Future<String?> resolveConversationId(String otherUserId) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return null;
 
     try {
-      final matchRows = await supabase
-          .from('matches')
-          .select('id')
-          .or(
-            'and(seeker_a_id.eq.${user.id},seeker_b_id.eq.$otherUserId),'
-            'and(seeker_a_id.eq.$otherUserId,seeker_b_id.eq.${user.id})',
-          )
-          .limit(1) as List;
+      final matchRows =
+          await supabase
+                  .from('matches')
+                  .select('id')
+                  .or(
+                    'and(seeker_a_id.eq.${user.id},seeker_b_id.eq.$otherUserId),'
+                    'and(seeker_a_id.eq.$otherUserId,seeker_b_id.eq.${user.id})',
+                  )
+                  .limit(1)
+              as List;
       if (matchRows.isEmpty) return null;
       final matchId = (matchRows.first as Map<String, dynamic>)['id'] as String;
 
@@ -203,106 +253,158 @@ class ZyraMatchService {
       final attemptId = await currentAttemptId(matchId);
       if (attemptId == null) return null;
 
-      final convRows = await supabase
-          .from('conversations')
-          .select('id')
-          .eq('attempt_id', attemptId)
-          .limit(1) as List;
+      final convRows =
+          await supabase
+                  .from('conversations')
+                  .select('id')
+                  .eq('attempt_id', attemptId)
+                  .limit(1)
+              as List;
       if (convRows.isEmpty) return null;
       return (convRows.first as Map<String, dynamic>)['id'] as String;
-    } catch (_) {
+    } catch (error) {
+      debugPrint(
+        'ZYRA: conversation resolution failed (${error.runtimeType}).',
+      );
       return null;
     }
   }
 
-  /// Ordered milestones for the match between the signed-in user and
-  /// [otherUserId], oldest first. Empty if not signed in, no real
-  /// match exists (mock Active Journey), or on any failure — the
-  /// Timeline screen has its own empty-state copy for "nothing here
-  /// yet" so this never needs to distinguish those cases for the UI.
+  /// Legacy collection adapter; the Timeline UI uses [fetchTimelineResult]
+  /// to distinguish unavailable history from a successful empty history.
   static Future<List<ZyraMilestone>> fetchTimeline(String otherUserId) async {
+    return (await fetchTimelineResult(otherUserId)).valueOr(const []);
+  }
+
+  static Future<ZyraSourceResult<List<ZyraMilestone>>> fetchTimelineResult(
+    String otherUserId,
+  ) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return [];
+    if (user == null) {
+      return const ZyraSourceResult.unavailable(ZyraSourceFailure.signedOut);
+    }
 
     try {
-      final matchRows = await supabase
-          .from('matches')
-          .select('id')
-          .or(
-            'and(seeker_a_id.eq.${user.id},seeker_b_id.eq.$otherUserId),'
-            'and(seeker_a_id.eq.$otherUserId,seeker_b_id.eq.${user.id})',
-          )
-          .limit(1) as List;
-      if (matchRows.isEmpty) return [];
+      final matchRows =
+          await supabase
+                  .from('matches')
+                  .select('id')
+                  .or(
+                    'and(seeker_a_id.eq.${user.id},seeker_b_id.eq.$otherUserId),'
+                    'and(seeker_a_id.eq.$otherUserId,seeker_b_id.eq.${user.id})',
+                  )
+                  .limit(1)
+              as List;
+      if (matchRows.isEmpty) return const ZyraSourceResult.available([]);
       final matchId = (matchRows.first as Map<String, dynamic>)['id'] as String;
 
       // OA-ZYRA-159 stage 4b. WAS: .eq('match_id', matchId) — see
       // resolveConversationId above for why that is now wrong.
-      final attemptId = await currentAttemptId(matchId);
-      if (attemptId == null) return [];
+      final attempt = await currentAttemptIdResult(matchId);
+      if (attempt.failed) {
+        return const ZyraSourceResult.unavailable(
+          ZyraSourceFailure.requestFailed,
+        );
+      }
+      final attemptId = attempt.attemptId;
+      if (attemptId == null) return const ZyraSourceResult.available([]);
 
-      final timelineRows = await supabase
-          .from('timelines')
-          .select('id')
-          .eq('attempt_id', attemptId)
-          .limit(1) as List;
-      if (timelineRows.isEmpty) return [];
-      final timelineId = (timelineRows.first as Map<String, dynamic>)['id'] as String;
+      final timelineRows =
+          await supabase
+                  .from('timelines')
+                  .select('id')
+                  .eq('attempt_id', attemptId)
+                  .limit(1)
+              as List;
+      if (timelineRows.isEmpty) return const ZyraSourceResult.available([]);
+      final timelineId =
+          (timelineRows.first as Map<String, dynamic>)['id'] as String;
 
-      final milestoneRows = await supabase
-          .from('timeline_milestones')
-          .select('milestone_type, occurred_at')
-          .eq('timeline_id', timelineId)
-          // OLDEST FIRST — the Timeline reads top to bottom, earliest at the
-          // top, and you scroll down through the Journey. Founder, 2026-08-11.
-          //
-          // ⚠️ ascending: true IS NOT THE DEFAULT. postgrest-dart declares
-          // `order(column, {bool ascending = false})`, so a bare .order()
-          // sorts NEWEST FIRST. Every place in this app that WANTS newest
-          // first passes ascending: false explicitly, which made the bare
-          // calls read as "chronological" at a glance. They were not.
-          // Found 2026-08-11 when the Founder reported the Timeline showing
-          // the oldest event at the BOTTOM. Never write a bare .order().
-          .order('occurred_at', ascending: true) as List;
+      final milestoneRows =
+          await supabase
+                  .from('timeline_milestones')
+                  .select('milestone_type, occurred_at')
+                  .eq('timeline_id', timelineId)
+                  // OLDEST FIRST — the Timeline reads top to bottom, earliest at the
+                  // top, and you scroll down through the Journey. Founder, 2026-08-11.
+                  //
+                  // ⚠️ ascending: true IS NOT THE DEFAULT. postgrest-dart declares
+                  // `order(column, {bool ascending = false})`, so a bare .order()
+                  // sorts NEWEST FIRST. Every place in this app that WANTS newest
+                  // first passes ascending: false explicitly, which made the bare
+                  // calls read as "chronological" at a glance. They were not.
+                  // Found 2026-08-11 when the Founder reported the Timeline showing
+                  // the oldest event at the BOTTOM. Never write a bare .order().
+                  .order('occurred_at', ascending: true)
+              as List;
 
-      return milestoneRows.map((r) {
-        final map = r as Map<String, dynamic>;
-        return ZyraMilestone(type: map['milestone_type'] as String, occurredAt: DateTime.parse(map['occurred_at'] as String));
-      }).toList();
-    } catch (_) {
-      return [];
+      return ZyraSourceResult.available(
+        milestoneRows.map((r) {
+          final map = r as Map<String, dynamic>;
+          return ZyraMilestone(
+            type: map['milestone_type'] as String,
+            occurredAt: DateTime.parse(map['occurred_at'] as String),
+          );
+        }).toList(),
+      );
+    } catch (error) {
+      debugPrint('ZYRA: timeline unavailable (${error.runtimeType}).');
+      return const ZyraSourceResult.unavailable(
+        ZyraSourceFailure.requestFailed,
+      );
     }
   }
 
-  static Future<List<ZyraChatMessage>> fetchMessages(String conversationId) async {
+  static Future<List<ZyraChatMessage>> fetchMessages(
+    String conversationId,
+  ) async => (await fetchMessagesResult(conversationId)).valueOr(const []);
+
+  /// A failed history read must not look like a successfully empty chat.
+  /// The legacy list method remains for callers which do not render truth
+  /// states; ChatScreen consumes this typed result directly.
+  static Future<ZyraSourceResult<List<ZyraChatMessage>>> fetchMessagesResult(
+    String conversationId,
+  ) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return [];
+    if (user == null) {
+      return const ZyraSourceResult.unavailable(ZyraSourceFailure.signedOut);
+    }
     try {
-      final rows = await supabase
-          .from('messages')
-          .select('id, sender_id, content, created_at')
-          .eq('conversation_id', conversationId)
-          // OLDEST FIRST. ChatScreen appends new messages to the end of its
-          // list and renders it with reverse: true plus a reversed index — a
-          // double flip that displays list order top to bottom while anchoring
-          // to the newest. That only works if history arrives oldest first,
-          // and it was arriving newest first: the whole loaded history read
-          // backwards, with live messages appended after it the right way up.
-          //
-          // Never seen because no dev account had sent a message yet. Fixed in
-          // the same sweep as the Timeline — it is the same one-word mistake.
-          .order('created_at', ascending: true) as List;
-      return rows.map((r) {
-        final map = r as Map<String, dynamic>;
-        return ZyraChatMessage(
-          id: map['id'] as String,
-          text: map['content'] as String,
-          fromMe: map['sender_id'] == user.id,
-          createdAt: DateTime.parse(map['created_at'] as String),
-        );
-      }).toList();
-    } catch (_) {
-      return [];
+      final rows =
+          await supabase
+                  .from('messages')
+                  .select('id, sender_id, content, created_at, read_at')
+                  .eq('conversation_id', conversationId)
+                  // OLDEST FIRST. ChatScreen appends new messages to the end of its
+                  // list and renders it with reverse: true plus a reversed index — a
+                  // double flip that displays list order top to bottom while anchoring
+                  // to the newest. That only works if history arrives oldest first,
+                  // and it was arriving newest first: the whole loaded history read
+                  // backwards, with live messages appended after it the right way up.
+                  //
+                  // Never seen because no dev account had sent a message yet. Fixed in
+                  // the same sweep as the Timeline — it is the same one-word mistake.
+                  .order('created_at', ascending: true)
+              as List;
+      return ZyraSourceResult.available(
+        rows.map((r) {
+          final map = r as Map<String, dynamic>;
+          return ZyraChatMessage(
+            id: map['id'] as String,
+            text: map['content'] as String,
+            fromMe: map['sender_id'] == user.id,
+            createdAt: DateTime.parse(map['created_at'] as String),
+            readAt: map['read_at'] == null
+                ? null
+                : DateTime.parse(map['read_at'] as String),
+          );
+        }).toList(),
+      );
+    } catch (error) {
+      debugPrint('ZYRA: message history failed (${error.runtimeType}).');
+      return const ZyraSourceResult.unavailable(
+        ZyraSourceFailure.requestFailed,
+      );
     }
   }
 
@@ -323,19 +425,40 @@ class ZyraMatchService {
     }
   }
 
+  /// Records that the signed-in Seeker has viewed the other Seeker's Journey
+  /// messages. The server proves the caller is one of the two Seekers and
+  /// never lets a Guardian manufacture a Seeker receipt.
+  static Future<bool> markMessagesRead(String conversationId) async {
+    if (!supabaseReady) return false;
+    final user = ZyraAuth.currentUser;
+    if (user == null) return false;
+    try {
+      await supabase.rpc(
+        'zyra_mark_journey_messages_read',
+        params: {'p_conversation': conversationId},
+      );
+      return true;
+    } catch (error) {
+      debugPrint('ZYRA: message read receipt failed (${error.runtimeType}).');
+      return false;
+    }
+  }
+
   /// The pair's match id, or null. Same lookup fetchTimeline performs;
   /// extracted 2026-08-12 for the attestation flow.
   static Future<String?> _matchIdWith(String otherUserId) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return null;
-    final rows = await supabase
-        .from('matches')
-        .select('id')
-        .or(
-          'and(seeker_a_id.eq.${user.id},seeker_b_id.eq.$otherUserId),'
-          'and(seeker_a_id.eq.$otherUserId,seeker_b_id.eq.${user.id})',
-        )
-        .limit(1) as List;
+    final rows =
+        await supabase
+                .from('matches')
+                .select('id')
+                .or(
+                  'and(seeker_a_id.eq.${user.id},seeker_b_id.eq.$otherUserId),'
+                  'and(seeker_a_id.eq.$otherUserId,seeker_b_id.eq.${user.id})',
+                )
+                .limit(1)
+            as List;
     if (rows.isEmpty) return null;
     return (rows.first as Map<String, dynamic>)['id'] as String;
   }
@@ -343,7 +466,9 @@ class ZyraMatchService {
   /// Milestone-recording context for the Timeline screen (2026-08-12,
   /// Founder-approved meeting/nikah attestation). Safe-empty on any
   /// failure — the Timeline still renders, just without the affordance.
-  static Future<ZyraTimelineContext> fetchTimelineContext(String otherUserId) async {
+  static Future<ZyraTimelineContext> fetchTimelineContext(
+    String otherUserId,
+  ) async {
     try {
       final matchId = await _matchIdWith(otherUserId);
       if (matchId == null) return const ZyraTimelineContext();
@@ -353,8 +478,12 @@ class ZyraMatchService {
           .eq('id', matchId)
           .maybeSingle();
       ZyraMilestoneAttestation? pending;
-      final rows = await supabase.rpc('zyra_milestone_attestation_state',
-          params: {'p_match_id': matchId}) as List;
+      final rows =
+          await supabase.rpc(
+                'zyra_milestone_attestation_state',
+                params: {'p_match_id': matchId},
+              )
+              as List;
       if (rows.isNotEmpty) {
         final m = rows.first as Map<String, dynamic>;
         pending = ZyraMilestoneAttestation(
@@ -377,21 +506,38 @@ class ZyraMatchService {
   }
 
   /// Null on success, otherwise a short user-facing reason.
-  static Future<String?> proposeMilestone(String matchId, String type, DateTime occurredOn) async {
+  static Future<String?> proposeMilestone(
+    String matchId,
+    String type,
+    DateTime occurredOn,
+  ) async {
     try {
-      await supabase.rpc('zyra_propose_milestone', params: {
-        'p_match_id': matchId,
-        'p_type': type,
-        'p_occurred_on': occurredOn.toIso8601String().substring(0, 10),
-      });
+      await supabase.rpc(
+        'zyra_propose_milestone',
+        params: {
+          'p_match_id': matchId,
+          'p_type': type,
+          'p_occurred_on': occurredOn.toIso8601String().substring(0, 10),
+        },
+      );
       return null;
     } catch (e) {
       final s = e.toString();
-      if (s.contains('milestone_already_recorded')) return 'That milestone is already on your Timeline.';
-      if (s.contains('confirm_theirs_instead')) return "They've already proposed this — confirm theirs instead.";
-      if (s.contains('journey_paused')) return 'This Journey is paused — resume it first.';
-      if (s.contains('journey_not_active')) return 'Only an Active Journey can record milestones.';
-      if (s.contains('milestone_in_future')) return 'A milestone records something that has happened.';
+      if (s.contains('milestone_already_recorded')) {
+        return 'That milestone is already on your Timeline.';
+      }
+      if (s.contains('confirm_theirs_instead')) {
+        return "They've already proposed this — confirm theirs instead.";
+      }
+      if (s.contains('journey_paused')) {
+        return 'This Journey is paused — resume it first.';
+      }
+      if (s.contains('journey_not_active')) {
+        return 'Only an Active Journey can record milestones.';
+      }
+      if (s.contains('milestone_in_future')) {
+        return 'A milestone records something that has happened.';
+      }
       debugPrint('ZYRA proposeMilestone failed: $e');
       return "That didn't go through. Please try again.";
     }
@@ -400,14 +546,25 @@ class ZyraMatchService {
   /// Null on success, otherwise a short user-facing reason.
   static Future<String?> confirmMilestone(String attestationId) async {
     try {
-      await supabase.rpc('zyra_confirm_milestone', params: {'p_attestation_id': attestationId});
+      await supabase.rpc(
+        'zyra_confirm_milestone',
+        params: {'p_attestation_id': attestationId},
+      );
       return null;
     } catch (e) {
       final s = e.toString();
-      if (s.contains('not_yours_to_confirm')) return 'The other Seeker confirms this one.';
-      if (s.contains('attestation_not_pending')) return 'This proposal is no longer waiting.';
-      if (s.contains('journey_paused')) return 'This Journey is paused — resume it first.';
-      if (s.contains('journey_not_active')) return 'Only an Active Journey can record milestones.';
+      if (s.contains('not_yours_to_confirm')) {
+        return 'The other Seeker confirms this one.';
+      }
+      if (s.contains('attestation_not_pending')) {
+        return 'This proposal is no longer waiting.';
+      }
+      if (s.contains('journey_paused')) {
+        return 'This Journey is paused — resume it first.';
+      }
+      if (s.contains('journey_not_active')) {
+        return 'Only an Active Journey can record milestones.';
+      }
       debugPrint('ZYRA confirmMilestone failed: $e');
       return "That didn't go through. Please try again.";
     }

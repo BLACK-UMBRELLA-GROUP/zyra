@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "governance": {
+    "programme": "OA-ZYRA-257",
+    "decision": "DR-ZYRA-214",
+    "contract": "SYSTEM/DOCUMENTS/ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md",
+    "product_authority": "Fable",
+    "technical_owner": "Codex",
+    "baseline_approver": "Founder",
+    "automatic_product_decisions": false
+  },
+  "sources": {
+    "tokens": [
+      "lib/theme/zyra_colors.dart",
+      "lib/theme/zyra_text.dart",
+      "lib/theme/zyra_card_metrics.dart"
+    ],
+    "components": "lib/widgets",
+    "production_ui": "lib/screens",
+    "developer_controls": "lib/dev"
+  },
+  "ui_affecting_paths": [
+    "lib/**/*.dart",
+    "test/visual/**/*.dart",
+    "assets/**/*",
+    "pubspec.yaml"
+  ],
+  "component_contracts": {
+    "FloatingNavBar": {
+      "status": "current",
+      "family": "navigation",
+      "variants": ["seeker", "guardian", "action-mode"],
+      "replacement": null
+    },
+    "OnboardingScaffold": {
+      "status": "current",
+      "family": "onboarding",
+      "variants": ["question", "transition"],
+      "replacement": null
+    },
+    "ZyraBottomPromotion": {
+      "status": "current",
+      "family": "promotion",
+      "variants": ["notification-permission", "upgrade"],
+      "replacement": null
+    },
+    "ZyraEmptyState": {
+      "status": "current",
+      "family": "state",
+      "variants": ["message", "title-message", "cta"],
+      "replacement": null
+    },
+    "ZyraFullScreenError": {
+      "status": "current",
+      "family": "state",
+      "variants": ["network", "service", "session"],
+      "replacement": null
+    },
+    "ZyraLoading": {
+      "status": "current",
+      "family": "state",
+      "variants": ["inline", "full-screen"],
+      "replacement": null
+    },
+    "ZyraProfileImage": {
+      "status": "current",
+      "family": "profile",
+      "variants": ["network", "file", "fallback"],
+      "replacement": null
+    },
+    "ZyraProfileNameBlock": {
+      "status": "current",
+      "family": "profile",
+      "variants": ["compact", "full"],
+      "replacement": null
+    },
+    "ZyraSegmentedToggle": {
+      "status": "current",
+      "family": "selection",
+      "variants": ["settled", "dragging", "unseen-dot"],
+      "replacement": null
+    },
+    "ZyraWardCard": {
+      "status": "current",
+      "family": "guardian-card",
+      "variants": ["main", "additional", "journey"],
+      "replacement": null
+    },
+    "NotificationBell": {
+      "status": "retired-candidate",
+      "family": "navigation",
+      "variants": [],
+      "replacement": "Dashboard notification card and nav badge",
+      "decision": "DR-ZYRA-149"
+    },
+    "FabContinueButton": {
+      "status": "retired-candidate",
+      "family": "journey-navigation",
+      "variants": [],
+      "replacement": "current in-flow Journey continuation control"
+    }
+  },
+  "terminology": {
+    "approved": [
+      "ZYRA Basic",
+      "ZYRA One",
+      "Guardian+",
+      "Compatibility Unlock",
+      "Compatibility Unlock Plus",
+      "End Journey",
+      "Active Journey",
+      "Paused Journey",
+      "Potential Journey",
+      "Guardian Network"
+    ],
+    "retired": {
+      "Profile Unlock": "Compatibility Unlock",
+      "Unlock Profile": "Compatibility Unlock",
+      "Extended Guardian": "Guardian+",
+      "End this Journey": "End Journey",
+      "GuardianNetworkPreview": "GNContext/GNScene/GNStage"
+    },
+    "review_only": [
+      "preview build",
+      "mock data",
+      "developer panel",
+      "dev-only",
+      "PROVISIONAL"
+    ]
+  },
+  "automatic_change_boundary": {
+    "allowed": [
+      "formatting",
+      "verified unused import removal",
+      "unambiguous governed literal convention fixes"
+    ],
+    "prohibited": [
+      "redesign",
+      "product copy rewrite",
+      "pricing change",
+      "entitlement change",
+      "permission change",
+      "flow change",
+      "baseline replacement",
+      "ambiguous component deletion"
+    ]
+  },
+  "run_policy": {
+    "required": [
+      "after UI-affecting implementation",
+      "before UI feature completion",
+      "before release"
+    ],
+    "overnight": {
+      "enabled": false,
+      "condition": "relevant UI fingerprint changed since last successful audit",
+      "reason_disabled": "Founder/Fable baseline approval pending",
+      "ai_when_unchanged": false
+    },
+    "layers": {
+      "L1": "deterministic static inventory and lint; local; $0",
+      "L2": "Flutter render, overflow, widget and approved-golden comparison; local; $0",
+      "L3": "interpret only new unexplained findings; governed budget required"
+    }
+  }
+}

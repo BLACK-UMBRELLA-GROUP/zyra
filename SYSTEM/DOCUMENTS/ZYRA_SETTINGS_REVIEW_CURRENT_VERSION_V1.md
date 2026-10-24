@@ -1,9 +1,15 @@
 # ZYRA — Settings: Holistic Review
 
-**Status:** FOR REVIEW — nothing built
+**Status:** HISTORICAL REVIEW — Settings built; Profile Personalisation added 2026-08-29
 **Date:** 2026-08-06 · **Origin:** Founder review, 8 points
 **Brief:** *"Settings should feel like the user's control centre… not a
 dumping ground, nor a duplicate of pages that already exist."*
+
+> 2026-08-29 current amendment: the older Appearance/Theme gap below is now
+> partly closed through a shared Seeker/Guardian **Profile → Personalisation**
+> screen. It owns dark background, app-text and haptic choices. Language is
+> still not built. Current implementation truth lives in
+> `ZYRA_STYLE_DEFAULT_HANDOVER_CURRENT_VERSION_V1.md` §11.
 
 ---
 

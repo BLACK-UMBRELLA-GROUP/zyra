@@ -12,8 +12,12 @@
 
 import 'package:flutter/material.dart';
 import '../data/zyra_journey_intelligence.dart';
+import '../data/zyra_membership_catalog.dart';
+import '../services/zyra_promotion_engine.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import 'zyra_gold_action_pill.dart';
+import 'zyra_locked_feature_upgrade.dart';
 
 class ZyraIntelligenceCard extends StatelessWidget {
   final ZyraIntelligence intelligence;
@@ -21,7 +25,11 @@ class ZyraIntelligenceCard extends StatelessWidget {
   /// Tightens the vertical margins for use inside an already-padded list.
   final bool compact;
 
-  const ZyraIntelligenceCard({super.key, required this.intelligence, this.compact = false});
+  const ZyraIntelligenceCard({
+    super.key,
+    required this.intelligence,
+    this.compact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +69,9 @@ class ZyraIntelligenceCard extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    Expanded(child: Text(prompt, style: ZyraText.subtext(size: 12.5))),
+                    Expanded(
+                      child: Text(prompt, style: ZyraText.subtext(size: 12.5)),
+                    ),
                   ],
                 ),
               ),
@@ -72,51 +82,62 @@ class ZyraIntelligenceCard extends StatelessWidget {
   }
 }
 
-/// The ZYRA Basic side of the same moment.
-///
-/// Deliberately NOT a card: no border, no fill, no lock icon, no blurred
-/// number behind it. It borrows the privacy-indicator idiom already used in
-/// onboarding and on Compatibility Unlock — a small dot and one line of plain
-/// text — because "upgrade prompts must feel like a natural invitation, not a
-/// paywall" (AI TIERING), and because the screen it sits on is complete
-/// without it.
-///
-/// Pass null intelligence and render nothing at all where even this is too
-/// much. That is a legitimate call.
+/// Visible membership boundary for Journey intelligence. Basic members keep
+/// the same Journey layout, see what belongs here, and can deliberately open
+/// membership information without gaining or mutating entitlement.
 class ZyraIntelligenceInvitation extends StatelessWidget {
   final ZyraIntelligenceKind kind;
   final VoidCallback? onTap;
 
   const ZyraIntelligenceInvitation({super.key, required this.kind, this.onTap});
 
+  String get _label => switch (kind) {
+    ZyraIntelligenceKind.insight => 'ZYRA Insight',
+    ZyraIntelligenceKind.recommendation => 'ZYRA Recommendation',
+    ZyraIntelligenceKind.summary => 'ZYRA Summary',
+  };
+
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget build(BuildContext context) => Container(
+    key: ValueKey('zyra-intelligence-${kind.name}-locked'),
+    width: double.infinity,
+    margin: const EdgeInsets.symmetric(vertical: 14),
+    padding: const EdgeInsets.fromLTRB(15, 14, 15, 15),
+    decoration: BoxDecoration(
+      color: ZyraColors.accentBg,
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(color: ZyraColors.accentBorder, width: 0.5),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
           children: [
-            Container(
-              width: 6,
-              height: 6,
-              margin: const EdgeInsets.only(top: 5, right: 9),
-              decoration: const BoxDecoration(
-                color: ZyraColors.privateDot,
-                shape: BoxShape.circle,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                ZyraJourneyIntelligence.invitationFor(kind),
-                style: ZyraText.privacyText(color: ZyraColors.privateText),
-              ),
+            Icon(Icons.lock_rounded, size: 17, color: ZyraColors.journeyGold),
+            const SizedBox(width: 8),
+            Text(
+              _label.toUpperCase(),
+              style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
             ),
           ],
         ),
-      ),
-    );
-  }
+        const SizedBox(height: 9),
+        Text(
+          'Available with ${ZyraMembershipCatalog.seekerOneTitle}.',
+          style: ZyraText.body(size: 13.5),
+        ),
+        const SizedBox(height: 14),
+        ZyraGoldActionPill(
+          label: 'View ${ZyraMembershipCatalog.seekerOneTitle}',
+          icon: Icons.workspace_premium_outlined,
+          onPressed:
+              onTap ??
+              () => openSeekerLockedFeaturePlan(
+                context,
+                feature: ZyraPromotionFeature.zyraIntelligence,
+              ),
+        ),
+      ],
+    ),
+  );
 }

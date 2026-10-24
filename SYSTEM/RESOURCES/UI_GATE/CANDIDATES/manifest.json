@@ -1,0 +1,2048 @@
+{
+  "automatic_promotion_allowed": false,
+  "generated": "2026-08-28T20:41:02.237701+00:00",
+  "matrix_fixture_count": 66,
+  "programme": "OA-ZYRA-257",
+  "schema_version": 1,
+  "screenshots": [
+    {
+      "approved": false,
+      "bytes": 34773,
+      "id": "auth-normal__large",
+      "sha256": "cd5e463060d1541cd9c63405e8bebbb933f1b34ddedcb94898e43c60a606a14b",
+      "source_path": "test/visual/candidates/auth-normal__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 26977,
+      "id": "auth-normal__small",
+      "sha256": "0054fb72aaaea9ffdbe74146d3ae3e38d3a9263d12e56c2eebb6ed1176811967",
+      "source_path": "test/visual/candidates/auth-normal__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 32608,
+      "id": "auth-normal__standard",
+      "sha256": "fea372747e9591d2bc40570f7dea160226bd49582fb8731fed9fce963f8bb0bc",
+      "source_path": "test/visual/candidates/auth-normal__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 37674,
+      "id": "auth-normal__standard__text-130",
+      "sha256": "71c744b615f7481f9555d9eae28bd00afe1cf87f617833e5173e8df1611f776b",
+      "source_path": "test/visual/candidates/auth-normal__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90972,
+      "id": "dashboard-classicGlass-journeyLens-guardian__large",
+      "sha256": "937a2454b941fc9be563a4342cb96bb40a0fb620f88bd8766b4beca7f8549842",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-journeyLens-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56921,
+      "id": "dashboard-classicGlass-journeyLens-guardian__small",
+      "sha256": "8d4955b5d2e4269d84fb8b43e6194140f3890797d29f956d5e11e84e40383b9d",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-journeyLens-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89925,
+      "id": "dashboard-classicGlass-journeyLens-guardian__standard",
+      "sha256": "1d921b223adff52dd48a0d8476b9d93512f2f724a743f446ad4d699f0e88d50e",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-journeyLens-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 96742,
+      "id": "dashboard-classicGlass-journeyLens-seeker__large",
+      "sha256": "95384bce1b15e68d356c88fd0471e372c7bdfb1b4278b9101c5d5a23674c2255",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-journeyLens-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53524,
+      "id": "dashboard-classicGlass-journeyLens-seeker__small",
+      "sha256": "2baa311831716115b09f4cc752a321f697252a5d51b1a586a0c901688117cd0d",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-journeyLens-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89218,
+      "id": "dashboard-classicGlass-journeyLens-seeker__standard",
+      "sha256": "530f21655f16999f6632809cdafdfdb849851c874c392679b72392343e260d53",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-journeyLens-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 74460,
+      "id": "dashboard-classicGlass-livingPriorities-guardian__large",
+      "sha256": "05f04105dd336333002243d2e1f216e988ebcce3c0b119f3bdce0fdbe23f09e8",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-livingPriorities-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54372,
+      "id": "dashboard-classicGlass-livingPriorities-guardian__small",
+      "sha256": "7d2b61f5bd3c58283723450fb04580ee1d59081da3e10052fdf01a505c69af9e",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-livingPriorities-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72553,
+      "id": "dashboard-classicGlass-livingPriorities-guardian__standard",
+      "sha256": "6bd35c8004653d941bc136ee3845e9d9cbeb0426fd9a5c754df216240326f793",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-livingPriorities-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 105871,
+      "id": "dashboard-classicGlass-livingPriorities-seeker__large",
+      "sha256": "36fc71ef16eae2eecb24fb5d3dcecd405616a5e0639271188da7aabc24af1cfb",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-livingPriorities-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53650,
+      "id": "dashboard-classicGlass-livingPriorities-seeker__small",
+      "sha256": "890efc1b4df6060398cc946b85482034ed720038f0432dc1977dc8746d734782",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-livingPriorities-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89481,
+      "id": "dashboard-classicGlass-livingPriorities-seeker__standard",
+      "sha256": "af4009d04cb01687ec0b041965765e80bc85a56f1103f0e1f219ca36496cf449",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-livingPriorities-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 74738,
+      "id": "dashboard-classicGlass-nowJourneyYou-guardian__large",
+      "sha256": "a560e21b1350706d06d907e75a96363b992a88692063638e29e3ab1fcdf681a1",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-nowJourneyYou-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53659,
+      "id": "dashboard-classicGlass-nowJourneyYou-guardian__small",
+      "sha256": "b96c2cc5ad9f781d776b3bb34b6300252b63d8916512842f49614a936cc8b0fd",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-nowJourneyYou-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73278,
+      "id": "dashboard-classicGlass-nowJourneyYou-guardian__standard",
+      "sha256": "74e9181601124b08992d3106b9d67dfa47b276ebad4377dcb166e98b79c548d0",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-nowJourneyYou-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99603,
+      "id": "dashboard-classicGlass-nowJourneyYou-seeker__large",
+      "sha256": "d034d80e8c0cb0d4e863c5ae60e88d97496af54481e3aeeee6ce9f45846c71a5",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-nowJourneyYou-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52432,
+      "id": "dashboard-classicGlass-nowJourneyYou-seeker__small",
+      "sha256": "e7c97d9858b06f618f612b5f84d703746a95b6e668e95e1548f80f77106c2a6e",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-nowJourneyYou-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 83352,
+      "id": "dashboard-classicGlass-nowJourneyYou-seeker__standard",
+      "sha256": "d900aaaf52f86a3117e9ed378da31fa5f5ca8e3cb4207919def11c04c8a24527",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-nowJourneyYou-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 71903,
+      "id": "dashboard-classicGlass-progressStory-guardian__large",
+      "sha256": "570cc44e7d1b83f6deb393a4ccdb0d9aea55214564f02a771cbc37cb7fe7db00",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-progressStory-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 58006,
+      "id": "dashboard-classicGlass-progressStory-guardian__small",
+      "sha256": "2ccbc5c2c946584c2dc0928e528b303b539ee5320e992fd878fd53dea79bf985",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-progressStory-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 69793,
+      "id": "dashboard-classicGlass-progressStory-guardian__standard",
+      "sha256": "84ac6ef839bcbc47a38a8c1d58e5a5d1d473193458d8bc38eb5639b6ab995499",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-progressStory-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99192,
+      "id": "dashboard-classicGlass-progressStory-seeker__large",
+      "sha256": "21659c3acf7fed1daefd8f4f4c18bf91383bb00e0ba39e2f6cdb044bc49e4cfa",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-progressStory-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 57003,
+      "id": "dashboard-classicGlass-progressStory-seeker__small",
+      "sha256": "918cf60cc4292270490ee84ca893e0cf5a1591a546d6d171b94f209654fbfe23",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-progressStory-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 92923,
+      "id": "dashboard-classicGlass-progressStory-seeker__standard",
+      "sha256": "47b9e0977f42839bc62b7ae83b8ed10539ac9991af2767a201b753ef6649a8fb",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-progressStory-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 113194,
+      "id": "dashboard-classicGlass-sectionedCards-guardian__large",
+      "sha256": "da663d4b97934f5a96d41c7a73ce40ee2bbfb3897dff91bf29411eb5ff6aa8b7",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCards-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 64864,
+      "id": "dashboard-classicGlass-sectionedCards-guardian__small",
+      "sha256": "9ec0e8aa7ff7695c9f177138289f388d2bfbb4a3979e6d54fa8bc5b53da6a4c8",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCards-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 110541,
+      "id": "dashboard-classicGlass-sectionedCards-guardian__standard",
+      "sha256": "5bd55f9619d93e0bb66695937c5d1b9a352dfd9ac579fae73ea028d44e986256",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCards-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 112394,
+      "id": "dashboard-classicGlass-sectionedCards-seeker__large",
+      "sha256": "b49c70ac331a8db4f8d3873aa3d421088be6f7bcdf807eabaf9f97b7ac3b4e8b",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCards-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 57860,
+      "id": "dashboard-classicGlass-sectionedCards-seeker__small",
+      "sha256": "df5d34b6e3a4c6e4314c2e50a6c9e0d19d3dcf9d054ef6d99863c6fba334c93f",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCards-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 91472,
+      "id": "dashboard-classicGlass-sectionedCards-seeker__standard",
+      "sha256": "e94cb997af2417fadbd4ceaccf963d305598cb3fa57c1119223dc0dd09fb5663",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCards-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 123461,
+      "id": "dashboard-classicGlass-sectionedCompact-guardian__large",
+      "sha256": "99d06240d37b832961b39d7c1bf4d7a27876790f229bbbb2cef84dc27fe0e225",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCompact-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 70389,
+      "id": "dashboard-classicGlass-sectionedCompact-guardian__small",
+      "sha256": "55cce07e0f2b740ca7ed809265e1a88e8c2af1b99ceaa31072abd810873b054d",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCompact-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 116738,
+      "id": "dashboard-classicGlass-sectionedCompact-guardian__standard",
+      "sha256": "f9adc6976b04e9ae1f483778b4819dc3dcaf53bf59c3c01f2d64f9f60315da7b",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCompact-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 113270,
+      "id": "dashboard-classicGlass-sectionedCompact-seeker__large",
+      "sha256": "7e52ac1d82bebd2709e350c9a0f12f2fdfcb68d7ecbddcfe68f2dbfd70efc734",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCompact-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 64311,
+      "id": "dashboard-classicGlass-sectionedCompact-seeker__small",
+      "sha256": "49820af88ec131a6ff12ccbf2d301ab32e5343fe2cb455e9323e7f2928a9eefc",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCompact-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 100442,
+      "id": "dashboard-classicGlass-sectionedCompact-seeker__standard",
+      "sha256": "f67ac5192bac00e3c3f38e87fd67ab90e5a65909b66e3ef4e470f012b5d617cf",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedCompact-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 116479,
+      "id": "dashboard-classicGlass-sectionedGuided-guardian__large",
+      "sha256": "8d71a88ce92c216b08c8f52abc0aaced394edc31511860802d357e5817d7f24b",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedGuided-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 63932,
+      "id": "dashboard-classicGlass-sectionedGuided-guardian__small",
+      "sha256": "c6e7ccd406f701cf0d13cf38089dfb300eb850323a768a2e16df7fea3fb35ec3",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedGuided-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 112852,
+      "id": "dashboard-classicGlass-sectionedGuided-guardian__standard",
+      "sha256": "3f10cc7e438ed9e226bb7e6b1b0a47560ed856caeb3a88dffb6d40707aeec110",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedGuided-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 119409,
+      "id": "dashboard-classicGlass-sectionedGuided-seeker__large",
+      "sha256": "48a7558db2c34883b94dd8d303126703b66ca8e7983c3da600e33a998cdcd07e",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedGuided-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 60550,
+      "id": "dashboard-classicGlass-sectionedGuided-seeker__small",
+      "sha256": "cf76511f19789e9923e35733750cb22018428bf98077319f073b76c62e1b5aed",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedGuided-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 105858,
+      "id": "dashboard-classicGlass-sectionedGuided-seeker__standard",
+      "sha256": "6058529e9423b825cf592c36e9b5d545d8fb3d0fcc1b064d5db3266e8c23ea0a",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedGuided-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 113355,
+      "id": "dashboard-classicGlass-sectionedPriority-guardian__large",
+      "sha256": "c865e685504cc9cfaa390117494530bb0493ed5783ffbab4a195a0bb918d2b15",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedPriority-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 60034,
+      "id": "dashboard-classicGlass-sectionedPriority-guardian__small",
+      "sha256": "633af4649d9aacf08928045bbfa626dd23377064d19421e9bd6da7d428a4887b",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedPriority-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 102474,
+      "id": "dashboard-classicGlass-sectionedPriority-guardian__standard",
+      "sha256": "db3111ceab845df9f1e3ad166813bd1f53c95e392f2774b6df65bf1a212a7bb8",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedPriority-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99869,
+      "id": "dashboard-classicGlass-sectionedPriority-seeker__large",
+      "sha256": "ec94b91d2baec58b543aa3c6961788192fecb6e61605a8e536b1b65fbdd1679c",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedPriority-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53517,
+      "id": "dashboard-classicGlass-sectionedPriority-seeker__small",
+      "sha256": "230646735af94f6937a7143bbc74ac7de99959a39646a6e4fd6cab34c8f6324a",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedPriority-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 93719,
+      "id": "dashboard-classicGlass-sectionedPriority-seeker__standard",
+      "sha256": "56978bf32459ee65f772f08fbcfa31fff2c73178a176d811a0c1c7fb6968f014",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedPriority-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 109678,
+      "id": "dashboard-classicGlass-sectionedProgress-guardian__large",
+      "sha256": "23abb294c9c5acb1caed0263c9d5b9dd7720b562d7b105ab371f7b6854095464",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedProgress-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 61182,
+      "id": "dashboard-classicGlass-sectionedProgress-guardian__small",
+      "sha256": "a6d4ce14b827339135d369db38d4ecdbd8a58a9b0f6dde3c3eb552929d341a8f",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedProgress-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 100171,
+      "id": "dashboard-classicGlass-sectionedProgress-guardian__standard",
+      "sha256": "8c541abca704b940c79ca8c965a8786df74d078b83474c0efaa2d7f6de292243",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedProgress-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 105435,
+      "id": "dashboard-classicGlass-sectionedProgress-seeker__large",
+      "sha256": "ed411c6c0b3f009b61e829e3bf2f94ca6f59e21e9e69c8d6d6b9b68dd779bba4",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedProgress-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56331,
+      "id": "dashboard-classicGlass-sectionedProgress-seeker__small",
+      "sha256": "8b0896f68ae4733518ac957c1069dd2fb5b143bf84b22eb3f64032537a3b5acd",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedProgress-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 93254,
+      "id": "dashboard-classicGlass-sectionedProgress-seeker__standard",
+      "sha256": "c58e9ffc8cbaca0491b3f92339f21c1bad17cd5f03f3f13889f5ea578b08585d",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedProgress-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 113021,
+      "id": "dashboard-classicGlass-sectionedStatus-guardian__large",
+      "sha256": "93ab97c271ced736a1c38667a32ebac0d1a73959292efd6ac9cf7f7ddf537e54",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedStatus-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 59913,
+      "id": "dashboard-classicGlass-sectionedStatus-guardian__small",
+      "sha256": "35b2db67ed41761ee34980c31233eff7b6473dd9481271ac2fdfcfd667997afd",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedStatus-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 103849,
+      "id": "dashboard-classicGlass-sectionedStatus-guardian__standard",
+      "sha256": "f16652a5e98efa1b6b3ccfb962f799c9f80d004400660c55d92c1ef04a03321b",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedStatus-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 108245,
+      "id": "dashboard-classicGlass-sectionedStatus-seeker__large",
+      "sha256": "af1586167d0b223419256826069f07be6d3e062a41f8f1b97cec5c2553c01e86",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedStatus-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56026,
+      "id": "dashboard-classicGlass-sectionedStatus-seeker__small",
+      "sha256": "85b48ebde04fdb1ab985126cd2ce46ec5c0814ee7ede47b7ccf7e976c94abf83",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedStatus-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 95433,
+      "id": "dashboard-classicGlass-sectionedStatus-seeker__standard",
+      "sha256": "926653db8a26b64f5e977083a81049ba5fd14fd4d4526ff8e670b2d2ed710cb4",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-sectionedStatus-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 65258,
+      "id": "dashboard-classicGlass-zyraCompass-guardian__large",
+      "sha256": "eb371817bb658f38082063896adf6a28ce221cbc90259a9b1d7d28cd2b18f322",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-zyraCompass-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52663,
+      "id": "dashboard-classicGlass-zyraCompass-guardian__small",
+      "sha256": "40ce4dfff2abb4ce8f658687f0c86343a6b6ef5d9debd26e61510d413dc23bb2",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-zyraCompass-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 63728,
+      "id": "dashboard-classicGlass-zyraCompass-guardian__standard",
+      "sha256": "552b3d20ca909f14e9558ee552548b3aa3c6b151649b73cd1717661e849b9200",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-zyraCompass-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 102310,
+      "id": "dashboard-classicGlass-zyraCompass-seeker__large",
+      "sha256": "72d492fb03b872523cb8461f03febfd8e466a9bc431a1ab4ac69ec4259161cd3",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-zyraCompass-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54356,
+      "id": "dashboard-classicGlass-zyraCompass-seeker__small",
+      "sha256": "5865cff299ee1fe1fd1b8b19a4e9f5d5630dbc766f7cd9e9dfadaa7afb6de7f8",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-zyraCompass-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 85208,
+      "id": "dashboard-classicGlass-zyraCompass-seeker__standard",
+      "sha256": "bca2ce44fb92d17525c274cdd2b9e5fe0a2d9425226e1828f303eea548770b1e",
+      "source_path": "test/visual/candidates/dashboard-classicGlass-zyraCompass-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90967,
+      "id": "dashboard-glassSignals-journeyLens-guardian__large",
+      "sha256": "cbb03ffbfeb3806d291db8ddf77f731935679083da4efe043d8acdb40f794f1a",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-journeyLens-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56901,
+      "id": "dashboard-glassSignals-journeyLens-guardian__small",
+      "sha256": "12ce993e0ba6ed5bf03291a33a304e2f731121930b22657d74f2e42329555506",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-journeyLens-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89945,
+      "id": "dashboard-glassSignals-journeyLens-guardian__standard",
+      "sha256": "64ebedbd2cbadf6e07e9565c0020fe85fc0156536f443cb78e21c999d7816c87",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-journeyLens-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 96723,
+      "id": "dashboard-glassSignals-journeyLens-seeker__large",
+      "sha256": "8cd6ec8b301b7c1228daf002ce3f9429afa3011f279dbe7f4095c031a2d5e1a8",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-journeyLens-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53524,
+      "id": "dashboard-glassSignals-journeyLens-seeker__small",
+      "sha256": "9a6f57f604837bd54291e3c1dfd76efc5080ebf94072e29f0b9ad56f8d55bfa4",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-journeyLens-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89136,
+      "id": "dashboard-glassSignals-journeyLens-seeker__standard",
+      "sha256": "f12f415e4914b2d7e635de90dd300a979bc7432fe6b9a31fa2131c72e9ad6541",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-journeyLens-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 74491,
+      "id": "dashboard-glassSignals-livingPriorities-guardian__large",
+      "sha256": "ae6ccaf14a180b29d87f634bf27eab5c071837c25734ef06ce4ca57f0207d2ff",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-livingPriorities-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54345,
+      "id": "dashboard-glassSignals-livingPriorities-guardian__small",
+      "sha256": "86052c74ed355fd7ce3f683706b764c0dba2c54114436db17ea8c39a3f2fef91",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-livingPriorities-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72537,
+      "id": "dashboard-glassSignals-livingPriorities-guardian__standard",
+      "sha256": "03f09e2e20f5c85c481f07b8c40e08163a3645099da14ad94e7cb44c2af2e136",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-livingPriorities-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 105880,
+      "id": "dashboard-glassSignals-livingPriorities-seeker__large",
+      "sha256": "91717f5b8e76477ceda9700888c12d6823b64b69b6935d1a6573ac38b9ed5e6a",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-livingPriorities-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53585,
+      "id": "dashboard-glassSignals-livingPriorities-seeker__small",
+      "sha256": "b39f446877f70be8795f5b068adc5ef8fc797d028743dd19ab43a5bb94e712fc",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-livingPriorities-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89381,
+      "id": "dashboard-glassSignals-livingPriorities-seeker__standard",
+      "sha256": "64e535db12ff13422e2b61e5974758a1eb8e7c59c993f9fc0099dab7f073f374",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-livingPriorities-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 74812,
+      "id": "dashboard-glassSignals-nowJourneyYou-guardian__large",
+      "sha256": "2e409b054b1e2673e8d0ff2b9a50b183e4b569baa47315d3f751e3cee092cc4b",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-nowJourneyYou-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53630,
+      "id": "dashboard-glassSignals-nowJourneyYou-guardian__small",
+      "sha256": "2e09ec00486849b8c9879c739b4d5ffe64ea9eef3cfcece9df2ac766e1652e60",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-nowJourneyYou-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73207,
+      "id": "dashboard-glassSignals-nowJourneyYou-guardian__standard",
+      "sha256": "948bb4fda72553a8664bbd1d54e0520f616b2816a78eef0f84013473fb86f8f3",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-nowJourneyYou-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99516,
+      "id": "dashboard-glassSignals-nowJourneyYou-seeker__large",
+      "sha256": "92c125637151ab2e77e83a72ccabbd14679a92c7197d462538f883f0d89894a5",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-nowJourneyYou-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52382,
+      "id": "dashboard-glassSignals-nowJourneyYou-seeker__small",
+      "sha256": "d06db23a3530fa7686f47f1174b4ef4cea774acb2e17c6a19515233d015169ce",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-nowJourneyYou-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 83087,
+      "id": "dashboard-glassSignals-nowJourneyYou-seeker__standard",
+      "sha256": "ff79899cd4f2b58a2fb9dafec2132d9bee16106e4fe39369059e0d173e6f25a2",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-nowJourneyYou-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 71854,
+      "id": "dashboard-glassSignals-progressStory-guardian__large",
+      "sha256": "106d2f6edd4eb5219b59887836cef0e92856e4754149d61e336a1187ced65122",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-progressStory-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 58041,
+      "id": "dashboard-glassSignals-progressStory-guardian__small",
+      "sha256": "62fde63a5fcdc6af5cd966a7f408aa60fca7b013d989241934476333e52372e8",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-progressStory-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 69860,
+      "id": "dashboard-glassSignals-progressStory-guardian__standard",
+      "sha256": "aab8346ac60aea14e4b29cff5da91ddcb293829ad34992a179d2adb4943bc2a2",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-progressStory-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99065,
+      "id": "dashboard-glassSignals-progressStory-seeker__large",
+      "sha256": "25b3a76645edc68d80da3587de24092b26dad763b8969b0253495fb457d92d75",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-progressStory-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56908,
+      "id": "dashboard-glassSignals-progressStory-seeker__small",
+      "sha256": "08df591ed9e337e43c59510819d155a695771731a4daa1b0e8f5168c0cbaec36",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-progressStory-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 92779,
+      "id": "dashboard-glassSignals-progressStory-seeker__standard",
+      "sha256": "38ba0ed46b8526aa92e60793145a7c697870106be4f446057b66816b87e96efe",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-progressStory-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 65285,
+      "id": "dashboard-glassSignals-zyraCompass-guardian__large",
+      "sha256": "d2f48b9d09d0ec0684aea4263817a01dff3cb9f602329f4182181c63c8c4d851",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-zyraCompass-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52660,
+      "id": "dashboard-glassSignals-zyraCompass-guardian__small",
+      "sha256": "b613620f70c7b3db13d06156205df9690871867976544845148f314bf0c78fcc",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-zyraCompass-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 63834,
+      "id": "dashboard-glassSignals-zyraCompass-guardian__standard",
+      "sha256": "29e0a560c36ede4329103ff79bba186b50b222191168ca8d4cabbf4ee309c1ea",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-zyraCompass-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 102286,
+      "id": "dashboard-glassSignals-zyraCompass-seeker__large",
+      "sha256": "3eeba47685a792da389e3be53cf0d4ea85fdace80980a06db0ab073edbf40cc4",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-zyraCompass-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54298,
+      "id": "dashboard-glassSignals-zyraCompass-seeker__small",
+      "sha256": "6ef7b4e26268008fdf0b96699b99565a13c3db927d2d8908f57eafb85fd117be",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-zyraCompass-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 85089,
+      "id": "dashboard-glassSignals-zyraCompass-seeker__standard",
+      "sha256": "6491f25ad89650d645a814307f11798b86607abbf28a36ac0d31b83749d802eb",
+      "source_path": "test/visual/candidates/dashboard-glassSignals-zyraCompass-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89728,
+      "id": "dashboard-journeyLens-guardian__large",
+      "sha256": "cadc8a4b96b9ac6d51b7f2c60f6b538adb20011d3cc02bcb6eda62ace8a4dfa8",
+      "source_path": "test/visual/candidates/dashboard-journeyLens-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 55422,
+      "id": "dashboard-journeyLens-guardian__small",
+      "sha256": "f915d5582d3c2de962f0ced843d675f0066668fd8f4f8c1d4c1efdf4f8710085",
+      "source_path": "test/visual/candidates/dashboard-journeyLens-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89034,
+      "id": "dashboard-journeyLens-guardian__standard",
+      "sha256": "013e83dde856b88798fb6f62919c2d1d119e5e9c852353c977938ea713d5b0cc",
+      "source_path": "test/visual/candidates/dashboard-journeyLens-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 96882,
+      "id": "dashboard-journeyLens-seeker__large",
+      "sha256": "75191b16a5a2a2aa3f661f4c11472c1ee9d535dcbcad72b45b044fe8e2c29851",
+      "source_path": "test/visual/candidates/dashboard-journeyLens-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53612,
+      "id": "dashboard-journeyLens-seeker__small",
+      "sha256": "cb2f16fbfec002ff9c20b4ddecaf53c0c3ac8ef87ef6130a26cce8632c27e9f0",
+      "source_path": "test/visual/candidates/dashboard-journeyLens-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 88251,
+      "id": "dashboard-journeyLens-seeker__standard",
+      "sha256": "a19ae14989ad30d1f84519455a6943d7667164c92c59bd684aa69f15a0c706eb",
+      "source_path": "test/visual/candidates/dashboard-journeyLens-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90972,
+      "id": "dashboard-large-text-journeyLens-guardian__large",
+      "sha256": "937a2454b941fc9be563a4342cb96bb40a0fb620f88bd8766b4beca7f8549842",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56921,
+      "id": "dashboard-large-text-journeyLens-guardian__small",
+      "sha256": "8d4955b5d2e4269d84fb8b43e6194140f3890797d29f956d5e11e84e40383b9d",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89925,
+      "id": "dashboard-large-text-journeyLens-guardian__standard",
+      "sha256": "1d921b223adff52dd48a0d8476b9d93512f2f724a743f446ad4d699f0e88d50e",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 106321,
+      "id": "dashboard-large-text-journeyLens-guardian__standard__text-130",
+      "sha256": "c1e7e0da325296afedd84731cbc99f0d5e55078d3031b3ef11dc950e14701d21",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-guardian__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 96742,
+      "id": "dashboard-large-text-journeyLens-seeker__large",
+      "sha256": "95384bce1b15e68d356c88fd0471e372c7bdfb1b4278b9101c5d5a23674c2255",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53524,
+      "id": "dashboard-large-text-journeyLens-seeker__small",
+      "sha256": "2baa311831716115b09f4cc752a321f697252a5d51b1a586a0c901688117cd0d",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89218,
+      "id": "dashboard-large-text-journeyLens-seeker__standard",
+      "sha256": "530f21655f16999f6632809cdafdfdb849851c874c392679b72392343e260d53",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 96847,
+      "id": "dashboard-large-text-journeyLens-seeker__standard__text-130",
+      "sha256": "07c78a047f7963eefbdf57a6763e4fe295e09cb13973c437ab5be118e0f00271",
+      "source_path": "test/visual/candidates/dashboard-large-text-journeyLens-seeker__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 74460,
+      "id": "dashboard-large-text-livingPriorities-guardian__large",
+      "sha256": "05f04105dd336333002243d2e1f216e988ebcce3c0b119f3bdce0fdbe23f09e8",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54372,
+      "id": "dashboard-large-text-livingPriorities-guardian__small",
+      "sha256": "7d2b61f5bd3c58283723450fb04580ee1d59081da3e10052fdf01a505c69af9e",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72553,
+      "id": "dashboard-large-text-livingPriorities-guardian__standard",
+      "sha256": "6bd35c8004653d941bc136ee3845e9d9cbeb0426fd9a5c754df216240326f793",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90289,
+      "id": "dashboard-large-text-livingPriorities-guardian__standard__text-130",
+      "sha256": "cff7ef23bad3a078aa6e03d9c89426b512e6ee0386b21aa204597f917e94483e",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-guardian__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 105871,
+      "id": "dashboard-large-text-livingPriorities-seeker__large",
+      "sha256": "36fc71ef16eae2eecb24fb5d3dcecd405616a5e0639271188da7aabc24af1cfb",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53650,
+      "id": "dashboard-large-text-livingPriorities-seeker__small",
+      "sha256": "890efc1b4df6060398cc946b85482034ed720038f0432dc1977dc8746d734782",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 89481,
+      "id": "dashboard-large-text-livingPriorities-seeker__standard",
+      "sha256": "af4009d04cb01687ec0b041965765e80bc85a56f1103f0e1f219ca36496cf449",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 94843,
+      "id": "dashboard-large-text-livingPriorities-seeker__standard__text-130",
+      "sha256": "95a6121c3a06238bfdc6198dcd52eb2112cf87e2e1bb83d34894e3c81d7db942",
+      "source_path": "test/visual/candidates/dashboard-large-text-livingPriorities-seeker__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 74738,
+      "id": "dashboard-large-text-nowJourneyYou-guardian__large",
+      "sha256": "a560e21b1350706d06d907e75a96363b992a88692063638e29e3ab1fcdf681a1",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53659,
+      "id": "dashboard-large-text-nowJourneyYou-guardian__small",
+      "sha256": "b96c2cc5ad9f781d776b3bb34b6300252b63d8916512842f49614a936cc8b0fd",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73278,
+      "id": "dashboard-large-text-nowJourneyYou-guardian__standard",
+      "sha256": "74e9181601124b08992d3106b9d67dfa47b276ebad4377dcb166e98b79c548d0",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90004,
+      "id": "dashboard-large-text-nowJourneyYou-guardian__standard__text-130",
+      "sha256": "8b87f1eaf188dc54871ab2bbe98b218295b0fff59257c934cd0e31f7f7dedb32",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-guardian__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99603,
+      "id": "dashboard-large-text-nowJourneyYou-seeker__large",
+      "sha256": "d034d80e8c0cb0d4e863c5ae60e88d97496af54481e3aeeee6ce9f45846c71a5",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52432,
+      "id": "dashboard-large-text-nowJourneyYou-seeker__small",
+      "sha256": "e7c97d9858b06f618f612b5f84d703746a95b6e668e95e1548f80f77106c2a6e",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 83352,
+      "id": "dashboard-large-text-nowJourneyYou-seeker__standard",
+      "sha256": "d900aaaf52f86a3117e9ed378da31fa5f5ca8e3cb4207919def11c04c8a24527",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 92769,
+      "id": "dashboard-large-text-nowJourneyYou-seeker__standard__text-130",
+      "sha256": "ad9b019dc01bfdb8f784d8553d6d90d0cc8b6e608205d27b58b316708b387459",
+      "source_path": "test/visual/candidates/dashboard-large-text-nowJourneyYou-seeker__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 71903,
+      "id": "dashboard-large-text-progressStory-guardian__large",
+      "sha256": "570cc44e7d1b83f6deb393a4ccdb0d9aea55214564f02a771cbc37cb7fe7db00",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 58006,
+      "id": "dashboard-large-text-progressStory-guardian__small",
+      "sha256": "2ccbc5c2c946584c2dc0928e528b303b539ee5320e992fd878fd53dea79bf985",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 69793,
+      "id": "dashboard-large-text-progressStory-guardian__standard",
+      "sha256": "84ac6ef839bcbc47a38a8c1d58e5a5d1d473193458d8bc38eb5639b6ab995499",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 82489,
+      "id": "dashboard-large-text-progressStory-guardian__standard__text-130",
+      "sha256": "106d01509bd6caad64ed3564d49c7cb728cad91632d21903afb8ed4f54d5cb5c",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-guardian__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99192,
+      "id": "dashboard-large-text-progressStory-seeker__large",
+      "sha256": "21659c3acf7fed1daefd8f4f4c18bf91383bb00e0ba39e2f6cdb044bc49e4cfa",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 57003,
+      "id": "dashboard-large-text-progressStory-seeker__small",
+      "sha256": "918cf60cc4292270490ee84ca893e0cf5a1591a546d6d171b94f209654fbfe23",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 92923,
+      "id": "dashboard-large-text-progressStory-seeker__standard",
+      "sha256": "47b9e0977f42839bc62b7ae83b8ed10539ac9991af2767a201b753ef6649a8fb",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 103425,
+      "id": "dashboard-large-text-progressStory-seeker__standard__text-130",
+      "sha256": "29a95e20f2411f76af4415ea11aed89c8354423710211fd39fbf28fa28f37778",
+      "source_path": "test/visual/candidates/dashboard-large-text-progressStory-seeker__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 65258,
+      "id": "dashboard-large-text-zyraCompass-guardian__large",
+      "sha256": "eb371817bb658f38082063896adf6a28ce221cbc90259a9b1d7d28cd2b18f322",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52663,
+      "id": "dashboard-large-text-zyraCompass-guardian__small",
+      "sha256": "40ce4dfff2abb4ce8f658687f0c86343a6b6ef5d9debd26e61510d413dc23bb2",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 63728,
+      "id": "dashboard-large-text-zyraCompass-guardian__standard",
+      "sha256": "552b3d20ca909f14e9558ee552548b3aa3c6b151649b73cd1717661e849b9200",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 77292,
+      "id": "dashboard-large-text-zyraCompass-guardian__standard__text-130",
+      "sha256": "41b82c5e5fbc043fb8c709f70c795a92a583670a2998c88c040c378a90ab14bc",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-guardian__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 102310,
+      "id": "dashboard-large-text-zyraCompass-seeker__large",
+      "sha256": "72d492fb03b872523cb8461f03febfd8e466a9bc431a1ab4ac69ec4259161cd3",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54356,
+      "id": "dashboard-large-text-zyraCompass-seeker__small",
+      "sha256": "5865cff299ee1fe1fd1b8b19a4e9f5d5630dbc766f7cd9e9dfadaa7afb6de7f8",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 85208,
+      "id": "dashboard-large-text-zyraCompass-seeker__standard",
+      "sha256": "bca2ce44fb92d17525c274cdd2b9e5fe0a2d9425226e1828f303eea548770b1e",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 91874,
+      "id": "dashboard-large-text-zyraCompass-seeker__standard__text-130",
+      "sha256": "1477afdb09a39b640e280ac6d31f211536fc37bd8957e67694214e1be765ed70",
+      "source_path": "test/visual/candidates/dashboard-large-text-zyraCompass-seeker__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 100391,
+      "id": "dashboard-learning-insufficient-basic__large",
+      "sha256": "1d37b58e84d918260629badc1979bbc71da77c1690346ed406d188e9b857e3f5",
+      "source_path": "test/visual/candidates/dashboard-learning-insufficient-basic__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52432,
+      "id": "dashboard-learning-insufficient-basic__small",
+      "sha256": "e7c97d9858b06f618f612b5f84d703746a95b6e668e95e1548f80f77106c2a6e",
+      "source_path": "test/visual/candidates/dashboard-learning-insufficient-basic__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 87210,
+      "id": "dashboard-learning-insufficient-basic__standard",
+      "sha256": "db9636a02b48ee5e88e25ec90c42c1a2fd1949b06f64443bafe8ad10c4c80256",
+      "source_path": "test/visual/candidates/dashboard-learning-insufficient-basic__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 101109,
+      "id": "dashboard-learning-neutral-one__large",
+      "sha256": "0b38b16501fec64bbde72cec1fc7b5de989b43b52eb018a6991194df78021fd5",
+      "source_path": "test/visual/candidates/dashboard-learning-neutral-one__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52432,
+      "id": "dashboard-learning-neutral-one__small",
+      "sha256": "e7c97d9858b06f618f612b5f84d703746a95b6e668e95e1548f80f77106c2a6e",
+      "source_path": "test/visual/candidates/dashboard-learning-neutral-one__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 86439,
+      "id": "dashboard-learning-neutral-one__standard",
+      "sha256": "b47f4934c8d35a354c2d18a01f5afe7449d5a1babc1a1c1c28e9239975fbae87",
+      "source_path": "test/visual/candidates/dashboard-learning-neutral-one__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99970,
+      "id": "dashboard-learning-positive-basic__large",
+      "sha256": "74423a7e659baa4597ab635053625952e98dc2bcd1c0a78f01c51e59b1ab459e",
+      "source_path": "test/visual/candidates/dashboard-learning-positive-basic__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52432,
+      "id": "dashboard-learning-positive-basic__small",
+      "sha256": "e7c97d9858b06f618f612b5f84d703746a95b6e668e95e1548f80f77106c2a6e",
+      "source_path": "test/visual/candidates/dashboard-learning-positive-basic__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 83568,
+      "id": "dashboard-learning-positive-basic__standard",
+      "sha256": "3c3a5cb05651ee78a030d4c1d88808c93ab5ec4addfc2ec901371f2165f7299c",
+      "source_path": "test/visual/candidates/dashboard-learning-positive-basic__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 98729,
+      "id": "dashboard-learning-preference-review-one__large",
+      "sha256": "12ffa19d144cf0c6aed507cbc97b23ea3c4f5224480cfcb4cfce9cbfccb546ec",
+      "source_path": "test/visual/candidates/dashboard-learning-preference-review-one__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52432,
+      "id": "dashboard-learning-preference-review-one__small",
+      "sha256": "e7c97d9858b06f618f612b5f84d703746a95b6e668e95e1548f80f77106c2a6e",
+      "source_path": "test/visual/candidates/dashboard-learning-preference-review-one__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 85670,
+      "id": "dashboard-learning-preference-review-one__standard",
+      "sha256": "857aa34b500b736060e012e47b66460d3cd42f096b6a2ad7609c201f1e1ebb63",
+      "source_path": "test/visual/candidates/dashboard-learning-preference-review-one__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73238,
+      "id": "dashboard-livingPriorities-guardian__large",
+      "sha256": "752c3839a567fb1352cbd294135b10a4fc1340e0bf549209e90a40fe8bca4d5d",
+      "source_path": "test/visual/candidates/dashboard-livingPriorities-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54089,
+      "id": "dashboard-livingPriorities-guardian__small",
+      "sha256": "ebbd88e8e7e1bee01c2182243896e1a2669c5c1ebadba722db2f21f83e3480bd",
+      "source_path": "test/visual/candidates/dashboard-livingPriorities-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 71455,
+      "id": "dashboard-livingPriorities-guardian__standard",
+      "sha256": "008fb58b1734900305e5d2af5a559bc12c85bf2a6f96e00dc97acfb4e64d5281",
+      "source_path": "test/visual/candidates/dashboard-livingPriorities-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104996,
+      "id": "dashboard-livingPriorities-seeker__large",
+      "sha256": "1dcaa0654d45a9661834e01cbcf65ec5309b1a5a18aed779843fcbb08c73858c",
+      "source_path": "test/visual/candidates/dashboard-livingPriorities-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53477,
+      "id": "dashboard-livingPriorities-seeker__small",
+      "sha256": "220923522fbf20d4b634960b4d465be7c56dabf5793cb6dcfd38074a6fe0c98c",
+      "source_path": "test/visual/candidates/dashboard-livingPriorities-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 88930,
+      "id": "dashboard-livingPriorities-seeker__standard",
+      "sha256": "d1b3818ae469caa43f8ee941d549bd71b810fa5990fdee01530089329ab93f39",
+      "source_path": "test/visual/candidates/dashboard-livingPriorities-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73163,
+      "id": "dashboard-nowJourneyYou-guardian__large",
+      "sha256": "98d2961b66932455d0d6c1c1e5b06939f6c3dd94387cf745dc4800d541460d98",
+      "source_path": "test/visual/candidates/dashboard-nowJourneyYou-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53169,
+      "id": "dashboard-nowJourneyYou-guardian__small",
+      "sha256": "479b3824b5d482f1dda81a4f2bcd02255bdb0c30adb83361e4c15cfb00711044",
+      "source_path": "test/visual/candidates/dashboard-nowJourneyYou-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 71810,
+      "id": "dashboard-nowJourneyYou-guardian__standard",
+      "sha256": "c7a0278fe86ca4103278cb413868c47a3ea4deabbf808f36ac1d2f8ce5270622",
+      "source_path": "test/visual/candidates/dashboard-nowJourneyYou-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 98352,
+      "id": "dashboard-nowJourneyYou-seeker__large",
+      "sha256": "60507fb3fa2b345ab4af5b409a031bada1aefd5751f4408df8371101c2826ad5",
+      "source_path": "test/visual/candidates/dashboard-nowJourneyYou-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52157,
+      "id": "dashboard-nowJourneyYou-seeker__small",
+      "sha256": "728ee072f7034962158a6bf6fd504fa9e37aca024137596038642ecfd85ccd65",
+      "source_path": "test/visual/candidates/dashboard-nowJourneyYou-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 82358,
+      "id": "dashboard-nowJourneyYou-seeker__standard",
+      "sha256": "8d2b9387193b3ad99d32fe5dec01b0580d2d25183cd2627f03dfca2326368691",
+      "source_path": "test/visual/candidates/dashboard-nowJourneyYou-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 71314,
+      "id": "dashboard-progressStory-guardian__large",
+      "sha256": "2375f58c9cc328ff662e2beb3566baf538cd1043538d16ed0ff76600b38fcfe7",
+      "source_path": "test/visual/candidates/dashboard-progressStory-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 57781,
+      "id": "dashboard-progressStory-guardian__small",
+      "sha256": "9892fc4f329aab0c22a0d172eef407141a9de07194643f70e8814f5dd14c9a79",
+      "source_path": "test/visual/candidates/dashboard-progressStory-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 68332,
+      "id": "dashboard-progressStory-guardian__standard",
+      "sha256": "b8f1454027f17668c5cb721fd02918617da9f26171f59176ada4884774412cd7",
+      "source_path": "test/visual/candidates/dashboard-progressStory-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 97963,
+      "id": "dashboard-progressStory-seeker__large",
+      "sha256": "f2fd1be50ebf23fd45eecbdfb540a9e06c355f9d04a4a7bb1b0d838f75e4abf6",
+      "source_path": "test/visual/candidates/dashboard-progressStory-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 57079,
+      "id": "dashboard-progressStory-seeker__small",
+      "sha256": "eecaa504f621062f657cbd68dc38280ed1d886c9be21a86b773037d67ee15f33",
+      "source_path": "test/visual/candidates/dashboard-progressStory-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 91009,
+      "id": "dashboard-progressStory-seeker__standard",
+      "sha256": "27b3428fc0f71b43030802eff640062be4834658afd62bd4996ece318c6c45cd",
+      "source_path": "test/visual/candidates/dashboard-progressStory-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 113457,
+      "id": "dashboard-sectionedCards-guardian__large",
+      "sha256": "8c1fcaca068a948dbaf6cc1116f14f93848c5b29b3d8f243425f19b69b493e1c",
+      "source_path": "test/visual/candidates/dashboard-sectionedCards-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 64961,
+      "id": "dashboard-sectionedCards-guardian__small",
+      "sha256": "c9d7b406d84e19232a09a311e26d1b7a60f3afa1c1de80fb84e50c6effef78af",
+      "source_path": "test/visual/candidates/dashboard-sectionedCards-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 110567,
+      "id": "dashboard-sectionedCards-guardian__standard",
+      "sha256": "42e77c7e0e3b8258f852f5e08c9a859a0f3351e13452b244c7e62f2a3069e37d",
+      "source_path": "test/visual/candidates/dashboard-sectionedCards-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 111604,
+      "id": "dashboard-sectionedCards-seeker__large",
+      "sha256": "dd235f712e4dd579f54018c4c53321675cde71c2736446f6829623e9f84b506f",
+      "source_path": "test/visual/candidates/dashboard-sectionedCards-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 58296,
+      "id": "dashboard-sectionedCards-seeker__small",
+      "sha256": "2cea3189e6958b87c2b2ce0d4a31a1d069eb7e0e0756e517d98d04cabc053f19",
+      "source_path": "test/visual/candidates/dashboard-sectionedCards-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90540,
+      "id": "dashboard-sectionedCards-seeker__standard",
+      "sha256": "06f2a93004addefa1ca01a0ea7356a82486e958e13348bb674ce08f39a04d89e",
+      "source_path": "test/visual/candidates/dashboard-sectionedCards-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 123039,
+      "id": "dashboard-sectionedCompact-guardian__large",
+      "sha256": "d95da8d30141c07785d732b27b2e041d0b7303d776e2b33f6bd8d0da6571d732",
+      "source_path": "test/visual/candidates/dashboard-sectionedCompact-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 69901,
+      "id": "dashboard-sectionedCompact-guardian__small",
+      "sha256": "fc535d80877e718726848765a77760eef08865ad93af9c34666aa627a99e2540",
+      "source_path": "test/visual/candidates/dashboard-sectionedCompact-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 115649,
+      "id": "dashboard-sectionedCompact-guardian__standard",
+      "sha256": "ef0b27532f030df38948ed4676a3564e13524e5b06614afe6bbc267492403c50",
+      "source_path": "test/visual/candidates/dashboard-sectionedCompact-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 112801,
+      "id": "dashboard-sectionedCompact-seeker__large",
+      "sha256": "faf8f01292bd37bb3e7308e118667f951cd6653f39f197df73031265e9a6b46a",
+      "source_path": "test/visual/candidates/dashboard-sectionedCompact-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 63876,
+      "id": "dashboard-sectionedCompact-seeker__small",
+      "sha256": "dc6f69acc42871c6c012535392e6eca25d77dfc16996413550df6ad6a27aec8d",
+      "source_path": "test/visual/candidates/dashboard-sectionedCompact-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99356,
+      "id": "dashboard-sectionedCompact-seeker__standard",
+      "sha256": "a9049994de3f89d3cc40bcfbb7bbee78b1f3d39a5f3d9816a41e53fc6df5fc54",
+      "source_path": "test/visual/candidates/dashboard-sectionedCompact-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 116584,
+      "id": "dashboard-sectionedGuided-guardian__large",
+      "sha256": "874f0c2887bd3d807a4e0e862b23d59393fcfe302fb9c80b8da6e726912bf829",
+      "source_path": "test/visual/candidates/dashboard-sectionedGuided-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 63457,
+      "id": "dashboard-sectionedGuided-guardian__small",
+      "sha256": "ba1650da3f21fc7eb6d30c4726f7259e8e3da31b59f707194a81b147382bbdc5",
+      "source_path": "test/visual/candidates/dashboard-sectionedGuided-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 112150,
+      "id": "dashboard-sectionedGuided-guardian__standard",
+      "sha256": "83886f15adc8ba1134940dc1f2f3e4a01bae0ae76aeed14fd6171f3cf1720d24",
+      "source_path": "test/visual/candidates/dashboard-sectionedGuided-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 116938,
+      "id": "dashboard-sectionedGuided-seeker__large",
+      "sha256": "ae0c214ce35cc5d2c7d350eb33045d5b2b1a593410ce86885b09953830d37fb9",
+      "source_path": "test/visual/candidates/dashboard-sectionedGuided-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 59612,
+      "id": "dashboard-sectionedGuided-seeker__small",
+      "sha256": "12bdf3be2bb9b99d59514fb07ed95ab2025d8c0ea42e73fdf75fbe2261e0656d",
+      "source_path": "test/visual/candidates/dashboard-sectionedGuided-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104766,
+      "id": "dashboard-sectionedGuided-seeker__standard",
+      "sha256": "11703e224e263724459e122f63359779ccc9b80387e0cb1e82e130d1c1def657",
+      "source_path": "test/visual/candidates/dashboard-sectionedGuided-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 111815,
+      "id": "dashboard-sectionedPriority-guardian__large",
+      "sha256": "ec5e0437c4682dd4271b1de425852a89cc63f7d2c73aec9d64a61c8784a54ef4",
+      "source_path": "test/visual/candidates/dashboard-sectionedPriority-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 59083,
+      "id": "dashboard-sectionedPriority-guardian__small",
+      "sha256": "9711bc297708b4a38840182ee616471423f0bb4420cacc2f6486f4191f512674",
+      "source_path": "test/visual/candidates/dashboard-sectionedPriority-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 101487,
+      "id": "dashboard-sectionedPriority-guardian__standard",
+      "sha256": "243f9ac7e9609ff367b5372e9188fd92b0e27851626df09cc93e842008565977",
+      "source_path": "test/visual/candidates/dashboard-sectionedPriority-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99728,
+      "id": "dashboard-sectionedPriority-seeker__large",
+      "sha256": "c827d6d1c820f40dc5cbdc01ccb451d8386aabbe86e30b07d78634f26a459a33",
+      "source_path": "test/visual/candidates/dashboard-sectionedPriority-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 53972,
+      "id": "dashboard-sectionedPriority-seeker__small",
+      "sha256": "f5f03b960f1752d6c9b385292560b1a1acc399d8b0e7b09e1ddf8decc6d3ed96",
+      "source_path": "test/visual/candidates/dashboard-sectionedPriority-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 93739,
+      "id": "dashboard-sectionedPriority-seeker__standard",
+      "sha256": "066e5b96138b1caf1cf65abc04390b466c85f88ec959844dd7b71651579e47e7",
+      "source_path": "test/visual/candidates/dashboard-sectionedPriority-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 109312,
+      "id": "dashboard-sectionedProgress-guardian__large",
+      "sha256": "9562d85b84858e3303aa7447df1c8c8be9c55bb0fd500b6b4fe7423d9bfd36ed",
+      "source_path": "test/visual/candidates/dashboard-sectionedProgress-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 60376,
+      "id": "dashboard-sectionedProgress-guardian__small",
+      "sha256": "aea2b7318ac792cd43ab3a74f819cde7dd06ca30b930a691157ffa9c3cb61874",
+      "source_path": "test/visual/candidates/dashboard-sectionedProgress-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 99998,
+      "id": "dashboard-sectionedProgress-guardian__standard",
+      "sha256": "341672a0f98eb33385ecc7a557b80df46346d90992e103ce18b3fb9d4c485c70",
+      "source_path": "test/visual/candidates/dashboard-sectionedProgress-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104065,
+      "id": "dashboard-sectionedProgress-seeker__large",
+      "sha256": "776db40c7bd563bf5c0a12dcc9270a36988692e48057e3d021a5c2b01ab6af8e",
+      "source_path": "test/visual/candidates/dashboard-sectionedProgress-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 55975,
+      "id": "dashboard-sectionedProgress-seeker__small",
+      "sha256": "ef58531c62f59f5f279ad989f2798708b6d428de125a92e2224f97eb548946e5",
+      "source_path": "test/visual/candidates/dashboard-sectionedProgress-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 92056,
+      "id": "dashboard-sectionedProgress-seeker__standard",
+      "sha256": "fff18eb22d80604926e52d49cba54ba77c6debce3ce382e69096231ecb15470b",
+      "source_path": "test/visual/candidates/dashboard-sectionedProgress-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 112750,
+      "id": "dashboard-sectionedStatus-guardian__large",
+      "sha256": "0c93d171a106fcad148ee65e7782ea1874cc4d7c9be4f1c236bb7dcb3a8f5cc7",
+      "source_path": "test/visual/candidates/dashboard-sectionedStatus-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 59861,
+      "id": "dashboard-sectionedStatus-guardian__small",
+      "sha256": "402497a4d0291eaeeab335b3fcf814333b815a5f94f890e76c92b9196722c96e",
+      "source_path": "test/visual/candidates/dashboard-sectionedStatus-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 102208,
+      "id": "dashboard-sectionedStatus-guardian__standard",
+      "sha256": "cabf2c3cd7f53999349f9272cd76c2b21d2ca9ee7eb1a9ca5e767ad18206da62",
+      "source_path": "test/visual/candidates/dashboard-sectionedStatus-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 109017,
+      "id": "dashboard-sectionedStatus-seeker__large",
+      "sha256": "94355b318d4d5f3a87edc5735c9855620d23594a11eed71084f6222210736d4e",
+      "source_path": "test/visual/candidates/dashboard-sectionedStatus-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56840,
+      "id": "dashboard-sectionedStatus-seeker__small",
+      "sha256": "36454233e66b88edcd37dd5cabf0610f7882ceafef973d58c7288cc7163cb062",
+      "source_path": "test/visual/candidates/dashboard-sectionedStatus-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 96092,
+      "id": "dashboard-sectionedStatus-seeker__standard",
+      "sha256": "1f68c42979bf43b50e044ed171ed2d5aa900aeea21a5dab915b9004c874b5f1a",
+      "source_path": "test/visual/candidates/dashboard-sectionedStatus-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 64420,
+      "id": "dashboard-zyraCompass-guardian__large",
+      "sha256": "65456a59914d012ef35c5500c7bb4542fe936d23ef3736e28675982dba3b86a8",
+      "source_path": "test/visual/candidates/dashboard-zyraCompass-guardian__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 52276,
+      "id": "dashboard-zyraCompass-guardian__small",
+      "sha256": "9e84eea58435a72c32b3790bcf5e21f586d5bd0c36470048c56d3ec1c443fa91",
+      "source_path": "test/visual/candidates/dashboard-zyraCompass-guardian__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 62493,
+      "id": "dashboard-zyraCompass-guardian__standard",
+      "sha256": "a74d00e8b1a16438147ab5247acf548799c540ab7cb094406b1a3cfc1b9c1a0b",
+      "source_path": "test/visual/candidates/dashboard-zyraCompass-guardian__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 102115,
+      "id": "dashboard-zyraCompass-seeker__large",
+      "sha256": "18c9db592877f8c1451a04ecc313b674abfa5a9e38376ed62508e4c7b468482e",
+      "source_path": "test/visual/candidates/dashboard-zyraCompass-seeker__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54032,
+      "id": "dashboard-zyraCompass-seeker__small",
+      "sha256": "6db86505a31ad850c8e65f88b584429fe08ef7aa2116395fb59c50562af9acb4",
+      "source_path": "test/visual/candidates/dashboard-zyraCompass-seeker__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 84635,
+      "id": "dashboard-zyraCompass-seeker__standard",
+      "sha256": "876c54513b98e1d5bb2045c7e520fd0e49fbd7316e5d7c66ae0c62fd0e316594",
+      "source_path": "test/visual/candidates/dashboard-zyraCompass-seeker__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 43715,
+      "id": "guardian-network-locked__large",
+      "sha256": "35555fdf38dbb055a67cd4d21ec7b56c4afd0ec72a7eff3469a745d56c04b20a",
+      "source_path": "test/visual/candidates/guardian-network-locked__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 37921,
+      "id": "guardian-network-locked__small",
+      "sha256": "1e992451fa7f558e764ac871ad947d2fdee138f30208a8d125a6069d8ac13ba4",
+      "source_path": "test/visual/candidates/guardian-network-locked__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 41872,
+      "id": "guardian-network-locked__standard",
+      "sha256": "9d9083ff348948baafea0bf4c9941cc558963767597f9d6c9892bca24c07d364",
+      "source_path": "test/visual/candidates/guardian-network-locked__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 55248,
+      "id": "guardian-network-locked__standard__text-130",
+      "sha256": "0daa2f2f1199db178e2823e94208ae64fa1732ef0be93c9d189dada3b2131656",
+      "source_path": "test/visual/candidates/guardian-network-locked__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 39079,
+      "id": "guardian-network-unavailable__large",
+      "sha256": "1c6d5dc7f466532fb8b0ad3d3d212c90e1cd18fd27050be7a807b407cd13890d",
+      "source_path": "test/visual/candidates/guardian-network-unavailable__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 32870,
+      "id": "guardian-network-unavailable__small",
+      "sha256": "4bccc7487cca33474f3f79034c9ec5dfac6658dd6d812b30b34aaf9262805eb3",
+      "source_path": "test/visual/candidates/guardian-network-unavailable__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 37447,
+      "id": "guardian-network-unavailable__standard",
+      "sha256": "d3ce53c7a6d5e663fe1ff8488f93c7f6915ec143735ffe2b4473f38a7110475d",
+      "source_path": "test/visual/candidates/guardian-network-unavailable__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 38409,
+      "id": "guardian-network-unlinked__large",
+      "sha256": "ad4413f1da8e73e49ff15d4220cbe7de196be656d466ef82c4fab8692c35b8d5",
+      "source_path": "test/visual/candidates/guardian-network-unlinked__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 32511,
+      "id": "guardian-network-unlinked__small",
+      "sha256": "7b5eac5e94786131404e4c8e6b6836400785e368367708ec7043aca5d2ddbb22",
+      "source_path": "test/visual/candidates/guardian-network-unlinked__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 36364,
+      "id": "guardian-network-unlinked__standard",
+      "sha256": "ec8734af4514864e70a67cf728a0604e30dcbb8efba33cb7a8cc5cddf89f4100",
+      "source_path": "test/visual/candidates/guardian-network-unlinked__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 40614,
+      "id": "guardian-slider-six-seekers__large",
+      "sha256": "2a97127387d77bbce484743b18bbad66c7f929d26a17f9372cb38ee63206b2e5",
+      "source_path": "test/visual/candidates/guardian-slider-six-seekers__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 34666,
+      "id": "guardian-slider-six-seekers__small",
+      "sha256": "a9c1116ae76efdcf9c3af239dfadafda657e14de54f3aad8cd0d4f043e941070",
+      "source_path": "test/visual/candidates/guardian-slider-six-seekers__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 39082,
+      "id": "guardian-slider-six-seekers__standard",
+      "sha256": "5594cf3d7bf1cb517a748fcb08b662a9a2dd9a05b4323a5767cc793edfad861e",
+      "source_path": "test/visual/candidates/guardian-slider-six-seekers__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 47642,
+      "id": "guardian-slider-six-seekers__standard__text-130",
+      "sha256": "189212198ea143e308bd515fa2f612967b1d4b876c4dd75549b960d6923ae98d",
+      "source_path": "test/visual/candidates/guardian-slider-six-seekers__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 27391,
+      "id": "notifications-empty__large",
+      "sha256": "87ee2c7a089cff96a048330a6162e91b95dfc93b0491d5e2dd558a3299990b36",
+      "source_path": "test/visual/candidates/notifications-empty__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 21143,
+      "id": "notifications-empty__small",
+      "sha256": "5d4a3fb7e39bc8d85094276f4442c4a949ea714578153f7526974776d160d7df",
+      "source_path": "test/visual/candidates/notifications-empty__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 25457,
+      "id": "notifications-empty__standard",
+      "sha256": "ca583c3f1f42980081889c6e2e86ee7376d7d88ebd286a3cd169b0a60b9562a2",
+      "source_path": "test/visual/candidates/notifications-empty__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 29878,
+      "id": "notifications-empty__standard__text-130",
+      "sha256": "d24afd8ae79444a5b201f7b2874ddc3861b0f4e38b1c686df82f9d6961bf17b7",
+      "source_path": "test/visual/candidates/notifications-empty__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 32394,
+      "id": "notifications-error__large",
+      "sha256": "420440777e16982c743d48ea927987cc1acd4a412ba6847c692249149fcca6b2",
+      "source_path": "test/visual/candidates/notifications-error__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 26057,
+      "id": "notifications-error__small",
+      "sha256": "fe6e2cc83af7ca07040b10e838269f14aaa98aeb5076a524bd8ec9ae61117623",
+      "source_path": "test/visual/candidates/notifications-error__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 30513,
+      "id": "notifications-error__standard",
+      "sha256": "601cb6677b2d65218668681fb2ea5ee2d8f4ee806ababeb61b5221590b2a8633",
+      "source_path": "test/visual/candidates/notifications-error__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 65576,
+      "id": "onboarding-intro__large",
+      "sha256": "d799ac3348b5eab6a3519e6369345a353f1cd0f7b3c21252838b26295f2e4080",
+      "source_path": "test/visual/candidates/onboarding-intro__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 57335,
+      "id": "onboarding-intro__small",
+      "sha256": "ce531482e01a7cf1119fdfad19e8e9c10a47bdfeb34bad7598ebcd5b7f55f3b8",
+      "source_path": "test/visual/candidates/onboarding-intro__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 64047,
+      "id": "onboarding-intro__standard",
+      "sha256": "4949c830e75f74c02df1dd6bee6ccf664017ea77de6d1816481f82521f40a1ef",
+      "source_path": "test/visual/candidates/onboarding-intro__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 81215,
+      "id": "onboarding-intro__standard__text-130",
+      "sha256": "fb8453d12512c41dcb138ee3da89eccdcfc0cdeee2cbfa93b5c03fc04287d913",
+      "source_path": "test/visual/candidates/onboarding-intro__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73684,
+      "id": "seeker-dashboard-home-lower-levels__large",
+      "sha256": "fb6377df6d50d4ed4d37bd6095db801f9fddff18fa7015d02db71a22f17a457d",
+      "source_path": "test/visual/candidates/seeker-dashboard-home-lower-levels__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 55853,
+      "id": "seeker-dashboard-home-lower-levels__small",
+      "sha256": "4117e33db40b2ac3f58316d42387bcbcd8a68e183dd6b820383ad72ce5d878bd",
+      "source_path": "test/visual/candidates/seeker-dashboard-home-lower-levels__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 69841,
+      "id": "seeker-dashboard-home-lower-levels__standard",
+      "sha256": "1dc2ed90bae987aaca8b54feba4420416a50a1c2f950635b48f908b59cfb7260",
+      "source_path": "test/visual/candidates/seeker-dashboard-home-lower-levels__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 78725,
+      "id": "seeker-dashboard-home-lower-levels__standard__text-130",
+      "sha256": "ac0ab320a983aef33e5493fb23b9286a8ce9bc72f7d58b94ea62c086e7e7e1be",
+      "source_path": "test/visual/candidates/seeker-dashboard-home-lower-levels__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90199,
+      "id": "seeker-dashboard-resolved-actions__large",
+      "sha256": "e09bf9c4c3a13471a77727d8982f615791a77a833e217e9416b679b6cd701e92",
+      "source_path": "test/visual/candidates/seeker-dashboard-resolved-actions__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 56874,
+      "id": "seeker-dashboard-resolved-actions__small",
+      "sha256": "3023fd0c422ffe5b2ee2d0e72ca6e37fc1686215f288f2dd4857ae15da85f0c2",
+      "source_path": "test/visual/candidates/seeker-dashboard-resolved-actions__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 85988,
+      "id": "seeker-dashboard-resolved-actions__standard",
+      "sha256": "9557a4780f9c25595c432c92f522156cfae373698d863394fc6b3e08c11e9ff9",
+      "source_path": "test/visual/candidates/seeker-dashboard-resolved-actions__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 94875,
+      "id": "seeker-dashboard-resolved-actions__standard__text-130",
+      "sha256": "a5f696deda6f919e65aca46196e31b39ce4d8d130a5a613d5398bff7fef66370",
+      "source_path": "test/visual/candidates/seeker-dashboard-resolved-actions__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90300,
+      "id": "seeker-dashboard-unread__large",
+      "sha256": "9bfe25d10a917fb32195e0c59b643708068eac43afe183b623757762e76df59a",
+      "source_path": "test/visual/candidates/seeker-dashboard-unread__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 54865,
+      "id": "seeker-dashboard-unread__small",
+      "sha256": "c65c3a9c04b2ef788af067d30dc38f4589ca86cfcd1653112cf9d504ec4a4ad7",
+      "source_path": "test/visual/candidates/seeker-dashboard-unread__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 83593,
+      "id": "seeker-dashboard-unread__standard",
+      "sha256": "8deac3a43c97933f4acd534add5832793b6276f20c484be6cf61a7b2f6289ab4",
+      "source_path": "test/visual/candidates/seeker-dashboard-unread__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 90627,
+      "id": "seeker-dashboard-unread__standard__text-130",
+      "sha256": "bbb3583db9c47a767e4b7fbb3f81e27bceeba7344d3d57a2dfc11b0007337ec7",
+      "source_path": "test/visual/candidates/seeker-dashboard-unread__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 42098,
+      "id": "shared-empty-long-copy__large",
+      "sha256": "a4cea6940aa1465dc16946137096888f4805b270844470e769a5a1c8450130a8",
+      "source_path": "test/visual/candidates/shared-empty-long-copy__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 36913,
+      "id": "shared-empty-long-copy__small",
+      "sha256": "c202f26212a97ce23d6299bf9705063b13287785994792346a1291c15f6752f3",
+      "source_path": "test/visual/candidates/shared-empty-long-copy__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 40249,
+      "id": "shared-empty-long-copy__standard",
+      "sha256": "7a08c20fe415a4aed4549a641b403ab4e53808420877f09b0feb170f4953eab0",
+      "source_path": "test/visual/candidates/shared-empty-long-copy__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 50176,
+      "id": "shared-empty-long-copy__standard__text-130",
+      "sha256": "6bb171f20f6eeec2bd61a5620301a7695ca2fe5944242eb8ae877e7a2cf4a9aa",
+      "source_path": "test/visual/candidates/shared-empty-long-copy__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 38466,
+      "id": "shared-error__large",
+      "sha256": "aadcf01264af90018bf64b36c632a5bf17899b913534ca901de1106447e87eb9",
+      "source_path": "test/visual/candidates/shared-error__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 33166,
+      "id": "shared-error__small",
+      "sha256": "7f0d04fc67bbf5eaa2b62dc9e1a74ab5d5b5e1800549bf161e06bab16997a6d9",
+      "source_path": "test/visual/candidates/shared-error__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 37639,
+      "id": "shared-error__standard",
+      "sha256": "af353d4d89e496ad33bd25ca3496d8c6a9c9e9c71360c621d4b89f9963e46121",
+      "source_path": "test/visual/candidates/shared-error__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 44472,
+      "id": "shared-error__standard__text-130",
+      "sha256": "69ba0d0a6aec443e8576789f8d1f428bad076c2eb8f9ce5dacd7f2021f21b567",
+      "source_path": "test/visual/candidates/shared-error__standard__text-130.png"
+    },
+    {
+      "approved": false,
+      "bytes": 17082,
+      "id": "shared-loading__large",
+      "sha256": "8d39c73c22660191e1503afdc571ee8f25cb20562d1253705f4abb7f8a7ea6df",
+      "source_path": "test/visual/candidates/shared-loading__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 11325,
+      "id": "shared-loading__small",
+      "sha256": "9cde0d5e3eb1b6291f2eed96fbc7acf931cf50f62c9f9ca585b0732be0b5d0fe",
+      "source_path": "test/visual/candidates/shared-loading__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 15240,
+      "id": "shared-loading__standard",
+      "sha256": "a9f61fabf24c06d02f040336f35ca6b2e761b08d881d59b38c28fd2c54b59776",
+      "source_path": "test/visual/candidates/shared-loading__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 122364,
+      "id": "style-accentRing__large",
+      "sha256": "a7f1106841eb574fc1f27dd78a513a0d89b0256b203d002eedf4e74020a15988",
+      "source_path": "test/visual/candidates/style-accentRing__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73224,
+      "id": "style-accentRing__small",
+      "sha256": "98db57edb4837be1d1c8a1491b1a781746c76a67c6b0f2655ab508ee8d1daecf",
+      "source_path": "test/visual/candidates/style-accentRing__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104822,
+      "id": "style-accentRing__standard",
+      "sha256": "cbd1d873000b23a994723936f3d90b3bab6a74c3b4501b1f7a580e5417ca2116",
+      "source_path": "test/visual/candidates/style-accentRing__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 122110,
+      "id": "style-floatingGlass__large",
+      "sha256": "6ed9c8a64b1c8eb39d9f625d7b5e6f699098a87bac65805ca52fdc3aa846e780",
+      "source_path": "test/visual/candidates/style-floatingGlass__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72956,
+      "id": "style-floatingGlass__small",
+      "sha256": "71dfba0dd40beccc8005d8c40288a4205b581e0b3583fb9c58cef427563b604a",
+      "source_path": "test/visual/candidates/style-floatingGlass__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104552,
+      "id": "style-floatingGlass__standard",
+      "sha256": "f740101ab0ad99d9d2e3910fbdbcafbaccde52ed27277962167748e301d0670c",
+      "source_path": "test/visual/candidates/style-floatingGlass__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 121087,
+      "id": "style-goldUnderline__large",
+      "sha256": "ba7df3143bd884cdd3d3d3086e0a0acdfe80962fbc3596625bb1abf0ae461b96",
+      "source_path": "test/visual/candidates/style-goldUnderline__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72004,
+      "id": "style-goldUnderline__small",
+      "sha256": "0aa20f6139b6b3a1944dfc38a8da1b12a340bba6b08d1a8133e6c944ddd116a1",
+      "source_path": "test/visual/candidates/style-goldUnderline__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 103485,
+      "id": "style-goldUnderline__standard",
+      "sha256": "e1c697e97f1b5311014ec60a6a9316564fdb4cea0028db1660d05cee2b16eed7",
+      "source_path": "test/visual/candidates/style-goldUnderline__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 121660,
+      "id": "style-labelledDock__large",
+      "sha256": "91641b0b6c16d70d20d37a1c319fb3d8fd4d1e4eab503995d85f1798ca6accc8",
+      "source_path": "test/visual/candidates/style-labelledDock__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72002,
+      "id": "style-labelledDock__small",
+      "sha256": "548445feda2f3e734d31084874dc1c0c5719e97d8669bdb74fb323a75aaba7f8",
+      "source_path": "test/visual/candidates/style-labelledDock__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104008,
+      "id": "style-labelledDock__standard",
+      "sha256": "27a340e457c636893bb5cd183789c3eae761973fcd3a97b4e7f0ef2d57130e40",
+      "source_path": "test/visual/candidates/style-labelledDock__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 121257,
+      "id": "style-quietDot__large",
+      "sha256": "d5ec1338f03b7a9972802764e709a5e39388ef62293ed3bc7a354283448dc5e6",
+      "source_path": "test/visual/candidates/style-quietDot__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72317,
+      "id": "style-quietDot__small",
+      "sha256": "5c216b2758612721bd160e8b05daa2c840b2f002496bdcf14413aba763e09b22",
+      "source_path": "test/visual/candidates/style-quietDot__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 103658,
+      "id": "style-quietDot__standard",
+      "sha256": "e20fa704e6aca83169c4434abf556a72648e3b8bf8243f9c1117f523f9010e09",
+      "source_path": "test/visual/candidates/style-quietDot__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 122148,
+      "id": "style-raisedCapsule__large",
+      "sha256": "10dc3c1c1630d27de3908f2f0efe1869cb822b3499be92c79dd9c82c7d6441da",
+      "source_path": "test/visual/candidates/style-raisedCapsule__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 72892,
+      "id": "style-raisedCapsule__small",
+      "sha256": "a102c4cfe72520ec42c8727fc735b85ee2233070be61d50e1cb640f78fee0362",
+      "source_path": "test/visual/candidates/style-raisedCapsule__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104581,
+      "id": "style-raisedCapsule__standard",
+      "sha256": "8c03ff34792844a69d3e53b37adac558bef0db1dad865bd140b0df7c7623cc97",
+      "source_path": "test/visual/candidates/style-raisedCapsule__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 122260,
+      "id": "style-softTiles__large",
+      "sha256": "8299965cde71237885a43114d3958fb3c042be5b0034b06dfc2ef81334731b7d",
+      "source_path": "test/visual/candidates/style-softTiles__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 73120,
+      "id": "style-softTiles__small",
+      "sha256": "5e807a3b64bd5b8aa6f5f4eeced403c99858b7813c1b01afc0644bb85f660c73",
+      "source_path": "test/visual/candidates/style-softTiles__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 104587,
+      "id": "style-softTiles__standard",
+      "sha256": "322bb7b7121f67da3fcaea5f0b3e4cc714bc1fe637c03ce2673904a1f69b3bf1",
+      "source_path": "test/visual/candidates/style-softTiles__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 130146,
+      "id": "subscription-upgrade__large",
+      "sha256": "727785c3573ddc1e5794c17f85b800f2023afb366900e24403bf38a603d7b0c3",
+      "source_path": "test/visual/candidates/subscription-upgrade__large.png"
+    },
+    {
+      "approved": false,
+      "bytes": 66897,
+      "id": "subscription-upgrade__small",
+      "sha256": "586a01ec4af3f9733c03a4963979b89bdfa097c91b65f764905cac0e695b4d45",
+      "source_path": "test/visual/candidates/subscription-upgrade__small.png"
+    },
+    {
+      "approved": false,
+      "bytes": 112798,
+      "id": "subscription-upgrade__standard",
+      "sha256": "636e4304189ce63d92ac3812e2acb2e35d1ae6d3cc5393f843ecda8474b170b1",
+      "source_path": "test/visual/candidates/subscription-upgrade__standard.png"
+    },
+    {
+      "approved": false,
+      "bytes": 120398,
+      "id": "subscription-upgrade__standard__text-130",
+      "sha256": "ef57f0886db5206e195d7ecd0077c029239b69fec110988b50e4cda05fbd6e9a",
+      "source_path": "test/visual/candidates/subscription-upgrade__standard__text-130.png"
+    }
+  ],
+  "source_fingerprint": "5b232a498251d91f",
+  "status": "candidate-only-not-authoritative"
+}

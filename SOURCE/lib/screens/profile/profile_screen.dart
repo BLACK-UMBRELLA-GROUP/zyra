@@ -1,23 +1,43 @@
 // Profile tab — APP/Profiles/Script/Script_V1.md: no white content
 // containers, info sits directly on the page background, white section
-// headings, plan badge (ZYRA Basic / ZYRA One) replaces generic
+// headings, membership status replaces the generic
 // "Member" label. Includes the Passed/Saved/Considered review lists
 // (DR-ZYRA-099 labels, 2026-07-25) per the same spec's Connection
 // Profile Expansion section (kept as a simple list here rather than
 // the full reused-Browse-viewer expansion, which is a larger follow-up).
 
 import 'package:flutter/material.dart';
+import '../../data/zyra_membership_catalog.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../models/zyra_gender.dart';
+import '../../dev/zyra_dev_local_preview.dart';
 import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_account_switch_sheet.dart';
+import '../../widgets/zyra_one_profile_avatar.dart';
+import '../../widgets/zyra_profile_membership_row.dart';
+import '../../services/zyra_app_invite.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_promotion_engine.dart';
+import '../../services/zyra_unlock_service.dart';
+import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-// Blocked users, Help, Notifications, Privacy and Upgrade are all reached
+// Hidden Profiles, Help, Notifications, Privacy and Membership are all reached
 // through SettingsScreen now. Profile knows about Settings and nothing else.
 import '../settings/settings_screen.dart';
+import '../settings/help_support_screen.dart';
+import '../settings/personalisation_screen.dart';
+import '../subscription/upgrade_screen.dart';
 import '../welcome_screen.dart';
+import '../onboarding/account_path_overview_screen.dart';
+import '../wali/wali_home_shell.dart';
+import 'edit_photos_screen.dart';
 import 'edit_profile_screen.dart';
+import 'my_profile_preview_screen.dart';
+import 'past_journeys_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -27,10 +47,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  int? _standardUnlocks;
+  int? _plusUnlocks;
+
   @override
   void initState() {
     super.initState();
     AppState.instance.addListener(_onChange);
+    _loadUnlockBalances();
   }
 
   @override
@@ -41,26 +65,127 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _onChange() => setState(() {});
 
-  void _todo(BuildContext context, String what) => ScaffoldMessenger.of(
-    context,
-  ).showSnackBar(SnackBar(content: Text('$what — coming next.')));
+  Future<void> _loadUnlockBalances() async {
+    final balance = await ZyraUnlockService.balances();
+    if (!mounted) return;
+    setState(() {
+      _standardUnlocks = balance[UnlockTier.standard] ?? 0;
+      _plusUnlocks = balance[UnlockTier.plus] ?? 0;
+    });
+  }
 
-  /// PREVIEW — the Founder's stated highest priority for this page.
-  ///
-  /// NOT BUILT YET, and this is deliberately a stub rather than a
-  /// half-preview, because a preview that is only approximately right is
-  /// worse than none: the entire promise is "exactly what another Seeker
-  /// sees", and a version that quietly showed your own unlocked data back
-  /// to you would misrepresent what other people can actually see.
-  ///
-  /// Doing it properly means rendering the Browse card as a STRANGER sees
-  /// it — honouring unlock tier, gender rules and blocks — and the viewer
-  /// currently lives inside browse_screen.dart rather than as a reusable
-  /// widget. Extracting it is the real work, and it is its own piece.
-  void _preview(BuildContext context) =>
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile preview — building this next.')),
+  void _preview(BuildContext context) => Navigator.of(context).push(
+    PageRouteBuilder<void>(
+      opaque: false,
+      barrierColor: Colors.transparent,
+      transitionDuration: const Duration(milliseconds: 220),
+      reverseTransitionDuration: const Duration(milliseconds: 180),
+      pageBuilder: (_, animation, secondaryAnimation) =>
+          const MyProfilePreviewScreen(),
+      transitionsBuilder: (_, animation, secondaryAnimation, child) =>
+          FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutCubic,
+              reverseCurve: Curves.easeInCubic,
+            ),
+            child: child,
+          ),
+    ),
+  );
+
+  /// One authenticated identity can enter either account context. The
+  /// Founder preview performs the full local shell switch now; ordinary
+  /// accounts stay migration-gated until the server can express dual-role
+  /// ownership without relying on profiles.role.
+  Future<void> _switchAccount(BuildContext context) async {
+    // A previously rendered preview button can outlive its authorisation.
+    // Check current authority at entry and bind the picker to its owner.
+    if (!context.mounted ||
+        !ZyraDeveloperAccess.isMainAppFounderPreview ||
+        ZyraAccountState.isSigningOut ||
+        ModalRoute.of(context)?.isCurrent == false) {
+      return;
+    }
+    String? ownerId() {
+      try {
+        return ZyraAuth.currentUser?.id;
+      } catch (_) {
+        return null; // Local preview without a configured client.
+      }
+    }
+
+    final owner = ownerId();
+    final generation = ZyraAccountState.generation;
+    bool canContinue() =>
+        context.mounted &&
+        ZyraDeveloperAccess.isMainAppFounderPreview &&
+        !ZyraAccountState.isSigningOut &&
+        ZyraAccountState.generation == generation &&
+        ownerId() == owner &&
+        ModalRoute.of(context)?.isCurrent != false;
+
+    final founderPreview = ZyraDeveloperAccess.isMainAppFounderPreview;
+    final guardianOf = founderPreview
+        ? const <WaliLinkedPerson>[]
+        : await ZyraWaliLinkService.fetchLinkedPeople(asWali: true);
+    if (!context.mounted || !canContinue()) return;
+    final names = guardianOf.map((person) => person.firstName).join(' · ');
+    final selection = await showZyraAccountSwitchPage(
+      context: context,
+      options: [
+        ZyraAccountSwitchOption(
+          context: ZyraAccountContext.seeker,
+          title: 'Seeker Account',
+          subtitle: ZyraDevLocalPreview.seekerMembershipLabel,
+          icon: Icons.person_outline,
+          current: true,
+        ),
+        ZyraAccountSwitchOption(
+          context: ZyraAccountContext.guardian,
+          title: 'Guardian Account',
+          subtitle: founderPreview
+              ? ZyraDevLocalPreview.guardianMembershipLabel
+              : guardianOf.isEmpty
+              ? 'Set up separately · identity check reused'
+              : 'Supporting $names',
+          icon: Icons.shield_outlined,
+          actionLabel: !founderPreview && guardianOf.isEmpty
+              ? 'SET UP ›'
+              : 'SWITCH ›',
+        ),
+      ],
+    );
+    if (!context.mounted ||
+        !canContinue() ||
+        selection != ZyraAccountContext.guardian) {
+      return;
+    }
+
+    if (founderPreview) {
+      await ZyraDevLocalPreview.switchAccountContext(context, toGuardian: true);
+      return;
+    }
+
+    await ZyraPromotionEngine.instance.clearForAccountSwitch();
+    if (!context.mounted || !canContinue()) return;
+    await ZyraPromotionEngine.instance.initialize();
+    if (!context.mounted || !canContinue()) return;
+    if (guardianOf.isEmpty) {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => const GuardianOnboardingOverviewScreen(
+            migrationGatedPreview: true,
+          ),
+        ),
       );
+      return;
+    }
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const WaliHomeShell()),
+      (route) => false,
+    );
+  }
 
   // ── "IMPROVE YOUR PROFILE" — REMOVED 2026-08-07 ─────────────────────
   //
@@ -80,28 +205,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // than cosmetic completion — the Founder's own condition, and not
   // something a checklist of two items was ever going to do.
 
-  /// Membership, directly beneath Edit Photos / Edit Profile.
-  ///
-  /// MOVED 2026-08-07 (Founder: "move the membership status under edit
-  /// photo / edit profile"). It was under a YOUR PROFILE heading below
-  /// ABOUT ME, which put a fact about your account underneath facts about
-  /// you, several sections away from the actions it relates to. Upgrading
-  /// is what someone does after looking at what they can edit.
-  ///
-  /// The heading went with it. One row does not need a section, and
-  /// "YOUR PROFILE" above a subscription tier was never quite true.
+  /// Membership is the first account section beneath the personal header.
+  /// Compatibility follows it, then profile actions and About Me.
   ///
   /// "Member since" is still NOT here and is still not faked.
   /// `profiles.created_at` exists and IS selectable by the owner; AppState
   /// simply never loads it. One field plus one line in the session router,
   /// alongside `bio` and `surname_line`, and all three arrive together.
-  Widget _membershipRow(AppState state) => Padding(
-    padding: const EdgeInsets.only(top: 18),
-    child: _InfoRow(
-      label: 'Membership',
-      value: state.plan == ZyraPlan.one ? 'ZYRA One' : 'ZYRA Basic',
-    ),
-  );
+  Widget _membershipRow(BuildContext context, AppState state) =>
+      ZyraProfileMembershipRow(
+        key: const ValueKey('seeker-profile-membership'),
+        value: state.plan == ZyraPlan.one
+            ? ZyraMembershipCatalog.seekerOneTitle
+            : (ZyraDevLocalPreview.basicMembershipPreviewLabel(
+                    guardian: false,
+                  ) ??
+                  'No active membership'),
+        isOne: state.plan == ZyraPlan.one,
+        onTap: () => Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const UpgradeScreen())),
+      );
   Future<void> _signOut(BuildContext context) async {
     // Real sign-out (OA-102) — only meaningful once Supabase is
     // configured; no-ops harmlessly via ZyraAuth otherwise since
@@ -145,140 +269,259 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // instead of the neutral brand gradient — Blue for male, Pink for
       // female. Was previously hardcoded to the neutral gradient here;
       // see ZyraColors.genderGradient() doc comment.
-      decoration: BoxDecoration(
+      decoration: ZyraAppGoldDecoration(
         gradient: ZyraColors.genderGradient(state.gender),
       ),
       child: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(24, 20, 24, 100),
           children: [
-            Row(
-              children: [
-                ClipOval(
-                  child: state.photos.isNotEmpty
-                      ? ZyraProfileImage(
-                          state.photos.first,
-                          width: 64,
-                          height: 64,
-                        )
-                      : Container(
-                          width: 64,
-                          height: 64,
-                          color: ZyraColors.iconButtonBg,
-                          child: const Icon(
-                            Icons.person,
-                            color: Colors.white38,
-                            size: 30,
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final showSwitch = ZyraDeveloperAccess.isMainAppFounderPreview;
+                final fullName = state.fullName ?? 'Your Profile';
+                TextStyle measuredStyle(TextStyle style) {
+                  final inherited = DefaultTextStyle.of(
+                    context,
+                  ).style.merge(style);
+                  return MediaQuery.boldTextOf(context)
+                      ? inherited.copyWith(fontWeight: FontWeight.bold)
+                      : inherited;
+                }
+
+                bool nameFitsTwoLines(double width) {
+                  if (width <= 0) return false;
+                  final painter = TextPainter(
+                    text: TextSpan(
+                      text: fullName,
+                      style: measuredStyle(ZyraText.heading(size: 20)),
+                    ),
+                    textDirection: Directionality.of(context),
+                    textScaler: MediaQuery.textScalerOf(context),
+                    locale: Localizations.maybeLocaleOf(context),
+                    maxLines: 2,
+                    ellipsis: '…',
+                  )..layout(maxWidth: width);
+                  final fits = !painter.didExceedMaxLines;
+                  painter.dispose();
+                  return fits;
+                }
+
+                final switchLabel = TextPainter(
+                  text: TextSpan(
+                    text: 'Switch',
+                    style: measuredStyle(ZyraText.subtext(size: 11.5)),
+                  ),
+                  textDirection: Directionality.of(context),
+                  textScaler: MediaQuery.textScalerOf(context),
+                  locale: Localizations.maybeLocaleOf(context),
+                  maxLines: 1,
+                )..layout();
+                final switchWidth = 16 + 8 + 22 + switchLabel.width;
+                switchLabel.dispose();
+                final stackSwitch =
+                    showSwitch &&
+                    !nameFitsTwoLines(
+                      constraints.maxWidth - 68 - 16 - 10 - switchWidth,
+                    );
+                final switchButton = ZyraAccountSwitchButton(
+                  onPressed: () => _switchAccount(context),
+                );
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        ZyraOneProfileAvatar(
+                          isOne: state.plan == ZyraPlan.one,
+                          child: state.photos.isNotEmpty
+                              ? ZyraAvatarImage(
+                                  state.photos.first,
+                                  width: 64,
+                                  height: 64,
+                                  alignmentX: state.avatarAlignmentX,
+                                  alignmentY: state.avatarAlignmentY,
+                                )
+                              : Container(
+                                  width: 64,
+                                  height: 64,
+                                  color: ZyraColors.iconButtonBg,
+                                  child: Icon(
+                                    Icons.person,
+                                    color: ZyraColors.ink(0.38),
+                                    size: 30,
+                                  ),
+                                ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // FULL NAME as of 2026-08-07 — "Maryam Fatima Ahmed",
+                              // which the Founder asked for on 2026-08-06 and which
+                              // was deliberately left as a first name at the time
+                              // rather than faked: surname_line existed in the
+                              // database but AppState never carried it.
+                              //
+                              // It does now (see AppState.fullName), hydrated in
+                              // the same round trip the router already made. Falls
+                              // back to the first name on its own when there is no
+                              // surname, which is a real state — nothing in
+                              // onboarding asks for one yet.
+                              Text(
+                                fullName,
+                                style: ZyraText.heading(size: 20),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 4),
+                              // PLAN BADGE REMOVED 2026-08-07 (Founder: "membership
+                              // already appears elsewhere on the page, so this is
+                              // duplicate information. The top of the Profile page
+                              // should feel personal rather than repeating
+                              // subscription information").
+                              //
+                              // Membership is on the YOUR PROFILE row below.
+                              //
+                              // The Founder asked for a full name here instead —
+                              // "Maryam Fatima Ahmed". NOT done, and deliberately
+                              // not faked: `profiles.surname_line` exists and is
+                              // writable, but AppState carries only `name`. Showing
+                              // a first name where a full name was asked for is
+                              // honest; inventing one is not. One field plus one
+                              // line in the session router, alongside `bio` and
+                              // `created_at`, and all three arrive together.
+                            ],
                           ),
                         ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // FULL NAME as of 2026-08-07 — "Maryam Fatima Ahmed",
-                      // which the Founder asked for on 2026-08-06 and which
-                      // was deliberately left as a first name at the time
-                      // rather than faked: surname_line existed in the
-                      // database but AppState never carried it.
-                      //
-                      // It does now (see AppState.fullName), hydrated in
-                      // the same round trip the router already made. Falls
-                      // back to the first name on its own when there is no
-                      // surname, which is a real state — nothing in
-                      // onboarding asks for one yet.
-                      Text(
-                        state.fullName ?? 'Your Profile',
-                        style: ZyraText.heading(size: 20),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        if (showSwitch && !stackSwitch) ...[
+                          SizedBox(width: 10),
+                          switchButton,
+                        ],
+                      ],
+                    ),
+                    if (stackSwitch) ...[
+                      const SizedBox(height: 12),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: switchButton,
                       ),
-                      const SizedBox(height: 4),
-                      // PLAN BADGE REMOVED 2026-08-07 (Founder: "membership
-                      // already appears elsewhere on the page, so this is
-                      // duplicate information. The top of the Profile page
-                      // should feel personal rather than repeating
-                      // subscription information").
-                      //
-                      // Membership is on the YOUR PROFILE row below.
-                      //
-                      // The Founder asked for a full name here instead —
-                      // "Maryam Fatima Ahmed". NOT done, and deliberately
-                      // not faked: `profiles.surname_line` exists and is
-                      // writable, but AppState carries only `name`. Showing
-                      // a first name where a full name was asked for is
-                      // honest; inventing one is not. One field plus one
-                      // line in the session router, alongside `bio` and
-                      // `created_at`, and all three arrive together.
                     ],
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 28),
-            // ── PREVIEW ───────────────────────────────────────────────
-            //
-            // Founder, 2026-08-06: "I actually think this is more important
-            // than Profile Strength. If this page is about 'how others see
-            // me', there should be a big obvious button."
-            //
-            // So it is the first thing under the header, and it is the only
-            // full-width action on the page.
-            _PrimaryAction(
-              icon: Icons.visibility_outlined,
+            Text(
+              'MEMBERSHIP',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            ),
+            _membershipRow(context, state),
+
+            const SizedBox(height: 24),
+            Text(
+              'COMPATIBILITY',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            ),
+            const SizedBox(height: 4),
+            _UnlockBalanceRow(
+              standard: _standardUnlocks,
+              plus: _plusUnlocks,
+              onBuyMore: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const CompatibilityUnlockStoreScreen(),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+            Text(
+              'YOUR PROFILE',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            ),
+            const SizedBox(height: 5),
+            _ProfileActionRow(
+              key: const ValueKey('preview-profile-action'),
+              icon: Icons.person_outline,
               label: 'Preview my profile',
-              hint: 'See exactly what another Seeker sees',
               onTap: () => _preview(context),
             ),
-            const SizedBox(height: 14),
-
-            // §5 — equal weight. Edit Photos was the only obvious action, so
-            // it read as the only one. These are the two things people
-            // actually come here to do.
-            Row(
-              children: [
-                Expanded(
-                  child: _SecondaryAction(
-                    icon: Icons.photo_library_outlined,
-                    label: 'Edit Photos',
-                    onTap: () => _todo(context, 'Edit Photos'),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: _SecondaryAction(
-                    icon: Icons.edit_outlined,
-                    label: 'Edit Profile',
-                    // A real screen as of 2026-08-07 — it now owns the
-                    // compatibility answers that used to live in Settings.
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const EditProfileScreen(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            const _ProfileActionDivider(),
+            _ProfileActionRow(
+              key: const ValueKey('edit-profile-action'),
+              icon: Icons.edit_outlined,
+              label: 'Edit profile',
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+              ),
+            ),
+            const _ProfileActionDivider(),
+            _ProfileActionRow(
+              key: const ValueKey('edit-photos-action'),
+              icon: Icons.photo_library_outlined,
+              label: 'Manage photos',
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const EditPhotosScreen()),
+              ),
             ),
 
-            // Membership sits with the two edit actions, not several
-            // sections below them — see _membershipRow.
-            _membershipRow(state),
-
-            const SizedBox(height: 26),
+            const SizedBox(height: 24),
             Text(
               'ABOUT ME',
-              style: ZyraText.chapterLabel(color: Colors.white54),
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             _InfoRow(label: 'Age', value: age?.toString() ?? '—'),
             _InfoRow(
               label: 'Gender',
               value: ZyraGender.profileLabel(state.gender),
             ),
             _InfoRow(label: 'Location', value: state.location ?? '—'),
-            const SizedBox(height: 24),
+
+            SizedBox(height: 24),
+            Text(
+              'JOURNEY HISTORY',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            ),
+            SizedBox(height: 6),
+            _SettingsRow(
+              label: 'Past Journeys',
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => ZyraDeveloperAccess.isMainAppFounderPreview
+                      ? const PastJourneysScreen(
+                          previewPaused: [],
+                          previewEnded: [],
+                        )
+                      : const PastJourneysScreen(),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 24),
+            Text(
+              'SAFETY & SHARING',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            ),
+            SizedBox(height: 6),
+            _SettingsRow(
+              label: 'Safety & advice',
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const HelpSupportScreen(
+                    initialQuery: 'Safety and reporting',
+                  ),
+                ),
+              ),
+            ),
+            Builder(
+              builder: (inviteContext) => _SettingsRow(
+                label: 'Invite someone to ZYRA',
+                onTap: () => ZyraAppInvite.share(inviteContext),
+              ),
+            ),
+            SizedBox(height: 24),
             // ── PUBLIC INFORMATION — REMOVED 2026-08-06 ───────────────
             //
             // Founder: "Since Browse no longer displays things like Sect, I
@@ -294,8 +537,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // YOUR CONNECTIONS is removed for the same reason it was removed
             // from the Settings section this morning: Connections owns it.
             //
-            // YOUR PROFILE / Membership moved UP, to sit with Edit Photos
-            // and Edit Profile — see _membershipRow.
+            // Membership and Compatibility live above YOUR PROFILE; see
+            // _membershipRow and _UnlockBalanceRow.
             // ── REMOVED 2026-08-06 ────────────────────────────────────
             //
             // Passed / Saved / Considered were rendered here as rows. That
@@ -312,7 +555,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // possible now that Settings is a screen.
             //
             // Profile is a profile again.
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
+            Text(
+              'PERSONALISATION',
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            ),
+            SizedBox(height: 6),
+            _SettingsRow(
+              label: 'Appearance & haptics',
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const PersonalisationScreen(),
+                ),
+              ),
+            ),
+            SizedBox(height: 14),
             _SettingsRow(
               label: 'Settings',
               onTap: () => Navigator.of(
@@ -327,111 +584,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-/// The one full-width action on the page. Preview earns it because it is
-/// the only control that answers the page's own question — "how do other
-/// people see me".
-class _PrimaryAction extends StatelessWidget {
+/// Profile actions deliberately sit directly on the page rather than inside
+/// four competing glass cards. The hierarchy comes from type, icons and calm
+/// hairline separators, matching the rest of Profile and Settings.
+class _ProfileActionRow extends StatelessWidget {
   final IconData icon;
   final String label;
-  final String hint;
   final VoidCallback onTap;
-  const _PrimaryAction({
+  const _ProfileActionRow({
+    super.key,
     required this.icon,
     required this.label,
-    required this.hint,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: ZyraColors.accentBg,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: ZyraColors.accentBorder, width: 1),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, size: 21, color: Colors.white),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label,
-                      style: ZyraText.body(size: 16, color: Colors.white),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      hint,
-                      style: ZyraText.subtext(size: 12, color: Colors.white60),
-                    ),
-                  ],
-                ),
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: ZyraColors.foregroundSecondary),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Text(
+                label,
+                style: ZyraText.body(size: 14, color: ZyraColors.foreground),
               ),
-              Icon(
-                Icons.chevron_right,
-                size: 18,
-                color: Colors.white.withValues(alpha: 0.5),
-              ),
-            ],
-          ),
+            ),
+            Icon(
+              Icons.chevron_right_rounded,
+              size: 18,
+              color: ZyraColors.ink(0.28),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-/// Equal-weight pair. Edit Photos used to be the only visible action, which
-/// made it read as the only one available.
-class _SecondaryAction extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  const _SecondaryAction({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
+class _ProfileActionDivider extends StatelessWidget {
+  const _ProfileActionDivider();
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white.withValues(alpha: 0.07),
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.13),
-              width: 0.5,
-            ),
-          ),
-          child: Column(
-            children: [
-              Icon(icon, size: 19, color: Colors.white.withValues(alpha: 0.85)),
-              const SizedBox(height: 6),
-              Text(
-                label,
-                style: ZyraText.subtext(size: 12.5, color: Colors.white),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      Divider(height: 1, indent: 34, color: ZyraColors.ink(0.10));
 }
 
 class _InfoRow extends StatelessWidget {
@@ -445,12 +645,127 @@ class _InfoRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Expanded(child: Text(label, style: ZyraText.subtext(size: 13))),
-          Text(value, style: ZyraText.body(size: 13, color: Colors.white)),
+          Expanded(
+            flex: 2,
+            child: Text(label, style: ZyraText.subtext(size: 13)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: ZyraText.body(size: 13, color: Colors.white),
+            ),
+          ),
         ],
       ),
     );
   }
+}
+
+class _UnlockBalanceRow extends StatelessWidget {
+  const _UnlockBalanceRow({
+    required this.standard,
+    required this.plus,
+    required this.onBuyMore,
+  });
+
+  final int? standard;
+  final int? plus;
+  final VoidCallback onBuyMore;
+
+  @override
+  Widget build(BuildContext context) => MergeSemantics(
+    child: Semantics(
+      key: const ValueKey('profile-compatibility-balances'),
+      button: true,
+      label: 'View compatibility unlocks',
+      child: Tooltip(
+        message: 'View compatibility unlocks',
+        excludeFromSemantics: true,
+        child: InkWell(
+          key: const ValueKey('profile-compatibility-buy-more'),
+          onTap: onBuyMore,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 11),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.insights_outlined,
+                  size: 20,
+                  color: ZyraColors.journeyGold,
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Compatibility unlocks',
+                        style: ZyraText.body(
+                          size: 14,
+                          color: ZyraColors.foreground,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Wrap(
+                        spacing: 18,
+                        runSpacing: 5,
+                        children: [
+                          _UnlockCount(label: 'Unlock', value: plus),
+                          if ((standard ?? 0) > 0)
+                            _UnlockCount(
+                              label: 'Earlier overall credits',
+                              value: standard,
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                ExcludeSemantics(
+                  child: SizedBox(
+                    width: 44,
+                    height: 44,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.chevron_right_rounded,
+                        size: 18,
+                        color: ZyraColors.ink(0.28),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+class _UnlockCount extends StatelessWidget {
+  const _UnlockCount({required this.label, required this.value});
+
+  final String label;
+  final int? value;
+
+  @override
+  Widget build(BuildContext context) => Text.rich(
+    TextSpan(
+      children: [
+        TextSpan(
+          text: value?.toString() ?? '—',
+          style: ZyraText.body(size: 12.5, color: ZyraColors.journeyGold),
+        ),
+        TextSpan(text: '  $label', style: ZyraText.subtext(size: 11.5)),
+      ],
+    ),
+  );
 }
 
 class _SettingsRow extends StatelessWidget {
@@ -472,7 +787,7 @@ class _SettingsRow extends StatelessWidget {
                 style: ZyraText.body(size: 13.5, color: Colors.white),
               ),
             ),
-            Icon(Icons.chevron_right, color: Colors.white24, size: 16),
+            Icon(Icons.chevron_right, color: ZyraColors.ink(0.24), size: 16),
           ],
         ),
       ),

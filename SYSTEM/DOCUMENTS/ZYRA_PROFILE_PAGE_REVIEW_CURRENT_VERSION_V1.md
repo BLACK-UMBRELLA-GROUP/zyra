@@ -1,9 +1,32 @@
 # ZYRA — Profile Page: Holistic Review
 
-**Status:** FOR REVIEW — nothing built
-**Date:** 2026-08-06 · **Origin:** Founder review, 8 points
+**Version:** V1
+**Status:** PARTIALLY IMPLEMENTED — row tap-target correction checked, installed and post-verified locally; Founder acceptance pending; other historical review items unchanged
+**Date:** 2026-10-21
+**Owner:** Codex under Founder authority
+**Original review:** 2026-08-06 · Founder review, 8 points
 **Brief:** *"Profile should be where people feel proud of their profile…
 'My profile and how other people see me.'"*
+
+> **Current Profile tap-target and chevron correction — Founder direct
+> instruction, 21 October 2026 / OA-ZYRA-151/304/305:** Compatibility unlocks
+> text, balance, row padding and arrow must open the same existing destination.
+> The shared Membership chevron must match the other current Profile arrows.
+> The bounded app-wide navigation-row sweep also finds the standalone Unlocks
+> Back word outside its arrow's target. The implementation addendum below owns
+> this round's measured results; prior deliveries are not reused as its proof.
+> This does not finalise the unresolved items in the historical review below.
+
+> **Current protected Profile correction — 2026-10-20 / OA-ZYRA-305:**
+> Founder requests the Compatibility unlocks Buy more pill become the same quiet
+> chevron used by other Profile rows. The original action key, balance and store
+> destination are retained. Long full names are measured against two reserved
+> lines beside Switch; only names which cannot fit that space use the wider,
+> natural-reading fallback. Font size is not reduced and Switch keeps its own
+> touch target. This amends presentation only; no photo, account, unlock or
+> membership logic changes. Tests and separate delivery status are in
+> `SYSTEM/RESOURCES/REVIEWS/OA305_MY_ZYRA_ACTIVITY_2026_10_20.PrA0zH/`.
+> This is not a new phone installation or physical acceptance of the layout.
 
 ---
 
@@ -33,8 +56,8 @@ That is the cheapest work here and the biggest single improvement.
 |---|---|
 | Remove Public Information | ✓ delete only |
 | Photo carousel, name, age, bio | ✓ all present |
-| Edit Photos | ✓ exists |
-| **Preview Profile** | **not built** |
+| Edit Photos | ✓ ordered manager built — add, reorder and confirmed removal |
+| **Preview Profile** | **built — read-only full-screen owner preview** |
 | **Share Profile** | **not built** |
 | **Invite Friend** | **not built** — and no referral concept at all |
 | **Profile Strength %** | `profile_complete` is a **boolean**. There is no percentage |
@@ -133,12 +156,15 @@ Gone: `PUBLIC INFORMATION`, `YOUR CONNECTIONS`.
 Not included: Profile Views, Share Profile, and the unlock counts until the
 disclosure question above is answered.
 
-**One deliberate omission from §6.** *Preview Profile* is the best idea in
-the brief — "how other people see me" is the page's stated purpose and a
-preview is literally that. It is not built, and it is not trivial: it needs
-to render the Browse card as a *stranger* sees it, which means honouring
-unlocks, gender rules and blocks rather than just showing your own data
-back. **Worth doing properly, as its own piece.**
+**Implementation update — 2026-09-18.** *Preview Profile* is now built as a
+read-only full-screen owner preview using the shared Seeker profile viewer.
+It presents the owner's name, age, location and ordered moderated photos with
+the established photo navigation, exact Browse identity typography, 130px
+position and legibility scrim, and contains no Browse decision actions. The
+preview dismisses with a downward swipe rather than a close button.
+Ordinary accounts restore their own signed photo URLs; the isolated Founder
+persona never reads live member rows and uses a clean no-photo state. The
+temporary bottom snackbar has been removed.
 
 ---
 
@@ -149,4 +175,108 @@ back. **Worth doing properly, as its own piece.**
 2. **Profile Views** — leave out?
 3. **Unlock counts** — show a count of Unlock+ only, or leave out until the
    disclosure is decided?
-4. **Preview Profile** — its own piece of work, after this?
+4. **Preview Profile** — implemented; Founder visual acceptance remains.
+
+---
+
+## 21 October 2026 — Profile/navigation row tap-target implementation
+
+Authority is the Founder's direct text/arrow consistency and app-update request,
+followed by the screenshot instruction to match Seeker One's lighter arrow.
+The shared Membership row used foregroundMuted (about54% white in the normal
+dark palette), while the current other Profile chevrons used ink(.28). The
+shared row now uses the same palette-aware ink(.28), retaining size18,
+alignment, text and callback. The icon is decorative beside readable labels.
+
+Protected _UnlockBalance in lib/dev/zyra_one_journey_account_presentation.dart
+and ordinary _UnlockBalanceRow in lib/screens/profile/profile_screen.dart now
+put title, balance, spacing and trailing chevron inside one InkWell. They
+retain their original balance/action keys and exact onBuyMore callbacks.
+The ordinary older Buy more outline is retired to the same quiet chevron
+already selected by the Founder for Profile. MergeSemantics exposes one
+button/action with readable current/unknown/legacy balances; the decorative
+chevron has no second focus/tap target. Tooltip wording remains available.
+The protected caller's existing account/UI/role/page/tab/control/native-route
+freshness guard is unchanged. No direct navigation bypass is added to a row.
+
+The added 320px/200%-text ordinary Profile check also exposed an existing
+personal-header overflow: the avatar, name and natural Switch width exceeded
+the row. The same name/Switch typography is now measured at the actual text
+scale, locale and bold setting. When two name lines cannot fit beside Switch,
+the existing Switch moves below the avatar/name row, aligned right. Ordinary
+widths retain the existing layout; no font reduction, new copy or account
+switch logic is introduced. The immediate no-overflow assertion remains.
+
+The navigation-row source audit covers protected and retained Profile,
+Settings/Advanced/privacy destinations, profile editors, Membership, My ZYRA,
+requests, Journey options/decisions/archive cards, Guardian management,
+workspaces/Circles, code actions and shared action pills. Their inspected
+navigation labels already share their row's InkWell/button, except for the
+two Profile implementations above and standalone Unlocks Back. The latter
+in lib/screens/subscription/upgrade_screen.dart is now one TextButton.icon:
+word and arrow share the same one-route return, with mounted/current-route
+checks preventing a disposed/covered callback popping a different parent.
+
+Written exclusions: informational status/coverage/profile facts, page titles
+beside menus/Close, score/page counters and cards with distinct deliberate
+Add/Change/View/destructive actions are not single-destination navigation rows.
+No blanket navigation action is added to them; doing so could misroute taps
+or trigger an unintended action. No new OA is raised for these intentional
+controls. This is a bounded source/hit-target audit, not a claim of a complete
+physical phone walk-through or absence of every possible app defect.
+
+Source and document preimages are preserved in
+SYSTEM/RESOURCES/REVIEWS/OA305_ROW_TAP_TARGETS_2026_10_21.xAJ1eM.
+Its true4,865-input SOURCE_PRE SHA256 is
+8ae2786da598333f4c0c52f42aa73155082a81ddfe4be3281f70d497b4889bd8.
+The existing contained native recipe is copied with only its exact packet
+whitelist adapted; full Xcode/SwiftPM remains held. Fresh qualification passed
+1,653 actual app cases across85 disjoint suites,46 separate recipe contracts,
+analysis, format and no-Git policy checks.87 focused cases and26 documentation
+unit checks passed separately. The final Poppins visual replay reported14
+passes and emitted14 PNGs; the single-file reporter has no actual-case count.
+Root opened images13/14 only; this is not an all-frame or physical-phone
+visual acceptance claim. The failed working focus/visual runs and their
+pre-repair evidence remain preserved; they are not counted as passing.
+
+QUALIFICATION_PLAN SHA256 is
+edeffd19768cddad0b31b03f04d077dcb2de7aeafea99dd0f48df7dcb454f901;
+CHECKED_PREBUILD SHA256 is
+ec977a315f74103b5aaa41f29e31ca6e06f565e9d4c522c43f283d41f9ed8093.
+Eight existing Source paths changed. The contained current-Dart plus fresh
+objective_c/retained-native-host build is HOST_PROFILE.IvKbjt/Runner.app.
+Its compiler post-check verifies3,582 regular inputs and one dependency marker;
+the4,865 Source inputs and14 recipe modules remain byte-equal to the frozen
+plan after building. BUILD SHA256 is
+b10e2682f6a7aa66ade5be4c706b1ff03652f6b52bd48f929948af635ffbab78;
+artifact SHA256 is
+fa106da74c95ed9a5faf534dd91d07a1d034b692d5abce7a7558a20d24d92eb9.
+
+The new exact identity/signature check PASSED. The first fresh lock-state
+check recognised the same paired iPhone but found it locked, so delivery
+STOPPED before installation. CHECKED_BUILD_AND_DELIVERY_HOLD.json preserves
+that snapshot. The Founder then directly replied "Unlocked now". The same
+checked candidate passed fresh IDENTITY_2 and LOCK_2, then INSTALL, LAUNCH and
+POST in sequence. Installation was12:20:28.996–12:20:40.902UTC on21 October;
+post-verification completed12:20:55.427UTC. The exact installed main app's
+container is2FE7B17E-1619-442D-9C4D-E363BDE01B3B and native PID30511. Main
+identity1.0.0(5), existing signing/team/profile and account data are retained.
+No previous delivery is reused as this build's proof.
+
+DELIVERED_AS_BUILT.json binds this new delivery's exact receipts, candidate,
+artifact, compiler proof, Source and recipe pins. SOURCE_POST_PHONE SHA256 is
+22f60c65c1acd26d087d25732786ae61f7c409ff3931c752741740a68a30dd88;
+its4,865 inputs and all14 recipe modules remain byte-equal to the frozen
+qualification after delivery. Native process proof is not Founder physical
+visual/flow acceptance, which remains pending.
+
+Existing main identity and native delivery gates still apply. The app adds
+no developer option, account state,
+relationship stage, receipt/payment, credit spending, backend/provider/schema
+change, permission grant, migration, signing/trust setup or release/upload.
+Prior test-cache deletion authority remains consumed; no new deletion occurs.
+
+OA151/304/305 own this bounded presentation/audit work; OA286 retains native
+pipeline limits and OA253/296 retain live billing/permission authority.
+Shared-register reconciliation is UNSENT under the existing one-writer hold.
+Founder physical visual/flow acceptance is separate; no action is self-closed.

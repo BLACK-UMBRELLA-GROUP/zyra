@@ -1,0 +1,39 @@
+{
+  "architecture": {
+    "global_overlay": "ZyraGlobalDevOverlay",
+    "guardian_network": "GNContext/GNScene/GNStage",
+    "state": "ZyraDevScenario",
+    "surface_coordinator": "ZyraDevSurfaceCoordinator"
+  },
+  "controls": [
+    "Preview",
+    "Actions",
+    "Home",
+    "Style"
+  ],
+  "generated": "2026-10-03T14:49:29.086195+00:00",
+  "known_boundary": "Mock state is developer-only; production services remain authoritative.",
+  "programme": "OA-ZYRA-257",
+  "release_guards_detected": true,
+  "reset_detected": true,
+  "retired_term_hits": {},
+  "schema_version": 1,
+  "verification_tests": [
+    {
+      "exists": true,
+      "file": "test/dev_scenario_panel_policy_test.dart"
+    },
+    {
+      "exists": true,
+      "file": "test/global_dev_overlay_test.dart"
+    },
+    {
+      "exists": true,
+      "file": "test/zyra_developer_access_test.dart"
+    },
+    {
+      "exists": true,
+      "file": "test/guardian_network_preview_test.dart"
+    }
+  ]
+}

@@ -11,14 +11,23 @@
 // Falls back to a plain empty state for mock Active Journeys with no
 // real backing match (nothing to show, not an error).
 
-import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show AuthChangeEvent, AuthState, Supabase;
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../data/journey_questions.dart';
 import '../../data/zyra_journey_stages.dart';
+import '../../data/zyra_timeline_milestones.dart';
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_journey_service.dart';
 import '../../services/zyra_match_service.dart';
+import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../widgets/zyra_glass_dialog.dart';
 import '../../theme/zyra_colors.dart';
@@ -65,6 +74,11 @@ class _TlAhead {
 
 class JourneyTimelineScreen extends StatefulWidget {
   final SeekerProfile withProfile;
+  final Future<ZyraSourceResult<List<ZyraMilestone>>> Function(String)?
+  loadTimeline;
+  final Future<ZyraTimelineContext> Function(String)? loadContext;
+  final Future<String?> Function(String, String, DateTime)? proposeMilestone;
+  final Future<String?> Function(String)? confirmMilestone;
 
   /// True when opened from a dev stand-in Journey (ZyraDevScenario fakes).
   /// A fake pair has no match row, so the fetch would come back empty and
@@ -88,6 +102,10 @@ class JourneyTimelineScreen extends StatefulWidget {
     required this.withProfile,
     this.isMock = false,
     this.journeyStage,
+    this.loadTimeline,
+    this.loadContext,
+    this.proposeMilestone,
+    this.confirmMilestone,
   });
 
   @override
@@ -95,7 +113,105 @@ class JourneyTimelineScreen extends StatefulWidget {
 }
 
 class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
+  final _accountGeneration = ZyraAccountState.generation;
+  final _accountOwner = ZyraAccountState.userId;
+  late final (bool, String?) _sdkOwner;
+  String? _initialAccessToken;
+  StreamSubscription<AuthState>? _authSubscription;
+  bool _revoked = false;
+  ModalRoute<dynamic>? _ownerRoute;
+  bool _routeWasCurrent = true;
+  int _actionRevision = 0;
+  bool _ownedChildShowing = false;
+  Route<dynamic>? _ownedChildRoute;
+  bool get _accountCurrent =>
+      mounted &&
+      !_revoked &&
+      _sdkOwner == _readSdkOwner() &&
+      (!_sdkOwner.$1 || _sdkOwner.$2 == _accountOwner) &&
+      !ZyraAccountState.isSigningOut &&
+      _accountGeneration == ZyraAccountState.generation &&
+      _accountOwner == ZyraAccountState.userId;
+  bool get _routeCurrent => _ownerRoute?.isCurrent ?? true;
+  bool get _canRecord =>
+      _accountCurrent &&
+      _routeCurrent &&
+      _sdkOwner.$1 &&
+      _sdkOwner.$2 != null &&
+      _sdkOwner.$2 == _accountOwner &&
+      !_loading &&
+      !_loadFailed &&
+      !_busy &&
+      _context.active &&
+      !_context.paused &&
+      _context.matchId != null;
+
+  (bool, String?) _readSdkOwner() {
+    try {
+      return (true, ZyraAuth.currentUser?.id);
+    } catch (_) {
+      return (false, null);
+    }
+  }
+
+  void _watchSdkOwner() {
+    _sdkOwner = _readSdkOwner();
+    if (!_sdkOwner.$1) return;
+    _initialAccessToken =
+        Supabase.instance.client.auth.currentSession?.accessToken;
+    _authSubscription = ZyraAuth.authStateChanges.listen((state) {
+      if (!mounted || _revoked) return;
+      if (_sdkOwner != _readSdkOwner() ||
+          (state.session != null && state.session!.user.id != _sdkOwner.$2) ||
+          state.event == AuthChangeEvent.signedIn ||
+          state.event == AuthChangeEvent.signedOut ||
+          state.event == AuthChangeEvent.passwordRecovery ||
+          (state.event == AuthChangeEvent.initialSession &&
+              state.session?.accessToken != _initialAccessToken)) {
+        _withdrawAccount();
+      }
+    }, onError: (Object _, StackTrace _) => _withdrawAccount());
+  }
+
+  void _invalidateIntent() {
+    ++_actionRevision;
+    _busy = false;
+    final child = _ownedChildRoute;
+    if (child != null && child.isActive) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (child.isActive) child.navigator?.removeRoute(child);
+      });
+      WidgetsBinding.instance.ensureVisualUpdate();
+    }
+  }
+
+  bool Function() _intentGuard(String matchId) {
+    final revision = _actionRevision;
+    return () =>
+        _accountCurrent &&
+        revision == _actionRevision &&
+        _context.matchId == matchId &&
+        _context.active &&
+        !_context.paused;
+  }
+
+  Widget _guardChild(Widget child, bool Function() current) =>
+      _TimelineOwnedChild(
+        current: current,
+        onRoute: (route) {
+          // The outgoing type dialog can report another dependency change
+          // after the date picker has opened. It must not replace the live
+          // owned route with its inactive, already-popped predecessor.
+          if (route != null && route.isActive && route.isCurrent) {
+            _ownedChildRoute = route;
+          }
+        },
+        onCovered: _invalidateIntent,
+        child: child,
+      );
   bool _loading = true;
+  bool _loadFailed = false;
+  int _loadGeneration = 0;
   List<ZyraMilestone> _milestones = [];
   bool _reviewEverything = false;
 
@@ -111,10 +227,91 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
   @override
   void initState() {
     super.initState();
+    _watchSdkOwner();
+    AppState.instance.addListener(_onAccountChanged);
     _load();
   }
 
+  @override
+  void dispose() {
+    _revoked = true;
+    _invalidateIntent();
+    _authSubscription?.cancel();
+    AppState.instance.removeListener(_onAccountChanged);
+    super.dispose();
+  }
+
+  void _onAccountChanged() {
+    if (!mounted || _accountCurrent) return;
+    _withdrawAccount();
+  }
+
+  void _withdrawAccount() {
+    if (!mounted || _revoked) return;
+    _revoked = true;
+    ++_loadGeneration;
+    _invalidateIntent();
+    _authSubscription?.cancel();
+    _milestones = [];
+    _qa = {};
+    _context = const ZyraTimelineContext();
+    _loading = false;
+    _loadFailed = true;
+    _reviewEverything = false;
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+      WidgetsBinding.instance.ensureVisualUpdate();
+    } else {
+      setState(() {});
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _ownerRoute = ModalRoute.of(context);
+    final current = _routeCurrent;
+    if (_routeWasCurrent && !current && !_ownedChildShowing) {
+      _invalidateIntent();
+    }
+    _routeWasCurrent = current;
+    if (!_accountCurrent) _withdrawAccount();
+  }
+
+  @override
+  void didUpdateWidget(covariant JourneyTimelineScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.withProfile.id == widget.withProfile.id &&
+        oldWidget.isMock == widget.isMock &&
+        oldWidget.journeyStage == widget.journeyStage) {
+      return;
+    }
+    ++_loadGeneration;
+    _invalidateIntent();
+    _context = const ZyraTimelineContext();
+    _milestones = [];
+    _qa = {};
+    _loading = true;
+    _pendingDismissed = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_accountCurrent && _routeCurrent) unawaited(_load());
+    });
+  }
+
   Future<void> _load() async {
+    if (!_accountCurrent || !_routeCurrent) return;
+    final generation = ++_loadGeneration;
+    _invalidateIntent();
+    setState(() {
+      _loading = true;
+      _loadFailed = false;
+      _context = const ZyraTimelineContext();
+      _milestones = [];
+      _qa = {};
+    });
     // Dev stand-ins have no match row — asking the server for their story
     // would return an empty list that reads as a bug. Say what it is
     // instead (see the isMock doc above).
@@ -122,22 +319,38 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
       setState(() => _loading = false);
       return;
     }
-    final results = await Future.wait([
-      ZyraMatchService.fetchTimeline(widget.withProfile.id),
-      ZyraMatchService.fetchTimelineContext(widget.withProfile.id),
-    ]);
-    final milestones = results[0] as List<ZyraMilestone>;
-    final tlContext = results[1] as ZyraTimelineContext;
-    // The Journey's own words need the matchId, which arrives with the
-    // context — so this fetch waits for it rather than racing it.
-    final qa = await _loadQa(tlContext.matchId);
-    if (!mounted) return;
-    setState(() {
-      _milestones = milestones;
-      _context = tlContext;
-      _qa = qa;
-      _loading = false;
-    });
+    try {
+      final results = await Future.wait([
+        (widget.loadTimeline ?? ZyraMatchService.fetchTimelineResult)(
+          widget.withProfile.id,
+        ),
+        (widget.loadContext ?? ZyraMatchService.fetchTimelineContext)(
+          widget.withProfile.id,
+        ),
+      ]);
+      if (!mounted || !_accountCurrent || generation != _loadGeneration) return;
+      final milestones = results[0] as ZyraSourceResult<List<ZyraMilestone>>;
+      if (milestones.isUnavailable) throw StateError('Timeline unavailable');
+      final tlContext = results[1] as ZyraTimelineContext;
+      // The Journey's own words need the matchId, which arrives with the
+      // context — so this fetch waits for it rather than racing it.
+      final qa = await _loadQa(tlContext.matchId);
+      if (!mounted || !_accountCurrent || generation != _loadGeneration) return;
+      setState(() {
+        _milestones = milestones.valueOr(const []);
+        _context = tlContext;
+        _qa = qa;
+        _loading = false;
+      });
+    } catch (error) {
+      debugPrint('ZYRA: timeline load failed (${error.runtimeType}).');
+      if (!mounted || !_accountCurrent || generation != _loadGeneration) return;
+      setState(() {
+        _loading = false;
+        _loadFailed = true;
+        _context = const ZyraTimelineContext();
+      });
+    }
   }
 
   /// THE JOURNEY'S OWN WORDS — 2026-08-13 (Founder: "they gotta find a
@@ -204,25 +417,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
   /// It exercises every milestone type accepted by the current Timeline
   /// contract without changing or fabricating server data.
   List<ZyraMilestone> _reviewMilestones() {
-    const types = [
-      'liked',
-      'match_created',
-      'journey_started',
-      'salam_exchanged',
-      'compatibility_revealed',
-      'guardian_linked',
-      'phase_1_complete',
-      'journey_paused',
-      'journey_continued',
-      'phase_2_complete',
-      'phase_3_complete',
-      'family_stage',
-      'conversation_started',
-      'meeting',
-      'journey_ended',
-      'journey_restarted',
-      'nikah',
-    ];
+    const types = ZyraTimelineMilestones.supportedTypes;
     final first = DateTime.now().subtract(const Duration(days: 48));
     return [
       for (var i = 0; i < types.length; i++)
@@ -290,127 +485,239 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
       type == 'meeting' ? 'Meeting' : 'Nikah';
 
   Future<void> _openPropose() async {
+    if (!_canRecord || _context.pending != null) return;
     final types = _attestableTypes;
     if (types.isEmpty || _context.matchId == null) return;
-    final picked = await showZyraGlassDialog<String>(
-      context: context,
-      builder: (ctx) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.auto_awesome_outlined,
-            color: Colors.white,
-            size: 30,
-          ),
-          const SizedBox(height: 14),
-          Text(
-            'Record a milestone',
-            style: ZyraText.heading(size: 18),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'It joins the Timeline once ${widget.withProfile.firstName} confirms it too.',
-            style: ZyraText.subtext(),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          for (final t in types) ...[
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: () => Navigator.of(ctx).pop(t),
-                child: Text(_attestLabel(t), style: ZyraText.button(size: 13)),
+    final matchId = _context.matchId!;
+    ++_actionRevision;
+    final current = _intentGuard(matchId);
+    setState(() => _busy = true);
+    try {
+      _ownedChildShowing = true;
+      final picked = await showZyraGlassDialog<String>(
+        context: context,
+        builder: (ctx) => _guardChild(
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.auto_awesome_outlined, color: Colors.white, size: 30),
+              SizedBox(height: 14),
+              Text(
+                'Record a milestone',
+                style: ZyraText.heading(size: 18),
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 8),
-          ],
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text('Cancel', style: ZyraText.subtext(size: 13)),
+              SizedBox(height: 8),
+              Text(
+                'It joins the Timeline once ${widget.withProfile.firstName} confirms it too.',
+                style: ZyraText.subtext(),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              for (final t in types) ...[
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () {
+                      if (current() &&
+                          ctx.mounted &&
+                          ModalRoute.of(ctx)?.isCurrent == true) {
+                        Navigator.of(ctx).pop(t);
+                      }
+                    },
+                    child: Text(
+                      _attestLabel(t),
+                      style: ZyraText.button(size: 13),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+              ],
+              TextButton(
+                onPressed: () {
+                  if (current() &&
+                      ctx.mounted &&
+                      ModalRoute.of(ctx)?.isCurrent == true) {
+                    Navigator.of(ctx).pop();
+                  }
+                },
+                child: Text('Cancel', style: ZyraText.subtext(size: 13)),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-    if (picked == null || !mounted) return;
-    final now = DateTime.now();
-    final date = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: DateTime(2024),
-      lastDate: now,
-      helpText: 'When was your ${_attestLabel(picked).toLowerCase()}?',
-    );
-    if (date == null || !mounted) return;
-    final error = await ZyraMatchService.proposeMilestone(
-      _context.matchId!,
-      picked,
-      date,
-    );
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          error ??
-              'Asked ${widget.withProfile.firstName} to confirm. It joins the Timeline when they do.',
+          current,
         ),
-      ),
-    );
-    await _load();
+      );
+      _ownedChildShowing = false;
+      _ownedChildRoute = null;
+      if (!mounted ||
+          picked == null ||
+          !current() ||
+          !_routeCurrent ||
+          !types.contains(picked)) {
+        return;
+      }
+      final now = DateTime.now();
+      _ownedChildShowing = true;
+      final date = await showDatePicker(
+        context: context,
+        initialDate: now,
+        firstDate: DateTime(2024),
+        lastDate: now,
+        helpText: 'When was your ${_attestLabel(picked).toLowerCase()}?',
+        builder: (_, child) => _guardChild(child!, current),
+      );
+      _ownedChildShowing = false;
+      _ownedChildRoute = null;
+      if (!mounted || date == null || !current() || !_routeCurrent) return;
+      final error =
+          await (widget.proposeMilestone ?? ZyraMatchService.proposeMilestone)(
+            matchId,
+            picked,
+            date,
+          );
+      if (!mounted || !current() || !_routeCurrent) return;
+      if (error != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error)));
+      }
+      await _load();
+    } catch (_) {
+      if (mounted && current() && _routeCurrent) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("That didn't go through. Please try again."),
+          ),
+        );
+      }
+    } finally {
+      _ownedChildShowing = false;
+      _ownedChildRoute = null;
+      if (mounted && current()) setState(() => _busy = false);
+    }
   }
 
   Future<void> _confirmPending() async {
+    if (!_canRecord) return;
     final pending = _context.pending;
-    if (pending == null || _busy) return;
+    if (pending == null || pending.proposedBy == _sdkOwner.$2) return;
+    final matchId = _context.matchId!;
+    ++_actionRevision;
+    final current = _intentGuard(matchId);
     setState(() => _busy = true);
-    final error = await ZyraMatchService.confirmMilestone(pending.id);
-    if (!mounted) return;
-    setState(() => _busy = false);
-    if (error != null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(error)));
-    } else {
-      // E5 / R7 (DR-ZYRA-147): both Seekers have now confirmed a
-      // real-world milestone. Meeting gets one breath; the Nikah gets
-      // the crown — the one screen a couple keeps. Plays on the
-      // CONFIRMING side here; the proposer sees it on their next visit
-      // via the Timeline itself (their moment is OA-listed).
-      final name = widget.withProfile.firstName;
-      if (pending.type == 'nikah') {
-        await showZyraMoment(
+    try {
+      final error =
+          await (widget.confirmMilestone ?? ZyraMatchService.confirmMilestone)(
+            pending.id,
+          );
+      if (!mounted ||
+          !current() ||
+          !_routeCurrent ||
+          _context.pending?.id != pending.id) {
+        return;
+      }
+      if (error != null) {
+        ScaffoldMessenger.of(
           context,
-          glow: true,
-          pairWith: widget.withProfile,
-          dateChip: 'NIKAH · ${_dateFor(pending.occurredOn).toUpperCase()}',
-          lines: [
-            const ZyraMomentLine.whisper('Alhamdulillah.'),
-            ZyraMomentLine.heading('You & $name'),
-            const ZyraMomentLine.body('From a match to a marriage.'),
-            const ZyraMomentLine.quiet(
-              'Your whole story is kept — the road, the words, the '
-              'milestones. ZYRA was honoured to walk it with you.',
-            ),
-          ],
-          ctaLabel: 'View your Timeline',
-        );
-      } else if (pending.type == 'meeting') {
-        await showZyraMoment(
-          context,
-          mark: Icons.people_outline,
-          lines: [
-            const ZyraMomentLine.heading('You met.'),
-            ZyraMomentLine.body(
-              'Recorded, agreed by you both — '
-              '${_dateFor(pending.occurredOn)} joins your Timeline.',
-            ),
-          ],
-          ctaLabel: 'Continue',
+        ).showSnackBar(SnackBar(content: Text(error)));
+      } else {
+        // E5 / R7 (DR-ZYRA-147): both Seekers have now confirmed a
+        // real-world milestone. Meeting gets one breath; the Nikah gets
+        // the crown — the one screen a couple keeps. Plays on the
+        // CONFIRMING side here; the proposer sees it on their next visit
+        // via the Timeline itself (their moment is OA-listed).
+        final name = widget.withProfile.firstName;
+        if (pending.type == 'nikah') {
+          await _showOwnedMoment(
+            current,
+            glow: true,
+            pairWith: widget.withProfile,
+            dateChip: 'NIKAH · ${_dateFor(pending.occurredOn).toUpperCase()}',
+            lines: [
+              const ZyraMomentLine.whisper('Alhamdulillah.'),
+              ZyraMomentLine.heading('You & $name'),
+              const ZyraMomentLine.body('From a match to a marriage.'),
+              const ZyraMomentLine.quiet(
+                'Your whole story is kept — the road, the words, the '
+                'milestones. ZYRA was honoured to walk it with you.',
+              ),
+            ],
+            ctaLabel: 'View your Timeline',
+          );
+        } else if (pending.type == 'meeting') {
+          await _showOwnedMoment(
+            current,
+            mark: Icons.people_outline,
+            lines: [
+              const ZyraMomentLine.heading('You met.'),
+              ZyraMomentLine.body(
+                'Recorded, agreed by you both — '
+                '${_dateFor(pending.occurredOn)} joins your Timeline.',
+              ),
+            ],
+            ctaLabel: 'Continue',
+          );
+        }
+        if (!mounted || !current() || !_routeCurrent) return;
+      }
+      await _load();
+    } catch (_) {
+      if (mounted && current() && _routeCurrent) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("That didn't go through. Please try again."),
+          ),
         );
       }
-      if (!mounted) return;
+    } finally {
+      if (mounted && current()) setState(() => _busy = false);
     }
-    await _load();
+  }
+
+  Future<void> _showOwnedMoment(
+    bool Function() current, {
+    IconData? mark,
+    SeekerProfile? pairWith,
+    String? dateChip,
+    bool glow = false,
+    required List<ZyraMomentLine> lines,
+    required String ctaLabel,
+  }) async {
+    if (!current() || !_routeCurrent) return;
+    _ownedChildShowing = true;
+    try {
+      await Navigator.of(context).push<bool>(
+        PageRouteBuilder<bool>(
+          opaque: true,
+          fullscreenDialog: true,
+          transitionDuration: const Duration(milliseconds: 400),
+          reverseTransitionDuration: const Duration(milliseconds: 260),
+          pageBuilder: (_, _, _) => _guardChild(
+            ZyraMomentScreen(
+              mark: mark,
+              pairWith: pairWith,
+              dateChip: dateChip,
+              glow: glow,
+              lines: lines,
+              ctaLabel: ctaLabel,
+              onPrimary: () {
+                final route = _ownedChildRoute;
+                if (current() && route?.isCurrent == true) {
+                  route!.navigator?.pop(true);
+                }
+              },
+            ),
+            current,
+          ),
+          transitionsBuilder: (_, animation, _, child) =>
+              FadeTransition(opacity: animation, child: child),
+        ),
+      );
+    } finally {
+      _ownedChildShowing = false;
+      _ownedChildRoute = null;
+    }
   }
 
   // ── EXTENDED 2026-08-11 with the Journey's own milestones. Until today
@@ -423,62 +730,17 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
   // ARE; 'You finished Faith & Values' is what HAPPENED, and a timeline is a
   // list of things that happened. The stage labels themselves still come from
   // the canonical map and are not duplicated here — these are event names.
-  static String _labelFor(String type) => switch (type) {
-    'liked' => 'You liked each other',
-    'match_created' => 'Match',
-    'journey_started' => 'Journey began',
-    'compatibility_revealed' => 'Compatibility revealed',
-    'salam_exchanged' => 'Salam exchanged',
-    'guardian_linked' => 'Guardians linked',
-    'phase_1_complete' => 'Finished Faith & Values',
-    'phase_2_complete' => 'Finished Building a Life',
-    'phase_3_complete' => 'Finished Navigating Life',
-    'family_stage' => 'Families introduced',
-    'conversation_started' => 'Open Conversation began',
-    'meeting' => 'Meeting',
-    'nikah' => 'Nikah',
-    'journey_ended' => 'Journey ended',
-    'journey_restarted' => 'Journey began again',
-    // DR-ZYRA-142: the pair, dated, NAMELESS and reasonless — who
-    // paused is never written, because the Timeline is the keepsake
-    // of the relationship, not a ledger of responsibility. Rendered
-    // quietly (see _isQuiet): part of the story, never a charge list.
-    'journey_paused' => 'Journey paused',
-    'journey_continued' => 'Journey continued',
-    _ => type,
-  };
+  static String _labelFor(String type) => ZyraTimelineMilestones.labelFor(type);
 
   /// Pauses and resumes are true history but small history — they render
   /// dimmed and tighter than real milestones, so five pauses read as a
   /// season of a relationship rather than a rap sheet (DR-ZYRA-142).
-  static bool _isQuiet(String type) =>
-      type == 'journey_paused' || type == 'journey_continued';
+  static bool _isQuiet(String type) => ZyraTimelineMilestones.isQuiet(type);
 
   // 2026-07-26: check_circle_outline replaces favorite here (Founder:
   // "for the whole app I'm tryna avoid any heart icons") — outline
   // variant matches this switch's other three entries.
-  static IconData _iconFor(String type) => switch (type) {
-    // No hearts anywhere, per the 2026-07-26 rule — mutual interest is a
-    // handshake here, not a heart.
-    'liked' => Icons.handshake_outlined,
-    'match_created' => Icons.check_circle_outline,
-    'journey_started' => Icons.flag_outlined,
-    'compatibility_revealed' => Icons.insights_outlined,
-    'salam_exchanged' => Icons.waving_hand_outlined,
-    'guardian_linked' => Icons.shield_outlined,
-    'phase_1_complete' => Icons.menu_book_outlined,
-    'phase_2_complete' => Icons.home_outlined,
-    'phase_3_complete' => Icons.route_outlined,
-    'family_stage' => Icons.family_restroom_outlined,
-    'conversation_started' => Icons.forum_outlined,
-    'meeting' => Icons.people_outline,
-    'nikah' => Icons.auto_awesome_outlined,
-    'journey_ended' => Icons.do_not_disturb_alt_outlined,
-    'journey_restarted' => Icons.restart_alt_outlined,
-    'journey_paused' => Icons.pause_circle_outline,
-    'journey_continued' => Icons.play_circle_outline,
-    _ => Icons.circle_outlined,
-  };
+  static IconData _iconFor(String type) => ZyraTimelineMilestones.iconFor(type);
 
   static const List<String> _months = [
     'January',
@@ -508,6 +770,10 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_accountCurrent) return const SizedBox.shrink();
+    final actionRevision = _actionRevision;
+    bool actionCurrent() =>
+        _accountCurrent && _routeCurrent && actionRevision == _actionRevision;
     final displayMilestones = _reviewEverything
         ? _reviewMilestones()
         : _milestones;
@@ -527,13 +793,13 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
           'Timeline with ${widget.withProfile.firstName}',
           style: ZyraText.heading(size: 17),
         ),
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
         // WAS gender-matched (DR-ZYRA-094, 2026-07-25). Journey mode is
         // neutral ground since DR-ZYRA-177 — the flow screen's header
         // note has the ruling; the Timeline is the same place.
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: Column(
             children: [
@@ -559,23 +825,30 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                       // confirms (Founder 2026-08-12). Only on a running
                       // Journey, only while something is left to record, and
                       // never while a proposal is already pending.
-                      if (_context.active &&
+                      if (_canRecord &&
                           !_context.paused &&
                           _context.matchId != null &&
                           _context.pending == null &&
                           _attestableTypes.isNotEmpty)
                         _TimelineBubble(
                           label: 'Record a milestone',
-                          onTap: _openPropose,
+                          onTap: () {
+                            if (actionCurrent()) unawaited(_openPropose());
+                          },
                         ),
-                      if (!kReleaseMode)
+                      if (ZyraDeveloperAccess.canUseDeveloperTools)
                         _TimelineBubble(
                           label: _reviewEverything
                               ? 'Close full review'
                               : 'Review everything',
-                          onTap: () => setState(
-                            () => _reviewEverything = !_reviewEverything,
-                          ),
+                          onTap: () {
+                            if (actionCurrent() &&
+                                ZyraDeveloperAccess.canUseDeveloperTools) {
+                              setState(
+                                () => _reviewEverything = !_reviewEverything,
+                              );
+                            }
+                          },
                         ),
                     ],
                   ),
@@ -601,7 +874,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                       'relationship data is changed.',
                       style: ZyraText.subtext(
                         size: 10.5,
-                        color: const Color(0xD9FFFFFF),
+                        color: ZyraColors.ink(0.85),
                       ).copyWith(letterSpacing: 0.5),
                       textAlign: TextAlign.center,
                     ),
@@ -609,7 +882,11 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                 ),
               // A proposal from the other Seeker: confirm it here, or leave
               // it — "Not yet" only hides it for this visit, deliberately.
-              if (_context.pending != null &&
+              if (!_loading &&
+                  !_loadFailed &&
+                  _context.active &&
+                  !_context.paused &&
+                  _context.pending != null &&
                   _context.pending!.proposedBy != ZyraAuth.currentUser?.id &&
                   !_pendingDismissed)
                 Padding(
@@ -634,21 +911,30 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                           '${_dateFor(_context.pending!.occurredOn)}.',
                           style: ZyraText.body(size: 13.5),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
-                              onPressed: () =>
-                                  setState(() => _pendingDismissed = true),
+                              onPressed: () {
+                                if (actionCurrent() && !_busy) {
+                                  setState(() => _pendingDismissed = true);
+                                }
+                              },
                               child: Text(
                                 'Not yet',
                                 style: ZyraText.subtext(size: 12.5),
                               ),
                             ),
-                            const SizedBox(width: 4),
+                            SizedBox(width: 4),
                             FilledButton(
-                              onPressed: _busy ? null : _confirmPending,
+                              onPressed: _busy
+                                  ? null
+                                  : () {
+                                      if (actionCurrent()) {
+                                        unawaited(_confirmPending());
+                                      }
+                                    },
                               child: Text(
                                 _busy ? 'Confirming…' : 'Confirm',
                                 style: ZyraText.button(size: 12.5),
@@ -675,6 +961,15 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
               Expanded(
                 child: _loading
                     ? const ZyraLoading()
+                    : (!_accountCurrent || _loadFailed) && !_reviewEverything
+                    ? ZyraEmptyState(
+                        icon: Icons.timeline_outlined,
+                        title: 'Couldn’t load your timeline',
+                        message:
+                            'Your Journey history is unavailable right now. Please try again.',
+                        ctaLabel: 'Try again',
+                        onCta: _load,
+                      )
                     : displayMilestones.isEmpty
                     ? Center(
                         child: Padding(
@@ -777,7 +1072,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                     style: ZyraText.subtext(
                                       size: 10.5,
                                       color: e.dim
-                                          ? const Color(0x59FFFFFF)
+                                          ? ZyraColors.ink(0.35)
                                           : const Color(0xD9CEA2D1),
                                     ).copyWith(letterSpacing: 1.6),
                                   ),
@@ -798,7 +1093,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                               shape: BoxShape.circle,
                                               color: Colors.white,
                                               border: Border.all(
-                                                color: const Color(0xFFCEA2D1),
+                                                color: ZyraColors.actionFill,
                                                 width: 2,
                                               ),
                                               boxShadow: const [
@@ -813,12 +1108,12 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                             Expanded(
                                               child: Container(
                                                 width: 1.5,
-                                                color: Colors.white24,
+                                                color: ZyraColors.ink(0.24),
                                               ),
                                             ),
                                         ],
                                       ),
-                                      const SizedBox(width: 14),
+                                      SizedBox(width: 14),
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -836,14 +1131,14 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                                   color: Colors.white,
                                                 ),
                                               ),
-                                              const SizedBox(height: 2),
+                                              SizedBox(height: 2),
                                               Text(
                                                 'In progress',
                                                 style: ZyraText.subtext(
                                                   size: 12,
                                                 ),
                                               ),
-                                              const SizedBox(height: 6),
+                                              SizedBox(height: 6),
                                               Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -851,17 +1146,14 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                                       vertical: 3,
                                                     ),
                                                 decoration: BoxDecoration(
-                                                  color: const Color(
-                                                    0x40CEA2D1,
-                                                  ),
+                                                  color: ZyraColors.surfaceFill,
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                         999,
                                                       ),
                                                   border: Border.all(
-                                                    color: const Color(
-                                                      0x99CEA2D1,
-                                                    ),
+                                                    color: ZyraColors
+                                                        .surfaceEmphasisBorder,
                                                   ),
                                                 ),
                                                 child: Text(
@@ -901,9 +1193,8 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               border: Border.all(
-                                                color: Colors.white.withValues(
-                                                  alpha: 0.35,
-                                                ),
+                                                color: ZyraColors.foreground
+                                                    .withValues(alpha: 0.35),
                                                 width: 1.5,
                                               ),
                                             ),
@@ -912,14 +1203,13 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                             Expanded(
                                               child: Container(
                                                 width: 1.5,
-                                                color: Colors.white.withValues(
-                                                  alpha: 0.10,
-                                                ),
+                                                color: ZyraColors.foreground
+                                                    .withValues(alpha: 0.10),
                                               ),
                                             ),
                                         ],
                                       ),
-                                      const SizedBox(width: 14),
+                                      SizedBox(width: 14),
                                       Expanded(
                                         child: Padding(
                                           padding: EdgeInsets.only(
@@ -946,7 +1236,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                               // nowhere earlier.
                                               if (e.stage.value ==
                                                   'conversation') ...[
-                                                const SizedBox(height: 2),
+                                                SizedBox(height: 2),
                                                 Text(
                                                   'free messaging begins here',
                                                   style: ZyraText.subtext(
@@ -984,7 +1274,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                   children: [
                                     Column(
                                       children: [
-                                        if (quiet) const SizedBox(height: 4),
+                                        if (quiet) SizedBox(height: 4),
                                         Container(
                                           width: quiet ? 26 : 34,
                                           height: quiet ? 26 : 34,
@@ -995,13 +1285,12 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: quiet
-                                                ? Colors.white.withValues(
-                                                    alpha: 0.06,
-                                                  )
+                                                ? ZyraColors.foreground
+                                                      .withValues(alpha: 0.06)
                                                 : ZyraColors.accentBg,
                                             border: Border.all(
                                               color: quiet
-                                                  ? Colors.white24
+                                                  ? ZyraColors.ink(0.24)
                                                   : ZyraColors.accentBorder,
                                               width: 1,
                                             ),
@@ -1009,7 +1298,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                           child: Icon(
                                             _iconFor(m.type),
                                             color: quiet
-                                                ? Colors.white54
+                                                ? ZyraColors.ink(0.54)
                                                 : Colors.white,
                                             size: quiet ? 13 : 16,
                                           ),
@@ -1018,12 +1307,12 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                           Expanded(
                                             child: Container(
                                               width: 1.5,
-                                              color: Colors.white24,
+                                              color: ZyraColors.ink(0.24),
                                             ),
                                           ),
                                       ],
                                     ),
-                                    const SizedBox(width: 14),
+                                    SizedBox(width: 14),
                                     Expanded(
                                       child: Padding(
                                         padding: EdgeInsets.only(
@@ -1048,7 +1337,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                                       color: Colors.white,
                                                     ),
                                             ),
-                                            const SizedBox(height: 2),
+                                            SizedBox(height: 2),
                                             // "08 August 2026", not
                                             // "8/8/2026" — see _dateFor.
                                             Text(
@@ -1134,6 +1423,47 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
 /// copies is not yet a shared widget; three is. Noted here so the third
 /// person to need one lifts all three into `widgets/` rather than adding a
 /// fourth quietly.
+// An owned picker/confirmation is allowed to cover its Timeline. Covering
+// that child with another route terminally withdraws this particular intent,
+// even if the child is later uncovered. Popping the child normally is not a
+// cover and preserves the healthy continuation.
+class _TimelineOwnedChild extends StatefulWidget {
+  const _TimelineOwnedChild({
+    required this.current,
+    required this.onRoute,
+    required this.onCovered,
+    required this.child,
+  });
+  final bool Function() current;
+  final ValueChanged<Route<dynamic>?> onRoute;
+  final VoidCallback onCovered;
+  final Widget child;
+
+  @override
+  State<_TimelineOwnedChild> createState() => _TimelineOwnedChildState();
+}
+
+class _TimelineOwnedChildState extends State<_TimelineOwnedChild> {
+  bool _withdrawn = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    widget.onRoute(route);
+    if (!_withdrawn &&
+        (!widget.current() ||
+            (route != null && route.isActive && !route.isCurrent))) {
+      _withdrawn = true;
+      widget.onCovered();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      !_withdrawn && widget.current() ? widget.child : const SizedBox.shrink();
+}
+
 class _TimelineBubble extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
@@ -1190,7 +1520,7 @@ class _TimelineQaState extends State<_TimelineQa> {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Material(
-        color: Colors.white.withValues(alpha: 0.07),
+        color: ZyraColors.foreground.withValues(alpha: 0.07),
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
@@ -1200,7 +1530,9 @@ class _TimelineQaState extends State<_TimelineQa> {
             padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.16)),
+              border: Border.all(
+                color: ZyraColors.foreground.withValues(alpha: 0.16),
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1214,28 +1546,28 @@ class _TimelineQaState extends State<_TimelineQa> {
                         style: ZyraText.body(size: 12.5, color: Colors.white),
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    SizedBox(width: 6),
                     Icon(
                       open
                           ? Icons.keyboard_arrow_up
                           : Icons.keyboard_arrow_down,
                       size: 16,
-                      color: Colors.white54,
+                      color: ZyraColors.ink(0.54),
                     ),
                   ],
                 ),
                 if (!open) ...[
-                  const SizedBox(height: 3),
+                  SizedBox(height: 3),
                   Text(
                     'Both answers — tap to read',
                     style: ZyraText.subtext(
                       size: 10,
-                      color: const Color(0x73FFFFFF),
+                      color: ZyraColors.ink(0.45),
                     ),
                   ),
                 ],
                 if (open) ...[
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text(
                     'YOU',
                     style: ZyraText.subtext(
@@ -1243,15 +1575,15 @@ class _TimelineQaState extends State<_TimelineQa> {
                       color: const Color(0xD9CEA2D1),
                     ).copyWith(letterSpacing: 1.2),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Text(
                     widget.pair.mine,
                     style: ZyraText.subtext(
                       size: 12,
-                      color: const Color(0xC7FFFFFF),
+                      color: ZyraColors.ink(0.78),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text(
                     widget.theirName.toUpperCase(),
                     style: ZyraText.subtext(
@@ -1259,12 +1591,12 @@ class _TimelineQaState extends State<_TimelineQa> {
                       color: const Color(0xD9CEA2D1),
                     ).copyWith(letterSpacing: 1.2),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Text(
                     widget.pair.theirs,
                     style: ZyraText.subtext(
                       size: 12,
-                      color: const Color(0xC7FFFFFF),
+                      color: ZyraColors.ink(0.78),
                     ),
                   ),
                 ],

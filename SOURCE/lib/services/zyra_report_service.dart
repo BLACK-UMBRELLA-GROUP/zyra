@@ -29,6 +29,8 @@
 import 'package:flutter/foundation.dart' show debugPrint;
 import '../main.dart';
 import 'zyra_auth.dart';
+import 'zyra_account_state.dart';
+import 'zyra_internal_preview_client.dart';
 
 /// Where the report was raised from. Moderation needs this: a report from
 /// an active Journey is a materially different signal to one from a
@@ -47,37 +49,100 @@ enum ZyraReportReason {
   other,
 }
 
+class ZyraSafetyCase {
+  final String id;
+  final String type;
+  final String status;
+  final DateTime createdAt;
+  final DateTime? updatedAt;
+
+  const ZyraSafetyCase({
+    required this.id,
+    required this.type,
+    required this.status,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  String get typeLabel => switch (type) {
+    'profile' => 'Member report',
+    'guardian_circle' => 'Guardian Circle report',
+    _ => 'Safety report',
+  };
+
+  String get statusLabel => switch (status) {
+    'pending' => 'Received',
+    'reviewing' => 'Under review',
+    'actioned' => 'Review complete',
+    'dismissed' => 'Review complete',
+    _ => 'Status unavailable',
+  };
+
+  static ZyraSafetyCase? fromRow(Map<String, dynamic> row) {
+    final id = row['case_id'];
+    final type = row['case_type'];
+    final status = row['status'];
+    final created = row['created_at'];
+    final updated = row['updated_at'];
+    final createdAt = created is String ? DateTime.tryParse(created) : null;
+    final updatedAt = updated is String ? DateTime.tryParse(updated) : null;
+    if (id is! String ||
+        id.isEmpty ||
+        type is! String ||
+        type.isEmpty ||
+        status is! String ||
+        status.isEmpty ||
+        createdAt == null ||
+        (updated != null && updatedAt == null)) {
+      return null;
+    }
+    return ZyraSafetyCase(
+      id: id,
+      type: type,
+      status: status,
+      createdAt: createdAt.toLocal(),
+      updatedAt: updatedAt?.toLocal(),
+    );
+  }
+}
+
 extension ZyraReportReasonX on ZyraReportReason {
   String get dbValue => switch (this) {
-        ZyraReportReason.fakeProfile => 'fake_profile',
-        ZyraReportReason.inappropriateContent => 'inappropriate_content',
-        ZyraReportReason.harassment => 'harassment',
-        ZyraReportReason.underage => 'underage',
-        ZyraReportReason.violence => 'violence',
-        ZyraReportReason.privacy => 'privacy',
-        ZyraReportReason.other => 'other',
-      };
+    ZyraReportReason.fakeProfile => 'fake_profile',
+    ZyraReportReason.inappropriateContent => 'inappropriate_content',
+    ZyraReportReason.harassment => 'harassment',
+    ZyraReportReason.underage => 'underage',
+    ZyraReportReason.violence => 'violence',
+    ZyraReportReason.privacy => 'privacy',
+    ZyraReportReason.other => 'other',
+  };
 
   /// User-facing label. Plain, non-clinical language — someone using this
   /// screen is usually upset, and this is not the moment for product
   /// voice.
   String get label => switch (this) {
-        ZyraReportReason.fakeProfile => 'Impersonation or fake profile',
-        ZyraReportReason.inappropriateContent => 'Nudity or sexual content',
-        ZyraReportReason.harassment => 'Harassment or abusive behaviour',
-        ZyraReportReason.underage => 'Minor or underage',
-        ZyraReportReason.violence => 'Violence or disturbing content',
-        ZyraReportReason.privacy => 'Privacy or personal information',
-        ZyraReportReason.other => 'Something else',
-      };
+    ZyraReportReason.fakeProfile => 'Impersonation or fake profile',
+    ZyraReportReason.inappropriateContent => 'Nudity or sexual content',
+    ZyraReportReason.harassment => 'Harassment or abusive behaviour',
+    ZyraReportReason.underage => 'Minor or underage',
+    ZyraReportReason.violence => 'Violence or disturbing content',
+    ZyraReportReason.privacy => 'Privacy or personal information',
+    ZyraReportReason.other => 'Something else',
+  };
 
   /// Reasons where we should say plainly that we act fast. Underage is
   /// the one that must never sit in a queue behind a bio complaint.
-  bool get isUrgent => this == ZyraReportReason.underage || this == ZyraReportReason.violence;
+  bool get isUrgent =>
+      this == ZyraReportReason.underage || this == ZyraReportReason.violence;
 }
 
 class ZyraReportService {
   ZyraReportService._();
+
+  static bool _sameOwner(String owner, int generation) =>
+      ZyraAuth.currentUser?.id == owner &&
+      ZyraAccountState.generation == generation &&
+      !ZyraAccountState.isSigningOut;
 
   /// Whether [id] is a real `profiles` row rather than one of the demo
   /// candidates in seeker_profile.dart, whose ids are '1', '2', '3'.
@@ -92,8 +157,38 @@ class ZyraReportService {
   /// ES-02 in the Muzz teardown ("no mock data in production paths"),
   /// which exists precisely because that fallback hid the profile_complete
   /// bug for a month. It is a bridge, not a design.
-  static bool isPersistableId(String id) =>
-      RegExp(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', caseSensitive: false).hasMatch(id);
+  static bool isPersistableId(String id) => RegExp(
+    r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+    caseSensitive: false,
+  ).hasMatch(id);
+
+  /// Caller-scoped status only. The RPC deliberately withholds the reported
+  /// person's identity and remains callable when paid membership has expired.
+  static Future<List<ZyraSafetyCase>?> safetyCases() async {
+    // Founder and external-tester previews are intentionally isolated from
+    // member reports. An empty local list is the truthful preview state; a
+    // blocked network request is not a load failure the member should see.
+    if (ZyraInternalPreviewClient.isActive) return const [];
+    final user = ZyraAuth.currentUser;
+    if (user == null || ZyraAccountState.isSigningOut) return null;
+    final generation = ZyraAccountState.generation;
+    try {
+      final raw = await supabase.rpc('zyra_my_safety_cases');
+      if (!_sameOwner(user.id, generation)) return null;
+      if (raw is! List) return null;
+      final cases = <ZyraSafetyCase>[];
+      for (final item in raw) {
+        if (item is! Map) return null;
+        final value = ZyraSafetyCase.fromRow(Map<String, dynamic>.from(item));
+        if (value == null) return null;
+        cases.add(value);
+      }
+      return cases;
+    } catch (e) {
+      debugPrint('ZYRA: safety case status read failed — ${e.runtimeType}.');
+      return null;
+    }
+  }
 
   /// Hides [otherUserId] and the caller from each other, everywhere,
   /// immediately. No report is filed and nobody is notified.
@@ -135,10 +230,21 @@ class ZyraReportService {
   /// from the user's point of view the desired state is already true.
   static Future<bool> block(String otherUserId) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return false;
+    final session = supabase.auth.currentSession;
+    final generation = ZyraAccountState.generation;
+    if (user == null ||
+        session == null ||
+        session.user.id != user.id ||
+        session.expiresAt == null ||
+        session.isExpired ||
+        ZyraAccountState.isSigningOut) {
+      return false;
+    }
     try {
-      await supabase.rpc('zyra_block_user', params: {'p_other': otherUserId});
-      return true;
+      await supabase
+          .rpc('zyra_block_user', params: {'p_other': otherUserId})
+          .setHeader('Authorization', 'Bearer ${session.accessToken}');
+      return _sameOwner(user.id, generation);
     } catch (e) {
       debugPrint('ZYRA: block($otherUserId) failed — $e');
       return false;
@@ -150,12 +256,23 @@ class ZyraReportService {
   /// letting someone correct their own mistake.
   static Future<bool> unblock(String otherUserId) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return false;
+    final session = supabase.auth.currentSession;
+    final generation = ZyraAccountState.generation;
+    if (user == null ||
+        session == null ||
+        session.user.id != user.id ||
+        session.expiresAt == null ||
+        session.isExpired ||
+        ZyraAccountState.isSigningOut) {
+      return false;
+    }
     try {
       // Via the RPC, for the same reason as block() above — the direct
       // DELETE was refused with 42501 and reported success.
-      await supabase.rpc('zyra_unblock_user', params: {'p_other': otherUserId});
-      return true;
+      await supabase
+          .rpc('zyra_unblock_user', params: {'p_other': otherUserId})
+          .setHeader('Authorization', 'Bearer ${session.accessToken}');
+      return _sameOwner(user.id, generation);
     } catch (e) {
       debugPrint('ZYRA: unblock($otherUserId) failed — $e');
       return false;
@@ -165,14 +282,35 @@ class ZyraReportService {
   /// Ids the caller has blocked. Note this is only blocks the caller
   /// MADE — RLS deliberately prevents anyone seeing who blocked them.
   static Future<List<String>> blockedIds() async {
+    return await blockedIdsOrNull() ?? const [];
+  }
+
+  /// A confirmed empty list is distinct from an unavailable read. Display
+  /// surfaces must not claim that nobody is hidden when the server is offline.
+  /// An account replacement also invalidates an in-flight result.
+  static Future<List<String>?> blockedIdsOrNull() async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return const [];
+    if (user == null || ZyraAccountState.isSigningOut) return null;
+    final generation = ZyraAccountState.generation;
     try {
-      final rows = await supabase.from('profile_blocks').select('blocked_id').eq('blocker_id', user.id) as List;
-      return rows.map((r) => (r as Map<String, dynamic>)['blocked_id'] as String).toList();
+      final rows =
+          await supabase
+                  .from('profile_blocks')
+                  .select('blocked_id')
+                  .eq('blocker_id', user.id)
+                  .timeout(const Duration(seconds: 10))
+              as List;
+      if (ZyraAuth.currentUser?.id != user.id ||
+          ZyraAccountState.generation != generation ||
+          ZyraAccountState.isSigningOut) {
+        return null;
+      }
+      return rows
+          .map((r) => (r as Map<String, dynamic>)['blocked_id'] as String)
+          .toList();
     } catch (e) {
-      debugPrint('ZYRA: blockedIds() failed — $e');
-      return const [];
+      debugPrint('ZYRA: blockedIdsOrNull() failed — $e');
+      return null;
     }
   }
 
@@ -208,17 +346,33 @@ class ZyraReportService {
     bool alsoBlock = true,
   }) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return false;
+    final session = supabase.auth.currentSession;
+    final generation = ZyraAccountState.generation;
+    if (user == null ||
+        session == null ||
+        session.user.id != user.id ||
+        session.expiresAt == null ||
+        session.isExpired ||
+        ZyraAccountState.isSigningOut) {
+      return false;
+    }
     try {
-      await supabase.from('profile_reports').insert({
-        'reporter_id': user.id,
-        'reported_id': reportedId,
-        'reason': reason.dbValue,
-        'detail': (detail != null && detail.trim().isNotEmpty) ? detail.trim() : null,
-        'source': source.name,
-      });
+      await supabase
+          .from('profile_reports')
+          .insert({
+            'reporter_id': user.id,
+            'reported_id': reportedId,
+            'reason': reason.dbValue,
+            'detail': (detail != null && detail.trim().isNotEmpty)
+                ? detail.trim()
+                : null,
+            'source': source.name,
+          })
+          .setHeader('Authorization', 'Bearer ${session.accessToken}');
     } catch (e) {
-      debugPrint('ZYRA: report($reportedId, ${reason.dbValue}) FAILED — nothing was stored. $e');
+      debugPrint(
+        'ZYRA: report($reportedId, ${reason.dbValue}) FAILED — nothing was stored. $e',
+      );
       return false;
     }
 
@@ -229,13 +383,18 @@ class ZyraReportService {
     // contract (true means the REPORT stored — see the doc above) but not
     // the silence: for a month `block()` returned false on every single
     // call and nothing anywhere said so. Audit finding 1.2.
+    // A stored report belongs to the initiating principal. Never continue
+    // its block or publish success into a replacement account.
+    if (!_sameOwner(user.id, generation)) return false;
     if (alsoBlock) {
       final blocked = await block(reportedId);
       if (!blocked) {
-        debugPrint('ZYRA: report($reportedId) stored, but the accompanying '
-            'block FAILED. The reporter can still see this person.');
+        debugPrint(
+          'ZYRA: report($reportedId) stored, but the accompanying '
+          'block FAILED. The reporter can still see this person.',
+        );
       }
     }
-    return true;
+    return _sameOwner(user.id, generation);
   }
 }

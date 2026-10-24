@@ -22,22 +22,24 @@
 //
 //   NOT    The payment. There is no payment SDK in the project — verified
 //          against pubspec.yaml: no in_app_purchase, no StoreKit, no
-//          RevenueCat, no Stripe. Unlocking currently costs nothing.
+//          RevenueCat, no Stripe. The RPC still spends ledger credits; this
+//          class never treats a missing checkout as a free live unlock.
 //
-//   NOT    The compatibility score itself. It is computed from
-//          `onboarding_answers`, which has zero rows for real users, and
-//          the scoring method is still an open to-do in the spec.
+//   REAL   The overall compatibility score, read by the presentation layer
+//          from score_candidates().
 //
-// So a real user could today unlock a real row and see sample numbers. The
-// row is worth writing anyway: the once-only rule and the button-state
-// behaviour are the parts being designed, and they need somewhere durable
-// to live. When payments land, the purchase gates the insert — the insert
-// itself does not change.
+//   NOT    Per-category compatibility totals. Until the server owns and
+//          returns that contract, a new Compatibility Unlock+ is unavailable
+//          and this service refuses it before any local or RPC write path.
+
+import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
 import '../main.dart';
 import 'zyra_auth.dart';
+import 'zyra_account_state.dart';
+import 'zyra_developer_access.dart';
 
 /// What happened when an unlock was attempted.
 ///
@@ -56,10 +58,13 @@ enum UnlockOutcome {
   /// No credits at this tier. Not an error; an answer.
   insufficientCredits,
 
-  /// The profile is one of the built-in sample profiles (`mockProfiles`),
-  /// whose ids are '1', '2', '3'… rather than real UUIDs. Unlocked locally
-  /// for the rest of the session so the screen can be tried, and no credit
-  /// is spent because there is nothing on the server to spend it against.
+  /// The requested tier cannot currently reveal a truthful result. Nothing
+  /// was written and no credit was spent.
+  unavailable,
+
+  /// A non-persisted sample inside the existing protected Founder preview.
+  /// Unlocked locally for the session, never a live entitlement or debit.
+  /// Ordinary or signed-out sample calls cannot obtain this outcome.
   ///
   /// ADDED 2026-08-05 (Fable). Before this, tapping Unlock on a sample
   /// profile sent '1' to `zyra_unlock_profile(p_target uuid, …)`, Postgres
@@ -70,17 +75,35 @@ enum UnlockOutcome {
   /// failure should at least be truthful.
   sampleProfile,
 
-  /// Network or server failure. The only outcome worth retrying.
+  /// The server requested recovery, or a write acknowledgement was lost or
+  /// malformed. Read access again; do not blindly repeat a possible debit.
+  recoveryRequired,
+
+  /// The caller no longer owns this request, or has no ordinary authority.
   failed,
+}
+
+enum UnlockBalanceStatus { available, failed, stale }
+
+/// A failed ledger lookup is not a zero-credit balance. The legacy Map API
+/// remains compatible for older callers; transaction UI uses this result.
+class UnlockBalanceResult {
+  final UnlockBalanceStatus status;
+  final Map<UnlockTier, int> values;
+
+  const UnlockBalanceResult._(this.status, this.values);
+
+  bool get available => status == UnlockBalanceStatus.available;
 }
 
 /// Which tier an unlock buys. Values must match `profile_unlocks`'
 /// unlock_type CHECK constraint.
 enum UnlockTier {
-  /// Compatibility Unlock — overall score plus Green/Amber/Red counts.
+  /// Compatibility Unlock — the viewer's overall directional score only.
   standard('paid_single'),
 
-  /// Compatibility Unlock Plus — the above plus a category breakdown.
+  /// Existing Plus includes Standard. New Plus spending remains held; this
+  /// enum does not activate the future reduced-disclosure projection.
   plus('paid_plus_single');
 
   const UnlockTier(this.dbValue);
@@ -90,6 +113,18 @@ enum UnlockTier {
 class ZyraUnlockService {
   ZyraUnlockService._();
 
+  /// The one current Compatibility Unlock product uses the former full-detail
+  /// entitlement. Stored tiers stay unchanged for permanent legacy access.
+  static const currentTier = UnlockTier.plus;
+
+  /// Compatibility Unlock+ remains held until real server-owned category
+  /// totals are implemented and verified. Keeping the fuse in the service
+  /// means a hidden, stale or future UI cannot debit a Plus credit either.
+  static const bool categoryBreakdownAvailable = false;
+
+  static bool isTierAvailable(UnlockTier tier) =>
+      tier != UnlockTier.plus || categoryBreakdownAvailable;
+
   /// Everything this Seeker has already unlocked, as `'<profileId>:<tier>'`.
   ///
   /// Cached in memory for the session after the first read. The set only
@@ -97,8 +132,69 @@ class ZyraUnlockService {
   /// is what lets every card check ownership without a round trip.
   static final Set<String> _unlocked = {};
   static bool _loaded = false;
+  static String? _owner;
+  static int _epoch = 0;
+  static int _loadRequest = 0;
+  static final Map<String, Future<UnlockOutcome>> _pending = {};
+  static final Map<String, String> _pendingTargets = {};
+  static final Set<String> _recoveryRequired = {};
+  static StreamSubscription<dynamic>? _authSubscription;
 
-  static String _key(String profileId, UnlockTier tier) => '$profileId:${tier.dbValue}';
+  static String? _currentOwner() {
+    try {
+      return ZyraAuth.currentUser?.id;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static void _synchronizeOwner() {
+    try {
+      _authSubscription ??= ZyraAuth.authStateChanges.listen(
+        (event) {
+          final current = event.session?.user.id;
+          if (_owner == current) return;
+          clearForSignOut();
+          _owner = current;
+        },
+        onError: (Object _, StackTrace _) {
+          // A refresh failure is not a success acknowledgement. Retain no
+          // in-flight transaction authority. Keep uncertain targets held for
+          // this owner, so a refresh error cannot reopen a possible debit.
+          _recoveryRequired.addAll(_pendingTargets.values);
+          _epoch++;
+          _loadRequest++;
+          _pending.clear();
+          _pendingTargets.clear();
+          _unlocked.clear();
+          _loaded = false;
+          debugPrint('ZYRA: unlock auth lifetime could not be confirmed.');
+        },
+      );
+    } catch (_) {
+      // Protected local sample previews can run without a Supabase instance.
+    }
+    final owner = _currentOwner();
+    if (_owner == owner) return;
+    clearForSignOut();
+    _owner = owner;
+  }
+
+  static bool _isCurrent(String? owner, int epoch, int generation) =>
+      !ZyraAccountState.isSigningOut &&
+      generation == ZyraAccountState.generation &&
+      epoch == _epoch &&
+      owner == _owner &&
+      owner == _currentOwner();
+
+  static UnlockTier? _storedTier(Object? type) => switch (type) {
+    'paid_single' || 'paid_bundle' || 'automatic_match' => UnlockTier.standard,
+    'paid_plus_single' || 'paid_plus_bundle' => UnlockTier.plus,
+    _ => null,
+  };
+
+  static String _key(String profileId, UnlockTier tier) =>
+      '${_uuid.hasMatch(profileId) ? profileId.toLowerCase() : profileId}:${tier.dbValue}';
 
   /// Real rows have UUID ids; `mockProfiles` uses '1', '2', '3'…
   /// Anything sent to a `uuid` parameter must pass this first, or Postgres
@@ -109,35 +205,148 @@ class ZyraUnlockService {
 
   static bool isSampleProfile(String profileId) => !_uuid.hasMatch(profileId);
 
-  static bool isUnlocked(String profileId, UnlockTier tier) =>
-      _unlocked.contains(_key(profileId, tier));
+  /// A non-persisted Browse card may exercise Compatibility Unlock only
+  /// inside the authenticated Founder preview. This never turns an email,
+  /// profile id or debug-looking string into authority: the existing
+  /// refreshed Founder capability remains the gate.
+  static bool isDeveloperPreviewProfile(String profileId) =>
+      ZyraDeveloperAccess.canUseDeveloperTools && isSampleProfile(profileId);
 
-  /// Loads the caller's unlocks. Called once per launch from the session
-  /// router; safe to call again.
-  static Future<void> load() async {
-    final user = ZyraAuth.currentUser;
-    if (user == null) return;
+  /// Deterministic fixture score for the isolated Founder preview. Real
+  /// profiles never use this; their score remains server-owned by
+  /// `score_candidates()`.
+  static double? developerPreviewScore(String profileId) {
+    if (!isDeveloperPreviewProfile(profileId)) return null;
+    final seed = profileId.codeUnits.fold<int>(0, (sum, unit) => sum + unit);
+    return (68 + (seed % 23)).toDouble();
+  }
+
+  static bool isUnlocked(String profileId, UnlockTier tier) {
+    _synchronizeOwner();
+    if (isSampleProfile(profileId) &&
+        !ZyraDeveloperAccess.canUseDeveloperTools) {
+      return false;
+    }
+    return _unlocked.contains(_key(profileId, tier)) ||
+        (tier == UnlockTier.standard &&
+            _unlocked.contains(_key(profileId, UnlockTier.plus)));
+  }
+
+  /// Confirms one existing owner/profile grant before a protected read.
+  ///
+  /// `null` means the read failed or its account lifetime expired, not that
+  /// the caller owns nothing. This target-bounded read does not depend on the
+  /// session router's concurrent full-cache hydration and never marks that
+  /// full cache loaded. It grants no new access and never reads/spends credits.
+  /// The server must still enforce disclosure at the numeric-result endpoint;
+  /// this client safeguard is not a substitute for that held server cutover.
+  static Future<bool?> confirmOwnedAccess(
+    String profileId,
+    UnlockTier tier,
+  ) async {
+    _synchronizeOwner();
+    if (isSampleProfile(profileId)) {
+      return isDeveloperPreviewProfile(profileId) &&
+          isUnlocked(profileId, tier);
+    }
+    final owner = _owner;
+    final epoch = _epoch;
+    final generation = ZyraAccountState.generation;
+    if (owner == null || !_isCurrent(owner, epoch, generation)) return null;
+    if (isUnlocked(profileId, tier)) return true;
+    final target = profileId.toLowerCase();
     try {
       final rows = await supabase
           .from('profile_unlocks')
           .select('unlocked_id, unlock_type')
-          .eq('unlocker_id', user.id) as List;
-      _unlocked
-        ..clear()
-        ..addAll([
-          for (final r in rows)
-            '${(r as Map<String, dynamic>)['unlocked_id']}:${r['unlock_type']}',
-        ]);
+          .eq('unlocker_id', owner)
+          .eq('unlocked_id', target)
+          .timeout(const Duration(seconds: 8));
+      if (!_isCurrent(owner, epoch, generation)) return null;
+      final keys = <String>{};
+      for (final row in rows) {
+        final unlocked = row['unlocked_id'];
+        final storedTier = _storedTier(row['unlock_type']);
+        if (unlocked is! String ||
+            unlocked.toLowerCase() != target ||
+            storedTier == null) {
+          throw const FormatException('Invalid profile access row');
+        }
+        keys.add(_key(target, storedTier));
+      }
+      // A concurrent confirmed unlock must not be erased by an older empty
+      // read. Only this owner/generation may acquire these permanent keys.
+      _unlocked.addAll(keys);
+      return isUnlocked(target, tier);
+    } catch (_) {
+      if (!_isCurrent(owner, epoch, generation)) return null;
+      // A failed older read cannot contradict a grant confirmed by a
+      // concurrent operation in this same owner/generation lifetime.
+      if (isUnlocked(target, tier)) return true;
+      debugPrint('ZYRA: existing profile access could not be confirmed.');
+      return null;
+    }
+  }
+
+  /// Captures the existing grant's local read lifetime, including auth-stream
+  /// failure/sign-out epochs even if the same account later returns. The
+  /// closure cannot create access; callers must first confirm ownership.
+  static bool Function() ownedReadGuard(String profileId, UnlockTier tier) {
+    _synchronizeOwner();
+    final owner = _owner;
+    final epoch = _epoch;
+    final generation = ZyraAccountState.generation;
+    return () =>
+        owner != null &&
+        _isCurrent(owner, epoch, generation) &&
+        isUnlocked(profileId, tier);
+  }
+
+  /// Loads the caller's unlocks. Called once per launch from the session
+  /// router; safe to call again.
+  static Future<void> load() async {
+    _synchronizeOwner();
+    final user = ZyraAuth.currentUser;
+    if (user == null) return;
+    final epoch = _epoch;
+    final generation = ZyraAccountState.generation;
+    final request = ++_loadRequest;
+    try {
+      final rows =
+          await supabase
+                  .from('profile_unlocks')
+                  .select('unlocked_id, unlock_type')
+                  .eq('unlocker_id', user.id)
+              as List;
+      if (!_isCurrent(user.id, epoch, generation) || request != _loadRequest) {
+        return;
+      }
+      final keys = <String>{};
+      for (final row in rows) {
+        if (row is! Map) continue;
+        final target = row['unlocked_id'];
+        final tier = _storedTier(row['unlock_type']);
+        if (target is String && _uuid.hasMatch(target) && tier != null) {
+          keys.add(_key(target, tier));
+        }
+      }
+      // Entitlements are permanent. An older read must not erase a write
+      // confirmed while that snapshot was in flight. Account resets still
+      // clear the entire cache and invalidate every pending request.
+      _unlocked.addAll(keys);
       _loaded = true;
     } catch (e) {
       // Logged, not swallowed. A failure here makes an already-unlocked
       // profile look locked, which would read as having lost something
       // paid for — worth seeing in the console rather than guessing at.
-      debugPrint('ZYRA: unlock load failed — $e');
+      debugPrint('ZYRA: unlock load failed.');
     }
   }
 
-  static bool get loaded => _loaded;
+  static bool get loaded {
+    _synchronizeOwner();
+    return _loaded;
+  }
 
   /// Spends one credit to unlock a profile.
   ///
@@ -162,28 +371,59 @@ class ZyraUnlockService {
   static Future<UnlockOutcome> unlock(String profileId, UnlockTier tier) async {
     if (isUnlocked(profileId, tier)) return UnlockOutcome.alreadyUnlocked;
 
-    final user = ZyraAuth.currentUser;
-    if (user == null) {
-      // Mock/offline session — nothing to spend and nowhere to write.
-      // Remember locally so the button behaves for the rest of the session.
-      _unlocked.add(_key(profileId, tier));
-      return UnlockOutcome.unlocked;
+    // Preserve access already held above, but refuse every new Plus attempt
+    // before the mock/offline, sample-profile and server RPC paths.
+    if (!isTierAvailable(tier)) return UnlockOutcome.unavailable;
+    if (_recoveryRequired.contains(_key(profileId, tier))) {
+      return UnlockOutcome.recoveryRequired;
     }
 
-    // Signed in, but looking at a sample profile: same situation as above —
-    // there is no server-side profile to unlock — so handle it the same way
-    // rather than sending '1' to a uuid parameter and reporting the
-    // resulting syntax error as a network problem.
-    if (isSampleProfile(profileId)) {
+    // Founder preview cards are deliberately non-persisted. Complete their
+    // standard unlock locally before touching Auth or Supabase so the test
+    // flow exercises the feature without resembling a live purchase.
+    if (isDeveloperPreviewProfile(profileId)) {
       _unlocked.add(_key(profileId, tier));
       return UnlockOutcome.sampleProfile;
     }
 
+    final user = ZyraAuth.currentUser;
+    final epoch = _epoch;
+    final generation = ZyraAccountState.generation;
+    if (user == null ||
+        isSampleProfile(profileId) ||
+        !_isCurrent(user.id, epoch, generation)) {
+      return UnlockOutcome.failed;
+    }
+
+    final key = '${user.id}:$epoch:$generation:${_key(profileId, tier)}';
+    final existing = _pending[key];
+    if (existing != null) return existing;
+    final pending = _unlockOnce(profileId, tier, user.id, epoch, generation);
+    _pending[key] = pending;
+    _pendingTargets[key] = _key(profileId, tier);
     try {
-      final res = await supabase.rpc('zyra_unlock_profile', params: {
-        'p_target': profileId,
-        'p_tier': tier.dbValue,
-      });
+      return await pending;
+    } finally {
+      if (identical(_pending[key], pending)) {
+        _pending.remove(key);
+        _pendingTargets.remove(key);
+      }
+    }
+  }
+
+  static Future<UnlockOutcome> _unlockOnce(
+    String profileId,
+    UnlockTier tier,
+    String owner,
+    int epoch,
+    int generation,
+  ) async {
+    try {
+      final res = await supabase.rpc(
+        'zyra_unlock_profile',
+        params: {'p_target': profileId, 'p_tier': tier.dbValue},
+      );
+      if (!_isCurrent(owner, epoch, generation)) return UnlockOutcome.failed;
       final status = (res as Map?)?['status'] as String?;
       switch (status) {
         case 'unlocked':
@@ -194,13 +434,21 @@ class ZyraUnlockService {
           return UnlockOutcome.alreadyUnlocked;
         case 'insufficient_credits':
           return UnlockOutcome.insufficientCredits;
+        case 'plus_unavailable':
+          return UnlockOutcome.unavailable;
+        case 'recovery_required':
+          _recoveryRequired.add(_key(profileId, tier));
+          return UnlockOutcome.recoveryRequired;
         default:
-          debugPrint('ZYRA: unlock returned unexpected status "$status"');
-          return UnlockOutcome.failed;
+          debugPrint('ZYRA: unlock acknowledgement requires recovery.');
+          _recoveryRequired.add(_key(profileId, tier));
+          return UnlockOutcome.recoveryRequired;
       }
     } catch (e) {
-      debugPrint('ZYRA: unlock($profileId, ${tier.dbValue}) failed — $e');
-      return UnlockOutcome.failed;
+      if (!_isCurrent(owner, epoch, generation)) return UnlockOutcome.failed;
+      debugPrint('ZYRA: unlock acknowledgement could not be confirmed.');
+      _recoveryRequired.add(_key(profileId, tier));
+      return UnlockOutcome.recoveryRequired;
     }
   }
 
@@ -210,42 +458,88 @@ class ZyraUnlockService {
   /// enum in the dev panel — there was no server-side notion of how many
   /// unlocks anyone owned, which is precisely why nothing could check one.
   ///
-  /// Returns 0 for a tier with no rows. Never null: a failed read must not
-  /// be mistaken for "you have credits".
+  /// Compatibility-only wrapper for existing Map callers. This never grants
+  /// credits on failure, but cannot express unknown. New transaction UI must
+  /// use [readBalances] instead. The older Profile consumer remains a held
+  /// presentation limitation until separately scoped.
   static Future<Map<UnlockTier, int>> balances() async {
+    final result = await readBalances();
+    return result.available
+        ? result.values
+        : {for (final tier in UnlockTier.values) tier: 0};
+  }
+
+  static Future<UnlockBalanceResult> readBalances() async {
+    _synchronizeOwner();
     final out = {for (final t in UnlockTier.values) t: 0};
-    if (ZyraAuth.currentUser == null) return out;
+    final owner = _owner;
+    final epoch = _epoch;
+    final generation = ZyraAccountState.generation;
+    if (owner == null || !_isCurrent(owner, epoch, generation)) {
+      return const UnlockBalanceResult._(UnlockBalanceStatus.stale, {});
+    }
     try {
-      final rows = await supabase.rpc('unlock_balance') as List?;
-      for (final r in rows ?? const []) {
+      final rows = await supabase.rpc('unlock_balance');
+      if (!_isCurrent(owner, epoch, generation)) {
+        return const UnlockBalanceResult._(UnlockBalanceStatus.stale, {});
+      }
+      if (rows is! List) throw const FormatException('Invalid balance rows');
+      final seen = <UnlockTier>{};
+      for (final r in rows) {
         final m = Map<String, dynamic>.from(r as Map);
+        if (!UnlockTier.values.any((tier) => tier.dbValue == m['tier'])) {
+          throw const FormatException('Unknown balance tier');
+        }
         // Plain loop rather than `.firstOrNull`, which lives in
         // package:collection and is not a dependency of this project.
         for (final t in UnlockTier.values) {
           if (t.dbValue == m['tier']) {
-            out[t] = (m['balance'] as num?)?.toInt() ?? 0;
+            final balance = m['balance'];
+            if (balance is! num ||
+                !balance.isFinite ||
+                balance < 0 ||
+                balance != balance.toInt() ||
+                !seen.add(t)) {
+              throw const FormatException('Invalid ledger balance');
+            }
+            out[t] = balance.toInt();
             break;
           }
         }
       }
+      return UnlockBalanceResult._(
+        UnlockBalanceStatus.available,
+        Map.unmodifiable(out),
+      );
     } catch (e) {
-      debugPrint('ZYRA: unlock_balance failed — showing 0. $e');
+      if (!_isCurrent(owner, epoch, generation)) {
+        return const UnlockBalanceResult._(UnlockBalanceStatus.stale, {});
+      }
+      debugPrint('ZYRA: unlock balance is unavailable.');
+      return const UnlockBalanceResult._(UnlockBalanceStatus.failed, {});
     }
-    return out;
   }
 
-  /// Dev-only credit grant. Refused server-side for anything other than a
-  /// `@zyra.test` account — same guard as `mock_purchase_wali_premium`.
+  /// Legacy server-backed credit grant retains its client capability guard.
+  /// Internal Founder previews use local credits and deny all data HTTP; this
+  /// retained RPC helper does not grant them live credit-writing authority.
+  /// Production server authorization remains unchanged.
   ///
   /// Exists because payments do not, and without it Compatibility Unlock
   /// would be untestable: a Seeker with no purchase route has a permanent
   /// balance of zero.
   static Future<bool> debugGrant(UnlockTier tier, int count) async {
-    if (kReleaseMode) return false;
+    if (!ZyraDeveloperAccess.canUseDeveloperTools) return false;
+    _synchronizeOwner();
+    final owner = _owner;
+    final epoch = _epoch;
+    final generation = ZyraAccountState.generation;
     try {
-      await supabase.rpc('zyra_debug_grant_credits',
-          params: {'p_tier': tier.dbValue, 'p_count': count});
-      return true;
+      await supabase.rpc(
+        'zyra_debug_grant_credits',
+        params: {'p_tier': tier.dbValue, 'p_count': count},
+      );
+      return _isCurrent(owner, epoch, generation);
     } catch (e) {
       debugPrint('ZYRA: debug credit grant refused — $e');
       return false;
@@ -255,6 +549,13 @@ class ZyraUnlockService {
   /// Test-account ids are not real `profiles` rows, so the FK would reject
   /// them. Mirrors ZyraReportService.isPersistableId.
   static void clearForSignOut() {
+    // Invalidates in-flight reads/writes even for an A -> B -> A switch.
+    _epoch++;
+    _loadRequest++;
+    _pending.clear();
+    _pendingTargets.clear();
+    _recoveryRequired.clear();
+    _owner = null;
     _unlocked.clear();
     _loaded = false;
   }

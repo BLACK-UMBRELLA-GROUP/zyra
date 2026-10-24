@@ -13,7 +13,9 @@
 
 import 'package:flutter/foundation.dart' show debugPrint;
 import '../main.dart';
+import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
+import 'zyra_internal_preview_client.dart';
 
 /// The three things a reset can do, kept apart because they need three
 /// different sentences. A blocked reset is not a failure — it is the
@@ -25,6 +27,30 @@ class ZyraResetResult {
   final ZyraResetOutcome outcome;
   final int activeJourneys;
   const ZyraResetResult(this.outcome, {this.activeJourneys = 0});
+}
+
+/// Server-owned progress for the deferred Seeker profile journey.
+///
+/// Account access and profile readiness are deliberately separate. A Seeker
+/// may enter the app after the short account setup while this object remains
+/// incomplete; Browse publication and Journey eligibility continue to use
+/// the server's existing completeness gate.
+class ZyraOnboardingProgress {
+  final bool complete;
+  final int due;
+  final int missing;
+  final bool hasChapter2;
+  final bool basicProfile;
+
+  const ZyraOnboardingProgress({
+    required this.complete,
+    required this.due,
+    required this.missing,
+    required this.hasChapter2,
+    required this.basicProfile,
+  });
+
+  int get answered => (due - missing).clamp(0, due);
 }
 
 class ZyraProfileService {
@@ -42,108 +68,90 @@ class ZyraProfileService {
     'p_dob': dob.toIso8601String().split('T').first,
   };
 
-  /// Reset profile — start fresh without deleting the account.
-  ///
-  /// Founder decision 2026-08-07. Clears answers, details, photos, bio,
-  /// location AND all discovery history in both directions — including
-  /// other people's likes, saves and passes about this user, which is the
-  /// only way "start fresh" actually means anything. Someone who has been
-  /// passed over stays invisible to those people otherwise, which is
-  /// exactly who they were trying to reach.
-  ///
-  /// KEEPS identity (still frozen — a reset is not a route to becoming
-  /// someone else), Guardians, unlock credits, subscription, matches,
-  /// consent evidence and any reports made against them.
-  ///
-  /// Refuses while an Active Journey exists. See zyra_reset_profile() for
-  /// the full reasoning on each of those.
-  static Future<ZyraResetResult> resetProfile() async {
-    if (!ZyraAuth.isSignedIn) {
-      return const ZyraResetResult(ZyraResetOutcome.failed);
-    }
-    try {
-      final res =
-          await supabase.rpc('zyra_reset_profile') as Map<String, dynamic>;
-      final status = res['status'] as String?;
-
-      if (status == 'blocked') {
-        return ZyraResetResult(
-          ZyraResetOutcome.blockedByJourney,
-          activeJourneys: (res['active'] as num?)?.toInt() ?? 1,
-        );
-      }
-      if (status == 'refused') {
-        return const ZyraResetResult(ZyraResetOutcome.refused);
-      }
-      if (status != 'reset') {
-        debugPrint(
-          'ZYRA: zyra_reset_profile returned an unknown status — $res',
-        );
-        return const ZyraResetResult(ZyraResetOutcome.failed);
-      }
-
-      // The rows are already gone; this clears the objects behind them.
-      // Best-effort by design — the reset itself has committed, so failing
-      // here must not report failure and invite a retry that would do
-      // nothing. Orphaned objects are a storage cost, not a broken account.
-      //
-      // The RPC returns ONLY paths under this user's own prefix, so there
-      // is nothing here that could remove someone else's file even if the
-      // bucket would allow it.
-      try {
-        final paths =
-            (res['storage_paths'] as List?)?.cast<String>() ?? const <String>[];
-        if (paths.isNotEmpty) {
-          await supabase.storage.from('profile-photos').remove(paths);
-        }
-      } catch (e) {
-        debugPrint(
-          'ZYRA: profile reset succeeded, photo objects were not removed.\n$e',
-        );
-      }
-
-      return const ZyraResetResult(ZyraResetOutcome.done);
-    } catch (e) {
-      debugPrint('ZYRA: zyra_reset_profile failed.\n$e');
-      return const ZyraResetResult(ZyraResetOutcome.failed);
-    }
+  /// Destructive reset is held pending the approved written data contract.
+  /// This client hold performs no SDK, RPC, Storage or local account action.
+  /// It does not claim that direct server RPC access has been disabled.
+  static Future<ZyraResetResult> resetProfile({
+    String? expectedUserId,
+    int? expectedGeneration,
+  }) async {
+    return const ZyraResetResult(ZyraResetOutcome.refused);
   }
 
   static Future<String?> createSeekerProfile({
     required String firstName,
     required String gender,
     required DateTime dob,
+    String? expectedUserId,
   }) => _createProfile(
     role: 'seeker',
     firstName: firstName,
     gender: gender,
     dob: dob,
+    expectedUserId: expectedUserId,
   );
 
   static Future<String?> createWaliProfile({
     required String firstName,
     required String gender,
     required DateTime dob,
+    String? expectedUserId,
+    bool publishOnCreate = true,
   }) =>
-      // profileComplete: true — FIXED 2026-08-01 (audit finding C3,
-      // second symptom). Unlike a Seeker, a Guardian has nothing further to
-      // complete: "Guardian accounts carry identity only" (WALI_ARCHITECTURE
-      // V5), there are no photos and no ID check, so this row IS complete
-      // the moment it's written. Leaving it false meant profiles_select's
-      // RLS (`id = auth.uid() OR (is_active AND profile_complete)`) hid
-      // every Guardian from everyone else — including from their own linked
-      // Seeker. zyra_wali_link_service.dart:108 reads profiles directly
-      // for linked people's names, so that query silently returned
-      // nothing and the Wali/Seeker link rendered nameless. Set here,
-      // atomically with the insert, rather than as a follow-up write that
-      // could fail and leave a half-created Wali.
+      // The existing helper can publish through a separate guarded RPC.
+      // Protected signup instead defers this until real IDV, both names and
+      // exact own-row confirmation have passed. These are not atomic writes;
+      // its secure draft remains recoverable until finalization succeeds.
       _createProfile(
         role: 'wali',
         firstName: firstName,
         gender: gender,
         dob: dob,
-        profileComplete: true,
+        profileComplete: publishOnCreate,
+        expectedUserId: expectedUserId,
       );
+
+  /// Saves only the existing public surname column for the captured account.
+  /// A successful HTTP status with zero rows is not confirmation. This cannot
+  /// publish, change identity/role, or turn preview data into member data.
+  static Future<bool> savePublicSurname(
+    String surname, {
+    required String expectedUserId,
+    required String expectedRole,
+    required int expectedGeneration,
+  }) async {
+    final trimmed = surname.trim();
+    if (trimmed.isEmpty ||
+        trimmed.length > 60 ||
+        !const ['seeker', 'wali'].contains(expectedRole)) {
+      return false;
+    }
+    final session = supabase.auth.currentSession;
+    bool ownsAccount() =>
+        !ZyraInternalPreviewClient.isActive &&
+        !ZyraAccountState.isSigningOut &&
+        ZyraAccountState.generation == expectedGeneration &&
+        ZyraAuth.currentUser?.id == expectedUserId &&
+        session?.user.id == expectedUserId;
+    if (!ownsAccount()) return false;
+    try {
+      final saved = await supabase
+          .from('profiles')
+          .update({'surname_line': trimmed})
+          .eq('id', expectedUserId)
+          .eq('role', expectedRole)
+          .setHeader('Authorization', 'Bearer ${session!.accessToken}')
+          .select('id, role, surname_line')
+          .maybeSingle();
+      return ownsAccount() &&
+          saved?['id'] == expectedUserId &&
+          saved?['role'] == expectedRole &&
+          saved?['surname_line'] == trimmed;
+    } catch (_) {
+      debugPrint('ZYRA: public surname save could not be confirmed.');
+      return false;
+    }
+  }
 
   /// Marks the signed-in user's profile complete — the single switch that
   /// makes them visible to anyone else on the platform.
@@ -185,21 +193,12 @@ class ZyraProfileService {
   /// client knows which questions it SHOWED; only the server knows which
   /// ones the gate is actually waiting on, and if the two ever disagree the
   /// one holding the door is the one worth asking.
-  static Future<
-    ({
-      bool complete,
-      int due,
-      int missing,
-      bool hasChapter2,
-      bool basicProfile,
-    })?
-  >
-  fetchOnboardingProgress() async {
+  static Future<ZyraOnboardingProgress?> fetchOnboardingProgress() async {
     try {
       final rows = await supabase.rpc('zyra_my_onboarding_progress') as List;
       if (rows.isEmpty) return null;
       final r = rows.first as Map<String, dynamic>;
-      return (
+      return ZyraOnboardingProgress(
         complete: r['complete'] == true,
         due: (r['questions_due'] as num?)?.toInt() ?? 0,
         missing: (r['questions_missing'] as num?)?.toInt() ?? 0,
@@ -212,18 +211,38 @@ class ZyraProfileService {
     }
   }
 
-  static Future<bool> setProfileComplete(bool complete) async {
+  static Future<bool> setProfileComplete(
+    bool complete, {
+    String? expectedUserId,
+  }) async {
     final user = ZyraAuth.currentUser;
-    if (user == null) return false;
+    if (user == null || (expectedUserId != null && user.id != expectedUserId)) {
+      return false;
+    }
+    final session = supabase.auth.currentSession;
+    if (expectedUserId != null && session?.user.id != expectedUserId) {
+      return false;
+    }
     try {
-      final res = await supabase.rpc(
+      var request = supabase.rpc(
         'zyra_set_profile_complete',
         params: {'p_complete': complete},
       );
+      if (expectedUserId != null) {
+        request = request.setHeader(
+          'Authorization',
+          'Bearer ${session!.accessToken}',
+        );
+      }
+      final res = await request;
+      if (expectedUserId != null &&
+          ZyraAuth.currentUser?.id != expectedUserId) {
+        return false;
+      }
       final status = (res as Map?)?['status'] as String?;
       if (status == 'published' || status == 'unpublished') return true;
       debugPrint(
-        'ZYRA: setProfileComplete refused — $res. '
+        'ZYRA: setProfileComplete refused. '
         'Profile stays invisible to other users.',
       );
       return false;
@@ -261,26 +280,62 @@ class ZyraProfileService {
   /// for any (see chapter2_flow.dart's note on why mileage bands were
   /// dropped). "London" and "london" are two different strings here and
   /// nothing pretends otherwise.
-  static Future<bool> saveLocation(String? city) async {
-    final user = ZyraAuth.currentUser;
-    if (user == null) return false; // mock/offline session — nothing to write
+  static Future<bool> saveLocation(
+    String? city, {
+    String? expectedUserId,
+  }) async {
     final trimmed = city?.trim();
     if (trimmed == null || trimmed.isEmpty) return false;
     try {
-      await supabase
+      final user = ZyraAuth.currentUser;
+      final generation = ZyraAccountState.generation;
+      if (user == null ||
+          ZyraAccountState.isSigningOut ||
+          (expectedUserId != null && user.id != expectedUserId)) {
+        return false;
+      }
+      final saved = await supabase
           .from('profiles')
           .update({'location_text': trimmed})
-          .eq('id', user.id);
-      return true;
+          .eq('id', user.id)
+          .select('id')
+          .maybeSingle();
+      return saved?['id'] == user.id &&
+          !ZyraAccountState.isSigningOut &&
+          ZyraAccountState.generation == generation &&
+          ZyraAuth.currentUser?.id == user.id;
     } catch (e) {
       // Logged, not swallowed (ES-08). A failure here is not fatal, but it
       // reproduces exactly the em-dash this method exists to fix, and a
       // silent version of that is what hid the bug for a month.
       debugPrint(
-        'ZYRA: saveLocation("$trimmed") failed — city will show as "—". $e',
+        'ZYRA: saveLocation failed — city will show as "—" (${e.runtimeType}).',
       );
       return false;
     }
+  }
+
+  static Future<String?> fetchOwnLocation({
+    required String expectedUserId,
+  }) async {
+    final generation = ZyraAccountState.generation;
+    if (ZyraAccountState.isSigningOut ||
+        ZyraAuth.currentUser?.id != expectedUserId) {
+      throw StateError('Account changed.');
+    }
+    final row = await supabase
+        .from('profiles')
+        .select('id, location_text')
+        .eq('id', expectedUserId)
+        .maybeSingle();
+    if (ZyraAuth.currentUser?.id != expectedUserId ||
+        ZyraAccountState.isSigningOut ||
+        ZyraAccountState.generation != generation ||
+        row == null ||
+        row['id'] != expectedUserId) {
+      throw StateError('Profile unavailable.');
+    }
+    return row['location_text'] as String?;
   }
 
   /// Toggles the signed-in user's own `is_active` flag — the same
@@ -330,12 +385,21 @@ class ZyraProfileService {
     required String firstName,
     required String gender,
     required DateTime dob,
-    // Seekers are NOT complete at this point — this runs at Chapter 1,
-    // long before photos, so they stay false until ProfileReadyScreen's
-    // checks pass. Guardians pass true (see createWaliProfile).
+    // Seekers are NOT complete at this point — this runs after the short
+    // account essentials, before their deferred profile journey. Publication
+    // remains server-owned and must never be awarded by an onboarding screen.
+    // Guardians pass true under the existing Guardian rule (see above).
     bool profileComplete = false,
+    String? expectedUserId,
   }) async {
     final user = ZyraAuth.currentUser;
+    if (expectedUserId != null && user?.id != expectedUserId) {
+      return 'Your sign-in changed. Please sign in again before continuing.';
+    }
+    final session = supabase.auth.currentSession;
+    if (expectedUserId != null && session?.user.id != expectedUserId) {
+      return 'Your sign-in changed. Please sign in again before continuing.';
+    }
     if (user == null) {
       return null; // not signed in via Supabase — mock-only path, nothing to write
     }
@@ -355,7 +419,7 @@ class ZyraProfileService {
       // needed here: the RPC never touches that column at all, so
       // re-entering Chapter 1 cannot un-publish a live Seeker. The failure
       // mode is gone rather than guarded against.
-      final res = await supabase.rpc(
+      var request = supabase.rpc(
         'zyra_create_profile',
         params: createProfileParams(
           role: role,
@@ -364,12 +428,31 @@ class ZyraProfileService {
           dob: dob,
         ),
       );
-      debugPrint('ZYRA: zyra_create_profile -> $res');
+      if (expectedUserId != null) {
+        request = request.setHeader(
+          'Authorization',
+          'Bearer ${session!.accessToken}',
+        );
+      }
+      await request;
+      if (expectedUserId != null &&
+          ZyraAuth.currentUser?.id != expectedUserId) {
+        return 'Your sign-in changed. Please sign in again before continuing.';
+      }
+      debugPrint('ZYRA: zyra_create_profile request completed.');
 
-      // Guardians are complete the moment their row exists — no photos, no
-      // further chapters. Goes through the publication RPC like everything
-      // else rather than writing the column directly.
-      if (profileComplete) await setProfileComplete(true);
+      // Explicit publication callers still use the RPC, never a direct
+      // column write. Initial Guardian signup passes publishOnCreate:false
+      // and confirms its required first photo before the separate publish.
+      if (profileComplete) {
+        final published = await setProfileComplete(
+          true,
+          expectedUserId: expectedUserId,
+        );
+        if (expectedUserId != null && !published) {
+          return "We couldn't confirm your Guardian setup. Please try again.";
+        }
+      }
       return null;
     } catch (_) {
       return "Something didn't quite work. Please try again — and if it keeps happening, let us know.";

@@ -1,36 +1,155 @@
 # AGENTS.md — ZYRA
 
+<!-- BLACK-UMBRELLA-CORE-RULES v1 START — master copy: BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V1.md. Edit the master, then re-sync every copy. -->
+## Core rules — every AI agent, every Black Umbrella Group project
+
+These rules sit above every other instruction in this tree. Where any older
+document, overlay or AD says otherwise, this block wins.
+
+1. **Only the Founder (Shakeel) approves.** Agreement between AIs is never
+   approval. His direct instruction in conversation is approval.
+2. **No AI runs git. Ever.** The Founder commits in his own Terminal.
+3. **Never touch `PRIVATE — API KEYS — DO NOT SYNC`** — never open, list,
+   copy or quote it, wherever it lives. Never put keys, tokens or
+   credentials in a conversation.
+4. **Never delete.** Move unwanted files into a `_to_delete` folder; the
+   Founder empties it. If `_to_delete` is missing, create it.
+5. **Findings become actions** — every finding gets an OA number or a
+   written refusal.
+6. **One CURRENT_VERSION per document system.** Register entries append
+   above the metadata block and bump the live NEXT IDENTIFIER.
+7. **BUILD → DOCUMENT → TRACE → HANDOVER.** Code-complete is not
+   handover-complete.
+8. **Evidence is not a build store.** Review evidence = screenshots, JSON
+   and a text BUILD.json (commit SHA, Flutter version, build mode,
+   timestamp). Never copy compiled apps (`Runner.app`, build products) or
+   source trees into registers or evidence folders.
+
+### Roles — Founder direction, 2026-10-24 (supersedes AD-AIOS-111; formal AD filing pending)
+
+| Seat | Holder | Scope |
+|---|---|---|
+| Founder | Shakeel | Sole approver |
+| Lead Architect | Fable (Claude) | Architecture, governance, registers, schedules, review and verification |
+| Design & Implementation | Codex | Product design and code execution only — no admin, governance, mailbox or schedules |
+| Admin | Pending Founder decision | — |
+
+Fable holds an active seat. Any line elsewhere saying "Fable/Claude is
+retired" or "no Claude/Fable bootstrap is active" is superseded.
+<!-- BLACK-UMBRELLA-CORE-RULES v1 END -->
+
 Bootstrap pointer for AI agent sessions working in `SUB BUSINESS/ZYRA/`.
 Rules live in the documents below, not here. Read them in this order:
 
-1. `CLAUDE.md` (this folder) — session rules: how to write to the Founder,
-   the one run command, approval law, verification discipline, current
-   position. Mandatory for every agent, whatever its name.
-2. `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_GOVERNANCE_CURRENT_VERSION_V3.md`
+> **LOCAL PHONE DELIVERY DEFAULT — Founder direct instruction, 2026-10-04 /
+> DR-ZYRA-257:** after implementing and checking a Founder-requested routine
+> app change, build/install/native-launch the existing main PROFILE app on the
+> existing paired Founder iPhone while his latest stated availability is home.
+> Do not ask for a second install approval for that same scoped change. The
+> Founder will say when away (including a later correction); then defer local
+> delivery until he says home again. Check connected/unlocked state, existing
+> identity/signature and exact installed process; stop on failure or scope drift.
+> Never infer a remote/TestFlight upload, new signing/registration authority,
+> backend/payment/provider/migration change or physical acceptance. Developer
+> Control handover §37 and One-App Internal Delivery Runbook §3 own this rule.
+
+> **OPERATING MODEL:** see Core rules at the top of this file (Founder
+> direction 2026-10-24, supersedes AD-AIOS-111).
+
+> **ONE ACTIVE APP — Founder direct instruction, 2026-09-12 / OA-ZYRA-286:**
+> `SOURCE/` remains one shared Flutter product, **ZYRA**. The separate ZYRA Test
+> delivery is CANCELLED, not waiting for another replay. Main internal builds
+> require explicit default-OFF compile opt-in, the pinned company Founder UUID,
+> exact main endpoint and refreshed protected role for local developer previews.
+> Personal accounts retain ordinary member onboarding/backend permissions;
+> email text alone never grants developer authority. Default/public builds
+> remain locked. `./run.sh` now selects the main app; old Test modes refuse.
+> Founder approved retiring the separate Test setup with historical records
+> preserved. Active native/runtime/server retirement is complete and its fresh
+> verification is recorded in mailbox 112. Mailbox 113 records POST-VERIFIED
+> deletion of the empty Test Supabase project and both Test Google clients.
+> One Test domain listing remains after Google's contradictory dependency
+> warning; no main login configuration was changed. OA-ZYRA-286 stays open.
+> Do not bulk-delete shared tests/security code or historical approvals and
+> consumed one-use evidence. Read the narrowed one-app Developer Control
+> handover, App Store runbook and mailbox 110–116 before proceeding.
+> DR-ZYRA-228/229 remain historical decisions beneath this named override.
+> Explicit unsupported/retired variants must fail closed, never become an
+> implicit production fallback. The Founder approved one complete main build-3
+> delivery, including necessary managed signing assets. The first restricted-
+> environment signature failure and stop remain preserved in 114. The Founder
+> then approved one normal-keychain check/resume: that check PASSED, without
+> rebuild or trust changes. Internal-only build 3 was exported and its final
+> distribution signature/identity verified in 115. Mailbox 116 records the
+> successful one-use upload and Apple post-verification on 2026-09-13:
+> main 1.0.0 (3) is internal Testing in Founder Internal, with only
+> admin@zyraconnect.app and automatic distribution OFF. Build 2 is retained.
+> The upload authority is consumed; no retry. Founder device acceptance of
+> build 3 is pending. Use the company Google identity for the pinned Founder
+> preview route; the same email through Apple is not assumed to be that UUID.
+> Founder accepted local Terminal for quick tweaks and batched TestFlight
+> releases for remote testing. No persistent upload credential was authorized
+> or created, and this cadence is not standing future-build upload authority.
+
+0. Core rules at the top of this file — roles and non-negotiables; they win on
+   any conflict. Master copy:
+   `../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V1.md`.
+   `FOUNDER_CODEX_OPERATING_MODEL_CURRENT_VERSION_V2.md` (same folder) still
+   governs exact-action safety gates; its role allocation is superseded.
+   Then read `../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V1.md`
+   — lessons from Aug–Oct 2026 and Codex's standing first task.
+1. This `AGENTS.md` is the active ZYRA bootstrap. Archived Claude/Fable files
+   remain historical evidence only.
+2. `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_GOVERNANCE_CURRENT_VERSION_V6.md`
    — authority, decision framework, findings-become-actions (§6).
-3. `SYSTEM/DOCUMENTS/MASTER_CONTRACTS/ZYRA_EXECUTION_V3.md` — how work moves
+3. `SYSTEM/DOCUMENTS/MASTER_CONTRACTS/ZYRA_EXECUTION_CURRENT_VERSION_V5.md` — how work moves
    from idea to code; the §3.2 pre-implementation checklist.
 4. `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md` — decisions register
-   (DR-ZYRA-191 = current team structure; check the live NEXT IDENTIFIER
-   before drafting entries).
+   (permanent team structure: AD-AIOS-107; superseded overlays
+   AD-AIOS-108/109/110/111 — current roles are in the Core rules at the top;
+   check the live NEXT IDENTIFIER before
+   drafting entries).
 5. `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md` — open actions
    register.
-6. `SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V3.md` —
+6. `SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md` —
    generated map of every governed document ("where does X live").
+7. `../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md`
+   — required as-built repository memory for meaningful work.
 
-Roles (AD-AIOS-099, 2026-08-19 — supersedes the AD-AIOS-097 seat split):
-Codex = Lead Architect and IMPLEMENTS — designs, briefs, edits app files
-and produces evidence for its own work (still: no git, no migrations
-without explicit Founder authorisation, no self-approval). Claude =
-Architecture Reviewer — reviews Codex's designs and implementations.
-Fable = company operations (connectors, estate, finance) and files all
-documentation; product/UX on Founder instruction. ChatGPT holds no seat
-(AD-AIOS-100) — manual advisor via the Founder only. Only the Founder
-approves.
+Historical roles and routing baseline (AD-AIOS-107, 2026-08-31 — final titles;
+supersedes the
+AD-AIOS-099/100 titles and AD-AIOS-106's ChatGPT-on-call-only standing;
+history preserved in the AD register: AD-AIOS-097 -> 099 -> 100 -> 105 ->
+106 -> 107). Its active-seat/default-route clauses are superseded by
+AD-AIOS-111:
+Shakeel = Founder & Final Authority — only the Founder approves.
+ChatGPT = Lead Product & Systems Architect — STANDING product/system-design
+partner; shapes Founder change requests; its proposals become operational
+only after Founder acceptance + Fable reconciliation/filing.
+Fable = Lead Operations, Governance & Delivery — governance, all registers
+and source-of-truth documentation, schedules, email triage, delivery/relay,
+verification of implemented work; owns and may directly implement
+architecture/governance/AIOS-machinery files (AD-AIOS-105 unchanged); the
+former separate Architecture Reviewer seat is folded into Fable's
+verification ownership.
+Codex = Product Designer & Implementation Engineer — ZYRA production code
+(Flutter/UI, Supabase/migrations/RPCs, entitlement, navigation, tests,
+build); EXPECTED to challenge and flag risk before building; still no git,
+no migrations without explicit written Founder authorisation, no
+self-approval.
+HISTORICAL DEFAULT CHANGE ROUTE: Founder -> ChatGPT (shapes) -> Fable (checks against
+approved decisions/docs/in-flight work; CLEAN = relay to Codex, intent
+undistorted; CONFLICT = contradiction report to the Founder, no relay) ->
+Codex builds -> Fable verifies -> Founder. DIRECT Founder -> Codex remains
+fully allowed at any time; Codex implements and files its handover; Fable
+reconciles documentation afterward. Canonical statement + status labels:
+"Founder Change-Request Routing" in
+IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md.
 
-Standing state (2026-08-19): **ZYRA feature building is paused** by Founder
-instruction, with one Founder-authorised exception (2026-08-19): the guided
-handoff applied to the three question chapters — Faith & Values, Building a
-Life, Navigating Life — plus the full-flow test (Codex implements, per
-AD-AIOS-099). Other feature work still needs a fresh Founder instruction.
-Group-wide non-negotiables: `DEVELOPMENT/AGENTS.md`.
+Current operating state: the Founder replaced the AD-AIOS-111 / OA-AIOS-379
+model on 2026-10-24 — see Core rules at the top of this file. Fable is Lead
+Architect; Codex is design and implementation only. Preparation, internal
+read-only verification, Founder GO, execution, post-verification and Founder
+acceptance remain separate; no agent self-approves.
+Group-wide non-negotiables: Core rules at the top of this file (master:
+`../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V1.md`).

@@ -61,10 +61,13 @@ class ZyraAgesService {
 
     final out = <String, int>{};
     for (var start = 0; start < ids.length; start += _maxPerCall) {
-      final end = (start + _maxPerCall) > ids.length ? ids.length : start + _maxPerCall;
+      final end = (start + _maxPerCall) > ids.length
+          ? ids.length
+          : start + _maxPerCall;
       final batch = ids.sublist(start, end);
       try {
-        final rows = await supabase.rpc('ages_for', params: {'p_ids': batch}) as List;
+        final rows =
+            await supabase.rpc('ages_for', params: {'p_ids': batch}) as List;
         for (final r in rows) {
           final row = r as Map<String, dynamic>;
           final age = row['age'];
@@ -78,9 +81,10 @@ class ZyraAgesService {
         // better than none: the candidates whose ages did arrive show a
         // real number instead of everyone showing 0.
         debugPrint(
-            'ZYRA: ages_for failed for $context — ${batch.length} ids '
-            '(batch ${start ~/ _maxPerCall + 1} of '
-            '${(ids.length / _maxPerCall).ceil()}) — $e');
+          'ZYRA: ages_for failed for $context — ${batch.length} ids '
+          '(batch ${start ~/ _maxPerCall + 1} of '
+          '${(ids.length / _maxPerCall).ceil()}) — $e',
+        );
       }
     }
     return out;

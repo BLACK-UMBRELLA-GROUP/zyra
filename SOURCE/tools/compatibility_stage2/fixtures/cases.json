@@ -1,0 +1,26 @@
+{
+  "candidate_only": true,
+  "synthetic_only": true,
+  "subject_ids": [
+    "synthetic-viewer",
+    "synthetic-viewer2",
+    "synthetic-target",
+    "synthetic-target2",
+    "synthetic-other",
+    "synthetic-guardian",
+    "synthetic-demo"
+  ],
+  "roles": [
+    "s2_viewer",
+    "s2_viewer2",
+    "s2_target",
+    "s2_target2",
+    "s2_other",
+    "s2_guardian",
+    "s2_demo"
+  ],
+  "manifest_source": "Read-only Stage 1 export_stage1.dart synthetic manifest and oracle",
+  "credit_note": "All balances and prices are disposable synthetic units, never real credits.",
+  "privacy_note": "Symbolic disclosure policies are test fixtures, not approved product bands or privacy safety.",
+  "reset_rule": "Named candidate tables only, under admin-only fixture helper and exact local database guard."
+}

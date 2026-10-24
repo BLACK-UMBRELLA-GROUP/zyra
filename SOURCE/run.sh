@@ -10,19 +10,30 @@
 # 2026-07-19_V1.md §7.
 #
 # Usage (from anywhere):
-#   ./run.sh           -> PROFILE build (default) — survives unplugging,
-#                         launches from the icon, safe to walk around with.
-#   ./run.sh dev       -> DEBUG build + hot reload — ONLY while the cable
-#                         stays plugged in. Unplugging kills it by design.
-#   ./run.sh release   -> Release build — what real users would get.
+#   ./run.sh           -> main ZYRA PROFILE build (default) — survives
+#                         unplugging. The exact authenticated Founder gets
+#                         local-only previews; personal accounts stay normal.
+#   ./run.sh dev       -> the same main ZYRA identity in DEBUG mode + hot
+#                         reload — ONLY while the cable stays plugged in.
+#   ./run.sh release   -> public main ZYRA release-mode device check. It has
+#                         no Founder opt-in and no Developer Access.
 #
-# AI sessions: tell Shakeel to run `./run.sh`, nothing else, unless he
-# explicitly wants tethered hot-reload work (then `./run.sh dev`).
+# Founder-operated legacy SDK route; AI sessions never invoke this script.
+# The SDK wrappers may run Git. AI checks/native PROFILE preparation use
+# tooling/no_git_driver.mjs under its inherited OS process-exec policy.
 
 cd "$(dirname "$0")" || exit 1
 
 DEVICE="00008130-001A2C1E26F8001C"   # Shakeel's iPhone (check: flutter devices)
 MODE="${1:-profile}"
+
+_run_internal_founder() {
+  flutter run \
+    --flavor production \
+    --dart-define=ZYRA_INTERNAL_FOUNDER_ACCESS=true \
+    --dart-define=ZYRA_INTERNAL_FOUNDER_UUID=dfcbd00d-bc22-4d6e-999b-3a9264cf3510 \
+    "$@" || _hint
+}
 
 # HARDENED 2026-08-01 (Opus). The device id above is hardcoded, so the day
 # it stops matching — new phone, restored device, re-pairing — `flutter run`
@@ -45,23 +56,39 @@ _hint() {
 }
 
 case "$MODE" in
+  check-founder-test-config|test|foundertest|founder-test)
+    echo ""
+    echo "🛑 The separate ZYRA Test target is retired. Nothing was run."
+    echo ""
+    exit 64
+    ;;
   dev|debug)
     echo ""
     echo "⚠️  DEBUG MODE — keep the cable plugged in."
     echo "   If you unplug, the app dies and won't reopen from the icon"
     echo "   until you run ./run.sh again. For untethered testing use: ./run.sh"
     echo ""
-    flutter run -d "$DEVICE" || _hint
+    _run_internal_founder -d "$DEVICE"
     ;;
   release)
-    flutter run --release -d "$DEVICE" || _hint
+    echo ""
+    echo "🔒 PRODUCTION ZYRA — Developer Access is disabled."
+    echo ""
+    flutter run --release --flavor production -d "$DEVICE" || _hint
     ;;
-  profile|*)
+  profile)
     echo ""
     echo "✅ PROFILE MODE — once the app opens on the phone you can unplug,"
     echo "   close it, and reopen it from the icon like a normal app."
     echo "   (No hot reload — rerun this script to pick up code changes.)"
     echo ""
-    flutter run --profile -d "$DEVICE" || _hint
+    _run_internal_founder --profile -d "$DEVICE"
+    ;;
+  *)
+    echo ""
+    echo "🛑 Unknown run mode '$MODE'. Nothing was run."
+    echo "   Use: ./run.sh, ./run.sh dev, or ./run.sh release"
+    echo ""
+    exit 64
     ;;
 esac

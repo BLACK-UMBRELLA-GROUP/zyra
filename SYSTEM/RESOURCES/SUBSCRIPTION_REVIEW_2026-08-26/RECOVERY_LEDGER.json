@@ -1,0 +1,108 @@
+{
+  "run_id": "subrev-recovery-20260826",
+  "framework": "aios_exec v1 (AC-5,7,14,15,17,18,19 + AC-21..25)",
+  "started": "2026-08-26T16:15:52.840648+00:00",
+  "finished": "2026-08-26T16:19:50.263136+00:00",
+  "reused": [
+    "01_FABLE_POSITION",
+    "02_CODEX_CHALLENGE",
+    "03_FABLE_REBUTTAL",
+    "04_CODEX_COUNTER",
+    "05_FABLE_SYNTHESIS"
+  ],
+  "cost_usd": 0.235579,
+  "ceiling_usd": 1.5,
+  "status": {
+    "status": "INCOMPLETE_UNVERIFIED",
+    "badge": "\ud83d\udd34 INCOMPLETE / UNVERIFIED",
+    "safe_to_rely_on": false
+  },
+  "assembly": {
+    "ok": false,
+    "sections_seen": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "missing": [],
+    "problems": [
+      "document does not end at a sentence boundary"
+    ]
+  },
+  "verification_contract": {
+    "complete": true,
+    "present": [
+      "constraint_check",
+      "safety_paywall",
+      "authority_check",
+      "continuity_check",
+      "store_billing",
+      "arithmetic_check",
+      "what_was_missed",
+      "verdict"
+    ],
+    "missing": [],
+    "declared_but_empty": [],
+    "status": "CHALLENGE COMPLETE"
+  },
+  "breakdown": {
+    "total_usd": 0.2356,
+    "useful_usd": 0.0431,
+    "failure_usd": 0.1924,
+    "context_tax_usd": 0.0,
+    "failure_pct": 81.7,
+    "context_tax_pct": 0.0,
+    "rows": [
+      {
+        "task": "R1_CODEX_VERIFY",
+        "cost": 0.043147,
+        "valid": true,
+        "result": "ok"
+      },
+      {
+        "task": "R2_FABLE_TAIL",
+        "cost": 0.192432,
+        "valid": false,
+        "result": "ok"
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "task": "R1_CODEX_VERIFY",
+      "agent": "Codex",
+      "model": "gpt-4o",
+      "cost_usd": 0.043147,
+      "result": "ok",
+      "input_tokens": 14615,
+      "output_tokens": 661,
+      "error": null,
+      "artifact_valid": true
+    },
+    {
+      "task": "R2_FABLE_TAIL",
+      "agent": "Fable",
+      "model": "claude-sonnet-4-6",
+      "cost_usd": 0.192432,
+      "result": "ok",
+      "input_tokens": 19144,
+      "output_tokens": 9000,
+      "artifact_valid": false
+    }
+  ]
+}

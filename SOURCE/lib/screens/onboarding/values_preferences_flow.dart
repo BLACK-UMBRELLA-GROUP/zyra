@@ -11,15 +11,23 @@ import 'package:flutter/material.dart';
 import '../../data/chapter3_categories.dart';
 import '../../models/onboarding_question.dart';
 import '../../services/zyra_onboarding_answers_service.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_auth.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_internal_preview_client.dart';
+import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/onboarding_scaffold.dart';
 import '../../widgets/privacy_indicator.dart';
+import '../../widgets/zyra_loading.dart';
+import '../../widgets/zyra_state_widgets.dart';
 import 'category_summary_screen.dart';
 import 'compatibility_category_intro_screen.dart';
 import 'generic_select_question_screen.dart';
 import 'onboarding_stage_intro_screen.dart';
 import 'profile_ready_screen.dart';
+import 'seeker_setup_navigation.dart';
 import 'traffic_light_question_screen.dart';
 
 enum _FlowStepKind {
@@ -69,10 +77,34 @@ class ValuesPreferencesFlow extends StatefulWidget {
 
 class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
   int _stepIndex = 0;
+  bool _restoring = false;
+  bool _saving = false;
+  bool _leaving = false;
+  String? _restoreError;
+  String? _ownerId;
+  late final int _ownerGeneration;
 
   final Map<String, dynamic> _ch3Answers = {};
   final Map<String, Map<String, TrafficLight>> _ch4Preferences = {};
   final Map<String, Set<String>> _ch4HardRequirement = {};
+
+  // A revoked preview is denied, never reclassified as a live signup.
+  bool get _devPreview => widget.devPreview;
+  bool get _canProceed =>
+      mounted &&
+      !_restoring &&
+      !_saving &&
+      !_leaving &&
+      _restoreError == null &&
+      (_devPreview ? ZyraDeveloperAccess.canUseDeveloperTools : _ownerCurrent);
+
+  bool get _ownerCurrent =>
+      ZyraOnboardingAnswersService.clientReady &&
+      !ZyraInternalPreviewClient.isActive &&
+      !ZyraAccountState.isSigningOut &&
+      _ownerId != null &&
+      ZyraAuth.currentUser?.id == _ownerId &&
+      ZyraAccountState.generation == _ownerGeneration;
 
   ZyraBackgroundVariant get _background => switch (widget.gender) {
     'male' => ZyraBackgroundVariant.male,
@@ -108,6 +140,95 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
 
   late List<_FlowStep> _steps = _buildSteps();
 
+  @override
+  void initState() {
+    super.initState();
+    _ownerGeneration = ZyraAccountState.generation;
+    if (!_devPreview) {
+      _ownerId = ZyraOnboardingAnswersService.clientReady
+          ? ZyraAuth.currentUser?.id
+          : null;
+      if (_ownerId == null) {
+        _restoreError = 'Sign in again to continue your saved setup.';
+      } else {
+        _restoreSavedProgress();
+      }
+    }
+  }
+
+  Future<void> _restoreSavedProgress() async {
+    if (_devPreview || _restoring || !_ownerCurrent) return;
+    setState(() {
+      _restoring = true;
+      _restoreError = null;
+    });
+    try {
+      final snapshot = await ZyraOnboardingAnswersService.fetchOwn(
+        expectedUserId: _ownerId,
+        throwOnError: true,
+      ).timeout(const Duration(seconds: 10));
+      if (!mounted || !_ownerCurrent) return;
+      if (snapshot == null) return;
+
+      AppState.instance.saveJourneyBio(snapshot.journeyBio);
+      for (final category in chapter3Categories) {
+        for (final question in category.questions) {
+          final persisted = ZyraOnboardingAnswersService.persistedQuestionId(
+            question.responseKey,
+          );
+          if (snapshot.ch3Answers.containsKey(persisted)) {
+            _ch3Answers[question.responseKey] = snapshot.ch3Answers[persisted];
+          }
+          final preferences = snapshot.ch4Preferences[persisted];
+          if (preferences != null) {
+            _ch4Preferences[question.responseKey] = preferences;
+          }
+          final hard = snapshot.ch4HardRequirements[persisted];
+          if (hard != null) {
+            _ch4HardRequirement[question.responseKey] = hard;
+          }
+        }
+      }
+      _steps = _buildSteps();
+      _stepIndex = _resumeStepIndex(snapshot);
+    } catch (_) {
+      if (mounted) {
+        _restoreError =
+            'We couldn’t restore your saved answers. Try again before continuing.';
+      }
+    } finally {
+      if (mounted) setState(() => _restoring = false);
+    }
+  }
+
+  int _resumeStepIndex(ZyraOnboardingAnswersSnapshot snapshot) {
+    if (snapshot.ch3Answers.keys.every((key) => key.startsWith('bio_'))) {
+      return 0;
+    }
+
+    for (var index = 0; index < _steps.length; index++) {
+      final step = _steps[index];
+      if (step.kind == _FlowStepKind.answer &&
+          !_answerComplete(step.question!)) {
+        return index;
+      }
+    }
+
+    if (snapshot.ch4Preferences.isEmpty) {
+      return _steps.indexWhere(
+        (step) => step.kind == _FlowStepKind.preferencesIntro,
+      );
+    }
+    for (var index = 0; index < _steps.length; index++) {
+      final step = _steps[index];
+      if (step.kind == _FlowStepKind.preferenceSection &&
+          !_preferenceSectionComplete(step.category!)) {
+        return index;
+      }
+    }
+    return _steps.length - 1;
+  }
+
   List<_FlowStep> _buildSteps() {
     final steps = <_FlowStep>[];
 
@@ -140,6 +261,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
   }
 
   void _recordCh3Answer(OnboardingQuestion question, dynamic value) {
+    if (!_canProceed) return;
     setState(() {
       _ch3Answers[question.responseKey] = value;
 
@@ -161,40 +283,133 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
   }
 
   void _back() {
+    if (!_canProceed) return;
     if (_stepIndex > 0) setState(() => _stepIndex--);
   }
 
-  void _syncAnswers() {
-    if (widget.devPreview) return;
-    ZyraOnboardingAnswersService.syncAnswers(
+  Future<bool> _syncAnswers() async {
+    if (_devPreview) return true;
+    if (!_ownerCurrent) return false;
+    return ZyraOnboardingAnswersService.syncAnswers(
       ch3Answers: _ch3Answers,
       ch4Preferences: _ch4Preferences,
       ch4HardRequirements: _ch4HardRequirement,
+      expectedUserId: _ownerId,
     );
   }
 
-  void _next() {
-    final step = _steps[_stepIndex];
-    if (step.kind == _FlowStepKind.summary ||
-        step.kind == _FlowStepKind.preferenceSection) {
-      _syncAnswers();
+  void _saveFailure(VoidCallback retry, {bool returningToApp = false}) {
+    ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+      SnackBar(
+        content: Text(
+          returningToApp
+              ? 'We couldn’t return to My ZYRA. Your answers are still here; try again.'
+              : 'Your answers weren’t saved. They’re still here; try again.',
+        ),
+        action: SnackBarAction(label: 'Try again', onPressed: retry),
+      ),
+    );
+  }
+
+  Future<void> _finishLater() async {
+    if (!_canProceed) return;
+    setState(() => _saving = true);
+    var returned = false;
+    try {
+      // A break may be taken without finishing the current question. Save
+      // exactly the entered draft, without marking this chapter complete.
+      final saved = await _syncAnswers();
+      if (!mounted || (!_devPreview && !_ownerCurrent)) return;
+      if (!saved) {
+        _saveFailure(_finishLater);
+        return;
+      }
+      returned = await returnToMyZyra(
+        context,
+        devPreview: _devPreview,
+        expectedUserId: _ownerId,
+        expectedGeneration: _ownerGeneration,
+      );
+      if (!mounted) return;
+      if (returned) {
+        _leaving = true;
+      } else {
+        _saveFailure(_finishLater, returningToApp: true);
+      }
+    } finally {
+      if (mounted && !returned) setState(() => _saving = false);
     }
+  }
+
+  Future<void> _next() async {
+    if (!_canProceed ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        (!_devPreview && !_canContinue)) {
+      return;
+    }
+    final step = _steps[_stepIndex];
+    if (step.kind == _FlowStepKind.answer ||
+        step.kind == _FlowStepKind.summary ||
+        step.kind == _FlowStepKind.preferenceSection) {
+      if (!_devPreview) {
+        setState(() => _saving = true);
+        final saved = await _syncAnswers();
+        if (!mounted) return;
+        setState(() => _saving = false);
+        if (!_ownerCurrent) return;
+        if (!saved) {
+          _saveFailure(_next);
+          return;
+        }
+      }
+    }
+
+    if (!_canProceed || ModalRoute.of(context)?.isCurrent != true) return;
 
     if (_stepIndex < _steps.length - 1) {
       setState(() => _stepIndex++);
       return;
     }
 
-    Navigator.of(context).push(
+    final devPreview = _devPreview;
+    final owner = _ownerId;
+    final ownerGeneration = _ownerGeneration;
+    var stageLeaving = false;
+    setState(() => _leaving = true);
+    await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (stageContext) => OnboardingStageIntroScreen(
-          stage: SeekerOnboardingStage.review,
-          onContinue: () => Navigator.of(stageContext).pushReplacement(
-            MaterialPageRoute(builder: (_) => const ProfileReadyScreen()),
-          ),
-        ),
+        builder: (stageContext) {
+          void openReview() {
+            if (stageLeaving ||
+                !stageContext.mounted ||
+                ModalRoute.of(stageContext)?.isCurrent != true) {
+              return;
+            }
+            if (devPreview
+                ? !ZyraDeveloperAccess.canUseDeveloperTools
+                : owner == null ||
+                      ZyraAuth.currentUser?.id != owner ||
+                      !ZyraAccountState.isCurrent(owner, ownerGeneration)) {
+              return;
+            }
+            stageLeaving = true;
+            Navigator.of(stageContext).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => ProfileReadyScreen(devPreview: devPreview),
+              ),
+            );
+          }
+
+          return OnboardingStageIntroScreen(
+            stage: SeekerOnboardingStage.review,
+            devPreview: devPreview,
+            onDevSkip: devPreview ? openReview : null,
+            onContinue: openReview,
+          );
+        },
       ),
     );
+    if (mounted) setState(() => _leaving = false);
   }
 
   Set<String> _answerOptions(OnboardingQuestion question) {
@@ -208,8 +423,13 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
 
   bool _answerComplete(OnboardingQuestion question) {
     final value = _ch3Answers[question.responseKey];
-    if (value is List) return value.isNotEmpty;
-    return value != null;
+    if (value is List) {
+      return value.isNotEmpty &&
+          value.every(
+            (item) => item is String && question.options.contains(item),
+          );
+    }
+    return value is String && question.options.contains(value);
   }
 
   bool _preferenceSectionComplete(OnboardingCategory category) =>
@@ -241,7 +461,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       background: _background,
       chapterName: 'Compatibility · Part 2',
       chapterProgress: sectionIndex / chapter3Categories.length,
-      chapterComplete: sectionIndex == chapter3Categories.length,
+      progressLabel: 'SECTION $sectionIndex OF ${chapter3Categories.length}',
       question: category.name,
       subtext:
           'Section $sectionIndex of ${chapter3Categories.length} · '
@@ -249,9 +469,10 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       privacy: PrivacyLevel.private,
       privacyOverrideText:
           'Private. Used to calculate your compatibility score.',
-      fabActive: _canContinue,
+      fabActive: _canProceed && _canContinue,
       onContinue: _next,
-      devPreview: widget.devPreview,
+      onFinishLater: _canProceed ? _finishLater : null,
+      devPreview: _devPreview,
       onDevSkip: _next,
       devSkipLabel: 'Skip section',
       onSwipeBack: _back,
@@ -268,18 +489,24 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
                   _ch4Preferences[questions[index].responseKey] ?? const {},
               initialHardRequirement:
                   _ch4HardRequirement[questions[index].responseKey] ?? const {},
-              onChanged: (values) => setState(
-                () => _ch4Preferences[questions[index].responseKey] = values,
-              ),
-              onHardRequirementChanged: (values) => setState(() {
-                if (values.isEmpty) {
-                  _ch4HardRequirement.remove(questions[index].responseKey);
-                } else {
-                  _ch4HardRequirement[questions[index].responseKey] = values;
-                }
-              }),
+              onChanged: (values) {
+                if (!_canProceed) return;
+                setState(
+                  () => _ch4Preferences[questions[index].responseKey] = values,
+                );
+              },
+              onHardRequirementChanged: (values) {
+                if (!_canProceed) return;
+                setState(() {
+                  if (values.isEmpty) {
+                    _ch4HardRequirement.remove(questions[index].responseKey);
+                  } else {
+                    _ch4HardRequirement[questions[index].responseKey] = values;
+                  }
+                });
+              },
             ),
-            if (index != questions.length - 1) const SizedBox(height: 18),
+            if (index != questions.length - 1) SizedBox(height: 18),
           ],
         ],
       ),
@@ -287,63 +514,154 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: Listenable.merge([
+      ZyraDeveloperAccess.authorizationChanges,
+      AppState.instance,
+    ]),
+    builder: (context, _) {
+      if (_devPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
+        return Scaffold(
+          key: const ValueKey('values_preview_denied'),
+          backgroundColor: ZyraColors.modalSheetSurface,
+          body: const SizedBox.expand(),
+        );
+      }
+      if (!_devPreview && !_ownerCurrent) {
+        return _recoveryScreen(
+          'Your account changed. Sign in again to continue setup.',
+        );
+      }
+      if (_restoreError != null) {
+        return _recoveryScreen(_restoreError!, onRetry: _restoreSavedProgress);
+      }
+      return Stack(
+        children: [
+          AbsorbPointer(
+            absorbing: _saving || _leaving,
+            child: _buildFlow(context),
+          ),
+          if (_saving)
+            const ZyraLoading.fullScreen(label: 'Saving your progress…'),
+        ],
+      );
+    },
+  );
+
+  Widget _recoveryScreen(String message, {VoidCallback? onRetry}) => Scaffold(
+    key: const ValueKey('values_recovery'),
+    body: Container(
+      decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+      child: SafeArea(
+        child: ZyraEmptyState(
+          icon: Icons.cloud_off_outlined,
+          message: message,
+          ctaLabel: onRetry == null ? null : 'Try again',
+          onCta: onRetry,
+        ),
+      ),
+    ),
+  );
+
+  Widget _withDevSkip(Widget child) {
+    if (!_devPreview) return child;
+    return Stack(
+      children: [
+        child,
+        Positioned(
+          top: MediaQuery.paddingOf(context).top + 12,
+          right: 18,
+          child: SafeArea(
+            top: false,
+            child: TextButton.icon(
+              key: const ValueKey('deferred_onboarding_dev_skip'),
+              onPressed: _canProceed ? _next : null,
+              icon: const Icon(Icons.skip_next_rounded, size: 18),
+              label: const Text('Skip · DEV'),
+              style: TextButton.styleFrom(
+                foregroundColor: ZyraColors.unlockText,
+                backgroundColor: ZyraColors.modalSheetSurface,
+                minimumSize: const Size(104, 44),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFlow(BuildContext context) {
+    if (_restoring) {
+      return const ZyraLoading.fullScreen(
+        label: 'Restoring your saved progress…',
+      );
+    }
     final step = _steps[_stepIndex];
 
     if (step.kind == _FlowStepKind.categoryIntro) {
       final category = step.category!;
-      return CompatibilityCategoryIntroScreen(
-        category: category,
-        sectionIndex: _sectionIndex(category),
-        totalSections: chapter3Categories.length,
-        questionCount: _visible(category).length,
-        onContinue: _next,
-        onBack: _stepIndex > 0 ? _back : null,
+      return _withDevSkip(
+        CompatibilityCategoryIntroScreen(
+          category: category,
+          sectionIndex: _sectionIndex(category),
+          totalSections: chapter3Categories.length,
+          questionCount: _visible(category).length,
+          onContinue: _next,
+          onBack: _stepIndex > 0 ? _back : null,
+        ),
       );
     }
 
     if (step.kind == _FlowStepKind.summary) {
       final category = step.category!;
-      return CategorySummaryScreen(
-        background: _background,
-        categoryName: category.name,
-        questions: _visible(category),
-        answers: _ch3Answers,
-        onContinue: _next,
-        onBack: _back,
+      return _withDevSkip(
+        CategorySummaryScreen(
+          background: _background,
+          categoryName: category.name,
+          questions: _visible(category),
+          answers: _ch3Answers,
+          onContinue: _next,
+          onBack: _back,
+        ),
       );
     }
 
     if (step.kind == _FlowStepKind.aboutYouComplete) {
-      return _CompatibilityBoundaryScreen(
-        eyebrow: 'COMPATIBILITY · PART 1 COMPLETE',
-        title: 'About You saved.',
-        description:
-            'Your private answers across all 11 sections are complete.',
-        count: chapter3Categories.expand(_visible).length.toString(),
-        countLabel: 'about-you answers',
-        continueLabel: 'Continue',
-        onContinue: _next,
-        onBack: _back,
+      return _withDevSkip(
+        _CompatibilityBoundaryScreen(
+          eyebrow: 'COMPATIBILITY · PART 1 COMPLETE',
+          title: 'About You saved.',
+          description:
+              'Your private answers across all 11 sections are complete.',
+          count: chapter3Categories.expand(_visible).length.toString(),
+          countLabel: 'about-you answers',
+          continueLabel: 'Continue',
+          onContinue: _next,
+          onBack: _back,
+        ),
       );
     }
 
     if (step.kind == _FlowStepKind.preferencesIntro) {
-      return _CompatibilityBoundaryScreen(
-        eyebrow: 'COMPATIBILITY · PART 2',
-        title: 'Partner Preferences',
-        description:
-            'Move through the same sections again and set what you prefer, feel neutral about or would rather avoid.',
-        count: '11',
-        countLabel: 'scrolling sections',
-        continueLabel: 'Begin Partner Preferences',
-        onContinue: _next,
-        onBack: _back,
+      return _withDevSkip(
+        _CompatibilityBoundaryScreen(
+          eyebrow: 'COMPATIBILITY · PART 2',
+          title: 'Partner Preferences',
+          description:
+              'Move through the same sections again and set what you prefer, feel neutral about or would rather avoid.',
+          count: '11',
+          countLabel: 'scrolling sections',
+          continueLabel: 'Begin Partner Preferences',
+          onContinue: _next,
+          onBack: _back,
+        ),
       );
     }
 
     if (step.kind == _FlowStepKind.preferenceGuide) {
-      return _PreferenceGuideScreen(onContinue: _next, onBack: _back);
+      return _withDevSkip(
+        _PreferenceGuideScreen(onContinue: _next, onBack: _back),
+      );
     }
 
     if (step.kind == _FlowStepKind.preferenceSection) {
@@ -363,10 +681,14 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
     return OnboardingScaffold(
       background: _background,
       chapterName: 'Compatibility · Part 1',
-      chapterProgress: questionIndex / visibleQuestions.length,
-      chapterComplete:
-          sectionIndex == chapter3Categories.length &&
-          questionIndex == visibleQuestions.length,
+      frameContent: false,
+      // The rail tracks the eleven sections, including position within the
+      // current section. It must not jump back to zero when the next section
+      // begins, nor imply each category end completes all of Part 1.
+      chapterProgress:
+          (sectionIndex - 1 + questionIndex / visibleQuestions.length) /
+          chapter3Categories.length,
+      progressLabel: 'SECTION $sectionIndex OF ${chapter3Categories.length}',
       question: question.prompt,
       subtext:
           'Section $sectionIndex of ${chapter3Categories.length} · '
@@ -374,9 +696,10 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       privacy: PrivacyLevel.private,
       privacyOverrideText:
           'Private. Used to calculate your compatibility score.',
-      fabActive: _canContinue,
+      fabActive: _canProceed && _canContinue,
       onContinue: _next,
-      devPreview: widget.devPreview,
+      onFinishLater: _canProceed ? _finishLater : null,
+      devPreview: _devPreview,
       onDevSkip: _next,
       onSwipeBack: _stepIndex > 0 ? _back : null,
       content: GenericSelectQuestionScreen(
@@ -384,6 +707,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
         prompt: question.prompt,
         options: question.options,
         selectionType: question.selectionType,
+        guidedChoices: true,
         initialValue: _ch3Answers[question.responseKey],
         onChanged: (value) => _recordCh3Answer(question, value),
       ),
@@ -434,16 +758,16 @@ class _PreferenceQuestionBlock extends StatelessWidget {
                   borderRadius: BorderRadius.circular(99),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Text(
                 'QUESTION $position OF $total',
                 style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(question.prompt, style: ZyraText.heading(size: 18)),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           TrafficLightQuestionScreen(
             key: ValueKey('ch4_grouped_${question.id}'),
             yourAnswer: '',
@@ -475,7 +799,7 @@ class _PreferenceGuideScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         constraints: const BoxConstraints.expand(),
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(27, 16, 27, 22),
@@ -495,7 +819,7 @@ class _PreferenceGuideScreen extends StatelessWidget {
                     style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -503,7 +827,7 @@ class _PreferenceGuideScreen extends StatelessWidget {
                     style: ZyraText.heading(size: 27),
                   ),
                 ),
-                const SizedBox(height: 11),
+                SizedBox(height: 11),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -511,26 +835,26 @@ class _PreferenceGuideScreen extends StatelessWidget {
                     style: ZyraText.body(size: 14),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 const _PreferenceMeaningRow(
-                  color: Color(0xFF84D0A8),
+                  color: ZyraColors.positiveGreen,
                   title: 'Prefer this',
                   description:
                       'This is something you would welcome in a partner.',
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 const _PreferenceMeaningRow(
-                  color: Color(0xFFE8C98A),
+                  color: ZyraColors.journeyGold,
                   title: 'No preference',
                   description: 'You neither prefer nor avoid this.',
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 const _PreferenceMeaningRow(
-                  color: Color(0xFFE18A91),
+                  color: ZyraColors.negativeRed,
                   title: 'Not for me',
                   description: 'This would not suit what you are looking for.',
                 ),
-                const SizedBox(height: 21),
+                SizedBox(height: 21),
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: PrivacyIndicator(
@@ -586,13 +910,13 @@ class _PreferenceMeaningRow extends StatelessWidget {
             margin: const EdgeInsets.only(top: 3),
             decoration: BoxDecoration(shape: BoxShape.circle, color: color),
           ),
-          const SizedBox(width: 11),
+          SizedBox(width: 11),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: ZyraText.option(size: 13.5)),
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 Text(description, style: ZyraText.subtext(size: 11.5)),
               ],
             ),
@@ -629,7 +953,7 @@ class _CompatibilityBoundaryScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         constraints: const BoxConstraints.expand(),
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(27, 16, 27, 22),
@@ -649,17 +973,17 @@ class _CompatibilityBoundaryScreen extends StatelessWidget {
                     style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(title, style: ZyraText.heading(size: 29)),
                 ),
-                const SizedBox(height: 13),
+                SizedBox(height: 13),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(description, style: ZyraText.body(size: 14.5)),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Row(
@@ -683,12 +1007,12 @@ class _CompatibilityBoundaryScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Text(countLabel, style: ZyraText.subtext(size: 12.5)),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: PrivacyIndicator(
@@ -730,7 +1054,7 @@ class _BoundaryCue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = accent ? ZyraColors.unlockText : Colors.white70;
+    final color = accent ? ZyraColors.unlockText : ZyraColors.ink(0.70);
     return Semantics(
       button: true,
       label: label,
@@ -742,7 +1066,7 @@ class _BoundaryCue extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, color: color, size: 24),
-              const SizedBox(height: 3),
+              SizedBox(height: 3),
               Text(
                 label,
                 textAlign: TextAlign.center,

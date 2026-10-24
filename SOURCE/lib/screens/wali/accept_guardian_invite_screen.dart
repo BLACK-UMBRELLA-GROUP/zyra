@@ -23,6 +23,7 @@
 // real so it can be judged; Confirm does not write anything yet.
 
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../data/zyra_reference_data.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
@@ -43,10 +44,12 @@ class AcceptGuardianInviteScreen extends StatefulWidget {
   });
 
   @override
-  State<AcceptGuardianInviteScreen> createState() => _AcceptGuardianInviteScreenState();
+  State<AcceptGuardianInviteScreen> createState() =>
+      _AcceptGuardianInviteScreenState();
 }
 
-class _AcceptGuardianInviteScreenState extends State<AcceptGuardianInviteScreen> {
+class _AcceptGuardianInviteScreenState
+    extends State<AcceptGuardianInviteScreen> {
   String? _relationship;
 
   @override
@@ -60,9 +63,11 @@ class _AcceptGuardianInviteScreenState extends State<AcceptGuardianInviteScreen>
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      appBar: AppBar(iconTheme: const IconThemeData(color: Colors.white70)),
+      appBar: AppBar(iconTheme: IconThemeData(color: ZyraColors.ink(0.70))),
       body: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: ZyraAppGoldDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -74,92 +79,113 @@ class _AcceptGuardianInviteScreenState extends State<AcceptGuardianInviteScreen>
                 child: ZyraFadeEdges(
                   top: 34,
                   child: ListView(
-                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                  children: [
-                    Center(child: _Monogram(letter: widget.from)),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: Text(widget.from, style: ZyraText.heading(size: 26)),
-                    ),
-                    const SizedBox(height: 8),
-                    Center(
-                      child: Text(
-                        'wants to be your Guardian',
-                        style: ZyraText.subtext(size: 14.5, color: Colors.white70),
+                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    children: [
+                      Center(child: _Monogram(letter: widget.from)),
+                      SizedBox(height: 20),
+                      Center(
+                        child: Text(
+                          widget.from,
+                          style: ZyraText.heading(size: 26),
+                        ),
                       ),
-                    ),
+                      SizedBox(height: 8),
+                      Center(
+                        child: Text(
+                          'wants to be your Guardian',
+                          style: ZyraText.subtext(
+                            size: 14.5,
+                            color: ZyraColors.ink(0.70),
+                          ),
+                        ),
+                      ),
 
-                    const SizedBox(height: 36),
-                    // The wording the Founder settled on: it covers Imam and
-                    // Legal Guardian, which "How are you related?" does not.
-                    Text(
-                      'What best describes their role in your marriage journey?',
-                      style: ZyraText.body(size: 16, color: Colors.white),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      widget.theirAnswer == null
-                          ? 'Choose one.'
-                          : '${widget.from} chose this. Change it if it is not right.',
-                      style: ZyraText.subtext(size: 12.5, color: Colors.white38),
-                    ),
-                    const SizedBox(height: 18),
-
-                    // GROUPED CHIPS — the full proposed list, 2026-08-07.
-                    //
-                    // Grouping is what makes twenty-three values scannable
-                    // where a flat wrap would be a wall. Five headings, and
-                    // the eye lands on the right one before reading any
-                    // chip.
-                    //
-                    // Values outside the live seven cannot be SAVED yet —
-                    // the CHECK constraint on wali_links.relationship still
-                    // allows seven. Harmless here because Confirm writes
-                    // nothing, and the point of the screen is to judge the
-                    // layout at full size.
-                    for (final g in zyraGuardianRelationshipGroups) ...[
+                      SizedBox(height: 36),
+                      // The wording the Founder settled on: it covers Imam and
+                      // Legal Guardian, which "How are you related?" does not.
                       Text(
-                        g.title.toUpperCase(),
-                        style: ZyraText.chapterLabel(color: Colors.white54),
+                        'What best describes their role in your marriage journey?',
+                        style: ZyraText.body(size: 16, color: Colors.white),
                       ),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 9,
-                        runSpacing: 9,
-                        children: [
-                          for (final r in g.items)
-                            _RelChip(
-                              label: r.name,
-                              selected: _relationship == r.code,
-                              // Dimmed where the value cannot yet be stored,
-                              // so the preview never pretends the enum is
-                              // wider than it is.
-                              preview: !zyraRelationshipIsLive(r.code),
-                              onTap: () => setState(() => _relationship = r.code),
-                            ),
-                        ],
+                      SizedBox(height: 6),
+                      Text(
+                        widget.theirAnswer == null
+                            ? 'Choose one.'
+                            : '${widget.from} chose this. Change it if it is not right.',
+                        style: ZyraText.subtext(
+                          size: 12.5,
+                          color: ZyraColors.ink(0.38),
+                        ),
                       ),
-                      const SizedBox(height: 22),
-                    ],
+                      SizedBox(height: 18),
 
-                    const SizedBox(height: 32),
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.05),
-                        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-                        border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.10), width: 0.5),
+                      // GROUPED CHIPS — the full proposed list, 2026-08-07.
+                      //
+                      // Grouping is what makes twenty-three values scannable
+                      // where a flat wrap would be a wall. Five headings, and
+                      // the eye lands on the right one before reading any
+                      // chip.
+                      //
+                      // Values outside the live seven cannot be SAVED yet —
+                      // the CHECK constraint on wali_links.relationship still
+                      // allows seven. Harmless here because Confirm writes
+                      // nothing, and the point of the screen is to judge the
+                      // layout at full size.
+                      for (final g in zyraGuardianRelationshipGroups) ...[
+                        Text(
+                          g.title.toUpperCase(),
+                          style: ZyraText.chapterLabel(
+                            color: ZyraColors.ink(0.54),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Wrap(
+                          spacing: 9,
+                          runSpacing: 9,
+                          children: [
+                            for (final r in g.items)
+                              _RelChip(
+                                label: r.name,
+                                selected: _relationship == r.code,
+                                // Dimmed where the value cannot yet be stored,
+                                // so the preview never pretends the enum is
+                                // wider than it is.
+                                preview: !zyraRelationshipIsLive(r.code),
+                                onTap: () =>
+                                    setState(() => _relationship = r.code),
+                              ),
+                          ],
+                        ),
+                        SizedBox(height: 22),
+                      ],
+
+                      SizedBox(height: 32),
+                      Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: ZyraColors.foreground.withValues(alpha: 0.05),
+                          borderRadius: BorderRadius.circular(
+                            ZyraCardMetrics.cardRadius,
+                          ),
+                          border: Border.all(
+                            color: ZyraColors.foreground.withValues(
+                              alpha: 0.10,
+                            ),
+                            width: 0.5,
+                          ),
+                        ),
+                        child: Text(
+                          'Once linked, ${widget.from} can follow your Journey and '
+                          'read conversations within it. You can remove them at '
+                          'any time.',
+                          style: ZyraText.subtext(
+                            size: 12.5,
+                            color: ZyraColors.ink(0.60),
+                          ),
+                        ),
                       ),
-                      child: Text(
-                        'Once linked, ${widget.from} can follow your Journey and '
-                        'read conversations within it. You can remove them at '
-                        'any time.',
-                        style: ZyraText.subtext(size: 12.5, color: Colors.white60),
-                      ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 ),
               ),
 
@@ -193,10 +219,12 @@ class _AcceptGuardianInviteScreenState extends State<AcceptGuardianInviteScreen>
                             : () {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Preview only — nothing linked. (dev)'),
+                                    content: Text(
+                                      'Preview only — nothing linked. (dev)',
+                                    ),
                                   ),
                                 );
-                                Navigator.of(context).pop();
+                                Navigator.of(context).pop(true);
                               },
                         child: Center(
                           child: Text('Confirm', style: ZyraText.button()),
@@ -241,7 +269,9 @@ class _RelChip extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder,
+              color: selected
+                  ? ZyraColors.accentBorder
+                  : ZyraColors.iconButtonBorder,
               width: selected ? 1 : 0.5,
             ),
           ),
@@ -249,8 +279,9 @@ class _RelChip extends StatelessWidget {
             label,
             style: ZyraText.body(
               size: 14,
-              color: Colors.white.withValues(
-                  alpha: selected ? 1 : (preview ? 0.42 : 0.65)),
+              color: ZyraColors.foreground.withValues(
+                alpha: selected ? 1 : (preview ? 0.42 : 0.65),
+              ),
             ),
           ),
         ),
@@ -274,11 +305,14 @@ class _Monogram extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.white.withValues(alpha: 0.28),
-            Colors.white.withValues(alpha: 0.10),
+            ZyraColors.foreground.withValues(alpha: 0.28),
+            ZyraColors.foreground.withValues(alpha: 0.10),
           ],
         ),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.28), width: 0.5),
+        border: Border.all(
+          color: ZyraColors.foreground.withValues(alpha: 0.28),
+          width: 0.5,
+        ),
       ),
       child: Center(
         child: Text(

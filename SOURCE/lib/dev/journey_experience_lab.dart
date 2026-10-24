@@ -28,7 +28,7 @@
 // switcher by stage value, so each stage change REMOUNTS the wrapper —
 // veils re-draw, beats replay — with no cross-stage state here.
 //
-// DEBUG/PROFILE ONLY, behind kReleaseMode in journey_flow_screen.
+// Protected internal Founder capability only; public builds never expose it.
 // When a composite is chosen it graduates into a ratified build and
 // this lab retires.
 
@@ -74,64 +74,71 @@ class JourneyExperienceLab {
           inner = _VeilGate(stage: s, profile: profile, child: inner);
         }
         return _Frame(
-            orbs: true,
-            rail: false,
-            header: false,
-            stage: s,
-            profile: profile,
-            waitingReason: waitingReason,
-            child: inner);
+          orbs: true,
+          rail: false,
+          header: false,
+          stage: s,
+          profile: profile,
+          waitingReason: waitingReason,
+          child: inner,
+        );
       case 2: // TRAIL — the rail, and a breath before each chapter.
         if (!isOpening) {
           inner = _BeatGate(stage: s, profile: profile, child: inner);
         }
         return _Frame(
-            orbs: false,
-            rail: true,
-            header: true,
-            stage: s,
-            profile: profile,
-            waitingReason: waitingReason,
-            child: inner);
+          orbs: false,
+          rail: true,
+          header: true,
+          stage: s,
+          profile: profile,
+          waitingReason: waitingReason,
+          child: inner,
+        );
       case 3: // RITE — veil, then breath. The ceremony, unaccompanied.
         if (!isOpening) {
           inner = _VeilGate(
-              stage: s,
-              profile: profile,
-              child: _BeatGate(stage: s, profile: profile, child: inner));
+            stage: s,
+            profile: profile,
+            child: _BeatGate(stage: s, profile: profile, child: inner),
+          );
         }
         return _Frame(
-            orbs: false,
-            rail: false,
-            header: true,
-            stage: s,
-            profile: profile,
-            waitingReason: waitingReason,
-            child: inner);
+          orbs: false,
+          rail: false,
+          header: true,
+          stage: s,
+          profile: profile,
+          waitingReason: waitingReason,
+          child: inner,
+        );
       case 4: // DUO — the two of you and the road, no gates at all.
         return _Frame(
-            orbs: true,
-            rail: true,
-            header: false,
-            stage: s,
-            profile: profile,
-            waitingReason: waitingReason,
-            child: _RiseIn(child: inner));
+          orbs: true,
+          rail: true,
+          header: false,
+          stage: s,
+          profile: profile,
+          waitingReason: waitingReason,
+          child: _RiseIn(child: inner),
+        );
       case 5: // FULL — everything the Founder liked, at once.
         if (!isOpening) {
           inner = _VeilGate(
-              stage: s,
-              profile: profile,
-              child: _BeatGate(stage: s, profile: profile, child: inner));
-        }
-        return _Frame(
-            orbs: true,
-            rail: true,
-            header: false,
             stage: s,
             profile: profile,
-            waitingReason: waitingReason,
-            child: inner);
+            child: _BeatGate(stage: s, profile: profile, child: inner),
+          );
+        }
+        return _Frame(
+          orbs: true,
+          rail: true,
+          header: false,
+          stage: s,
+          profile: profile,
+          waitingReason: waitingReason,
+          child: inner,
+        );
       default:
         return current;
     }
@@ -207,9 +214,10 @@ class _Frame extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      'YOU ARE HERE · ${stage.order} OF '
-                      '${ZyraJourneyStages.count}',
-                      style: ZyraText.chapterLabel(color: _gold)),
+                    'YOU ARE HERE · ${stage.order} OF '
+                    '${ZyraJourneyStages.count}',
+                    style: ZyraText.chapterLabel(color: _gold),
+                  ),
                   const SizedBox(height: 2),
                   Text(stage.label, style: ZyraText.heading(size: 18)),
                 ],
@@ -254,8 +262,9 @@ class _OrbsHeader extends StatefulWidget {
 class _OrbsHeaderState extends State<_OrbsHeader>
     with SingleTickerProviderStateMixin {
   late final AnimationController _c = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 2800))
-    ..repeat(reverse: true);
+    vsync: this,
+    duration: const Duration(milliseconds: 2800),
+  )..repeat(reverse: true);
 
   @override
   void dispose() {
@@ -273,7 +282,7 @@ class _OrbsHeaderState extends State<_OrbsHeader>
         color: Colors.white.withValues(alpha: 0.08),
         border: Border.all(color: _gold.withValues(alpha: 0.55)),
         boxShadow: [
-          BoxShadow(color: _gold.withValues(alpha: 0.22), blurRadius: 14)
+          BoxShadow(color: _gold.withValues(alpha: 0.22), blurRadius: 14),
         ],
       ),
       child: Text(letter, style: ZyraText.heading(size: 14)),
@@ -283,34 +292,41 @@ class _OrbsHeaderState extends State<_OrbsHeader>
   @override
   Widget build(BuildContext context) {
     final s = widget.stage;
-    final them =
-        widget.profile.firstName.isEmpty ? '·' : widget.profile.firstName[0];
+    final them = widget.profile.firstName.isEmpty
+        ? '·'
+        : widget.profile.firstName[0];
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 2),
       child: _RiseIn(
         child: Column(
           children: [
             FadeTransition(
-              opacity: Tween(begin: 0.75, end: 1.0).animate(
-                  CurvedAnimation(parent: _c, curve: Curves.easeInOut)),
+              opacity: Tween(
+                begin: 0.75,
+                end: 1.0,
+              ).animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _orb('You'[0]),
                   Container(
-                      width: 26,
-                      height: 1.5,
-                      color: _gold.withValues(alpha: 0.4)),
+                    width: 26,
+                    height: 1.5,
+                    color: _gold.withValues(alpha: 0.4),
+                  ),
                   _orb(them),
                 ],
               ),
             ),
             const SizedBox(height: 6),
             Text(
-                'Chapter ${_word(s.order)} of '
-                '${_word(ZyraJourneyStages.count)} · ${s.label}',
-                style: ZyraText.subtext(
-                    size: 10.5, color: _gold.withValues(alpha: 0.75))),
+              'Chapter ${_word(s.order)} of '
+              '${_word(ZyraJourneyStages.count)} · ${s.label}',
+              style: ZyraText.subtext(
+                size: 10.5,
+                color: _gold.withValues(alpha: 0.75),
+              ),
+            ),
           ],
         ),
       ),
@@ -335,53 +351,61 @@ class _StationRail extends StatelessWidget {
           children: [
             const SizedBox(height: 18),
             for (var i = 0; i < stages.length; i++) ...[
-              Builder(builder: (_) {
-                final n = i + 1;
-                final isHere = n == here;
-                final walked = n < here;
-                return Container(
-                  width: isHere ? 20 : 14,
-                  height: isHere ? 20 : 14,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: walked
-                        ? _gold.withValues(alpha: 0.12)
-                        : ZyraColors.luxuryDarkPurple.withValues(alpha: 0.4),
-                    border: Border.all(
-                      color: isHere
-                          ? _gold
-                          : walked
-                              ? _gold.withValues(alpha: 0.45)
-                              : Colors.white.withValues(alpha: 0.22),
-                      width: isHere ? 1.5 : 1,
-                    ),
-                    boxShadow: isHere
-                        ? [
-                            BoxShadow(
+              Builder(
+                builder: (_) {
+                  final n = i + 1;
+                  final isHere = n == here;
+                  final walked = n < here;
+                  return Container(
+                    width: isHere ? 20 : 14,
+                    height: isHere ? 20 : 14,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: walked
+                          ? _gold.withValues(alpha: 0.12)
+                          : ZyraColors.luxuryDarkPurple.withValues(alpha: 0.4),
+                      border: Border.all(
+                        color: isHere
+                            ? _gold
+                            : walked
+                            ? _gold.withValues(alpha: 0.45)
+                            : Colors.white.withValues(alpha: 0.22),
+                        width: isHere ? 1.5 : 1,
+                      ),
+                      boxShadow: isHere
+                          ? [
+                              BoxShadow(
                                 color: _gold.withValues(alpha: 0.35),
-                                blurRadius: 14)
-                          ]
-                        : null,
-                  ),
-                  child: Text('$n',
+                                blurRadius: 14,
+                              ),
+                            ]
+                          : null,
+                    ),
+                    child: Text(
+                      '$n',
                       style: TextStyle(
-                          fontSize: isHere ? 9 : 7,
-                          color: isHere
-                              ? _gold
-                              : walked
-                                  ? _gold.withValues(alpha: 0.7)
-                                  : Colors.white.withValues(alpha: 0.35))),
-                );
-              }),
+                        fontSize: isHere ? 9 : 7,
+                        color: isHere
+                            ? _gold
+                            : walked
+                            ? _gold.withValues(alpha: 0.7)
+                            : Colors.white.withValues(alpha: 0.35),
+                      ),
+                    ),
+                  );
+                },
+              ),
               if (i < stages.length - 1)
                 Expanded(
                   child: Container(
-                      width: 1.5,
-                      color: i + 1 < here
-                          ? _gold.withValues(alpha: 0.30)
-                          : Colors.white
-                              .withValues(alpha: i + 1 == here ? 0.25 : 0.10)),
+                    width: 1.5,
+                    color: i + 1 < here
+                        ? _gold.withValues(alpha: 0.30)
+                        : Colors.white.withValues(
+                            alpha: i + 1 == here ? 0.25 : 0.10,
+                          ),
+                  ),
                 ),
             ],
             const SizedBox(height: 18),
@@ -420,7 +444,8 @@ class _VeilGateState extends State<_VeilGate> {
   @override
   Widget build(BuildContext context) {
     final s = widget.stage;
-    final line = s.guidingQuestion ??
+    final line =
+        s.guidingQuestion ??
         '${s.label} — walked with ${widget.profile.firstName}.';
     return Stack(
       fit: StackFit.expand,
@@ -436,61 +461,75 @@ class _VeilGateState extends State<_VeilGate> {
           ),
         ),
         if (!_veilLifted)
-        IgnorePointer(
-          ignoring: _parted,
-          child: AnimatedOpacity(
-            opacity: _parted ? 0 : 1,
-            duration: const Duration(milliseconds: 900),
-            onEnd: () {
-              if (_parted && mounted) setState(() => _veilLifted = true);
-            },
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-              child: Container(
-                // The scrim is the app's own dark stop (DR-ZYRA-182).
-                color: ZyraColors.luxuryDarkPurple.withValues(alpha: 0.55),
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('YOU ARE ENTERING',
-                          style: ZyraText.chapterLabel(color: Colors.white54)),
-                      const SizedBox(height: 10),
-                      Text('Chapter ${_word(s.order)}',
-                          style: ZyraText.heading(size: 22)),
-                      const SizedBox(height: 4),
-                      Text(s.label,
-                          style: ZyraText.subtext(size: 13.5, color: _gold)),
-                      const SizedBox(height: 8),
-                      Text(line,
+          IgnorePointer(
+            ignoring: _parted,
+            child: AnimatedOpacity(
+              opacity: _parted ? 0 : 1,
+              duration: const Duration(milliseconds: 900),
+              onEnd: () {
+                if (_parted && mounted) setState(() => _veilLifted = true);
+              },
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                child: Container(
+                  // The scrim is the app's own dark stop (DR-ZYRA-182).
+                  color: ZyraColors.luxuryDarkPurple.withValues(alpha: 0.55),
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'YOU ARE ENTERING',
+                          style: ZyraText.chapterLabel(color: Colors.white54),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Chapter ${_word(s.order)}',
+                          style: ZyraText.heading(size: 22),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          s.label,
+                          style: ZyraText.subtext(size: 13.5, color: _gold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          line,
                           textAlign: TextAlign.center,
-                          style: ZyraText.subtext(size: 12.5)),
-                      const SizedBox(height: 22),
-                      Material(
-                        color: Colors.white.withValues(alpha: 0.22),
-                        shape: StadiumBorder(
+                          style: ZyraText.subtext(size: 12.5),
+                        ),
+                        const SizedBox(height: 22),
+                        Material(
+                          color: Colors.white.withValues(alpha: 0.22),
+                          shape: StadiumBorder(
                             side: BorderSide(
-                                color: Colors.white.withValues(alpha: 0.42))),
-                        child: InkWell(
-                          customBorder: const StadiumBorder(),
-                          onTap: () => setState(() => _parted = true),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 26, vertical: 12),
-                            child: Text('Part the veil',
-                                style: ZyraText.button(size: 13.5)),
+                              color: Colors.white.withValues(alpha: 0.42),
+                            ),
+                          ),
+                          child: InkWell(
+                            customBorder: const StadiumBorder(),
+                            onTap: () => setState(() => _parted = true),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 26,
+                                vertical: 12,
+                              ),
+                              child: Text(
+                                'Part the veil',
+                                style: ZyraText.button(size: 13.5),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -531,27 +570,34 @@ class _BeatGateState extends State<_BeatGate> {
               child: Column(
                 children: [
                   Text(
-                      'CHAPTER ${_word(s.order).toUpperCase()} OF '
-                      '${_word(ZyraJourneyStages.count).toUpperCase()}',
-                      style: ZyraText.chapterLabel(color: Colors.white54)),
+                    'CHAPTER ${_word(s.order).toUpperCase()} OF '
+                    '${_word(ZyraJourneyStages.count).toUpperCase()}',
+                    style: ZyraText.chapterLabel(color: Colors.white54),
+                  ),
                   const SizedBox(height: 16),
-                  Text(s.label,
-                      textAlign: TextAlign.center,
-                      style: ZyraText.heading(size: 20)),
+                  Text(
+                    s.label,
+                    textAlign: TextAlign.center,
+                    style: ZyraText.heading(size: 20),
+                  ),
                   const SizedBox(height: 12),
                   Text(
-                      s.guidingQuestion ??
-                          'You and ${widget.profile.firstName} are both '
-                              'here. Take a breath — then enter.',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.subtext(size: 13)),
+                    s.guidingQuestion ??
+                        'You and ${widget.profile.firstName} are both '
+                            'here. Take a breath — then enter.',
+                    textAlign: TextAlign.center,
+                    style: ZyraText.subtext(size: 13),
+                  ),
                   const SizedBox(height: 30),
                   const _Breath(),
                   const SizedBox(height: 14),
-                  Text('tap to continue',
-                      style: ZyraText.subtext(
-                          size: 10.5,
-                          color: Colors.white.withValues(alpha: 0.35))),
+                  Text(
+                    'tap to continue',
+                    style: ZyraText.subtext(
+                      size: 10.5,
+                      color: Colors.white.withValues(alpha: 0.35),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -568,11 +614,11 @@ class _Breath extends StatefulWidget {
   State<_Breath> createState() => _BreathState();
 }
 
-class _BreathState extends State<_Breath>
-    with SingleTickerProviderStateMixin {
+class _BreathState extends State<_Breath> with SingleTickerProviderStateMixin {
   late final AnimationController _c = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 3000))
-    ..repeat(reverse: true);
+    vsync: this,
+    duration: const Duration(milliseconds: 3000),
+  )..repeat(reverse: true);
 
   @override
   void dispose() {
@@ -583,14 +629,17 @@ class _BreathState extends State<_Breath>
   @override
   Widget build(BuildContext context) {
     return ScaleTransition(
-      scale: Tween(begin: 1.0, end: 1.7)
-          .animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut)),
+      scale: Tween(
+        begin: 1.0,
+        end: 1.7,
+      ).animate(CurvedAnimation(parent: _c, curve: Curves.easeInOut)),
       child: Container(
         width: 8,
         height: 8,
         decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white.withValues(alpha: 0.4)),
+          shape: BoxShape.circle,
+          color: Colors.white.withValues(alpha: 0.4),
+        ),
       ),
     );
   }

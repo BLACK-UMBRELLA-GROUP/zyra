@@ -58,7 +58,8 @@ void _clear() {
 }
 
 bool _isDeclined(SeekerProfile p) => _s.declined.any((x) => x.id == p.id);
-bool _isConsidering(SeekerProfile p) => _s.outgoingLikes.any((x) => x.id == p.id);
+bool _isConsidering(SeekerProfile p) =>
+    _s.outgoingLikes.any((x) => x.id == p.id);
 bool _isSaved(SeekerProfile p) => _s.saved.any((x) => x.id == p.id);
 
 /// The invariant the whole model rests on. Asserted after every transition
@@ -69,8 +70,11 @@ void _expectExactlyOneState(SeekerProfile p, {required String expected}) {
     if (_isConsidering(p)) 'considering',
     if (_isDeclined(p)) 'declined',
   ];
-  expect(states.length, lessThanOrEqualTo(1),
-      reason: '${p.firstName} is in ${states.length} states at once: $states');
+  expect(
+    states.length,
+    lessThanOrEqualTo(1),
+    reason: '${p.firstName} is in ${states.length} states at once: $states',
+  );
   expect(states.isEmpty ? 'none' : states.first, expected);
 
   for (final list in [_s.declined, _s.outgoingLikes, _s.saved]) {
@@ -205,8 +209,11 @@ void main() {
       _s.resetDeclined();
 
       expect(_s.declined, isEmpty);
-      expect(_isConsidering(_other), isTrue,
-          reason: 'already decided to Consider — no need to rediscover');
+      expect(
+        _isConsidering(_other),
+        isTrue,
+        reason: 'already decided to Consider — no need to rediscover',
+      );
       expect(_isSaved(third), isTrue, reason: 'deliberately kept');
     });
   });

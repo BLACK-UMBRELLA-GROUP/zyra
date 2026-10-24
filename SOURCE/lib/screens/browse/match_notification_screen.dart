@@ -23,8 +23,11 @@ class MatchNotificationScreen extends StatelessWidget {
   final SeekerProfile matchedWith;
   final VoidCallback onViewMatch;
 
-  const MatchNotificationScreen(
-      {super.key, required this.matchedWith, required this.onViewMatch});
+  const MatchNotificationScreen({
+    super.key,
+    required this.matchedWith,
+    required this.onViewMatch,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +39,13 @@ class MatchNotificationScreen extends StatelessWidget {
         ZyraMomentLine.whisper('$name said yes. So did you.'),
         const ZyraMomentLine.heading("You've both chosen each other."),
         const ZyraMomentLine.body(
-            'A quiet congratulations — every Journey starts exactly here.'),
+          'A quiet congratulations — every Journey starts exactly here.',
+        ),
         ZyraMomentLine.quiet(
-            '$name now waits in your Potential Journeys. Begin whenever '
-            "you're both ready — one person at a time, with both families "
-            'present.'),
+          '$name now waits in your Potential Journeys. Begin whenever '
+          "you're both ready — one person at a time, with both families "
+          'present.',
+        ),
       ],
       ctaLabel: 'See $name in Journeys',
       secondaryLabel: 'Later',

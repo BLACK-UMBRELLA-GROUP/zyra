@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/screens/wali/wali_onboarding_flow.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
 
 void main() {
+  setUp(() => ZyraDeveloperAccess.setAuthorizedForTesting(true));
+  tearDown(() => ZyraDeveloperAccess.setAuthorizedForTesting(false));
   testWidgets('Guardian onboarding captures female identity before relation', (
     tester,
   ) async {
@@ -23,7 +26,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull, reason: 'gender page');
 
-    expect(find.text('Gender'), findsOneWidget);
+    expect(find.text('What’s your gender?'), findsOneWidget);
     await tester.tap(find.text('Female'));
     await tester.pump();
     expect(tester.takeException(), isNull, reason: 'female selected');

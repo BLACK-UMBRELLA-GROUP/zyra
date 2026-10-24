@@ -9,6 +9,33 @@ ONBOARDING RULES & UX
 Status: Approved
 Last Updated: 2026-06-28
 
+CURRENT ACCOUNT-NAME OVERLAY — 2026-10-02 / DR-ZYRA-251:
+The Master Product Spec governs required, public first and last names for
+new Seeker and Guardian signup. One name question has two open Poppins
+inputs with gold underlines; no filled answer card. Neither field may be
+empty/whitespace or over 60 characters when continuing. Keyboard Next
+focuses last name; Done dismisses without advancing. Both names persist
+in protected same-device recovery and surname is confirmed in the existing
+public surname_line field before admission. Legacy unfinished drafts return
+to this question retaining valid later answers. Required Male/Female and
+private DOB are unchanged. This does not force existing admitted accounts
+to supply surname or add a database-wide constraint. Onboarding Preview
+§89 governs the current Luma/four-profile flow; §90 records this follow-up.
+Older layouts, counts and name-visibility rules below are historical where
+they conflict with those current records.
+
+CURRENT COMPATIBILITY POLICY OVERLAY — 2026-09-28:
+ZYRA_PRODUCT_SPEC Part 1 section 8 / DR-ZYRA-250 govern future
+capture. Versioned future labels replace the old wording: Prefer this /
+Open to this / Not for me (1 / 0.5 / 0). Legacy Amber No preference is
+not silently reinterpreted; only affected controls require reconfirmation,
+with structural repair separately. Every applicable required answer/light
+must exist. Chapter4 Skip must not invent Green or any default preference.
+Old wording/auto-Green rules below are history; no app code changes here.
+Governed Chapter2 skip/no-preference contribution conditions are separate.
+Counterpart targeting, validation and execution boundaries follow the
+policy reference; final new capture/repair copy is not deployed by filing.
+
 ------------------------------------------------------------
 SCREEN ANATOMY — EVERY QUESTION SCREEN
 ------------------------------------------------------------
@@ -192,7 +219,8 @@ Required fields
   FAB never disappears — always visible, dimmed or active.
 
 Optional fields
-  FAB is active immediately (e.g. Last Name in Q1).
+  FAB is active immediately only for actually optional questions.
+  Last Name in Q1 is REQUIRED under DR-ZYRA-251, not an example of this rule.
   Optional status is noted below the field.
 
 Under-18 validation (Date of Birth)
@@ -200,7 +228,13 @@ Under-18 validation (Date of Birth)
   FAB remains dimmed.
   Cannot proceed.
 
-Photo minimum (Photo screen)
+First account photo (DR-ZYRA-264, before Membership)
+  Seeker signup requires one first photo before choosing Membership.
+  It is privately staged and carried into the later Your Profile photo step.
+  Upload is not a moderation verdict or public-profile completion.
+  Guardian identity-only account setup has no Seeker-photo checkpoint.
+
+Photo minimum (Your Profile photo screen)
   FAB dimmed until minimum 3 photos added.
   Counter text updates: "X more to continue" / "X of 6 added."
 
@@ -230,7 +264,8 @@ a real answer.
 PHOTO SCREEN — SPECIAL BEHAVIOUR
 ------------------------------------------------------------
 
-Minimum 3 photos required.
+Minimum 3 photos required to complete the later Your Profile photo step.
+The earlier account-photo checkpoint requires one, not three (DR-ZYRA-264).
 Maximum 6 photos.
 First uploaded photo becomes the main profile photo.
 Photos can be reordered by hold-and-drag.
@@ -281,7 +316,8 @@ Content:
    For each topic, you'll see the possible answers and
    tell us how you feel about each one."
 
-  The colours always mean the same thing:
+  Historical colour explanation — superseded for future versioned
+  capture by DR-ZYRA-250; retained for chronology:
 
   🟢 Open
   You're happy for ZYRA to introduce people with this answer.
@@ -312,7 +348,7 @@ Content:
 GLOBAL TRAFFIC LIGHT RULES (Chapter 4)
 ------------------------------------------------------------
 
-Meaning (never changes):
+Historical meaning — superseded by the current policy overlay:
   🟢 = Open / most compatible
   🟡 = Flexible / depends
   🔴 = Not preferred / outside preference
@@ -320,7 +356,7 @@ Meaning (never changes):
 Wording beside each traffic light changes per question.
 Colour meaning never changes.
 
-Skip behaviour
+Historical Chapter4 Skip behaviour — not future capture authority
   If the user selects Skip:
     Record 🟢 (No Preference) automatically.
     Do not display Hard Requirement.
@@ -417,8 +453,13 @@ Ch complete:  rgba(80,180,120,0.6) progress fill
 TYPOGRAPHY
 ------------------------------------------------------------
 
-Font: Jost (Google Fonts)
-  Weights: 200 (headings/wordmark), 300 (body/subtext), 400 (buttons)
+Current reading font: Poppins (Google Fonts; bundled locally)
+  Weights: 200 (headings), 300 (body/subtext), 400 (buttons)
+
+CURRENT DEFAULT OVERRIDE (Founder direct, 2026-08-24): Poppins replaces Jost
+as the launch/default reading face across onboarding and the rest of the app.
+Jost and every other comparison remain available in Developer Style. The ZYRA
+wordmark remains locked to Syne and is not affected by reading-font selection.
 
 UPDATED 2026-07-25 (DR-ZYRA-101 audit, Founder decision: keep the
 larger, more readable sizes actually built — this spec's original
@@ -426,17 +467,16 @@ larger, more readable sizes actually built — this spec's original
 exception (Playfair Display, not Jost — see zyra_text.dart header,
 2026-07-18 Founder request).
 
-Question heading:    Jost 200, ~20px (ZyraText.heading, default)
-Body text:           Jost 300, 13px (ZyraText.body)
-Subtext:             Jost 300, 12.5px (ZyraText.subtext)
-Option text:         Jost 300, 14px (ZyraText.option)
-Button text:         Jost 400, 15px, letter-spacing 0.5 (ZyraText.button)
-Chapter name label:  Jost 300, 10px, letter-spacing 0.8px (ZyraText.chapterLabel)
-Privacy indicator:   Jost 300, 11px (ZyraText.privacyText)
+Question heading:    Poppins 200, ~20px (ZyraText.heading, default)
+Body text:           Poppins 300, 13px (ZyraText.body)
+Subtext:             Poppins 300, 12.5px (ZyraText.subtext)
+Option text:         Poppins 300, 14px (ZyraText.option)
+Button text:         Poppins 400, 15px, letter-spacing 0.5 (ZyraText.button)
+Chapter name label:  Poppins 300, 10px, letter-spacing 0.8px (ZyraText.chapterLabel)
+Privacy indicator:   Poppins 300, 11px (ZyraText.privacyText)
 Progress %:          no dedicated style built — the "X/50 profiles"-
                      style counter this would apply to was removed
                      from Browse per OA-ZYRA-125 §5; not currently
                      needed anywhere. Removed from spec rather than
                      left as a phantom requirement — re-add if a
                      future screen needs it.
-

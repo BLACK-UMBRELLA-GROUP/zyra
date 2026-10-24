@@ -123,10 +123,10 @@ class ZyraProfileNameBlock extends StatelessWidget {
         // LINE 1 — the first name.
         Text(
           profile.firstName,
-          style: ZyraText.heading(size: nameSize).copyWith(
-            fontWeight: FontWeight.w600,
-            shadows: shadows,
-          ),
+          style: ZyraText.heading(
+            size: nameSize,
+            color: onPhoto ? Colors.white : null,
+          ).copyWith(fontWeight: FontWeight.w600, shadows: shadows),
         ),
         // LINE 2 — the surname, on its own line (Founder, 2026-07-26:
         // "first line is Bilal, second line is Abdul Malik", restored
@@ -161,8 +161,10 @@ class ZyraProfileNameBlock extends StatelessWidget {
           // the words either side, and scales with them.
           Text(
             meta,
-            style: ZyraText.body(size: _metaSize, color: Colors.white)
-                .copyWith(shadows: shadows),
+            style: ZyraText.body(
+              size: _metaSize,
+              color: Colors.white,
+            ).copyWith(shadows: shadows),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

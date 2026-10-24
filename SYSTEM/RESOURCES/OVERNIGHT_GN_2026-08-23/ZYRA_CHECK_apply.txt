@@ -1,0 +1,16 @@
+ZYRA static check — 152 files
+
+  BROKEN IMPORT    clean
+
+  MISSING MEMBER  (2)
+    lib/services/zyra_journey_service.dart:1251  PausedLimitReachedException.new is not declared on PausedLimitReachedException
+    lib/services/zyra_journey_service.dart:1252  SuspensionRequiresOneException.new is not declared on SuspensionRequiresOneException
+  BAD NAMED ARG    clean
+  MISSING IMPORT   clean
+
+  UNUSED IMPORT  (1)
+    lib/screens/journey/journey_flow_screen.dart:60  '../../models/zyra_gender.dart' — nothing from it is referenced
+  DANGLING DOC REF PASS — 5 baselined reference(s) (scheduled for Option A), 0 new findings
+
+  3 finding(s). This does NOT replace flutter analyze.
+

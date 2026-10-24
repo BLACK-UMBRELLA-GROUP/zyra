@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/chapter3_categories.dart';
 import 'package:zyra/screens/onboarding/values_preferences_flow.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
 
 void main() {
+  setUp(() => ZyraDeveloperAccess.setAuthorizedForTesting(true));
+  tearDown(() => ZyraDeveloperAccess.setAuthorizedForTesting(false));
   testWidgets(
     'compatibility flow completes About You before Partner Preferences',
     (tester) async {
@@ -13,7 +16,9 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
 
       await tester.pumpWidget(
-        const MaterialApp(home: ValuesPreferencesFlow(gender: 'male')),
+        const MaterialApp(
+          home: ValuesPreferencesFlow(gender: 'male', devPreview: true),
+        ),
       );
 
       final firstCategory = chapter3Categories.first;

@@ -38,6 +38,11 @@ lib/config/supabase_config.dart
 # OAuth client IDs (Google) — 2026-07-18, same hygiene reasoning as
 # the Supabase config above.
 lib/config/oauth_config.dart
+# Founder Test carries only public client configuration here, but the exact
+# staging endpoint and OAuth registrations stay machine-local so an accidental
+# mixed build cannot be normalised in source control.
+config/founder_test.public.json
+ios/Flutter/FounderTestSecrets.xcconfig
 .pub-cache/
 .pub/
 /build/

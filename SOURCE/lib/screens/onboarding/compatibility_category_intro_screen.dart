@@ -4,6 +4,7 @@ import '../../data/onboarding_category_guidance.dart';
 import '../../models/onboarding_question.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_onboarding_continue_action.dart';
 
 /// A quiet boundary between compatibility subjects.
 ///
@@ -34,7 +35,7 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         constraints: const BoxConstraints.expand(),
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) => SingleChildScrollView(
@@ -55,36 +56,36 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: ZyraText.chapterLabel(
-                                  color: Colors.white54,
+                                  color: ZyraColors.ink(0.54),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Text(
                               'SECTION $sectionIndex OF $totalSections',
                               key: const ValueKey(
                                 'compatibility_section_position',
                               ),
                               style: ZyraText.chapterLabel(
-                                color: Colors.white54,
+                                color: ZyraColors.ink(0.54),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 11),
+                        SizedBox(height: 11),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(2),
                           child: LinearProgressIndicator(
                             value: sectionIndex / totalSections,
                             minHeight: 1.5,
                             backgroundColor: ZyraColors.progressTrack,
-                            valueColor: const AlwaysStoppedAnimation<Color>(
+                            valueColor: AlwaysStoppedAnimation<Color>(
                               ZyraColors.unlockDot,
                             ),
                           ),
                         ),
                         if (onBack != null) ...[
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           _CategoryUpCue(onTap: onBack!),
                         ],
                         const Spacer(flex: 2),
@@ -97,7 +98,7 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -108,7 +109,7 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
                             style: ZyraText.heading(size: 29),
                           ),
                         ),
-                        const SizedBox(height: 14),
+                        SizedBox(height: 14),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -116,7 +117,7 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
                             style: ZyraText.body(size: 14.5),
                           ),
                         ),
-                        const SizedBox(height: 18),
+                        SizedBox(height: 18),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -127,17 +128,27 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 28),
+                        SizedBox(height: 28),
                         const _VisibilityLine(
                           icon: Icons.lock_outline_rounded,
                           label: 'PRIVATE',
                           text: 'Used to calculate your compatibility score.',
                         ),
                         const Spacer(flex: 3),
-                        _CategoryDownCue(
-                          label: 'Begin section',
-                          onTap: onContinue,
-                        ),
+                        if (ZyraOnboardingArrowScope.enabledOf(context))
+                          ZyraOnboardingArrowAction(
+                            key: const ValueKey(
+                              'compatibility_section_continue',
+                            ),
+                            active: true,
+                            onPressed: onContinue,
+                            semanticLabel: 'Begin section',
+                          )
+                        else
+                          _CategoryDownCue(
+                            label: 'Begin section',
+                            onTap: onContinue,
+                          ),
                       ],
                     ),
                   ),
@@ -166,14 +177,16 @@ class _VisibilityLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.white12, width: 0.7)),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: ZyraColors.ink(0.12), width: 0.7),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, color: ZyraColors.unlockText, size: 16),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           SizedBox(
             width: 86,
             child: Text(
@@ -206,14 +219,14 @@ class _CategoryUpCue extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 Icons.keyboard_arrow_up_rounded,
-                color: Colors.white70,
+                color: ZyraColors.ink(0.70),
                 size: 21,
               ),
               Text(
                 'Previous page',
-                style: ZyraText.subtext(size: 9.5, color: Colors.white54),
+                style: ZyraText.subtext(size: 9.5, color: ZyraColors.ink(0.54)),
               ),
             ],
           ),
@@ -242,17 +255,20 @@ class _CategoryDownCue extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 Icons.keyboard_arrow_down_rounded,
                 color: ZyraColors.unlockText,
                 size: 25,
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: ZyraText.subtext(size: 11.5, color: Colors.white70),
+                style: ZyraText.subtext(
+                  size: 11.5,
+                  color: ZyraColors.ink(0.70),
+                ),
               ),
             ],
           ),

@@ -6,8 +6,14 @@ ARCHITECTURAL DECISION RECORD
 ============================================================
 Version: V1
 Status: Approved — Active Baseline
-Lead Architect: Claude
-Architectural Reviewer: ChatGPT
+Historical roles (AD-AIOS-107): ChatGPT — Lead Product & Systems Architect;
+  Fable — Lead Operations, Governance & Delivery; Codex — Product Designer &
+  Implementation Engineer
+Current model (AD-AIOS-109): Founder ↔ Codex is the active route; Codex also
+  holds Operations, Governance & Delivery; Fable remains stepped back;
+  ChatGPT is Founder-request-only; only the Founder approves. Active stale
+  owner, relay and review labels are interpreted through this overlay without
+  rewriting historical authorship.
 Project Owner: Shakeel
 ============================================================
 
@@ -231,9 +237,12 @@ It does not make them.
 
 Only the Project Owner can approve a decision.
 
-The Lead Architect and Architectural Reviewer may
-propose and challenge decisions, but neither role
-alone can create an Active Decision Record.
+Under AD-AIOS-109, the Founder and Codex are the active
+operating pair. Codex may propose, challenge, implement,
+internally verify and file; ChatGPT or Fable participates only
+when the Founder explicitly requests it for a named matter.
+No agent alone can create an Active Decision Record; only the
+Founder approves.
 
 This document never:
 
@@ -5334,7 +5343,15 @@ Status:      PROPOSED — awaiting Founder ratification. Do not implement
              below) has been built independently under the existing
              WALI_ARCHITECTURE_CURRENT_VERSION_V5.md baseline and does
              NOT depend on this DR being approved.
-Superseded By: None
+Superseded By: CLOSED 2026-08-30 by DR-ZYRA-224 F6 —
+  passive Guardian visibility of Saved/Considering/
+  Passed is REJECTED (conflicts with the permanent
+  process-never-behaviour boundary). Dev-staged Browse
+  chips die with it. Guardian Suggestions, Guardian
+  Network, Family Review and Guardian Gate are untouched
+  separate mechanisms. A future Seeker-initiated
+  "share this profile with my Guardian" may be designed
+  separately.
 Category:    Product / Privacy / Guardian Architecture
 Owner:       Founder (Shakeel)
 Approved by: Pending
@@ -13502,9 +13519,3641 @@ Dependencies: DR-013 (Developer Mode superset); DR-ZYRA-087 (seeded personas);
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-210,
+DR-ZYRA-211
+Title:       Multi-Select Compatibility Scoring — One Question Is One
+             Contribution to the Score (OA-ZYRA-228 Option A Ratified)
+Date:        2026-08-22
+Status:      RATIFIED — direct Founder instruction, 2026-08-22, on Codex's
+             Batch 1 handback (built as recommended option (a); the pack's
+             pre-build one-liner was skipped — deviation flagged by Fable,
+             cured by this ratification).
+Owner:       Founder (Shakeel)
+Approved by: Founder, in his own words: "Ratify Option A for OA-ZYRA-228...
+             So please keep Codex's Option A implementation and record this
+             as Founder-ratified."
+
+Decision:
+  1. A multi-select question contributes exactly ONE unit to the
+     compatibility denominator, regardless of how many options it offers or
+     how many the Seeker ticks. The light weights of the selected options
+     are averaged inside the question.
+  2. The Founder's settling example, kept verbatim in intent: "How many
+     times do you pray daily?" — his answer 5, rated 5=Green and 4, 3, 2,
+     1-or-less=Red. A counterpart answering 5 turns the QUESTION Green; a
+     counterpart answering 4 turns it Red. The question speaks once.
+  3. The ratified principle: "One question = one contribution to the
+     compatibility score. The number of possible answers inside that
+     question should NOT accidentally make the question more influential."
+  4. If prayer, children, location or any subject later deserves greater
+     importance, that is done through DELIBERATE per-question weighting —
+     a separate, explicit future decision — never as an accident of how
+     many answer options a question happens to contain.
+
+Evidence:    Migration 20260821122000_oa228_multiselect_one_question_unit
+             applied (live history row) with same-change repo file; suite
+             zyra_oa228_multiselect_scoring_suite.sql; measured 100.0 with
+             a green multi-select + green single-select, 75.0 after adding
+             a red option (old per-option maths: 66.7); fixtures rolled
+             back. Closure filed under OA-ZYRA-228 / OA-AIOS-342.
+
+Dependencies: OA-ZYRA-228 (Completed); CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1
+              (Batch 1); OA-ZYRA-193(d)(e) (category-level scoring, still
+              open separately).
+
+------------------------------------------------------------
+
+DR-ZYRA-212
+Title:       ZYRA adopts No Undocumented Intelligence and the
+             three-document implementation truth model
+Date:        2026-08-23
+Status:      RATIFIED — direct Founder instruction
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. ZYRA inherits AD-AIOS-104 and IMPLEMENTATION_HANDOVER_STANDARD in full.
+     Meaningful implementation is not handover-complete until the current
+     as-built record is reconciled against code/evidence by Fable.
+  2. ZYRA_EXECUTION distinguishes CODE_COMPLETE from HANDOVER_COMPLETE and
+     from DONE/Founder approval. Existing handovers update at the next
+     meaningful change; no undocumented backlogs are created by silence.
+  3. For Guardian Network the ONE product authority is
+     ZYRA_GUARDIAN_NETWORK_CURRENT_VERSION_V2. Build obligations are
+     ZYRA_GN_BUILD_CONTRACT_CURRENT_VERSION_V1. Actual implementation is
+     ZYRA_GN_HANDOVER_CURRENT_VERSION_V1. The APP V1 draft is archived and
+     superseded; no second current product source exists.
+  4. Retired developer controls/tests are removed, migrated or archived with
+     provenance. Current tests target GNContext/GNScene/GNStage.
+  5. No migration or backend work is authorised by this documentation
+     decision. Guardian Network production work still requires explicit
+     Founder authority.
+
+Evidence:    Focused GN suite before 0/4 + 155px overflow; after 5/5 PASS;
+             GN/Journey/onboarding regression 18/18 PASS; flutter analyze
+             PASS/no issues; stale retired-model references zero;
+             ZYRA_GN_HANDOVER_CURRENT_VERSION_V1.
+Dependencies: AD-AIOS-104; OA-AIOS-363; OA-ZYRA-246–252.
+
+------------------------------------------------------------
+
+DR-ZYRA-213
+Title:       Respectful promotion, permission and locked-state policy;
+             central evaluator; production analytics remains gated
+Date:        2026-08-23
+Status:      RATIFIED — direct Founder instruction
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. ZYRA adopts ZYRA_RESPECTFUL_PROMOTION_AND_PERMISSION as the one
+     cross-cutting authority for notification-permission education,
+     ZYRA One / Guardian+ promotion cadence, locked-feature presentation,
+     Service-versus-Marketing settings structure and the privacy-safe event
+     taxonomy. Existing Notification, Pricing and Guardian Network documents
+     retain their irreducible authorities; the evaluator cites rather than
+     duplicates them.
+  2. Permission is never requested on launch/onboarding. Seeker eligibility
+     follows the first successfully begun Active Journey; Guardian eligibility
+     follows the first successfully accepted Seeker link. ZYRA explains first;
+     the OS prompt follows only an explicit Enable tap. Not now cools down 30
+     days; only one final explainer is permitted; OS denial/restriction,
+     Don't ask again or second dismissal ends interruptive asking permanently.
+     Existing users receive no catch-up launch prompt.
+  3. Proactive upgrade promotion is inline only. It begins no earlier than
+     onboarding complete + seven full days + one successful core-value action;
+     existing members require a future contextual event. Caps: one/session,
+     two/rolling 30 days, same feature/placement once/30 days. X/back = 14-day
+     global cooldown; Not now = 30 days; Not interested = 90 days per target;
+     Don't show upgrade suggestions = target-specific permanent suppression
+     until Settings re-enables it. Manual plan entry and a user-tapped locked
+     feature remain available.
+  4. Locked states distinguish not-entitled, dependency-missing,
+     unavailable and not-built. They never auto-open checkout or reveal/blur
+     private candidates, counts, scores, activity or consent as purchase bait.
+     Prices live only on governed plan surfaces. Guardian context promotes
+     Guardian+, never mislabels it ZYRA One; Main-Wali bundle coverage is
+     entitlement, not another offer.
+  5. Notification Settings has Device notifications, Service notifications
+     (the three current default-on categories), Marketing (the two current
+     independent default-off append-only consents) and an untoggled Account &
+     Safety explanation. Service permission, OS permission, purchase and
+     analytics never imply marketing consent.
+  6. The named analytics taxonomy is final for implementation, but current
+     code/privacy truth is “no analytics”. OA-ZYRA-255 may add a dev-only,
+     in-memory evidence log. No production SDK, remote write, provider or
+     Privacy-page claim is authorised; those require OA-ZYRA-256.
+  7. UI cadence state may use SharedPreferences and clears on sign-out,
+     account switch and deletion. Entitlement stays server-only. No migration,
+     APNs/FCM, payment or backend work is authorised by this decision.
+
+Evidence:    ZYRA_RESPECTFUL_PROMOTION_AND_PERMISSION_CURRENT_VERSION_V1.md;
+             ZYRA_PROMOTION_ENGINE_BUILD_CONTRACT_CURRENT_VERSION_V1.md;
+             source audit: persisted Seeker notification preferences,
+             session-only Guardian drift, no native push integration, no
+             analytics SDK/pipeline, Privacy & Data “no analytics”, GN
+             production gate/empty state and D14 dev-only preview.
+Dependencies: OA-ZYRA-254 (deferred real push plumbing); OA-ZYRA-255;
+              OA-ZYRA-256; DR-ZYRA-212.
+
+------------------------------------------------------------
+
+DR-ZYRA-214
+Title:       ZYRA adopts the UI Consistency & Visual
+             Regression Gate as a permanent governed system
+Date:        2026-08-23
+Status:      RATIFIED — direct Founder instruction (22-section
+             directive, chat, 2026-08-23)
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. Consistency must never depend on the Founder noticing
+     drift manually. A permanent gate inspects UI-affecting
+     changes, runs deterministic checks first, renders
+     representative screens against approved baselines, and
+     reports drift with a permanent evidence trail.
+  2. Authority split: the system decides nothing. Fable holds
+     product/design authority and the register queue; Codex
+     owns technical implementation, screenshots, comparisons
+     and evidence; the Founder approves baselines.
+  3. Deterministic-first cost discipline: local tools handle
+     everything mechanical at $0; AI interprets only findings
+     that genuinely require judgement; overnight runs are
+     change-gated and never spend on an unchanged tree.
+  4. A changed screenshot never auto-replaces an approved
+     baseline; baseline updates follow explain -> intent
+     check -> approval -> versioned archive.
+  5. Automated corrections limited to proven deterministic
+     reversible fixes; redesigns, product copy, pricing,
+     entitlements, permissions, flows and baseline swaps
+     always require review.
+  6. No recurring run before the current state is audited,
+     inventoried and its baseline approved (directive
+     section 21).
+
+Evidence:    ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md;
+             tools/zyra_ui_gate.py; first audit
+             ZYRA_UI_AUDIT_2026-08-23_1daa7708.md (178
+             findings, 0 crit/high, $0.00, 0.3s).
+Dependencies: OA-ZYRA-257 (programme); IMPLEMENTATION_
+              HANDOVER_STANDARD (as-built discipline);
+              AD-AIOS-099 (Codex implements, Claude reviews).
+
+------------------------------------------------------------
+
+DR-ZYRA-215
+Title:       Pause becomes a Shared Pause Decision — the
+             personal-hold model is retired
+Date:        2026-08-25
+Status:      RATIFIED — direct Founder brief to Codex
+             (chat, 2026-08-25); documented by Fable
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. Asking to pause does not pause. Request Pause opens a
+     pending decision: the Journey locks for both people,
+     stays Active-counted for both, and moves only when a
+     final decision settles it to Active, Paused or Ended.
+  2. The responder receives three equal choices — Agree to
+     Pause, Request to Continue, End Journey — on a
+     dedicated decision page. A continuation request
+     returns the final decision to the original requester
+     (Continue Journey / Confirm Pause / End Journey).
+  3. The Active slot is freed, and Paused capacity consumed
+     for both people, ONLY at a settled Pause. A pause
+     request can never free a slot or grant extra Active
+     capacity. Paused caps (Basic 5 / One 10, DR-ZYRA-138)
+     are checked for both sides before settling; a cap
+     conflict refuses cleanly with the Journey kept Active
+     and locked.
+  4. Resume is mutual and symmetric: from Paused, either
+     person may Request Resume; the other agrees, keeps it
+     paused, or ends. No unilateral Resume Journey exists.
+     Either person may End from any state; ordinary End
+     rules apply.
+  5. The shared Timeline records final outcomes only
+     (Paused / Continued / Ended) — dated, neutral,
+     reasonless, initiator-free. Requests are not
+     relationship events. Guardians see only neutral state,
+     never actors.
+  6. Decision pages carry a configurable response deadline;
+     the duration and both silence outcomes are RESERVED
+     Founder decisions — nothing auto-pauses, auto-resumes
+     or auto-ends until ratified (OA-ZYRA-261).
+  7. Enforcement is one server-side atomic state machine
+     (single RPC door, CAS versioning, row + participant
+     locks, direct-write revocation, retired RPC refusal).
+     Client checks explain; the server enforces.
+  8. Supersedes DR-ZYRA-170's personal holds (and the
+     "Pause too" / "Paused by you-them-both" / one-shot
+     Request Continue vocabulary, incl. its DR-ZYRA-206
+     response-language amendment) — the DR-ZYRA-206
+     confirmation/outcome-screen discipline itself carries
+     forward. Also supersedes, in part, the 2026-08-06
+     Journey Entitlement record's paused-slot position
+     (already superseded in practice by DR-ZYRA-138/170):
+     paused Journeys occupy Paused capacity, not Active.
+     Governed spec: JOURNEY_SUSPENSION_CURRENT_VERSION_V4.
+
+Evidence:    Founder Shared Pause Decision brief 2026-08-25;
+             ZYRA_PAUSE_DECISION_HANDOVER_CURRENT_VERSION_
+             V1.md (as-built + probes; hashes verified by
+             Fable); JOURNEY_SUSPENSION_CURRENT_VERSION_V4;
+             OA-ZYRA-261
+
+------------------------------------------------------------
+
+DR-ZYRA-216
+Title:       Dashboard resolver architecture + Guardian
+             Route 2 agreed; Founder authorises the
+             no-migration implementation slice
+Date:        2026-08-28
+Status:      RATIFIED — Founder instruction 2026-08-28
+             ("once agreement and the DR/OA trace are filed,
+             Codex is authorised to implement the agreed
+             no-migration scope"); convergence recorded in
+             MESSAGES/007 (Fable diagnosis), 008 (Codex
+             gates), 009 (Fable AGREE x7)
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. One shared Dashboard resolver, not per-layout data.
+     Contract per 008: DashboardSource loading/available/
+     unavailable; DashboardSnapshot (role, onboarding,
+     journeys, notifications, guardianInvitations,
+     guardianActivity, insights); DashboardResolution
+     (answer: ONE primary; otherActions: ordered, never
+     discarded by presentation, <=2 rendered + "N more"
+     disclosure, never mixed with insights; journey summary;
+     worthKnowing cap 3; tone; sourceHealth).
+  2. Ranking: deadline decisions by due time -> server gate
+     blocking next meaningful action -> decision without
+     deadline -> own move in Active Journey -> meaningful
+     movement backed by existing unread/unresolved state ->
+     qualifying Learning Loop insight -> calm. Deterministic
+     tie-breaks (class -> due -> event time -> stable id);
+     hero does not reshuffle without material change.
+  3. No passive-view demotion: obligations leave
+     primary/action state only by resolution, approved
+     expiry, or a real acknowledgement action. No new
+     last_seen_at bookmark. Insights keep Learning Loop
+     dismiss/cooldown semantics.
+  4. Quiet day is designed, truthful and calm; a partial
+     source failure PROHIBITS the calm claim — the page says
+     it could not refresh everything and offers Retry.
+  5. Notifications: the stack card is replaced by a compact
+     header utility + badge; the full manager remains
+     reachable from Dashboard (approved presentation change
+     under this decision, not a silent removal).
+  6. Seeker Guardian page: Route 2 on the Founder-directed
+     near-full-page envelope (580px test value = derived
+     proxy, not a product number). Guardian Pulse is the
+     production composition base; no sixth layout. Wording
+     matrix per 008 (no acceptance attribution on linked; no
+     raw Family Review decision on summary cards; suggested
+     third-party name withheld pending visibility recheck;
+     review_waiting is state, not accusation; failure is
+     never rendered as emptiness; empty copy only after a
+     successful read). Failure-as-empty repairs to
+     fetchActivity/fetchLinkedPeople/fetchPendingInvites and
+     a SeekerWaliTab unavailable state are in-scope
+     blockers. Other four renderers stay developer-only
+             until Founder phone acceptance, then archive.
+  7. Boundary: NO migration (shared-pause enrichment and
+     "whose move" stay out of production until separately
+     authorised/applied/probed per OA-ZYRA-261); no
+     entitlement gating (no Seeker plan read exists beyond
+     hasWaliOne); production learning INACTIVE (OA-ZYRA-259
+     P1); user-facing copy in 008/009 is implementation
+     draft pending Founder device review; own-move-only
+     action language with neutral mutual/system status.
+
+Evidence:    MESSAGES/007, 008, 009; live read-only probes
+             2026-08-28 (Fable: zyra_guardian_activity def;
+             Codex: types/grants/counts, migration absent);
+             OA-ZYRA-264 (implementation tracking)
+
+------------------------------------------------------------
+
+DR-ZYRA-217
+Title:       Dashboard-as-Home content contract ratified;
+             named amendments to DR-ZYRA-216
+Date:        2026-08-28
+Status:      RATIFIED — Founder decisions message (chat,
+             2026-08-28) responding to the module inventory;
+             recorded by Fable same day
+Owner:       Founder (Shakeel)
+
+SUPERSEDED IN PART (2026-08-30): DR-ZYRA-222 D1 supersedes
+  item 2's six-level single-page presentation shape (now
+  Today · Updates · Insights). Items 1/3/4/7/8/9 survive
+  re-homed per the DR-ZYRA-222 supersession map; item 5's
+  One-depth allocation of Discovery Health and item 6's
+  design-only status are superseded by DR-ZYRA-222 D2/D3;
+  item 10's contract pointer moves to module inventory V3
+  and ZYRA_INSIGHTS_SYSTEM_CURRENT_VERSION_V1.md.
+
+Decision:
+  1. PRINCIPLE: the Dashboard shows enough stable state to
+     feel like home, enough movement to feel alive, and
+     enough intelligence to become more useful over time —
+     never a feed, analytics page or set of navigation
+     cards. Resolver = brain; Dashboard = home; the page
+     must breathe.
+  2. CONTENT ARCHITECTURE (Seeker): Header -> Right Now ->
+     Journey/Search -> My ZYRA -> Family -> Recently ->
+     ZYRA Intelligence. Guardian mirrors the philosophy
+     with role-specific levels, sequenced AFTER the Seeker
+     home is designed, device-confirmed, then moved onto
+     the shared resolver with its own adapter.
+  3. AMENDS DR-ZYRA-216: (a) a stable-state content class
+     is added to the home — compact Guardian status and the
+     My ZYRA orientation snapshot (intelligent suppression:
+     useful tiles only, never a wall of zeros; Saved is
+     de-emphasised and never growth-gamified); (b) the
+     Answer gains a calm-advisory form — when nothing needs
+     the user, Right Now may carry ONE defensible, governed
+     suggestion; a standing second recommendation card is
+     rejected.
+  4. REAFFIRMS DR-ZYRA-216 gate 2 UNCHANGED: no generic
+     last-visit bookmark; recency is unread-backed; ONE
+     Recently section absorbs milestones (celebratory
+     styling, no trophies/streaks/points) and links to the
+     Notifications manager. Since-Last-Visit and This-Week
+     sections are not built (This Week = future premium
+     idea once aggregation exists).
+  5. BASIC vs ZYRA ONE PRINCIPLE: Basic = a complete,
+     honest, useful home; One = deeper understanding.
+     Never paywalled: Right Now, Journey/search truth,
+     Guardian presence, important actions, safety, core
+     progress, truthful state. One depth: more/deeper
+     insights, trends, Discovery Health, recurring
+     patterns, richer why, advanced AI Help, future weekly
+     digest. Prerequisite at build time: Seeker entitlement
+     read.
+  6. DISCOVERY HEALTH: design/specification authorised for
+     an honest server-calculated eligible-count; production
+     blocked until eligibility definition, calculation
+     source, privacy/legal constraints, number stability
+     and real-data testing are confirmed. No narrowing
+     attribution; no location-narrowing claims.
+  7. GUARDIAN BROWSE ACTIVITY: HELD pending a dedicated
+     Founder privacy review (proposal filed:
+     ZYRA_GUARDIAN_BROWSE_ACTIVITY_PRIVACY_PROPOSAL_
+     2026-08-28_DRAFT.md). Access is not assumed; staged
+     chips stay dev-only; no RLS path is built.
+  8. GUARDIAN PREMIUM: premium Guardian-side modules gate
+     on the guardian_premium entitlement CAPABILITY; the
+     pricing source of truth owns its commercial name and
+     bundling (currently Guardian+ per PRICING V2). This
+     review changes no pricing.
+  9. DEADLINES UNCHANGED: no invented countdowns;
+     invitation expiry continues (real); pause/Journey
+     deadlines stay blocked on OA-ZYRA-261.
+  10. Binding contract = ZYRA_DASHBOARD_MODULE_INVENTORY_
+     CURRENT_VERSION_V2.md. Visual design remains frozen
+     until the Founder reviews V2 and gives the explicit
+     go; no implementation and no Codex layout request
+     until then.
+
+Evidence:    Founder decisions message 2026-08-28; module
+             inventory V1 -> V2; OA-ZYRA-265; DR-ZYRA-216;
+             ZYRA_LEARNING_LOOP_CURRENT_VERSION_V1.md;
+             ZYRA_PRICING_CURRENT_VERSION_V2.md
+
+------------------------------------------------------------
+
+DR-ZYRA-218
+Title:       Canonical application identifier —
+             app.zyraconnect.zyra on both platforms
+Date:        2026-08-29
+Status:      RATIFIED — Founder decision message (chat,
+             2026-08-29); recorded by Fable same day
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. app.zyraconnect.zyra is the canonical ZYRA
+     application identifier (reverse-DNS of the owned
+     domain zyraconnect.app).
+  2. iOS and Android are unified on it BEFORE any App
+     Store Connect app record / App ID is created —
+     the identifier becomes permanent at that moment,
+     so unification is a hard precondition of Runbook
+     Phase 2.
+  3. It replaces the current inconsistent set observed
+     2026-08-29: iOS Runner com.shakeelahmed.zyraapp,
+     iOS tests com.zyra.app.RunnerTests, Android
+     applicationId/namespace com.zyra.app (Android is
+     unpublished, so still free to change).
+  4. Codex implements the change and verifies ALL
+     dependent configuration (OA-ZYRA-268; brief
+     015_FABLE-CODEX_2026-08-29). No store records are
+     created under this decision — that remains gated
+     on OA-ZYRA-267 activation and the Founder.
+
+Evidence:    Founder decision message 2026-08-29 (chat);
+             ZYRA_APP_STORE_RUNBOOK_CURRENT_VERSION_V1.md
+             Phase 2 pre-check; OA-ZYRA-267; OA-ZYRA-268
+
+------------------------------------------------------------
+
+DR-ZYRA-219
+Title:       Single-account / identity-linking policy
+             (OA-ZYRA-273 ruling) + Apple signing-team
+             process rule
+Date:        2026-08-29
+Status:      RATIFIED — Founder decisions message (chat,
+             2026-08-29) approving Codex 019 §6 with two
+             Founder wording clarifications; recorded by
+             Fable same day
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. SERVER AUTHORITY (Founder wording, verbatim): "Under
+     the current Supabase authentication configuration,
+     identities presenting the same trusted/verified email
+     are linked server-side where Supabase permits it. The
+     client never determines identity equivalence." The
+     server-authority principle is PERMANENT; the specific
+     provider/configuration behaviour is deliberately NOT
+     hard-coded as an eternal product invariant.
+  2. Automatic trusted same-email linking remains, as
+     account continuity — never as proof that two accounts
+     belong to one person.
+  3. The client never merges identities and never infers
+     identity equivalence from client-supplied email or
+     user metadata.
+  4. Manual "link another sign-in method" stays OFF for V1.
+     It may be enabled only by a separately approved
+     change: authenticated + recently re-authenticated
+     session, corrected Settings copy, and a security
+     notification after a link.
+  5. AUTHORISED NOW: fix the Sign-in & Security Settings
+     copy so it no longer promises "Add Apple/Google" while
+     manual linking is off (work item OA-ZYRA-277).
+  6. No unlink feature in V1. If later approved: requires
+     re-authentication and never permits removal of the
+     last verified sign-in/recovery method.
+  7. Apple relay-address duplicates are handled through
+     OA-ZYRA-266 identity verification, never email
+     heuristics. No ZYRA face database. No automatic
+     duplicate-account bans — tenant-scoped opaque
+     duplicate signal plus controlled human review only.
+  8. Identity verification becomes the one-person /
+     one-ZYRA-identity control. BEFORE implementation,
+     "full account activation" must be exactly defined as
+     a capability matrix stating which capabilities require
+     verification — ruling at minimum on: onboarding,
+     Browse, Consider / Save / Pass, matching, Potential
+     Journey, Active Journey, Guardian linking, messaging,
+     purchases. An ambiguous "full activation" is
+     prohibited. The matrix is added to the OA-ZYRA-266
+     definition round.
+  9. Any future duplicate-account merge gets its own
+     governed architecture and is never improvised.
+  10. PROCESS RULE (Apple signing, ratified in the same
+     message): paid Apple Developer Team selection /
+     signing configuration must be completed BEFORE Xcode
+     is reopened for the Phase 2 signing pass, so Xcode
+     cannot auto-register production identifiers against
+     the wrong team again. The OA-ZYRA-274 support case
+     (20000150964412) stays active.
+
+Evidence:    Founder decisions message 2026-08-29 (chat);
+             019_CODEX-FABLE OA-ZYRA-273 report;
+             020_CODEX-FABLE collision diagnosis;
+             021_FABLE-CODEX verification; OA-ZYRA-274
+
+------------------------------------------------------------
+
+DR-ZYRA-220
+Title:       Solicitor review CANCELLED — self-serve
+             compliance path for identity verification,
+             biometrics and related legal gates
+Date:        2026-08-29
+Status:      RATIFIED — direct Founder instruction (chat,
+             2026-08-29): "THERE WILL BE NO SOLICITOR
+             REVIEW... ANYTHING THAT WAS SAID ABOUT THAT IS
+             CANCELLED." Recorded by Fable same day under
+             the AD-AIOS-106 supersession workflow.
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. Every currently held solicitor-review gate is REMOVED:
+     the OA-ZYRA-266 IDV/Article 9 gate; the OA-ZYRA-259
+     learning-loop Article 9 instruction items; the
+     app-grade privacy-policy legal review; 027 §11
+     condition 5's "solicitor accepts" clause. No solicitor
+     engagement takes place.
+  2. The underlying UK GDPR obligations are NOT waived by
+     this decision and are carried IN-HOUSE instead: an
+     in-app explicit-consent flow for biometric
+     verification; a privacy policy drafted by Fable from
+     provider compliance templates and ICO public guidance;
+     a self-run DPIA (Fable drafts, Founder reviews and
+     signs); provider DPA/data terms read and accepted by
+     the Founder directly. The seven questions in the
+     withdrawn instruction pack become the INTERNAL
+     compliance checklist, answered by Fable for Founder
+     sign-off instead of by external counsel.
+  3. RISK ACCEPTANCE: the Founder accepts the legal risk of
+     proceeding on provider compliance frameworks and
+     self-prepared documentation without independent legal
+     advice. Recorded once, here; not to be re-litigated in
+     future briefs.
+  4. ZYRA_IDV_SOLICITOR_INSTRUCTION V1 is WITHDRAWN and
+     archived with history preserved (never deleted); the
+     capability matrix and OA references update from
+     "solicitor gate" to "DR-ZYRA-220 self-serve compliance
+     path".
+  5. DR-ZYRA-219's product rules stand unchanged: no
+     ZYRA-owned face database; duplicate -> human review,
+     never automatic ban; no auto-merge; server authority.
+     All other 027 §11 provider-selection conditions stand.
+
+Evidence:    Founder instruction 2026-08-29 (chat);
+             AD-AIOS-106 items 6-7; OA-ZYRA-266; 027 §9/§11
+
+------------------------------------------------------------
+
+DR-ZYRA-221
+Title:       IDV capability matrix RULED — verification is
+             mandatory at onboarding; the app does not open
+             unverified (fulfils DR-ZYRA-219 item 8)
+Date:        2026-08-29
+Status:      RATIFIED — Founder decision (chat, 2026-08-29):
+             "VERIFICATION CANNOT CONTINUE — I MEAN THE APP/
+             ONBOARDING PROCESS CANNOT CONTINUE UNTIL THATS
+             DONE." Supersedes the matrix draft's
+             recommended positions per AD-AIOS-106.
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. Identity verification (document + selfie liveness +
+     face match, bank-style single flow) is a MANDATORY
+     ONBOARDING STEP for every account. Onboarding cannot
+     complete, and the app does not open, until the member
+     is verified.
+  2. Every capability therefore inherits REQUIRED: Browse,
+     Consider/Save/Pass, Matching, Potential Journey,
+     Active Journey, Guardian linking (Seeker side),
+     Messaging. The Active Journey additionally requires
+     any duplicate_review_required flag RESOLVED by human
+     review before it starts.
+  3. Guardian accounts verify at onboarding on the same
+     rule (plain reading of "the app"). FLAG held open: if
+     the Founder wants Guardians exempt at launch for
+     scope/cost, one line amends this row; until then, all
+     users verify.
+  4. Purchases inherit (no purchase before onboarding
+     completes); verification itself remains FREE to the
+     member on every plan — trust gate, never a paywall.
+  5. Recorded consequences, accepted with the ruling:
+     (a) per-signup verification cost is incurred for every
+     new account, not only serious users (provider
+     pricing per OA-ZYRA-266); (b) with no unverified tier,
+     Article 9 consent has no in-app alternative path —
+     the DR-ZYRA-220 in-house compliance work (consent
+     wording, privacy policy, DPIA) must present refusal =
+     no account honestly; the member's alternative is not
+     using ZYRA. Carried under the Founder's DR-ZYRA-220
+     risk acceptance, not re-litigated.
+  6. Failure states per 027 §8 stand: neutral retry copy;
+     duplicate = "manual review", never disclosure of the
+     other account, never an automatic ban; provider
+     unavailable = retry state, never self-attested
+     "verified"; pending states never optimistically grant
+     the app.
+  7. The capability matrix V1 document is updated to RULED
+     with these decisions; profile-photo-vs-selfie matching
+     stays OFF (027 §11 condition 8) and the nudity/NSFW
+     photo checker proceeds as a separate moderation
+     pipeline per the OA-ZYRA-266 go-forward plan.
+
+Evidence:    Founder ruling 2026-08-29 (chat); ZYRA_IDV_
+             CAPABILITY_MATRIX_CURRENT_VERSION_V1.md;
+             DR-ZYRA-219 item 8; DR-ZYRA-220; 027 §8/§11
+
+------------------------------------------------------------
+
+DR-ZYRA-222
+Title:       Dashboard Insights V1 ratified (D1-D6);
+             presentation supersession of DR-ZYRA-217 —
+             three-tab Dashboard: Today · Updates · Insights
+Date:        2026-08-30
+Status:      RATIFIED — Founder rulings D1-D6 (chat,
+             2026-08-30) on the Joint Fable x ChatGPT
+             Dashboard Insights Position V1 (four debate
+             rounds; ChatGPT co-signed 2026-08-30 as
+             external reviewer per AD-AIOS-106); recorded by
+             Fable same day. Master source of truth:
+             ZYRA_INSIGHTS_SYSTEM_CURRENT_VERSION_V1.md.
+Owner:       Founder (Shakeel)
+
+AMENDED IN PART (2026-08-30): DR-ZYRA-223 item 1 extends
+  D1's three-tab presentation to BOTH roles, resolving the
+  Guardian crossed-instruction conflict (033 §8 C1). D6
+  insight rulings unchanged.
+
+Decision:
+  1. D1 — PRESENTATION. The six-level single-page Seeker
+     Home presentation ruled in DR-ZYRA-217 item 2 is
+     EXPLICITLY SUPERSEDED by a three-tab Dashboard:
+     TODAY · UPDATES · INSIGHTS. Founder scope wording:
+     "This supersession applies to presentation/routing.
+     Preserve the underlying resolver, state authorities,
+     update projection and Insights architecture as agreed
+     in the Joint Fable x ChatGPT position." Seeker surface
+     only; the Guardian Dashboard is untouched and remains
+     sequenced per DR-ZYRA-217 Decision 8 and D6 below.
+  2. SUPERSESSION MAP (nothing superseded silently):
+     (a) SUPERSEDED: DR-217 item 2 presentation shape.
+     Level-to-tab mapping: Header + RIGHT NOW +
+     JOURNEY/SEARCH + MY ZYRA + FAMILY + onboarding gate ->
+     TODAY; RECENTLY -> UPDATES; ZYRA INTELLIGENCE ->
+     INSIGHTS.
+     (b) PRESERVED, re-homed: item 1 principle (home, not
+     feed; the page must breathe); item 3 stable-state
+     class + calm-advisory single suggestion (now TODAY
+     rules); item 4 unread-backed recency, ONE capped
+     recency stream, no last-visit bookmark, no
+     trophies/streaks/points (now UPDATES rules); item 7
+     Guardian browse-activity HELD; item 8 guardian_premium
+     capability gating; item 9 no invented countdowns.
+     (c) SUPERSEDED IN PART: item 5 — the Basic/One
+     principle survives as FUTURE ENTITLEMENT PRINCIPLE,
+     PENDING RATIFICATION, but its allocation of Discovery
+     Health to One-depth is superseded for V1: identical
+     insights on every plan (no Seeker entitlement read
+     exists); future depth differentiation requires its own
+     DR.
+     (d) CARRIED FORWARD AND EXTENDED: item 6 Discovery
+     Health design-only authorisation becomes D2/D3 below;
+     its constraints "no narrowing attribution" and "never
+     a location-narrowing claim" remain binding validation
+     constraints.
+     (e) item 10: the binding content contract moves to
+     ZYRA_DASHBOARD_MODULE_INVENTORY_CURRENT_VERSION_V3.md;
+     insights governance lives in ZYRA_INSIGHTS_SYSTEM_
+     CURRENT_VERSION_V1.md.
+  3. D2 — V1 INSIGHT SCOPE. APPROVED: validation before
+     construction; Discovery Health as the SOLE V1
+     candidate family; honest-empty if validation fails; no
+     state cards masquerading as Insights (profile
+     completeness, verification state, journey position
+     render in state surfaces only); no speculative Insight
+     infrastructure without an approved consuming family;
+     Discovery Health must pass all definition,
+     directionality (one-way; copy never implies
+     mutuality), verified-pool, privacy/differencing
+     (low-count bucketing; never a one-person change
+     detector), batching and query-cost gates BEFORE
+     construction.
+  4. D3 — SENSITIVE DERIVATION. APPROVED INCLUDING THE
+     FORMAL FOUNDER RISK ACCEPTANCE, recorded verbatim:
+     "I approve the narrowly scoped Discovery Health
+     sensitive-data processing exception under the current
+     in-house governance path. This approval is limited
+     exactly to the jointly agreed exception:
+     - the user's own existing search criteria may be
+       executed in full;
+     - output is only the approved aggregate orientation
+       signal;
+     - no sensitive-axis breakdown;
+     - no religious/practice profiling;
+     - no behavioural, correlational, explanatory or
+       inferential Article 9 intelligence;
+     - no raw or axis-specific sensitive attributes stored
+       in Insight stores;
+     - the resulting aggregate remains governed as the
+       product of the authorised sensitive-data processing;
+     - it must never operate as a one-person change
+       detector;
+     - privacy policy and DPIA must document the processing
+       and this residual-risk acceptance;
+     - the precedent lock is absolute.
+     This approval does NOT authorise another Insight
+     family to use sensitive inputs. Any additional family
+     touching Article 9 inputs must return through the
+     agreed consent/privacy/DPIA/Founder/DR process."
+     Compliance-wording standard applies: this processing
+     is described as Founder-approved / risk-accepted under
+     current governance (DR-ZYRA-220), never "legally
+     proven safe". If the risk acceptance is ever
+     withdrawn, the pre-agreed strict fallback applies: no
+     Article 9 inputs anywhere in Insights, Discovery
+     Health does not ship, Insights renders honest-empty.
+  5. D4 — AUTHORITY. Insights V1 is LEVEL 0, display-only.
+     No Insight or Insight feedback may affect matching,
+     ranking, eligibility, visibility, preferences, Journey
+     questions or Guardian disclosure. insight_feedback is
+     quarantined from recommendation systems. Any LEVEL 1+
+     authority requires a new Founder decision with its own
+     consent/privacy review.
+  6. D5 — DATA MODEL. insight_facts + insight_feedback
+     only. PROHIBITED: generic event tables, behavioural-
+     history infrastructure, event sourcing, unused daily
+     rollups. Bounded allowlisted rollups arrive only with
+     a separately approved consuming family. Retention
+     follows genuine evidence requirements of shipped
+     families plus a defined margin — never indefinite
+     collection. Write ceiling ~1-1.25 insight-system
+     writes per active user per day, measured at
+     implementation verification.
+  7. D6 — GUARDIAN. No Guardian Insight families in V1.
+     PERMANENT principle: Guardian intelligence = PROCESS,
+     NEVER BEHAVIOUR — never behavioural surveillance of
+     the Seeker. The Guardian Dashboard/Insight
+     architecture gets its own governed design round after
+     the Guardian presentation is settled.
+  8. EXECUTION. Programme tracked as OA-ZYRA-281. The Codex
+     implementation contract goes to the Founder for review
+     BEFORE any mailbox send; no build until the Founder
+     approves the contract; validation precedes
+     construction; Fable verifies against this DR and the
+     master document before any enablement.
+
+Evidence:    Founder rulings message 2026-08-30 (chat);
+             Joint Fable x ChatGPT Dashboard Insights
+             Position V1 (co-signed 2026-08-30; preserved
+             in ZYRA_INSIGHTS_SYSTEM_CURRENT_VERSION_V1.md
+             §2); DR-ZYRA-216/217/219/220/221;
+             OA-ZYRA-259/265/266; MESSAGES/011/012/016;
+             module inventory V2 -> V3
+
+------------------------------------------------------------
+
+DR-ZYRA-223
+Title:       Guardian three-tab confirmed; Updates
+             projection authorised; Phase 2 correction GO;
+             calm advisory removed; Discovery Health failure
+             accepted (OA-ZYRA-281 Phase 1 dispositions)
+Date:        2026-08-30
+Status:      RATIFIED — Founder rulings (chat, 2026-08-30)
+             on the four questions raised by MESSAGES/033
+             §8 and 034 §4; recorded by Fable same day
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. GUARDIAN — CONFIRMED (amends DR-ZYRA-222 D1 scope).
+     The three-tab presentation (Today · Updates ·
+     Insights) applies to BOTH roles; the crossed
+     instruction resolves in favour of the Founder's direct
+     Dashboard design instruction to Codex; records
+     amended. EXPLICITLY NOT AMENDED OR REOPENED: D6 —
+     zero Guardian Insight families in V1; no Seeker
+     behavioural intelligence exposed to Guardians;
+     permanent principle PROCESS, NEVER BEHAVIOUR. Guardian
+     may use the shared three-tab presentation while its
+     Insights surface remains honestly empty until
+     separately governed Guardian intelligence exists. No
+     filler merely because the tab exists.
+  2. UPDATES PROJECTION — AUTHORISED. The bounded
+     server-authoritative projection per 033 §6:
+     signed-in user only (auth.uid()); existing
+     authoritative timestamped sources only; allowlisted
+     event classes; no generic event table; no additional
+     behavioural logging; no unnecessary writes; proper
+     RLS/server authority; keyset pagination as designed.
+     RULED UI LAW: EMPTY (query succeeded; genuinely no
+     meaningful updates) is distinct from FAILED (source/
+     query failed; the app cannot truthfully determine
+     whether updates exist). No silent empty-on-error. One
+     Updates source serves the Dashboard architecture —
+     never a second Updates system.
+  3. PHASE 2 — GO (correction/reconciliation, not
+     redesign): remove the duplicated movement/recent
+     preview from Today (Updates owns change/history);
+     rename to the ruled MY ZYRA and FAMILY terminology;
+     distinguish empty from failed in Updates and in
+     Insights; correct the Insights honest-empty wording;
+     update fixtures and tests; reconcile the Guardian
+     presentation record per item 1. Preserve: Today =
+     current state/current priority; Updates = what
+     changed; Insights = derived understanding; no
+     duplicated responsibility between them.
+  4. CALM ADVISORY — REMOVED. "Review your preferences"
+     leaves the calm state: a deterministic lack-of-
+     activity/state rule is not sufficient evidence for a
+     behavioural suggestion. Calm state uses the approved
+     equivalent of "Nothing needs your attention right
+     now." — no behavioural suggestion, no implication that
+     the user's preferences are wrong, no upgrade or
+     engagement prompt filling the space. The intelligence
+     rules are not amended to preserve copy; such a
+     recommendation returns only via a separately governed
+     insight.
+  5. DISCOVERY HEALTH — PHASE 1 RESULT ACCEPTED:
+     FAILED/DEFERRED. The one-person-change-detector
+     invariant is NOT weakened to make the feature
+     shippable. Under the V1 fallback nothing is built:
+     no insight_facts, no insight_feedback, no Discovery
+     Health infrastructure, no dormant production Insight
+     tables. Insights remains honestly empty; the
+     architecture and dormant design documentation are
+     preserved for future reconsideration. Discovery
+     Health may return only through a NEW Founder ruling
+     after: a meaningful real verified-user population
+     exists; a genuinely privacy-preserving mechanism is
+     proposed; the differencing/privacy implications are
+     reassessed; D3 implications are revisited if
+     necessary; cost/query behaviour is validated.
+     Calibrated noise or another privacy-preserving
+     approach can be considered later; NOT authorised now.
+  6. SCOPE DISCIPLINE: the score_candidates search_path
+     issue stays within the existing pre-production
+     security/audit blocker (030 §6 activation audit)
+     unless the Phase 2 patch genuinely needs to touch
+     that function; the correction batch is not casually
+     broadened.
+  7. EXECUTION: Fable files these rulings, reconciles the
+     Guardian documentation, releases Codex for the
+     bounded Phase 2 patch and the authorised Updates
+     projection (migration STAGED, not applied — apply
+     requires a separate Founder GO after Fable
+     verification), verifies independently on return, and
+     reports material deviations rather than silently
+     reconciling them.
+
+Evidence:    Founder rulings message 2026-08-30 (chat);
+             MESSAGES/033 (Phase 1, hash ecd5cea6...),
+             034 (verification), 035 (release);
+             OA-ZYRA-281; DR-ZYRA-222;
+             ZYRA_INSIGHTS_SYSTEM_CURRENT_VERSION_V1.md
+
+------------------------------------------------------------
+
+DR-ZYRA-224
+Title:       Guardian Relationship Surfaces V1 ratified
+             (F1-F7); DR-ZYRA-104 closed; early server-truth
+             security batch authorised; Guardian UI build
+             sequenced behind the Dashboard programme
+Date:        2026-08-30
+Status:      RATIFIED — Founder rulings F1-F7 (chat,
+             2026-08-30) on the Joint Fable x ChatGPT
+             Guardian Relationship Surfaces Position V1
+             (three debate rounds; ChatGPT co-signed after
+             the role-aware grouping correction); recorded
+             by Fable same day. Master source of truth:
+             ZYRA_GUARDIAN_RELATIONSHIP_SURFACES_CURRENT_
+             VERSION_V1.md.
+Owner:       Founder (Shakeel)
+
+AMENDED IN PART (2026-09-01): DR-ZYRA-226 supersedes F2's
+  final sentence only — "Existing wali_invites authority +
+  current RPCs only; no second store or competing state
+  model". That authority MAY now evolve into a recipient-
+  bound request system (sender, recipient, direction/
+  context, proposed relationship, pending/accepted/declined/
+  cancelled/expired, timestamps, provenance). F2's PURPOSE
+  IS UNCHANGED AND BINDING: one source of truth, no
+  duplicate invitation systems, Dashboard summarises and
+  routes, dedicated pages own the full lifecycle. A second
+  competing request store remains UNAPPROVED. F2's
+  supersession of the 2026-08-26 invitations-to-Dashboard
+  direction stands. F1 and F3-F7 unchanged.
+
+Decision:
+  1. F1 — CONTRACTS AND OWNERSHIP. Seeker Guardian tab =
+     GUARDIANSHIP MANAGER ("see, understand and manage the
+     people who act as my Guardians"). Guardian Seekers tab
+     = SEEKER WORKSPACE ROSTER ("see and manage the people
+     I support, understand my role for each person, and
+     enter their workspace in one tap"). Permanent
+     principle: Dashboard summarises and routes; dedicated
+     relationship pages own management and detail.
+     Necessary identity/state context may appear on both;
+     controls, full rosters and role detail have one
+     canonical dedicated owner.
+  2. F2 — INVITATIONS. Full lifecycle (create, preview/
+     continue, pending, expiry, cancel/revoke, decline,
+     detail) moves to the dedicated pages; Dashboard keeps
+     a compact obligation summary + one Manage route.
+     EXPLICITLY SUPERSEDES the Founder's 2026-08-26
+     invitations-to-Dashboard direction. Existing
+     wali_invites authority + current RPCs only; no second
+     store or competing state model.
+  3. F3 — SEEKER GUARDIAN PAGE. MAIN GUARDIAN section
+     first, ADDITIONAL GUARDIANS below, vertical hierarchy
+     scaling to any count (no governed cap exists). Cards:
+     identity, relationship, role, linked date, concise
+     role copy, detail entry. No generic movement copy on
+     roster cards — movement belongs to Dashboard Updates;
+     relationship history lives in Guardian detail.
+     "What can my Guardians see and do?" ships only when
+     driven by the governed permissions matrix reconciled
+     against live server authority. Guardian Pulse retires
+     as production default; Pulse + the four sibling
+     experiments are removed/cleaned only after the
+     replacement passes Founder device acceptance.
+  4. F4 — GUARDIAN SEEKERS PAGE AND WORKSPACE. Every
+     Seeker card tappable, opening a thin ROLE-AWARE
+     per-Seeker workspace (identity, relationship, linked
+     date, role, permitted current context, authorised
+     actions, routes into existing Journey / Family Review
+     / Guardian Gate / Guardian Network surfaces) —
+     assembly and routing only. Main-Guardian roster
+     grouping: NEEDS YOU -> IN A JOURNEY -> PAUSED OR
+     WAITING -> OTHER SEEKERS; oldest waiting first within
+     NEEDS YOU; stable alphabetical elsewhere.
+     Additional-Guardian relationships sit in a neutral
+     ADDITIONAL GUARDIANSHIPS section and must not reveal
+     Journey state through headings, ordering, badges,
+     counts, card position, aggregates, or disabled/locked
+     modules — unauthorised sections are omitted entirely.
+     No behavioural scoring or engagement ranking.
+  5. F5 — DASHBOARD THINNING, SEQUENCED LAST. Only after
+     the dedicated pages ship, pass tests, Fable
+     verification and Founder device acceptance: Guardian
+     Today keeps one priority + compact family snapshot +
+     highlighted actionable Seeker where necessary + View
+     Seekers route; Seeker Today keeps compact Guardian
+     status + invitation summary + Manage Guardians route.
+     Dashboards no longer own rosters, invitation
+     cancellation, role management, removal/reassignment
+     or full per-person Journey context. All counts and
+     summaries must respect caller authority; no aggregate
+     may reveal hidden Additional-Guardian Journey state.
+  6. F6 — PRIVACY AND VISIBILITY. DR-ZYRA-104 formally
+     CLOSED (passive Saved/Considering/Passed visibility
+     REJECTED; Suggestions/Guardian Network/Family Review/
+     Guardian Gate untouched; future Seeker-initiated
+     "share this profile with my Guardian" may be designed
+     separately). No cross-Guardian visibility without a
+     future ruling. No reciprocal verification badges in
+     V1. Additional-Guardian Journey visibility remains
+     HELD (DR-ZYRA-168 batch); Main-only Journey summary
+     in V1. Process, never behavioural surveillance.
+  7. F6 EARLY SECURITY FIX — AUTHORISED as an independent
+     early security batch, the ONLY Guardian-related
+     production work before the Dashboard programme
+     closes. One staged "guardian server truth"
+     micro-migration containing exactly: (a) tighten
+     zyra_attempt_summary_for_guardian to Main-Guardian
+     authority only (verified live defect: authenticated
+     holds EXECUTE, predicate admits any active guardian);
+     (b) correct the misleading final-Guardian-removal
+     hint (pausing does NOT permit removal; enforcement
+     logic unchanged; corrected meaning: "An active or
+     paused Journey requires the Seeker to retain a
+     Guardian. Another Guardian must be assigned where
+     possible, or the Journey must be ended through the
+     governed flow before the final Guardian can be
+     removed."). Gated sequence: Fable brief -> Codex
+     migration -> Fable verification -> ChatGPT external
+     security review -> Founder apply GO -> post-apply
+     verification. Package must include pre/post
+     definitions, byte-exact hash, full SQL, owner/
+     definer/search_path/ACL, returned fields justified,
+     exact Main predicate, hint change, rollback strategy,
+     and the twelve direct-call tests (unauthenticated;
+     unrelated authenticated; Seeker; Main; Additional;
+     dual-role; removed Guardian; inactive link;
+     potential/active/paused/ended attempts). Invariant:
+     Additional Guardians receive no Journey summary; no
+     client hiding substitutes for server authority.
+  8. F7 — TRUTH LAWS AND SCOPE. Permanent laws for these
+     pages: EMPTY != FAILED; STALE != CURRENT; no no-op
+     primary person cards; management has one canonical
+     owner; movement has one canonical owner; role claims
+     must match server authority; AUTHORITY APPLIES TO
+     FIELDS, COPY, GROUPING, ORDERING, BADGES AND
+     AGGREGATE COUNTS; release builds contain no dev
+     fixtures. Also approved: WaliSeekersScreen moves to
+     the typed Result read; explicit failure/stale states;
+     matrix-driven Role and Access copy; hint correction
+     via the early batch. V1 excludes: Guardian Insights,
+     passive Browse visibility, Guardian Network redesign,
+     Journey redesign, verification badges, premium
+     differentiation, shell-navigation redesign, Guardian
+     resignation rules, behavioural analytics,
+     sub-navigation, roster search/filtering, new AI, new
+     recommendation systems.
+  9. FUTURE ITEMS — RECORDED, NOT IMPLEMENTED: Guardian-
+     initiated resignation/unlink (genuine missing product
+     rule); any Additional-Guardian cap; DR-ZYRA-168
+     visibility expansion; Seeker-controlled profile
+     sharing; Guardian-facing verification display;
+     ward-list search/filtering; Guardian Insights;
+     premium workspace tools; navigation-shell redesign.
+  10. SEQUENCING. Now: file rulings, reconcile documents,
+     close DR-ZYRA-104, prepare the F6 security contract
+     and staged migration, return the security package for
+     review before apply. NOT yet: Guardian Flutter build
+     brief, page redesigns, Dashboard thinning, design
+     cleanup. Guardian UI sequence: OA-ZYRA-281 fully
+     closes -> Guardian build contract reviewed -> Codex
+     implementation -> Fable verification -> Founder
+     device acceptance -> Dashboard thinning last.
+
+Evidence:    Founder rulings message 2026-08-30 (chat);
+             Joint Fable x ChatGPT Guardian Relationship
+             Surfaces Position V1 (co-signed 2026-08-30;
+             preserved in ZYRA_GUARDIAN_RELATIONSHIP_
+             SURFACES_CURRENT_VERSION_V1.md); current-state
+             handover 2026-08-30 V1; live ACL/function
+             evidence 2026-08-30; DR-ZYRA-104 (closed);
+             DR-ZYRA-136/137/123/152/166/168/171;
+             OA-ZYRA-282 (programme)
+
+------------------------------------------------------------
+
+DR-ZYRA-225
+Title:       Guardian Journey-history scope + Seeker consent
+             toggle (resolves the D-1 wiring gate from the
+             OA-ZYRA-282 external sign-off)
+Date:        2026-08-30
+Status:      RATIFIED — Founder ruling (chat, 2026-08-30):
+             "Confirm D-1 with two amendments" on Fable's
+             five-point proposal, after external analysis.
+             Founder principle (verbatim, earlier same day):
+             "we are making the app there seeker and
+             gaurdian have maximum safe transparency" —
+             private by default; the Seeker may deliberately
+             grant more.
+Owner:       Founder (Shakeel)
+Decision:
+             RULED VISIBILITY TABLE for the Main Guardian's
+             Journey summary (server-enforced, never UI
+             hiding):
+             - DEFAULT (toggle OFF): the current ACTIVE
+               Journey is ALWAYS visible to the current
+               active Main Guardian, even if it began before
+               their Guardian link (paused included — pause
+               is a flag on an active Journey); PLUS ended
+               Journey summaries whose ending falls on or
+               after the moment their Guardian link began.
+               Anything that ended before they were linked
+               stays private. [AMENDMENT A1]
+             - FULL-HISTORY TOGGLE ON: all past Journey
+               summaries.
+             - ADDITIONAL GUARDIAN: no Journey information
+               (unchanged law; DR-ZYRA-168 stays HELD).
+             - MAIN GUARDIAN CHANGES: full-history consent
+               RESETS OFF automatically — consent is bound
+               server-side to the specific current Main
+               Guardian link and is never inherited by a
+               successor. Re-granting is a fresh, deliberate
+               Seeker action. [AMENDMENT A2]
+             - TOGGLE TURNED OFF: full-history access
+               disappears immediately.
+             - FIELD CAP UNCHANGED IN EVERY MODE: the four
+               narrow fields only (attempt existence /
+               started_at / ended_at / ended). Never
+               counterpart identity, stage, messages,
+               compatibility answers, end reason, notes, or
+               safety information.
+             UI: ONE simple Seeker-facing toggle ("Let my
+             Main Guardian see my full Journey history"),
+             living in the Guardianship Manager page,
+             offered only while a Main Guardian exists.
+             "Own period" in V1 is defined as
+             since-this-link-was-created (provable today
+             from wali_links.created_at); the stricter
+             since-becoming-Main reading has no historical
+             record and is recorded as a noted, unbuilt
+             alternative.
+             STATUS-RULE CONSEQUENCE: the ruled predicate is
+             a POSITIVE allowlist by construction (active
+             branch; ended branch under its temporal or
+             consent condition) — future attempt statuses
+             fail closed, satisfying the external reviewer's
+             pre-wiring requirement.
+Rationale:   Resolves the reviewer's Options A/B/C as a
+             B+consent hybrid: least-privilege default that
+             never hides the live process from the person
+             responsible for it, with explicit, revocable,
+             non-inheritable Seeker consent for full
+             transparency. A1 fixes the pre-link live-
+             Journey hole; A2 prevents accidental inherited
+             consent on Main reassignment.
+Implementation:
+             OA-ZYRA-282 Phase 0 (Guardian UI build
+             contract): consent storage bound to the Main
+             link (mechanism proposed by Codex — link-bound
+             consent reference recommended so reassignment
+             invalidates structurally), summary-function
+             predicate migration, corrected + extended
+             post-apply harness (pre-link-ended hidden by
+             default; ended-after-link visible; active-
+             started-before-link visible; toggle ON all /
+             OFF immediate; Main-reassignment auto-reset;
+             future-status fail-closed). Gate chain
+             unchanged: staged only -> Fable verification ->
+             ChatGPT external security review -> Founder
+             apply GO -> post-apply verification. No client
+             wiring before Phase 0 completes its gates.
+Evidence:    ChatGPT final sign-off 2026-08-30 (§7 wiring
+             holds); Founder proposal + confirmation
+             messages 2026-08-30 (chat); Fable five-point
+             proposal 2026-08-30; live facts: wali_links has
+             created_at only (no Main-period history);
+             journey_attempts status check constraint pins
+             potential/active/ended.
+Links:       DR-ZYRA-224 (F6 Main-only law — unchanged);
+             DR-ZYRA-168 (HELD — untouched); OA-ZYRA-282;
+             20260830183151 (applied baseline the Phase 0
+             migration will amend)
+Annotation:  2026-08-30 — BOUNDARY MECHANISM AMENDED BY
+             FOUNDER RULING (external review finding N1,
+             Phase 0 review; Founder chose "fix it in the
+             staged file"). accept_wali_invite() reuses
+             removed link rows without refreshing
+             created_at, so a created_at boundary would
+             include a removed-then-relinked Guardian's
+             away period — contradicting "their own
+             period". RULED FINAL MODEL: created_at is
+             NEVER repurposed or refreshed (row
+             provenance); a separate server-authoritative
+             current-link-period timestamp (active-since
+             semantics: set on activation; preserved across
+             continuous activity, Main/Additional switches
+             and unrelated updates; cleared when not
+             active; FRESH on reactivation) becomes the
+             default ended-history boundary. All other
+             DR-225 rulings unchanged. Implemented by
+             revising the still-staged Phase 0 migration
+             (054 order); ended-history client wiring HELD
+             until the revised file passes external delta
+             review and post-apply verification.
+Annotation2: 2026-08-31 — CONTROL LOCATION AND COPY AMENDED
+             BY FOUNDER-DIRECT BUILD (post-acceptance,
+             verified by Fable on disk): the consent
+             control now lives on the MAIN GUARDIAN DETAIL
+             page (not the Guardianship Manager roster),
+             is labelled "Share full Journey history", and
+             its explanation is collapsed behind a
+             disclosure that never changes consent when
+             opened. The roster performs ZERO consent
+             reads (it only forwards the loader with
+             preview isolation); Additional Guardian pages
+             show nothing and make zero consent calls.
+             SERVER MODEL UNCHANGED — server-confirmed-only
+             rendering, failure retention, retry and the
+             C3 Main-match guard all intact. Recorded via
+             the post-067 delta round (068/069).
+
+------------------------------------------------------------
+
+DR-ZYRA-226
+Title:       Guardian linking model — recipient-bound
+             requests replace bearer invitations;
+             DR-ZYRA-224 F2 superseded IN PART; two-step
+             adoption with the personal ZYRA Code deferred
+             behind operational identity verification
+Date:        2026-09-01
+Status:      RATIFIED — Founder decisions D1, D2, D3 and the
+             safe-preview confirmation (chat, 2026-08-31 and
+             2026-09-01) on Fable's opinion "PERSONAL ZYRA
+             CODE + GUARDIAN REQUEST MODEL", which returned a
+             material contradiction under Implementation
+             Handover Standard V3 rather than relaying it.
+             Recorded by Fable 2026-09-01 at Founder
+             instruction ("file them now"). NO IMPLEMENTATION
+             AUTHORITY — the Step 1 contract returns to the
+             Founder for review before Codex sees it.
+Owner:       Founder (Shakeel)
+
+Decision:
+
+  1. D1 — DR-ZYRA-224 F2 SUPERSEDED IN PART. F2's sentence
+     "Existing wali_invites authority + current RPCs only;
+     no second store or competing state model" is amended:
+     the existing wali_invites authority MAY EVOLVE into a
+     recipient-bound request system carrying sender,
+     recipient, request direction/context, proposed
+     relationship, the states pending/accepted/declined/
+     cancelled/expired, and the relevant timestamps and
+     provenance. F2's PURPOSE IS UNCHANGED AND BINDING: one
+     source of truth; no duplicate invitation systems;
+     Dashboard summarises and routes; dedicated relationship
+     pages own the full lifecycle. A second competing
+     request store is NOT approved. Existing temporary
+     invitations are preserved through migration so no user
+     is stranded. Every other part of F2 and of DR-ZYRA-224
+     stands, including F2's supersession of the 2026-08-26
+     invitations-to-Dashboard direction.
+
+  2. D2 — TWO-STEP ADOPTION.
+     STEP 1 (approved to design): the real request lifecycle
+     on the existing invitation authority — sent, received,
+     pending, safe identity confirmation, accept, decline,
+     cancel, expiry, proposed relationship, recipient
+     confirmation/correction, Dashboard summary, dedicated-
+     page management. Step 1 EXCLUDES the permanent personal
+     ZYRA Code, QR and deep links.
+     STEP 2 (deferred, separate approval): one permanent
+     rotatable code per account, Copy/Share/QR, rotation,
+     retired-code ledger, rate limits, enumeration
+     protection, verified identity preview, and deep links
+     when the Apple/App-ID dependency permits. HELD UNTIL
+     IDENTITY VERIFICATION IS GENUINELY OPERATIONAL — not
+     merely documented or partially prepared. Founder's
+     eventual preferred model remains ONE code per account.
+     Basis: OA-ZYRA-263 established, and Fable independently
+     verified against source, that ZYRA verifies nobody; a
+     permanent shareable code plus an unverified photo
+     preview would make the unverified-photo defect into an
+     identity-confirmation mechanism.
+
+  3. D3 — SEQUENCING. OA-ZYRA-282 closes correctly first; no
+     competing edits against screens holding verified
+     successor candidates. Order: (a) close OA-ZYRA-282;
+     (b) reconcile the Guardian relationship documents;
+     (c) draft the Step 1 contract; (d) RETURN IT TO THE
+     FOUNDER FOR REVIEW; (e) only then relay to Codex.
+
+  4. STEP 1 FLOW — RULED SHAPE. The single redemption
+     transition is split in two. Today entering a code IS
+     acceptance (zyra_accept_wali_invite writes wali_links
+     in one step), so any bearer-token holder is linked.
+     New shape: A generates a code (status UNCLAIMED) and
+     shares it out of band; B enters it and the server
+     resolves a safe preview of A; B confirms and proposes
+     the relationship; CLAIM binds recipient_id = B, status
+     PENDING, NO LINK CREATED; A reviews, confirms or
+     corrects the relationship, and ACCEPT writes wali_links
+     — there and nowhere else. The claim is the moment the
+     request becomes recipient-bound, and is what makes
+     "sent" and "received" truthful. The code owner is the
+     confirming party BY DESIGN: A never chose who would
+     hold the code, so A's confirmation is what closes the
+     bearer hole. Dashboard copy follows: code owner sees
+     "request received … Review"; code enterer sees "request
+     pending … Manage".
+
+  5. SAFE PREVIEW — NO PHOTO, NO VERIFICATION CLAIM.
+     The Step 1 preview shows FIRST NAME ONLY. No profile
+     photo. The preview must not assert or imply that ZYRA
+     has verified the person: in Step 1 the identity check
+     is the out-of-band code exchange plus two-sided
+     confirmation, not a ZYRA assertion. Copy states what is
+     true — "You're connecting with the person who gave you
+     this code" — never "Is this Ahmed?", which implies
+     knowledge ZYRA does not have. A photo becomes
+     admissible only when identity verification is
+     operational, carrying a verified badge rather than an
+     implied one. Founder rulings this derives from: "do not
+     use an unverified photo as proof of identity" and
+     "safe preview wording must not claim that ZYRA has
+     verified someone unless identity verification has
+     genuinely completed."
+
+  6. PRODUCT RULINGS PRESERVED IN STEP 1.
+     Dashboard shows compact request status plus Review or
+     Manage only; accept/decline/cancel/expiry/relationship
+     confirmation belong to the dedicated pages; no inline
+     Dashboard request management. Request expiry 30 days,
+     reported to the SENDER without repeatedly prompting the
+     recipient. Rotation is irrelevant until Step 2. Existing
+     pending temporary invitations remain valid until
+     accepted, cancelled or expired; new temporary-code
+     generation stops only when the Step 1 flow is ready.
+     Preview/demo wording removed from release UI. The
+     optional private-name field is removed once the
+     recipient-bound model makes it unnecessary. Neutral
+     failure copy must not reveal whether a code belongs to
+     a Seeker, Guardian, dual-role, blocked or ineligible
+     account. Self-link, romantic-history, block and
+     eligibility protections remain server-enforced. Any new
+     acceptance RPC must INDEPENDENTLY preserve the Guardian
+     role/gender/eligibility rules currently enforced inside
+     accept_wali_invite() — the general wali_links trigger
+     does NOT cover them. QR is Step 2. Deep links remain
+     separately blocked until app-link/Apple identifier
+     infrastructure exists.
+
+  7. FABLE-RECORDED IMPLEMENTATION CONSTRAINTS — measured,
+     NOT Founder rulings; stated here so the Step 1 contract
+     cannot be written without them.
+     (a) Migration 20260809170940 makes wali_invites.
+         expires_at deliberately IMMUTABLE. The 30-day
+         request expiry MUST NOT reuse that column — it
+         needs a second clock (request_expires_at set at
+         claim), leaving the code's 7-day expiry untouched.
+     (b) Roles must be read from profiles.role, never from
+         request context; context validates intent only.
+         The 2026-08-09 audit finding 2.1 already fixed this
+         once where inviter_role was client-supplied.
+     (c) The migration overlap is bounded at SEVEN DAYS:
+         wali_invites.expires_at defaults to NOW() + 7 days,
+         so legacy rows self-retire within a week of
+         cutover. One accept RPC branching on legacy vs new,
+         not two paths.
+     (d) The status CHECK already permits pending/accepted/
+         declined/revoked/expired; unclaimed and cancelled
+         must be added.
+     (e) The "Sharing isn't wired up yet in this preview
+         build" copy exists in THREE files — link_guardian_
+         panel.dart, link_wali_screen.dart and wali_invite_
+         seeker_screen.dart. The contract consolidates these
+         near-duplicate invite screens rather than patching
+         three.
+     (f) There is NO deep-link infrastructure: no Universal
+         Links, no Android App Links beyond LAUNCHER, no
+         deep-link package or handler; the only registered
+         URL scheme is the Google Sign-In OAuth callback.
+         Associated Domains binds to the App ID, which is
+         blocked by OA-ZYRA-274.
+     (g) zyra_can_guardian_link() IS enforced by a BEFORE
+         trigger on wali_links and its own migration
+         anticipated future acceptance flows, so romantic-
+         conflict and self-link protection are inherited
+         automatically by a new RPC. Role, gender and
+         eligibility are NOT — see 6 above.
+     (h) invite_label is preserved as history; the column is
+         not dropped.
+
+  8. NOT AUTHORISED BY THIS DECISION. No Codex brief, no
+     implementation, no migration, no schema change. The
+     Step 1 contract returns to the Founder for review
+     before relay. Any migration keeps the normal separate
+     Founder apply gate and security review.
+
+Supersedes:  DR-ZYRA-224 F2 IN PART (the "no second store"
+             sentence only; F2's purpose, its lifecycle-to-
+             dedicated-pages ruling and its supersession of
+             the 2026-08-26 Dashboard direction all stand).
+Related:     DR-ZYRA-224/225 · OA-ZYRA-282 (closes first) ·
+             OA-ZYRA-263 (verification absent — gates Step 2)
+             · OA-ZYRA-274 (App ID — gates deep links) ·
+             AD-AIOS-107 (routing; this returned as a
+             contradiction rather than being relayed)
+Target:      OA-ZYRA-282 closes -> Guardian documents
+             reconciled -> Step 1 contract drafted -> Founder
+             review -> Codex relay -> Fable verification
+
+------------------------------------------------------------
+
+DR-ZYRA-227
+Title:       Request New Journey temporarily unavailable at
+             client and server for the Founder-only TestFlight
+Date:        2026-09-10
+Status:      RATIFIED — Founder directly approved Codex's
+             recommended temporary hold in chat on 2026-09-10.
+Owner:       Founder (Shakeel)
+
+Context:     OA-ZYRA-283's release audit proved that Request New
+             Journey can create a second journey_attempts row while
+             compatibility, Salams and Journey checkpoints still use
+             match-keyed uniqueness and gates. The new Compatibility
+             RPCs correctly refuse a stale attempt-one row; they cannot
+             make the broader ritual attempt-safe. Production contained
+             zero journey_requests, zero request notifications and zero
+             matches with more than one attempt when the route was put
+             to the Founder.
+
+Decision:
+  1. For the bounded Founder-only TestFlight, Request New Journey
+     is temporarily unavailable at BOTH layers. The app hides the
+     ended-card action, does not query its eligibility path, short-
+     circuits request/response wrappers, and does not promise the
+     suspended 60-day route on End/Ended surfaces.
+  2. The server hold is grant-based and reversible. PUBLIC, anon and
+     authenticated lose EXECUTE on request_new_journey(uuid),
+     respond_to_journey_request(uuid,text),
+     zyra_may_request_new_journey(uuid), and
+     zyra_may_request_new_journey_ids(). Function bodies, request
+     history and Journey history are not rewritten or deleted.
+     postgres and service_role retain the trusted administration plane.
+  3. DR-ZYRA-121 item 8 and OA-ZYRA-159's permanent mutual-consent
+     design are NOT repealed. Availability may return only after
+     OA-ZYRA-156 completes the remaining per-attempt conversion and
+     tests it across a genuine second Journey, followed by a separate
+     Founder-authorised server apply and app release.
+  4. This product ruling authorises implementation and staging only.
+     It is NOT production-migration GO and NOT TestFlight upload GO.
+     Production apply still requires the exact project, immutable
+     migration hashes, ordered cutover, stop thresholds, forward-repair
+     plan and acceptance probes to be shown to the Founder.
+  5. The controlled cutover order is OA-ZYRA-283 first, then the
+     temporary hold, with the app quiesced and no binary upload/reopen
+     between them. Any request row, request notification, multi-attempt
+     match, function/hash/ACL drift or failed denial probe stops the
+     cutover. Direct compatibility-table access is never regranted as
+     rollback; repair is forward or the new binary remains held.
+  6. Distribution remains Founder-only. OA-ZYRA-184 and OA-ZYRA-285
+     continue to block untrusted/external testers; this decision does
+     not close or weaken either finding.
+
+Related:     DR-ZYRA-121 · OA-ZYRA-156 · OA-ZYRA-159 ·
+             OA-ZYRA-184 · OA-ZYRA-198 · OA-ZYRA-283 ·
+             OA-ZYRA-285 · MESSAGES/074 · MESSAGES/075
+
+------------------------------------------------------------
+
+DR-ZYRA-228
+Title:       One Shared Product Codebase, Two Isolated Apps —
+             ZYRA Production and Founder-only ZYRA Test
+Date:        2026-09-12
+Status:      RATIFIED — direct Founder approval in Codex chat,
+             including the same-turn clarification that ordinary
+             changes must update both apps
+Owner:       Founder (Shakeel)
+
+Context:     TestFlight build 2 correctly denies Developer Access in
+             the production release target, but that also prevents the
+             Founder using the governed developer tools through remote
+             TestFlight. The Founder approved a second, internal-only
+             test application and clarified the controlling product
+             rule: a normal instruction such as changing a colour is
+             implemented once and appears in both apps.
+
+Decision:
+  1. ONE PRODUCT / ONE SOURCE. ZYRA Production and ZYRA Test are built
+     from one shared Flutter product codebase. They do not own copied
+     screens, independent feature implementations or divergent product
+     rules.
+  2. TWO APP IDENTITIES.
+     (a) ZYRA Production keeps runtime display name `ZYRA`, canonical
+         bundle identifier `app.zyraconnect.zyra`, the existing App
+         Store Connect record and the production backend. Developer
+         Access is absent or denied.
+     (b) ZYRA Test uses runtime display name `ZYRA Test`, a visibly
+         test-marked icon, proposed bundle identifier
+         `app.zyraconnect.zyra.test`, a separate staging backend and
+         Founder-only App Store Connect internal TestFlight delivery.
+         No external tester or public distribution is permitted. The
+         proposed bundle identifier must pass a read-only availability
+         check before creation; any conflict returns to the Founder
+         rather than causing a silent identifier change.
+  3. SHARED-BY-DEFAULT LAW. Every ordinary Founder instruction about
+     product behaviour, layout, copy, styling, accessibility or shared
+     business logic applies to both apps through shared source unless
+     the Founder explicitly limits that instruction to one target.
+     Target-specific divergence is prohibited except for app identity,
+     compile-time configuration, backend/environment selection,
+     protected test tooling and the minimum signing/store metadata
+     those differences require. Any other divergence needs a new,
+     explicit Founder ruling.
+  4. HARD ENVIRONMENT ISOLATION. Each target is compile-time pinned to
+     exactly one backend: Production to production and Test to staging.
+     Neither app has a runtime backend selector. A missing, mixed or
+     unexpected configuration fails closed. ZYRA Test must never read
+     or write production, and no production member data is copied into
+     staging; staging uses synthetic/test data only.
+  5. PROTECTED FOUNDER AUTHORISATION. Internal TestFlight membership is
+     distribution, not authorisation. Developer Access still begins
+     with normal authentication and requires the exact staging Auth
+     principal to hold a current server-controlled signed Founder
+     claim (`app_metadata.zyra_role = founder`, or a governed equivalent).
+     The claim is refreshed and verified before entry, then rechecked
+     at the route and every privileged server boundary. Email/domain,
+     client flags, build mode and possession of the binary never grant
+     authority. Removing the claim denies the next check.
+  6. NO EMBEDDED CREDENTIALS. Neither binary may contain a shared test
+     password, seeded-account password, service-role key, OTP, action
+     link or other privileged credential. Test persona switching is
+     staging-only, server-mediated, exact-allowlisted and default-deny;
+     it returns and logs no privileged token or credential.
+  7. NARROW ONBOARDING EXCEPTION. The authenticated, authorised Founder
+     operator may enter the ZYRA Test Developer Access shell without
+     completing member onboarding or identity verification. This is a
+     non-member staging operator capability, not a product entitlement.
+     It grants no ordinary account the same bypass, cannot reach
+     production and does not weaken production's mandatory identity-
+     verification gate. Test personas carry explicit staging fixture
+     state rather than pretending a real verification occurred.
+  8. SEPARATE LIVE GATES. This decision authorises the architecture and
+     its tracked implementation work; it does not itself create an
+     Apple App ID/App Store Connect record, Supabase project, provider
+     configuration or Founder role; deploy a function or migration;
+     build an archive; or upload a binary. Each external mutation,
+     signing action and upload remains separately and exactly Founder-
+     gated. No paid plan or public availability is implied.
+  9. EXISTING RELEASE UNCHANGED. The current ZYRA production record,
+     production backend and Founder-internal build 2 remain unchanged
+     until a separately approved action says otherwise. OA-ZYRA-184
+     and OA-ZYRA-285 continue to block untrusted/external testing.
+ 10. REGISTER LINK CORRECTION. References in DR-ZYRA-210 and derivative
+     documents assigning Developer Access implementation to
+     OA-ZYRA-245 are historical cross-reference errors. OA-ZYRA-245 is
+     the completed Guardian Network first draft and remains untouched.
+     From this decision forward OA-ZYRA-286 is the canonical owner of
+     the two-app/Developer Access implementation. No historical entry
+     is rewritten.
+
+Supersession and relationship:
+  - Supersedes DR-013 only where it mandates one application and one
+    database. Its one-codebase, production-truth and no-product-drift
+    rules remain controlling.
+  - Supersedes DR-ZYRA-210 item 5 and its related `non-release/dev`
+    build-mode wording only: the application target and isolated
+    environment, not Dart release mode, now gate Developer Access.
+    DR-ZYRA-210's protected-account, no-embedded-credentials and
+    server-mediated-persona rules remain controlling.
+  - Supplements DR-ZYRA-218; the production identifier is unchanged.
+  - Supersedes DR-ZYRA-221 only for the narrow, non-member Founder
+    operator shell described in item 7. All member rows and product
+    capabilities retain the mandatory verification rule.
+  - DR-ZYRA-227 and its controlled-release restrictions are unchanged.
+
+Related:     DR-013 · DR-ZYRA-087 · DR-ZYRA-210 · DR-ZYRA-218 ·
+             DR-ZYRA-221 · DR-ZYRA-227 · OA-ZYRA-184 ·
+             OA-ZYRA-245 · OA-ZYRA-268 · OA-ZYRA-283 ·
+             OA-ZYRA-285 · OA-ZYRA-286
+
+------------------------------------------------------------
+
+DR-ZYRA-229
+Title:       Narrow Founder Test Persona Exchange Ruling
+Date:        2026-09-12
+Status:      RATIFIED — Founder replied "I confirm" to the recommended
+             one-use test-account sign-in and existing-organisation choice
+Owner:       Founder (Shakeel)
+Category:    Architecture / Security
+
+Context:     DR-ZYRA-228 item 6 literally prohibits any returned token.
+             The staged broker needs a one-use Supabase magic-link
+             token_hash so the native Test client can enter an actual
+             synthetic-persona RLS session. Messages 090 and 091 named
+             this conflict and the auth.sessions validity limitation.
+             The Founder has now confirmed the recommended design.
+
+Decision:
+  1. Permit ONLY the exact-Founder-authorised, staging-only persona
+     broker to return a short-lived, one-use token_hash over TLS for
+     immediate native Supabase verifyOTP redemption. This narrow
+     exception supersedes DR-ZYRA-228 item 6 / OA-ZYRA-286 item 6 only
+     where their no-token wording would prohibit that exchange.
+  2. The hash is not public or harmless merely because it is hashed.
+     It must never be embedded, logged, displayed or persisted by
+     ZYRA. No service key, password, action link, email OTP, access
+     token or refresh token may be added to the broker response.
+     The ordinary synthetic-persona Auth session obtained from Auth
+     is distinct from the ephemeral broker exchange material.
+  3. Preserve all existing conditions: independently exact-pinned
+     staging/Founder/persona identities; fresh server-side Founder
+     checks; fixed synthetic target allowlist; durable rate limit;
+     no-store responses; successful durable issued audit before
+     delivery; 120-second Auth expiry independently proved; replay
+     and expiry denial. The local TTL declaration is not expiry proof.
+  4. Accept the documented session-table check as defence in depth,
+     not complete GoTrue time-box, inactivity or single-session
+     validity proof. Live getUser plus a fresh Admin Founder check
+     remain mandatory, alongside exact session-row/not_after checks
+     and the database boundary. No check is removed or relabelled as
+     a guarantee it does not provide.
+  5. The Founder selected existing Supabase organisation
+     "ZYRA-APP-LAB's Org" (pdekarsldtaqlqdthgwh) for staging preparation.
+     This selection does not itself approve a cost, create a project,
+     assign an Auth principal/role or deploy anything.
+  6. All remaining DR-ZYRA-228 controls and live gates stand. No
+     production data copy, production change, SQL replay/apply,
+     fixture/role provisioning, OAuth change, Apple registration,
+     signing/archive/upload or paid plan is authorised by this ruling.
+     Founder acceptance of the finished Test app remains outstanding.
+
+Related:     DR-ZYRA-228 · OA-ZYRA-286 · MESSAGES/090 · MESSAGES/091 ·
+             MESSAGES/092
+
+------------------------------------------------------------
+
+DR-ZYRA-230
+Title:       Every Active Guardian Receives a Data-Minimised Journey
+             Summary; Main-Only Decisions and Sensitive Context Remain
+Date:        2026-09-17
+Status:      RATIFIED — direct Founder instruction in Codex chat:
+             "ensure all guardians have journey information. there is
+             no guardian who doesnt have access to journey info"
+Owner:       Founder (Shakeel)
+Category:    Product / Privacy / Guardian Authority
+
+Context:     The Founder saw the Seeker Guardian roster correctly rendering
+             the earlier DR-ZYRA-224/225 law: an Additional Guardian was
+             described as linked with no Journey information. The Founder
+             rejected that product rule and directed that no active Guardian
+             be left without Journey information. This is an authority change,
+             not a copy-only correction.
+
+Decision:
+  1. Every current active Guardian link, Main or Additional, may call the
+     caller-bound Journey-summary boundary for that linked Seeker.
+  2. The returned shape remains the existing four data-minimised fields only:
+     attempt identity as an internal routing/reference key, started_at,
+     ended_at and ended. No counterpart identity, Journey stage, messages,
+     compatibility answers, end reason, reflections/notes or safety data.
+  3. Every active Guardian sees the current active/paused Journey summary and
+     ended summaries whose ending occurred during that Guardian's own current
+     continuous active-link period.
+  4. The existing Seeker-controlled full-history consent remains Main-only,
+     assignment-bound, revocable and non-inheritable. Additional Guardians do
+     not receive pre-link ended history under this ruling.
+  5. Main-only responsibilities and actions remain Main-only: Family Review,
+     Guardian Gate decisions, current-context detail routing and any wider
+     authority are not granted by the summary read.
+  6. The Guardian workspace shows the server-confirmed summary for both roles.
+     Additional roster grouping may stay neutral; access to a narrow summary
+     does not require exposing state in headings, ordering, badges or counts.
+  7. EMPTY != FAILED and STALE != CURRENT continue to apply. The client never
+     invents rows and never treats a summary row as authority for a wider
+     Journey route.
+  8. Server enforcement is required; changing copy or hiding controls is not
+     an implementation. The replacement function stays SECURITY DEFINER with
+     empty search_path, qualified relations, caller/Seeker binding and
+     explicit PUBLIC/anon revocation.
+
+Supersession and relationship:
+  - Supersedes DR-ZYRA-224 F4/F6 and item 7, and DR-ZYRA-225's Additional-
+    Guardian no-information row, only to the narrow extent stated above.
+  - DR-ZYRA-225's four-field cap, temporal boundary and Main full-history
+    consent model remain controlling.
+  - Does not reopen passive Browse visibility, cross-Guardian identity,
+    behavioural surveillance or any Main-only action.
+
+Implementation: OA-ZYRA-288. Flutter copy/workspace changes may be locally
+                built and verified now. The new migration is staged only and
+                requires separate exact-file Founder apply GO before any live
+                database change.
+
+Related:     DR-ZYRA-168 · DR-ZYRA-224 · DR-ZYRA-225 · OA-ZYRA-282 ·
+             OA-ZYRA-288
+
+------------------------------------------------------------
+
+DR-ZYRA-231
+Title:       Permanent Role-Specific ZYRA Codes Create Two-Sided Guardian
+             Requests; a Code Never Creates a Link
+Date:        2026-09-17
+Status:      RATIFIED — Founder selected Option 1 in Codex chat
+Owner:       Founder (Shakeel)
+Category:    Product / Identity / Guardian Safety
+
+Context:     The existing Guardian invitation is an eight-character bearer
+             token: entering it is acceptance and the server writes
+             wali_links immediately. The Founder wants every account to have
+             a stable code it can share repeatedly, including by free QR and
+             native share, without turning that code into a credential.
+
+Decision:
+  1. Each account receives one permanent ZYRA Code for its current role
+     context. The storage model supports separate Seeker and Guardian codes,
+     but the current single-role profile model may mint only its actual
+     profiles.role; this ruling does not invent dual-role entitlement.
+  2. The code is a random opaque 80-bit handle displayed as
+     ZYRA-XXXX-XXXX-XXXX-XXXX-XXXX. It is not sequential, not an account
+     identifier exposed elsewhere and not an authentication factor.
+  3. Copy, on-device QR rendering/scanning and the native share sheet are the
+     approved no-provider-cost delivery paths. The QR contains only the raw
+     code. Deep links remain outside this implementation.
+  4. Entering or scanning a code returns only a safe first-name-and-role
+     preview. No photo and no identity-verification claim are returned.
+  5. Confirming the preview creates a recipient-bound 30-day request in the
+     existing wali_invites authority. It never creates or reactivates a
+     wali_links row. The code owner must accept; decline and requester cancel
+     are first-class states.
+  6. The relationship answer belongs to the Guardian. When a Guardian enters
+     a Seeker's code, the Guardian proposes it with the request. When a Seeker
+     enters a Guardian's code, the Guardian supplies it when accepting. This
+     supersedes DR-ZYRA-226 only where that record let a non-Guardian code
+     owner correct the relationship.
+  7. Rotation is available. Every retired or account-deleted code is hashed
+     into a pseudonymous non-reuse ledger and is never reissued. The ledger
+     retains no owner identifier.
+  8. Preview is authenticated, neutral on invalid/self/blocked/ineligible
+     codes and limited to 10 attempts/hour and 30/day per caller. Romantic
+     conflict, block, role and existing-link rules are rechecked at request
+     and acceptance; the wali_links trigger remains the final boundary.
+  9. Existing seven-day bearer invitations remain usable only for their
+     natural transition overlap. New app surfaces stop minting them. No row is
+     deleted or rewritten by the staged migration.
+ 10. The schema/RPC migration is STAGED ONLY. A separate Founder GO naming
+     the exact file and SHA-256 is required before apply. Until then the new
+     app page is not installable as a working live feature.
+
+Supersession and relationship:
+  - Activates and replaces DR-ZYRA-226 Step 2's deferral and modifies Step 1
+    as stated above; its one-authority, safe-preview and legacy-overlap rules
+    remain.
+  - Does not change DR-ZYRA-230 Journey visibility, IDV gates, subscriptions,
+    Guardian role powers or dual-role architecture.
+
+Implementation: OA-ZYRA-289.
+
+Related:     DR-ZYRA-123 · DR-ZYRA-136 · DR-ZYRA-226 · DR-ZYRA-230 ·
+             OA-ZYRA-263 · OA-ZYRA-274 · OA-ZYRA-289
+
+------------------------------------------------------------
+
+DR-ZYRA-232
+Title:       Main Guardian Leads; Seeker Controls Additional-Guardian Access
+             Per Active Journey
+Date:        2026-09-18
+Status:      RATIFIED — Founder direct instruction in Codex chat
+Owner:       Founder (Shakeel)
+Category:    Product / Guardian Authority / Journey Privacy
+
+Context:     The live DR-ZYRA-230 model gives every active Guardian only a
+             four-field Journey summary while richer Journey surfaces remain
+             Main-only. The Founder ruled that an Additional Guardian may
+             support a Journey like the Main Guardian when the Seeker chooses,
+             while the Main Guardian remains the non-optional lead.
+
+Decision:
+  1. A current Main Guardian is included in every active or paused Journey of
+     their Seeker and cannot be switched off from a Journey.
+  2. Each Seeker controls only their own Additional Guardian links. For each
+     active Journey, the Seeker may include or remove each Additional Guardian
+     independently. The other Seeker controls their own family separately.
+  3. While included, an Additional Guardian receives the same existing
+     read-only Journey surfaces as Main: Journey context, restricted
+     counterpart card, Timeline/milestones, conversation read access and
+     Family-answer reads. "Enter chat" means open/read, matching Main's
+     current authority; this ruling does not create Guardian message sending.
+  4. Main-only leadership remains Main-only: Family Review, Guardian Gate and
+     any existing Guardian decision/request addressed specifically to Main.
+     Inclusion never promotes an Additional Guardian and never transfers Main
+     authority.
+  5. Removing an Additional Guardian from an active Journey revokes the richer
+     participation immediately. Ending the Journey also ends that richer
+     Additional access. The DR-ZYRA-230 four-field summary remains available
+     under its existing temporal rules to every active Guardian.
+  6. The Seeker Guardian page owns the control. Main renders as "Always
+     included"; Additional renders one server-confirmed switch per active
+     Journey. EMPTY, FAILED and last-confirmed write failure remain distinct;
+     no optimistic authority state is shown.
+  7. The Guardian-side roster/workspace may show current Journey context for
+     an Additional Guardian only when the caller-scoped server participation
+     row exists. Additional rows stay in the neutral ADDITIONAL GUARDIANSHIPS
+     group and never inherit Main-only attention badges or ordering.
+  8. Authority is server-side and auditable. A private assignment ledger plus
+     one hardened Seeker-owned RPC controls access; client hiding is not an
+     authority boundary.
+  9. Migration `20260918075737_oa290_additional_guardian_journey_access.sql`
+     is STAGED ONLY. Production apply requires a separate Founder GO naming
+     the exact file and SHA-256 after local verification.
+
+Supersession and relationship:
+  - Supersedes DR-ZYRA-224 F4/F6, DR-ZYRA-225's Additional no-information row
+    and DR-ZYRA-230's summary-only ceiling only for an Additional Guardian
+    whom their own Seeker has included in that active Journey.
+  - Preserves Main leadership, DR-ZYRA-225 Main history consent, DR-ZYRA-230
+    narrow summary access outside an active assignment, passive Browse
+    exclusion, blocks, IDV and all romantic-conflict rules.
+
+Implementation: OA-ZYRA-290.
+
+Related:     DR-ZYRA-168 · DR-ZYRA-224 · DR-ZYRA-225 · DR-ZYRA-230 ·
+             OA-ZYRA-282 · OA-ZYRA-288 · OA-ZYRA-290
+
+------------------------------------------------------------
+
+DR-ZYRA-233
+Title:       Per-Guardian Past Journey Summaries; Paid Capacity Is Not
+             Journey Authority; Guardian Notes Remain Separate
+Date:        2026-09-18
+Status:      RATIFIED — Founder accepted Codex's recommended model
+Owner:       Founder (Shakeel)
+Category:    Product / Privacy / Guardian Authority / Commercial Disclosure
+
+Context:     After DR-ZYRA-232 made current-Journey Additional access
+             Seeker-controlled, the Founder asked whether every Guardian
+             should have full Journey history and comment access. The accepted
+             model separates current participation, past summaries and future
+             Guardian-authored notes so payment or linking never silently
+             becomes broad data authority.
+
+Decision:
+  1. Main remains the non-optional lead and is always included in active and
+     paused Journeys. Additional Guardian current-Journey participation stays
+     controlled per active Journey by DR-ZYRA-232.
+  2. Every current active Guardian, Main or Additional, may separately be
+     granted access to all past Journey summaries by the linked Seeker. This
+     permission is OFF by default for a newly linked Guardian, immediately
+     revocable and person-specific.
+  3. The permission is bound to that Seeker/Guardian relationship's current
+     continuous active-link epoch. It survives a continuous Main/Additional
+     role switch for the same person, never transfers to another person, and
+     becomes ineffective on removal/inactivity; a later re-link starts OFF.
+     A valid existing Main permission is preserved during migration.
+  4. "Past Journey summaries" means the existing four-field
+     `zyra_attempt_summary_for_guardian` boundary only: opaque attempt id,
+     started_at, ended_at and ended. It never adds counterpart identity,
+     stage, messages, answers, reasons, notes, compatibility or safety data.
+     The UI must not call this "full Journey history".
+  5. Paid Additional Guardian membership buys capacity to link; it does not
+     guarantee access to any Journey. The limitation and Seeker control must
+     be prominent before purchase, when a link is accepted and in-product,
+     not buried only in Terms or Privacy copy.
+  6. Guardian-authored participation is not couple-chat access. A future
+     Guardian Notes feature may be designed as its own auditable authority,
+     visible only to the linked Seeker and authorised Guardian team. No note,
+     message-send or edit permission is created by this decision.
+  7. The other Seeker needs truthful visibility of which Guardians can access
+     their shared Journey. That reciprocal-transparency surface is required
+     future design work; it does not widen access and is not silently folded
+     into this migration.
+  8. EMPTY != FAILED and server-confirmed-only state remain law. Main's live
+     legacy history control must keep working during the staged migration
+     interval; Additional history fails closed until the new RPC is live.
+  9. Migration `20260918094504_oa291_per_guardian_past_journey_summaries.sql`
+     is STAGED ONLY. Production apply requires a later exact-file and SHA-256
+     Founder GO after verification.
+
+Supersession and relationship:
+  - Amends DR-ZYRA-225's Main-only history-consent rule and reset-on-Main-
+    change rule as stated above; preserves its temporal and four-field data-
+    minimisation boundary.
+  - Preserves DR-ZYRA-230 default summaries and DR-ZYRA-232 current-Journey
+    participation/Main leadership.
+  - Does not authorise Guardian sending, editing, decisions, cross-family
+    visibility, broad historical detail or passive Browse visibility.
+
+Implementation: OA-ZYRA-291. Future notes and reciprocal access disclosure:
+                OA-ZYRA-292.
+
+Related:     DR-ZYRA-225 · DR-ZYRA-230 · DR-ZYRA-232 · OA-ZYRA-290 ·
+             OA-ZYRA-291 · OA-ZYRA-292
+
+------------------------------------------------------------
+
+DR-ZYRA-234
+Title:       Separate ZYRA One Seeker and Guardian Memberships;
+             Guardian Free Observes and Guardian One Participates
+Date:        2026-09-18
+Status:      RATIFIED — Founder direct instruction in Codex chat followed by
+             explicit "execute that"
+Owner:       Founder (Shakeel)
+Category:    Pricing / Membership / Guardian Capabilities
+
+Decision:
+  1. ZYRA One — Seeker costs £29.99/month.
+  2. ZYRA One — Guardian costs £19.99/month.
+  3. Guardian Free may view a linked Seeker's Journey but has no Journey
+     commenting, Journey-conversation entry or Guardian Network page.
+  4. ZYRA One — Guardian may view and comment across the permitted Journey,
+     enter permitted Journey conversations, and use Guardian Network to find
+     Seekers and make recommendations.
+  5. Invitation, consent, reporting, blocking, privacy and essential safety
+     controls remain free. Membership never creates a link, grants Main
+     authority or bypasses Seeker permission and privacy rules.
+  6. ZYRA Family remains unchanged.
+  7. Weekly memberships, the combined Seeker-plus-Guardian allocation and
+     Additional Guardian subscription product are retired. Additional Guardian
+     remains a relationship-authority role, not a payment tier.
+  8. The existing planned fourteen-day trial remains Seeker-only. No Guardian
+     trial, annual offer or new Family term is inferred.
+  9. Current Guardian conversation entry remains read-only. Message sending is
+     not authorised by this decision. Journey-wide comments require the
+     separately governed OA-ZYRA-292 server implementation before production
+     activation.
+ 10. Client hiding is fail-closed presentation, not sufficient authority.
+     Live billing and paid capability enforcement remain under OA-ZYRA-253.
+
+Supersession: Replaces the pricing and Guardian-allocation model in
+              ZYRA_PRICING V3 and JOURNEY_CAPABILITY_GRANT_RULES V4.
+              Supersedes DR-ZYRA-233 item 5 only where it describes a paid
+              Additional Guardian capacity product; the per-person history
+              permission and Guardian Notes boundaries remain unchanged.
+
+Implementation: ZYRA_PRICING_CURRENT_VERSION_V4.md;
+                JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V5.md;
+                OA-ZYRA-253.
+
+------------------------------------------------------------
+
+DR-ZYRA-235
+Title:       Add Seeker Basic and Convert Guardian Free to Guardian Basic
+Date:        2026-09-18
+Status:      RATIFIED — Founder direct instruction to “execute everything and
+             add to app”
+Owner:       Founder (Shakeel)
+Category:    Pricing / Membership / Seeker Limits / Advertising
+
+Decision:
+  1. Seeker Basic has a £9.99 one-time joining fee.
+  2. Seeker Basic permits at most one Active Journey, 50 active Likes
+     (product label: Considers), 10 Saves, 5 Likes/Considers per calendar day
+     and 25 committed profile swipes per four-hour allowance window.
+  3. Seeker Basic has no Insights access. Now remains available as the My ZYRA
+     notification centre.
+  4. Seeker Basic presents an advert after each five committed profile swipes.
+  5. Guardian Free is replaced by Guardian Basic at a £9.99 one-time joining
+     fee. Its capability boundary remains Journey viewing without commenting,
+     conversation entry or Guardian Network.
+  6. ZYRA One — Seeker remains £29.99/month and ZYRA One — Guardian remains
+     £19.99/month. ZYRA Family remains unchanged.
+  7. Developer Access must expose Seeker, Seeker Basic, Guardian, Guardian
+     Basic and Sign Up as separate routes.
+  8. The present client may implement a clearly disclosed advert preview and
+     device-persisted counters for testing. It must not claim live ad delivery,
+     verified billing or server-authoritative quota enforcement.
+  9. Production activation requires verified billing, server-side quotas and
+     an approved advertising provider/privacy/consent implementation.
+
+Supersession: Amends DR-ZYRA-234 items 3 and 5 only by replacing Guardian Free
+              with the paid one-time Guardian Basic product. Adds Seeker Basic
+              without changing the approved ZYRA One or Family prices.
+
+Implementation: ZYRA_PRICING_CURRENT_VERSION_V5.md;
+                JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V6.md;
+                ZYRA_PAID_MEMBERSHIP_HANDOVER_CURRENT_VERSION_V3.md;
+                OA-ZYRA-253; OA-ZYRA-293.
+
+------------------------------------------------------------
+
+DR-ZYRA-236
+Title:       A Seeker May Deliberately Have No Main Guardian; Active Journey
+             Participation Waits Until Main Leadership Is Restored
+Date:        2026-09-18
+Status:      RATIFIED — Founder direct instruction in Codex chat
+Owner:       Founder (Shakeel)
+Category:    Product / Guardian Authority / Journey Safety / Interaction
+
+Context:     The Founder replaced the earlier forced-replacement rule after
+             reviewing the live Guardian management surface. A Main Guardian
+             may be demoted without unlinking them, but a shared Active Journey
+             must not continue without Main leadership on both sides.
+
+Decision:
+  1. The Main Guardian action is labelled "Remove as Main Guardian". It
+     demotes that person to Additional Guardian and does not unlink them.
+  2. The Seeker may deliberately leave all linked Guardians as Additional.
+     ZYRA never auto-promotes another existing Guardian as a side effect of
+     demotion or removal.
+  3. "Remove Guardian" remains a separate unlink action. Removing the Main or
+     final Guardian no longer requires choosing a replacement first.
+  4. A no-Main state appears in My ZYRA Now under Needs You as "Choose a Main
+     Guardian" and routes to the Guardian owner page.
+  5. While either Seeker in a shared Active Journey lacks a current active
+     Main Guardian, ordinary Journey participation and resumption are held.
+     Pause and End remain available so neither person is trapped.
+  6. The Journey check is server-confirmed and caller-relative. It discloses
+     only whether each side has Main leadership, never Guardian identity or
+     unrelated family data. Server write enforcement is required; client
+     hiding alone is not authority.
+  7. Make Main Guardian, Remove as Main Guardian and Remove Guardian use the
+     same in-place confirmation interaction: the action pill becomes equal
+     Cancel and Confirm pills. No confirmation dialog or expanding warning
+     surface is used.
+  8. Migration `20260918140508_oa294_main_guardian_optional_journey_hold.sql`
+     is STAGED ONLY. Production apply requires a separate Founder GO naming
+     the exact file and SHA-256 after isolated replay and security review.
+
+Supersession and relationship:
+  - Supersedes DR-ZYRA-136 in full and DR-ZYRA-232/233 only where they say a
+    Main Guardian is non-optional at all times.
+  - Preserves DR-ZYRA-232 Main-only leadership authority whenever a Main is
+    assigned, all per-Journey Additional permissions, past-summary controls,
+    blocks, IDV and romantic-conflict rules.
+
+Implementation: OA-ZYRA-294.
+
+Related:     DR-ZYRA-136 · DR-ZYRA-232 · DR-ZYRA-233 · OA-ZYRA-290 ·
+             OA-ZYRA-291 · OA-ZYRA-294
+
+------------------------------------------------------------
+
+DR-ZYRA-237
+Title:       A Permanent Seeker ZYRA Code May Open a Known-Person Consider
+             Route; It Never Bypasses Mutual Matching
+Date:        2026-09-18
+Status:      RATIFIED — Founder direct instruction in Codex chat
+Owner:       Founder (Shakeel)
+Category:    Product / Matching / Privacy / Identity
+
+Context:     The Founder wants a Seeker who already knows a potential spouse
+             to find that person deliberately from Browse, rather than wait
+             for ordinary feed discovery. Every account already has the
+             permanent role-specific ZYRA Code governed by DR-ZYRA-231.
+
+Decision:
+  1. Browse's visible three-dot action mode gains one item, "ZYRA Code".
+     It opens a dedicated known-person route with Scan code and Enter code.
+  2. This route resolves only a Seeker-role permanent code for a signed-in,
+     identity-verified Seeker. Guardian codes and the existing Guardian-link
+     preview/request APIs remain separate and unchanged.
+  3. The code is a bearer-held discovery handle, not proof of consent,
+     eligibility or identity. Preview reuses the shared 10/hour and 30/day
+     caller attempt budget and remains neutral across unknown, self, blocked,
+     same-gender, incomplete, unverified and otherwise ineligible targets.
+  4. A successful preview returns only the Browse-level confirmation fields
+     first name, age and location. It returns no photo, UUID, verification
+     claim, contact detail, compatibility score or private profile answer.
+  5. The server must pass both zyra_can_view_profile and zyra_can_match before
+     preview and recheck them, plus both users' IDV, at mutation time.
+  6. Confirming records the caller's ordinary Consider. It does not directly
+     create a Match: the existing mutual-Consider trigger remains the only
+     Match creator, so the other Seeker must also Consider the caller.
+  7. Existing one-state-per-profile triggers, blocks, onboarding, gender and
+     Guardian-conflict exclusions remain authoritative. The client never
+     treats possession of a code as a bypass.
+  8. Migration `20260918145126_oa295_known_person_code_matching.sql` is
+     STAGED ONLY. Production apply requires isolated replay/security review
+     and a separate Founder GO naming the exact file and SHA-256.
+
+Supersession and relationship:
+  - Extends DR-ZYRA-231 with one purpose-specific Seeker-to-Seeker consumer;
+    it does not widen or replace the Guardian-link functions.
+  - Preserves DR-ZYRA-099 mutual Consider, DR-ZYRA-123 romantic exclusions,
+    DR-ZYRA-221 mandatory IDV and all existing safety/block authority.
+
+Implementation: OA-ZYRA-295.
+
+Related:     DR-ZYRA-099 · DR-ZYRA-123 · DR-ZYRA-221 · DR-ZYRA-231 ·
+             OA-ZYRA-289 · OA-ZYRA-293 · OA-ZYRA-295
+
+------------------------------------------------------------
+
+DR-ZYRA-238
+Title:       Guardian One Makes Features Eligible; the Seeker Separately
+             Controls Additional-Guardian View and Chat
+Date:        2026-09-18
+Status:      RATIFIED — Founder direct instruction in Codex chat
+Owner:       Founder (Shakeel)
+Category:    Product / Guardian Authority / Membership Disclosure / Privacy
+
+Decision:
+  1. ZYRA One — Guardian makes its paid Guardian capabilities available; the
+     purchase does not guarantee access to every linked Seeker Journey.
+  2. For each active Journey, the Seeker separately controls whether each own
+     Additional Guardian may View the Journey and enter its Chat.
+  3. Chat depends on View. Turning View off also turns Chat off, and Chat
+     cannot be enabled until View is enabled again.
+  4. A current Main Guardian's View and plan-enabled Chat access cannot be
+     disabled while that person remains Main. The Seeker must first use the
+     governed Remove as Main Guardian flow if they no longer want protected
+     Main access.
+  5. Guardian Basic remains View-only and is never made Chat-eligible by this
+     decision.
+  6. The limitation must be prominent before purchase, in help/legal terms
+     and in-product: payment provides eligibility subject to the Guardian
+     link, membership, Seeker permission, Journey state and privacy rules.
+  7. Client preview may demonstrate the two controls immediately, but live
+     separation is not complete until server authority stores, returns and
+     enforces View and Chat independently. No client-only state may be
+     represented as a production permission.
+
+Supersession and relationship:
+  - Amends DR-ZYRA-232 item 3: Additional Guardian Journey viewing and
+    conversation entry are no longer one combined inclusion decision.
+  - Clarifies DR-ZYRA-234/235: Guardian One is capability eligibility, not a
+    guarantee of Seeker-granted access.
+  - Preserves Main-only leadership, Guardian Basic boundaries, past-summary
+    consent, blocks, IDV and all other privacy rules.
+
+Implementation: OA-ZYRA-296.
+
+Related:     DR-ZYRA-232 · DR-ZYRA-233 · DR-ZYRA-234 · DR-ZYRA-235 ·
+             DR-ZYRA-236 · OA-ZYRA-253 · OA-ZYRA-290 · OA-ZYRA-296
+
+------------------------------------------------------------
+
+DR-ZYRA-239
+Title:       Privacy-Safe First-Party Product Evidence and Reliability
+             Foundation; Production Collection Remains Separately Gated
+Date:        2026-09-18
+Status:      RATIFIED — Founder direct instruction to start building after
+             reviewing the proposed analytics/reliability architecture
+Owner:       Founder (Shakeel)
+Category:    Product / Privacy / Observability / Operations
+
+Decision:
+  1. ZYRA may build a first-party product-evidence foundation that measures
+     fixed feature funnels (`shown`, `opened`, `started`, `completed`,
+     `failed`) rather than arbitrary raw taps.
+  2. Events may contain only allowlisted feature, event, surface, platform,
+     app-version/build and server-time fields. They must not contain a person,
+     profile, device, session, Match, Journey or ZYRA Code identifier; user
+     content; free text; screenshots; replay; advertising identifiers;
+     compatibility, religion, safety or precise-location data.
+  3. The first implementation is bounded in-memory evidence plus a protected
+     Founder truth view. Remote collection defaults compile-time OFF.
+  4. One private-table/authenticated-RPC migration may be staged, but never
+     applied under this decision alone. Applying it and enabling collection
+     are separate Founder gates after privacy/legal, security, retention,
+     deletion, access and abuse-control review.
+  5. Telemetry failure never blocks or changes member behaviour. Raw evidence
+     must not become an individual member activity history.
+  6. Apple diagnostics and a scrubbed EU-region error provider may be assessed
+     separately. No screenshots, replay, user content, email or IP retention
+     is authorised by this decision.
+  7. AIOS may later summarise approved aggregate health through the existing
+     daily Founder operation. No new duplicate scheduler and no activation are
+     authorised now. Agents may detect, triage and prepare tested repairs but
+     may not deploy, apply migrations, release or self-approve.
+
+Implementation: ZYRA_PRODUCT_OBSERVABILITY;
+                ZYRA_PRODUCT_OBSERVABILITY_BUILD_CONTRACT;
+                ZYRA_PRODUCT_OBSERVABILITY_HANDOVER;
+                OA-ZYRA-256; OA-ZYRA-297.
+
+Supersession and relationship:
+  - Activates a controlled Phase 1 under DR-ZYRA-213 item 6 / OA-ZYRA-256;
+    it does not make the staged server boundary live.
+  - Preserves DR-ZYRA-238's separate Guardian View/Chat authority.
+  - The Privacy & Data statement remains truthful because normal builds send
+    no analytics and no provider has been activated.
+
+------------------------------------------------------------
+
+DR-ZYRA-240
+Title:       Family Messaging Is a Separate Pair-Scoped Guardian–Seeker
+             Conversation
+Date:        2026-09-19
+Status:      SUPERSEDED 2026-09-20 by DR-ZYRA-242 after Founder clarified
+             that family messaging is one shared Guardian Circle
+Owner:       Founder (Shakeel)
+Category:    Product / Guardian Relationships / Messaging / Privacy
+
+Decision:
+  1. Family Messaging is one private thread between one linked Seeker and one
+     linked Guardian. It is never Journey chat and inherits no Match, Journey,
+     compatibility or other Guardian's content.
+  2. One valid entitlement covering the pair enables both participants to
+     send. ZYRA One included Guardian coverage or the linked Guardian's own
+     Guardian One is sufficient; both people are not charged.
+  3. Every Guardian has a separate canonical thread with the Seeker. Main
+     status creates no visibility into Additional Guardian conversations.
+  4. Removing a link or losing coverage makes history read-only. Removing a
+     link retains the thread for twelve months; re-linking reopens the same
+     thread with a lifecycle separator. Blocking closes messaging immediately.
+  5. V1 is text-only, maximum 2,000 characters, initially limited to 10 sends
+     per minute and 60 per hour. No media, calls, group chat, reactions,
+     editing or AI analysis is authorised.
+  6. Report, block and export remain available even when sending is locked.
+  7. Production activation requires server RLS/RPC authority, retention and
+     deletion review, isolated replay and an exact-file/hash Founder GO.
+
+Implementation: OA-ZYRA-298.
+
+Related:     DR-ZYRA-238 · OA-ZYRA-296 · OA-ZYRA-298
+
+------------------------------------------------------------
+
+DR-ZYRA-241
+Title:       Journey History Is Visible to All; ZYRA One Gates Only Return
+             Initiation from the Five Most Recent Rows
+Date:        2026-09-19
+Status:      RATIFIED — Founder approved implementation after independent
+             review
+Owner:       Founder (Shakeel)
+Category:    Product / Journey / Membership / Safety
+
+Decision:
+  1. Basic and One members may see complete Paused and Ended Journey history.
+     Identities, timelines and historic records are not paid features.
+  2. ZYRA One controls initiation only: the five most recent Paused and five
+     most recent Ended Journeys are independently eligible.
+  3. A recipient may accept, decline, block or report without paying. A valid
+     incoming request remains visible even when outside the recipient's own
+     five-row initiation window.
+  4. Paused returns continue the same Journey. Ended returns leave the old
+     Journey permanently ended and create a new attempt only after acceptance.
+  5. Requests expire after seven days; decline creates a thirty-day cooldown;
+     the recipient may stop future requests from that person. Capacity is
+     checked on acceptance and may hold an accepted request until expiry.
+  6. Blocks, deleted/suspended/restricted accounts and other safety exclusions
+     always override return eligibility.
+  7. Ended returns remain held until OA-ZYRA-156 makes every ritual record
+     attempt-owned. No client gate may substitute for server authority.
+
+Implementation: OA-ZYRA-299; OA-ZYRA-156 remains a dependency.
+
+Related:     DR-ZYRA-227 · OA-ZYRA-156 · OA-ZYRA-299
+
+------------------------------------------------------------
+
+DR-ZYRA-242
+Title:       Family Messaging Is One Shared Guardian Circle per Seeker
+Date:        2026-09-20
+Status:      RATIFIED — Founder corrected the earlier pair interpretation and
+             authorised implementation
+Owner:       Founder (Shakeel)
+Category:    Product / Guardian Relationships / Messaging / Privacy
+
+Decision:
+  1. Every Seeker has one Guardian Circle conversation containing that Seeker
+     and every currently linked, unblocked Guardian. One Guardian means a
+     two-person circle; two Guardians means a three-person circle.
+  2. There is no private one-to-one Seeker–Guardian family chat. Main and
+     Additional Guardians participate in the same circle. Journey chat remains
+     a separate system and is never copied into the Guardian Circle.
+  3. One valid entitlement covering the Circle enables its active members to
+     send: the Seeker's ZYRA One or Guardian One held by any current Circle
+     Guardian is sufficient. The Circle is not charged once per participant.
+  4. Membership is epoch-scoped. A newly linked or re-linked Guardian can read
+     only messages written from that membership epoch forward. Removing or
+     blocking a Guardian ends access immediately; old Circle history is not
+     restored by a later re-link.
+  5. The Seeker-side Guardian page owns one Guardian Circle entry. The
+     Guardian-side Seeker page enters the selected Seeker's Guardian Circle.
+     Labels must name the Circle and never imply a private chat.
+  6. V1 remains text-only, maximum 2,000 characters, initially limited to ten
+     sends per minute and sixty per hour. Messages identify their sender, and
+     another member's individual message can be reported.
+  7. Production activation still requires isolated replay, direct-call and RLS
+     role tests, membership-transition tests, retention/deletion review and an
+     exact-file/hash Founder GO. The client release gate stays closed until
+     that evidence exists.
+
+Supersedes:  DR-ZYRA-240.
+Implementation: OA-ZYRA-298.
+
+Related:     DR-ZYRA-238 · OA-ZYRA-296 · OA-ZYRA-298
+
+------------------------------------------------------------
+
+DR-ZYRA-243
+Title:       Paid-Only Membership Model Restored; ZYRA One Bundles Seeker
+             and Guardian Access
+Date:        2026-09-21
+Status:      RATIFIED — Founder direct commercial ruling
+Owner:       Founder (Shakeel)
+Category:    Commercial / Membership / Pricing
+
+Decision:
+  1. ZYRA has no public free or Basic membership offer. Legacy Basic values
+     may remain parseable temporarily only to avoid breaking staged accounts
+     and developer boundary tests; they must not be sold or presented as a
+     public plan.
+  2. ZYRA One is £49.99 per month and includes Seeker and Guardian account
+     access for the account holder. Using both experiences never permits
+     self-guarding or bypasses role, gender, relationship or Journey rules.
+  3. An Additional Guardian membership is a separate £19.99 per month charge.
+  4. The configurable ZYRA Family plus/minus calculator remains. Its current
+     price calculation uses the £49.99 ZYRA One and £19.99 Additional Guardian
+     monthly bases until the Founder changes the Family formula.
+  5. The fourteen-day ZYRA One trial remains planned after verification.
+     Checkout, receipts and paid activation remain held under OA-ZYRA-253;
+     client copy is not entitlement proof.
+
+Supersedes:  DR-ZYRA-235 wherever it created a public Basic offer or set
+             Seeker One at £29.99. Earlier Basic quota/advert work is retired.
+Implementation: OA-ZYRA-253; OA-ZYRA-293.
+
+Related:     DR-ZYRA-235 · DR-ZYRA-238 · OA-ZYRA-253 · OA-ZYRA-293
+
+------------------------------------------------------------
+
+DR-ZYRA-244
+Title:       Connections Restores Separate Live Journey Sections; Expired
+             History Lives in Profile
+Date:        2026-09-21
+Status:      RATIFIED — Founder direct UI correction; two limits remain open
+Owner:       Founder (Shakeel)
+Category:    Product / Journey / Navigation / Safety
+
+Decision:
+  1. Connections keeps four separate live sections: Active Journey,
+     Potential Journeys, Paused Journeys and Ended Journeys. The combined
+     Journey History Paused/Ended selector is removed from Connections.
+  2. Profile owns a separate Past Journeys page with Paused and Ended pills
+     for records that have expired from the live return surface. Visibility
+     alone never creates a return action.
+  3. A valid incoming return request that is no longer in the recipient's own
+     ordinary list resurfaces in the matching live section under a distinct
+     Requests for you subsection, so it cannot become invisible.
+  4. The exact response deadline and whether Paused-return eligibility needs
+     a count or time limit are reopened. OA-ZYRA-299 must recommend the least
+     restrictive safe rule in light of the three-Active-Journey cap. No new
+     client deadline or cap may be invented before that decision.
+  5. Ended-return resurfacing remains server-dependent and held until
+     OA-ZYRA-156/299 provide attempt-safe authority.
+
+Amends:      DR-ZYRA-241 items 2 and 5 pending OA-ZYRA-299 reconciliation;
+             preserves recipient visibility, safety overrides and the rule
+             that Ended returns create a new attempt.
+Implementation: OA-ZYRA-299; OA-ZYRA-156 remains a dependency.
+
+Related:     DR-ZYRA-241 · OA-ZYRA-156 · OA-ZYRA-299
+
+------------------------------------------------------------
+
+DR-ZYRA-245
+Title:       Mailbox label taxonomy amended - agent coverage
+             markers governed; Claude/Checked and
+             Claude/Action Needed added to the approved set
+Date:        2026-09-23
+Status:      RATIFIED - Founder instruction (chat, 2026-09-23):
+             a Claude-side equivalent of the Codex/Checked tag,
+             answering Fable's flag that a third off-taxonomy
+             label would repeat the defect rather than fix it.
+             Recorded by Fable under AD-AIOS-110.
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. THE APPROVED TAXONOMY IS AMENDED from thirteen labels to
+     seventeen. The original thirteen are unchanged: Apple,
+     Finance, Finance/Receipts, Finance/Logged, Accounts +
+     Security, Dev, General, Support, Legal, Privacy, Security,
+     Careers, Black Umbrella. Four AGENT COVERAGE MARKERS are
+     added and governed: Codex/Checked, Codex/Action Needed,
+     Claude/Checked, Claude/Action Needed.
+  2. THE TWO CODEX LABELS ARE REGULARISED, NOT CONDEMNED. They
+     were applied outside the approved set and OA-ZYRA-278 says
+     "Create NO new labels", so they were a governance breach on
+     the letter. But the idea was sound and the approved thirteen
+     could not express it: nothing in a topic taxonomy records
+     WHO LOOKED and WHETHER ANYTHING IS OWED. That is what these
+     four do. Measured 2026-09-23: Codex/Checked holds 23 threads
+     and Codex/Action Needed holds 12.
+  3. THE TWO CLASSES ARE DIFFERENT IN KIND, and the distinction
+     is the point of this decision. The thirteen describe WHAT A
+     MESSAGE IS ABOUT and are permanent. The four describe WHO
+     HAS PROCESSED IT and are operational state - they are
+     applied, cleared and reapplied in the ordinary course. A
+     future taxonomy audit must not treat a coverage marker as a
+     topic label or delete it as clutter.
+  4. FABLE APPLIES ONLY THE CLAUDE PAIR. It never applies,
+     removes or edits a Codex label. Codex's markers remain
+     Codex's record of its own work, and stay until the Founder
+     rules otherwise.
+  5. CREATE NO OTHER LABELS. OA-ZYRA-278's prohibition stands for
+     everything outside these seventeen. A future agent needing a
+     new marker raises a decision first, as this one did.
+  6. THE TWELVE ARE NOT CLOSED BY THIS DECISION. Codex/Action
+     Needed still holds 12 threads. They must be reconciled into
+     the approved topic labels BEFORE Codex stops triaging, or
+     the queue becomes a historical artefact rather than a queue.
+     Sequence unchanged: Fable's triage proven (done 2026-09-23,
+     123-second run) -> twelve reconciled -> Codex stops.
+
+Evidence:    Founder instruction 2026-09-23 ("yes also emmend").
+             Gmail label list measured 2026-09-23 before the
+             change: thirteen approved topic labels plus the two
+             Codex markers. Claude/Checked (Label_17, mint) and
+             Claude/Action Needed (Label_18, dark orange) created
+             2026-09-23 by Fable under this decision. Fable's
+             flag that a third off-book label would repeat the
+             defect is what prompted the amendment rather than a
+             silent creation. Handover request to Codex filed as
+             mailbox message 148, asking how Codex/Checked was
+             created and applied so the Claude pair mirrors it.
+Supersedes:  Amends the thirteen-label taxonomy in OA-ZYRA-278.
+Related:     OA-ZYRA-278 · AD-AIOS-110 · mailbox message 148
+Target:      ZYRA EMAIL workflow prompt updated to name all four
+             markers -> twelve reconciled -> Codex stops triage
+             on Founder instruction
+
+------------------------------------------------------------
+
+DR-ZYRA-246
+Title:       Codex coverage markers retired from the mailbox;
+             DR-ZYRA-245 clause 4 amended to permit Fable to
+             clear them
+Date:        2026-09-23
+Status:      RATIFIED - Founder instruction (chat, 2026-09-23):
+             "for task 3 you sort it out. so no more codex label
+             since its replaced by claude label". Recorded by
+             Fable under AD-AIOS-110.
+Owner:       Founder (Shakeel)
+
+Decision:
+  1. DR-ZYRA-245 CLAUSE 4 IS AMENDED. That clause said Fable
+     never applies, removes or edits a Codex label. The Founder
+     has now instructed otherwise. Fable MAY clear the Codex
+     coverage markers, for the specific purpose of retiring them
+     once the work they tracked is settled. The clause stands in
+     every other respect: Fable still does not reinterpret,
+     relabel or rewrite Codex's classifications.
+  2. CODEX/ACTION NEEDED IS CLEARED FROM ALL TWELVE THREADS.
+     Eleven were settled by Founder confirmation on 2026-09-23
+     (see mailbox message 150). The twelfth, the Cloudflare
+     aios-mac tunnel, is NOT settled and carries Claude/Action
+     Needed instead, so it stays visible under the marker that is
+     now live.
+  3. THE LABEL ITSELF IS NOT DELETED YET, AND THE REASON IS
+     OPERATIONAL, NOT SENTIMENTAL. Codex still runs the mailbox
+     check and applies labels with create_missing_labels set to
+     false (message 149, section 7). Deleting the label while he
+     is running would make his next run report PARTIAL and refuse
+     to advance its cursor - it would break the coverage that is
+     still protecting the mailbox. The empty label is deleted
+     when Codex stops, not before.
+  4. CODEX/CHECKED IS LEFT ENTIRELY ALONE for the same reason. It
+     is Codex's live record of what he has reviewed, and he is
+     still reviewing. It is retired at the same moment as the
+     other, after he stops.
+  5. NO HISTORY IS LOST. What each of the twelve threads needed,
+     and why each is now closed, is recorded in mailbox messages
+     149 and 150. Clearing a Gmail label removes a queue marker,
+     not the record.
+  6. THE TAXONOMY IS UNCHANGED. Seventeen labels stand as
+     DR-ZYRA-245 set them. Retiring the Codex pair when Codex
+     stops will reduce it to fifteen and needs no further
+     decision - it is the completion of this one.
+
+Evidence:    Founder instruction 2026-09-23. Founder confirmations
+             on the eleven settled threads, same day, recorded in
+             mailbox message 150. Codex's own account of how the
+             labels were created and applied, message 149 section
+             7, including create_missing_labels false. Twelve
+             thread identifiers measured live from Gmail on
+             2026-09-23 before any label was touched.
+Supersedes:  Amends DR-ZYRA-245 clause 4 only.
+Related:     DR-ZYRA-245 - OA-ZYRA-278 - AD-AIOS-110 -
+             mailbox messages 148, 149, 150
+Target:      Twelve threads cleared -> Cloudflare tunnel resolved
+             -> Codex stops on Founder instruction -> both Codex
+             labels deleted -> taxonomy reduces to fifteen
+
+EXECUTION 2026-09-24
+             Twelve threads: cleared 2026-09-23. Cloudflare tunnel:
+             resolved and OA-AIOS-385 closed 2026-09-24. Codex
+             stopped: the Founder confirmed 2026-09-24 that he has
+             told Codex to stop the daily email check.
+             `Codex/Action Needed` DELETED - it held zero messages
+             and zero threads, so nothing was lost.
+             `Codex/Checked` carried 47 messages across 23 threads and
+             was the only per-thread record that those threads had been
+             reviewed at all. Fable put that cost to the Founder rather
+             than deleting on the earlier authority alone, because the
+             message counts were not in front of anyone when
+             DR-ZYRA-246 was written.
+             FOUNDER RULING 2026-09-24: "replace codex checked with
+             claude checked". Not a plain deletion - the review record
+             moves rather than disappearing. Executed the same hour:
+             all 23 threads were listed from Gmail, `Claude/Checked`
+             applied to each, a check run for any thread holding
+             `Codex/Checked` without `Claude/Checked` returned ZERO,
+             and only then was `Codex/Checked` deleted. Nothing was
+             deleted before its replacement was verified in place.
+             Counts after: `Claude/Checked` 27 threads / 52 messages,
+             up from 5 / 6. The rise beyond the 23 is correct - four
+             threads already carried it, and Gmail applies a label to
+             every message in a thread whereas Codex had applied his
+             at message level.
+             ONE THING THIS DOES TO THE RECORD, STATED PLAINLY. Those
+             23 threads were reviewed by CODEX, and they now carry
+             Claude's marker. The label still means what it has always
+             meant operationally - reviewed, nothing outstanding - but
+             it no longer says who did the reviewing. That attribution
+             is not recoverable from Gmail. It survives only here and
+             in mailbox messages 148-150. Anyone auditing coverage
+             before 2026-09-24 should read this entry, not the labels.
+             TAXONOMY NOW SIXTEEN LABELS, MEASURED FROM GMAIL ON
+             2026-09-24, not inferred: thirteen topic labels (Apple,
+             Finance, Finance/Receipts, Finance/Logged, Accounts +
+             Security, Dev, General, Support, Legal, Privacy, Security,
+             Careers, Black Umbrella) plus Claude, Claude/Checked and
+             Claude/Action Needed. The Codex pair no longer exists.
+             A COUNTING CORRECTION, SO THE REGISTER IS NOT WRONG. Fable
+             first wrote "fifteen" here by subtracting two from
+             DR-ZYRA-245's seventeen. That arithmetic missed the
+             `Claude` parent, which exists as a real label in Gmail but
+             was not counted among 245's four coverage markers. The
+             live measured figure is SIXTEEN and supersedes any
+             "fifteen" written in 245, 246 or the daily email prompt.
+             Counted, not calculated.
+
+------------------------------------------------------------
+
+DR-ZYRA-247
+Title:       The daily email report is rewritten for the Founder -
+             scannable in fifteen seconds, audit detail removed
+Category:    Operations / Reporting / Founder-facing output
+Status:      APPROVED - Founder, 2026-09-24, with a written specification
+             of his own. Applied to the ZYRA EMAIL scheduled task the
+             same day.
+Decided by:  Founder (Shakeel)
+Date:        2026-09-24
+Authority:   AD-AIOS-110 - Fable owns the daily email workflow
+Amends:      OA-ZYRA-278 (the workflow itself) - section 11 of the ZYRA
+             EMAIL scheduled task prompt
+
+THE PROBLEM, IN THE FOUNDER'S WORDS
+             "The current report is too much like an audit log. For a
+             daily email check, you should be able to understand it in
+             10-15 seconds."
+             He is right, and the fault is Fable's. The previous format
+             ended with a COVERAGE block reporting how many messages
+             were marked Checked, how many carried Action Needed and how
+             many still sat under a Codex label. That is a record of the
+             MACHINE'S WORK, not of his mail. It told him the workflow
+             had run. He already knew that - the report arriving is the
+             proof.
+
+WHAT HE ASKED FOR
+             The report answers three questions and stops: what needs my
+             attention, what might be a security problem, what can I
+             ignore.
+             It normally fits one screen. It is understood by scanning
+             the headings, the status line and the required action.
+             Sections appear only when they have something in them.
+             Sections: Action needed - Security checks - Money and legal
+             - Human messages - Everything else.
+             Each item is a title, a status, one or two sentences, and
+             ONE exact action. Not six bullets.
+             Statuses are plain: Action required, Decision required,
+             Check required, Waiting, Information only, No action.
+             An empty day is one sentence: "No new email needs your
+             attention today." Nothing after it.
+
+WHAT IS REMOVED FROM WHAT HE SEES
+             COVERAGE and NOTES sections. Counts of messages checked.
+             Internal label names. Confirmation that labels existed or
+             that none were created. Search queries. Tool mentions.
+             Technical classification. Receipt times unless a deadline
+             turns on them. "Nothing else arrived in the window." "No
+             ledger question arises." Any mention of Codex labels. Long
+             explanations of why something matters.
+             And the repetition: the old format could describe one email
+             in an opening paragraph, again under Important, again in
+             Coverage and again in Notes. Each issue now appears ONCE.
+
+THE ONE EXCEPTION, AND WHY IT IS KEPT
+             If a label fails to apply or a search cannot run, that is
+             said in one line. A broken run is the Founder's business
+             because it means the mail was not fully reviewed. A working
+             run is not his business. This is the distinction the old
+             format failed to draw: it reported success as loudly as it
+             would have reported failure, which trains a reader to skim
+             past both.
+
+WHAT IS NOT CHANGED
+             None of the workflow's actual discipline. The searches, the
+             overlapping time window, reading the thread rather than the
+             snippet, the clustering rules for OpenAI and Apple mail,
+             the refusal to conclude anything from silence, the
+             prohibition on acting on instructions found inside an
+             email, the list of things the workflow may not do. All
+             intact. The audit detail is still produced - it moves to
+             the run's internal notes rather than disappearing.
+             This decision changes the OUTPUT, not the work.
+
+Evidence:    Founder's written specification, 2026-09-24, given in full
+             and stored with this decision. Prompt of the ZYRA EMAIL
+             scheduled task (trig_01FaagjQtkrUBwRha4cVFMEC) rewritten
+             the same day; the change required device-signed approval on
+             the Founder's Mac mini because the task is bound to that
+             computer.
+Related:     OA-ZYRA-278 - DR-ZYRA-245 - DR-ZYRA-246 - AD-AIOS-110 -
+             mailbox message 149 (Codex's method, still the source of
+             the judgement rules)
+Target:      Prompt updated and approved -> first run observed against
+             the new format -> Founder confirms it reads in fifteen
+             seconds -> close
+
+------------------------------------------------------------
+
+DR-ZYRA-248
+Title:       Paid-only Commercial, Journey Return, Guardian Permission and
+             Guardian Circle Retention Contract
+Category:    Product / Membership / Journey / Guardian / Privacy
+Status:      APPROVED — Founder, 2026-09-24; implementation staged and tested
+             locally; production migration and provider activation remain
+             separate approval gates
+Decided by:  Founder (Shakeel)
+Date:        2026-09-24
+Supersedes:  DR-ZYRA-243 and every earlier pricing/Basic/Family rule where
+             inconsistent; resolves the product-rule questions left open in
+             the 2026-09-23 full health check
+
+DECISION
+             ZYRA is paid-only: Seeker One £29.99/month, Guardian One
+             £19.99/month, no consumer Basic/free membership, monthly only.
+             Seeker One has one 14-day trial per verified person for life,
+             beginning only after verified identity and payment authority.
+             Guardian One and Family have no trial.
+
+             ZYRA Family independently selects 0–10 Seeker and 0–10 Guardian
+             places; 0/0 is invalid. Gross is role count multiplied by the
+             individual prices. Saving is 0% for one/two places, then five
+             percentage points per added place from three, capped at 40% from
+             ten. Unused purchased places are charged and count. Store price
+             rounds upward to a supported point and the verified local charge
+             controls display. The owner occupies a role place. Family
+             invites require consent and expire after seven days; permanent
+             ZYRA codes do not. Adds prorate immediately; removals/decreases
+             change billing at renewal. Funded removed places cannot be reused
+             before renewal. Owner cancellation continues all access to
+             renewal and notifies all members.
+
+             Paid renewal receives a 16-day Apple billing grace. After grace,
+             all product features lock while account, safety, support,
+             billing/restore, privacy/data deletion, legal and sign-out remain.
+             Refund/fraud/chargeback restrictions are immediate. Immediate
+             deletion ends ZYRA access but must warn that store billing needs
+             separate cancellation; scheduled deletion at coverage end is
+             also offered.
+
+             A paid Seeker can initiate return from their five most recent
+             Paused and five most recent Ended Journeys. Requests expire after
+             30 days. Decline creates a 30-day same-person cooldown; permanent
+             no-future-requests remains available; sender withdrawal has no
+             cooldown. If either person is at the three-Active-Journey cap,
+             the request cannot be sent or accepted and UI discloses only
+             Available / Not currently available. Incoming valid requests
+             resurface even outside the recipient's five. Paused resumes the
+             same record; Ended always creates a fresh attempt and preserves
+             the ended one.
+
+             Main Guardian has View and Chat for every Active Journey.
+             Additional Guardian has independent per-Journey View and Chat,
+             both ON by default; the linked Seeker may turn either off and
+             Chat cannot remain on without View. Every current Guardian Circle
+             participant must hold their own paid role entitlement. Removal
+             closes access immediately; relink creates a new history epoch.
+             Deleted-sender Circle messages are retained with a neutral label
+             for 12 months. Reported-message evidence plus bounded immediate
+             context is protected for 24 months after case closure, longer
+             only under active legal/safety hold.
+
+             Phase-one pricing markets are UK, US, Canada, Australia, New
+             Zealand and UAE, with purchasing-power pricing and a documented
+             profitability floor rather than exchange-rate conversion alone.
+
+ACTIVATION BOUNDARY
+             This decision authorises implementation and testing, not an
+             automatic production database push, store-product activation,
+             IDV activation, TestFlight upload or public release. The exact
+             reviewed migration batch and Stripe IDV rollout each require a
+             later Founder GO after evidence.
+
+Evidence:    BUSINESS/ZYRA PRICING/ZYRA_PRICING_CURRENT_VERSION_V6.md;
+             SOURCE migration
+             20260924100231_founder_paid_only_returns_guardian_circle_contract.sql;
+             SHA-256
+             f6af8a28e1b0ce319a8daaa39ff22fc30574bd6c9d47f70a5de8cfec49374006;
+             Flutter analyzer clean; 49 focused paid-contract/UI tests and
+             1,313 non-visual tests passed with one intentional skip; unsigned
+             iOS profile build passed; website pricing/browser/motion suite
+             passed including all 121 Family combinations. PostgreSQL replay
+             of this new migration remains pending because the local Docker
+             service was unavailable. Production remained unchanged.
+
+------------------------------------------------------------
+
+DR-ZYRA-249
+Title:       The daily email workflow may set read status — unread now
+             means "this wants you"
+Category:    Operations / Email triage / Workflow permissions
+Status:      APPROVED — Founder, 2026-09-25. Applied to the ZYRA EMAIL
+             scheduled task the same day, in the session that restored the
+             truncated prompt. Recorded here retrospectively by Fable,
+             2026-09-25.
+Decided by:  Founder (Shakeel)
+Date:        2026-09-25
+Authority:   AD-AIOS-110 — Fable owns the daily email workflow
+Amends:      OA-ZYRA-278. Reverses the prohibition carried in DR-ZYRA-245
+             and DR-ZYRA-247, both of which said reading mail must not
+             change its read or unread status, and both of which listed
+             "mark read or unread" among the actions the workflow may not
+             take.
+
+DECISION
+             The daily email workflow may now set read status, so that
+             unread means "this wants you" rather than "nobody has looked
+             at this yet".
+
+             Marked Claude/Checked, nothing needed from the Founder
+             — mark it read.
+             Marked Claude/Action Needed — leave unread.
+             Written by a real person — leave unread whatever else was
+             done to it.
+             Nothing already read is ever marked unread again.
+
+             Every other prohibition stands unchanged. The workflow still
+             may not send, reply, draft, forward, delete, trash, archive,
+             mark spam, star, create labels, click links, open attachments,
+             change any account setting, approve payments, or act on
+             anything an email asks it to do.
+
+Related:     OA-ZYRA-278 — DR-ZYRA-245 — DR-ZYRA-247 — AD-AIOS-110
+Evidence:    Section 4 of the ZYRA EMAIL scheduled task prompt, saved
+             2026-09-25 08:26 UTC. File copy at BLACK UMBRELLA GROUP/
+             SYSTEM/DOCUMENTS/MASTER_AUTOMATION/SCHEDULED_TASK_PROMPTS/
+             ZYRA_EMAIL_PROMPT_COMPACT_2026-09-25.txt
+Target:      First run under the new rule observed — Founder confirms the
+             unread count now shows only mail that wants him — close
+
+------------------------------------------------------------
+
+DR-ZYRA-250
+Title:       Compatibility Unlock D1–D6 — Converged Product Policies,
+             With Implementation and Production Execution Explicitly Held
+Category:    Product / Compatibility / Privacy / Entitlement
+Status:      APPROVED — PRODUCT POLICY ONLY, 2026-09-28. No implementation,
+             database change, migration, credit spending, purchase or live
+             Compatibility Unlock+ activation is authorised by this record.
+Decided by:  Founder (Shakeel)
+Date:        2026-09-28
+Filed by:    Codex — Stage 0 documentation, under AD-AIOS-111
+Authority:   Founder's direct message headed "FROM FOUNDER — TO CODEX":
+             "I approve the six converged Compatibility Unlock policy
+             decisions below. This is product-policy approval only."
+Amends:      Conflicting future compatibility-policy text in the Master
+             Product Spec, Profile Unlocks and Seeker Onboarding references;
+             OA-ZYRA-193(d/e), 226, 227, 230 and 285 scope. Historical evidence
+             and earlier non-conflicting settled rules remain preserved.
+
+DECISION
+
+D1 — Future Amber meaning
+             Green = Prefer this = 1; Amber = Open to this = 0.5;
+             Red = Not for me = 0. Future preference capture must be
+             versioned. Existing Amber recorded as No preference must not
+             be automatically reinterpreted. Only affected legacy Amber
+             controls require reconfirmation; do not reset the entire bank.
+             Structural repair is separate from Amber reconfirmation.
+
+D2 — Counterpart applicability and strict validation
+             Preferences evaluate the prospective counterpart's applicable
+             question and vocabulary, including q24 children timing, q26
+             gender-specific polygamy variants, q39 male Masjid attendance,
+             conditional/gender-specific questions and Hard Requirements.
+             Every applicable required answer and preference light must
+             exist. Invalid data fails closed with a truthful typed state.
+             No missing-required skip, invalid-as-red, incomplete multi-
+             select partial scoring, stale hidden alias or guessed variant.
+
+D3 — Twelve internal categories
+             Approved canonical internal taxonomy:
+             1. Deen & Islamic Practice
+             2. Marriage Intentions & Structure
+             3. Children & Parenting
+             4. Family & In-Laws
+             5. Finances & Provision
+             6. Education, Career & Work
+             7. Home Life & Household Roles
+             8. Communication & Conflict
+             9. Personality & Connection
+             10. Lifestyle, Health & Well-being
+             11. Digital Life, Privacy & Boundaries
+             12. Culture & Language
+             Sect/revert -> Deen; country of birth/nationality/ethnicity/
+             languages -> Culture & Language. Location remains unscored
+             until separately approved. Chapter2 contribution weight 1 is
+             PROVISIONAL V1 while the corrected scorer is remeasured.
+             Unscored collected controls must not imply Compatibility
+             influence. Internal taxonomy approval does not automatically
+             regroup onboarding presentation or deploy a category contract.
+
+D4 — Reduced-disclosure Unlock+ direction
+             Approved as a DESIGN DIRECTION ONLY: explain the same saved
+             directional score as Standard with broad category bands,
+             fixed category order, neutral unavailable states and Guardian
+             information separate from the score. No exact category
+             percentages, counts/denominators, ranking or score-history
+             changes. Band names/thresholds, suppression and residual-risk
+             acceptance remain later Founder decisions. This is not a
+             privacy-safety certification. Old exact-tally/category-
+             percentage proposals are not the future V1 display contract.
+
+D5 — One saved directional result
+             One validated directional result when first authorised, reused
+             by Standard, Unlock+ and permitted Journey Reveal. No ordinary
+             recalculation because of reopening, upgrading, reinstalling,
+             another Journey, another screen or later answer/preference
+             edits. No user-controlled V1 refresh; reopening never consumes
+             another unlock. Version changes are not permission to requery.
+
+Technical-defect replacement
+             An authorised review must prove a defect affected the saved
+             calculation or captured inputs (corruption, scoring/mapping
+             defect or configuration error). Replacement is server-
+             controlled, scoped, audited, free and unavailable for probing.
+             Use original captured inputs where lawfully available. If
+             they cannot be reproduced, do not silently use current inputs:
+             show truthful unavailable and return the matter for review.
+             Ordinary edits, upgrades and software-version changes are not
+             technical defects. This policy does not authorise any specific
+             production repair or replacement execution.
+
+D6 — Legacy transition, retention principles and Plus hold
+             Preserve permanent entitlements; do not charge existing users
+             again or migrate fictional category fixtures as real results.
+             One bounded free legacy transition to the first validated
+             snapshot. Validation failure permits necessary repair/retry
+             without provisional scores. Once validated, no-refresh V1
+             applies. Keep one current approved result, not unlimited
+             user-visible score history. Safety/blocking/deletion/privacy
+             still govern disclosure. Guardian information remains current,
+             not frozen calculation data. New Plus spending must remain
+             server-disabled until every launch gate passes; this is a
+             REQUIRED future control, not fresh verification of today's
+             server state. Current static evidence proves an app/service
+             hold, not the proposed server availability/preflight gate.
+
+SETTLED — UNCHANGED
+             Standard shows only the viewer's overall directional percent;
+             no counterpart score. Entitlement is permanent per viewer/
+             profile/tier and survives ordinary Journey ending. Hard
+             Requirements remain independent exclusions. Overall is
+             question-based; category percentages are not equally averaged.
+             Approved Guardian information remains part of Unlock+.
+
+NOT APPROVED
+             Band names/thresholds; suppression thresholds; minimum useful
+             Plus disclosure; exact retention periods; measured Standard
+             or incremental Plus privacy-risk acceptance; real spending,
+             purchases, migrations, production changes or activation.
+
+NEXT / AUTHORITY BOUNDARY
+             Founder asked for a bounded implementation/evidence plan and
+             prohibited implementation until plan review plus separate
+             execution approval. The later "Continue" was scoped by Codex
+             to Stage 0 documentation preparation; broader execution was
+             not assumed. The Stage 1 local-only build brief remains DRAFT
+             and is not an engineering GO. No app/test/database execution
+             was performed while filing this decision.
+
+Evidence:    Founder direct D1–D6 approval, 2026-09-28; Founder-relayed final
+             review is support evidence, never approval. Source anchor:
+             SYSTEM/RESOURCES/REVIEWS/COMPATIBILITY_UNLOCK_ROUND2_2026-09-28_
+             FOCUSED_PACKET.json, SHA-256
+             fb3bdbb33e7f9c801a492f1125f732faa74552ce5aa88ed83472ac926240853d.
+Related:     OA-ZYRA-192, 193, 226, 227, 230, 283, 284, 285;
+             DR-ZYRA-211 (one question = one contribution, unchanged);
+             COMPATIBILITY_UNLOCK_IMPLEMENTATION_AND_EVIDENCE_PLAN and
+             COMPATIBILITY_UNLOCK_STAGE1_LOCAL_BUILD_BRIEF (dated drafts
+             under SYSTEM/RESOURCES/REVIEWS).
+
+------------------------------------------------------------
+
+DR-ZYRA-251
+Title:       Required Public First and Last Names in Account Essentials
+Date:        2026-10-02
+Status:      FOUNDER APPROVED — bounded client implementation; physical
+             acceptance and live integration verification remain separate
+Authority:   Founder direct instruction in the current onboarding chat and
+             explicit reply that last name must not be optional and must
+             appear publicly. No AI or support relay is the approver.
+
+Decision:    New Seeker and Guardian signup collects required first name and
+             last name on the same account-essentials question. Both names
+             appear on the public profile under existing visibility rules;
+             surname is not labelled private or optional. Ordinary reading
+             type remains Poppins, with the separate gold Syne wordmark.
+             The existing required Male/Female question remains: Seeker
+             question 2; Guardian question 3 after date of birth. No new
+             question count, gender rule, intro copy or motion is approved.
+
+Supersedes:  Earlier optional-last-name and internal-only-name statements
+             in APP onboarding documents, only to this bounded extent.
+             The existing public profiles.surname_line display field is
+             reused; no column, policy or grant change is authorized.
+
+Implementation boundary:
+             Required names are enforced by the new-signup client and its
+             protected recovery draft, not a newly enforced database-wide
+             NOT NULL rule. Valid legacy unfinished drafts collect surname
+             before admission while retaining later answers. Existing
+             admitted accounts are not silently renamed, backfilled or
+             forced through new signup. Profile Settings surname editing
+             is not included in this request. Real IDV and own-row-confirmed
+             save remain mandatory; DEV values cannot become member data.
+
+Not approved: Migration, production member-data mutation, provider or held
+             IDV-gate activation, publication execution, billing, external
+             release or a waiver of outstanding onboarding safety gates.
+Related:     OA-ZYRA-145; OA-ZYRA-303; Onboarding Preview handover §90.
+
+------------------------------------------------------------
+
+DR-ZYRA-252
+Title:       Restore Basic at £4.99 Once and Choose Membership During Signup
+Date:        2026-10-03
+Status:      FOUNDER APPROVED — bounded client implementation; checkout,
+             receipt enforcement and public activation remain separately held
+Authority:   Founder directly requested the onboarding membership choice and
+             return of the free version. Asked whether this meant genuinely
+             £0 or Basic with a £4.99 verification joining fee, the Founder
+             selected “Basic with £4.99 one-time fee”.
+
+Decision:    Restore Seeker Basic and Guardian Basic as £4.99 one-time joining
+             products, with no monthly subscription. Do not advertise them as
+             completely free. Reuse the last pre-retirement Basic client
+             feature boundaries, not older superseded limits. Keep Seeker One
+             £29.99/month, Guardian One £19.99/month, current Family formula,
+             One limits, trial terms and separate compatibility purchases.
+             No £4.99 first-month offer or universal extra One/Family fee is
+             inferred from the earlier idea discussion.
+
+Onboarding:  Required account names, gender and DOB (Guardian relationship
+             too) → a role-aware membership choice → real identity check →
+             existing post-verification flow. The choice is private intent,
+             not a purchase, verified status or membership grant. Retain it
+             securely for recovery and subsequent membership review without
+             shifting the accepted essentials question indices.
+
+Basic scope: Seeker: 1 Active / 10 Potential / 1 Paused; 5 Saves; 25 active
+             Considers; 5 Considers/day; 25 committed swipes/4h; 1 linked
+             Guardian; no Insights or initiating history returns. Guardian:
+             permitted Journey/Timeline view and essential relationship,
+             consent, Main review and safety controls; no paid conversation,
+             compatibility answering or Network access. No link or Main
+             authority is created by payment or selection. Ads stay non-live.
+
+Supersedes:  DR-ZYRA-248's no-consumer-Basic rule and zero Basic client limits
+             only. Other lifecycle, privacy, role, Family and safety terms
+             remain unless separately amended. Missing/expired paid status is
+             not proof that a Basic joining fee has been paid; no automatic
+             funded-Basic claim or access grant is authorized.
+
+Not approved: Live payments/store product activation, receipts, IDV/provider
+             or held release-gate activation, migration authoring/application,
+             production member-data mutation, advertising activation, website
+             publication, external release or waiver of existing open gates.
+Related:     OA-ZYRA-253 (membership/receipt authority); OA-ZYRA-303 (signup
+             flow); OA-ZYRA-293 (retained Basic quotas/adverts).
+
+------------------------------------------------------------
+
+DR-ZYRA-253
+Title:       Purpose-Led Opening — One Welcome and Three Clear Themes
+Date:        2026-10-03
+Status:      FOUNDER AUTHORIZED — bounded local implementation; physical
+             design acceptance and public-route adoption remain separate
+Authority:   Founder directly requested one deep review and implementation of
+             meaningful, readable, sectioned onboarding, saying the three
+             welcome clicks felt like gap-filling and typed-on motion did
+             not fit the onboarding culture.
+
+Decision:    In the protected opening rehearsal, consolidate named welcome,
+             praise/blessings and role-neutral prayer into one thoughtfully
+             ordered welcome page that explains who ZYRA serves. Follow with
+             three complete themes: photos-first mutual choice, Compatibility
+             with private answers, and shared/multiple-Guardian support.
+             Remove the redundant final Let's begin screen; the Guardian
+             section action leads directly to the existing role choice.
+             Retain the reported Imam Ahmad excerpt with concise attribution
+             in an optional same-page Why photos first? explanation, never a
+             separate required step or visible bibliographic reference.
+
+Presentation: Show full thoughts on entry, with one soft foreground motion
+             for icon and text, a stationary purple/live-diagonal-gold canvas,
+             gold Syne wordmark and Poppins reading text. Three local theme
+             dots only, completed/current gold. Welcome and final section
+             actions use down handoffs; within-theme tap/right-swipe and the
+             explicit scroll comparison remain. Welcome arrow waits three
+             seconds after entrance; reduced-motion/accessibility bypasses
+             motion/delay. No visible tap/swipe instructional caption.
+             Opening controls retain five whole-page descent variations;
+             legacy typewriter enum values cannot type this reader.
+
+Supersedes:  The protected seven-card/three-welcome-dot/extra-final-handoff and
+             mandatory hidden-explanation reading model only. Standalone
+             four-card direction studies remain a distinct comparison.
+             DR-ZYRA-251 required/public names and DR-ZYRA-252 Membership
+             choice → IDV remain unchanged, as do profile-now/finish-later,
+             consent, saved answers, Guardian authority and publication.
+
+Not approved: Promotion into ordinary OAuth routing, new religious/product
+             claims, backend/member-data writes, payments/receipts, provider
+             or release activation, migrations, external release or inferred
+             Founder acceptance of the resulting design.
+Related:     OA-ZYRA-303/286; Onboarding Preview handover §94.
+
+------------------------------------------------------------
+
+DR-ZYRA-254
+Title:       Seeker One £4.99 First-Month Membership Design Preview
+Date:        2026-10-03
+Status:      FOUNDER AUTHORIZED — bounded local design implementation;
+             trial decision, commercial adoption and design acceptance pending
+Authority:   Founder direct request in the current app-building chat: show
+             Seeker One at £4.99 for its first month, improve the Membership
+             page, and offer a gentle Basic-to-One suggestion at the same
+             initial price. The Founder asked whether to retain the trial;
+             asking for advice is not approval to remove it.
+
+Decision:    Protected Seeker signup preview shows Basic £4.99 once and One
+             £4.99 first month, then £29.99/month with cancellation-of-renewal
+             wording. Joining/verification is included in the One preview,
+             not an additional £4.99 fee. Selecting Basic retains Basic and
+             a valid Continue action; a separate explicit Try Seeker One
+             action is optional and disabled during saving. No automatic
+             selection, pressure dialog or access grant is introduced.
+
+Boundary:    The proposed first-month offer is a design comparison, not an
+             active store offer. Ordinary Seeker pricing and its current
+             14-day trial remain unchanged pending the Founder decision.
+             Guardian/Family introductory amounts and eligibility are not
+             invented from the Seeker example; existing recurring prices,
+             Family formula and role limits remain unchanged. Shared card
+             readability improvements apply to both signup roles.
+
+Supersedes:  DR-ZYRA-252's exclusion of a first-month offer only for this
+             protected local design comparison. Its ordinary commercial,
+             receipt, account sequencing and entitlement boundaries remain.
+
+Not approved: Trial removal, live introductory offer/product activation,
+             purchase or receipt enforcement, automatic Basic fallback,
+             IDV/provider activation, migrations, backend/member-data writes,
+             phone installation, public release or existing-gate waiver.
+Related:     OA-ZYRA-303 (signup); OA-ZYRA-253 (commerce); Pricing V6 preview
+             overlay; Onboarding Preview handover §96 and verification JSON.
+
+------------------------------------------------------------
+
+DR-ZYRA-255
+Title:       App Gold Accents On and Off Developer Preview
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — bounded local UI implementation;
+             phone delivery and Founder visual acceptance pending
+Authority:   Founder direct request to see onboarding's gold dots across
+             the app, with a toggle to turn the treatment on and off.
+
+Decision:    Add App gold accents in the shared Developer Home controls for
+             Entry, Seeker and Guardian. Start Off, keep the choice temporary
+             within the current authorized account session, and leave the
+             onboarding gold controls and approved defaults unchanged.
+             On uses the existing Diagonal edge / Live drift gold dust on
+             normal app gradient canvases, below page content rather than
+             as a foreground overlay. Off retains the original canvas.
+
+Boundary:    Existing developer authorization and account-generation guards
+             apply to the control and painter. Revocation/account reset
+             clears the choice. One shared motion clock pauses in the
+             background and for disabled tickers; reduced motion keeps dust
+             still. Cards, photos, text, gestures, navigation, colours,
+             Poppins reading text and Syne wordmark are not redesigned.
+
+Supersedes:  The earlier retirement of developer visual controls only for
+             this explicitly requested, separately labelled app-background
+             comparison. It is not a member Personalisation preference or
+             an ordinary app default.
+
+Not approved: Saved or public theme adoption, backend/member-data writes,
+             billing/verification/provider activation, migrations, phone
+             installation, public release or inference of visual acceptance.
+Related:     OA-ZYRA-257; Colour Theme Summary; UI Consistency Gate handover;
+             APP_GOLD_ACCENTS_PREVIEW_2026-10-04_VERIFICATION.json.
+
+------------------------------------------------------------
+
+DR-ZYRA-256
+Title:       Standalone Verification Trust Page in the Protected Opening
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — bounded local presentation implementation;
+             internal checks, phone delivery and physical acceptance separate
+Authority:   Founder direct instruction to remove the identity-verification
+             sign-up sentence from Welcome and give the standard its own
+             meaningful page, with Codex refining the wording.
+
+Decision:    Preserve the named Welcome, purpose, praise/blessings and prayer;
+             remove only its verification sentence. Insert Our community
+             before the existing three How ZYRA works themes. Heading:
+             “Verified people. Serious intentions.” Body: “Every Seeker and
+             Guardian must complete identity verification before joining
+             ZYRA.” Closing: “A shared standard for a community focused on
+             marriage.” This describes the approved admission requirement.
+
+Presentation: Reuse gold shield/halo artwork, the same artwork anchor, Poppins,
+             Syne wordmark, fixed purple/live gold background and selected
+             clear-then-enter foreground motion. Welcome and trust are
+             unnumbered reading checkpoints with their own three-second
+             arrow delay; reduced motion/accessibility bypass both delays.
+             Retain exactly three theme dots, completed/current gold, and
+             unchanged photos/Compatibility/Guardian paragraphs and quotation.
+             Back retraces Photos → trust → Welcome → provider. Final Guardian
+             action still reaches the existing role choice.
+
+Supersedes:  DR-ZYRA-253's four-page count and placement of the verification
+             sentence on Welcome only. Standalone direction studies, account
+             admission, Membership/IDV, profile sections and permission rules
+             are unchanged.
+
+Not approved: Claims that every existing live member is already verified,
+             verified intentions/safety/background/photo checks, comparison
+             claims about Muzz, public-route promotion, provider/enforcement
+             activation, migration, backend/member-data writes, commerce,
+             installation, release or inferred Founder design acceptance.
+Related:     OA-ZYRA-303; OA-ZYRA-266; Onboarding Preview handover §99.
+
+------------------------------------------------------------
+
+DR-ZYRA-257
+Title:       Install Checked Routine App Changes While the Founder Is Home
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — local delivery workflow only; independent
+             execution checks and physical acceptance still required
+Authority:   Founder direct reply: “yeh im at homen so always insall, if im
+             away ill tell you or tell you after i forgot”. This also approves
+             the pending Account ready redesign's local installation now.
+
+Decision:    For a Founder-requested routine app change, complete its internal
+             checks, then build/install/native-launch the existing main PROFILE
+             app on the existing paired Founder iPhone while his latest stated
+             availability is home, without a second install confirmation.
+             An away notice (including later correction) defers local delivery
+             until the next home confirmation. No timer/automation is added.
+
+Checks:      Existing product scope/source, connected/unlocked device, main
+             identity/signature, successful installation and exact new-container
+             process. Stop on failure, unavailable/locked device or scope drift;
+             seek only the needed unblock/new authority. Installation success
+             is not physical page/flow/VoiceOver or saved-data acceptance.
+
+Supersedes:  Requiring a separate install approval for each checked routine
+             local tweak while the Founder is home, only to this named extent.
+             No app feature, pricing, policy or permission rule changes.
+
+Not approved: New signing assets/identity, device/App-ID registration, security
+             trust changes, remote delivery, Apple upload/TestFlight assignment,
+             backend/member-data write, Auth/provider/commerce activation,
+             SQL/migration, public release or inferred Founder acceptance.
+Related:     OA-ZYRA-286; OA-ZYRA-257/303; Developer Control handover §37;
+             One-App Internal Delivery Runbook §3; current AD-AIOS-111 overlay.
+
+------------------------------------------------------------
+
+DR-ZYRA-258
+Title:       Gold Accents in Shared Member Personalisation
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — scoped presentation implementation;
+             internal checks, local delivery and physical acceptance separate
+Authority:   Founder direct instruction: “ok remmeber the gold dots we said
+             add to app in toggle, add it as a option in personilsation please”.
+
+Decision:    Expose Gold accents On/Off in the existing shared Personalisation
+             page for Seekers and Guardians, using the existing live Diagonal
+             edge dust behind app canvases. Default Off. Save the member's
+             choice locally for the bound account on this device, following
+             existing same-owner cold-start restoration and logout/account
+             switch cleanup. No server preference or profile write is added.
+
+Controls:    Keep the authorized developer comparison temporary and separate.
+             Its explicit On/Off overrides the saved choice only in that session;
+             revocation/account change discards the override. A member selection
+             clears the preview override and applies immediately. Preserve
+             reduced-motion, app-lock, background/ticker pause and stale-account
+             guards. Opening/login gold choices and all page content stay intact.
+
+Supersedes:  DR-ZYRA-255's exclusion from member Personalisation and persistence
+             only; its historical comparison evidence is retained. Routine local
+             installation follows DR-ZYRA-257 while the Founder is home.
+
+Not approved: Global default-On adoption, theme/typography/content changes,
+             backend/Auth/provider/member-data writes, SQL/migration, commerce,
+             new signing/identity/security assets, Apple upload/TestFlight,
+             public release or inferred Founder visual acceptance.
+Related:     OA-ZYRA-257/286; Colour Theme Summary; Settings & Identity V3;
+             UI Consistency Gate handover.
+
+------------------------------------------------------------
+
+DR-ZYRA-259
+Title:       Verification Joins the Four Slide Introduction Section
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — scoped opening presentation/navigation;
+             internal checks, phone delivery and physical acceptance separate
+Authority:   Founder screenshots and direct instruction to add Verified people
+             to the other three introduction themes, making four slides.
+
+Decision:    Keep Welcome as the separate unnumbered entrance. Group existing
+             Verified people → Photos → Compatibility → Guardian support
+             into one four-slide section. Show four dots and local 1/4–4/4
+             progress; completed/current dots are gold. Verification uses the
+             same next/tap/swipe navigation and foreground transition as the
+             following slides, not its own down-arrow section checkpoint.
+             Retain Welcome's delayed down entrance, Guardian's final down
+             exit to role choice, Back and the explicit scroll-all comparison.
+
+Preserve:    All existing wording, shield/other artwork, anchors, fonts, gold
+             dust, optional same-page Imam Ahmad quotation, account/Membership/
+             mandatory identity flow, authorization and stale-flow guards.
+
+Supersedes:  DR-ZYRA-256's unnumbered standalone trust checkpoint, its separate
+             three-second down action and three-theme progress only. The trust
+             page/content and admission requirement remain. Standalone quote
+             study and its different page counts are not changed.
+
+Not approved: Provider/Auth/backend/member-data or verification enforcement
+             activation, SDK/migration/commerce, typography/content changes,
+             new signing/identity/security assets, Apple upload/TestFlight,
+             public release or inferred Founder visual acceptance. Routine
+             local delivery follows DR-ZYRA-257 while Founder remains home.
+Related:     OA-ZYRA-303/257/286; Onboarding Preview handover; UI Gate handover.
+
+------------------------------------------------------------
+
+DR-ZYRA-260
+Title:       Smooth Finger Swipes and Down Arrow Checkpoints
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — scoped client motion and callback repair;
+             internal verification, local delivery and acceptance separate
+Authority:   Founder reports buggy finger scrolling after selecting Seeker or
+             Guardian and asks to check all down arrows so page movement is
+             clean and smooth, matching the already-liked arrow interaction.
+
+Decision:    Keep existing arrow/swipe destinations and timing. Stop outgoing
+             scroll activity after pointer release before invoking the same
+             guarded page transition. Use clamped role-choice scrolling;
+             wait for entrance/card focus and full page settlement before
+             accepting another advance. Cancel stale gestures and guard
+             existing arrow callbacks against duplicate/disposed navigation.
+             Final Guardian checkpoint uses the existing vertical role entry
+             in both Tap-through and Scroll-all comparison modes.
+
+Preserve:    Welcome and the four-slide section, approved words/counts/order,
+             fonts, artwork anchors, fixed purple/live diagonal gold canvas,
+             selected within-section motion, accessibility, read-before-
+             advance, validation, Auth/principal/revocation and consent gates.
+             Tap-only forms/IDV/consent do not gain swipe-to-advance.
+
+Not approved: New product sequencing, text/design/default theme, backend/
+             provider/member-data/verification activation, SQL/migration,
+             commerce, signing/registration/security changes, upload/
+             TestFlight/release or inferred physical Founder acceptance.
+             Checked local delivery follows standing home DR-ZYRA-257.
+Related:     OA-ZYRA-303/257/286; Onboarding Preview handover; UI Gate handover.
+
+------------------------------------------------------------
+
+DR-ZYRA-261
+Title:       Account Essentials Handoff Artwork
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — scoped presentation change;
+             internal checks, local delivery and physical acceptance separate
+Authority:   Founder direct instruction to change the top icon on
+             “First, your account.” because he dislikes the existing icon.
+
+Decision:    Replace only this account-details handoff's abstract motif with
+             a decorative gold person outline in a subtle circular halo.
+             Retain its 70px artwork space and anchor. Apply to the ordinary
+             page and its protected comparisons; other page artwork stays.
+
+Preserve:    Text, surrounding layout, fonts, palette, selected transitions,
+             arrow/swipe controls, destinations, account/Membership/IDV and
+             authorization rules. The icon does not claim verified status.
+
+Not approved: Other product/design changes, backend/provider/member-data,
+             migration/payment, signing/registration/security changes,
+             upload/TestFlight/release or inferred Founder acceptance.
+             Checked local delivery follows standing home DR-ZYRA-257.
+Related:     OA-ZYRA-303/257/286; Onboarding Preview handover §106.
+
+------------------------------------------------------------
+
+DR-ZYRA-262
+Title:       Guided Onboarding Answer Cards and Motion
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — scoped onboarding presentation;
+             internal checks, routine local delivery and acceptance separate
+Authority:   Founder gender-page screenshot and instruction to improve the
+             page/animation using Seeker/Guardian choice as the consistency
+             reference, checking other onboarding areas and changing as needed.
+
+Decision:    Adapt Guided paths' separate frost/gold cards to onboarding
+             answers. Remove redundant surrounding answer frames on Seeker
+             gender, Guardian gender/relationship, equivalent profile choice
+             lists and Compatibility Part 1. Use flexible readable heights,
+             clear gold selection marks, restrained entry/selection motion
+             and immediate reduced-motion/accessibility presentation. Keep
+             choices visible rather than copying role focus/collapse behavior.
+
+Controls:    Only onboarding opts into the shared compatibility selector's
+             new presentation; profile editors retain their existing default.
+             Flexibility's green/yellow/red circles use existing semantic
+             tokens rather than emoji-font glyphs. No new visible instructions.
+
+Preserve:    Approved text, values, order/counts, selection cardinality,
+             required answers, privacy, persistence, manual continuation,
+             routes/arrow/swipe gates, fonts, palette, account-handoff icon,
+             opening and membership/admission rules. Distinct DOB/photos/
+             text/Bio/traffic-light matrix/commerce interfaces remain.
+
+Not approved: Backend/Auth/provider/member-data, verification activation,
+             scoring/policy changes, SQL/migration/payment, new signing/
+             registration/security, upload/TestFlight/release or inferred
+             physical acceptance. Home delivery follows DR-ZYRA-257.
+Related:     OA-ZYRA-303/257/286; Onboarding Preview handover §107.
+
+------------------------------------------------------------
+
+DR-ZYRA-263
+Title:       ZYRA Family £4.99 Per Person First-Month Onboarding Preview
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — bounded client design implementation;
+             commercial activation and physical acceptance remain separate
+Authority:   Founder direct instruction: “Zyra family also gets 4.99 per
+             person first month. Include that onboarding.”
+
+Decision:    Show the Family introductory amount in the protected onboarding
+             comparison for both Seeker and Guardian signup. The selected
+             configuration shows £4.99 times its selected places as the
+             first-month total, then the unchanged monthly renewal estimate
+             and renewal saving separately. No further bundle discount is
+             applied to the introductory unit price or extra joining fee.
+
+Boundary:    Preserve DR-ZYRA-254's protected comparison/commerce hold.
+             Ordinary Family/One renewal prices, Family limits/owner-role
+             requirements, trial terms, selection/persistence, routes and
+             payment/identity/entitlement guards remain. The configurator
+             counts role places, not deduplicated verified people; dual-role
+             eligibility/billing awaits separate OA-ZYRA-253 reconciliation.
+
+Supersedes:  Prior exclusion of an inferred Family introductory comparison
+             only. The Founder now explicitly requests that display; no
+             standalone Guardian One introduction or trial removal is inferred.
+
+Not approved: Store offer/checkout/receipt activation, spending, entitlement
+             grants, Family allocation/linking, backend/member-data/provider/
+             migration changes, new signing/registration/security or upload/
+             TestFlight/public release. Home delivery follows DR-ZYRA-257.
+Related:     OA-ZYRA-303/253/286; Pricing preview overlay; Onboarding §108.
+
+------------------------------------------------------------
+
+DR-ZYRA-264
+Title:       First Seeker Photo Before Signup Membership
+Date:        2026-10-04
+Status:      FOUNDER AUTHORIZED — bounded client flow implementation;
+             provider, backend and physical acceptance remain separate
+Authority:   Founder direct request: users entering the app need at least
+             one photo, so add that before subscription selection.
+
+Decision:    Seeker essentials collect the first profile photo after DOB
+             and before Membership. Reuse the existing privacy processing,
+             crop review and private own-folder upload; secure same-device
+             recovery stores only an owner-bound path, never photo bytes or
+             signed URLs. Verification still precedes profile creation.
+             Finalization attaches and confirms the photo before erasing the
+             signup draft or offering profile-now / app-now. Existing unfinished
+             drafts return through the new photo checkpoint without losing
+             their identity answers or membership choice.
+             A minimal protected same-device pending-finalization marker
+             contains no identity/photo/choice values and survives sign-out
+             until confirmation. It is a recovery checkpoint, never access
+             proof. Server atomicity/cross-device partial-creation recovery
+             remains a separate held backend gap under OA-ZYRA-193/303.
+
+Boundary:    Guardian essentials/relationship/IDV remain identity-only.
+             The existing three-photo full-profile completion requirement
+             remains; the early photo carries into that later step. No new
+             photo ownership/safety verdict, payment or verified grant is
+             inferred from choosing/uploading a photo. Existing accounts are
+             not backfilled or forced through signup.
+
+Supersedes:  DR-ZYRA-252's Seeker essentials-to-Membership sequencing only.
+             Required names, privacy, membership terms, admission guards,
+             approved opening and deferred profile setup remain.
+Not approved: Live test uploads/member-data mutations, migrations, RLS or
+             provider activation, new storage/security/signing configuration,
+             checkout/receipt grants or remote/TestFlight/public release.
+             Routine local delivery follows DR-ZYRA-257.
+Related:     OA-ZYRA-303/193/286/257; Onboarding Preview handover §109.
+
+------------------------------------------------------------
+
+DR-ZYRA-265
+Title:       Adopt the Non-Swipe Design as the Real Member Direction
+Date:        2026-10-09
+Status:      FOUNDER DIRECTION ACCEPTED — authoritative lifecycle contract,
+             implementation checks and activation remain separate
+Authority:   Founder asked to set the new style as default, retain the old
+             comparison as Option 1, and remove toggle explanatory subtext.
+             When asked whether this meant developer testing with sample data,
+             Founder expressly replied: “Make the new style the real member flow”.
+
+Decision:    The intended default is the new non-swipe member experience,
+             preserving ZYRA's established theme and real account data. The
+             old presentation is the intended protected Option 1 comparison.
+             This is not permission to launch the sample-data concept shell
+             for ordinary members or to relabel Consider as a working direct
+             Journey request. Request/acceptance and capacity must be trusted
+             server operations, with ordinary Journey, Guardian, compatibility,
+             reporting and onboarding safeguards retained.
+
+Scope:       Consolidate the earlier Founder concept instructions: Browse
+             without swipe decisions; remove Save/Pause actions from the new
+             direction; Journey for current real relationships; other account
+             information in one My ZYRA view. Intended place counts remain
+             Basic 1 and funded monthly Seeker One/Family Seeker 3. Preserve
+             existing Potential, Paused, pending decisions and Ended records;
+             their safe access/transition mapping requires reconciliation,
+             not deletion or silent conversion. Canonical lifecycle integrity
+             remains binding; preparation/reservation is not an implicitly
+             approved new match.status or a chat/compatibility access grant.
+
+Execution:   Read-only source review identified no existing first-contact
+             request/recipient-acceptance contract. Current Consider writes
+             likes; existing return-request RPC concerns already-ended pairs
+             and remains held. Latest staged paid-only cap also needs funded
+             Basic reconciliation. Live deployment state was not inspected.
+             OA-ZYRA-151 now owns the missing contract, request-limit/expiry
+             and reservation-abandonment decisions, legacy mapping and tests.
+             Database authoring/local-test permission was requested separately;
+             no migration was authored or executed in this decision stage.
+
+Immediate:   Toggle descriptions may be removed now while keeping section
+             titles, option labels, usable compact controls, failures and
+             safety confirmations. Sample comparisons retain a concise sample
+             label. Runtime default/old comparison naming is held until the
+             real contract can deliver the approved methodology truthfully.
+
+Not approved: Live database/member-data writes, migrations or deployment,
+             guessed request limits/timeouts, backfills, receipt/IDV/provider
+             activation, release-fuse bypass, new signing/registration,
+             TestFlight/public release or inferred Founder acceptance.
+Related:     OA-ZYRA-151/286/253/299/303; Navigation Haptics handover §29;
+             existing canonical lifecycle in Product Spec Part 0; DR-ZYRA-257.
+
+------------------------------------------------------------
+
+DR-ZYRA-266
+Title:       New Opening Style for the Protected Founder Phone Preview
+Date:        2026-10-09
+Status:      APPROVED — reversible local presentation only
+Authority:   Founder clarified: “i want the option in toggle to become ...
+             default when i launch app ... current (old) style can be in
+             toggle just in case i revert back”. Codex explicitly separated
+             this phone opening layout from unfinished real-member services.
+
+Decision:    The existing new Browse/Journey style opens by default for the
+             freshly authorized Founder preview. Keep the old presentation
+             as Option 1 in the toggle; an explicit choice is remembered for
+             this account. The old toggle offers Default to switch back.
+             Preserve the approved page/card styling rather than redesign it.
+
+Boundary:    This changes protected local presentation only. Ordinary member
+             routing and authorization do not inherit fictional preview data.
+             Preferences never grant Founder, identity, payment or Journey
+             authority. Owner/generation/route guards, network-denial latch
+             and isolation remain; failed refresh stays closed. Developer
+             Home/preview exit do not silently persist Option 1.
+
+Supersedes:  DR-ZYRA-265's immediate hold on local preview launch-default and
+             old comparison naming only. Its real-member product direction,
+             canonical lifecycle, implementation and live-activation gates
+             remain open under OA-ZYRA-151 and existing dependencies.
+Not approved: Live migrations/member writes, provider/payment activation,
+             invented request policy, record conversion, new signing,
+             TestFlight/public release or inferred physical acceptance.
+Related:     OA-ZYRA-151/286; Navigation Haptics handover §33;
+             OA151_LAUNCH_STYLE_DEFAULT_2026_10_09.RvK3wJ; DR-ZYRA-257/265.
+
+------------------------------------------------------------
+
+DR-ZYRA-267
+Title:       Browse Gallery Controls and Separate Public Profile Answers
+Date:        2026-10-10
+Status:      APPROVED product direction and reversible local preview;
+             real-data capture, consent, server authority and deployment open
+Authority:   Founder requested both Browse helper sentences removed, a larger
+             photo card with identity over the photograph, photo swiping,
+             compact Back/Request Journey/Next pills, ten gallery comparisons,
+             consistent top-right main titles, and age, residence-country,
+             nationality, ethnicity and current-location radius filters.
+             Founder explicitly confirmed separate public profile answers,
+             keeping existing private compatibility answers private.
+
+Decision:    Keep the established theme, typography and caller-owned photo
+             rendering. Photo gestures change gallery position only, never
+             send a Journey request or make a swipe decision. Back and Next
+             use icon-only pills with accessible labels. The toggle keeps
+             Current plus ten numbered gallery comparisons, not a redesign
+             of the rest of the app. Main root-page titles share 26px sizing
+             and top-right alignment. Journey's empty explanation is centred.
+
+Privacy:     Public nationality/ethnicity are separately captured and clearly
+             labelled; never project or filter existing seeker_details answers
+             under the old compatibility consent. New public disclosure needs
+             a specific, versioned member choice and narrow server projection.
+             Withdrawal and account replacement revoke disclosure. Residence
+             country is distinct from nationality and country of birth. Radius
+             search requires explicit private location collection and trusted
+             server filtering; exact member coordinates are not public.
+
+Boundary:    The current protected phone preview may demonstrate filters with
+             invented metadata and a clearly labelled synthetic origin. It
+             must not call that origin the device's current location, imply
+             real-member filtering, or invent a public-answer save endpoint.
+             Admission, full-capacity exclusion, blocks and ownership still
+             precede filters. Existing private answers remain unchanged.
+Not approved: Live data/schema changes, consent backfills, silent disclosure,
+             location tracking, payment/provider activation or public release.
+Related:     OA-ZYRA-151/306; Navigation Haptics handover §34; DR-ZYRA-266.
+
+------------------------------------------------------------
+
+DR-ZYRA-268
+Title:       Guardian Basic Chat and Read Only Ended Journey Archives
+Date:        2026-10-10
+Status:      APPROVED product direction; local preview/client safeguards
+             and live server enforcement are separate
+Authority:   Founder requested Basic Guardians have disabled Chat in the
+             Seeker's View/Chat controls and the system; Ended Journeys belong
+             only in My ZYRA as archives, with no restart-request action.
+
+Decision:    Guardian Basic has no Journey Chat, including Main Guardians.
+             Main View remains required. Guardian One or a funded Family
+             Guardian place makes Chat eligible, not automatically authorized:
+             View, current link/attempt, stage, user permission and block rules
+             still apply. Missing paid-chat proof denies Chat, not View.
+             Neither a local plan toggle nor a Seeker subscription proves the
+             linked Guardian's paid authority. Legacy true chat_available
+             without separate authoritative paid proof is insufficient.
+
+Archives:    The new direction removes Ended Journeys from Profile. My ZYRA
+             provides read-only authorized old messages, not a request to
+             restart the ended attempt. Ending permits Browse rediscovery,
+             subject to eligibility, capacity, hide and block controls. A
+             blocked counterpart resolves to User not found, not archived
+             content. Historical attempts survive; rediscovery must not
+             overwrite history or revive chat/compatibility grants.
+
+Follow up:   Retain a Browse three-dot menu placement/content review after
+             the Founder chooses a gallery. OA-ZYRA-307 records this requested
+             reminder and the Hide/Block/archive boundary checks. A later
+             first-contact request after rediscovery must be reconciled with
+             canonical attempt isolation, not implemented as an old restart.
+Not approved: Production migrations, receipt assumptions, deletion/conversion
+             of legacy rows, widening message access or external release.
+Related:     OA-ZYRA-151/290/299/303/305/307; Navigation Haptics handover §34.
+
+------------------------------------------------------------
+
+DR-ZYRA-269
+Title:       Journey Navigation Shared Path Icon
+Date:        2026-10-10
+Status:      APPROVED visual implementation; internal/device checks and
+             Founder visual acceptance remain separate
+Authority:   Founder directly requested: 'In the navigation bar redesign
+             the journey icon'.
+Decision:    Replace the new-style Seeker Journey tab's route glyph with a
+             code-native outline symbol: two curved paths joining one upward
+             arrow. Retain navigation size, theme colour, selected highlight,
+             inactive scale, tap target, accessibility label and haptics.
+             The shared renderer supports the same opt-in glyph in alternate
+             menu layouts. Do not change other tabs, action icons, Journey
+             lifecycle or old Option 1's Connections icon.
+Delivery:    Include in the checked §34 bundle before phone installation,
+             after renewed source/visual/build gates; prior successful builds
+             remain historical and were not installed for this expanded scope.
+Related:     OA-ZYRA-151/307; Navigation Haptics handover §35; DR-ZYRA-267/268.
+
+------------------------------------------------------------
+
+DR-ZYRA-270
+Title:       Main Titles Top Left and Journey Icon Choice
+Date:        2026-10-10
+Status:      APPROVED title correction; replacement icon NOT selected
+Authority:   Founder directly corrected top right to top left, rejected the
+             current Journey icon and requested ten options in conversation
+             before choosing.
+Decision:    New-style Seeker and Guardian main tab titles sit at top left.
+             Retain their existing 26px size, top position, theme and spacing.
+             This supersedes the title-alignment clause of DR-ZYRA-267 only.
+             Keep ordinary Option 1 presentation defaults unchanged. Do not
+             replace the Journey navigation icon until the Founder selects
+             an option; the ten visual concepts are conversation previews,
+             not new app-toggle options or permission/lifecycle changes.
+Rejection:   DR-ZYRA-269 implementation and measured delivery remain history;
+             its shared-path glyph has not received Founder visual acceptance.
+Related:     OA-ZYRA-151/308; Navigation Haptics handover §36.
+
+------------------------------------------------------------
+
+DR-ZYRA-271
+Title:       Browse Button Sizes and Centred Request Text
+Date:        2026-10-10
+Status:      APPROVED scoped visual refinement and one-profile Back check
+Authority:   Founder directly requested nicer centred Request Journey text,
+             Back only one user, and Next larger than Back but smaller than
+             Request Journey, with a current phone screenshot.
+Decision:    Keep approved Back/Request Journey/Next order and existing theme,
+             card, title and request wording. Centre the request label in both
+             axes with a slightly larger current-font style. Keep Back compact,
+             make Next wider with a slightly larger arrow, and keep Request
+             widest. Back moves one eligible profile in the current deck per
+             activation; it does not revive users removed by eligibility or
+             filters. Do not change Journey lifecycle or the pending icon choice.
+Related:     OA-ZYRA-151/308; Navigation Haptics handover §37; DR267/270.
+
+------------------------------------------------------------
+
+DR-ZYRA-272
+Title:       Ten Multi-Person Browse Gallery Previews
+Date:        2026-10-10
+Status:      APPROVED bounded developer comparison implementation
+Authority:   Founder directly requested removing the existing Browse designs
+             from the toggle except Current and replacing them with ten
+             creative gallery styles showing multiple people, not one user.
+Decision:    Keep Current and its approved card/footer unchanged. Offer ten
+             numbered multi-person galleries using existing ZYRA typography,
+             palette and public profile inputs. Every visible card opens or
+             requests its own person; no shared selected-person request footer,
+             Save action, fabricated ranking or new relationship authority.
+             Filters, eligibility, archived state and guarded caller actions
+             remain binding. The previous ten single-person photo studies are
+             retired from the toggle, with compatibility code/evidence retained.
+             These are protected, session-only previews, not a production feed
+             activation or a choice of canonical gallery. Default stays Current.
+Related:     OA-ZYRA-151/306/308; Navigation Haptics handover §38; DR267/271.
+
+------------------------------------------------------------
+
+DR-ZYRA-273
+Title:       Current Browse Full Photo Downward Dismissal
+Date:        2026-10-10
+Status:      APPROVED scoped viewing gesture
+Authority:   Founder directly requested scrolling down to close the full view
+             opened by tapping Current Browse's picture, returning to Browse.
+Decision:    Enable downward dismissal only on Current Browse's ordinary full
+             photo inspection. A deliberate pull closes; a short pull springs
+             back. Keep the same Browse person, layout and filters, existing
+             photo taps and close controls. No request is created by dismissal.
+             Request confirmations, galleries and unrelated viewers retain
+             their existing behavior. Delayed gesture completion must not borrow
+             a later route, account or action delegate. Respect reduced motion.
+Related:     OA-ZYRA-151; Navigation Haptics handover §39; DR271/272.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-273,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-211 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-274 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

@@ -25,6 +25,8 @@
 // strongest in the app; the corrections below preserve it rather than
 // retreating into legal register.
 
+import 'zyra_membership_catalog.dart';
+
 class ZyraHelpEntry {
   final String question;
   final String answer;
@@ -33,7 +35,8 @@ class ZyraHelpEntry {
   bool matches(String query) {
     final q = query.toLowerCase().trim();
     if (q.isEmpty) return true;
-    return question.toLowerCase().contains(q) || answer.toLowerCase().contains(q);
+    return question.toLowerCase().contains(q) ||
+        answer.toLowerCase().contains(q);
   }
 }
 
@@ -57,7 +60,7 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
           'Dating apps are designed to keep you browsing. The longer you stay, '
           'the better they do. ZYRA is designed for you to leave — married. '
           'That single difference explains most of what follows.\n\n'
-          'You hold one Journey at a time, not a dozen conversations. A Journey '
+          'You follow structured Journeys, not endless conversations. A Journey '
           'moves through stages, with questions that surface what actually '
           'matters before a wedding, rather than small talk that avoids it. '
           'Your Guardian is a real participant in that process, not a spectator. '
@@ -68,11 +71,12 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     ZyraHelpEntry(
       'How does ZYRA work?',
       'You browse, and when two people are both open to each other, that '
-          'becomes a Potential Journey. You may hold as many of those as you '
-          'like. When you choose to begin with one person, it becomes your '
+          'becomes a Potential Journey, within your membership allowance. '
+          'When you choose to begin with one person, it becomes your '
           'Active Journey — a structured process with stages, guided questions '
           'and your family involved.\n\n'
-          'One Active Journey at a time. That is the whole idea.',
+          'Each Journey progresses deliberately, with both people choosing '
+          'whether to continue.',
     ),
     // ADDED 2026-08-01 (Fable): the biggest real-world anxiety in this
     // market. Answered honestly, including the parts ZYRA has not built —
@@ -82,7 +86,7 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     ZyraHelpEntry(
       'Will people I know see my profile?',
       'Possibly — and we would rather be straight with you about it.\n\n'
-          'Anyone signed in with a live profile can appear in Browse, and that '
+          'Anyone signed in with a live profile can appear in Profiles, and that '
           'includes people you know. You can hide your profile completely at '
           'any time from Privacy settings, and blocking someone makes you both '
           'invisible to each other everywhere in ZYRA, immediately.\n\n'
@@ -103,12 +107,12 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // tell whether any of it applied to him.
     ZyraHelpEntry(
       'Who needs a Guardian?',
-      'A Guardian is the family member who takes part in a woman\'s Journey — usually '
-          'her father, and otherwise a grandfather, brother or paternal uncle.\n\n'
-          'If you are a female Seeker, you will link a Guardian before a Journey '
-          'can progress past its early stages. If you are a male Seeker, you do '
-          'not need one, and the Guardian sections of the app will not apply to '
-          'you — you will meet your match\'s Guardian during the Family Stage.',
+      'Seekers can use the Guardian section to involve their family in '
+          'their marriage Journey. The Main Guardian leads the responsibilities '
+          'assigned to that role; Additional Guardians have the access you '
+          'permit.\n\n'
+          'The app shows which Guardian steps are needed for your Journey. '
+          'Paying for membership never grants relationship authority.',
     ),
     // ADDED 2026-08-01 (Fable): "a guaranteed support email". Prices taken
     // from BUSINESS/ZYRA PRICING/Summary.md, not invented. Launch
@@ -116,14 +120,31 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // cannot be corrected without a release until it moves to Supabase.
     ZyraHelpEntry(
       'What does ZYRA cost?',
-      'Creating a profile, browsing, matching and holding an Active Journey '
-          'are free. So is everything to do with your safety — blocking, '
-          'reporting and privacy controls are free for everyone, always.\n\n'
-          'ZYRA One is £34.99 a month and is optional. Guardian+, for guardians '
-          'buying separately, is £9.99 a month — though it comes free with a '
-          'Seeker\'s ZYRA One.\n\n'
-          'Promotional pricing is often running for new members. You will see '
-          'the current price before you are ever asked to pay.',
+      '${ZyraMembershipCatalog.basicTerms}\n\nSeeker One is '
+          '£29.99 a month and Guardian One is £19.99 a month in the UK. '
+          'Country-specific launch prices use local purchasing power and the '
+          'store price shown before confirmation is authoritative.\n\n'
+          '${ZyraMembershipCatalog.familyTerms}\n'
+          '${ZyraMembershipCatalog.familyAvailability}\n\n'
+          '${ZyraMembershipCatalog.guardianBasicTerms}\n\n'
+          '${ZyraMembershipCatalog.guardianAccessTerms}\n\n'
+          '${ZyraMembershipCatalog.compatibilityTerms}\n'
+          '${ZyraMembershipCatalog.compatibilityPrices}\n'
+          '${ZyraMembershipCatalog.compatibilityAvailability}\n\n'
+          'Seeker One has one planned 14-day trial per verified person for '
+          'life, starting only after verification and payment authorisation. '
+          'Guardian One and ZYRA Family do not have a trial. '
+          'Payments and paid access activation are not available in this '
+          'build; no trial starts just by opening a page.\n\n'
+          'After a confirmed previous membership payment, moving from One '
+          'to Basic does not require another joining fee. Compatibility '
+          'Unlock purchases and unpaid trials do not waive that fee. '
+          'Payment history and Basic access still need to be confirmed; '
+          'choosing a plan or reaching subscription expiry alone is not '
+          'payment proof. Without confirmed membership access, product '
+          'features lock. Resubscription, '
+          'billing, purchase restoration, data rights, safety/support, legal '
+          'information and sign out remain available.',
     ),
   ]),
   ZyraHelpCategory('Your profile', [
@@ -133,12 +154,10 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // broke this file's own rule.
     ZyraHelpEntry(
       'When does my profile go live?',
-      'Once you have finished onboarding and added at least one photo. You can '
-          'look around before then — you just will not appear to anyone else '
-          'yet.\n\n'
-          'Photo review and identity verification are being built and are not '
-          'running yet. When they arrive we will tell you clearly, and explain '
-          'what changes, before anything changes for you.',
+      'Completing your profile does not by itself verify your identity. '
+          'Follow the verification and profile-status steps shown in the app. '
+          'If verification is unavailable, it has not been approved.\n\n'
+          'Developer previews are not live profiles.',
     ),
     // SOFTENED 2026-08-01. The app enforces this; the database does not
     // yet (audit finding C4 is open). V1 promised a guarantee that only
@@ -147,7 +166,8 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
       'Can I change my date of birth?',
       'Not from inside the app. Age is one of the few things other members '
           'rely on completely, so we do not let it be edited casually. If yours '
-          'was entered wrongly, email support and we will correct it.',
+          'was entered wrongly, contact Help & support to request a review. '
+          'An account change is not made just by opening support.',
     ),
     ZyraHelpEntry(
       'Who can see my photos?',
@@ -172,6 +192,21 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
           'begins and you both choose to reveal it.',
     ),
     ZyraHelpEntry(
+      'What is Compatibility Unlock?',
+      'Compatibility Unlock uses one credit on another member’s profile to '
+          'reveal your overall compatibility and a deeper breakdown, with '
+          'authorised Guardian information where available. It never '
+          'shows either person’s private answers. Once that profile is '
+          'unlocked, viewing the result again does not use another credit.\n\n'
+          'The full reveal is not available in this build, so a new '
+          'Compatibility Unlock credit cannot currently be spent. Earlier '
+          'overall-only results and credits remain separate; they are not '
+          'converted into deeper access.\n\n'
+          '${ZyraMembershipCatalog.compatibilityTerms}\n'
+          '${ZyraMembershipCatalog.compatibilityPrices}\n'
+          '${ZyraMembershipCatalog.compatibilityAvailability}',
+    ),
+    ZyraHelpEntry(
       'What is the difference between Consider, Save and Pass?',
       'Consider means you are open to a Journey — if they consider you back, '
           'you match. Save is private: it keeps someone in mind without telling '
@@ -184,13 +219,14 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
           'told they were declined.',
     ),
     ZyraHelpEntry(
-      'Why can I only have one Active Journey?',
-      'Because marriage deserves your attention. Talking to several people at '
-          'once makes it harder to know anyone properly, and easier to keep '
-          'looking rather than deciding. You may hold as many Potential '
-          'Journeys as you like — only one may be Active.\n\n'
-          'This is a principle, not a limit we sell. There is no way to buy '
-          'additional Active Journeys, and there never will be.',
+      'How many Journeys can I hold?',
+      'Seeker Basic supports one Active Journey, ten Potential Journeys '
+          'and one Paused Journey. Seeker One supports up to three Active '
+          'Journeys, Unlimited Potential Journeys and ten Paused Journeys. '
+          'Potential Journeys do not use an Active slot.\n\n'
+          'The limits help you give each person meaningful attention. Pausing '
+          'or continuing still follows the shared Journey rules; membership '
+          'never skips the other person’s agreement.',
     ),
     // ADDED 2026-08-01 (Founder decision on Guardian conversation
     // visibility). Two entries, because the V2 rewrite of this file
@@ -208,9 +244,15 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // stated plainly, everywhere, and framed as the design choice it is.
     ZyraHelpEntry(
       'What can my Guardian see?',
-      'Your Journey progress, the family-stage questions you both answer, '
-          'and — once a Journey becomes active — the conversation between you '
-          'and your match.\n\n'
+      'Your Main Guardian is included in your active Journeys, and you cannot '
+          'switch off their View or plan-enabled Chat access while they remain '
+          'Main. For each Additional Guardian, you choose View and Chat '
+          'separately for that specific Journey. Chat requires View, and you '
+          'can withdraw either permission.\n\n'
+          'A Guardian with View access can see Journey progress and the '
+          'family-stage questions you both answer. They can read the '
+          'conversation between you and your match only when Chat access is '
+          'also on and their Guardian membership includes Chat.\n\n'
           'That last part is deliberate, and we tell you before you begin. '
           'ZYRA is built for a marriage process with family present, not for '
           'private one-to-one messaging. If you want conversations nobody else '
@@ -226,10 +268,12 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // Guardian" anywhere would be a second, subtler untruth.
     ZyraHelpEntry(
       'Can my match\'s Guardian read our conversation too?',
-      'Yes. Once a Journey is active, a Guardian linked to either of you can read '
-          'it — not only your own.\n\n'
-          'Both of you are told this before the Journey begins, and neither of '
-          'you can be brought into a Journey without choosing to start it. '
+      'Their Main Guardian can read an active Journey conversation when their '
+          'Guardian membership includes Chat. An Additional Guardian can read '
+          'it only while your match has separately allowed Chat for that '
+          'Journey.\n\n'
+          'Neither of you can be brought into a Journey without choosing to '
+          'start it. '
           'Nothing is shared while a Journey is still Potential, so if this is '
           'not what you want, simply do not begin.',
     ),
@@ -237,13 +281,12 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // (_EndedView, 24h) and was completely undocumented.
     ZyraHelpEntry(
       'What happens when a Journey ends?',
-      'Ending a Journey is deliberate and final — it is not a pause. For the '
-          'next 24 hours neither of you can act on it. That quiet period is on '
-          'purpose: it protects both people from a decision made in a difficult '
-          'moment.\n\n'
-          'Afterwards you are free to begin a Journey with someone else. If the '
-          'two of you choose to start again together, you begin from the '
-          'beginning — the process is not something you can skip back into.',
+      'Ending a Journey is deliberate and final — it is not a pause. '
+          'Your shared Timeline is kept as the record of that attempt. '
+          'Ending it does not automatically begin another Journey.\n\n'
+          'Restarting an ended Journey is not available in this build. '
+          'Membership does not reopen an ended attempt or bypass either '
+          'person’s choice.',
     ),
     // CORRECTED 2026-08-01. V1 named "age, location, sect and ethnicity"
     // as filters. Only age exists (browse_screen's _minAge/_maxAge). Three
@@ -273,14 +316,15 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // not just more honest. Founder to confirm the wording.
     ZyraHelpEntry(
       'How do I report someone?',
-      'Press and hold the middle of their photo in Browse, then choose Report '
+      'Press and hold the middle of their photo in Profiles, then choose Report '
           'this profile. Pick a reason and send.\n\n'
           'They are never told, and you stop seeing each other straight away — '
           'that part is immediate. The report itself is recorded and kept.\n\n'
-          'We are new, and our review process is still being built, so we will '
-          'be straight with you rather than imply more than exists: if '
-          'something is urgent, or you feel unsafe, email support@zyra.app as '
-          'well and a person will read it.',
+          'Check the submission result rather than assuming it was sent. '
+          'You can view available case updates from Help & support. '
+          'A recorded report does not mean someone has reviewed it. '
+          'Reports and support email are not emergency services; if you are '
+          'in immediate danger, contact your local emergency services.',
     ),
     ZyraHelpEntry(
       'What is the difference between blocking and reporting?',
@@ -297,28 +341,56 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     ),
     ZyraHelpEntry(
       'Something feels wrong and I am not sure it counts',
-      'Report it anyway. You do not need to be certain, and you will not get '
-          'into trouble for raising something in good faith. We would far '
-          'rather look at ten things that turn out to be fine than miss one '
-          'that was not.',
+      'You can report a concern in good faith without being certain that '
+          'a rule was broken. Describe what happened and choose the closest '
+          'reason. Keep other people’s private details out of general feedback. '
+          'Check the submission result and any available case updates.',
     ),
   ]),
   ZyraHelpCategory('Account and plan', [
     ZyraHelpEntry(
-      'What does ZYRA One include?',
-      'More profiles each day, the ability to pause an Active Journey, and no '
-          'sponsored cards while you browse.\n\n'
-          'What it does not include: seeing who considered you before they have '
-          'decided, extra Active Journeys, or anything to do with your safety. '
-          'Verification, blocking and reporting are free for everyone and '
-          'always will be.',
+      'What does Basic include?',
+      '${ZyraMembershipCatalog.basicTerms}\n\n'
+          'Seeker Basic includes one Active Journey, ten Potential Journeys, '
+          'one Paused Journey, five Saved profiles, 25 active Considers, '
+          'five Considers per day, 25 profile swipes per four-hour window '
+          'and one linked Guardian. Insights and initiating Paused or Ended '
+          'Journey returns are not included. Your existing history and '
+          'Guardian links are kept. Basic is intended to be ad-supported, '
+          'but live adverts are not available in this build.\n\n'
+          '${ZyraMembershipCatalog.guardianBasicTerms}\n\n'
+          '${ZyraMembershipCatalog.availability}',
+    ),
+    ZyraHelpEntry(
+      'What do ${ZyraMembershipCatalog.seekerOneTitle} and ${ZyraMembershipCatalog.guardianOneTitle} include?',
+      'Seeker One includes paid Seeker access, 3 Active Journeys, Unlimited Potential '
+          'Journeys, 10 Paused Journeys, 50 Saved profiles, Unlimited active '
+          'and daily Considers, and up to 10 linked Guardians including Main. '
+          'Initiate returns from the five most recent Paused and five most '
+          'recent Ended Journeys, and revisit 10 declined profiles. '
+          'My ZYRA Insights is coming soon. '
+          'Guardian One provides paid Guardian access. Main Guardians have '
+          'View and Chat across Active Journeys; Additional Guardians begin '
+          'with both enabled per Journey and the Seeker may change them.\n\n'
+          'After a previous confirmed membership payment, you can choose '
+          'Basic with no new joining fee. Basic access must still be '
+          'confirmed, not inferred from subscription expiry alone. '
+          'Without confirmed membership, the app is locked apart from billing, '
+          'resubscription, purchase restoration, data rights, safety/support, '
+          'legal information and sign out.\n\n'
+          'You cannot be your own Guardian. Membership never bypasses '
+          'matching exclusions, Seeker permission or Main Guardian authority. '
+          'A membership change does not erase relationships or history.\n\n'
+          '${ZyraMembershipCatalog.guardianAccessTerms}\n\n'
+          '${ZyraMembershipCatalog.compatibilityTerms} '
+          '${ZyraMembershipCatalog.compatibilityAvailability}',
     ),
     // MERGED 2026-08-01 (Fable): "How do I take a break?" and "How do I
     // hide my profile?" were the same answer twice — both said Privacy
     // settings, step out of Browse, everything kept.
     ZyraHelpEntry(
       'How do I take a break or hide my profile?',
-      'Privacy settings let you step out of Browse while keeping everything — '
+      'Privacy settings let you step out of Profiles while keeping everything — '
           'your Journeys, matches and messages stay exactly as they are, and '
           'come back with you.\n\n'
           'There is no penalty for taking as long as you need. If you want '
@@ -331,8 +403,9 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
     // least willing to hunt.
     ZyraHelpEntry(
       'How do I delete my account?',
-      'At the bottom of your Profile tab. This permanently removes your '
-          'profile, photos, matches and messages. It cannot be undone.\n\n'
+      'Open Profile › Settings › Account › Advanced › Delete account. '
+          'Read the confirmation and check the result. Records subject to '
+          'a safety or legal retention requirement are separate.\n\n'
           'If you are unsure, hide your profile instead and come back when you '
           'are ready.',
     ),

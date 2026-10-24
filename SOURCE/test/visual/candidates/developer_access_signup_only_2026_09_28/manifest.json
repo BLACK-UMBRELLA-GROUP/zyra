@@ -1,0 +1,68 @@
+{
+  "status": "REVIEW_CANDIDATE_NOT_FOUNDER_ACCEPTED",
+  "approved": false,
+  "approved_baselines_changed": false,
+  "capture_command": "flutter test --no-pub --update-goldens --dart-define=ZYRA_DEV_ACCESS_CAPTURE_CANDIDATES=true test/visual/zyra_developer_access_visual_test.dart",
+  "captured_at_utc": "2026-09-28T09:37:27.524393Z",
+  "palette": "midnightPlum",
+  "surface": "glassSignals",
+  "reading_font": "PoppinsAudit (bundled Poppins)",
+  "device_pixel_ratio": 1,
+  "fixture_data_only": true,
+  "active_preview_latch": true,
+  "includes_global_developer_controls": true,
+  "landing_actions": [
+    "Sign up"
+  ],
+  "removed_landing_role_quick_jumps": true,
+  "source_sha256": {
+    "lib/screens/dev/developer_access_screen.dart": "912f5a9cf1e9e837961cbea6fabf061bcabc80936928a173883f0d0d7f4c2ee8",
+    "lib/dev/zyra_dev_signup.dart": "474a8e5c3b948175c6ce12434a269eacd1ef4bd24754129c98f1ce638fa9ef34",
+    "lib/dev/dev_signup_process.dart": "d795a447bc120c256589ee07bfb1c5e0cbbda02c41aac04b7a0f1380dc5af763",
+    "lib/dev/zyra_dev_surface_coordinator.dart": "b21ae169db581b3d586aca2693e66c03782bd242d1047073fcfbd44a95c24314",
+    "lib/dev/zyra_global_dev_overlay.dart": "ccc3d367830ba0a82e4088369824f54e2432b155e04be596a6cb1dc436c9469e",
+    "test/visual/zyra_developer_access_visual_test.dart": "a761cee0906ffdf2fa2d208ab83fff0b1fe85508929242328f5b9635ee19cefc"
+  },
+  "captures": [
+    {
+      "id": "small",
+      "approved": false,
+      "path": "small.png",
+      "width": 320,
+      "height": 568,
+      "text_scale": 1.0,
+      "sha256": "bded5f06dc10db2f9796c800cd19fe5c805e2c618bdd2fb143bab79ae46318c7",
+      "bytes": 76875
+    },
+    {
+      "id": "standard",
+      "approved": false,
+      "path": "standard.png",
+      "width": 390,
+      "height": 844,
+      "text_scale": 1.0,
+      "sha256": "7c311c15849511b8b957d4685c2fa7b29a9fcf6b36fb0c9eb19e4ce2f6a80050",
+      "bytes": 107585
+    },
+    {
+      "id": "large",
+      "approved": false,
+      "path": "large.png",
+      "width": 430,
+      "height": 932,
+      "text_scale": 1.0,
+      "sha256": "8ff4e29d586a3a9894ad578f77efa5dcd9f3e9132ca4fb478cb1a40d0cf0089e",
+      "bytes": 125095
+    },
+    {
+      "id": "standard__text-130",
+      "approved": false,
+      "path": "standard__text-130.png",
+      "width": 390,
+      "height": 844,
+      "text_scale": 1.3,
+      "sha256": "247300cd21dc987af635d9bbc149c5eac6b40d32dda9ad2f09e178ec6e5ac4b0",
+      "bytes": 110227
+    }
+  ]
+}

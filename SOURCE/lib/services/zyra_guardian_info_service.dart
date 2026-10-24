@@ -58,12 +58,12 @@ class GuardianInfo {
   });
 
   factory GuardianInfo.fromRow(Map<String, dynamic> row) => GuardianInfo(
-        firstName: (row['first_name'] as String?) ?? '',
-        gender: row['gender'] as String?,
-        city: row['location_text'] as String?,
-        isMain: (row['is_main'] as bool?) ?? false,
-        relationship: row['relationship'] as String?,
-      );
+    firstName: (row['first_name'] as String?) ?? '',
+    gender: row['gender'] as String?,
+    city: row['location_text'] as String?,
+    isMain: (row['is_main'] as bool?) ?? false,
+    relationship: row['relationship'] as String?,
+  );
 
   /// "Paternal Uncle" for the code 'uncle'. Null when unrecorded.
   String? get relationshipLabel => zyraRelationshipLabel(relationship);
@@ -87,10 +87,10 @@ class GuardianInfo {
   /// name, which is what the replace-only version did and which showed the
   /// reader LESS than before for every link with no relationship yet.
   String get displayLine => [
-        if (firstName.isNotEmpty) firstName,
-        ?relationshipLabel,
-        if (city != null && city!.isNotEmpty) city!,
-      ].join(' · ');
+    if (firstName.isNotEmpty) firstName,
+    ?relationshipLabel,
+    if (city != null && city!.isNotEmpty) city!,
+  ].join(' · ');
 }
 
 class ZyraGuardianInfoService {
@@ -106,8 +106,12 @@ class ZyraGuardianInfoService {
   static Future<List<GuardianInfo>?> fetchUnlocked(String profileId) async {
     if (ZyraAuth.currentUser == null) return null;
     try {
-      final rows = await supabase
-          .rpc('guardians_for_unlocked', params: {'p_target': profileId}) as List?;
+      final rows =
+          await supabase.rpc(
+                'guardians_for_unlocked',
+                params: {'p_target': profileId},
+              )
+              as List?;
       if (rows == null) return null;
       return rows
           .map((r) => GuardianInfo.fromRow(Map<String, dynamic>.from(r as Map)))

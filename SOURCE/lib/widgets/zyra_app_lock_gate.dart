@@ -95,8 +95,7 @@ class _ZyraAppLockGateState extends State<ZyraAppLockGate>
             // Content stays mounted underneath — this is a cover, not a
             // teardown. Rebuilding the whole tree on every trip to the app
             // switcher would lose scroll positions and in-progress text.
-            if (_lock.isObscured)
-              const Positioned.fill(child: _ObscureVeil()),
+            if (_lock.isObscured) const Positioned.fill(child: _ObscureVeil()),
           ],
         );
       },
@@ -109,12 +108,12 @@ class _ObscureVeil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
-        child: Container(
-          decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
-          alignment: Alignment.center,
-          child: Text('ZYRA', style: ZyraText.heading(size: 26)),
-        ),
-      );
+    child: Container(
+      decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+      alignment: Alignment.center,
+      child: Text('ZYRA', style: ZyraText.wordmark(size: 26)),
+    ),
+  );
 }
 
 class _LockScreen extends StatelessWidget {
@@ -132,7 +131,7 @@ class _LockScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: Center(
             child: Padding(
@@ -140,15 +139,18 @@ class _LockScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('ZYRA', style: ZyraText.heading(size: 30)),
-                  const SizedBox(height: 10),
+                  Text('ZYRA', style: ZyraText.wordmark(size: 30)),
+                  SizedBox(height: 10),
                   Text(
                     'Locked',
-                    style: ZyraText.subtext(size: 14, color: Colors.white54),
+                    style: ZyraText.subtext(
+                      size: 14,
+                      color: ZyraColors.ink(0.54),
+                    ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
                   _UnlockButton(onTap: onUnlock),
-                  const SizedBox(height: 28),
+                  SizedBox(height: 28),
                   // Always present. See zyra_app_lock.dart — a lock you
                   // cannot escape is a bug, and nothing is lost by signing
                   // out, because the account lives on the server.
@@ -156,7 +158,10 @@ class _LockScreen extends StatelessWidget {
                     onPressed: onSignOut,
                     child: Text(
                       'Sign out instead',
-                      style: ZyraText.subtext(size: 13, color: Colors.white38),
+                      style: ZyraText.subtext(
+                        size: 13,
+                        color: ZyraColors.ink(0.38),
+                      ),
                     ),
                   ),
                 ],
@@ -175,23 +180,22 @@ class _UnlockButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-          decoration: BoxDecoration(
-            color: ZyraColors.accentBg,
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: ZyraColors.accentBorder),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.lock_outline, size: 17, color: Colors.white70),
-              const SizedBox(width: 9),
-              Text('Unlock',
-                  style: ZyraText.body(size: 15, color: Colors.white)),
-            ],
-          ),
-        ),
-      );
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+      decoration: BoxDecoration(
+        color: ZyraColors.accentBg,
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: ZyraColors.accentBorder),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.lock_outline, size: 17, color: ZyraColors.ink(0.70)),
+          SizedBox(width: 9),
+          Text('Unlock', style: ZyraText.body(size: 15, color: Colors.white)),
+        ],
+      ),
+    ),
+  );
 }

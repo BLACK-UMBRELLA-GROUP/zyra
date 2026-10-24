@@ -42,9 +42,9 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import 'package:flutter/services.dart';
 import '../../data/journey_questions.dart';
 import '../../data/zyra_journey_guardian_selection.dart';
@@ -55,19 +55,27 @@ import '../../data/zyra_journey_pause_state.dart';
 import '../../data/zyra_journey_scroll.dart';
 import '../../data/zyra_journey_stages.dart';
 import '../../data/zyra_reference_data.dart';
+import '../../data/zyra_release_gates.dart';
 import '../../dev/zyra_dev_scenario.dart';
+import '../../dev/zyra_dev_tool_section.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
 import '../../models/zyra_gender.dart';
+import '../../models/zyra_identity_verification.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_guardian_info_service.dart';
 import '../../services/zyra_image_cache.dart';
 import '../../services/zyra_journey_service.dart';
+import '../../services/zyra_identity_verification_service.dart';
+import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../chat/chat_screen.dart';
 import '../matches/journey_timeline_screen.dart';
+import '../onboarding/identity_verification_screen.dart';
 // seeker_profile_screen / journey_map_screen imports left with the
 // header pill row (2026-08-13) — Profile lives on the Connections card,
 // the Map inside the Timeline.
@@ -82,9 +90,9 @@ import '../wali/link_wali_screen.dart';
 import '../../widgets/zyra_glass_dialog.dart';
 import '../../widgets/zyra_intelligence_card.dart';
 import '../../widgets/zyra_loading.dart';
-import '../../widgets/zyra_paused_limit_refusal.dart';
 import '../../widgets/zyra_profile_image.dart';
 import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_write_feedback.dart';
 
 /// Network polling must stop when iOS has put ZYRA in the background. Timers
 /// otherwise keep waking the process until the OS suspends it, wasting radio
@@ -103,10 +111,18 @@ bool _journeyViewCanPoll(BuildContext context) =>
 class JourneyFlowScreen extends StatefulWidget {
   final String matchId;
   final SeekerProfile profile;
+  final VoidCallback? onOpenGuardian;
+
+  /// Injectable transport for deterministic widget tests; ordinary routes
+  /// always use the caller-bound Guardian service. This is not server authority.
+  final Future<ZyraJourneyGuardianGate> Function(String matchId)?
+  guardianGateLoader;
   const JourneyFlowScreen({
     super.key,
     required this.matchId,
     required this.profile,
+    this.onOpenGuardian,
+    this.guardianGateLoader,
   });
 
   @override
@@ -114,16 +130,27 @@ class JourneyFlowScreen extends StatefulWidget {
 }
 
 class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
+  late final DevPage _previousDevPage;
   String _status = 'active';
   String? _stage = 'salam_exchange'; // first stage — Salam first, DR-ZYRA-183
-  String? _suspendedBy;
-  String? _alsoPausedBy;
-  DateTime? _pauseNudgedAt;
+  ZyraJourneyPauseState _pauseState = ZyraJourneyPauseState.active;
+  bool? _pauseCapacityAvailable;
   bool _loading = true;
   bool _stageLoaded = false;
   Timer? _poll;
   bool _pollRefreshBusy = false;
   Future<void>? _refreshFlight;
+  bool _identityGateLoading =
+      ZyraIdentityVerificationService.enforceExistingAccountGate;
+  bool _journeyExperienceStarted = false;
+  bool _guardianGateLoading = true;
+  ZyraJourneyGuardianGate _guardianGate = ZyraJourneyGuardianGate.unavailable;
+  int _guardianGateGeneration = 0;
+  ({ZyraCompatibilityReadScope scope, Object context, bool admitted})?
+  _compatibilitySurfaceContext;
+  int _compatibilitySurfaceGeneration = 0;
+  ZyraIdentityVerificationState? _identityVerification;
+  Object? _identityGateError;
 
   ({
     ZyraJourneyStage stage,
@@ -138,7 +165,8 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   String? _viewedRibbonStage;
   bool _pauseActionBusy = false;
   ZyraJourneyPauseState? _devPausePreview;
-  bool _devPauseReadySent = false;
+  ZyraPauseDevScenario _devPauseScenario = ZyraPauseDevScenario.active;
+  bool _devPauseEnded = false;
   Set<int> _devGuardianSelections = const <int>{};
   bool _lifeSnapshotOpen = false;
   bool _lifeSnapshotOpenedFromDevJump = false;
@@ -172,6 +200,60 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   @override
   void initState() {
     super.initState();
+    final dev = ZyraDevScenario.instance;
+    _previousDevPage = dev.currentPage;
+    dev.setCurrentPage(DevPage.activeJourney);
+    final devScenario = dev.pauseScenario;
+    if (ZyraDeveloperAccess.canUseDeveloperTools &&
+        devScenario != ZyraPauseDevScenario.active) {
+      final me = ZyraAuth.currentUser?.id ?? 'dev-me';
+      _devPauseScenario = devScenario;
+      _devPausePreview = devScenario.stateFor(
+        viewerId: me,
+        otherId: widget.profile.id,
+      );
+      _devPauseEnded = devScenario.isEnded;
+    }
+    dev.addListener(_onDevScenarioChanged);
+    ZyraDeveloperAccess.authorizationChanges.addListener(
+      _onGuardianAuthorityChanged,
+    );
+    ZyraWaliLinkService.linkRevision.addListener(_onGuardianLinksChanged);
+    _resolveMainGuardianGate();
+    if (ZyraIdentityVerificationService.enforceExistingAccountGate) {
+      _resolveIdentityGate();
+    } else {
+      _startJourneyExperience();
+    }
+  }
+
+  Future<void> _resolveIdentityGate() async {
+    if (mounted) {
+      setState(() {
+        _identityGateLoading = true;
+        _identityGateError = null;
+      });
+    }
+    try {
+      final state = await ZyraIdentityVerificationService.fetchMyState();
+      if (!mounted) return;
+      setState(() {
+        _identityVerification = state;
+        _identityGateLoading = false;
+      });
+      if (state?.allowsActiveJourney == true) _startJourneyExperience();
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _identityGateLoading = false;
+        _identityGateError = error;
+      });
+    }
+  }
+
+  void _startJourneyExperience() {
+    if (_journeyExperienceStarted) return;
+    _journeyExperienceStarted = true;
     _refresh();
     _loadPlusUnlock();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -228,7 +310,98 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   @override
   void dispose() {
     _poll?.cancel();
+    final dev = ZyraDevScenario.instance;
+    dev.removeListener(_onDevScenarioChanged);
+    ZyraDeveloperAccess.authorizationChanges.removeListener(
+      _onGuardianAuthorityChanged,
+    );
+    ZyraWaliLinkService.linkRevision.removeListener(_onGuardianLinksChanged);
+    // A developer destination may have changed while this route was open.
+    // Only restore the underlying page if this Journey still owns context.
+    if (dev.currentPage == DevPage.activeJourney) {
+      dev.setCurrentPage(_previousDevPage);
+    }
     super.dispose();
+  }
+
+  /// Keeps the visible Journey in sync with the app-wide page-aware control.
+  /// The previous local-only jumper updated these fields directly; the shared
+  /// control writes the same scenario store, so this listener is now the one
+  /// rendering boundary for either developer action or an in-preview choice.
+  void _onDevScenarioChanged() {
+    if (!mounted) return;
+    unawaited(_resolveMainGuardianGate());
+    final scenario = ZyraDeveloperAccess.canUseDeveloperTools
+        ? ZyraDevScenario.instance.pauseScenario
+        : ZyraPauseDevScenario.active;
+    if (scenario == _devPauseScenario) return;
+    final me = ZyraAuth.currentUser?.id ?? 'dev-me';
+    setState(() {
+      _devPauseScenario = scenario;
+      _devPausePreview = scenario == ZyraPauseDevScenario.active
+          ? null
+          : scenario.stateFor(viewerId: me, otherId: widget.profile.id);
+      _devPauseEnded = scenario.isEnded;
+      _stageActionVisible = false;
+    });
+  }
+
+  void _onGuardianLinksChanged() {
+    unawaited(_resolveMainGuardianGate());
+  }
+
+  void _onGuardianAuthorityChanged() {
+    if (!mounted) return;
+    setState(() {
+      _guardianGateLoading = true;
+      _guardianGate = ZyraJourneyGuardianGate.unavailable;
+      if (!ZyraDeveloperAccess.canUseDeveloperTools) {
+        _devPauseScenario = ZyraPauseDevScenario.active;
+        _devPausePreview = null;
+        _devPauseEnded = false;
+      }
+    });
+    unawaited(_resolveMainGuardianGate());
+  }
+
+  Future<void> _resolveMainGuardianGate() async {
+    final request = ++_guardianGateGeneration;
+    final accountGeneration = ZyraAccountState.generation;
+    final accountId = ZyraAccountState.userId;
+    final dev = ZyraDevScenario.instance;
+    if (dev.guardianOverride) {
+      if (!mounted) return;
+      setState(() {
+        _guardianGateLoading = false;
+        _guardianGate = dev.mainGuardian && dev.guardianCount > 0
+            ? ZyraJourneyGuardianGate.ready
+            : ZyraJourneyGuardianGate.selfMissing;
+      });
+      return;
+    }
+
+    // A live refresh is not permission to keep a previously simulated or
+    // revoked ready gate visible while the server answer is pending.
+    if (!mounted) return;
+    setState(() {
+      _guardianGateLoading = true;
+      _guardianGate = ZyraJourneyGuardianGate.unavailable;
+    });
+    final result =
+        await (widget.guardianGateLoader?.call(widget.matchId) ??
+            ZyraWaliLinkService.fetchJourneyGuardianGate(widget.matchId));
+    if (!mounted ||
+        request != _guardianGateGeneration ||
+        ZyraAccountState.isSigningOut ||
+        accountGeneration != ZyraAccountState.generation ||
+        accountId != ZyraAccountState.userId ||
+        ZyraDevScenario.instance.guardianOverride) {
+      return;
+    }
+    setState(() {
+      _guardianGateLoading = false;
+      _guardianGate = result;
+    });
   }
 
   Future<void> _refresh({bool showSpinner = true}) async {
@@ -303,15 +476,13 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         final journeySurfaceChanged =
             stageChanged ||
             _status != m.status ||
-            _suspendedBy != m.suspendedBy ||
-            _alsoPausedBy != m.alsoPausedBy ||
+            _pauseState.phase != m.pause.phase ||
+            _pauseState.version != m.pause.version ||
             (_review == null) != (review == null);
         _stageLoaded = true;
         _status = m.status;
         _stage = m.journeyStage;
-        _suspendedBy = m.suspendedBy;
-        _alsoPausedBy = m.alsoPausedBy;
-        _pauseNudgedAt = m.pauseNudgedAt;
+        _pauseState = m.pause;
         _review = review;
         if (journeySurfaceChanged) {
           _stageActionVisible = false;
@@ -327,8 +498,17 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           _stageDecisionBusy = false;
           _stageContinueSelected = false;
         }
+        _observeCompatibilitySurface();
         _loading = false;
       });
+      if (m.pause.isLocked) {
+        final capacity = await ZyraJourneyService.fetchPauseCapacity(
+          widget.matchId,
+        );
+        if (mounted) setState(() => _pauseCapacityAvailable = capacity);
+      } else if (_pauseCapacityAvailable != null && mounted) {
+        setState(() => _pauseCapacityAvailable = null);
+      }
     } else if (showSpinner) {
       setState(() => _loading = false);
     }
@@ -340,7 +520,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   /// Threshold stages only. The four gated ones go through a Family Review
   /// and resolveFamilyReviewIfDue() above already retries those.
   Future<JourneyMatch?> _retryStalledAdvance(JourneyMatch? fresh) async {
-    if (fresh == null || fresh.status != 'active' || fresh.isSuspended) {
+    if (fresh == null || fresh.status != 'active' || fresh.isJourneyLocked) {
       return fresh;
     }
     final stage = fresh.journeyStage;
@@ -490,19 +670,19 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   Future<void> _pauseStageDecision() async {
     if (_stageDecision == null || _stageDecisionBusy) return;
     setState(() => _stageDecisionBusy = true);
-    final paused = await Navigator.of(context).push<bool>(
+    final requested = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
         builder: (_) => _JourneyLifecycleConfirmScreen(
           action: _JourneyLifecycleAction.pause,
           profile: widget.profile,
           onConfirm: () async {
             try {
-              await ZyraJourneyService.suspendJourney(widget.matchId);
+              await ZyraJourneyService.transitionPause(
+                matchId: widget.matchId,
+                action: ZyraPauseAction.requestPause,
+                expectedVersion: _pauseState.version,
+              );
               return null;
-            } on PausedLimitReachedException {
-              return _JourneyLifecycleFailure.pausedLimit;
-            } on SuspensionRequiresOneException {
-              return _JourneyLifecycleFailure.suspensionRequiresOne;
             } catch (_) {
               return _JourneyLifecycleFailure.failed;
             }
@@ -511,7 +691,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       ),
     );
     if (!mounted) return;
-    if (paused != true) {
+    if (requested != true) {
       setState(() => _stageDecisionBusy = false);
       return;
     }
@@ -522,77 +702,24 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       _stageContinueSelected = false;
     });
     await _refresh(showSpinner: false);
-    if (!mounted) return;
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) => _JourneyLifecycleCompleteScreen(
-          action: _JourneyLifecycleAction.pause,
-          profile: widget.profile,
-        ),
-      ),
-    );
-    if (mounted) Navigator.of(context).pop();
   }
 
-  void _setDevPausePreview(ZyraJourneyPauseState? state) {
-    if (!mounted) return;
-    setState(() {
-      _devPausePreview = state;
-      _devPauseReadySent = false;
-      _stageActionVisible = false;
-    });
-  }
-
-  void _liftDevPause() {
-    final state = _devPausePreview;
-    if (state == null) return;
-    final next = ZyraJourneyPausePolicy.liftMine(state);
-    setState(() {
-      _devPausePreview = next == ZyraJourneyPauseState.none ? null : next;
-      _devPauseReadySent = false;
-      _stageActionVisible = false;
-    });
-  }
-
-  void _alsoPauseDevPreview() {
-    final state = _devPausePreview;
-    if (state == null) return;
-    setState(() {
-      _devPausePreview = ZyraJourneyPausePolicy.alsoPause(state);
-      _devPauseReadySent = false;
-    });
-  }
-
-  void _readyDevPreview() {
-    if (!mounted) return;
-    setState(() => _devPauseReadySent = true);
-  }
-
-  void _endDevPausePreview() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Pause preview only — the real Journey was not ended.'),
-      ),
-    );
-  }
-
-  Future<void> _alsoPauseJourney() async {
-    if (_pauseActionBusy) return;
+  Future<void> _pauseForMissingMainGuardian() async {
+    if (_pauseActionBusy || _pauseState.isLocked) return;
     setState(() => _pauseActionBusy = true);
-    final paused = await Navigator.of(context).push<bool>(
+    final requested = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
         builder: (_) => _JourneyLifecycleConfirmScreen(
           action: _JourneyLifecycleAction.pause,
           profile: widget.profile,
-          otherAlreadyPaused: true,
           onConfirm: () async {
             try {
-              await ZyraJourneyService.suspendJourney(widget.matchId);
+              await ZyraJourneyService.transitionPause(
+                matchId: widget.matchId,
+                action: ZyraPauseAction.requestPause,
+                expectedVersion: _pauseState.version,
+              );
               return null;
-            } on PausedLimitReachedException {
-              return _JourneyLifecycleFailure.pausedLimit;
-            } on SuspensionRequiresOneException {
-              return _JourneyLifecycleFailure.suspensionRequiresOne;
             } catch (_) {
               return _JourneyLifecycleFailure.failed;
             }
@@ -601,55 +728,64 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       ),
     );
     if (!mounted) return;
-    if (paused != true) {
-      setState(() => _pauseActionBusy = false);
+    setState(() => _pauseActionBusy = false);
+    if (requested == true) await _refresh(showSpinner: false);
+  }
+
+  void _openGuardianFromJourneyHold() {
+    Navigator.of(context).pop();
+    widget.onOpenGuardian?.call();
+  }
+
+  Future<void> _applyPauseAction(ZyraPauseAction action) async {
+    if (_pauseActionBusy) return;
+    final preview = _devPausePreview;
+    if (preview != null) {
+      final me = ZyraAuth.currentUser?.id ?? 'dev-me';
+      try {
+        final next = ZyraJourneyPausePolicy.apply(
+          state: preview,
+          action: action,
+          actorId: me,
+          otherId: widget.profile.id,
+        );
+        if (mounted) {
+          final scenario = ZyraPauseDevScenario.fromState(next, me);
+          ZyraDevScenario.instance.setPauseScenario(scenario);
+          setState(() {
+            _devPauseScenario = scenario;
+            _devPausePreview = next.phase == ZyraPausePhase.active
+                ? null
+                : next;
+            _stageActionVisible = false;
+          });
+        }
+      } on StateError {
+        // A preview action can only be reached from a compatible decision
+        // surface. If a hot-reload leaves a stale callback, ignore it.
+      }
       return;
     }
-
-    await _refresh(showSpinner: false);
-    if (!mounted) return;
-    setState(() => _pauseActionBusy = false);
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute(
-        builder: (_) => _JourneyLifecycleCompleteScreen(
-          action: _JourneyLifecycleAction.pause,
-          profile: widget.profile,
-          pausedByBoth: true,
-        ),
-      ),
-    );
-    if (mounted) Navigator.of(context).pop();
-  }
-
-  Future<void> _sendPauseReady() async {
-    if (_pauseActionBusy || _pauseNudgedAt != null) return;
-    setState(() => _pauseActionBusy = true);
-    final ok = await ZyraJourneyService.nudgePausedJourney(widget.matchId);
-    if (ok && mounted) {
-      // The write is confirmed. Preserve that truth even if the immediate
-      // re-read fails; the next poll will reconcile the timestamp.
-      setState(() => _pauseNudgedAt ??= DateTime.now());
-    }
-    await _refresh(showSpinner: false);
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          ok
-              ? 'Continue requested. Waiting for '
-                    '${widget.profile.firstName} to lift their pause.'
-              : "That didn't go through — check your connection and try again.",
-        ),
-      ),
-    );
-    setState(() => _pauseActionBusy = false);
-  }
-
-  Future<void> _resumePausedJourney() async {
-    if (_pauseActionBusy) return;
     setState(() => _pauseActionBusy = true);
     try {
-      await ZyraJourneyService.resumeJourney(widget.matchId);
+      final next = await ZyraJourneyService.transitionPause(
+        matchId: widget.matchId,
+        action: action,
+        expectedVersion: _pauseState.version,
+      );
+      if (mounted) {
+        setState(() {
+          _pauseState = next;
+          _pauseCapacityAvailable = null;
+        });
+      }
+      await _refresh(showSpinner: false);
+    } on PauseCapacityConflictException {
+      if (!mounted) return;
+      setState(() => _pauseCapacityAvailable = false);
+    } on PauseTransitionStaleException {
+      await _refresh(showSpinner: false);
+    } on PauseTransitionNotAllowedException {
       await _refresh(showSpinner: false);
     } on SelfInActiveJourneyException {
       await _refresh(showSpinner: false);
@@ -669,7 +805,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         const SnackBar(
           content: Text(
             "They're in another Journey right now, so this one stays paused. "
-            'Nothing has been lost. You can resume when they are ready.',
+            'Nothing has been lost. You can request again when there is capacity.',
           ),
         ),
       );
@@ -691,6 +827,21 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     } finally {
       if (mounted) setState(() => _pauseActionBusy = false);
     }
+  }
+
+  void _endPauseFlow() {
+    if (_devPausePreview != null) {
+      ZyraDevScenario.instance.setPauseScenario(
+        ZyraPauseDevScenario.endedFromPause,
+      );
+      setState(() {
+        _devPauseScenario = ZyraPauseDevScenario.endedFromPause;
+        _devPausePreview = null;
+        _devPauseEnded = true;
+      });
+      return;
+    }
+    unawaited(_endJourney());
   }
 
   void _resetGuardianGate() {
@@ -733,22 +884,17 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
 
     await Navigator.of(context).push<void>(
       MaterialPageRoute(
-        builder: (_) => _JourneyLifecycleCompleteScreen(
-          action: _JourneyLifecycleAction.end,
-          profile: widget.profile,
-        ),
+        builder: (_) =>
+            _JourneyLifecycleCompleteScreen(profile: widget.profile),
       ),
     );
     if (mounted) Navigator.of(context).pop();
   }
 
-  /// Whether to DRAW the developer stage jumper. Not a permission check —
-  /// `zyra_dev_set_journey_stage` refuses server-side by reading
-  /// `auth.users.email`, and would refuse this account even if this getter
-  /// were changed to `true`. Contradiction-audit §3.1 is a full section on
-  /// this project shipping client-side gates and believing them.
-  bool get _isDevAccount =>
-      (ZyraAuth.currentUser?.email ?? '').endsWith('@zyra.test');
+  /// Legacy live-account Journey controls stay disabled in the one-app model.
+  // Legacy server-backed Journey jump controls are not part of local previews.
+  // Keep disabled; the shared local scenario panel owns preview controls.
+  bool get _isDevAccount => false;
 
   bool _jumping = false;
 
@@ -803,46 +949,16 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     if (_jumping) return;
     if (_lifeSnapshotOpen && _stage == 'compatibility_reveal') {
       if (_lifeSnapshotTheirsRevealed) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${widget.profile.firstName} already revealed their profile (dev)',
-            ),
-          ),
-        );
         return;
       }
       setState(() => _lifeSnapshotTheirsRevealed = true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${widget.profile.firstName} revealed their profile (dev)',
-          ),
-        ),
-      );
       return;
     }
     if (_stage == 'wali_gate') {
       if (_guardianProfilesTheirsRevealed) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${widget.profile.firstName} already chose to reveal their '
-              'Guardians (dev)',
-            ),
-          ),
-        );
         return;
       }
       setState(() => _guardianProfilesTheirsRevealed = true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${widget.profile.firstName} chose to reveal their Guardians '
-            '(dev)',
-          ),
-        ),
-      );
       return;
     }
     setState(() => _jumping = true);
@@ -855,15 +971,11 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           JourneyQuestions.seekerToWali.map((q) => q.id).toList(),
         _ => const <String>[],
       };
-      final said = await ZyraJourneyService.devCounterpartComplete(
+      await ZyraJourneyService.devCounterpartComplete(
         widget.matchId,
         questionIds: ids,
       );
       await _refresh(showSpinner: false);
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('$said (dev)')));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
@@ -1031,9 +1143,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
 
     setState(() => _jumping = true);
     try {
-      final said = await ZyraJourneyService.devRewindJourney(
-        matchId: widget.matchId,
-      );
+      await ZyraJourneyService.devRewindJourney(matchId: widget.matchId);
       if (mounted) {
         setState(() {
           _guardianProfilesMineRevealed = false;
@@ -1043,10 +1153,6 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         });
       }
       await _refresh(showSpinner: false);
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('$said (dev)')));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
@@ -1095,6 +1201,57 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _observeCompatibilitySurface();
+    if (ZyraIdentityVerificationService.enforceExistingAccountGate) {
+      if (_identityGateLoading) {
+        return const Scaffold(body: SafeArea(child: ZyraLoading.fullScreen()));
+      }
+      if (_identityGateError != null) {
+        return Scaffold(
+          body: Container(
+            constraints: const BoxConstraints.expand(),
+            decoration: ZyraAppGoldDecoration(
+              gradient: ZyraColors.brandGradient,
+            ),
+            child: SafeArea(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(28),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "We couldn't check Journey access.",
+                        style: ZyraText.heading(size: 22),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Nothing has changed. Check your connection and try again.',
+                        style: ZyraText.subtext(size: 13),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      FilledButton(
+                        onPressed: _resolveIdentityGate,
+                        child: const Text('Try again'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+      if (_identityVerification?.allowsActiveJourney != true) {
+        return InitialIdentityCheckScreen(
+          initialState: _identityVerification,
+          requireDuplicateResolution: true,
+          onContinue: (_) => _resolveIdentityGate(),
+        );
+      }
+    }
     return Scaffold(
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 420),
@@ -1105,7 +1262,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         // share one place, so neither side's tint paints it; the
         // neutral brand gradient does. Gender tints stay everywhere
         // else (DR-ZYRA-094 unchanged outside Journey mode).
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: Stack(
           children: [
             // One shared living background for the whole Journey. The
@@ -1125,9 +1282,9 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
             // reviewed; stage-changing controls disable while the live row is
             // paused.
             //
-            // The email test here decides only whether to DRAW it. The refusal
-            // that matters is inside zyra_dev_set_journey_stage, which reads
-            // auth.users and raises `dev_only`.
+            // Client capability decides whether this is drawn; the staging
+            // RPC boundary independently repeats the exact protected-persona
+            // check before changing server state.
             if (_isDevAccount && _stageLoaded && _status == 'active')
               _DevStageJumper(
                 current: _displayStage.value,
@@ -1143,9 +1300,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
                 hasPlus: _hasPlus,
                 onHasPlusChanged: _setPlusUnlock,
                 onRewind: _rewindJourney,
-                livePaused: _suspendedBy != null,
-                pausePreview: _devPausePreview,
-                onPausePreviewChanged: _setDevPausePreview,
+                livePaused: _pauseState.isLocked,
               ),
           ],
         ),
@@ -1177,28 +1332,52 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       );
     }
 
-    if (_status == 'ended') {
+    if (_status == 'ended' || _devPauseEnded) {
       return _EndedView(profile: widget.profile);
     }
 
-    final livePauseState = ZyraJourneyPausePolicy.resolve(
-      currentUserId: ZyraAuth.currentUser?.id,
-      suspendedBy: _suspendedBy,
-      alsoPausedBy: _alsoPausedBy,
-    );
-    final pauseState = _devPausePreview ?? livePauseState;
-    if (pauseState != ZyraJourneyPauseState.none) {
+    if (_guardianGateLoading) {
+      return const ZyraLoading();
+    }
+    if (_guardianGate == ZyraJourneyGuardianGate.unavailable) {
+      return ZyraEmptyState(
+        icon: Icons.cloud_off_outlined,
+        title: "Couldn't check your Main Guardian",
+        message:
+            'Journey access stays protected until this check succeeds. '
+            'Nothing has changed.',
+        ctaLabel: 'Try again',
+        onCta: _resolveMainGuardianGate,
+      );
+    }
+    if (_guardianGate != ZyraJourneyGuardianGate.ready) {
+      final selfMissing =
+          _guardianGate == ZyraJourneyGuardianGate.selfMissing ||
+          _guardianGate == ZyraJourneyGuardianGate.bothMissing;
+      return _MainGuardianRequiredJourneyView(
+        profile: widget.profile,
+        paused: _pauseState.isLocked,
+        busy: _pauseActionBusy,
+        waitingOnOther: !selfMissing,
+        onChooseGuardian: selfMissing ? _openGuardianFromJourneyHold : null,
+        onPause: _pauseState.isLocked ? null : _pauseForMissingMainGuardian,
+        onEnd: _endJourney,
+      );
+    }
+
+    final pauseState = _devPausePreview ?? _pauseState;
+    if (pauseState.isLocked) {
       final preview = _devPausePreview != null;
-      return _SuspendedView(
+      return _PauseDecisionView(
         profile: widget.profile,
         state: pauseState,
-        readySent: preview ? _devPauseReadySent : _pauseNudgedAt != null,
         busy: preview ? false : _pauseActionBusy,
         preview: preview,
-        onLiftMine: preview ? _liftDevPause : _resumePausedJourney,
-        onAlsoPause: preview ? _alsoPauseDevPreview : _alsoPauseJourney,
-        onReady: preview ? _readyDevPreview : _sendPauseReady,
-        onEnd: preview ? _endDevPausePreview : _endJourney,
+        capacityAvailable: preview
+            ? !pauseState.capacityBlocked
+            : _pauseCapacityAvailable,
+        onAction: _applyPauseAction,
+        onEnd: _endPauseFlow,
         onReturn: () => Navigator.of(context).maybePop(),
       );
     }
@@ -1246,6 +1425,9 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
                         profile: widget.profile,
                         isActionVisible: false,
                         readOnly: true,
+                        isCurrentSurface: _captureCompatibilitySurfaceOwner(
+                          readOnly: true,
+                        ),
                         onContinue: () async {},
                         waitingReason: null,
                       ),
@@ -1322,10 +1504,10 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         // the Journey move. It stays during a Family Review (its RPC's
         // closing block is the only fast exit from one). Subtle and
         // apart from the Journey's own controls; never in release.
-        if (!kReleaseMode &&
+        if (ZyraDeveloperAccess.canUseDeveloperTools &&
             _isDevAccount &&
             _status == 'active' &&
-            _suspendedBy == null)
+            !_pauseState.isLocked)
           Padding(
             padding: const EdgeInsets.only(top: 2, bottom: 10),
             child: Center(
@@ -1338,10 +1520,10 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
+                    color: ZyraColors.foreground.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.14),
+                      color: ZyraColors.foreground.withValues(alpha: 0.14),
                       width: 0.5,
                     ),
                   ),
@@ -1349,7 +1531,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
                     'User',
                     style: ZyraText.subtext(
                       size: 11.5,
-                      color: Colors.white.withValues(alpha: 0.6),
+                      color: ZyraColors.foreground.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -1381,6 +1563,88 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         ZyraJourneyStages.previewAll.first;
   }
 
+  String get _currentJourneySurfaceKey =>
+      _review != null ? 'family_review' : _displayStage.value;
+
+  bool get _compatibilityParentAdmitted =>
+      _stageLoaded &&
+      _status == 'active' &&
+      !_devPauseEnded &&
+      _review == null &&
+      !_guardianGateLoading &&
+      _guardianGate == ZyraJourneyGuardianGate.ready &&
+      !(_devPausePreview ?? _pauseState).isLocked &&
+      !_identityGateLoading &&
+      (!ZyraIdentityVerificationService.enforceExistingAccountGate ||
+          (_identityGateError == null &&
+              _identityVerification?.allowsActiveJourney == true));
+
+  int _observeCompatibilitySurface() {
+    final pause = _devPausePreview ?? _pauseState;
+    final next = (
+      scope: ZyraCompatibilityReadScope(
+        actorId: ZyraAuth.currentUser?.id,
+        accountGeneration: ZyraAccountState.generation,
+        matchId: widget.matchId,
+      ),
+      context: (
+        widget.profile.id,
+        _currentJourneySurfaceKey,
+        _stageLoaded,
+        _status,
+        _devPauseEnded,
+        _review?.id,
+        _review?.status,
+        _guardianGateLoading,
+        _guardianGate,
+        pause.phase,
+        pause.version,
+        pause.isLocked,
+        _identityGateLoading,
+        _identityGateError != null,
+        ZyraIdentityVerificationService.enforceExistingAccountGate,
+        _identityVerification?.allowsActiveJourney,
+        _lifeSnapshotOpen,
+      ),
+      admitted: _compatibilityParentAdmitted,
+    );
+    final previous = _compatibilitySurfaceContext;
+    if (previous != next) {
+      // Initial loading is not a retirement of a usable parent context.
+      // Preserve an unchanged-context revisit's last confirmed cache.
+      if (previous?.admitted == true) {
+        _CompatibilityRevealViewState.invalidateParentContext(previous!.scope);
+      }
+      _compatibilitySurfaceContext = next;
+      _compatibilitySurfaceGeneration++;
+    }
+    return _compatibilitySurfaceGeneration;
+  }
+
+  bool Function() _captureCompatibilitySurfaceOwner({required bool readOnly}) {
+    final matchId = widget.matchId;
+    final profileId = widget.profile.id;
+    final surfaceKey = _currentJourneySurfaceKey;
+    final generation = _observeCompatibilitySurface();
+    var retired = false;
+    return () {
+      if (retired) return false;
+      final current =
+          mounted &&
+          _observeCompatibilitySurface() == generation &&
+          widget.matchId == matchId &&
+          widget.profile.id == profileId &&
+          _currentJourneySurfaceKey == surfaceKey &&
+          _compatibilityParentAdmitted &&
+          (readOnly ||
+              (_stage == 'compatibility_reveal' && !_lifeSnapshotOpen));
+      // Once this captured surface loses admission it cannot revive an old
+      // awaited read merely because the same surface key comes back later.
+      if (!current) retired = true;
+      return current;
+    };
+  }
+
   Widget _buildStage(BuildContext context) {
     if (_lifeSnapshotOpen && _stage == 'compatibility_reveal') {
       return _LifeSnapshotView(
@@ -1407,6 +1671,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           matchId: widget.matchId,
           profile: widget.profile,
           isActionVisible: _stageActionVisible,
+          isCurrentSurface: _captureCompatibilitySurfaceOwner(readOnly: false),
           onContinue: () => _openStageDecision(
             fromStage: 'compatibility_reveal',
             nextLabelOverride: ZyraJourneyStages.lifeSnapshotPreview.label,
@@ -1514,6 +1779,95 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   }
 }
 
+class _MainGuardianRequiredJourneyView extends StatelessWidget {
+  final SeekerProfile profile;
+  final bool paused;
+  final bool busy;
+  final bool waitingOnOther;
+  final VoidCallback? onChooseGuardian;
+  final Future<void> Function()? onPause;
+  final Future<void> Function() onEnd;
+
+  const _MainGuardianRequiredJourneyView({
+    required this.profile,
+    required this.paused,
+    required this.busy,
+    required this.waitingOnOther,
+    required this.onChooseGuardian,
+    required this.onPause,
+    required this.onEnd,
+  });
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(24, 18, 24, 28),
+    child: Column(
+      children: [
+        _JourneyAppBar(profile: profile),
+        Expanded(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.shield_outlined,
+                    size: 34,
+                    color: ZyraColors.journeyGold,
+                  ),
+                  const SizedBox(height: 18),
+                  Text(
+                    waitingOnOther
+                        ? 'This Journey is waiting'
+                        : 'Choose a Main Guardian',
+                    style: ZyraText.heading(size: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    waitingOnOther
+                        ? '${profile.firstName} needs to choose a Main Guardian before this Journey can continue.'
+                        : paused
+                        ? 'This Journey stays paused until you choose the Guardian who leads.'
+                        : 'This Journey is held until you choose the Guardian who leads.',
+                    style: ZyraText.subtext(size: 13),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  if (onChooseGuardian != null)
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: busy ? null : onChooseGuardian,
+                        child: const Text('Go to Guardian'),
+                      ),
+                    ),
+                  if (onPause != null) ...[
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: busy ? null : onPause,
+                        child: const Text('Pause Journey'),
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 10),
+                  TextButton(
+                    onPressed: busy ? null : onEnd,
+                    child: const Text('End Journey'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 /// The Journey's shared visual atmosphere.
 ///
 /// Founder direction, 2026-08-17: the neutral purple was correct but felt
@@ -1535,11 +1889,17 @@ class _JourneyAtmosphere extends StatefulWidget {
 
 class _JourneyAtmosphereState extends State<_JourneyAtmosphere>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(seconds: 12),
-    value: 0.5,
-  );
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 12),
+      value: 0.5,
+    );
+  }
 
   @override
   void dispose() {
@@ -1566,9 +1926,9 @@ class _JourneyAtmosphereState extends State<_JourneyAtmosphere>
                 right: -95 + stageShift,
                 child: Transform.scale(
                   scale: 0.96 + (0.08 * eased),
-                  child: const _JourneyGlow(
+                  child: _JourneyGlow(
                     size: 300,
-                    colour: Color(0xFFCEA2D1),
+                    colour: ZyraColors.actionFill,
                     opacity: 0.24,
                   ),
                 ),
@@ -1804,7 +2164,7 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                                       ).withValues(alpha: 0.9)
                                     : Colors.transparent)
                               : (complete
-                                        ? const Color(0xFFE8C98A)
+                                        ? ZyraColors.journeyGold
                                         : Colors.white)
                                     .withValues(
                                       alpha: complete
@@ -1827,7 +2187,7 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                                   : const []
                             : [
                                 BoxShadow(
-                                  color: const Color(0xFFCEA2D1).withValues(
+                                  color: ZyraColors.actionFill.withValues(
                                     alpha: complete
                                         ? 0.24
                                         : highlightedWaiting
@@ -1850,7 +2210,9 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                       child: ClipOval(
                         child: photos.isEmpty
                             ? ColoredBox(
-                                color: Colors.white.withValues(alpha: 0.1),
+                                color: ZyraColors.foreground.withValues(
+                                  alpha: 0.1,
+                                ),
                                 child: Center(
                                   child: Text(
                                     you
@@ -1881,7 +2243,7 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                             height: 22,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: const Color(0xFFE8C98A),
+                              color: ZyraColors.journeyGold,
                               border: Border.all(
                                 color: ZyraColors.luxuryDarkPurple,
                                 width: 2.5,
@@ -1895,7 +2257,7 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                                 ),
                               ],
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.check_rounded,
                               size: 13,
                               color: ZyraColors.luxuryDarkPurple,
@@ -1906,7 +2268,7 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                   ],
                 ),
               ),
-              const SizedBox(height: 7),
+              SizedBox(height: 7),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: SizedBox(
@@ -1920,7 +2282,7 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                     textAlign: TextAlign.center,
                     style: ZyraText.subtext(
                       size: 10.5,
-                      color: Colors.white.withValues(
+                      color: ZyraColors.foreground.withValues(
                         alpha: complete ? 0.8 : 0.5,
                       ),
                     ),
@@ -1970,19 +2332,21 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                 decoration: widget.salamGoldWake
                     ? BoxDecoration(
                         color: connection == ZyraSalamConnectionMotion.settled
-                            ? const Color(0xFFE8C98A).withValues(alpha: 0.74)
-                            : Colors.white.withValues(alpha: 0.28),
+                            ? ZyraColors.journeyGold.withValues(alpha: 0.74)
+                            : ZyraColors.foreground.withValues(alpha: 0.28),
                       )
                     : BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                           colors: [
-                            const Color(0xFFE8C98A).withValues(
+                            ZyraColors.journeyGold.withValues(
                               alpha: widget.youComplete ? 0.7 : 0.16,
                             ),
-                            Colors.white.withValues(alpha: 0.2 + (0.18 * t)),
-                            const Color(0xFFE8C98A).withValues(
+                            ZyraColors.foreground.withValues(
+                              alpha: 0.2 + (0.18 * t),
+                            ),
+                            ZyraColors.journeyGold.withValues(
                               alpha: widget.otherComplete ? 0.7 : 0.16,
                             ),
                           ],
@@ -2008,8 +2372,8 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                             ? Alignment.centerRight
                             : Alignment.centerLeft,
                         colors: [
-                          const Color(0xFFE8C98A),
-                          const Color(0xFFE8C98A).withValues(alpha: 0.12),
+                          ZyraColors.journeyGold,
+                          ZyraColors.journeyGold.withValues(alpha: 0.12),
                         ],
                       ),
                     ),
@@ -2026,7 +2390,7 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                     height: 7,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color(0xFFE8C98A),
+                      color: ZyraColors.journeyGold,
                       boxShadow: [
                         BoxShadow(
                           color: const Color(
@@ -2078,7 +2442,7 @@ class _JourneyRibbon extends StatelessWidget {
     required this.onCompletedStageTap,
   });
 
-  static const _gold = Color(0xFFE8C98A);
+  static const _gold = ZyraColors.journeyGold;
 
   @override
   Widget build(BuildContext context) {
@@ -2089,28 +2453,37 @@ class _JourneyRibbon extends StatelessWidget {
         break;
       }
     }
-    if (selected == null) return const SizedBox.shrink();
+    if (selected == null) return SizedBox.shrink();
     final current = selected;
     final children = <Widget>[];
     for (final st in stages) {
-      if (children.isNotEmpty) children.add(const SizedBox(width: 3));
+      if (children.isNotEmpty) children.add(SizedBox(width: 3));
       if (st.order == current.order) {
         children.add(
-          Container(
-            height: 24,
-            padding: const EdgeInsets.symmetric(horizontal: 11),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(999),
-              color: _gold.withValues(alpha: 0.10),
-              border: Border.all(color: _gold, width: 1.5),
-              boxShadow: [
-                BoxShadow(color: _gold.withValues(alpha: 0.30), blurRadius: 10),
-              ],
-            ),
-            child: Text(
-              '${current.order} · ${reviewOpen ? ZyraJourneyStages.familyReviewOverride : current.label}',
-              style: ZyraText.subtext(size: 11.5, color: _gold),
+          Flexible(
+            fit: FlexFit.loose,
+            child: IntrinsicWidth(
+              child: Container(
+                constraints: const BoxConstraints(minHeight: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 11),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(999),
+                  color: _gold.withValues(alpha: 0.10),
+                  border: Border.all(color: _gold, width: 1.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _gold.withValues(alpha: 0.30),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: Text(
+                  '${current.order} · ${reviewOpen ? ZyraJourneyStages.familyReviewOverride : current.label}',
+                  style: ZyraText.subtext(size: 11.5, color: _gold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
           ),
         );
@@ -2141,7 +2514,9 @@ class _JourneyRibbon extends StatelessWidget {
                       border: walked
                           ? null
                           : Border.all(
-                              color: Colors.white.withValues(alpha: 0.2),
+                              color: ZyraColors.foreground.withValues(
+                                alpha: 0.2,
+                              ),
                               width: 1,
                             ),
                     ),
@@ -2229,13 +2604,17 @@ class _JourneyStageDecisionPage extends StatelessWidget {
                               Icon(
                                 Icons.keyboard_arrow_up_rounded,
                                 size: 24,
-                                color: Colors.white.withValues(alpha: 0.52),
+                                color: ZyraColors.foreground.withValues(
+                                  alpha: 0.52,
+                                ),
                               ),
                               Text(
                                 'Stage ${stage.order} completion above',
                                 style: ZyraText.subtext(
                                   size: 10.5,
-                                  color: Colors.white.withValues(alpha: 0.52),
+                                  color: ZyraColors.foreground.withValues(
+                                    alpha: 0.52,
+                                  ),
                                 ),
                               ),
                             ],
@@ -2252,16 +2631,18 @@ class _JourneyStageDecisionPage extends StatelessWidget {
                             completionConfirmed
                                 ? 'STAGE ${stage.order} COMPLETE'
                                 : 'STAGE ${stage.order} CHECKPOINT',
-                            style: ZyraText.chapterLabel(color: Colors.white54),
+                            style: ZyraText.chapterLabel(
+                              color: ZyraColors.ink(0.54),
+                            ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text(
                             completionConfirmed
                                 ? stage.completionHeading
                                 : 'Ready to move forward?',
                             style: ZyraText.heading(size: 23),
                           ),
-                          const SizedBox(height: 7),
+                          SizedBox(height: 7),
                           Text(
                             completionConfirmed
                                 ? stage.completionLine
@@ -2278,11 +2659,13 @@ class _JourneyStageDecisionPage extends StatelessWidget {
                         children: [
                           Text(
                             'STAGE ${stage.order + 1} AHEAD',
-                            style: ZyraText.chapterLabel(color: Colors.white54),
+                            style: ZyraText.chapterLabel(
+                              color: ZyraColors.ink(0.54),
+                            ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text(nextLabel, style: ZyraText.heading(size: 20)),
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Text(
                             'The next chapter waits below.',
                             style: ZyraText.subtext(size: 13),
@@ -2291,26 +2674,28 @@ class _JourneyStageDecisionPage extends StatelessWidget {
                       ),
                     ),
                     _JourneyDecisionBeat(
-                      nodeColor: const Color(0xFF78C69D),
+                      nodeColor: ZyraColors.journeyDotGreen,
                       last: true,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'YOUR DECISION',
-                            style: ZyraText.chapterLabel(color: Colors.white54),
+                            style: ZyraText.chapterLabel(
+                              color: ZyraColors.ink(0.54),
+                            ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text(
                             'How will you continue?',
                             style: ZyraText.heading(size: 20),
                           ),
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Text(
                             'Continue, pause, or end your Journey.',
                             style: ZyraText.subtext(size: 13),
                           ),
-                          const SizedBox(height: 15),
+                          SizedBox(height: 15),
                           _JourneyOpenDecisionRail(
                             busy: busy,
                             continueSelected: continueSelected,
@@ -2319,7 +2704,7 @@ class _JourneyStageDecisionPage extends StatelessWidget {
                             onEnd: onEnd,
                           ),
                           if (continueSelected) ...[
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             _JourneyScrollToContinue(
                               onContinue: onCommitContinue,
                               idleLabel: 'Continue',
@@ -2361,7 +2746,7 @@ class _JourneyDecisionBeat extends StatelessWidget {
             width: 34,
             child: Column(
               children: [
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 Container(
                   width: 15,
                   height: 15,
@@ -2378,7 +2763,7 @@ class _JourneyDecisionBeat extends StatelessWidget {
                   Expanded(
                     child: Container(
                       width: 1,
-                      color: Colors.white.withValues(alpha: 0.28),
+                      color: ZyraColors.foreground.withValues(alpha: 0.28),
                     ),
                   ),
               ],
@@ -2415,10 +2800,13 @@ class _JourneyOpenDecisionRail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Divider(height: 1, color: Colors.white.withValues(alpha: 0.24)),
+        Divider(
+          height: 1,
+          color: ZyraColors.foreground.withValues(alpha: 0.24),
+        ),
         _JourneyOpenDecisionAction(
           label: continueSelected ? 'Continue selected' : 'Continue',
-          dotColor: const Color(0xFF78C69D),
+          dotColor: ZyraColors.journeyDotGreen,
           selected: continueSelected,
           onTap: busy ? null : onContinue,
         ),
@@ -2432,12 +2820,12 @@ class _JourneyOpenDecisionRail extends StatelessWidget {
             child: FadeTransition(opacity: animation, child: child),
           ),
           child: continueSelected
-              ? const SizedBox.shrink(key: ValueKey('continue-selected'))
+              ? SizedBox.shrink(key: ValueKey('continue-selected'))
               : Column(
                   key: const ValueKey('all-decisions'),
                   children: [
                     _JourneyOpenDecisionAction(
-                      label: 'Pause Journey',
+                      label: 'Request Pause',
                       dotColor: const Color(0xFFDFBD62),
                       onTap: busy ? null : onPause,
                     ),
@@ -2482,13 +2870,13 @@ class _JourneyOpenDecisionAction extends StatelessWidget {
             height: 54,
             decoration: BoxDecoration(
               color: selected
-                  ? const Color(0xFFE8C98A).withValues(alpha: 0.09)
+                  ? ZyraColors.journeyGold.withValues(alpha: 0.09)
                   : Colors.transparent,
               border: Border(
                 bottom: BorderSide(
                   color: selected
-                      ? const Color(0xFFE8C98A).withValues(alpha: 0.52)
-                      : Colors.white.withValues(alpha: 0.24),
+                      ? ZyraColors.journeyGold.withValues(alpha: 0.52)
+                      : ZyraColors.foreground.withValues(alpha: 0.24),
                 ),
               ),
             ),
@@ -2502,7 +2890,7 @@ class _JourneyOpenDecisionAction extends StatelessWidget {
                     color: dotColor,
                   ),
                 ),
-                const SizedBox(width: 14),
+                SizedBox(width: 14),
                 Expanded(
                   child: Text(
                     label,
@@ -2518,8 +2906,8 @@ class _JourneyOpenDecisionAction extends StatelessWidget {
                   selected ? Icons.check_rounded : Icons.chevron_right_rounded,
                   size: 20,
                   color: selected
-                      ? const Color(0xFFE8C98A)
-                      : Colors.white.withValues(alpha: 0.5),
+                      ? ZyraColors.journeyGold
+                      : ZyraColors.foreground.withValues(alpha: 0.5),
                 ),
               ],
             ),
@@ -2532,19 +2920,66 @@ class _JourneyOpenDecisionAction extends StatelessWidget {
 
 enum _JourneyLifecycleAction { pause, end }
 
-enum _JourneyLifecycleFailure { pausedLimit, suspensionRequiresOne, failed }
+enum _JourneyLifecycleFailure { failed }
+
+/// Exact production Pause-confirm surface with an injectable write, used to
+/// force the unknown-failure branch without a live backend outage.
+@visibleForTesting
+Widget buildZyraPauseFailureTestSurface({
+  required Future<void> Function() write,
+}) {
+  return _JourneyLifecycleConfirmScreen(
+    action: _JourneyLifecycleAction.pause,
+    profile: const SeekerProfile(
+      id: 'truthful-failure-test-profile',
+      firstName: 'Adam',
+      age: 30,
+      city: 'London',
+      photos: <String>[],
+      gender: 'male',
+    ),
+    onConfirm: () async {
+      await write();
+      return null;
+    },
+  );
+}
+
+const _requestNewJourneyHoldTestProfile = SeekerProfile(
+  id: 'request-new-journey-hold-test-profile',
+  firstName: 'Maryam',
+  age: 30,
+  city: 'London',
+  photos: <String>[],
+  gender: 'female',
+);
+
+@visibleForTesting
+Widget buildZyraEndConfirmationTestSurface() => _JourneyLifecycleConfirmScreen(
+  action: _JourneyLifecycleAction.end,
+  profile: _requestNewJourneyHoldTestProfile,
+  onConfirm: () async => null,
+);
+
+@visibleForTesting
+Widget buildZyraJourneyEndedCompleteTestSurface() =>
+    const _JourneyLifecycleCompleteScreen(
+      profile: _requestNewJourneyHoldTestProfile,
+    );
+
+@visibleForTesting
+Widget buildZyraEndedJourneyTestSurface() =>
+    const _EndedView(profile: _requestNewJourneyHoldTestProfile);
 
 class _JourneyLifecycleConfirmScreen extends StatefulWidget {
   final _JourneyLifecycleAction action;
   final SeekerProfile profile;
-  final bool otherAlreadyPaused;
   final Future<_JourneyLifecycleFailure?> Function() onConfirm;
 
   const _JourneyLifecycleConfirmScreen({
     required this.action,
     required this.profile,
     required this.onConfirm,
-    this.otherAlreadyPaused = false,
   });
 
   @override
@@ -2578,22 +3013,13 @@ class _JourneyLifecycleConfirmScreenState
       return;
     }
 
-    if (failure == _JourneyLifecycleFailure.pausedLimit) {
-      await showZyraPausedLimitRefusal(context);
-      if (mounted) setState(() => _busy = false);
-      return;
-    }
-
     setState(() {
       _busy = false;
       _error = switch (failure) {
-        _JourneyLifecycleFailure.suspensionRequiresOne =>
-          'Journey Suspension requires ZYRA One.',
         _JourneyLifecycleFailure.failed =>
           _pausing
-              ? "Pause didn't go through. Check your connection and try again."
+              ? "Pause request didn't go through. Check your connection and try again."
               : "End didn't go through. Check your connection and try again.",
-        _JourneyLifecycleFailure.pausedLimit => null,
         null => null,
       };
     });
@@ -2602,29 +3028,26 @@ class _JourneyLifecycleConfirmScreenState
   @override
   Widget build(BuildContext context) {
     final accent = _pausing ? const Color(0xFFDFBD62) : const Color(0xFFDF7D82);
-    final actionTitle = _pausing ? 'Pause Journey' : 'End Journey';
+    final actionTitle = _pausing ? 'Request Pause' : 'End Journey';
     final body = _pausing
-        ? widget.otherAlreadyPaused
-              ? '${widget.profile.firstName} has already paused. Adding your '
-                    'pause means you will both be taking space.'
-              : 'Pause holds your place without closing this chapter. Nothing in '
-                    'your Journey is lost.'
+        ? 'This asks for space without deciding the Journey for either of '
+              'you. Nothing in your Journey is lost.'
         : 'Ending closes this Journey for both of you. It cannot resume from '
               'this point.';
     final detail = _pausing
-        ? widget.otherAlreadyPaused
-              ? 'Each pause remains a personal choice. The Journey continues '
-                    'only after you have each lifted your own pause.'
-              : 'You can lift your pause whenever you are ready. '
-                    '${widget.profile.firstName} may pause too, request that you '
-                    'continue, or choose to end the Journey.'
-        : 'For 60 days after ending, one of you may request a new Journey '
+        ? '${widget.profile.firstName} can agree to pause, request to '
+              'continue, or end the Journey. Until then, it stays Active but '
+              'locked for both of you.'
+        : ZyraReleaseGates.requestNewJourneyEnabled
+        ? 'For 60 days after ending, one of you may request a new Journey '
               'and the other must accept. After that, you would need to find '
-              'each other again in Browser. Your Timeline is kept.';
+              'each other again in Profiles. Your Timeline is kept.'
+        : '${ZyraReleaseGates.requestNewJourneyUnavailable} '
+              'Your Timeline is kept.';
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: Column(
             children: [
@@ -2636,9 +3059,9 @@ class _JourneyLifecycleConfirmScreenState
                       onPressed: _busy
                           ? null
                           : () => Navigator.of(context).pop(false),
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back_ios_new,
-                        color: Colors.white70,
+                        color: ZyraColors.ink(0.70),
                         size: 18,
                       ),
                     ),
@@ -2647,12 +3070,12 @@ class _JourneyLifecycleConfirmScreenState
                         actionTitle,
                         style: ZyraText.subtext(
                           size: 13,
-                          color: Colors.white70,
+                          color: ZyraColors.ink(0.70),
                         ),
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(width: 48),
+                    SizedBox(width: 48),
                   ],
                 ),
               ),
@@ -2672,30 +3095,28 @@ class _JourneyLifecycleConfirmScreenState
                               color: accent,
                             ),
                           ),
-                          const SizedBox(height: 22),
+                          SizedBox(height: 22),
                           Text(
-                            _pausing
-                                ? 'Pause this Journey?'
-                                : 'End this Journey?',
+                            _pausing ? 'Request a pause?' : 'End this Journey?',
                             style: ZyraText.heading(size: 25),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           Text(
                             body,
                             style: ZyraText.body(size: 14),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           Container(width: 54, height: 1, color: accent),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           Text(
                             detail,
                             style: ZyraText.subtext(size: 13),
                             textAlign: TextAlign.center,
                           ),
                           if (_error != null) ...[
-                            const SizedBox(height: 18),
+                            SizedBox(height: 18),
                             Text(
                               _error!,
                               style: ZyraText.subtext(
@@ -2705,16 +3126,16 @@ class _JourneyLifecycleConfirmScreenState
                               textAlign: TextAlign.center,
                             ),
                           ],
-                          const SizedBox(height: 30),
+                          SizedBox(height: 30),
                           _JourneySolidAction(
                             label: _busy
-                                ? (_pausing ? 'Pausing…' : 'Ending…')
-                                : (_pausing ? 'Confirm Pause' : 'End Journey'),
+                                ? (_pausing ? 'Requesting…' : 'Ending…')
+                                : (_pausing ? 'Request Pause' : 'End Journey'),
                             accent: accent,
                             destructive: !_pausing,
                             onTap: _busy ? null : _confirm,
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10),
                           TextButton(
                             onPressed: _busy
                                 ? null
@@ -2723,7 +3144,7 @@ class _JourneyLifecycleConfirmScreenState
                               _pausing ? 'Keep Journey active' : 'Keep Journey',
                               style: ZyraText.subtext(
                                 size: 12.5,
-                                color: Colors.white70,
+                                color: ZyraColors.ink(0.70),
                               ),
                             ),
                           ),
@@ -2742,24 +3163,17 @@ class _JourneyLifecycleConfirmScreenState
 }
 
 class _JourneyLifecycleCompleteScreen extends StatelessWidget {
-  final _JourneyLifecycleAction action;
   final SeekerProfile profile;
-  final bool pausedByBoth;
 
-  const _JourneyLifecycleCompleteScreen({
-    required this.action,
-    required this.profile,
-    this.pausedByBoth = false,
-  });
+  const _JourneyLifecycleCompleteScreen({required this.profile});
 
   @override
   Widget build(BuildContext context) {
-    final paused = action == _JourneyLifecycleAction.pause;
-    final accent = paused ? const Color(0xFFDFBD62) : const Color(0xFFDF7D82);
+    const accent = Color(0xFFDF7D82);
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -2776,57 +3190,40 @@ class _JourneyLifecycleCompleteScreen extends StatelessWidget {
                         color: accent,
                       ),
                     ),
-                    const SizedBox(height: 22),
+                    SizedBox(height: 22),
                     Text(
-                      paused ? 'JOURNEY PAUSED' : 'JOURNEY ENDED',
-                      style: ZyraText.chapterLabel(color: Colors.white54),
+                      'JOURNEY ENDED',
+                      style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Text(
-                      paused
-                          ? pausedByBoth
-                                ? 'You have both paused.'
-                                : 'Your place is held.'
-                          : 'This chapter has closed.',
+                      'This chapter has closed.',
                       style: ZyraText.heading(size: 25),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Text(
-                      paused
-                          ? pausedByBoth
-                                ? 'Your pause now sits beside '
-                                      '${profile.firstName}’s. Nothing you '
-                                      'have shared is lost.'
-                                : 'You can choose to resume at any time. Nothing '
-                                      'you and ${profile.firstName} have shared is lost.'
-                          : '${profile.firstName} has been notified. Your '
-                                'Timeline is kept, but continuing together '
-                                'would mean beginning a new Journey.',
+                      '${profile.firstName} has been notified. Your Timeline '
+                      'is kept, but continuing together would mean '
+                      'beginning a new Journey.',
                       style: ZyraText.body(size: 14),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Container(width: 54, height: 1, color: accent),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Text(
-                      paused
-                          ? pausedByBoth
-                                ? 'The Journey continues after each of you '
-                                      'has lifted your own pause. Neither '
-                                      'person decides for the other.'
-                                : '${profile.firstName} can pause too, request to '
-                                      'continue, or end the Journey. You do not '
-                                      'need to decide anything else now.'
-                          : 'Starting again requires a new request and '
-                                'agreement from both of you. The direct '
-                                'request is available for 60 days; after '
-                                'that, you would need to meet again in Browser.',
+                      ZyraReleaseGates.requestNewJourneyEnabled
+                          ? 'Starting again requires a new request and agreement '
+                                'from both of you. The direct request is available '
+                                'for 60 days; after that, you would need to meet '
+                                'again in Profiles.'
+                          : ZyraReleaseGates.requestNewJourneyUnavailable,
                       style: ZyraText.subtext(size: 13),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 34),
+                    SizedBox(height: 34),
                     _JourneySolidAction(
                       label: 'Return to Connections',
                       accent: accent,
@@ -2866,7 +3263,7 @@ class _JourneySolidAction extends StatelessWidget {
         child: Material(
           color: destructive
               ? const Color(0xFF56313B)
-              : const Color(0xFF34283F),
+              : ZyraColors.sheetSurface,
           shape: StadiumBorder(side: BorderSide(color: accent, width: 1)),
           child: InkWell(
             customBorder: const StadiumBorder(),
@@ -2911,9 +3308,9 @@ class _FrostPill extends StatelessWidget {
 
   Widget _pill(BuildContext context) {
     return Material(
-      color: Colors.white.withValues(alpha: 0.22),
+      color: ZyraColors.surfaceEmphasisFill,
       shape: StadiumBorder(
-        side: BorderSide(color: Colors.white.withValues(alpha: 0.42)),
+        side: BorderSide(color: ZyraColors.surfaceEmphasisBorder),
       ),
       child: InkWell(
         customBorder: const StadiumBorder(),
@@ -2950,11 +3347,17 @@ class _JourneyRoundAction extends StatefulWidget {
 
 class _JourneyRoundActionState extends State<_JourneyRoundAction>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _breath = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1800),
-    value: 0.5,
-  );
+  late final AnimationController _breath;
+
+  @override
+  void initState() {
+    super.initState();
+    _breath = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+      value: 0.5,
+    );
+  }
 
   @override
   void dispose() {
@@ -3002,9 +3405,9 @@ class _JourneyRoundActionState extends State<_JourneyRoundAction>
                       height: 58,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withValues(alpha: 0.1),
+                        color: ZyraColors.foreground.withValues(alpha: 0.1),
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.28),
+                          color: ZyraColors.foreground.withValues(alpha: 0.28),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -3017,7 +3420,7 @@ class _JourneyRoundActionState extends State<_JourneyRoundAction>
                       ),
                       child: Icon(
                         widget.icon,
-                        color: const Color(0xFFE8C98A),
+                        color: ZyraColors.journeyGold,
                         size: 25,
                       ),
                     ),
@@ -3025,7 +3428,7 @@ class _JourneyRoundActionState extends State<_JourneyRoundAction>
                 ),
               ),
               if (widget.showLabel) ...[
-                const SizedBox(height: 7),
+                SizedBox(height: 7),
                 Text(widget.label, style: ZyraText.button(size: 13.5)),
               ],
             ],
@@ -3130,12 +3533,12 @@ class _JourneyScrollInvitationState extends State<_JourneyScrollInvitation>
                       ).withValues(alpha: 0.58 + (0.36 * progress)),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     widget.continuing ? widget.openingLabel : widget.idleLabel,
                     style: ZyraText.subtext(
                       size: 13,
-                      color: Colors.white.withValues(
+                      color: ZyraColors.foreground.withValues(
                         alpha: 0.58 + (0.3 * progress),
                       ),
                     ),
@@ -3292,11 +3695,7 @@ class _JourneyVerticalStageSwapState extends State<_JourneyVerticalStageSwap>
     with SingleTickerProviderStateMixin {
   late Widget _current;
   Widget? _previous;
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 480),
-    value: 1,
-  );
+  late final AnimationController _controller;
 
   late final Animation<Offset> _incoming = Tween<Offset>(
     begin: const Offset(0, 1),
@@ -3311,6 +3710,11 @@ class _JourneyVerticalStageSwapState extends State<_JourneyVerticalStageSwap>
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 480),
+      value: 1,
+    );
     _current = widget.child;
   }
 
@@ -3805,27 +4209,29 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
                               Text(
                                 'STAGE ${stage.order} OF ${widget.stages.length}',
                                 style: ZyraText.chapterLabel(
-                                  color: Colors.white54,
+                                  color: ZyraColors.ink(0.54),
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: 10),
                               Text(
                                 stage.arrivalTitle ?? stage.label,
                                 style: ZyraText.heading(size: 25),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: 16),
                               Text(
                                 stage.introduction,
                                 style: ZyraText.body(
                                   size: 15,
-                                  color: Colors.white.withValues(alpha: 0.9),
+                                  color: ZyraColors.foreground.withValues(
+                                    alpha: 0.9,
+                                  ),
                                 ),
                                 textAlign: TextAlign.center,
                               ),
                               if (secondary != null) ...[
-                                const SizedBox(height: 10),
+                                SizedBox(height: 10),
                                 Text(
                                   secondary,
                                   style: ZyraText.subtext(size: 13),
@@ -3833,7 +4239,7 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
                                 ),
                               ],
                               if (questionCount != null) ...[
-                                const SizedBox(height: 22),
+                                SizedBox(height: 22),
                                 _JourneyQuestionChapterBriefing(
                                   questionCount: questionCount,
                                 ),
@@ -3904,7 +4310,7 @@ class _JourneyQuestionChapterBriefing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const gold = Color(0xFFE8C98A);
+    const gold = ZyraColors.journeyGold;
     return Semantics(
       label:
           '$questionCount questions, one at a time. Answer privately, review and seal, then open together.',
@@ -3937,17 +4343,17 @@ class _JourneyQuestionChapterBriefing extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 13),
+            SizedBox(height: 13),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.lock_outline_rounded, size: 13, color: gold),
-                const SizedBox(width: 6),
+                Icon(Icons.lock_outline_rounded, size: 13, color: gold),
+                SizedBox(width: 6),
                 Text(
                   '$questionCount questions · one at a time',
                   style: ZyraText.subtext(
                     size: 10.5,
-                    color: Colors.white.withValues(alpha: 0.58),
+                    color: ZyraColors.foreground.withValues(alpha: 0.58),
                   ),
                 ),
               ],
@@ -3980,20 +4386,20 @@ class _JourneyQuestionBriefingStep extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: const Color(0xFFE8C98A).withValues(alpha: 0.76),
+              color: ZyraColors.journeyGold.withValues(alpha: 0.76),
             ),
           ),
           child: Text(
             '$number',
-            style: ZyraText.subtext(size: 9.5, color: const Color(0xFFE8C98A)),
+            style: ZyraText.subtext(size: 9.5, color: ZyraColors.journeyGold),
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
           label,
           style: ZyraText.subtext(
             size: 9.5,
-            color: Colors.white.withValues(alpha: 0.78),
+            color: ZyraColors.foreground.withValues(alpha: 0.78),
           ),
           textAlign: TextAlign.center,
         ),
@@ -4049,13 +4455,13 @@ class _JourneyUpCue extends StatelessWidget {
                 Icon(
                   Icons.keyboard_arrow_up_rounded,
                   size: 24,
-                  color: Colors.white.withValues(alpha: 0.58),
+                  color: ZyraColors.foreground.withValues(alpha: 0.58),
                 ),
                 Text(
                   label,
                   style: ZyraText.subtext(
                     size: 10.5,
-                    color: Colors.white.withValues(alpha: 0.58),
+                    color: ZyraColors.foreground.withValues(alpha: 0.58),
                   ),
                 ),
               ],
@@ -4069,34 +4475,56 @@ class _JourneyUpCue extends StatelessWidget {
 
 /// The next chapter's invitation appears with the arrival instead of asking
 /// the member to guess whether the successful Continue tap did anything.
-class _JourneyDownCue extends StatelessWidget {
+class _JourneyDownCue extends StatefulWidget {
   final String label;
   final VoidCallback onTap;
 
   const _JourneyDownCue({required this.label, required this.onTap});
 
   @override
+  State<_JourneyDownCue> createState() => _JourneyDownCueState();
+}
+
+class _JourneyDownCueState extends State<_JourneyDownCue> {
+  bool _reducedMotionLatched = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.maybeOf(context)?.disableAnimations ?? false) {
+      _reducedMotionLatched = true;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final reduceMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
-      duration: const Duration(milliseconds: 560),
+      duration: reduceMotion
+          ? Duration.zero
+          : const Duration(milliseconds: 560),
       curve: Curves.easeOutCubic,
-      builder: (context, value, child) => Opacity(
-        opacity: value,
-        child: Transform.translate(
-          offset: Offset(0, 10 * (1 - value)),
-          child: child,
-        ),
-      ),
+      builder: (context, value, child) {
+        final visibleValue = _reducedMotionLatched ? 1.0 : value;
+        return Opacity(
+          opacity: visibleValue,
+          child: Transform.translate(
+            offset: Offset(0, 10 * (1 - visibleValue)),
+            child: child,
+          ),
+        );
+      },
       child: Semantics(
         button: true,
-        label: label,
-        onTap: onTap,
+        label: widget.label,
+        onTap: widget.onTap,
         excludeSemantics: true,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTap,
+            onTap: widget.onTap,
             excludeFromSemantics: true,
             borderRadius: BorderRadius.circular(18),
             child: Padding(
@@ -4107,13 +4535,13 @@ class _JourneyDownCue extends StatelessWidget {
                   Icon(
                     Icons.keyboard_arrow_down_rounded,
                     size: 30,
-                    color: Colors.white.withValues(alpha: 0.58),
+                    color: ZyraColors.foreground.withValues(alpha: 0.58),
                   ),
                   Text(
-                    label,
+                    widget.label,
                     style: ZyraText.subtext(
                       size: 12,
-                      color: Colors.white.withValues(alpha: 0.6),
+                      color: ZyraColors.foreground.withValues(alpha: 0.6),
                     ),
                   ),
                 ],
@@ -4156,44 +4584,47 @@ class _JourneyCompletedStage extends StatelessWidget {
             Icon(
               Icons.check_circle_outline_rounded,
               size: 25,
-              color: const Color(0xFFE8C98A).withValues(alpha: 0.72),
+              color: ZyraColors.journeyGold.withValues(alpha: 0.72),
             ),
-            const SizedBox(height: 11),
+            SizedBox(height: 11),
             Text(
               'STAGE ${stage.order} · ${stage.label.toUpperCase()}',
-              style: ZyraText.chapterLabel(color: Colors.white54),
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Text(
               stage.completionHeading,
               style: ZyraText.heading(size: 21),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 7),
+            SizedBox(height: 7),
             Text(
               stage.completionLine,
               style: ZyraText.subtext(size: 13.5),
               textAlign: TextAlign.center,
             ),
             if (stage.guidingQuestion != null) ...[
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Text(
                 stage.guidingQuestion!,
                 style: ZyraText.body(
                   size: 12.5,
-                  color: Colors.white.withValues(alpha: 0.62),
+                  color: ZyraColors.foreground.withValues(alpha: 0.62),
                 ),
                 textAlign: TextAlign.center,
               ),
             ],
             if (_hasTimelineRecord) ...[
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               TextButton(
                 onPressed: onOpenTimeline,
                 child: Text(
                   'Read this stage in your Timeline',
-                  style: ZyraText.subtext(size: 11.5, color: Colors.white70),
+                  style: ZyraText.subtext(
+                    size: 11.5,
+                    color: ZyraColors.ink(0.70),
+                  ),
                 ),
               ),
             ],
@@ -4201,7 +4632,7 @@ class _JourneyCompletedStage extends StatelessWidget {
             Container(
               width: 54,
               height: 1,
-              color: Colors.white.withValues(alpha: 0.13),
+              color: ZyraColors.foreground.withValues(alpha: 0.13),
             ),
           ],
         ),
@@ -4218,13 +4649,14 @@ class _JourneyCompletedStage extends StatelessWidget {
 ///
 /// The first version was an amber strip under the app bar. It was legible and
 /// it was wrong: `dev_scenario_panel.dart` already established the pattern on
-/// 2026-08-01 — a 22pt tab, `0xF20E0B12`, chevron when open and a tune glyph
+/// 2026-08-01 — a 22pt tab, dark-plum glass, chevron when open and a tune glyph
 /// when closed, vertically centred. Two debug conventions in one app is one
 /// too many, and the newer one is always the one that looks like a bug.
 ///
-/// IT IS A SEPARATE TAB, NOT THE SAME ONE. JourneyFlowScreen is pushed above
-/// HomeShell, so HomeShell's panel is covered by this route and cannot be
-/// reached from here. They never appear together, so they cannot collide.
+/// This remains the Journey's specialist stage-control tab. The global
+/// developer rail stays available above pushed routes and owns the page-aware
+/// Pause Decision State control; keeping pause state out of this tab avoids
+/// two controls for the same scenario.
 ///
 /// ⚠️ IT SKIPS THE THREE THINGS THAT MAKE ZYRA WHAT IT IS: the Pre-Journey
 /// Ritual, the Guardian Gate, and the 48-hour Family Review Period.
@@ -4253,8 +4685,6 @@ class _DevStageJumper extends StatefulWidget {
   final ValueChanged<bool> onHasPlusChanged;
   final VoidCallback onRewind;
   final bool livePaused;
-  final ZyraJourneyPauseState? pausePreview;
-  final ValueChanged<ZyraJourneyPauseState?> onPausePreviewChanged;
 
   const _DevStageJumper({
     required this.current,
@@ -4271,8 +4701,6 @@ class _DevStageJumper extends StatefulWidget {
     required this.onHasPlusChanged,
     required this.onRewind,
     required this.livePaused,
-    required this.pausePreview,
-    required this.onPausePreviewChanged,
   });
 
   @override
@@ -4292,34 +4720,6 @@ class _DevStageJumperState extends State<_DevStageJumper> {
       .map((stage) => stage.value)
       .toList(growable: false);
 
-  Widget _pausePreviewChip(String label, ZyraJourneyPauseState? state) {
-    final selected = widget.pausePreview == state;
-    return GestureDetector(
-      onTap: widget.busy ? null : () => widget.onPausePreviewChanged(state),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-        decoration: BoxDecoration(
-          color: selected
-              ? Colors.white.withValues(alpha: 0.22)
-              : Colors.white.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: selected ? 0.35 : 0.12),
-            width: 0.5,
-          ),
-        ),
-        child: Text(
-          label,
-          style: ZyraText.subtext(
-            size: 11,
-            color: selected ? Colors.white : const Color(0xB3FFFFFF),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _guardianChip(int index) {
     final guardian = ZyraDevScenario.fakeGuardians[index];
     final selected = widget.selectedGuardians.contains(index);
@@ -4335,13 +4735,13 @@ class _DevStageJumperState extends State<_DevStageJumper> {
         padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
         decoration: BoxDecoration(
           color: selected
-              ? const Color(0xFFE8C98A).withValues(alpha: 0.2)
-              : Colors.white.withValues(alpha: 0.06),
+              ? ZyraColors.journeyGold.withValues(alpha: 0.2)
+              : ZyraColors.foreground.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: selected
-                ? const Color(0xFFE8C98A).withValues(alpha: 0.72)
-                : Colors.white.withValues(alpha: 0.12),
+                ? ZyraColors.journeyGold.withValues(alpha: 0.72)
+                : ZyraColors.foreground.withValues(alpha: 0.12),
             width: 0.7,
           ),
         ),
@@ -4351,9 +4751,9 @@ class _DevStageJumperState extends State<_DevStageJumper> {
             Icon(
               selected ? Icons.check_circle_rounded : Icons.circle_outlined,
               size: 13,
-              color: selected ? const Color(0xFFE8C98A) : Colors.white54,
+              color: selected ? ZyraColors.journeyGold : ZyraColors.ink(0.54),
             ),
-            const SizedBox(width: 5),
+            SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -4366,7 +4766,7 @@ class _DevStageJumperState extends State<_DevStageJumper> {
                   role,
                   style: ZyraText.subtext(
                     size: 8.5,
-                    color: Colors.white.withValues(alpha: 0.52),
+                    color: ZyraColors.foreground.withValues(alpha: 0.52),
                   ),
                 ),
               ],
@@ -4388,13 +4788,13 @@ class _DevStageJumperState extends State<_DevStageJumper> {
         padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
         decoration: BoxDecoration(
           color: selected
-              ? const Color(0xFFE8C98A).withValues(alpha: 0.2)
-              : Colors.white.withValues(alpha: 0.06),
+              ? ZyraColors.journeyGold.withValues(alpha: 0.2)
+              : ZyraColors.foreground.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: selected
-                ? const Color(0xFFE8C98A).withValues(alpha: 0.72)
-                : Colors.white.withValues(alpha: 0.12),
+                ? ZyraColors.journeyGold.withValues(alpha: 0.72)
+                : ZyraColors.foreground.withValues(alpha: 0.12),
             width: 0.7,
           ),
         ),
@@ -4404,14 +4804,14 @@ class _DevStageJumperState extends State<_DevStageJumper> {
             Icon(
               selected ? Icons.check_rounded : Icons.add_rounded,
               size: 12,
-              color: selected ? const Color(0xFFE8C98A) : Colors.white54,
+              color: selected ? ZyraColors.journeyGold : ZyraColors.ink(0.54),
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: 4),
             Text(
               field.label,
               style: ZyraText.subtext(
                 size: 10,
-                color: selected ? Colors.white : const Color(0xB3FFFFFF),
+                color: selected ? Colors.white : ZyraColors.ink(0.70),
               ),
             ),
           ],
@@ -4422,7 +4822,9 @@ class _DevStageJumperState extends State<_DevStageJumper> {
 
   @override
   Widget build(BuildContext context) {
-    if (kReleaseMode) return const SizedBox.shrink();
+    if (!ZyraDeveloperAccess.canUseDeveloperTools) {
+      return SizedBox.shrink();
+    }
 
     return Positioned(
       top: 0,
@@ -4438,12 +4840,14 @@ class _DevStageJumperState extends State<_DevStageJumper> {
                 width: _tabWidth,
                 height: 92,
                 decoration: BoxDecoration(
-                  color: const Color(0xF20E0B12),
+                  color: ZyraColors.modalSheetSurface.withValues(
+                    alpha: 242 / 255,
+                  ),
                   borderRadius: const BorderRadius.horizontal(
                     left: Radius.circular(8),
                   ),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.16),
+                    color: ZyraColors.foreground.withValues(alpha: 0.16),
                     width: 0.5,
                   ),
                 ),
@@ -4451,7 +4855,7 @@ class _DevStageJumperState extends State<_DevStageJumper> {
                   child: Icon(
                     _open ? Icons.chevron_right : Icons.tune,
                     size: 15,
-                    color: Colors.white.withValues(alpha: 0.75),
+                    color: ZyraColors.foreground.withValues(alpha: 0.75),
                   ),
                 ),
               ),
@@ -4459,7 +4863,7 @@ class _DevStageJumperState extends State<_DevStageJumper> {
           ),
           Expanded(
             child: Material(
-              color: const Color(0xF20E0B12),
+              color: ZyraColors.modalSheetSurface.withValues(alpha: 242 / 255),
               child: SafeArea(
                 left: false,
                 child: ListView(
@@ -4471,305 +4875,316 @@ class _DevStageJumperState extends State<_DevStageJumper> {
                     // first reach, not a scroll. Still the only destructive
                     // thing in the panel, still tinted like the account
                     // reset in dev_scenario_panel, still asks first.
-                    Text(
-                      'START OVER',
-                      style: ZyraText.chapterLabel(color: Colors.white70),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: widget.busy || widget.livePaused
-                            ? null
-                            : widget.onRewind,
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                            color: ZyraColors.destructiveBorder,
-                            width: 0.7,
-                          ),
-                        ),
-                        child: Text(
-                          'Start this Journey again',
-                          style: ZyraText.subtext(
-                            size: 12,
-                            color: ZyraColors.destructive,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Back to Compatibility Reveal, with everything you both '
-                      'did inside it cleared. The match and your Guardian link '
-                      'stay. Asks first.',
-                      style: ZyraText.subtext(size: 10.5),
-                    ),
-
-                    const SizedBox(height: 14),
-                    Divider(
-                      color: Colors.white.withValues(alpha: 0.12),
-                      height: 1,
-                    ),
-                    const SizedBox(height: 14),
-
-                    Text(
-                      'PAUSE PREVIEW',
-                      style: ZyraText.chapterLabel(color: Colors.white70),
-                    ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        _pausePreviewChip('Live', null),
-                        _pausePreviewChip('You', ZyraJourneyPauseState.you),
-                        _pausePreviewChip('Them', ZyraJourneyPauseState.them),
-                        _pausePreviewChip('Both', ZyraJourneyPauseState.both),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Display only — changes this page, never Journey data.',
-                      style: ZyraText.subtext(size: 10.5),
-                    ),
-
-                    const SizedBox(height: 14),
-                    Divider(
-                      color: Colors.white.withValues(alpha: 0.12),
-                      height: 1,
-                    ),
-                    const SizedBox(height: 14),
-
-                    Row(
-                      children: [
-                        Text(
-                          'SKIP TO STAGE',
-                          style: ZyraText.chapterLabel(color: Colors.white70),
-                        ),
-                        const Spacer(),
-                        if (widget.busy)
-                          const SizedBox(
-                            width: 12,
-                            height: 12,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1.6,
-                              color: Colors.white70,
+                    ZyraDevToolSection(
+                      key: const ValueKey('dev_journey_section_start'),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'START OVER',
+                            style: ZyraText.chapterLabel(
+                              color: ZyraColors.ink(0.70),
                             ),
                           ),
-                      ],
+                          SizedBox(height: 8),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton(
+                              onPressed: widget.busy || widget.livePaused
+                                  ? null
+                                  : widget.onRewind,
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                  color: ZyraColors.destructiveBorder,
+                                  width: 0.7,
+                                ),
+                              ),
+                              child: Text(
+                                'Start this Journey again',
+                                style: ZyraText.subtext(
+                                  size: 12,
+                                  color: ZyraColors.destructive,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            'Back to Compatibility Reveal, with everything you both '
+                            'did inside it cleared. The match and your Guardian link '
+                            'stay. Asks first.',
+                            style: ZyraText.subtext(size: 10.5),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 10),
-                    // CHIPS, not a tower — 2026-08-12 (premium-tool pass).
-                    // Full-width rows pushed the panel past one screen;
-                    // wrapped chips keep the whole sequence visible.
-                    // Labels still come from the canonical map, never a
-                    // literal here.
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        for (final s in _stages)
-                          Builder(
-                            builder: (_) {
-                              final isCurrent = s == widget.current;
-                              return GestureDetector(
-                                onTap:
-                                    widget.busy ||
-                                        widget.livePaused ||
-                                        isCurrent
-                                    ? null
-                                    : () => widget.onJump(s),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 7,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isCurrent
-                                        ? Colors.white.withValues(alpha: 0.22)
-                                        : Colors.white.withValues(alpha: 0.06),
-                                    borderRadius: BorderRadius.circular(999),
-                                    border: Border.all(
-                                      color: Colors.white.withValues(
-                                        alpha: isCurrent ? 0.35 : 0.12,
-                                      ),
-                                      width: 0.5,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    ZyraJourneyStages.previewLabelFor(s),
-                                    style: ZyraText.subtext(
-                                      size: 11,
-                                      color: isCurrent
-                                          ? Colors.white
-                                          : const Color(0xB3FFFFFF),
-                                    ),
+                    const SizedBox(height: 16),
+                    ZyraDevToolSection(
+                      key: const ValueKey('dev_journey_section_stages'),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'SKIP TO STAGE',
+                                style: ZyraText.chapterLabel(
+                                  color: ZyraColors.ink(0.70),
+                                ),
+                              ),
+                              const Spacer(),
+                              if (widget.busy)
+                                SizedBox(
+                                  width: 12,
+                                  height: 12,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 1.6,
+                                    color: ZyraColors.ink(0.70),
                                   ),
                                 ),
-                              );
-                            },
+                            ],
                           ),
-                      ],
+                          SizedBox(height: 10),
+                          // CHIPS, not a tower — 2026-08-12 (premium-tool pass).
+                          // Full-width rows pushed the panel past one screen;
+                          // wrapped chips keep the whole sequence visible.
+                          // Labels still come from the canonical map, never a
+                          // literal here.
+                          Wrap(
+                            spacing: 6,
+                            runSpacing: 6,
+                            children: [
+                              for (final s in _stages)
+                                Builder(
+                                  builder: (_) {
+                                    final isCurrent = s == widget.current;
+                                    return GestureDetector(
+                                      onTap:
+                                          widget.busy ||
+                                              widget.livePaused ||
+                                              isCurrent
+                                          ? null
+                                          : () => widget.onJump(s),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 7,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: isCurrent
+                                              ? ZyraColors.foreground
+                                                    .withValues(alpha: 0.22)
+                                              : ZyraColors.foreground
+                                                    .withValues(alpha: 0.06),
+                                          borderRadius: BorderRadius.circular(
+                                            999,
+                                          ),
+                                          border: Border.all(
+                                            color: ZyraColors.foreground
+                                                .withValues(
+                                                  alpha: isCurrent
+                                                      ? 0.35
+                                                      : 0.12,
+                                                ),
+                                            width: 0.5,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          ZyraJourneyStages.previewLabelFor(s),
+                                          style: ZyraText.subtext(
+                                            size: 11,
+                                            color: isCurrent
+                                                ? Colors.white
+                                                : ZyraColors.ink(0.70),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
 
                     if (widget.current ==
                         ZyraJourneyStages.lifeSnapshotPreview.value) ...[
-                      const SizedBox(height: 14),
-                      Divider(
-                        color: Colors.white.withValues(alpha: 0.12),
-                        height: 1,
-                      ),
-                      const SizedBox(height: 14),
-                      Text(
-                        'STAGE 3 BIO',
-                        style: ZyraText.chapterLabel(color: Colors.white70),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Preview only what the other person chose to share '
-                        'for this Journey.',
-                        style: ZyraText.subtext(size: 10.5),
-                      ),
-                      const SizedBox(height: 8),
-                      SwitchListTile.adaptive(
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(
-                          'Journey bio added',
-                          style: ZyraText.subtext(
-                            size: 11.5,
-                            color: Colors.white,
-                          ),
-                        ),
-                        subtitle: Text(
-                          widget.lifeSnapshotHasBio
-                              ? '${ZyraJourneyLifeSnapshotMock.bio.length} / '
-                                    '${ZyraJourneyLifeSnapshotMock.bioCharacterLimit} characters'
-                              : 'No biography will appear',
-                          style: ZyraText.subtext(size: 9.5),
-                        ),
-                        value: widget.lifeSnapshotHasBio,
-                        onChanged: widget.busy || widget.livePaused
-                            ? null
-                            : widget.onLifeSnapshotBioChanged,
-                        activeTrackColor: const Color(
-                          0xFFE8C98A,
-                        ).withValues(alpha: 0.65),
-                      ),
-                      Row(
-                        children: [
-                          TextButton(
-                            onPressed: widget.busy || widget.livePaused
-                                ? null
-                                : () => widget.onLifeSnapshotShowAll(true),
-                            child: const Text('Show all'),
-                          ),
-                          TextButton(
-                            onPressed: widget.busy || widget.livePaused
-                                ? null
-                                : () => widget.onLifeSnapshotShowAll(false),
-                            child: const Text('Show none'),
-                          ),
-                        ],
-                      ),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: [
-                          for (final field
-                              in ZyraJourneyLifeSnapshotMock.fields)
-                            _lifeSnapshotFieldChip(field),
-                        ],
-                      ),
-                      const SizedBox(height: 7),
-                      Text(
-                        '${widget.lifeSnapshotFieldIds.length} of '
-                        '${ZyraJourneyLifeSnapshotMock.fields.length} details shared',
-                        style: ZyraText.subtext(
-                          size: 10,
-                          color: const Color(0xFFE8C98A),
+                      const SizedBox(height: 16),
+                      ZyraDevToolSection(
+                        key: const ValueKey('dev_journey_section_bio'),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'STAGE 3 BIO',
+                              style: ZyraText.chapterLabel(
+                                color: ZyraColors.ink(0.70),
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              'Preview only what the other person chose to share '
+                              'for this Journey.',
+                              style: ZyraText.subtext(size: 10.5),
+                            ),
+                            SizedBox(height: 8),
+                            SwitchListTile.adaptive(
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              title: Text(
+                                'Journey bio added',
+                                style: ZyraText.subtext(
+                                  size: 11.5,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              subtitle: Text(
+                                widget.lifeSnapshotHasBio
+                                    ? '${ZyraJourneyLifeSnapshotMock.bio.length} / '
+                                          '${ZyraJourneyLifeSnapshotMock.bioCharacterLimit} characters'
+                                    : 'No biography will appear',
+                                style: ZyraText.subtext(size: 9.5),
+                              ),
+                              value: widget.lifeSnapshotHasBio,
+                              onChanged: widget.busy || widget.livePaused
+                                  ? null
+                                  : widget.onLifeSnapshotBioChanged,
+                              activeTrackColor: const Color(
+                                0xFFE8C98A,
+                              ).withValues(alpha: 0.65),
+                            ),
+                            Row(
+                              children: [
+                                TextButton(
+                                  onPressed: widget.busy || widget.livePaused
+                                      ? null
+                                      : () =>
+                                            widget.onLifeSnapshotShowAll(true),
+                                  child: const Text('Show all'),
+                                ),
+                                TextButton(
+                                  onPressed: widget.busy || widget.livePaused
+                                      ? null
+                                      : () =>
+                                            widget.onLifeSnapshotShowAll(false),
+                                  child: const Text('Show none'),
+                                ),
+                              ],
+                            ),
+                            Wrap(
+                              spacing: 6,
+                              runSpacing: 6,
+                              children: [
+                                for (final field
+                                    in ZyraJourneyLifeSnapshotMock.fields)
+                                  _lifeSnapshotFieldChip(field),
+                              ],
+                            ),
+                            SizedBox(height: 7),
+                            Text(
+                              '${widget.lifeSnapshotFieldIds.length} of '
+                              '${ZyraJourneyLifeSnapshotMock.fields.length} details shared',
+                              style: ZyraText.subtext(
+                                size: 10,
+                                color: ZyraColors.journeyGold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
 
                     if (widget.current == 'wali_gate') ...[
-                      const SizedBox(height: 14),
-                      Divider(
-                        color: Colors.white.withValues(alpha: 0.12),
-                        height: 1,
-                      ),
-                      const SizedBox(height: 14),
-                      Text(
-                        'STAGE 4 GUARDIANS',
-                        style: ZyraText.chapterLabel(color: Colors.white70),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Choose the one Main and any of the five Additional '
-                        'mock Guardians, then send Salam on the stage.',
-                        style: ZyraText.subtext(size: 10.5),
-                      ),
-                      const SizedBox(height: 9),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: [
-                          for (
-                            var index = 0;
-                            index < ZyraDevScenario.fakeGuardians.length;
-                            index++
-                          )
-                            _guardianChip(index),
-                        ],
-                      ),
-                      const SizedBox(height: 7),
-                      Text(
-                        widget.selectedGuardians.isEmpty
-                            ? 'None selected'
-                            : '${widget.selectedGuardians.length} selected',
-                        style: ZyraText.subtext(
-                          size: 10,
-                          color: const Color(0xFFE8C98A),
+                      const SizedBox(height: 16),
+                      ZyraDevToolSection(
+                        key: const ValueKey('dev_journey_section_guardians'),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'STAGE 4 GUARDIANS',
+                              style: ZyraText.chapterLabel(
+                                color: ZyraColors.ink(0.70),
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              'Choose the one Main and any of the five Additional '
+                              'mock Guardians, then send Salam on the stage.',
+                              style: ZyraText.subtext(size: 10.5),
+                            ),
+                            SizedBox(height: 9),
+                            Wrap(
+                              spacing: 6,
+                              runSpacing: 6,
+                              children: [
+                                for (
+                                  var index = 0;
+                                  index < ZyraDevScenario.fakeGuardians.length;
+                                  index++
+                                )
+                                  _guardianChip(index),
+                              ],
+                            ),
+                            SizedBox(height: 7),
+                            Text(
+                              widget.selectedGuardians.isEmpty
+                                  ? 'None selected'
+                                  : '${widget.selectedGuardians.length} selected',
+                              style: ZyraText.subtext(
+                                size: 10,
+                                color: ZyraColors.journeyGold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
 
-                    const SizedBox(height: 14),
-                    Divider(
-                      color: Colors.white.withValues(alpha: 0.12),
-                      height: 1,
-                    ),
-                    const SizedBox(height: 14),
-
-                    // DR-ZYRA-135 / OA-ZYRA-152. Simulates having bought
-                    // Compatibility Unlock+, which lets you see the score
-                    // before the other Seeker reveals.
-                    //
-                    // With THE OTHER PERSON's auto half left OFF, this
-                    // reaches the state that could not exist before today:
-                    // you see the number, she has not revealed, and she has
-                    // not been told.
-                    Text(
-                      'THIS ACCOUNT',
-                      style: ZyraText.chapterLabel(color: Colors.white70),
-                    ),
-                    const SizedBox(height: 8),
-                    SwitchListTile.adaptive(
-                      contentPadding: EdgeInsets.zero,
-                      dense: true,
-                      value: widget.hasPlus,
-                      onChanged: widget.busy || widget.livePaused
-                          ? null
-                          : widget.onHasPlusChanged,
-                      title: Text(
-                        'Has paid for Compatibility Unlock+',
-                        style: ZyraText.subtext(size: 12, color: Colors.white),
-                      ),
-                      subtitle: Text(
-                        widget.hasPlus
-                            ? 'You see the score early. They are told nothing.'
-                            : 'Mutual reveal applies — neither sees it first.',
-                        style: ZyraText.subtext(size: 10.5),
+                    const SizedBox(height: 16),
+                    ZyraDevToolSection(
+                      key: const ValueKey('dev_journey_section_account'),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // DR-ZYRA-135 / OA-ZYRA-152. Simulates having bought
+                          // Compatibility Unlock+, which lets you see the score
+                          // before the other Seeker reveals.
+                          //
+                          // With THE OTHER PERSON's auto half left OFF, this
+                          // reaches the state that could not exist before today:
+                          // you see the number, she has not revealed, and she has
+                          // not been told.
+                          Text(
+                            'THIS ACCOUNT',
+                            style: ZyraText.chapterLabel(
+                              color: ZyraColors.ink(0.70),
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          SwitchListTile.adaptive(
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            value: widget.hasPlus,
+                            onChanged: widget.busy || widget.livePaused
+                                ? null
+                                : widget.onHasPlusChanged,
+                            title: Text(
+                              'Has paid for Compatibility Unlock',
+                              style: ZyraText.subtext(
+                                size: 12,
+                                color: Colors.white,
+                              ),
+                            ),
+                            subtitle: Text(
+                              widget.hasPlus
+                                  ? 'You see the score early. They are told nothing.'
+                                  : 'Mutual reveal applies — neither sees it first.',
+                              style: ZyraText.subtext(size: 10.5),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -4812,9 +5227,9 @@ class _JourneyAppBar extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () => Navigator.of(context).maybePop(),
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios_new,
-              color: Colors.white70,
+              color: ZyraColors.ink(0.70),
               size: 18,
             ),
           ),
@@ -4827,7 +5242,7 @@ class _JourneyAppBar extends StatelessWidget {
           ),
           // The old trailing controls' footprint, kept as space so the
           // title stays centred — an IconButton is 48pt wide.
-          const SizedBox(width: 48),
+          SizedBox(width: 48),
         ],
       ),
     );
@@ -4868,45 +5283,47 @@ class _EndedView extends StatelessWidget {
               Container(
                 width: 18,
                 height: 18,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Color(0xFFDF7D82),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Text(
                 'JOURNEY ENDED',
-                style: ZyraText.chapterLabel(color: Colors.white54),
+                style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               Text(
                 'This chapter has closed.',
                 style: ZyraText.heading(size: 24),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 11),
+              SizedBox(height: 11),
               Text(
                 'Your Journey with ${profile.firstName} is no longer active. '
                 'Your Timeline and everything you shared are kept.',
                 style: ZyraText.body(size: 14),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
-              const SizedBox(
+              SizedBox(height: 20),
+              SizedBox(
                 width: 54,
                 child: Divider(height: 1, color: Color(0xFFDF7D82)),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Text(
-                'Beginning together again means starting a new Journey. One '
-                'person requests it and the other decides. That direct option '
-                'lasts 60 days; after it closes, you would need to meet again '
-                'through Browser.',
+                ZyraReleaseGates.requestNewJourneyEnabled
+                    ? 'Beginning together again means starting a new Journey. One '
+                          'person requests it and the other decides. That direct option '
+                          'lasts 60 days; after it closes, you would need to meet again '
+                          'through Profiles.'
+                    : ZyraReleaseGates.requestNewJourneyUnavailable,
                 style: ZyraText.subtext(size: 13),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
               _JourneySolidAction(
                 label: 'Return to Connections',
                 accent: const Color(0xFFDF7D82),
@@ -4920,55 +5337,121 @@ class _EndedView extends StatelessWidget {
   }
 }
 
-class _SuspendedView extends StatelessWidget {
+@visibleForTesting
+Widget buildZyraPauseDecisionTestSurface({
+  required ZyraJourneyPauseState state,
+  required String viewerId,
+  bool capacityAvailable = true,
+  String profileName = 'Adam',
+  String profileGender = 'male',
+  ValueChanged<ZyraPauseAction>? onAction,
+}) => MaterialApp(
+  home: Scaffold(
+    body: _PauseDecisionView(
+      profile: SeekerProfile(
+        id: 'pause-test-other',
+        firstName: profileName,
+        age: 30,
+        city: 'London',
+        photos: const <String>[],
+        gender: profileGender,
+      ),
+      state: state,
+      busy: false,
+      preview: false,
+      capacityAvailable: capacityAvailable,
+      viewerId: viewerId,
+      onAction: onAction ?? (_) {},
+      onEnd: () {},
+      onReturn: () {},
+    ),
+  ),
+);
+
+class _PauseDecisionView extends StatelessWidget {
   final SeekerProfile profile;
   final ZyraJourneyPauseState state;
-  final bool readySent;
   final bool busy;
   final bool preview;
-  final VoidCallback onLiftMine;
-  final VoidCallback onAlsoPause;
-  final VoidCallback onReady;
+  final bool? capacityAvailable;
+  final ValueChanged<ZyraPauseAction> onAction;
   final VoidCallback onEnd;
   final VoidCallback onReturn;
+  final String? viewerId;
 
-  const _SuspendedView({
+  const _PauseDecisionView({
     required this.profile,
     required this.state,
-    required this.readySent,
     required this.busy,
     required this.preview,
-    required this.onLiftMine,
-    required this.onAlsoPause,
-    required this.onReady,
+    required this.capacityAvailable,
+    required this.onAction,
     required this.onEnd,
     required this.onReturn,
+    this.viewerId,
   });
+
+  String? _deadlineLine() {
+    final deadline = state.deadlineAt;
+    if (deadline == null) return null;
+    final remaining = deadline.difference(DateTime.now());
+    if (remaining <= Duration.zero) {
+      return 'The response window has ended. No automatic outcome is '
+          'configured, so this Journey remains safely locked.';
+    }
+    if (remaining.inHours >= 24) {
+      final days = (remaining.inHours / 24).ceil();
+      return 'Response due in $days day${days == 1 ? '' : 's'}.';
+    }
+    final hours = remaining.inHours;
+    final minutes = remaining.inMinutes.remainder(60);
+    return 'Response due in ${hours}h ${minutes}m.';
+  }
 
   @override
   Widget build(BuildContext context) {
-    final title = switch (state) {
-      ZyraJourneyPauseState.you => 'You chose to pause',
-      ZyraJourneyPauseState.them => '${profile.firstName} chose to pause',
-      ZyraJourneyPauseState.both => 'Paused by both of you',
-      ZyraJourneyPauseState.none => 'Journey paused',
+    final perspective = state.perspectiveFor(
+      viewerId ?? ZyraAuth.currentUser?.id,
+    );
+    final title = switch (perspective) {
+      ZyraPausePerspective.pauseRequesterWaiting => 'Pause requested',
+      ZyraPausePerspective.pauseResponderDecision =>
+        '${profile.firstName} has asked to pause this Journey',
+      ZyraPausePerspective.continuationRequesterWaiting =>
+        'Continuation requested',
+      ZyraPausePerspective.continuationResponderDecision =>
+        '${profile.firstName} would like to continue',
+      ZyraPausePerspective.mutuallyPaused => 'Journey paused',
+      ZyraPausePerspective.resumeRequesterWaiting => 'Resume requested',
+      ZyraPausePerspective.resumeResponderDecision =>
+        '${profile.firstName} would like to resume',
+      ZyraPausePerspective.active => 'Journey active',
     };
-    final body = switch (state) {
-      ZyraJourneyPauseState.you =>
-        readySent
-            ? '${profile.firstName} has requested to continue. Your pause '
-                  'remains yours — resume only when you are ready.'
-            : 'Your place is held. When you feel ready, resume and return '
-                  'to the same place.',
-      ZyraJourneyPauseState.them =>
-        '${profile.firstName} has taken some space. You can pause too, request '
-            'to continue, or end the Journey. You do not have to decide now.',
-      ZyraJourneyPauseState.both =>
-        'You both chose to take some space. The Journey continues once you '
-            'have each lifted your own pause.',
-      ZyraJourneyPauseState.none =>
-        'Your place is held. Nothing in this Journey has been lost.',
+    final body = switch (perspective) {
+      ZyraPausePerspective.pauseRequesterWaiting =>
+        'You asked to pause this Journey. Waiting for '
+            '${profile.firstName} to decide.',
+      ZyraPausePerspective.pauseResponderDecision =>
+        'Choose what feels right. The Journey stays active but locked until '
+            'this decision is settled.',
+      ZyraPausePerspective.continuationRequesterWaiting =>
+        'You asked to continue this Journey. Waiting for '
+            '${profile.firstName} to decide.',
+      ZyraPausePerspective.continuationResponderDecision =>
+        'You can continue from the exact place you both reached, confirm the '
+            'pause, or end the Journey.',
+      ZyraPausePerspective.mutuallyPaused =>
+        'You both agreed to take some space. Nothing has been lost. Either '
+            'person can ask to resume when ready.',
+      ZyraPausePerspective.resumeRequesterWaiting =>
+        'You asked to resume. This Journey remains paused while '
+            '${profile.firstName} decides.',
+      ZyraPausePerspective.resumeResponderDecision =>
+        'Choose whether this Journey resumes, remains paused, or ends.',
+      ZyraPausePerspective.active => 'Your Journey is ready to continue.',
     };
+    final deadline = _deadlineLine();
+    final capacityBlocked = capacityAvailable == false;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 42),
@@ -4994,55 +5477,176 @@ class _SuspendedView extends StatelessWidget {
                   ),
                   child: Text(
                     'DEVELOPMENT PREVIEW',
-                    style: ZyraText.chapterLabel(color: Colors.white54),
+                    style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
               ],
               Container(
-                width: 18,
-                height: 18,
-                decoration: const BoxDecoration(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFDFBD62),
+                  color: ZyraColors.journeyGold.withValues(alpha: 0.14),
+                  border: Border.all(
+                    color: ZyraColors.journeyGold.withValues(alpha: 0.72),
+                  ),
+                ),
+                child: Icon(
+                  state.isPaused
+                      ? Icons.pause_rounded
+                      : Icons.hourglass_top_rounded,
+                  color: ZyraColors.journeyGold,
+                  size: 18,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Text(
-                switch (state) {
-                  ZyraJourneyPauseState.you => 'PAUSED BY YOU',
-                  ZyraJourneyPauseState.them =>
-                    'PAUSED BY ${profile.firstName.toUpperCase()}',
-                  ZyraJourneyPauseState.both => 'PAUSED BY BOTH OF YOU',
-                  ZyraJourneyPauseState.none => 'JOURNEY PAUSED',
-                },
-                style: ZyraText.chapterLabel(color: Colors.white54),
+                state.isPaused ? 'SHARED PAUSE' : 'DECISION PENDING',
+                style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               Text(
                 title,
                 style: ZyraText.heading(size: 24),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 11),
+              SizedBox(height: 11),
               Text(
                 body,
                 style: ZyraText.body(size: 14),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 26),
-              if (state == ZyraJourneyPauseState.them) ...[
-                Divider(height: 1, color: Colors.white.withValues(alpha: 0.24)),
-                _JourneyOpenDecisionAction(
-                  label: 'Pause too',
-                  dotColor: const Color(0xFFDFBD62),
-                  onTap: busy ? null : onAlsoPause,
+              if (deadline != null) ...[
+                SizedBox(height: 12),
+                Text(
+                  deadline,
+                  style: ZyraText.subtext(
+                    size: 11.5,
+                    color: state.deadlineExpired
+                        ? const Color(0xFFDFBD62)
+                        : ZyraColors.ink(0.58),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              if (capacityBlocked &&
+                  (perspective == ZyraPausePerspective.pauseResponderDecision ||
+                      perspective ==
+                          ZyraPausePerspective
+                              .continuationResponderDecision)) ...[
+                SizedBox(height: 18),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: ZyraColors.journeyGold.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: ZyraColors.journeyGold.withValues(alpha: 0.35),
+                      width: 0.7,
+                    ),
+                  ),
+                  child: Text(
+                    'Paused Journey capacity is full for one account. '
+                    'Manage a Paused Journey, continue this one, or end it.',
+                    style: ZyraText.subtext(size: 12.5),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+              SizedBox(height: 26),
+              if (perspective ==
+                  ZyraPausePerspective.pauseResponderDecision) ...[
+                Divider(
+                  height: 1,
+                  color: ZyraColors.foreground.withValues(alpha: 0.24),
                 ),
                 _JourneyOpenDecisionAction(
-                  label: readySent ? 'Continue requested' : 'Request Continue',
-                  dotColor: const Color(0xFF78C69D),
-                  onTap: busy || readySent ? null : onReady,
+                  label: 'Agree to Pause',
+                  dotColor: const Color(0xFFDFBD62),
+                  onTap: busy || capacityBlocked
+                      ? null
+                      : () => onAction(ZyraPauseAction.agreePause),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'Request to Continue',
+                  dotColor: ZyraColors.journeyDotGreen,
+                  onTap: busy
+                      ? null
+                      : () => onAction(ZyraPauseAction.requestContinue),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'End Journey',
+                  dotColor: const Color(0xFFDF7D82),
+                  destructive: true,
+                  onTap: busy ? null : onEnd,
+                ),
+              ] else if (perspective ==
+                  ZyraPausePerspective.continuationResponderDecision) ...[
+                Divider(
+                  height: 1,
+                  color: ZyraColors.foreground.withValues(alpha: 0.24),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'Continue Journey',
+                  dotColor: ZyraColors.journeyDotGreen,
+                  onTap: busy
+                      ? null
+                      : () => onAction(ZyraPauseAction.continueJourney),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'Confirm Pause',
+                  dotColor: const Color(0xFFDFBD62),
+                  onTap: busy || capacityBlocked
+                      ? null
+                      : () => onAction(ZyraPauseAction.confirmPause),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'End Journey',
+                  dotColor: const Color(0xFFDF7D82),
+                  destructive: true,
+                  onTap: busy ? null : onEnd,
+                ),
+              ] else if (perspective ==
+                  ZyraPausePerspective.mutuallyPaused) ...[
+                Divider(
+                  height: 1,
+                  color: ZyraColors.foreground.withValues(alpha: 0.24),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'Request Resume',
+                  dotColor: ZyraColors.journeyDotGreen,
+                  onTap: busy
+                      ? null
+                      : () => onAction(ZyraPauseAction.requestResume),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'End Journey',
+                  dotColor: const Color(0xFFDF7D82),
+                  destructive: true,
+                  onTap: busy ? null : onEnd,
+                ),
+              ] else if (perspective ==
+                  ZyraPausePerspective.resumeResponderDecision) ...[
+                Divider(
+                  height: 1,
+                  color: ZyraColors.foreground.withValues(alpha: 0.24),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'Agree to Resume',
+                  dotColor: ZyraColors.journeyDotGreen,
+                  onTap: busy
+                      ? null
+                      : () => onAction(ZyraPauseAction.agreeResume),
+                ),
+                _JourneyOpenDecisionAction(
+                  label: 'Keep Paused',
+                  dotColor: const Color(0xFFDFBD62),
+                  onTap: busy
+                      ? null
+                      : () => onAction(ZyraPauseAction.keepPaused),
                 ),
                 _JourneyOpenDecisionAction(
                   label: 'End Journey',
@@ -5051,13 +5655,9 @@ class _SuspendedView extends StatelessWidget {
                   onTap: busy ? null : onEnd,
                 ),
               ] else ...[
-                Divider(height: 1, color: Colors.white.withValues(alpha: 0.24)),
-                _JourneyOpenDecisionAction(
-                  label: state == ZyraJourneyPauseState.both
-                      ? 'Lift my pause'
-                      : 'Resume Journey',
-                  dotColor: const Color(0xFF78C69D),
-                  onTap: busy ? null : onLiftMine,
+                Divider(
+                  height: 1,
+                  color: ZyraColors.foreground.withValues(alpha: 0.24),
                 ),
                 _JourneyOpenDecisionAction(
                   label: 'End Journey',
@@ -5067,10 +5667,10 @@ class _SuspendedView extends StatelessWidget {
                 ),
               ],
               if (busy) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 const ZyraLoading(label: 'Updating your Journey'),
               ],
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
               _JourneySolidAction(
                 label: 'Return to Connections',
                 accent: const Color(0xFFDFBD62),
@@ -5152,30 +5752,30 @@ class _FamilyReviewViewState extends State<_FamilyReviewView> {
           children: [
             Icon(
               paused ? Icons.pause_circle_outline : Icons.hourglass_top,
-              color: Colors.white54,
+              color: ZyraColors.ink(0.54),
               size: 32,
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             if (!paused && sealedStage != null) ...[
               Text(
                 sealedStage.completionHeading,
                 style: ZyraText.heading(size: 18),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
               Text(
                 sealedStage.completionLine,
                 style: ZyraText.subtext(),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
             ] else
               Text(
                 paused ? 'Paused for family review' : 'Family Review Period',
                 style: ZyraText.heading(size: 18),
                 textAlign: TextAlign.center,
               ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
               paused
                   ? "A Guardian has asked for more time before this Journey continues. This isn't a rejection — it means the family needs a little longer. ZYRA support is available to help if needed."
@@ -5186,7 +5786,7 @@ class _FamilyReviewViewState extends State<_FamilyReviewView> {
               style: ZyraText.subtext(),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             TextButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
@@ -5196,7 +5796,10 @@ class _FamilyReviewViewState extends State<_FamilyReviewView> {
               ),
               child: Text(
                 'Read your story so far',
-                style: ZyraText.subtext(size: 12.5, color: Colors.white70),
+                style: ZyraText.subtext(
+                  size: 12.5,
+                  color: ZyraColors.ink(0.70),
+                ),
               ),
             ),
           ],
@@ -5215,6 +5818,9 @@ class _CompatibilityRevealView extends StatefulWidget {
   final Future<void> Function() onContinue;
   final bool readOnly;
 
+  /// Parent-owned admission/lifetime, not a transport or developer bypass.
+  final bool Function() isCurrentSurface;
+
   /// Server's reason the pair has not moved on yet. 'waiting_for_continue'
   /// means this user has pressed Continue and the other has not — the
   /// checkpoint is recorded, so it is safe to show a wait rather than the
@@ -5227,6 +5833,7 @@ class _CompatibilityRevealView extends StatefulWidget {
     required this.isActionVisible,
     required this.onContinue,
     required this.waitingReason,
+    required this.isCurrentSurface,
     this.readOnly = false,
   });
 
@@ -5239,87 +5846,210 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
   bool _mine = false;
   bool _theirs = false;
   double? _score;
-  Map<String, dynamic>? _categories;
   bool _loading = true;
   bool _animateReveal = false;
+  bool _hasConfirmedSnapshot = false;
+  bool _accountRetryRequired = false;
+  ZyraCompatibilityReadStatus _readStatus =
+      ZyraCompatibilityReadStatus.unavailable;
+  ZyraCompatibilityReadFailure? _readFailure;
+  late ZyraCompatibilityReadScope _scope;
+  int _readGeneration = 0;
   Timer? _poll;
+  StreamSubscription<dynamic>? _authSubscription;
   bool _pollLoadBusy = false;
   Future<void>? _loadFlight;
 
   static final Map<
-    String,
-    ({
-      bool mine,
-      bool theirs,
-      double? score,
-      Map<String, dynamic>? categories,
-      double? plusScore,
-    })
+    ZyraCompatibilityReadScope,
+    ({bool mine, bool theirs, double? score, double? plusScore})
   >
   _settledSnapshots = {};
 
-  /// The score a Compatibility Unlock+ holder may see before the other Seeker
-  /// reveals — DR-ZYRA-135, closing OA-ZYRA-152.
-  ///
-  /// Null for everyone without Plus, which is nearly everyone, and null is the
-  /// ordinary case rather than a failure. The server refuses with
-  /// `plus_required` and the service turns that into null quietly.
+  /// DR-ZYRA-135: the server alone decides whether an early Plus read exists.
   double? _plusScore;
 
-  /// Matches whose reveal moment has already played this process — the
-  /// count-up runs ONCE, the first time the mutual result is seen, and
-  /// never again on later visits (2026-08-12, experience redesign: the
-  /// June spec's "transitional moment", built at last; a number that
-  /// re-celebrates itself every visit celebrates nothing).
-  static final Set<String> _celebratedMatches = {};
+  /// A reveal celebration belongs to this member lifetime, not just a match.
+  static final Set<ZyraCompatibilityReadScope> _celebratedMatches = {};
 
-  @override
-  void initState() {
-    super.initState();
-    final cached = _settledSnapshots[widget.matchId];
+  static void invalidateParentContext(ZyraCompatibilityReadScope scope) {
+    _settledSnapshots.remove(scope);
+    _celebratedMatches.remove(scope);
+  }
+
+  ZyraCompatibilityReadScope _currentScope() => ZyraCompatibilityReadScope(
+    actorId: ZyraAuth.currentUser?.id,
+    accountGeneration: ZyraAccountState.generation,
+    matchId: widget.matchId,
+  );
+
+  bool _scopeIsCurrent(ZyraCompatibilityReadScope scope) {
+    final actor = scope.actorId;
+    return actor != null &&
+        scope == _currentScope() &&
+        ZyraAccountState.isCurrent(actor, scope.accountGeneration);
+  }
+
+  bool _canPublish(
+    ZyraCompatibilityReadScope scope,
+    int generation, {
+    bool Function()? surfaceOwner,
+  }) =>
+      mounted &&
+      generation == _readGeneration &&
+      scope == _scope &&
+      widget.isCurrentSurface() &&
+      (surfaceOwner?.call() ?? true) &&
+      _scopeIsCurrent(scope);
+
+  void _clearConfirmed() {
+    _mine = false;
+    _theirs = false;
+    _score = null;
+    _plusScore = null;
+    _hasConfirmedSnapshot = false;
+    _animateReveal = false;
+  }
+
+  void _resetReadScope({bool restoreCache = false}) {
+    _readGeneration++;
+    _loadFlight = null;
+    _pollLoadBusy = false;
+    _scope = _currentScope();
+    // Eagerly discard another member's or a previous session's protected data.
+    _settledSnapshots.removeWhere(
+      (scope, _) =>
+          scope.actorId != _scope.actorId ||
+          scope.accountGeneration != _scope.accountGeneration,
+    );
+    _celebratedMatches.removeWhere(
+      (scope) =>
+          scope.actorId != _scope.actorId ||
+          scope.accountGeneration != _scope.accountGeneration,
+    );
+    _clearConfirmed();
+    _readStatus = ZyraCompatibilityReadStatus.unavailable;
+    _readFailure = _scope.actorId == null
+        ? ZyraCompatibilityReadFailure.signedOut
+        : ZyraCompatibilityReadFailure.staleOwner;
+    _loading = restoreCache && _scopeIsCurrent(_scope);
+    final cached = restoreCache && _scopeIsCurrent(_scope)
+        ? _settledSnapshots[_scope]
+        : null;
     if (cached != null) {
       _mine = cached.mine;
       _theirs = cached.theirs;
       _score = cached.score;
-      _categories = cached.categories;
       _plusScore = cached.plusScore;
-      _loading = false;
+      _hasConfirmedSnapshot = true;
+      _readFailure = ZyraCompatibilityReadFailure.transient;
+      // Cache is not a failed refresh or renewed authority. Keep the loader
+      // until this visit's read confirms it or actually returns transient.
+      _loading = true;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _resetReadScope(restoreCache: true);
+    AppState.instance.addListener(_onAccountChanged);
+    _authSubscription = ZyraAuth.authStateChanges.listen(
+      (_) => _onAccountChanged(),
+      onError: (Object error, StackTrace stackTrace) {
+        if (!mounted) return;
+        if (_scope != _currentScope() || !_scopeIsCurrent(_scope)) {
+          _onAccountChanged();
+          return;
+        }
+        // Retire the pending read and its captured actions without inventing
+        // a logout. Keep same-owner confirmed data display-only after the error.
+        _readGeneration++;
+        _loadFlight = null;
+        _pollLoadBusy = false;
+        _publishReadFailure(
+          ZyraCompatibilityReadResult.unavailable(
+            scope: _scope,
+            failure: ZyraCompatibilityReadFailure.transient,
+          ),
+        );
+      },
+    );
     _load();
-    if (!widget.readOnly) {
-      _poll = Timer.periodic(const Duration(seconds: 5), (_) => _pollLoad());
+    _configurePolling();
+  }
+
+  void _onAccountChanged() {
+    if (!mounted || (_scope == _currentScope() && _scopeIsCurrent(_scope))) {
+      return;
     }
+    // AccountState changes its owner/generation before AppState's reset signal.
+    // Do not wait for a timer or an outstanding HTTP response to hide old data.
+    setState(() {
+      _resetReadScope();
+      _accountRetryRequired = true;
+    });
+  }
+
+  void _configurePolling() {
+    _poll?.cancel();
+    _poll = widget.readOnly
+        ? null
+        : Timer.periodic(const Duration(seconds: 5), (_) => _pollLoad());
   }
 
   @override
   void didUpdateWidget(covariant _CompatibilityRevealView oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.matchId != widget.matchId ||
+        oldWidget.profile.id != widget.profile.id ||
+        !oldWidget.isCurrentSurface() ||
+        _scope != _currentScope()) {
+      final requestedDifferentJourney =
+          oldWidget.matchId != widget.matchId ||
+          oldWidget.profile.id != widget.profile.id;
+      if (requestedDifferentJourney) _accountRetryRequired = false;
+      if (oldWidget.profile.id != widget.profile.id) {
+        _settledSnapshots.remove(_scope);
+        _celebratedMatches.remove(_scope);
+      }
+      _resetReadScope();
+      _loading = !_accountRetryRequired && _scopeIsCurrent(_scope);
+      if (!_accountRetryRequired) _load();
+    }
+    if (oldWidget.readOnly != widget.readOnly) _configurePolling();
     if (!oldWidget.isActionVisible && widget.isActionVisible) {
       _armRevealIfReady();
     }
   }
 
-  bool get _revealIsReady => _mine && _theirs && _score != null;
+  bool get _readIsAvailable =>
+      _readStatus == ZyraCompatibilityReadStatus.available &&
+      _hasConfirmedSnapshot &&
+      widget.isCurrentSurface() &&
+      _scopeIsCurrent(_scope);
+
+  bool get _revealIsReady =>
+      _readIsAvailable && _mine && _theirs && _score != null;
 
   void _armRevealIfReady() {
+    if (!_readIsAvailable) return;
     final shouldAnimate = ZyraCompatibilityRevealPolicy.shouldAnimate(
       isActionVisible: widget.isActionVisible,
       mineRevealed: _mine,
       theirsRevealed: _theirs,
       hasScore: _score != null,
-      alreadyCelebrated:
-          _animateReveal || _celebratedMatches.contains(widget.matchId),
+      alreadyCelebrated: _animateReveal || _celebratedMatches.contains(_scope),
     );
     if (!shouldAnimate) return;
-    _celebratedMatches.add(widget.matchId);
-    // didUpdateWidget is followed by build, so mutating this private animation
-    // latch here avoids a redundant nested setState while still changing the
-    // Tween's key on the very frame the action page becomes visible.
+    _celebratedMatches.add(_scope);
     _animateReveal = true;
   }
 
   Future<void> _pollLoad() async {
     if (_pollLoadBusy ||
+        !widget.isCurrentSurface() ||
+        !_scopeIsCurrent(_scope) ||
         !_journeyViewCanPoll(context) ||
         !widget.isActionVisible) {
       return;
@@ -5334,14 +6064,17 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
 
   @override
   void dispose() {
+    _readGeneration++;
     _poll?.cancel();
+    _authSubscription?.cancel();
+    AppState.instance.removeListener(_onAccountChanged);
     super.dispose();
   }
 
-  Future<void> _load() async {
+  Future<void> _load({bool allowScoreRecovery = true}) async {
     final active = _loadFlight;
     if (active != null) return active;
-    final next = _loadOnce();
+    final next = _loadOnce(allowScoreRecovery: allowScoreRecovery);
     _loadFlight = next;
     try {
       await next;
@@ -5350,96 +6083,232 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
     }
   }
 
-  Future<void> _loadOnce() async {
-    var r = await ZyraJourneyService.fetchCompatibility(widget.matchId);
+  void _publishReadFailure(ZyraCompatibilityReadResult result) {
+    final keepConfirmed =
+        result.status == ZyraCompatibilityReadStatus.unavailable &&
+        result.failure == ZyraCompatibilityReadFailure.transient &&
+        _hasConfirmedSnapshot;
+    setState(() {
+      if (!keepConfirmed) {
+        _settledSnapshots.remove(_scope);
+        _celebratedMatches.remove(_scope);
+        _clearConfirmed();
+      }
+      _readStatus = result.status;
+      _readFailure = result.failure;
+      _loading = false;
+    });
+  }
 
-    // LAZY SCORING, the same pattern as resolveFamilyReviewIfDue().
-    //
-    // REASON RESTATED 2026-08-11 (OA-ZYRA-193 a2). The original was: whoever
-    // revealed second computed the pair's single score, so if they revealed
-    // from a path that did not score, both flags ended up true with no number.
-    // That sequencing is gone — each side computes its own on its own reveal.
-    //
-    // The retry is still needed, for a narrower reason: MY reveal can set my
-    // flag and still fail to produce a figure (a transient RPC failure). The
-    // screen would then find mine && theirs && score == null, match none of
-    // its branches, and fall through to the "Reveal" prompt — offering to
-    // reveal something already revealed.
-    //
-    // FOUND WHILE BUILDING THE DEV COUNTERPART TOGGLE, which produces exactly
-    // that state on purpose. But it is NOT a dev-only bug: the same hole is
-    // reachable in production the moment the second reveal happens anywhere
-    // the client is not watching. Fixed here rather than in the dev function,
-    // because a dev tool that quietly patched over a real gap would have
-    // hidden it.
-    //
-    // Calling revealCompatibility again is safe and is the point: it sets an
-    // already-true flag, then runs the REAL scoring path. No second code path
-    // computes a score.
-    if (r.mine && r.theirs && r.overallScore == null) {
-      await ZyraJourneyService.revealCompatibility(
-        widget.matchId,
-        widget.profile.id,
+  Future<void> _loadOnce({required bool allowScoreRecovery}) async {
+    final scope = _scope;
+    final generation = _readGeneration;
+    final otherId = widget.profile.id;
+    final surfaceOwner = widget.isCurrentSurface;
+    if (!surfaceOwner()) return;
+    if (!_scopeIsCurrent(scope)) {
+      if (mounted && generation == _readGeneration) {
+        _publishReadFailure(
+          ZyraCompatibilityReadResult.unavailable(
+            scope: scope,
+            failure: scope.actorId == null
+                ? ZyraCompatibilityReadFailure.signedOut
+                : ZyraCompatibilityReadFailure.staleOwner,
+          ),
+        );
+      }
+      return;
+    }
+    var result = await ZyraJourneyService.fetchCompatibility(scope.matchId);
+    if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
+    if (result.scope != scope ||
+        result.status != ZyraCompatibilityReadStatus.available) {
+      _publishReadFailure(
+        result.scope == scope
+            ? result
+            : ZyraCompatibilityReadResult.unavailable(
+                scope: scope,
+                failure: ZyraCompatibilityReadFailure.staleOwner,
+              ),
       );
-      r = await ZyraJourneyService.fetchCompatibility(widget.matchId);
+      return;
+    }
+    var snapshot = result.snapshot!;
+
+    // Keep the existing valid mutual/null-score first-score recovery.
+    // DR250D5's future-held change is not implemented here. An unavailable or
+    // empty read never enters this mutation. Explicit Retry skips this legacy
+    // recovery; validated one-sided Plus retains its existing server policy.
+    if (allowScoreRecovery &&
+        !widget.readOnly &&
+        snapshot.mine &&
+        snapshot.theirs &&
+        snapshot.overallScore == null) {
+      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
+      await ZyraJourneyService.revealCompatibility(scope.matchId, otherId);
+      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
+      result = await ZyraJourneyService.fetchCompatibility(scope.matchId);
+      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
+      if (result.scope != scope ||
+          result.status != ZyraCompatibilityReadStatus.available) {
+        _publishReadFailure(
+          result.scope == scope
+              ? result
+              : ZyraCompatibilityReadResult.unavailable(
+                  scope: scope,
+                  failure: ZyraCompatibilityReadFailure.staleOwner,
+                ),
+        );
+        return;
+      }
+      snapshot = result.snapshot!;
     }
 
-    // DR-ZYRA-135. Only asked in the one state where it changes anything:
-    // this Seeker has revealed and the other has not. Asking earlier would
-    // show the number before they chose to look at it, which is the opposite
-    // of what a Reveal is; asking later is pointless, since both revealing
-    // shows it anyway.
-    //
-    // Returns null for everyone without Plus — the ordinary case, refused
-    // server-side, not inferred here.
     double? plus;
-    if (r.mine && !r.theirs) {
-      plus = await ZyraJourneyService.fetchCompatibilityForPlus(widget.matchId);
+    if (!widget.readOnly && snapshot.mine && !snapshot.theirs) {
+      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
+      plus = await ZyraJourneyService.fetchCompatibilityForPlus(scope.matchId);
+      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
     }
 
-    if (!mounted) return;
-    if (r.mine && r.theirs) {
-      _settledSnapshots[widget.matchId] = (
-        mine: r.mine,
-        theirs: r.theirs,
-        score: r.overallScore,
-        categories: r.categoryScores,
+    if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
+    if (snapshot.mine && snapshot.theirs) {
+      _settledSnapshots[scope] = (
+        mine: snapshot.mine,
+        theirs: snapshot.theirs,
+        score: snapshot.overallScore,
         plusScore: plus,
       );
+    } else {
+      _settledSnapshots.remove(scope);
     }
     final animateNow = ZyraCompatibilityRevealPolicy.shouldAnimate(
       isActionVisible: widget.isActionVisible,
-      mineRevealed: r.mine,
-      theirsRevealed: r.theirs,
-      hasScore: r.overallScore != null,
-      alreadyCelebrated:
-          _animateReveal || _celebratedMatches.contains(widget.matchId),
+      mineRevealed: snapshot.mine,
+      theirsRevealed: snapshot.theirs,
+      hasScore: snapshot.overallScore != null,
+      alreadyCelebrated: _animateReveal || _celebratedMatches.contains(scope),
     );
-    if (animateNow) _celebratedMatches.add(widget.matchId);
+    if (animateNow) _celebratedMatches.add(scope);
     setState(() {
       _plusScore = plus;
-      _mine = r.mine;
-      _theirs = r.theirs;
-      _score = r.overallScore;
-      _categories = r.categoryScores;
+      _mine = snapshot.mine;
+      _theirs = snapshot.theirs;
+      _score = snapshot.overallScore;
+      _hasConfirmedSnapshot = true;
+      _readStatus = ZyraCompatibilityReadStatus.available;
+      _readFailure = null;
+      _accountRetryRequired = false;
       _loading = false;
       if (animateNow) _animateReveal = true;
     });
   }
 
-  Future<void> _reveal() async {
+  Future<void> _retryRead() {
+    _accountRetryRequired = false;
+    return _load(allowScoreRecovery: false);
+  }
+
+  Future<void> _reveal(
+    ZyraCompatibilityReadScope scope,
+    int generation,
+    bool Function() surfaceOwner,
+  ) async {
+    if (widget.readOnly ||
+        !_readIsAvailable ||
+        _loading ||
+        _loadFlight != null) {
+      return;
+    }
+    final otherId = widget.profile.id;
+    if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
     setState(() => _loading = true);
-    await ZyraJourneyService.revealCompatibility(
-      widget.matchId,
-      widget.profile.id,
-    );
+    await ZyraJourneyService.revealCompatibility(scope.matchId, otherId);
+    if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
     await _load();
   }
 
+  String get _readFailureMessage => switch (_readFailure) {
+    ZyraCompatibilityReadFailure.signedOut =>
+      'Sign in again to check your compatibility.',
+    ZyraCompatibilityReadFailure.forbidden ||
+    ZyraCompatibilityReadFailure.unavailableJourney =>
+      'Compatibility is not available for this Journey.',
+    ZyraCompatibilityReadFailure.staleOwner =>
+      'Your account changed. Check this Journey again to continue.',
+    _ =>
+      _hasConfirmedSnapshot
+          ? 'Showing your last confirmed result. Could not refresh compatibility.'
+          : 'Could not load compatibility. Please try again.',
+  };
+
   @override
   Widget build(BuildContext context) {
+    // A retired outgoing surface may remain mounted for the 480 ms page
+    // handover. It is no longer a place to display protected cached content.
+    if (!widget.isCurrentSurface() && !_accountRetryRequired) {
+      return const SizedBox.shrink();
+    }
     if (_loading) return const ZyraLoading();
+    if (!_readIsAvailable) {
+      final retryScope = _scope;
+      final retryGeneration = _readGeneration;
+      final retrySurfaceOwner = widget.isCurrentSurface;
+      void retryIfCurrent() {
+        if (!_canPublish(
+          retryScope,
+          retryGeneration,
+          surfaceOwner: retrySurfaceOwner,
+        )) {
+          return;
+        }
+        unawaited(_retryRead());
+      }
+
+      final banner = Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+        child: ZyraErrorBanner(
+          message: !_scopeIsCurrent(_scope)
+              ? (ZyraAuth.currentUser == null
+                    ? 'Sign in again to check your compatibility.'
+                    : 'Your account changed. Check this Journey again to continue.')
+              : _readStatus == ZyraCompatibilityReadStatus.empty
+              ? 'Compatibility is not available yet for this Journey.'
+              : _readFailureMessage,
+          onRetry: retryIfCurrent,
+        ),
+      );
+      final keepConfirmed =
+          _scopeIsCurrent(_scope) &&
+          _readStatus == ZyraCompatibilityReadStatus.unavailable &&
+          _readFailure == ZyraCompatibilityReadFailure.transient &&
+          _hasConfirmedSnapshot;
+      if (!keepConfirmed) return Center(child: banner);
+      // Only a same-owner transient refresh can retain confirmed content.
+      // It is display-only until a current read confirms the protected action.
+      return Column(
+        children: [
+          banner,
+          Expanded(child: IgnorePointer(child: _buildConfirmed(context))),
+        ],
+      );
+    }
+    return _buildConfirmed(context);
+  }
+
+  Widget _buildConfirmed(BuildContext context) {
     final stage = ZyraJourneyStages.of('compatibility_reveal')!;
+    final scope = _scope;
+    final generation = _readGeneration;
+    final surfaceOwner = widget.isCurrentSurface;
+    Future<void> continueIfCurrent() async {
+      if (!_readIsAvailable ||
+          _loading ||
+          !_canPublish(scope, generation, surfaceOwner: surfaceOwner)) {
+        return;
+      }
+      await widget.onContinue();
+    }
 
     // REVEALED, BUT NOT SCOREABLE. Distinct from the retry above, which
     // covers a figure that failed to compute: this is a figure that cannot
@@ -5459,28 +6328,31 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
               youComplete: _mine,
               otherComplete: _theirs,
             ),
-            const SizedBox(height: 18),
+            SizedBox(height: 18),
             Text(
               stage.completionHeading,
               style: ZyraText.heading(size: 18),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               'You both chose to reveal.',
               style: ZyraText.subtext(),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
-            Text('—', style: ZyraText.heading(size: 44, color: Colors.white38)),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
+            Text(
+              '—',
+              style: ZyraText.heading(size: 44, color: ZyraColors.ink(0.38)),
+            ),
+            SizedBox(height: 10),
             Text(
               'There is not enough between you yet to work out a figure. '
               'It appears here once you have both covered more ground.',
               style: ZyraText.subtext(),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
           ],
         ),
       );
@@ -5488,7 +6360,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
         return Center(child: content);
       }
       return _JourneyScrollToContinue(
-        onContinue: widget.onContinue,
+        onContinue: continueIfCurrent,
         openingLabel: 'Opening your choices…',
         expand: true,
         child: content,
@@ -5503,44 +6375,31 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
       final intelligence = ZyraJourneyIntelligence.compatibility(
         plan: AppState.instance.plan,
         score: _score!,
-        categories: _categories,
-        otherName: widget.profile.firstName,
       );
       // THE MOMENT — the June spec's STATE 2, built 2026-08-12. First
       // sight of a mutual result: a held beat on "You both chose to
-      // reveal", the number counting up, categories arriving one by one.
+      // reveal", then the genuine caller-owned number counting up.
       // Once, ever — and only once this preloaded page is actually visible.
       // Later visits render the settled screen instantly.
       final reduceMotion =
           MediaQuery.maybeOf(context)?.disableAnimations ?? false;
       final animate = _animateReveal && !reduceMotion && _revealIsReady;
-      final cats = _categories?.entries.toList() ?? const [];
       return Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
           child: TweenAnimationBuilder<double>(
-            key: ValueKey('compatibility-${widget.matchId}-$animate'),
+            key: ValueKey('compatibility-${_scope.hashCode}-$animate'),
             tween: Tween(begin: animate ? 0.0 : 1.0, end: 1.0),
             duration: animate
                 ? const Duration(milliseconds: 2600)
                 : Duration.zero,
             curve: Curves.easeOutCubic,
             builder: (context, t, _) {
-              // The overall ring completes before the section breakdown
-              // begins. That gives the reveal one clear focal point instead
-              // of making the number and five rows compete for attention.
+              // The overall ring is the one truthful focal point. Category
+              // detail stays withheld until the server owns a real,
+              // provenance-safe category contract (OA-ZYRA-193d).
               final countT = ((t - 0.18) / 0.40).clamp(0.0, 1.0);
               final shown = (_score! * countT).round();
-              // Stagger the category entrance, but finish every row at the
-              // same full opacity. The previous formula ended its animation
-              // with the final row (usually Family Expectations) at 24%, so
-              // it looked less important even after the reveal had settled.
-              double catOpacity(int i) {
-                final spread = cats.length <= 1 ? 0.0 : i / (cats.length - 1);
-                final start = 0.62 + (0.18 * spread);
-                return ((t - start) / 0.18).clamp(0.0, 1.0);
-              }
-
               final tailT = ((t - 0.85) * 6.7).clamp(0.0, 1.0);
               return Column(
                 mainAxisSize: MainAxisSize.min,
@@ -5551,36 +6410,23 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                     youComplete: _mine,
                     otherComplete: _theirs,
                   ),
-                  const SizedBox(height: 18),
+                  SizedBox(height: 18),
                   Text(
                     stage.completionHeading,
                     style: ZyraText.heading(size: 18),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     stage.completionLine,
                     style: ZyraText.subtext(),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14),
                   _CompatibilityScoreRing(
                     score: countT == 0 ? null : shown,
                     progress: (_score! / 100 * countT).clamp(0.0, 1.0),
                   ),
-                  const SizedBox(height: 16),
-                  for (var i = 0; i < cats.length; i++)
-                    Opacity(
-                      opacity: catOpacity(i),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: _CompatibilitySectionRow(
-                          label: cats[i].key,
-                          score: (cats[i].value as num).toDouble(),
-                          reveal: catOpacity(i),
-                        ),
-                      ),
-                    ),
                   // Everything below the result fades in after it — the
                   // moment first, the machinery second.
                   Opacity(
@@ -5590,6 +6436,13 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          SizedBox(height: 16),
+                          Text(
+                            'Detailed compatibility isn’t available yet.',
+                            style: ZyraText.subtext(),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 16),
                           // ZYRA One reads the number back; ZYRA Basic sees
                           // the number and an invitation, and the screen is
                           // complete either way.
@@ -5599,9 +6452,9 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                             const ZyraIntelligenceInvitation(
                               kind: ZyraIntelligenceKind.insight,
                             ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20),
                           if (widget.readOnly)
-                            const SizedBox.shrink()
+                            SizedBox.shrink()
                           else if (widget.waitingReason ==
                               'waiting_for_continue') ...[
                             Text(
@@ -5611,7 +6464,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                             ),
                           ] else
                             _JourneyScrollToContinue(
-                              onContinue: widget.onContinue,
+                              onContinue: continueIfCurrent,
                               openingLabel: 'Opening your choices…',
                             ),
                         ],
@@ -5657,13 +6510,13 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                 otherComplete: _theirs,
                 emphasizeWaiting: true,
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
               Text(
                 '${_plusScore!.round()}%',
                 style: ZyraText.heading(size: 44),
               ),
               Text('Overall Compatibility', style: ZyraText.subtext()),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               // Said plainly, because it is the thing they paid for and the
               // thing that could otherwise feel like a glitch: you can see it,
               // they cannot.
@@ -5672,7 +6525,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
                 style: ZyraText.body(size: 13),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 "${widget.profile.firstName} hasn't revealed yet, and hasn't "
                 'been told you have. The Journey moves when '
@@ -5709,7 +6562,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
           : _JourneyRoundAction(
               label: 'Reveal Compatibility',
               icon: Icons.visibility_outlined,
-              onTap: _reveal,
+              onTap: () => _reveal(scope, generation, surfaceOwner),
             ),
     );
   }
@@ -5754,13 +6607,13 @@ class _CompatibilityScoreRing extends StatelessWidget {
                             style: ZyraText.heading(
                               size: 43,
                               color: score == null
-                                  ? Colors.white38
+                                  ? ZyraColors.ink(0.38)
                                   : Colors.white,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      SizedBox(height: 3),
                       SizedBox(
                         height: 28,
                         child: FittedBox(
@@ -5771,7 +6624,9 @@ class _CompatibilityScoreRing extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: ZyraText.subtext(
                               size: 10.5,
-                              color: Colors.white.withValues(alpha: 0.66),
+                              color: ZyraColors.foreground.withValues(
+                                alpha: 0.66,
+                              ),
                             ).copyWith(height: 1.15, letterSpacing: 0.15),
                           ),
                         ),
@@ -5793,14 +6648,14 @@ class _CompatibilityScoreRingPainter extends CustomPainter {
 
   const _CompatibilityScoreRingPainter({required this.progress});
 
-  static const _gold = Color(0xFFE8C98A);
+  static const _gold = ZyraColors.journeyGold;
 
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
     final arcRect = rect.deflate(8);
     final track = Paint()
-      ..color = Colors.white.withValues(alpha: 0.12)
+      ..color = ZyraColors.foreground.withValues(alpha: 0.12)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.2;
     canvas.drawOval(arcRect, track);
@@ -5826,73 +6681,6 @@ class _CompatibilityScoreRingPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _CompatibilityScoreRingPainter oldDelegate) =>
       oldDelegate.progress != progress;
-}
-
-/// One category in the Compatibility breakdown: fixed label, proportional
-/// gold measure, then the exact value. The bar length is data, not decoration,
-/// and enters with the same stagger as its row during the first reveal.
-class _CompatibilitySectionRow extends StatelessWidget {
-  final String label;
-  final double score;
-  final double reveal;
-
-  const _CompatibilitySectionRow({
-    required this.label,
-    required this.score,
-    required this.reveal,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final normalized = (score / 100).clamp(0.0, 1.0).toDouble();
-    final visibleFill = (normalized * reveal).clamp(0.0, 1.0).toDouble();
-    return Semantics(
-      label: '$label, ${score.round()} percent',
-      excludeSemantics: true,
-      child: Row(
-        children: [
-          SizedBox(
-            width: 122,
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: ZyraText.body(size: 12.5),
-            ),
-          ),
-          const SizedBox(width: 9),
-          Expanded(
-            child: SizedBox(
-              height: 5,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: ColoredBox(
-                  color: Colors.white.withValues(alpha: 0.13),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: FractionallySizedBox(
-                      widthFactor: visibleFill,
-                      heightFactor: 1,
-                      child: const ColoredBox(color: Color(0xFFE8C98A)),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(
-            width: 36,
-            child: Text(
-              '${score.round()}%',
-              textAlign: TextAlign.right,
-              style: ZyraText.body(size: 12.5),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _CompatibilityCompactState extends StatelessWidget {
@@ -5928,7 +6716,7 @@ class _CompatibilityCompactState extends StatelessWidget {
               otherComplete: theirs,
               emphasizeWaiting: emphasizeWaiting,
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             SizedBox(
               height: 64,
               child: Center(
@@ -5940,7 +6728,7 @@ class _CompatibilityCompactState extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             SizedBox(
               height: 50,
               child: Center(
@@ -5952,7 +6740,7 @@ class _CompatibilityCompactState extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 48),
+            SizedBox(height: 48),
             SizedBox(height: 130, child: Center(child: action)),
           ],
         ),
@@ -6172,7 +6960,7 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_known) return const SizedBox.shrink();
+    if (!_known) return SizedBox.shrink();
     final name = widget.profile.firstName;
     final stage = ZyraJourneyStages.of('salam_exchange')!;
 
@@ -6215,7 +7003,7 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
         openingLabel: 'Opening your choices…',
       );
     } else {
-      stageAction = const SizedBox.shrink();
+      stageAction = SizedBox.shrink();
     }
 
     return Listener(
@@ -6263,7 +7051,7 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
                   otherCompleteLabel: 'Salam received',
                   otherWaitingLabel: 'Awaiting Salam',
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 SizedBox(
                   height: 64,
                   child: Center(
@@ -6275,7 +7063,7 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 SizedBox(
                   height: 50,
                   child: Center(
@@ -6295,11 +7083,11 @@ class _SalamExchangeViewState extends State<_SalamExchangeView> {
                             "Salam wasn't sent. Check your connection and try again.",
                             style: ZyraText.subtext(
                               size: 12.5,
-                              color: const Color(0xFFE08080),
+                              color: ZyraColors.destructive,
                             ),
                             textAlign: TextAlign.center,
                           )
-                        : const SizedBox.shrink(),
+                        : SizedBox.shrink(),
                   ),
                 ),
                 SizedBox(height: 130, child: Center(child: stageAction)),
@@ -6338,13 +7126,13 @@ class _SalamExchangeHistoryView extends StatelessWidget {
               youCompleteLabel: 'Salam sent',
               otherCompleteLabel: 'Salam received',
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Text(
               stage.completionHeading,
               style: ZyraText.heading(size: 27),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
               stage.completionLine,
               style: ZyraText.subtext(size: 14),
@@ -6429,25 +7217,25 @@ class _LifeSnapshotView extends StatelessWidget {
                 otherCompleteLabel: 'Profile revealed',
                 otherWaitingLabel: 'Awaiting reveal',
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Icon(
                 Icons.visibility_outlined,
                 size: 27,
-                color: const Color(0xFFE8C98A).withValues(alpha: 0.84),
+                color: ZyraColors.journeyGold.withValues(alpha: 0.84),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12),
               Text(
                 headline,
                 style: ZyraText.heading(size: 23),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(
                 body,
                 style: ZyraText.subtext(size: 13.5),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 34),
+              SizedBox(height: 34),
               if (canReveal)
                 _JourneyRoundAction(
                   label: 'Reveal Profile',
@@ -6459,7 +7247,7 @@ class _LifeSnapshotView extends StatelessWidget {
                   'Profile revealed · waiting together',
                   style: ZyraText.subtext(
                     size: 12,
-                    color: const Color(0xFFE8C98A).withValues(alpha: 0.7),
+                    color: ZyraColors.journeyGold.withValues(alpha: 0.7),
                   ),
                 ),
             ],
@@ -6486,21 +7274,21 @@ class _LifeSnapshotView extends StatelessWidget {
           Icon(
             Icons.visibility_outlined,
             size: 24,
-            color: const Color(0xFFE8C98A).withValues(alpha: 0.8),
+            color: ZyraColors.journeyGold.withValues(alpha: 0.8),
           ),
-          const SizedBox(height: 7),
+          SizedBox(height: 7),
           Text(
             'Profiles revealed',
             style: ZyraText.heading(size: 18),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             'You both chose to open this part of the Journey.',
             style: ZyraText.subtext(size: 12.5),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 22),
+          SizedBox(height: 22),
           Center(
             child: Container(
               width: 92,
@@ -6508,7 +7296,7 @@ class _LifeSnapshotView extends StatelessWidget {
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: const Color(0xFFE8C98A), width: 1.5),
+                border: Border.all(color: ZyraColors.journeyGold, width: 1.5),
               ),
               child: ClipOval(
                 child: profile.photoUrl.isEmpty
@@ -6527,24 +7315,24 @@ class _LifeSnapshotView extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           Text(
             profile.firstName,
             style: ZyraText.heading(size: 24),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 5),
+          SizedBox(height: 5),
           Text(
             'SHARED FOR THIS JOURNEY',
             style: ZyraText.chapterLabel(
-              color: const Color(0xFFE8C98A).withValues(alpha: 0.82),
+              color: ZyraColors.journeyGold.withValues(alpha: 0.82),
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 28),
+          SizedBox(height: 28),
           if (showBio) ...[
             _LifeSnapshotSectionHeading(label: 'BIO'),
-            const SizedBox(height: 9),
+            SizedBox(height: 9),
             Container(
               padding: const EdgeInsets.all(18),
               decoration: _lifeSnapshotCardDecoration(),
@@ -6552,15 +7340,15 @@ class _LifeSnapshotView extends StatelessWidget {
                 ZyraJourneyLifeSnapshotMock.bio,
                 style: ZyraText.body(
                   size: 14.5,
-                  color: Colors.white.withValues(alpha: 0.9),
+                  color: ZyraColors.foreground.withValues(alpha: 0.9),
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
           ],
           for (final entry in sections.entries) ...[
             _LifeSnapshotSectionHeading(label: entry.key.toUpperCase()),
-            const SizedBox(height: 9),
+            SizedBox(height: 9),
             Container(
               decoration: _lifeSnapshotCardDecoration(),
               child: Column(
@@ -6572,13 +7360,13 @@ class _LifeSnapshotView extends StatelessWidget {
                         height: 1,
                         indent: 16,
                         endIndent: 16,
-                        color: Colors.white.withValues(alpha: 0.1),
+                        color: ZyraColors.foreground.withValues(alpha: 0.1),
                       ),
                   ],
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
           ],
           if (!hasAnything)
             Container(
@@ -6589,15 +7377,15 @@ class _LifeSnapshotView extends StatelessWidget {
                   Icon(
                     Icons.notes_rounded,
                     size: 30,
-                    color: Colors.white.withValues(alpha: 0.52),
+                    color: ZyraColors.foreground.withValues(alpha: 0.52),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Text(
                     'No Journey bio added',
                     style: ZyraText.heading(size: 18),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 7),
+                  SizedBox(height: 7),
                   Text(
                     'A biography and these life details are optional. '
                     '${profile.firstName} chose not to add them.',
@@ -6616,9 +7404,9 @@ class _LifeSnapshotView extends StatelessWidget {
                 Icon(
                   Icons.lock_outline_rounded,
                   size: 15,
-                  color: Colors.white.withValues(alpha: 0.48),
+                  color: ZyraColors.foreground.withValues(alpha: 0.48),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Only what ${profile.firstName} chose to share for this '
@@ -6626,16 +7414,16 @@ class _LifeSnapshotView extends StatelessWidget {
                     'stay private.',
                     style: ZyraText.subtext(
                       size: 11.5,
-                      color: Colors.white.withValues(alpha: 0.54),
+                      color: ZyraColors.foreground.withValues(alpha: 0.54),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
           if (readOnly)
-            const SizedBox(height: 12)
+            SizedBox(height: 12)
           else if (waitingForOther)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 24),
@@ -6658,9 +7446,12 @@ class _LifeSnapshotView extends StatelessWidget {
 }
 
 BoxDecoration _lifeSnapshotCardDecoration() => BoxDecoration(
-  color: Colors.white.withValues(alpha: 0.065),
+  color: ZyraColors.foreground.withValues(alpha: 0.065),
   borderRadius: BorderRadius.circular(16),
-  border: Border.all(color: Colors.white.withValues(alpha: 0.13), width: 0.7),
+  border: Border.all(
+    color: ZyraColors.foreground.withValues(alpha: 0.13),
+    width: 0.7,
+  ),
 );
 
 class _LifeSnapshotSectionHeading extends StatelessWidget {
@@ -6670,7 +7461,7 @@ class _LifeSnapshotSectionHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Text(label, style: ZyraText.chapterLabel(color: Colors.white54));
+      Text(label, style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)));
 }
 
 class _LifeSnapshotFactRow extends StatelessWidget {
@@ -6690,18 +7481,18 @@ class _LifeSnapshotFactRow extends StatelessWidget {
             field.label,
             style: ZyraText.subtext(
               size: 12,
-              color: Colors.white.withValues(alpha: 0.58),
+              color: ZyraColors.foreground.withValues(alpha: 0.58),
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           flex: 5,
           child: Text(
             field.value,
             style: ZyraText.body(
               size: 12.5,
-              color: Colors.white.withValues(alpha: 0.9),
+              color: ZyraColors.foreground.withValues(alpha: 0.9),
             ),
             textAlign: TextAlign.right,
           ),
@@ -6967,7 +7758,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
               otherCompleteLabel: 'Reveal chosen',
               otherWaitingLabel: 'Not revealed',
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
           ],
           changingText(
             revealed
@@ -6975,14 +7766,14 @@ class _WaliGateViewState extends State<_WaliGateView> {
                 : preRevealCopy.$1,
             ZyraText.heading(size: 23),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           changingText(
             revealed
                 ? 'Profiles revealed. Salam to each Guardian is optional.'
                 : preRevealCopy.$2,
             ZyraText.subtext(size: 13.5),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           SizedBox(
             height: 218,
             child: PageView.builder(
@@ -7005,7 +7796,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
               ),
             ),
           ),
-          const SizedBox(height: 13),
+          SizedBox(height: 13),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -7016,17 +7807,17 @@ class _WaliGateViewState extends State<_WaliGateView> {
                   height: 5,
                   decoration: BoxDecoration(
                     color: index == currentPage
-                        ? const Color(0xFFE8C98A)
-                        : Colors.white.withValues(alpha: 0.24),
+                        ? ZyraColors.journeyGold
+                        : ZyraColors.foreground.withValues(alpha: 0.24),
                     borderRadius: BorderRadius.circular(999),
                   ),
                 ),
-                if (index != guardians.length - 1) const SizedBox(width: 7),
+                if (index != guardians.length - 1) SizedBox(width: 7),
               ],
             ],
           ),
           if (revealed) ...[
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             SizedBox(
               height: 96,
               child: Center(
@@ -7037,17 +7828,17 @@ class _WaliGateViewState extends State<_WaliGateView> {
                           key: ValueKey('guardian-salam-sent-$currentPage'),
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.waving_hand_rounded,
                               size: 22,
-                              color: Color(0xFFE8C98A),
+                              color: ZyraColors.journeyGold,
                             ),
-                            const SizedBox(height: 5),
+                            SizedBox(height: 5),
                             Text(
                               'Salam sent',
                               style: ZyraText.subtext(
                                 size: 11,
-                                color: const Color(0xFFE8C98A),
+                                color: ZyraColors.journeyGold,
                               ),
                             ),
                           ],
@@ -7092,12 +7883,12 @@ class _WaliGateViewState extends State<_WaliGateView> {
                 youComplete: true,
                 otherComplete: false,
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
               Text(
                 ZyraJourneyStages.labelFor('wali_gate'),
                 style: ZyraText.heading(size: 20),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
               Text(
                 'Your Guardian is with you. Waiting for '
                 '${widget.otherFirstName} to '
@@ -7106,12 +7897,15 @@ class _WaliGateViewState extends State<_WaliGateView> {
                 style: ZyraText.subtext(),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               TextButton(
                 onPressed: widget.onChanged,
                 child: Text(
                   'Check again',
-                  style: ZyraText.subtext(size: 12, color: Colors.white70),
+                  style: ZyraText.subtext(
+                    size: 12,
+                    color: ZyraColors.ink(0.70),
+                  ),
                 ),
               ),
             ],
@@ -7143,7 +7937,18 @@ class _WaliGateViewState extends State<_WaliGateView> {
         child: Column(
           children: [
             Expanded(
-              child: Center(child: _guardianPortraitFocus(revealed: false)),
+              child: LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Center(
+                      child: _guardianPortraitFocus(revealed: false),
+                    ),
+                  ),
+                ),
+              ),
             ),
             SizedBox(
               height: 96,
@@ -7167,12 +7972,12 @@ class _WaliGateViewState extends State<_WaliGateView> {
                     : Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.visibility_outlined,
                             size: 22,
-                            color: Color(0xFFE8C98A),
+                            color: ZyraColors.journeyGold,
                           ),
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Text(
                             'Reveal chosen · waiting together',
                             style: ZyraText.subtext(
@@ -7211,7 +8016,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
               ZyraJourneyStages.labelFor('wali_gate'),
               style: ZyraText.heading(size: 20),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Text(
               'This is where your families join you. From here, nothing in '
               'this Journey happens without a Guardian beside each of you — '
@@ -7219,7 +8024,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
               style: ZyraText.subtext(),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             _JourneyRoundAction(
               label: 'Link a Guardian',
               icon: Icons.shield_outlined,
@@ -7232,7 +8037,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
                 widget.onChanged();
               },
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             TextButton(
               onPressed: widget.onChanged,
               child: Text(
@@ -7287,7 +8092,7 @@ class _JourneyGuardianPortraitCard extends StatelessWidget {
     final duration = reduceMotion
         ? Duration.zero
         : const Duration(milliseconds: 420);
-    const gold = Color(0xFFE8C98A);
+    const gold = ZyraColors.journeyGold;
     final role = guardian.isMain ? 'Main Guardian' : 'Additional Guardian';
 
     return AnimatedContainer(
@@ -7295,12 +8100,14 @@ class _JourneyGuardianPortraitCard extends StatelessWidget {
       curve: Curves.easeOutCubic,
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 19),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: revealed ? 0.085 : 0.065),
+        color: ZyraColors.foreground.withValues(
+          alpha: revealed ? 0.085 : 0.065,
+        ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: guardian.isMain && revealed
               ? gold.withValues(alpha: 0.5)
-              : Colors.white.withValues(alpha: 0.14),
+              : ZyraColors.foreground.withValues(alpha: 0.14),
           width: guardian.isMain && revealed ? 1.2 : 0.8,
         ),
         boxShadow: guardian.isMain && revealed
@@ -7354,55 +8161,69 @@ class _ProtectedGuardianPortrait extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 82,
-              height: 82,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.055),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
-              ),
-              child: Icon(
-                Icons.person_rounded,
-                size: 52,
-                color: Colors.white.withValues(alpha: 0.11),
+            Flexible(
+              fit: FlexFit.loose,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Container(
+                  width: 82,
+                  height: 82,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ZyraColors.foreground.withValues(alpha: 0.055),
+                    border: Border.all(
+                      color: ZyraColors.foreground.withValues(alpha: 0.12),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.person_rounded,
+                    size: 52,
+                    color: ZyraColors.foreground.withValues(alpha: 0.11),
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Container(
               width: 86,
               height: 12,
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.11),
+                color: ZyraColors.foreground.withValues(alpha: 0.11),
                 borderRadius: BorderRadius.circular(999),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.white.withValues(alpha: 0.1),
+                    color: ZyraColors.foreground.withValues(alpha: 0.1),
                     blurRadius: 9,
                     spreadRadius: 2,
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 11),
+            SizedBox(height: 11),
             Text(
               '$otherFirstName’s $role',
-              style: ZyraText.subtext(size: 11.5, color: Colors.white60),
+              style: ZyraText.subtext(size: 11.5, color: ZyraColors.ink(0.60)),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
+                Icon(
                   Icons.lock_outline_rounded,
                   size: 12,
-                  color: Color(0xFFE8C98A),
+                  color: ZyraColors.journeyGold,
                 ),
-                const SizedBox(width: 5),
-                Text(
-                  'Protected until both reveal',
-                  style: ZyraText.subtext(size: 10, color: Colors.white54),
+                SizedBox(width: 5),
+                Flexible(
+                  child: Text(
+                    'Protected until both reveal',
+                    style: ZyraText.subtext(
+                      size: 10,
+                      color: ZyraColors.ink(0.54),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
@@ -7453,20 +8274,20 @@ class _RevealedGuardianPortrait extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.white.withValues(alpha: 0.2),
-                  const Color(0xFF3D2A4A).withValues(alpha: 0.72),
+                  ZyraColors.foreground.withValues(alpha: 0.2),
+                  ZyraColors.luxuryDarkPurple.withValues(alpha: 0.72),
                 ],
               ),
               border: Border.all(
                 color: guardian.isMain
-                    ? const Color(0xFFE8C98A)
-                    : Colors.white.withValues(alpha: 0.22),
+                    ? ZyraColors.journeyGold
+                    : ZyraColors.foreground.withValues(alpha: 0.22),
                 width: guardian.isMain ? 2 : 1,
               ),
               boxShadow: guardian.isMain
                   ? [
                       BoxShadow(
-                        color: const Color(0xFFE8C98A).withValues(alpha: 0.2),
+                        color: ZyraColors.journeyGold.withValues(alpha: 0.2),
                         blurRadius: 16,
                       ),
                     ]
@@ -7474,42 +8295,42 @@ class _RevealedGuardianPortrait extends StatelessWidget {
             ),
             child: hasName
                 ? Text(guardian.initials, style: ZyraText.heading(size: 20))
-                : const Icon(
+                : Icon(
                     Icons.person_outline_rounded,
-                    color: Colors.white70,
+                    color: ZyraColors.ink(0.70),
                     size: 32,
                   ),
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           Text(
             hasName ? name : role,
             style: ZyraText.heading(size: 18),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(
             details.join(' · '),
-            style: ZyraText.subtext(size: 10.5, color: Colors.white60),
+            style: ZyraText.subtext(size: 10.5, color: ZyraColors.ink(0.60)),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 7),
+          SizedBox(height: 7),
           AnimatedOpacity(
             duration: const Duration(milliseconds: 320),
             opacity: salamSent ? 1 : 0,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
+                Icon(
                   Icons.waving_hand_rounded,
                   size: 11,
-                  color: Color(0xFFE8C98A),
+                  color: ZyraColors.journeyGold,
                 ),
-                const SizedBox(width: 4),
+                SizedBox(width: 4),
                 Text(
                   'SALAM SENT',
-                  style: ZyraText.chapterLabel(color: const Color(0xFFE8C98A)),
+                  style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
                 ),
               ],
             ),
@@ -7602,13 +8423,13 @@ class _JourneyGuardianHistoryViewState
               style: ZyraText.heading(size: 23),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 7),
+            SizedBox(height: 7),
             Text(
               'Profiles revealed for this Journey.',
               style: ZyraText.subtext(size: 13),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 17),
+            SizedBox(height: 17),
             SizedBox(
               height: 218,
               child: PageView.builder(
@@ -7629,7 +8450,7 @@ class _JourneyGuardianHistoryViewState
                 ),
               ),
             ),
-            const SizedBox(height: 13),
+            SizedBox(height: 13),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -7640,20 +8461,20 @@ class _JourneyGuardianHistoryViewState
                     height: 5,
                     decoration: BoxDecoration(
                       color: index == currentPage
-                          ? const Color(0xFFE8C98A)
-                          : Colors.white.withValues(alpha: 0.24),
+                          ? ZyraColors.journeyGold
+                          : ZyraColors.foreground.withValues(alpha: 0.24),
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
-                  if (index != guardians.length - 1) const SizedBox(width: 7),
+                  if (index != guardians.length - 1) SizedBox(width: 7),
                 ],
               ],
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             AnimatedSwitcher(
               duration: duration,
               child: salamSummary == null
-                  ? const SizedBox(height: 24)
+                  ? SizedBox(height: 24)
                   : Semantics(
                       key: ValueKey(salamSummary),
                       label: 'Salam was sent to $salamSummary',
@@ -7661,18 +8482,18 @@ class _JourneyGuardianHistoryViewState
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.waving_hand_rounded,
                               size: 17,
-                              color: Color(0xFFE8C98A),
+                              color: ZyraColors.journeyGold,
                             ),
-                            const SizedBox(width: 7),
+                            SizedBox(width: 7),
                             Flexible(
                               child: Text(
                                 'Salam sent to $salamSummary',
                                 style: ZyraText.subtext(
                                   size: 12,
-                                  color: const Color(0xFFE8C98A),
+                                  color: ZyraColors.journeyGold,
                                 ),
                                 textAlign: TextAlign.center,
                                 maxLines: 2,
@@ -7862,7 +8683,17 @@ class _PhaseViewState extends State<_PhaseView> {
   );
 
   Future<void> _submitAll() async {
+    final userId = ZyraAuth.currentUser?.id;
+    if (userId == null) return;
+    final generation = ZyraAccountState.generation;
+    bool isCurrentSubmission() =>
+        mounted &&
+        ZyraAuth.currentUser?.id == userId &&
+        ZyraAccountState.isCurrent(userId, generation);
+
+    var allSaved = true;
     for (var index = 0; index < _questions.length; index++) {
+      if (!isCurrentSubmission()) return;
       final q = _questions[index];
       final text = _controllers[q.id]!.text.trim();
       if (!JourneyQuestions.answerFitsCharacterLimit(widget.phase, text)) {
@@ -7881,13 +8712,25 @@ class _PhaseViewState extends State<_PhaseView> {
         return;
       }
       if (text.isNotEmpty) {
-        await ZyraJourneyService.submitPhaseAnswer(
+        final saved = await ZyraJourneyService.submitPhaseAnswer(
           widget.matchId,
           widget.phase,
           q.id,
           text,
         );
+        if (!isCurrentSubmission()) return;
+        if (!saved) allSaved = false;
       }
+    }
+    if (!isCurrentSubmission()) return;
+    if (!allSaved && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Some answers didn't save — check your connection and submit again.",
+          ),
+        ),
+      );
     }
     await _load();
   }
@@ -7896,22 +8739,44 @@ class _PhaseViewState extends State<_PhaseView> {
     // Optimistic, then written. The signal has to select instantly — this is a
     // private note to yourself, and waiting on a round-trip to see it land
     // reads as the tap having missed.
+    final previous = _ratings[questionId];
     setState(() => _ratings[questionId] = rating);
-    await ZyraJourneyService.submitRating(
+    final saved = await ZyraJourneyService.submitRating(
       widget.matchId,
       widget.phase,
       questionId,
       rating,
     );
+    if (!saved && mounted) {
+      setState(() {
+        if (previous == null) {
+          _ratings.remove(questionId);
+        } else {
+          _ratings[questionId] = previous;
+        }
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("That reflection didn't save — please try again."),
+        ),
+      );
+    }
   }
 
   Future<void> _checkpoint(String decision) async {
-    await ZyraJourneyService.submitCheckpoint(
+    final saved = await ZyraJourneyService.submitCheckpoint(
       widget.matchId,
       widget.phase,
       decision,
     );
     await _load();
+    if (!saved && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Your choice didn't save — please try again."),
+        ),
+      );
+    }
   }
 
   // _phaseGuidingQuestion REMOVED 2026-08-09 — the three questions now
@@ -7946,19 +8811,19 @@ class _PhaseViewState extends State<_PhaseView> {
               (ZyraJourneyStages.phase(widget.phase)?.label ??
                       'Phase ${widget.phase}')
                   .toUpperCase(),
-              style: ZyraText.chapterLabel(color: Colors.white54),
+              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               'Your answers, opened together',
               style: ZyraText.heading(size: 18),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               'Read slowly — there is no clock on this stage.',
               style: ZyraText.subtext(),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             for (var index = 0; index < _questions.length; index++)
               _JourneyRevealedQuestion(
                 question: _questions[index],
@@ -7972,14 +8837,14 @@ class _PhaseViewState extends State<_PhaseView> {
               ),
             // The privacy line the spec asks for on every phase. It sits
             // directly under the ratings it is about, not in a footer.
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               'Your answers are shared with ${widget.profile.firstName} and '
               'your Guardian. Your ratings are private and used only to guide '
               'your journey.',
               style: ZyraText.privacyText(),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             if (_summary != null) ZyraIntelligenceCard(intelligence: _summary!),
             if (_followUps != null)
               ZyraIntelligenceCard(intelligence: _followUps!),
@@ -7994,13 +8859,13 @@ class _PhaseViewState extends State<_PhaseView> {
                 'Close this chapter together?',
                 style: ZyraText.heading(size: 15),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 'What you shared here stays on your Timeline. '
                 '${_nextChapterLabel != null ? '${_nextChapterLabel!} is next.' : ''}',
                 style: ZyraText.subtext(),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               _JourneyScrollToContinue(
                 onContinue: () =>
                     widget.onRequestDecision(() => _checkpoint('continue')),
@@ -8016,18 +8881,18 @@ class _PhaseViewState extends State<_PhaseView> {
                       style: ZyraText.heading(size: 17),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 5),
+                    SizedBox(height: 5),
                     Text(
                       ZyraJourneyStages.phase(widget.phase)!.completionLine,
                       style: ZyraText.subtext(),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Text(
                       'Waiting for ${widget.profile.firstName} to close it too.',
                       style: ZyraText.subtext(
                         size: 12.5,
-                        color: Colors.white60,
+                        color: ZyraColors.ink(0.60),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -8055,14 +8920,14 @@ class _PhaseViewState extends State<_PhaseView> {
               style: ZyraText.heading(size: 18),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
               'Your answers are sealed until ${widget.profile.firstName} '
               'finishes — you open them together. There is no clock on this.',
               style: ZyraText.subtext(),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             _SealedAnswers(questions: _questions, answers: myAnswers),
           ],
         ),
@@ -8084,13 +8949,13 @@ class _PhaseViewState extends State<_PhaseView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Read yours once more', style: ZyraText.heading(size: 18)),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               'Sealed answers wait for ${widget.profile.firstName}. Tap one '
               'to change it.',
               style: ZyraText.subtext(),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             for (var i = 0; i < _questions.length; i++) ...[
               InkWell(
                 borderRadius: BorderRadius.circular(12),
@@ -8102,10 +8967,10 @@ class _PhaseViewState extends State<_PhaseView> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.06),
+                    color: ZyraColors.foreground.withValues(alpha: 0.06),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.10),
+                      color: ZyraColors.foreground.withValues(alpha: 0.10),
                       width: 0.5,
                     ),
                   ),
@@ -8116,7 +8981,7 @@ class _PhaseViewState extends State<_PhaseView> {
                         _questions[i].text,
                         style: ZyraText.subtext(size: 11.5),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
                         _controllers[_questions[i].id]!.text.trim().isEmpty
                             ? 'Not answered yet'
@@ -8127,7 +8992,7 @@ class _PhaseViewState extends State<_PhaseView> {
                               _controllers[_questions[i].id]!.text
                                   .trim()
                                   .isEmpty
-                              ? Colors.white38
+                              ? ZyraColors.ink(0.38)
                               : Colors.white,
                         ),
                       ),
@@ -8135,9 +9000,9 @@ class _PhaseViewState extends State<_PhaseView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
             ],
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Center(
               child: _JourneyRoundAction(
                 label: missing == 0
@@ -8166,24 +9031,24 @@ class _PhaseViewState extends State<_PhaseView> {
               Expanded(
                 child: Text(
                   chapterLabel.toUpperCase(),
-                  style: ZyraText.chapterLabel(color: Colors.white54),
+                  style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
                 ),
               ),
               Text(
                 'Question ${_qIndex + 1} of ${_questions.length}',
-                style: ZyraText.subtext(size: 11, color: Colors.white38),
+                style: ZyraText.subtext(size: 11, color: ZyraColors.ink(0.38)),
               ),
             ],
           ),
           if (_qIndex == 0) ...[
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.045),
+                color: ZyraColors.foreground.withValues(alpha: 0.045),
                 border: const Border(
-                  left: BorderSide(color: Color(0xFFE8C98A), width: 2),
+                  left: BorderSide(color: ZyraColors.journeyGold, width: 2),
                 ),
               ),
               child: Text.rich(
@@ -8193,7 +9058,7 @@ class _PhaseViewState extends State<_PhaseView> {
                       text: 'You are answering privately. ',
                       style: ZyraText.subtext(
                         size: 11.5,
-                        color: const Color(0xFFE8C98A),
+                        color: ZyraColors.journeyGold,
                       ),
                     ),
                     TextSpan(
@@ -8201,7 +9066,7 @@ class _PhaseViewState extends State<_PhaseView> {
                           'After all ${_questions.length}, you can review every answer before sealing. When you both seal, the answers open to both of you and your Guardians.',
                       style: ZyraText.subtext(
                         size: 11.5,
-                        color: Colors.white.withValues(alpha: 0.66),
+                        color: ZyraColors.foreground.withValues(alpha: 0.66),
                       ),
                     ),
                   ],
@@ -8209,9 +9074,9 @@ class _PhaseViewState extends State<_PhaseView> {
               ),
             ),
           ],
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
           Text(q.text, style: ZyraText.heading(size: 17)),
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           TextField(
             controller: _controllers[q.id],
             maxLines: 5,
@@ -8230,24 +9095,27 @@ class _PhaseViewState extends State<_PhaseView> {
                       size: 11,
                       color:
                           currentLength >= (answerCharacterLimit * 0.9).round()
-                          ? const Color(0xFFE8C98A)
-                          : Colors.white38,
+                          ? ZyraColors.journeyGold
+                          : ZyraColors.ink(0.38),
                     ),
                   ),
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               filled: true,
-              fillColor: Colors.white.withValues(alpha: 0.06),
+              fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
               hintText: 'In your own words…',
-              hintStyle: const TextStyle(color: Colors.white38),
-              counterStyle: ZyraText.subtext(size: 11, color: Colors.white38),
+              hintStyle: TextStyle(color: ZyraColors.ink(0.38)),
+              counterStyle: ZyraText.subtext(
+                size: 11,
+                color: ZyraColors.ink(0.38),
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             children: [
               if (_qIndex > 0) ...[
@@ -8255,7 +9123,7 @@ class _PhaseViewState extends State<_PhaseView> {
                   onPressed: () => setState(() => _qIndex -= 1),
                   child: Text('Back', style: ZyraText.button(size: 13)),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
               ],
               Expanded(
                 child: Center(
@@ -8314,12 +9182,12 @@ class _SealedAnswersState extends State<_SealedAnswers> {
           ),
         ),
         if (_open) ...[
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           for (final q in widget.questions) ...[
             Text(q.text, style: ZyraText.subtext(size: 11.5)),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(widget.answers[q.id] ?? '—', style: ZyraText.body(size: 13.5)),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
           ],
         ],
       ],
@@ -8355,7 +9223,7 @@ class _JourneyRevealedQuestion extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Colors.white.withValues(alpha: 0.12)),
+          top: BorderSide(color: ZyraColors.foreground.withValues(alpha: 0.12)),
         ),
       ),
       child: Column(
@@ -8364,26 +9232,26 @@ class _JourneyRevealedQuestion extends StatelessWidget {
           Text(
             'QUESTION $questionNumber OF $questionCount',
             style: ZyraText.chapterLabel(
-              color: const Color(0xFFE8C98A).withValues(alpha: 0.9),
+              color: ZyraColors.journeyGold.withValues(alpha: 0.9),
             ),
           ),
-          const SizedBox(height: 9),
+          SizedBox(height: 9),
           Text(question.text, style: ZyraText.heading(size: 16)),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           _JourneyRevealedAnswerRow(label: 'YOU', answer: myAnswer),
-          const SizedBox(height: 11),
+          SizedBox(height: 11),
           _JourneyRevealedAnswerRow(
             label: otherName.toUpperCase(),
             answer: theirAnswer,
           ),
-          const SizedBox(height: 19),
+          SizedBox(height: 19),
           Text(
             'YOUR PRIVATE REFLECTION',
             style: ZyraText.chapterLabel(
-              color: Colors.white.withValues(alpha: 0.44),
+              color: ZyraColors.foreground.withValues(alpha: 0.44),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           _TrafficLightRatingScale(selected: rating, onSelected: onRate),
         ],
       ),
@@ -8411,18 +9279,18 @@ class _JourneyRevealedAnswerRow extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: ZyraText.chapterLabel(
-                color: Colors.white.withValues(alpha: 0.46),
+                color: ZyraColors.foreground.withValues(alpha: 0.46),
               ),
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Expanded(
           child: Text(
             answer,
             style: ZyraText.body(
               size: 13.5,
-              color: Colors.white.withValues(alpha: 0.86),
+              color: ZyraColors.foreground.withValues(alpha: 0.86),
             ),
           ),
         ),
@@ -8448,17 +9316,17 @@ class _TrafficLightRatingScale extends StatelessWidget {
     _TrafficLightRatingOption(
       value: 'reassured',
       label: 'Reassured me',
-      color: Color(0xFF84D0A8),
+      color: ZyraColors.positiveGreen,
     ),
     _TrafficLightRatingOption(
       value: 'discuss_further',
       label: 'Discuss further',
-      color: Color(0xFFE8C98A),
+      color: ZyraColors.journeyGold,
     ),
     _TrafficLightRatingOption(
       value: 'concerns',
       label: 'Concerns me',
-      color: Color(0xFFE18A91),
+      color: ZyraColors.negativeRed,
     ),
   ];
 
@@ -8487,7 +9355,7 @@ class _TrafficLightRatingScale extends StatelessWidget {
                   flex: 4,
                   child: Container(
                     height: 1,
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: ZyraColors.foreground.withValues(alpha: 0.2),
                   ),
                 ),
                 const Spacer(),
@@ -8524,9 +9392,8 @@ class _TrafficLightRatingScale extends StatelessWidget {
                                   ),
                                   border: selected == option.value
                                       ? Border.all(
-                                          color: Colors.white.withValues(
-                                            alpha: 0.88,
-                                          ),
+                                          color: ZyraColors.foreground
+                                              .withValues(alpha: 0.88),
                                           width: 2,
                                         )
                                       : Border.all(
@@ -8546,14 +9413,16 @@ class _TrafficLightRatingScale extends StatelessWidget {
                                       : null,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: 8),
                               Text(
                                 option.label,
                                 style: ZyraText.subtext(
                                   size: 10.5,
                                   color: selected == option.value
                                       ? Colors.white
-                                      : Colors.white.withValues(alpha: 0.68),
+                                      : ZyraColors.foreground.withValues(
+                                          alpha: 0.68,
+                                        ),
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -8661,17 +9530,28 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
   }
 
   Future<void> _loadOnce({required bool showSpinner}) async {
+    final userId = ZyraAuth.currentUser?.id;
+    if (userId == null) return;
+    final generation = ZyraAccountState.generation;
+    bool isCurrentLoad() =>
+        mounted &&
+        ZyraAuth.currentUser?.id == userId &&
+        ZyraAccountState.isCurrent(userId, generation);
+
+    if (!isCurrentLoad()) return;
     if (showSpinner && mounted) setState(() => _loading = true);
     final myAnswers = await ZyraJourneyService.fetchFamilyAnswers(
       widget.matchId,
       'wali_to_seeker',
     );
+    if (!isCurrentLoad()) return;
     final waliAnswers = await ZyraJourneyService.fetchFamilyAnswers(
       widget.matchId,
       'seeker_to_wali',
     );
+    if (!isCurrentLoad()) return;
     final ratings = await ZyraJourneyService.fetchAllMyRatings(widget.matchId);
-    if (!mounted) return;
+    if (!isCurrentLoad()) return;
     final submitted = myAnswers.length >= JourneyQuestions.waliToSeeker.length;
     final waliAnswered =
         waliAnswers.length >= JourneyQuestions.seekerToWali.length;
@@ -8691,6 +9571,14 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
   }
 
   Future<void> _submit() async {
+    final userId = ZyraAuth.currentUser?.id;
+    if (userId == null) return;
+    final generation = ZyraAccountState.generation;
+    bool isCurrentSubmission() =>
+        mounted &&
+        ZyraAuth.currentUser?.id == userId &&
+        ZyraAccountState.isCurrent(userId, generation);
+
     // BUG-03 (2026-08-14 audit, OA-ZYRA-225 — fixed 2026-08-15):
     // submitFamilyAnswer reports failure now, and this surfaces it. The
     // text stays in the controllers either way, and _load() keeps
@@ -8700,6 +9588,7 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
     // fetchFamilyAnswers' later-insert-wins ordering).
     var allSaved = true;
     for (final q in JourneyQuestions.waliToSeeker) {
+      if (!isCurrentSubmission()) return;
       final text = _controllers[q.id]!.text.trim();
       if (text.isNotEmpty) {
         final ok = await ZyraJourneyService.submitFamilyAnswer(
@@ -8708,17 +9597,13 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
           q.id,
           text,
         );
+        if (!isCurrentSubmission()) return;
         if (!ok) allSaved = false;
       }
     }
+    if (!isCurrentSubmission()) return;
     if (!allSaved && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Some answers didn't save — check your connection and press Submit again.",
-          ),
-        ),
-      );
+      showZyraFamilyAnswersWriteFailure(context);
     }
     await _load();
   }
@@ -8752,7 +9637,7 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
                 style: ZyraText.heading(size: 18),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(
                 _waliAnswered
                     ? stage.completionLine
@@ -8769,7 +9654,7 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
                   kind: ZyraIntelligenceKind.summary,
                 ),
               if (_waliAnswered) ...[
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 _JourneyScrollToContinue(
                   onContinue: () => widget.onRequestDecision(widget.onAdvance),
                   openingLabel: 'Opening your choices…',
@@ -8790,7 +9675,7 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
             ZyraJourneyStages.labelFor('family_stage'),
             style: ZyraText.heading(size: 18),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(
             'Your families meet your Journey here. '
             "${widget.profile.firstName}'s Guardian asks you their questions; "
@@ -8798,31 +9683,31 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
             'you — they are.',
             style: ZyraText.subtext(),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
           Text(
             "${widget.profile.firstName}'s family asks:",
-            style: ZyraText.body(size: 13, color: Colors.white70),
+            style: ZyraText.body(size: 13, color: ZyraColors.ink(0.70)),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           for (final q in JourneyQuestions.waliToSeeker) ...[
             Text(q.text, style: ZyraText.body(size: 14)),
-            const SizedBox(height: 6),
+            SizedBox(height: 6),
             TextField(
               controller: _controllers[q.id],
               maxLines: 3,
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white.withValues(alpha: 0.06),
+                fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
                 hintText: 'Your answer…',
-                hintStyle: const TextStyle(color: Colors.white38),
+                hintStyle: TextStyle(color: ZyraColors.ink(0.38)),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
           ],
           SizedBox(
             width: double.infinity,
@@ -8900,24 +9785,24 @@ class _OpenConversationViewState extends State<_OpenConversationView> {
               style: ZyraText.heading(size: 22),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Text(
               '${stage.completionLine} Your Timeline keeps going, and your '
               'Guardians remain part of it.',
               style: ZyraText.subtext(),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             // THE EARNED ARRIVAL — 2026-08-12 (experience redesign §7).
             // Not a badge and not a number: the accurate list of what they
             // actually did to be standing here.
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.07),
+                color: ZyraColors.foreground.withValues(alpha: 0.07),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.14),
+                  color: ZyraColors.foreground.withValues(alpha: 0.14),
                   width: 0.5,
                 ),
               ),
@@ -8936,16 +9821,16 @@ class _OpenConversationViewState extends State<_OpenConversationView> {
                           Icon(
                             Icons.check,
                             size: 14,
-                            color: Colors.white.withValues(alpha: 0.6),
+                            color: ZyraColors.foreground.withValues(alpha: 0.6),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Expanded(
                             child: Text(line, style: ZyraText.body(size: 13)),
                           ),
                         ],
                       ),
                     ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   Text(
                     'You have earned this conversation.',
                     style: ZyraText.subtext(size: 12),
@@ -8953,14 +9838,14 @@ class _OpenConversationViewState extends State<_OpenConversationView> {
                 ],
               ),
             ),
-            const SizedBox(height: 6),
+            SizedBox(height: 6),
             if (_topics != null)
               ZyraIntelligenceCard(intelligence: _topics!)
             else if (AppState.instance.plan != ZyraPlan.one)
               const ZyraIntelligenceInvitation(
                 kind: ZyraIntelligenceKind.recommendation,
               ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             Center(
               child: _JourneyRoundAction(
                 label: 'Open your conversation with $name',
@@ -8981,7 +9866,10 @@ class _OpenConversationViewState extends State<_OpenConversationView> {
               ),
               child: Text(
                 'Read your story so far',
-                style: ZyraText.subtext(size: 12.5, color: Colors.white70),
+                style: ZyraText.subtext(
+                  size: 12.5,
+                  color: ZyraColors.ink(0.70),
+                ),
               ),
             ),
           ],

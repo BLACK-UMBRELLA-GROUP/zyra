@@ -56,8 +56,10 @@ flutter run --profile -d 00008130-001A2C1E26F8001C
 In-app test-scenario switcher on the Welcome screen ("Developer
 Access"): one tap signs into seeded real Supabase test accounts
 (`dev.*@zyra.test`, see `supabase/seed_dev_accounts.sql`) and lands
-fully onboarded. No OAuth needed — OAuth client IDs are still
-placeholders in `lib/config/oauth_config.dart` (gitignored).
+fully onboarded. No OAuth is needed for that developer path. Real local
+OAuth IDs live in gitignored `lib/config/oauth_config.dart`; the matching
+Google bundle/package registrations and Supabase provider allow-list remain
+external configuration and must be verified after any application-ID change.
 
 ## Backend
 

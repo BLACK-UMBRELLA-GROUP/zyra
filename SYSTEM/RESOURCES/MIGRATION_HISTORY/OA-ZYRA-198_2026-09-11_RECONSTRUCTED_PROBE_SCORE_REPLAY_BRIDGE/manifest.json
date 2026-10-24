@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "artifact_id": "OA-ZYRA-198-RECONSTRUCTED-PROBE-SCORE-REPLAY-BRIDGE-2026-09-11",
+  "classification": "reconstructed replay-only compatibility bridge; not retained production history",
+  "status": "CODEX_INTERNALLY_VERIFIED_REPLAY_NOT_AUTHORISED",
+  "authority": {
+    "approved_by": "Founder (Shakeel)",
+    "approved_on": "2026-09-11",
+    "source": "direct Founder Codex instruction",
+    "scope": "Complete every safe TestFlight prerequisite; preserve separate exact gates for destructive replay, production apply and Apple upload."
+  },
+  "provenance": {
+    "original_creator_sql_recovered": false,
+    "original_migration_version_recovered": false,
+    "retained_record_search_result": "No creator statement, migration-history row, filename or statement boundary survives.",
+    "historical_role": "out-of-band 2026-08-10/11 scoring-analysis scratch table",
+    "historical_pre_hardening_rows": 2,
+    "historical_pre_hardening_rls": false,
+    "historical_target_version": "20260811233813",
+    "historical_target_sha256": "3934282f2b2d97c3bac7b6cac42c4044942d69c5a59111ffb2e672d360e73c95"
+  },
+  "production_catalog_evidence": {
+    "project_id": "sxoaxonzjqkgajmlagyk",
+    "inspected_on": "2026-09-11",
+    "access": "read_only_schema_and_count",
+    "row_values_read": false,
+    "rows_copied_into_bridge": 0,
+    "live_row_count": 2,
+    "owner": "postgres",
+    "relkind": "r",
+    "relpersistence": "p",
+    "replica_identity": "d",
+    "rls_enabled": true,
+    "force_rls": false,
+    "columns": [
+      {
+        "name": "viewer",
+        "type": "text",
+        "nullable": true
+      },
+      {
+        "name": "rows_returned",
+        "type": "integer",
+        "nullable": true
+      },
+      {
+        "name": "score",
+        "type": "numeric",
+        "nullable": true
+      }
+    ],
+    "defaults": 0,
+    "identity_columns": 0,
+    "generated_columns": 0,
+    "constraints": 0,
+    "indexes": 0,
+    "policies": 0,
+    "triggers": 0,
+    "rules": 0,
+    "table_comment": null,
+    "column_comments": 0,
+    "final_acl": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}"
+  },
+  "bridge": {
+    "path": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_PROBE_SCORE_REPLAY_BRIDGE/20260811233812_oa198_reconstructed_probe_score_replay_bridge.sql",
+    "filename": "20260811233812_oa198_reconstructed_probe_score_replay_bridge.sql",
+    "ordering_version": "20260811233812",
+    "ordering_version_is_recovered_history": false,
+    "bytes": 7302,
+    "sha256": "9f9a818f3370b849ba1ff21f1d4ea9c3adb9ab866b22e15f6ba7a03454b46b46",
+    "mode": "0600",
+    "active_migration_path": false,
+    "reconstructed_rows": 0,
+    "change_scope": "catalog-proven schema presence only"
+  },
+  "readme": {
+    "path": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_PROBE_SCORE_REPLAY_BRIDGE/README.md",
+    "bytes": 5792,
+    "sha256": "6250dbb0723bd56de0325de07c9cc4ae945d7a8d4964f5557d0fc782b12e7a39"
+  },
+  "question_bank_bridge_v2": {
+    "path": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE_V2/20260811153415_oa198_reconstructed_question_bank_replay_bridge_v2.sql",
+    "ordering_version": "20260811153415",
+    "bytes": 28501,
+    "sha256": "337b342df347b7e902d8da32bafd0a2b21516550b9234213298079304ca66aa1",
+    "immutable": true
+  },
+  "active_inventory": {
+    "directory": "SOURCE/supabase/migrations",
+    "sql_files": 207,
+    "digest": "8a36926aaca155493f16a731ee498204f0d0225e2a5b41cc66f89e1da39b8861",
+    "contains_ordering_version_20260811153415": false,
+    "contains_ordering_version_20260811233812": false,
+    "hypothetical_two_bridge_scratch_sql_files": 209,
+    "v1_and_v2_may_coexist_in_scratch": false
+  },
+  "runtime_verification": {
+    "sql_path": "SOURCE/supabase/tests/zyra_oa198_probe_score_replay_bridge_pg17_runtime.sql",
+    "sql_bytes": 4676,
+    "sql_sha256": "bfbd13da58a12b9cacfdca79ab86f26b1484127171fb28e89106687547446997",
+    "image": "public.ecr.aws/supabase/postgres:17.6.1.165",
+    "image_id": "sha256:28f0e16a019e648089fc1a6d333549a55548f6019c15ae4bd7cd58b989027518",
+    "server_version_num": 170006,
+    "network_mode": "none",
+    "published_ports": 0,
+    "mounts": 0,
+    "application_migrations_loaded": false,
+    "seed_loaded": false,
+    "project_reference_present": false,
+    "database_url_present": false,
+    "production_accessed": false,
+    "psql_on_error_stop": true,
+    "postgresql_17_maintain_privilege_checked": true,
+    "transaction_read_only": true,
+    "transaction_rolled_back": true,
+    "result": "OA-ZYRA-198 PROBE SCORE BRIDGE PG17 PASS",
+    "exit_code": 0
+  },
+  "verification": {
+    "artifact_test_path": "SOURCE/test/zyra_oa198_probe_score_replay_bridge_artifact_test.dart",
+    "artifact_test_bytes": 8967,
+    "artifact_test_sha256": "97de713fbbfd15680e8f909ec37ed987a2ac4636c36fcb56b5c7d3b5b9f89e19",
+    "artifact_test_cases": 4,
+    "runtime_sql_sha256": "bfbd13da58a12b9cacfdca79ab86f26b1484127171fb28e89106687547446997",
+    "bridge_executed_in_minimal_integration": true,
+    "unchanged_historical_table_statements_executed": true,
+    "postgresql_server_version_num": 170006,
+    "runtime_result": "PASS",
+    "final_relation_contract_matches_production_catalog": true,
+    "full_209_file_replay_run": false
+  },
+  "side_effects": {
+    "production_catalog_read_only_access": true,
+    "production_row_values_read": false,
+    "production_mutated": false,
+    "production_history_changed": false,
+    "active_migration_path_changed": false,
+    "question_bank_bridge_v2_changed": false,
+    "full_replay_run": false,
+    "testflight_uploaded": false,
+    "git_used": false,
+    "private_credential_store_accessed": false,
+    "disposable_container_removed": true,
+    "isolated_colima_profile_stopped": true
+  },
+  "future_gate": {
+    "separate_founder_one_replay_go_required": true,
+    "exact_question_bank_bridge_v2_sha256_required": "337b342df347b7e902d8da32bafd0a2b21516550b9234213298079304ca66aa1",
+    "exact_probe_score_bridge_sha256_required": "9f9a818f3370b849ba1ff21f1d4ea9c3adb9ab866b22e15f6ba7a03454b46b46",
+    "copy_both_into_isolated_scratch_only": true,
+    "scratch_must_contain_v2_not_v1": true,
+    "fresh_seedless_unlinked_pg17_required": true,
+    "stop_at_first_result_no_repair_no_retry": true,
+    "production_apply_permitted": false,
+    "testflight_upload_permitted": false
+  }
+}

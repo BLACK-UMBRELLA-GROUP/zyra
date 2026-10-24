@@ -33,8 +33,9 @@
 //      families is something that happened and wants attention — which
 //      is Activity's job — and it outranks a bookmark, so it goes first.
 //
-// Activity rows are now _ActivityCard (expand on tap, with Unlock and
-// Report). Journey rows use the same expanding model (_JourneyExpandingCard).
+// Activity rows use the same compact expansion language as Potential Journey:
+// a persistent identity row, top-right Report flag, then profile, decision
+// and compatibility actions. Journey rows use _JourneyExpandingCard.
 // See _journeysChildren()/_activityChildren() for the two panels.
 //
 // 2026-07-26 (DR-ZYRA-101 audit, nav bar fix — see SEEKER NAVIGATION
@@ -67,20 +68,29 @@ import 'dart:async';
 
 import '../../widgets/zyra_profile_image.dart';
 
-import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../data/zyra_entitlements.dart';
+import '../../data/zyra_membership_catalog.dart';
+import '../../data/zyra_seeker_plan_limits.dart';
+import '../../data/zyra_journey_pause_state.dart';
 import '../../data/zyra_journey_stages.dart';
+import '../../data/zyra_release_gates.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
 import '../../models/zyra_gender.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_guardian_suggestion_service.dart';
 import '../../services/zyra_journey_service.dart';
+import '../../services/zyra_promotion_engine.dart';
 import '../../services/zyra_report_service.dart';
+import '../../services/zyra_seeker_basic_usage_store.dart';
 import '../../theme/zyra_card_metrics.dart';
 import '../../services/zyra_unlock_service.dart';
+import '../../services/zyra_wali_link_service.dart';
 import '../../dev/zyra_dev_scenario.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
@@ -92,28 +102,250 @@ import '../../widgets/report_profile_sheet.dart';
 // but Pause/End still require their existing inline confirmation before
 // anything is written. Report and rare server-refusal routes are unchanged.
 import '../../widgets/zyra_moment.dart';
-import '../../widgets/zyra_paused_limit_refusal.dart';
 import '../../widgets/zyra_segmented_toggle.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_loading.dart';
-import '../../widgets/zyra_profile_name_block.dart';
+import '../../widgets/zyra_membership_history_lock.dart';
 import '../journey/journey_flow_screen.dart';
 import '../matches/journey_timeline_screen.dart';
 import '../profile/seeker_profile_screen.dart';
 import '../subscription/profile_unlock_screen.dart';
+import 'connections_section_controller.dart';
+
+/// The one profile-route contract for Connections.
+///
+/// A Connections profile is a temporary full-photo inspection surface, so it
+/// rises modally and leaves by swiping down. Keeping the route here prevents
+/// Active, Potential, Paused, Ended and Activity cards from quietly drifting
+/// back to different dismissal controls.
+@visibleForTesting
+Future<T?> pushZyraConnectionsProfile<T>(
+  BuildContext context, {
+  required SeekerProfile profile,
+  String? suggestedBy,
+}) => Navigator.of(context).push<T>(
+  MaterialPageRoute<T>(
+    fullscreenDialog: true,
+    builder: (_) => SeekerProfileScreen(
+      profile: profile,
+      suggestedBy: suggestedBy,
+      swipeDownToDismiss: true,
+    ),
+  ),
+);
+
+bool _isIntroductionPreview(GuardianSuggestion suggestion) =>
+    suggestion.profile.id.startsWith(kZyraIntroductionTestProfilePrefix);
+
+bool _isActivityPreview(SeekerProfile profile) =>
+    profile.id.startsWith(kZyraActivityTestProfilePrefix);
+
+bool _isLocalTestProfile(SeekerProfile profile) =>
+    _isActivityPreview(profile) ||
+    profile.id.startsWith(kZyraIntroductionTestProfilePrefix);
+
+const String _kLocalIntroductionSuggestedBy = 'Ibrahim';
+
+String? _localIntroductionAttribution(SeekerProfile profile) =>
+    profile.id.startsWith(kZyraIntroductionTestProfilePrefix)
+    ? _kLocalIntroductionSuggestedBy
+    : null;
+
+/// A local developer Introduction is already a complete renderable row and
+/// must not sit behind an unrelated pending server read. Release never reads
+/// the developer count, so it continues to wait for account truth.
+@visibleForTesting
+bool shouldZyraIntroductionShowLoading({
+  required bool suggestionsLoaded,
+  required int localPreviewCount,
+  required bool releaseBuild,
+}) => !suggestionsLoaded && (releaseBuild || localPreviewCount <= 0);
+
+/// Adds deterministic local rows beside real Activity truth. The function
+/// never mutates [AppState], and release builds never call it. Unique non-UUID
+/// ids keep their production-style actions on explicit local-only paths.
+@visibleForTesting
+List<SeekerProfile> composeZyraActivityPreviewProfiles(
+  List<SeekerProfile> real, {
+  required ZyraActivityTestState kind,
+  required int previewCount,
+  String? viewerGender,
+}) {
+  final count = previewCount.clamp(0, 5);
+  if (count == 0) return List<SeekerProfile>.of(real);
+
+  const women = ['Hana', 'Zara', 'Safiya', 'Inaya', 'Amira'];
+  const men = ['Hamza', 'Omar', 'Idris', 'Zayd', 'Rayyan'];
+  const surnames = ['Rahman', 'Khan', 'Malik', 'Ahmed', 'Hussain'];
+  const cities = ['London', 'Birmingham', 'Manchester', 'Leeds', 'Glasgow'];
+  final gender = ZyraGender.oppositeCode(viewerGender);
+  final names = gender == 'female' ? women : men;
+  final ids = real.map((profile) => profile.id).toSet();
+  final output = List<SeekerProfile>.of(real);
+
+  for (var index = 0; index < count; index++) {
+    final id = zyraActivityTestProfileId(kind, index);
+    if (!ids.add(id)) continue;
+    output.add(
+      SeekerProfile(
+        id: id,
+        firstName: names[index],
+        surnameLine: surnames[index],
+        age: 26 + index,
+        city: cities[index],
+        gender: gender,
+        photos: [
+          'https://picsum.photos/seed/zyra-${kind.name}-$index/700/1000',
+        ],
+      ),
+    );
+  }
+  return output;
+}
+
+/// Adds deterministic, local-only Introduction examples without replacing or
+/// mutating any row returned by the real Guardian Suggestions RPC.
+///
+/// The live screen bypasses this composition entirely in release mode and
+/// does not even read the developer count.
+@visibleForTesting
+List<GuardianSuggestion> composeZyraIntroductionPreviewSuggestions(
+  List<GuardianSuggestion> real, {
+  required int previewCount,
+}) {
+  final count = previewCount.clamp(0, 5);
+  if (count == 0) return List<GuardianSuggestion>.of(real);
+  final ids = real.map((suggestion) => suggestion.profile.id).toSet();
+  final output = List<GuardianSuggestion>.of(real);
+  var added = 0;
+  var candidate = 0;
+  while (added < count) {
+    final id = zyraIntroductionTestProfileId(candidate);
+    candidate++;
+    if (!ids.add(id)) continue;
+    final source = mockProfiles[added % mockProfiles.length];
+    output.add(
+      GuardianSuggestion(
+        profile: SeekerProfile(
+          id: id,
+          firstName: source.firstName,
+          surnameLine: source.surnameLine,
+          age: source.age,
+          city: source.city,
+          photos: source.photos,
+          gender: source.gender,
+        ),
+        suggestedBy: _kLocalIntroductionSuggestedBy,
+        unseen: false,
+      ),
+    );
+    added++;
+  }
+  return output;
+}
+
+@visibleForTesting
+typedef ZyraActivityTestBuckets = ({
+  List<SeekerProfile> considered,
+  List<SeekerProfile> saved,
+  List<SeekerProfile> passed,
+});
+
+/// Composes the Activity sections used in developer builds without touching
+/// [AppState]. A fixture has one seed section until an action assigns one
+/// local destination; it can therefore never appear in both its origin and
+/// destination after a move.
+@visibleForTesting
+ZyraActivityTestBuckets composeZyraActivityTestBuckets({
+  required ZyraDevScenario scenario,
+  required List<SeekerProfile> realConsidered,
+  required List<SeekerProfile> realSaved,
+  required List<SeekerProfile> realPassed,
+  String? viewerGender,
+}) {
+  final fixtures = <({SeekerProfile profile, ZyraActivityTestState? origin})>[];
+
+  void addActivityFixtures(ZyraActivityTestState origin, int count) {
+    fixtures.addAll(
+      composeZyraActivityPreviewProfiles(
+        const [],
+        kind: origin,
+        previewCount: count,
+        viewerGender: viewerGender,
+      ).map((profile) => (profile: profile, origin: origin)),
+    );
+  }
+
+  addActivityFixtures(
+    ZyraActivityTestState.considered,
+    scenario.consideredPreviewCount,
+  );
+  addActivityFixtures(ZyraActivityTestState.saved, scenario.savedPreviewCount);
+  addActivityFixtures(
+    ZyraActivityTestState.passed,
+    scenario.passedPreviewCount,
+  );
+  fixtures.addAll(
+    composeZyraIntroductionPreviewSuggestions(
+      const [],
+      previewCount: scenario.introductionPreviewCount,
+    ).map((row) => (profile: row.profile, origin: null)),
+  );
+
+  List<SeekerProfile> rowsFor(
+    List<SeekerProfile> accountTruth,
+    ZyraActivityTestState target,
+  ) => [
+    // A hot-reloaded session may still hold a local card in AppState from
+    // the retired implementation. The scenario map is now the only test
+    // destination authority, so those stale duplicates stay excluded.
+    ...accountTruth.where((profile) => !_isLocalTestProfile(profile)),
+    for (final fixture in fixtures)
+      if (!scenario.isLocalProfileHidden(fixture.profile.id) &&
+          (scenario.localProfileDestination(fixture.profile.id) ??
+                  fixture.origin) ==
+              target)
+        fixture.profile,
+  ];
+
+  return (
+    considered: rowsFor(realConsidered, ZyraActivityTestState.considered),
+    saved: rowsFor(realSaved, ZyraActivityTestState.saved),
+    passed: rowsFor(realPassed, ZyraActivityTestState.passed),
+  );
+}
 
 class ConnectionsScreen extends StatefulWidget {
   /// Switches the shell to the Browse tab. Used by "View profile" on a
   /// Guardian Suggestion — this screen can't change tabs itself.
   final VoidCallback? onNavigateToBrowse;
+  final VoidCallback? onNavigateToGuardian;
+  final ZyraConnectionsSectionController? sectionController;
+  final Future<ZyraSourceResult<List<GuardianSuggestion>>> Function()?
+  loadSuggestions;
 
-  const ConnectionsScreen({super.key, this.onNavigateToBrowse});
+  const ConnectionsScreen({
+    super.key,
+    this.onNavigateToBrowse,
+    this.onNavigateToGuardian,
+    this.sectionController,
+    this.loadSuggestions,
+  });
 
   @override
   State<ConnectionsScreen> createState() => _ConnectionsScreenState();
 }
 
 class _ConnectionsScreenState extends State<ConnectionsScreen> {
+  final _accountGeneration = ZyraAccountState.generation;
+  final _accountOwner = ZyraAccountState.userId;
+  bool get _accountCurrent =>
+      !ZyraAccountState.isSigningOut &&
+      _accountGeneration == ZyraAccountState.generation &&
+      _accountOwner == ZyraAccountState.userId;
+  final ZyraConnectionsExpansionController _expansionController =
+      ZyraConnectionsExpansionController();
+
   // Suspended journeys (JOURNEY_SUSPENSION (CURRENT_VERSION)): these
   // are NOT a separate matches.status — per that spec's own §1.1
   // "Architectural Framing", suspension is a behavioural sub-state of
@@ -152,6 +384,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// Empty until the query returns, and empty forever if it fails — so the
   /// button is hidden rather than offered and refused.
   Set<String> _mayRequest = const {};
+  Set<String> _availableReturns = const {};
 
   /// Drives the Journeys/Activity pager. The toggle animates it; swiping
   /// moves it directly.
@@ -164,7 +397,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   ///
   /// Leaving the bool in place would have been a second, coarser source of
   /// truth for the same thing. The analyzer caught it as write-only.
-  final PageController _pager = PageController();
+  late final PageController _pager;
 
   /// The pager's live position, 0.0 (Journeys) to 1.0 (Activity), updated
   /// on every frame of a drag so the toggle pill can track it.
@@ -173,6 +406,8 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// source of truth for "where is the pager" is exactly how the pill and
   /// the page would end up disagreeing.
   double _pagerPos = 0;
+  late int _settledPage;
+  late int _collapseRevisionSeen;
 
   /// Introductions. Named rather than a bare `2` because the arrival hook
   /// below depends on it and a fourth segment would silently break it.
@@ -189,11 +424,35 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// the panel merely following you.
   bool _pushingSection = false;
 
+  late int _devJourneySignatureSeen;
+
+  int _devJourneySignature(ZyraDevScenario scenario) => Object.hash(
+    scenario.connectionsPreviewIsolated,
+    scenario.queuedJourneys,
+    scenario.activeJourneys,
+    scenario.pausedJourneys,
+    scenario.endedJourneys,
+    scenario.busyPotential,
+    scenario.busyPaused,
+    scenario.busyEnded,
+    scenario.pauseScenario,
+  );
+
   /// A dev toggle moved. Re-fetch, because the fakes are substituted at the
   /// fetch and a rebuild alone would show the same stale list.
   void _onScenarioChange() {
     if (_pushingSection) return; // our own section push looping back
-    if (mounted) _refresh();
+    if (!mounted) return;
+    final signature = _devJourneySignature(ZyraDevScenario.instance);
+    if (signature != _devJourneySignatureSeen) {
+      _devJourneySignatureSeen = signature;
+      _refresh();
+      return;
+    }
+    // Design and heading comparisons are presentation-only. Rebuild in place
+    // instead of re-fetching Supabase and flashing a loading state whenever
+    // the Founder tries another option.
+    setState(() {});
   }
 
   void _onPagerScroll() {
@@ -207,10 +466,20 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // Founder: "i gotta be on indroduction to see the introduction optins
     // in toggle"). notifyListeners is synchronous, so the flag brackets
     // the loopback completely.
-    if (!kReleaseMode && p == p.roundToDouble()) {
+    if (ZyraDeveloperAccess.canUseDeveloperTools && p == p.roundToDouble()) {
       _pushingSection = true;
       ZyraDevScenario.instance.setConnectionsSection(p.round());
       _pushingSection = false;
+    }
+    if (p == p.roundToDouble()) {
+      final settled = p.round();
+      if (settled != _settledPage) {
+        _settledPage = settled;
+        _expansionController.collapseAll();
+      }
+      widget.sectionController?.synchroniseFromPage(
+        ZyraConnectionsSection.fromPage(settled),
+      );
     }
     // Settled on Introductions — the arrival that discharges the alert.
     if (p == _kIntroductionsIndex.toDouble()) _markIntroductionsSeen();
@@ -247,6 +516,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   @override
   void initState() {
     super.initState();
+    final initialSection =
+        widget.sectionController?.section ?? ZyraConnectionsSection.journeys;
+    _pager = PageController(initialPage: initialSection.page);
+    _pagerPos = initialSection.page.toDouble();
+    _settledPage = initialSection.page;
+    _collapseRevisionSeen = widget.sectionController?.collapseRevision ?? 0;
+    widget.sectionController?.addListener(_onExternalSectionRequest);
+    _devJourneySignatureSeen = _devJourneySignature(ZyraDevScenario.instance);
     AppState.instance.addListener(_onChange);
     // ADDED 2026-08-06. The Journey toggles wrote to ZyraDevScenario and
     // nothing on this screen was listening, so `_refresh()` never re-ran and
@@ -258,15 +535,15 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // same stale list.
     ZyraDevScenario.instance.addListener(_onScenarioChange);
     _pager.addListener(_onPagerScroll);
-    // A fresh build starts the pager on Journeys, but the scenario may
-    // still hold the segment from a previous visit — realign it, or the
-    // panel would show Introductions controls over a Journeys screen.
+    // A fresh build starts on the shell-requested section. Keep the developer
+    // panel aligned with that real page rather than forcing Journeys and
+    // silently undoing a Dashboard deep-link.
     // Post-frame because notifying listeners mid-build is not allowed.
-    if (!kReleaseMode) {
+    if (ZyraDeveloperAccess.canUseDeveloperTools) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         _pushingSection = true;
-        ZyraDevScenario.instance.setConnectionsSection(0);
+        ZyraDevScenario.instance.setConnectionsSection(initialSection.page);
         _pushingSection = false;
       });
     }
@@ -275,21 +552,65 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   }
 
   @override
+  void didUpdateWidget(covariant ConnectionsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.sectionController == widget.sectionController) return;
+    oldWidget.sectionController?.removeListener(_onExternalSectionRequest);
+    widget.sectionController?.addListener(_onExternalSectionRequest);
+    _collapseRevisionSeen = widget.sectionController?.collapseRevision ?? 0;
+    _onExternalSectionRequest();
+  }
+
+  void _onExternalSectionRequest() {
+    if (!mounted || widget.sectionController == null) return;
+    final collapseRevision = widget.sectionController!.collapseRevision;
+    if (collapseRevision != _collapseRevisionSeen) {
+      _collapseRevisionSeen = collapseRevision;
+      _expansionController.collapseAll();
+    }
+    final target = widget.sectionController!.section.page;
+    void move() {
+      if (!mounted || !_pager.hasClients) return;
+      final current = _pager.page?.round() ?? _pager.initialPage;
+      if (current == target) return;
+      ZyraSegmentedMotion.animateToPage(_pager, target);
+    }
+
+    if (_pager.hasClients) {
+      move();
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) => move());
+    }
+  }
+
+  @override
   void dispose() {
     AppState.instance.removeListener(_onChange);
     ZyraDevScenario.instance.removeListener(_onScenarioChange);
+    widget.sectionController?.removeListener(_onExternalSectionRequest);
     _pager.removeListener(_onPagerScroll);
     _pager.dispose();
+    _expansionController.dispose();
     super.dispose();
   }
 
   /// Guardian Suggestions for this Seeker. Loaded alongside the Journeys
   /// refresh and re-loaded whenever AppState.suggestionsVersion moves.
   List<GuardianSuggestion> _suggestions = const [];
+  bool _suggestionsUnavailable = false;
+  int _suggestionsLoadGeneration = 0;
   int _suggestionsVersion = AppState.instance.suggestionsVersion;
   ZyraPlan _planSeen = AppState.instance.plan;
 
   void _onChange() {
+    if (!_accountCurrent) {
+      setState(() {
+        _suggestions = const [];
+        _suggestionsLoaded = true;
+        _suggestionsUnavailable = true;
+      });
+      return;
+    }
     final v = AppState.instance.suggestionsVersion;
     if (v != _suggestionsVersion) {
       _suggestionsVersion = v;
@@ -311,11 +632,36 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
 
   /// False until the first fetch resolves — see [_suggestionsLoaded].
   Future<void> _loadSuggestions() async {
-    final s = await ZyraGuardianSuggestionService.fetchPending();
-    if (!mounted) return;
+    if (!_accountCurrent) return;
+    final generation = ++_suggestionsLoadGeneration;
+    ZyraSourceResult<List<GuardianSuggestion>> result;
+    try {
+      result =
+          await (widget.loadSuggestions ??
+              ZyraGuardianSuggestionService.fetchPendingResult)();
+    } catch (error) {
+      debugPrint('ZYRA: introduction read failed (${error.runtimeType}).');
+      result = const ZyraSourceResult.unavailable(
+        ZyraSourceFailure.requestFailed,
+      );
+    }
+    if (!mounted ||
+        !_accountCurrent ||
+        generation != _suggestionsLoadGeneration) {
+      return;
+    }
+    if (result.isUnavailable) {
+      setState(() {
+        _suggestionsUnavailable = true;
+        _suggestionsLoaded = true;
+      });
+      return;
+    }
+    final s = result.valueOr(const []);
     setState(() {
       _suggestions = s;
       _suggestionsLoaded = true;
+      _suggestionsUnavailable = false;
     });
     // Publish app-wide so Browse can mark a suggested profile in the deck,
     // and so the mark survives into Considered/Saved/Passed after a
@@ -372,7 +718,18 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     //     the same as an unresolved introduction. A per-item flag, not
     //     a last_seen_at bookmark.
     //   The other party requested a new Journey — OA-ZYRA-159, unbuilt.
-    AppState.instance.potentialJourneys.length,
+    AppState.instance.potentialJourneys.length +
+        AppState.instance.activeJourneys.where((journey) {
+          final perspective = journey.pause.perspectiveFor(
+            ZyraAuth.currentUser?.id,
+          );
+          return perspective == ZyraPausePerspective.pauseResponderDecision ||
+              perspective == ZyraPausePerspective.continuationResponderDecision;
+        }).length +
+        _suspended.where((journey) {
+          return journey.pause.perspectiveFor(ZyraAuth.currentUser?.id) ==
+              ZyraPausePerspective.resumeResponderDecision;
+        }).length,
 
     // ACTIVITY — permanently zero, and correct.
     //
@@ -432,11 +789,72 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// here." Told to someone who may well have one waiting.
   ///
   /// Every comparable list screen guards this (Notifications, the
-  /// Guardian tab, Blocked users, the Timeline). Scoped here to
+  /// Guardian tab, Hidden Profiles, the Timeline). Scoped here to
   /// Introductions rather than the whole screen, because the other two
   /// segments read AppState, which is hydrated before this tab can be
   /// reached — Introductions is the only section that waits on a query.
   bool _suggestionsLoaded = false;
+
+  Widget _introductionsPage() {
+    final unavailable =
+        _suggestionsUnavailable && !ZyraDeveloperAccess.canUseDeveloperTools;
+    if (shouldZyraIntroductionShowLoading(
+      suggestionsLoaded: _suggestionsLoaded,
+      localPreviewCount: ZyraDevScenario.instance.introductionPreviewCount,
+      releaseBuild: !ZyraDeveloperAccess.canUseDeveloperTools,
+    )) {
+      return const ZyraLoading();
+    }
+    if (_undecidedSuggestions.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+        child: unavailable
+            ? ZyraEmptyState(
+                icon: Icons.groups_outlined,
+                title: 'Couldn’t load introductions',
+                message:
+                    'Your introductions are unavailable right now. Please try again.',
+                ctaLabel: 'Try again',
+                onCta: _loadSuggestions,
+              )
+            : const ZyraEmptyState(
+                icon: Icons.groups_outlined,
+                title: 'No introductions yet',
+                message: 'People your Guardian puts forward will appear here.',
+              ),
+      );
+    }
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+      children: [
+        if (unavailable) ...[
+          ZyraErrorBanner(
+            message:
+                'Introductions could not refresh. Showing last confirmed information.',
+            onRetry: _loadSuggestions,
+          ),
+          const SizedBox(height: 12),
+        ],
+        ..._introductionsChildren(),
+      ],
+    );
+  }
+
+  List<GuardianSuggestion> get _displaySuggestions {
+    // The release branch returns before the developer getter is read. Local
+    // test cards can never become a fallback for production/account truth.
+    if (!ZyraDeveloperAccess.canUseDeveloperTools) return _suggestions;
+    final dev = ZyraDevScenario.instance;
+    return composeZyraIntroductionPreviewSuggestions(
+      _suggestions,
+      previewCount: dev.introductionPreviewCount,
+    ).where((suggestion) {
+      final id = suggestion.profile.id;
+      if (!id.startsWith(kZyraIntroductionTestProfilePrefix)) return true;
+      return !dev.isLocalProfileHidden(id) &&
+          dev.localProfileDestination(id) == null;
+    }).toList();
+  }
 
   List<GuardianSuggestion> get _undecidedSuggestions {
     final app = AppState.instance;
@@ -445,15 +863,16 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       ...app.saved.map((p) => p.id),
       ...app.outgoingLikes.map((p) => p.id),
     };
-    return _suggestions.where((s) => !decided.contains(s.profile.id)).toList();
+    return _displaySuggestions
+        .where((s) => !decided.contains(s.profile.id))
+        .toList();
   }
 
   Future<void> _refresh() async {
-    // The clean dev panel is additive: real Journey rows are always shown,
-    // and its counts add labelled preview cards for layout/state testing.
-    // Zero removes previews only. This prevents a toggle from hiding a live
-    // server Journey or replacing it with an Active-looking fake that cannot
-    // enter the flow. Release builds use the real list directly.
+    // Release always uses live account truth. Developer mode starts that way,
+    // but Reset or any Connections count control enters an isolated preview:
+    // zero then means zero visible cards and the operator adds only the states
+    // they want to inspect. No server row is deleted or mutated by that view.
     final dev = ZyraDevScenario.instance;
     final realOrNull = await ZyraJourneyService.fetchJourneyMatches(
       statuses: const ['potential', 'active', 'ended'],
@@ -463,23 +882,16 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // as an empty list for three days, and in dev builds the panel's
     // stand-ins then topped up over the hole, so a real, live Journey
     // was invisible everywhere while every card LOOKED fine. Hold what
-    // is already on screen, say so, and let the next pull retry.
+    // is already on screen and let the next pull retry. The former persistent
+    // snackbar was removed by Founder review; a background refresh failure
+    // must not obscure the app with a message that never clears.
     if (realOrNull == null) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Couldn't refresh Journeys — showing what was "
-            'already loaded.',
-          ),
-        ),
-      );
       return;
     }
     final real = realOrNull;
     bool isRunning(JourneyMatch j) => j.status == 'active' && !j.isSuspended;
 
-    final all = kReleaseMode
+    final all = !ZyraDeveloperAccess.canUseDeveloperTools
         ? real
         : ZyraDevScenario.composeJourneys(
             viewerGender: AppState.instance.gender,
@@ -491,12 +903,16 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             // 2026-08-09: the generator clamps its counts to the plan's
             // Journey limits, so it has to be told which plan.
             viewerPlan: AppState.instance.plan,
-            realActive: real.where(isRunning).toList(),
-            realPotential: real.where((j) => j.status == 'potential').toList(),
-            realPaused: real
-                .where((j) => j.status == 'active' && j.isSuspended)
-                .toList(),
-            realEnded: real.where((j) => j.status == 'ended').toList(),
+            realActive: dev.connectionsRealRows(real.where(isRunning).toList()),
+            realPotential: dev.connectionsRealRows(
+              real.where((j) => j.status == 'potential').toList(),
+            ),
+            realPaused: dev.connectionsRealRows(
+              real.where((j) => j.status == 'active' && j.isSuspended).toList(),
+            ),
+            realEnded: dev.connectionsRealRows(
+              real.where((j) => j.status == 'ended').toList(),
+            ),
           );
     if (!mounted) return;
     final potential = all.where((j) => j.status == 'potential').toList();
@@ -536,7 +952,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         : await ZyraJourneyService.fetchOpenReviewMatchIds(realActiveIds);
 
     // OA-ZYRA-159 stage 5. Expire lapsed requests BEFORE asking which
-    // Journeys may be asked on, or a request that ran out its fourteen days
+    // Journeys may be asked on, or a request that ran out its thirty days
     // yesterday would still read as pending and suppress the button.
     //
     // Lazy rather than scheduled — there is no cron in this database, and
@@ -544,11 +960,18 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // Same rule as openReviews above: asked when there is a real ended row to
     // ask about, not when a flag says the panel is involved.
     Set<String> mayRequest = const {};
-    if (ended.any((j) => !j.isMock)) {
+    Set<String> availableReturns = const {};
+    if (ZyraReleaseGates.requestNewJourneyEnabled &&
+        (ended.any((j) => !j.isMock) || suspended.any((j) => !j.isMock))) {
       await ZyraJourneyService.expireDueJourneyRequests();
       // BATCHED — one call for every ended Journey. A per-row lookup here is
       // the N+1 this file already has a rule against.
-      mayRequest = await ZyraJourneyService.fetchMayRequestNewJourneyIds();
+      final result = await Future.wait([
+        ZyraJourneyService.fetchMayRequestNewJourneyIds(),
+        ZyraJourneyService.fetchAvailableJourneyReturnIds(),
+      ]);
+      mayRequest = result[0];
+      availableReturns = result[1];
     }
     if (!mounted) return;
 
@@ -557,6 +980,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       _ended = ended;
       _openReviews = openReviews;
       _mayRequest = mayRequest;
+      _availableReturns = availableReturns;
     });
   }
 
@@ -575,6 +999,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// _InlineRestartAsk at the bottom of this file. _sendRestartRequest
   /// finishes the job.
   Future<void> _requestNewJourney(JourneyMatch j) async {
+    if (!ZyraReleaseGates.requestNewJourneyEnabled) return;
     setState(() => _restartMatchId = j.matchId);
   }
 
@@ -586,7 +1011,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// Builds the inline restart ask for [j], or null when its card isn't
   /// the one asking.
   Widget? _inlineRestartFor(JourneyMatch j) {
-    if (_restartMatchId != j.matchId) return null;
+    if (!ZyraReleaseGates.requestNewJourneyEnabled ||
+        _restartMatchId != j.matchId) {
+      return null;
+    }
     return _InlineRestartAsk(
       next: j,
       onDismiss: () => setState(() => _restartMatchId = null),
@@ -595,15 +1023,19 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   }
 
   Future<void> _sendRestartRequest(JourneyMatch j) async {
+    if (!ZyraReleaseGates.requestNewJourneyEnabled) {
+      setState(() => _restartMatchId = null);
+      return;
+    }
     setState(() => _restartMatchId = null);
 
-    // A stand-in's request succeeds in words alone — there is no server
-    // row to ask through, and no request state the list would show anyway.
+    // A stand-in has no server row or pending request state. Keep this
+    // unavailable outcome explicit rather than claim somebody was contacted.
     if (j.isMock) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text(
-            'Asked ${j.profile.firstName}. You\'ll hear when they answer.',
+            'Restart requests are not available here. No request was sent.',
           ),
         ),
       );
@@ -616,14 +1048,6 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(error)));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Asked ${j.profile.firstName}. You\'ll hear when they answer.',
-          ),
-        ),
-      );
     }
     // Re-read either way: on success the button must disappear (one pending
     // request per pair), and on failure the server may have refused for a
@@ -781,16 +1205,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     );
   }
 
-  /// Settle the chosen active Journey (pause or end), then begin with
-  /// [j] — settle-then-start, the same order the dialogs enforced,
-  /// because promoteToActive refuses while any unsuspended Active
-  /// Journey holds the slot.
-  ///
-  /// PAUSE IS REAL HERE, not advice: the pause_frees_active_slot
-  /// migrations (20260812144437 + 144851) made a paused Journey release
-  /// its slot, and journey suite section J (checks 68-71) holds it —
-  /// pause with one person, begin with another, resume refused by name
-  /// while the second runs, resume clean after it ends.
+  /// Resolve an Active-slot conflict. End is immediate after confirmation and
+  /// can therefore be followed by Begin. Pause is now a shared request: it
+  /// keeps the Active slot until the other Seeker agrees, so it opens the
+  /// decision flow and deliberately does not begin the waiting Journey.
   ///
   /// A STAND-IN settles in the scenario's numbers, not the database: the
   /// staged Active count drops by one and the Paused/Ended count rises,
@@ -809,42 +1227,40 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     switch (choice) {
       case _TakeoverChoice.continueCurrent:
         return; // the inline widgets never emit this; enum exhaustiveness
-      case _TakeoverChoice.pauseAndBegin:
+      case _TakeoverChoice.requestPause:
         if (other.isMock) {
-          dev.setActiveJourneys((dev.activeJourneys - 1).clamp(0, 99));
-          dev.setPausedJourneys(dev.pausedJourneys + 1);
+          dev.setPauseScenario(ZyraPauseDevScenario.pauseRequesterWaiting);
         } else {
           try {
-            await ZyraJourneyService.suspendJourney(other.matchId);
-          } on PausedLimitReachedException {
-            if (!mounted) return;
-            await showZyraPausedLimitRefusal(context);
-            return;
-          } on SuspensionRequiresOneException {
-            // Only against an un-migrated database — degrade, don't crash.
+            await ZyraJourneyService.transitionPause(
+              matchId: other.matchId,
+              action: ZyraPauseAction.requestPause,
+              expectedVersion: other.pause.version,
+            );
+          } on PauseTransitionStaleException {
             if (!mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Journey Suspension requires ZYRA One.'),
+                content: Text('This Journey changed. Review it again.'),
               ),
             );
             return;
           } catch (_) {
-            // BUG-04 (OA-ZYRA-225, 2026-08-15): an unexpected failure no
-            // longer sails on into _promote — the settle didn't happen,
-            // so beginning would be refused server-side anyway. Say so
-            // and stop; nothing has changed.
             if (!mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
-                  "Pause didn't go through — check your connection and try again.",
+                  "Pause request didn't go through — check your connection and try again.",
                 ),
               ),
             );
             return;
           }
         }
+        await _refresh();
+        if (!mounted) return;
+        await _openPauseFlow(other);
+        return;
       case _TakeoverChoice.endAndBegin:
         if (other.isMock) {
           dev.setActiveJourneys((dev.activeJourneys - 1).clamp(0, 99));
@@ -886,6 +1302,21 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       await _refresh();
       if (!mounted) return;
       if (ok) {
+        // Successful value event only — never a screen-open heuristic. The
+        // engine records eligibility now; the explainer/invitation may render
+        // only on the next calm shell landing after this Journey route.
+        await ZyraPromotionEngine.instance.markNotificationValueMoment(
+          role: ZyraPromotionRole.seeker,
+          trigger: ZyraPromotionTrigger.firstActiveJourney,
+        );
+        await ZyraPromotionEngine.instance.markUpgradeValueMoment(
+          role: ZyraPromotionRole.seeker,
+          product: ZyraPromotionProduct.zyraOne,
+          placement: ZyraPromotionPlacement.home,
+          feature: ZyraPromotionFeature.generalMembership,
+          trigger: ZyraPromotionTrigger.firstActiveJourney,
+        );
+        if (!mounted) return;
         // E2 — Journey Begins (DR-ZYRA-147): the threshold from choice
         // to commitment, and the honest moment to restate that both
         // Guardians can now read the conversation. Plays before the
@@ -901,8 +1332,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
               'One person. Both families present. Step by step.',
             ),
             ZyraMomentLine.quiet(
-              'From the first message, your linked Guardian — and '
-              "${j.profile.firstName}'s — can read the conversation.",
+              'From the first message, each person’s Main Guardian and any '
+              'Additional Guardians included in this Journey can read the '
+              'conversation.',
             ),
             const ZyraMomentLine.body('It opens with Compatibility Reveal.'),
           ],
@@ -911,8 +1343,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         if (!mounted) return;
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) =>
-                JourneyFlowScreen(matchId: j.matchId, profile: j.profile),
+            builder: (_) => JourneyFlowScreen(
+              matchId: j.matchId,
+              profile: j.profile,
+              onOpenGuardian: widget.onNavigateToGuardian,
+            ),
           ),
         );
       }
@@ -936,64 +1371,32 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     }
   }
 
-  /// The one-shot nudge (DR-ZYRA-142). One per pause episode; the row's
-  /// button greys via pause_nudged_at on the refetch, so there is no
-  /// local state to hold. A stand-in nudges in the scenario (Founder,
-  /// 2026-08-12: the dev snackbar that used to sit here was the panel
-  /// refusing to rehearse the experience it exists to rehearse) — the
-  /// marked id survives recompose and the button greys identically.
-  Future<void> _nudge(JourneyMatch j) async {
-    if (j.isMock) {
-      ZyraDevScenario.instance.markFakeNudged(j.matchId);
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Continue requested. Waiting for ${j.profile.firstName}.',
-          ),
-        ),
-      );
-      return;
-    }
-    final ok = await ZyraJourneyService.nudgePausedJourney(j.matchId);
-    await _refresh();
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          ok
-              ? 'Continue requested. Waiting for ${j.profile.firstName}.'
-              : "That didn't go through. Pull down to refresh and try again.",
-        ),
-      ),
-    );
-  }
+  /// Opens the single Pause decision surface. Pending requests are not
+  /// answered from a Connections card: both Seekers see the same calm,
+  /// explicit decision page and the database remains the only state owner.
+  Future<void> _openPauseFlow(JourneyMatch j) => _enterJourney(j);
 
-  /// DR-ZYRA-170: the non-holder rests too. Same server verb — the
-  /// server mirrors when the other side already holds — so the plan-cap
-  /// refusals arrive through the same doors as any pause.
-  Future<void> _alsoPause(JourneyMatch j) async {
+  Future<void> _requestResume(JourneyMatch j) async {
     if (j.isMock) {
-      // A staged mirror flips the first paused-by-them stand-in to
-      // paused-by-both — positional, the same accepted limitation as
-      // the takeover's settle; exact in the common solo case.
-      final dev = ZyraDevScenario.instance;
-      dev.setMirroredPaused(dev.mirroredPaused + 1);
+      ZyraDevScenario.instance.setPauseScenario(
+        ZyraPauseDevScenario.resumeRequesterWaiting,
+      );
+      await _openPauseFlow(j);
       return;
     }
     try {
-      await ZyraJourneyService.suspendJourney(j.matchId);
-    } on PausedLimitReachedException {
-      // A mirror is YOUR hold and counts toward your plan's 5/10 —
-      // ratified with the shared-holds design; the refusal is the
-      // honest one every pause gets.
-      if (!mounted) return;
-      await showZyraPausedLimitRefusal(context);
-      return;
-    } on SuspensionRequiresOneException {
+      await ZyraJourneyService.transitionPause(
+        matchId: j.matchId,
+        action: ZyraPauseAction.requestResume,
+        expectedVersion: j.pause.version,
+      );
+    } on PauseTransitionStaleException {
+      await _refresh();
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Journey Suspension requires ZYRA One.')),
+        const SnackBar(
+          content: Text('This decision changed. Review it again.'),
+        ),
       );
       return;
     } catch (_) {
@@ -1001,81 +1404,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            "Pause didn't go through — check your connection and try again.",
-          ),
-        ),
-      );
-      return;
-    }
-    await _refresh();
-  }
-
-  /// DR-ZYRA-170: this LIFTS THE CALLER'S OWN HOLD — nothing more. Only
-  /// when it was the last hold does the Journey go active, so the flow
-  /// screen opens only if the refreshed row is genuinely running again.
-  /// A non-final lift stays right here: the card re-reads "Paused by
-  /// X — she knows you're ready", which is the whole message.
-  Future<void> _resumeSuspended(JourneyMatch j) async {
-    if (j.isMock) {
-      // Stand-ins settle in the scenario's numbers. A both-held fake
-      // drops back to paused-by-them (my hand lifted, theirs stands); a
-      // sole-hold fake resumes into the Active count. Also fixes a
-      // latent pre-170 crash: this method had no mock branch at all, so
-      // Resume on a stand-in reached the real RPC.
-      final dev = ZyraDevScenario.instance;
-      if (j.pausedByBoth) {
-        dev.setMirroredPaused((dev.mirroredPaused - 1).clamp(0, 99));
-      } else {
-        dev.setPausedJourneys((dev.pausedJourneys - 1).clamp(0, 99));
-        dev.setActiveJourneys(dev.activeJourneys + 1);
-      }
-      return;
-    }
-    try {
-      await ZyraJourneyService.resumeJourney(j.matchId);
-    } on SelfInActiveJourneyException {
-      await _refresh();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "You're at your plan's Active Journey limit, so this one stays "
-            "paused. Pause or end an Active Journey first — nothing here is lost.",
-          ),
-        ),
-      );
-      return;
-    } on OtherPartyInActiveJourneyException {
-      // OA-ZYRA-164, DR-ZYRA-121 item 12. The old copy — "it has now
-      // ended" — was accurate at the time: the server really did end the
-      // Journey underneath the person pressing Resume. It no longer does,
-      // so the message must not imply a loss that has not happened.
-      await _refresh();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "They're in another Journey right now, so this one stays paused. "
-            "Nothing has been lost. You can resume when they're ready.",
-          ),
-        ),
-      );
-      return;
-    } on NotEligibleToContinueException {
-      await _refresh();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("This Journey can't continue right now.")),
-      );
-      return;
-    } catch (_) {
-      // DR-ZYRA-167's rule: an unknown failure says so and changes
-      // nothing — the hold it failed to lift is still shown held.
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "That didn't go through — check your connection and try again.",
+            "Resume request didn't go through — check your connection and try again.",
           ),
         ),
       );
@@ -1083,16 +1412,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     }
     await _refresh();
     if (!mounted) return;
-    final fresh = await ZyraJourneyService.refetchOne(j.matchId, j.profile.id);
-    if (!mounted) return;
-    if (fresh != null && fresh.status == 'active' && !fresh.isSuspended) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) =>
-              JourneyFlowScreen(matchId: j.matchId, profile: j.profile),
-        ),
-      );
-    }
+    await _openPauseFlow(j);
   }
 
   /// Ends a paused Journey — CONFIRMED FIRST since 2026-08-12, because
@@ -1253,12 +1573,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       );
     }
     return _InlineConfirmBlock(
-      title: 'Pause with ${j.profile.firstName}?',
+      title: 'Request a pause with ${j.profile.firstName}?',
       body:
           '${_keepsPlaceLine(j.profile)} '
-          "${ZyraGender.subject(j.profile.gender, capitalized: true)}'ll see the "
-          'Journey is paused.',
-      actionLabel: 'Pause Journey',
+          '${j.profile.firstName} will choose whether to pause or continue.',
+      actionLabel: 'Request Pause',
       danger: false,
       onConfirm: () => _doPauseActive(j),
       dismissLabel: 'Not now',
@@ -1269,11 +1588,12 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   Future<void> _doPauseActive(JourneyMatch j) async {
     if (j.isMock) {
       _clearInlineDecisions();
-      // A staged Active pauses in the scenario's numbers, like every
-      // other stand-in action on this screen.
-      final dev = ZyraDevScenario.instance;
-      dev.setActiveJourneys((dev.activeJourneys - 1).clamp(0, 99));
-      dev.setPausedJourneys(dev.pausedJourneys + 1);
+      // A pending pause still occupies the Active slot. Only a jointly
+      // confirmed pause moves the card to Paused.
+      ZyraDevScenario.instance.setPauseScenario(
+        ZyraPauseDevScenario.pauseRequesterWaiting,
+      );
+      await _openPauseFlow(j);
       return;
     }
     // BUG-04 (2026-08-14 audit, OA-ZYRA-225 — fixed 2026-08-15): the
@@ -1283,21 +1603,16 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // says so: the tap didn't happen, so the card shouldn't pretend the
     // question was answered.
     try {
-      await ZyraJourneyService.suspendJourney(j.matchId);
-    } on PausedLimitReachedException {
-      // The plan-cap REFUSAL stays a dialog, deliberately — it is the
-      // server saying no after the choice, not a choice; flagged in the
-      // round-four mock and accepted.
-      if (!mounted) return;
-      _clearInlineDecisions();
-      await showZyraPausedLimitRefusal(context);
-      return;
-    } on SuspensionRequiresOneException {
-      // Only against an un-migrated database — degrade, don't crash.
+      await ZyraJourneyService.transitionPause(
+        matchId: j.matchId,
+        action: ZyraPauseAction.requestPause,
+        expectedVersion: j.pause.version,
+      );
+    } on PauseTransitionStaleException {
       if (!mounted) return;
       _clearInlineDecisions();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Journey Suspension requires ZYRA One.')),
+        const SnackBar(content: Text('This Journey changed. Review it again.')),
       );
       return;
     } catch (_) {
@@ -1305,7 +1620,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            "Pause didn't go through — check your connection and try again.",
+            "Pause request didn't go through — check your connection and try again.",
           ),
         ),
       );
@@ -1314,6 +1629,8 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     if (!mounted) return;
     _clearInlineDecisions();
     await _refresh();
+    if (!mounted) return;
+    await _openPauseFlow(j);
   }
 
   Future<void> _doEndActive(JourneyMatch j) async {
@@ -1380,6 +1697,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       profileId: j.profile.id,
       firstName: j.profile.firstName,
       source: ZyraReportSource.connections,
+      profileSnapshot: j.profile,
     );
     if (mounted) await _refresh();
   }
@@ -1418,7 +1736,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       );
     }
     if (j.status == 'ended') {
+      if (!ZyraReleaseGates.requestNewJourneyEnabled) return null;
       final mayAsk =
+          _withinPaidReturnWindow(j) &&
           !j.inAnotherJourney &&
           j.isWithinNewJourneyRequestWindow &&
           (j.isMock ? j.canRestart : _mayRequest.contains(j.matchId));
@@ -1434,27 +1754,28 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         run: () => _requestNewJourney(j),
       );
     }
-    // SHARED PAUSE HOLDS — DR-ZYRA-170 (2026-08-15), SUPERSEDING the
-    // 2026-08-13 one-label ruling ("Request Resume" on both sides).
-    // That fix made the BUTTONS equal while the machinery stayed
-    // unequal — one resumed instantly, the other sent a one-shot note
-    // whose spent state read "— she decides". Under shared holds the
-    // verb names what the tap does and nobody requests anything: a
-    // HOLDER lifts their own pause here; a NON-HOLDER answers through
-    // the neutral pair (pairHero at the call site), so this returns
-    // null for them.
-    final me = ZyraAuth.currentUser?.id;
-    final iHold = j.heldBy(me);
-    // Busy elsewhere: with BOTH hands holding, my lift is never the
-    // final one (theirs stands), so it is always safe. A SOLE hold's
-    // lift would try to activate and be refused by name (suite section
-    // J) — no verb, the fact says why.
-    if (j.inAnotherJourney && !(iHold && j.pausedByBoth)) return null;
-    if (!iHold) return null;
+    // A mutual Pause is symmetrical. Either Seeker may ask to resume; once
+    // a request exists both sides open the same decision surface.
+    if (j.pause.phase == ZyraPausePhase.paused && _withinPaidReturnWindow(j)) {
+      return (
+        label: 'Request Resume',
+        caption: null,
+        run: () => _requestResume(j),
+      );
+    }
+    if (j.pause.phase == ZyraPausePhase.resumeDecisionPending) {
+      final mine = j.pause.requestedBy == ZyraAuth.currentUser?.id;
+      return (
+        label: mine ? 'Resume requested' : 'Review resume request',
+        caption: null,
+        run: () => _openPauseFlow(j),
+      );
+    }
+    if (j.pause.phase == ZyraPausePhase.paused) return null;
     return (
-      label: 'Resume Journey',
+      label: 'Open decision',
       caption: null,
-      run: () => _resumeSuspended(j),
+      run: () => _openPauseFlow(j),
     );
   }
 
@@ -1468,31 +1789,33 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       return '${j.profile.firstName} is in a Journey with someone else '
           'right now.';
     }
+    if (j.status == 'ended' && !ZyraReleaseGates.requestNewJourneyEnabled) {
+      return null;
+    }
+    if (ZyraReleaseGates.requestNewJourneyEnabled &&
+        (j.status == 'ended' || j.isSuspended)) {
+      return _availableReturns.contains(j.matchId)
+          ? 'Available to reconnect'
+          : 'Not currently available';
+    }
     if (j.status == 'ended' && j.isInCoolingPeriod) {
       return j.restartAvailableIn;
     }
-    if (j.status == 'ended' && !j.isWithinNewJourneyRequestWindow) {
-      return 'The 60-day request window has ended.';
-    }
-    // SHARED PAUSE HOLDS — DR-ZYRA-170. The line this replaces read
-    // "Restart requested — Amina decides." — the sentence that proved
-    // the Founder's whole point (wrong word AND named the power
-    // imbalance out loud). The facts below say only what is true, in
-    // nobody's favour.
     if (j.isSuspended && !j.inAnotherJourney) {
-      final name = j.profile.firstName;
-      final subject = ZyraGender.subject(j.profile.gender, capitalized: true);
-      if (j.pausedByBoth) {
-        return 'Paused by both of you — continues when you’ve both resumed.';
+      if (j.pause.phase == ZyraPausePhase.resumeDecisionPending) {
+        return j.pause.requestedBy == ZyraAuth.currentUser?.id
+            ? 'Waiting for ${j.profile.firstName} to decide.'
+            : '${j.profile.firstName} has asked to resume.';
       }
-      if (j.heldBy(ZyraAuth.currentUser?.id)) {
-        return j.pauseNudgedAt != null
-            ? '$name is ready when you are.'
-            : 'Your pause is yours — resuming continues for you both.';
+      if (!_withinPaidReturnWindow(j)) {
+        return AppState.instance.plan == ZyraPlan.one
+            ? 'Only your five most recent Paused Journeys can be requested.'
+            : '${ZyraMembershipCatalog.seekerOneTitle} is needed to request a return.';
       }
-      return j.pauseNudgedAt != null
-          ? '$subject knows you’re ready — or rest too, or simply wait.'
-          : 'How you answer — or whether you answer — is yours.';
+      // The persistent card subtitle already says the Journey is Paused and
+      // the primary action says "Request Resume". Repeating both facts as a
+      // sentence made the expanded card denser without adding information.
+      return null;
     }
     return null;
   }
@@ -1513,27 +1836,60 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// rather than in the corner of their photo, and with the same shield
   /// glyph the Connections card uses for it.
   void _openSuggestionProfile(GuardianSuggestion s) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) =>
-            SeekerProfileScreen(profile: s.profile, suggestedBy: s.suggestedBy),
-      ),
+    pushZyraConnectionsProfile(
+      context,
+      profile: s.profile,
+      suggestedBy: s.suggestedBy,
     );
+  }
+
+  void _moveLocalProfile(SeekerProfile profile, _Move move) {
+    final destination = switch (move) {
+      _Move.consider => ZyraActivityTestState.considered,
+      _Move.save => ZyraActivityTestState.saved,
+      _Move.pass => ZyraActivityTestState.passed,
+      _Move.unsave => null,
+    };
+    if (destination == null) return;
+    ZyraDevScenario.instance.moveLocalProfile(profile.id, destination);
+    if (mounted) setState(() {});
+  }
+
+  void _hideLocalProfile(SeekerProfile profile) {
+    ZyraDevScenario.instance.hideLocalProfile(profile.id);
+    if (mounted) setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final potential = AppState.instance.potentialJourneys;
     final active = AppState.instance.activeJourneys;
-    final passed = AppState.instance.declined;
-    final saved = AppState.instance.saved;
-    final considered = AppState.instance.outgoingLikes;
+    final dev = ZyraDevScenario.instance;
+    late final List<SeekerProfile> passed;
+    late final List<SeekerProfile> saved;
+    late final List<SeekerProfile> considered;
+    if (!ZyraDeveloperAccess.canUseDeveloperTools) {
+      passed = AppState.instance.declined;
+      saved = AppState.instance.saved;
+      considered = AppState.instance.outgoingLikes;
+    } else {
+      final buckets = composeZyraActivityTestBuckets(
+        scenario: dev,
+        realConsidered: AppState.instance.outgoingLikes,
+        realSaved: AppState.instance.saved,
+        realPassed: AppState.instance.declined,
+        viewerGender: AppState.instance.gender,
+      );
+      passed = buckets.passed;
+      saved = buckets.saved;
+      considered = buckets.considered;
+    }
 
     return Container(
       // 2026-07-25: gender-matched gradient (DR-ZYRA-094), widened from
       // Profile-only to all in-app post-onboarding screens per Founder
       // instruction — see ZyraColors.genderGradient() doc comment.
-      decoration: BoxDecoration(
+      decoration: ZyraAppGoldDecoration(
         gradient: ZyraColors.genderGradient(AppState.instance.gender),
       ),
       child: SafeArea(
@@ -1565,11 +1921,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                 labels: _kSegmentLabels,
                 position: _pagerPos,
                 badges: _segmentBadges,
-                onChanged: (i) => _pager.animateToPage(
-                  i,
-                  duration: const Duration(milliseconds: 260),
-                  curve: Curves.easeOutCubic,
-                ),
+                onChanged: (i) => ZyraSegmentedMotion.animateToPage(_pager, i),
               ),
             ),
             // SWIPEABLE 2026-08-01 (Founder: "allow the UI when I swipe
@@ -1588,6 +1940,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             Expanded(
               child: PageView(
                 controller: _pager,
+                physics: ZyraSegmentedMotion.pagePhysics,
                 // No onPageChanged — _onPagerScroll already tracks
                 // position on every frame, including the settle at the
                 // end of a swipe. A second callback writing a second
@@ -1619,44 +1972,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                   // child left off, so it read as pinned under the
                   // header. Notifications puts it in an Expanded, which
                   // is what makes Center mean anything — same here now.
-                  !_suggestionsLoaded
-                      ? const ZyraLoading()
-                      : _undecidedSuggestions.isEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Same header the populated state draws, so
-                              // the section does not appear to lose its
-                              // name when it empties.
-                              Text(
-                                'INTRODUCTIONS',
-                                style: ZyraText.chapterLabel(
-                                  color: Colors.white54,
-                                ),
-                              ),
-                              const Expanded(
-                                child: ZyraEmptyState(
-                                  icon: Icons.groups_outlined,
-                                  // The Notifications pattern: state
-                                  // first, then the fact.
-                                  title: 'No introductions yet',
-                                  // Honest. There is still no
-                                  // Guardian-side UI to create one, so
-                                  // this list is empty in practice, not
-                                  // only in a new account.
-                                  message:
-                                      'People your Guardian puts forward will appear here.',
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : ListView(
-                          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
-                          children: _introductionsChildren(),
-                        ),
+                  _introductionsPage(),
                 ],
               ),
             ),
@@ -1666,11 +1982,18 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     );
   }
 
-  /// How many Ended Journeys this plan lists, and how many are held back.
-  /// Display only — see the note at the ENDED JOURNEYS section below.
-  int get _endedShown => ZyraEntitlements.of(AppState.instance.plan).ended;
-  int get _endedHidden =>
-      _ended.length <= _endedShown ? 0 : _ended.length - _endedShown;
+  /// History is visible to every plan. Entitlement controls only whether the
+  /// signed-in person may initiate a return from one of their five most
+  /// recent rows in that state; incoming decisions remain actionable.
+  bool _withinPaidReturnWindow(JourneyMatch journey) {
+    if (AppState.instance.plan != ZyraPlan.one) return false;
+    final limits = ZyraEntitlements.one;
+    final rows = journey.status == 'ended' ? _ended : _suspended;
+    final window = journey.status == 'ended'
+        ? limits.endedReturnWindow
+        : limits.pausedReturnWindow;
+    return rows.take(window).any((row) => row.matchId == journey.matchId);
+  }
 
   /// Developer Active previews used to look fully interactive and then stop
   /// at the door with a bottom snackbar because their fake match id had no
@@ -1738,8 +2061,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     if (!mounted) return;
     await Navigator.of(context).push<void>(
       MaterialPageRoute(
-        builder: (_) =>
-            JourneyFlowScreen(matchId: target.matchId, profile: target.profile),
+        builder: (_) => JourneyFlowScreen(
+          matchId: target.matchId,
+          profile: target.profile,
+          onOpenGuardian: widget.onNavigateToGuardian,
+        ),
       ),
     );
   }
@@ -1748,6 +2074,65 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     required List<JourneyMatch> active,
     required List<JourneyMatch> potential,
   }) {
+    final currentUserId = ZyraAuth.currentUser?.id;
+    final incomingPaused = _suspended
+        .where(
+          (journey) =>
+              journey.pause.phase == ZyraPausePhase.resumeDecisionPending &&
+              journey.pause.requestedBy != null &&
+              journey.pause.requestedBy != currentUserId,
+        )
+        .toList(growable: false);
+    final ordinaryPaused = _suspended
+        .where((journey) => !incomingPaused.contains(journey))
+        .toList(growable: false);
+
+    Widget pausedCard(JourneyMatch journey) {
+      final pausedFor = journey.pausedFor;
+      return _JourneyExpandingCard(
+        j: journey,
+        expansionController: _expansionController,
+        subtitle:
+            (journey.pause.phase == ZyraPausePhase.resumeDecisionPending
+                ? 'Resume decision pending'
+                : 'Paused') +
+            (pausedFor.isEmpty ? '' : ' · $pausedFor'),
+        hero: _personHero(journey),
+        heroFact: _personHeroFact(journey),
+        showStateLine: _personHeroFact(journey) != null,
+        showTimeline: true,
+        onTimeline: () => _pushTimeline(journey),
+        canEnd: true,
+        onEnd: () => _endSuspended(journey),
+        onReport: () => _reportPerson(journey),
+        compatibilityRevealed: true,
+        inlineExtension: _inlineEndConfirmFor(journey),
+        onDismissExtension: _clearInlineDecisions,
+      );
+    }
+
+    Widget endedCard(JourneyMatch journey) => _JourneyExpandingCard(
+      j: journey,
+      expansionController: _expansionController,
+      subtitle: journey.inAnotherJourney
+          ? 'Ended · in another Journey now'
+          : !ZyraReleaseGates.requestNewJourneyEnabled || journey.canRestart
+          ? 'Ended'
+          : 'Ended — ${journey.restartAvailableIn.toLowerCase()}',
+      hero: _personHero(journey),
+      heroFact: _personHeroFact(journey),
+      showStateLine: _personHeroFact(journey) != null,
+      showTimeline: true,
+      onTimeline: () => _pushTimeline(journey),
+      canEnd: false,
+      onEnd: null,
+      onReport: () => _reportPerson(journey),
+      dimmed: true,
+      compatibilityRevealed: true,
+      inlineExtension: _inlineRestartFor(journey),
+      onDismissExtension: _clearInlineDecisions,
+    );
+
     return [
       // ACTIVE JOURNEY — 2026-08-01 (Founder: "active journey should be
       // more stand out then the rest").
@@ -1762,10 +2147,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       // the card itself (_ActiveJourneyCard — brighter fill, real
       // border, larger photo), NOT by a new accent colour. Introducing
       // one here would collide with the gender gradient behind it.
-      Text('ACTIVE JOURNEY', style: ZyraText.chapterLabel(color: Colors.white)),
-      const SizedBox(height: 8),
+      _ConnectionsSectionHeading(title: 'Active Journey', emphasised: true),
+      SizedBox(height: 8),
       if (active.isEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
             icon: Icons.forum_outlined,
@@ -1793,30 +2178,38 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           // silently does something else.
           return _ActiveJourneyCard(
             profile: j.profile,
-            onEnter: () => unawaited(_enterJourney(j)),
-            onTimeline: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                // isMock: a dev stand-in has no match row; the screen
-                // says so instead of showing an empty story that reads
-                // as a bug (Founder, 2026-08-12). journeyStage feeds
-                // the Timeline's road (2026-08-13).
-                builder: (_) => JourneyTimelineScreen(
-                  withProfile: j.profile,
-                  isMock: j.isMock,
-                  journeyStage: j.journeyStage,
+            onEnter: () {
+              _expansionController.collapseAll();
+              unawaited(_enterJourney(j));
+            },
+            onTimeline: () {
+              _expansionController.collapseAll();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  // isMock: a dev stand-in has no match row; the screen
+                  // says so instead of showing an empty story that reads
+                  // as a bug (Founder, 2026-08-12). journeyStage feeds
+                  // the Timeline's road (2026-08-13).
+                  builder: (_) => JourneyTimelineScreen(
+                    withProfile: j.profile,
+                    isMock: j.isMock,
+                    journeyStage: j.journeyStage,
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
             // Same sheet and same source as every other card on this page,
             // so a report raised from an Active Journey is indistinguishable
             // from one raised anywhere else — which is what the person
             // reporting should be able to assume.
             onReport: () async {
+              _expansionController.collapseAll();
               await showReportProfileSheet(
                 context,
                 profileId: j.profile.id,
                 firstName: j.profile.firstName,
                 source: ZyraReportSource.connections,
+                profileSnapshot: j.profile,
               );
               if (mounted) await _refresh();
             },
@@ -1824,12 +2217,18 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             // "remove it.. put it in main page section"). View Profile
             // was the Timeline bubble's job until today; the bubble
             // stays, but the person is one tap from the card now too.
-            onViewProfile: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => SeekerProfileScreen(profile: j.profile),
-              ),
-            ),
-            onOptions: () => _showActiveJourneyOptions(j),
+            onViewProfile: () {
+              _expansionController.collapseAll();
+              pushZyraConnectionsProfile(context, profile: j.profile);
+            },
+            onOptions: () {
+              _expansionController.collapseAll();
+              if (j.pause.isPending) {
+                unawaited(_openPauseFlow(j));
+              } else {
+                _showActiveJourneyOptions(j);
+              }
+            },
             // Round four: the confirms extend this card in place —
             // no popups on this page.
             inlineConfirm: _activeInlineConfirmFor(j),
@@ -1845,6 +2244,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             // audit, inverted. Restored as a chip that appears only while a
             // review is open, so the ordinary card stays as asked.
             reviewOpen: _openReviews.contains(j.matchId),
+            decisionPending: j.pause.isPending,
             // BEGIN vs CONTINUE, Founder 2026-08-10: "either begin journey
             // if user started or continue journey if user is continuing".
             //
@@ -1860,19 +2260,16 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           );
         }),
 
-      const SizedBox(height: 20),
+      SizedBox(height: 20),
       // RENAMED 2026-08-03, Founder approved: "Potential Journeys"
       // suggested uncertainty, when these are confirmed mutual likes
       // waiting for the user to begin. "Queue" also carries the
       // one-Active-Journey-at-a-time rule without stating it — things in
       // a queue are waiting their turn by definition.
-      Text(
-        'POTENTIAL JOURNEYS',
-        style: ZyraText.chapterLabel(color: Colors.white54),
-      ),
-      const SizedBox(height: 8),
+      _ConnectionsSectionHeading(title: 'Potential Journeys'),
+      SizedBox(height: 8),
       if (potential.isEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           // 2026-07-26: check_circle_outline replaced favorite_border
           // (Founder: app-wide heart-icon removal).
@@ -1896,6 +2293,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         ...potential.map(
           (j) => _JourneyExpandingCard(
             j: j,
+            expansionController: _expansionController,
             // "In another Journey": beginning would be refused (the
             // server's other-party cap guard), so the card states it and
             // offers no verb — a fact, never a disabled button.
@@ -1921,183 +2319,49 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           ),
         ),
 
-      // PAUSED JOURNEYS — 2026-07-29: renamed from "Suspended" (matches
-      // the Journey Pause naming used everywhere else, DR-ZYRA-119) and
-      // now ALWAYS rendered with its own empty state instead of only
-      // appearing once non-empty, so the section is actually
-      // discoverable (Founder, Connections review). Basic Seekers can
-      // still land here as the non-initiating party of a Journey a ZYRA
-      // One partner paused (JOURNEY_SUSPENSION (CURRENT_VERSION)) —
-      // this isn't ZYRA-One-only data, so no tier gate on the section.
-      const SizedBox(height: 20),
-      Text(
-        'PAUSED JOURNEYS',
-        style: ZyraText.chapterLabel(color: Colors.white54),
-      ),
-      const SizedBox(height: 8),
+      // The live Journey page keeps its original four-section hierarchy:
+      // Active, Potential, Paused, Ended. Complete historical browsing now
+      // has a separate Profile route instead of replacing these sections
+      // with a nested History toggle (Founder correction, 2026-09-21).
+      SizedBox(height: 20),
+      _ConnectionsSectionHeading(title: 'Paused Journeys'),
+      SizedBox(height: 8),
       if (_suspended.isEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
             icon: Icons.pause_circle_outlined,
             message: 'Paused Journeys will appear here.',
           ),
         )
-      else
-        ..._suspended.map((j) {
-          // SHARED PAUSE HOLDS — DR-ZYRA-170 (2026-08-15): a pause is a
-          // personal hold; either party may hold; each lifts only their
-          // own. A HOLDER gets the Resume hero; a NON-HOLDER gets the
-          // neutral pair (Pause too | Request Continue) — and waiting, which
-          // needs no button, stays a legitimate answer.
-          final me = ZyraAuth.currentUser?.id;
-          final iHold = j.heldBy(me);
-          // DR-ZYRA-142 time-honesty: after 30 days the row says how long,
-          // on both sides. A mirror, not a deadline — the system never
-          // ends what people haven't (DR-ZYRA-121 item 12).
-          final pausedFor = j.pausedFor;
-          return _JourneyExpandingCard(
-            j: j,
-            subtitle:
-                (j.pausedByBoth
-                    ? 'Paused by both of you'
-                    : iHold
-                    ? 'Paused by you'
-                    : 'Paused by ${j.profile.firstName}') +
-                (pausedFor.isEmpty ? '' : ' · $pausedFor') +
-                (j.inAnotherJourney ? ' · in another Journey' : ''),
-            // The non-holder's answer surface. Busy elsewhere hides the
-            // ready-note (asking for what cannot happen yet — the same
-            // reasoning that hid the old nudge) but keeps Pause too:
-            // adding your own hold is always legal.
-            pairHero: iHold
-                ? null
-                : (
-                    left: 'Pause too',
-                    onLeft: () => _alsoPause(j),
-                    right: (j.pauseNudgedAt == null && !j.inAnotherJourney)
-                        ? 'Request Continue'
-                        : null,
-                    onRight: (j.pauseNudgedAt == null && !j.inAnotherJourney)
-                        ? () => _nudge(j)
-                        : null,
-                    rightDone: j.pauseNudgedAt != null
-                        ? 'Continue requested'
-                        : null,
-                  ),
-            // The verbs live in the expansion now (Founder: "no text
-            // anymore, it's got an arrow like in activity"). Paused-by-
-            // them wording per the interactive round: "Request restart",
-            // used once, becomes the fact "Restart requested" (nudged is
-            // read inside _personHero/_personHeroFact).
-            hero: _personHero(j),
-            heroFact: _personHeroFact(j),
-            // Speaks only when there is something the verb cannot say —
-            // the spent ask, or busy elsewhere. Never the subtitle again.
-            showStateLine: _personHeroFact(j) != null,
-            showTimeline: true,
-            onTimeline: () => _pushTimeline(j),
-            canEnd: true,
-            onEnd: () => _endSuspended(j),
-            onReport: () => _reportPerson(j),
-            // Their Journey began — the reveal already happened
-            // (2026-08-13: "View Compatibility", never "Unlock", here).
-            compatibilityRevealed: true,
-            // Round four: End confirms inline in this card.
-            inlineExtension: _inlineEndConfirmFor(j),
-            onDismissExtension: _clearInlineDecisions,
-          );
-        }),
+      else ...[
+        if (incomingPaused.isNotEmpty) ...[
+          _ConnectionsSubsectionLabel('REQUESTS FOR YOU'),
+          SizedBox(height: 8),
+          ...incomingPaused.map(pausedCard),
+          if (ordinaryPaused.isNotEmpty) SizedBox(height: 8),
+        ],
+        if (ordinaryPaused.isNotEmpty) ...[
+          if (incomingPaused.isNotEmpty)
+            _ConnectionsSubsectionLabel('YOUR PAUSED JOURNEYS'),
+          if (incomingPaused.isNotEmpty) SizedBox(height: 8),
+          ...ordinaryPaused.map(pausedCard),
+        ],
+      ],
 
-      // ENDED JOURNEYS — 2026-08-03, Founder approved.
-      //
-      // Was a conditional block that only appeared once something had
-      // ended, which meant the section did not exist for anyone who had
-      // not yet ended a Journey — so nobody could learn it was there.
-      // Now always rendered with its own empty state, matching how Paused
-      // Journeys was fixed on 2026-07-29 for the same reason.
-      //
-      // Founder's stated purpose: "gives users closure instead of a
-      // Journey disappearing". A Journey that vanishes on ending is the
-      // app quietly deciding something is over; a Journey that moves to a
-      // section named Ended is the app acknowledging it.
-      //
-      // Greyed (#17, JOURNEY AVAILABILITY/Summary.md). Tapping opens
-      // JourneyFlowScreen, which shows the 24h cooling countdown or the
-      // Restart button once elapsed.
-      const SizedBox(height: 20),
-      Text(
-        'ENDED JOURNEYS',
-        style: ZyraText.chapterLabel(color: Colors.white54),
-      ),
-      const SizedBox(height: 8),
+      SizedBox(height: 20),
+      _ConnectionsSectionHeading(title: 'Ended Journeys'),
+      SizedBox(height: 8),
       if (_ended.isEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
             icon: Icons.history,
             message: 'Ended Journeys will appear here.',
           ),
         )
-      else ...[
-        // ── A DISPLAY CAP, AND ONLY A DISPLAY CAP. Founder, 2026-08-09:
-        // "The cap is purely a UI cap, not a data-retention cap. I never
-        // want Journey history deleted automatically."
-        //
-        // 1 on Basic, 5 on ZYRA One — most recent first, since _refresh()
-        // already sorts descending by endedAt. `_ended` keeps every row, so
-        // nothing here loses data and a Journey History screen can read the
-        // full list whenever it is built.
-        //
-        // This is the ONLY one of the four Journey limits the client
-        // enforces, precisely because it is not really a limit. Active,
-        // Potential and Paused are entitlements and belong to the database
-        // — see data/zyra_entitlements.dart.
-        ..._ended.take(_endedShown).map((j) {
-          // Whether New Journey may be requested is computed in _personHero:
-          // stand-ins from their own canRestart (fake ids were never sent
-          // to the server, so _mayRequest cannot hold them), real rows
-          // from the server's list, busy people never.
-          return _JourneyExpandingCard(
-            j: j,
-            subtitle: j.inAnotherJourney
-                ? 'Ended · in another Journey now'
-                : j.canRestart
-                ? 'Ended'
-                : 'Ended — ${j.restartAvailableIn.toLowerCase()}',
-            hero: _personHero(j),
-            heroFact: _personHeroFact(j),
-            // Speaks only for the cooling period or busy elsewhere.
-            showStateLine: _personHeroFact(j) != null,
-            showTimeline: true,
-            onTimeline: () => _pushTimeline(j),
-            canEnd: false,
-            onEnd: null,
-            onReport: () => _reportPerson(j),
-            dimmed: true,
-            // Ended Journeys began once too — the reveal is theirs
-            // for good (2026-08-13).
-            compatibilityRevealed: true,
-            // The restart ask extends THIS card inline (2026-08-13,
-            // "like we did for potential") — null for every row but
-            // the one mid-ask.
-            inlineExtension: _inlineRestartFor(j),
-            onDismissExtension: _clearInlineDecisions,
-          );
-        }),
-        // Said out loud, rather than letting older Journeys vanish — the
-        // disappearing-Journey problem this whole section exists to solve.
-        if (_endedHidden > 0)
-          Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: Text(
-              'Showing your $_endedShown most recent. '
-              '$_endedHidden older ${_endedHidden == 1 ? "Journey is" : "Journeys are"} '
-              'kept, just not listed here.',
-              style: ZyraText.subtext(size: 11.5),
-            ),
-          ),
-      ],
+      else
+        ..._ended.map(endedCard),
     ];
   }
 
@@ -2140,29 +2404,32 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   List<Widget> _introductionsChildren() {
     final pending = _undecidedSuggestions;
     return [
-      Text(
-        'INTRODUCTIONS (${pending.length})',
-        style: ZyraText.chapterLabel(color: Colors.white54),
-      ),
-      const SizedBox(height: 10),
       // ONE CARD, ALL FOUR SECTIONS — 2026-08-13 (Founder: "a user cannot
       // tell that Introductions cards were built separately from the
       // newer profile cards"). _SuggestionCard is gone; this is the same
       // _ActivityCard that Considered, Saved and Passed use, with the
       // introduction kind.
       //
-      // Pass/Save/Consider still do not appear on it — see _moveRow. You
-      // have not seen this person yet, and deciding from a thumbnail is
-      // exactly what ZYRA is not. The three decisions live on the profile
-      // this opens (2026-08-12 rerouting), which is where there is
-      // something to decide from.
-      ...pending.map(
-        (s) => _ActivityCard(
+      // View Profile remains the primary action. Pass, Save, Consider and
+      // Compatibility use the same compact secondary deck as every other
+      // Activity state, so an Introduction does not become a one-action
+      // dead end after its developer fixture is staged.
+      ...pending.map((s) {
+        final local = _isIntroductionPreview(s);
+        return _ActivityCard(
+          expansionController: _expansionController,
+          key: ValueKey<String>('connections-activity-widget-${s.profile.id}'),
           profile: s.profile,
           kind: _ActivityKind.introduction,
+          suggestedByOverride: s.suggestedBy,
+          isLocalTestProfile: local,
+          onLocalMove: local
+              ? (move) => _moveLocalProfile(s.profile, move)
+              : null,
+          onLocalHidden: local ? () => _hideLocalProfile(s.profile) : null,
           onViewProfile: () => _openSuggestionProfile(s),
-        ),
-      ),
+        );
+      }),
     ];
   }
 
@@ -2174,14 +2441,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     return [
       // CONSIDERED — outgoing Likes (renamed per DR-ZYRA-099 /
       // OA-ZYRA-138; underlying AppState field name unchanged).
-      const SizedBox(height: 28),
-      Text(
-        'CONSIDERED (${considered.length})',
-        style: ZyraText.chapterLabel(color: Colors.white54),
-      ),
-      const SizedBox(height: 10),
+      SizedBox(height: 28),
+      _ConnectionsSectionHeading(title: 'Considered'),
+      SizedBox(height: 10),
       if (considered.isEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           // CHANGED 2026-08-01 (Founder: "the Considered icon should be a
           // tick"). Was pending_outlined (a "…" circle). The tick had to
@@ -2193,19 +2457,34 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           ),
         )
       else
-        ...considered.map(
-          (p) => _ActivityCard(profile: p, kind: _ActivityKind.considered),
-        ),
+        ...considered.map((p) {
+          final local = _isLocalTestProfile(p);
+          final suggestedBy = _localIntroductionAttribution(p);
+          return _ActivityCard(
+            expansionController: _expansionController,
+            key: ValueKey<String>('connections-activity-widget-${p.id}'),
+            profile: p,
+            kind: _ActivityKind.considered,
+            suggestedByOverride: suggestedBy,
+            isLocalTestProfile: local,
+            onLocalMove: local ? (move) => _moveLocalProfile(p, move) : null,
+            onLocalHidden: local ? () => _hideLocalProfile(p) : null,
+            onViewProfile: suggestedBy == null
+                ? null
+                : () => pushZyraConnectionsProfile(
+                    context,
+                    profile: p,
+                    suggestedBy: suggestedBy,
+                  ),
+          );
+        }),
 
       // SAVED.
-      const SizedBox(height: 28),
-      Text(
-        'SAVED (${saved.length})',
-        style: ZyraText.chapterLabel(color: Colors.white54),
-      ),
-      const SizedBox(height: 10),
+      SizedBox(height: 28),
+      _ConnectionsSectionHeading(title: 'Saved'),
+      SizedBox(height: 10),
       if (saved.isEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
             icon: Icons.bookmark_border,
@@ -2213,37 +2492,52 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           ),
         )
       else
-        ...saved.map(
-          (p) => _ActivityCard(profile: p, kind: _ActivityKind.saved),
-        ),
+        ...saved.map((p) {
+          final local = _isLocalTestProfile(p);
+          final suggestedBy = _localIntroductionAttribution(p);
+          return _ActivityCard(
+            expansionController: _expansionController,
+            key: ValueKey<String>('connections-activity-widget-${p.id}'),
+            profile: p,
+            kind: _ActivityKind.saved,
+            suggestedByOverride: suggestedBy,
+            isLocalTestProfile: local,
+            onLocalMove: local ? (move) => _moveLocalProfile(p, move) : null,
+            onLocalHidden: local ? () => _hideLocalProfile(p) : null,
+            onViewProfile: suggestedBy == null
+                ? null
+                : () => pushZyraConnectionsProfile(
+                    context,
+                    profile: p,
+                    suggestedBy: suggestedBy,
+                  ),
+          );
+        }),
 
-      // PASSED — per PROFILE DECISION SYSTEM/Summary.md ("no record, no
-      // notification"), this is a purely local, session-scoped list —
-      // nothing is written to the backend for a Pass, so this list
-      // resets on sign-out/account switch.
-      //
-      // CAPPED 2026-07-27 (Founder: "the decline button with shows in
-      // connections tab shows a maximum of 10 people. the last 10 they
-      // declined") — display-only cap, not tier-gated (applies the same
-      // to Basic and ZYRA One). `declined` is append-only (AppState.
-      // decline() only ever adds), so the last 10 by list position ARE
-      // the 10 most recently Passed.
-      const SizedBox(height: 28),
+      // PASSED means profile decisions, never declined Journey requests.
+      // Membership changes only this display window; the underlying list
+      // and decision persistence are preserved without deleting anything.
+      SizedBox(height: 28),
       Builder(
         builder: (context) {
-          final recentPassed = passed.length > 10
-              ? passed.sublist(passed.length - 10)
-              : passed;
-          final label = passed.length > 10
-              ? 'PASSED (${passed.length} — showing last 10)'
-              : 'PASSED (${passed.length})';
+          final limits = ZyraSeekerPlanLimits.of(AppState.instance.plan);
+          final recentPassed = limits.recentDeclined(passed);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: ZyraText.chapterLabel(color: Colors.white54)),
-              const SizedBox(height: 10),
-              if (recentPassed.isEmpty)
-                const Padding(
+              _ConnectionsSectionHeading(title: 'Passed'),
+              SizedBox(height: 10),
+              if (limits.recentDeclinedProfiles == 0)
+                ZyraMembershipHistoryLock(
+                  key: const ValueKey('connections-passed-membership-lock'),
+                  description:
+                      'Revisit your last '
+                      '${ZyraSeekerPlanLimits.one.recentDeclinedProfiles} '
+                      'declined profiles with ${ZyraMembershipCatalog.seekerOneTitle}. Your existing '
+                      'profile decisions are kept.',
+                )
+              else if (recentPassed.isEmpty)
+                Padding(
                   padding: EdgeInsets.symmetric(vertical: 12),
                   child: ZyraEmptyState(
                     icon: Icons.close,
@@ -2254,9 +2548,31 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                 // Passed cards use the same expanded compatibility action as
                 // Considered and Saved. See APP/Premium/Profile Unlocks/
                 // Summary.md; the older prohibition was reversed.
-                ...recentPassed.map(
-                  (p) => _ActivityCard(profile: p, kind: _ActivityKind.passed),
-                ),
+                ...recentPassed.map((p) {
+                  final local = _isLocalTestProfile(p);
+                  final suggestedBy = _localIntroductionAttribution(p);
+                  return _ActivityCard(
+                    expansionController: _expansionController,
+                    key: ValueKey<String>(
+                      'connections-activity-widget-${p.id}',
+                    ),
+                    profile: p,
+                    kind: _ActivityKind.passed,
+                    suggestedByOverride: suggestedBy,
+                    isLocalTestProfile: local,
+                    onLocalMove: local
+                        ? (move) => _moveLocalProfile(p, move)
+                        : null,
+                    onLocalHidden: local ? () => _hideLocalProfile(p) : null,
+                    onViewProfile: suggestedBy == null
+                        ? null
+                        : () => pushZyraConnectionsProfile(
+                            context,
+                            profile: p,
+                            suggestedBy: suggestedBy,
+                          ),
+                  );
+                }),
             ],
           );
         },
@@ -2290,6 +2606,106 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
 /// rejected for colliding with the Family Stage, and has been reinstated
 /// deliberately.
 const List<String> _kSegmentLabels = ['Journeys', 'Activity', 'Introductions'];
+
+/// One section-heading component for every repeatable Connections list.
+/// Introductions does not use it: the selected segment already says
+/// Introductions, so repeating the word immediately below was removed by the
+/// Founder on 2026-08-25.
+class _ConnectionsSectionHeading extends StatelessWidget {
+  final String title;
+  final bool emphasised;
+
+  const _ConnectionsSectionHeading({
+    required this.title,
+    this.emphasised = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const style = ZyraConnectionsHeadingStyle.accentMarker;
+    final quiet = emphasised ? ZyraColors.foreground : ZyraColors.ink(0.54);
+    final accent = ZyraColors.accentOnCanvas;
+
+    switch (style) {
+      case ZyraConnectionsHeadingStyle.chapterLeft:
+        return Text(
+          title.toUpperCase(),
+          style: ZyraText.chapterLabel(color: quiet),
+        );
+      case ZyraConnectionsHeadingStyle.titleLeft:
+        return Text(
+          title,
+          style: ZyraText.heading(
+            size: emphasised ? 18 : 16,
+            color: emphasised ? ZyraColors.foreground : ZyraColors.ink(0.82),
+          ),
+        );
+      case ZyraConnectionsHeadingStyle.centredRule:
+        return Row(
+          children: [
+            Expanded(
+              child: Container(height: 0.6, color: ZyraColors.ink(0.16)),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              title.toUpperCase(),
+              style: ZyraText.chapterLabel(color: quiet),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Container(height: 0.6, color: ZyraColors.ink(0.16)),
+            ),
+          ],
+        );
+      case ZyraConnectionsHeadingStyle.accentMarker:
+        return Row(
+          children: [
+            Container(
+              width: 3,
+              height: 28,
+              decoration: BoxDecoration(
+                color: accent.withValues(alpha: 0.85),
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
+            const SizedBox(width: 9),
+            Expanded(
+              child: Text(
+                title,
+                style: ZyraText.body(
+                  size: emphasised ? 16 : 14.5,
+                  color: emphasised
+                      ? ZyraColors.foreground
+                      : ZyraColors.ink(0.82),
+                ),
+              ),
+            ),
+          ],
+        );
+      case ZyraConnectionsHeadingStyle.countSplit:
+        return Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: ZyraText.heading(
+                  size: emphasised ? 17 : 15.5,
+                  color: emphasised
+                      ? ZyraColors.foreground
+                      : ZyraColors.ink(0.82),
+                ),
+              ),
+            ),
+            Container(
+              width: 34,
+              height: 1,
+              color: accent.withValues(alpha: 0.48),
+            ),
+          ],
+        );
+    }
+  }
+}
 
 // _SegmentedToggle and _UnseenDot MOVED 2026-08-13 to
 // widgets/zyra_segmented_toggle.dart as ZyraSegmentedToggle. The Guardian's
@@ -2335,10 +2751,10 @@ const List<String> _kSegmentLabels = ['Journeys', 'Activity', 'Introductions'];
 Widget _cardThumb(SeekerProfile p, {required double size, double radius = 0}) {
   final child = p.photos.isEmpty
       ? ColoredBox(
-          color: Colors.white.withValues(alpha: 0.08),
+          color: ZyraColors.surfaceFill,
           child: Icon(
             Icons.person_outline,
-            color: Colors.white.withValues(alpha: 0.35),
+            color: ZyraColors.foregroundMuted,
             size: size * 0.4,
           ),
         )
@@ -2351,10 +2767,9 @@ Widget _cardThumb(SeekerProfile p, {required double size, double radius = 0}) {
 
 /// INTRODUCTION JOINED 2026-08-13 (DR-ZYRA-157, Founder: "a user cannot
 /// tell that Introductions cards were built separately from the newer
-/// profile cards"). It is a full member — same card, same expansion,
-/// same photo handling — and differs only in which actions it offers,
-/// which is a rule rather than a style: you have not seen this person
-/// yet, so the card cannot ask you to decide about them.
+/// profile cards"). It is a full member — same card, same expansion and
+/// same photo handling. Toggle-created rows take the same production form;
+/// their non-UUID ids and explicit callbacks keep every mutation local.
 enum _ActivityKind { considered, saved, passed, introduction }
 
 // _SuggestionCard REMOVED 2026-08-13 (DR-ZYRA-157, Founder: "a user
@@ -2376,31 +2791,44 @@ enum _ActivityKind { considered, saved, passed, introduction }
 //   closes a latent crash that only ever stayed hidden because real
 //   profiles happen to carry photos.
 //
-//   BEHAVIOURAL — "the others show things you have already decided on
-//   and can move between lists; this is someone you have never seen".
-//   STILL TRUE, AND STILL HONOURED. It is a rule about ACTIONS, not
-//   about style: _moveRow gives the introduction kind one button, View
-//   Profile, and no decisions. The card looks like its neighbours and
-//   behaves like itself.
+//   BEHAVIOURAL — the retired class once kept Introduction decisions off
+//   the row. That is historical, not current product truth: every row now
+//   uses the shared Activity decisions. Local test rows route those same
+//   controls through ZyraDevScenario rather than production writes.
 //
 // Deleted rather than left unused — an unreferenced widget is one
 // somebody re-adds a call to six weeks later without reading why it
 // stopped being used.
 
-/// What a move button does. Consider and pass are decisions; save and
-/// unsave are bookmark operations. See _ActivityCardState._move.
+/// The one-state transitions available from an Activity card. Consider,
+/// Save and Pass are mutually exclusive; choosing one replaces the current
+/// state. `unsave` returns a saved real profile to no decision state.
 enum _Move { consider, pass, save, unsave }
 
 class _ActivityCard extends StatefulWidget {
   final SeekerProfile profile;
   final _ActivityKind kind;
+  final ZyraConnectionsExpansionController expansionController;
 
-  // NO `suggestedBy` PARAMETER. The card already draws "Suggested by X"
-  // from AppState.suggestedBy(), populated for pending introductions by
-  // _loadSuggestions() — the line was added on 2026-08-05 so a Guardian's
-  // involvement survives into whichever list the person ends up in, and
-  // it works here unchanged. Passing the name in again would be a second
-  // source for one fact.
+  /// Introduction cards receive the source directly. Other Activity states
+  /// keep reading AppState so the real Guardian attribution follows a person
+  /// after the Seeker makes a decision.
+  final String? suggestedByOverride;
+
+  /// Internal truth boundary for a card created through developer controls.
+  /// It never changes the card's product presentation; it only chooses the
+  /// local-only action/report paths.
+  final bool isLocalTestProfile;
+
+  final ValueChanged<_Move>? onLocalMove;
+  final VoidCallback? onLocalHidden;
+
+  // Real introductions receive their source directly from the suggestion
+  // row. Considered/Saved/Passed cards still read AppState.suggestedBy(),
+  // populated by _loadSuggestions(), so a Guardian's involvement survives
+  // whichever list the person enters. Local preview rows never enter that
+  // app-wide map; their explicit source is part of keeping mock and account
+  // truth separate.
 
   /// Opens the read-only profile — introductions only.
   final VoidCallback? onViewProfile;
@@ -2414,9 +2842,15 @@ class _ActivityCard extends StatefulWidget {
   /// two identical ones would have been arbitrary. Say if the other two
   /// should come back.
   const _ActivityCard({
+    super.key,
     required this.profile,
     required this.kind,
+    required this.expansionController,
     this.onViewProfile,
+    this.suggestedByOverride,
+    this.isLocalTestProfile = false,
+    this.onLocalMove,
+    this.onLocalHidden,
   });
 
   @override
@@ -2424,39 +2858,47 @@ class _ActivityCard extends StatefulWidget {
 }
 
 class _ActivityCardState extends State<_ActivityCard> {
-  bool _open = false;
+  String get _cardId => 'activity:${widget.profile.id}';
+  bool get _open => widget.expansionController.value == _cardId;
 
   /// Anchor for Scrollable.ensureVisible when the card expands.
   final GlobalKey _cardKey = GlobalKey();
-  int _photoIndex = 0;
   bool _busy = false;
 
-  /// CHANGED 2026-08-01 (Founder: "make it match the Browse button, where
-  /// if tapped it moves, and the dot to show photo number... copy the
-  /// Browse page and be on left centre side").
-  ///
-  /// Was a PageView with a horizontal dot row on top. Two problems with
-  /// that here, and the second is the real one:
-  ///
-  ///   1. It did not match Browse, which cycles on TAP.
-  ///   2. A horizontally-swipeable PageView inside a horizontally-
-  ///      swipeable Connections pager fights it. Whichever wins, one of
-  ///      the two gestures becomes unreliable — and Connections only just
-  ///      gained its swipe.
-  ///
-  /// Tapping has no such conflict. Same tap-left/tap-right split as
-  /// browse_screen's _tapPhoto.
-  void _tapPhoto(TapUpDetails d, double width) {
-    final photos = widget.profile.photos;
-    if (photos.length <= 1) return;
-    setState(() {
-      if (d.localPosition.dx > width / 2) {
-        _photoIndex = _photoIndex >= photos.length - 1 ? 0 : _photoIndex + 1;
-      } else {
-        _photoIndex = _photoIndex <= 0 ? 0 : _photoIndex - 1;
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    widget.expansionController.addListener(_onExpansionChanged);
   }
+
+  @override
+  void didUpdateWidget(covariant _ActivityCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.expansionController == widget.expansionController) return;
+    oldWidget.expansionController.removeListener(_onExpansionChanged);
+    widget.expansionController.addListener(_onExpansionChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.expansionController.removeListener(_onExpansionChanged);
+    super.dispose();
+  }
+
+  void _onExpansionChanged() {
+    if (mounted) setState(() {});
+  }
+
+  void _collapse() => widget.expansionController.close(_cardId);
+
+  void _leavePage(VoidCallback action) {
+    widget.expansionController.collapseAll();
+    action();
+  }
+
+  String? get _suggestedBy =>
+      widget.suggestedByOverride ??
+      AppState.instance.suggestedBy(widget.profile.id);
 
   /// Move this profile to a different state.
   ///
@@ -2464,22 +2906,50 @@ class _ActivityCardState extends State<_ActivityCard> {
   /// and move a user to save or decline... if I considered a profile but
   /// changed my mind then I need a button").
   ///
-  /// Honours the two-axis model rather than flattening it:
-  ///
-  ///   CONSIDER / PASS  are DECISIONS. Mutually exclusive, most recent
-  ///                    wins. Setting one clears the other, in AppState
-  ///                    and via the database's own trigger.
-  ///   SAVE / UNSAVE    is a BOOKMARK. It never touches the decision, and
-  ///                    the decision never touches it.
-  ///
-  /// So "move to Save" from Considered adds a bookmark and leaves them
-  /// Considering — it is not a downgrade, because there is no such thing.
-  /// Only Pass can undo a Consider.
+  /// The current one-state model is enforced in AppState and by database
+  /// triggers: Consider, Save and Pass each replace the previous state.
+  /// Toggle-created people follow the same visible rule through the scenario
+  /// callback, without entering AppState or reaching a service.
   Future<void> _move(_Move move) async {
     if (_busy) return;
+    _collapse();
     setState(() => _busy = true);
+
+    final localMove = widget.onLocalMove;
+    if (localMove != null) {
+      localMove(move);
+      if (mounted) setState(() => _busy = false);
+      return;
+    }
+
     final app = AppState.instance;
     final p = widget.profile;
+    final limits = ZyraSeekerPlanLimits.of(app.plan);
+    final alreadyConsidered = app.outgoingLikes.any((item) => item.id == p.id);
+    final maySave = limits.canSave(
+      currentCount: app.saved.length,
+      alreadySaved: app.saved.any((item) => item.id == p.id),
+    );
+    final mayConsider = limits.canConsider(
+      currentCount: app.outgoingLikes.length,
+      alreadyConsidered: alreadyConsidered,
+    );
+    if ((move == _Move.save && !maySave) ||
+        (move == _Move.consider && !mayConsider)) {
+      setState(() => _busy = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            move == _Move.save
+                ? 'Your ${limits.savedProfiles}-profile Save list is full. '
+                      'Remove a Save before adding another; existing profiles are kept.'
+                : 'Your ${limits.activeConsiders}-profile Consider list is full. '
+                      'Pass an existing Consider before adding another.',
+          ),
+        ),
+      );
+      return;
+    }
     // BUG-02 (2026-08-14 audit, OA-ZYRA-225 — fixed 2026-08-15): the
     // record calls report failure now instead of swallowing it. The
     // AppState change stays — same optimistic-with-honesty ruling as
@@ -2488,6 +2958,40 @@ class _ActivityCardState extends State<_ActivityCard> {
     // the guard keeps them off the persistence path, so a staged move
     // keeps behaving exactly as before.
     final persistable = ZyraReportService.isPersistableId(p.id);
+    if (move == _Move.consider &&
+        !alreadyConsidered &&
+        persistable &&
+        limits.dailyConsiders != null) {
+      try {
+        final usage = await ZyraSeekerBasicUsageStore.tryRecordConsider();
+        if (!mounted) return;
+        if (usage == null) {
+          setState(() => _busy = false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Your current access allows ${limits.dailyConsiders} '
+                'Considers each day. Passing or removing profiles is still available.',
+              ),
+            ),
+          );
+          return;
+        }
+      } catch (_) {
+        if (!mounted) return;
+        setState(() => _busy = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Couldn’t record your daily allowance. '
+              'Your profile decision is unchanged; please try again.',
+            ),
+          ),
+        );
+        return;
+      }
+      if (!mounted) return;
+    }
     var ok = true;
     switch (move) {
       case _Move.consider:
@@ -2534,8 +3038,9 @@ class _ActivityCardState extends State<_ActivityCard> {
   /// full thing — once they press expand, the page shows the full expand
   /// so the user doesn't have to swipe").
   ///
-  /// The card grows from ~76pt to roughly 500pt, all of it below the tap,
-  /// so expanding always pushes most of itself off-screen.
+  /// The card grows below the tap as its compact action deck appears. Even
+  /// without the retired full-photo body, a card low in the Activity list can
+  /// otherwise leave its lower actions outside the viewport.
   ///
   /// FIXED 2026-08-04 (Founder: "that's no longer working"). It was a race
   /// all along and had simply been getting away with it.
@@ -2572,7 +3077,7 @@ class _ActivityCardState extends State<_ActivityCard> {
   }
 
   void _expand() {
-    setState(() => _open = true);
+    widget.expansionController.open(_cardId);
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollIntoView());
     // +40ms past the crossfade so the final layout has certainly been
     // laid out, not merely scheduled.
@@ -2581,143 +3086,99 @@ class _ActivityCardState extends State<_ActivityCard> {
     });
   }
 
+  void _toggleOpen() {
+    if (_open) {
+      _collapse();
+      return;
+    }
+    _expand();
+  }
+
   Future<void> _report() async {
+    widget.expansionController.collapseAll();
+    final localOnly =
+        widget.isLocalTestProfile ||
+        !ZyraReportService.isPersistableId(widget.profile.id);
     final handled = await showReportProfileSheet(
       context,
       profileId: widget.profile.id,
       firstName: widget.profile.firstName,
       source: ZyraReportSource.connections,
+      profileSnapshot: widget.profile,
+      simulateOnly: localOnly,
+      // Toggle-created people must disappear from this test surface only.
+      // Do not let a fake id enter AppState or the member's persisted Hidden
+      // Profiles list; [onLocalHidden] owns that scenario-only transition.
+      applySimulatedHideLocally: !widget.isLocalTestProfile,
     );
-    if (handled == true && mounted) setState(() => _open = false);
+    if (handled != true || !mounted) return;
+    widget.onLocalHidden?.call();
+    _collapse();
   }
 
-  /// The two move buttons, ordered by ascending commitment.
+  /// The two state-change pills, in the Founder-approved reading order.
   ///
-  ///   Considered   Pass · Save
-  ///   Saved        Pass · Consider
-  ///   Passed       Save · Consider
+  ///   Considered   Save · Pass
+  ///   Saved        Consider · Pass
+  ///   Passed       Consider · Save
   ///
-  /// FIXED 2026-08-04 (Founder: "the flag for Considered isn't in line with
-  /// the others — make it the same as Saved").
-  ///
-  /// It was not the flag. The flag row was always full width; the row ABOVE
-  /// it was 8pt short, but only on a Considered card, so the flag looked
-  /// like the thing sticking out.
-  ///
-  /// The old code put each button and a trailing 8pt gap inside the same
-  /// `if`, so the gap survived whenever its button was the last one
-  /// rendered. That only happens for Considered — it is the one kind whose
-  /// two buttons are the FIRST two in the list:
-  ///
-  ///   Considered   [Pass][8][Save][8]        <- 8pt of nothing on the end
-  ///   Saved        [Pass][8][Consider]
-  ///   Passed       [Save][8][Consider]
-  ///
-  /// The Expandeds then divided the remaining width, so both buttons ended
-  /// 8pt shy of the card edge.
-  ///
-  /// Rebuilt as a list joined by separators rather than three independent
-  /// `if`s each carrying its own spacing. A separator can now only exist
-  /// BETWEEN two buttons, so this cannot reappear if a fourth action is
-  /// added or the order changes again.
-  Widget _moveRow() {
-    // AN INTRODUCTION OFFERS ONE ACTION, AND THAT IS A RULE RATHER THAN
-    // A STYLE. The card now looks exactly like its neighbours — same
-    // shell, same expansion, same photos — but Pass/Save/Consider stay
-    // off it, because this is someone you have NOT SEEN. Deciding from
-    // a thumbnail is precisely what ZYRA is not, and the three
-    // decisions live on the profile screen this button opens, where
-    // there is something to decide from (2026-08-12 rerouting).
-    //
-    // So the visual separation the Founder objected to is gone and the
-    // behavioural separation, which he did not, is kept.
-    final actions = <Widget>[
-      if (widget.kind != _ActivityKind.passed)
-        _CardAction(
-          icon: Icons.close,
-          label: 'Pass',
-          onTap: _busy ? null : () => _move(_Move.pass),
-        ),
-      if (widget.kind != _ActivityKind.saved)
-        _CardAction(
-          icon: Icons.bookmark_border,
-          label: 'Save',
-          onTap: _busy ? null : () => _move(_Move.save),
-        ),
-      // Consider is the only action the other person ever learns about, so
-      // it sits furthest from the thumb and is never the accidental tap.
-      if (widget.kind != _ActivityKind.considered)
-        _CardAction(
-          icon: Icons.check_circle_outline,
-          label: 'Consider',
-          onTap: _busy ? null : () => _move(_Move.consider),
-        ),
-    ];
+  /// Introduction retains its existing Pass · Save · Consider decision row.
+  /// Compatibility is appended after these by build(), so each settled
+  /// Activity state has exactly three secondary pills under View Profile.
+  List<_ConnectionsActionItem> _moveActions() {
+    _ConnectionsActionItem item(_Move move) => switch (move) {
+      _Move.pass => _ConnectionsActionItem(
+        icon: Icons.close,
+        label: 'Pass',
+        onTap: _busy ? null : () => _move(_Move.pass),
+      ),
+      _Move.save => _ConnectionsActionItem(
+        icon: Icons.bookmark_border,
+        label: 'Save',
+        onTap: _busy ? null : () => _move(_Move.save),
+      ),
+      _Move.consider => _ConnectionsActionItem(
+        icon: Icons.check_circle_outline,
+        label: 'Consider',
+        onTap: _busy ? null : () => _move(_Move.consider),
+      ),
+      _Move.unsave => _ConnectionsActionItem(
+        icon: Icons.bookmark_remove_outlined,
+        label: 'Remove Save',
+        onTap: _busy ? null : () => _move(_Move.unsave),
+      ),
+    };
 
-    final row = Row(
-      children: [
-        for (var i = 0; i < actions.length; i++) ...[
-          if (i > 0) const SizedBox(width: 8),
-          Expanded(child: actions[i]),
-        ],
+    final moves = switch (widget.kind) {
+      _ActivityKind.considered => const [_Move.save, _Move.pass],
+      _ActivityKind.saved => const [_Move.consider, _Move.pass],
+      _ActivityKind.passed => const [_Move.consider, _Move.save],
+      _ActivityKind.introduction => const [
+        _Move.pass,
+        _Move.save,
+        _Move.consider,
       ],
-    );
-
-    // AN INTRODUCTION GETS ALL THREE, UNDER VIEW PROFILE — 2026-08-13
-    // (DR-ZYRA-160, Founder: "below view profile add 3 new widgets, pass
-    // save consider").
-    //
-    // THIS REVERSES A RULE, and the reversal is the Founder's: since
-    // 2026-08-05 the card deliberately offered no decisions, because
-    // "you have not seen this person yet, and deciding from a thumbnail
-    // is exactly what ZYRA is not". The decisions lived on the profile
-    // screen instead. They have now moved BACK here, and off that screen
-    // in the same change — so there is still exactly one place to decide
-    // from, it is just this one.
-    //
-    // The three come from the list above rather than being written out
-    // again: an introduction is in none of the three lists, so all three
-    // conditions pass and it gets Pass, Save and Consider. They cannot
-    // drift from the versions Considered, Saved and Passed draw, because
-    // they ARE those versions.
-    //
-    // _move() needs no special case either. It writes through AppState,
-    // _undecidedSuggestions filters on exactly those three lists, and
-    // this screen listens to AppState — so deciding on an introduction
-    // removes it from Introductions on the next frame, with nothing to
-    // refresh by hand.
-    if (widget.kind == _ActivityKind.introduction) {
-      return Column(
-        children: [
-          _CardAction(
-            icon: Icons.arrow_forward,
-            label: 'View Profile',
-            onTap: widget.onViewProfile,
-          ),
-          const SizedBox(height: 8),
-          row,
-        ],
-      );
-    }
-
-    return row;
+    };
+    return moves.map(item).toList(growable: false);
   }
 
   @override
   Widget build(BuildContext context) {
+    final city = widget.profile.city.trim();
     return Padding(
       key: _cardKey,
       padding: const EdgeInsets.only(bottom: 10),
       child: DecoratedBox(
+        key: ValueKey<String>('connections-activity-card-${widget.profile.id}'),
         decoration: BoxDecoration(
           color: _open
-              ? Colors.white.withValues(alpha: 0.13)
-              : ZyraColors.iconButtonBg,
+              ? ZyraColors.surfaceEmphasisFill
+              : ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: _open
-                ? Colors.white.withValues(alpha: 0.24)
-                : ZyraColors.iconButtonBorder,
+                ? ZyraColors.surfaceEmphasisBorder
+                : ZyraColors.surfaceBorder,
             width: _open ? 1 : 0.5,
           ),
         ),
@@ -2725,140 +3186,116 @@ class _ActivityCardState extends State<_ActivityCard> {
           color: Colors.transparent,
           child: Column(
             children: [
-              // COLLAPSED HEADER ONLY, 2026-08-01 (Founder: "when I
-              // expand I can now see the photo twice, big and small, and
-              // Hassan 29 twice big and small... when you expand, the
-              // large overtakes the small so the small isn't shown").
-              //
-              // It was rendering in both states: a 52px thumbnail and a
-              // name directly above the full-size photo and the same name
-              // again. The header exists to identify a row you cannot see
-              // into. Once you can see into it, it is duplication.
-              if (!_open)
-                InkWell(
-                  borderRadius: BorderRadius.circular(14),
-                  onTap: _expand,
-                  child: Padding(
-                    padding: const EdgeInsets.all(ZyraCardMetrics.padding),
-                    child: Row(
-                      children: [
-                        _cardThumb(
-                          widget.profile,
-                          size: ZyraCardMetrics.thumb,
-                          radius: ZyraCardMetrics.thumbRadius,
-                        ),
-                        const SizedBox(width: ZyraCardMetrics.gap),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      // An introduction may arrive without
-                                      // an age; ", 0" is worse than the
-                                      // name alone.
-                                      widget.profile.age > 0
-                                          ? '${widget.profile.firstName}, ${widget.profile.age}'
-                                          : widget.profile.firstName,
-                                      style: ZyraText.body(
-                                        size: 14,
-                                        color: Colors.white,
-                                      ),
+              // Activity now follows Potential Journey's compact model:
+              // the one identity row remains visible in both states and
+              // expansion reveals controls, never a second enlarged photo.
+              InkWell(
+                key: ValueKey<String>(
+                  'connections-activity-card-header-${widget.profile.id}',
+                ),
+                borderRadius: BorderRadius.circular(14),
+                onTap: _toggleOpen,
+                child: Padding(
+                  padding: const EdgeInsets.all(ZyraCardMetrics.padding),
+                  child: Row(
+                    children: [
+                      _cardThumb(
+                        widget.profile,
+                        size: ZyraCardMetrics.thumb,
+                        radius: ZyraCardMetrics.thumbRadius,
+                      ),
+                      SizedBox(width: ZyraCardMetrics.gap),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    // An introduction may arrive without
+                                    // an age; ", 0" is worse than the
+                                    // name alone.
+                                    widget.profile.age > 0
+                                        ? '${widget.profile.firstName}, ${widget.profile.age}'
+                                        : widget.profile.firstName,
+                                    style: ZyraText.body(
+                                      size: 14,
+                                      color: ZyraColors.foreground,
                                     ),
                                   ),
-                                  // (see the Guardian line below the Row)
-                                  // ADDED 2026-08-01 (Founder: "when I swiped
-                                  // on one user and it had Saved and I moved
-                                  // it to Considered I still see it on
-                                  // Saved").
-                                  //
-                                  // That is the model working, not a bug —
-                                  // Saved is a bookmark and Considering is a
-                                  // decision, so one profile legitimately
-                                  // holds both. But "correct" is no defence
-                                  // if it LOOKS like the duplicate we just
-                                  // spent a session fixing. The chip says
-                                  // out loud why the person is in two
-                                  // places, on the row where the question
-                                  // actually occurs to you.
-                                ],
-                              ),
-                              // ADDED 2026-08-05 (Founder: "if they decline,
-                              // consider etc it moves to decline/consider/save
-                              // but still with the word guardian suggested
-                              // somewhere").
-                              //
-                              // The Guardian's involvement is the most
-                              // meaningful thing about how this person got
-                              // here, and it shouldn't evaporate the moment a
-                              // decision is made — a month later, "Ibrahim
-                              // suggested her" is exactly the context you want
-                              // when scanning a list of people you passed on.
-                              if (AppState.instance.suggestedBy(
-                                    widget.profile.id,
-                                  ) !=
-                                  null) ...[
-                                const SizedBox(height: 3),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.shield_outlined,
-                                      size: 11,
-                                      color: Colors.white.withValues(
-                                        alpha: 0.45,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Flexible(
-                                      child: Text(
-                                        'Suggested by ${AppState.instance.suggestedBy(widget.profile.id)}',
-                                        style: ZyraText.subtext(size: 11),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ],
+                            ),
+                            if (city.isNotEmpty) ...[
+                              const SizedBox(height: 3),
+                              Text(
+                                city,
+                                key: ValueKey<String>(
+                                  'connections-activity-location-${widget.profile.id}',
+                                ),
+                                style: ZyraText.subtext(size: 11.5),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ],
+                            // ADDED 2026-08-05 (Founder: "if they decline,
+                            // consider etc it moves to decline/consider/save
+                            // but still with the word guardian suggested
+                            // somewhere").
+                            //
+                            // The Guardian's involvement is the most
+                            // meaningful thing about how this person got
+                            // here, and it shouldn't evaporate the moment a
+                            // decision is made — a month later, "Ibrahim
+                            // suggested her" is exactly the context you want
+                            // when scanning a list of people you passed on.
+                            if (_suggestedBy != null) ...[
+                              SizedBox(height: 3),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.shield_outlined,
+                                    size: 11,
+                                    color: ZyraColors.foreground.withValues(
+                                      alpha: 0.45,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  Flexible(
+                                    child: Text(
+                                      'Suggested by $_suggestedBy',
+                                      style: ZyraText.subtext(size: 11),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      if (!_open)
+                        _ConnectionsCollapsedExpandArrow(
+                          key: ValueKey<String>(
+                            'connections-activity-expand-${widget.profile.id}',
                           ),
                         ),
-                        // Plain, not AnimatedRotation. It used to flip
-                        // between down and up on `_open` — but this whole
-                        // row is now inside `if (!_open)`, so it only ever
-                        // exists in the collapsed state and the rotation
-                        // could never fire. Expanding is signalled by the
-                        // card opening; collapsing is the centred chevron
-                        // at the bottom.
-                        const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.white38,
-                          size: 20,
+                      if (_open)
+                        _ConnectionsReportFlag(
+                          profileId: widget.profile.id,
+                          firstName: widget.profile.firstName,
+                          onTap: _report,
                         ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
+              ),
 
-              // REDESIGNED 2026-08-01 (Founder: "the expansion should be
-              // just Unlock and Unlock+ because what if they wanna see
-              // full photo of person again... it's kinda gotta be a mini
-              // profile view. And the report button is too exposed and
-              // wide so it needs to be more hidden").
-              //
-              // Both notes are right and they are the same note. The first
-              // version was an ACTION MENU — three stacked buttons, one of
-              // them a full-width salmon bar — attached to a 52px
-              // thumbnail. Nobody opens a saved profile to file a report;
-              // they open it to look at the person again.
-              //
-              // So: photos first and large, swipeable, with the details
-              // under them. Unlock and Unlock+ are the only buttons.
-              // Report moves to a small flag in the corner of the photo —
-              // reachable in one tap, but no longer the loudest thing in
-              // the card. A report is rare and deliberate; it does not
-              // need to shout.
+              // The retired full-photo mini-profile is gone. Potential,
+              // Considered, Saved and Passed now all expand in place into a
+              // compact action surface. The full-photo experience remains
+              // available through View Profile.
               AnimatedCrossFade(
                 // Shared with _expand()'s second scroll pass — if these two
                 // durations drift apart, the auto-scroll silently starts
@@ -2867,190 +3304,20 @@ class _ActivityCardState extends State<_ActivityCard> {
                 crossFadeState: _open
                     ? CrossFadeState.showSecond
                     : CrossFadeState.showFirst,
-                firstChild: const SizedBox(width: double.infinity),
+                firstChild: SizedBox(width: double.infinity),
                 secondChild: Padding(
-                  // Top inset raised from 0 to 12 — with the collapsed
-                  // header gone, the photo is now the top of the card and
-                  // needs the same breathing room as its other edges.
                   padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: AspectRatio(
-                          aspectRatio: 4 / 5,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              LayoutBuilder(
-                                builder: (context, c) => GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTapUp: (d) => _tapPhoto(d, c.maxWidth),
-                                  // GUARDED 2026-08-13: on an empty photo
-                                  // list this read `photos[clamp(0, -1)]`,
-                                  // which fails on the clamp before it
-                                  // ever reaches the index. Same honest
-                                  // placeholder the thumb uses, at hero
-                                  // scale.
-                                  child: widget.profile.photos.isEmpty
-                                      ? ColoredBox(
-                                          color: Colors.white.withValues(
-                                            alpha: 0.08,
-                                          ),
-                                          child: Icon(
-                                            Icons.person_outline,
-                                            color: Colors.white.withValues(
-                                              alpha: 0.35,
-                                            ),
-                                            size: 56,
-                                          ),
-                                        )
-                                      : ZyraProfileImage(
-                                          widget.profile.photos[_photoIndex
-                                              .clamp(
-                                                0,
-                                                widget.profile.photos.length -
-                                                    1,
-                                              )],
-                                        ),
-                                ),
-                              ),
-                              // Bottom scrim so the name stays legible on
-                              // a pale photo — same problem the sheets
-                              // have, same solution.
-                              Positioned(
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                child: Container(
-                                  height: 96,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                      colors: [
-                                        Colors.black.withValues(alpha: 0.65),
-                                        Colors.black.withValues(alpha: 0.0),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              // Left-side vertical rail, copied from
-                              // browse_screen (left: 16, vertically
-                              // centred, 7px dots, white active / white
-                              // 0.32 inactive, 0.5px white 0.3 border).
-                              // Same values, not an approximation — two
-                              // photo viewers in one app should not have
-                              // two dot styles.
-                              if (widget.profile.photos.length > 1)
-                                Positioned(
-                                  left: 12,
-                                  top: 0,
-                                  bottom: 0,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: List.generate(
-                                        widget.profile.photos.length,
-                                        (i) {
-                                          final active = i == _photoIndex;
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(
-                                              vertical: 3,
-                                            ),
-                                            width: 7,
-                                            height: 7,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: Colors.white.withValues(
-                                                  alpha: 0.3,
-                                                ),
-                                                width: 0.5,
-                                              ),
-                                              color: active
-                                                  ? Colors.white
-                                                  : Colors.white.withValues(
-                                                      alpha: 0.32,
-                                                    ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              // Report — deliberately small and quiet.
-                              Positioned(
-                                left: 12,
-                                right: 12,
-                                bottom: 10,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // THE SHARED BLOCK — DR-ZYRA-163.
-                                    // Was "Arif, 36" over a pin icon and
-                                    // a city; now the same widget Browse
-                                    // draws, at card scale. The comma
-                                    // and the pin were this card's own
-                                    // invention, not a decision.
-                                    ZyraProfileNameBlock(
-                                      profile: widget.profile,
-                                      nameSize: 20,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // MOVE ACTIONS — 2026-08-01 (Founder: "there's no
-                      // way to open the profile card and move a user to
-                      // save or decline").
-                      //
-                      // Which actions appear depends on where the card
-                      // already is, and follows the two-axis model:
-                      //
-                      //   Considered  Pass (changes the decision)
-                      //               Save / Saved (bookmark, independent)
-                      //   Saved       Consider, Pass (set the decision)
-                      //               Remove save (drops the bookmark)
-                      //   Passed      Consider (changes the decision)
-                      //               Save (bookmark)
-                      //
-                      // Note what is deliberately absent: there is no
-                      // "un-Consider". Considering can only be replaced by
-                      // Passing, because the other person may already have
-                      // been told. Quietly withdrawing would be a lie by
-                      // omission, and the database enforces the same rule
-                      // through the likes/passes triggers.
-                      // ORDER: Pass, Save, Consider — 2026-08-03
-                      // (Founder: "in decline you have Consider, Save but
-                      // it should be Save, Consider; likewise for Save
-                      // it's Consider, Pass but it should be Pass,
-                      // Consider").
-                      //
-                      // Both corrections point at one principle, so the
-                      // row is now ordered by ASCENDING COMMITMENT rather
-                      // than by a fixed list with gaps:
-                      //
-                      //   Pass      let them go
-                      //   Save      keep them, tell them nothing
-                      //   Consider  tell them you are interested
-                      //
-                      // Consider is the only action the other person ever
-                      // learns about, so it sits furthest from the thumb
-                      // and is never the accidental tap. Each card shows
-                      // the two it is not already in:
-                      //
-                      //   Considered   Pass · Save
-                      //   Saved        Pass · Consider
-                      //   Passed       Save · Consider
-                      const SizedBox(height: 10),
-                      _moveRow(),
+                      // The full-photo mini-profile was retired. View Profile
+                      // owns photo inspection; this expansion is the same
+                      // compact action surface used by Potential Journey.
+                      // Each settled Activity state exposes the other two
+                      // one-state destinations, followed by Compatibility.
+                      // The exact Founder-approved order lives in
+                      // _moveActions(); local test people use the same deck.
+                      SizedBox(height: 10),
                       // SHOWN ON EVERY CARD, INCLUDING PASSED — Founder,
                       // 2026-08-03: "we said on decline there isn't an
                       // option for Profile Unlock, but I feel we should
@@ -3068,70 +3335,55 @@ class _ActivityCardState extends State<_ActivityCard> {
                       //
                       // APP/Premium/Profile Unlocks/Summary.md updated to
                       // match rather than left contradicting the app.
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 85,
-                            // LABEL 2026-08-03, Founder approved: the
-                            // button becomes "View Compatibility"
-                            // permanently once this profile has been
-                            // unlocked at either tier, and returning
-                            // never consumes another unlock.
-                            //
-                            // Either tier flips it, because both lead to
-                            // the same screen and the same idea. Holding
-                            // Unlock but not Plus still means there is
-                            // compatibility to view.
-                            child: _CardAction(
-                              icon: _viewable
-                                  ? Icons.visibility_outlined
-                                  : Icons.insights_outlined,
-                              label: _viewable
-                                  ? 'View Compatibility'
-                                  : 'Compatibility Unlock',
-                              onTap: () async {
-                                await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => ProfileUnlockScreen(
-                                      profile: widget.profile,
-                                    ),
-                                  ),
-                                );
-                                // An unlock may have happened on that
-                                // screen; the label has to catch up.
-                                if (mounted) setState(() {});
-                              },
-                            ),
+                      _ConnectionsActionDeck(
+                        primary: _ConnectionsActionItem(
+                          icon: Icons.person_outline,
+                          label: 'View Profile',
+                          onTap: () => _leavePage(
+                            widget.onViewProfile ??
+                                () => pushZyraConnectionsProfile(
+                                  context,
+                                  profile: widget.profile,
+                                ),
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            flex: 15,
-                            child: _FlagAction(onTap: _report),
+                        ),
+                        actions: [
+                          ..._moveActions(),
+                          // The label becomes View Compatibility permanently
+                          // after an unlock at either tier.
+                          _ConnectionsActionItem(
+                            icon: _viewable
+                                ? Icons.visibility_outlined
+                                : Icons.insights_outlined,
+                            label: _viewable
+                                ? 'View Compatibility'
+                                : 'Compatibility Unlock',
+                            onTap: () async {
+                              widget.expansionController.collapseAll();
+                              await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ProfileUnlockScreen(
+                                    profile: widget.profile,
+                                  ),
+                                ),
+                              );
+                              if (mounted) setState(() {});
+                            },
                           ),
                         ],
+                        // The two short decisions share one row; the longer
+                        // Compatibility label gets a full-width pill below.
+                        // This preserves the three-action reading order
+                        // without truncating the feature name on an iPhone.
+                        fullWidthLastAction:
+                            widget.kind != _ActivityKind.introduction,
                       ),
-                      // COLLAPSE — 2026-08-01 (Founder: "the arrow on the
-                      // top right of the card is still needed... the flag
-                      // button can go up and the arrow can move to middle,
-                      // so the flag is in top right of card and arrow is
-                      // in middle").
-                      //
-                      // The flag already sits top-right of the photo,
-                      // which IS the top right of the card now that the
-                      // header is hidden — so it moved by deletion rather
-                      // than by being repositioned.
-                      //
-                      // The chevron went with the header, so the only way
-                      // out was tapping the photo, which now cycles
-                      // photos instead. Without this the card could be
-                      // opened and not closed. Centred, full width, and a
-                      // comfortable tap target.
-                      const SizedBox(height: 4),
+                      // COLLAPSE — same single affordance as Potential.
+                      SizedBox(height: 4),
                       Center(
                         child: InkWell(
                           borderRadius: BorderRadius.circular(20),
-                          onTap: () => setState(() => _open = false),
+                          onTap: _collapse,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 26,
@@ -3139,8 +3391,11 @@ class _ActivityCardState extends State<_ActivityCard> {
                             ),
                             child: Icon(
                               Icons.keyboard_arrow_up,
+                              key: ValueKey<String>(
+                                'connections-activity-collapse-${widget.profile.id}',
+                              ),
                               size: 22,
-                              color: Colors.white.withValues(alpha: 0.45),
+                              color: ZyraColors.ink(0.45),
                             ),
                           ),
                         ),
@@ -3157,49 +3412,27 @@ class _ActivityCardState extends State<_ActivityCard> {
   }
 }
 
-/// 2026-08-01: the `danger` variant was dropped with the Report button
-/// that used it. Report is now a small flag on the photo, not a
-/// full-width salmon bar (Founder: "too exposed and wide"). Unlock and
-/// Unlock+ are the only things using this now.
-/// Report. Same height, radius and fill as _CardAction so the two sit
-/// level in the row — icon only, because at 15% width a label would not
-/// fit and an abbreviation would be worse than a glyph.
-class _FlagAction extends StatelessWidget {
-  final VoidCallback onTap;
-  const _FlagAction({required this.onTap});
+class _ConnectionsSubsectionLabel extends StatelessWidget {
+  final String label;
+
+  const _ConnectionsSubsectionLabel(this.label);
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white.withValues(alpha: 0.07),
-      borderRadius: BorderRadius.circular(10),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10),
-        onTap: onTap,
-        child: Padding(
-          // Matches _CardAction's vertical 10 + 15px icon, so both
-          // buttons are the same height without hardcoding one.
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Center(
-            child: Icon(
-              Icons.flag_outlined,
-              size: 15,
-              color: Colors.white.withValues(alpha: 0.75),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Text(
+    label,
+    style: ZyraText.chapterLabel(color: ZyraColors.foregroundMuted),
+  );
 }
 
 /// THE JOURNEY PERSON CARD — _ActivityCard's expansion model carrying
 /// Journey verbs (Founder, 2026-08-12, third person-surface round: "take
 /// the activity section how it expands and copy that model").
 ///
-/// The thumbnail, name, state and chevron remain the card's single identity
-/// header while closed and open. Expansion adds only the state's verb — with
-/// the small flag Report beside it at the same 85/15 split — followed by the
+/// The thumbnail, name and state remain the card's single identity header
+/// while closed and open. The down chevron belongs only to the collapsed
+/// state; once expanded, the small person-level Report flag takes its place
+/// and the one collapse chevron lives at the bottom. Expansion then adds the
+/// state's verb, followed by the
 /// full-width Profile, Compatibility and optional Timeline/End rows. States
 /// with no verb (busy elsewhere, the spent nudge, the cooling period) show the
 /// honest fact in the verb's place instead of a disabled button.
@@ -3209,6 +3442,7 @@ class _FlagAction extends StatelessWidget {
 /// must move identically or the copy reads as a knock-off.
 class _JourneyExpandingCard extends StatefulWidget {
   final JourneyMatch j;
+  final ZyraConnectionsExpansionController expansionController;
   final String subtitle;
   final ({String label, String? caption, Future<void> Function() run})? hero;
   final String? heroFact;
@@ -3247,26 +3481,9 @@ class _JourneyExpandingCard extends StatefulWidget {
   /// replaces it here; the freed height goes to the photo/verb gap.
   final bool showStateLine;
 
-  /// THE NEUTRAL PAIR — DR-ZYRA-170 (2026-08-15, shared pause holds).
-  /// On a Journey paused by the OTHER person, the verb seat holds two
-  /// equal half-pills instead of one hero: "Pause too" and
-  /// "Request Continue"
-  /// — the two ways to answer a pause, at the same visual weight,
-  /// because neither is the expected one (waiting, which needs no
-  /// button, is an answer too). [right] null with [rightDone] set shows
-  /// the spent ready-note as a quiet fact; both null (busy elsewhere)
-  /// leaves Pause too standing alone. Exclusive with [hero].
-  final ({
-    String left,
-    Future<void> Function() onLeft,
-    String? right,
-    Future<void> Function()? onRight,
-    String? rightDone,
-  })?
-  pairHero;
-
   const _JourneyExpandingCard({
     required this.j,
+    required this.expansionController,
     required this.subtitle,
     required this.hero,
     required this.heroFact,
@@ -3280,7 +3497,6 @@ class _JourneyExpandingCard extends StatefulWidget {
     this.compatibilityRevealed = false,
     this.onDismissExtension,
     this.showStateLine = true,
-    this.pairHero,
   });
 
   @override
@@ -3288,7 +3504,8 @@ class _JourneyExpandingCard extends StatefulWidget {
 }
 
 class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
-  bool _open = false;
+  String get _cardId => 'journey:${widget.j.matchId}';
+  bool get _open => widget.expansionController.value == _cardId;
   final GlobalKey _cardKey = GlobalKey();
 
   static const Duration _kExpandAnim = Duration(milliseconds: 200);
@@ -3302,20 +3519,65 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
       ZyraUnlockService.isUnlocked(_p.id, UnlockTier.standard) ||
       ZyraUnlockService.isUnlocked(_p.id, UnlockTier.plus);
 
+  bool get _hasJourneyReference =>
+      widget.compatibilityRevealed &&
+      widget.showTimeline &&
+      widget.onTimeline != null;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.expansionController.addListener(_onExpansionChanged);
+  }
+
+  void _onExpansionChanged() {
+    if (mounted) setState(() {});
+  }
+
+  void _collapse() => widget.expansionController.close(_cardId);
+
+  void _leavePage(VoidCallback action) {
+    widget.expansionController.collapseAll();
+    action();
+  }
+
+  Future<void> _openCompatibility() async {
+    widget.expansionController.collapseAll();
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ProfileUnlockScreen(
+          profile: _p,
+          journeyRevealed: widget.compatibilityRevealed,
+        ),
+      ),
+    );
+    if (mounted) setState(() {});
+  }
+
   @override
   void didUpdateWidget(covariant _JourneyExpandingCard old) {
     super.didUpdateWidget(old);
+    if (old.expansionController != widget.expansionController) {
+      old.expansionController.removeListener(_onExpansionChanged);
+      widget.expansionController.addListener(_onExpansionChanged);
+    }
     // The extension lands right after the hero tap collapsed the card
     // (the hero's onTap closes before running the verb) — reopen so the
     // choice is actually visible, and bring it into view. Both setStates
     // happen in the same frame, so no collapse is ever painted.
     if (widget.inlineExtension != null && old.inlineExtension == null) {
-      _open = true;
+      widget.expansionController.open(_cardId);
       WidgetsBinding.instance.addPostFrameCallback((_) => _scrollIntoView());
       Future.delayed(_kExpandAnim + const Duration(milliseconds: 40), () {
         if (mounted) _scrollIntoView();
       });
     }
+  }
+
+  @override
+  void dispose() {
+    widget.expansionController.removeListener(_onExpansionChanged);
+    super.dispose();
   }
 
   void _scrollIntoView() {
@@ -3330,7 +3592,7 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
   }
 
   void _expand() {
-    setState(() => _open = true);
+    widget.expansionController.open(_cardId);
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollIntoView());
     Future.delayed(_kExpandAnim + const Duration(milliseconds: 40), () {
       if (mounted) _scrollIntoView();
@@ -3339,7 +3601,7 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
 
   void _toggleOpen() {
     if (_open) {
-      setState(() => _open = false);
+      _collapse();
       return;
     }
     _expand();
@@ -3353,15 +3615,16 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
         key: _cardKey,
         padding: const EdgeInsets.only(bottom: 10),
         child: DecoratedBox(
+          key: ValueKey<String>('connections-journey-card-${widget.j.matchId}'),
           decoration: BoxDecoration(
             color: _open
-                ? Colors.white.withValues(alpha: 0.13)
-                : ZyraColors.iconButtonBg,
+                ? ZyraColors.surfaceEmphasisFill
+                : ZyraColors.surfaceFill,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: _open
-                  ? Colors.white.withValues(alpha: 0.24)
-                  : ZyraColors.iconButtonBorder,
+                  ? ZyraColors.surfaceEmphasisBorder
+                  : ZyraColors.surfaceBorder,
               width: _open ? 1 : 0.5,
             ),
           ),
@@ -3373,6 +3636,9 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                 // states. Expanding reveals only Journey controls below it,
                 // so the photo, name and state are never repeated.
                 InkWell(
+                  key: ValueKey<String>(
+                    'connections-card-header-${widget.j.matchId}',
+                  ),
                   borderRadius: BorderRadius.circular(14),
                   onTap: _toggleOpen,
                   child: Padding(
@@ -3387,7 +3653,7 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                               ? Container(
                                   width: ZyraCardMetrics.thumb,
                                   height: ZyraCardMetrics.thumb,
-                                  color: Colors.white.withValues(alpha: 0.22),
+                                  color: ZyraColors.ink(0.22),
                                   alignment: Alignment.center,
                                   child: Text(
                                     _p.firstName.isEmpty
@@ -3402,7 +3668,7 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                                   height: ZyraCardMetrics.thumb,
                                 ),
                         ),
-                        const SizedBox(width: ZyraCardMetrics.gap),
+                        SizedBox(width: ZyraCardMetrics.gap),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -3411,10 +3677,10 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                                 '${_p.firstName}, ${_p.age}',
                                 style: ZyraText.body(
                                   size: 14,
-                                  color: Colors.white,
+                                  color: ZyraColors.foreground,
                                 ),
                               ),
-                              const SizedBox(height: 3),
+                              SizedBox(height: 3),
                               Text(
                                 widget.subtitle,
                                 style: ZyraText.subtext(size: 11),
@@ -3423,15 +3689,18 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                             ],
                           ),
                         ),
-                        AnimatedRotation(
-                          duration: _kExpandAnim,
-                          turns: _open ? 0.5 : 0,
-                          child: const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Colors.white38,
-                            size: 20,
+                        if (!_open)
+                          _ConnectionsCollapsedExpandArrow(
+                            key: ValueKey<String>(
+                              'connections-card-expand-${widget.j.matchId}',
+                            ),
                           ),
-                        ),
+                        if (_open)
+                          _ConnectionsReportFlag(
+                            profileId: _p.id,
+                            firstName: _p.firstName,
+                            onTap: () => _leavePage(widget.onReport),
+                          ),
                       ],
                     ),
                   ),
@@ -3441,7 +3710,7 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                   crossFadeState: _open
                       ? CrossFadeState.showSecond
                       : CrossFadeState.showFirst,
-                  firstChild: const SizedBox(width: double.infinity),
+                  firstChild: SizedBox(width: double.infinity),
                   secondChild: Padding(
                     padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
                     child: Column(
@@ -3459,24 +3728,19 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                               height: 26,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.white.withValues(alpha: 0.10),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.25),
-                                ),
+                                color: ZyraColors.ink(0.10),
+                                border: Border.all(color: ZyraColors.ink(0.25)),
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.close,
                                 size: 14,
-                                color: Colors.white70,
+                                color: ZyraColors.ink(0.70),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          Container(
-                            height: 1,
-                            color: Colors.white.withValues(alpha: 0.14),
-                          ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
+                          Container(height: 1, color: ZyraColors.ink(0.14)),
+                          SizedBox(height: 12),
                           widget.inlineExtension!,
                         ],
                         // MID-DECISION the card IS the dialog: the rows
@@ -3488,197 +3752,82 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                           // rows suppress it; their persistent header already
                           // says they are ready to start.
                           if (widget.showStateLine) ...[
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10),
                             Text(
                               widget.heroFact ??
                                   widget.hero?.caption ??
                                   widget.subtitle,
                               style: ZyraText.subtext(
                                 size: 10.5,
-                                color: const Color(0x8CFFFFFF),
+                                color: ZyraColors.ink(0.55),
                               ),
                             ),
                           ],
                           // THE VERB ROW — Activity's 85/15 split, with
-                          // the Journey verb in the big seat. A FILLED
-                          // LAVENDER PILL since 2026-08-13 (Founder: "its
-                          // a more meaningful button so pill should be
-                          // different") — the one control on the card
-                          // that moves the Journey, visually above the
-                          // flat look-at rows and apart from coral End.
+                          // the Journey verb in the big seat. Its full width
+                          // preserves hierarchy; Founder direction on
+                          // 2026-08-29 removed the former accent-colour fill
+                          // so it now uses the same neutral glass as the
+                          // look-at rows. Coral remains reserved for End.
                           SizedBox(height: widget.showStateLine ? 8 : 14),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 85,
-                                // DR-ZYRA-170: paused-by-them rows carry
-                                // the neutral pair in this seat; the card
-                                // stays OPEN through both taps so the
-                                // state change is watched, not implied.
-                                child: widget.pairHero != null
-                                    ? _PairHero(pair: widget.pairHero!)
-                                    : widget.hero != null
-                                    ? _HeroPill(
-                                        label: widget.hero!.label,
-                                        onTap: () {
-                                          setState(() => _open = false);
-                                          widget.hero!.run();
-                                        },
-                                      )
-                                    : Material(
-                                        color: Colors.white.withValues(
-                                          alpha: 0.05,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 10,
-                                            horizontal: 8,
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              widget.heroFact ??
-                                                  'Nothing to do right now',
-                                              textAlign: TextAlign.center,
-                                              style: ZyraText.subtext(size: 11),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                flex: 15,
-                                child: _FlagAction(onTap: widget.onReport),
-                              ),
-                            ],
-                          ),
-                          // VIEW PROFILE, ON EVERY STATE — 2026-08-13
-                          // (Founder: "Potential, Paused and Ended
-                          // Journeys should all have a View Profile
-                          // action… available consistently"). First of
-                          // the look-at rows, deliberately: the person,
-                          // then the fit (Compatibility), then the story
-                          // (Timeline). Same full screen the Active
-                          // card's pill opens.
-                          const SizedBox(height: 8),
-                          _JourneyCardAction(
-                            label: 'View Profile',
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    SeekerProfileScreen(profile: _p),
-                              ),
+                          _ConnectionsActionDeck(
+                            primary: _ConnectionsActionItem(
+                              icon: Icons.route_outlined,
+                              label:
+                                  widget.hero?.label ??
+                                  widget.heroFact ??
+                                  'Nothing to do right now',
+                              onTap: widget.hero == null
+                                  ? null
+                                  : () {
+                                      _collapse();
+                                      widget.hero!.run();
+                                    },
                             ),
-                          ),
-                          // COMPATIBILITY, ON EVERY JOURNEY CARD — Founder,
-                          // 2026-08-12: "what if its ended or paused but
-                          // they paid for profile unlock where can they
-                          // view" / "if its potential and they wanna now
-                          // pay for profile unlock then what".
-                          //
-                          // AMENDED 2026-08-13: on Paused and Ended it is
-                          // ALWAYS "View Compatibility" ("its not
-                          // compatibility unlock. because they already
-                          // unlocked") — a Journey opens with
-                          // Compatibility Reveal, so the overall figure
-                          // is already theirs and the screen opens
-                          // through its journeyRevealed door, no
-                          // purchase. Potential is the only state that
-                          // can still read "Compatibility Unlock", and
-                          // only until unlocked at either tier.
-                          const SizedBox(height: 8),
-                          _JourneyCardAction(
-                            label: widget.compatibilityRevealed || _viewable
-                                ? 'View Compatibility'
-                                : 'Compatibility Unlock',
-                            onTap: () async {
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => ProfileUnlockScreen(
+                            journeyReference: _hasJourneyReference
+                                ? _ConnectionsJourneyReference(
+                                    matchId: widget.j.matchId,
+                                    onTimeline: () =>
+                                        _leavePage(widget.onTimeline!),
+                                    onCompatibility: _openCompatibility,
+                                  )
+                                : null,
+                            actions: [
+                              _ConnectionsActionItem(
+                                icon: Icons.person_outline,
+                                label: 'View Profile',
+                                onTap: () => _leavePage(
+                                  () => pushZyraConnectionsProfile(
+                                    context,
                                     profile: _p,
-                                    journeyRevealed:
-                                        widget.compatibilityRevealed,
                                   ),
                                 ),
-                              );
-                              if (mounted) setState(() {});
-                            },
-                          ),
-                          if (widget.showTimeline &&
-                              widget.onTimeline != null) ...[
-                            const SizedBox(height: 8),
-                            _JourneyCardAction(
-                              label: 'Timeline',
-                              onTap: widget.onTimeline,
-                            ),
-                          ],
-                          if (widget.canEnd && widget.onEnd != null) ...[
-                            const SizedBox(height: 8),
-                            // A PILL, NOT SMALL PRINT — Founder,
-                            // 2026-08-12: "for paused i dont like end
-                            // journey being so small, maybe give it a
-                            // pill also". Full width per his A1 pick.
-                            //
-                            // 2026-08-13 twice more: the label is "End
-                            // Journey" EVERYWHERE (naming-consistency
-                            // ruling — "End this Journey" retired), and
-                            // the contrast fix — a dark under-fill in
-                            // the app's dark-chip tone, outline and text
-                            // lifted — so the pill holds its own on the
-                            // gradient's pink stop. Still an OUTLINE
-                            // destructive; never a solid coral fill.
-                            SizedBox(
-                              width: double.infinity,
-                              child: Material(
-                                color: const Color(0x48140C1A),
-                                shape: StadiumBorder(
-                                  side: BorderSide(
-                                    color: _takeoverCoral.withValues(
-                                      alpha: 0.75,
-                                    ),
-                                  ),
+                              ),
+                              if (!_hasJourneyReference)
+                                _ConnectionsActionItem(
+                                  icon: Icons.insights_outlined,
+                                  label:
+                                      widget.compatibilityRevealed || _viewable
+                                      ? 'View Compatibility'
+                                      : 'Compatibility Unlock',
+                                  onTap: _openCompatibility,
                                 ),
-                                child: InkWell(
-                                  customBorder: const StadiumBorder(),
+                              if (widget.canEnd && widget.onEnd != null)
+                                _ConnectionsActionItem(
+                                  icon: Icons.stop_circle_outlined,
+                                  label: 'End Journey',
                                   onTap: () {
-                                    setState(() => _open = false);
+                                    _collapse();
                                     widget.onEnd!();
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 10,
-                                      horizontal: 11,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          'End Journey',
-                                          style: ZyraText.body(
-                                            size: 12.5,
-                                            color: const Color(0xFFF0A2A0),
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        Icon(
-                                          Icons.chevron_right,
-                                          size: 18,
-                                          color: _takeoverCoral.withValues(
-                                            alpha: 0.78,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                          const SizedBox(height: 4),
+                            ],
+                          ),
+                          SizedBox(height: 4),
                           Center(
                             child: InkWell(
                               borderRadius: BorderRadius.circular(20),
-                              onTap: () => setState(() => _open = false),
+                              onTap: _collapse,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 26,
@@ -3686,8 +3835,11 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                                 ),
                                 child: Icon(
                                   Icons.keyboard_arrow_up,
+                                  key: ValueKey<String>(
+                                    'connections-card-collapse-${widget.j.matchId}',
+                                  ),
                                   size: 22,
-                                  color: Colors.white.withValues(alpha: 0.45),
+                                  color: ZyraColors.ink(0.45),
                                 ),
                               ),
                             ),
@@ -3710,183 +3862,691 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
 // compact identity header now remains visible while open, and the expansion is
 // reserved for Journey controls only.
 
-/// The Journey verb — Begin / Resume / Restart / Request restart — as the
-/// FROST PRIMARY: Continue Journey's exact recipe (white 22% fill, white
-/// 42% border), because the Founder named that pill his favourite and
-/// asked every primary Journey action to follow it (2026-08-13,
-/// primary-button-consistency ruling — this RETIRES the same-day lavender
-/// fill after one day; his call, both days). The hierarchy still reads:
-/// frost pill acts on the Journey, flat rows look at things
-/// (View Profile, Compatibility, Timeline), coral outline ends things.
-class _HeroPill extends StatelessWidget {
-  final String label;
-  final VoidCallback onTap;
-  const _HeroPill({required this.label, required this.onTap});
+/// The one collapsed-card invitation used by Journey and Activity rows.
+/// Sharing the width, alignment and glyph keeps Potential and
+/// Considered/Saved/Passed in the exact same centre-right position.
+class _ConnectionsCollapsedExpandArrow extends StatelessWidget {
+  const _ConnectionsCollapsedExpandArrow({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white.withValues(alpha: 0.22),
-      shape: StadiumBorder(
-        side: BorderSide(color: Colors.white.withValues(alpha: 0.42), width: 1),
+  Widget build(BuildContext context) => SizedBox(
+    width: 32,
+    child: Center(
+      child: Icon(
+        Icons.keyboard_arrow_down,
+        color: ZyraColors.ink(0.38),
+        size: 20,
       ),
-      child: InkWell(
-        customBorder: const StadiumBorder(),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: ZyraText.button(size: 12.5),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }
 
-/// Two half-pills at equal weight — DR-ZYRA-170's answer surface for a
-/// pause you didn't place. Same frost as _HeroPill, deliberately: both
-/// responses act on the Journey, and neither outranks the other. The
-/// spent ready-note renders as the same quiet box the no-verb states
-/// use, so "they already know" reads as a fact, not a disabled button.
-class _PairHero extends StatelessWidget {
-  final ({
-    String left,
-    Future<void> Function() onLeft,
-    String? right,
-    Future<void> Function()? onRight,
-    String? rightDone,
-  })
-  pair;
-  const _PairHero({required this.pair});
+class _ConnectionsActionItem {
+  final IconData icon;
+  final String label;
+  final VoidCallback? onTap;
+
+  const _ConnectionsActionItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+}
+
+/// A person-level safety action, deliberately outside Journey navigation.
+/// Active keeps this visible because its card is already the live expanded
+/// Journey surface. Potential, Paused and Ended build it only after their
+/// shared card opens, keeping collapsed identity rows free of safety chrome.
+class _ConnectionsReportFlag extends StatelessWidget {
+  final String profileId;
+  final String firstName;
+  final VoidCallback onTap;
+
+  const _ConnectionsReportFlag({
+    required this.profileId,
+    required this.firstName,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Tooltip(
+    message: 'Report $firstName',
+    child: Semantics(
+      button: true,
+      label: 'Report $firstName',
+      child: GestureDetector(
+        key: ValueKey<String>('connections-report-$profileId'),
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, bottom: 10),
+          child: Icon(
+            Icons.flag_outlined,
+            size: 15,
+            color: ZyraColors.ink(0.75),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// One action hierarchy shared by Active, Potential, Paused and Ended
+/// Journeys plus Considered, Saved, Passed and Introductions. The selected
+/// developer style changes only presentation; labels, callbacks and data stay
+/// attached to the same action objects.
+class _ConnectionsActionDeck extends StatelessWidget {
+  final _ConnectionsActionItem primary;
+  final List<_ConnectionsActionItem> actions;
+  final Widget? journeyReference;
+  final bool fullWidthLastAction;
+
+  const _ConnectionsActionDeck({
+    required this.primary,
+    required this.actions,
+    this.journeyReference,
+    this.fullWidthLastAction = false,
+  });
+
+  ZyraConnectionsCardStyle get _style => ZyraConnectionsCardStyle.compactChips;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: _HeroPill(label: pair.left, onTap: () => pair.onLeft()),
-        ),
-        if (pair.right != null || pair.rightDone != null)
-          const SizedBox(width: 6),
-        if (pair.right != null)
-          Expanded(
-            child: _HeroPill(
-              label: pair.right!,
-              onTap: () => pair.onRight?.call(),
-            ),
-          )
-        else if (pair.rightDone != null)
-          Expanded(
-            child: Material(
-              color: Colors.white.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(10),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 8,
-                ),
-                child: Center(
-                  child: Text(
-                    '✓ ${pair.rightDone}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: ZyraText.subtext(size: 11),
-                  ),
-                ),
-              ),
+        _ConnectionsActionButton(item: primary, primary: true, style: _style),
+        if (journeyReference != null) ...[
+          const SizedBox(height: 10),
+          journeyReference!,
+        ],
+        if (actions.isNotEmpty) ...[
+          const SizedBox(height: 9),
+          KeyedSubtree(
+            key: const ValueKey('connections-card-action-strip'),
+            child: _ConnectionsSecondaryActions(
+              actions: actions,
+              style: _style,
+              fullWidthLastAction: fullWidthLastAction,
             ),
           ),
+        ],
       ],
     );
   }
 }
 
-/// The compact open row used only inside Potential, Paused and Ended Journey
-/// expansions. It keeps the action name left-aligned and the direction cue at
-/// the far edge, matching the approved Connections treatment without changing
-/// the shared action component used by Activity or Introductions.
-class _JourneyCardAction extends StatelessWidget {
-  final String label;
-  final VoidCallback? onTap;
+/// Paused and Ended cards already have a Journey history. Their Timeline and
+/// revealed Compatibility belong together as references to that Journey,
+/// rather than being mixed with profile/safety/state-changing controls. The
+/// label groups them without a second enclosing glass box; each action keeps
+/// the same simple Compact Chips pill used by View Profile.
+class _ConnectionsJourneyReference extends StatelessWidget {
+  final String matchId;
+  final VoidCallback onTimeline;
+  final VoidCallback onCompatibility;
 
-  const _JourneyCardAction({required this.label, required this.onTap});
+  const _ConnectionsJourneyReference({
+    required this.matchId,
+    required this.onTimeline,
+    required this.onCompatibility,
+  });
+
+  ZyraConnectionsCardStyle get _style => ZyraConnectionsCardStyle.compactChips;
 
   @override
-  Widget build(BuildContext context) {
-    final tint = Colors.white.withValues(alpha: onTap == null ? 0.35 : 0.82);
-    return Material(
-      color: Colors.white.withValues(alpha: 0.035),
-      shape: StadiumBorder(
-        side: BorderSide(color: Colors.white.withValues(alpha: 0.17)),
-      ),
-      child: InkWell(
-        customBorder: const StadiumBorder(),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 11),
-          child: Row(
-            children: [
-              Text(label, style: ZyraText.body(size: 11.5, color: tint)),
-              const Spacer(),
-              Icon(
-                Icons.chevron_right,
-                size: 18,
-                color: tint.withValues(alpha: 0.55),
+  Widget build(BuildContext context) => Container(
+    key: ValueKey<String>('connections-journey-reference-$matchId'),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'JOURNEY',
+          style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+        ),
+        const SizedBox(height: 7),
+        KeyedSubtree(
+          key: const ValueKey('connections-journey-reference-actions'),
+          child: _ConnectionsSecondaryActions(
+            style: _style,
+            actions: [
+              _ConnectionsActionItem(
+                icon: Icons.timeline_outlined,
+                label: 'Timeline',
+                onTap: onTimeline,
+              ),
+              _ConnectionsActionItem(
+                icon: Icons.insights_outlined,
+                label: 'View Compatibility',
+                onTap: onCompatibility,
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
 }
 
-class _CardAction extends StatelessWidget {
-  final IconData icon;
-  final String label;
+class _ConnectionsSecondaryActions extends StatelessWidget {
+  final List<_ConnectionsActionItem> actions;
+  final ZyraConnectionsCardStyle style;
+  final bool fullWidthLastAction;
 
-  /// Nullable so a move in flight can disable every button at once —
-  /// double-tapping Pass while its write is still going would fire two
-  /// decisions for one intent.
-  final VoidCallback? onTap;
-
-  const _CardAction({
-    required this.icon,
-    required this.label,
-    required this.onTap,
+  const _ConnectionsSecondaryActions({
+    required this.actions,
+    required this.style,
+    this.fullWidthLastAction = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final tint = Colors.white.withValues(alpha: onTap == null ? 0.35 : 1);
-    return Material(
-      color: Colors.white.withValues(alpha: 0.07),
-      borderRadius: BorderRadius.circular(10),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    switch (style) {
+      case ZyraConnectionsCardStyle.unifiedRail:
+        return LayoutBuilder(
+          builder: (context, constraints) => Wrap(
+            spacing: 0,
+            runSpacing: 7,
             children: [
-              Icon(icon, size: 15, color: tint.withValues(alpha: 0.8)),
-              const SizedBox(width: 7),
-              Text(label, style: ZyraText.button(size: 12.5, color: tint)),
+              for (final action in actions)
+                SizedBox(
+                  width: constraints.maxWidth / actions.length.clamp(1, 3),
+                  child: _ConnectionsActionButton(item: action, style: style),
+                ),
             ],
           ),
+        );
+      case ZyraConnectionsCardStyle.splitPills:
+        return _ConnectionsActionWrap(
+          actions: actions,
+          columns: 2,
+          style: style,
+          gap: 8,
+        );
+      case ZyraConnectionsCardStyle.iconDock:
+        return _ConnectionsActionWrap(
+          actions: actions,
+          columns: 3,
+          style: style,
+          gap: 5,
+        );
+      case ZyraConnectionsCardStyle.stackedRows:
+        return Column(
+          children: [
+            for (var i = 0; i < actions.length; i++) ...[
+              if (i > 0) const SizedBox(height: 6),
+              _ConnectionsActionButton(item: actions[i], style: style),
+            ],
+          ],
+        );
+      case ZyraConnectionsCardStyle.compactChips:
+        if (fullWidthLastAction && actions.length == 3) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _ConnectionsActionWrap(
+                actions: actions.take(2).toList(growable: false),
+                columns: 2,
+                style: style,
+                gap: 7,
+              ),
+              const SizedBox(height: 7),
+              _ConnectionsActionButton(item: actions.last, style: style),
+            ],
+          );
+        }
+        return _ConnectionsActionWrap(
+          actions: actions,
+          columns: actions.length.clamp(1, 3),
+          style: style,
+          gap: 7,
+        );
+      case ZyraConnectionsCardStyle.framedGrid:
+        return Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: ZyraColors.surfaceBorder, width: 0.6),
+          ),
+          child: _ConnectionsActionWrap(
+            actions: actions,
+            columns: 2,
+            style: style,
+            gap: 5,
+          ),
+        );
+    }
+  }
+}
+
+/// Narrow public seam for layout regression tests. It uses the same private
+/// heading and action widgets as the live Connections card, so the test proves
+/// the Compact Chips row fills its real width rather than testing a replica.
+@visibleForTesting
+Widget buildZyraConnectionsDesignTestSurface() {
+  return SizedBox(
+    width: 330,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const _ConnectionsSectionHeading(
+          title: 'Active Journey',
+          emphasised: true,
+        ),
+        const SizedBox(height: 12),
+        _ConnectionsSecondaryActions(
+          style: ZyraConnectionsCardStyle.compactChips,
+          actions: [
+            _ConnectionsActionItem(
+              icon: Icons.person_outline,
+              label: 'View Profile',
+              onTap: _ignoreConnectionsDesignTestTap,
+            ),
+            _ConnectionsActionItem(
+              icon: Icons.timeline_outlined,
+              label: 'Timeline',
+              onTap: _ignoreConnectionsDesignTestTap,
+            ),
+            _ConnectionsActionItem(
+              icon: Icons.more_horiz,
+              label: 'Options',
+              onTap: _ignoreConnectionsDesignTestTap,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+void _ignoreConnectionsDesignTestTap() {}
+
+/// Live-card test states for the Potential / Paused / Ended hierarchy. The
+/// surface instantiates [_JourneyExpandingCard] itself, rather than a visual
+/// replica, so route, width and overflow tests exercise production widgets.
+@visibleForTesting
+enum ZyraConnectionsJourneyCardTestState { potential, paused, ended }
+
+@visibleForTesting
+Widget buildZyraConnectionsJourneyCardTestSurface(
+  ZyraConnectionsJourneyCardTestState state,
+) {
+  const profile = SeekerProfile(
+    id: 'connections-card-test-profile',
+    firstName: 'Maryam',
+    surnameLine: 'Hussain',
+    age: 27,
+    city: 'London',
+    photos: [],
+    gender: 'female',
+  );
+  final paused = state == ZyraConnectionsJourneyCardTestState.paused;
+  final ended = state == ZyraConnectionsJourneyCardTestState.ended;
+  final match = JourneyMatch(
+    matchId: 'connections-card-test-${state.name}',
+    profile: profile,
+    status: ended
+        ? 'ended'
+        : paused
+        ? 'active'
+        : 'potential',
+    pause: paused
+        ? const ZyraJourneyPauseState(phase: ZyraPausePhase.paused)
+        : ZyraJourneyPauseState.active,
+    endedAt: ended ? DateTime.now().subtract(const Duration(days: 2)) : null,
+    isMock: true,
+  );
+  return _JourneyExpandingCard(
+    j: match,
+    expansionController: ZyraConnectionsExpansionController(),
+    subtitle: ended
+        ? 'Ended'
+        : paused
+        ? 'Paused'
+        : 'Ready to start',
+    hero: ended && !ZyraReleaseGates.requestNewJourneyEnabled
+        ? null
+        : (
+            label: ended
+                ? 'Request New Journey'
+                : paused
+                ? 'Request Resume'
+                : 'Begin Journey',
+            caption: null,
+            run: _ignoreConnectionsDesignTestTapAsync,
+          ),
+    heroFact: null,
+    showTimeline: paused || ended,
+    onTimeline: paused || ended ? _ignoreConnectionsDesignTestTap : null,
+    canEnd: paused,
+    onEnd: paused ? _ignoreConnectionsDesignTestTap : null,
+    onReport: _ignoreConnectionsDesignTestTap,
+    compatibilityRevealed: paused || ended,
+    showStateLine: false,
+  );
+}
+
+Future<void> _ignoreConnectionsDesignTestTapAsync() async {}
+
+/// Journey and Activity production cards sharing the live one-open contract.
+@visibleForTesting
+Widget buildZyraConnectionsExclusiveExpansionTestSurface() {
+  final expansionController = ZyraConnectionsExpansionController();
+  const journeyProfile = SeekerProfile(
+    id: 'exclusive-journey-profile',
+    firstName: 'Maryam',
+    age: 27,
+    city: 'London',
+    photos: [],
+    gender: 'female',
+  );
+  const activityProfile = SeekerProfile(
+    id: 'exclusive-activity-profile',
+    firstName: 'Amina',
+    age: 29,
+    city: 'Leeds',
+    photos: [],
+    gender: 'female',
+  );
+  return Column(
+    children: [
+      _JourneyExpandingCard(
+        j: const JourneyMatch(
+          matchId: 'exclusive-journey',
+          profile: journeyProfile,
+          status: 'potential',
+          isMock: true,
+        ),
+        expansionController: expansionController,
+        subtitle: 'Ready to start',
+        hero: (
+          label: 'Begin Journey',
+          caption: null,
+          run: _ignoreConnectionsDesignTestTapAsync,
+        ),
+        heroFact: null,
+        showTimeline: false,
+        onTimeline: null,
+        canEnd: false,
+        onEnd: null,
+        onReport: _ignoreConnectionsDesignTestTap,
+        showStateLine: false,
+      ),
+      _ActivityCard(
+        expansionController: expansionController,
+        profile: activityProfile,
+        kind: _ActivityKind.considered,
+      ),
+    ],
+  );
+}
+
+/// Live collapsed Activity cards for alignment and overflow regression tests.
+@visibleForTesting
+enum ZyraConnectionsActivityCardTestState { considered, saved, passed }
+
+@visibleForTesting
+Widget buildZyraConnectionsActivityCardTestSurface(
+  ZyraConnectionsActivityCardTestState state, {
+  bool localTestProfile = false,
+  bool movedIntroduction = false,
+  String? profileId,
+}) {
+  assert(!movedIntroduction || localTestProfile);
+  final kind = switch (state) {
+    ZyraConnectionsActivityCardTestState.considered => _ActivityKind.considered,
+    ZyraConnectionsActivityCardTestState.saved => _ActivityKind.saved,
+    ZyraConnectionsActivityCardTestState.passed => _ActivityKind.passed,
+  };
+  final localState = switch (state) {
+    ZyraConnectionsActivityCardTestState.considered =>
+      ZyraActivityTestState.considered,
+    ZyraConnectionsActivityCardTestState.saved => ZyraActivityTestState.saved,
+    ZyraConnectionsActivityCardTestState.passed => ZyraActivityTestState.passed,
+  };
+  final profile = SeekerProfile(
+    id:
+        profileId ??
+        (movedIntroduction
+            ? zyraIntroductionTestProfileId(0)
+            : localTestProfile
+            ? zyraActivityTestProfileId(localState, 0)
+            : 'connections-activity-test-${state.name}'),
+    firstName: 'Maryam',
+    surnameLine: 'Hussain',
+    age: 27,
+    city: 'London',
+    photos: const [],
+    gender: 'female',
+  );
+  return _ActivityCard(
+    expansionController: ZyraConnectionsExpansionController(),
+    profile: profile,
+    kind: kind,
+    suggestedByOverride: movedIntroduction
+        ? _kLocalIntroductionSuggestedBy
+        : null,
+    isLocalTestProfile: localTestProfile,
+    onViewProfile: movedIntroduction ? _ignoreConnectionsDesignTestTap : null,
+    onLocalMove: localTestProfile
+        ? (move) {
+            final destination = switch (move) {
+              _Move.consider => ZyraActivityTestState.considered,
+              _Move.save => ZyraActivityTestState.saved,
+              _Move.pass => ZyraActivityTestState.passed,
+              _Move.unsave => null,
+            };
+            if (destination != null) {
+              ZyraDevScenario.instance.moveLocalProfile(
+                profile.id,
+                destination,
+              );
+            }
+          }
+        : null,
+    onLocalHidden: localTestProfile
+        ? () => ZyraDevScenario.instance.hideLocalProfile(profile.id)
+        : null,
+  );
+}
+
+/// Renders the same Introduction cards used by the live segment so focused
+/// tests can verify the local 0/1/multiple states without invoking Supabase.
+@visibleForTesting
+Widget buildZyraIntroductionPreviewTestSurface({required int previewCount}) {
+  final expansionController = ZyraConnectionsExpansionController();
+  final suggestions = composeZyraIntroductionPreviewSuggestions(
+    const [],
+    previewCount: previewCount,
+  );
+  return Column(
+    children: [
+      for (final suggestion in suggestions)
+        _ActivityCard(
+          expansionController: expansionController,
+          profile: suggestion.profile,
+          kind: _ActivityKind.introduction,
+          suggestedByOverride: suggestion.suggestedBy,
+          isLocalTestProfile: true,
+          onLocalMove: (_) {},
+          onViewProfile: _ignoreConnectionsDesignTestTap,
+        ),
+    ],
+  );
+}
+
+class _ConnectionsActionWrap extends StatelessWidget {
+  final List<_ConnectionsActionItem> actions;
+  final int columns;
+  final ZyraConnectionsCardStyle style;
+  final double gap;
+
+  const _ConnectionsActionWrap({
+    required this.actions,
+    required this.columns,
+    required this.style,
+    required this.gap,
+  });
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final width = (constraints.maxWidth - gap * (columns - 1)) / columns;
+      return Wrap(
+        spacing: gap,
+        runSpacing: gap,
+        children: [
+          for (final action in actions)
+            SizedBox(
+              width: width,
+              child: _ConnectionsActionButton(item: action, style: style),
+            ),
+        ],
+      );
+    },
+  );
+}
+
+class _ConnectionsActionButton extends StatelessWidget {
+  final _ConnectionsActionItem item;
+  final bool primary;
+  final ZyraConnectionsCardStyle style;
+
+  const _ConnectionsActionButton({
+    required this.item,
+    required this.style,
+    this.primary = false,
+  });
+
+  Color get _tint {
+    if (item.onTap == null) return ZyraColors.ink(0.34);
+    return primary ? ZyraColors.foreground : ZyraColors.ink(0.80);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final tint = _tint;
+    final content = switch (style) {
+      ZyraConnectionsCardStyle.iconDock => SizedBox(
+        // Leave enough vertical room for the app's supported large-text
+        // scaling. The former 58pt secondary dock clipped its one-line label
+        // by 3px at 145% text on a compact phone width.
+        height: primary ? 48 : 64,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(item.icon, size: primary ? 17 : 16, color: tint),
+            const SizedBox(height: 4),
+            Text(
+              item.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: ZyraText.button(size: primary ? 12.5 : 9.5, color: tint),
+            ),
+          ],
+        ),
+      ),
+      ZyraConnectionsCardStyle.stackedRows => SizedBox(
+        height: primary ? 44 : 40,
+        child: Row(
+          children: [
+            const SizedBox(width: 12),
+            Icon(item.icon, size: 16, color: tint),
+            const SizedBox(width: 9),
+            Expanded(
+              child: Text(
+                item.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: ZyraText.body(size: primary ? 12.5 : 11.5, color: tint),
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              size: 17,
+              color: tint.withValues(alpha: 0.55),
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
+      ),
+      ZyraConnectionsCardStyle.compactChips => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: primary ? 14 : 10,
+          vertical: primary ? 11 : 8,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(item.icon, size: 14, color: tint),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                item.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: ZyraText.button(
+                  size: primary ? 12.5 : 10.5,
+                  color: tint,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      _ => SizedBox(
+        height: primary ? 44 : 40,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (style != ZyraConnectionsCardStyle.unifiedRail || primary) ...[
+              Icon(item.icon, size: 15, color: tint),
+              const SizedBox(width: 7),
+            ],
+            Flexible(
+              child: Text(
+                item.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: ZyraText.button(
+                  size: primary ? 12.5 : 10.5,
+                  color: tint,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    };
+
+    final radius = switch (style) {
+      ZyraConnectionsCardStyle.unifiedRail => primary ? 999.0 : 0.0,
+      ZyraConnectionsCardStyle.splitPills => 999.0,
+      ZyraConnectionsCardStyle.iconDock => 12.0,
+      ZyraConnectionsCardStyle.stackedRows => 10.0,
+      ZyraConnectionsCardStyle.compactChips => 999.0,
+      ZyraConnectionsCardStyle.framedGrid => 8.0,
+    };
+    final border = ZyraColors.surfaceBorder;
+    final fill = style == ZyraConnectionsCardStyle.unifiedRail && !primary
+        ? Colors.transparent
+        : ZyraColors.surfaceFill;
+
+    return Material(
+      key: ValueKey<String>('connections-action-${item.label}'),
+      color: fill,
+      borderRadius: BorderRadius.circular(radius),
+      child: Ink(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(radius),
+          border: Border.all(color: border, width: primary ? 1 : 0.6),
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(radius),
+          onTap: item.onTap,
+          child: content,
         ),
       ),
     );
@@ -3930,6 +4590,7 @@ class _ActiveJourneyCard extends StatelessWidget {
   final VoidCallback onViewProfile;
   final VoidCallback onOptions;
   final bool reviewOpen;
+  final bool decisionPending;
 
   /// INLINE CONFIRMS — 2026-08-13, round four ("popups now in
   /// connections page no longer exist and is all expanded"). When
@@ -3956,6 +4617,7 @@ class _ActiveJourneyCard extends StatelessWidget {
     required this.onViewProfile,
     required this.onOptions,
     required this.reviewOpen,
+    required this.decisionPending,
     required this.hasBegun,
     this.inlineConfirm,
     this.onDismissConfirm,
@@ -3967,9 +4629,9 @@ class _ActiveJourneyCard extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 14),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.16),
+          color: ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.30)),
+          border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
         ),
         // NOT tappable as a card — see the note at the call site. The two
         // pills below are the only actions, so there is no invisible third
@@ -3997,19 +4659,19 @@ class _ActiveJourneyCard extends StatelessWidget {
                           height: 26,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white.withValues(alpha: 0.10),
+                            color: ZyraColors.iconButtonBg,
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.25),
+                              color: ZyraColors.iconButtonBorder,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.close,
                             size: 14,
-                            color: Colors.white70,
+                            color: ZyraColors.ink(0.70),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                     ],
                     // PLAIN PHOTO. The expand glyph that briefly sat in this
                     // corner was rejected by the Founder on 2026-08-10 — a
@@ -4029,7 +4691,7 @@ class _ActiveJourneyCard extends StatelessWidget {
                         height: inlineConfirm != null ? 56 : 96,
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -4058,29 +4720,29 @@ class _ActiveJourneyCard extends StatelessWidget {
                               profile.surnameLine!.trim(),
                               style: ZyraText.heading(
                                 size: 15,
-                                color: Colors.white.withValues(alpha: 0.86),
+                                color: ZyraColors.ink(0.86),
                               ),
                             ),
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Text(
                             '${profile.age} · ${profile.city}',
                             style: ZyraText.subtext(
                               size: 12.5,
-                              color: Colors.white.withValues(alpha: 0.78),
+                              color: ZyraColors.ink(0.78),
                             ),
                           ),
                           if (reviewOpen) ...[
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 9,
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.20),
+                                color: ZyraColors.surfaceEmphasisFill,
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.34),
+                                  color: ZyraColors.surfaceEmphasisBorder,
                                   width: 0.6,
                                 ),
                               ),
@@ -4092,7 +4754,31 @@ class _ActiveJourneyCard extends StatelessWidget {
                                 ZyraJourneyStages.familyReviewOverride,
                                 style: ZyraText.subtext(
                                   size: 11,
-                                  color: Colors.white,
+                                  color: ZyraColors.foreground,
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (decisionPending) ...[
+                            SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 9,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: ZyraColors.surfaceEmphasisFill,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: ZyraColors.surfaceEmphasisBorder,
+                                  width: 0.6,
+                                ),
+                              ),
+                              child: Text(
+                                'Pause decision pending',
+                                style: ZyraText.subtext(
+                                  size: 11,
+                                  color: ZyraColors.foreground,
                                 ),
                               ),
                             ),
@@ -4113,31 +4799,19 @@ class _ActiveJourneyCard extends StatelessWidget {
                     // card in this file. It opens the same sheet, with
                     // ZyraReportSource.connections, so reports from here land
                     // where reports from the other cards land.
-                    GestureDetector(
+                    _ConnectionsReportFlag(
+                      profileId: profile.id,
+                      firstName: profile.firstName,
                       onTap: onReport,
-                      behavior: HitTestBehavior.opaque,
-                      child: Padding(
-                        // Generous padding, small glyph — the tap target
-                        // needs to clear 44pt without the icon shouting.
-                        padding: const EdgeInsets.only(left: 10, bottom: 10),
-                        child: Icon(
-                          Icons.flag_outlined,
-                          size: 15,
-                          color: Colors.white.withValues(alpha: 0.75),
-                        ),
-                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // MID-CONFIRM the bands step aside and the confirm
                 // holds the card (round four — no popups on this page).
                 if (inlineConfirm != null) ...[
-                  Container(
-                    height: 1,
-                    color: Colors.white.withValues(alpha: 0.14),
-                  ),
-                  const SizedBox(height: 12),
+                  Container(height: 1, color: ZyraColors.ink(0.14)),
+                  SizedBox(height: 12),
                   inlineConfirm!,
                 ] else ...[
                   // CONNECTIONS OPTION 4 — Founder, 2026-08-20. One primary
@@ -4145,16 +4819,33 @@ class _ActiveJourneyCard extends StatelessWidget {
                   // secondary destinations. Report remains the flag above;
                   // Pause and End sit behind Options and still open their
                   // existing inline confirmation before any write.
-                  _CardPill(
-                    label: hasBegun ? 'Continue Journey' : 'Begin Journey',
-                    onTap: onEnter,
-                    primary: true,
-                  ),
-                  const SizedBox(height: 10),
-                  _ActiveJourneyActionRail(
-                    onViewProfile: onViewProfile,
-                    onTimeline: onTimeline,
-                    onOptions: onOptions,
+                  _ConnectionsActionDeck(
+                    primary: _ConnectionsActionItem(
+                      icon: Icons.route_outlined,
+                      label: decisionPending
+                          ? 'Open decision'
+                          : hasBegun
+                          ? 'Continue Journey'
+                          : 'Begin Journey',
+                      onTap: onEnter,
+                    ),
+                    actions: [
+                      _ConnectionsActionItem(
+                        icon: Icons.person_outline,
+                        label: 'View Profile',
+                        onTap: onViewProfile,
+                      ),
+                      _ConnectionsActionItem(
+                        icon: Icons.timeline_outlined,
+                        label: 'Timeline',
+                        onTap: onTimeline,
+                      ),
+                      _ConnectionsActionItem(
+                        icon: Icons.more_horiz,
+                        label: decisionPending ? 'Decision' : 'Options',
+                        onTap: onOptions,
+                      ),
+                    ],
                   ),
                 ],
               ],
@@ -4162,96 +4853,6 @@ class _ActiveJourneyCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ActiveJourneyActionRail extends StatelessWidget {
-  final VoidCallback onViewProfile;
-  final VoidCallback onTimeline;
-  final VoidCallback onOptions;
-
-  const _ActiveJourneyActionRail({
-    required this.onViewProfile,
-    required this.onTimeline,
-    required this.onOptions,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(
-            color: Colors.white.withValues(alpha: 0.14),
-            width: 0.6,
-          ),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _ActiveJourneyRailAction(
-              label: 'View Profile',
-              onTap: onViewProfile,
-            ),
-          ),
-          const _ActiveJourneyRailDivider(),
-          Expanded(
-            child: _ActiveJourneyRailAction(
-              label: 'Timeline',
-              onTap: onTimeline,
-            ),
-          ),
-          const _ActiveJourneyRailDivider(),
-          Expanded(
-            child: _ActiveJourneyRailAction(label: 'Options', onTap: onOptions),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ActiveJourneyRailAction extends StatelessWidget {
-  final String label;
-  final VoidCallback onTap;
-
-  const _ActiveJourneyRailAction({required this.label, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: SizedBox(
-          height: 42,
-          child: Center(
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: ZyraText.button(
-                size: 11.5,
-              ).copyWith(color: Colors.white.withValues(alpha: 0.78)),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ActiveJourneyRailDivider extends StatelessWidget {
-  const _ActiveJourneyRailDivider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 0.6,
-      height: 22,
-      color: Colors.white.withValues(alpha: 0.14),
     );
   }
 }
@@ -4266,9 +4867,9 @@ class _ActiveJourneyOptionsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: ZyraColors.sheetGradient,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: ZyraColors.modalSheetSurface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: SafeArea(
         top: false,
@@ -4283,23 +4884,23 @@ class _ActiveJourneyOptionsSheet extends StatelessWidget {
                   width: 36,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.white24,
+                    color: ZyraColors.ink(0.24),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
               Text('Journey options', style: ZyraText.heading(size: 22)),
-              const SizedBox(height: 5),
+              SizedBox(height: 5),
               Text(
                 'Manage your Journey with $firstName.',
                 style: ZyraText.subtext(size: 12),
               ),
-              const SizedBox(height: 14),
+              SizedBox(height: 14),
               _ActiveJourneyOptionRow(
                 icon: Icons.pause_rounded,
-                label: 'Pause Journey',
-                detail: 'Hold your place and continue when you are ready.',
+                label: 'Request Pause',
+                detail: '$firstName chooses whether to pause or continue.',
                 onTap: () =>
                     Navigator.of(context).pop(_ActiveJourneyOption.pause),
               ),
@@ -4311,7 +4912,7 @@ class _ActiveJourneyOptionsSheet extends StatelessWidget {
                 onTap: () =>
                     Navigator.of(context).pop(_ActiveJourneyOption.end),
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
@@ -4320,7 +4921,7 @@ class _ActiveJourneyOptionsSheet extends StatelessWidget {
                     'Cancel',
                     style: ZyraText.button(
                       size: 12,
-                    ).copyWith(color: Colors.white.withValues(alpha: 0.70)),
+                    ).copyWith(color: ZyraColors.ink(0.70)),
                   ),
                 ),
               ),
@@ -4349,7 +4950,7 @@ class _ActiveJourneyOptionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foreground = danger ? _takeoverCoral : Colors.white;
+    final foreground = danger ? _takeoverCoral : ZyraColors.foreground;
 
     return Material(
       color: Colors.transparent,
@@ -4360,10 +4961,7 @@ class _ActiveJourneyOptionRow extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             border: Border(
-              top: BorderSide(
-                color: Colors.white.withValues(alpha: 0.12),
-                width: 0.6,
-              ),
+              top: BorderSide(color: ZyraColors.ink(0.12), width: 0.6),
             ),
           ),
           child: Row(
@@ -4377,7 +4975,7 @@ class _ActiveJourneyOptionRow extends StatelessWidget {
                 ),
                 child: Icon(icon, size: 18, color: foreground),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -4388,14 +4986,14 @@ class _ActiveJourneyOptionRow extends StatelessWidget {
                         size: 13,
                       ).copyWith(color: foreground),
                     ),
-                    const SizedBox(height: 3),
+                    SizedBox(height: 3),
                     Text(
                       detail,
                       style: ZyraText.subtext(
                         size: 10.5,
                         color: danger
                             ? _takeoverCoral.withValues(alpha: 0.70)
-                            : Colors.white38,
+                            : ZyraColors.ink(0.38),
                       ),
                     ),
                   ],
@@ -4448,9 +5046,7 @@ class _CardPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: primary
-          ? Colors.white.withValues(alpha: 0.22)
-          : ZyraColors.iconButtonBg,
+      color: ZyraColors.iconButtonBg,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
@@ -4466,9 +5062,7 @@ class _CardPill extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: primary
-                  ? Colors.white.withValues(alpha: 0.42)
-                  : ZyraColors.iconButtonBorder,
+              color: ZyraColors.iconButtonBorder,
               width: primary ? 1 : 0.5,
             ),
           ),
@@ -4524,14 +5118,14 @@ class _CardPill extends StatelessWidget {
 //
 // Three ways out, every one of them honest:
 //   Continue / Not now  dismiss — nothing changes, and the caption says so
-//   Pause     suspendJourney, then the promote; real since the
-//             pause_frees_active_slot migrations (same day)
+//   Request Pause  asks the current person; the waiting Journey cannot begin
+//                  unless both agree and the Active slot is released
 //   End       endJourney, then the promote; permanent, Timeline kept
 // ═══════════════════════════════════════════════════════════════════════
 
-enum _TakeoverChoice { continueCurrent, pauseAndBegin, endAndBegin }
+enum _TakeoverChoice { continueCurrent, requestPause, endAndBegin }
 
-const Color _takeoverCoral = Color(0xFFE08080);
+const Color _takeoverCoral = ZyraColors.destructive;
 
 /// One person: circular photo over a "Name · State" caption. photoUrl is
 /// photos.first and throws on an empty list — real profiles always carry
@@ -4542,10 +5136,10 @@ Widget _takeoverPerson(SeekerProfile p, String label, {required bool waiting}) {
     mainAxisSize: MainAxisSize.min,
     children: [
       Opacity(opacity: waiting ? 0.65 : 1, child: _takeoverAvatar(p, 46)),
-      const SizedBox(height: 4),
+      SizedBox(height: 4),
       Text(
         '${p.firstName} · $label',
-        style: ZyraText.subtext(size: 10, color: const Color(0x8CFFFFFF)),
+        style: ZyraText.subtext(size: 10, color: ZyraColors.ink(0.55)),
       ),
     ],
   );
@@ -4555,14 +5149,14 @@ Widget _takeoverAvatar(SeekerProfile p, double size) {
   return Container(
     decoration: BoxDecoration(
       shape: BoxShape.circle,
-      border: Border.all(color: Colors.white.withValues(alpha: 0.35), width: 2),
+      border: Border.all(color: ZyraColors.ink(0.35), width: 2),
     ),
     child: ClipOval(
       child: p.photos.isEmpty
           ? Container(
               width: size,
               height: size,
-              color: Colors.white.withValues(alpha: 0.22),
+              color: ZyraColors.ink(0.22),
               alignment: Alignment.center,
               child: Text(
                 p.firstName.isEmpty ? '?' : p.firstName[0],
@@ -4591,12 +5185,14 @@ Widget _takeoverChoiceCard({
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.08),
+          color: danger
+              ? ZyraColors.destructive.withValues(alpha: 0.08)
+              : ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: danger
                 ? _takeoverCoral.withValues(alpha: 0.55)
-                : Colors.white.withValues(alpha: 0.18),
+                : ZyraColors.surfaceBorder,
           ),
         ),
         child: Column(
@@ -4605,15 +5201,15 @@ Widget _takeoverChoiceCard({
             Text(
               title,
               textAlign: TextAlign.center,
-              style: ZyraText.button(
-                size: 12.5,
-              ).copyWith(color: danger ? _takeoverCoral : Colors.white),
+              style: ZyraText.button(size: 12.5).copyWith(
+                color: danger ? _takeoverCoral : ZyraColors.foreground,
+              ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               sub,
               textAlign: TextAlign.center,
-              style: ZyraText.subtext(size: 10, color: const Color(0x80FFFFFF)),
+              style: ZyraText.subtext(size: 10, color: ZyraColors.ink(0.50)),
             ),
           ],
         ),
@@ -4634,12 +5230,12 @@ String _keepsPlaceLine(SeekerProfile p) => ZyraGender.keepsPlaceLine(p.gender);
 /// One quiet line, identical in the plain start, B1 and C1 dialogs,
 /// keeps the disclosure at the moment it matters (the long paragraph
 /// retired with the dialog restyle, Founder-directed, 2026-08-12).
-Widget _takeoverDisclosure(String nextName) {
+Widget _takeoverDisclosure() {
   return Text(
-    "From the first message, your linked Guardian — and $nextName's — "
-    'can read the conversation.',
+    'From the first message, each person’s Main Guardian and any Additional '
+    'Guardians included in this Journey can read the conversation.',
     textAlign: TextAlign.center,
-    style: ZyraText.subtext(size: 10, color: const Color(0x6BFFFFFF)),
+    style: ZyraText.subtext(size: 10, color: ZyraColors.ink(0.42)),
   );
 }
 
@@ -4681,19 +5277,19 @@ class _InlineTakeover extends StatelessWidget {
             _takeoverPerson(next.profile, 'Waiting', waiting: true),
           ],
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Text(
           'Begin with $nextName?',
           style: ZyraText.heading(size: 18),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           'One Journey at a time — choose what happens with $activeName.',
           style: ZyraText.subtext(),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: 18),
         SizedBox(
           width: double.infinity,
           // Frost primary since 2026-08-13 (the consistency ruling) —
@@ -4705,25 +5301,25 @@ class _InlineTakeover extends StatelessWidget {
             primary: true,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
           'Nothing changes — carry on where you left off.',
-          style: ZyraText.subtext(size: 10, color: const Color(0x6BFFFFFF)),
+          style: ZyraText.subtext(size: 10, color: ZyraColors.ink(0.42)),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: _takeoverChoiceCard(
-                  title: 'Pause with $activeName',
-                  sub: _keepsPlaceLine(active.profile),
+                  title: 'Request Pause',
+                  sub: '$activeName must agree before this slot is free.',
                   danger: false,
-                  onTap: () => onChoice(_TakeoverChoice.pauseAndBegin),
+                  onTap: () => onChoice(_TakeoverChoice.requestPause),
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Expanded(
                 child: _takeoverChoiceCard(
                   title: 'End with $activeName',
@@ -4735,8 +5331,8 @@ class _InlineTakeover extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
-        _takeoverDisclosure(nextName),
+        SizedBox(height: 12),
+        _takeoverDisclosure(),
         // The dialogs could be dismissed by tapping outside; a card
         // extension has no outside, so the way out is written down.
         TextButton(
@@ -4788,20 +5384,20 @@ class _InlineTakeoverChooserState extends State<_InlineTakeoverChooser> {
         // ✕ header carries the one divider now — extensions start with
         // their content.
         _takeoverPerson(widget.next.profile, 'Waiting', waiting: true),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         Text(
           'Begin with $nextName?',
           style: ZyraText.heading(size: 18),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           'Your $_countWord Journeys are all active — choose who makes '
           'room.',
           style: ZyraText.subtext(),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         Wrap(
           spacing: 10,
           runSpacing: 8,
@@ -4817,25 +5413,25 @@ class _InlineTakeoverChooserState extends State<_InlineTakeoverChooser> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14),
                     color: identical(a, sel)
-                        ? const Color(0x29CEA2D1)
-                        : Colors.white.withValues(alpha: 0.06),
+                        ? ZyraColors.surfaceEmphasisFill
+                        : ZyraColors.surfaceFill,
                     border: Border.all(
                       color: identical(a, sel)
-                          ? const Color(0xFFCEA2D1)
-                          : Colors.white.withValues(alpha: 0.16),
+                          ? ZyraColors.surfaceEmphasisBorder
+                          : ZyraColors.surfaceBorder,
                     ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       _takeoverAvatar(a.profile, 40),
-                      const SizedBox(height: 5),
+                      SizedBox(height: 5),
                       Text(
                         a.profile.firstName,
                         overflow: TextOverflow.ellipsis,
                         style: ZyraText.subtext(
                           size: 10,
-                          color: const Color(0x8CFFFFFF),
+                          color: ZyraColors.ink(0.55),
                         ),
                       ),
                     ],
@@ -4844,7 +5440,7 @@ class _InlineTakeoverChooserState extends State<_InlineTakeoverChooser> {
               ),
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
           // Frost primary since 2026-08-13 (the consistency ruling) —
@@ -4856,34 +5452,32 @@ class _InlineTakeoverChooserState extends State<_InlineTakeoverChooser> {
             primary: true,
           ),
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6),
         Text(
           widget.actives.length == 2
               ? 'Both Journeys stay exactly as they are.'
               : 'All $_countWord Journeys stay exactly as they are.',
-          style: ZyraText.subtext(size: 10, color: const Color(0x6BFFFFFF)),
+          style: ZyraText.subtext(size: 10, color: ZyraColors.ink(0.42)),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: _takeoverChoiceCard(
-                  title: sel == null
-                      ? 'Pause'
-                      : 'Pause with ${sel.profile.firstName}',
+                  title: sel == null ? 'Request Pause' : 'Request Pause',
                   sub: sel == null
                       ? 'Choose someone above first.'
-                      : _keepsPlaceLine(sel.profile),
+                      : '${sel.profile.firstName} must agree before this slot is free.',
                   danger: false,
                   onTap: sel == null
                       ? null
                       : () =>
-                            widget.onChoice(_TakeoverChoice.pauseAndBegin, sel),
+                            widget.onChoice(_TakeoverChoice.requestPause, sel),
                 ),
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8),
               Expanded(
                 child: _takeoverChoiceCard(
                   title: sel == null
@@ -4901,8 +5495,8 @@ class _InlineTakeoverChooserState extends State<_InlineTakeoverChooser> {
             ],
           ),
         ),
-        const SizedBox(height: 12),
-        _takeoverDisclosure(nextName),
+        SizedBox(height: 12),
+        _takeoverDisclosure(),
         // Same written way out as _InlineTakeover — no outside to tap.
         TextButton(
           onPressed: widget.onDismiss,
@@ -4941,14 +5535,14 @@ class _InlineRestartAsk extends StatelessWidget {
         // The leading divider left 2026-08-13 (round four): the card's
         // ✕ header carries the one divider now — extensions start with
         // their content.
-        const Icon(Icons.restart_alt_outlined, size: 26, color: Colors.white70),
-        const SizedBox(height: 10),
+        Icon(Icons.restart_alt_outlined, size: 26, color: Colors.white70),
+        SizedBox(height: 10),
         Text(
           'Ask $name to begin a new Journey?',
           style: ZyraText.heading(size: 17),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           "They'll be told you asked, and can accept or decline. Nothing "
           'starts unless they agree.\n\nIf they accept, this is a fresh '
@@ -4957,7 +5551,7 @@ class _InlineRestartAsk extends StatelessWidget {
           style: ZyraText.subtext(),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         SizedBox(
           width: double.infinity,
           // Frost primary since 2026-08-13 (the consistency ruling).
@@ -5000,20 +5594,20 @@ class _InlineBeginConfirm extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _takeoverPerson(next.profile, 'Ready', waiting: false),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Text(
           'Begin with $name?',
           style: ZyraText.heading(size: 18),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           'One person at a time, with both families present — it '
           'begins with Compatibility Reveal.',
           style: ZyraText.subtext(),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         SizedBox(
           width: double.infinity,
           child: _CardPill(
@@ -5026,8 +5620,8 @@ class _InlineBeginConfirm extends StatelessWidget {
           onPressed: onDismiss,
           child: Text('Not yet', style: ZyraText.subtext()),
         ),
-        const SizedBox(height: 2),
-        _takeoverDisclosure(name),
+        SizedBox(height: 2),
+        _takeoverDisclosure(),
       ],
     );
   }
@@ -5067,9 +5661,9 @@ class _InlineConfirmBlock extends StatelessWidget {
           style: ZyraText.heading(size: 16),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(body, style: ZyraText.subtext(), textAlign: TextAlign.center),
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
         SizedBox(
           width: double.infinity,
           child: danger

@@ -9,27 +9,20 @@
 // ZyraJourneyService for how these are fetched.
 
 import 'seeker_profile.dart';
+import '../data/zyra_journey_pause_state.dart';
 
 class JourneyMatch {
   final String matchId;
   final SeekerProfile profile; // the OTHER party
   /// 'potential' | 'active' | 'ended'.
   ///
-  /// 'paused' was removed from the CHECK constraint 2026-08-06 (OA-ZYRA-164).
-  /// It had always been unreachable — suspend_journey() writes suspended_by
-  /// and suspended_at and leaves the status 'active'. Pausing is a FLAG on an
-  /// Active Journey, not a lifecycle state of its own (V3 §1).
+  /// 'paused' is deliberately not a match status. The shared [pause] state
+  /// decides whether an active match is running, decision-locked or mutually
+  /// Paused without inventing a fourth lifecycle status.
   final String status;
   final String? journeyStage; // null while potential
-  final String? suspendedBy; // user id of the PRIMARY hold, or null
-
-  /// The SECOND hold — DR-ZYRA-170 (2026-08-15, shared pause holds).
-  /// A pause is a personal hold: either party may hold, the Journey
-  /// rests while any hold exists, and each lifts only their own. When
-  /// the primary hand lifts first, the server PROMOTES this id into
-  /// suspendedBy — so this is only ever the second of two live hands,
-  /// never a survivor of one.
-  final String? alsoPausedBy;
+  /// The single authoritative Pause decision state.
+  final ZyraJourneyPauseState pause;
 
   /// When the current pause episode began. Drives the time-honesty line
   /// ("Paused · 3 months") on the Journeys rows — DR-ZYRA-142's answer to
@@ -37,15 +30,9 @@ class JourneyMatch {
   /// people haven't — DR-ZYRA-121 item 12), but honestly.
   final DateTime? suspendedAt;
 
-  /// When the waiting person sent their one "I'm ready" nudge this pause
-  /// episode, or null if they still have it. Set by nudge_paused_journey,
-  /// cleared by suspend/resume (a new pause is a new episode). Only
-  /// meaningful to the NON-pauser: it decides whether their row shows the
-  /// nudge button or "You let them know".
-  final DateTime? pauseNudgedAt;
-
-  /// Set when status == 'ended'; drives the 24-hour cooling period and the
-  /// Founder's 60-day direct New Journey request window.
+  /// Set when status == 'ended'; drives the 24-hour cooling period. Return
+  /// initiation is now based on the caller's five most recent Ended Journeys,
+  /// not an arbitrary age limit.
   final DateTime? endedAt;
 
   /// The OTHER person is currently in an Active Journey with someone else,
@@ -62,25 +49,18 @@ class JourneyMatch {
     required this.profile,
     required this.status,
     this.journeyStage,
-    this.suspendedBy,
-    this.alsoPausedBy,
+    this.pause = ZyraJourneyPauseState.active,
     this.suspendedAt,
-    this.pauseNudgedAt,
     this.endedAt,
     this.inAnotherJourney = false,
     this.isMock = false,
   });
 
-  bool get isSuspended => suspendedBy != null;
-
-  /// Both hands holding (DR-ZYRA-170) — the card reads "Paused by both
-  /// of you" and each Resume lifts only the caller's own hold.
-  bool get pausedByBoth => suspendedBy != null && alsoPausedBy != null;
-
-  /// Whether [userId] currently holds a pause on this Journey, either
-  /// hand. Decides Resume-vs-respond on the paused card.
-  bool heldBy(String? userId) =>
-      userId != null && (suspendedBy == userId || alsoPausedBy == userId);
+  /// Only a mutually settled pause belongs in Paused Journeys and frees the
+  /// Active slot. Pending decisions remain Active but locked.
+  bool get isSuspended => pause.isPaused;
+  bool get isPauseDecisionPending => pause.isPending;
+  bool get isJourneyLocked => pause.isLocked;
 
   /// "3 months" / "6 weeks" / "12 days" — empty under 30 days, because a
   /// young pause needs no commentary. Time-honesty is a mirror, not a
@@ -103,14 +83,12 @@ class JourneyMatch {
       endedAt != null &&
       DateTime.now().isBefore(endedAt!.add(const Duration(hours: 24)));
 
-  /// Founder, 2026-08-18: a direct New Journey request remains visible for
-  /// 60 days after End. This client boundary prevents the app offering the
-  /// action outside the approved window; OA-ZYRA-242 owns matching server and
-  /// Browse enforcement before the rule is production-complete.
+  /// Kept as a compatibility getter for callers written before the Founder
+  /// replaced the 60-day age rule with a five-most-recent rule. Any ended row
+  /// is age-eligible; the ranked server lookup decides whether this member may
+  /// initiate from it.
   bool get isWithinNewJourneyRequestWindow =>
-      status == 'ended' &&
-      endedAt != null &&
-      DateTime.now().isBefore(endedAt!.add(const Duration(days: 60)));
+      status == 'ended' && endedAt != null;
 
   bool get canRestart => isWithinNewJourneyRequestWindow && !isInCoolingPeriod;
 
@@ -137,9 +115,6 @@ class JourneyMatch {
   /// Rounds UP, so it never promises sooner than it can deliver.
   String get restartAvailableIn {
     if (endedAt == null) return '';
-    if (!isWithinNewJourneyRequestWindow) {
-      return 'the 60-day request window has ended';
-    }
     final left = endedAt!
         .add(const Duration(hours: 24))
         .difference(DateTime.now());

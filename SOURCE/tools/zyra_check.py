@@ -141,7 +141,8 @@ def dart_files():
 class Unit:
     def __init__(self, path):
         self.path = path
-        self.raw = open(path, encoding="utf-8").read()
+        with open(path, encoding="utf-8") as source:
+            self.raw = source.read()
         self.code = strip_code(self.raw)
         self.imports = []            # (target, resolved_path_or_None, line)
         self.classes = {}            # name -> {methods:set, fields:set, ctor_params:set, static:set}
@@ -221,7 +222,14 @@ class Unit:
             # named constructor params, incl. `this.x`, `super.key`, `required T x`
             for cm in re.finditer(re.escape(name) + r"\.?\w*\s*\(([^)]*)\)", body):
                 for p in re.finditer(r"(?:this\.|super\.)?(\w+)\s*(?:,|=|\}|$)", cm.group(1)):
-                    info["ctor_params"].add(p.group(1))
+                    parameter = p.group(1)
+                    info["ctor_params"].add(parameter)
+                    # Dart exposes a private field-formal such as
+                    # `required this._groups` to the same-library caller as
+                    # `groups:`. Flutter analyze accepts that spelling; the
+                    # fallback checker must not invent a BAD NAMED ARG.
+                    if parameter.startswith("_") and len(parameter) > 1:
+                        info["ctor_params"].add(parameter[1:])
             if kind == "enum":
                 head = body.split(";")[0]
                 for ev in re.finditer(r"\b([a-z]\w*)\b", head):
@@ -280,6 +288,9 @@ INHERITED = {
     "map", "where", "add", "remove", "contains", "clear", "length", "isEmpty",
     "isNotEmpty", "first", "last", "forEach", "join", "reduce", "fold", "cast",
     "values", "keys", "index", "name", "toDouble", "toInt", "abs", "clamp",
+    # Every Dart class has an unnamed-constructor tear-off spelled `.new`
+    # when that constructor exists. It is syntax, not a declared member.
+    "new",
 }
 
 # ---------------------------------------------------------------- doc refs
@@ -494,7 +505,22 @@ def check(units):
             exported = set(other.classes) | other.top_level
             if not exported:
                 continue
-            if not any(re.search(r"\b" + re.escape(s) + r"\b", u.code) for s in exported):
+            used_in_code = any(
+                re.search(r"\b" + re.escape(s) + r"\b", u.code)
+                for s in exported
+            )
+            # strip_code correctly blanks string bodies, but Dart executes
+            # expressions inside `${...}`. Imports referenced only in an
+            # interpolation must therefore count as used.
+            used_in_interpolation = any(
+                re.search(
+                    r"\$\{[^}]*\b" + re.escape(s) + r"\b[^}]*\}",
+                    u.raw,
+                    re.DOTALL,
+                )
+                for s in exported
+            )
+            if not used_in_code and not used_in_interpolation:
                 report("UNUSED IMPORT", u.path, ln, f"'{target}' — nothing from it is referenced")
 
         # 5 — project class used without importing its file

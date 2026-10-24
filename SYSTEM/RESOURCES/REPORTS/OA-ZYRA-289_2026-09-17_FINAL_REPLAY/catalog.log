@@ -1,0 +1,35 @@
+ migration_count | latest_version 
+-----------------+----------------
+             211 | 20260917144606
+(1 row)
+
+ nspname |                    proname                     |  owner   | prosecdef | provolatile |      proconfig       |                                 proacl                                 
+---------+------------------------------------------------+----------+-----------+-------------+----------------------+------------------------------------------------------------------------
+ private | zyra_enforce_personal_request_owner_acceptance | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres}
+ private | zyra_generate_personal_code                    | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres}
+ private | zyra_identity_verification_allows_user         | postgres | t         | s           | {"search_path=\"\""} | {postgres=X/postgres}
+ private | zyra_normalize_personal_code                   | postgres | f         | i           | {"search_path=\"\""} | {postgres=X/postgres}
+ private | zyra_retire_personal_code                      | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres}
+ public  | zyra_accept_guardian_request                   | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_cancel_guardian_request                   | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_decline_guardian_request                  | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_expire_due_wali_invites                   | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_my_guardian_requests                      | postgres | t         | s           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_my_personal_code                          | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_preview_personal_code                     | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_request_guardian_link                     | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+ public  | zyra_rotate_my_personal_code                   | postgres | t         | v           | {"search_path=\"\""} | {postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}
+(14 rows)
+
+              relname              | relrowsecurity |                         relacl                          
+-----------------------------------+----------------+---------------------------------------------------------
+ zyra_personal_code_attempts       | t              | {postgres=arwdDxtm/postgres,service_role=ard/postgres}
+ zyra_personal_codes               | t              | {postgres=arwdDxtm/postgres,service_role=arwd/postgres}
+ zyra_retired_personal_code_hashes | t              | {postgres=arwdDxtm/postgres,service_role=ar/postgres}
+(3 rows)
+
+ rolled_back_test_users 
+------------------------
+                      0
+(1 row)
+

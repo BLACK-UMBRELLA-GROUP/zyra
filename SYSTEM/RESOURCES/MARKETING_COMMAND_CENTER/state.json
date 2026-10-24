@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-25T15:29:28Z",
+  "principle": "AI prepares and learns; the Founder controls what represents ZYRA publicly.",
+  "pillars": [
+    "Why ZYRA is different from dating apps",
+    "Guardian and family involvement",
+    "Serious, marriage-first introductions",
+    "Safety, trust and privacy",
+    "Compatibility and intentional matching",
+    "Advice for Seekers",
+    "Advice for Guardians and parents",
+    "Founder story and building ZYRA",
+    "Product demonstrations",
+    "Pre-launch progress and testing"
+  ],
+  "agents": [
+    {
+      "id": "research",
+      "name": "Research Agent",
+      "role": "Public-source signals, competitor activity, audience questions and opportunities",
+      "status": "READY",
+      "mode": "Codex-assisted"
+    },
+    {
+      "id": "strategy",
+      "name": "Strategy Agent",
+      "role": "Pillars, hooks, keywords, platform fit and priorities",
+      "status": "READY",
+      "mode": "Codex-assisted"
+    },
+    {
+      "id": "studio",
+      "name": "Content Studio",
+      "role": "Scripts, captions, carousels, thumbnails and variants",
+      "status": "READY",
+      "mode": "Codex-assisted"
+    },
+    {
+      "id": "brand",
+      "name": "ZYRA Brand Guardian",
+      "role": "Product truth, voice, privacy and claim checks",
+      "status": "ACTIVE",
+      "mode": "Deterministic checks + Codex review"
+    },
+    {
+      "id": "approval",
+      "name": "Approval Centre",
+      "role": "Exact final previews and Founder decisions",
+      "status": "ACTIVE",
+      "mode": "Founder-controlled"
+    },
+    {
+      "id": "publishing",
+      "name": "Publishing System",
+      "role": "Exports approved manual publishing packs",
+      "status": "MANUAL_ONLY",
+      "mode": "No social API connected"
+    },
+    {
+      "id": "community",
+      "name": "Community Manager",
+      "role": "Classifies inbound messages and drafts ordinary replies",
+      "status": "DRAFT_ONLY",
+      "mode": "Sensitive categories human-only"
+    },
+    {
+      "id": "analytics",
+      "name": "Analytics & Memory",
+      "role": "Performance records, observations and future learning",
+      "status": "READY",
+      "mode": "Manual metrics first"
+    }
+  ],
+  "research": [],
+  "content": [
+    {
+      "id": "CNT-001",
+      "title": "Why ZYRA is different from swipe culture",
+      "pillar": "Why ZYRA is different from dating apps",
+      "platform": "TikTok + Instagram Reels",
+      "format": "Short video",
+      "objective": "Explain the marriage-first Journey model without attacking members of other platforms.",
+      "hook": "A Muslim marriage app should help a connection move somewhere meaningful.",
+      "body": "ZYRA is being built around thoughtful discovery, compatibility that starts better conversations, a structured Journey and family support at the right moments. It is in private testing.",
+      "caption": "A clearer path to marriage. ZYRA is currently in private testing.",
+      "cta": "Follow the build.",
+      "destination": "https://zyraconnect.app",
+      "risk": "routine",
+      "sources": [
+        "ZYRA Brand Guidelines",
+        "ZYRA Product Spec",
+        "Current website implementation"
+      ],
+      "budgetGbp": "",
+      "status": "DRAFT",
+      "createdAt": "2026-09-25T00:00:00Z",
+      "updatedAt": "2026-09-25T00:00:00Z",
+      "brandCheck": null,
+      "compliance": null,
+      "approval": null,
+      "publication": null
+    },
+    {
+      "id": "CNT-002",
+      "title": "What a Guardian can—and cannot—see",
+      "pillar": "Guardian and family involvement",
+      "platform": "Instagram + Facebook",
+      "format": "Carousel",
+      "objective": "Show that Guardian involvement has a real role and real privacy boundaries.",
+      "hook": "Family support should not mean giving somebody unrestricted access to your account.",
+      "body": "A ZYRA Guardian has their own account and follows only the Journeys their role and permissions allow. Private compatibility answers and unrelated Journeys stay private. ZYRA is in private testing.",
+      "caption": "A real role. Clear boundaries. Private testing continues.",
+      "cta": "Learn how Guardians fit into ZYRA.",
+      "destination": "https://zyraconnect.app/#for-guardians",
+      "risk": "sensitive",
+      "sources": [
+        "Wali Architecture",
+        "Journey Capability Grant Rules",
+        "Guardian relationship implementation handovers"
+      ],
+      "budgetGbp": "",
+      "status": "DRAFT",
+      "createdAt": "2026-09-25T00:00:00Z",
+      "updatedAt": "2026-09-25T00:00:00Z",
+      "brandCheck": null,
+      "compliance": null,
+      "approval": null,
+      "publication": null
+    },
+    {
+      "id": "CNT-003",
+      "title": "Founder build diary: private testing",
+      "pillar": "Founder story and building ZYRA",
+      "platform": "TikTok + Instagram Reels",
+      "format": "Founder video",
+      "objective": "Build trust by showing the product is being tested carefully before launch.",
+      "hook": "Before ZYRA launches, I want the difficult parts tested—not hidden.",
+      "body": "A short Founder update showing one real product improvement, what was learned and what remains private testing. No launch-date promise and no test-member data.",
+      "caption": "Building ZYRA carefully. Still in private testing.",
+      "cta": "Follow the journey to launch.",
+      "destination": "https://zyraconnect.app",
+      "risk": "routine",
+      "sources": [
+        "Current verified product handovers",
+        "ZYRA Brand Guidelines"
+      ],
+      "budgetGbp": "",
+      "status": "DRAFT",
+      "createdAt": "2026-09-25T00:00:00Z",
+      "updatedAt": "2026-09-25T00:00:00Z",
+      "brandCheck": null,
+      "compliance": null,
+      "approval": null,
+      "publication": null
+    }
+  ],
+  "community": [],
+  "metrics": [],
+  "events": []
+}

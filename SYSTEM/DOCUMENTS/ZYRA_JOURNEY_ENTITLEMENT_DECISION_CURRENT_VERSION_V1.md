@@ -117,6 +117,14 @@ exactly why the number can safely stay open.
 Recorded so the undecided value is never mistaken for an unfinished design.
 The number is policy sitting on top of the architecture, not a gap in it.
 
+> **SUPERSEDED IN PART (2026-08-25, annotation by Fable):** the paused-slot
+> position below was later changed by ratified decisions — DR-ZYRA-138/170
+> moved paused Journeys to their own capacity (Basic 5 / One 10), and
+> DR-ZYRA-215 (Shared Pause Decision) settled the current model: a pause
+> REQUEST stays Active-counted; the Active slot is freed only at a settled
+> Pause. Current authority: JOURNEY_SUSPENSION_CURRENT_VERSION_V4.md. The
+> original text is preserved below unchanged as the historical record.
+
 Paused still consumes the Active slot, because a paused Journey *is* an
 active one — `suspend_journey()` sets `suspended_by` and leaves the status
 `'active'`, and `'paused'` was removed from the status CHECK on 2026-08-06

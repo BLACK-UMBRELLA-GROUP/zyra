@@ -1,171 +1,335 @@
 // Conversation screen for an Active Journey — per MATCH_UX_SPEC:
 // "Conversation belongs to Active Journey only."
 //
-// Real wiring (2026-07-18): if withProfile is a real matched Seeker,
-// resolves the real conversation, loads message history, subscribes
-// to Realtime for incoming messages, and sends via the real
-// `messages` table. Falls back to the original local-only mock chat
-// (including the [failtest] deterministic failure trigger) whenever
-// no real conversation exists — not signed in, or withProfile is a
-// mock Browse candidate with no backing match. This keeps the screen
-// fully testable in both states rather than breaking mock Active
-// Journeys built before real matches existed.
+// Unavailable conversations fail closed. Local sample messages are confined
+// to the explicitly authorised and isolated Founder preview, never used as
+// a fallback for a real member's missing conversation or failed request.
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../widgets/zyra_profile_image.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../main.dart';
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_internal_preview_client.dart';
+import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_match_service.dart';
+import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_loading.dart';
+import '../../widgets/zyra_message_receipt.dart';
 import '../matches/journey_timeline_screen.dart';
 
 class _ChatMessage {
+  final String id;
   final String text;
   final bool fromMe;
-  const _ChatMessage(this.text, this.fromMe);
+  final DateTime createdAt;
+  final DateTime? readAt;
+  const _ChatMessage({
+    required this.id,
+    required this.text,
+    required this.fromMe,
+    required this.createdAt,
+    this.readAt,
+  });
 }
 
 class ChatScreen extends StatefulWidget {
   final SeekerProfile withProfile;
-  const ChatScreen({super.key, required this.withProfile});
+
+  /// Read/write seams for measured failure-state tests. Normal routes omit
+  /// these and use the authenticated service and Realtime channel.
+  final Future<String?> Function(String)? resolveConversation;
+  final Future<ZyraSourceResult<List<ZyraChatMessage>>> Function(String)?
+  loadMessages;
+  final Future<bool> Function(String, String)? sendMessage;
+  final Stream<ZyraChatMessage> Function(String)? incomingMessages;
+  final Future<bool> Function(String)? markMessagesRead;
+
+  const ChatScreen({
+    super.key,
+    required this.withProfile,
+    this.resolveConversation,
+    this.loadMessages,
+    this.sendMessage,
+    this.incomingMessages,
+    this.markMessagesRead,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _accountGeneration = ZyraAccountState.generation;
+  final _accountOwner = ZyraAccountState.userId;
+  bool get _accountCurrent =>
+      !ZyraAccountState.isSigningOut &&
+      _accountGeneration == ZyraAccountState.generation &&
+      _accountOwner == ZyraAccountState.userId;
   final TextEditingController _controller = TextEditingController();
-  late final List<_ChatMessage> _messages = [
-    _ChatMessage(
-      'Assalamu alaikum — excited to start this Journey together, in sha Allah.',
-      false,
-    ),
-  ];
+  final List<_ChatMessage> _messages = [];
 
   String? _sendError;
-  String? _pendingText;
+  bool _loading = true;
+  bool _unavailable = false;
+  bool _sending = false;
+  int _loadGeneration = 0;
+  String? _firstUnreadMessageId;
+  late final bool _localPreview;
 
-  // Non-null once a real conversation has been resolved (see
-  // _loadRealConversation). While null, this screen behaves exactly
-  // as it did before real backend wiring.
+  // Non-null only after a real conversation and its history were confirmed.
   String? _conversationId;
   RealtimeChannel? _channel;
+  StreamSubscription<ZyraChatMessage>? _incomingSubscription;
+
+  bool get _canSend =>
+      _accountCurrent &&
+      !_loading &&
+      !_unavailable &&
+      (_localPreview
+          ? ZyraDeveloperAccess.canUseDeveloperTools &&
+                ZyraInternalPreviewClient.isActive
+          : _conversationId != null && !ZyraInternalPreviewClient.isActive);
 
   @override
   void initState() {
     super.initState();
+    _localPreview =
+        ZyraDeveloperAccess.canUseDeveloperTools &&
+        ZyraInternalPreviewClient.isActive;
+    AppState.instance.addListener(_onAccountChanged);
     _loadRealConversation();
   }
 
-  Future<void> _loadRealConversation() async {
-    final convId = await ZyraMatchService.resolveConversationId(widget.withProfile.id);
-    if (!mounted || convId == null) return;
-
-    final history = await ZyraMatchService.fetchMessages(convId);
-    if (!mounted) return;
+  void _onAccountChanged() {
+    if (!mounted || _accountCurrent) return;
+    _incomingSubscription?.cancel();
+    final channel = _channel;
+    if (channel != null) supabase.removeChannel(channel);
+    _channel = null;
     setState(() {
-      _conversationId = convId;
-      if (history.isNotEmpty) {
+      _messages.clear();
+      _controller.clear();
+      _conversationId = null;
+      _unavailable = true;
+      _loading = false;
+      _sendError = null;
+    });
+  }
+
+  Future<void> _loadRealConversation() async {
+    final generation = ++_loadGeneration;
+    _incomingSubscription?.cancel();
+    _incomingSubscription = null;
+    final previousChannel = _channel;
+    if (previousChannel != null) supabase.removeChannel(previousChannel);
+    _channel = null;
+    setState(() {
+      _loading = true;
+      _unavailable = false;
+    });
+    if (_localPreview && _accountCurrent) {
+      setState(() => _loading = false);
+      return;
+    }
+    try {
+      if (!_accountCurrent || ZyraInternalPreviewClient.isActive) {
+        throw StateError('Preview closed');
+      }
+      final convId =
+          await (widget.resolveConversation ??
+              ZyraMatchService.resolveConversationId)(widget.withProfile.id);
+      if (!mounted || !_accountCurrent || generation != _loadGeneration) return;
+      if (convId == null) throw StateError('Conversation unavailable');
+      final history =
+          await (widget.loadMessages ?? ZyraMatchService.fetchMessagesResult)(
+            convId,
+          );
+      if (!mounted || !_accountCurrent || generation != _loadGeneration) return;
+      if (!history.isAvailable || ZyraInternalPreviewClient.isActive) {
+        throw StateError('History unavailable');
+      }
+      setState(() {
+        _conversationId = convId;
+        _loading = false;
         _messages
           ..clear()
-          ..addAll(history.map((m) => _ChatMessage(m.text, m.fromMe)));
+          ..addAll(
+            history
+                .valueOr(const [])
+                .map(
+                  (m) => _ChatMessage(
+                    id: m.id,
+                    text: m.text,
+                    fromMe: m.fromMe,
+                    createdAt: m.createdAt,
+                    readAt: m.readAt,
+                  ),
+                ),
+          );
+        _firstUnreadMessageId = history
+            .valueOr(const [])
+            .where((message) => !message.fromMe && message.readAt == null)
+            .firstOrNull
+            ?.id;
+      });
+      unawaited(_markRead(convId));
+      final incoming = widget.incomingMessages;
+      if (incoming != null) {
+        _incomingSubscription = incoming(convId).listen((message) {
+          if (!mounted || !_accountCurrent) return;
+          setState(() => _messages.add(_fromServiceMessage(message)));
+          if (!message.fromMe) unawaited(_markRead(convId));
+        });
+        return;
       }
-    });
 
-    _channel = supabase.channel('messages:$convId')
-      ..onPostgresChanges(
-        event: PostgresChangeEvent.insert,
-        schema: 'public',
-        table: 'messages',
-        filter: PostgresChangeFilter(type: PostgresChangeFilterType.eq, column: 'conversation_id', value: convId),
-        callback: (payload) {
-          if (!mounted) return;
-          final row = payload.newRecord;
-          if (row['sender_id'] == ZyraAuth.currentUser?.id) return; // already shown optimistically on send
-          setState(() => _messages.add(_ChatMessage(row['content'] as String? ?? '', false)));
-        },
-      );
-    _channel!.subscribe();
+      _channel = supabase.channel('messages:$convId')
+        ..onPostgresChanges(
+          event: PostgresChangeEvent.insert,
+          schema: 'public',
+          table: 'messages',
+          filter: PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'conversation_id',
+            value: convId,
+          ),
+          callback: (payload) {
+            if (!mounted || !_accountCurrent) return;
+            final row = payload.newRecord;
+            if (row['sender_id'] == ZyraAuth.currentUser?.id) {
+              return; // our acknowledged send is appended by _send
+            }
+            setState(
+              () => _messages.add(
+                _ChatMessage(
+                  id:
+                      row['id'] as String? ??
+                      'live-${DateTime.now().microsecondsSinceEpoch}',
+                  text: row['content'] as String? ?? '',
+                  fromMe: false,
+                  createdAt:
+                      DateTime.tryParse(row['created_at'] as String? ?? '') ??
+                      DateTime.now(),
+                  readAt: row['read_at'] == null
+                      ? null
+                      : DateTime.tryParse(row['read_at'] as String),
+                ),
+              ),
+            );
+            unawaited(_markRead(convId));
+          },
+        )
+        ..onPostgresChanges(
+          event: PostgresChangeEvent.update,
+          schema: 'public',
+          table: 'messages',
+          filter: PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'conversation_id',
+            value: convId,
+          ),
+          callback: (payload) {
+            if (!mounted || !_accountCurrent) return;
+            final row = payload.newRecord;
+            final id = row['id'] as String?;
+            final readAt = DateTime.tryParse(row['read_at'] as String? ?? '');
+            if (id == null || readAt == null) return;
+            final index = _messages.indexWhere((message) => message.id == id);
+            if (index < 0 || !_messages[index].fromMe) return;
+            final previous = _messages[index];
+            setState(() {
+              _messages[index] = _ChatMessage(
+                id: previous.id,
+                text: previous.text,
+                fromMe: true,
+                createdAt: previous.createdAt,
+                readAt: readAt,
+              );
+            });
+          },
+        );
+      _channel!.subscribe();
+    } catch (error) {
+      debugPrint('ZYRA: conversation unavailable (${error.runtimeType}).');
+      if (!mounted || generation != _loadGeneration) return;
+      setState(() {
+        _loading = false;
+        _unavailable = true;
+        _conversationId = null;
+      });
+    }
   }
 
-  // "[failtest]" is a deterministic trigger for the send-failure state
-  // (Category 2, ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md /
-  // DR-ZYRA-080) — kept only for the no-real-conversation mock path.
-  // Once a real conversation exists, failures are genuine (real
-  // network/RLS errors), so [failtest] no longer applies there.
+  _ChatMessage _fromServiceMessage(ZyraChatMessage message) => _ChatMessage(
+    id: message.id,
+    text: message.text,
+    fromMe: message.fromMe,
+    createdAt: message.createdAt,
+    readAt: message.readAt,
+  );
+
+  Future<void> _markRead(String conversationId) async {
+    await (widget.markMessagesRead ?? ZyraMatchService.markMessagesRead)(
+      conversationId,
+    );
+  }
+
+  // Do not paint a sent bubble until the server acknowledges the write.
+  // In particular, never removeLast() on failure: an incoming message may
+  // have arrived since the send started and would be the item removed.
   Future<void> _send() async {
-    final text = _controller.text.trim();
-    if (text.isEmpty) return;
-
-    if (_conversationId != null) {
-      setState(() {
-        _messages.add(_ChatMessage(text, true));
-        _controller.clear();
-        _sendError = null;
-      });
-      final ok = await ZyraMatchService.sendMessage(_conversationId!, text);
-      if (!ok && mounted) {
-        setState(() {
-          _messages.removeLast();
-          _pendingText = text;
-          _sendError = "That didn't send. Tap to try again.";
-        });
-      }
-      return;
+    final draft = _controller.text;
+    final text = draft.trim();
+    if (!_canSend || _sending || text.isEmpty) return;
+    setState(() => _sending = true);
+    var ok = false;
+    try {
+      ok = _localPreview
+          ? true
+          : await (widget.sendMessage ?? ZyraMatchService.sendMessage)(
+              _conversationId!,
+              text,
+            );
+    } catch (error) {
+      debugPrint('ZYRA: message send failed (${error.runtimeType}).');
     }
-
-    if (text.toLowerCase().contains('[failtest]')) {
-      setState(() {
-        _pendingText = text;
-        _sendError = "That didn't send. Tap to try again.";
-        _controller.clear();
-      });
-      return;
-    }
+    if (!mounted || !_accountCurrent) return;
     setState(() {
-      _messages.add(_ChatMessage(text, true));
-      _controller.clear();
-      _sendError = null;
-    });
-  }
-
-  Future<void> _retrySend() async {
-    final text = _pendingText;
-    if (text == null) return;
-    final cleanText = text.replaceAll(RegExp(r'\[failtest\]', caseSensitive: false), '').trim();
-
-    if (_conversationId != null) {
-      setState(() {
-        _messages.add(_ChatMessage(cleanText, true));
+      _sending = false;
+      if (ok && _canSend) {
+        _messages.add(
+          _ChatMessage(
+            id: 'local-${DateTime.now().microsecondsSinceEpoch}',
+            text: text,
+            fromMe: true,
+            createdAt: DateTime.now(),
+          ),
+        );
+        // A new draft typed while the write was in flight belongs to the user.
+        if (_controller.text == draft) _controller.clear();
         _sendError = null;
-        _pendingText = null;
-      });
-      final ok = await ZyraMatchService.sendMessage(_conversationId!, cleanText);
-      if (!ok && mounted) {
-        setState(() {
-          _messages.removeLast();
-          _pendingText = cleanText;
-          _sendError = "That didn't send. Tap to try again.";
-        });
+      } else {
+        _sendError =
+            "That didn't send. Your message is still here to try again.";
       }
-      return;
-    }
-
-    setState(() {
-      _messages.add(_ChatMessage(cleanText, true));
-      _sendError = null;
-      _pendingText = null;
     });
   }
 
   @override
   void dispose() {
+    AppState.instance.removeListener(_onAccountChanged);
     _controller.dispose();
+    _incomingSubscription?.cancel();
     final channel = _channel;
     if (channel != null) supabase.removeChannel(channel);
     super.dispose();
@@ -177,7 +341,9 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Container(
         // 2026-07-25: gender-matched gradient (DR-ZYRA-094) — see
         // ZyraColors.genderGradient() doc comment.
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: ZyraAppGoldDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -187,62 +353,165 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     IconButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.arrow_back, color: Colors.white70),
+                      icon: Icon(Icons.arrow_back, color: ZyraColors.ink(0.70)),
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(18),
-                      child: ZyraProfileImage(widget.withProfile.photoUrl, width: 36, height: 36),
+                      child: ZyraProfileImage(
+                        widget.withProfile.photoUrl,
+                        width: 36,
+                        height: 36,
+                      ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(child: Text(widget.withProfile.firstName, style: ZyraText.body(size: 15, color: Colors.white))),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        widget.withProfile.firstName,
+                        style: ZyraText.body(size: 15, color: Colors.white),
+                      ),
+                    ),
                     IconButton(
                       onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => JourneyTimelineScreen(withProfile: widget.withProfile)),
+                        MaterialPageRoute(
+                          builder: (_) => JourneyTimelineScreen(
+                            withProfile: widget.withProfile,
+                          ),
+                        ),
                       ),
-                      icon: const Icon(Icons.timeline_outlined, color: Colors.white70),
+                      icon: Icon(
+                        Icons.timeline_outlined,
+                        color: ZyraColors.ink(0.70),
+                      ),
                       tooltip: 'Timeline',
                     ),
                   ],
                 ),
               ),
               Expanded(
-                child: _messages.isEmpty
+                child: _loading
+                    ? const ZyraLoading(label: 'Opening conversation…')
+                    : _unavailable || !_accountCurrent
+                    ? ZyraEmptyState(
+                        icon: Icons.forum_outlined,
+                        title: 'Conversation unavailable',
+                        message:
+                            'We could not open this conversation. Please try again.',
+                        ctaLabel: 'Try again',
+                        onCta: _loadRealConversation,
+                      )
+                    : _messages.isEmpty
                     ? ZyraEmptyState(
                         icon: Icons.mail_outline,
-                        message: 'Say Salam to start your Journey with ${widget.withProfile.firstName}.',
+                        message:
+                            'Say Salam to start your Journey with ${widget.withProfile.firstName}.',
                       )
                     : ListView.builder(
-                  reverse: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  itemCount: _messages.length,
-                  itemBuilder: (context, index) {
-                    final m = _messages[_messages.length - 1 - index];
-                    return Align(
-                      alignment: m.fromMe ? Alignment.centerRight : Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.72),
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: m.fromMe ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: m.fromMe ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder, width: 0.5),
+                        reverse: true,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
                         ),
-                        child: Text(m.text, style: ZyraText.body(size: 14, color: Colors.white)),
+                        itemCount: _messages.length,
+                        itemBuilder: (context, index) {
+                          final messageIndex = _messages.length - 1 - index;
+                          final m = _messages[messageIndex];
+                          final latestMine = _messages.lastIndexWhere(
+                            (message) => message.fromMe,
+                          );
+                          return Column(
+                            children: [
+                              if (m.id == _firstUnreadMessageId)
+                                const ZyraUnreadMessagesDivider(),
+                              Align(
+                                alignment: m.fromMe
+                                    ? Alignment.centerRight
+                                    : Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: m.fromMe
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 4),
+                                      constraints: BoxConstraints(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width *
+                                            0.72,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: m.fromMe
+                                            ? ZyraColors.accentBg
+                                            : ZyraColors.iconButtonBg,
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                          color: m.fromMe
+                                              ? ZyraColors.accentBorder
+                                              : ZyraColors.iconButtonBorder,
+                                          width: 0.5,
+                                        ),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (!m.fromMe) ...[
+                                            Text(
+                                              '${widget.withProfile.firstName} · Seeker',
+                                              style: ZyraText.subtext(
+                                                size: 10.5,
+                                                color: ZyraColors.actionFill,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 3),
+                                          ],
+                                          Text(
+                                            m.text,
+                                            style: ZyraText.body(
+                                              size: 14,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (m.fromMe && messageIndex == latestMine)
+                                      ZyraMessageReceipt(
+                                        readBy: m.readAt == null
+                                            ? const []
+                                            : [
+                                                ZyraMessageReader(
+                                                  userId: widget.withProfile.id,
+                                                  firstName: widget
+                                                      .withProfile
+                                                      .firstName,
+                                                  roleLabel: 'Seeker',
+                                                  readAt: m.readAt,
+                                                ),
+                                              ],
+                                        recipientCount: 1,
+                                      )
+                                    else
+                                      const SizedBox(height: 8),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
               if (_sendError != null)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: ZyraErrorBanner(
                     message: _sendError!,
-                    onRetry: _retrySend,
+                    onRetry: _sending ? null : _send,
                     onDismiss: () => setState(() {
                       _sendError = null;
-                      _pendingText = null;
                     }),
                   ),
                 ),
@@ -252,23 +521,34 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     Expanded(
                       child: TextField(
+                        enabled: _canSend,
                         controller: _controller,
                         style: ZyraText.body(size: 14, color: Colors.white),
                         decoration: InputDecoration(
                           hintText: 'Message…',
-                          hintStyle: ZyraText.body(size: 14, color: Colors.white38),
+                          hintStyle: ZyraText.body(
+                            size: 14,
+                            color: ZyraColors.ink(0.38),
+                          ),
                           filled: true,
                           fillColor: ZyraColors.iconButtonBg,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(24), borderSide: BorderSide.none),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(24),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                         onSubmitted: (_) => _send(),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     IconButton(
-                      onPressed: _send,
-                      icon: const Icon(Icons.send, color: Colors.white70),
+                      tooltip: _sending ? 'Sending message' : 'Send message',
+                      onPressed: _canSend && !_sending ? _send : null,
+                      icon: Icon(Icons.send, color: ZyraColors.ink(0.70)),
                     ),
                   ],
                 ),

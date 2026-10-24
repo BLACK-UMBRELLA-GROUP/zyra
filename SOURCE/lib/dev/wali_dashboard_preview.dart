@@ -42,6 +42,7 @@
 // is the only way a preview can be argued with rather than admired.
 
 import 'package:flutter/material.dart';
+import 'zyra_app_gold_preview.dart';
 
 import '../data/zyra_journey_stages.dart';
 import '../services/zyra_wali_journey_service.dart';
@@ -56,18 +57,18 @@ enum _Maturity { built, designed, blocked }
 
 extension _MaturityX on _Maturity {
   String get label => switch (this) {
-        _Maturity.built => 'BUILT',
-        _Maturity.designed => 'DESIGNED',
-        _Maturity.blocked => 'BLOCKED',
-      };
+    _Maturity.built => 'BUILT',
+    _Maturity.designed => 'DESIGNED',
+    _Maturity.blocked => 'BLOCKED',
+  };
 
   Color get tint => switch (this) {
-        // Reuses the app's own tokens rather than inventing a third
-        // red/amber/green triad — there are already two.
-        _Maturity.built => const Color(0xFF84C88E),
-        _Maturity.designed => const Color(0xFFEED26C),
-        _Maturity.blocked => const Color(0xFFF47272),
-      };
+    // Reuses the app's own tokens rather than inventing a third
+    // red/amber/green triad — there are already two.
+    _Maturity.built => const Color(0xFF84C88E),
+    _Maturity.designed => const Color(0xFFEED26C),
+    _Maturity.blocked => const Color(0xFFF47272),
+  };
 }
 
 class WaliDashboardPreview extends StatefulWidget {
@@ -110,12 +111,14 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white70),
-        title: Text('Guardian dashboard — preview',
-            style: ZyraText.heading(size: 16)),
+        title: Text(
+          'Guardian dashboard — preview',
+          style: ZyraText.heading(size: 16),
+        ),
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
-        decoration: BoxDecoration(
+        decoration: ZyraAppGoldDecoration(
           gradient: ZyraColors.genderGradient(AppState.instance.gender),
         ),
         child: SafeArea(
@@ -136,13 +139,14 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                 [
                   _row('Role', main ? 'Main Guardian' : 'Additional Guardian'),
                   _row('Seekers', '${wards.length}'),
-                  _row('Plan', 'Standard Guardian'),
+                  _row('Membership', 'No access'),
                   if (!main)
                     _note(
-                        'An Additional Guardian sees NO Journeys at all — the '
-                        'counterpart card is Main-only, so the row is skipped '
-                        'entirely rather than shown without detail. Whether '
-                        'that is intended is OA-ZYRA-213.'),
+                      'An Additional Guardian receives full current Journey '
+                      'context only while the Seeker includes them in that '
+                      'Journey. Family Review, Guardian Gate and protected '
+                      'decisions remain led by the Main Guardian.',
+                    ),
                 ],
               ),
 
@@ -157,13 +161,18 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                   if (review == null)
                     _empty('Nothing is waiting on you.')
                   else ...[
-                    _row('Family Review',
-                        '${journeys.isEmpty ? "—" : journeys.first.linkedSeekerName} · closes in 41h 12m'),
-                    _row('Your decision',
-                        _s.waliReviewDecision ?? 'not yet given'),
+                    _row(
+                      'Family Review',
+                      '${journeys.isEmpty ? "—" : journeys.first.linkedSeekerName} · closes in 41h 12m',
+                    ),
+                    _row(
+                      'Your decision',
+                      _s.waliReviewDecision ?? 'not yet given',
+                    ),
                     _note(
-                        'A Main Guardian votes; an Additional Guardian cannot '
-                        '— wali_review_decision() refuses them server-side.'),
+                      'A Main Guardian votes; an Additional Guardian cannot '
+                      '— wali_review_decision() refuses them server-side.',
+                    ),
                   ],
                 ],
               ),
@@ -179,9 +188,9 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                   else
                     for (final w in wards)
                       _row(
-                          w.firstName,
-                          w.relationshipLabel ??
-                              'relationship not recorded'),
+                        w.firstName,
+                        w.relationshipLabel ?? 'relationship not recorded',
+                      ),
                 ],
               ),
 
@@ -194,13 +203,17 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                     'Journey is moving.',
                 [
                   if (journeys.isEmpty)
-                    _empty(main
-                        ? 'No Journeys yet.'
-                        : 'Additional Guardians see none — see Your standing.')
+                    _empty(
+                      main
+                          ? 'No Journeys yet.'
+                          : 'Additional Guardians see none — see Your standing.',
+                    )
                   else
                     for (final j in journeys)
-                      _row('${j.linkedSeekerName} & ${j.partner.firstName}',
-                          _statusOf(j, review != null)),
+                      _row(
+                        '${j.linkedSeekerName} & ${j.partner.firstName}',
+                        _statusOf(j, review != null),
+                      ),
                 ],
               ),
 
@@ -215,20 +228,24 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                     _empty('Nothing to show without a Journey.')
                   else ...[
                     for (final j in journeys.take(1)) ...[
-                      _row('Seeker',
-                          '${j.partner.firstName}, ${j.partner.age}'),
                       _row(
-                          'Their Main Guardian',
-                          j.counterpartGuardianName == null
-                              ? 'None linked'
-                              : '${j.counterpartGuardianName} · ${j.counterpartGuardianSurname ?? ""}'),
+                        'Seeker',
+                        '${j.partner.firstName}, ${j.partner.age}',
+                      ),
+                      _row(
+                        'Their Main Guardian',
+                        j.counterpartGuardianName == null
+                            ? 'None linked'
+                            : '${j.counterpartGuardianName} · ${j.counterpartGuardianSurname ?? ""}',
+                      ),
                     ],
                     _note(
-                        'City, photos and gender are WITHHELD by design, not '
-                        'missing (clause 3, closed 2026-08-08). The screen '
-                        'should say so — "this is everything you can see of '
-                        'them, and they see the same of yours" — rather than '
-                        'leaving a Guardian to wonder what failed to load.'),
+                      'City, photos and gender are WITHHELD by design, not '
+                      'missing (clause 3, closed 2026-08-08). The screen '
+                      'should say so — "this is everything you can see of '
+                      'them, and they see the same of yours" — rather than '
+                      'leaving a Guardian to wonder what failed to load.',
+                    ),
                   ],
                 ],
               ),
@@ -245,8 +262,10 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                     _empty('No codes outstanding.')
                   else
                     for (final i in invites)
-                      _row(i.label ?? i.token,
-                          i.expiresAt == null ? 'no expiry' : 'live'),
+                      _row(
+                        i.label ?? i.token,
+                        i.expiresAt == null ? 'no expiry' : 'live',
+                      ),
                 ],
               ),
 
@@ -258,8 +277,10 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                 [
                   _row('Suggest someone to your Seeker', 'no create UI'),
                   _row('See what you put forward', 'OA-ZYRA-214'),
-                  _row('Guardian AI Summary',
-                      'generated; shows on the SEEKER\'s screen'),
+                  _row(
+                    'Guardian AI Summary',
+                    'generated; shows on the SEEKER\'s screen',
+                  ),
                   _row('Family Review notifications', 'must open the Journey'),
                   _row('Raise a concern', 'no Guardian-side route'),
                 ],
@@ -272,12 +293,13 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
                 'Cannot be built without schema or a product ruling. Listed '
                     'so the preview does not quietly imply they are coming.',
                 [
-                  _row('Invitations received',
-                      'wali_invites has no recipient column'),
+                  _row(
+                    'Invitations received',
+                    'wali_invites has no recipient column',
+                  ),
                   _row('Network Discover / Requests', 'no Network data exists'),
                   _row('Invite delivery (SMS/email)', 'no sending backend'),
-                  _row('Browse-stage visibility',
-                      'out of scope by decision'),
+                  _row('Profiles visibility', 'out of scope by decision'),
                 ],
               ),
             ],
@@ -290,8 +312,10 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
   String _statusOf(WaliJourneyView j, bool reviewOpen) {
     if (j.status == 'ended') return 'Journey ended';
     if (j.isSuspended) return 'Journey paused';
-    return ZyraJourneyStages.labelFor(j.journeyStage,
-        reviewOpen: reviewOpen && j.isMock);
+    return ZyraJourneyStages.labelFor(
+      j.journeyStage,
+      reviewOpen: reviewOpen && j.isMock,
+    );
   }
 
   Widget _banner() {
@@ -301,13 +325,17 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
         color: Colors.white.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-            color: Colors.white.withValues(alpha: 0.18), width: 0.5),
+          color: Colors.white.withValues(alpha: 0.18),
+          width: 0.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('This screen is a preview, not the app',
-              style: ZyraText.body(size: 14, color: Colors.white)),
+          Text(
+            'This screen is a preview, not the app',
+            style: ZyraText.body(size: 14, color: Colors.white),
+          ),
           const SizedBox(height: 5),
           Text(
             'It shows what the Guardian dashboard could hold, so the shape '
@@ -324,7 +352,11 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
   }
 
   Widget _section(
-      String title, _Maturity maturity, String why, List<Widget> children) {
+    String title,
+    _Maturity maturity,
+    String why,
+    List<Widget> children,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Container(
@@ -332,7 +364,9 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
           color: Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-              color: Colors.white.withValues(alpha: 0.10), width: 0.5),
+            color: Colors.white.withValues(alpha: 0.10),
+            width: 0.5,
+          ),
         ),
         padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
         child: Column(
@@ -341,24 +375,30 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
             Row(
               children: [
                 Expanded(
-                  child: Text(title.toUpperCase(),
-                      style: ZyraText.chapterLabel(color: Colors.white70)),
+                  child: Text(
+                    title.toUpperCase(),
+                    style: ZyraText.chapterLabel(color: Colors.white70),
+                  ),
                 ),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: maturity.tint.withValues(alpha: 0.16),
                     borderRadius: BorderRadius.circular(50),
                     border: Border.all(
-                        color: maturity.tint.withValues(alpha: 0.45),
-                        width: 0.5),
+                      color: maturity.tint.withValues(alpha: 0.45),
+                      width: 0.5,
+                    ),
                   ),
                   // The word, not just the colour — a status told only in
                   // hue is a status nobody colour-blind can read.
-                  child: Text(maturity.label,
-                      style:
-                          ZyraText.subtext(size: 9, color: maturity.tint)),
+                  child: Text(
+                    maturity.label,
+                    style: ZyraText.subtext(size: 9, color: maturity.tint),
+                  ),
                 ),
               ],
             ),
@@ -373,33 +413,41 @@ class _WaliDashboardPreviewState extends State<WaliDashboardPreview> {
   }
 
   Widget _row(String left, String right) => Padding(
-        padding: const EdgeInsets.only(bottom: 7),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(left,
-                  style: ZyraText.body(size: 13.5, color: Colors.white)),
-            ),
-            const SizedBox(width: 10),
-            Flexible(
-              child: Text(right,
-                  textAlign: TextAlign.right,
-                  style: ZyraText.subtext(size: 12)),
-            ),
-          ],
+    padding: const EdgeInsets.only(bottom: 7),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Text(
+            left,
+            style: ZyraText.body(size: 13.5, color: Colors.white),
+          ),
         ),
-      );
+        const SizedBox(width: 10),
+        Flexible(
+          child: Text(
+            right,
+            textAlign: TextAlign.right,
+            style: ZyraText.subtext(size: 12),
+          ),
+        ),
+      ],
+    ),
+  );
 
   Widget _empty(String message) => Padding(
-        padding: const EdgeInsets.only(bottom: 4),
-        child:
-            Text(message, style: ZyraText.subtext(size: 12.5, color: Colors.white38)),
-      );
+    padding: const EdgeInsets.only(bottom: 4),
+    child: Text(
+      message,
+      style: ZyraText.subtext(size: 12.5, color: Colors.white38),
+    ),
+  );
 
   Widget _note(String text) => Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Text(text,
-            style: ZyraText.subtext(size: 10.5, color: Colors.white38)),
-      );
+    padding: const EdgeInsets.only(top: 4),
+    child: Text(
+      text,
+      style: ZyraText.subtext(size: 10.5, color: Colors.white38),
+    ),
+  );
 }

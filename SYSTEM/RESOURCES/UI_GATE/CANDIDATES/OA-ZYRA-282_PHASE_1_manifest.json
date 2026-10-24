@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "programme": "OA-ZYRA-282",
+  "phase": "Phase 1 · Guardianship Manager",
+  "generated": "2026-08-31T09:22:10.356Z",
+  "automatic_promotion_allowed": false,
+  "device_acceptance_pending": false,
+  "comparison_clock": "2026-08-30T18:00:00Z",
+  "role_scope": [
+    "seeker"
+  ],
+  "fixture_count": 7,
+  "variant_count": 28,
+  "variants_per_fixture": 4,
+  "approved_baselines_modified": false,
+  "fixtures": [
+    {
+      "id": "guardianship-manager-empty",
+      "perspective": "Seeker · no linked Guardian",
+      "state": "truthful empty",
+      "scroll_offset_y": 0,
+      "variants": [
+        "small",
+        "standard",
+        "large",
+        "standard__text-130"
+      ]
+    },
+    {
+      "id": "guardianship-manager-main-consent-off",
+      "perspective": "Seeker · Main Guardian",
+      "state": "Main only · consent OFF",
+      "scroll_offset_y": 0,
+      "variants": [
+        "small",
+        "standard",
+        "large",
+        "standard__text-130"
+      ]
+    },
+    {
+      "id": "guardianship-manager-loaded-consent-on",
+      "perspective": "Seeker · Main + Additional Guardians",
+      "state": "loaded · consent ON · pending invitation",
+      "scroll_offset_y": -520,
+      "variants": [
+        "small",
+        "standard",
+        "large",
+        "standard__text-130"
+      ]
+    },
+    {
+      "id": "guardianship-manager-unavailable",
+      "perspective": "Seeker · source failure",
+      "state": "links unavailable + Retry",
+      "scroll_offset_y": 0,
+      "variants": [
+        "small",
+        "standard",
+        "large",
+        "standard__text-130"
+      ]
+    },
+    {
+      "id": "guardian-detail-main",
+      "perspective": "Seeker viewing Main Guardian",
+      "state": "current obligation + relationship history",
+      "scroll_offset_y": -360,
+      "variants": [
+        "small",
+        "standard",
+        "large",
+        "standard__text-130"
+      ]
+    },
+    {
+      "id": "guardian-detail-additional",
+      "perspective": "Seeker viewing Additional Guardian",
+      "state": "role explanation + honest empty history",
+      "scroll_offset_y": -360,
+      "variants": [
+        "small",
+        "standard",
+        "large",
+        "standard__text-130"
+      ]
+    },
+    {
+      "id": "guardian-detail-history-unavailable",
+      "perspective": "Seeker viewing Main Guardian",
+      "state": "history unavailable + Retry",
+      "scroll_offset_y": -360,
+      "variants": [
+        "small",
+        "standard",
+        "large",
+        "standard__text-130"
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "guardianship-manager-empty__small",
+      "path": "test/visual/candidates/guardianship-manager-empty__small.png",
+      "sha256": "72f05fe0ed2801ca2ef728fe8541d2908c4010524351d20ae4b3ccfc12b184f8",
+      "bytes": 55113,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-empty__small.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-empty__standard",
+      "path": "test/visual/candidates/guardianship-manager-empty__standard.png",
+      "sha256": "fddaff26144107d47e47f85c3c88f113b44832ab93a696d9d809f29f7b58f501",
+      "bytes": 57368,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-empty__standard.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-empty__large",
+      "path": "test/visual/candidates/guardianship-manager-empty__large.png",
+      "sha256": "7638ee9032fb19a94ad2eae85fec8caa3a186f50dbf1ba4ce083a7f12f112854",
+      "bytes": 58976,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-empty__large.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-empty__standard__text-130",
+      "path": "test/visual/candidates/guardianship-manager-empty__standard__text-130.png",
+      "sha256": "b9fe053441756f9a1a71a2160498590acf0ba5d85b3e4c8a45bbe642237170b4",
+      "bytes": 76843,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-empty__standard__text-130.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-main-consent-off__small",
+      "path": "test/visual/candidates/guardianship-manager-main-consent-off__small.png",
+      "sha256": "6945d7fb18a53eeff162085fdac8f4381b0d58f5aae64ac31dde53b3581565a8",
+      "bytes": 74299,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-main-consent-off__small.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-main-consent-off__standard",
+      "path": "test/visual/candidates/guardianship-manager-main-consent-off__standard.png",
+      "sha256": "57179b77cec71a59d1671095e625ea4d0adffa42168212bc934e55537fad0624",
+      "bytes": 92295,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-main-consent-off__standard.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-main-consent-off__large",
+      "path": "test/visual/candidates/guardianship-manager-main-consent-off__large.png",
+      "sha256": "c1b4804e2ffdbfce6220e953e1afbf0fa76690e5eb13371fc1574e71ef770f91",
+      "bytes": 93429,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-main-consent-off__large.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-main-consent-off__standard__text-130",
+      "path": "test/visual/candidates/guardianship-manager-main-consent-off__standard__text-130.png",
+      "sha256": "ad671ceb48b05ecbe9e4bc8ec6ccbf9d274c75851cbfdfcf227fb86d79ed9298",
+      "bytes": 124382,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-main-consent-off__standard__text-130.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-loaded-consent-on__small",
+      "path": "test/visual/candidates/guardianship-manager-loaded-consent-on__small.png",
+      "sha256": "689bf53f5c6cff892654ef7e090210c19de0864dd4fcbfe51fc298a6916a8a58",
+      "bytes": 71169,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-loaded-consent-on__small.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-loaded-consent-on__standard",
+      "path": "test/visual/candidates/guardianship-manager-loaded-consent-on__standard.png",
+      "sha256": "a6e60a42af9201880e37fccf48a81ca197f528fd1ba9c8252cd5631ead7a3f13",
+      "bytes": 92233,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-loaded-consent-on__standard.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-loaded-consent-on__large",
+      "path": "test/visual/candidates/guardianship-manager-loaded-consent-on__large.png",
+      "sha256": "01ec10b2e8c39d0a936cc5fa4386362d24f222d1db2edc499b740ab5e70f1e02",
+      "bytes": 104137,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-loaded-consent-on__large.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-loaded-consent-on__standard__text-130",
+      "path": "test/visual/candidates/guardianship-manager-loaded-consent-on__standard__text-130.png",
+      "sha256": "b469e7c0e139bd0efc4b102ec408ad5352582f46d390e7f2bf07381c958b4b30",
+      "bytes": 122728,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-loaded-consent-on__standard__text-130.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-unavailable__small",
+      "path": "test/visual/candidates/guardianship-manager-unavailable__small.png",
+      "sha256": "465ddfd7ebd74f5b8f30328f135fc20522a31a43d5d2d3092f6c6028223c7585",
+      "bytes": 52300,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-unavailable__small.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-unavailable__standard",
+      "path": "test/visual/candidates/guardianship-manager-unavailable__standard.png",
+      "sha256": "50cb9cf7827d4773569b3a5685ed55278d2bb0545f5d5c1f3b72014bdedaef37",
+      "bytes": 54941,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-unavailable__standard.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-unavailable__large",
+      "path": "test/visual/candidates/guardianship-manager-unavailable__large.png",
+      "sha256": "552458165b119e7c48a353d94064799e0100042e4b9eea23cdb98501c29c37e9",
+      "bytes": 56873,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-unavailable__large.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardianship-manager-unavailable__standard__text-130",
+      "path": "test/visual/candidates/guardianship-manager-unavailable__standard__text-130.png",
+      "sha256": "1369212d343203c43a803975fae9368dda1df0fe6b65b4fff7892a2bab079fd2",
+      "bytes": 74026,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardianship-manager-unavailable__standard__text-130.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-main__small",
+      "path": "test/visual/candidates/guardian-detail-main__small.png",
+      "sha256": "a6b8c7b57812f1d2a40350337fd11c8fa5e96c467af8436a8e19f1695b29dba9",
+      "bytes": 54423,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-main__small.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-main__standard",
+      "path": "test/visual/candidates/guardian-detail-main__standard.png",
+      "sha256": "3667aada25ea8c8a74114b3d27bbc0aaef460a37536d63062169a6e84d7fe306",
+      "bytes": 73021,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-main__standard.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-main__large",
+      "path": "test/visual/candidates/guardian-detail-main__large.png",
+      "sha256": "f2ed5c50afd2303f67d2d873c51ba3416b91688a0b98bfe809eeaa2f5318ff67",
+      "bytes": 80295,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-main__large.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-main__standard__text-130",
+      "path": "test/visual/candidates/guardian-detail-main__standard__text-130.png",
+      "sha256": "b40a91ec3bb577000989eeaeb25d4949218eea241d4caa78c48696c926c9c925",
+      "bytes": 90237,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-main__standard__text-130.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-additional__small",
+      "path": "test/visual/candidates/guardian-detail-additional__small.png",
+      "sha256": "061009c74230f8e03f4f3383b0af1662d677643f310c90730eca3d284f48eb72",
+      "bytes": 49008,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-additional__small.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-additional__standard",
+      "path": "test/visual/candidates/guardian-detail-additional__standard.png",
+      "sha256": "dd3020917f5818dc972328c428311ecee05e7da4e98bff7805f36b0c267d3f12",
+      "bytes": 69578,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-additional__standard.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-additional__large",
+      "path": "test/visual/candidates/guardian-detail-additional__large.png",
+      "sha256": "a278638114c284921ffbce8fa8be71423f1062e2f23312a598b5a6a51c96c16e",
+      "bytes": 77863,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-additional__large.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-additional__standard__text-130",
+      "path": "test/visual/candidates/guardian-detail-additional__standard__text-130.png",
+      "sha256": "c15e53a70face282e0a9fec0b4cc1cc94bab7a5107ca66a0b510491b67a35461",
+      "bytes": 87379,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-additional__standard__text-130.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-history-unavailable__small",
+      "path": "test/visual/candidates/guardian-detail-history-unavailable__small.png",
+      "sha256": "0dbb32dcc052622f0982882f4edda9706f518f7b9aa22d4e1b2ec54725d7cb0b",
+      "bytes": 44025,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-history-unavailable__small.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-history-unavailable__standard",
+      "path": "test/visual/candidates/guardian-detail-history-unavailable__standard.png",
+      "sha256": "63d8ea2888486d9cac6ef53791d57e598a720ed296b2a236e486b7173aafe42b",
+      "bytes": 66964,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-history-unavailable__standard.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-history-unavailable__large",
+      "path": "test/visual/candidates/guardian-detail-history-unavailable__large.png",
+      "sha256": "5c96a7e959214fab2a732568427ba114a4388bc67754b53956d0ca82ad260288",
+      "bytes": 70015,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-history-unavailable__large.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    },
+    {
+      "id": "guardian-detail-history-unavailable__standard__text-130",
+      "path": "test/visual/candidates/guardian-detail-history-unavailable__standard__text-130.png",
+      "sha256": "d3b4300c1edb4ac81a4dbab7b31a62358cf86f72aed78b50e0af42d65e5dee1e",
+      "bytes": 76866,
+      "approved": true,
+      "governing_reference": "051 §2/§6 · 059 §2 · OA-ZYRA-282 Phase 1 · 066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+      "approved_path": "test/visual/approved/oa-zyra-282-phase1-v1/guardian-detail-history-unavailable__standard__text-130.png",
+      "approved_date": "2026-08-31",
+      "approved_by": "Founder (Shakeel)",
+      "version": "OA-ZYRA-282-phase1-v1"
+    }
+  ],
+  "founder_approved_date": "2026-08-31",
+  "approved_by": "Founder (Shakeel)",
+  "approval_reference": "066_FABLE-CODEX_2026-08-31_FOUNDER_ACCEPTED_PROMOTION_ROUND_RELEASED.md §1/§2",
+  "promoted_baseline_version": "OA-ZYRA-282-phase1-v1",
+  "promoted_variant_count": 28
+}

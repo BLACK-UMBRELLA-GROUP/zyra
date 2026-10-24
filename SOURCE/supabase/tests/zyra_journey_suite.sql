@@ -1,6 +1,14 @@
 -- ═══════════════════════════════════════════════════════════════════════
 -- ZYRA — Journey lifecycle regression suite
 --
+-- LEGACY ARCHIVE AFTER THE SHARED PAUSE MIGRATION (2026-08-25).
+-- Sections D/J/L/M preserve the retired personal-hold RPC evidence and must
+-- not be used to verify the current Pause model. Run
+-- zyra_pause_decision_state_machine_suite.sql for the authoritative shared
+-- decision, capacity, CAS/race and lock-bypass checks. The non-Pause sections
+-- remain useful historical lifecycle evidence until Fable splits/renames this
+-- archive under the governed test index.
+--
 -- Companion to zyra_guard_suite.sql, which covers visibility and privacy.
 -- This one covers the LIFECYCLE: match creation, promotion, the Family
 -- Review Period, pause/resume, and endings — everything OA-ZYRA-156

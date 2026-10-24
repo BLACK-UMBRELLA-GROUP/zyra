@@ -10,11 +10,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_colors.dart';
+
 class GlassIconButton extends StatelessWidget {
   final IconData icon;
-  final Color iconColor;
+  final Color? iconColor;
   final double size;
-  final Color tint;
+  final Color? tint;
   final VoidCallback? onTap;
 
   // FIXED 2026-07-27 (Founder: "check the bell icon transparence. make
@@ -31,9 +33,9 @@ class GlassIconButton extends StatelessWidget {
   const GlassIconButton({
     super.key,
     required this.icon,
-    this.iconColor = Colors.white,
+    this.iconColor,
     this.size = 40,
-    this.tint = const Color(0x1AFFFFFF), // white/10 — FloatingNavBar idle-state match
+    this.tint,
     this.onTap,
   });
 
@@ -49,13 +51,22 @@ class GlassIconButton extends StatelessWidget {
             height: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: tint,
-              border: Border.all(color: Colors.white.withValues(alpha: 0.18), width: 1),
-              boxShadow: const [
-                BoxShadow(color: Color(0x2EFFFFFF), blurRadius: 0, spreadRadius: 0, offset: Offset(0, 1)),
+              color: tint ?? ZyraColors.frostFill,
+              border: Border.all(color: ZyraColors.frostBorder, width: 1),
+              boxShadow: [
+                BoxShadow(
+                  color: ZyraColors.ink(0.18),
+                  blurRadius: 0,
+                  spreadRadius: 0,
+                  offset: Offset(0, 1),
+                ),
               ],
             ),
-            child: Icon(icon, color: iconColor, size: size * 0.45),
+            child: Icon(
+              icon,
+              color: iconColor ?? ZyraColors.foreground,
+              size: size * 0.45,
+            ),
           ),
         ),
       ),
@@ -84,7 +95,10 @@ class GlassFlashCircle extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: tint,
-            border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.3),
+              width: 1,
+            ),
           ),
           child: Icon(icon, color: Colors.white, size: 34),
         ),

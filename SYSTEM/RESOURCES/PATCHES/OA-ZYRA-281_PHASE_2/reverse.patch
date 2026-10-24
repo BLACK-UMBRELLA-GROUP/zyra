@@ -1,0 +1,1503 @@
+--- b/lib/models/zyra_dashboard_resolution.dart
++++ a/lib/models/zyra_dashboard_resolution.dart
+@@ -385,14 +385,6 @@
+ 
+ enum DashboardSourceHealth { complete, partial, failed }
+ 
+-/// Health of one Dashboard destination after its contributing reads resolve.
+-///
+-/// [available] includes a successful empty result. [partial] means at least
+-/// one contributor did not complete, so a renderer must never describe an
+-/// empty list as "nothing happened". This is separate from the aggregate
+-/// [DashboardSourceHealth] because each tab must tell the truth independently.
+-enum DashboardSectionState { loading, available, partial, unavailable }
+-
+ final class DashboardResolution {
+   final DashboardAnswer answer;
+ 
+@@ -407,17 +399,10 @@
+   /// One compact stream of meaningful movement, newest first and capped.
+   final List<DashboardResolvedItem> recently;
+ 
+-  /// Truth state for Updates, independently of Today and Insights.
+-  final DashboardSectionState updatesState;
+-
+   /// Governed intelligence only. Production remains honestly empty until the
+   /// Learning Loop gates are satisfied.
+   final List<DashboardResolvedItem> intelligence;
+ 
+-  /// Truth state for Insights. Successful empty is an intended launch state;
+-  /// unavailable must render a retry state instead.
+-  final DashboardSectionState insightsState;
+-
+   final DashboardTone tone;
+   final DashboardSourceHealth sourceHealth;
+ 
+@@ -427,9 +412,7 @@
+     required this.journey,
+     required this.stableState,
+     required List<DashboardResolvedItem> recently,
+-    required this.updatesState,
+     required List<DashboardResolvedItem> intelligence,
+-    required this.insightsState,
+     required this.tone,
+     required this.sourceHealth,
+   }) : otherActions = List.unmodifiable(otherActions),
+@@ -516,11 +499,6 @@
+     final journey = _journeyResolution(snapshot.journeys);
+     final recentOutput = recently.take(recentlyLimit).toList();
+     final intelligenceOutput = intelligence.take(intelligenceLimit).toList();
+-    final updatesState = _sectionState([
+-      snapshot.notifications.state,
+-      snapshot.guardianActivity.state,
+-    ]);
+-    final insightsState = _sectionState([snapshot.insights.state]);
+ 
+     if (obligations.isNotEmpty) {
+       return DashboardResolution(
+@@ -529,9 +507,7 @@
+         journey: journey,
+         stableState: snapshot.stableState,
+         recently: recentOutput,
+-        updatesState: updatesState,
+         intelligence: intelligenceOutput,
+-        insightsState: insightsState,
+         tone: DashboardTone.needsYou,
+         sourceHealth: health,
+       );
+@@ -549,9 +525,7 @@
+         journey: journey,
+         stableState: snapshot.stableState,
+         recently: recentOutput,
+-        updatesState: updatesState,
+         intelligence: intelligenceOutput,
+-        insightsState: insightsState,
+         tone: DashboardTone.needsYou,
+         sourceHealth: health,
+       );
+@@ -568,9 +542,7 @@
+         // complete destinations in their own right. Keep the item in its
+         // canonical tab instead of making a one-item tab look empty.
+         recently: recentOutput,
+-        updatesState: updatesState,
+         intelligence: intelligenceOutput,
+-        insightsState: insightsState,
+         tone: DashboardTone.moving,
+         sourceHealth: health,
+       );
+@@ -584,9 +556,7 @@
+       journey: journey,
+       stableState: snapshot.stableState,
+       recently: recentOutput,
+-      updatesState: updatesState,
+       intelligence: intelligenceOutput,
+-      insightsState: insightsState,
+       tone: DashboardTone.calm,
+       sourceHealth: health,
+     );
+@@ -693,21 +663,6 @@
+     return DashboardSourceHealth.partial;
+   }
+ 
+-  static DashboardSectionState _sectionState(
+-    List<DashboardSourceState> states,
+-  ) {
+-    if (states.every((state) => state == DashboardSourceState.available)) {
+-      return DashboardSectionState.available;
+-    }
+-    if (states.every((state) => state == DashboardSourceState.loading)) {
+-      return DashboardSectionState.loading;
+-    }
+-    if (states.every((state) => state == DashboardSourceState.unavailable)) {
+-      return DashboardSectionState.unavailable;
+-    }
+-    return DashboardSectionState.partial;
+-  }
+-
+   static bool _hasIncompleteActionSource(DashboardSnapshot snapshot) =>
+       _actionSourceStates(
+         snapshot,
+--- b/lib/screens/home/seeker_dashboard_screen.dart
++++ a/lib/screens/home/seeker_dashboard_screen.dart
+@@ -192,7 +192,7 @@
+     notifications: DashboardSource.loading(),
+     guardianInvitations: DashboardSource.loading(),
+     guardianActivity: DashboardSource.loading(),
+-    insights: DashboardSource.loading(),
++    insights: DashboardSource.available([]),
+     advisories: DashboardSource.loading(),
+     stableState: DashboardStableState(
+       orientationItems: DashboardSource.loading(),
+@@ -209,7 +209,7 @@
+       notifications: DashboardSource.unavailable(failure),
+       guardianInvitations: DashboardSource.unavailable(failure),
+       guardianActivity: DashboardSource.unavailable(failure),
+-      insights: DashboardSource.unavailable(failure),
++      insights: DashboardSource.available([]),
+       advisories: DashboardSource.unavailable(failure),
+       stableState: DashboardStableState(
+         orientationItems: DashboardSource.unavailable(failure),
+--- b/lib/screens/wali/wali_dashboard_screen.dart
++++ a/lib/screens/wali/wali_dashboard_screen.dart
+@@ -41,7 +41,6 @@
+ import '../../services/zyra_discovery_service.dart';
+ import '../../services/zyra_guardian_dashboard_resolver.dart';
+ import '../../services/zyra_journey_service.dart';
+-import '../../services/zyra_match_service.dart';
+ import '../../services/zyra_wali_journey_service.dart';
+ import '../../services/zyra_wali_link_service.dart';
+ import '../../services/zyra_developer_access.dart';
+@@ -66,14 +65,12 @@
+   final bool hasGuardianPlus;
+   final VoidCallback? onOpenNetwork;
+   final Future<List<WaliJourneyView>?> Function()? loadJourneys;
+-  final Future<List<ZyraMilestone>?> Function(String matchId)? loadTimeline;
+ 
+   const WaliDashboardScreen({
+     super.key,
+     this.hasGuardianPlus = false,
+     this.onOpenNetwork,
+     this.loadJourneys,
+-    this.loadTimeline,
+   });
+ 
+   @override
+@@ -94,11 +91,6 @@
+   bool _loadFailed = false;
+   List<WaliJourneyView> _journeys = [];
+ 
+-  /// Updates has its own query truth. It must not inherit Today's empty or
+-  /// failure state, and Timeline failures must never become "all caught up".
+-  bool _updatesLoading = true;
+-  bool _updatesFailed = false;
+-
+   /// Journeys with a Family Review open — the one thing on this screen
+   /// that is waiting on THE GUARDIAN. One batched query; Main-only under
+   /// RLS, exactly like the detail screen.
+@@ -159,12 +151,9 @@
+     setState(() {
+       if (journeys == null) {
+         _loadFailed = true; // keep whatever we already had
+-        _updatesLoading = false;
+-        _updatesFailed = true;
+       } else {
+         _loadFailed = false;
+         _journeys = journeys;
+-        _updatesLoading = true;
+       }
+       _loading = false;
+     });
+@@ -199,39 +188,21 @@
+     // RECENTLY — the newest milestone of each live Journey (bounded: a
+     // Guardian's Journey count is small by the product's own model).
+     final recent = <({WaliJourneyView j, String type, DateTime at})>[];
+-    var recentFailed = false;
+     for (final j in journeys.where((j) => j.status != 'ended').take(4)) {
+-      final tl =
+-          await (widget.loadTimeline ??
+-              ZyraWaliJourneyService.fetchTimelineResult)(j.matchId);
+-      if (tl == null) {
+-        recentFailed = true;
+-        continue;
+-      }
++      final tl = await ZyraWaliJourneyService.fetchTimeline(j.matchId);
+       if (tl.isNotEmpty) {
+         final last = tl.last;
+         recent.add((j: j, type: last.type, at: last.occurredAt));
+       }
+     }
+     recent.sort((a, b) => b.at.compareTo(a.at));
+-    if (mounted) {
+-      setState(() {
+-        // Keep last-known rows if every refresh path failed. A complete
+-        // successful empty result is the only thing allowed to clear them.
+-        if (!recentFailed || recent.isNotEmpty) {
+-          _recent = recent.take(4).toList();
+-        }
+-        _updatesLoading = false;
+-        _updatesFailed = recentFailed;
+-      });
++    if (mounted && recent.isNotEmpty) {
++      setState(() => _recent = recent.take(4).toList());
+     }
+   }
+ 
+   void _retry() {
+-    setState(() {
+-      _loading = true;
+-      _updatesLoading = true;
+-    });
++    setState(() => _loading = true);
+     _load();
+   }
+ 
+@@ -495,14 +466,12 @@
+     required int familyReviewCount,
+     required ZyraDevScenario? dev,
+   }) {
+-    if (section == _GuardianDashboardSection.today &&
+-        _dashboardLabActive &&
++    if (_dashboardLabActive &&
+         dev?.dashboardGuardianTodayState ==
+             ZyraGuardianDashboardTodayState.loading) {
+       return const [SizedBox(height: 210, child: ZyraLoading())];
+     }
+-    if (section == _GuardianDashboardSection.today &&
+-        _dashboardLabActive &&
++    if (_dashboardLabActive &&
+         dev?.dashboardGuardianTodayState ==
+             ZyraGuardianDashboardTodayState.fullFailure) {
+       return [
+@@ -518,13 +487,10 @@
+         ),
+       ];
+     }
+-    if (section == _GuardianDashboardSection.today && _loading) {
++    if (_loading) {
+       return const [SizedBox(height: 210, child: ZyraLoading())];
+     }
+-    if (section == _GuardianDashboardSection.today &&
+-        _loadFailed &&
+-        people.isEmpty &&
+-        journeys.isEmpty) {
++    if (_loadFailed && people.isEmpty && journeys.isEmpty) {
+       return [
+         SizedBox(
+           height: 300,
+@@ -686,10 +652,8 @@
+         : null;
+     final rows =
+         previewRows ?? [for (final recent in _recent) _recentRow(recent)];
+-    final loading = !_dashboardLabActive && _updatesLoading;
+-    final failed = !_dashboardLabActive && _updatesFailed;
+     return [
+-      if ((failed && rows.isNotEmpty) ||
++      if (_loadFailed ||
+           (_dashboardLabActive &&
+               dev?.dashboardGuardianTodayState ==
+                   ZyraGuardianDashboardTodayState.partialFailure))
+@@ -697,28 +661,7 @@
+       _guardianSection(
+         key: const ValueKey('guardian-dashboard-updates'),
+         label: 'UPDATES',
+-        children: loading && rows.isEmpty
+-            ? const [
+-                _GuardianStatusCard(
+-                  key: ValueKey('guardian-updates-loading'),
+-                  icon: Icons.sync_rounded,
+-                  eyebrow: 'UPDATES',
+-                  title: 'Checking for Guardian updates',
+-                ),
+-              ]
+-            : failed && rows.isEmpty
+-            ? [
+-                _GuardianStatusCard(
+-                  key: const ValueKey('guardian-updates-unavailable'),
+-                  icon: Icons.sync_problem_outlined,
+-                  eyebrow: 'UPDATES UNAVAILABLE',
+-                  title: 'Guardian updates could not be refreshed',
+-                  detail: 'Try again before relying on this list.',
+-                  actionLabel: 'Retry',
+-                  onTap: _retry,
+-                ),
+-              ]
+-            : rows.isEmpty
++        children: rows.isEmpty
+             ? const [
+                 _GuardianStatusCard(
+                   key: ValueKey('guardian-updates-empty'),
+@@ -774,7 +717,7 @@
+           eyebrow: 'INSIGHTS',
+           title: 'No Guardian insights available yet',
+           detail:
+-              'ZYRA will only show a Guardian insight when real, governed family-process evidence supports it.',
++              'ZYRA will only show family-process insights when real, permitted activity supports them.',
+         ),
+       ];
+     }
+--- b/lib/services/zyra_dashboard_adapter.dart
++++ a/lib/services/zyra_dashboard_adapter.dart
+@@ -156,9 +156,7 @@
+       // successful empty source keeps the resolver stable without claiming an
+       // insight or introducing plan gating.
+       insights: const DashboardSource.available(<DashboardSignal>[]),
+-      // DR-ZYRA-223: a calm deterministic state is not evidence for a
+-      // behavioural suggestion. Production therefore supplies no advisory.
+-      advisories: const DashboardSource.available(<DashboardAdvisory>[]),
++      advisories: _calmAdvisories(onboarding, journeys),
+       stableState: DashboardStableState(
+         orientationItems: _orientationItems(
+           journeys: journeys,
+@@ -213,6 +211,36 @@
+         target: ZyraDashboardTarget.onboarding,
+       ),
+     ];
++  }
++
++  static DashboardSource<List<DashboardAdvisory>> _calmAdvisories(
++    DashboardSource<ZyraOnboardingProgress> onboarding,
++    DashboardSource<List<JourneyMatch>> journeys,
++  ) {
++    if (onboarding.state == DashboardSourceState.loading ||
++        journeys.state == DashboardSourceState.loading) {
++      return const DashboardSource.loading();
++    }
++    if (onboarding.state == DashboardSourceState.unavailable) {
++      return DashboardSource.unavailable(onboarding.failureOrNull!);
++    }
++    if (journeys.state == DashboardSourceState.unavailable) {
++      return DashboardSource.unavailable(journeys.failureOrNull!);
++    }
++    if (!onboarding.valueOrNull!.complete || journeys.valueOrNull!.isNotEmpty) {
++      return const DashboardSource.available([]);
++    }
++    return const DashboardSource.available([
++      DashboardAdvisory(
++        id: 'calm-review-preferences',
++        title: 'Review your preferences',
++        detail: 'Make sure your search still reflects what matters to you.',
++        why:
++            'Your profile is ready and there are no Potential Journeys to review right now.',
++        actionLabel: 'Review preferences',
++        target: ZyraDashboardTarget.preferences,
++      ),
++    ]);
+   }
+ 
+   static DashboardSource<List<DashboardOrientationItem>> _orientationItems({
+--- b/lib/services/zyra_match_service.dart
++++ a/lib/services/zyra_match_service.dart
+@@ -181,11 +181,7 @@
+   /// server-side `zyra_set_attempt_from_match` trigger exactly — if either
+   /// changes, change both, or the client and the database will disagree
+   /// about which conversation is "the" conversation.
+-  /// Typed form used by summary surfaces that must distinguish a genuine
+-  /// no-attempt result from a failed read.
+-  static Future<({String? attemptId, bool failed})> currentAttemptIdResult(
+-    String matchId,
+-  ) async {
++  static Future<String?> currentAttemptId(String matchId) async {
+     try {
+       final rows =
+           await supabase
+@@ -193,27 +189,18 @@
+                   .select('attempt_id, attempt_status')
+                   .eq('match_id', matchId)
+               as List;
+-      if (rows.isEmpty) return (attemptId: null, failed: false);
++      if (rows.isEmpty) return null;
+ 
+       final maps = rows.cast<Map<String, dynamic>>().toList();
+       final active = maps.where((r) => r['attempt_status'] == 'active');
+-      final attemptId = active.isNotEmpty
+-          ? active.first['attempt_id'] as String?
+-          : maps.last['attempt_id'] as String?;
+-      return (attemptId: attemptId, failed: false);
++      if (active.isNotEmpty) return active.first['attempt_id'] as String?;
++      return maps.last['attempt_id'] as String?;
+     } catch (e) {
+       debugPrint('ZYRA: currentAttemptId($matchId) failed — $e');
+-      return (attemptId: null, failed: true);
++      return null;
+     }
+   }
+ 
+-  /// Compatibility boundary for existing detail/chat consumers where null
+-  /// already means either unavailable or absent.
+-  static Future<String?> currentAttemptId(String matchId) async {
+-    final result = await currentAttemptIdResult(matchId);
+-    return result.attemptId;
+-  }
+-
+   /// Resolves the real conversation id for a match between the
+   /// signed-in user and [otherUserId], or null if none exists (a
+   /// mock Browse candidate, no real match yet, or not signed in) —
+--- b/lib/services/zyra_wali_journey_service.dart
++++ a/lib/services/zyra_wali_journey_service.dart
+@@ -264,28 +264,17 @@
+     }
+   }
+ 
+-  /// Read-only Timeline for a Journey the Guardian supervises.
+-  ///
+-  /// A successful empty list means there is genuinely no Timeline movement;
+-  /// null means the read failed. New user-facing summary surfaces must use
+-  /// this typed boundary so they cannot paint a network failure as empty.
+-  static Future<List<ZyraMilestone>?> fetchTimelineResult(
+-    String matchId,
+-  ) async {
++  /// Read-only Timeline for a Journey the Guardian supervises. Empty on
++  /// any failure or if there's genuinely nothing yet.
++  static Future<List<ZyraMilestone>> fetchTimeline(String matchId) async {
+     try {
+       // OA-ZYRA-159 stage 4b, 2026-08-10. WAS: .eq('match_id', matchId).
+       // timelines belong to an ATTEMPT since stage 4a, so match_id no longer
+-      // identifies one row. Resolved through the typed attempt boundary, which
+-      // reads zyra_my_attempt_participation — a Guardian appears in that view
+-      // as a participant, so one helper serves both roles and there is a single
+-      // implementation to keep in step with the server-side trigger. The typed
+-      // result is required here so a failed attempt lookup cannot masquerade as
+-      // a genuinely empty Updates Timeline.
+-      final attemptResult = await ZyraMatchService.currentAttemptIdResult(
+-        matchId,
+-      );
+-      if (attemptResult.failed) return null;
+-      final attemptId = attemptResult.attemptId;
++      // identifies one row. Resolved through ZyraMatchService.currentAttemptId,
++      // which reads zyra_my_attempt_participation — a Guardian appears in that
++      // view as a participant, so one helper serves both roles and there is a
++      // single implementation to keep in step with the server-side trigger.
++      final attemptId = await ZyraMatchService.currentAttemptId(matchId);
+       if (attemptId == null) return [];
+ 
+       final timelineRows =
+@@ -318,18 +307,11 @@
+           occurredAt: DateTime.parse(map['occurred_at'] as String),
+         );
+       }).toList();
+-    } catch (e) {
+-      debugPrint('ZYRA: Guardian Timeline for $matchId failed — $e');
+-      return null;
++    } catch (_) {
++      return [];
+     }
+   }
+ 
+-  /// Compatibility bridge for detail screens whose existing contract treats
+-  /// a failed Timeline as no rows. New summary surfaces use
+-  /// [fetchTimelineResult].
+-  static Future<List<ZyraMilestone>> fetchTimeline(String matchId) async =>
+-      (await fetchTimelineResult(matchId)) ?? const [];
+-
+   /// #31 — Family Review Period. Records this Wali's Continue/Pause
+   /// decision on [reviewId] (from ZyraJourneyService.fetchFamilyReview()).
+   /// The RPC itself verifies the caller is an active main Guardian for one
+--- b/lib/widgets/zyra_resolved_dashboard.dart
++++ a/lib/widgets/zyra_resolved_dashboard.dart
+@@ -48,9 +48,7 @@
+   @override
+   void initState() {
+     super.initState();
+-    final initialPage = widget.selectedTabIndex ?? 0;
+-    _pagerPosition = initialPage.toDouble();
+-    _pager = PageController(initialPage: initialPage)
++    _pager = PageController(initialPage: widget.selectedTabIndex ?? 0)
+       ..addListener(_onPagerScroll);
+   }
+ 
+@@ -218,16 +216,24 @@
+         const SizedBox(height: 26),
+         _section(
+           key: const ValueKey('dashboard-section-today-snapshot'),
+-          label: 'MY ZYRA',
++          label: 'AT A GLANCE',
+           child: _todaySnapshot(orientation.valueOrNull!),
+         ),
+       ],
+       const SizedBox(height: 26),
+       _section(
+         key: const ValueKey('dashboard-section-family'),
+-        label: 'FAMILY',
++        label: 'GUARDIAN',
+         child: _family(),
+       ),
++      if (widget.resolution.recently.isNotEmpty) ...[
++        const SizedBox(height: 26),
++        _section(
++          key: const ValueKey('dashboard-section-today-movement'),
++          label: 'RECENT MOVEMENT',
++          child: _recentMovementPreview(),
++        ),
++      ],
+     ];
+   }
+ 
+@@ -235,7 +241,7 @@
+     _section(
+       key: const ValueKey('dashboard-section-updates'),
+       label: 'UPDATES',
+-      child: _updates(),
++      child: widget.resolution.recently.isEmpty ? _emptyUpdates() : _recently(),
+     ),
+   ];
+ 
+@@ -243,7 +249,16 @@
+     _section(
+       key: const ValueKey('dashboard-section-insights'),
+       label: 'INSIGHTS',
+-      child: _insights(),
++      child: widget.resolution.intelligence.isEmpty
++          ? const _MessageCard(
++              key: ValueKey('dashboard-insights-empty'),
++              icon: Icons.auto_awesome_outlined,
++              eyebrow: 'NOT ENOUGH ACTIVITY YET',
++              title: 'No insights available yet',
++              detail:
++                  'ZYRA will only show an insight when real activity supports it.',
++            )
++          : _intelligence(),
+     ),
+   ];
+ 
+@@ -272,70 +287,18 @@
+     ),
+   );
+ 
+-  Widget _updates() => switch (widget.resolution.updatesState) {
+-    DashboardSectionState.loading => const _MessageCard(
+-      key: ValueKey('dashboard-updates-loading'),
+-      icon: Icons.sync_rounded,
+-      eyebrow: 'UPDATES',
+-      title: 'Checking for meaningful updates',
+-    ),
+-    DashboardSectionState.unavailable => _updatesUnavailable(),
+-    DashboardSectionState.partial => Column(
+-      children: [
+-        _updatesUnavailable(partial: true),
+-        if (widget.resolution.recently.isNotEmpty) ...[
+-          const SizedBox(height: 9),
+-          _recently(),
++  Widget _recentMovementPreview() {
++    final item = widget.resolution.recently.first;
++    return _GlassCard(
++      child: Column(
++        children: [
++          _signalRow(item, recent: true, keyPrefix: 'dashboard-today-recent'),
++          const _Divider(),
++          _notificationsLink(label: 'See all updates'),
+         ],
+-      ],
+-    ),
+-    DashboardSectionState.available =>
+-      widget.resolution.recently.isEmpty ? _emptyUpdates() : _recently(),
+-  };
+-
+-  Widget _updatesUnavailable({bool partial = false}) => _MessageCard(
+-    key: ValueKey(
+-      partial ? 'dashboard-updates-partial' : 'dashboard-updates-unavailable',
+-    ),
+-    icon: Icons.sync_problem_outlined,
+-    eyebrow: partial ? 'SOME UPDATES ARE UNAVAILABLE' : 'UPDATES UNAVAILABLE',
+-    title: partial
+-        ? 'Updates could not be fully refreshed'
+-        : 'Updates could not be refreshed',
+-    detail: 'Try again before relying on this list.',
+-    actionLabel: 'Retry',
+-    onTap: widget.onRetry,
+-  );
+-
+-  Widget _insights() => switch (widget.resolution.insightsState) {
+-    DashboardSectionState.loading => const _MessageCard(
+-      key: ValueKey('dashboard-insights-loading'),
+-      icon: Icons.auto_awesome_outlined,
+-      eyebrow: 'INSIGHTS',
+-      title: 'Checking for supported insights',
+-    ),
+-    DashboardSectionState.unavailable ||
+-    DashboardSectionState.partial => _MessageCard(
+-      key: const ValueKey('dashboard-insights-unavailable'),
+-      icon: Icons.sync_problem_outlined,
+-      eyebrow: 'INSIGHTS UNAVAILABLE',
+-      title: 'Insights could not be refreshed',
+-      detail: 'Try again to check whether a supported insight is available.',
+-      actionLabel: 'Retry',
+-      onTap: widget.onRetry,
+-    ),
+-    DashboardSectionState.available =>
+-      widget.resolution.intelligence.isEmpty
+-          ? const _MessageCard(
+-              key: ValueKey('dashboard-insights-empty'),
+-              icon: Icons.auto_awesome_outlined,
+-              eyebrow: 'INSIGHTS',
+-              title: 'No insights available yet',
+-              detail:
+-                  'ZYRA will only show an insight when real, governed evidence supports it.',
+-            )
+-          : _intelligence(),
+-  };
++      ),
++    );
++  }
+ 
+   Widget _emptyUpdates() => Column(
+     children: [
+@@ -488,8 +451,8 @@
+           _CardLead(
+             icon: Icons.check_circle_outline_rounded,
+             eyebrow: 'ALL SETTLED',
+-            title: 'Nothing needs your attention right now',
+-            detail: 'There are no current actions waiting on you.',
++            title: 'Nothing needs your attention',
++            detail: 'Your current ZYRA state is up to date.',
+             prominent: true,
+           ),
+           if (advisory != null) ...[
+--- b/supabase/migrations/20260830145711_oa281_dashboard_updates_projection.sql
++++ /dev/null	1970-01-01 00:00:00 +0000
+@@ -1,352 +0,0 @@
+--- OA-ZYRA-281 / DR-ZYRA-223 — one curated Dashboard Updates projection.
+---
+--- STAGED ONLY on 2026-08-30. Applying this file requires a separate Founder
+--- GO after Fable verification. The projection reads existing authoritative
+--- rows only: it creates no event store and performs no user-data write.
+-
+-create index if not exists notifications_dashboard_updates_unread_idx
+-on public.notifications (user_id, created_at desc, id desc)
+-where read_at is null;
+-
+-create index if not exists wali_suggestions_dashboard_updates_seeker_idx
+-on public.wali_suggestions (seeker_id, created_at desc, id desc);
+-
+--- The same projection serves a Guardian caller's own suggestions too.
+-create index if not exists wali_suggestions_dashboard_updates_wali_idx
+-on public.wali_suggestions (wali_id, created_at desc, id desc);
+-
+-create index if not exists journey_family_reviews_dashboard_updates_idx
+-on public.journey_family_reviews (match_id, opened_at desc, id desc);
+-
+--- This table has the real composite PK (review_id, wali_id), not an id
+--- column. Preserve that schema and use wali_id as the deterministic tie-break.
+-create index if not exists journey_family_review_responses_dashboard_updates_idx
+-on public.journey_family_review_responses
+-  (review_id, responded_at desc, wali_id);
+-
+-create index if not exists timeline_milestones_dashboard_updates_idx
+-on public.timeline_milestones (timeline_id, occurred_at desc, id desc);
+-
+-create or replace function public.zyra_dashboard_updates(
+-  p_limit integer default 3,
+-  p_cursor_occurred_at timestamptz default null,
+-  p_cursor_class_key text default null,
+-  p_cursor_source_id uuid default null
+-)
+-returns table (
+-  occurred_at timestamptz,
+-  class_key text,
+-  source_id uuid,
+-  title_key text,
+-  detail_key text,
+-  destination_key text,
+-  related_match_id uuid,
+-  is_unread boolean
+-)
+-language plpgsql
+-stable
+-security definer
+-set search_path = ''
+-as $$
+-declare
+-  v_caller uuid := (select auth.uid());
+-  v_limit integer := greatest(1, least(coalesce(p_limit, 3), 20));
+-  v_cursor_parts integer :=
+-    (p_cursor_occurred_at is not null)::integer
+-    + (p_cursor_class_key is not null)::integer
+-    + (p_cursor_source_id is not null)::integer;
+-begin
+-  if v_cursor_parts not in (0, 3) then
+-    raise exception 'dashboard_updates_cursor_incomplete'
+-      using errcode = '22023';
+-  end if;
+-
+-  if v_caller is null then
+-    return;
+-  end if;
+-
+-  return query
+-  with
+-  notification_templates(
+-    notification_type,
+-    title_key,
+-    detail_key,
+-    destination_key
+-  ) as (
+-    values
+-      ('new_match'::text,
+-       'dashboard_updates.notification.new_match.title'::text,
+-       'dashboard_updates.notification.new_match.detail'::text,
+-       'notifications'::text),
+-      ('new_message',
+-       'dashboard_updates.notification.new_message.title',
+-       'dashboard_updates.notification.new_message.detail',
+-       'notifications'),
+-      ('wali_request',
+-       'dashboard_updates.notification.wali_request.title',
+-       'dashboard_updates.notification.wali_request.detail',
+-       'notifications'),
+-      ('journey_ended',
+-       'dashboard_updates.notification.journey_ended.title',
+-       'dashboard_updates.notification.journey_ended.detail',
+-       'notifications'),
+-      ('journey_request',
+-       'dashboard_updates.notification.journey_request.title',
+-       'dashboard_updates.notification.journey_request.detail',
+-       'notifications'),
+-      ('journey_request_accepted',
+-       'dashboard_updates.notification.journey_request_accepted.title',
+-       'dashboard_updates.notification.journey_request_accepted.detail',
+-       'notifications'),
+-      ('journey_request_declined',
+-       'dashboard_updates.notification.journey_request_declined.title',
+-       'dashboard_updates.notification.journey_request_declined.detail',
+-       'notifications'),
+-      ('pause_nudge',
+-       'dashboard_updates.notification.pause_nudge.title',
+-       'dashboard_updates.notification.pause_nudge.detail',
+-       'notifications'),
+-      ('journey_paused',
+-       'dashboard_updates.notification.journey_paused.title',
+-       'dashboard_updates.notification.journey_paused.detail',
+-       'notifications'),
+-      ('journey_also_paused',
+-       'dashboard_updates.notification.journey_also_paused.title',
+-       'dashboard_updates.notification.journey_also_paused.detail',
+-       'notifications'),
+-      ('journey_continued',
+-       'dashboard_updates.notification.journey_continued.title',
+-       'dashboard_updates.notification.journey_continued.detail',
+-       'notifications'),
+-      ('wali_invite_received',
+-       'dashboard_updates.notification.wali_invite_received.title',
+-       'dashboard_updates.notification.wali_invite_received.detail',
+-       'notifications'),
+-      ('wali_invite_declined',
+-       'dashboard_updates.notification.wali_invite_declined.title',
+-       'dashboard_updates.notification.wali_invite_declined.detail',
+-       'notifications'),
+-      ('wali_invite_expiring',
+-       'dashboard_updates.notification.wali_invite_expiring.title',
+-       'dashboard_updates.notification.wali_invite_expiring.detail',
+-       'notifications'),
+-      ('wali_invite_expired',
+-       'dashboard_updates.notification.wali_invite_expired.title',
+-       'dashboard_updates.notification.wali_invite_expired.detail',
+-       'notifications'),
+-      ('wali_invite_revoked',
+-       'dashboard_updates.notification.wali_invite_revoked.title',
+-       'dashboard_updates.notification.wali_invite_revoked.detail',
+-       'notifications'),
+-      ('journey_decision_needed',
+-       'dashboard_updates.notification.journey_decision_needed.title',
+-       'dashboard_updates.notification.journey_decision_needed.detail',
+-       'notifications'),
+-      ('journey_decision_answered',
+-       'dashboard_updates.notification.journey_decision_answered.title',
+-       'dashboard_updates.notification.journey_decision_answered.detail',
+-       'notifications'),
+-      -- A proposal has no Timeline row yet, so notification is the canonical
+-      -- representation until the other Seeker confirms it.
+-      ('milestone_proposed',
+-       'dashboard_updates.notification.milestone_proposed.title',
+-       'dashboard_updates.notification.milestone_proposed.detail',
+-       'notifications'),
+-      ('milestone_confirmed',
+-       'dashboard_updates.notification.milestone_confirmed.title',
+-       'dashboard_updates.notification.milestone_confirmed.detail',
+-       'notifications')
+-  ),
+-  milestone_templates(milestone_type, title_key, detail_key) as (
+-    values
+-      ('liked'::text,
+-       'dashboard_updates.journey.timeline_milestone.title'::text,
+-       'dashboard_updates.journey.timeline_milestone.liked.detail'::text),
+-      ('match_created',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.match_created.detail'),
+-      ('journey_started',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.journey_started.detail'),
+-      ('compatibility_revealed',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.compatibility_revealed.detail'),
+-      ('salam_exchanged',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.salam_exchanged.detail'),
+-      ('guardian_linked',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.guardian_linked.detail'),
+-      ('phase_1_complete',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.phase_1_complete.detail'),
+-      ('phase_2_complete',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.phase_2_complete.detail'),
+-      ('phase_3_complete',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.phase_3_complete.detail'),
+-      ('family_stage',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.family_stage.detail'),
+-      ('conversation_started',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.conversation_started.detail'),
+-      ('journey_paused',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.journey_paused.detail'),
+-      ('journey_continued',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.journey_continued.detail'),
+-      ('journey_ended',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.journey_ended.detail'),
+-      ('meeting',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.meeting.detail'),
+-      ('nikah',
+-       'dashboard_updates.journey.timeline_milestone.title',
+-       'dashboard_updates.journey.timeline_milestone.nikah.detail')
+-  ),
+-  caller_participation as materialized (
+-    select distinct
+-      p.attempt_id,
+-      p.match_id
+-    from public.zyra_my_attempt_participation p
+-    where p.role = 'seeker'
+-       or (p.is_main is true and p.attempt_status <> 'potential')
+-  ),
+-  notification_rows as (
+-    select
+-      n.created_at as occurred_at,
+-      ('notification.' || nt.notification_type)::text as class_key,
+-      n.id as source_id,
+-      nt.title_key,
+-      nt.detail_key,
+-      nt.destination_key,
+-      n.related_match_id,
+-      true as is_unread
+-    from public.notifications n
+-    join notification_templates nt on nt.notification_type = n.type
+-    where n.user_id = v_caller
+-      and n.read_at is null
+-      and (
+-        n.type <> 'milestone_confirmed'
+-        or not exists (
+-          select 1
+-          from public.timelines t
+-          join caller_participation cp on cp.attempt_id = t.attempt_id
+-          join public.timeline_milestones tm on tm.timeline_id = t.id
+-          where t.match_id = n.related_match_id
+-            and tm.milestone_type in ('meeting', 'nikah')
+-            and tm.occurred_at <= n.created_at
+-        )
+-      )
+-  ),
+-  milestone_rows as (
+-    select
+-      tm.occurred_at,
+-      'journey.timeline_milestone'::text as class_key,
+-      tm.id as source_id,
+-      mt.title_key,
+-      mt.detail_key,
+-      'connections.journeys'::text as destination_key,
+-      t.match_id as related_match_id,
+-      false as is_unread
+-    from public.timeline_milestones tm
+-    join milestone_templates mt on mt.milestone_type = tm.milestone_type
+-    join public.timelines t on t.id = tm.timeline_id
+-    join caller_participation cp on cp.attempt_id = t.attempt_id
+-  ),
+-  suggestion_rows as (
+-    select
+-      s.created_at as occurred_at,
+-      'guardian.suggestion'::text as class_key,
+-      s.id as source_id,
+-      'dashboard_updates.guardian.suggestion.title'::text as title_key,
+-      'dashboard_updates.guardian.suggestion.detail'::text as detail_key,
+-      'guardian'::text as destination_key,
+-      null::uuid as related_match_id,
+-      false as is_unread
+-    from public.wali_suggestions s
+-    where s.seeker_id = v_caller
+-       or s.wali_id = v_caller
+-  ),
+-  review_opened_rows as (
+-    select
+-      r.opened_at as occurred_at,
+-      'guardian.review_opened'::text as class_key,
+-      r.id as source_id,
+-      'dashboard_updates.guardian.review_opened.title'::text as title_key,
+-      'dashboard_updates.guardian.review_opened.detail'::text as detail_key,
+-      'connections.journeys'::text as destination_key,
+-      r.match_id as related_match_id,
+-      false as is_unread
+-    from public.journey_family_reviews r
+-    join caller_participation cp on cp.attempt_id = r.attempt_id
+-  ),
+-  review_answered_rows as (
+-    select
+-      rr.responded_at as occurred_at,
+-      'guardian.review_answered'::text as class_key,
+-      -- Stable opaque UUID derived from the table's composite primary key.
+-      md5(rr.review_id::text || ':' || rr.wali_id::text)::uuid as source_id,
+-      'dashboard_updates.guardian.review_answered.title'::text as title_key,
+-      'dashboard_updates.guardian.review_answered.detail'::text as detail_key,
+-      'connections.journeys'::text as destination_key,
+-      r.match_id as related_match_id,
+-      false as is_unread
+-    from public.journey_family_review_responses rr
+-    join public.journey_family_reviews r on r.id = rr.review_id
+-    join caller_participation cp on cp.attempt_id = r.attempt_id
+-  ),
+-  updates as (
+-    select * from notification_rows
+-    union all
+-    select * from milestone_rows
+-    union all
+-    select * from suggestion_rows
+-    union all
+-    select * from review_opened_rows
+-    union all
+-    select * from review_answered_rows
+-  )
+-  select
+-    u.occurred_at,
+-    u.class_key,
+-    u.source_id,
+-    u.title_key,
+-    u.detail_key,
+-    u.destination_key,
+-    u.related_match_id,
+-    u.is_unread
+-  from updates u
+-  where p_cursor_occurred_at is null
+-     or (u.occurred_at, u.class_key, u.source_id)
+-        < (p_cursor_occurred_at, p_cursor_class_key, p_cursor_source_id)
+-  order by u.occurred_at desc, u.class_key desc, u.source_id desc
+-  limit v_limit;
+-end;
+-$$;
+-
+-comment on function public.zyra_dashboard_updates(
+-  integer,
+-  timestamptz,
+-  text,
+-  uuid
+-) is
+-  'OA-ZYRA-281: caller-scoped, allowlisted, read-only Dashboard Updates projection for Seeker and Guardian roles.';
+-
+-revoke execute on function public.zyra_dashboard_updates(
+-  integer,
+-  timestamptz,
+-  text,
+-  uuid
+-) from public, anon;
+-
+-grant execute on function public.zyra_dashboard_updates(
+-  integer,
+-  timestamptz,
+-  text,
+-  uuid
+-) to authenticated, service_role;
+--- b/test/guardian_dashboard_greeting_test.dart
++++ a/test/guardian_dashboard_greeting_test.dart
+@@ -5,7 +5,6 @@
+ import 'package:zyra/models/zyra_dashboard_lab.dart';
+ import 'package:zyra/screens/wali/wali_dashboard_screen.dart';
+ import 'package:zyra/services/zyra_developer_access.dart';
+-import 'package:zyra/services/zyra_wali_journey_service.dart';
+ import 'package:zyra/state/app_state.dart';
+ import 'package:zyra/theme/zyra_text.dart';
+ import 'package:zyra/widgets/zyra_ward_card.dart';
+@@ -42,19 +41,14 @@
+ 
+   tearDownAll(() => ZyraText.useTestFontStubs = false);
+ 
+-  Widget subject({
+-    Key? key,
+-    bool plus = false,
+-    VoidCallback? onOpenNetwork,
+-    Future<List<WaliJourneyView>?> Function()? loadJourneys,
+-  }) => MaterialApp(
+-    home: WaliDashboardScreen(
+-      key: key,
+-      hasGuardianPlus: plus,
+-      onOpenNetwork: onOpenNetwork,
+-      loadJourneys: loadJourneys ?? () async => [],
+-    ),
+-  );
++  Widget subject({bool plus = false, VoidCallback? onOpenNetwork}) =>
++      MaterialApp(
++        home: WaliDashboardScreen(
++          hasGuardianPlus: plus,
++          onOpenNetwork: onOpenNetwork,
++          loadJourneys: () async => [],
++        ),
++      );
+ 
+   testWidgets('Guardian Dashboard greets the signed-in Guardian by name', (
+     tester,
+@@ -155,45 +149,6 @@
+     expect(find.textContaining('private Seeker judgement'), findsOneWidget);
+   });
+ 
+-  testWidgets('Guardian Updates distinguishes failed from successful empty', (
+-    tester,
+-  ) async {
+-    await tester.pumpWidget(subject(loadJourneys: () async => null));
+-    await tester.pump();
+-    await tester.tap(find.text('Updates'));
+-    await tester.pumpAndSettle();
+-
+-    expect(
+-      find.text('Guardian updates could not be refreshed'),
+-      findsOneWidget,
+-    );
+-    expect(find.text('No Guardian updates yet'), findsNothing);
+-
+-    await tester.pumpWidget(subject(key: const ValueKey('successful-empty')));
+-    await tester.pumpAndSettle();
+-    await tester.tap(find.text('Updates'));
+-    await tester.pumpAndSettle();
+-    expect(find.text('No Guardian updates yet'), findsOneWidget);
+-  });
+-
+-  testWidgets('Guardian Insights stays honest-empty and independent', (
+-    tester,
+-  ) async {
+-    await tester.pumpWidget(subject(loadJourneys: () async => null));
+-    await tester.pump();
+-    await tester.tap(find.text('Insights'));
+-    await tester.pumpAndSettle();
+-
+-    expect(find.text('No Guardian insights available yet'), findsOneWidget);
+-    expect(
+-      find.text(
+-        'ZYRA will only show a Guardian insight when real, governed family-process evidence supports it.',
+-      ),
+-      findsOneWidget,
+-    );
+-    expect(find.text("Couldn't load your dashboard"), findsNothing);
+-  });
+-
+   testWidgets('Guardian Network status follows the real entitlement boundary', (
+     tester,
+   ) async {
+--- b/test/seeker_dashboard_screen_test.dart
++++ a/test/seeker_dashboard_screen_test.dart
+@@ -8,8 +8,6 @@
+ import 'package:zyra/theme/zyra_text.dart';
+ import 'package:zyra/widgets/floating_nav_bar.dart';
+ import 'package:zyra/widgets/zyra_fade_edges.dart';
+-import 'package:zyra/widgets/zyra_resolved_dashboard.dart';
+-import 'package:zyra/widgets/zyra_segmented_toggle.dart';
+ 
+ void main() {
+   setUpAll(() => ZyraText.useTestFontStubs = true);
+@@ -36,8 +34,6 @@
+     List<DashboardAdvisory> advisories = const [],
+     DashboardJourneyKind journeyKind = DashboardJourneyKind.searching,
+     DashboardSource<List<DashboardSignal>>? notificationSource,
+-    DashboardSource<List<DashboardSignal>>? guardianActivitySource,
+-    DashboardSource<List<DashboardSignal>>? insightsSource,
+     DashboardStableState? stableState,
+     String? latestCompletedStage,
+     String? nextMilestone,
+@@ -67,9 +63,8 @@
+     notifications:
+         notificationSource ?? DashboardSource.available(notifications),
+     guardianInvitations: DashboardSource.available(invitations),
+-    guardianActivity:
+-        guardianActivitySource ?? DashboardSource.available(guardianActivity),
+-    insights: insightsSource ?? DashboardSource.available(insights),
++    guardianActivity: DashboardSource.available(guardianActivity),
++    insights: DashboardSource.available(insights),
+     advisories: DashboardSource.available(advisories),
+     stableState:
+         stableState ??
+@@ -110,7 +105,7 @@
+     await tester.pump();
+ 
+     expect(find.text('Dashboard'), findsOneWidget);
+-    expect(find.text('Nothing needs your attention right now'), findsOneWidget);
++    expect(find.text('Nothing needs your attention'), findsOneWidget);
+     expect(find.text('Ready for introductions'), findsOneWidget);
+     expect(
+       find.byKey(const ValueKey('dashboard-notifications-utility')),
+@@ -164,7 +159,7 @@
+     await tester.pumpWidget(subject());
+     await tester.pump();
+ 
+-    expect(find.text('Nothing needs your attention right now'), findsOneWidget);
++    expect(find.text('Nothing needs your attention'), findsOneWidget);
+     await tester.drag(
+       find.byKey(const ValueKey('seeker-dashboard-pages')),
+       const Offset(-700, 0),
+@@ -172,31 +167,7 @@
+     await tester.pumpAndSettle();
+ 
+     expect(find.text('No meaningful updates yet'), findsOneWidget);
+-    expect(find.text('Nothing needs your attention right now'), findsNothing);
+-  });
+-
+-  testWidgets('an initial non-Today page highlights the matching tab', (
+-    tester,
+-  ) async {
+-    await tester.pumpWidget(
+-      MaterialApp(
+-        home: ZyraResolvedDashboard(
+-          resolution: const DashboardResolver().resolve(snapshot()),
+-          firstName: 'Maryam',
+-          notificationCount: 0,
+-          onNavigate: (_) {},
+-          onRetry: () {},
+-          selectedTabIndex: 2,
+-        ),
+-      ),
+-    );
+-    await tester.pump();
+-
+-    final toggle = tester.widget<ZyraSegmentedToggle>(
+-      find.byType(ZyraSegmentedToggle),
+-    );
+-    expect(toggle.position, 2);
+-    expect(find.text('No insights available yet'), findsOneWidget);
++    expect(find.text('Nothing needs your attention'), findsNothing);
+   });
+ 
+   testWidgets('long notification counts stay compact', (tester) async {
+@@ -262,7 +233,7 @@
+     await tester.pump();
+ 
+     expect(find.text('Some of your Dashboard is unavailable'), findsOneWidget);
+-    expect(find.text('Nothing needs your attention right now'), findsNothing);
++    expect(find.text('Nothing needs your attention'), findsNothing);
+     await tester.tap(
+       find.descendant(
+         of: find.byKey(const ValueKey('dashboard-answer-refresh-required')),
+@@ -348,28 +319,19 @@
+       'dashboard-section-journey',
+       'dashboard-section-today-snapshot',
+       'dashboard-section-family',
++      'dashboard-section-today-movement',
+     ]);
+     expect(find.text('Today'), findsOneWidget);
+     expect(find.text('Updates'), findsOneWidget);
+     expect(find.text('Insights'), findsOneWidget);
+-    expect(find.text('MY ZYRA'), findsOneWidget);
+-    expect(
+-      find.byKey(const ValueKey('dashboard-section-today-movement')),
+-      findsNothing,
+-    );
+-    expect(find.text('Your Journey moved forward'), findsNothing);
++    expect(find.text('My ZYRA'), findsNothing);
+     expect(find.text('YOUR JOURNEY'), findsOneWidget);
+     expect(find.text('Latest: Compatibility Reveal completed'), findsOneWidget);
+     expect(find.text('Next: Faith & Values'), findsOneWidget);
+     expect(find.text('Your Journey moved forward this week.'), findsOneWidget);
+ 
+-    await tester.drag(find.byType(ListView).first, const Offset(0, -420));
+-    await tester.pump();
+-    expect(find.text('FAMILY'), findsOneWidget);
+-
+     await tester.tap(find.text('Updates'));
+     await tester.pumpAndSettle();
+-    expect(find.text('Your Journey moved forward'), findsOneWidget);
+     await tester.scrollUntilVisible(
+       find.byKey(const ValueKey('dashboard-view-all-notifications')),
+       280,
+@@ -418,12 +380,6 @@
+     await tester.tap(find.text('Insights'));
+     await tester.pumpAndSettle();
+     expect(find.text('No insights available yet'), findsOneWidget);
+-    expect(
+-      find.text(
+-        'ZYRA will only show an insight when real, governed evidence supports it.',
+-      ),
+-      findsOneWidget,
+-    );
+ 
+     await tester.tap(find.text('Today'));
+     await tester.pumpAndSettle();
+@@ -433,42 +389,7 @@
+     );
+   });
+ 
+-  testWidgets('Updates failure never renders the successful empty state', (
+-    tester,
+-  ) async {
+-    const failure = DashboardFailure(code: 'updates_failed');
+-    final failed = snapshot(
+-      notificationSource: const DashboardSource.unavailable(failure),
+-      guardianActivitySource: const DashboardSource.unavailable(failure),
+-    );
+-
+-    await tester.pumpWidget(subject(dashboard: failed));
+-    await tester.pump();
+-    await tester.tap(find.text('Updates'));
+-    await tester.pumpAndSettle();
+-
+-    expect(find.text('Updates could not be refreshed'), findsOneWidget);
+-    expect(find.text('No meaningful updates yet'), findsNothing);
+-  });
+-
+-  testWidgets('Insights failure never renders the honest-empty state', (
+-    tester,
+-  ) async {
+-    const failure = DashboardFailure(code: 'insights_failed');
+-    final failed = snapshot(
+-      insightsSource: const DashboardSource.unavailable(failure),
+-    );
+-
+-    await tester.pumpWidget(subject(dashboard: failed));
+-    await tester.pump();
+-    await tester.tap(find.text('Insights'));
+-    await tester.pumpAndSettle();
+-
+-    expect(find.text('Insights could not be refreshed'), findsOneWidget);
+-    expect(find.text('No insights available yet'), findsNothing);
+-  });
+-
+-  testWidgets('an explicit test advisory remains explainable', (tester) async {
++  testWidgets('calm state carries one explained advisory', (tester) async {
+     var preferenceReviews = 0;
+     final calm = snapshot(
+       advisories: const [
+--- b/test/visual/zyra_visual_regression_test.dart
++++ a/test/visual/zyra_visual_regression_test.dart
+@@ -23,7 +23,6 @@
+ import 'package:zyra/widgets/zyra_full_screen_error.dart';
+ import 'package:zyra/widgets/zyra_dashboard_experience.dart';
+ import 'package:zyra/widgets/zyra_loading.dart';
+-import 'package:zyra/widgets/zyra_resolved_dashboard.dart';
+ import 'package:zyra/widgets/zyra_state_widgets.dart';
+ 
+ /// Candidate screenshots are deliberately separate from approved baselines.
+@@ -151,7 +150,16 @@
+   guardianInvitations: DashboardSource.available(<DashboardSignal>[]),
+   guardianActivity: DashboardSource.available(<DashboardSignal>[]),
+   insights: DashboardSource.available(<DashboardSignal>[]),
+-  advisories: DashboardSource.available(<DashboardAdvisory>[]),
++  advisories: DashboardSource.available(<DashboardAdvisory>[
++    DashboardAdvisory(
++      id: 'visual-review-preferences',
++      title: 'Review your preferences',
++      detail: 'A quick review can keep your search focused.',
++      why: 'Your profile is complete and no Journey is active.',
++      actionLabel: 'Review',
++      target: ZyraDashboardTarget.preferences,
++    ),
++  ]),
+   stableState: DashboardStableState(
+     orientationItems: DashboardSource.available(<DashboardOrientationItem>[
+       DashboardOrientationItem(
+@@ -287,18 +295,6 @@
+ final _visualDecisionDue = DateTime.utc(2026, 9, 1, 12);
+ final _visualEventAt = DateTime.utc(2026, 8, 28, 10);
+ final _visualEarlierEventAt = DateTime.utc(2026, 8, 27, 10);
+-
+-Widget _productionDashboardFixture(
+-  DashboardSnapshot snapshot, {
+-  required int selectedTab,
+-}) => ZyraResolvedDashboard(
+-  resolution: const DashboardResolver().resolve(snapshot),
+-  firstName: 'Maryam',
+-  notificationCount: 0,
+-  onNavigate: (_) {},
+-  onRetry: () {},
+-  selectedTabIndex: selectedTab,
+-);
+ 
+ Widget _styleShowcase(ZyraNavStyle nav, ZyraDevLightAccent accent) {
+   ZyraColors.selectDevPalette(ZyraDevPalette.crystalMist);
+@@ -475,35 +471,6 @@
+     ),
+   ),
+   _Fixture(
+-    id: 'seeker-dashboard-updates-populated',
+-    role: 'female-seeker',
+-    plan: 'basic',
+-    state: 'updates-populated',
+-    largeText: true,
+-    build: () => _productionDashboardFixture(
+-      _resolvedDashboardSnapshot(),
+-      selectedTab: 1,
+-    ),
+-  ),
+-  _Fixture(
+-    id: 'seeker-dashboard-updates-empty',
+-    role: 'female-seeker',
+-    plan: 'basic',
+-    state: 'updates-honest-empty',
+-    largeText: true,
+-    build: () =>
+-        _productionDashboardFixture(_calmDashboardSnapshot(), selectedTab: 1),
+-  ),
+-  _Fixture(
+-    id: 'seeker-dashboard-insights-empty',
+-    role: 'female-seeker',
+-    plan: 'basic',
+-    state: 'insights-honest-empty',
+-    largeText: true,
+-    build: () =>
+-        _productionDashboardFixture(_calmDashboardSnapshot(), selectedTab: 2),
+-  ),
+-  _Fixture(
+     id: 'notifications-empty',
+     role: 'female-seeker',
+     plan: 'basic',
+--- b/test/zyra_dashboard_adapter_test.dart
++++ a/test/zyra_dashboard_adapter_test.dart
+@@ -352,11 +352,12 @@
+     expect(snapshot.stableState.family.valueOrNull?.kind, isNotNull);
+   });
+ 
+-  test('production calm state carries no behavioural advisory', () {
++  test('calm review-preferences advisory has a governed why', () {
+     final snapshot = build();
++    final advisory = snapshot.advisories.valueOrNull!.single;
+ 
+-    expect(snapshot.advisories.state, DashboardSourceState.available);
+-    expect(snapshot.advisories.valueOrNull, isEmpty);
++    expect(advisory.target, ZyraDashboardTarget.preferences);
++    expect(advisory.why, contains('no Potential Journeys'));
+   });
+ 
+   test('Guardian activity excludes stable link facts and raw decisions', () {
+--- b/test/zyra_dashboard_resolver_test.dart
++++ a/test/zyra_dashboard_resolver_test.dart
+@@ -115,8 +115,6 @@
+       ]);
+       expect(result.tone, DashboardTone.needsYou);
+       expect(result.sourceHealth, DashboardSourceHealth.complete);
+-      expect(result.updatesState, DashboardSectionState.available);
+-      expect(result.insightsState, DashboardSectionState.available);
+     });
+ 
+     test('earliest real expiry wins within deadline decisions', () {
+@@ -400,37 +398,8 @@
+         expect(result.answer.kind, DashboardAnswerKind.calm);
+         expect(result.tone, DashboardTone.calm);
+         expect(result.sourceHealth, DashboardSourceHealth.partial);
+-        expect(result.insightsState, DashboardSectionState.unavailable);
+       },
+     );
+-
+-    test(
+-      'Updates health is independent and never turns partial into empty',
+-      () {
+-        final result = resolver.resolve(
+-          snapshot(
+-            notifications: const DashboardSource.unavailable(failure),
+-            guardianActivity: const DashboardSource.available([]),
+-          ),
+-        );
+-
+-        expect(result.recently, isEmpty);
+-        expect(result.updatesState, DashboardSectionState.partial);
+-        expect(result.insightsState, DashboardSectionState.available);
+-      },
+-    );
+-
+-    test('all failed Updates contributors resolve as unavailable', () {
+-      final result = resolver.resolve(
+-        snapshot(
+-          notifications: const DashboardSource.unavailable(failure),
+-          guardianActivity: const DashboardSource.unavailable(failure),
+-        ),
+-      );
+-
+-      expect(result.recently, isEmpty);
+-      expect(result.updatesState, DashboardSectionState.unavailable);
+-    });
+   });
+ 
+   group('truthful source health', () {
+--- b/test/zyra_dashboard_updates_migration_test.dart
++++ /dev/null	1970-01-01 00:00:00 +0000
+@@ -1,97 +0,0 @@
+-import 'dart:io';
+-
+-import 'package:flutter_test/flutter_test.dart';
+-
+-void main() {
+-  final migration = File(
+-    'supabase/migrations/'
+-    '20260830145711_oa281_dashboard_updates_projection.sql',
+-  );
+-  late String sql;
+-
+-  setUpAll(() {
+-    expect(migration.existsSync(), isTrue);
+-    sql = migration.readAsStringSync().toLowerCase();
+-  });
+-
+-  test('RPC is caller-scoped, read-only and hardened', () {
+-    expect(sql, contains('stable\nsecurity definer'));
+-    expect(sql, contains("set search_path = ''"));
+-    expect(sql, contains('v_caller uuid := (select auth.uid())'));
+-    expect(sql, contains('if v_caller is null then'));
+-    expect(sql, contains('greatest(1, least(coalesce(p_limit, 3), 20))'));
+-    expect(sql, contains('from public.zyra_my_attempt_participation'));
+-    expect(sql, contains('revoke execute on function'));
+-    expect(sql, contains('from public, anon'));
+-    expect(sql, contains('to authenticated, service_role'));
+-  });
+-
+-  test('projection uses deterministic descending keyset pagination', () {
+-    expect(
+-      sql,
+-      contains(
+-        '(u.occurred_at, u.class_key, u.source_id)\n'
+-        '        < (p_cursor_occurred_at, p_cursor_class_key, '
+-        'p_cursor_source_id)',
+-      ),
+-    );
+-    expect(
+-      sql,
+-      contains(
+-        'order by u.occurred_at desc, u.class_key desc, u.source_id desc',
+-      ),
+-    );
+-    expect(
+-      sql,
+-      contains("raise exception 'dashboard_updates_cursor_incomplete'"),
+-    );
+-  });
+-
+-  test('only governed classes and controlled copy keys are projected', () {
+-    for (final classKey in const [
+-      'notification.new_match',
+-      'notification.new_message',
+-      'notification.wali_request',
+-      'notification.journey_ended',
+-      'notification.journey_request',
+-      'notification.journey_request_accepted',
+-      'notification.journey_request_declined',
+-      'notification.pause_nudge',
+-      'notification.journey_paused',
+-      'notification.journey_also_paused',
+-      'notification.journey_continued',
+-      'notification.wali_invite_received',
+-      'notification.wali_invite_declined',
+-      'notification.wali_invite_expiring',
+-      'notification.wali_invite_expired',
+-      'notification.wali_invite_revoked',
+-      'notification.journey_decision_needed',
+-      'notification.journey_decision_answered',
+-      'journey.timeline_milestone',
+-      'guardian.suggestion',
+-      'guardian.review_opened',
+-      'guardian.review_answered',
+-    ]) {
+-      expect(sql, contains(classKey), reason: classKey);
+-    }
+-    expect(sql, isNot(contains('n.title as')));
+-    expect(sql, isNot(contains('n.body')));
+-    expect(sql, isNot(contains('rr.decision')));
+-    expect(sql, isNot(contains('tm.metadata')));
+-  });
+-
+-  test('milestone mirror notification is excluded when domain row exists', () {
+-    expect(sql, contains("n.type <> 'milestone_confirmed'"));
+-    expect(sql, contains("tm.milestone_type in ('meeting', 'nikah')"));
+-    expect(sql, contains('join caller_participation cp'));
+-  });
+-
+-  test('real schema composite key remains stable without adding an id', () {
+-    expect(sql, contains('(review_id, responded_at desc, wali_id)'));
+-    expect(
+-      sql,
+-      contains("md5(rr.review_id::text || ':' || rr.wali_id::text)::uuid"),
+-    );
+-    expect(sql, isNot(contains('alter table')));
+-  });
+-}

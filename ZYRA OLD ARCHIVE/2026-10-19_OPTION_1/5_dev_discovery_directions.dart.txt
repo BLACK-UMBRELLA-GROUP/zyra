@@ -1,0 +1,101 @@
+class DevDiscoveryDirectionPicker extends StatefulWidget {
+  const DevDiscoveryDirectionPicker({
+    super.key,
+    this.enabled = true,
+    this.onBeforeOpen,
+  });
+  final bool enabled;
+  final VoidCallback? onBeforeOpen;
+
+  @override
+  State<DevDiscoveryDirectionPicker> createState() =>
+      _DevDiscoveryDirectionPickerState();
+}
+
+class _DevDiscoveryDirectionPickerState
+    extends State<DevDiscoveryDirectionPicker> {
+  late final _DraftOwner _owner = _DraftOwner(
+    generation: ZyraAccountState.generation,
+    userId: ZyraAccountState.userId,
+  );
+  bool _opening = false;
+
+  @override
+  void dispose() {
+    _owner.dispose();
+    super.dispose();
+  }
+
+  Future<void> _open() async {
+    if (!mounted || !widget.enabled || _opening || !_owner.current) return;
+    if (ZyraDeveloperAccess.isMainAppFounderPreview &&
+        !ZyraDeveloperAccess.isAuthorizedTester &&
+        _owner.userId != null &&
+        ZyraLocalPrefs.accountOwner == _owner.userId) {
+      // Replace the old shell with the new style, not another route on top.
+      // Fresh launches also reset to new; the cached style only carries the
+      // current session's comparison across persona changes. Admission was
+      // checked before closing; open rechecks fresh proof and owner lifetime.
+      _opening = true;
+      final role = ZyraLocalPrefs.cachedFounderPreviewRole;
+      // Capture the still-mounted panel's navigator before refresh/collapse
+      // retracts that panel. The entry method owns the awaited lifetime check.
+      final opening = ZyraDevLocalPreview.open(
+        context,
+        isWali: role == 'guardian',
+        appStyle: 'request',
+      );
+      widget.onBeforeOpen?.call();
+      await opening;
+      if (mounted) setState(() => _opening = false);
+      return;
+    }
+    final navigator = Navigator.of(context);
+    final admission = _DraftOwner(
+      generation: _owner.generation,
+      userId: _owner.userId,
+    );
+    _opening = true;
+    widget.onBeforeOpen?.call();
+    // Closing the developer panel must not let a stale callback open a route
+    // for a newly selected account. Bind the destination to this exact owner.
+    if (!admission.current) {
+      admission.dispose();
+      _opening = false;
+      return;
+    }
+    // Deny real-shell controls even during the incoming route's first frame.
+    final launchLease = ZyraConceptPreviewIsolation.acquire();
+    try {
+      await navigator.push<void>(
+        MaterialPageRoute(
+          builder: (_) => ViewRequestDraftScreen._(
+            admission: admission,
+            launchLease: launchLease,
+          ),
+        ),
+      );
+    } finally {
+      admission.dispose();
+      launchLease.release();
+    }
+    if (mounted) setState(() => _opening = false);
+  }
+
+  @override
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: _owner,
+    builder: (context, _) => !_owner.current
+        ? const SizedBox.shrink()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('App style', style: ZyraText.body(size: 15)),
+              const SizedBox(height: 8),
+              _DraftButton(
+                id: 'dev_discovery_view_request',
+                label: 'Back to new style',
+                icon: Icons.travel_explore_outlined,
+                onTap: widget.enabled && !_opening ? _open : null,
+              ),
+            ],

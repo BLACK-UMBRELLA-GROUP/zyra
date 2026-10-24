@@ -50,12 +50,13 @@ import '../../models/seeker_profile.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_profile_name_block.dart';
 import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_pull_down_back_scope.dart';
 
 class SeekerProfileScreen extends StatefulWidget {
   final SeekerProfile profile;
 
-  /// Small chip at the top right — "Paused by Aisha · 3 months",
-  /// "Potential", "Ended in June". Null (the Journey header's use) shows
+  /// Small chip at the top right — "Paused · 3 months", "Potential",
+  /// "Ended in June". Null (the Journey header's use) shows
   /// nothing.
   final String? stateLabel;
 
@@ -79,12 +80,43 @@ class SeekerProfileScreen extends StatefulWidget {
   /// the two surfaces say it the same way.
   final String? suggestedBy;
 
-  const SeekerProfileScreen(
-      {super.key,
-      required this.profile,
-      this.stateLabel,
-      this.actionBar,
-      this.suggestedBy});
+  /// Connections presents a profile as a temporary, full-screen look at the
+  /// person rather than as another page in the app hierarchy. Those callers
+  /// opt into the shared Back button and interactive left-edge return;
+  /// look-only callers retain their established close-button behaviour.
+  final bool swipeDownToDismiss;
+
+  /// Lets a deliberately non-opaque full-screen route retain its live parent
+  /// background. Other viewers keep black behind the photograph.
+  final bool revealRouteOnSwipeDismiss;
+
+  /// Optional presentation for an owner preview before any photo has been
+  /// added. Other-person viewers keep the existing privacy-safe dark field.
+  final Widget? emptyPhoto;
+
+  /// Uses Browse's exact 340px scrim and 130px identity position. Kept
+  /// opt-in because Journey and Connections viewers intentionally place the
+  /// identity nearer the bottom when no app navigation sits above it.
+  final bool matchBrowseIdentityLayout;
+
+  /// Caller-owned navigation for an embedded, bounded owner preview. Existing
+  /// full-profile routes keep their original dismissal when this is absent.
+  final VoidCallback? onDismiss;
+  final bool Function()? canAct;
+
+  const SeekerProfileScreen({
+    super.key,
+    required this.profile,
+    this.stateLabel,
+    this.actionBar,
+    this.suggestedBy,
+    this.swipeDownToDismiss = false,
+    this.revealRouteOnSwipeDismiss = false,
+    this.emptyPhoto,
+    this.matchBrowseIdentityLayout = false,
+    this.onDismiss,
+    this.canAct,
+  });
 
   @override
   State<SeekerProfileScreen> createState() => _SeekerProfileScreenState();
@@ -92,6 +124,67 @@ class SeekerProfileScreen extends StatefulWidget {
 
 class _SeekerProfileScreenState extends State<SeekerProfileScreen> {
   int _photoIndex = 0;
+  late final bool _callerOwned = widget.onDismiss != null;
+  late final VoidCallback? _ownerDismiss = widget.onDismiss;
+  late final bool Function()? _ownerGuard = widget.canAct;
+  final Object _returnIdentity = Object();
+  bool _revoked = false;
+  int _backRevision = 0;
+  int _backEpoch = 0;
+  bool _manualBackTaken = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final revision = ZyraBackNavigationPreview.revisionOf(context);
+    if (revision != _backRevision) {
+      _backRevision = revision;
+      _backEpoch++;
+      _manualBackTaken = false;
+    }
+  }
+
+  bool get _canAct {
+    if (!mounted || _revoked) return false;
+    if (!_callerOwned) return widget.onDismiss == null;
+    try {
+      if (widget.onDismiss == null ||
+          !identical(widget.onDismiss, _ownerDismiss) ||
+          _ownerGuard?.call() != true ||
+          widget.canAct?.call() != true) {
+        _revoked = true;
+        return false;
+      }
+      return ModalRoute.of(context)?.isCurrent ?? true;
+    } catch (_) {
+      _revoked = true;
+      return false;
+    }
+  }
+
+  // The shared Back scope binds this callback for the route's whole lifetime.
+  // ignore: prefer_function_declarations_over_variables
+  late final VoidCallback _return = () {
+    if (_canAct) {
+      _ownerDismiss?.call();
+    } else if (mounted) {
+      setState(() {});
+    }
+  };
+
+  bool _manualCurrent(int epoch) =>
+      mounted &&
+      !_callerOwned &&
+      widget.swipeDownToDismiss &&
+      epoch == _backEpoch &&
+      !_manualBackTaken &&
+      (ModalRoute.of(context)?.isCurrent ?? true);
+
+  void _manualReturn(int epoch) {
+    if (!_manualCurrent(epoch)) return;
+    _manualBackTaken = true;
+    Navigator.of(context).maybePop();
+  }
 
   /// Left half steps back, right half steps forward. Same rule and same
   /// wrap behaviour as browse_screen.dart's `_tapPhoto`: forward wraps to
@@ -100,6 +193,10 @@ class _SeekerProfileScreenState extends State<SeekerProfileScreen> {
   /// forward is browsing, going back is correcting, and a correction that
   /// jumps you to the end is not a correction.
   void _tapPhoto(TapUpDetails details, double width) {
+    if (!_canAct) {
+      if (mounted) setState(() {});
+      return;
+    }
     final photos = widget.profile.photos;
     if (photos.length <= 1) return;
     final goRight = details.localPosition.dx > width / 2;
@@ -114,175 +211,263 @@ class _SeekerProfileScreenState extends State<SeekerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if ((_callerOwned && !_canAct) ||
+        (widget.onDismiss != null) != _callerOwned) {
+      return const SizedBox.expand(
+        key: ValueKey('seeker-profile-preview-unavailable'),
+      );
+    }
     final p = widget.profile;
     final photos = p.photos;
     // Guard the index the way browse_screen learned to: a stale index against
     // a shorter list threw there once, and the fix was to clamp at the read
     // rather than trust every writer.
     final safeIndex = _photoIndex < photos.length ? _photoIndex : 0;
+    final epoch = _backEpoch;
 
-    return Scaffold(
+    final page = Scaffold(
       // Black, not the gender gradient. Every other surface in the app is
       // gradient-backed; here the photo IS the content, and a gradient behind
       // a full-bleed image is a gradient nobody sees, tinting the edges of
       // someone's face for no reason.
-      backgroundColor: Colors.black,
+      backgroundColor: widget.revealRouteOnSwipeDismiss
+          ? Colors.transparent
+          : Colors.black,
       body: LayoutBuilder(
-        builder: (context, constraints) => GestureDetector(
-          onTapUp: (d) => _tapPhoto(d, constraints.maxWidth),
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: ZyraProfileImage(
-                  photos.isEmpty ? '' : photos[safeIndex],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              ),
-
-              // Legibility scrim. The name sits over a photograph nobody chose
-              // for its contrast, so the text needs its own background rather
-              // than hoping the image is dark at the bottom.
-              Positioned(
-                left: 0, right: 0, bottom: 0,
-                child: IgnorePointer(
-                  child: Container(
-                    height: 260,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Color(0x00000000), Color(0xE6000000)],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              // LEFT-SIDE VERTICAL DOTS — browse_screen.dart's indicator,
-              // matched exactly. Only when there is more than one photo: a
-              // single dot says "there is more" and there is not.
-              if (photos.length > 1)
-                Positioned(
-                  left: 16, top: 0, bottom: 0,
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(photos.length, (i) {
-                        final active = i == safeIndex;
-                        return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 3),
-                          width: 7,
-                          height: 7,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.3),
-                                width: 0.5),
-                            color: active
-                                ? Colors.white
-                                : Colors.white.withValues(alpha: 0.32),
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-
-              Positioned(
-                // The name block lifts to make room when a state's action
-                // bar rides along (journey rows); look-only callers keep
-                // the original resting place.
-                left: 20, right: 20,
-                bottom: widget.actionBar == null ? 32 : 132,
-                child: IgnorePointer(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // THE SHARED BLOCK — DR-ZYRA-163. The surname
-                      // had its own line here, per the 2026-07-26 Browse
-                      // review; Browse itself moved it inline on
-                      // 2026-08-13 (DR-ZYRA-162) and this followed it,
-                      // by using the same widget rather than by being
-                      // edited to match. It also gains the two-layer
-                      // photo shadow, which was private to Browse and so
-                      // never reached this screen at all.
-                      ZyraProfileNameBlock(profile: p),
-                      if ((widget.suggestedBy ?? '').trim().isNotEmpty) ...[
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.shield_outlined,
-                                size: 13,
-                                color: Colors.white.withValues(alpha: 0.75)),
-                            const SizedBox(width: 5),
-                            Flexible(
-                              child: Text(
-                                'Suggested by ${widget.suggestedBy!.trim()}',
-                                style: ZyraText.subtext(
-                                    size: 12.5,
-                                    color:
-                                        Colors.white.withValues(alpha: 0.85)),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
+        builder: (context, constraints) {
+          final surface = GestureDetector(
+            key: widget.swipeDownToDismiss
+                ? const ValueKey('connections-profile-swipe-surface')
+                : null,
+            onTapUp: (d) => _tapPhoto(d, constraints.maxWidth),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: photos.isEmpty && widget.emptyPhoto != null
+                      ? widget.emptyPhoto!
+                      : _callerOwned &&
+                            photos.isNotEmpty &&
+                            photos[safeIndex].startsWith('assets/')
+                      ? Image.asset(
+                          photos[safeIndex],
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (_, _, _) =>
+                              const ColoredBox(color: Colors.black),
+                        )
+                      : ZyraProfileImage(
+                          photos.isEmpty ? '' : photos[safeIndex],
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
                         ),
-                      ],
-                    ],
-                  ),
                 ),
-              ),
 
-              Positioned(
-                top: 0, left: 4,
-                child: SafeArea(
-                  child: IconButton(
-                    icon: const Icon(Icons.close, color: Colors.white, size: 26),
-                    tooltip: 'Close',
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ),
-              ),
-
-              if (widget.stateLabel != null)
+                // Legibility scrim. The name sits over a photograph nobody chose
+                // for its contrast, so the text needs its own background rather
+                // than hoping the image is dark at the bottom.
                 Positioned(
-                  top: 8, right: 16,
-                  child: SafeArea(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: IgnorePointer(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 11, vertical: 6),
+                      height: widget.matchBrowseIdentityLayout ? 340 : 260,
                       decoration: BoxDecoration(
-                        color: const Color(0x59140C1A),
-                        borderRadius: BorderRadius.circular(999),
-                        border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.22)),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: widget.matchBrowseIdentityLayout
+                              ? const [
+                                  Colors.transparent,
+                                  Color(0x4D000000),
+                                  Color(0xB3000000),
+                                ]
+                              : const [Color(0x00000000), Color(0xE6000000)],
+                          stops: widget.matchBrowseIdentityLayout
+                              ? const [0.0, 0.32, 1.0]
+                              : null,
+                        ),
                       ),
-                      child: Text(widget.stateLabel!,
-                          style: ZyraText.subtext(
-                              size: 10.5,
-                              color: Colors.white.withValues(alpha: 0.9))),
                     ),
                   ),
                 ),
 
-              if (widget.actionBar != null)
+                // LEFT-SIDE VERTICAL DOTS — browse_screen.dart's indicator,
+                // matched exactly. Only when there is more than one photo: a
+                // single dot says "there is more" and there is not.
+                if (photos.length > 1)
+                  Positioned(
+                    left: 16,
+                    top: 0,
+                    bottom: 0,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(photos.length, (i) {
+                          final active = i == safeIndex;
+                          return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 3),
+                            width: 7,
+                            height: 7,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.3),
+                                width: 0.5,
+                              ),
+                              color: active
+                                  ? Colors.white
+                                  : Colors.white.withValues(alpha: 0.32),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
+                  ),
+
                 Positioned(
-                  left: 16, right: 16, bottom: 0,
-                  child: SafeArea(
-                    top: false,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
-                      child: widget.actionBar!,
+                  key: const ValueKey('seeker-profile-identity'),
+                  // The name block lifts to make room when a state's action
+                  // bar rides along (journey rows); look-only callers keep
+                  // the original resting place.
+                  left: 20,
+                  right: 20,
+                  bottom: widget.matchBrowseIdentityLayout
+                      ? 130
+                      : widget.actionBar == null
+                      ? 32
+                      : 132,
+                  child: IgnorePointer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // THE SHARED BLOCK — DR-ZYRA-163. The surname
+                        // had its own line here, per the 2026-07-26 Browse
+                        // review; Browse itself moved it inline on
+                        // 2026-08-13 (DR-ZYRA-162) and this followed it,
+                        // by using the same widget rather than by being
+                        // edited to match. It also gains the two-layer
+                        // photo shadow, which was private to Browse and so
+                        // never reached this screen at all.
+                        ZyraProfileNameBlock(profile: p),
+                        if ((widget.suggestedBy ?? '').trim().isNotEmpty) ...[
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.shield_outlined,
+                                size: 13,
+                                color: Colors.white.withValues(alpha: 0.75),
+                              ),
+                              const SizedBox(width: 5),
+                              Flexible(
+                                child: Text(
+                                  'Suggested by ${widget.suggestedBy!.trim()}',
+                                  style: ZyraText.subtext(
+                                    size: 12.5,
+                                    color: Colors.white.withValues(alpha: 0.85),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ),
-            ],
-          ),
-        ),
+
+                if (!widget.swipeDownToDismiss)
+                  Positioned(
+                    top: 0,
+                    left: 4,
+                    child: SafeArea(
+                      child: IconButton(
+                        key: const ValueKey('seeker-profile-close'),
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                        tooltip: 'Close',
+                        onPressed: () {
+                          if (_callerOwned) {
+                            _return();
+                          } else if (mounted &&
+                              (ModalRoute.of(context)?.isCurrent ?? false)) {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+
+                if (widget.stateLabel != null)
+                  Positioned(
+                    top: 8,
+                    right: 16,
+                    child: SafeArea(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 11,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0x59140C1A),
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.22),
+                          ),
+                        ),
+                        child: Text(
+                          widget.stateLabel!,
+                          style: ZyraText.subtext(
+                            size: 10.5,
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                if (widget.actionBar != null)
+                  Positioned(
+                    left: 16,
+                    right: 16,
+                    bottom: 0,
+                    child: SafeArea(
+                      top: false,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 14),
+                        child: widget.actionBar!,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          );
+          return !_callerOwned && widget.swipeDownToDismiss
+              ? ZyraPullDownCloseCue(
+                  enabled: _canAct,
+                  onBack: () => _manualReturn(epoch),
+                  routeIdentity: (_returnIdentity, epoch),
+                  child: surface,
+                )
+              : surface;
+        },
       ),
+    );
+    if (!_callerOwned) return page;
+    return ZyraPullDownBackScope(
+      key: const ValueKey('concept_pull_down_back_scope'),
+      routeIdentity: _returnIdentity,
+      onBack: _return,
+      enabled: _canAct,
+      child: page,
     );
   }
 }

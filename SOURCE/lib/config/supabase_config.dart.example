@@ -1,15 +1,22 @@
-// Template for lib/config/supabase_config.dart — copy this file to
-// supabase_config.dart (without .example) and fill in your project's
-// values from Supabase Dashboard > Project Settings > API.
-//
-// supabase_config.dart is gitignored — never commit real keys.
-// Only the URL and the "anon / public" key go here. NEVER put the
-// service_role key in this file or anywhere in the Flutter app — it
-// bypasses Row Level Security and must stay server-side only.
+// Single ZYRA backend configuration. Only public client keys belong here.
+// Use the project's existing default publishable key; no staging fallback.
+
+import 'zyra_app_variant.dart';
+import 'zyra_supabase_config_policy.dart';
 
 class SupabaseConfig {
   SupabaseConfig._();
 
-  static const String url = 'https://YOUR-PROJECT-REF.supabase.co';
-  static const String anonKey = 'YOUR-ANON-PUBLIC-KEY';
+  static const ZyraSupabaseEndpoint _production = ZyraSupabaseEndpoint(
+    url: 'https://YOUR-PROJECT-REF.supabase.co',
+    publishableKey: 'YOUR-PUBLISHABLE-KEY',
+  );
+  static ZyraSupabaseEndpoint get active => ZyraSupabaseConfigPolicy.select(
+    variant: ZyraAppVariantPolicy.current,
+    production: _production,
+  );
+
+  static String get url => active.url;
+  static String get publishableKey => active.publishableKey;
+  static bool get isConfigured => active.isConfigured;
 }

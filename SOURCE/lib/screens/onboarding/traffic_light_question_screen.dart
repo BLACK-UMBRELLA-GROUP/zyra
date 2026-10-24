@@ -136,7 +136,7 @@ class _TrafficLightQuestionScreenState
               style: ZyraText.subtext(size: 12.5),
             ),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
         ],
         ...widget.options.map((option) {
           final current = _values[option];
@@ -147,9 +147,11 @@ class _TrafficLightQuestionScreenState
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 11),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.035),
+              color: ZyraColors.foreground.withValues(alpha: 0.035),
               borderRadius: BorderRadius.circular(13),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.09)),
+              border: Border.all(
+                color: ZyraColors.foreground.withValues(alpha: 0.09),
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +161,7 @@ class _TrafficLightQuestionScreenState
                   children: [
                     Expanded(child: Text(option, style: ZyraText.option())),
                     if (widget.yourAnswers.contains(option)) ...[
-                      const SizedBox(width: 9),
+                      SizedBox(width: 9),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 7,
@@ -175,13 +177,15 @@ class _TrafficLightQuestionScreenState
                         ),
                         child: Text(
                           'YOUR ANSWER',
-                          style: ZyraText.chapterLabel(color: Colors.white70),
+                          style: ZyraText.chapterLabel(
+                            color: ZyraColors.ink(0.70),
+                          ),
                         ),
                       ),
                     ],
                   ],
                 ),
-                const SizedBox(height: 11),
+                SizedBox(height: 11),
                 Row(
                   children: [
                     Expanded(
@@ -194,7 +198,7 @@ class _TrafficLightQuestionScreenState
                         onTap: () => _set(option, TrafficLight.green),
                       ),
                     ),
-                    const SizedBox(width: 7),
+                    SizedBox(width: 7),
                     Expanded(
                       child: _LightButton(
                         key: ValueKey('preference_${option}_yellow'),
@@ -205,7 +209,7 @@ class _TrafficLightQuestionScreenState
                         onTap: () => _set(option, TrafficLight.yellow),
                       ),
                     ),
-                    const SizedBox(width: 7),
+                    SizedBox(width: 7),
                     Expanded(
                       child: _LightButton(
                         key: ValueKey('preference_${option}_red'),
@@ -222,7 +226,7 @@ class _TrafficLightQuestionScreenState
                 // renders under the option — indented, so it reads as a
                 // qualifier on the row above rather than a new question.
                 if (showHard && isRed) ...[
-                  const SizedBox(height: 6),
+                  SizedBox(height: 6),
                   InkWell(
                     onTap: () => _toggleHardOption(option),
                     child: Padding(
@@ -237,10 +241,10 @@ class _TrafficLightQuestionScreenState
                             _hard.contains(option)
                                 ? Icons.check_box
                                 : Icons.check_box_outline_blank,
-                            color: Colors.white54,
+                            color: ZyraColors.ink(0.54),
                             size: 17,
                           ),
-                          const SizedBox(width: 9),
+                          SizedBox(width: 9),
                           Expanded(
                             child: Text(
                               'Never introduce anyone who answered "$option".',
@@ -268,7 +272,7 @@ class _TrafficLightQuestionScreenState
         // Marking everything 🔴 is a legitimate thing to mean. The Seeker is
         // told what it costs and allowed to proceed.
         if (_allRed) ...[
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             _hard.length == widget.options.length
                 ? 'You have ruled out every answer to this question, so nobody who '
@@ -277,12 +281,12 @@ class _TrafficLightQuestionScreenState
                       'people, but this question will count against every one of them.',
             style: ZyraText.subtext(size: 11.5),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
         ],
 
         // Chapter 4 — a plain-language confirmation of what was just promised.
         if (showHard && _hard.isNotEmpty) ...[
-          const SizedBox(height: 6),
+          SizedBox(height: 6),
           Text(
             _hard.length == 1
                 ? 'ZYRA will never introduce someone with that answer.'
@@ -312,9 +316,9 @@ class _LightButton extends StatelessWidget {
   });
 
   Color get _color => switch (light) {
-    TrafficLight.green => const Color(0xFF84D0A8),
-    TrafficLight.yellow => const Color(0xFFE8C98A),
-    TrafficLight.red => const Color(0xFFE18A91),
+    TrafficLight.green => ZyraColors.positiveGreen,
+    TrafficLight.yellow => ZyraColors.journeyGold,
+    TrafficLight.red => ZyraColors.negativeRed,
   };
 
   @override
@@ -340,7 +344,7 @@ class _LightButton extends StatelessWidget {
               border: Border.all(
                 color: active
                     ? _color.withValues(alpha: 0.82)
-                    : Colors.white.withValues(alpha: 0.13),
+                    : ZyraColors.foreground.withValues(alpha: 0.13),
                 width: active ? 1.2 : 0.8,
               ),
             ),
@@ -363,14 +367,14 @@ class _LightButton extends StatelessWidget {
                         : null,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6),
                 Text(
                   label,
                   maxLines: 2,
                   textAlign: TextAlign.center,
                   style: ZyraText.subtext(
                     size: 10.5,
-                    color: active ? Colors.white : Colors.white60,
+                    color: active ? Colors.white : ZyraColors.ink(0.60),
                   ),
                 ),
               ],

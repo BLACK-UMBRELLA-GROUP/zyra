@@ -1,0 +1,4139 @@
+{
+ "files": {
+  "lib/config/oauth_config.dart": "3001164dadb45569",
+  "lib/config/supabase_config.dart": "969ebc83f6d5c365",
+  "lib/config/zyra_app_variant.dart": "f0750e6cbc462538",
+  "lib/config/zyra_external_tester_policy.dart": "aa389052ea008a22",
+  "lib/config/zyra_internal_founder_policy.dart": "31411b99b14b4920",
+  "lib/config/zyra_native_identity_policy.dart": "d9e31d8fbf1f9a9a",
+  "lib/config/zyra_supabase_config_policy.dart": "cb9017b12ba503c6",
+  "lib/constants/zyra_plan_names.dart": "ed0151f2ff5c356a",
+  "lib/data/chapter3_categories.dart": "5208df8f7315d5d4",
+  "lib/data/compatibility_categories.dart": "cd77409709487e05",
+  "lib/data/help_content.dart": "55e38825347c1402",
+  "lib/data/journey_questions.dart": "fa090c88ac5b635a",
+  "lib/data/onboarding_bank_contract.dart": "0edaea768f69707f",
+  "lib/data/onboarding_category_guidance.dart": "9391aca211737d41",
+  "lib/data/zyra_entitlements.dart": "ec74ba133d65a746",
+  "lib/data/zyra_guardian_capacity.dart": "214766cd4566d2f5",
+  "lib/data/zyra_journey_advance_policy.dart": "81e01d2113766715",
+  "lib/data/zyra_journey_guardian_selection.dart": "1550c6041f160706",
+  "lib/data/zyra_journey_intelligence.dart": "e7027181a2fee38b",
+  "lib/data/zyra_journey_life_snapshot.dart": "722041eac1501769",
+  "lib/data/zyra_journey_pause_state.dart": "b292b5042b8d393c",
+  "lib/data/zyra_journey_scroll.dart": "fef70772d923a1e4",
+  "lib/data/zyra_journey_stages.dart": "19019fac15039179",
+  "lib/data/zyra_membership_catalog.dart": "3ccc3cdf32be347f",
+  "lib/data/zyra_reference_data.dart": "8d6844b7914ed025",
+  "lib/data/zyra_release_gates.dart": "4be206b75c43fab9",
+  "lib/data/zyra_seeker_basic_policy.dart": "b93933e7142a17f1",
+  "lib/data/zyra_seeker_plan_limits.dart": "c2540ff7dc8a9720",
+  "lib/dev/dev_app_icon_directions.dart": "8354cd274b07aa07",
+  "lib/dev/dev_onboarding_directions.dart": "f419e0e5dac0a4dc",
+  "lib/dev/dev_onboarding_gold_design.dart": "3aa62703c650ca80",
+  "lib/dev/dev_onboarding_interaction.dart": "76dda3b890ef76f7",
+  "lib/dev/dev_onboarding_lab.dart": "97265a44cc39f330",
+  "lib/dev/dev_onboarding_opening.dart": "7d3a352f6a617cb5",
+  "lib/dev/dev_onboarding_transition.dart": "ff80f2bc9f126748",
+  "lib/dev/dev_onboarding_welcome_motion.dart": "703775a07bdc725f",
+  "lib/dev/dev_role_choice_design.dart": "16ab939b993c08aa",
+  "lib/dev/dev_scenario_panel_v2.dart": "4473e235e21289bd",
+  "lib/dev/dev_settings_design.dart": "2132421484657cfe",
+  "lib/dev/dev_settings_design_state.dart": "417170c071988a6c",
+  "lib/dev/dev_signup_process.dart": "286644d245d1c522",
+  "lib/dev/dev_splash_directions.dart": "17ab3c5c966b51e1",
+  "lib/dev/dev_splash_lab.dart": "46fc903dcb4cb1b1",
+  "lib/dev/journey_experience_lab.dart": "79b3820c207fe875",
+  "lib/dev/wali_dashboard_preview.dart": "5bcd747d85beff72",
+  "lib/dev/wali_dev_scenario_panel.dart": "276a5a9d48402e29",
+  "lib/dev/zyra_app_gold_preview.dart": "a8c67160af467610",
+  "lib/dev/zyra_compatibility_demo.dart": "9d81bb39c57a5dfe",
+  "lib/dev/zyra_dashboard_dev_adapter.dart": "ceb2d51d009e411b",
+  "lib/dev/zyra_dashboard_lab_controls.dart": "af56168ed0b07704",
+  "lib/dev/zyra_dev_control_system.dart": "ba9aee4ac558c221",
+  "lib/dev/zyra_dev_home.dart": "984d57acd512ec1f",
+  "lib/dev/zyra_dev_local_preview.dart": "2f42118107e08dbe",
+  "lib/dev/zyra_dev_page_options.dart": "0bc9faea5f7542d1",
+  "lib/dev/zyra_dev_personal_code_fixtures.dart": "c95ff6395796630b",
+  "lib/dev/zyra_dev_scenario.dart": "b12999d2cbbe1140",
+  "lib/dev/zyra_dev_signup.dart": "739f23fbfd6d2a0b",
+  "lib/dev/zyra_dev_surface_coordinator.dart": "fdbaa958af2f93e1",
+  "lib/dev/zyra_dev_tool_section.dart": "5acf5eb3f41babea",
+  "lib/dev/zyra_developer_route_gate.dart": "7628eeac70513f8b",
+  "lib/dev/zyra_global_dev_overlay.dart": "097781236a301d9a",
+  "lib/dev/zyra_my_zyra_design_kit.dart": "623f6cc4da233e11",
+  "lib/dev/zyra_my_zyra_designs.dart": "93b95d8894a52b4b",
+  "lib/dev/zyra_my_zyra_editorial_designs.dart": "f0cc50fe146de155",
+  "lib/dev/zyra_my_zyra_spatial_designs.dart": "87b32f1e9adab53e",
+  "lib/dev/zyra_page_preview_screen.dart": "c58816203e4a5b28",
+  "lib/dev/zyra_supportive_dashboard_preview.dart": "809c78c3e72b7206",
+  "lib/main.dart": "1ca2a8fe7d3d617d",
+  "lib/models/journey_bio.dart": "bbca078bb5d812c4",
+  "lib/models/journey_match.dart": "cd8c5dc8698a9892",
+  "lib/models/onboarding_question.dart": "7d02d0efbe34a2f6",
+  "lib/models/seeker_profile.dart": "a120a53b3e89c783",
+  "lib/models/seeker_setup_checkpoint.dart": "1232c2d8d1548ce6",
+  "lib/models/zyra_dashboard_lab.dart": "0115f6261517719a",
+  "lib/models/zyra_dashboard_resolution.dart": "0d2621779b952992",
+  "lib/models/zyra_error_state.dart": "0c6545205d2b3c97",
+  "lib/models/zyra_gender.dart": "2d8bfc84762d8392",
+  "lib/models/zyra_identity_verification.dart": "958754408356bb7d",
+  "lib/models/zyra_initial_signup_draft.dart": "176080c5df724c13",
+  "lib/models/zyra_journey_presentation.dart": "b20c25448756dcc2",
+  "lib/models/zyra_known_person_code.dart": "9188e56dbd270046",
+  "lib/models/zyra_moderation_review.dart": "b066ce4f65adaa90",
+  "lib/models/zyra_signup_membership_choice.dart": "fb53aedf1e71d52c",
+  "lib/models/zyra_supportive_dashboard.dart": "2b4adaf457d7e0c8",
+  "lib/screens/auth/email_recovery_screen.dart": "902f48dd6c88185b",
+  "lib/screens/auth/role_selection_screen.dart": "5b1c633989b67fb3",
+  "lib/screens/auth/tester_access_screen.dart": "2c91e4a7b7168892",
+  "lib/screens/auth_gate.dart": "6f7af611e144f02b",
+  "lib/screens/browse/browse_screen.dart": "a5698964c4120e5b",
+  "lib/screens/browse/browse_swipe_policy.dart": "c4aa8378fc9d1709",
+  "lib/screens/browse/find_by_zyra_code_screen.dart": "cf7225898322db48",
+  "lib/screens/browse/match_notification_screen.dart": "96f2f5994445668d",
+  "lib/screens/chat/chat_screen.dart": "6a6112b180e5b2fd",
+  "lib/screens/connections/connections_screen.dart": "d306f6956aae9f8f",
+  "lib/screens/connections/connections_section_controller.dart": "07bb5f7535f16d72",
+  "lib/screens/dev/developer_access_screen.dart": "d8fc24714f46bbf1",
+  "lib/screens/dev/moderation_review_queue_screen.dart": "4639979cfbe06d5f",
+  "lib/screens/dev/zyra_health_usage_screen.dart": "1fc363200a01d8f2",
+  "lib/screens/home/home_shell.dart": "1567fcc156d5a39d",
+  "lib/screens/home/seeker_dashboard_screen.dart": "3acb86909bbc5fda",
+  "lib/screens/home/unread_badge_coordinator.dart": "31c3c859afd73fec",
+  "lib/screens/journey/journey_flow_screen.dart": "2a15a3e9c153f943",
+  "lib/screens/journey/journey_map_screen.dart": "cea9b83dd223bb35",
+  "lib/screens/matches/journey_timeline_screen.dart": "3bbe3d59e5a8dbb2",
+  "lib/screens/notifications/notifications_screen.dart": "f00b71aaa14fa6b0",
+  "lib/screens/onboarding/account_path_overview_screen.dart": "890ecdf79c8f148e",
+  "lib/screens/onboarding/article9_consent_screen.dart": "154aad2c15794454",
+  "lib/screens/onboarding/bio_onboarding_flow.dart": "8cb1db9b3dac0a2b",
+  "lib/screens/onboarding/category_summary_screen.dart": "472ca7bac2c8d0f6",
+  "lib/screens/onboarding/chapter2_flow.dart": "f312c9e4244254f6",
+  "lib/screens/onboarding/compatibility_category_intro_screen.dart": "af7b9d16bd608d0e",
+  "lib/screens/onboarding/generic_select_question_screen.dart": "8f14a72275583ade",
+  "lib/screens/onboarding/identity_verification_screen.dart": "467c55a5d3172906",
+  "lib/screens/onboarding/onboarding_flow.dart": "a33b76e5e5713e04",
+  "lib/screens/onboarding/onboarding_stage_intro_screen.dart": "54c85329c23f5bd6",
+  "lib/screens/onboarding/profile_ready_screen.dart": "ddfada85b112e369",
+  "lib/screens/onboarding/seeker_setup_navigation.dart": "090735dafdeea3a2",
+  "lib/screens/onboarding/signup_membership_choice_screen.dart": "3801566f58f8ff70",
+  "lib/screens/onboarding/traffic_light_question_screen.dart": "6d70714da82536b9",
+  "lib/screens/onboarding/transition_screen.dart": "20995bdb2c4e263b",
+  "lib/screens/onboarding/values_preferences_flow.dart": "b3ea4e35e733564d",
+  "lib/screens/profile/avatar_adjust_screen.dart": "2e6db101f7f7d55b",
+  "lib/screens/profile/compatibility_editors.dart": "98cb6061d44f4964",
+  "lib/screens/profile/edit_photos_screen.dart": "b7df036468077aa3",
+  "lib/screens/profile/edit_profile_screen.dart": "f67783b1fec24fa6",
+  "lib/screens/profile/my_profile_preview_screen.dart": "0da8728cbb1f94d1",
+  "lib/screens/profile/past_journeys_screen.dart": "02ab84685b20c2c0",
+  "lib/screens/profile/photo_crop_review_screen.dart": "4b129caef37eb492",
+  "lib/screens/profile/profile_screen.dart": "17624c1dcd55f63a",
+  "lib/screens/profile/seeker_profile_screen.dart": "97773e1186ce2d03",
+  "lib/screens/profile/zyra_photo_batch_flow.dart": "b9d3da23cdccd3f6",
+  "lib/screens/settings/account_advanced_screen.dart": "e13b898c4e497c9d",
+  "lib/screens/settings/app_lock_screen.dart": "8bf004d2536b3a93",
+  "lib/screens/settings/feedback_screen.dart": "d6021e285d55d350",
+  "lib/screens/settings/help_support_screen.dart": "8c5df4542d8a94f4",
+  "lib/screens/settings/hidden_profiles_screen.dart": "d38682d990a42a88",
+  "lib/screens/settings/notification_settings_screen.dart": "c4c7b15166c3722f",
+  "lib/screens/settings/personalisation_screen.dart": "4b5d7870475d4aac",
+  "lib/screens/settings/privacy_and_data_screen.dart": "e3ef407637cf1e5b",
+  "lib/screens/settings/privacy_settings_screen.dart": "b5b9f6e7fbd5e0ab",
+  "lib/screens/settings/safety_case_status_screen.dart": "7755eaf8fcc70d5d",
+  "lib/screens/settings/settings_screen.dart": "3721400a0148b0a0",
+  "lib/screens/settings/sign_in_security_screen.dart": "a439e4d858c9d13a",
+  "lib/screens/splash_screen.dart": "2509f1ccb9523eac",
+  "lib/screens/subscription/membership_required_screen.dart": "d75ac519c87622f6",
+  "lib/screens/subscription/profile_unlock_screen.dart": "0158968c284d1ae3",
+  "lib/screens/subscription/upgrade_screen.dart": "b199d2052b0abf23",
+  "lib/screens/wali/accept_guardian_invite_screen.dart": "d132dcbe6db91920",
+  "lib/screens/wali/accept_wali_invite_screen.dart": "0616abd8849f87a7",
+  "lib/screens/wali/family_messaging_screens.dart": "e3a6868b8806b395",
+  "lib/screens/wali/guardian_detail_screen.dart": "39ccb197ac5f911a",
+  "lib/screens/wali/link_guardian_panel.dart": "35d7ba2557bc25a3",
+  "lib/screens/wali/link_wali_screen.dart": "04792652f7622540",
+  "lib/screens/wali/seeker_guardian_designs.dart": "cee0d16f66e815e0",
+  "lib/screens/wali/seeker_wali_tab.dart": "0e94b89e74c351c3",
+  "lib/screens/wali/wali_dashboard_screen.dart": "e92f38eb459fe9a7",
+  "lib/screens/wali/wali_gn_shared.dart": "6bf8230f3a7d1093",
+  "lib/screens/wali/wali_home_shell.dart": "1dfd04e5be7a4c24",
+  "lib/screens/wali/wali_invite_seeker_screen.dart": "da21c9583ef198b5",
+  "lib/screens/wali/wali_journey_detail_screen.dart": "8acecd719d3e6780",
+  "lib/screens/wali/wali_network_screen.dart": "5b08eadb78209cf0",
+  "lib/screens/wali/wali_notification_settings_screen.dart": "1a62fa7a2137c5d2",
+  "lib/screens/wali/wali_onboarding_flow.dart": "d84cae241d006f2e",
+  "lib/screens/wali/wali_profile_screen.dart": "55b26559041d4b28",
+  "lib/screens/wali/wali_seeker_workspace_screen.dart": "4e8de67c61e68f6c",
+  "lib/screens/wali/wali_seekers_screen.dart": "c1b4c593e895762f",
+  "lib/screens/wali/zyra_code_screen.dart": "029839431c16126c",
+  "lib/screens/welcome_screen.dart": "7e6e99eb8360e770",
+  "lib/services/zyra_account_state.dart": "73bb8ab2b13f2086",
+  "lib/services/zyra_ages_service.dart": "4ef20dce56de5705",
+  "lib/services/zyra_app_invite.dart": "45fbd9330562a063",
+  "lib/services/zyra_app_lock.dart": "a2eb845f75a6f259",
+  "lib/services/zyra_auth.dart": "d4460eba74c3b313",
+  "lib/services/zyra_consent_service.dart": "23de0d9d4600e02a",
+  "lib/services/zyra_dashboard_adapter.dart": "7e75ddea0ca5e23e",
+  "lib/services/zyra_dashboard_updates_service.dart": "e182d7dab2ce8c0f",
+  "lib/services/zyra_dev_app_icon.dart": "bb88ca7a05c054c7",
+  "lib/services/zyra_developer_access.dart": "51f4ee4559164dd2",
+  "lib/services/zyra_discovery_service.dart": "79d25ebdfe19c2b3",
+  "lib/services/zyra_entitlement_service.dart": "86f48b54734aa87f",
+  "lib/services/zyra_family_messaging_service.dart": "0e0f14edcc93d928",
+  "lib/services/zyra_feedback_service.dart": "5315a5a572144b27",
+  "lib/services/zyra_guardian_dashboard_resolver.dart": "e03fc170a4287d30",
+  "lib/services/zyra_guardian_info_service.dart": "6396f43899a54580",
+  "lib/services/zyra_guardian_seeker_roster_resolver.dart": "98d36bcc2548b753",
+  "lib/services/zyra_guardian_suggestion_service.dart": "bc4804079bd99ef8",
+  "lib/services/zyra_hidden_profile_store.dart": "c82e8829ab3d438b",
+  "lib/services/zyra_identity_admission_policy.dart": "e662a576cb6bb0e9",
+  "lib/services/zyra_identity_verification_service.dart": "f8f0b82f74c0deb5",
+  "lib/services/zyra_image_cache.dart": "35da7a627b93db20",
+  "lib/services/zyra_initial_signup_draft_service.dart": "b13e83f7936588b8",
+  "lib/services/zyra_internal_preview_client.dart": "dfadd955d13ef9b7",
+  "lib/services/zyra_journey_service.dart": "3711f136a3ffae21",
+  "lib/services/zyra_local_prefs.dart": "7dd5eb4eeda6815a",
+  "lib/services/zyra_match_service.dart": "789fdf6e0670e51c",
+  "lib/services/zyra_moderation_preview_store.dart": "f19608a027d31588",
+  "lib/services/zyra_notification_prefs_service.dart": "de1d15a965cf7e65",
+  "lib/services/zyra_notification_service.dart": "edf5c801c1c6a1f3",
+  "lib/services/zyra_onboarding_answers_service.dart": "bd2f91e5be334081",
+  "lib/services/zyra_photo_service.dart": "bcce0336fbf9b764",
+  "lib/services/zyra_product_telemetry.dart": "a5afb057c224d32d",
+  "lib/services/zyra_profile_photo_processor.dart": "3f94b0e15d3f2a72",
+  "lib/services/zyra_profile_service.dart": "80c4c17da3a7c72d",
+  "lib/services/zyra_promotion_engine.dart": "a6babbd9084516fe",
+  "lib/services/zyra_release_diagnostics.dart": "f80a309352bdf455",
+  "lib/services/zyra_reliability_monitor.dart": "05364aca6e4e1e23",
+  "lib/services/zyra_report_service.dart": "f086fca80787a8e4",
+  "lib/services/zyra_seeker_basic_usage_store.dart": "a044048f1a5d9711",
+  "lib/services/zyra_seeker_details_service.dart": "f7ce90a92397dd3a",
+  "lib/services/zyra_session_router.dart": "2ee165d1db018389",
+  "lib/services/zyra_truthful_write.dart": "f813860b1b42c40a",
+  "lib/services/zyra_unlock_service.dart": "59887b34e33f2fca",
+  "lib/services/zyra_wali_journey_service.dart": "ff034390c31dd02e",
+  "lib/services/zyra_wali_link_service.dart": "e090cce3c23d822d",
+  "lib/state/app_state.dart": "7e5d7b68080b3738",
+  "lib/theme/zyra_app_gold_style.dart": "25d306834c61397a",
+  "lib/theme/zyra_card_metrics.dart": "cb27e3d7341cbc20",
+  "lib/theme/zyra_colors.dart": "d11e575aeff0d6a0",
+  "lib/theme/zyra_interaction_style.dart": "324cfe8707532ef8",
+  "lib/theme/zyra_text.dart": "fa105dcb3818ea0d",
+  "lib/widgets/anchored_card_overlay.dart": "304fbc56bee9316a",
+  "lib/widgets/fab_continue_button.dart": "c74830c157938059",
+  "lib/widgets/flexibility_choice.dart": "407e6eaaaa8f3b68",
+  "lib/widgets/floating_nav_bar.dart": "556737efef8e95e2",
+  "lib/widgets/glass_icon_button.dart": "0e2b32df4a6d1202",
+  "lib/widgets/help_report_sheet.dart": "179c7a8a11c73a62",
+  "lib/widgets/notification_bell.dart": "933cb8d33e2b449e",
+  "lib/widgets/onboarding_scaffold.dart": "ce7d2bd5edb9f488",
+  "lib/widgets/onboarding_top_bar.dart": "48091ba07a6dc6e0",
+  "lib/widgets/privacy_indicator.dart": "60b40d2cc46479c4",
+  "lib/widgets/report_profile_sheet.dart": "2760af8a9c884c08",
+  "lib/widgets/searchable_list_picker.dart": "befa5872a9740793",
+  "lib/widgets/zyra_account_switch_sheet.dart": "6b43be73a1b75a08",
+  "lib/widgets/zyra_app_lock_gate.dart": "a256c3ed593d4689",
+  "lib/widgets/zyra_bottom_promotion.dart": "e02c0922ce8ebdfc",
+  "lib/widgets/zyra_comet_rule.dart": "04d2506583accf16",
+  "lib/widgets/zyra_dashboard_experience.dart": "3a16af660dde9cfc",
+  "lib/widgets/zyra_fade_edges.dart": "49bda76cb827e3ae",
+  "lib/widgets/zyra_family_pricing_card.dart": "5a50e7d01379481b",
+  "lib/widgets/zyra_full_screen_error.dart": "8f15c0fab4d1e5ca",
+  "lib/widgets/zyra_glass_dialog.dart": "3b419eeb41a4f262",
+  "lib/widgets/zyra_gold_action_pill.dart": "4f6b78319aeccb31",
+  "lib/widgets/zyra_guardian_capacity_notice.dart": "347388aa936c2343",
+  "lib/widgets/zyra_guardian_dashboard_profile_card.dart": "aa3122b3ee865583",
+  "lib/widgets/zyra_guardian_invitation_dashboard.dart": "6fe4a0ffac1cfb68",
+  "lib/widgets/zyra_guardian_preview_lifetime.dart": "38abd6475e6deee7",
+  "lib/widgets/zyra_intelligence_card.dart": "278378c1d6ce99e0",
+  "lib/widgets/zyra_keyboard_dismiss_scope.dart": "c59f2b8443ef175a",
+  "lib/widgets/zyra_loading.dart": "f067adad9d783ce8",
+  "lib/widgets/zyra_locked_feature_upgrade.dart": "afff4bff1c1d0e91",
+  "lib/widgets/zyra_meet_and_pass_rule.dart": "a742c6fff337720b",
+  "lib/widgets/zyra_membership_history_lock.dart": "a68a58a05e0292b7",
+  "lib/widgets/zyra_message_receipt.dart": "12b4effb4fab87fa",
+  "lib/widgets/zyra_moment.dart": "dbbb5990a6f1a60b",
+  "lib/widgets/zyra_my_zyra_design_kit.dart": "b0ef8735fb38a0e5",
+  "lib/widgets/zyra_onboarding_account_exit.dart": "e43c2390ee75f012",
+  "lib/widgets/zyra_onboarding_choice_card.dart": "3108348b49a8bce5",
+  "lib/widgets/zyra_onboarding_continue_action.dart": "254240881bfe807f",
+  "lib/widgets/zyra_onboarding_direction_style.dart": "51ea1cb85ec66102",
+  "lib/widgets/zyra_onboarding_edge_swipe.dart": "e60dd71cfc24ef8a",
+  "lib/widgets/zyra_onboarding_name_field.dart": "e2353391dd02460a",
+  "lib/widgets/zyra_onboarding_study.dart": "06daa0d326d98077",
+  "lib/widgets/zyra_one_profile_avatar.dart": "9bcff48a10a81d96",
+  "lib/widgets/zyra_paused_limit_refusal.dart": "9b07642d2728b21a",
+  "lib/widgets/zyra_profile_image.dart": "41f12c35b74432db",
+  "lib/widgets/zyra_profile_membership_row.dart": "594f1266725139ac",
+  "lib/widgets/zyra_profile_name_block.dart": "742a41bd0be93a33",
+  "lib/widgets/zyra_quiet_dashboard.dart": "c32d4703a9b71d67",
+  "lib/widgets/zyra_resolved_dashboard.dart": "6896ea4228b98424",
+  "lib/widgets/zyra_scrollable_seeker_selector.dart": "81226101fe8f65b2",
+  "lib/widgets/zyra_segmented_toggle.dart": "9edf32b596b39ab8",
+  "lib/widgets/zyra_signup_first_photo_card.dart": "59d4e4dd4a9f117e",
+  "lib/widgets/zyra_splash_artwork.dart": "7c79d08b417b249f",
+  "lib/widgets/zyra_splash_motion.dart": "ec9b54df89986c1f",
+  "lib/widgets/zyra_state_widgets.dart": "a1be60e3d6043485",
+  "lib/widgets/zyra_supportive_dashboard.dart": "3fbbf75e6105e351",
+  "lib/widgets/zyra_ward_card.dart": "9511c9513e891ea9",
+  "lib/widgets/zyra_write_feedback.dart": "b2693d1074c11d4b"
+ },
+ "findings": {
+  "0034cb707b4f": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "b405adde",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "00c7aa56a26f": {
+   "count": 39,
+   "file": "lib/screens/profile/profile_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "f697c347",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "029e05cd2d8b": {
+   "count": 27,
+   "file": "lib/widgets/zyra_intelligence_card.dart",
+   "first_seen": "2026-09-30",
+   "key": "fef8e0dd",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "033908d36e6f": {
+   "count": 63,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "25743590",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "03fa3a5f631a": {
+   "count": 9,
+   "file": "lib/screens/wali/wali_dashboard_screen.dart",
+   "first_seen": "2026-08-28",
+   "key": "a95c28d6",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "046dbfb2f9f1": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_lab_controls.dart",
+   "first_seen": "2026-09-30",
+   "key": "2eeb11ec",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "04d054d75c5e": {
+   "count": 27,
+   "file": "lib/dev/dev_app_icon_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "656b8c11",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "0576389bf5f6": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "bf62f0e8",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "07198f715551": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "cbad97a5",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "075b1136f0f7": {
+   "count": 27,
+   "file": "lib/screens/dev/zyra_health_usage_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "ee0c88cc",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "09da8e71699a": {
+   "count": 66,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "9d3336d1",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "0b987b74e69b": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "29e78b3c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "0bd5c3546c65": {
+   "count": 66,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-08-23",
+   "key": "8759a6af",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "0c61155e1b57": {
+   "count": 27,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-09-30",
+   "key": "28fd3297",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "0d1d84196707": {
+   "count": 39,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "2cd7dce7",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "0d390ecbf24a": {
+   "count": 66,
+   "file": "lib/widgets/fab_continue_button.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "0e79fc0dedb9": {
+   "count": 27,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "aa214558",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "0eaa8a3ecad8": {
+   "count": 66,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-08-23",
+   "key": "bb4f7646",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "0f72c9bf1a28": {
+   "count": 66,
+   "file": "lib/screens/onboarding/chapter2_flow.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@style: TextStyle(fontSize: 10, color: Co",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-03",
+   "status": "open"
+  },
+  "105e440eb629": {
+   "count": 66,
+   "file": "lib/screens/auth/email_recovery_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "8a966af8",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "108916605056": {
+   "count": 27,
+   "file": "lib/widgets/zyra_my_zyra_design_kit.dart",
+   "first_seen": "2026-09-30",
+   "key": "34a9d79e",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "109b5c7116ff": {
+   "count": 27,
+   "file": "lib/dev/dev_splash_lab.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "11632f55863f": {
+   "count": 27,
+   "file": "lib/screens/onboarding/onboarding_flow.dart",
+   "first_seen": "2026-09-30",
+   "key": "a2b6f2c4",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "13bf732f69da": {
+   "count": 39,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "e9cb1968",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "1431a67ce083": {
+   "count": 16,
+   "file": "lib/screens/onboarding/onboarding_flow.dart",
+   "first_seen": "2026-10-03",
+   "key": "f7ac452a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1528d2270aae": {
+   "count": 27,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "a7594501",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "15e43991e0e4": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_dev_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "1644574dfcf5": {
+   "count": 16,
+   "file": "lib/dev/dev_onboarding_directions.dart",
+   "first_seen": "2026-10-03",
+   "key": "56f794b2",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "19181282bc8a": {
+   "count": 39,
+   "file": "lib/main.dart",
+   "first_seen": "2026-08-23",
+   "key": "39fd61eb",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "19c7bddb3495": {
+   "count": 27,
+   "file": "lib/screens/settings/settings_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "row",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "19ed3a226b49": {
+   "count": 39,
+   "file": "lib/screens/dev/developer_access_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "3ccdb138",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "1a473a346bf0": {
+   "count": 66,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-08-23",
+   "key": "35f994b0",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1a5fa6980892": {
+   "count": 27,
+   "file": "lib/dev/dev_app_icon_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "755b5914",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1b139ecbe792": {
+   "count": 1,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "8CFFFFFF",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "1b7195faa61e": {
+   "count": 27,
+   "file": "lib/dev/zyra_supportive_dashboard_preview.dart",
+   "first_seen": "2026-09-30",
+   "key": "00013e1a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1c469fa9e512": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "f1776b62",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1dbefe7b7c64": {
+   "count": 27,
+   "file": "lib/data/zyra_reference_data.dart",
+   "first_seen": "2026-09-30",
+   "key": "71a259d2",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1e5cb5cc51e5": {
+   "count": 27,
+   "file": "lib/screens/subscription/upgrade_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "58813fab",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1e71035c394c": {
+   "count": 27,
+   "file": "lib/dev/zyra_dev_scenario.dart",
+   "first_seen": "2026-09-30",
+   "key": "855ad372",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "1ffe5a4eb3cf": {
+   "count": 66,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "8b5fa97d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "202a69de704b": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "2b3d13ef",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "203048d41451": {
+   "count": 27,
+   "file": "lib/screens/home/home_shell.dart",
+   "first_seen": "2026-09-30",
+   "key": "4b2e363b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "20570183995a": {
+   "count": 27,
+   "file": "lib/screens/home/home_shell.dart",
+   "first_seen": "2026-09-30",
+   "key": "be58e8d8",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "2062eaede980": {
+   "count": 38,
+   "file": "lib/screens/chat/chat_screen.dart",
+   "first_seen": "2026-08-26",
+   "key": "03717991",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "209f6d5e26fd": {
+   "count": 63,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "cc65cb77",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "210147b43815": {
+   "count": 39,
+   "file": "lib/services/zyra_guardian_info_service.dart",
+   "first_seen": "2026-08-23",
+   "key": "e4aef048",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "211d17d1371a": {
+   "count": 1,
+   "file": "lib/screens/onboarding/category_summary_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FF50B478",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "21d568b23b4b": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "23630f6b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "220d355bce00": {
+   "count": 27,
+   "file": "lib/services/zyra_account_state.dart",
+   "first_seen": "2026-09-30",
+   "key": "169d77fb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "221892bdd164": {
+   "count": 24,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "34a77d23",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "22eae2fe9ffc": {
+   "count": 66,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "1caaa1bb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "2349fb6d0e71": {
+   "count": 27,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "8280a79a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "238ec5b2df51": {
+   "count": 27,
+   "file": "lib/services/zyra_dashboard_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "96e66662",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "244ed256d63e": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "8e424d0b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "256da1359b74": {
+   "count": 6,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-28",
+   "key": "3aaa063a",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "2685f3996df0": {
+   "count": 27,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "4aef2698",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "26e906436d66": {
+   "count": 27,
+   "file": "lib/main.dart",
+   "first_seen": "2026-09-30",
+   "key": "21da95e0",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "27c6f3b3eb79": {
+   "count": 66,
+   "file": "lib/screens/chat/chat_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "5c9b37b3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "27e2bb41f5d0": {
+   "count": 12,
+   "file": "lib/data/help_content.dart",
+   "first_seen": "2026-09-30",
+   "key": "\u00a329.99",
+   "last_seen": "2026-10-03",
+   "resolved": "2026-10-03",
+   "rule": "UIG-06",
+   "status": "resolved"
+  },
+  "27fdabe171dc": {
+   "count": 36,
+   "file": "lib/dev/zyra_dev_scenario.dart",
+   "first_seen": "2026-08-28",
+   "key": "36205394",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "2873307d6fe7": {
+   "count": 3,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "34a77d23",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "2a3e7e1ade26": {
+   "count": 66,
+   "file": "lib/data/zyra_entitlements.dart",
+   "first_seen": "2026-08-23",
+   "key": "9181b753",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "2b27d0572719": {
+   "count": 27,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-09-30",
+   "key": "254e03d0",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "2ba788eefff7": {
+   "count": 16,
+   "file": "lib/models/seeker_setup_checkpoint.dart",
+   "first_seen": "2026-10-03",
+   "key": "4415c357",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "2c869e52708c": {
+   "count": 39,
+   "file": "lib/screens/wali/accept_guardian_invite_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "relchip",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-11",
+   "status": "resolved"
+  },
+  "2d7845abb2e4": {
+   "count": 16,
+   "file": "lib/screens/onboarding/onboarding_flow.dart",
+   "first_seen": "2026-10-03",
+   "key": "e65ca2d8",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "2fc6d3e33ceb": {
+   "count": 23,
+   "file": "lib/widgets/zyra_segmented_toggle.dart",
+   "first_seen": "2026-08-23",
+   "key": "radius:17",
+   "last_seen": "2026-08-24",
+   "resolved": "2026-08-25",
+   "rule": "UIG-04",
+   "status": "resolved"
+  },
+  "314834ac22e3": {
+   "count": 39,
+   "file": "lib/screens/wali/wali_dashboard_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "f56d65b6",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "3163a37bc89a": {
+   "count": 1,
+   "file": "lib/screens/wali/link_wali_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "preview build",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-07",
+   "status": "resolved"
+  },
+  "316fc7cc3e7f": {
+   "count": 27,
+   "file": "lib/widgets/zyra_my_zyra_design_kit.dart",
+   "first_seen": "2026-09-30",
+   "key": "9310ee96",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "31b17b56979d": {
+   "count": 1,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FF3D2A4A",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "32bfe3cb09dd": {
+   "count": 16,
+   "file": "lib/screens/onboarding/signup_membership_choice_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "90ce311c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "32c57f0adee6": {
+   "count": 16,
+   "file": "lib/dev/dev_onboarding_gold_design.dart",
+   "first_seen": "2026-10-03",
+   "key": "73dfb510",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "33d114e050e9": {
+   "count": 16,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "radius:5",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-04",
+   "status": "open"
+  },
+  "347ac5b0d6c3": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "96e79aa4",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "34f2cfd87232": {
+   "count": 27,
+   "file": "lib/screens/wali/wali_dashboard_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "6990e8ed",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "354a92670072": {
+   "count": 3,
+   "file": "lib/screens/settings/notification_settings_screen.dart",
+   "first_seen": "2026-08-28",
+   "key": "0303e182",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "36093fdc8abc": {
+   "count": 27,
+   "file": "lib/dev/zyra_supportive_dashboard_preview.dart",
+   "first_seen": "2026-09-30",
+   "key": "e04d313a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "366c4da1506e": {
+   "count": 27,
+   "file": "lib/dev/wali_dev_scenario_panel.dart",
+   "first_seen": "2026-09-30",
+   "key": "d48df52d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "37465249eabb": {
+   "count": 61,
+   "file": "lib/screens/onboarding/category_summary_screen.dart",
+   "first_seen": "2026-08-24",
+   "key": "fontSize@style: TextStyle(fontSize: 13),",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-03",
+   "status": "open"
+  },
+  "381039234f69": {
+   "count": 65,
+   "file": "lib/dev/wali_dev_scenario_panel.dart",
+   "first_seen": "2026-08-23",
+   "key": "0359148d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "38664b3e0552": {
+   "count": 27,
+   "file": "lib/screens/wali/guardian_detail_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "smallaction",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "38d3346ad5eb": {
+   "count": 39,
+   "file": "lib/dev/wali_dev_scenario_panel.dart",
+   "first_seen": "2026-08-23",
+   "key": "78801183",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "38f0a00cce72": {
+   "count": 66,
+   "file": "lib/screens/journey/journey_map_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "38fc27b8d377": {
+   "count": 12,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-10-04",
+   "key": "0f5ae108",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "3928a1a5eccf": {
+   "count": 45,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-08-24",
+   "key": "FF63B2E8",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "3a1796904b19": {
+   "count": 27,
+   "file": "lib/services/zyra_discovery_service.dart",
+   "first_seen": "2026-09-30",
+   "key": "4d24b784",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "3aa5d05314b3": {
+   "count": 28,
+   "file": "lib/screens/wali/accept_wali_invite_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "479f64e2",
+   "last_seen": "2026-08-25",
+   "resolved": "2026-08-26",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "3d0cce93ce95": {
+   "count": 66,
+   "file": "lib/screens/chat/chat_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "74f33cfb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "3d5a2d8def60": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "76a0c8fb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "3fe0b0d1e3d3": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "62c85ee8",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "403054f9e4e0": {
+   "count": 2,
+   "file": "lib/services/zyra_account_state.dart",
+   "first_seen": "2026-10-05",
+   "key": "99f1fa76",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "40a2a7b9a5f3": {
+   "count": 27,
+   "file": "lib/screens/wali/family_messaging_screens.dart",
+   "first_seen": "2026-09-30",
+   "key": "87cf1427",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "40f15b788479": {
+   "count": 1,
+   "file": "lib/dev/journey_experience_lab.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFE8C98A",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "415f01cff832": {
+   "count": 11,
+   "file": "lib/data/zyra_membership_catalog.dart",
+   "first_seen": "2026-09-30",
+   "key": "a53ebd90",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-10-03",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "41632548f046": {
+   "count": 66,
+   "file": "lib/screens/wali/accept_guardian_invite_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "monogram",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "420670b0fcb5": {
+   "count": 66,
+   "file": "lib/screens/profile/profile_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "inforow",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "422d77120af1": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_gn_shared.dart",
+   "first_seen": "2026-08-23",
+   "key": "mock data",
+   "last_seen": "2026-08-23",
+   "rule": "UIG-07",
+   "status": "open"
+  },
+  "42b698f1be9d": {
+   "count": 39,
+   "file": "lib/widgets/notification_bell.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@fontSize: 10,",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-03",
+   "status": "resolved"
+  },
+  "42d0ffd52c75": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_dev_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "e1ee7b73",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "43a1aca2d8f0": {
+   "count": 27,
+   "file": "lib/screens/onboarding/identity_verification_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "f697c347",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "44172cc51968": {
+   "count": 66,
+   "file": "lib/services/zyra_journey_service.dart",
+   "first_seen": "2026-08-23",
+   "key": "8088ae87",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4450e846fe82": {
+   "count": 1,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FF84D0A8",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "445aff8e2a39": {
+   "count": 27,
+   "file": "lib/widgets/zyra_guardian_capacity_notice.dart",
+   "first_seen": "2026-09-30",
+   "key": "722a800b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "44bb6807381e": {
+   "count": 36,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-08-28",
+   "key": "FFE9CF76",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "44bddea07d14": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "962d36dc",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "454bbb107e71": {
+   "count": 11,
+   "file": "lib/screens/onboarding/bio_onboarding_flow.dart",
+   "first_seen": "2026-09-30",
+   "key": "8501b33a",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-10-03",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "4611a5dd0e8b": {
+   "count": 66,
+   "file": "lib/screens/chat/chat_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "aa973527",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4657f8f178d3": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "a857f8c5",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "46bcf20da216": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "mock data",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-07",
+   "status": "resolved"
+  },
+  "4723ab6164cc": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_advance_policy.dart",
+   "first_seen": "2026-08-23",
+   "key": "87fcdb8a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "490a8e38ebf8": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "d9970a16",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "495c754d5b78": {
+   "count": 11,
+   "file": "lib/screens/onboarding/chapter2_flow.dart",
+   "first_seen": "2026-09-30",
+   "key": "ed304466",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-10-03",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "49db2e68046a": {
+   "count": 39,
+   "file": "lib/screens/wali/link_guardian_panel.dart",
+   "first_seen": "2026-08-23",
+   "key": "actionbutton",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-11",
+   "status": "resolved"
+  },
+  "4a5f4a373146": {
+   "count": 66,
+   "file": "lib/dev/wali_dashboard_preview.dart",
+   "first_seen": "2026-08-23",
+   "key": "e518efa4",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4ab68add8d1c": {
+   "count": 39,
+   "file": "lib/screens/settings/settings_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "4ecda5e7",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "4b4745f3e438": {
+   "count": 27,
+   "file": "lib/dev/zyra_my_zyra_designs.dart",
+   "first_seen": "2026-09-30",
+   "key": "59bee19b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4c60093ecb28": {
+   "count": 5,
+   "file": "lib/widgets/zyra_splash_artwork.dart",
+   "first_seen": "2026-09-30",
+   "key": "FFE5CE8E",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-09-30",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "4c65c9d0fafe": {
+   "count": 39,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "755b5914",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "4cf4e66bc853": {
+   "count": 66,
+   "file": "lib/services/zyra_discovery_service.dart",
+   "first_seen": "2026-08-23",
+   "key": "28ed6262",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4cfcb488d4ac": {
+   "count": 12,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-10-04",
+   "key": "ca8d3dec",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4da24084f446": {
+   "count": 27,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-09-30",
+   "key": "cfc94747",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4dee3751eb33": {
+   "count": 27,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "6767c478",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4eed611ee138": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "ed304466",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4efe1bb02de4": {
+   "count": 39,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "e58f3636",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "4f2b9fab034d": {
+   "count": 1,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFE18A91",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "4f3fc5dbea6b": {
+   "count": 27,
+   "file": "lib/widgets/zyra_my_zyra_design_kit.dart",
+   "first_seen": "2026-09-30",
+   "key": "ce41f254",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "4fafa298d337": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@style: ZyraText.chapterLabel(color: gnGo",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-03",
+   "status": "resolved"
+  },
+  "527b9cd2c69d": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "5f6fc864",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "53035844700b": {
+   "count": 39,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "btnheight:44",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-05",
+   "status": "resolved"
+  },
+  "534815c3dfc3": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "81d85326",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5435c8c05187": {
+   "count": 27,
+   "file": "lib/screens/browse/find_by_zyra_code_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "4fd8d39e",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "544854325248": {
+   "count": 66,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "9caf33f9",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "546da0fe49ba": {
+   "count": 66,
+   "file": "lib/screens/profile/profile_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "settingsrow",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "54a2cf3fa077": {
+   "count": 27,
+   "file": "lib/screens/wali/family_messaging_screens.dart",
+   "first_seen": "2026-09-30",
+   "key": "8a20943c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "54ab188d77d8": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "14e0b3a2",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5560f82b35ef": {
+   "count": 27,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-09-30",
+   "key": "6dff6cf7",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "55f289924b0e": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_lab_controls.dart",
+   "first_seen": "2026-09-30",
+   "key": "363e0c55",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "565900e3391a": {
+   "count": 39,
+   "file": "lib/screens/dev/developer_access_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "ad177260",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "567b52dffc4f": {
+   "count": 39,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "83df011f",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "56d07a9487d1": {
+   "count": 63,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "bd914385",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "58a21e93bb8f": {
+   "count": 36,
+   "file": "lib/screens/home/home_shell.dart",
+   "first_seen": "2026-08-28",
+   "key": "63aec6ff",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "58d5a076e784": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "95381fcb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5958a3e6214c": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "b37ddf1f",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5b4321bf0e7f": {
+   "count": 1,
+   "file": "lib/screens/matches/journey_timeline_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "D9FFFFFF",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "5b46998846d8": {
+   "count": 27,
+   "file": "lib/dev/zyra_dev_control_system.dart",
+   "first_seen": "2026-09-30",
+   "key": "8e5fe693",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5b77d245a994": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "78a5e08c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5bf052cac4b0": {
+   "count": 27,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "b1dafb24",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5c5183c2cfbe": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_dev_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "c5702c19",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5d112c29ec12": {
+   "count": 50,
+   "file": "lib/screens/onboarding/bio_onboarding_flow.dart",
+   "first_seen": "2026-08-23",
+   "key": "fd60af22",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-10-03",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "5da2c19c1133": {
+   "count": 1,
+   "file": "lib/dev/wali_dev_scenario_panel.dart",
+   "first_seen": "2026-08-23",
+   "key": "F20E0B12",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "5e88faf88c08": {
+   "count": 66,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "7289f8ec",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "5ea2ee5ca232": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "3408af32",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "601191dcdb1e": {
+   "count": 45,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-08-24",
+   "key": "FFA0A7DA",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "602b69a82529": {
+   "count": 16,
+   "file": "lib/constants/zyra_plan_names.dart",
+   "first_seen": "2026-10-03",
+   "key": "645c324c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "602c520955c6": {
+   "count": 3,
+   "file": "lib/screens/dev/developer_access_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "b944dca3",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "607173fcee09": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "8501b33a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "60d9b9212efe": {
+   "count": 27,
+   "file": "lib/screens/wali/seeker_guardian_designs.dart",
+   "first_seen": "2026-09-30",
+   "key": "c1220a62",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "61025aff8d2c": {
+   "count": 27,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-09-30",
+   "key": "ca5839e3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "61998f9a76a9": {
+   "count": 27,
+   "file": "lib/data/help_content.dart",
+   "first_seen": "2026-09-30",
+   "key": "528d89ad",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "62009849480e": {
+   "count": 4,
+   "file": "lib/screens/wali/wali_gn_shared.dart",
+   "first_seen": "2026-08-23",
+   "key": "PROVISIONAL",
+   "last_seen": "2026-08-23",
+   "rule": "UIG-07",
+   "status": "open"
+  },
+  "625faa64aaec": {
+   "count": 1,
+   "file": "lib/screens/subscription/upgrade_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "preview build",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-07",
+   "status": "resolved"
+  },
+  "62964a9b0b4a": {
+   "count": 27,
+   "file": "lib/screens/dev/moderation_review_queue_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "statuspill",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "62f8003d09b5": {
+   "count": 66,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-08-23",
+   "key": "661a1de7",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "637de276fa84": {
+   "count": 45,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-08-24",
+   "key": "FFF5A6CB",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "64011570e692": {
+   "count": 66,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-08-23",
+   "key": "b1392bf8",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "645884f04613": {
+   "count": 3,
+   "file": "lib/screens/home/home_shell.dart",
+   "first_seen": "2026-08-23",
+   "key": "b37ddf1f",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "64a694a9268b": {
+   "count": 27,
+   "file": "lib/services/zyra_dashboard_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "54b1e31a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "64f5fea0f048": {
+   "count": 27,
+   "file": "lib/dev/zyra_supportive_dashboard_preview.dart",
+   "first_seen": "2026-09-30",
+   "key": "ee353a58",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "66842a6790e5": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "4acfc8a1",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6707f5cf91f0": {
+   "count": 32,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-08-25",
+   "key": "radius:21",
+   "last_seen": "2026-10-05",
+   "resolved": "2026-08-28",
+   "rule": "UIG-04",
+   "status": "open"
+  },
+  "6728c2a2142f": {
+   "count": 30,
+   "file": "lib/models/zyra_dashboard_lab.dart",
+   "first_seen": "2026-08-28",
+   "key": "ac5698d4",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "69056c92a2bc": {
+   "count": 16,
+   "file": "lib/screens/onboarding/bio_onboarding_flow.dart",
+   "first_seen": "2026-10-03",
+   "key": "a456a1ae",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "69d09321b954": {
+   "count": 66,
+   "file": "lib/screens/onboarding/category_summary_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "34d0415e",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "69ebde7b0727": {
+   "count": 27,
+   "file": "lib/screens/auth/tester_access_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "9b5850ef",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6a8574ecb2d8": {
+   "count": 27,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "3cb1dbcc",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6b3f3cacd3e7": {
+   "count": 66,
+   "file": "lib/screens/browse/match_notification_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "c85cd74d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6b841869bba2": {
+   "count": 66,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "52e3e532",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6ba94e064949": {
+   "count": 66,
+   "file": "lib/dev/wali_dashboard_preview.dart",
+   "first_seen": "2026-08-23",
+   "key": "c8ffb08a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6bbf6d123e6b": {
+   "count": 27,
+   "file": "lib/screens/settings/safety_case_status_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "6deb7801",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6c2eabcf5459": {
+   "count": 16,
+   "file": "lib/dev/dev_onboarding_lab.dart",
+   "first_seen": "2026-10-03",
+   "key": "59483281",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6c31cc35d39e": {
+   "count": 27,
+   "file": "lib/dev/dev_app_icon_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "e58f3636",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6c565491edb4": {
+   "count": 27,
+   "file": "lib/data/zyra_membership_catalog.dart",
+   "first_seen": "2026-09-30",
+   "key": "628c5512",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6c81a123be08": {
+   "count": 36,
+   "file": "lib/dev/zyra_dev_signup.dart",
+   "first_seen": "2026-08-23",
+   "key": "e8585910",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "6c9341a86c1f": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "4ba36ecc",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6cc108979f43": {
+   "count": 66,
+   "file": "lib/screens/onboarding/bio_onboarding_flow.dart",
+   "first_seen": "2026-08-23",
+   "key": "4eeb067a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6d7c55258c98": {
+   "count": 27,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "6d9346bd7b22": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "ed6edc71",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "6e56c4f09987": {
+   "count": 66,
+   "file": "lib/screens/wali/wali_home_shell.dart",
+   "first_seen": "2026-08-23",
+   "key": "85f1ae3d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "712721de4812": {
+   "count": 27,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "radius:42",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-04",
+   "status": "open"
+  },
+  "72820b1fc3ce": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "9b5b7bff",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "74580f65f810": {
+   "count": 1,
+   "file": "lib/dev/wali_dev_scenario_panel.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFE08080",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "74b85346279a": {
+   "count": 27,
+   "file": "lib/widgets/zyra_intelligence_card.dart",
+   "first_seen": "2026-09-30",
+   "key": "e8f67181",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "74d4ff887745": {
+   "count": 39,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "e5641e0c",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "7622bc220b14": {
+   "count": 66,
+   "file": "lib/widgets/anchored_card_overlay.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "763ce8dde113": {
+   "count": 27,
+   "file": "lib/services/zyra_initial_signup_draft_service.dart",
+   "first_seen": "2026-09-30",
+   "key": "a25fa46a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "77c23b85cda8": {
+   "count": 38,
+   "file": "lib/data/compatibility_categories.dart",
+   "first_seen": "2026-08-26",
+   "key": "58dcb198",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "77d019f5beba": {
+   "count": 27,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "62eecd80",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "78cf296ce7e0": {
+   "count": 66,
+   "file": "lib/screens/settings/settings_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "section",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "793d48eef277": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_lab_controls.dart",
+   "first_seen": "2026-09-30",
+   "key": "13d4889d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "79c23e40a331": {
+   "count": 64,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "34782fdc",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "7a8231dd4f4f": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_invite_seeker_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "preview build",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-07",
+   "status": "resolved"
+  },
+  "7adaf1d0f353": {
+   "count": 66,
+   "file": "lib/screens/home/home_shell.dart",
+   "first_seen": "2026-08-23",
+   "key": "6a1ca5b3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "7b5a3b2c2491": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_gn_shared.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@style: ZyraText.chapterLabel(color: gnGo",
+   "last_seen": "2026-08-23",
+   "rule": "UIG-03",
+   "status": "open"
+  },
+  "7b7c33640aa4": {
+   "count": 66,
+   "file": "lib/services/zyra_consent_service.dart",
+   "first_seen": "2026-08-23",
+   "key": "09c5b94e",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "7c7fc72c0275": {
+   "count": 1,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFCEA2D1",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "7d5e1f225e3d": {
+   "count": 27,
+   "file": "lib/dev/zyra_supportive_dashboard_preview.dart",
+   "first_seen": "2026-09-30",
+   "key": "b78b3716",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "7e2432d18595": {
+   "count": 39,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFF0A2A0",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "7ef3de2e564b": {
+   "count": 5,
+   "file": "lib/services/zyra_initial_signup_draft_service.dart",
+   "first_seen": "2026-10-04",
+   "key": "781fafef",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "7f5b8a17c96b": {
+   "count": 66,
+   "file": "lib/services/zyra_discovery_service.dart",
+   "first_seen": "2026-08-23",
+   "key": "9bc840c3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "7f5c4bf9af2b": {
+   "count": 27,
+   "file": "lib/dev/zyra_supportive_dashboard_preview.dart",
+   "first_seen": "2026-09-30",
+   "key": "f4a6e169",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "7fcbe30ec124": {
+   "count": 66,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "bbbdafb7",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "802d6158d61e": {
+   "count": 27,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "932b7bf9",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "80e532adff63": {
+   "count": 66,
+   "file": "lib/dev/journey_experience_lab.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "82fccf8497cd": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "0d654bf9",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "849ec677854b": {
+   "count": 31,
+   "file": "lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "radius:5",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-09-30",
+   "rule": "UIG-04",
+   "status": "resolved"
+  },
+  "84a997c6cee1": {
+   "count": 1,
+   "file": "lib/widgets/flexibility_choice.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@Text(e.$1.emoji, style: const TextStyle(",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-10-04",
+   "rule": "UIG-03",
+   "status": "resolved"
+  },
+  "84b3e0c7ec41": {
+   "count": 27,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-09-30",
+   "key": "d89a6bc6",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "84b9a8ccea76": {
+   "count": 36,
+   "file": "lib/screens/wali/wali_dashboard_screen.dart",
+   "first_seen": "2026-08-28",
+   "key": "f63e9cc0",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "87a6cb3155a5": {
+   "count": 66,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-08-23",
+   "key": "6435c808",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "883202131719": {
+   "count": 66,
+   "file": "lib/dev/journey_experience_lab.dart",
+   "first_seen": "2026-08-23",
+   "key": "c0dbab06",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8845d084bd1b": {
+   "count": 27,
+   "file": "lib/screens/welcome_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "13c00454",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "886ecaf8c67b": {
+   "count": 27,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "364aecc3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8926f5ba987c": {
+   "count": 27,
+   "file": "lib/screens/wali/guardian_detail_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "89cdcb83ca01": {
+   "count": 27,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "cd989731",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8b8e14767f04": {
+   "count": 27,
+   "file": "lib/models/zyra_supportive_dashboard.dart",
+   "first_seen": "2026-09-30",
+   "key": "5985aa3b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8baaa2b5c13f": {
+   "count": 27,
+   "file": "lib/dev/zyra_global_dev_overlay.dart",
+   "first_seen": "2026-09-30",
+   "key": "69d278ef",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8c020708846e": {
+   "count": 27,
+   "file": "lib/dev/zyra_my_zyra_designs.dart",
+   "first_seen": "2026-09-30",
+   "key": "9dc54594",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8c0ccd12a7fe": {
+   "count": 36,
+   "file": "lib/dev/zyra_dev_signup.dart",
+   "first_seen": "2026-08-23",
+   "key": "1ce921fd",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "8ca075b924d9": {
+   "count": 5,
+   "file": "lib/services/zyra_initial_signup_draft_service.dart",
+   "first_seen": "2026-10-04",
+   "key": "e00d68ef",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8d18aca92410": {
+   "count": 27,
+   "file": "lib/dev/dev_signup_process.dart",
+   "first_seen": "2026-09-30",
+   "key": "07b96691",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8f06db14e1a9": {
+   "count": 9,
+   "file": "lib/services/zyra_dashboard_adapter.dart",
+   "first_seen": "2026-08-28",
+   "key": "128347de",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "8fb7126cc519": {
+   "count": 11,
+   "file": "lib/dev/zyra_page_preview_screen.dart",
+   "first_seen": "2026-08-26",
+   "key": "39236903",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "8fc5176721b2": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_advance_policy.dart",
+   "first_seen": "2026-08-23",
+   "key": "11ca7f26",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "8fe819dd9d39": {
+   "count": 45,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-08-24",
+   "key": "FFCEA2D1",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "9156d893a716": {
+   "count": 12,
+   "file": "lib/dev/wali_dashboard_preview.dart",
+   "first_seen": "2026-10-04",
+   "key": "91a2fe40",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "91b116f40a23": {
+   "count": 27,
+   "file": "lib/dev/dev_onboarding_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "9864fadd",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "92d52ec3dfd4": {
+   "count": 27,
+   "file": "lib/screens/notifications/notifications_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "3bc62a9e",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "93387fff0bd0": {
+   "count": 1,
+   "file": "lib/widgets/floating_nav_bar.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@fontSize: 9,",
+   "last_seen": "2026-08-23",
+   "rule": "UIG-03",
+   "status": "open"
+  },
+  "93388ac08d9c": {
+   "count": 66,
+   "file": "lib/screens/auth/email_recovery_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "79fe6387",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "93a5b99a633c": {
+   "count": 16,
+   "file": "lib/dev/dev_onboarding_gold_design.dart",
+   "first_seen": "2026-10-03",
+   "key": "radius:7",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-04",
+   "status": "open"
+  },
+  "94328b7936eb": {
+   "count": 65,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFDF7D82",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "94b6582c7dc6": {
+   "count": 27,
+   "file": "lib/dev/dev_splash_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "451f4d72",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "971131f72217": {
+   "count": 27,
+   "file": "lib/services/zyra_account_state.dart",
+   "first_seen": "2026-09-30",
+   "key": "aa46aa06",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9727387acbe5": {
+   "count": 1,
+   "file": "lib/widgets/glass_icon_button.dart",
+   "first_seen": "2026-08-23",
+   "key": "2EFFFFFF",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "97a7a6c543a4": {
+   "count": 66,
+   "file": "lib/screens/onboarding/bio_onboarding_flow.dart",
+   "first_seen": "2026-08-23",
+   "key": "46c668cd",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "98207012b366": {
+   "count": 27,
+   "file": "lib/dev/zyra_dev_personal_code_fixtures.dart",
+   "first_seen": "2026-09-30",
+   "key": "27422409",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "98d17b6dea2a": {
+   "count": 27,
+   "file": "lib/state/app_state.dart",
+   "first_seen": "2026-09-30",
+   "key": "80b1b31f",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "990aa79f3c91": {
+   "count": 66,
+   "file": "lib/screens/matches/journey_timeline_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "D9CEA2D1",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "9a1d990b3e24": {
+   "count": 66,
+   "file": "lib/dev/wali_dashboard_preview.dart",
+   "first_seen": "2026-08-23",
+   "key": "a355fdc7",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9a8ef3d868d6": {
+   "count": 39,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "1c6eec00",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "9aca6f62fce8": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_life_snapshot.dart",
+   "first_seen": "2026-08-23",
+   "key": "0fbc1236",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9cea0e58212b": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "d67f4db1",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9e0aa9bef637": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_life_snapshot.dart",
+   "first_seen": "2026-08-23",
+   "key": "1eee5180",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9e676bb61968": {
+   "count": 27,
+   "file": "lib/dev/journey_experience_lab.dart",
+   "first_seen": "2026-09-30",
+   "key": "3aaa063a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9ed0c2655819": {
+   "count": 16,
+   "file": "lib/screens/onboarding/profile_ready_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "d4788f25",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9f4ad8ad195d": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "3de4c91c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9fc66d1dcec0": {
+   "count": 27,
+   "file": "lib/dev/dev_app_icon_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "83df011f",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "9ff45778e679": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "637b5b24",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a0dd85ffaf1d": {
+   "count": 1,
+   "file": "lib/widgets/glass_icon_button.dart",
+   "first_seen": "2026-08-23",
+   "key": "1AFFFFFF",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "a198d45e3a18": {
+   "count": 27,
+   "file": "lib/dev/dev_onboarding_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "8031244d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a1deaea9a6d5": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "3ddf5345",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a2907736d611": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "78801183",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a29b56f8e12a": {
+   "count": 27,
+   "file": "lib/widgets/zyra_bottom_promotion.dart",
+   "first_seen": "2026-09-30",
+   "key": "b6eb8273",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a2d55fbeebcd": {
+   "count": 1,
+   "file": "lib/screens/matches/journey_timeline_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "C7FFFFFF",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "a3fa0e61690b": {
+   "count": 39,
+   "file": "lib/screens/matches/journey_timeline_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "9fac16a3",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "a41e6baf992a": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_gn_shared.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@).copyWith(fontSize: 6),",
+   "last_seen": "2026-08-23",
+   "rule": "UIG-03",
+   "status": "open"
+  },
+  "a5334c2437bd": {
+   "count": 27,
+   "file": "lib/screens/wali/wali_notification_settings_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "a5be7e4eb0d4": {
+   "count": 66,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-08-23",
+   "key": "28d28489",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a6061e72e919": {
+   "count": 7,
+   "file": "lib/screens/onboarding/chapter2_flow.dart",
+   "first_seen": "2026-10-04",
+   "key": "111e4e16",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a610bff8d8e6": {
+   "count": 27,
+   "file": "lib/screens/browse/find_by_zyra_code_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "f65afe60",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "a75b074a4ad0": {
+   "count": 18,
+   "file": "lib/screens/matches/journey_timeline_screen.dart",
+   "first_seen": "2026-08-24",
+   "key": "30a4c818",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "aa451a8a4516": {
+   "count": 24,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "b944dca3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "aa791994464f": {
+   "count": 24,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "radius:32",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-04",
+   "status": "open"
+  },
+  "aadf67d5f275": {
+   "count": 64,
+   "file": "lib/dev/wali_dashboard_preview.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "acc1b9a95034": {
+   "count": 16,
+   "file": "lib/dev/dev_onboarding_directions.dart",
+   "first_seen": "2026-10-03",
+   "key": "4fed14e4",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ad733bfbbcc3": {
+   "count": 16,
+   "file": "lib/screens/profile/profile_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "a53ebd90",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ad89a5205b68": {
+   "count": 11,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "d4788f25",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-10-03",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "aec09ca41a68": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "fd60af22",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b0232a7a5843": {
+   "count": 27,
+   "file": "lib/screens/profile/edit_profile_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "f8e11237",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b0da9d86ee6b": {
+   "count": 27,
+   "file": "lib/services/zyra_family_messaging_service.dart",
+   "first_seen": "2026-09-30",
+   "key": "e4aef048",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b1bc270b6f8c": {
+   "count": 39,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "179d3f2b",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "b1c14844937c": {
+   "count": 27,
+   "file": "lib/services/zyra_hidden_profile_store.dart",
+   "first_seen": "2026-09-30",
+   "key": "7d21d273",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b1ebe314fd3f": {
+   "count": 27,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "3ccdb138",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b285986db86b": {
+   "count": 27,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "5fc4aab2",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b28ef95b4346": {
+   "count": 66,
+   "file": "lib/screens/auth/email_recovery_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "bc9ad91c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b2aa073e2997": {
+   "count": 27,
+   "file": "lib/screens/onboarding/chapter2_flow.dart",
+   "first_seen": "2026-09-30",
+   "key": "radius:6",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-04",
+   "status": "open"
+  },
+  "b384a120dcb4": {
+   "count": 27,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "ad177260",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b39704992d18": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "8b34dbc2",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b46a6208e286": {
+   "count": 27,
+   "file": "lib/widgets/zyra_supportive_dashboard.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "b53ebd743bd4": {
+   "count": 63,
+   "file": "lib/dev/zyra_page_preview_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "25490a10",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b5763f9f9573": {
+   "count": 66,
+   "file": "lib/screens/auth/email_recovery_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "d3b7f433",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b5e5f99c0633": {
+   "count": 39,
+   "file": "lib/services/zyra_app_lock.dart",
+   "first_seen": "2026-08-23",
+   "key": "169d77fb",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "b63aa45fd9f3": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "preview build",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-07",
+   "status": "resolved"
+  },
+  "b66a393ced1d": {
+   "count": 39,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "3ddfb043",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "b6f2e7b23d7d": {
+   "count": 27,
+   "file": "lib/widgets/zyra_dashboard_experience.dart",
+   "first_seen": "2026-09-30",
+   "key": "64a935a2",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b90e473e48f4": {
+   "count": 27,
+   "file": "lib/dev/zyra_global_dev_overlay.dart",
+   "first_seen": "2026-09-30",
+   "key": "10207504",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b9490f8afc14": {
+   "count": 27,
+   "file": "lib/dev/wali_dashboard_preview.dart",
+   "first_seen": "2026-09-30",
+   "key": "e5641e0c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b9bca5afdf90": {
+   "count": 27,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "e67dc1b7",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "b9e6742fe6ce": {
+   "count": 27,
+   "file": "lib/dev/zyra_dev_scenario.dart",
+   "first_seen": "2026-09-30",
+   "key": "39236903",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ba44c7c33b89": {
+   "count": 39,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "a7594501",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "bb984792f593": {
+   "count": 27,
+   "file": "lib/config/oauth_config.dart",
+   "first_seen": "2026-09-30",
+   "key": "7d8d419d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "bbeed2b88e55": {
+   "count": 5,
+   "file": "lib/screens/home/seeker_dashboard_screen.dart",
+   "first_seen": "2026-08-25",
+   "key": "a95c28d6",
+   "last_seen": "2026-08-26",
+   "resolved": "2026-08-28",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "bc27c5147ec6": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "a869fd6d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "bcbf31f0f80a": {
+   "count": 27,
+   "file": "lib/dev/dev_onboarding_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "20840ef5",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "be571d62aa8a": {
+   "count": 27,
+   "file": "lib/config/zyra_external_tester_policy.dart",
+   "first_seen": "2026-09-30",
+   "key": "0db5966d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "be7379fbebbc": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "038ddbd5",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "befa7df3594a": {
+   "count": 66,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "7f495810",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "bfac5bed112c": {
+   "count": 1,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFDF7D82",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "c0192bb829ce": {
+   "count": 66,
+   "file": "lib/widgets/notification_bell.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "c11e2331adc2": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_life_snapshot.dart",
+   "first_seen": "2026-08-23",
+   "key": "7b41c105",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c1d68a037089": {
+   "count": 27,
+   "file": "lib/screens/settings/personalisation_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "422890cf",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c259b632c236": {
+   "count": 27,
+   "file": "lib/widgets/zyra_my_zyra_design_kit.dart",
+   "first_seen": "2026-09-30",
+   "key": "6d160b56",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c299768c46ac": {
+   "count": 39,
+   "file": "lib/main.dart",
+   "first_seen": "2026-08-23",
+   "key": "a3bf36a1",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "c3c1b2973204": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "1c3bdb26",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c3f000a7d77e": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "7418e62f",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c40c09c93258": {
+   "count": 27,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "27295de2",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c53daa66e2ce": {
+   "count": 27,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "822872a6",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c5ed8d1d9eb0": {
+   "count": 27,
+   "file": "lib/screens/profile/photo_crop_review_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "7537436a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c8148e91b93d": {
+   "count": 1,
+   "file": "lib/screens/wali/accept_wali_invite_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FF2A1F33",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "c81905cc2abd": {
+   "count": 27,
+   "file": "lib/screens/dev/zyra_health_usage_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "c169a04d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c85979b4d367": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "c4874966",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c924d1189127": {
+   "count": 27,
+   "file": "lib/screens/wali/link_guardian_panel.dart",
+   "first_seen": "2026-09-30",
+   "key": "9982a3df",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c92647fc166e": {
+   "count": 27,
+   "file": "lib/data/help_content.dart",
+   "first_seen": "2026-09-30",
+   "key": "5e17d19a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "c9545a3788a1": {
+   "count": 39,
+   "file": "lib/constants/zyra_plan_names.dart",
+   "first_seen": "2026-08-23",
+   "key": "9ae4e5a0",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "cad0d0da9312": {
+   "count": 9,
+   "file": "lib/screens/home/seeker_dashboard_screen.dart",
+   "first_seen": "2026-08-24",
+   "key": "f63e9cc0",
+   "last_seen": "2026-08-26",
+   "resolved": "2026-08-28",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "cadbcb33c304": {
+   "count": 39,
+   "file": "lib/screens/profile/edit_profile_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "row",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-11",
+   "status": "resolved"
+  },
+  "cb4b5373681f": {
+   "count": 39,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "5187a573",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "cc06743baaf0": {
+   "count": 66,
+   "file": "lib/data/compatibility_categories.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "cc98e8a41f42": {
+   "count": 66,
+   "file": "lib/data/zyra_journey_stages.dart",
+   "first_seen": "2026-08-23",
+   "key": "5f0bdb22",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "cd137985750b": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_dev_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "128347de",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "cddf706e2721": {
+   "count": 66,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "1b00be9b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ce01ad95d2af": {
+   "count": 39,
+   "file": "lib/screens/matches/journey_timeline_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "2edd7bae",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "cec0e3501ed3": {
+   "count": 66,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "d07b9230",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ced75d72907d": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "e97162e0",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "d06bb38dcaf4": {
+   "count": 66,
+   "file": "lib/screens/onboarding/compatibility_category_intro_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "1208ec01",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "d0be6ce97f1f": {
+   "count": 39,
+   "file": "lib/screens/wali/wali_dashboard_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "3cb1dbcc",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "d106c325bade": {
+   "count": 27,
+   "file": "lib/widgets/glass_icon_button.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "d48055070ce4": {
+   "count": 1,
+   "file": "lib/dev/journey_experience_lab.dart",
+   "first_seen": "2026-08-23",
+   "key": "656b8c11",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "d4a636e59f47": {
+   "count": 36,
+   "file": "lib/dev/zyra_page_preview_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "b37ddf1f",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "d5697b9db63b": {
+   "count": 66,
+   "file": "lib/dev/journey_experience_lab.dart",
+   "first_seen": "2026-08-23",
+   "key": "f6ec809c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "d56d12eb26f5": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_dev_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "4dc1301b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "d5e4827d475c": {
+   "count": 1,
+   "file": "lib/screens/wali/wali_network_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "PROVISIONAL",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-07",
+   "status": "resolved"
+  },
+  "d612d07e49c2": {
+   "count": 38,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "656b8c11",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "d6cfb1db7b68": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "1500bfbd",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "d7f7fe6a2b3b": {
+   "count": 1,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "B3FFFFFF",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "d92ac11b39e6": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "0bdecc2a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "d96fb9f765f6": {
+   "count": 66,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-08-23",
+   "key": "94f350e3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "d98addd9db20": {
+   "count": 27,
+   "file": "lib/widgets/zyra_my_zyra_design_kit.dart",
+   "first_seen": "2026-09-30",
+   "key": "c21a5a15",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "da3dbc0e95e1": {
+   "count": 21,
+   "file": "lib/widgets/zyra_bottom_promotion.dart",
+   "first_seen": "2026-08-23",
+   "key": "radius:19",
+   "last_seen": "2026-08-24",
+   "resolved": "2026-08-24",
+   "rule": "UIG-04",
+   "status": "resolved"
+  },
+  "da92bf7b80c2": {
+   "count": 38,
+   "file": "lib/widgets/zyra_paused_limit_refusal.dart",
+   "first_seen": "2026-08-26",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "db2347ba9d9b": {
+   "count": 39,
+   "file": "lib/dev/zyra_dev_scenario.dart",
+   "first_seen": "2026-08-23",
+   "key": "0db5966d",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "dc1eadc2e836": {
+   "count": 27,
+   "file": "lib/dev/zyra_dashboard_dev_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "2f6f7aaa",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "dcf8df47cb8e": {
+   "count": 1,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "developer panel",
+   "last_seen": "2026-08-23",
+   "rule": "UIG-07",
+   "status": "open"
+  },
+  "dd4c04057edd": {
+   "count": 27,
+   "file": "lib/screens/settings/notification_settings_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "45a6b080",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ddbdcc5c1c63": {
+   "count": 27,
+   "file": "lib/screens/wali/guardian_detail_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "b37c7879",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "de407b1cf8dd": {
+   "count": 12,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-04",
+   "key": "btnheight:56",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-05",
+   "status": "open"
+  },
+  "dec33cacfc17": {
+   "count": 27,
+   "file": "lib/widgets/zyra_guardian_invitation_dashboard.dart",
+   "first_seen": "2026-09-30",
+   "key": "4cd82db3",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "df57b61e1871": {
+   "count": 27,
+   "file": "lib/config/zyra_app_variant.dart",
+   "first_seen": "2026-09-30",
+   "key": "39fd61eb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "e0c69b9e7717": {
+   "count": 66,
+   "file": "lib/screens/journey/journey_flow_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FFDFBD62",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-02",
+   "status": "open"
+  },
+  "e183a768feb0": {
+   "count": 27,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-09-30",
+   "key": "41d2ecb4",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "e22599d1e860": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "345ae94d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "e267cc2a1d56": {
+   "count": 27,
+   "file": "lib/services/zyra_account_state.dart",
+   "first_seen": "2026-09-30",
+   "key": "cc587037",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "e3b7a137b4ec": {
+   "count": 1,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "FF78C69D",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "e41754c81ad1": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "966ab7c7",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "e48ca7af5483": {
+   "count": 11,
+   "file": "lib/dev/zyra_dev_scenario.dart",
+   "first_seen": "2026-08-26",
+   "key": "27422409",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "e5263e3a8465": {
+   "count": 11,
+   "file": "lib/dev/dev_onboarding_interaction.dart",
+   "first_seen": "2026-09-30",
+   "key": "73dfb510",
+   "last_seen": "2026-09-30",
+   "resolved": "2026-10-03",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "e59b0e647919": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "4991424c",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "e620f8a8c4f3": {
+   "count": 66,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "f424419f",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "e6642ce38e26": {
+   "count": 1,
+   "file": "lib/screens/onboarding/category_summary_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "fontSize@style: const TextStyle(fontSize: 13),",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-24",
+   "rule": "UIG-03",
+   "status": "resolved"
+  },
+  "e7896b933e72": {
+   "count": 39,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "9f9ab1e5",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "e980d66c873d": {
+   "count": 1,
+   "file": "lib/screens/connections/connections_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "6BFFFFFF",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "e9ed64c40c6f": {
+   "count": 66,
+   "file": "lib/data/onboarding_bank_contract.dart",
+   "first_seen": "2026-08-23",
+   "key": "b051080b",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ea03c999e746": {
+   "count": 27,
+   "file": "lib/dev/dev_onboarding_directions.dart",
+   "first_seen": "2026-09-30",
+   "key": "d8b3f3d5",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ea44bc1c87ad": {
+   "count": 66,
+   "file": "lib/data/onboarding_bank_contract.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "ea7c57895ad4": {
+   "count": 66,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "f8f67101",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "eb0507ed3e53": {
+   "count": 1,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "FF3A2D43",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-08-23",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "eb5d4499ae9e": {
+   "count": 38,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-26",
+   "key": "d1d5a053",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ec38a17f6922": {
+   "count": 27,
+   "file": "lib/screens/notifications/notifications_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "ed199d3d25b8": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "fe63e31f",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "ed6d2e2c54c0": {
+   "count": 39,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "0df9b7b3",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "eda40c16518c": {
+   "count": 66,
+   "file": "lib/screens/onboarding/category_summary_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "summarycard",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-11",
+   "status": "open"
+  },
+  "eef095e72be1": {
+   "count": 39,
+   "file": "lib/screens/matches/journey_timeline_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "e74eb51b",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "efaf8a0038d3": {
+   "count": 16,
+   "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "67b97483",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f068bbbcc938": {
+   "count": 38,
+   "file": "lib/screens/journey/journey_map_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "FF3D2A4A",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-02",
+   "status": "resolved"
+  },
+  "f0acf144a678": {
+   "count": 27,
+   "file": "lib/screens/dev/moderation_review_queue_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "f0dcbb4869cc": {
+   "count": 27,
+   "file": "lib/screens/settings/privacy_and_data_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "4391d8a9",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f11cf5dc025c": {
+   "count": 27,
+   "file": "lib/dev/zyra_global_dev_overlay.dart",
+   "first_seen": "2026-09-30",
+   "key": "a3bf36a1",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f1627319de39": {
+   "count": 27,
+   "file": "lib/services/zyra_dashboard_adapter.dart",
+   "first_seen": "2026-09-30",
+   "key": "8bb69227",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f1bbbb6c1cfd": {
+   "count": 27,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "b55328be",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f1bdc0859330": {
+   "count": 16,
+   "file": "lib/screens/dev/developer_access_screen.dart",
+   "first_seen": "2026-10-03",
+   "key": "59201f4d",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f2c2c202f74a": {
+   "count": 66,
+   "file": "lib/screens/auth/email_recovery_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "35e41faf",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f2e4c2ba0cf6": {
+   "count": 59,
+   "file": "lib/screens/wali/accept_wali_invite_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "relationshipoption",
+   "last_seen": "2026-10-04",
+   "resolved": "2026-10-04",
+   "rule": "UIG-11",
+   "status": "resolved"
+  },
+  "f41192a609b6": {
+   "count": 39,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-08-23",
+   "key": "cc587037",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "f53ae18b2e74": {
+   "count": 66,
+   "file": "lib/screens/browse/browse_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "7b9b2975",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f595a7f218f4": {
+   "count": 27,
+   "file": "lib/constants/zyra_plan_names.dart",
+   "first_seen": "2026-09-30",
+   "key": "cbfeafdc",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f5e71182626f": {
+   "count": 27,
+   "file": "lib/widgets/zyra_my_zyra_design_kit.dart",
+   "first_seen": "2026-09-30",
+   "key": "c3a40427",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f6aa73a3d452": {
+   "count": 27,
+   "file": "lib/widgets/zyra_resolved_dashboard.dart",
+   "first_seen": "2026-09-30",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "f6ae15851654": {
+   "count": 27,
+   "file": "lib/screens/wali/seeker_guardian_designs.dart",
+   "first_seen": "2026-09-30",
+   "key": "f5722edb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f6e2b039362f": {
+   "count": 66,
+   "file": "lib/widgets/help_report_sheet.dart",
+   "first_seen": "2026-08-23",
+   "key": "orphan",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-10",
+   "status": "open"
+  },
+  "f7509e820124": {
+   "count": 27,
+   "file": "lib/screens/auth/role_selection_screen.dart",
+   "first_seen": "2026-09-30",
+   "key": "fd42c62f",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f7ffa6bc1f2f": {
+   "count": 16,
+   "file": "lib/constants/zyra_plan_names.dart",
+   "first_seen": "2026-10-03",
+   "key": "9c8de81a",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f85d23b6f418": {
+   "count": 27,
+   "file": "lib/dev/zyra_dev_control_system.dart",
+   "first_seen": "2026-09-30",
+   "key": "b1ef0a74",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f8e12d02152f": {
+   "count": 27,
+   "file": "lib/widgets/zyra_guardian_dashboard_profile_card.dart",
+   "first_seen": "2026-09-30",
+   "key": "aa6d5b93",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f8efefa92b79": {
+   "count": 27,
+   "file": "lib/widgets/zyra_my_zyra_design_kit.dart",
+   "first_seen": "2026-09-30",
+   "key": "092ac864",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "f9a6bf5a1f28": {
+   "count": 1,
+   "file": "lib/widgets/floating_nav_bar.dart",
+   "first_seen": "2026-08-24",
+   "key": "radius:22",
+   "last_seen": "2026-08-24",
+   "resolved": "2026-08-24",
+   "rule": "UIG-04",
+   "status": "resolved"
+  },
+  "fac6976b9348": {
+   "count": 1,
+   "file": "lib/screens/wali/link_guardian_panel.dart",
+   "first_seen": "2026-08-23",
+   "key": "preview build",
+   "last_seen": "2026-08-23",
+   "resolved": "2026-09-30",
+   "rule": "UIG-07",
+   "status": "resolved"
+  },
+  "fb176e195375": {
+   "count": 27,
+   "file": "lib/models/zyra_initial_signup_draft.dart",
+   "first_seen": "2026-09-30",
+   "key": "28d9e7bb",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "fc5852d1b801": {
+   "count": 66,
+   "file": "lib/services/zyra_auth.dart",
+   "first_seen": "2026-08-23",
+   "key": "a04753a5",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "fd62a2d6b1b9": {
+   "count": 66,
+   "file": "lib/screens/auth/email_recovery_screen.dart",
+   "first_seen": "2026-08-23",
+   "key": "22914747",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "fe21235de4db": {
+   "count": 36,
+   "file": "lib/dev/dev_scenario_panel_v2.dart",
+   "first_seen": "2026-08-23",
+   "key": "9864fadd",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "fea0871ecd87": {
+   "count": 66,
+   "file": "lib/services/zyra_discovery_service.dart",
+   "first_seen": "2026-08-23",
+   "key": "ae13fa61",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "feb3873f752e": {
+   "count": 27,
+   "file": "lib/services/zyra_dashboard_updates_service.dart",
+   "first_seen": "2026-09-30",
+   "key": "410819c1",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  },
+  "fec2f02df2aa": {
+   "count": 18,
+   "file": "lib/dev/zyra_dashboard_lab_controls.dart",
+   "first_seen": "2026-08-24",
+   "key": "4ba36ecc",
+   "last_seen": "2026-08-28",
+   "resolved": "2026-09-30",
+   "rule": "UIG-09",
+   "status": "resolved"
+  },
+  "ff5de6453ffb": {
+   "count": 27,
+   "file": "lib/widgets/zyra_onboarding_direction_style.dart",
+   "first_seen": "2026-09-30",
+   "key": "btnheight:50",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-05",
+   "status": "open"
+  },
+  "ff894dededfe": {
+   "count": 27,
+   "file": "lib/data/chapter3_categories.dart",
+   "first_seen": "2026-09-30",
+   "key": "0a1cd390",
+   "last_seen": "2026-10-05",
+   "rule": "UIG-09",
+   "status": "open"
+  }
+ },
+ "last_run": {
+  "counts": {
+   "LOW": 288,
+   "MED": 23
+  },
+  "date": "2026-10-05",
+  "duration_s": 0.8,
+  "run_id": "c2f45d5a",
+  "tree": "fb5aa9d16efb10a8",
+  "verdict": "PASS-WITH-FINDINGS"
+ }
+}

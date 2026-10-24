@@ -19,33 +19,536 @@
 // preview build) rather than wiring delete permissions and re-ordering
 // logic today. Worth cleaning up before a real launch.
 
+import 'dart:convert';
+import 'dart:io' show Platform, SocketException;
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/services.dart' show MethodChannel, PlatformException;
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show FileOptions, StorageException;
 import '../main.dart';
+import '../models/zyra_initial_signup_draft.dart';
+import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
+import 'zyra_internal_preview_client.dart';
+import 'zyra_profile_photo_processor.dart';
 
 enum ZyraPhotoOutcome { uploaded, cancelled, error }
+
+/// Stable, privacy-safe failure categories for profile-photo support.
+///
+/// These values never contain filenames, Storage paths, member ids, exception
+/// messages or photo metadata. They let the UI give useful recovery advice and
+/// let an attached debug console distinguish an expired session from RLS,
+/// network, processing and Storage failures without exposing private data.
+enum ZyraPhotoFailureKind {
+  authentication,
+  accessDenied,
+  connection,
+  processing,
+  storage,
+  unknown,
+}
+
+extension ZyraPhotoFailureCopy on ZyraPhotoFailureKind {
+  String get referenceCode => switch (this) {
+    ZyraPhotoFailureKind.authentication => 'ZY-PH-01',
+    ZyraPhotoFailureKind.accessDenied => 'ZY-PH-02',
+    ZyraPhotoFailureKind.connection => 'ZY-PH-03',
+    ZyraPhotoFailureKind.processing => 'ZY-PH-04',
+    ZyraPhotoFailureKind.storage => 'ZY-PH-05',
+    ZyraPhotoFailureKind.unknown => 'ZY-PH-06',
+  };
+
+  String get memberMessage => switch (this) {
+    ZyraPhotoFailureKind.authentication =>
+      'Your session has ended. Sign in again, then retry.',
+    ZyraPhotoFailureKind.accessDenied =>
+      "Your account couldn't save photos. Please contact ZYRA Support.",
+    ZyraPhotoFailureKind.connection =>
+      'Check your connection, then try adding the photos again.',
+    ZyraPhotoFailureKind.processing =>
+      "One photo couldn't be prepared safely. Try a different photo.",
+    ZyraPhotoFailureKind.storage =>
+      'Photo storage is temporarily unavailable. Please try again shortly.',
+    ZyraPhotoFailureKind.unknown =>
+      "Those photos couldn't be added. Please try again.",
+  };
+}
 
 class ZyraPhotoResult {
   final ZyraPhotoOutcome outcome;
   final String? url;
-  const ZyraPhotoResult._(this.outcome, this.url);
+  final ZyraPhotoFailureKind? failureKind;
+  const ZyraPhotoResult._(this.outcome, this.url, this.failureKind);
 
-  const ZyraPhotoResult.uploaded(String url) : this._(ZyraPhotoOutcome.uploaded, url);
-  const ZyraPhotoResult.cancelled() : this._(ZyraPhotoOutcome.cancelled, null);
-  const ZyraPhotoResult.error() : this._(ZyraPhotoOutcome.error, null);
+  const ZyraPhotoResult.uploaded(String url)
+    : this._(ZyraPhotoOutcome.uploaded, url, null);
+  const ZyraPhotoResult.cancelled()
+    : this._(ZyraPhotoOutcome.cancelled, null, null);
+  const ZyraPhotoResult.error([
+    ZyraPhotoFailureKind kind = ZyraPhotoFailureKind.unknown,
+  ]) : this._(ZyraPhotoOutcome.error, null, kind);
+}
+
+enum ZyraPhotoSelectionOutcome { selected, cancelled, error }
+
+class ZyraPhotoSelectionResult {
+  const ZyraPhotoSelectionResult._(this.outcome, this.photos);
+
+  const ZyraPhotoSelectionResult.selected(List<Uint8List> photos)
+    : this._(ZyraPhotoSelectionOutcome.selected, photos);
+  const ZyraPhotoSelectionResult.cancelled()
+    : this._(ZyraPhotoSelectionOutcome.cancelled, const []);
+  const ZyraPhotoSelectionResult.error()
+    : this._(ZyraPhotoSelectionOutcome.error, const []);
+
+  final ZyraPhotoSelectionOutcome outcome;
+  final List<Uint8List> photos;
 }
 
 class ZyraPhotoService {
   ZyraPhotoService._();
 
   static const String _bucket = 'profile-photos';
+  static const MethodChannel _iosPhotoChannel = MethodChannel(
+    'app.zyraconnect.zyra/profile_photo',
+  );
 
   /// Signed-URL lifetime. 7 days: outlives any realistic app session
   /// (URLs are regenerated on every fetch anyway), short enough that a
   /// leaked URL expires.
   static const int _signedUrlExpirySeconds = 60 * 60 * 24 * 7;
+
+  static Future<XFile?> _pickProfilePhoto() => ImagePicker().pickImage(
+    source: ImageSource.gallery,
+    maxWidth: ZyraProfilePhotoProcessor.maxDimension.toDouble(),
+    maxHeight: ZyraProfilePhotoProcessor.maxDimension.toDouble(),
+    imageQuality: ZyraProfilePhotoProcessor.jpegQuality,
+    // Profile photos do not need original EXIF metadata. On iOS this also
+    // lets PHPicker provide the chosen image without broad library access.
+    requestFullMetadata: false,
+  );
+
+  static Future<Uint8List> _readAndProcess(XFile picked) async {
+    Uint8List? sourceBytes;
+    try {
+      sourceBytes = await picked.readAsBytes();
+      // The picker normally returns a bounded JPEG/PNG. Process that directly
+      // so supported iPhone photos do not depend on a second platform hop.
+      // This is still fail-closed: only the newly encoded, verified JPEG can
+      // leave this method; the picked bytes are never uploadable as-is.
+      return await ZyraProfilePhotoProcessor.process(sourceBytes);
+    } on ZyraProfilePhotoProcessingException {
+      if (!Platform.isIOS) rethrow;
+      // HEIC/HEIF is expected on iPhone and is deliberately handled below by
+      // UIKit, which can decode it while Dart's image package cannot.
+    } catch (_) {
+      if (!Platform.isIOS) rethrow;
+    }
+
+    // Pass the bytes rather than asking native code to reopen PHPicker's
+    // temporary path. iOS may retire that sandboxed file after picker return,
+    // which made valid photos fail with ZY-PH-04 on a real device. UIKit
+    // applies orientation, redraws into a fresh bitmap and emits a clean JPEG;
+    // the Dart privacy processor then verifies the result once more.
+    final arguments = <String, Object>{
+      'path': picked.path,
+      'maxDimension': ZyraProfilePhotoProcessor.maxDimension,
+      'quality': ZyraProfilePhotoProcessor.jpegQuality,
+      'data': ?sourceBytes,
+    };
+    final normalised = await _iosPhotoChannel.invokeMethod<Uint8List>(
+      'normaliseProfilePhoto',
+      arguments,
+    );
+    if (normalised == null || normalised.isEmpty) {
+      throw const ZyraProfilePhotoProcessingException(
+        'native iOS normalisation failed',
+      );
+    }
+    return ZyraProfilePhotoProcessor.process(normalised);
+  }
+
+  /// Selects up to [limit] photos in one native picker pass and normalises
+  /// them before the crop UI receives them. Nothing is uploaded here: the
+  /// member can cancel anywhere in the review queue without changing their
+  /// profile or leaving partial Storage objects behind.
+  static Future<ZyraPhotoSelectionResult> pickManyForReview({
+    required int limit,
+    void Function(int prepared, int total)? onProgress,
+  }) async {
+    if (limit < 1) return const ZyraPhotoSelectionResult.cancelled();
+    try {
+      final picked = await ImagePicker().pickMultiImage(
+        maxWidth: ZyraProfilePhotoProcessor.maxDimension.toDouble(),
+        maxHeight: ZyraProfilePhotoProcessor.maxDimension.toDouble(),
+        imageQuality: ZyraProfilePhotoProcessor.jpegQuality,
+        limit: limit,
+        requestFullMetadata: false,
+      );
+      if (picked.isEmpty) return const ZyraPhotoSelectionResult.cancelled();
+
+      final bounded = picked.take(limit).toList(growable: false);
+      final prepared = <Uint8List>[];
+      for (var i = 0; i < bounded.length; i++) {
+        prepared.add(await _readAndProcess(bounded[i]));
+        onProgress?.call(i + 1, bounded.length);
+      }
+      return ZyraPhotoSelectionResult.selected(prepared);
+    } catch (error) {
+      const kind = ZyraPhotoFailureKind.processing;
+      debugPrint(
+        'ZYRA: profile photo selection/preparation failed '
+        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was retained.',
+      );
+      return const ZyraPhotoSelectionResult.error();
+    }
+  }
+
+  /// Selects a real device photo for Developer Preview without crossing the
+  /// preview's no-live-data boundary. The processed, metadata-free JPEG stays
+  /// in memory for this preview session and never reaches Storage/Postgres.
+  static Future<ZyraPhotoResult> pickForLocalPreview() async {
+    try {
+      final picked = await _pickProfilePhoto();
+      if (picked == null) return const ZyraPhotoResult.cancelled();
+      final bytes = await _readAndProcess(picked);
+      return ZyraPhotoResult.uploaded(
+        'data:image/jpeg;base64,${base64Encode(bytes)}',
+      );
+    } catch (error) {
+      const kind = ZyraPhotoFailureKind.processing;
+      debugPrint(
+        'ZYRA: local preview photo processing failed '
+        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was retained.',
+      );
+      return const ZyraPhotoResult.error(kind);
+    }
+  }
+
+  /// Finalises bytes returned by the crop/review screen. Cropping is followed
+  /// by the privacy processor again so the final uploaded artifact — not only
+  /// the original picker output — is bounded, orientation-safe and metadata
+  /// free.
+  static Future<ZyraPhotoResult> saveReviewedPhoto(
+    Uint8List croppedBytes, {
+    required bool localPreview,
+    bool Function()? canProceed,
+  }) async {
+    if (canProceed?.call() == false) return const ZyraPhotoResult.cancelled();
+    try {
+      final bytes = await ZyraProfilePhotoProcessor.process(croppedBytes);
+      if (canProceed?.call() == false) return const ZyraPhotoResult.cancelled();
+      if (localPreview) {
+        return ZyraPhotoResult.uploaded(
+          'data:image/jpeg;base64,${base64Encode(bytes)}',
+        );
+      }
+      return _uploadProcessed(bytes, canProceed: canProceed);
+    } catch (error) {
+      const kind = ZyraPhotoFailureKind.processing;
+      debugPrint(
+        'ZYRA: reviewed profile photo could not be finalised '
+        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was retained.',
+      );
+      return const ZyraPhotoResult.error(kind);
+    }
+  }
+
+  static Future<ZyraPhotoResult> _uploadProcessed(
+    Uint8List bytes, {
+    bool Function()? canProceed,
+  }) async {
+    if (canProceed?.call() == false) return const ZyraPhotoResult.cancelled();
+    _synchronizeOwner();
+    final user = ZyraAuth.currentUser;
+    if (user == null) {
+      return const ZyraPhotoResult.error(ZyraPhotoFailureKind.authentication);
+    }
+    final epoch = _epoch;
+    try {
+      final path = '${user.id}/${DateTime.now().microsecondsSinceEpoch}.jpg';
+      await supabase.storage
+          .from(_bucket)
+          .uploadBinary(
+            path,
+            bytes,
+            fileOptions: const FileOptions(
+              contentType: 'image/jpeg',
+              upsert: false,
+            ),
+          );
+      if (!_isCurrent(user.id, epoch) || canProceed?.call() == false) {
+        return const ZyraPhotoResult.cancelled();
+      }
+      final signedUrl = await supabase.storage
+          .from(_bucket)
+          .createSignedUrl(path, _signedUrlExpirySeconds);
+      if (!_isCurrent(user.id, epoch) || canProceed?.call() == false) {
+        return const ZyraPhotoResult.cancelled();
+      }
+      _urlMemo[path] = (url: signedUrl, at: DateTime.now());
+      return ZyraPhotoResult.uploaded(signedUrl);
+    } catch (error) {
+      final kind = classifyFailure(error);
+      final storageStatus = error is StorageException
+          ? '; status=${error.statusCode ?? "unknown"}'
+          : '';
+      debugPrint(
+        'ZYRA: processed profile photo upload failed '
+        '[${kind.referenceCode}; ${error.runtimeType}$storageStatus]. '
+        'Nothing was saved.',
+      );
+      return ZyraPhotoResult.error(kind);
+    }
+  }
+
+  /// Convert only this backend's signed private JPEG URL into an owner-bound,
+  /// tokenless reference suitable for protected same-device signup recovery.
+  static String? signupStoragePathFor(
+    String url, {
+    required String expectedUserId,
+  }) {
+    final uri = Uri.tryParse(url);
+    if (uri == null ||
+        uri.scheme != 'https' ||
+        uri.userInfo.isNotEmpty ||
+        uri.fragment.isNotEmpty) {
+      return null;
+    }
+    final base = Uri.parse(supabase.storage.from(_bucket).url);
+    final prefix = '${base.path}/object/sign/$_bucket/';
+    if (uri.origin != base.origin || !uri.path.startsWith(prefix)) return null;
+    final path = uri.path.substring(prefix.length);
+    return ZyraInitialSignupDraft.isPrivatePhotoPath(
+          path,
+          expectedUserId: expectedUserId,
+        )
+        ? path
+        : null;
+  }
+
+  static bool _signupOwnerCurrent(String userId, int generation) {
+    try {
+      return !ZyraInternalPreviewClient.isActive &&
+          ZyraAuth.currentUser?.id == userId &&
+          ZyraAccountState.isCurrent(userId, generation);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Fresh capability stays in memory only. A missing/expired object or stale
+  /// account cannot be mistaken for a usable saved first photo.
+  static Future<String?> signupPhotoUrl(
+    String path, {
+    required String expectedUserId,
+    required int expectedGeneration,
+  }) async {
+    if (!_signupOwnerCurrent(expectedUserId, expectedGeneration) ||
+        !ZyraInitialSignupDraft.isPrivatePhotoPath(
+          path,
+          expectedUserId: expectedUserId,
+        )) {
+      return null;
+    }
+    try {
+      final session = supabase.auth.currentSession;
+      if (session?.user.id != expectedUserId) return null;
+      final url = await supabase.storage
+          .from(_bucket)
+          .setHeader('Authorization', 'Bearer ${session!.accessToken}')
+          .createSignedUrl(path, _signedUrlExpirySeconds);
+      if (!_signupOwnerCurrent(expectedUserId, expectedGeneration) ||
+          signupStoragePathFor(url, expectedUserId: expectedUserId) != path) {
+        return null;
+      }
+      return url;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Used only after verified profile creation. Unlike the legacy replacement
+  /// sync, this never deletes or reorders photos: a retry reuses the same row,
+  /// and any existing saved photos keep their primary/order. Readback and fresh
+  /// signing must confirm the staged reference before signup can be erased.
+  static Future<List<String>?> ensureSignupFirstPhotoConfirmed(
+    String path, {
+    required String expectedUserId,
+    required int expectedGeneration,
+  }) async {
+    bool current() => _signupOwnerCurrent(expectedUserId, expectedGeneration);
+    if (!current() ||
+        !ZyraInitialSignupDraft.isPrivatePhotoPath(
+          path,
+          expectedUserId: expectedUserId,
+        )) {
+      return null;
+    }
+    final session = supabase.auth.currentSession;
+    if (session?.user.id != expectedUserId) return null;
+    final authorization = 'Bearer ${session!.accessToken}';
+    Future<List<Map<String, dynamic>>> readRows() => supabase
+        .from('profile_photos')
+        .select('user_id, storage_path, display_order, is_primary')
+        .eq('user_id', expectedUserId)
+        .order('display_order')
+        .setHeader('Authorization', authorization);
+    try {
+      // Confirm Storage before inserting any reference to an unavailable file.
+      if (await signupPhotoUrl(
+            path,
+            expectedUserId: expectedUserId,
+            expectedGeneration: expectedGeneration,
+          ) ==
+          null) {
+        return null;
+      }
+      if (!current()) return null;
+      var rows = await readRows();
+      if (!current()) return null;
+      bool validRows() => rows.every(
+        (row) =>
+            row['user_id'] == expectedUserId &&
+            row['storage_path'] is String &&
+            ZyraInitialSignupDraft.isPrivatePhotoPath(
+              row['storage_path'] as String,
+              expectedUserId: expectedUserId,
+            ) &&
+            row['display_order'] is int &&
+            (row['display_order'] as int) >= 0 &&
+            row['is_primary'] is bool,
+      );
+      if (!validRows()) return null;
+      if (!rows.any((row) => row['storage_path'] == path)) {
+        if (rows.length >= 6) return null;
+        var lastOrder = -1;
+        for (final row in rows) {
+          final order = row['display_order'];
+          if (order is! int || order < 0) return null;
+          if (order > lastOrder) lastOrder = order;
+        }
+        await supabase
+            .from('profile_photos')
+            .insert({
+              'user_id': expectedUserId,
+              'storage_path': path,
+              'is_primary': rows.isEmpty,
+              'display_order': lastOrder + 1,
+            })
+            .setHeader('Authorization', authorization);
+        if (!current()) return null;
+        rows = await readRows();
+        if (!current()) return null;
+      }
+      if (!validRows() || !rows.any((row) => row['storage_path'] == path)) {
+        return null;
+      }
+      final urls = <String>[];
+      for (final row in rows) {
+        final savedPath = row['storage_path'];
+        if (savedPath is! String) return null;
+        final url = await signupPhotoUrl(
+          savedPath,
+          expectedUserId: expectedUserId,
+          expectedGeneration: expectedGeneration,
+        );
+        if (!current() || url == null) return null;
+        urls.add(url);
+      }
+      return urls;
+    } catch (_) {
+      debugPrint(
+        'ZYRA: signup photo confirmation failed; setup remains pending.',
+      );
+      return null;
+    }
+  }
+
+  /// Maps raw SDK/transport failures to a stable category without retaining
+  /// or displaying their potentially sensitive free-text messages.
+  static ZyraPhotoFailureKind classifyFailure(Object error) {
+    if (error is SocketException || error is http.ClientException) {
+      return ZyraPhotoFailureKind.connection;
+    }
+    if (error is StorageException) {
+      final status = int.tryParse(error.statusCode ?? '');
+      if (status == 401) return ZyraPhotoFailureKind.authentication;
+      if (status == 403) return ZyraPhotoFailureKind.accessDenied;
+      if (status == 408 || status == 429 || (status != null && status >= 500)) {
+        return ZyraPhotoFailureKind.storage;
+      }
+      return ZyraPhotoFailureKind.storage;
+    }
+    if (error is ZyraProfilePhotoProcessingException) {
+      return ZyraPhotoFailureKind.processing;
+    }
+    if (error is PlatformException && error.code.startsWith('photo_')) {
+      return ZyraPhotoFailureKind.processing;
+    }
+    return ZyraPhotoFailureKind.unknown;
+  }
+
+  /// Loads an existing display photo back into the same safe crop pipeline.
+  ///
+  /// Developer Preview supplies an in-memory data URL. Signed-in accounts
+  /// supply a private, short-lived signed URL. The URL itself is never logged
+  /// or included in errors, and the returned bytes have already passed the
+  /// profile-photo privacy processor before the crop screen receives them.
+  static Future<Uint8List> prepareDisplayPhotoForReview(String photo) async {
+    Uint8List sourceBytes;
+    if (photo.startsWith('data:image/')) {
+      final comma = photo.indexOf(',');
+      if (comma < 0) {
+        throw const ZyraProfilePhotoProcessingException(
+          'invalid local preview photo',
+        );
+      }
+      sourceBytes = base64Decode(photo.substring(comma + 1));
+    } else {
+      final uri = Uri.tryParse(photo);
+      if (uri == null || !uri.hasScheme || uri.scheme != 'https') {
+        throw const ZyraProfilePhotoProcessingException(
+          'invalid profile photo reference',
+        );
+      }
+      final response = await http.get(uri);
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        throw http.ClientException('profile photo download failed');
+      }
+      sourceBytes = response.bodyBytes;
+    }
+    return ZyraProfilePhotoProcessor.process(sourceBytes);
+  }
+
+  /// Best-effort rollback for a reviewed batch that only partly uploaded.
+  /// Existing profile rows and existing photos are never included here.
+  static Future<void> discardNewUploads(List<String> displayUrls) async {
+    _synchronizeOwner();
+    final user = ZyraAuth.currentUser;
+    if (user == null || displayUrls.isEmpty) return;
+    final ownPrefix = '${user.id}/';
+    final paths = displayUrls
+        .map(_storagePathFromUrl)
+        .where((path) => path.startsWith(ownPrefix))
+        .toList(growable: false);
+    if (paths.isEmpty) return;
+    try {
+      await supabase.storage.from(_bucket).remove(paths);
+      for (final path in paths) {
+        _urlMemo.remove(path);
+      }
+    } catch (error) {
+      debugPrint(
+        'ZYRA: incomplete photo batch cleanup failed '
+        '(${error.runtimeType}).',
+      );
+    }
+  }
 
   // ── SESSION URL MEMO — DR-ZYRA-169 Phase 2, 2026-08-15 ──────────────
   //
@@ -67,9 +570,33 @@ class ZyraPhotoService {
   // (zyra_auth.dart) with everything else the account minted.
   static final Map<String, ({String url, DateTime at})> _urlMemo = {};
   static const Duration _memoMaxAge = Duration(days: 6);
+  static String? _owner;
+  static int _epoch = 0;
+
+  static String? _currentOwner() {
+    try {
+      return ZyraAuth.currentUser?.id;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static void _synchronizeOwner() {
+    final owner = _currentOwner();
+    if (_owner == owner) return;
+    clearUrlMemoForSignOut();
+    _owner = owner;
+  }
+
+  static bool _isCurrent(String? owner, int epoch) =>
+      epoch == _epoch && owner == _owner && owner == _currentOwner();
 
   /// Sign-out hook — see the memo note above.
-  static void clearUrlMemoForSignOut() => _urlMemo.clear();
+  static void clearUrlMemoForSignOut() {
+    _epoch++;
+    _owner = null;
+    _urlMemo.clear();
+  }
 
   /// Batch-signs storage paths for display. Used by Browse and Matches
   /// for other users' photos as well as the user's own. Returns an
@@ -98,6 +625,9 @@ class ZyraPhotoService {
   /// misaligned list.
   static Future<List<String>> signedUrlsFor(List<String> storagePaths) async {
     if (storagePaths.isEmpty) return const [];
+    _synchronizeOwner();
+    final owner = _owner;
+    final epoch = _epoch;
     // DELEGATES to signedUrlMap since 2026-08-15 (DR-ZYRA-169 Phase 2):
     // one signing implementation, one memo, one retry policy — this used
     // to be a second copy of the chunked signer with a harsher failure
@@ -109,14 +639,17 @@ class ZyraPhotoService {
     // This also retires the second of the two deprecated
     // createSignedUrls call sites.
     final byPath = await signedUrlMap(storagePaths);
+    if (!_isCurrent(owner, epoch)) return const [];
     final out = <String>[];
     for (final p in storagePaths) {
       final url = byPath[p];
       if (url != null) out.add(url);
     }
     if (out.length != storagePaths.length) {
-      debugPrint('ZYRA: signedUrlsFor — resolved ${out.length} of '
-          '${storagePaths.length} paths; the rest are skipped.');
+      debugPrint(
+        'ZYRA: signedUrlsFor — resolved ${out.length} of '
+        '${storagePaths.length} paths; the rest are skipped.',
+      );
     }
     return out;
   }
@@ -137,8 +670,13 @@ class ZyraPhotoService {
   ///
   /// Never throws and never returns null — an empty map means nothing
   /// resolved, which callers already treat as "no photos".
-  static Future<Map<String, String>> signedUrlMap(List<String> storagePaths) async {
+  static Future<Map<String, String>> signedUrlMap(
+    List<String> storagePaths,
+  ) async {
     if (storagePaths.isEmpty) return const {};
+    _synchronizeOwner();
+    final owner = _owner;
+    final epoch = _epoch;
     final byPath = <String, String>{};
 
     // Memo first (DR-ZYRA-169 Phase 2): anything this session already
@@ -165,16 +703,23 @@ class ZyraPhotoService {
     const chunkSize = 40;
 
     for (var start = 0; start < unique.length; start += chunkSize) {
-      final end = (start + chunkSize) > unique.length ? unique.length : start + chunkSize;
+      final end = (start + chunkSize) > unique.length
+          ? unique.length
+          : start + chunkSize;
       final slice = unique.sublist(start, end);
 
       for (var attempt = 0; attempt < 2; attempt++) {
         if (attempt > 0) {
           await Future<void>.delayed(const Duration(milliseconds: 400));
         }
+        if (!_isCurrent(owner, epoch)) return const {};
         try {
           // ignore: deprecated_member_use
-          final signed = await supabase.storage.from(_bucket).createSignedUrls(slice, _signedUrlExpirySeconds);
+          final signed = await supabase.storage
+              .from(_bucket)
+              // ignore: deprecated_member_use
+              .createSignedUrls(slice, _signedUrlExpirySeconds);
+          if (!_isCurrent(owner, epoch)) return const {};
           // Positional correlation is only safe when every path came back —
           // the slice is deduplicated, so a short result means something was
           // dropped and we can no longer say which. Retry rather than guess.
@@ -186,11 +731,16 @@ class ZyraPhotoService {
             }
             break;
           }
-          debugPrint('ZYRA: signedUrlMap — asked for ${slice.length}, got '
-              '${signed.length}${attempt == 0 ? ", retrying" : ", giving up on this chunk"}.');
+          debugPrint(
+            'ZYRA: signedUrlMap — asked for ${slice.length}, got '
+            '${signed.length}${attempt == 0 ? ", retrying" : ", giving up on this chunk"}.',
+          );
         } catch (e) {
-          debugPrint('ZYRA: signedUrlMap — chunk failed'
-              '${attempt == 0 ? ", retrying" : ", giving up on this chunk"}. $e');
+          if (!_isCurrent(owner, epoch)) return const {};
+          debugPrint(
+            'ZYRA: signedUrlMap — chunk failed'
+            '${attempt == 0 ? ", retrying" : ", giving up on this chunk"}. $e',
+          );
         }
       }
     }
@@ -199,12 +749,13 @@ class ZyraPhotoService {
     // `unique` shrank to the memo-miss set above.
     final wanted = storagePaths.toSet().length;
     if (byPath.length != wanted) {
-      debugPrint('ZYRA: signedUrlMap — resolved ${byPath.length} of '
-          '$wanted unique paths.');
+      debugPrint(
+        'ZYRA: signedUrlMap — resolved ${byPath.length} of '
+        '$wanted unique paths.',
+      );
     }
     return byPath;
   }
-
 
   /// Opens the device photo library and uploads the chosen image.
   /// Distinguishes "user cancelled picking" from "upload actually
@@ -217,23 +768,68 @@ class ZyraPhotoService {
   /// no signed-in-user fallback here (that's handled at the call site
   /// in chapter2_flow.dart for the mock/dev-access path).
   static Future<ZyraPhotoResult> pickAndUpload() async {
+    _synchronizeOwner();
     final user = ZyraAuth.currentUser;
-    if (user == null) return const ZyraPhotoResult.error();
+    if (user == null) {
+      return const ZyraPhotoResult.error(ZyraPhotoFailureKind.authentication);
+    }
+    final epoch = _epoch;
 
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 85);
+    final picked = await _pickProfilePhoto();
+    if (!_isCurrent(user.id, epoch)) return const ZyraPhotoResult.cancelled();
     if (picked == null) return const ZyraPhotoResult.cancelled();
 
     try {
-      final Uint8List bytes = await picked.readAsBytes();
-      final ext = picked.name.contains('.') ? picked.name.split('.').last : 'jpg';
-      final path = '${user.id}/${DateTime.now().millisecondsSinceEpoch}.$ext';
-      await supabase.storage.from(_bucket).uploadBinary(path, bytes);
-      final signedUrl = await supabase.storage.from(_bucket).createSignedUrl(path, _signedUrlExpirySeconds);
-      // A freshly-minted URL is a memo entry like any other.
-      _urlMemo[path] = (url: signedUrl, at: DateTime.now());
-      return ZyraPhotoResult.uploaded(signedUrl);
-    } catch (_) {
-      return const ZyraPhotoResult.error();
+      final bytes = await _readAndProcess(picked);
+      if (!_isCurrent(user.id, epoch)) return const ZyraPhotoResult.cancelled();
+      return _uploadProcessed(bytes);
+    } catch (error) {
+      // Fail closed: processing errors never fall back to the picker bytes.
+      // Log only the error type, never a path, filename or photo metadata.
+      final kind = classifyFailure(error);
+      debugPrint(
+        'ZYRA: profile photo processing/upload failed '
+        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was uploaded.',
+      );
+      return ZyraPhotoResult.error(kind);
+    }
+  }
+
+  /// Restores the signed-in Seeker's ordered photo draft for deferred
+  /// onboarding. Only storage paths are persisted; fresh signed URLs are
+  /// minted on every restore so an expired URL is never treated as data.
+  static Future<List<String>> fetchOwnPhotos({
+    String? expectedUserId,
+    bool throwOnError = false,
+  }) async {
+    _synchronizeOwner();
+    final user = ZyraAuth.currentUser;
+    if (user == null || (expectedUserId != null && user.id != expectedUserId)) {
+      if (throwOnError) throw StateError('Account changed.');
+      return const [];
+    }
+    final epoch = _epoch;
+    try {
+      final rows = await supabase
+          .from('profile_photos')
+          .select('storage_path, display_order')
+          .eq('user_id', user.id)
+          .order('display_order');
+      if (!_isCurrent(user.id, epoch)) throw StateError('Account changed.');
+      final paths = <String>[
+        for (final row in rows)
+          if (row['storage_path'] is String) row['storage_path'] as String,
+      ];
+      final urls = await signedUrlsFor(paths);
+      if (!_isCurrent(user.id, epoch) ||
+          (throwOnError && urls.length != paths.length)) {
+        throw StateError('Photos unavailable.');
+      }
+      return urls;
+    } catch (e) {
+      debugPrint('ZYRA: own onboarding photos could not be restored — $e');
+      if (throwOnError) rethrow;
+      return const [];
     }
   }
 
@@ -246,12 +842,27 @@ class ZyraPhotoService {
   /// profile-photos/{path}`, in case any pre-privacy-fix URL is still
   /// held in AppState from an older session).
   static Future<void> syncPhotos(List<String> displayUrls) async {
+    await syncPhotosConfirmed(displayUrls);
+  }
+
+  /// Edit Photos variant of [syncPhotos] that reports whether the ordered
+  /// rows were actually saved. The onboarding flow remains best-effort, while
+  /// an explicit editor must not silently claim a failed write succeeded.
+  static Future<bool> syncPhotosConfirmed(
+    List<String> displayUrls, {
+    String? expectedUserId,
+  }) async {
+    _synchronizeOwner();
     final user = ZyraAuth.currentUser;
-    if (user == null) return;
+    if (user == null || (expectedUserId != null && user.id != expectedUserId)) {
+      return false;
+    }
+    final epoch = _epoch;
 
     try {
       await supabase.from('profile_photos').delete().eq('user_id', user.id);
-      if (displayUrls.isEmpty) return;
+      if (!_isCurrent(user.id, epoch)) return false;
+      if (displayUrls.isEmpty) return true;
 
       final rows = <Map<String, dynamic>>[];
       for (var i = 0; i < displayUrls.length; i++) {
@@ -263,10 +874,13 @@ class ZyraPhotoService {
         });
       }
       await supabase.from('profile_photos').insert(rows);
-    } catch (_) {
+      return _isCurrent(user.id, epoch);
+    } catch (e) {
       // Best-effort — AppState's in-memory photos list (used everywhere
       // else in the app today) already has the URLs regardless of
       // whether this sync succeeds.
+      debugPrint('ZYRA: ordered profile photos could not be saved — $e');
+      return false;
     }
   }
 
@@ -276,9 +890,14 @@ class ZyraPhotoService {
   /// for anything this service produced).
   static String _storagePathFromUrl(String url) {
     final withoutQuery = url.split('?').first;
-    for (final marker in ['/object/sign/$_bucket/', '/object/public/$_bucket/']) {
+    for (final marker in [
+      '/object/sign/$_bucket/',
+      '/object/public/$_bucket/',
+    ]) {
       final idx = withoutQuery.indexOf(marker);
-      if (idx != -1) return Uri.decodeComponent(withoutQuery.substring(idx + marker.length));
+      if (idx != -1) {
+        return Uri.decodeComponent(withoutQuery.substring(idx + marker.length));
+      }
     }
     return url;
   }

@@ -1,0 +1,47 @@
+{
+  "createdAt": "2026-10-19T01:49:25.136Z",
+  "kind": "Nonbuildable exact retired-comparison excerpts, not a member app/source replacement",
+  "source": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE",
+  "fullPreimages": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/OA305_LOCKSCREEN_HANDOFF_2026_10_18.76vv6v/OPTION_RETIREMENT_PRE",
+  "entries": [
+    {
+      "file": "lib/dev/zyra_one_journey_concept_shell.dart",
+      "start": 6195,
+      "end": 6200,
+      "archiveFile": "1_zyra_one_journey_concept_shell.dart.txt",
+      "sha256": "9c1dfcb228716f7fac8033e928973d112399658e58f235ed977cfa7eab4eada6"
+    },
+    {
+      "file": "lib/dev/zyra_founder_launch_screen.dart",
+      "start": 894,
+      "end": 904,
+      "archiveFile": "2_zyra_founder_launch_screen.dart.txt",
+      "sha256": "cf7bd70dddacec70bae49984b9f46afc2646710f9ecbd51dccf8e313dab0000e"
+    },
+    {
+      "file": "lib/dev/zyra_dev_local_preview.dart",
+      "start": 239,
+      "end": 259,
+      "archiveFile": "3_zyra_dev_local_preview.dart.txt",
+      "sha256": "9cf5f6e6a2ef77139aaeb3a51658fa738b9624e7e4f57495278cf42f88f86759"
+    },
+    {
+      "file": "lib/services/zyra_local_prefs.dart",
+      "start": 240,
+      "end": 261,
+      "archiveFile": "4_zyra_local_prefs.dart.txt",
+      "sha256": "abccb09984fe35a9ca7ba0e8d3f55e2ba787ffdb9cfdc1dd3345ad0e29098d6a"
+    },
+    {
+      "file": "lib/dev/dev_discovery_directions.dart",
+      "start": 55,
+      "end": 155,
+      "archiveFile": "5_dev_discovery_directions.dart.txt",
+      "sha256": "be17561b86382cfc691ac70a292791709e65d8b267722190efade3c20387adf1"
+    }
+  ],
+  "historicalProvenance": [
+    "SYSTEM/RESOURCES/REVIEWS/OA151_LAUNCH_STYLE_DEFAULT_2026_10_09.RvK3wJ",
+    "SYSTEM/DOCUMENTS/ZYRA_NAVIGATION_HAPTICS_HANDOVER_CURRENT_VERSION_V1.md section 33 and section 64"
+  ]
+}

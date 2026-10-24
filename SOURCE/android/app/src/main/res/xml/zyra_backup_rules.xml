@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Device-bound signup drafts must never be restored with an unusable key.
+     Only this new secure-storage namespace is excluded; other backups retain
+     their existing policy. Keep in sync with ZyraSignupDraftService. -->
+<full-backup-content>
+    <exclude domain="sharedpref" path="zyra_signup_draft.xml" />
+    <exclude domain="sharedpref" path="FlutterSecureKeyStorage:zyra_signup_draft.xml" />
+    <exclude domain="sharedpref" path="FlutterSecureStorageConfiguration:zyra_signup_draft.xml" />
+</full-backup-content>

@@ -4,10 +4,10 @@
 // both paths agree.
 //
 // Looks up the `profiles` row for the current session: role='seeker'
-// -> HomeShell, role='wali' -> WaliHomeShell. No profile row yet (user
-// signed up but never finished onboarding, e.g. closed the app
-// mid-flow) -> RoleSelectionScreen, so they resume rather than land on
-// a broken/empty Home.
+// -> HomeShell, role='wali' -> WaliHomeShell. A Seeker with a profile row but
+// unfinished long-form onboarding enters Dashboard and resumes there. Initial
+// setup resumes from a protected same-device draft; an older IDV attempt can
+// resume its server checkpoint even where the earlier app lost form answers.
 
 import 'zyra_local_prefs.dart';
 import 'dart:async';
@@ -16,23 +16,78 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../models/zyra_error_state.dart';
 import '../screens/auth/role_selection_screen.dart';
+import '../dev/zyra_founder_launch_screen.dart';
 import '../screens/home/home_shell.dart';
+import '../screens/onboarding/identity_verification_screen.dart';
+import '../screens/onboarding/onboarding_flow.dart';
+import '../screens/subscription/membership_required_screen.dart';
+import '../screens/wali/wali_onboarding_flow.dart';
+import '../models/zyra_initial_signup_draft.dart';
 import '../screens/wali/wali_home_shell.dart';
 import '../state/app_state.dart';
 import '../constants/zyra_plan_names.dart';
+import '../data/zyra_release_gates.dart';
 import 'zyra_auth.dart';
+import 'zyra_account_state.dart';
 import 'zyra_discovery_service.dart';
+import 'zyra_developer_access.dart';
 import 'zyra_unlock_service.dart';
+import 'zyra_profile_service.dart';
+import 'zyra_identity_verification_service.dart';
+import 'zyra_identity_admission_policy.dart';
+import 'zyra_initial_signup_draft_service.dart';
 
 class ZyraSessionRouter {
   ZyraSessionRouter._();
 
+  static const readTimeout = Duration(seconds: 10);
+  static Duration _effectiveReadTimeout = readTimeout;
+
+  @visibleForTesting
+  static void setReadTimeoutForTesting(Duration? value) {
+    assert(() {
+      _effectiveReadTimeout = value ?? readTimeout;
+      return true;
+    }());
+  }
+
   static Future<Widget> resolveHome() async {
     final user = ZyraAuth.currentUser;
+    final cleanup = ZyraAccountState.synchronize(user?.id);
+    final generation = ZyraAccountState.generation;
+    await cleanup.timeout(_effectiveReadTimeout);
     if (user == null) {
+      if (ZyraAccountState.generation != generation ||
+          ZyraAuth.currentUser != null) {
+        throw StateError('Session expired during account routing.');
+      }
       return const RoleSelectionScreen(); // shouldn't be reached without a session; safe fallback
     }
+    final userId = user.id;
+    _requireCurrent(userId, generation);
 
+    // Fresh operator proof is checked before ordinary member routing.
+    final authorization =
+        await ZyraDeveloperAccess.refreshCurrentAuthorizationSnapshot();
+    _requireCurrent(userId, generation);
+
+    if (authorization.founderAuthorized &&
+        ZyraDeveloperAccess.isAuthorizedOperator) {
+      // The Founder approved switching the opening presentation, not granting
+      // synthetic request data to real members. This guarded local entry owns
+      // the current local presentation; member routing is unchanged.
+      return ZyraFounderLaunchScreen(
+        ownerId: userId,
+        ownerGeneration: generation,
+      );
+    }
+    _requireMember(userId, generation);
+
+    var resolvingSignup = false;
+    var checkingIdentityGate = false;
+    final identityGateEnabled =
+        ZyraIdentityVerificationService.enforceExistingAccountGate;
+    var identityGatePassed = !identityGateEnabled;
     try {
       // FIXED 2026-08-01 (Founder: "the first time it loads it loads the
       // user page but with the OLD PURPLE background... I have to keep
@@ -72,19 +127,134 @@ class ZyraSessionRouter {
           // already read by Browse for everyone ELSE — the owner's own
           // profile page was the one place still showing a bare first name.
           .select('role, first_name, surname_line, gender, location_text')
-          .eq('id', user.id)
-          .maybeSingle();
+          .eq('id', userId)
+          .maybeSingle()
+          .timeout(_effectiveReadTimeout);
+      _requireMember(userId, generation);
       if (row == null) {
-        return const RoleSelectionScreen(); // signed up, onboarding never finished
+        // New-account recovery is independent of the existing-member rollout
+        // fuse. Its errors must never enter a remembered-role shell.
+        resolvingSignup = true;
+        return await _resolveInitialSignup(userId, generation);
       }
 
-      await _hydrate(user.id, row);
+      if (ZyraInitialSignupDraftService.supportedOnThisPlatform) {
+        resolvingSignup = true;
+        final unfinished = await ZyraInitialSignupDraftService.repository
+            .read(userId)
+            .timeout(_effectiveReadTimeout);
+        _requireMember(userId, generation);
+        if (unfinished != null) {
+          final expectedRole = unfinished.role == ZyraSignupRole.seeker
+              ? 'seeker'
+              : 'wali';
+          if (row['role'] != expectedRole) {
+            throw StateError(
+              'Signup recovery role does not match this account.',
+            );
+          }
+          return await _resolveInitialSignup(
+            userId,
+            generation,
+            restoredDraft: unfinished,
+            recoverExistingPhoto: true,
+          );
+        }
+        // Same-device partial finalization survives a deliberate sign-out
+        // without retaining private form answers or photo capabilities. This
+        // narrow recovery marker never gates unrelated existing accounts and
+        // is not server/identity proof or a cross-device admission guarantee.
+        final pendingRole = await _pendingSignupRole(userId, generation);
+        if (pendingRole != null) {
+          final expectedRole = pendingRole == ZyraSignupRole.seeker
+              ? 'seeker'
+              : 'wali';
+          if (row['role'] != expectedRole) {
+            throw StateError(
+              'Signup recovery role does not match this account.',
+            );
+          }
+          return _pendingSignupFlow(userId, pendingRole);
+        }
+        resolvingSignup = false;
+      }
+
+      checkingIdentityGate = true;
+      final blocked = await _existingIdentityGate(userId, generation);
+      _requireMember(userId, generation);
+      checkingIdentityGate = false;
+      if (blocked != null) return blocked;
+      identityGatePassed = true;
+
+      // A crash after server creation but before draft erasure must not leave
+      // private signup data indefinitely. Here the secure read already proved
+      // there is no unfinished account checkpoint; no draft grants access.
+      if (ZyraInitialSignupDraftService.supportedOnThisPlatform) {
+        try {
+          await ZyraInitialSignupDraftService.repository
+              .clear(userId)
+              .timeout(_effectiveReadTimeout);
+          _requireMember(userId, generation);
+        } catch (_) {
+          debugPrint(
+            'ZYRA: completed signup draft cleanup could not be confirmed.',
+          );
+        }
+      }
+      _requireMember(userId, generation);
 
       final role = row['role'] as String?;
+      if (ZyraReleaseGates.paidOnlyMembershipEnforced) {
+        final paid = await _hasPaidRole(role).timeout(_effectiveReadTimeout);
+        _requireMember(userId, generation);
+        if (!paid) {
+          AppState.instance.hydrateFrom(
+            name: row['first_name'] as String?,
+            surnameLine: row['surname_line'] as String?,
+            gender: row['gender'] as String?,
+            location: row['location_text'] as String?,
+            plan: ZyraPlan.basic,
+          );
+          return MembershipRequiredScreen(guardian: role == 'wali');
+        }
+      }
+
+      await _hydrate(userId, generation, row);
+      _requireMember(userId, generation);
+
       // Remembered for the failure path below — see there for why.
       ZyraLocalPrefs.setCachedRole(role);
-      return role == 'wali' ? const WaliHomeShell() : const HomeShell();
+      if (role == 'wali') return const WaliHomeShell();
+
+      // Dashboard is the normal authenticated landing surface. Progressive
+      // onboarding also resumes there, where the saved setup journey can be
+      // continued. Auth, missing-profile and operator routes above remain
+      // explicit exceptions; deep links push their own destination and do not
+      // resolve through this cold-start default.
+      final onboarding = await ZyraProfileService.fetchOnboardingProgress()
+          .timeout(_effectiveReadTimeout);
+      _requireMember(userId, generation);
+      return HomeShell(initialTab: 2, initialOnboardingProgress: onboarding);
     } catch (e) {
+      // Never let an old account's cached role, failed refresh or preview
+      // denial turn into a member shell after an asynchronous boundary.
+      _requireMember(userId, generation);
+      if (resolvingSignup || checkingIdentityGate || !identityGatePassed) {
+        rethrow;
+      }
+      // A failed profile read must not bypass a partly-created account by
+      // opening its remembered shell. Check only owner-bound recovery state:
+      // no draft answers are hydrated or displayed on this failure path.
+      if (ZyraInitialSignupDraftService.supportedOnThisPlatform) {
+        final repository = ZyraInitialSignupDraftService.repository;
+        final unfinished = await repository
+            .read(userId)
+            .timeout(_effectiveReadTimeout);
+        _requireMember(userId, generation);
+        repository.requireOwner(userId);
+        final pendingRole = await _pendingSignupRole(userId, generation);
+        if (unfinished != null || pendingRole != null) rethrow;
+      }
       // FALLS BACK TO THE REMEMBERED ROLE — 2026-08-14 (DR-ZYRA-166).
       //
       // This returned HomeShell unconditionally. A Guardian whose profile
@@ -107,19 +277,198 @@ class ZyraSessionRouter {
       // AuthGate present the approved full-screen recovery in both cases.
       if (remembered == null ||
           zyraErrorKindFor(e) == ZyraErrorKind.sessionExpired) {
-        debugPrint('ZYRA resolveHome failed ($e) — recovery page required.');
+        debugPrint(
+          'ZYRA resolveHome failed [${zyraErrorReference(e)}] '
+          '(${e.runtimeType}) — recovery page required.',
+        );
         rethrow;
       }
-      debugPrint('ZYRA resolveHome failed ($e) — falling back to $remembered.');
+      debugPrint(
+        'ZYRA resolveHome failed [${zyraErrorReference(e)}] '
+        '(${e.runtimeType}) — falling back to $remembered.',
+      );
       return remembered == 'wali' ? const WaliHomeShell() : const HomeShell();
     }
   }
+
+  static void _requireCurrent(String userId, int generation) {
+    if (!ZyraAccountState.isCurrent(userId, generation) ||
+        ZyraAuth.currentUser?.id != userId) {
+      throw StateError('Session expired during account routing.');
+    }
+  }
+
+  static void _requireMember(String userId, int generation) {
+    _requireCurrent(userId, generation);
+    if (ZyraDeveloperAccess.blocksMemberRouting) {
+      throw const ZyraPreviewAuthorizationException();
+    }
+  }
+
+  static Future<bool> _hasPaidRole(String? role) async {
+    if (role != 'seeker' && role != 'wali') return false;
+    try {
+      final value = await supabase.rpc(
+        'zyra_my_paid_access',
+        params: {'p_role': role == 'wali' ? 'guardian' : 'seeker'},
+      );
+      return value == true;
+    } catch (error) {
+      debugPrint(
+        'ZYRA paid membership check failed closed '
+        '(${error.runtimeType}).',
+      );
+      return false;
+    }
+  }
+
+  static Future<Widget?> _existingIdentityGate(
+    String userId,
+    int generation,
+  ) async {
+    final enabled = ZyraIdentityVerificationService.enforceExistingAccountGate;
+    if (!enabled) return null;
+    final verification = await ZyraIdentityVerificationService.fetchMyState(
+      expectedUserId: userId,
+    ).timeout(_effectiveReadTimeout);
+    _requireMember(userId, generation);
+    if (ZyraIdentityAdmissionPolicy.allowsExistingAccountEntry(
+      productionRolloutEnabled: enabled,
+      state: verification,
+    )) {
+      return null;
+    }
+    return InitialIdentityCheckScreen(
+      initialState: verification,
+      onContinue: (context) async {
+        _requireMember(userId, generation);
+        final home = await resolveHome();
+        _requireMember(userId, generation);
+        if (!context.mounted) return;
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => home),
+          (_) => false,
+        );
+      },
+    );
+  }
+
+  static Future<Widget> _resolveInitialSignup(
+    String userId,
+    int generation, {
+    ZyraInitialSignupDraft? restoredDraft,
+    bool recoverExistingPhoto = false,
+  }) async {
+    final repository = ZyraInitialSignupDraftService.repository;
+    final draft =
+        restoredDraft ??
+        await repository.read(userId).timeout(_effectiveReadTimeout);
+    _requireMember(userId, generation);
+    repository.requireOwner(userId);
+    final pendingRole = await _pendingSignupRole(userId, generation);
+    if (draft != null) {
+      if (pendingRole != null && draft.role != pendingRole) {
+        throw StateError('Signup recovery role does not match this draft.');
+      }
+      final verification = draft.awaitsVerification
+          ? await ZyraIdentityVerificationService.fetchMyState(
+              expectedUserId: userId,
+            ).timeout(_effectiveReadTimeout)
+          : null;
+      _requireMember(userId, generation);
+      repository.requireOwner(userId);
+      return draft.role == ZyraSignupRole.seeker
+          ? OnboardingFlow(
+              initialDraft: draft,
+              signupUserId: userId,
+              initialVerificationState: verification,
+              recoverExistingPhoto: recoverExistingPhoto,
+            )
+          : WaliOnboardingFlow(
+              initialDraft: draft,
+              signupUserId: userId,
+              initialVerificationState: verification,
+              recoverExistingPhoto: recoverExistingPhoto,
+            );
+    }
+    if (pendingRole != null) {
+      return _pendingSignupFlow(userId, pendingRole);
+    }
+    // Builds before protected recovery saved consent, but not account details.
+    // Resume the real server check; never fabricate the lost form answers.
+    final verification = await ZyraIdentityVerificationService.fetchMyState(
+      expectedUserId: userId,
+    ).timeout(_effectiveReadTimeout);
+    _requireMember(userId, generation);
+    repository.requireOwner(userId);
+    if (verification == null) return const RoleSelectionScreen();
+    const recovery = RoleSelectionScreen(
+      recoveryNotice:
+          'Your identity result is saved. This earlier app version did not save '
+          'your account details on this device. Please enter them once more to finish setup.',
+    );
+    if (verification.allowsApp) return recovery;
+    return InitialIdentityCheckScreen(
+      initialState: verification,
+      onContinue: (context) async {
+        _requireMember(userId, generation);
+        repository.requireOwner(userId);
+        final fresh = await ZyraIdentityVerificationService.fetchMyState(
+          expectedUserId: userId,
+        ).timeout(_effectiveReadTimeout);
+        _requireMember(userId, generation);
+        repository.requireOwner(userId);
+        if (fresh?.allowsApp != true || !context.mounted) return;
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => recovery),
+          (_) => false,
+        );
+      },
+    );
+  }
+
+  /// An opaque, same-device retry only. Neither marker can prove a member's
+  /// role or identity, and conflicting markers cannot choose one silently.
+  static Future<ZyraSignupRole?> _pendingSignupRole(
+    String userId,
+    int generation,
+  ) async {
+    final repository = ZyraInitialSignupDraftService.repository;
+    repository.requireOwner(userId);
+    final seeker = await repository
+        .readPendingSeekerFinalization(userId)
+        .timeout(_effectiveReadTimeout);
+    _requireMember(userId, generation);
+    repository.requireOwner(userId);
+    final guardian = await repository
+        .readPendingGuardianFinalization(userId)
+        .timeout(_effectiveReadTimeout);
+    _requireMember(userId, generation);
+    repository.requireOwner(userId);
+    if (seeker && guardian) {
+      throw StateError('Conflicting signup recovery markers.');
+    }
+    return seeker
+        ? ZyraSignupRole.seeker
+        : guardian
+        ? ZyraSignupRole.guardian
+        : null;
+  }
+
+  static Widget _pendingSignupFlow(String userId, ZyraSignupRole role) =>
+      role == ZyraSignupRole.seeker
+      ? OnboardingFlow(signupUserId: userId, recoverExistingPhoto: true)
+      : WaliOnboardingFlow(signupUserId: userId, recoverExistingPhoto: true);
 
   /// Best-effort population of AppState. Deliberately never throws: a
   /// failure here degrades the app to its old behaviour (neutral
   /// gradient, Basic plan) rather than blocking sign-in, which is what
   /// resolveHome's own catch is protecting against.
-  static Future<void> _hydrate(String userId, Map<String, dynamic> row) async {
+  static Future<void> _hydrate(
+    String userId,
+    int generation,
+    Map<String, dynamic> row,
+  ) async {
     int? age;
     ZyraPlan? plan;
 
@@ -149,12 +498,13 @@ class ZyraSessionRouter {
           // ages_for_one, not ages_for — one id, one visibility
           // hypothesis (I10, 2026-08-08). The batch form is now capped at
           // 50 and reserved for callers that genuinely have a page of ids.
-          final one = await supabase.rpc(
-            'ages_for_one',
-            params: {'p_id': userId},
-          );
+          final one = await supabase
+              .rpc('ages_for_one', params: {'p_id': userId})
+              .timeout(_effectiveReadTimeout);
+          _requireMember(userId, generation);
           if (one != null) age = (one as num).toInt();
         } catch (_) {
+          _requireMember(userId, generation);
           // age stays null — Profile hides the row, nothing else needs it
         }
       }(),
@@ -167,7 +517,9 @@ class ZyraSessionRouter {
               .select('plan_type')
               .eq('user_id', userId)
               .eq('status', 'active')
-              .maybeSingle();
+              .maybeSingle()
+              .timeout(_effectiveReadTimeout);
+          _requireMember(userId, generation);
           final planType = sub?['plan_type'] as String?;
           // Only seeker_premium maps to ZYRA One. wali_premium is the
           // Guardian's own entitlement, resolved separately by
@@ -180,11 +532,13 @@ class ZyraSessionRouter {
               ? ZyraPlan.one
               : ZyraPlan.basic;
         } catch (e) {
-          debugPrint('ZYRA plan fetch failed: $e'); // 2026-08-12, CLAUDE.md §3
+          _requireMember(userId, generation);
+          debugPrint('ZYRA plan fetch failed (${e.runtimeType}).');
           // plan stays null -> hydrateFrom leaves the existing default
         }
       }(),
     ]);
+    _requireMember(userId, generation);
 
     AppState.instance.hydrateFrom(
       name: row['first_name'] as String?,
@@ -216,25 +570,30 @@ class ZyraSessionRouter {
     //
     // Fire-and-forget with a notifyListeners() at the end, so Connections
     // fills in a beat after Home rather than delaying Home.
-    unawaited(_hydrateDecisions());
+    unawaited(_hydrateDecisions(userId, generation));
   }
 
   /// Best-effort, never throws. A failure leaves the lists empty, which is
   /// the pre-2026-08-01 behaviour — degraded, not broken.
-  static Future<void> _hydrateDecisions() async {
+  static Future<void> _hydrateDecisions(String userId, int generation) async {
     try {
+      _requireMember(userId, generation);
       // Unlocks load alongside decisions — both are "what has this Seeker
       // already done", both are needed before Connections renders, and
       // neither blocks first paint.
       await ZyraUnlockService.load();
-      final d = await ZyraDiscoveryService.fetchDecisions();
+      _requireMember(userId, generation);
+      final d = await ZyraDiscoveryService.fetchDecisions().timeout(
+        _effectiveReadTimeout,
+      );
+      _requireMember(userId, generation);
       AppState.instance.hydrateDecisions(
         saved: d.saved,
         considered: d.considered,
         passed: d.passed,
       );
     } catch (_) {
-      // Intentionally silent — see doc comment.
+      debugPrint('ZYRA decision hydration did not complete for its account.');
     }
   }
 }

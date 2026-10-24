@@ -6,26 +6,39 @@
 // interleaved About+Compatibility pattern the restructure explicitly
 // preserved for Chapter 2 (only Ch3/Ch4 were separated).
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show AuthChangeEvent, AuthState, Supabase;
 import '../../widgets/zyra_profile_image.dart';
 import '../../data/zyra_reference_data.dart';
 import '../../models/onboarding_question.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_consent_service.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_photo_service.dart';
 import '../../services/zyra_profile_service.dart';
 import '../../services/zyra_seeker_details_service.dart';
 import 'article9_consent_screen.dart';
+import '../profile/zyra_photo_batch_flow.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/flexibility_choice.dart';
 import '../../widgets/onboarding_scaffold.dart';
+import '../../widgets/zyra_onboarding_choice_card.dart';
 import '../../widgets/privacy_indicator.dart';
 import '../../widgets/searchable_list_picker.dart';
 import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_loading.dart';
 import 'traffic_light_question_screen.dart';
 import 'bio_onboarding_flow.dart';
 import 'onboarding_stage_intro_screen.dart';
+import 'seeker_setup_navigation.dart';
 
 const int _totalSteps = 21;
 
@@ -45,6 +58,89 @@ class Chapter2Flow extends StatefulWidget {
 
 class _Chapter2FlowState extends State<Chapter2Flow> {
   int _step = 0;
+  bool _restoring = false;
+  bool _saving = false;
+  bool _leaving = false;
+  String? _owner;
+  late int _ownerGeneration;
+  String? _restoreError;
+  String? _saveError;
+  late final bool _openingDevPreview;
+  late final String? _openingGender;
+  late final (bool, String?) _openingSdk;
+  late final (bool, int) _openingPreview;
+  String? _initialAccessToken;
+  StreamSubscription<AuthState>? _authSubscription;
+  final ValueNotifier<int> _photoOwnerChanges = ValueNotifier(0);
+  bool _photoOwnerRevoked = false;
+
+  // Latch the requested mode. Revocation must never turn this route into a
+  // live persistence path while an old preview callback is still mounted.
+  bool get _devPreview => _openingDevPreview;
+  bool get _canProceed => mounted && !_leaving && _photoOwnerCurrent;
+
+  (bool, String?) _sdkOwner() {
+    try {
+      return (true, ZyraAuth.currentUser?.id);
+    } catch (_) {
+      return (false, null);
+    }
+  }
+
+  bool get _photoOwnerCurrent {
+    if (!mounted || _photoOwnerRevoked) return false;
+    final preview = (
+      ZyraInternalPreviewClient.isActive,
+      ZyraInternalPreviewClient.previewSession,
+    );
+    if (widget.devPreview != _openingDevPreview ||
+        widget.gender != _openingGender ||
+        _sdkOwner() != _openingSdk ||
+        preview != _openingPreview ||
+        ZyraAccountState.isSigningOut ||
+        ZyraAccountState.generation != _ownerGeneration ||
+        (_devPreview
+            ? !ZyraDeveloperAccess.canUseDeveloperTools
+            : _owner == null ||
+                  _openingSdk.$2 != _owner ||
+                  !ZyraAccountState.isCurrent(_owner!, _ownerGeneration))) {
+      _photoOwnerRevoked = true;
+      return false;
+    }
+    return true;
+  }
+
+  bool _canUsePhotos() => _canProceed;
+
+  void _photosChanged(List<String> photos) {
+    if (!_canProceed || ModalRoute.of(context)?.isCurrent != true) return;
+    setState(() {
+      _photos
+        ..clear()
+        ..addAll(photos);
+    });
+  }
+
+  void _photoLifetimeChanged() {
+    if (!mounted) return;
+    final current = _photoOwnerCurrent;
+    if (!current) {
+      _photos.clear();
+    }
+    // The owner guard is independent of route visibility: the existing crop
+    // child must withdraw while this Chapter2 route is covered by that child.
+    _photoOwnerChanges.value++;
+    if (current) return;
+    final binding = WidgetsBinding.instance;
+    if (binding.schedulerPhase != SchedulerPhase.persistentCallbacks) {
+      setState(() {});
+    } else {
+      binding.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+      binding.ensureVisualUpdate();
+    }
+  }
 
   final List<String> _photos = [];
   String? _location;
@@ -83,6 +179,235 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   bool _languageSkipped = false;
   TrafficLight? _languageFlex;
 
+  @override
+  void initState() {
+    super.initState();
+    _openingDevPreview = widget.devPreview;
+    _openingGender = widget.gender;
+    _ownerGeneration = ZyraAccountState.generation;
+    _openingSdk = _sdkOwner();
+    _openingPreview = (
+      ZyraInternalPreviewClient.isActive,
+      ZyraInternalPreviewClient.previewSession,
+    );
+    if (!_devPreview) {
+      try {
+        _owner = ZyraAuth.currentUser?.id;
+      } catch (_) {
+        /* Restore fails closed. */
+      }
+    }
+    _location = AppState.instance.location;
+    AppState.instance.addListener(_photoLifetimeChanged);
+    ZyraInternalPreviewClient.changes.addListener(_photoLifetimeChanged);
+    ZyraDeveloperAccess.authorizationChanges.addListener(_photoLifetimeChanged);
+    if (_openingSdk.$1) {
+      _initialAccessToken =
+          Supabase.instance.client.auth.currentSession?.accessToken;
+      _authSubscription = ZyraAuth.authStateChanges.listen(
+        (state) {
+          if (!mounted || _photoOwnerRevoked) return;
+          if (_sdkOwner() != _openingSdk ||
+              (state.session != null &&
+                  state.session!.user.id != _openingSdk.$2) ||
+              state.event == AuthChangeEvent.signedIn ||
+              state.event == AuthChangeEvent.signedOut ||
+              state.event == AuthChangeEvent.passwordRecovery ||
+              (state.event == AuthChangeEvent.initialSession &&
+                  state.session?.accessToken != _initialAccessToken)) {
+            _photoOwnerRevoked = true;
+          }
+          _photoLifetimeChanged();
+        },
+        onError: (Object _, StackTrace _) {
+          _photoOwnerRevoked = true;
+          _photoLifetimeChanged();
+        },
+      );
+    }
+    if (_devPreview) _photos.addAll(AppState.instance.photos);
+    if (!_devPreview) _restoreSavedProgress();
+  }
+
+  @override
+  void didUpdateWidget(covariant Chapter2Flow oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _photoLifetimeChanged();
+  }
+
+  @override
+  void dispose() {
+    _photoOwnerRevoked = true;
+    AppState.instance.removeListener(_photoLifetimeChanged);
+    ZyraInternalPreviewClient.changes.removeListener(_photoLifetimeChanged);
+    ZyraDeveloperAccess.authorizationChanges.removeListener(
+      _photoLifetimeChanged,
+    );
+    _authSubscription?.cancel().ignore();
+    _photoOwnerChanges.value++;
+    _photoOwnerChanges.dispose();
+    super.dispose();
+  }
+
+  Future<void> _restoreSavedProgress() async {
+    if (!mounted || !_photoOwnerCurrent) return;
+    setState(() => _restoring = true);
+    try {
+      final results = await Future.wait<dynamic>([
+        ZyraSeekerDetailsService.fetchOwn(
+          expectedUserId: _owner,
+          throwOnError: true,
+        ),
+        ZyraPhotoService.fetchOwnPhotos(
+          expectedUserId: _owner,
+          throwOnError: true,
+        ),
+        ZyraConsentService.currentArticle9Decision(
+          expectedUserId: _owner,
+          throwOnError: true,
+        ),
+      ]).timeout(const Duration(seconds: 10));
+      if (!_canProceed) throw StateError('Account changed.');
+
+      final details = results[0] as SeekerDetails?;
+      final photos = results[1] as List<String>;
+      final consentDecision = results[2] as bool?;
+      _photos
+        ..clear()
+        ..addAll(photos);
+      _article9Consent = consentDecision;
+      if (details != null) _applySavedDetails(details);
+      _step = _firstIncompleteStep();
+      setState(() {
+        _restoring = false;
+        _restoreError = null;
+      });
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _restoring = false;
+          _restoreError =
+              'Your saved profile could not be loaded. Try again before continuing.';
+        });
+      }
+    }
+  }
+
+  TrafficLight? _light(Object? value) => switch (value) {
+    'green' => TrafficLight.green,
+    'yellow' => TrafficLight.yellow,
+    'red' => TrafficLight.red,
+    _ => null,
+  };
+
+  void _applySavedDetails(SeekerDetails details) {
+    _sect = details.sect;
+    _revertStatus = details.revertStatus == null
+        ? null
+        : details.revertStatus!
+        ? 'Yes'
+        : 'No';
+    _countryOfBirth = details.countryOfBirth;
+    _nationality = details.nationality;
+    _ethnicity = details.ethnicity;
+    _languages = List<String>.from(details.languages);
+
+    final p = details.preferences;
+    final location = p['location'] as Map?;
+    _distancePref = zyraNameFor(
+      zyraLocationPreferences,
+      location?['preference'] as String?,
+    );
+    _distanceFlex = _light(location?['flexibility']);
+
+    final sect = p['sect'] as Map?;
+    final rawMatrix = sect?['matrix'];
+    if (rawMatrix is Map) {
+      _sectMatrix = {
+        for (final entry in rawMatrix.entries)
+          if (entry.key is String && _light(entry.value) != null)
+            switch (entry.key as String) {
+              'sunni' => 'Sunni',
+              'shia' => 'Shia',
+              _ => entry.key as String,
+            }: _light(
+              entry.value,
+            )!,
+      };
+    }
+    final rawHard = sect?['hard_requirement'];
+    if (rawHard is List) {
+      _sectHard = {
+        for (final value in rawHard.whereType<String>())
+          switch (value) {
+            'sunni' => 'Sunni',
+            'shia' => 'Shia',
+            _ => value,
+          },
+      };
+    }
+    _sectOutsideFlex = _light(sect?['outside_flexibility']);
+    _revertFlex = _light((p['revert'] as Map?)?['flexibility']);
+
+    _restoreReferencePreference(
+      p['country_of_birth'],
+      labelFor: (code) => zyraNameFor([
+        for (final country in zyraCountries)
+          ZyraRefItem(country.code, country.name),
+      ], code),
+      assignValues: (values) => _countryPrefs = values,
+      assignSkipped: (value) => _countrySkipped = value,
+      assignLight: (value) => _countryFlex = value,
+    );
+    _restoreReferencePreference(
+      p['nationality'],
+      labelFor: (code) {
+        for (final country in zyraCountries) {
+          if (country.code == code) return country.nationality;
+        }
+        return null;
+      },
+      assignValues: (values) => _nationalityPrefs = values,
+      assignSkipped: (value) => _nationalitySkipped = value,
+      assignLight: (value) => _nationalityFlex = value,
+    );
+    _restoreReferencePreference(
+      p['ethnicity'],
+      labelFor: (code) => zyraNameFor(zyraEthnicities, code),
+      assignValues: (values) => _ethnicityPrefs = values,
+      assignSkipped: (value) => _ethnicitySkipped = value,
+      assignLight: (value) => _ethnicityFlex = value,
+    );
+    _restoreReferencePreference(
+      p['languages'],
+      labelFor: (code) => zyraNameFor(zyraLanguages, code),
+      assignValues: (values) => _languagePrefs = values,
+      assignSkipped: (value) => _languageSkipped = value,
+      assignLight: (value) => _languageFlex = value,
+    );
+  }
+
+  void _restoreReferencePreference(
+    Object? raw, {
+    required String? Function(String code) labelFor,
+    required ValueChanged<List<String>> assignValues,
+    required ValueChanged<bool> assignSkipped,
+    required ValueChanged<TrafficLight?> assignLight,
+  }) {
+    final map = raw as Map?;
+    final values = <String>[];
+    final preferred = map?['preferred'];
+    if (preferred is List) {
+      for (final code in preferred.whereType<String>()) {
+        final label = labelFor(code);
+        if (label != null) values.add(label);
+      }
+    }
+    assignValues(values);
+    assignSkipped(map?['skipped'] == true);
+    assignLight(_light(map?['flexibility']));
+  }
+
   ZyraBackgroundVariant get _background {
     if (widget.gender == 'male') return ZyraBackgroundVariant.male;
     if (widget.gender == 'female') return ZyraBackgroundVariant.female;
@@ -95,98 +420,166 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     if (_sect == 'Other' && _sectOther.isNotEmpty) _sectOther else 'Other',
   ];
 
-  void _goto(int step) => setState(() => _step = step);
+  void _goto(int step) {
+    if (!_canProceed || _saving) return;
+    setState(() => _step = step);
+  }
 
-  void _goToBioTransition() {
+  SeekerDetails get _currentDetails => SeekerDetails(
+    sect: _sect == 'Other' ? _sectOther : _sect,
+    revertStatus: _revertStatus == null ? null : _revertStatus == 'Yes',
+    countryOfBirth: _countryOfBirth,
+    nationality: _nationality,
+    ethnicity: _ethnicity,
+    languages: _languages,
+    preferences: ZyraSeekerDetailsService.buildPreferences(
+      distancePref: _distancePref,
+      distanceFlex: _distanceFlex,
+      sectMatrix: _sectMatrix,
+      sectHard: _sectHard,
+      sectOutsideFlex: _sectOutsideFlex,
+      revertFlex: _revertFlex,
+      countryPrefs: _countryPrefs,
+      countrySkipped: _countrySkipped,
+      countryFlex: _countryFlex,
+      nationalityPrefs: _nationalityPrefs,
+      nationalitySkipped: _nationalitySkipped,
+      nationalityFlex: _nationalityFlex,
+      ethnicityPrefs: _ethnicityPrefs,
+      ethnicitySkipped: _ethnicitySkipped,
+      ethnicityFlex: _ethnicityFlex,
+      languagePrefs: _languagePrefs,
+      languageSkipped: _languageSkipped,
+      languageFlex: _languageFlex,
+    ),
+  );
+
+  Future<void> _finishLater() async {
+    if (!_canProceed || _saving || _restoring || _restoreError != null) return;
+    setState(() {
+      _saving = true;
+      _saveError = null;
+    });
+    // Save the valid draft fields, without inventing answers to unfinished questions.
+    final step = _step;
+    bool saved = true;
+    if (_photos.isNotEmpty) saved = await _persistCheckpoint(0);
+    if (saved && (_location ?? '').trim().isNotEmpty) {
+      saved = await _persistCheckpoint(1);
+    }
+    if (saved && _article9Consent == true) {
+      saved = await _persistCheckpoint(step < 4 ? 4 : step);
+    }
+    if (!mounted) return;
+    if (saved && _canProceed) {
+      final opened = await returnToMyZyra(
+        context,
+        devPreview: _devPreview,
+        expectedUserId: _owner,
+        expectedGeneration: _ownerGeneration,
+      );
+      if (opened) return;
+    }
+    if (mounted) {
+      setState(() {
+        _saving = false;
+        _saveError = 'Your progress could not be confirmed. Please try again.';
+      });
+    }
+  }
+
+  Future<bool> _persistCheckpoint(
+    int step, {
+    bool finalCheckpoint = false,
+  }) async {
+    if (_devPreview) return true;
+    if (!_canProceed) return false;
+    if ((step == 0 || finalCheckpoint) &&
+        !await ZyraPhotoService.syncPhotosConfirmed(
+          List.of(_photos),
+          expectedUserId: _owner,
+        )) {
+      return false;
+    }
+    if (!_canProceed) return false;
+    if ((step == 1 || finalCheckpoint) &&
+        !await ZyraProfileService.saveLocation(
+          _location,
+          expectedUserId: _owner,
+        )) {
+      return false;
+    }
+    if (!_canProceed) return false;
+    // Respect refusal. The existing service cannot store special-category
+    // details without consent, and the server still owns readiness.
+    if (_article9Consent == true && (step >= 4 || finalCheckpoint)) {
+      if (!await ZyraSeekerDetailsService.saveDetails(
+        _currentDetails,
+        expectedUserId: _owner,
+      )) {
+        return false;
+      }
+    }
+    return _canProceed;
+  }
+
+  Future<void> _goToBioTransition() async {
+    if (!_canProceed || _saving || ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+    setState(() => _saving = true);
+    final saved = await _persistCheckpoint(_step, finalCheckpoint: true);
+    if (!mounted) return;
+    if (!saved || !_canProceed || ModalRoute.of(context)?.isCurrent != true) {
+      setState(() {
+        _saving = false;
+        _saveError = 'Your profile could not be saved. Please try again.';
+      });
+      return;
+    }
     final gender = widget.gender;
+    final devPreview = _devPreview;
+    final owner = _owner;
+    final ownerGeneration = _ownerGeneration;
+    var stageLeaving = false;
     AppState.instance.saveChapter2(
       photos: _photos,
       location: _location,
       sect: _sect == 'Other' ? _sectOther : _sect,
     );
-    // Fire-and-forget: photos are already uploaded to Storage as each
-    // one is picked (_PhotoGrid), this just writes the profile_photos
-    // rows recording the final order/primary photo. Not awaited —
-    // doesn't block the chapter transition on a non-critical sync, per
-    // the "AppState's in-memory copy always works regardless" pattern
-    // used throughout this build's Supabase wiring.
-    if (!widget.devPreview) ZyraPhotoService.syncPhotos(_photos);
-    // ADDED 2026-08-04. `saveChapter2` above writes to memory only, so
-    // the city collected on step 1 died with the app. Three services read
-    // `profiles.location_text` and nothing wrote it — every onboarded
-    // Seeker rendered an em-dash where their city belongs.
-    //
-    // Same fire-and-forget shape as syncPhotos, and for the same reason:
-    // a failed write must not trap someone at a chapter boundary. It logs
-    // on failure rather than failing silently.
-    //
-    // NOTE: this is the ONLY Chapter 2 answer that currently persists.
-    // Sect, revert status, country of birth, nationality, ethnicity,
-    // languages and every traffic-light preference are all still
-    // memory-only — there are no columns for them. See
-    // SYSTEM/DOCUMENTS/ZYRA_CHAPTER2_PERSISTENCE_PLAN_CURRENT_VERSION_V1.md,
-    // which is awaiting Founder approval before any migration is written.
-    if (!widget.devPreview) ZyraProfileService.saveLocation(_location);
-
-    // CHAPTER 2 PERSISTENCE — Founder approved 2026-08-04.
-    //
-    // Everything except the city used to die here. `saveChapter2` above
-    // assigns three fields to an in-memory object; nothing else reached
-    // Postgres, so 30 of the 31 answers were discarded at the chapter
-    // boundary and no compatibility score could ever be computed.
-    //
-    // Labels go in, CODES come out — SeekerDetails.toRow does the
-    // conversion and the database's CHECK constraints reject a label if it
-    // ever slips through.
-    //
-    // The service refuses to write without recorded Article 9 consent. That
-    // check is intentionally duplicated there as well as gated here: this
-    // screen can be reordered or skipped, the service cannot.
-    if (!widget.devPreview) {
-      ZyraSeekerDetailsService.saveDetails(
-        SeekerDetails(
-          sect: _sect == 'Other' ? _sectOther : _sect,
-          revertStatus: _revertStatus == null ? null : _revertStatus == 'Yes',
-          countryOfBirth: _countryOfBirth,
-          nationality: _nationality,
-          ethnicity: _ethnicity,
-          languages: _languages,
-          preferences: ZyraSeekerDetailsService.buildPreferences(
-            distancePref: _distancePref,
-            distanceFlex: _distanceFlex,
-            sectMatrix: _sectMatrix,
-            sectHard: _sectHard,
-            sectOutsideFlex: _sectOutsideFlex,
-            revertFlex: _revertFlex,
-            countryPrefs: _countryPrefs,
-            countrySkipped: _countrySkipped,
-            countryFlex: _countryFlex,
-            nationalityPrefs: _nationalityPrefs,
-            nationalitySkipped: _nationalitySkipped,
-            nationalityFlex: _nationalityFlex,
-            ethnicityPrefs: _ethnicityPrefs,
-            ethnicitySkipped: _ethnicitySkipped,
-            ethnicityFlex: _ethnicityFlex,
-            languagePrefs: _languagePrefs,
-            languageSkipped: _languageSkipped,
-            languageFlex: _languageFlex,
-          ),
-        ),
-      );
-    }
+    setState(() => _leaving = true);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (stageContext) => OnboardingStageIntroScreen(
-          stage: SeekerOnboardingStage.journeyBio,
-          onContinue: () => Navigator.of(stageContext).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => BioOnboardingFlow(
-                gender: gender,
-                devPreview: widget.devPreview,
+        builder: (stageContext) {
+          void openBio() {
+            if (stageLeaving ||
+                !stageContext.mounted ||
+                ModalRoute.of(stageContext)?.isCurrent != true) {
+              return;
+            }
+            if (devPreview
+                ? !ZyraDeveloperAccess.canUseDeveloperTools
+                : owner == null ||
+                      ZyraAuth.currentUser?.id != owner ||
+                      !ZyraAccountState.isCurrent(owner, ownerGeneration)) {
+              return;
+            }
+            stageLeaving = true;
+            Navigator.of(stageContext).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) =>
+                    BioOnboardingFlow(gender: gender, devPreview: devPreview),
               ),
-            ),
-          ),
-        ),
+            );
+          }
+
+          return OnboardingStageIntroScreen(
+            stage: SeekerOnboardingStage.journeyBio,
+            devPreview: devPreview,
+            onDevSkip: devPreview ? openBio : null,
+            onContinue: openBio,
+          );
+        },
       ),
     );
   }
@@ -211,11 +604,14 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   /// chapter completes normally. A decline that dead-ended would make the
   /// consent not freely given, and therefore not valid consent at all.
   Future<void> _askArticle9Consent() async {
+    if (!_canProceed) return;
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => Article9ConsentScreen(
           background: _background,
+          devPreview: _devPreview,
           onDecision: (granted) {
+            if (!_canProceed) return;
             Navigator.of(context).pop();
             setState(() {
               _article9Consent = granted;
@@ -227,12 +623,37 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     );
   }
 
-  void _next() {
+  Future<void> _next() async {
+    if (!_canProceed ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        _saving ||
+        _restoring ||
+        _restoreError != null ||
+        (!_devPreview && !_canContinue)) {
+      return;
+    }
+    setState(() {
+      _saving = true;
+      _saveError = null;
+    });
+    final saved = await _persistCheckpoint(_step);
+    if (!mounted) return;
+    setState(() => _saving = false);
+    if (!saved || !_canProceed || ModalRoute.of(context)?.isCurrent != true) {
+      setState(
+        () => _saveError = 'Your profile could not be saved. Please try again.',
+      );
+      return;
+    }
     // Gate on the way IN to the special-category block. Placed here rather
     // than on a step boundary so any future reordering that lands on step 4
     // still passes through it.
     if (_step == _firstArticle9Step - 1 && _article9Consent == null) {
       _askArticle9Consent();
+      return;
+    }
+    if (_step == _firstArticle9Step - 1 && _article9Consent == false) {
+      _goto(_firstNonArticle9Step);
       return;
     }
 
@@ -266,7 +687,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   }
 
   void _devSkipCurrentQuestion() {
-    if (!widget.devPreview) return;
+    if (!_devPreview || !_canProceed) return;
     if (_step == _firstArticle9Step - 1 && _article9Consent == null) {
       setState(() {
         // Developer preview never persists these answers, so it may bypass
@@ -286,6 +707,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   /// on whether that section's preference step was skipped; every other
   /// step has exactly one, so a plain decrement is correct there.
   void _back() {
+    if (!_canProceed || _saving) return;
     switch (_step) {
       case 12:
         _goto(_countrySkipped ? 10 : 11);
@@ -310,8 +732,21 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     }
   }
 
-  bool get _canContinue {
-    switch (_step) {
+  int _firstIncompleteStep() {
+    for (final step in _activeStepIds) {
+      if (!_isStepComplete(step)) return step;
+    }
+    return _activeStepIds.last;
+  }
+
+  bool get _canContinue =>
+      !_saving &&
+      !_restoring &&
+      _restoreError == null &&
+      _isStepComplete(_step);
+
+  bool _isStepComplete(int step) {
+    switch (step) {
       case 0:
         return _photos.length >= 3;
       case 1:
@@ -360,10 +795,91 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     }
   }
 
-  double get _progress => (_step + 1) / _totalSteps;
+  // Article 9 refusal and explicit no-preference answers remove questions
+  // from this person's path. The displayed position must describe that path,
+  // rather than count skipped questions as completed work. Before the consent
+  // decision, the possible full path remains the provisional denominator.
+  List<int> get _activeStepIds {
+    final steps = <int>[0, 1, 2, 3];
+    if (_article9Consent != false) {
+      steps.addAll([
+        for (
+          var step = _firstArticle9Step;
+          step < _firstNonArticle9Step;
+          step++
+        )
+          step,
+      ]);
+    }
+    steps.addAll([18, 19, 20]);
+    if (_countrySkipped) steps.remove(11);
+    if (_nationalitySkipped) steps.remove(14);
+    if (_ethnicitySkipped) steps.remove(17);
+    if (_languageSkipped) steps.remove(20);
+    return steps;
+  }
+
+  int get _activeStepPosition {
+    final index = _activeStepIds.indexOf(_step);
+    return index < 0 ? _step + 1 : index + 1;
+  }
+
+  double get _progress => _activeStepPosition / _activeStepIds.length;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: ZyraDeveloperAccess.authorizationChanges,
+    builder: (context, _) {
+      if (!_photoOwnerCurrent) {
+        return Scaffold(
+          key: ValueKey(
+            _devPreview
+                ? 'chapter2_preview_denied'
+                : 'chapter2_owner_unavailable',
+          ),
+          backgroundColor: ZyraColors.modalSheetSurface,
+          body: const SizedBox.expand(),
+        );
+      }
+      return _buildFlow(context);
+    },
+  );
+
+  Widget _buildFlow(BuildContext context) {
+    if (_restoring) {
+      return const ZyraLoading.fullScreen(
+        label: 'Restoring your saved profile…',
+      );
+    }
+    if (_restoreError != null) {
+      return Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _restoreError!,
+                    textAlign: TextAlign.center,
+                    style: ZyraText.body(),
+                  ),
+                  TextButton(
+                    onPressed: _restoreSavedProgress,
+                    child: const Text('Try again'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    child: const Text('Back'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     late String question;
     String? subtext;
     Widget content;
@@ -371,20 +887,21 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
 
     switch (_step) {
       case 0:
-        question = 'Add your photos';
-        subtext =
-            'At least 3 required, up to 6. First photo becomes your main profile photo.';
+        question = _photos.isEmpty ? 'Add your photos' : 'Add more photos';
+        subtext = _photos.isEmpty
+            ? 'At least 3 required, up to 6. First photo becomes your main profile photo.'
+            : 'Your first photo is already here. Complete your profile with at least 3 photos, up to 6.';
         privacy = PrivacyLevel.public;
         content = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _PhotoGrid(
               photos: _photos,
-              onChanged: (p) => setState(
-                () => _photos
-                  ..clear()
-                  ..addAll(p),
-              ),
+              devPreview: _devPreview,
+              gender: _openingGender,
+              canAct: _canUsePhotos,
+              canActChanges: _photoOwnerChanges,
+              onChanged: _photosChanged,
             ),
             if (_photos.length < 3)
               const ZyraDisabledHint(
@@ -448,7 +965,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
               onChanged: (v) => setState(() => _sect = v),
             ),
             if (_sect == 'Other') ...[
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               _TextField(
                 hint: 'Please specify…',
                 value: _sectOther,
@@ -686,20 +1203,56 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         break;
     }
 
+    final standaloneChoices = const {
+      2,
+      3,
+      4,
+      6,
+      7,
+      8,
+      11,
+      14,
+      17,
+      20,
+    }.contains(_step);
     return OnboardingScaffold(
       background: _background,
       chapterName: 'Your Profile',
+      frameContent: !standaloneChoices,
       chapterProgress: _progress,
-      chapterComplete: _step == _totalSteps - 1,
+      progressLabel: 'STEP $_activeStepPosition OF ${_activeStepIds.length}',
       question: question,
       subtext: subtext,
       privacy: privacy,
       fabActive: _canContinue,
       onContinue: _next,
-      devPreview: widget.devPreview,
+      devPreview: _devPreview,
       onDevSkip: _devSkipCurrentQuestion,
       onSwipeBack: _step > 0 ? _back : null,
-      content: content,
+      onFinishLater: _finishLater,
+      content: IgnorePointer(
+        ignoring: _saving,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (_saveError != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  _saveError!,
+                  style: ZyraText.subtext(color: ZyraColors.destructive),
+                ),
+              ),
+            if (standaloneChoices)
+              ZyraOnboardingChoiceEntrance(
+                key: ValueKey('profile_choice_entrance_$_step'),
+                child: content,
+              )
+            else
+              content,
+          ],
+        ),
+      ),
     );
   }
 }
@@ -720,12 +1273,12 @@ class _TextField extends StatelessWidget {
       controller: TextEditingController(text: value)
         ..selection = TextSelection.collapsed(offset: (value ?? '').length),
       onChanged: onChanged,
-      style: ZyraText.body(size: 16, color: Colors.white),
+      style: ZyraText.body(size: 16, color: ZyraColors.foreground),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: ZyraText.body(size: 16, color: Colors.white24),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.white24),
+        hintStyle: ZyraText.body(size: 16, color: ZyraColors.ink(0.24)),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: ZyraColors.ink(0.24)),
         ),
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: ZyraColors.royalPurple),
@@ -751,35 +1304,12 @@ class _LargeSelect extends StatelessWidget {
       children: options.map((o) {
         final selected = value == o;
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: SizedBox(
-            width: double.infinity,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-                border: Border.all(
-                  color: selected
-                      ? ZyraColors.accentBorder
-                      : ZyraColors.iconButtonBorder,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(14),
-                  onTap: () => onChanged(o),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    child: Text(o, style: ZyraText.option()),
-                  ),
-                ),
-              ),
-            ),
+          padding: const EdgeInsets.only(bottom: 14),
+          child: ZyraOnboardingChoiceCard(
+            key: ValueKey('profile_choice_$o'),
+            label: o,
+            selected: selected,
+            onTap: () => onChanged(o),
           ),
         );
       }).toList(),
@@ -807,8 +1337,8 @@ class _SearchPickButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.search, color: Colors.white38, size: 18),
-            const SizedBox(width: 10),
+            Icon(Icons.search, color: ZyraColors.ink(0.38), size: 18),
+            SizedBox(width: 10),
             Expanded(child: Text(label, style: ZyraText.body(size: 15))),
           ],
         ),
@@ -853,7 +1383,7 @@ class _MultiPrefPicker extends StatelessWidget {
           },
         ),
         if (onSkip != null) ...[
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           TextButton(
             onPressed: onSkip,
             child: Text(
@@ -869,14 +1399,23 @@ class _MultiPrefPicker extends StatelessWidget {
 
 // Real device photo picking + Storage upload (OA-104) — replaced the
 // original mock 6-photo picsum pool picker on 2026-07-18 now that a
-// real Storage bucket exists. Falls back to a deterministic picsum
-// placeholder if there's no signed-in Supabase user (e.g. reached via
-// the Developer Access jump-menu without a real account), so that path
-// stays testable without a login.
+// real Storage bucket exists. Developer Preview selects and processes a
+// real device photo locally, without uploading it or touching live data.
 class _PhotoGrid extends StatefulWidget {
   final List<String> photos;
+  final bool devPreview;
+  final String? gender;
   final ValueChanged<List<String>> onChanged;
-  const _PhotoGrid({required this.photos, required this.onChanged});
+  final bool Function() canAct;
+  final Listenable canActChanges;
+  const _PhotoGrid({
+    required this.photos,
+    required this.devPreview,
+    required this.gender,
+    required this.onChanged,
+    required this.canAct,
+    required this.canActChanges,
+  });
 
   @override
   State<_PhotoGrid> createState() => _PhotoGridState();
@@ -885,49 +1424,120 @@ class _PhotoGrid extends StatefulWidget {
 class _PhotoGridState extends State<_PhotoGrid> {
   bool _uploading = false;
   String? _uploadError;
+  late final _PhotoGrid _opening;
+  bool _revoked = false;
+
+  bool get _ownerCurrent {
+    if (!mounted || _revoked) return false;
+    try {
+      if (widget.devPreview == _opening.devPreview &&
+          widget.gender == _opening.gender &&
+          identical(widget.photos, _opening.photos) &&
+          widget.onChanged == _opening.onChanged &&
+          widget.canAct == _opening.canAct &&
+          identical(widget.canActChanges, _opening.canActChanges) &&
+          _opening.canAct() &&
+          widget.canAct()) {
+        return true;
+      }
+    } catch (_) {
+      // A failed caller check cannot release a later account or preview mode.
+    }
+    _revoked = true;
+    return false;
+  }
+
+  bool get _canDispatch =>
+      _ownerCurrent && ModalRoute.of(context)?.isCurrent == true;
+
+  bool _canContinueBatch() => _ownerCurrent;
+
+  @override
+  void initState() {
+    super.initState();
+    _opening = widget;
+    _opening.canActChanges.addListener(_ownerChanged);
+  }
+
+  void _ownerChanged() {
+    if (!mounted || _ownerCurrent) return;
+    _uploading = false;
+    _uploadError = null;
+    final binding = WidgetsBinding.instance;
+    if (binding.schedulerPhase != SchedulerPhase.persistentCallbacks) {
+      setState(() {});
+    } else {
+      binding.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+      binding.ensureVisualUpdate();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _PhotoGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _ownerChanged();
+  }
+
+  @override
+  void dispose() {
+    _revoked = true;
+    _opening.canActChanges.removeListener(_ownerChanged);
+    super.dispose();
+  }
 
   Future<void> _addPhoto() async {
-    if (widget.photos.length >= 6 || _uploading) return;
+    if (!_canDispatch ||
+        widget.photos.length >= 6 ||
+        _uploading ||
+        (widget.devPreview && !ZyraDeveloperAccess.canUseDeveloperTools)) {
+      return;
+    }
     setState(() {
       _uploading = true;
       _uploadError = null;
     });
 
-    if (!ZyraAuth.isSignedIn) {
-      // Dev/mock path (e.g. Developer Access jump-menu, no real
-      // account) — add a deterministic placeholder so this step stays
-      // testable without a login, same as before real Storage existed.
-      if (mounted) {
-        setState(() => _uploading = false);
-        widget.onChanged([
-          ...widget.photos,
-          'https://picsum.photos/seed/self${DateTime.now().millisecondsSinceEpoch}/400/400',
-        ]);
-      }
-      return;
-    }
-
-    final result = await ZyraPhotoService.pickAndUpload();
-    if (!mounted) return;
+    final result = await runZyraPhotoBatchFlow(
+      context,
+      remaining: 6 - widget.photos.length,
+      localPreview:
+          widget.devPreview ||
+          (!ZyraAuth.isSignedIn && ZyraInternalPreviewClient.isActive),
+      onProgress: (_) {},
+      canProceed: _canContinueBatch,
+      canProceedChanges: _opening.canActChanges,
+      preview: _opening.devPreview,
+      previewGender: _opening.gender,
+    );
+    if (!mounted || !_ownerCurrent) return;
     setState(() => _uploading = false);
+    if (!_canDispatch) return;
     switch (result.outcome) {
-      case ZyraPhotoOutcome.uploaded:
-        widget.onChanged([...widget.photos, result.url!]);
+      case ZyraPhotoBatchOutcome.added:
+        _opening.onChanged([...widget.photos, ...result.urls]);
         return;
-      case ZyraPhotoOutcome.cancelled:
+      case ZyraPhotoBatchOutcome.cancelled:
         return; // not an error — nothing to show
-      case ZyraPhotoOutcome.error:
-        setState(() => _uploadError = "That didn't upload. Tap to try again.");
+      case ZyraPhotoBatchOutcome.error:
+        setState(() => _uploadError = result.memberErrorMessage);
         return;
     }
   }
 
   void _removePhoto(String url) {
-    widget.onChanged(widget.photos.where((p) => p != url).toList());
+    if (!_canDispatch || _uploading || !widget.photos.contains(url)) return;
+    _opening.onChanged(widget.photos.where((p) => p != url).toList());
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_ownerCurrent) {
+      return const SizedBox.shrink(
+        key: ValueKey('chapter2-photo-owner-unavailable'),
+      );
+    }
     final tileCount = widget.photos.length + (widget.photos.length < 6 ? 1 : 0);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -962,15 +1572,11 @@ class _PhotoGridState extends State<_PhotoGrid> {
                       right: 6,
                       child: Container(
                         padding: const EdgeInsets.all(3),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           color: Colors.black54,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
-                          Icons.close,
-                          size: 14,
-                          color: Colors.white,
-                        ),
+                        child: Icon(Icons.close, size: 14, color: Colors.white),
                       ),
                     ),
                     if (index == 0)
@@ -1010,17 +1616,17 @@ class _PhotoGridState extends State<_PhotoGrid> {
                 ),
                 child: Center(
                   child: _uploading
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white54,
+                            color: ZyraColors.ink(0.54),
                           ),
                         )
-                      : const Icon(
+                      : Icon(
                           Icons.add_photo_alternate_outlined,
-                          color: Colors.white54,
+                          color: ZyraColors.ink(0.54),
                           size: 26,
                         ),
                 ),
@@ -1029,14 +1635,19 @@ class _PhotoGridState extends State<_PhotoGrid> {
           },
         ),
         if (_uploadError != null) ...[
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           ZyraErrorBanner(
             message: _uploadError!,
             onRetry: () {
+              if (!_canDispatch || _uploading) return;
               setState(() => _uploadError = null);
               _addPhoto();
             },
-            onDismiss: () => setState(() => _uploadError = null),
+            onDismiss: () {
+              if (_canDispatch && !_uploading) {
+                setState(() => _uploadError = null);
+              }
+            },
           ),
         ],
       ],

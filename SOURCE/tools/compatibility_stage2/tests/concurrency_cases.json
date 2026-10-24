@@ -1,0 +1,164 @@
+{
+  "candidate_only": true,
+  "schedule_rule": "Every race runs independent psql sessions with SERIALIZABLE mutation transactions and bounded whole-transaction retries. A case is pending until observations and postconditions are recorded.",
+  "cases": [
+    {
+      "id": "TX01",
+      "name": "standard_plus_same_pair_concurrent",
+      "status": "planned_not_run",
+      "sessions": [
+        "purchase('target','standard','race-standard')",
+        "purchase('target','plus','race-plus')"
+      ],
+      "expected": "One current snapshot; permitted per-tier fake debits only; both reuse its basis.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX02",
+      "name": "plus_journey_same_pair_concurrent",
+      "status": "planned_not_run",
+      "sessions": [
+        "purchase('target','plus','race-plus')",
+        "reveal_journey('target','race-journey')"
+      ],
+      "expected": "One current snapshot; Journey flags unchanged; no Journey debit.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX03",
+      "name": "same_target_same_operation_key",
+      "status": "planned_not_run",
+      "sessions": [
+        "purchase('target','standard','same-key')",
+        "purchase('target','standard','same-key')"
+      ],
+      "expected": "One entitlement and one fake debit.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX04",
+      "name": "same_target_different_operation_keys",
+      "status": "planned_not_run",
+      "sessions": [
+        "purchase('target','standard','key-a')",
+        "purchase('target','standard','key-b')"
+      ],
+      "expected": "One entitlement and one fake debit.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX05",
+      "name": "different_targets_one_remaining_fake_credit",
+      "status": "planned_not_run",
+      "sessions": [
+        "purchase('target','standard','target-a')",
+        "purchase('target2','standard','target-b')"
+      ],
+      "expected": "Only one purchase can debit the single remaining fake credit.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX06",
+      "name": "legacy_transition_races_paid_purchase",
+      "status": "planned_not_run",
+      "sessions": [
+        "legacy_transition('target','legacy-race')",
+        "purchase('target','standard','paid-race')"
+      ],
+      "expected": "Held entitlement repaired once; zero repeat debit.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX07",
+      "name": "technical_replacement_races_read",
+      "status": "planned_not_run",
+      "sessions": [
+        "repair_snapshot('viewer','target','test defect','synthetic-authority')",
+        "read_result('target','standard')"
+      ],
+      "expected": "Only an authorised current immutable result; no historical comparison.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX08",
+      "name": "credit_grant_races_debit",
+      "status": "planned_not_run",
+      "sessions": [
+        "grant_credit('viewer',1)",
+        "purchase('target','standard','grant-race')"
+      ],
+      "expected": "Serialized fake ledger and balance reconciliation.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX09",
+      "name": "credit_refund_races_debit",
+      "status": "planned_not_run",
+      "sessions": [
+        "grant_credit('viewer',1)",
+        "purchase('target','standard','refund-race')"
+      ],
+      "expected": "Serialized fake refund fixture and debit, no balance divergence.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX10",
+      "name": "plus_gate_off_during_operation",
+      "status": "planned_not_run",
+      "sessions": [
+        "set_plus_gate(false)",
+        "purchase('target','plus','gate-race')"
+      ],
+      "expected": "Gate winner defines outcome; no blocked purchase debits.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX11",
+      "name": "serialization_failure_whole_transaction_retry",
+      "status": "planned_not_run",
+      "sessions": [],
+      "expected": "Controlled conflict yields SQLSTATE40001 and whole-transaction retry.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX12",
+      "name": "protocol_lock_order_no_deadlock",
+      "status": "planned_not_run",
+      "sessions": [],
+      "expected": "Full tested protocol race matrix shows no unexpected 40P01.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX13",
+      "name": "injected_deadlock_bounded_recovery",
+      "status": "planned_not_run",
+      "sessions": [],
+      "expected": "Privileged test locks deliberately create 40P01; bounded retry preserves effects.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX14",
+      "name": "failure_at_each_commit_mutation_boundary",
+      "status": "planned_not_run",
+      "sessions": [],
+      "expected": "Injected exception rolls back each candidate mutation boundary.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX15",
+      "name": "cross_tier_authority_and_fixture_debit_rules",
+      "status": "planned_not_run",
+      "sessions": [],
+      "expected": "One pair result; separate permanent tier ownership; no policy bypass.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    },
+    {
+      "id": "TX16",
+      "name": "concurrent_first_purposes_one_calculation_binding",
+      "status": "planned_not_run",
+      "sessions": [],
+      "expected": "All first permitted purpose races bind one immutable basis.",
+      "barrier": "Privileged local harness only; no test flags in ordinary API"
+    }
+  ]
+}

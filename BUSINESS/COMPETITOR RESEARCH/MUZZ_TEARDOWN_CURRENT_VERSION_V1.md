@@ -66,7 +66,7 @@ Each screen is assessed against your framework. To keep this readable I have mer
 
 **Engineering.** Cheap to build; a solved pattern. No visible technical debt.
 
-**ZYRA comparison.** ZYRA's Browse is structurally the same swipe deck with a three-way traffic-light decision (Consider / Save / Pass) instead of a binary. ZYRA's decision language is better — "Consider" is a meaningfully different mental act from "Like". ZYRA's swipe directions are non-standard (left = Consider, right = Pass) and undiscoverable, which Muzz gets right by convention. **ZYRA should copy:** conventional swipe directions, or drop swiping. **ZYRA should avoid:** street-level distance. **Third solution:** see §1.9.
+**ZYRA comparison.** ZYRA's Browse is structurally the same swipe deck with a three-way traffic-light decision (Consider / Save / Pass) instead of a binary. ZYRA's decision language is better — "Consider" is a meaningfully different mental act from "Like". Current physical travel follows the positive/rightward convention: finger left-to-right = Consider, finger right-to-left = Pass, and downward = Save. The gesture remains undiscoverable before first use. **ZYRA should copy:** Muzz's early gesture discoverability, not its binary language. **ZYRA should avoid:** street-level distance. **Third solution:** see §1.9.
 
 ---
 

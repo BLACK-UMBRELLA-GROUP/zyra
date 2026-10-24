@@ -1,63 +1,56 @@
-// Test sign-up — ONE implementation, reachable from two places.
-//
-// NEW 2026-08-07, correcting a mistake made earlier the same day.
-//
-// ── WHAT WENT WRONG. The Founder asked for the Test Sign Up tiles to move
-// from Developer Access into the toggle panel. I moved them and deleted the
-// originals, reasoning that "two copies of a dev entry point is how one of
-// them quietly stops matching the flow it launches."
-//
-// That reasoning was right and the move was still wrong, because the panel
-// is mounted in exactly one place:
-//
-//     home_shell.dart       if (!kReleaseMode) DevScenarioPanelV2(...),
-//
-// Not WaliHomeShell. Not Welcome. Not Developer Access. So the action
-// "test signing up as a brand new user" ended up reachable only from
-// inside the signed-in Seeker home — the one state you cannot be in when
-// you want to test signing up.
-//
-// ── THE FIX IS BOTH PLACES, NOT ONE. They are two different moments:
-//
-//   Developer Access, signed out   "start the sign-up flow from scratch"
-//   Toggle panel, signed in        "jump into onboarding from where I am"
-//
-// The original worry about drift is answered by this file rather than by
-// picking one location: Developer Access and the toggle panel both call
-// start(), so there is one behaviour and nowhere for a second copy to rot.
+// One protected, local-only signup entry for Developer Access and toggles.
+// Founder correction 2026-09-28: no developer-only role sheet or direct-role
+// shortcut. Rehearse Welcome and the app's actual first-use choice, then the
+// existing setup screens. No real OAuth, account/draft writes or sign-out.
 
 import 'package:flutter/material.dart';
 
-import '../screens/onboarding/onboarding_flow.dart';
-import '../screens/wali/wali_onboarding_flow.dart';
-import '../services/zyra_auth.dart';
+import '../services/zyra_developer_access.dart';
+import '../services/zyra_internal_preview_client.dart';
 import '../state/app_state.dart';
+import '../widgets/zyra_onboarding_study.dart';
+import 'dev_signup_process.dart';
+import 'zyra_dev_surface_coordinator.dart';
 
 class ZyraDevSignUp {
   ZyraDevSignUp._();
 
-  /// Resets AppState to a blank slate and pushes the REAL onboarding flow.
-  ///
-  /// Deliberately NOT applyDevPreset's usual pre-filled-persona use: the
-  /// questions and validation stay identical to production. The explicit
-  /// DEV skip control is the only shortcut: it advances without persisting
-  /// placeholder answers. No tier picker either — every account starts on
-  /// Basic and upgrades afterwards from Profile or Network, same as
-  /// production.
-  ///
-  /// A plain push, not pushAndRemoveUntil: backing out returns you where
-  /// you were, so an abandoned trial costs nothing. Developer Access used
-  /// to wipe the stack, which is fine on a screen you signed out to reach
-  /// and wrong from inside a live session.
-  static void start(BuildContext context, {required bool isWali}) {
-    AppState.instance.applyDevPreset();
-    final previewName = ZyraAuth.onboardingFirstName ?? 'Shakeel';
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => isWali
-            ? const WaliOnboardingFlow(devPreview: true)
-            : OnboardingFlow(welcomeName: previewName, devPreview: true),
-      ),
-    );
+  static bool _opening = false;
+
+  /// One neutral entry: Welcome → actual first-use role choice → questions.
+  /// Refresh proof before latching local-only data isolation and resetting
+  /// sample state. Never sign out or create/change an authenticated account.
+  static Future<void> start(
+    BuildContext context, {
+    ZyraOnboardingDirection direction = zyraDefaultDevOnboardingDirection,
+  }) async {
+    if (!ZyraDeveloperAccess.canUseDeveloperTools) return;
+    final coordinator = ZyraDevSurfaceCoordinator.instance;
+    if (coordinator.restartOnboarding(direction)) return;
+    if (_opening) return;
+    final navigator = Navigator.of(context);
+    _opening = true;
+    var started = false;
+    try {
+      final allowed = await ZyraDeveloperAccess.refreshCurrentAuthorization();
+      if (!navigator.mounted ||
+          !allowed ||
+          !ZyraDeveloperAccess.canUseDeveloperTools) {
+        return;
+      }
+      ZyraInternalPreviewClient.beginPreview();
+      AppState.instance.applyDevPreset();
+      coordinator.beginEntryFlow('Onboarding');
+      started = true;
+      await navigator.push<void>(
+        MaterialPageRoute(
+          allowSnapshotting: false,
+          builder: (_) => DevSignUpProcessScreen(initialDirection: direction),
+        ),
+      );
+    } finally {
+      if (started) coordinator.endEntryFlow();
+      _opening = false;
+    }
   }
 }

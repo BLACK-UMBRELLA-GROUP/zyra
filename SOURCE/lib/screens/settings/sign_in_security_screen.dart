@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import 'package:flutter/services.dart';
 
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
@@ -14,32 +18,6 @@ class SignInSecurityScreen extends StatefulWidget {
 }
 
 class _SignInSecurityScreenState extends State<SignInSecurityScreen> {
-  String? _busyProvider;
-  String? _error;
-  String? _notice;
-
-  Future<void> _link(String provider) async {
-    setState(() {
-      _busyProvider = provider;
-      _error = null;
-      _notice = null;
-    });
-
-    final result = provider == 'apple'
-        ? await ZyraAuth.linkAppleIdentity()
-        : await ZyraAuth.linkGoogleIdentity();
-    if (!mounted) return;
-
-    setState(() {
-      _busyProvider = null;
-      if (result.outcome == ZyraAuthOutcome.error) {
-        _error = result.errorMessage;
-      } else if (result.outcome == ZyraAuthOutcome.success) {
-        _notice = '${provider == 'apple' ? 'Apple' : 'Google'} connected.';
-      }
-    });
-  }
-
   Future<void> _openRecoveryEmail() async {
     await Navigator.of(
       context,
@@ -52,89 +30,92 @@ class _SignInSecurityScreenState extends State<SignInSecurityScreen> {
     final providers = ZyraAuth.linkedProviders;
     final hasOAuth = ZyraAuth.hasLinkedOAuth;
     final recoveryEmail = ZyraAuth.recoveryEmail;
+    final methods = <_CurrentSignInMethod>[
+      if (providers.contains('apple'))
+        _CurrentSignInMethod(
+          key: 'apple',
+          icon: Icons.apple,
+          title: 'Apple',
+          detail: ZyraAuth.providerEmail('apple') ?? 'Connected',
+        ),
+      if (providers.contains('google'))
+        _CurrentSignInMethod(
+          key: 'google',
+          icon: Icons.g_mobiledata,
+          title: 'Google',
+          detail: ZyraAuth.providerEmail('google') ?? 'Connected',
+        ),
+    ];
+
+    // Seeded developer personas currently use an email identity. Keep that
+    // existing method visible without presenting email as a public sign-up
+    // choice or offering an unsupported provider-linking action.
+    if (methods.isEmpty) {
+      methods.add(
+        _CurrentSignInMethod(
+          key: 'email',
+          icon: Icons.alternate_email,
+          title: 'Email sign-in',
+          detail: ZyraAuth.currentUser?.email ?? 'Connected',
+        ),
+      );
+    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text('Sign-in & security', style: ZyraText.heading(size: 17)),
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 18, 20, 90),
             children: [
-              Text('Your ways into ZYRA', style: ZyraText.heading(size: 24)),
-              const SizedBox(height: 8),
+              Text('How you sign in', style: ZyraText.heading(size: 24)),
+              SizedBox(height: 8),
               Text(
-                'Connect a backup before you need it. Every method below opens this same account.',
+                'These are the sign-in methods currently connected to your ZYRA account.',
                 style: ZyraText.body(size: 13.5),
               ),
-              const SizedBox(height: 22),
-              if (_error != null) ...[
-                ZyraErrorBanner(
-                  message: _error!,
-                  onDismiss: () => setState(() => _error = null),
-                ),
-                const SizedBox(height: 12),
-              ],
-              if (_notice != null) ...[
-                _NoticeBanner(message: _notice!),
-                const SizedBox(height: 12),
-              ],
+              SizedBox(height: 22),
               Text(
-                'SIGN-IN METHODS',
-                style: ZyraText.chapterLabel(color: Colors.white54),
+                'CURRENT SIGN-IN METHODS',
+                style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
               ),
-              const SizedBox(height: 9),
-              _MethodCard(
-                icon: Icons.apple,
-                title: 'Apple',
-                detail: providers.contains('apple')
-                    ? ZyraAuth.providerEmail('apple') ?? 'Connected'
-                    : 'Not connected',
-                connected: providers.contains('apple'),
-                busy: _busyProvider == 'apple',
-                onAdd: !hasOAuth && providers.contains('email')
-                    ? null
-                    : () => _link('apple'),
-              ),
-              const SizedBox(height: 10),
-              _MethodCard(
-                icon: Icons.g_mobiledata,
-                title: 'Google',
-                detail: providers.contains('google')
-                    ? ZyraAuth.providerEmail('google') ?? 'Connected'
-                    : 'Not connected',
-                connected: providers.contains('google'),
-                busy: _busyProvider == 'google',
-                onAdd: !hasOAuth && providers.contains('email')
-                    ? null
-                    : () => _link('google'),
-              ),
-              const SizedBox(height: 25),
+              SizedBox(height: 9),
+              for (var index = 0; index < methods.length; index++) ...[
+                _MethodCard(
+                  key: ValueKey('sign_in_method_${methods[index].key}'),
+                  icon: methods[index].icon,
+                  title: methods[index].title,
+                  detail: methods[index].detail,
+                ),
+                if (index != methods.length - 1) SizedBox(height: 10),
+              ],
+              SizedBox(height: 25),
               Text(
                 'RECOVERY EMAIL',
-                style: ZyraText.chapterLabel(color: Colors.white54),
+                style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
               ),
-              const SizedBox(height: 9),
+              SizedBox(height: 9),
               _RecoveryCard(
                 email: recoveryEmail,
                 enabled: hasOAuth,
                 onTap: _openRecoveryEmail,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.lock_outline_rounded,
                     size: 16,
-                    color: Colors.white38,
+                    color: ZyraColors.ink(0.38),
                   ),
-                  const SizedBox(width: 9),
+                  SizedBox(width: 9),
                   Expanded(
                     child: Text(
                       'ZYRA never creates or stores a password. Recovery uses a one-time code sent only to a verified address.',
@@ -144,10 +125,13 @@ class _SignInSecurityScreenState extends State<SignInSecurityScreen> {
                 ],
               ),
               if (!hasOAuth) ...[
-                const SizedBox(height: 15),
+                SizedBox(height: 15),
                 Text(
                   'Recovery controls become available on an Apple or Google account. This test account remains separate.',
-                  style: ZyraText.subtext(size: 11.5, color: Colors.white38),
+                  style: ZyraText.subtext(
+                    size: 11.5,
+                    color: ZyraColors.ink(0.38),
+                  ),
                 ),
               ],
             ],
@@ -176,15 +160,56 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
   bool _busy = false;
   String? _error;
   String _newEmail = '';
+  late final String? _owner;
+  late final int _generation;
+  bool _superseded = false;
+  StreamSubscription? _authSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _owner = ZyraAuth.currentUser?.id;
+    _generation = ZyraAccountState.generation;
+    _authSubscription = ZyraAuth.authStateChanges.listen(
+      (_) => _withdrawSupersededAccount(),
+      onError: (Object error, StackTrace stack) =>
+          _withdrawSupersededAccount(force: true),
+    );
+  }
+
+  bool get _accountCurrent =>
+      !_superseded &&
+      _owner != null &&
+      !ZyraAccountState.isSigningOut &&
+      ZyraAuth.currentUser?.id == _owner &&
+      ZyraAccountState.generation == _generation;
+
+  bool _canAct(_RecoverySetupStep step) =>
+      mounted && _accountCurrent && !_busy && _step == step;
+
+  void _withdrawSupersededAccount({bool force = false}) {
+    if (!mounted || _superseded || (!force && _accountCurrent)) return;
+    setState(() {
+      // Irreversible for this route, including an A → B → A replacement.
+      _superseded = true;
+      _busy = false;
+      _newEmail = '';
+      _error = null;
+      _emailController.clear();
+      _codeController.clear();
+    });
+  }
 
   @override
   void dispose() {
+    _authSubscription?.cancel();
     _emailController.dispose();
     _codeController.dispose();
     super.dispose();
   }
 
   Future<void> _request() async {
+    if (!_canAct(_RecoverySetupStep.email)) return;
     final email = _emailController.text.trim().toLowerCase();
     if (!ZyraAuth.isValidEmail(email)) {
       setState(() => _error = 'Enter a valid email address.');
@@ -195,7 +220,7 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
       _error = null;
     });
     final result = await ZyraAuth.requestRecoveryEmail(email);
-    if (!mounted) return;
+    if (!mounted || !_accountCurrent) return;
     setState(() {
       _busy = false;
       if (result.outcome == ZyraAuthOutcome.success) {
@@ -209,11 +234,18 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
   }
 
   Future<void> _verifyNewEmail() async {
-    final result = await _verifyCode(_newEmail);
-    if (!mounted || result.outcome != ZyraAuthOutcome.success) return;
+    final result = await _verifyCode(
+      _newEmail,
+      _RecoverySetupStep.newEmailCode,
+    );
+    if (!mounted ||
+        !_accountCurrent ||
+        result.outcome != ZyraAuthOutcome.success) {
+      return;
+    }
 
     final complete = await ZyraAuth.isRecoveryEmailVerified(_newEmail);
-    if (!mounted) return;
+    if (!mounted || !_accountCurrent) return;
     setState(() {
       _busy = false;
       _codeController.clear();
@@ -224,11 +256,18 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
   }
 
   Future<void> _verifyCurrentEmail() async {
-    final result = await _verifyCode(_currentEmail);
-    if (!mounted || result.outcome != ZyraAuthOutcome.success) return;
+    final result = await _verifyCode(
+      _currentEmail,
+      _RecoverySetupStep.currentEmailCode,
+    );
+    if (!mounted ||
+        !_accountCurrent ||
+        result.outcome != ZyraAuthOutcome.success) {
+      return;
+    }
 
     final complete = await ZyraAuth.isRecoveryEmailVerified(_newEmail);
-    if (!mounted) return;
+    if (!mounted || !_accountCurrent) return;
     setState(() {
       _busy = false;
       if (complete) {
@@ -240,7 +279,11 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
     });
   }
 
-  Future<ZyraAuthResult> _verifyCode(String email) async {
+  Future<ZyraAuthResult> _verifyCode(
+    String email,
+    _RecoverySetupStep step,
+  ) async {
+    if (!_canAct(step)) return const ZyraAuthResult.cancelled();
     final code = _codeController.text.trim();
     if (code.length != 6) {
       setState(() => _error = 'Enter the six-digit code.');
@@ -254,7 +297,7 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
       email: email,
       code: code,
     );
-    if (!mounted) return result;
+    if (!mounted || !_accountCurrent) return const ZyraAuthResult.cancelled();
     if (result.outcome == ZyraAuthOutcome.error) {
       setState(() {
         _busy = false;
@@ -278,22 +321,27 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(title, style: ZyraText.heading(size: 17)),
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
+        decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: ListView(
             padding: const EdgeInsets.fromLTRB(24, 32, 24, 70),
             children: [
-              if (_step == _RecoverySetupStep.email) ...[
+              if (!_accountCurrent)
+                Text(
+                  'Your account changed. Return to Sign-in & security and open recovery email again.',
+                  style: ZyraText.body(size: 13.5),
+                )
+              else if (_step == _RecoverySetupStep.email) ...[
                 Text('A safe way back in.', style: ZyraText.heading(size: 27)),
-                const SizedBox(height: 9),
+                SizedBox(height: 9),
                 Text(
                   'Use any email you control. If you lose Apple or Google access, ZYRA can send a one-time sign-in code here.',
                   style: ZyraText.body(size: 13.5),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
                 _SecurityTextField(
                   key: const ValueKey('recovery_setup_email'),
                   controller: _emailController,
@@ -302,12 +350,12 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
                   textInputAction: TextInputAction.done,
                   onSubmitted: (_) => _busy ? null : _request(),
                 ),
-                const SizedBox(height: 13),
+                SizedBox(height: 13),
                 Text(
                   'This address is private and is not shown on your profile.',
                   style: ZyraText.subtext(size: 11.5),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
                 _SecurityActionButton(
                   key: const ValueKey('recovery_setup_send'),
                   label: 'Send verification code',
@@ -335,32 +383,36 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
                   onVerify: _verifyCurrentEmail,
                 ),
               ] else ...[
-                const Icon(
+                Icon(
                   Icons.verified_user_outlined,
                   size: 48,
-                  color: Color(0xFF84D0A8),
+                  color: ZyraColors.positiveGreen,
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
                 Text(
                   'Your backup is ready.',
                   textAlign: TextAlign.center,
                   style: ZyraText.heading(size: 27),
                 ),
-                const SizedBox(height: 9),
+                SizedBox(height: 9),
                 Text(
                   'You can now use $_newEmail to request a one-time sign-in code. No password has been created.',
                   textAlign: TextAlign.center,
                   style: ZyraText.body(size: 13.5),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: 28),
                 _SecurityActionButton(
                   label: 'Done',
                   busy: false,
-                  onTap: () => Navigator.of(context).pop(),
+                  onTap: () {
+                    if (_canAct(_RecoverySetupStep.complete)) {
+                      Navigator.of(context).pop();
+                    }
+                  },
                 ),
               ],
               if (_error != null) ...[
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 ZyraErrorBanner(
                   message: _error!,
                   onDismiss: () => setState(() => _error = null),
@@ -378,17 +430,12 @@ class _MethodCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String detail;
-  final bool connected;
-  final bool busy;
-  final VoidCallback? onAdd;
 
   const _MethodCard({
+    super.key,
     required this.icon,
     required this.title,
     required this.detail,
-    required this.connected,
-    required this.busy,
-    required this.onAdd,
   });
 
   @override
@@ -397,13 +444,13 @@ class _MethodCard extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: Colors.white, size: 23),
-          const SizedBox(width: 13),
+          SizedBox(width: 13),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: ZyraText.body(size: 14.5)),
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 Text(
                   detail,
                   maxLines: 1,
@@ -413,24 +460,26 @@ class _MethodCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 10),
-          if (connected)
-            const _ConnectedBadge()
-          else
-            TextButton(
-              onPressed: busy ? null : onAdd,
-              child: busy
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 1.6),
-                    )
-                  : Text('Add', style: ZyraText.button(size: 12.5)),
-            ),
+          SizedBox(width: 10),
+          const _ConnectedBadge(),
         ],
       ),
     );
   }
+}
+
+class _CurrentSignInMethod {
+  final String key;
+  final IconData icon;
+  final String title;
+  final String detail;
+
+  const _CurrentSignInMethod({
+    required this.key,
+    required this.icon,
+    required this.title,
+    required this.detail,
+  });
 }
 
 class _RecoveryCard extends StatelessWidget {
@@ -449,8 +498,8 @@ class _RecoveryCard extends StatelessWidget {
     return _SecurityCard(
       child: Row(
         children: [
-          const Icon(Icons.alternate_email, color: Colors.white70, size: 21),
-          const SizedBox(width: 13),
+          Icon(Icons.alternate_email, color: ZyraColors.ink(0.70), size: 21),
+          SizedBox(width: 13),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -461,7 +510,7 @@ class _RecoveryCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: ZyraText.body(size: 14),
                 ),
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 Text(
                   email == null ? 'One-time codes · no password' : 'Verified',
                   style: ZyraText.subtext(size: 11.5),
@@ -511,37 +560,16 @@ class _ConnectedBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: const Color(0xFF84D0A8).withValues(alpha: 0.12),
+        color: ZyraColors.positiveGreen.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(99),
         border: Border.all(
-          color: const Color(0xFF84D0A8).withValues(alpha: 0.45),
+          color: ZyraColors.positiveGreen.withValues(alpha: 0.45),
         ),
       ),
       child: Text(
         'Connected',
         style: ZyraText.subtext(size: 10.5, color: const Color(0xFFBCEBD2)),
       ),
-    );
-  }
-}
-
-class _NoticeBanner extends StatelessWidget {
-  final String message;
-
-  const _NoticeBanner({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
-      decoration: BoxDecoration(
-        color: const Color(0xFF84D0A8).withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(13),
-        border: Border.all(
-          color: const Color(0xFF84D0A8).withValues(alpha: 0.35),
-        ),
-      ),
-      child: Text(message, style: ZyraText.body(size: 12.5)),
     );
   }
 }
@@ -569,9 +597,9 @@ class _CodeStep extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: ZyraText.heading(size: 25)),
-        const SizedBox(height: 9),
+        SizedBox(height: 9),
         Text(description, style: ZyraText.body(size: 13.5)),
-        const SizedBox(height: 25),
+        SizedBox(height: 25),
         _SecurityTextField(
           key: const ValueKey('recovery_setup_code'),
           controller: controller,
@@ -581,7 +609,7 @@ class _CodeStep extends StatelessWidget {
           inputFormatters: const [_SixDigitFormatter()],
           onSubmitted: (_) => busy ? null : onVerify(),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         _SecurityActionButton(
           key: buttonKey,
           label: 'Verify code',
@@ -646,11 +674,11 @@ class _SecurityTextField extends StatelessWidget {
         fillColor: ZyraColors.iconButtonBg,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: ZyraColors.iconButtonBorder),
+          borderSide: BorderSide(color: ZyraColors.iconButtonBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: ZyraColors.primaryAction),
+          borderSide: BorderSide(color: ZyraColors.actionFill),
         ),
       ),
     );
@@ -677,7 +705,7 @@ class _SecurityActionButton extends StatelessWidget {
       child: FilledButton(
         onPressed: busy ? null : onTap,
         child: busy
-            ? const SizedBox(
+            ? SizedBox(
                 width: 18,
                 height: 18,
                 child: CircularProgressIndicator(strokeWidth: 1.8),

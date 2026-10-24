@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "artifact_id": "OA-ZYRA-198-RECONSTRUCTED-QUESTION-BANK-REPLAY-BRIDGE-2026-09-11",
+  "classification": "reconstructed replay-only compatibility bridge; not retained production history",
+  "status": "CODEX_INTERNALLY_VERIFIED_REPLAY_NOT_AUTHORISED",
+  "authority": {
+    "governing_message": "SYSTEM/RESOURCES/MESSAGES/079_CODEX-FOUNDER_2026-09-11_OA-ZYRA-198_PROVENANCE_ABSENT_RECONSTRUCTION_RULING_REQUIRED.md",
+    "approved_by": "Founder (Shakeel)",
+    "approved_on": "2026-09-11",
+    "scope": "Build and internally verify outside the active production migration path; do not apply and do not run a replay; return evidence for a separate one-replay GO."
+  },
+  "bridge": {
+    "path": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE/20260811153415_oa198_reconstructed_question_bank_replay_bridge.sql",
+    "filename": "20260811153415_oa198_reconstructed_question_bank_replay_bridge.sql",
+    "ordering_version": "20260811153415",
+    "ordering_version_is_recovered_history": false,
+    "bytes": 28387,
+    "sha256": "461c3bd0e4ef4692229027c5659756983ed2048e1e78cf71e2148009d6729055",
+    "mode": "0600",
+    "active_migration_path": false
+  },
+  "readme": {
+    "path": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE/README.md",
+    "bytes": 5521,
+    "sha256": "d883fe559f417d1ab8c5311cb7e521aeea1fdfe2b9262c0b7ef54567f5cbab21"
+  },
+  "source_evidence": {
+    "archived_chapter3_categories": {
+      "entry_timestamp": "2026-08-10 17:23",
+      "bytes": 32290,
+      "lines": 681,
+      "sha256": "232cdf3e70f7e739fedda2a0004e57ffa346686347c86cc2b67e9c895a8677ce"
+    },
+    "archived_onboarding_model": {
+      "sha256": "0a87d252dc2f2b2895ea058defb92683949669f01dd9bee12ccc628c6bb525f4"
+    },
+    "historical_ddl_recovered": false,
+    "historical_catalog_recovered": false,
+    "historical_acl_recovered": false
+  },
+  "payload": {
+    "encoding": "compact UTF-8 JSON with alphabetically ordered object keys; numeric qid then gender_visibility row order; no trailing newline",
+    "fields": [
+      "gender_visibility",
+      "is_multi",
+      "options",
+      "qid"
+    ],
+    "bytes": 12927,
+    "sha256": "eb355693f50651c7090aeaa5e7eb15187eb9a37855a785aaa259991cb1b43f90",
+    "rows": 72,
+    "distinct_qids": 71,
+    "duplicate_qid": "ch3_q26",
+    "men_only_qid": "ch3_q39",
+    "scored_multi_qids": [
+      "ch3_q37",
+      "ch3_q97"
+    ],
+    "later_non_scored_overlap": 0
+  },
+  "active_inventory": {
+    "directory": "SOURCE/supabase/migrations",
+    "sql_files": 207,
+    "digest": "8a36926aaca155493f16a731ee498204f0d0225e2a5b41cc66f89e1da39b8861",
+    "digest_method": "From SOURCE/supabase/migrations: sorted ./filename paths, each passed to macOS shasum -a 256; SHA-256 of the resulting lines.",
+    "contains_ordering_version_20260811153415": false,
+    "hypothetical_isolated_scratch_sql_files": 208,
+    "hypothetical_difference": "exactly this one bridge"
+  },
+  "chronology": {
+    "predecessor": {
+      "version": "20260811152809",
+      "file_sha256": "94799280bc9edd760bd1566e8b65dd79f6271a95bf32475c96edc9a4df9382bd",
+      "retained_statement_sha256": "38a2a20e810895d1975d4ec27eaea5db0cd03e78d3a114848171343bb2b16366"
+    },
+    "successor": {
+      "version": "20260811153416",
+      "file_sha256": "832c4bdfcac2e622700458810768a995a058d7186933ea5fb6458ac4ac3f3d6d",
+      "retained_statement_sha256": "0f9022853b97fa328940e15296e885e917d83842ee19ff9d469ebef88e42fcfc"
+    }
+  },
+  "reconstructed_catalog_contract": {
+    "historical_claim": false,
+    "columns_in_order": [
+      {
+        "name": "qid",
+        "type": "text",
+        "not_null": true,
+        "default": null
+      },
+      {
+        "name": "gender_visibility",
+        "type": "text",
+        "not_null": true,
+        "default": null
+      },
+      {
+        "name": "is_multi",
+        "type": "boolean",
+        "not_null": true,
+        "default": null
+      },
+      {
+        "name": "options",
+        "type": "jsonb",
+        "not_null": true,
+        "default": null
+      }
+    ],
+    "persistent_constraints": [
+      {
+        "name": "zyra_seed_ch4_questions_pkey",
+        "type": "primary_key",
+        "columns": [
+          "qid",
+          "gender_visibility"
+        ]
+      }
+    ],
+    "persistent_checks": [],
+    "owner": "migration executor (current_user)",
+    "historical_owner": "unknown"
+  },
+  "security_contract": {
+    "rls_enabled": true,
+    "force_rls": false,
+    "policies": 0,
+    "table_privileges_for_public_anon_authenticated": 0,
+    "column_privileges_for_public_anon_authenticated": 0,
+    "effective_privileges_checked_for_anon_authenticated": true,
+    "postgresql_17_maintain_privilege_checked": true,
+    "service_role_grant_assumed": false,
+    "optional_non_owner_table_acl_grantee": "service_role",
+    "all_column_acl_entries": 0
+  },
+  "contract_identity": {
+    "method": "SHA-256 of recursively key-sorted compact JSON containing reconstructed_catalog_contract and security_contract; arrays preserve order; no trailing newline",
+    "sha256": "a929d23e5190ce238ef86a8786bdbaf0858337ae16a55cbf79572c6f2410850a"
+  },
+  "execution_guards": [
+    "schema_migrations exists",
+    "20260811152809 exists exactly once",
+    "both old and canonical relation names are absent",
+    "no migration version at or after 20260811153416",
+    "no unexpected version between 20260811152809 and 20260811153416",
+    "current 20260811153415 history row is absent",
+    "payload byte length and core PostgreSQL SHA-256 match",
+    "full rows and reconstructed catalog/security contract match"
+  ],
+  "verification": {
+    "test_path": "SOURCE/test/zyra_oa198_replay_bridge_artifact_test.dart",
+    "test_bytes": 20192,
+    "test_sha256": "11148da4d68ec8d63633a1a9db868b84451e65ebacc4810aa73bc9fb3b0bb975",
+    "artifact_test_cases": 6,
+    "focused_combined_test_cases": 16,
+    "retained_migration_bodies_rechecked": 8,
+    "non_visual_test_cases_passed": 549,
+    "analyzer_result": "PASS — no issues found",
+    "repository_check_result": "PASS — 0 findings",
+    "repository_checker_unit_tests_passed": 1,
+    "full_flutter_suite_passed": 824,
+    "full_flutter_suite_failed": 60,
+    "full_flutter_suite_failure_scope": "existing visual golden comparisons only; no approved pixels regenerated or changed",
+    "tests_run": true,
+    "static_review_complete": true,
+    "separate_internal_static_review_passes": 3,
+    "static_sql_review_result": "PASS against exact bridge SHA-256 461c3bd0e4ef4692229027c5659756983ed2048e1e78cf71e2148009d6729055",
+    "database_execution_used_for_internal_verification": false
+  },
+  "side_effects": {
+    "active_migration_path_changed": false,
+    "production_history_changed": false,
+    "replay_run": false,
+    "production_applied": false,
+    "testflight_changed": false,
+    "git_used": false,
+    "private_credential_store_accessed": false
+  },
+  "future_gate": {
+    "separate_founder_one_replay_go_required": true,
+    "copy_into_isolated_scratch_only": true,
+    "production_apply_permitted": false,
+    "stop_on_any_hash_inventory_frontier_or_destination_drift": true,
+    "retry_after_failure_implicitly_authorised": false
+  }
+}

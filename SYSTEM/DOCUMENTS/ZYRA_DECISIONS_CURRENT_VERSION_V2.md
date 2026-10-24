@@ -1,7 +1,17 @@
 # ZYRA — Decisions of 2026-08-01 to 2026-08-04
 
+> **Compatibility supersession — DR-ZYRA-250, 2026-09-28:**
+> This dated implementation record remains historical. The new D1–D6
+> product policies are approved, not implemented: consume ZYRA_PRODUCT_SPEC
+> Part 1 section 8 and the exact decisions-register entry. Old six-category
+> examples, exact tally/percentage targets, unvalidated skips and statements
+> that categories/Chapter2 weight are still wholly undecided are not current
+> future-policy authority. Weight 1 is provisional; corrected measurement,
+> bands/suppression/usefulness, retention and risk acceptance remain pending.
+> No source/SQL/database/spending/activation change follows from this filing.
+
 **Version:** V2 — CURRENT
-**Status:** RECORD — all items Founder approved and implemented
+**Status:** HISTORICAL RECORD — dated implementations below, subject to later overlays; the new policy overlay is not an as-built claim
 **Author:** Claude (Opus), Implementation Lead
 
 *Supersedes `ZYRA_DECISIONS_2026-08-04_V1.md` (archived, covered 01–03
@@ -400,7 +410,7 @@ scores everyone 50.0.
 previously fell through the early return and got a flat 50 despite having
 told us six things.
 
-**OPEN — needs a Founder decision.** `v_ch2_weight` is set to **1**: one
+**HISTORICAL OPEN ITEM — later settled provisionally by DR-ZYRA-250.** `v_ch2_weight` is set to **1**: one
 Chapter 2 attribute counts the same as one Chapter 3 question. But Chapters
 3/4 ask ~174 questions and Chapter 2 offers 6 attributes, so at weight 1
 Chapter 2 moves the final score by only a few percent. That may understate
@@ -415,6 +425,12 @@ exclusion.)*
 ---
 
 ## 10. Still open
+
+Current compatibility disposition (2026-09-28): categories and D1–D6 are
+policy-approved; Chapter2 weight 1 is provisional. The old worked examples
+remain historical, never a real category contract or equal-category average.
+OA193/226/227/285 retain engineering/measurement/risk gates. The dated open
+list below does not grant new execution or override that disposition.
 - **Article 9 solicitor review** of the consent wording, Privacy Policy, Terms and the Compatibility Unlock flow, before public launch. Founder has confirmed this will happen; implementation deliberately did not wait.
 - **Payments.** No SDK in the project. Every price is unchargeable.
 - **The buy page.** Now owns prices, BEST VALUE, and the free-vs-purchased credit itemisation — three things the spec requires and no screen shows.

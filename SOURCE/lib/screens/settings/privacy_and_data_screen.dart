@@ -1,3 +1,7 @@
+// Current 2026-10-18: product summary only, not a formal app policy. The
+// website notice covers the website, not the app. Fixed-label first-party
+// telemetry and verified recovery email supersede the older dated inventory
+// below; no placeholder consent control or legal acceptance is created here.
 // Settings › Legal › Privacy & data.
 //
 // ADDED 2026-08-09. Founder: "on Muzz in settings they have a privacy and
@@ -36,18 +40,23 @@
 // the moment it lands, and it is the first thing that must change.
 
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../state/app_state.dart';
+import '../../services/zyra_product_telemetry.dart';
+import 'legal_document_screen.dart';
 
 class PrivacyAndDataScreen extends StatelessWidget {
-  const PrivacyAndDataScreen({super.key});
+  final bool guardian;
+
+  const PrivacyAndDataScreen({super.key, this.guardian = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: ZyraAppGoldDecoration(
         gradient: ZyraColors.genderGradient(AppState.instance.gender),
       ),
       child: Scaffold(
@@ -61,54 +70,78 @@ class PrivacyAndDataScreen extends StatelessWidget {
           top: false,
           child: ListView(
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 40),
-            children: const [
-              _Lead(
-                'ZYRA collects what it needs to introduce you properly, and '
-                'nothing for advertising.',
+            children: [
+              const _Lead(
+                'A summary of your account, sharing choices and device settings. '
+                'This is not the full Privacy Policy.',
               ),
-              SizedBox(height: 26),
+              const SizedBox(height: 26),
 
               _Block(
-                heading: 'Cookies and tracking',
-                body:
-                    'The ZYRA app uses no cookies, no analytics and no '
-                    'advertising or attribution services. Nothing you do in '
-                    'the app is measured by a third party, so there is '
-                    'nothing here to switch off.\n\n'
-                    'If that ever changes, you will be asked first, and this '
-                    'screen will say so.',
+                heading: 'Feature usage',
+                body: ZyraProductTelemetry.productionCollectionEnabled
+                    ? 'This build can send limited feature-usage events to ZYRA. '
+                          'Those events use fixed feature and action labels, not '
+                          'your name, messages, answers or search terms. The app '
+                          'does not configure an advertising or attribution SDK.'
+                    : 'The app can keep a small, temporary record of fixed '
+                          'feature actions in memory. Production usage-event '
+                          'transmission is off in this build. These records do not '
+                          'contain your name, messages, answers or search terms. '
+                          'The app does not configure an advertising or attribution SDK.',
               ),
 
-              _Block(
+              const _Block(
                 heading: 'How you sign in',
                 body:
-                    'Through Apple or Google. ZYRA never sees or stores a '
-                    'password, and does not ask for your phone number.',
+                    'Use Apple or Google to sign in. A separately verified '
+                    'recovery email can help you recover your account with a '
+                    'one-time code. ZYRA does not ask you to create an app password.',
               ),
 
-              _Block(
-                heading: 'What is stored about you',
-                body:
-                    'Your profile and photographs, your onboarding answers, '
-                    'the people you save, consider or pass, your Journeys and '
-                    'their messages, and your Guardian links.\n\n'
-                    'Some answers describe your religious practice. Those are '
-                    'held as special-category data and are handled separately '
-                    'from the rest of your profile.',
-              ),
+              if (guardian)
+                const _Block(
+                  heading: 'What is stored about you',
+                  body:
+                      'Your account identity, the Seekers who link you, your '
+                      'Journey access and the notification and privacy choices '
+                      'you make. Messages you send as a Guardian are also kept '
+                      'with the relevant conversation.',
+                )
+              else
+                const _Block(
+                  heading: 'What is stored about you',
+                  body:
+                      'Your profile and photographs, your onboarding answers, '
+                      'the people you save, consider or pass, your Journeys and '
+                      'their messages, and your Guardian links.\n\n'
+                      'Some answers describe your religious practice. Those are '
+                      'held as special-category data and are handled separately '
+                      'from the rest of your profile.',
+                ),
 
-              _Block(
-                heading: 'Who can see it',
-                body:
-                    'Other Seekers see your profile only where the rules of '
-                    'the app allow it. A linked Guardian sees a defined, '
-                    'limited set — never your full browsing, never your '
-                    'private decisions.\n\n'
-                    'Your Guardian is shown what they need to support you, '
-                    'and nothing beyond it.',
-              ),
+              if (guardian)
+                const _Block(
+                  heading: 'Who can see it',
+                  body:
+                      'Guardian accounts never appear in Profiles. A Seeker who '
+                      'links you can see your Guardian identity. Other linked '
+                      'Guardians see it only where you share responsibility in '
+                      'the same Journey or Guardian Circle.',
+                )
+              else
+                const _Block(
+                  heading: 'Who can see it',
+                  body:
+                      'Other Seekers see your profile only where the rules of '
+                      'the app allow it. A linked Guardian sees a defined, '
+                      'limited set — never your full browsing, never your '
+                      'private decisions.\n\n'
+                      'Your Guardian is shown what they need to support you, '
+                      'and nothing beyond it.',
+                ),
 
-              _Block(
+              const _Block(
                 heading: 'On your device only',
                 body:
                     'App Lock and your last-used colour theme are kept on '
@@ -117,17 +150,28 @@ class PrivacyAndDataScreen extends StatelessWidget {
 
               _Block(
                 heading: 'Deleting your account',
-                body:
-                    'Settings › Account › Advanced. Deletion removes your '
-                    'profile, photographs, answers and Journeys.',
+                body: guardian
+                    ? 'Start in Settings › Account › Advanced. Review the '
+                          'confirmation and the result before assuming your '
+                          'Guardian account has been deleted. Records subject '
+                          'to a safety or legal retention requirement are separate.'
+                    : 'Start in Settings › Account › Advanced. Review the '
+                          'confirmation and the result before assuming your '
+                          'account has been deleted. Records subject to a '
+                          'safety or legal retention requirement are separate.',
               ),
 
-              SizedBox(height: 8),
-              _Footnote(
+              const SizedBox(height: 8),
+              const _Footnote(
                 'This page is a plain-English summary of how the app behaves. '
-                'The full Privacy Policy and Terms will be published before '
-                'launch and linked here.',
+                'The formal app documents below are not available yet; the '
+                'website notice covers the public website only.',
               ),
+              const SizedBox(height: 20),
+              for (final document in ZyraLegalDocument.values) ...[
+                _DocumentDestination(document: document, guardian: guardian),
+                const SizedBox(height: 12),
+              ],
             ],
           ),
         ),
@@ -142,7 +186,7 @@ class _Lead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Text(text, style: ZyraText.body(size: 15, color: Colors.white));
+      Text(text, style: ZyraText.body(size: 15, color: ZyraColors.foreground));
 }
 
 class _Block extends StatelessWidget {
@@ -152,16 +196,19 @@ class _Block extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(heading, style: ZyraText.body(size: 14, color: Colors.white)),
-            const SizedBox(height: 6),
-            Text(body, style: ZyraText.subtext(size: 13.5)),
-          ],
+    padding: const EdgeInsets.only(bottom: 24),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          heading,
+          style: ZyraText.body(size: 14, color: ZyraColors.foreground),
         ),
-      );
+        SizedBox(height: 6),
+        Text(body, style: ZyraText.subtext(size: 13.5)),
+      ],
+    ),
+  );
 }
 
 class _Footnote extends StatelessWidget {
@@ -170,7 +217,55 @@ class _Footnote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        text,
-        style: ZyraText.subtext(size: 12, color: Colors.white38),
+    text,
+    style: ZyraText.subtext(size: 12, color: ZyraColors.foregroundSecondary),
+  );
+}
+
+class _DocumentDestination extends StatelessWidget {
+  const _DocumentDestination({required this.document, required this.guardian});
+  final ZyraLegalDocument document;
+  final bool guardian;
+
+  @override
+  Widget build(BuildContext context) => OutlinedButton(
+    key: ValueKey('privacy_document_${document.name}'),
+    style: OutlinedButton.styleFrom(
+      minimumSize: const Size(44, 48),
+      padding: const EdgeInsets.all(16),
+    ),
+    onPressed: () {
+      if (!context.mounted || !(ModalRoute.of(context)?.isCurrent ?? false)) {
+        return;
+      }
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) =>
+              LegalDocumentScreen(document: document, guardian: guardian),
+        ),
       );
+    },
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(document.title, style: ZyraText.body(size: 14)),
+              const SizedBox(height: 4),
+              Text(
+                'Not added yet',
+                style: ZyraText.subtext(
+                  size: 12,
+                  color: ZyraColors.foregroundSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+        Icon(Icons.chevron_right, color: ZyraColors.foregroundSecondary),
+      ],
+    ),
+  );
 }

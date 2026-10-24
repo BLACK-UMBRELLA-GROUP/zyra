@@ -20,20 +20,20 @@ JourneyMatch _ended(Duration ago) => JourneyMatch(
 );
 
 void main() {
-  group('60-day New Journey request window', () {
-    test('remains open after the cooling period and before day 60', () {
+  group('paid New Journey return eligibility', () {
+    test('remains open after the cooling period', () {
       final journey = _ended(const Duration(days: 30));
 
       expect(journey.isWithinNewJourneyRequestWindow, isTrue);
       expect(journey.canRestart, isTrue);
     });
 
-    test('does not offer a direct request after day 60', () {
+    test('has no age expiry when the Journey remains in the latest five', () {
       final journey = _ended(const Duration(days: 61));
 
-      expect(journey.isWithinNewJourneyRequestWindow, isFalse);
-      expect(journey.canRestart, isFalse);
-      expect(journey.restartAvailableIn, 'the 60-day request window has ended');
+      expect(journey.isWithinNewJourneyRequestWindow, isTrue);
+      expect(journey.canRestart, isTrue);
+      expect(journey.restartAvailableIn, 'you can ask again');
     });
 
     test('keeps the existing 24-hour cooling period', () {
@@ -57,8 +57,15 @@ void main() {
     });
   });
 
-  test('Ended Connections display caps are Basic 1 and ZYRA One 5', () {
-    expect(ZyraEntitlements.basic.ended, 1);
-    expect(ZyraEntitlements.one.ended, 5);
+  test('Ended Connections display caps are Basic 0 and ZYRA One 10', () {
+    expect(ZyraEntitlements.basic.ended, 0);
+    expect(ZyraEntitlements.one.ended, 10);
+  });
+
+  test('return initiation windows are paid and limited to five', () {
+    expect(ZyraEntitlements.basic.pausedReturnWindow, 0);
+    expect(ZyraEntitlements.basic.endedReturnWindow, 0);
+    expect(ZyraEntitlements.one.pausedReturnWindow, 5);
+    expect(ZyraEntitlements.one.endedReturnWindow, 5);
   });
 }

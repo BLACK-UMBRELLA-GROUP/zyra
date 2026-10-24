@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>ZYRA Marketing Command Centre</title>
+    <link rel="stylesheet" href="./app.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="wordmark" href="#command" aria-label="ZYRA Marketing home">ZYRA</a>
+      <div class="topbar-copy">
+        <p class="eyebrow">Marketing Command Centre</p>
+        <p class="quiet">AI prepares and learns. The Founder controls what represents ZYRA publicly.</p>
+      </div>
+      <span class="local-badge"><i></i> Local only</span>
+      <a class="aios-back" id="aios-back" href="/">Back to AIOS</a>
+    </header>
+
+    <div class="shell">
+      <nav class="rail" aria-label="Marketing sections">
+        <button class="nav-item active" data-view="command"><span>01</span> Command</button>
+        <button class="nav-item" data-view="accounts"><span>02</span> Social accounts</button>
+        <button class="nav-item" data-view="campaigns"><span>03</span> Master ideas</button>
+        <button class="nav-item" data-view="calendar"><span>04</span> Calendar</button>
+        <button class="nav-item" data-view="pipeline"><span>05</span> Content variants</button>
+        <button class="nav-item" data-view="research"><span>06</span> Research</button>
+        <button class="nav-item" data-view="inspiration"><span>07</span> Inspiration inbox</button>
+        <button class="nav-item" data-view="approval"><span>08</span> Founder approval</button>
+        <button class="nav-item" data-view="community"><span>09</span> Community</button>
+        <button class="nav-item" data-view="analytics"><span>10</span> Analytics</button>
+        <div class="rail-note">
+          <strong>Live connections locked</strong>
+          <p>AIOS records non-secret account facts. It cannot post, reply publicly or hold passwords.</p>
+        </div>
+      </nav>
+
+      <main>
+        <section class="view active" id="view-command">
+          <div class="page-heading">
+            <div><p class="eyebrow">Operating room</p><h1>Your AI-assisted marketing team</h1></div>
+            <button class="button secondary" data-go="pipeline">Open content queue</button>
+          </div>
+          <div class="stats" id="status-stats" aria-label="Pipeline status"></div>
+          <div class="section-heading"><div><p class="eyebrow">Team</p><h2>Eight clear roles. One approval line.</h2></div></div>
+          <div class="agent-grid" id="agent-grid"></div>
+          <div class="governance-strip">
+            <div><span>Prepare</span><strong>Research · strategy · studio</strong></div>
+            <b>→</b>
+            <div><span>Protect</span><strong>Brand · compliance</strong></div>
+            <b>→</b>
+            <div><span>Approve</span><strong>Founder sees exact preview</strong></div>
+            <b>→</b>
+            <div><span>Publish</span><strong>Manual only, then measure</strong></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-accounts">
+          <div class="page-heading"><div><p class="eyebrow">Control register</p><h1>Social accounts</h1></div></div>
+          <div class="approval-warning"><strong>No passwords or tokens.</strong> Record ownership, recovery and security status only. Live connections remain disabled until authentication and encrypted secret storage are separately approved.</div>
+          <div class="account-summary" id="account-summary"></div>
+          <div class="account-grid" id="account-grid"></div>
+        </section>
+
+        <section class="view" id="view-campaigns">
+          <div class="page-heading"><div><p class="eyebrow">One idea · many versions</p><h1>Master ideas</h1></div></div>
+          <div class="two-column">
+            <form class="panel form-panel" id="campaign-form">
+              <input name="id" type="hidden" />
+              <p class="eyebrow">Create a reusable idea</p>
+              <label>Idea title<input name="title" required placeholder="What should a Guardian be able to see?" /></label>
+              <label>Category<select name="category"><option>Helpful</option><option>Trust</option><option>Conversation</option><option>Product proof</option><option>Founder story</option><option>Community</option></select></label>
+              <label>Audience<select name="audience"><option>Both</option><option>Seekers</option><option>Guardians and parents</option></select></label>
+              <label>Pillar<select name="pillar" id="campaign-pillar" required></select></label>
+              <label>Objective<textarea name="objective" required placeholder="The single outcome this idea should achieve"></textarea></label>
+              <label>Notes<textarea name="notes" placeholder="Angle, evidence or production notes"></textarea></label>
+              <button class="button gold" type="submit">Save master idea</button>
+            </form>
+            <div><p class="eyebrow list-label">Campaign families</p><div class="stack" id="campaign-list"></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-calendar">
+          <div class="page-heading"><div><p class="eyebrow">1–3 ideas daily</p><h1>Publishing calendar</h1></div></div>
+          <div class="approval-warning"><strong>Variants do not consume extra idea slots.</strong> TikTok, Reels and Shorts can all belong to one master idea on the same day.</div>
+          <div class="calendar-board" id="calendar-board"></div>
+        </section>
+
+        <section class="view" id="view-pipeline">
+          <div class="page-heading">
+            <div><p class="eyebrow">Content studio</p><h1>Platform variants</h1></div>
+            <button class="button gold" id="new-content-button">New variant</button>
+          </div>
+          <div class="filter-row" id="pipeline-filters"></div>
+          <div class="content-list" id="content-list"></div>
+        </section>
+
+        <section class="view" id="view-research">
+          <div class="page-heading"><div><p class="eyebrow">Evidence before output</p><h1>Research signals</h1></div></div>
+          <div class="two-column">
+            <form class="panel form-panel" id="research-form">
+              <p class="eyebrow">Add a public-source signal</p>
+              <label>Headline<input name="headline" required placeholder="What did we learn?" /></label>
+              <label>Source URL<input name="sourceUrl" type="url" required placeholder="https://…" /></label>
+              <label>Audience<select name="audience"><option>Seekers</option><option>Guardians and parents</option><option>Both</option></select></label>
+              <label>Observation<textarea name="observation" required placeholder="Factual observation, not a copied post"></textarea></label>
+              <label>Opportunity<textarea name="opportunity" required placeholder="How could ZYRA respond truthfully?"></textarea></label>
+              <button class="button gold" type="submit">Save signal</button>
+            </form>
+            <div><p class="eyebrow list-label">Research memory</p><div class="stack" id="research-list"></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-inspiration">
+          <div class="page-heading"><div><p class="eyebrow">Collect first · analyse later</p><h1>Inspiration inbox</h1></div><span class="collection-badge">Collection mode</span></div>
+          <div class="approval-warning"><strong>No idea is being executed.</strong> Links are retained in order. Exact repeat URLs are marked automatically; deeper review starts only when the Founder ends collection.</div>
+          <div class="two-column">
+            <form class="panel form-panel" id="inspiration-form">
+              <p class="eyebrow">Capture a saved video</p>
+              <label>Platform<select name="platform"><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>YouTube</option><option>Other</option></select></label>
+              <label>Video URL<input name="sourceUrl" type="url" required placeholder="https://…" /></label>
+              <label>Optional note<textarea name="note" placeholder="Leave blank during rapid collection"></textarea></label>
+              <button class="button gold" type="submit">Remember only</button>
+            </form>
+            <div><p class="eyebrow list-label">Saved in arrival order</p><div class="stack" id="inspiration-list"></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-approval">
+          <div class="page-heading"><div><p class="eyebrow">Founder-controlled</p><h1>Approval centre</h1></div></div>
+          <div class="approval-warning"><strong>Approval is exact.</strong> Changing copy, media, destination, platform or spend cancels it automatically.</div>
+          <div class="content-list" id="approval-list"></div>
+        </section>
+
+        <section class="view" id="view-community">
+          <div class="page-heading"><div><p class="eyebrow">Draft, classify, escalate</p><h1>Community inbox</h1></div></div>
+          <div class="two-column">
+            <form class="panel form-panel" id="community-form">
+              <p class="eyebrow">Add an inbound item</p>
+              <label>Platform<select name="platform"><option>TikTok</option><option>Instagram</option><option>Facebook</option></select></label>
+              <label>Category<select name="category"><option value="routine">Routine question</option><option value="safety">Safety report</option><option value="complaint">Complaint</option><option value="religious">Religious question</option><option value="sensitive_matrimonial">Sensitive matrimonial situation</option><option value="press_regulator">Press or regulator</option></select></label>
+              <label>Message<textarea name="message" required placeholder="Paste only what is operationally necessary"></textarea></label>
+              <label>Draft reply<textarea name="draftReply" placeholder="Routine drafts only; sensitive categories are human-only"></textarea></label>
+              <button class="button gold" type="submit">Classify item</button>
+            </form>
+            <div><p class="eyebrow list-label">Inbox</p><div class="stack" id="community-list"></div></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-analytics">
+          <div class="page-heading"><div><p class="eyebrow">Learn without guessing</p><h1>Analytics & memory</h1></div></div>
+          <div class="two-column">
+            <form class="panel form-panel" id="metrics-form">
+              <p class="eyebrow">Record performance</p>
+              <label>Published content<select name="contentId" id="metric-content" required></select></label>
+              <div class="field-row"><label>Views<input name="views" type="number" min="0" value="0" /></label><label>Engagements<input name="engagements" type="number" min="0" value="0" /></label></div>
+              <label>Outcome<textarea name="outcome" required placeholder="What happened? Keep fact separate from interpretation."></textarea></label>
+              <label>Lesson<textarea name="lesson" required placeholder="What should the next content item test?"></textarea></label>
+              <button class="button gold" type="submit">Record result</button>
+            </form>
+            <div><p class="eyebrow list-label">Performance memory</p><div class="stack" id="metrics-list"></div></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="content-dialog">
+      <form id="content-form">
+        <div class="dialog-heading"><div><p class="eyebrow">Content studio</p><h2 id="content-form-title">New content</h2></div><button type="button" class="icon-button" id="close-dialog" aria-label="Close">×</button></div>
+        <input name="id" type="hidden" />
+        <div class="form-grid">
+          <label class="wide">Title<input name="title" required /></label>
+          <label>Master idea<select name="campaignId" id="content-campaign" required></select></label>
+          <label>Destination account<select name="accountId" id="content-account" required></select></label>
+          <label>Pillar<select name="pillar" id="pillar-select" required></select></label>
+          <label>Platform<input name="platform" required placeholder="TikTok + Instagram Reels" /></label>
+          <label>Format<input name="format" required placeholder="Short video" /></label>
+          <label>Risk<select name="risk"><option value="routine">Routine</option><option value="sensitive">Sensitive</option><option value="spend">Spend-bearing</option></select></label>
+          <label class="wide">Objective<textarea name="objective" required></textarea></label>
+          <label class="wide">Hook<textarea name="hook" required></textarea></label>
+          <label class="wide">Body / script<textarea name="body" required></textarea></label>
+          <label class="wide">Caption<textarea name="caption" required></textarea></label>
+          <label>Call to action<input name="cta" required /></label>
+          <label>Destination<input name="destination" type="url" required /></label>
+          <label>Budget (£)<input name="budgetGbp" type="number" min="0" step="0.01" /></label>
+          <label>Scheduled local time<input name="scheduledAt" type="datetime-local" /></label>
+          <input name="scheduleTimezone" type="hidden" value="Europe/London" />
+          <label class="wide">Media reference<input name="assetRef" placeholder="Asset filename or approved library reference" /></label>
+          <label class="wide">Media SHA-256 <span class="hint">optional until final media exists</span><input name="assetSha256" minlength="64" maxlength="64" placeholder="64-character fingerprint" /></label>
+          <label class="wide">Approved sources <span class="hint">one per line</span><textarea name="sources" required></textarea></label>
+        </div>
+        <div class="dialog-actions"><button class="button secondary" type="button" id="cancel-dialog">Cancel</button><button class="button gold" type="submit">Save to draft</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="account-dialog">
+      <form id="account-form">
+        <div class="dialog-heading"><div><p class="eyebrow">Non-secret record</p><h2 id="account-form-title">Social account</h2></div><button type="button" class="icon-button" id="close-account-dialog" aria-label="Close">×</button></div>
+        <input name="id" type="hidden" />
+        <div class="form-grid">
+          <label>Platform<input name="platform" readonly /></label>
+          <label>Handle<input name="handle" placeholder="@handle" /></label>
+          <label class="wide">Public profile URL<input name="publicUrl" type="url" placeholder="https://…" /></label>
+          <label>Login identity <span class="hint">email label only</span><input name="loginIdentity" type="email" placeholder="social@zyraconnect.app" /></label>
+          <label>Owner<input name="owner" value="Founder" /></label>
+          <label>Account status<select name="accountStatus"><option>NEEDS_RECONCILIATION</option><option>ACTIVE</option><option>INACTIVE</option><option>LOCKED</option></select></label>
+          <label>AIOS integration<select name="integrationStatus"><option>NOT_CONNECTED</option><option>MANUAL_ONLY</option><option>READY_TO_CONNECT</option></select></label>
+          <label>MFA<select name="mfaStatus"><option>NOT_RECORDED</option><option>ENABLED_NOT_TESTED</option><option>TESTED</option><option>NEEDS_ACTION</option></select></label>
+          <label>Passkey<select name="passkeyStatus"><option>NOT_RECORDED</option><option>ENABLED_NOT_TESTED</option><option>TESTED</option><option>NOT_SUPPORTED</option><option>NEEDS_ACTION</option></select></label>
+          <label>Recovery<select name="recoveryStatus"><option>NOT_RECORDED</option><option>RECORDED_NOT_TESTED</option><option>TESTED</option><option>NEEDS_ACTION</option></select></label>
+          <label>Delegated access<select name="delegatedAccess"><option>NOT_RECORDED</option><option>FOUNDER_ONLY</option><option>BUSINESS_ROLE_CONFIGURED</option><option>NEEDS_ACTION</option></select></label>
+          <label>Business status<select name="businessStatus"><option>NOT_RECORDED</option><option>PERSONAL</option><option>CREATOR</option><option>BUSINESS</option><option>VERIFIED_BUSINESS</option></select></label>
+          <label class="wide">Notes<textarea name="notes" placeholder="No passwords, tokens, recovery codes or secret values"></textarea></label>
+        </div>
+        <div class="dialog-actions"><button class="button secondary" type="button" id="cancel-account-dialog">Cancel</button><button class="button gold" type="submit">Save account record</button></div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

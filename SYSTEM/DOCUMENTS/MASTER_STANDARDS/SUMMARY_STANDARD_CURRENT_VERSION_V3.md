@@ -88,7 +88,7 @@ should proceed, so it replaces the two ambiguous states rather than
 sitting alongside them as a fourth value.
 
 **Why this exists — the Colour Theme test case, 2026-07-19:** this
-standard's V2 checklist (`ZYRA_EXECUTION_V3.md` §3.2, see also) was
+standard's V2 checklist (`ZYRA_EXECUTION` §3.2, see also) was
 ratified, then tested the same evening against `BUSINESS/COLOUR THEME/`.
 The Summary's own prose ("Current preferred direction: OPTION 1") and
 `References.md`'s Open Dependencies section ("Option 1 vs Option 2
@@ -100,7 +100,7 @@ this signal at all: if it isn't 🟢, implementation stops and a Founder
 decision is requested before proceeding, full stop, no exceptions the
 reader has to reason their way to.
 
-**Behavioural rule, cross-referenced in `ZYRA_EXECUTION_V3.md` §3.2:** if
+**Behavioural rule, cross-referenced in `ZYRA_EXECUTION` §3.2:** if
 a Summary's Status is 🔴 or 🟡, or has no Status field at all, treat it
 as 🔴 by default — implementation does not proceed from an unstatused
 document. The one exception is an explicit, in-the-moment Founder
@@ -232,7 +232,7 @@ Do NOT include speculative or unapproved ideas here. Only formally approved futu
 
 **New Summaries:** All new Summary.md files created after this standard is published must follow this format from day one.
 
-**Existing Summaries:** Existing Summary.md files are not immediately required to update. When a Summary is being meaningfully edited for another reason, bring it into alignment with this standard at the same time. Do not create update sessions solely to reformat existing Summaries — other work takes priority. This applies to the V2 casing change and the V3 Status field exactly as it applied to every other part of this standard: do not rename or reformat existing files solely to adopt them. **Exception, V3:** because an absent or non-🟢 Status field is now the trigger for stopping before implementation (§2.1), a Summary should have its Status field populated honestly the first time `ZYRA_EXECUTION_V3.md` §3.2's checklist is run against it, even if no other content changes that day. Populating the field is not "reformatting" for the purposes of this exception — it is closing exactly the gap this version exists to close.
+**Existing Summaries:** Existing Summary.md files are not immediately required to update. When a Summary is being meaningfully edited for another reason, bring it into alignment with this standard at the same time. Do not create update sessions solely to reformat existing Summaries — other work takes priority. This applies to the V2 casing change and the V3 Status field exactly as it applied to every other part of this standard: do not rename or reformat existing files solely to adopt them. **Exception, V3:** because an absent or non-🟢 Status field is now the trigger for stopping before implementation (§2.1), a Summary should have its Status field populated honestly the first time `ZYRA_EXECUTION` §3.2's checklist is run against it, even if no other content changes that day. Populating the field is not "reformatting" for the purposes of this exception — it is closing exactly the gap this version exists to close.
 
 **Incomplete sections:** If a section genuinely has no content at the time of writing, include the heading followed by: `Not yet defined.` This keeps the structure intact and signals the gap clearly.
 

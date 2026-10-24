@@ -1,290 +1,394 @@
-// Account → Advanced. The only place Delete Account appears.
-//
-// NEW 2026-08-06. Founder: "Delete should never be visible in the main
-// list… the goal isn't to hide it unfairly, but to avoid making such a
-// destructive action one of the most visually prominent items on the page."
-//
-// So it is two taps down, and the two actions here are deliberately NOT
-// presented as equivalent. Deactivating is reversible and is offered first,
-// because for most people wanting to step away it is the thing they
-// actually mean.
-//
-// "HIDE MY PROFILE" WAS REMOVED FROM THIS SCREEN — Founder, 2026-08-07:
-// "in setting in discovery we have discovery and visibility which is the
-// same thing. I'd rather leave it in the privacy section."
-//
-// It wrote `profiles.is_active` — the same column as Privacy's "Visible in
-// Browse". The earlier attempt to live with that made them read the same
-// value and said so in the copy, which reduced the confusion without
-// removing it: the page still offered the same switch twice, and a page
-// that does that is a page people stop trusting.
-//
-// Visibility is a privacy control, so it lives in Privacy. This screen is
-// now the three things that change what your account IS, ordered by how
-// much of it survives.
-//
-// If deactivation ever gains its own meaning — a grace period, a stated
-// intent to leave — it gains its own column at the same time, and can come
-// back here as a genuinely different thing.
+// Reset/Delete are explanation destinations only. Their written destructive
+// contracts remain unapproved, and the client service methods also refuse.
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show AuthChangeEvent, AuthState;
+
+import '../../dev/zyra_app_gold_preview.dart';
+import '../../main.dart' show supabase;
+import '../../services/zyra_account_state.dart';
 import '../../services/zyra_auth.dart';
-import '../../services/zyra_profile_service.dart';
+import '../../services/zyra_internal_preview_client.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../auth_gate.dart';
-import '../welcome_screen.dart';
-import '../../widgets/zyra_loading.dart';
+import 'help_support_screen.dart';
+
+class _AccountControlLifetime extends ChangeNotifier {
+  _AccountControlLifetime({String? expectedOwner, int? expectedGeneration})
+    : owner = expectedOwner ?? _currentId(),
+      generation = expectedGeneration ?? ZyraAccountState.generation,
+      previewSession = ZyraInternalPreviewClient.previewSession,
+      openingToken = _currentToken() {
+    AppState.instance.addListener(_check);
+    ZyraInternalPreviewClient.changes.addListener(_check);
+    try {
+      _subscription = ZyraAuth.authStateChanges.listen(
+        _authChanged,
+        onError: (Object _, StackTrace _) => _check(force: true),
+      );
+    } catch (_) {
+      // No SDK means no originating owner and no active control.
+    }
+  }
+
+  final String? owner;
+  final int generation;
+  final int previewSession;
+  final String? openingToken;
+  StreamSubscription? _subscription;
+  bool _alive = true;
+  bool _revoked = false;
+
+  static String? _currentId() {
+    try {
+      return ZyraAuth.currentUser?.id;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static String? _currentToken() {
+    try {
+      return supabase.auth.currentSession?.accessToken;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool get current =>
+      _alive &&
+      !_revoked &&
+      owner != null &&
+      !ZyraAccountState.isSigningOut &&
+      ZyraAccountState.generation == generation &&
+      !ZyraInternalPreviewClient.isActive &&
+      ZyraInternalPreviewClient.previewSession == previewSession &&
+      _currentId() == owner;
+
+  void _authChanged(AuthState state) {
+    _check(
+      force:
+          state.session?.user.id != owner ||
+          state.event == AuthChangeEvent.signedIn ||
+          state.event == AuthChangeEvent.signedOut ||
+          state.event == AuthChangeEvent.passwordRecovery ||
+          (state.event == AuthChangeEvent.initialSession &&
+              state.session?.accessToken != openingToken),
+    );
+  }
+
+  void _check({bool force = false}) {
+    if (!_alive || _revoked || (!force && current)) return;
+    _revoked = true;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _alive = false;
+    AppState.instance.removeListener(_check);
+    ZyraInternalPreviewClient.changes.removeListener(_check);
+    _subscription?.cancel().ignore();
+    super.dispose();
+  }
+}
 
 class AccountAdvancedScreen extends StatefulWidget {
-  const AccountAdvancedScreen({super.key});
+  const AccountAdvancedScreen({super.key, this.guardian = false});
+  final bool guardian;
 
   @override
   State<AccountAdvancedScreen> createState() => _AccountAdvancedScreenState();
 }
 
 class _AccountAdvancedScreenState extends State<AccountAdvancedScreen> {
-  bool _busy = false;
+  late final _AccountControlLifetime _lifetime;
+  bool _opening = false;
 
-  /// Reset profile — NEW 2026-08-07.
-  ///
-  /// The dialog names what survives before what goes, because the fear
-  /// this button has to answer is "am I about to lose my account?" — and
-  /// the answer is no. Keeping that first is the difference between this
-  /// and Delete.
-  Future<void> _reset() async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: ZyraColors.luxuryDarkPurple,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Start fresh?', style: ZyraText.heading(size: 16)),
-        content: Text(
-          'You keep your account, your Guardians, your membership and any '
-          'unlocks you have paid for.\n\n'
-          "You'll clear your answers, your details and your photos, and go "
-          'through setup again. Everyone who passed on you, saved you or '
-          'considered you starts over too, so you appear as new.\n\n'
-          "Your name, date of birth and gender stay as they are. This can't "
-          'be undone.',
-          style: ZyraText.subtext(),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text('Cancel', style: ZyraText.subtext(size: 13)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text('Start fresh', style: ZyraText.body(size: 14, color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true || !mounted) return;
-
-    setState(() => _busy = true);
-    final res = await ZyraProfileService.resetProfile();
-    if (!mounted) return;
-    setState(() => _busy = false);
-
-    switch (res.outcome) {
-      case ZyraResetOutcome.done:
-        // Straight back through the gate. profile_complete is false now, so
-        // the router lands them in onboarding — the same path a new Seeker
-        // takes, rather than a second one built to imitate it.
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const AuthGate()),
-          (_) => false,
-        );
-
-      case ZyraResetOutcome.blockedByJourney:
-        // NOT an error. The rule is the feature: another family is in that
-        // conversation, and they should not lose a Journey because someone
-        // pressed a button in Settings.
-        showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            backgroundColor: ZyraColors.luxuryDarkPurple,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            title: Text('You have an Active Journey', style: ZyraText.heading(size: 16)),
-            content: Text(
-              res.activeJourneys == 1
-                  ? 'Starting fresh would leave the person you are talking to '
-                      'in a conversation with a profile that no longer exists.'
-                      '\n\nEnd the Journey first — there is a proper way to do '
-                      'that, and they will be told.'
-                  : 'You have ${res.activeJourneys} Active Journeys. Starting '
-                      'fresh would leave those conversations attached to a '
-                      'profile that no longer exists.\n\nEnd them first — there '
-                      'is a proper way to do that, and they will be told.',
-              style: ZyraText.subtext(),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(ctx).pop(),
-                child: Text('OK', style: ZyraText.body(size: 14, color: Colors.white)),
-              ),
-            ],
-          ),
-        );
-
-      case ZyraResetOutcome.refused:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Starting fresh is for Seeker profiles.')),
-        );
-
-      case ZyraResetOutcome.failed:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("That didn't go through. Nothing was changed — please try again.")),
-        );
-    }
+  @override
+  void initState() {
+    super.initState();
+    _lifetime = _AccountControlLifetime();
   }
 
-  Future<void> _delete() async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: ZyraColors.luxuryDarkPurple,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text('Delete your account?', style: ZyraText.heading(size: 16)),
-        content: Text(
-          'This permanently deletes your profile, photos, Matches, messages, and '
-          'Guardian links — including your side of any shared conversation history '
-          "with someone you've matched with. This cannot be undone.\n\n"
-          "If you only want to stop being seen, hiding your profile does that "
-          'and keeps everything.',
-          style: ZyraText.subtext(),
+  @override
+  void dispose() {
+    _lifetime.dispose();
+    super.dispose();
+  }
+
+  bool get _canAct =>
+      mounted && _lifetime.current && ModalRoute.of(context)?.isCurrent == true;
+
+  Future<void> _openExplanation({required bool reset}) async {
+    if (!_canAct || _opening) return;
+    setState(() => _opening = true);
+    final owner = _lifetime.owner!;
+    final generation = _lifetime.generation;
+    try {
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          builder: (_) => _lifetime.current
+              ? _AccountControlInformationScreen(
+                  reset: reset,
+                  guardian: widget.guardian,
+                  owner: owner,
+                  generation: generation,
+                )
+              : const SizedBox.shrink(),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text('Cancel', style: ZyraText.subtext(size: 13)),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: const Color(0xFFB33A3A)),
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text('Delete Account', style: ZyraText.button(size: 13)),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true || !mounted) return;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => const ZyraLoading(),
-    );
-    final ok = await ZyraAuth.deleteAccount();
-    if (!mounted) return;
-    Navigator.of(context).pop(); // spinner
-
-    if (ok) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-        (_) => false,
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("We couldn't delete your account. Please try again.")),
-      );
+    } finally {
+      if (mounted) setState(() => _opening = false);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: _lifetime,
+    builder: (context, _) => Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text('Advanced', style: ZyraText.heading(size: 17)),
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: ZyraColors.foreground),
       ),
       body: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: ZyraAppGoldDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: SafeArea(
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 60),
             children: [
-              // Ordered by how much survives. Reset keeps the account;
-              // Delete does not. Nothing here is reversible, so neither is
-              // described as though it might be.
-              _DangerRow(
+              Text(
+                'Understand your options.',
+                style: ZyraText.heading(size: 25),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'These pages explain account controls. Reset and deletion are not available from this version.',
+                style: ZyraText.subtext(size: 13),
+              ),
+              const SizedBox(height: 24),
+              _AccountInformationRow(
                 label: 'Reset profile',
-                hint: 'Clear your answers, details and photos and set up '
-                    'again. Keeps your account, Guardians, membership and '
-                    'unlocks.',
-                onTap: _busy ? null : _reset,
+                hint: 'Read about starting your profile setup again.',
+                icon: Icons.restart_alt_rounded,
+                onTap: _opening || !_lifetime.current
+                    ? null
+                    : () => _openExplanation(reset: true),
               ),
               const SizedBox(height: 14),
-              _DangerRow(
+              _AccountInformationRow(
                 label: 'Delete account',
-                hint: 'Permanent. Removes your profile, photos, Journeys, '
-                    'messages and Guardian links.',
-                destructive: true,
-                onTap: _busy ? null : _delete,
+                hint: 'Read about permanent account closure and support.',
+                icon: Icons.delete_outline_rounded,
+                onTap: _opening || !_lifetime.current
+                    ? null
+                    : () => _openExplanation(reset: false),
               ),
-              const SizedBox(height: 20),
-              Text(
-                "Deleting is irreversible and takes effect immediately. If you "
-                'only want to stop being seen for a while, you can turn off '
-                'Visible in Browse under Privacy instead — that keeps '
-                'everything and you can turn it back on whenever you like.',
-                style: ZyraText.subtext(size: 12, color: Colors.white38),
-              ),
+              if (!_lifetime.current) ...[
+                const SizedBox(height: 20),
+                Text(
+                  'Account controls unavailable. Reopen Settings from your current account.',
+                  style: ZyraText.subtext(size: 13),
+                ),
+              ],
             ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
-class _DangerRow extends StatelessWidget {
-  final String label;
-  final String hint;
-  final bool destructive;
-  final VoidCallback? onTap;
-
-  const _DangerRow({
-    required this.label,
-    required this.hint,
-    required this.onTap,
-    this.destructive = false,
+class _AccountControlInformationScreen extends StatefulWidget {
+  const _AccountControlInformationScreen({
+    required this.reset,
+    required this.guardian,
+    required this.owner,
+    required this.generation,
   });
+  final bool reset;
+  final bool guardian;
+  final String owner;
+  final int generation;
 
   @override
-  Widget build(BuildContext context) {
-    final tint = destructive ? ZyraColors.destructive : Colors.white;
-    return Material(
-      color: Colors.white.withValues(alpha: 0.05),
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: destructive
-                  ? ZyraColors.destructive.withValues(alpha: 0.30)
-                  : Colors.white.withValues(alpha: 0.11),
-              width: 0.5,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: ZyraText.body(size: 15, color: tint)),
-              const SizedBox(height: 4),
-              Text(hint, style: ZyraText.subtext(size: 12, color: Colors.white38)),
-            ],
-          ),
-        ),
+  State<_AccountControlInformationScreen> createState() =>
+      _AccountControlInformationScreenState();
+}
+
+class _AccountControlInformationScreenState
+    extends State<_AccountControlInformationScreen> {
+  late final _AccountControlLifetime _lifetime;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifetime = _AccountControlLifetime(
+      expectedOwner: widget.owner,
+      expectedGeneration: widget.generation,
+    );
+  }
+
+  @override
+  void dispose() {
+    _lifetime.dispose();
+    super.dispose();
+  }
+
+  bool get _canAct =>
+      mounted && _lifetime.current && ModalRoute.of(context)?.isCurrent == true;
+
+  void _back() {
+    if (_canAct) Navigator.of(context).pop();
+  }
+
+  void _support() {
+    if (!_canAct) return;
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => _lifetime.current
+            ? const HelpSupportScreen()
+            : const SizedBox.shrink(),
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: _lifetime,
+    builder: (context, _) {
+      final title = widget.reset ? 'Reset Profile' : 'Delete Account';
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          leading: IconButton(
+            key: const ValueKey('account-control-info-back'),
+            tooltip: 'Back',
+            onPressed: _lifetime.current ? _back : null,
+            icon: const Icon(Icons.arrow_back_rounded),
+          ),
+          title: Text(title, style: ZyraText.heading(size: 17)),
+        ),
+        body: Container(
+          decoration: ZyraAppGoldDecoration(
+            gradient: ZyraColors.genderGradient(AppState.instance.gender),
+          ),
+          child: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
+              children: [
+                Icon(
+                  widget.reset
+                      ? Icons.restart_alt_rounded
+                      : Icons.manage_accounts_outlined,
+                  size: 38,
+                  color: ZyraColors.journeyGold,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  !_lifetime.current
+                      ? 'Account controls unavailable'
+                      : widget.reset
+                      ? 'A fresh start needs a clear plan.'
+                      : 'Account closure needs care.',
+                  style: ZyraText.heading(size: 26),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  !_lifetime.current
+                      ? 'Reopen Settings from your current account.'
+                      : widget.reset
+                      ? widget.guardian
+                            ? 'A Guardian profile reset is not available. This page does not change your account, Seeker links, Circle or membership.'
+                            : 'Reset Profile is not available yet. This page does not clear answers, photos, history, Guardian links or paid entitlements, and it does not restart setup.'
+                      : 'Delete Account is not available from this version. This page does not delete your account or photos, end relationships, sign you out or submit a deletion request.',
+                  style: ZyraText.body(size: 14),
+                ),
+                const SizedBox(height: 20),
+                if (_lifetime.current) ...[
+                  Text(
+                    widget.reset
+                        ? widget.guardian
+                              ? 'Use supported profile edits for changes. Any future reset needs its own clearly described Guardian-specific behavior.'
+                              : 'You can continue making supported changes through Edit profile and Manage photos. The final reset details will be provided before this feature becomes available.'
+                        : widget.guardian
+                        ? 'Closing a Guardian account affects its Seeker links and responsibilities. Contact support for help with your account and data.'
+                        : 'Account closure affects shared Journeys, Guardian links and account data. Contact support for help with your account and data.',
+                    style: ZyraText.subtext(size: 13),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Opening this page does not change or cancel store subscription billing.',
+                    style: ZyraText.subtext(size: 13),
+                  ),
+                  const SizedBox(height: 24),
+                  OutlinedButton.icon(
+                    key: const ValueKey('account-control-info-support'),
+                    onPressed: _support,
+                    icon: const Icon(Icons.support_agent_outlined),
+                    label: const Text('Help & support'),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+class _AccountInformationRow extends StatelessWidget {
+  const _AccountInformationRow({
+    required this.label,
+    required this.hint,
+    required this.icon,
+    required this.onTap,
+  });
+  final String label;
+  final String hint;
+  final IconData icon;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => Material(
+    color: ZyraColors.surfaceFill,
+    borderRadius: BorderRadius.circular(18),
+    child: InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          children: [
+            Icon(icon, color: ZyraColors.journeyGold, size: 24),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label, style: ZyraText.body(size: 15)),
+                  const SizedBox(height: 5),
+                  Text(hint, style: ZyraText.subtext(size: 12)),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: ZyraColors.foregroundMuted,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }

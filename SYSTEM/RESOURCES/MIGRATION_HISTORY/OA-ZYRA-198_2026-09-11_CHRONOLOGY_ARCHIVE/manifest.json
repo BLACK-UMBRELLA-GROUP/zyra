@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "archive_id": "OA-ZYRA-198_2026-09-11_CHRONOLOGY_ARCHIVE",
+  "status": "byte-preserved evidence; excluded from active local replay",
+  "governing_record": "SYSTEM/RESOURCES/MESSAGES/077_CODEX-FOUNDER_2026-09-10_OA-ZYRA-198_EIGHT_BODIES_RECOVERED_CLEAN_REPLAY_FIRST_FAILURE.md section 9",
+  "founder_go": {
+    "date": "2026-09-11",
+    "form": "Founder replied Approved to the exact next action stated in message 077 section 9",
+    "scope": "Preserve and archive versions 20260811102840 and 20260811103056 outside the active migration directory, then rerun the isolated zero-state replay using the intended split sequence; stop at the first result; no production apply or TestFlight upload."
+  },
+  "reason": "The 2026-08-21 file-presence reconciliation added live-history copies that collide with the repository's intended split replay chronology.",
+  "identity_rule": "filename + byte length + SHA-256; mode and original mtime are also retained but are not content identity",
+  "files": [
+    {
+      "version": "20260811102840",
+      "applied_name": "journey_timeline_milestones_and_rewind_all",
+      "classification": "production-migration-history evidence; inactive replay input",
+      "filename": "20260811102840_journey_timeline_milestones_and_rewind_all.sql",
+      "original_active_path": "SOURCE/supabase/migrations/20260811102840_journey_timeline_milestones_and_rewind_all.sql",
+      "archive_path": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_CHRONOLOGY_ARCHIVE/20260811102840_journey_timeline_milestones_and_rewind_all.sql",
+      "sha256": "897cd7ced829dd0844690c38501faca20da080e86cd6b78ebf34f0b7f8c327bc",
+      "bytes": 12519,
+      "mode": "0600",
+      "original_mtime": "2026-08-21T14:06:46+0100"
+    },
+    {
+      "version": "20260811103056",
+      "applied_name": "rewind_keeps_journey_started_milestone",
+      "classification": "production-migration-history evidence; inactive replay input",
+      "filename": "20260811103056_rewind_keeps_journey_started_milestone.sql",
+      "original_active_path": "SOURCE/supabase/migrations/20260811103056_rewind_keeps_journey_started_milestone.sql",
+      "archive_path": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_CHRONOLOGY_ARCHIVE/20260811103056_rewind_keeps_journey_started_milestone.sql",
+      "sha256": "a101e019ba525e55dd97c2c98f3313d85b15ff94ee28f892f7dd4a06ea1be805",
+      "bytes": 4835,
+      "mode": "0600",
+      "original_mtime": "2026-08-21T14:06:46+0100"
+    }
+  ],
+  "active_inventory": {
+    "sql_files_before": 209,
+    "sql_files_after": 207,
+    "removed_versions": ["20260811102840", "20260811103056"]
+  },
+  "active_replay_sequence": [
+    "SOURCE/supabase/migrations/20260811104500_dev_rewind_journey_to_stage_one.sql",
+    "SOURCE/supabase/migrations/20260811110300_journey_timeline_milestones.sql",
+    "SOURCE/supabase/migrations/20260811111500_dev_rewind_journey_account_wide.sql"
+  ],
+  "rollback": {
+    "map": [
+      {
+        "from": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_CHRONOLOGY_ARCHIVE/20260811102840_journey_timeline_milestones_and_rewind_all.sql",
+        "to": "SOURCE/supabase/migrations/20260811102840_journey_timeline_milestones_and_rewind_all.sql"
+      },
+      {
+        "from": "SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_CHRONOLOGY_ARCHIVE/20260811103056_rewind_keeps_journey_started_milestone.sql",
+        "to": "SOURCE/supabase/migrations/20260811103056_rewind_keeps_journey_started_milestone.sql"
+      }
+    ],
+    "requires_new_founder_chronology_approval": true,
+    "stop_if": "Either destination already exists, either archive file is missing or a byte length/SHA-256 differs from this manifest."
+  },
+  "production_history_changed": false
+}

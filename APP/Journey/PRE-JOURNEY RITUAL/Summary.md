@@ -21,9 +21,9 @@ FULL JOURNEY FLOW
 
 Match
   ↓
-Compatibility Reveal
-  ↓
 Salam Exchange
+  ↓
+Compatibility Reveal
   ↓
 Guardian Gate
   ↓
@@ -63,13 +63,35 @@ It encourages meaningful progression instead of
 maximising time spent chatting.
 
 ------------------------------------------------------------
-COMPATIBILITY REVEAL (ON MATCH)
+COMPATIBILITY REVEAL (AFTER SALAM)
 ------------------------------------------------------------
 
-The first thing that happens after a mutual match.
+The second Journey threshold, after both people exchange Salam.
 This is one of the first meaningful moments two people
 experience together. It should feel like an event —
 not just another information screen.
+
+CURRENT IMPLEMENTATION TRUTH — 2026-09-10
+
+This note supersedes the older illustrative category and shared-score
+wording in this section:
+
+• Each Seeker sees only their own real overall score. There is no shared
+  couple score, and the client does not fetch the counterpart's score.
+• No server-owned, provenance-safe category scoring contract exists yet.
+  The app therefore shows "Detailed compatibility isn’t available yet."
+  and renders no category values, bars or category-derived insight.
+• Historical rows may contain synthetic category JSON created by copying
+  the overall score. The production client neither selects nor renders it.
+  Future category work must version its real provenance and deliberately
+  handle those legacy rows before detail can return.
+• The Compatibility Reveal milestone records that the threshold completed;
+  it does not publish either person's private percentage as one shared fact.
+• The caller-scoped OA-ZYRA-283 RPC boundary and matching client wiring were
+  prepared on 2026-09-10, but the migration is STAGED ONLY and NOT APPLIED.
+  Production therefore still has the old shared-row authorization until the
+  Founder gives the separate hash-specific apply GO and the post-apply matrix
+  passes. Truthful read-failure handling remains separate in OA-ZYRA-284.
 
 FLOW — THREE STATES:
 
@@ -91,28 +113,23 @@ STATE 2 — TRANSITIONAL MOMENT (both have tapped)
   Followed by animation:
     • Profile pictures slide together
     • Percentage counts up from 0
-    • Categories appear one by one
     • Subtle visual effect (glow or pulse)
 
 STATE 3 — REVEALED (score visible)
-  Overall Compatibility: 87%
+  Your Overall Compatibility: 87%
 
-  Category breakdown (animated in one by one):
-  • Deen:                 95%
-  • Marriage Goals:       92%
-  • Communication:        86%
-  • Lifestyle:            84%
-  • Family Expectations:  78%
+  Category breakdown:
+  "Detailed compatibility isn’t available yet."
+  No category percentages render until real category scoring exists.
 
-  AI Summary (conversational tone):
-  "You appear to share similar priorities in Deen
-   and long-term marriage goals. Family expectations
-   may be worth discussing early."
+  ZYRA Insight (ZYRA One, deterministic today):
+  Gives a short interpretation of the caller's genuine overall score only.
+  It makes no category, population or marriage-outcome claim.
 
   Summary gives the score meaning — a direction for
   the journey, not just a number.
 
-  Visible to: Both matched parties and their Guardian(s).
+  Visible to: each matched Seeker sees their own score in this screen.
 
 CHECKPOINT ACTIONS (after reveal):
 
@@ -134,7 +151,6 @@ CHECKPOINT ACTIONS (after reveal):
 TIMELINE MILESTONE (auto-added on reveal):
   Date
   "You both revealed your compatibility."
-  "87% overall compatibility."
   This entry stays permanently on the timeline —
   couples can look back on this moment years later.
 
@@ -627,7 +643,7 @@ DEFAULT RULE: Everything is PUBLIC.
 Private is the exception and must be explicitly stated.
 
 PUBLIC (both matched parties + linked Guardian):
-  • Compatibility score and AI summary
+  • Compatibility Reveal completion milestone (without a percentage)
   • All question answers across all phases
   • Guardian hearts / likes on answers
   • Timeline milestones
@@ -636,6 +652,7 @@ PUBLIC (both matched parties + linked Guardian):
 
 PRIVATE (rater + AI only — never shown to others):
   • Per-answer ratings and phrases
+  • Each Seeker's caller-owned compatibility percentage
 
 NEVER VISIBLE TO ANYONE:
   • Raw onboarding compatibility responses
@@ -651,7 +668,8 @@ GUARDIAN — VISIBILITY AND ENGAGEMENT
 ------------------------------------------------------------
 
 Guardian can see everything across the entire journey:
-  • Compatibility Reveal score and AI summary
+  • Compatibility Reveal completion milestone; the current Guardian client
+    does not display either Seeker's private compatibility percentage
   • All question answers across all phases
   • Family Compatibility stage content
   • Timeline milestones

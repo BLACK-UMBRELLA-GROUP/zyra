@@ -28,6 +28,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_card_metrics.dart';
+import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_profile_image.dart';
 
@@ -45,12 +46,14 @@ class ZyraWardChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
+        color: ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.16), width: 0.5),
+        border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
       ),
-      child: Text('$label $count',
-          style: ZyraText.subtext(size: 10.5, color: Colors.white70)),
+      child: Text(
+        '$label $count',
+        style: ZyraText.subtext(size: 10.5, color: ZyraColors.ink(0.70)),
+      ),
     );
   }
 }
@@ -77,16 +80,17 @@ class ZyraStageRail extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: i <= order
-                  ? Colors.white.withValues(alpha: i == order ? 0.95 : 0.55)
-                  : Colors.white.withValues(alpha: 0.18),
+                  ? ZyraColors.foreground.withValues(
+                      alpha: i == order ? 0.95 : 0.55,
+                    )
+                  : ZyraColors.foreground.withValues(alpha: 0.18),
             ),
           ),
           if (i < count)
             Expanded(
               child: Container(
                 height: 1,
-                color: Colors.white
-                    .withValues(alpha: i < order ? 0.35 : 0.12),
+                color: Colors.white.withValues(alpha: i < order ? 0.35 : 0.12),
               ),
             ),
         ],
@@ -107,7 +111,7 @@ class ZyraWardCard extends StatelessWidget {
   /// "You are their Main Guardian", "No Journey yet".
   final String statusLine;
 
-  /// Optional second quiet line ("Paused by both of them · 2 months").
+  /// Optional second quiet line (for example, a neutral Journey status).
   final String? detailLine;
 
   /// Current stage order (1-based) — non-null draws the stage rail.
@@ -141,7 +145,7 @@ class ZyraWardCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: ZyraCardMetrics.spacing),
       child: Material(
-        color: Colors.white.withValues(alpha: 0.07),
+        color: ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
         child: InkWell(
           borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
@@ -150,8 +154,7 @@ class ZyraWardCard extends StatelessWidget {
             padding: const EdgeInsets.all(ZyraCardMetrics.padding),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-              border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.14), width: 0.5),
+              border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,17 +163,20 @@ class ZyraWardCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(ZyraCardMetrics.thumbRadius),
+                      borderRadius: BorderRadius.circular(
+                        ZyraCardMetrics.thumbRadius,
+                      ),
                       child: SizedBox(
                         width: ZyraCardMetrics.thumb,
                         height: ZyraCardMetrics.thumb,
-                        child: ZyraProfileImage(photoUrl,
-                            width: ZyraCardMetrics.thumb,
-                            height: ZyraCardMetrics.thumb),
+                        child: ZyraProfileImage(
+                          photoUrl,
+                          width: ZyraCardMetrics.thumb,
+                          height: ZyraCardMetrics.thumb,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: ZyraCardMetrics.gap),
+                    SizedBox(width: ZyraCardMetrics.gap),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,53 +184,67 @@ class ZyraWardCard extends StatelessWidget {
                           Row(
                             children: [
                               Flexible(
-                                child: Text(name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: ZyraText.body(
-                                        size: 15, color: Colors.white)),
+                                child: Text(
+                                  name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: ZyraText.body(
+                                    size: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                               if (needsAttention) ...[
-                                const SizedBox(width: 7),
+                                SizedBox(width: 7),
                                 Container(
                                   width: 7,
                                   height: 7,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFFF0A2A0)),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFFF0A2A0),
+                                  ),
                                 ),
                               ],
                             ],
                           ),
-                          const SizedBox(height: 3),
-                          Text(statusLine,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: ZyraText.subtext(size: 11.5)),
+                          SizedBox(height: 3),
+                          Text(
+                            statusLine,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: ZyraText.subtext(size: 11.5),
+                          ),
                           if (detailLine != null) ...[
-                            const SizedBox(height: 2),
-                            Text(detailLine!,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: ZyraText.subtext(
-                                    size: 10.5,
-                                    color: Colors.white.withValues(alpha: 0.4))),
+                            SizedBox(height: 2),
+                            Text(
+                              detailLine!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: ZyraText.subtext(
+                                size: 10.5,
+                                color: ZyraColors.foreground.withValues(
+                                  alpha: 0.4,
+                                ),
+                              ),
+                            ),
                           ],
                         ],
                       ),
                     ),
                     if (onTap != null)
-                      Icon(Icons.chevron_right,
-                          size: 18,
-                          color: Colors.white.withValues(alpha: 0.35)),
+                      Icon(
+                        Icons.chevron_right,
+                        size: 18,
+                        color: ZyraColors.foreground.withValues(alpha: 0.35),
+                      ),
                   ],
                 ),
                 if (stageOrder != null) ...[
-                  const SizedBox(height: 11),
+                  SizedBox(height: 11),
                   ZyraStageRail(order: stageOrder!, count: stageCount),
                 ],
                 if (chips.isNotEmpty) ...[
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Wrap(spacing: 6, runSpacing: 6, children: chips),
                 ],
               ],

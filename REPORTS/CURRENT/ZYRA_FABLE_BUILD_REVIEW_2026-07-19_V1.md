@@ -41,7 +41,7 @@ No WITH CHECK + full-column scope meant a signed-in Guardian could rewrite an ex
 
 `DeveloperAccessScreen` is now a test-scenario switcher. Six presets — Seeker Basic (male/female), Seeker One (male/female), Guardian, Guardian + Extended Guardian (mock) — each sign into a **real seeded Supabase account** and land on a fully-onboarded Home/WaliHome with AppState pre-populated. The old jump-menu remains below. **DR-ZYRA-087 (PROPOSED).**
 
-Seeded accounts (password `ZyraTest!2026`, seed script at `SOURCE/supabase/seed_dev_accounts.sql`, already applied):
+Seeded accounts (password `[REDACTED — legacy test credential]`, seed script at `SOURCE/supabase/seed_dev_accounts.sql`, already applied):
 
 | Email | Name | Role | Plan |
 |---|---|---|---|

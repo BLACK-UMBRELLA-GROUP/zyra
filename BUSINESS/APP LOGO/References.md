@@ -53,6 +53,12 @@ Overlap Flags
 Open Dependencies
 ------------------------------------------------------------
 
+CURRENT COMPARISON NOTE — 2026-09-27 (OA-ZYRA-257): current purple values
+and component tokens are owned by the Colour Theme's live override. The
+Founder-authorized Current + ten icon studies do not resolve final logo
+selection or finalise the historical ring proposal. See App Logo Summary
+and the UI Consistency Gate handover. Historical dependency list follows.
+
 • Official purple colour hex value not yet defined.
 • App Colour Theme document not yet created or located.
 • Ring proportions not yet finalised.

@@ -1,5 +1,5 @@
-// Home shell — bottom navigation across Browse / Connections / Wali /
-// Notifications / Profile.
+// Home shell — bottom navigation across Browse / Connections / Dashboard /
+// Guardian / Profile.
 //
 // 2026-08-13 (DR-ZYRA-149, Founder via the ChatGPT nav brief + his own
 // placement correction): NOTIFICATIONS BECAME THE FIFTH TAB — "left of
@@ -45,29 +45,64 @@
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart' show kReleaseMode, setEquals;
+import 'package:flutter/foundation.dart' show setEquals, visibleForTesting;
 import 'package:flutter/material.dart';
 
-import '../../dev/dev_scenario_panel_v2.dart';
 import '../../dev/zyra_dev_scenario.dart';
+import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../services/zyra_notification_service.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_internal_preview_client.dart';
+import '../../services/zyra_promotion_engine.dart';
+import '../../services/zyra_profile_service.dart';
+import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
+import '../../services/zyra_product_telemetry.dart';
+import '../../state/app_state.dart';
+import '../../theme/zyra_colors.dart';
+import '../../widgets/zyra_bottom_promotion.dart';
 import '../../widgets/floating_nav_bar.dart';
+import '../../widgets/zyra_shell_navigation.dart';
+import '../../widgets/zyra_keyboard_dismiss_scope.dart';
+import '../../theme/zyra_interaction_style.dart';
 import '../browse/browse_screen.dart';
+import '../browse/find_by_zyra_code_screen.dart';
 import '../connections/connections_screen.dart';
-import '../notifications/notifications_screen.dart';
+import '../connections/connections_section_controller.dart';
+import '../onboarding/account_path_overview_screen.dart';
+import '../profile/edit_profile_screen.dart';
 import '../profile/profile_screen.dart';
 import '../settings/help_support_screen.dart';
+import '../subscription/upgrade_screen.dart';
 import '../wali/seeker_wali_tab.dart';
+import 'seeker_dashboard_screen.dart';
+import 'unread_badge_coordinator.dart';
 
 class HomeShell extends StatefulWidget {
-  const HomeShell({super.key});
+  final int initialTab;
+  final ZyraOnboardingProgress? initialOnboardingProgress;
+  final bool deferredOnboardingDevPreview;
+
+  const HomeShell({
+    super.key,
+    this.initialTab = 2,
+    this.initialOnboardingProgress,
+    this.deferredOnboardingDevPreview = false,
+  });
 
   @override
   State<HomeShell> createState() => _HomeShellState();
 }
 
 class _HomeShellState extends State<HomeShell> {
-  int _tab = 0;
+  late int _tab;
+  late final (String?, int) _ownerScope;
+  late final ZyraUnreadBadgeCoordinator _unreadCoordinator;
+  late final ZyraNotificationOwnerLease? _notificationOwner;
+  ZyraOnboardingProgress? _onboardingProgress;
+  bool _resumingOnboarding = false;
+  final ZyraConnectionsSectionController _connectionsSection =
+      ZyraConnectionsSectionController();
 
   /// True while a tab is showing something that must own the entire
   /// screen — currently only Browse's sponsored card. Hides the Bell and
@@ -83,13 +118,21 @@ class _HomeShellState extends State<HomeShell> {
   static const _devPages = [
     DevPage.browse,
     DevPage.connections,
+    DevPage.dashboard,
     DevPage.guardian,
-    DevPage.notifications,
     DevPage.profile,
   ];
 
+  static const _telemetryFeatures = [
+    ZyraTelemetryFeature.browse,
+    ZyraTelemetryFeature.connections,
+    ZyraTelemetryFeature.myZyra,
+    ZyraTelemetryFeature.guardian,
+    ZyraTelemetryFeature.profile,
+  ];
+
   /// The Bell's unread count, relocated (DR-ZYRA-149): same 20s poll the
-  /// Bell widget ran, now feeding the Notifications tab's badge.
+  /// Bell widget ran, now feeding the Dashboard tab's notification badge.
   int _unread = 0;
   Timer? _unreadPoll;
 
@@ -101,18 +144,25 @@ class _HomeShellState extends State<HomeShell> {
 
   /// ACTION MODE — 2026-08-13 (DR-ZYRA-150, Founder's ChatGPT brief,
   /// built on his word over the counter-proposal): Browse's ⋮ asks this
-  /// shell to transform the nav bar into two pills — Report Profile /
-  /// Help & Support — and a tap anywhere else restores it. Non-null IS
+  /// shell to transform the nav bar into the profile-action destinations,
+  /// and a tap anywhere else restores it. Choosing Hide transforms the bar
+  /// once more into equal Cancel / Confirm pills. Non-null IS
   /// the mode: the value is what Report should do right now (Browse
   /// hands over "report whoever is on the card"), so the shell never
   /// needs to know who is on screen.
-  /// CARRIES TWO ACTIONS SINCE 2026-08-13 (DR-ZYRA-155): Hide Profile
-  /// left the report sheet and became its own option, so the card has
-  /// to hand over both. Still non-null IS the mode, and the shell still
-  /// never learns who is on the card.
-  ({VoidCallback report, VoidCallback hide, VoidCallback compatibility})?
+  /// Hide Profile left the report sheet and became its own option, so the card
+  /// hands the shell the already-bound action plus presentation-ready warning
+  /// copy. The shell never has to resolve or retain the profile identity.
+  ({
+    VoidCallback report,
+    VoidCallback hide,
+    String hideWarning,
+    VoidCallback compatibility,
+  })?
   _cardActions;
   bool get _actionMode => _cardActions != null;
+  bool _hideConfirmation = false;
+  bool get _hideConfirmationMode => _actionMode && _hideConfirmation;
 
   /// Which action the bar is sitting on while in action mode.
   ///
@@ -137,6 +187,11 @@ class _HomeShellState extends State<HomeShell> {
       label: 'Compatibility',
       act: _CardAct.compatibility,
     ),
+    (
+      icon: Icons.qr_code_scanner_rounded,
+      label: 'ZYRA Code',
+      act: _CardAct.findByCode,
+    ),
     (icon: Icons.visibility_off_outlined, label: 'Hide', act: _CardAct.hide),
     (icon: Icons.help_outline, label: 'Help', act: _CardAct.help),
     (icon: Icons.flag_outlined, label: 'Report', act: _CardAct.report),
@@ -157,23 +212,42 @@ class _HomeShellState extends State<HomeShell> {
   ///
   /// Two things changed. Report is now LAST, furthest from the thumb.
   /// And — checked before adopting this, not assumed — NONE of the four
-  /// actions is irreversible on its own: Report opens a sheet that
-  /// requires a reason, Hide opens a confirmation, Help and
+  /// actions fires irreversibly on its own: Report opens a sheet that
+  /// requires a reason, Hide enters the dedicated Cancel / Confirm nav,
+  /// Help and
   /// Compatibility push a screen you can leave. Every one of them has a
   /// next step, so an accidental tap costs a dismissal.
   void _runAction(int index) {
     final act = _actionOptions[index].act;
     final actions = _cardActions;
     if (actions == null) return;
+    if (act == _CardAct.hide) {
+      setState(() {
+        _actionIndex = index;
+        _hideConfirmation = true;
+      });
+      return;
+    }
     setState(() {
       _actionIndex = index;
       _cardActions = null;
+      _hideConfirmation = false;
     });
     switch (act) {
       case _CardAct.compatibility:
         actions.compatibility();
+      case _CardAct.findByCode:
+        ZyraProductTelemetry.instance.record(
+          feature: ZyraTelemetryFeature.zyraCode,
+          name: ZyraTelemetryEventName.opened,
+          action: ZyraTelemetryAction.pageView,
+          surface: ZyraTelemetrySurface.seeker,
+        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const FindByZyraCodeScreen()));
       case _CardAct.hide:
-        actions.hide();
+        return;
       case _CardAct.help:
         Navigator.of(
           context,
@@ -183,26 +257,142 @@ class _HomeShellState extends State<HomeShell> {
     }
   }
 
+  void _closeCardActions() {
+    setState(() {
+      _cardActions = null;
+      _hideConfirmation = false;
+    });
+  }
+
+  void _confirmHide() {
+    final hide = _cardActions?.hide;
+    if (hide == null) return;
+    _closeCardActions();
+    hide();
+  }
+
   @override
   void initState() {
     super.initState();
-    ZyraDevScenario.instance.setCurrentPage(_devPages[_tab]);
-    _refreshUnread();
-    _unreadPoll = Timer.periodic(
-      const Duration(seconds: 20),
-      (_) => _refreshUnread(),
+    _ownerScope = (ZyraAccountState.userId, ZyraAccountState.generation);
+    _notificationOwner = widget.deferredOnboardingDevPreview
+        ? null
+        : ZyraNotificationOwnerLease.capture();
+    _unreadCoordinator = ZyraUnreadBadgeCoordinator(
+      fetchUnreadCount: ZyraNotificationService.fetchUnreadCount,
+      fetchSectionsWithUnread: ZyraNotificationService.fetchSectionsWithUnread,
+      onSnapshot: _applyUnreadSnapshot,
+      currentScope: () =>
+          (ZyraAccountState.userId, ZyraAccountState.generation),
     );
+    _tab = widget.initialTab.clamp(0, _devPages.length - 1);
+    _onboardingProgress = widget.initialOnboardingProgress;
+    ZyraDevScenario.instance.setCurrentPage(_devPages[_tab]);
+    ZyraProductTelemetry.instance.record(
+      feature: _telemetryFeatures[_tab],
+      name: ZyraTelemetryEventName.opened,
+      action: ZyraTelemetryAction.pageView,
+      surface: ZyraTelemetrySurface.seeker,
+    );
+    if (ZyraDeveloperAccess.canUseDeveloperTools) {
+      ZyraDevSurfaceCoordinator.instance.attachSeeker(
+        this,
+        _openDevPage,
+        onOpenConnectionsSection: (section) =>
+            _openConnectionsSection(ZyraConnectionsSection.fromPage(section)),
+        onOpenIntroductions: () =>
+            _openConnectionsSection(ZyraConnectionsSection.introductions),
+      );
+    }
+    if (!widget.deferredOnboardingDevPreview) {
+      ZyraNotificationService.confirmedAcknowledgements.addListener(
+        _onConfirmedAcknowledgement,
+      );
+      _refreshUnread();
+      _unreadPoll = Timer.periodic(
+        const Duration(seconds: 20),
+        (_) => _refreshUnread(),
+      );
+    }
+  }
+
+  Future<void> _resumeOnboarding() async {
+    if (_resumingOnboarding) return;
+    _resumingOnboarding = true;
+    final owner = widget.deferredOnboardingDevPreview
+        ? null
+        : ZyraAuth.currentUser?.id;
+    final generation = ZyraAccountState.generation;
+    try {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => SeekerOnboardingOverviewScreen(
+            gender: AppState.instance.gender,
+            progress: _onboardingProgress,
+            devPreview: widget.deferredOnboardingDevPreview,
+          ),
+        ),
+      );
+      // The protected onboarding rehearsal has no server-side profile to read.
+      if (widget.deferredOnboardingDevPreview) return;
+      final progress = await ZyraProfileService.fetchOnboardingProgress();
+      if (!mounted ||
+          progress == null ||
+          ZyraAuth.currentUser?.id != owner ||
+          ZyraAccountState.generation != generation) {
+        return;
+      }
+      setState(() => _onboardingProgress = progress);
+    } finally {
+      _resumingOnboarding = false;
+    }
   }
 
   @override
   void dispose() {
+    ZyraNotificationService.confirmedAcknowledgements.removeListener(
+      _onConfirmedAcknowledgement,
+    );
+    _notificationOwner?.dispose();
     _unreadPoll?.cancel();
+    _unreadCoordinator.dispose();
+    _connectionsSection.dispose();
+    ZyraDevSurfaceCoordinator.instance.detachSeeker(this);
     super.dispose();
   }
 
-  Future<void> _refreshUnread() async {
-    final count = await ZyraNotificationService.fetchUnreadCount();
-    final dots = await ZyraNotificationService.fetchSectionsWithUnread();
+  void _openDevPage(DevPage page) {
+    if (!mounted) return;
+    _goToTab(_devPages.indexOf(page));
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).popUntil((route) => route.isFirst);
+  }
+
+  Future<void> _refreshUnread() {
+    if (widget.deferredOnboardingDevPreview ||
+        !_currentAccount ||
+        _notificationOwner?.isCurrent != true) {
+      return Future<void>.value();
+    }
+    return _unreadCoordinator.refresh();
+  }
+
+  void _onConfirmedAcknowledgement() {
+    if (!mounted ||
+        widget.deferredOnboardingDevPreview ||
+        !_currentAccount ||
+        _notificationOwner?.isCurrent != true) {
+      return;
+    }
+    unawaited(_refreshUnread());
+  }
+
+  bool get _currentAccount =>
+      _ownerScope == (ZyraAccountState.userId, ZyraAccountState.generation);
+
+  void _applyUnreadSnapshot(int? count, Set<ZyraNavSection>? dots) {
     if (!mounted) return;
     // NULL = THE FETCH FAILED — BUG-05 (OA-ZYRA-225, 2026-08-15): hold
     // the last known badge and dots rather than zeroing marks that may
@@ -217,41 +407,62 @@ class _HomeShellState extends State<HomeShell> {
     }
   }
 
-  /// Which section each tab IS, for the dot-clearing rule. Index-matched
-  /// to the nav items below; null where a tab is nobody's destination.
-  static const List<ZyraNavSection?> _tabSections = [
-    null, // Browse
-    ZyraNavSection.connections,
-    ZyraNavSection.guardian,
-    // Notifications is deliberately null. Arriving is what clears a dot
-    // everywhere else, because the dot points at something ELSE; here
-    // the notifications ARE the content, so opening the tab marks
-    // nothing. That is what leaves Mark all read something to do.
-    null,
-    null, // Profile
-  ];
-
   void _goToTab(int index) {
+    dismissZyraKeyboardAfterNavigation();
+    final changed = index != _tab;
+    if (index != 1) _connectionsSection.collapseCards();
     setState(() => _tab = index);
-    ZyraDevScenario.instance.setCurrentPage(_devPages[index]);
-    // OPENING A SECTION CLEARS ITS DOT — DR-ZYRA-154 (Founder: "the user
-    // does NOT need to open the exact notification item for the dot to
-    // disappear"). Awaited before the refresh so the count that comes
-    // back is the one after the clear, not a stale read racing it.
-    final section = _tabSections[index];
-    if (section != null) {
-      ZyraNotificationService.markSectionRead(
-        section,
-      ).then((_) => _refreshUnread());
+    if (changed) {
+      ZyraProductTelemetry.instance.record(
+        feature: _telemetryFeatures[index],
+        name: ZyraTelemetryEventName.opened,
+        action: ZyraTelemetryAction.pageView,
+        surface: ZyraTelemetrySurface.seeker,
+      );
     }
-    // Rows get marked read inside the Notifications tab — re-read the
-    // count on ANY tab change rather than waiting out the poll, so the
-    // badge never lingers after the person has already looked.
-    _refreshUnread();
+    ZyraDevScenario.instance.setCurrentPage(_devPages[index]);
+    if (widget.deferredOnboardingDevPreview || !_currentAccount) return;
+    // Arrival is not acknowledgement of every unseen item in a section.
+    // Only explicit, exact-item actions may change read_at.
+    unawaited(_refreshUnread());
+  }
+
+  void _openConnectionsSection(ZyraConnectionsSection section) {
+    _connectionsSection.open(section);
+    _goToTab(1);
+  }
+
+  void _openPreferenceEditor() {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const EditProfileScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.deferredOnboardingDevPreview) {
+      return ListenableBuilder(
+        listenable: Listenable.merge([
+          ZyraDeveloperAccess.authorizationChanges,
+          ZyraInternalPreviewClient.changes,
+        ]),
+        builder: (context, _) {
+          if (!ZyraDeveloperAccess.canUseDeveloperTools ||
+              !ZyraInternalPreviewClient.isActive) {
+            return Scaffold(
+              key: const ValueKey('seeker_home_preview_denied'),
+              backgroundColor: ZyraColors.modalSheetSurface,
+              body: const SizedBox.expand(),
+            );
+          }
+          return _buildShell(context);
+        },
+      );
+    }
+    return _buildShell(context);
+  }
+
+  Widget _buildShell(BuildContext context) {
     final pages = [
       BrowseScreen(
         onNavigateToConnections: () => _goToTab(1),
@@ -261,6 +472,7 @@ class _HomeShellState extends State<HomeShell> {
         },
         onOpenActions: (actions) => setState(() {
           _cardActions = actions;
+          _hideConfirmation = false;
           // Always opens on Compatibility. Leaving the highlight where
           // the last visit left it would mean the bar sometimes opened
           // sitting on Report.
@@ -272,12 +484,30 @@ class _HomeShellState extends State<HomeShell> {
       // consumes it on its next build. Done through the shell because
       // Connections cannot change the tab itself — it doesn't own the
       // IndexedStack.
-      ConnectionsScreen(onNavigateToBrowse: () => _goToTab(0)),
+      ConnectionsScreen(
+        onNavigateToBrowse: () => _goToTab(0),
+        onNavigateToGuardian: () => _goToTab(3),
+        sectionController: _connectionsSection,
+      ),
+      // My ZYRA is the notification centre: Now combines current priorities
+      // with updates, while Insights is the deeper ZYRA One view.
+      SeekerDashboardScreen(
+        unreadCount: _unread,
+        isActive: _tab == 2,
+        initialOnboardingProgress: _onboardingProgress,
+        onboardingEntryPreview: widget.deferredOnboardingDevPreview,
+        onOpenDiscovery: () => _goToTab(0),
+        onOpenProfile: () => _goToTab(4),
+        onResumeOnboarding: _resumeOnboarding,
+        onOpenConnections: () =>
+            _openConnectionsSection(ZyraConnectionsSection.journeys),
+        onOpenConnectionsActivity: () =>
+            _openConnectionsSection(ZyraConnectionsSection.activity),
+        onOpenGuardian: () => _goToTab(3),
+        onReviewPreferences: _openPreferenceEditor,
+        onNotificationsChanged: _refreshUnread,
+      ),
       const SeekerWaliTab(),
-      // Tab four (DR-ZYRA-149): the Bell's destination, now a
-      // destination proper — isTab hides the back arrow that would
-      // otherwise pop HomeShell itself.
-      const NotificationsScreen(isTab: true),
       const ProfileScreen(),
     ];
     return Scaffold(
@@ -296,12 +526,28 @@ class _HomeShellState extends State<HomeShell> {
           // time — re-triggering the fresh-fetch flash fixed in
           // browse_screen.dart this same pass, repeatedly, and also
           // silently losing your place in the swipe deck (_index reset
-          // to 0) on every trip back. IndexedStack keeps all 4 tabs
+          // to 0) on every trip back. IndexedStack keeps all 5 tabs
           // mounted with their State preserved and just toggles which
           // one paints, so BrowseScreen's fetch now genuinely only runs
           // once, and switching tabs and back leaves you exactly where
           // you were.
-          IndexedStack(index: _tab, children: pages),
+          // The bounded onboarding rehearsal lands on My ZYRA before a real
+          // account exists. Mount only its active tab: otherwise IndexedStack
+          // eagerly starts Browse and the other account readers behind it,
+          // even though the network-deny latch rejects their requests.
+          // Ordinary member navigation keeps the persistent five-tab stack.
+          ZyraMenuCanvas(
+            enabled: !_actionMode && !_chromeHidden,
+            child: IndexedStack(
+              index: _tab,
+              children: widget.deferredOnboardingDevPreview
+                  ? [
+                      for (var index = 0; index < pages.length; index++)
+                        index == _tab ? pages[index] : const SizedBox.shrink(),
+                    ]
+                  : pages,
+            ),
+          ),
           // 2026-07-26 (Founder review of the Browse page): the Dev
           // Access wrench that used to sit here is gone — it was
           // redundant with DevNavOverlay's Home button (Back also
@@ -333,7 +579,7 @@ class _HomeShellState extends State<HomeShell> {
           // ON TOP of it — the sponsored card's own Skip button sat
           // underneath the Bell and could not be tapped.
           // THE BELL OVERLAY IS GONE — 2026-08-13 (DR-ZYRA-149): its
-          // destination is tab four now, its badge lives on that tab,
+          // destination now lives inside Dashboard, and its badge lives there,
           // and the top-right corner belongs to each page again. The
           // long history of this corner (bell top-left -> top-right,
           // the retired ⋯) stays in git.
@@ -353,9 +599,8 @@ class _HomeShellState extends State<HomeShell> {
           // gesture do two things).
           if (_actionMode)
             Positioned.fill(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => setState(() => _cardActions = null),
+              child: ZyraBrowseActionModeDismissLayer(
+                onDismiss: _closeCardActions,
               ),
             ),
           // ONE BAR — 2026-08-13 (DR-ZYRA-159). Action mode swaps the
@@ -366,78 +611,106 @@ class _HomeShellState extends State<HomeShell> {
           // not because four decisions in a row got the numbers to
           // agree.
           if (!_chromeHidden)
-            FloatingNavBar(
-              currentIndex: _actionMode ? _actionIndex : _tab,
-              onTap: _actionMode ? _runAction : _goToTab,
-              // ACTIONS WAIT FOR THE FINGER TO LIFT — DR-ZYRA-161. Tabs
-              // keep firing live as you scrub, which is what makes the
-              // nav bar feel scrubable; running Report or Hide as a
-              // finger passes over them is a different thing entirely.
-              commitOnRelease: _actionMode,
-              // No longer const: the Notifications item carries the live
-              // unread badge (DR-ZYRA-149).
-              items: _actionMode
-                  ? [
-                      for (final o in _actionOptions)
-                        FloatingNavItem(icon: o.icon, label: o.label),
-                    ]
-                  : [
-                      FloatingNavItem(icon: Icons.search, label: 'Browse'),
-                      FloatingNavItem(
-                        icon: Icons.bookmark_border,
-                        label: 'Connections',
-                        dot: _sectionDots.contains(ZyraNavSection.connections),
-                      ),
-                      // 2026-07-26: swapped from verified_user_outlined —
-                      // Founder reported the active highlight badge looks
-                      // vertically unbalanced specifically on this tab (more
-                      // space below the icon than above). Layout math centres
-                      // all 4 icons identically, so this is very likely the
-                      // glyph itself: verified_user's inner person-check shape
-                      // sits high in its bounding box. gpp_good is a plainer
-                      // shield-checkmark with no inner figure, which sits more
-                      // symmetrically — worth a visual check once built; if it
-                      // still looks off, the fix is a different icon, not more
-                      // layout tuning (see floating_nav_bar.dart's centring fix
-                      // this same pass, which addresses the layout side).
-                      FloatingNavItem(
-                        icon: Icons.gpp_good_outlined,
-                        label: 'Guardian',
-                        dot: _sectionDots.contains(ZyraNavSection.guardian),
-                      ),
-                      FloatingNavItem(
-                        icon: Icons.notifications_none,
-                        label: 'Notifications',
-                        badge: _unread,
-                      ),
-                      FloatingNavItem(
-                        icon: Icons.person_outline,
-                        label: 'Profile',
-                      ),
-                    ],
+            if (_hideConfirmationMode)
+              FloatingNavConfirmationBar(
+                onCancel: _closeCardActions,
+                onConfirm: _confirmHide,
+              )
+            else
+              ZyraShellNavigation(
+                forceCurrent: _actionMode,
+                currentIndex: _actionMode ? _actionIndex : _tab,
+                onTap: _actionMode ? _runAction : _goToTab,
+                // ACTIONS WAIT FOR THE FINGER TO LIFT — DR-ZYRA-161. Tabs
+                // keep firing live as you scrub, which is what makes the
+                // nav bar feel scrubable; running Report or Hide as a
+                // finger passes over them is a different thing entirely.
+                commitOnRelease: _actionMode,
+                // My ZYRA carries the unread badge because it is the
+                // notification centre.
+                items: _actionMode
+                    ? [
+                        for (final o in _actionOptions)
+                          FloatingNavItem(icon: o.icon, label: o.label),
+                      ]
+                    : [
+                        FloatingNavItem(icon: Icons.search, label: 'Profiles'),
+                        FloatingNavItem(
+                          icon: Icons.bookmark_border,
+                          label: 'Connections',
+                          dot: _sectionDots.contains(
+                            ZyraNavSection.connections,
+                          ),
+                        ),
+                        FloatingNavItem(
+                          icon: Icons.dashboard_outlined,
+                          label: 'My ZYRA',
+                          badge: _unread,
+                        ),
+                        // 2026-07-26: swapped from verified_user_outlined —
+                        // Founder reported the active highlight badge looks
+                        // vertically unbalanced specifically on this tab. The
+                        // plainer gpp_good shield sits symmetrically in its box.
+                        FloatingNavItem(
+                          icon: Icons.gpp_good_outlined,
+                          label: 'Guardian',
+                          dot: _sectionDots.contains(ZyraNavSection.guardian),
+                        ),
+                        FloatingNavItem(
+                          icon: Icons.person_outline,
+                          label: 'Profile',
+                        ),
+                      ],
+              ),
+          if (!_chromeHidden)
+            ZyraBottomPromotion(
+              role: ZyraPromotionRole.seeker,
+              placement: _tab == 4
+                  ? ZyraPromotionPlacement.profile
+                  : ZyraPromotionPlacement.home,
+              isCalmLanding:
+                  !_actionMode && (ModalRoute.of(context)?.isCurrent ?? true),
+              isEntitled: AppState.instance.plan == ZyraPlan.one,
+              // The invitation opens governed plan information only; it never
+              // auto-opens checkout. Actual payment availability is explained
+              // on that user-initiated surface.
+              upgradeOfferAvailable: true,
+              onOpenPlan: (_) => Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const UpgradeScreen())),
             ),
-          // (The transformed bar is the SAME FloatingNavBar above, with
-          // its items swapped — see _runAction and _actionOptions.)
-          // DEV SCENARIO PANEL — 2026-08-01 (Founder: "make a toggle side
-          // button where I can select the options to see how it works").
-          //
-          // Last in the Stack so its pull-out tab sits above the nav bar
-          // rather than under it.
-          //
-          // GATED TWICE, deliberately. This check is the first guard; the
-          // widget's own build() returns SizedBox.shrink() in a release
-          // build as the second. The 2026-07-26 audit found Developer
-          // Access reachable in a release build precisely because one
-          // entry point was guarded and another was not — one guard is
-          // how that happens again.
-          if (!kReleaseMode)
-            DevScenarioPanelV2(
-              onOpenPage: (page) => _goToTab(_devPages.indexOf(page)),
-            ),
+          // Developer controls are app-wide in MaterialApp.builder. This
+          // shell only registers the real tab callback with that overlay,
+          // which keeps the rail visible when a Settings/Journey route is
+          // pushed above this shell.
         ],
       ),
     );
   }
+}
+
+/// The full-screen dismissal target shown while Browse's action rail is open.
+///
+/// This sits above the Browse card, including above the visible three-dot
+/// glyph. A second press on that glyph therefore lands here rather than on
+/// [ZyraBrowseMoreActionsButton]. Keep the same selection haptic on this
+/// close transition so opening and closing the rail both acknowledge the
+/// member's press instead of producing the former every-other-tap pattern.
+@visibleForTesting
+class ZyraBrowseActionModeDismissLayer extends StatelessWidget {
+  final VoidCallback onDismiss;
+
+  const ZyraBrowseActionModeDismissLayer({super.key, required this.onDismiss});
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    key: const ValueKey('browse-action-mode-dismiss-layer'),
+    behavior: HitTestBehavior.opaque,
+    onTap: () {
+      unawaited(ZyraInteractionStyle.emitSelectionHaptic());
+      onDismiss();
+    },
+  );
 }
 
 /// What an action-bar option DOES, independent of where it sits.
@@ -446,7 +719,7 @@ class _HomeShellState extends State<HomeShell> {
 /// relevant profile action first, then privacy, support, and
 /// safety/reporting. Each item carries its act, so reordering the list
 /// cannot rewire the buttons.
-enum _CardAct { compatibility, hide, help, report }
+enum _CardAct { compatibility, findByCode, hide, help, report }
 
 /// _ActionModeBar DELETED 2026-08-13 (DR-ZYRA-159).
 ///

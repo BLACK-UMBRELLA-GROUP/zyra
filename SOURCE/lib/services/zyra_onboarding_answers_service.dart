@@ -5,10 +5,9 @@
 // lifetime — previously they were held only in memory and lost the
 // moment the flow was disposed.
 //
-// Fire-and-forget, best-effort, same pattern as ZyraPhotoService.
-// syncPhotos: the flow's own local state remains the source of truth
-// for the in-progress session regardless of whether this succeeds, so
-// a Supabase hiccup never blocks onboarding progress.
+// Checkpoints return confirmed own-row persistence. Onboarding callers await
+// them and retain entered answers for retry when a save fails; they never
+// present unsaved answers as durable progress.
 
 // VERIFIED AGAINST THE LIVE DATABASE 2026-08-04, because the table had
 // zero rows and it was not obvious whether that meant "broken" or "nobody
@@ -33,6 +32,8 @@
 // in to a real Supabase session — not because this is broken. Recorded so
 // the next person does not re-investigate from scratch.
 
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import '../main.dart';
@@ -40,9 +41,62 @@ import '../models/journey_bio.dart';
 import '../models/onboarding_question.dart';
 import '../state/app_state.dart';
 import 'zyra_auth.dart';
+import 'zyra_account_state.dart';
+import 'zyra_internal_preview_client.dart';
+
+class ZyraOnboardingAnswersSnapshot {
+  final Map<String, dynamic> ch3Answers;
+  final Map<String, Map<String, TrafficLight>> ch4Preferences;
+  final Map<String, Set<String>> ch4HardRequirements;
+  final JourneyBio journeyBio;
+
+  const ZyraOnboardingAnswersSnapshot({
+    required this.ch3Answers,
+    required this.ch4Preferences,
+    required this.ch4HardRequirements,
+    required this.journeyBio,
+  });
+}
 
 class ZyraOnboardingAnswersService {
   ZyraOnboardingAnswersService._();
+
+  static bool? _clientReadyForTesting;
+
+  static bool get clientReady => _clientReadyForTesting ?? supabaseReady;
+
+  @visibleForTesting
+  static void setClientReadyForTesting(bool? ready) {
+    assert(() {
+      _clientReadyForTesting = ready;
+      return true;
+    }());
+  }
+
+  static (String, int) _captureActor(String? expectedUserId) {
+    if (!clientReady ||
+        ZyraInternalPreviewClient.isActive ||
+        ZyraAccountState.isSigningOut) {
+      throw StateError('The setup account is no longer available.');
+    }
+    final userId = ZyraAuth.currentUser?.id;
+    if (userId == null ||
+        userId.isEmpty ||
+        (expectedUserId != null && expectedUserId != userId)) {
+      throw StateError('The setup account is no longer available.');
+    }
+    return (userId, ZyraAccountState.generation);
+  }
+
+  static void _requireActor((String, int) actor) {
+    if (!clientReady ||
+        ZyraInternalPreviewClient.isActive ||
+        ZyraAccountState.isSigningOut ||
+        ZyraAuth.currentUser?.id != actor.$1 ||
+        ZyraAccountState.generation != actor.$2) {
+      throw StateError('The setup account changed.');
+    }
+  }
 
   /// `ch3_q26` has male and female client variants, but the persisted bank
   /// deliberately has one canonical qid. Strip only the explicit variant
@@ -51,19 +105,86 @@ class ZyraOnboardingAnswersService {
   static String persistedQuestionId(String responseKey) =>
       responseKey.split('::').first;
 
+  /// Reads the signed-in Seeker's saved compatibility and Journey Bio draft.
+  ///
+  /// The former flow persisted category checkpoints but never read them on
+  /// re-entry, so "continue later" restarted at question one and could
+  /// overwrite already-saved answers. This is the inverse of [syncAnswers].
+  static Future<ZyraOnboardingAnswersSnapshot?> fetchOwn({
+    String? expectedUserId,
+    bool throwOnError = false,
+  }) async {
+    try {
+      final actor = _captureActor(expectedUserId);
+      final row = await supabase
+          .from('onboarding_answers')
+          .select('ch3_answers, ch4_preferences, ch4_hard_requirements')
+          .eq('user_id', actor.$1)
+          .maybeSingle();
+      _requireActor(actor);
+      if (row == null) return null;
+
+      final rawCh3 = Map<String, dynamic>.from(
+        row['ch3_answers'] as Map? ?? const {},
+      );
+      final preferences = <String, Map<String, TrafficLight>>{};
+      final rawPreferences = row['ch4_preferences'];
+      if (rawPreferences is Map) {
+        for (final question in rawPreferences.entries) {
+          if (question.key is! String || question.value is! Map) continue;
+          final values = <String, TrafficLight>{};
+          for (final option in (question.value as Map).entries) {
+            if (option.key is! String || option.value is! String) continue;
+            final light = switch (option.value as String) {
+              'green' => TrafficLight.green,
+              'yellow' => TrafficLight.yellow,
+              'red' => TrafficLight.red,
+              _ => null,
+            };
+            if (light != null) values[option.key as String] = light;
+          }
+          if (values.isNotEmpty) {
+            preferences[question.key as String] = values;
+          }
+        }
+      }
+
+      final hardRequirements = <String, Set<String>>{};
+      final rawHard = row['ch4_hard_requirements'];
+      if (rawHard is Map) {
+        for (final question in rawHard.entries) {
+          if (question.key is! String || question.value is! List) continue;
+          final options = (question.value as List).whereType<String>().toSet();
+          if (options.isNotEmpty) {
+            hardRequirements[question.key as String] = options;
+          }
+        }
+      }
+
+      return ZyraOnboardingAnswersSnapshot(
+        ch3Answers: rawCh3,
+        ch4Preferences: preferences,
+        ch4HardRequirements: hardRequirements,
+        journeyBio: JourneyBio.fromOnboardingAnswers(rawCh3),
+      );
+    } catch (e) {
+      debugPrint('ZYRA: onboarding answer restore failed (${e.runtimeType}).');
+      if (throwOnError) rethrow;
+      return null;
+    }
+  }
+
   /// Upserts the full current answer state for the signed-in user.
-  /// Called at category-summary checkpoints (not per-question) to
-  /// keep call volume reasonable across a ~174-question walk while
-  /// still giving real crash/interruption resilience.
-  static Future<void> syncAnswers({
+  /// The caller decides checkpoint frequency. Capture a detached JSON payload
+  /// before awaiting so edits and principal changes cannot mutate a request.
+  static Future<bool> syncAnswers({
     required Map<String, dynamic> ch3Answers,
     required Map<String, Map<String, TrafficLight>> ch4Preferences,
     required Map<String, Set<String>> ch4HardRequirements,
+    String? expectedUserId,
   }) async {
-    final user = ZyraAuth.currentUser;
-    if (user == null) return;
-
     try {
+      final actor = _captureActor(expectedUserId);
       // Journey Bio metadata shares this own-row-only JSON store, but is not
       // a scored question. Always merge it back at a Values checkpoint so
       // the Chapter 3 write cannot erase the preceding Bio chapter.
@@ -72,51 +193,51 @@ class ZyraOnboardingAnswersService {
         for (final entry in ch3Answers.entries)
           persistedQuestionId(entry.key): entry.value,
       };
-      await supabase.from('onboarding_answers').upsert({
-        'user_id': user.id,
-        'ch3_answers': completeCh3Answers,
-        'ch4_preferences': {
-          for (final entry in ch4Preferences.entries)
-            persistedQuestionId(entry.key): {
-              for (final option in entry.value.entries)
-                option.key: option.value.name,
+      final payload = Map<String, dynamic>.from(
+        jsonDecode(
+          jsonEncode({
+            'user_id': actor.$1,
+            'ch3_answers': completeCh3Answers,
+            'ch4_preferences': {
+              for (final entry in ch4Preferences.entries)
+                persistedQuestionId(entry.key): {
+                  for (final option in entry.value.entries)
+                    option.key: option.value.name,
+                },
             },
-        },
-        // PER-OPTION SINCE 2026-08-10 — {question_id: [option_label, ...]}.
-        // WAS {question_id: bool}. The database CHECK constraint
-        // onboarding_answers_ch4_hard_shape now REJECTS the old form, so a
-        // stale build cannot quietly write an exclusion the engine would
-        // then ignore. If this ever starts throwing
-        // "violates check constraint", the shape is wrong — do not widen
-        // the constraint to make it pass.
-        //
-        // Empty sets are dropped rather than written as `[]`: a question
-        // with no exclusions should be absent from the payload, not present
-        // and empty.
-        'ch4_hard_requirements': {
-          for (final entry in ch4HardRequirements.entries)
-            if (entry.value.isNotEmpty)
-              persistedQuestionId(entry.key): entry.value.toList(),
-        },
-      });
+            // PER-OPTION SINCE 2026-08-10 —
+            // {question_id: [option_label, ...]}. WAS {question_id: bool}.
+            // Empty sets are dropped rather than written as `[]`.
+            'ch4_hard_requirements': {
+              for (final entry in ch4HardRequirements.entries)
+                if (entry.value.isNotEmpty)
+                  persistedQuestionId(entry.key): entry.value.toList(),
+            },
+          }),
+        ),
+      );
+      _requireActor(actor);
+      final saved = await supabase
+          .from('onboarding_answers')
+          .upsert(payload)
+          // A successful request is not enough proof under RLS: an UPDATE
+          // can match zero rows without throwing. Returning the own row makes
+          // Profile editing confirm that the write actually landed.
+          .select('user_id')
+          .single();
+      _requireActor(actor);
+      return saved['user_id'] == actor.$1;
     } catch (e) {
       // LOGGED 2026-08-04. This was `catch (_) {}` — completely silent.
       //
-      // Best-effort is the right behaviour: a network hiccup must not trap
-      // someone 90 questions into a 174-question walk. Silent is not. These
-      // answers are the only input the compatibility score will ever have,
-      // so a persistent failure here means the entire premium feature
-      // computes from nothing — and the app would look like it was working
-      // the whole time.
-      //
-      // This is the exact shape of the `profile_complete` bug (audit
-      // finding C3): a write that nobody watched, hidden by a fallback that
-      // made the screen look fine.
+      // The entered draft remains in the calling screen. False means retry;
+      // it must never be translated into a saved/complete claim.
       debugPrint(
         'ZYRA: onboarding answer sync failed — Chapter 3/4 answers '
         'not saved for this checkpoint. Compatibility cannot be computed '
-        'without them. $e',
+        'without them (${e.runtimeType}).',
       );
+      return false;
     }
   }
 
@@ -124,38 +245,48 @@ class ZyraOnboardingAnswersService {
   /// existing own-row-only onboarding JSON. No schema change is needed and
   /// the public `profiles.bio` column is deliberately not used: its profile
   /// visibility is broader than the Founder-approved Journey-only reveal.
-  static Future<bool> syncJourneyBio(JourneyBio bio) async {
-    final user = ZyraAuth.currentUser;
-    if (user == null) return true; // Developer Access / offline preview.
-
+  static Future<bool> syncJourneyBio(
+    JourneyBio bio, {
+    String? expectedUserId,
+  }) async {
     try {
+      final actor = _captureActor(expectedUserId);
+      final incoming = Map<String, dynamic>.from(
+        jsonDecode(jsonEncode(bio.toOnboardingAnswers())),
+      );
       final existing = await supabase
           .from('onboarding_answers')
           .select('ch3_answers, ch4_preferences, ch4_hard_requirements')
-          .eq('user_id', user.id)
+          .eq('user_id', actor.$1)
           .maybeSingle();
+      _requireActor(actor);
 
       final existingCh3 = Map<String, dynamic>.from(
         (existing?['ch3_answers'] as Map?) ?? const {},
       );
       existingCh3.removeWhere((key, _) => key.startsWith('bio_'));
-      existingCh3.addAll(bio.toOnboardingAnswers());
+      existingCh3.addAll(incoming);
 
-      await supabase.from('onboarding_answers').upsert({
-        'user_id': user.id,
-        'ch3_answers': existingCh3,
-        'ch4_preferences': Map<String, dynamic>.from(
-          (existing?['ch4_preferences'] as Map?) ?? const {},
-        ),
-        'ch4_hard_requirements': Map<String, dynamic>.from(
-          (existing?['ch4_hard_requirements'] as Map?) ?? const {},
-        ),
-      });
-      return true;
+      final saved = await supabase
+          .from('onboarding_answers')
+          .upsert({
+            'user_id': actor.$1,
+            'ch3_answers': existingCh3,
+            'ch4_preferences': Map<String, dynamic>.from(
+              (existing?['ch4_preferences'] as Map?) ?? const {},
+            ),
+            'ch4_hard_requirements': Map<String, dynamic>.from(
+              (existing?['ch4_hard_requirements'] as Map?) ?? const {},
+            ),
+          })
+          .select('user_id')
+          .single();
+      _requireActor(actor);
+      return saved['user_id'] == actor.$1;
     } catch (e) {
       debugPrint(
         'ZYRA: Journey Bio sync failed — the draft remains available in '
-        'this onboarding session. $e',
+        'this onboarding session (${e.runtimeType}).',
       );
       return false;
     }

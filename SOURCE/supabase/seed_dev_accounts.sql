@@ -12,11 +12,14 @@
 -- have a linked Seeker covering a different plan tier than the
 -- other (Ibrahim <-> Maryam, ZYRA Basic).
 --
--- ALREADY APPLIED to the live dev project (sxoaxonzjqkgajmlagyk).
--- Kept here so the seed is reproducible after a db reset.
--- Idempotent — safe to re-run.
+-- HISTORICAL RECORD: this was applied to the then-live dev project
+-- (sxoaxonzjqkgajmlagyk). That production-era application is history, not
+-- authority to run this file there again. The seed is retained only as a
+-- reproducible, staging-only reset aid and is default-deny until an exact
+-- staging project ref is separately approved and pinned below.
 --
--- Accounts (password for all: ZyraTest!2026):
+-- Accounts (their password is caller-supplied at execution time and is never
+-- stored in this repository):
 --   dev.seeker.basic.m@zyra.test  Adam     seeker  seeker_basic
 --   dev.seeker.basic.f@zyra.test  Maryam   seeker  seeker_basic   <- linked to Ibrahim
 --   dev.seeker.one.m@zyra.test    Yusuf    seeker  seeker_premium <- linked to Khadija
@@ -38,16 +41,72 @@
 -- mock_set_wali_plan() to force-write a real wali_premium row on
 -- entry, rather than a local-only flag.
 --
--- NOTE: these are dev/preview credentials for a database with no real
--- users. Delete all dev.*@zyra.test accounts before any real launch:
+-- NOTE: these are historical dev/preview identities for a database with no
+-- real users. This comment records the old clean-up instruction; it does not
+-- authorise a production write. Before any real launch, the intended outcome
+-- was:
 --   delete from auth.users where email like 'dev.%@zyra.test';
+--
+-- Governed invocation contract (psql example; never put the password in this
+-- file or on a command line): start a transaction, use set_config(..., true)
+-- to set BOTH `zyra.target_project_ref` and `zyra.dev_seed_password`, include
+-- this file in that same transaction, and commit only after review. A local
+-- setting made outside an open transaction expires before this file can see
+-- it. The password setting is cleared again immediately after validation.
 
 do $$
 declare
-  v_pass text := 'ZyraTest!2026';
+  v_approved_staging_project_ref constant text := 'UNASSIGNED_STAGING_PROJECT_REF';
+  v_production_project_ref constant text := 'sxoaxonzjqkgajmlagyk';
+  v_runtime_project_ref text := nullif(
+    btrim(current_setting('zyra.target_project_ref', true)),
+    ''
+  );
+  v_pass text;
   rec record;
   v_id uuid;
 begin
+  if v_approved_staging_project_ref = 'UNASSIGNED_STAGING_PROJECT_REF' then
+    raise exception using
+      errcode = '22023',
+      message = 'Developer seed is disabled: the approved staging project ref is unassigned';
+  end if;
+
+  if v_approved_staging_project_ref = v_production_project_ref then
+    raise exception using
+      errcode = '22023',
+      message = 'Developer seed is disabled: the approved pin must never be production';
+  end if;
+
+  if v_runtime_project_ref is null then
+    raise exception using
+      errcode = '22023',
+      message = 'Developer seed requires a transaction-local target project ref';
+  end if;
+
+  if v_runtime_project_ref = v_production_project_ref then
+    raise exception using
+      errcode = '22023',
+      message = 'Developer seed refuses the production project';
+  end if;
+
+  if v_runtime_project_ref <> v_approved_staging_project_ref then
+    raise exception using
+      errcode = '22023',
+      message = 'Developer seed target does not match the separately approved staging pin';
+  end if;
+
+  v_pass := nullif(current_setting('zyra.dev_seed_password', true), '');
+  if v_pass is null or char_length(v_pass) < 16 then
+    raise exception using
+      errcode = '22023',
+      message = 'Developer seed requires a transaction-local password of at least 16 characters';
+  end if;
+
+  -- Keep the working copy only inside this DO block; remove the setting before
+  -- any row write so later statements in the session cannot recover it.
+  perform set_config('zyra.dev_seed_password', '', true);
+
   for rec in
     select * from (values
       ('dev.seeker.basic.m@zyra.test', 'seeker', 'Adam',   'male',   date '1997-03-14', 'London',     'seeker_basic'),
@@ -72,6 +131,13 @@ begin
       values (gen_random_uuid(), v_id, v_id::text,
         jsonb_build_object('sub', v_id::text, 'email', rec.email, 'email_verified', true),
         'email', now(), now(), now());
+    else
+      -- A governed staging rerun rotates every retained seed identity away
+      -- from any historical shared credential.
+      update auth.users
+      set encrypted_password = extensions.crypt(v_pass, extensions.gen_salt('bf')),
+          updated_at = now()
+      where id = v_id;
     end if;
 
     insert into public.profiles (id, role, first_name, date_of_birth, gender, location_text, bio, is_active, profile_complete)

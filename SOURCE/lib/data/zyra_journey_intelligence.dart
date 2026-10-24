@@ -64,10 +64,10 @@ class ZyraIntelligence {
 
   /// The ONLY user-facing name for this content.
   String get label => switch (kind) {
-        ZyraIntelligenceKind.insight => 'ZYRA Insight',
-        ZyraIntelligenceKind.recommendation => 'ZYRA Recommendation',
-        ZyraIntelligenceKind.summary => 'ZYRA Summary',
-      };
+    ZyraIntelligenceKind.insight => 'ZYRA Insight',
+    ZyraIntelligenceKind.recommendation => 'ZYRA Recommendation',
+    ZyraIntelligenceKind.summary => 'ZYRA Summary',
+  };
 }
 
 class ZyraJourneyIntelligence {
@@ -80,7 +80,10 @@ class ZyraJourneyIntelligence {
   // it, and exactly what the member tapped.
 
   static List<String> _topicsRated(
-      Iterable<JourneyQuestion> questions, Map<String, String> ratings, String rating) {
+    Iterable<JourneyQuestion> questions,
+    Map<String, String> ratings,
+    String rating,
+  ) {
     return [
       for (final q in questions)
         if (ratings[q.id] == rating) q.topic,
@@ -102,47 +105,17 @@ class ZyraJourneyIntelligence {
   static ZyraIntelligence? compatibility({
     required ZyraPlan plan,
     required double score,
-    required Map<String, dynamic>? categories,
-    required String otherName,
   }) {
     if (!availableTo(plan)) return null;
 
     final band = score >= 80
         ? 'You are starting from a lot of common ground.'
         : score >= 60
-            ? 'There is real common ground here, and some genuine differences.'
-            : 'There is more distance here than most pairs begin with. That is '
-                'information, not a verdict — plenty of strong marriages start further apart.';
+        ? 'There is real common ground here, and some genuine differences.'
+        : 'Your score points to more differences to explore. It is a starting '
+              'point, not a verdict.';
 
-    final scored = <String, double>{
-      for (final e in (categories ?? const {}).entries)
-        if (e.value is num) e.key: (e.value as num).toDouble(),
-    };
-
-    if (scored.length < 2) return ZyraIntelligence(ZyraIntelligenceKind.insight, band);
-
-    final values = scored.values.toSet();
-    if (values.length == 1) {
-      // TRUE TODAY on the ordinary reveal path: revealCompatibility() writes
-      // the overall score into all five categories because score_candidates()
-      // exposes no per-category detail. Saying "your strongest area is Deen"
-      // over five identical numbers would be inventing a finding.
-      return ZyraIntelligence(
-        ZyraIntelligenceKind.insight,
-        '$band Every area currently scores the same, so there is no strongest '
-        'or weakest to point to yet — that arrives as you answer more together.',
-      );
-    }
-
-    final sorted = scored.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
-    final strongest = sorted.first.key.toLowerCase();
-    final weakest = sorted.last.key.toLowerCase();
-
-    return ZyraIntelligence(
-      ZyraIntelligenceKind.insight,
-      '$band Your strongest alignment with $otherName is $strongest. The area '
-      'most worth talking through is $weakest.',
-    );
+    return ZyraIntelligence(ZyraIntelligenceKind.insight, band);
   }
 
   // ═══════════════════════════════════════════════════════════════════════
@@ -161,11 +134,15 @@ class ZyraJourneyIntelligence {
     for (final q in questions) {
       switch (ratings[q.id]) {
         case 'concerns':
-          prompts.add('On ${q.topic} — what would need to be true for that to '
-              'sit more easily with you?');
+          prompts.add(
+            'On ${q.topic} — what would need to be true for that to '
+            'sit more easily with you?',
+          );
         case 'discuss_further':
-          prompts.add("On ${q.topic} — what does $otherName's answer make you "
-              'want to ask next?');
+          prompts.add(
+            "On ${q.topic} — what does $otherName's answer make you "
+            'want to ask next?',
+          );
       }
     }
     if (prompts.isEmpty) return null;
@@ -286,11 +263,17 @@ class ZyraJourneyIntelligence {
       ..._topicsRated(questions, ratings, 'discuss_further'),
     ];
 
-    final body = StringBuffer('This is the summary your Guardian would be given: ');
+    final body = StringBuffer(
+      'This is the summary your Guardian would be given: ',
+    );
     if (reassured.isNotEmpty) {
-      body.write('you and $otherName appear well aligned on ${_list(reassured)}. ');
+      body.write(
+        'you and $otherName appear well aligned on ${_list(reassured)}. ',
+      );
     } else {
-      body.write('you and $otherName have worked through the phases together. ');
+      body.write(
+        'you and $otherName have worked through the phases together. ',
+      );
     }
     if (open.isNotEmpty) {
       body.write('${_list(open)} may benefit from an early conversation.');
@@ -337,28 +320,4 @@ class ZyraJourneyIntelligence {
       ],
     );
   }
-
-  // ═══════════════════════════════════════════════════════════════════════
-  // THE BASIC SIDE
-  // ═══════════════════════════════════════════════════════════════════════
-  //
-  // "Upgrade prompts must feel like a natural invitation, not a paywall."
-  //
-  // So: no lock icon, no blurred number, no "unlock to see". It says what
-  // ZYRA One would add here and then says the Journey works without it,
-  // because it does — which is the whole design test this layer had to pass.
-  // Return null and render nothing at all if even this feels like too much on
-  // a given screen; that is a legitimate choice, not a missing feature.
-
-  static String invitationFor(ZyraIntelligenceKind kind) => switch (kind) {
-        ZyraIntelligenceKind.insight =>
-          'ZYRA One reads a score like this back to you — where you are '
-              'closest, and what is most worth talking through.',
-        ZyraIntelligenceKind.recommendation =>
-          'ZYRA One suggests what to revisit before you continue, based on how '
-              'you marked the answers.',
-        ZyraIntelligenceKind.summary =>
-          'ZYRA One writes each part of your Journey back to you, and shares a '
-              'summary with your Guardian.',
-      };
 }

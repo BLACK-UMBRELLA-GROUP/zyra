@@ -57,25 +57,27 @@ Future<bool?> showZyraMoment(
   required String ctaLabel,
   String? secondaryLabel,
 }) {
-  return Navigator.of(context).push<bool>(PageRouteBuilder(
-    opaque: true,
-    fullscreenDialog: true,
-    transitionDuration: const Duration(milliseconds: 400),
-    reverseTransitionDuration: const Duration(milliseconds: 260),
-    pageBuilder: (_, _, _) => ZyraMomentScreen(
-      mark: mark,
-      pairWith: pairWith,
-      ringPercent: ringPercent,
-      dateChip: dateChip,
-      glow: glow,
-      closure: closure,
-      lines: lines,
-      ctaLabel: ctaLabel,
-      secondaryLabel: secondaryLabel,
+  return Navigator.of(context).push<bool>(
+    PageRouteBuilder(
+      opaque: true,
+      fullscreenDialog: true,
+      transitionDuration: const Duration(milliseconds: 400),
+      reverseTransitionDuration: const Duration(milliseconds: 260),
+      pageBuilder: (_, _, _) => ZyraMomentScreen(
+        mark: mark,
+        pairWith: pairWith,
+        ringPercent: ringPercent,
+        dateChip: dateChip,
+        glow: glow,
+        closure: closure,
+        lines: lines,
+        ctaLabel: ctaLabel,
+        secondaryLabel: secondaryLabel,
+      ),
+      transitionsBuilder: (_, anim, _, child) =>
+          FadeTransition(opacity: anim, child: child),
     ),
-    transitionsBuilder: (_, anim, _, child) =>
-        FadeTransition(opacity: anim, child: child),
-  ));
+  );
 }
 
 class ZyraMomentScreen extends StatefulWidget {
@@ -137,16 +139,22 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
   void initState() {
     super.initState();
     final elementCount =
-        (_hasLead ? 1 : 0) + widget.lines.length + (widget.dateChip != null ? 1 : 0) + 1;
+        (_hasLead ? 1 : 0) +
+        widget.lines.length +
+        (widget.dateChip != null ? 1 : 0) +
+        1;
     _starts = List.generate(elementCount, (i) => 0.3 + i * 0.6);
     _total = _starts.last + 0.9;
     _c = AnimationController(
-        vsync: this, duration: Duration(milliseconds: (_total * 1000).round()))
-      ..forward();
+      vsync: this,
+      duration: Duration(milliseconds: (_total * 1000).round()),
+    )..forward();
   }
 
   bool get _hasLead =>
-      widget.mark != null || widget.pairWith != null || widget.ringPercent != null;
+      widget.mark != null ||
+      widget.pairWith != null ||
+      widget.ringPercent != null;
 
   @override
   void dispose() {
@@ -157,59 +165,78 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
   /// THE TAP-THROUGH RULE, enforced here for every moment ever built:
   /// any tap before the reveal finishes settles everything instantly.
   void _settle() {
-    if (_c.value < 1) _c.animateTo(1, duration: const Duration(milliseconds: 160));
+    if (_c.value < 1) {
+      _c.animateTo(1, duration: const Duration(milliseconds: 160));
+    }
   }
 
   Widget _reveal(int index, Widget child) {
     final start = (_starts[index] / _total).clamp(0.0, 0.99);
     final end = ((_starts[index] + 0.8) / _total).clamp(start + 0.01, 1.0);
     final a = CurvedAnimation(
-        parent: _c, curve: Interval(start, end, curve: Curves.easeOut));
+      parent: _c,
+      curve: Interval(start, end, curve: Curves.easeOut),
+    );
     return FadeTransition(
       opacity: a,
       child: SlideTransition(
-        position:
-            Tween(begin: const Offset(0, 0.06), end: Offset.zero).animate(a),
+        position: Tween(
+          begin: const Offset(0, 0.06),
+          end: Offset.zero,
+        ).animate(a),
         child: child,
       ),
     );
   }
 
   Widget _line(ZyraMomentLine l) => switch (l.kind) {
-        ZyraMomentLineKind.whisper => Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(l.text,
-                textAlign: TextAlign.center,
-                style: ZyraText.subtext(
-                    size: 13.5, color: const Color(0xB8FFFFFF))),
-          ),
-        ZyraMomentLineKind.heading => Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: Text(l.text,
-                textAlign: TextAlign.center,
-                style: ZyraText.heading(size: 23)),
-          ),
-        ZyraMomentLineKind.guiding => Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text('“${l.text}”',
-                textAlign: TextAlign.center,
-                style: ZyraText.subtext(size: 13, color: const Color(0xB8FFFFFF))
-                    .copyWith(fontStyle: FontStyle.italic)),
-          ),
-        ZyraMomentLineKind.body => Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Text(l.text,
-                textAlign: TextAlign.center,
-                style: ZyraText.body(size: 13.5, color: const Color(0xC7FFFFFF))
-                    .copyWith(height: 1.55)),
-          ),
-        ZyraMomentLineKind.quiet => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(l.text,
-                textAlign: TextAlign.center,
-                style: ZyraText.subtext(size: 11.5, color: const Color(0x80FFFFFF))),
-          ),
-      };
+    ZyraMomentLineKind.whisper => Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Text(
+        l.text,
+        textAlign: TextAlign.center,
+        style: ZyraText.subtext(size: 13.5, color: ZyraColors.ink(0.72)),
+      ),
+    ),
+    ZyraMomentLineKind.heading => Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Text(
+        l.text,
+        textAlign: TextAlign.center,
+        style: ZyraText.heading(size: 23),
+      ),
+    ),
+    ZyraMomentLineKind.guiding => Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Text(
+        '“${l.text}”',
+        textAlign: TextAlign.center,
+        style: ZyraText.subtext(
+          size: 13,
+          color: ZyraColors.ink(0.72),
+        ).copyWith(fontStyle: FontStyle.italic),
+      ),
+    ),
+    ZyraMomentLineKind.body => Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Text(
+        l.text,
+        textAlign: TextAlign.center,
+        style: ZyraText.body(
+          size: 13.5,
+          color: ZyraColors.ink(0.78),
+        ).copyWith(height: 1.55),
+      ),
+    ),
+    ZyraMomentLineKind.quiet => Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        l.text,
+        textAlign: TextAlign.center,
+        style: ZyraText.subtext(size: 11.5, color: ZyraColors.ink(0.50)),
+      ),
+    ),
+  };
 
   Widget _lead() {
     if (widget.ringPercent != null) {
@@ -224,12 +251,15 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
               CircularProgressIndicator(
                 value: widget.ringPercent! / 100,
                 strokeWidth: 5,
-                color: const Color(0xFFCEA2D1),
-                backgroundColor: Colors.white.withValues(alpha: 0.14),
+                color: ZyraColors.actionFill,
+                backgroundColor: ZyraColors.foreground.withValues(alpha: 0.14),
               ),
               Center(
-                  child: Text('${widget.ringPercent}%',
-                      style: ZyraText.heading(size: 22))),
+                child: Text(
+                  '${widget.ringPercent}%',
+                  style: ZyraText.heading(size: 22),
+                ),
+              ),
             ],
           ),
         ),
@@ -243,96 +273,123 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             _circle(
-                child: p.photos.isEmpty
-                    ? Center(
-                        child: Text(p.firstName.isEmpty ? '?' : p.firstName[0],
-                            style: ZyraText.heading(size: 18)))
-                    : ZyraProfileImage(p.photoUrl, width: 56, height: 56)),
+              child: p.photos.isEmpty
+                  ? Center(
+                      child: Text(
+                        p.firstName.isEmpty ? '?' : p.firstName[0],
+                        style: ZyraText.heading(size: 18),
+                      ),
+                    )
+                  : ZyraProfileImage(p.photoUrl, width: 56, height: 56),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Icon(Icons.swap_horiz,
-                  size: 18, color: Colors.white.withValues(alpha: 0.6)),
+              child: Icon(
+                Icons.swap_horiz,
+                size: 18,
+                color: ZyraColors.foreground.withValues(alpha: 0.6),
+              ),
             ),
             _circle(
-                child: Center(
-                    child: Text('You', style: ZyraText.subtext(size: 11)))),
+              child: Center(
+                child: Text('You', style: ZyraText.subtext(size: 11)),
+              ),
+            ),
           ],
         ),
       );
     }
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child:
-          Icon(widget.mark, size: 30, color: Colors.white.withValues(alpha: 0.85)),
+      child: Icon(
+        widget.mark,
+        size: 30,
+        color: ZyraColors.foreground.withValues(alpha: 0.85),
+      ),
     );
   }
 
   Widget _circle({required Widget child}) => Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white.withValues(alpha: 0.18),
-          border:
-              Border.all(color: Colors.white.withValues(alpha: 0.45), width: 2),
-        ),
-        child: ClipOval(child: child),
-      );
+    width: 56,
+    height: 56,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: ZyraColors.surfaceFill,
+      border: Border.all(color: ZyraColors.surfaceEmphasisBorder, width: 2),
+    ),
+    child: ClipOval(child: child),
+  );
 
   @override
   Widget build(BuildContext context) {
     var i = 0;
-    final children = <Widget>[
-      if (_hasLead) _reveal(i++, _lead()),
-    ];
+    final children = <Widget>[if (_hasLead) _reveal(i++, _lead())];
     for (final l in widget.lines) {
       children.add(_reveal(i++, _line(l)));
       if (l.kind == ZyraMomentLineKind.heading && widget.dateChip != null) {
-        children.add(_reveal(
+        children.add(
+          _reveal(
             i++,
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: Text(widget.dateChip!,
-                  style: ZyraText.subtext(size: 11, color: const Color(0x99FFFFFF))
-                      .copyWith(letterSpacing: 2)),
-            )));
-      }
-    }
-    children.add(_reveal(
-      i++,
-      Column(
-        children: [
-          const SizedBox(height: 12),
-          SizedBox(
-            width: 230,
-            child: Material(
-              color: Colors.white.withValues(alpha: 0.22),
-              shape: StadiumBorder(
-                  side: BorderSide(
-                      color: Colors.white.withValues(alpha: 0.42), width: 1)),
-              child: InkWell(
-                customBorder: const StadiumBorder(),
-                onTap: widget.onPrimary ??
-                    () => Navigator.of(context).pop(true),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 13),
-                  child: Center(
-                      child: Text(widget.ctaLabel,
-                          style: ZyraText.button(size: 13))),
-                ),
+              child: Text(
+                widget.dateChip!,
+                style: ZyraText.subtext(
+                  size: 11,
+                  color: ZyraColors.ink(0.60),
+                ).copyWith(letterSpacing: 2),
               ),
             ),
           ),
-          if (widget.secondaryLabel != null)
-            TextButton(
-              onPressed: widget.onSecondary ??
-                  () => Navigator.of(context).pop(false),
-              child: Text(widget.secondaryLabel!,
-                  style: ZyraText.subtext(size: 12)),
+        );
+      }
+    }
+    children.add(
+      _reveal(
+        i++,
+        Column(
+          children: [
+            SizedBox(height: 12),
+            SizedBox(
+              width: 230,
+              child: Material(
+                color: ZyraColors.surfaceEmphasisFill,
+                shape: StadiumBorder(
+                  side: BorderSide(
+                    color: ZyraColors.surfaceEmphasisBorder,
+                    width: 1,
+                  ),
+                ),
+                child: InkWell(
+                  customBorder: const StadiumBorder(),
+                  onTap:
+                      widget.onPrimary ?? () => Navigator.of(context).pop(true),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 13),
+                    child: Center(
+                      child: Text(
+                        widget.ctaLabel,
+                        style: ZyraText.button(size: 13),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-        ],
+            if (widget.secondaryLabel != null)
+              TextButton(
+                onPressed:
+                    widget.onSecondary ??
+                    () => Navigator.of(context).pop(false),
+                child: Text(
+                  widget.secondaryLabel!,
+                  style: ZyraText.subtext(size: 12),
+                ),
+              ),
+          ],
+        ),
       ),
-    ));
+    );
 
     return Scaffold(
       body: GestureDetector(
@@ -341,7 +398,8 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
         child: Container(
           constraints: const BoxConstraints.expand(),
           decoration: BoxDecoration(
-              gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+            gradient: ZyraColors.genderGradient(AppState.instance.gender),
+          ),
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -363,12 +421,11 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
                       child: Container(
                         width: 300,
                         height: 300,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          gradient: RadialGradient(colors: [
-                            Color(0x47CEA2D1),
-                            Color(0x00CEA2D1),
-                          ]),
+                          gradient: RadialGradient(
+                            colors: [Color(0x47CEA2D1), Color(0x00CEA2D1)],
+                          ),
                         ),
                       ),
                     ),
@@ -377,7 +434,9 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
                   child: Center(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 34, vertical: 40),
+                        horizontal: 34,
+                        vertical: 40,
+                      ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: children,
@@ -411,7 +470,10 @@ class ZyraStageBeat extends StatelessWidget {
       curve: Curves.easeOut,
       builder: (_, t, child) => Opacity(
         opacity: t,
-        child: Transform.translate(offset: Offset(0, (1 - t) * 8), child: child),
+        child: Transform.translate(
+          offset: Offset(0, (1 - t) * 8),
+          child: child,
+        ),
       ),
       child: Container(
         width: double.infinity,
@@ -424,15 +486,21 @@ class ZyraStageBeat extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(text,
-                textAlign: TextAlign.center,
-                style: ZyraText.body(size: 12.5, color: Colors.white)),
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: ZyraText.body(size: 12.5, color: Colors.white),
+            ),
             if (sub != null) ...[
-              const SizedBox(height: 3),
-              Text(sub!,
-                  textAlign: TextAlign.center,
-                  style: ZyraText.subtext(
-                      size: 10.5, color: const Color(0x8CFFFFFF))),
+              SizedBox(height: 3),
+              Text(
+                sub!,
+                textAlign: TextAlign.center,
+                style: ZyraText.subtext(
+                  size: 10.5,
+                  color: ZyraColors.ink(0.55),
+                ),
+              ),
             ],
           ],
         ),

@@ -1,187 +1,865 @@
-// Wali "Seekers" tab — list of linked Seekers per WALI NAVIGATION.
-// Real linking (ZyraWaliLinkService) — populated from wali_links.
+// Guardian-side Seeker Workspace roster — DR-ZYRA-224 F4 / 051 Phase 2.
 //
-// 2026-08-13, DR-ZYRA-152: in DEBUG AND PROFILE BUILDS the Guardian dev
-// panel composes this list — real links first, stand-ins topping up, and
-// 0 meaning zero. That mirrors the Seeker side's Connections list exactly
-// (Founder, 2026-08-12: "zero means zero, every time"), and it is what
-// makes the panel's Reset mean reset here. A release build never calls
-// composeWaliWards at all and shows the fetched links untouched.
+// Server truth is split by role before rich Journey context is assembled.
+// Main Guardianships are always represented by caller-scoped participation;
+// Additional Guardianships gain that row only while the Seeker includes them
+// in the active Journey. Main-only attention and decision states stay out of
+// the neutral Additional section.
 
-import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
+
 import '../../dev/zyra_dev_scenario.dart';
+import '../../data/zyra_release_gates.dart';
+import '../../models/seeker_profile.dart';
 import '../../services/zyra_discovery_service.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_guardian_seeker_roster_resolver.dart';
+import '../../services/zyra_wali_journey_service.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_loading.dart';
-import '../../widgets/zyra_ward_card.dart';
+import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_state_widgets.dart';
+import 'wali_gn_shared.dart';
 import 'wali_invite_seeker_screen.dart';
+import 'family_messaging_screens.dart';
+import 'wali_seeker_workspace_screen.dart';
+
+typedef GuardianLinksLoader =
+    Future<ZyraSourceResult<List<WaliLinkedPerson>>> Function();
+typedef GuardianRosterContextLoader =
+    Future<ZyraSourceResult<GuardianSeekerRosterContext>> Function(
+      List<WaliLinkedPerson> people,
+    );
+typedef GuardianRosterProfilesLoader =
+    Future<List<SeekerProfile>> Function(List<String> ids);
 
 class WaliSeekersScreen extends StatefulWidget {
-  const WaliSeekersScreen({super.key});
+  final bool hasGuardianOne;
+  final GuardianLinksLoader? loadLinks;
+  final GuardianRosterContextLoader? loadContext;
+  final GuardianRosterProfilesLoader? loadProfiles;
+  final VoidCallback? onOpenNetwork;
+  final String? requestedSeekerId;
+  final int selectionRequest;
+
+  const WaliSeekersScreen({
+    super.key,
+    this.hasGuardianOne = false,
+    this.loadLinks,
+    this.loadContext,
+    this.loadProfiles,
+    this.onOpenNetwork,
+    this.requestedSeekerId,
+    this.selectionRequest = 0,
+  });
 
   @override
   State<WaliSeekersScreen> createState() => _WaliSeekersScreenState();
 }
 
 class _WaliSeekersScreenState extends State<WaliSeekersScreen> {
-  /// False until the link fetch returns — 2026-08-14 (DR-ZYRA-166).
-  ///
-  /// This screen rendered "No Seekers linked yet" plus an invite CTA
-  /// while the fetch was still in flight. A Guardian with two wards was
-  /// told, briefly, that they had none and offered a button to fix it.
-  /// It also made a slow request indistinguishable from an empty account.
-  bool _loaded = false;
+  static const _resolver = ZyraGuardianSeekerRosterResolver();
 
-  /// Ward id → signed photo URL — DR-ZYRA-171, the card family upgrade.
-  /// A Guardian can view their own ward (guard-suite clause 2); a ward
-  /// with no viewable photo renders the standard quiet block.
+  bool _loading = true;
+  bool _hasLinks = false;
+  bool _hasContext = false;
+  bool _linksUnavailable = false;
+  bool _contextUnavailable = false;
+  int _loadGeneration = 0;
+  List<WaliLinkedPerson> _people = const [];
+  GuardianSeekerRosterContext _context = const GuardianSeekerRosterContext();
+  Set<String> _contextRoleKeys = const {};
   Map<String, String> _photos = const {};
+
+  bool get _usesInjectedData =>
+      widget.loadLinks != null ||
+      widget.loadContext != null ||
+      widget.loadProfiles != null;
 
   @override
   void initState() {
     super.initState();
-    AppState.instance.addListener(_onChange);
-    if (!kReleaseMode) ZyraDevScenario.instance.addListener(_onChange);
-    ZyraWaliLinkService.fetchLinkedPeople(asWali: true).then((people) async {
-      if (!mounted) return;
-      AppState.instance.setWaliRealLinkedSeekers(people);
-      setState(() => _loaded = true);
-      if (people.isEmpty) return;
-      final profiles =
-          await ZyraDiscoveryService.profilesByIds(people.map((p) => p.id).toList());
-      if (!mounted || profiles.isEmpty) return;
-      setState(() => _photos = {
-            for (final p in profiles)
-              if (p.photos.isNotEmpty) p.id: p.photos.first,
-          });
+    AppState.instance.addListener(_onPresentationChange);
+    ZyraWaliLinkService.linkRevision.addListener(_onLinksChanged);
+    if (ZyraDeveloperAccess.canUseDeveloperTools) {
+      ZyraDevScenario.instance.addListener(_onPresentationChange);
+    }
+    _load();
+  }
+
+  @override
+  void dispose() {
+    AppState.instance.removeListener(_onPresentationChange);
+    ZyraWaliLinkService.linkRevision.removeListener(_onLinksChanged);
+    ZyraDevScenario.instance.removeListener(_onPresentationChange);
+    super.dispose();
+  }
+
+  void _onPresentationChange() {
+    if (mounted) setState(() {});
+  }
+
+  void _onLinksChanged() => _load();
+
+  Future<void> _load() async {
+    final generation = ++_loadGeneration;
+    if (mounted) setState(() => _loading = true);
+    final linksLoader =
+        widget.loadLinks ??
+        () => ZyraWaliLinkService.fetchLinkedPeopleResult(asWali: true);
+    final linksResult = await linksLoader();
+    if (!mounted || generation != _loadGeneration) return;
+
+    if (linksResult.isUnavailable) {
+      setState(() {
+        _linksUnavailable = true;
+        _loading = false;
+      });
+      return;
+    }
+
+    final people = linksResult.valueOr(const []);
+    final roleKeys = {
+      for (final person in people) '${person.id}:${person.isMain}',
+    };
+    if (!_usesInjectedData) AppState.instance.setWaliRealLinkedSeekers(people);
+
+    ZyraSourceResult<GuardianSeekerRosterContext> contextResult;
+    if (people.isEmpty) {
+      contextResult = const ZyraSourceResult.available(
+        GuardianSeekerRosterContext(),
+      );
+    } else {
+      final contextLoader =
+          widget.loadContext ?? ZyraWaliJourneyService.fetchRosterContextResult;
+      contextResult = await contextLoader(people);
+      if (!mounted || generation != _loadGeneration) return;
+    }
+
+    setState(() {
+      _people = people;
+      _hasLinks = true;
+      _linksUnavailable = false;
+      _loading = false;
+      if (contextResult.isAvailable) {
+        _context = contextResult.valueOr(const GuardianSeekerRosterContext());
+        _contextRoleKeys = roleKeys;
+        _hasContext = true;
+        _contextUnavailable = false;
+      } else {
+        _contextUnavailable = true;
+        if (_contextRoleKeys.length != roleKeys.length ||
+            !_contextRoleKeys.containsAll(roleKeys)) {
+          _hasContext = false;
+        }
+      }
+    });
+    _loadPhotos(people, generation);
+  }
+
+  Future<void> _loadPhotos(
+    List<WaliLinkedPerson> people,
+    int generation,
+  ) async {
+    if (people.isEmpty) {
+      if (mounted && generation == _loadGeneration) {
+        setState(() => _photos = const {});
+      }
+      return;
+    }
+    final loader = widget.loadProfiles ?? ZyraDiscoveryService.profilesByIds;
+    final profiles = await loader(people.map((person) => person.id).toList());
+    if (!mounted || generation != _loadGeneration) return;
+    setState(
+      () => _photos = {
+        for (final profile in profiles)
+          if (profile.photos.isNotEmpty) profile.id: profile.photos.first,
+      },
+    );
+  }
+
+  List<WaliLinkedPerson> get _visiblePeople {
+    if (!ZyraDeveloperAccess.canUseDeveloperTools || _usesInjectedData) {
+      return _people;
+    }
+    return ZyraDevScenario.composeWaliWards(real: _people);
+  }
+
+  GuardianSeekerRosterContext get _visibleContext {
+    if (!ZyraDeveloperAccess.canUseDeveloperTools || _usesInjectedData) {
+      return _context;
+    }
+    final journeys = ZyraDevScenario.composeWaliJourneys(
+      wards: _visiblePeople,
+      real: _context.journeys,
+    );
+    final stagedReviews = ZyraDevScenario.waliOpenReviewIds(journeys);
+    return GuardianSeekerRosterContext(
+      journeys: journeys,
+      openReviewMatchIds: {..._context.openReviewMatchIds, ...stagedReviews},
+      waitingSinceByMatchId: {
+        ..._context.waitingSinceByMatchId,
+        for (final matchId in stagedReviews)
+          if (!_context.waitingSinceByMatchId.containsKey(matchId))
+            matchId: DateTime.now(),
+      },
+    );
+  }
+
+  Future<void> _openInvite() async {
+    await Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const WaliInviteSeekerScreen()));
+    if (mounted) _load();
+  }
+
+  bool get _familyMessagingVisible =>
+      ZyraReleaseGates.familyMessagingEnabled ||
+      ZyraDeveloperAccess.canUseDeveloperTools;
+
+  Widget _workspacePage(GuardianSeekerRosterEntry entry) {
+    final developerPreview =
+        ZyraDeveloperAccess.canUseDeveloperTools &&
+        (entry.currentJourney?.isMock == true ||
+            entry.person.id.startsWith('dev-ws'));
+    return WaliSeekerWorkspaceScreen(
+      key: ValueKey('guardian-seeker-page-${entry.person.id}'),
+      entry: entry,
+      embedded: true,
+      hasGuardianOne: widget.hasGuardianOne,
+      photoUrl: _photos[entry.person.id] ?? '',
+      loadSummaries: developerPreview
+          ? (_) async => ZyraSourceResult.available([
+              GuardianAttemptSummary(
+                attemptId:
+                    'dev-summary-${entry.currentJourney?.matchId ?? entry.person.id}',
+                startedAt: DateTime.now().subtract(const Duration(days: 18)),
+                endedAt: null,
+                ended: false,
+              ),
+            ])
+          : null,
+      onOpenNetwork: widget.onOpenNetwork == null
+          ? null
+          : () {
+              GNContext.instance.selectSeeker(entry.person.id);
+              widget.onOpenNetwork!();
+            },
+      onOpenFamilyChat: _familyMessagingVisible
+          ? () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ZyraGuardianCircleScreen(
+                  seekerId: entry.person.id,
+                  seekerFirstName: entry.person.firstName,
+                  preview: !ZyraReleaseGates.familyMessagingEnabled,
+                ),
+              ),
+            )
+          : null,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final people = _visiblePeople;
+    final developerPreview = ZyraDeveloperAccess.canUseDeveloperTools;
+    final hasMain = people.any((person) => person.isMain);
+    final hasAuthoritativeRows = _hasLinks && (!hasMain || _hasContext);
+    final initialUnavailable =
+        !hasAuthoritativeRows && (_linksUnavailable || _contextUnavailable);
+
+    if ((_loading && !_hasLinks) || (!_hasLinks && !initialUnavailable)) {
+      return _shell(const ZyraLoading());
+    }
+    // Developer Access owns a complete local preview model. A failed live
+    // roster read must not replace its deliberate zero-Seeker state with a
+    // production error page (or cover local mock Seekers with the same error).
+    // Public accounts retain the honest unavailable state because an unknown
+    // live roster must never be represented as an authoritative empty roster.
+    if (initialUnavailable && !developerPreview) {
+      return _shell(ZyraUnknownErrorState(onRetry: _load));
+    }
+
+    final resolution = _resolver.resolve(
+      linkedPeople: people,
+      context: _visibleContext,
+    );
+    return GuardianSeekerRosterView(
+      resolution: resolution,
+      requestedSeekerId: widget.requestedSeekerId,
+      selectionRequest: widget.selectionRequest,
+      photos: _photos,
+      lastKnown:
+          !developerPreview && (_linksUnavailable || _contextUnavailable),
+      onRetry: _load,
+      onInvite: _openInvite,
+      onOpenSeeker: (_) {},
+      pageBuilder: _workspacePage,
+    );
+  }
+
+  Widget _shell(Widget child) => Container(
+    decoration: ZyraAppGoldDecoration(
+      gradient: ZyraColors.genderGradient(AppState.instance.gender),
+    ),
+    child: SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+            child: _SeekersHeader(onAdd: _openInvite),
+          ),
+          Expanded(child: child),
+        ],
+      ),
+    ),
+  );
+}
+
+/// Pure roster presentation used by production, focused widget tests and the
+/// frozen-clock visual matrix.
+class GuardianSeekerRosterView extends StatelessWidget {
+  final GuardianSeekerRosterResolution resolution;
+
+  /// A caller-owned canvas for isolated presentation previews. Ordinary
+  /// owners omit this and retain the current gender/gold app decoration.
+  final Decoration? decoration;
+  final Map<String, String> photos;
+  final bool lastKnown;
+  final VoidCallback onRetry;
+  final VoidCallback onInvite;
+  final ValueChanged<GuardianSeekerRosterEntry> onOpenSeeker;
+  final Widget Function(GuardianSeekerRosterEntry)? pageBuilder;
+  final String? requestedSeekerId;
+  final int selectionRequest;
+
+  /// Presentation-only opt-in; the ordinary roster keeps its original header.
+  final Alignment titleAlignment;
+
+  /// Optional parent-owned heading for a bounded presentation wrapper.
+  /// Ordinary roster callers keep the original header.
+  final bool showHeader;
+
+  const GuardianSeekerRosterView({
+    super.key,
+    required this.resolution,
+    this.photos = const {},
+    this.lastKnown = false,
+    required this.onRetry,
+    required this.onInvite,
+    required this.onOpenSeeker,
+    this.pageBuilder,
+    this.requestedSeekerId,
+    this.selectionRequest = 0,
+    this.decoration,
+    this.titleAlignment = Alignment.centerLeft,
+    this.showHeader = true,
+  });
+
+  List<GuardianSeekerRosterEntry> get _entries => [
+    for (final section in resolution.mainSections) ...section.entries,
+    ...resolution.additionalGuardianships,
+  ];
+
+  @override
+  Widget build(BuildContext context) => Container(
+    decoration:
+        decoration ??
+        ZyraAppGoldDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
+    child: SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (showHeader)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+              child: _SeekersHeader(
+                onAdd: onInvite,
+                titleAlignment: titleAlignment,
+              ),
+            ),
+          Expanded(
+            child: resolution.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 96),
+                    child: const Center(child: _SeekersEmpty()),
+                  )
+                : Column(
+                    children: [
+                      if (requestedSeekerId != null &&
+                          !_entries.any(
+                            (entry) => entry.person.id == requestedSeekerId,
+                          ))
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 2, 20, 8),
+                          child: const ZyraErrorBanner(
+                            message:
+                                'This Seeker is not available in your linked roster.',
+                          ),
+                        ),
+                      if (lastKnown) ...[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 2, 20, 8),
+                          child: ZyraErrorBanner(
+                            message:
+                                'The roster could not refresh. Showing last confirmed information.',
+                            onRetry: onRetry,
+                          ),
+                        ),
+                      ],
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 88),
+                          child: _SeekerPager(
+                            entries: _entries,
+                            photos: photos,
+                            pageBuilder: pageBuilder,
+                            requestedSeekerId: requestedSeekerId,
+                            selectionRequest: selectionRequest,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _SeekerPager extends StatefulWidget {
+  const _SeekerPager({
+    required this.entries,
+    required this.photos,
+    required this.pageBuilder,
+    required this.requestedSeekerId,
+    required this.selectionRequest,
+  });
+
+  final List<GuardianSeekerRosterEntry> entries;
+  final Map<String, String> photos;
+  final Widget Function(GuardianSeekerRosterEntry)? pageBuilder;
+  final String? requestedSeekerId;
+  final int selectionRequest;
+
+  @override
+  State<_SeekerPager> createState() => _SeekerPagerState();
+}
+
+class _SeekerPagerState extends State<_SeekerPager> {
+  late final PageController _controller;
+  int _page = 0;
+  late String _currentSeekerId;
+  String? _pendingSeekerId;
+  int _jumpRevision = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pendingSeekerId = widget.requestedSeekerId;
+    final requested = _requestedIndex();
+    if (requested >= 0) {
+      _page = requested;
+      _pendingSeekerId = null;
+    }
+    _controller = PageController(initialPage: _page);
+    _currentSeekerId = widget.entries[_page].person.id;
+  }
+
+  int _requestedIndex() => _pendingSeekerId == null
+      ? -1
+      : widget.entries.indexWhere(
+          (entry) => entry.person.id == _pendingSeekerId,
+        );
+
+  @override
+  void didUpdateWidget(covariant _SeekerPager oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!listEquals(
+      oldWidget.entries.map((entry) => entry.person.id).toList(),
+      widget.entries.map((entry) => entry.person.id).toList(),
+    )) {
+      _jumpRevision++;
+    }
+    if (widget.selectionRequest != oldWidget.selectionRequest ||
+        widget.requestedSeekerId != oldWidget.requestedSeekerId) {
+      // Invalidate queued jumps before any early return, including cancel or
+      // an unavailable replacement target. Keep actual selection until commit.
+      _jumpRevision++;
+      _pendingSeekerId = widget.requestedSeekerId;
+    }
+    final retained = widget.entries.indexWhere(
+      (entry) => entry.person.id == _currentSeekerId,
+    );
+    final requested = _requestedIndex();
+    final next = requested >= 0
+        ? requested
+        : retained >= 0
+        ? retained
+        : _page.clamp(0, widget.entries.length - 1);
+    if (next == _page && requested < 0) {
+      _currentSeekerId = widget.entries[next].person.id;
+      return;
+    }
+    final revision = ++_jumpRevision;
+    final targetId = widget.entries[next].person.id;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted &&
+          revision == _jumpRevision &&
+          _controller.hasClients &&
+          next < widget.entries.length &&
+          widget.entries[next].person.id == targetId) {
+        setState(() {
+          _page = next;
+          _currentSeekerId = targetId;
+          if (_pendingSeekerId == targetId) _pendingSeekerId = null;
+        });
+        _controller.jumpToPage(next);
+      }
     });
   }
 
   @override
   void dispose() {
-    AppState.instance.removeListener(_onChange);
-    if (!kReleaseMode) ZyraDevScenario.instance.removeListener(_onChange);
+    _controller.dispose();
     super.dispose();
   }
 
-  void _onChange() => setState(() {});
-
-  /// The Seekers this screen draws. See the header: the panel owns this
-  /// list in debug and profile builds, and nothing else does in release.
-  List<WaliLinkedPerson> get _wards {
-    final real = AppState.instance.waliRealLinkedSeekers;
-    if (kReleaseMode) return real;
-    return ZyraDevScenario.composeWaliWards(real: real);
-  }
-
   @override
-  Widget build(BuildContext context) {
-    final linked = _wards;
-    return Container(
-      // 2026-07-25: gender-matched gradient, was hardcoded Male — see
-      // ZyraColors.genderGradient() doc comment / DR-ZYRA-094.
-      decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: Text('Seekers', style: ZyraText.heading(size: 26)),
-            ),
-            Expanded(
-              child: !_loaded
-                  ? const ZyraLoading()
-                  : linked.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: ZyraEmptyState(
-                        icon: Icons.person_search_outlined,
-                        message: 'No Seekers linked yet.',
-                        ctaLabel: 'Invite your Seeker',
-                        onCta: () => Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const WaliInviteSeekerScreen()),
-                        ),
+  Widget build(BuildContext context) => Column(
+    children: [
+      Expanded(
+        child: ShaderMask(
+          key: const ValueKey('guardian-seeker-page-bottom-fade'),
+          blendMode: BlendMode.dstIn,
+          shaderCallback: (bounds) {
+            const fadeExtent = 26.0;
+            final fadeStart = bounds.height <= fadeExtent
+                ? 0.0
+                : 1 - (fadeExtent / bounds.height);
+            return LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: const [Colors.white, Colors.white, Colors.transparent],
+              stops: [0, fadeStart, 1],
+            ).createShader(bounds);
+          },
+          child: PageView.builder(
+            key: const ValueKey('guardian-seeker-page-view'),
+            controller: _controller,
+            physics: const BouncingScrollPhysics(),
+            itemCount: widget.entries.length,
+            onPageChanged: (value) => setState(() {
+              _page = value;
+              _currentSeekerId = widget.entries[value].person.id;
+            }),
+            itemBuilder: (context, index) {
+              final entry = widget.entries[index];
+              return Semantics(
+                label:
+                    'Seeker ${index + 1} of ${widget.entries.length}: '
+                    '${entry.person.firstName}',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child:
+                      widget.pageBuilder?.call(entry) ??
+                      _SeekerQuietSummary(
+                        entry: entry,
+                        photoUrl: widget.photos[entry.person.id] ?? '',
                       ),
-                    )
-                  : ListView(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
-                      children: [
-                        // CARD FAMILY, not icon rows — DR-ZYRA-171
-                        // (Founder: "Guardian profile card should feel
-                        // like the same component family"). Same
-                        // ZyraCardMetrics numbers as every person row
-                        // in the app.
-                        for (final person in linked)
-                          ZyraWardCard(
-                            name: person.firstName,
-                            photoUrl: _photos[person.id] ?? '',
-                            statusLine:
-                                person.relationshipLabel ?? 'Linked Seeker',
-                            detailLine: person.isMain
-                                ? 'You are their Main Guardian'
-                                : 'Additional Guardian',
-                          ),
-                        // THE MISSING ENTRY POINT — added 2026-08-07.
-                        //
-                        // "Invite your Seeker" existed ONLY inside
-                        // `linked.isEmpty`, on this screen and the
-                        // Dashboard. So the control vanished the moment it
-                        // succeeded once: a Guardian with one Seeker had no
-                        // way to invite a second, and the Founder could not
-                        // find the flow at all because his test accounts
-                        // already had Seekers linked.
-                        //
-                        // The functionality was complete the whole time —
-                        // accept_wali_invite has always handled both
-                        // directions. Only the door was missing.
-                        //
-                        // Same + pattern the Seeker's Guardian tab uses:
-                        // sitting where the next entry would go, so the
-                        // list reads Seeker → Seeker → +.
-                        const SizedBox(height: 18),
-                        Center(
-                          child: Material(
-                            color: Colors.white.withValues(alpha: 0.10),
-                            shape: const CircleBorder(),
-                            child: InkWell(
-                              customBorder: const CircleBorder(),
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => const WaliInviteSeekerScreen()),
-                              ),
-                              child: Container(
-                                width: 56,
-                                height: 56,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.28),
-                                      width: 1),
-                                ),
-                                child: const Icon(Icons.add, size: 26, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Center(
-                          child: Text('Invite another Seeker',
-                              style: ZyraText.subtext(
-                                  size: 12.5,
-                                  color: Colors.white.withValues(alpha: 0.55))),
-                        ),
-                      ],
-                    ),
-            ),
-          ],
+                ),
+              );
+            },
+          ),
         ),
       ),
-    );
-  }
+      if (widget.entries.length > 1) ...[
+        const SizedBox(height: 12),
+        _SeekerPageDots(count: widget.entries.length, selected: _page),
+        const SizedBox(height: 4),
+      ],
+    ],
+  );
+}
+
+class _SeekerQuietSummary extends StatelessWidget {
+  const _SeekerQuietSummary({required this.entry, required this.photoUrl});
+
+  final GuardianSeekerRosterEntry entry;
+  final String photoUrl;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) => SingleChildScrollView(
+      key: ValueKey('guardian-seeker-page-scroll-${entry.person.id}'),
+      physics: const BouncingScrollPhysics(),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: constraints.maxHeight),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8, bottom: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _SeekerPageIdentity(entry: entry, photoUrl: photoUrl),
+              _SeekerQuietSection(
+                label: 'DETAILS',
+                child: Column(
+                  children: [
+                    _SeekerQuietPair(
+                      label: 'Status',
+                      value: entry.needsAttention ? 'Needs you' : 'Active',
+                      signal: entry.needsAttention,
+                    ),
+                    _SeekerQuietPair(
+                      label: 'Linked',
+                      value: entry.person.linkedDateLabel ?? 'Not recorded',
+                    ),
+                  ],
+                ),
+              ),
+              _SeekerQuietSection(
+                label: 'JOURNEY ACCESS',
+                child: Column(
+                  children: [
+                    _SeekerQuietPair(
+                      label: 'Role',
+                      value: entry.person.isMain
+                          ? 'Main Guardian'
+                          : 'Additional Guardian',
+                    ),
+                    _SeekerQuietPair(
+                      label: 'Current',
+                      value: entry.contextLine,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+class _SeekerPageIdentity extends StatelessWidget {
+  const _SeekerPageIdentity({required this.entry, required this.photoUrl});
+
+  final GuardianSeekerRosterEntry entry;
+  final String photoUrl;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: Row(
+      children: [
+        ClipOval(
+          child: SizedBox.square(
+            dimension: 72,
+            child: ZyraProfileImage(photoUrl, width: 72, height: 72),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(entry.person.firstName, style: ZyraText.heading(size: 27)),
+              const SizedBox(height: 3),
+              Text(
+                [
+                  entry.person.relationshipLabel ?? 'Relationship not recorded',
+                  entry.person.isMain ? 'Main Guardian' : 'Additional Guardian',
+                ].join(' · '),
+                style: ZyraText.subtext(
+                  size: 12.5,
+                  color: ZyraColors.ink(0.58),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _SeekerPageDots extends StatelessWidget {
+  const _SeekerPageDots({required this.count, required this.selected});
+
+  final int count;
+  final int selected;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: 'Seeker ${selected + 1} of $count',
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (var index = 0; index < count; index++)
+          AnimatedContainer(
+            key: ValueKey('guardian-seeker-page-dot-$index'),
+            duration: const Duration(milliseconds: 180),
+            width: index == selected ? 20 : 5,
+            height: 5,
+            margin: const EdgeInsets.symmetric(horizontal: 3),
+            decoration: BoxDecoration(
+              color: index == selected
+                  ? ZyraColors.journeyGold
+                  : ZyraColors.ink(0.25),
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+      ],
+    ),
+  );
+}
+
+class _SeekerQuietSection extends StatelessWidget {
+  const _SeekerQuietSection({required this.label, required this.child});
+
+  final String label;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 2),
+    decoration: BoxDecoration(
+      border: Border(top: BorderSide(color: ZyraColors.ink(0.13))),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: ZyraText.chapterLabel(color: ZyraColors.ink(0.47))),
+        const SizedBox(height: 10),
+        child,
+      ],
+    ),
+  );
+}
+
+class _SeekerQuietPair extends StatelessWidget {
+  const _SeekerQuietPair({
+    required this.label,
+    required this.value,
+    this.signal = false,
+  });
+
+  final String label;
+  final String value;
+  final bool signal;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            label,
+            style: ZyraText.subtext(size: 12.5, color: ZyraColors.ink(0.46)),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.right,
+            style: ZyraText.body(
+              size: 13,
+              color: signal ? ZyraColors.journeyGold : ZyraColors.foreground,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+/// Mirrors the Seeker-side Guardian header: the relationship owner page
+/// keeps its add action beside the title instead of burying it in Profile or
+/// repeating it at the bottom of the roster.
+class _SeekersHeader extends StatelessWidget {
+  final VoidCallback onAdd;
+  final Alignment titleAlignment;
+
+  const _SeekersHeader({
+    required this.onAdd,
+    this.titleAlignment = Alignment.centerLeft,
+  });
+
+  Widget _title() => Expanded(
+    child: Text(
+      'Seekers',
+      key: const ValueKey('guardian-seekers-title'),
+      textAlign: titleAlignment.x > 0 ? TextAlign.right : TextAlign.left,
+      style: ZyraText.heading(size: 26),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      if (titleAlignment.x <= 0) ...[_title(), const SizedBox(width: 8)],
+      Tooltip(
+        message: 'Add a Seeker',
+        excludeFromSemantics: true,
+        child: Semantics(
+          button: true,
+          label: 'Add a Seeker',
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              key: const ValueKey('guardian-seeker-add-top'),
+              customBorder: const CircleBorder(),
+              onTap: onAdd,
+              child: SizedBox.square(
+                dimension: 48,
+                child: Center(
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ZyraColors.iconButtonBg,
+                      border: Border.all(color: ZyraColors.iconButtonBorder),
+                    ),
+                    child: Icon(
+                      Icons.add_rounded,
+                      size: 23,
+                      color: ZyraColors.foreground,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      if (titleAlignment.x > 0) ...[const SizedBox(width: 8), _title()],
+    ],
+  );
+}
+
+class _SeekersEmpty extends StatelessWidget {
+  const _SeekersEmpty();
+
+  @override
+  Widget build(BuildContext context) => ZyraEmptyState(
+    key: const ValueKey('guardian-seekers-empty'),
+    icon: Icons.people_outline_rounded,
+    title: 'Add a Seeker',
+    message: '',
+  );
 }

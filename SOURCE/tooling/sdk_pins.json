@@ -1,0 +1,12 @@
+{
+  "sdkRoot": "/opt/homebrew/share/flutter",
+  "frameworkVersion": "3.44.2",
+  "channel": "stable",
+  "sha256": {
+    "bin/cache/dart-sdk/bin/dart": "3760a76d390be872c4b4a44a5d045f06183bc21b191b98c8f1e26bc9b1d65d20",
+    "bin/cache/flutter_tools.snapshot": "13abc665bbccfaf78f1357ada1818adf27ed05663a1d3c4519da5b89e3ea0f1a",
+    "bin/cache/flutter.version.json": "62b76a2190a0dc19abe64bc3f7feadcc8aaae6e8ba3e4199df519adcfcb9fbd0",
+    "packages/flutter_tools/.dart_tool/package_config.json": "2e1fd90c83dcdedf42dc536969dd3297040cbb2114971f7774824dc1e3f59b93",
+    "packages/flutter_tools/bin/xcode_backend.dart": "472073909ce8bde7f5844379c8949bc536a9889a7565a962608fd0da6bcda494"
+  }
+}

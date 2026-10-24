@@ -1,0 +1,877 @@
+{
+  "candidate_only": true,
+  "production_authority": false,
+  "status": "planned_not_run",
+  "scope": "Isolated synthetic PostgreSQL candidate; no production or privacy-safety certification",
+  "result_rules": "Only observed assertions may pass. Unimplemented, runtime-unavailable and future product-decision cases remain pending.",
+  "tests": [
+    {
+      "id": "ISO01",
+      "name": "no_remote_connection_or_credentials",
+      "group": "ISO",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ISO02",
+      "name": "no_network_interface_or_published_port",
+      "group": "ISO",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ISO03",
+      "name": "exact_image_database_and_resource_identity",
+      "group": "ISO",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ISO04",
+      "name": "no_project_environment_or_host_mounts",
+      "group": "ISO",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ISO05",
+      "name": "runtime_and_stage1_baselines_unchanged",
+      "group": "ISO",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN01",
+      "name": "duplicate_options_rejected_before_normalisation",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN02",
+      "name": "exclusive_none_combination_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN03",
+      "name": "missing_required_control_or_light_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN04",
+      "name": "unknown_question_option_or_light_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN05",
+      "name": "partial_multiselect_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN06",
+      "name": "wrong_variant_or_broken_dependency_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN07",
+      "name": "unsupported_hard_requirement_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN08",
+      "name": "missing_or_multiple_category_mapping_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN09",
+      "name": "unknown_custom_sect_code_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN10",
+      "name": "alias_collision_and_hidden_q26_overwrite_rejected",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN11",
+      "name": "q24_target_branch_applicability",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN12",
+      "name": "q26_counterpart_variant_vocabulary",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN13",
+      "name": "q39_male_counterpart_pool",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN14",
+      "name": "legacy_amber_targeted_reconfirmation",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN15",
+      "name": "unversioned_green_red_structural_validation",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN16",
+      "name": "chapter2_conditions_and_provisional_weight_parity",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN17",
+      "name": "unscored_controls_do_not_change_result",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN18",
+      "name": "category_totals_reconcile_to_overall",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN19",
+      "name": "valid_zero_distinguished_from_unavailable",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "IN20",
+      "name": "stage1_oracle_and_manifest_parity",
+      "group": "IN",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REV01",
+      "name": "viewer_preferences_change_during_candidate",
+      "group": "REV",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REV02",
+      "name": "target_answers_change_during_candidate",
+      "group": "REV",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REV03",
+      "name": "hard_requirements_change_during_candidate",
+      "group": "REV",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REV04",
+      "name": "manifest_category_or_vocabulary_changes",
+      "group": "REV",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REV05",
+      "name": "bio_change_does_not_invalidate_semantic_inputs",
+      "group": "REV",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REV06",
+      "name": "concurrent_capture_cannot_create_torn_revision",
+      "group": "REV",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REV07",
+      "name": "existing_snapshot_ignores_ordinary_later_edits",
+      "group": "REV",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX01",
+      "name": "standard_plus_same_pair_concurrent",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX02",
+      "name": "plus_journey_same_pair_concurrent",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX03",
+      "name": "same_target_same_operation_key",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX04",
+      "name": "same_target_different_operation_keys",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX05",
+      "name": "different_targets_one_remaining_fake_credit",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX06",
+      "name": "legacy_transition_races_paid_purchase",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX07",
+      "name": "technical_replacement_races_read",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX08",
+      "name": "credit_grant_races_debit",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX09",
+      "name": "credit_refund_races_debit",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX10",
+      "name": "plus_gate_off_during_operation",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX11",
+      "name": "serialization_failure_whole_transaction_retry",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX12",
+      "name": "protocol_lock_order_no_deadlock",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX13",
+      "name": "injected_deadlock_bounded_recovery",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX14",
+      "name": "failure_at_each_commit_mutation_boundary",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX15",
+      "name": "cross_tier_authority_and_fixture_debit_rules",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "TX16",
+      "name": "concurrent_first_purposes_one_calculation_binding",
+      "group": "TX",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC01",
+      "name": "block_before_preflight",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC02",
+      "name": "block_after_preflight_before_commit",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC03",
+      "name": "block_after_commit_before_response",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC04",
+      "name": "target_deletion_during_calculation",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC05",
+      "name": "target_suspension_during_calculation",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC06",
+      "name": "visibility_change_during_transaction",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC07",
+      "name": "safety_restriction_after_entitlement",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC08",
+      "name": "existing_entitlement_current_disclosure_denied",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC09",
+      "name": "wrong_actor_retries_previous_operation",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC10",
+      "name": "revocation_wins_no_purchase_effects",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC11",
+      "name": "commit_wins_later_reads_denied",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "AC12",
+      "name": "guardian_relationship_changed_or_removed",
+      "group": "AC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC01",
+      "name": "same_key_different_request_conflict",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC02",
+      "name": "lost_response_one_effect_one_debit",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC03",
+      "name": "retry_after_revocation_no_cached_payload",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC04",
+      "name": "retry_after_repair_current_binding_only",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC05",
+      "name": "entitlement_exists_snapshot_missing_no_recharge",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC06",
+      "name": "snapshot_exists_entitlement_missing_no_free_bypass",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC07",
+      "name": "committed_purchase_projection_failure_no_recharge",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC08",
+      "name": "legacy_entitlement_no_validated_snapshot",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC09",
+      "name": "legacy_validation_failure_then_repair",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC10",
+      "name": "irreproducible_legacy_truthful_unavailable",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC11",
+      "name": "technical_repair_original_inputs_missing",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC12",
+      "name": "evidence_purged_no_current_input_substitution",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC13",
+      "name": "existing_result_read_no_wallet_creation",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "REC14",
+      "name": "invalid_candidate_no_visible_provisional_result",
+      "group": "REC",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL01",
+      "name": "role_resource_effective_grant_matrix",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL02",
+      "name": "direct_scorer_denied",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL03",
+      "name": "private_snapshot_and_evidence_denied",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL04",
+      "name": "views_sequences_and_helpers_do_not_leak",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL05",
+      "name": "public_and_anonymous_execute_denied",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL06",
+      "name": "fixed_search_path_and_object_shadowing",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL07",
+      "name": "forged_viewer_and_snapshot_ids_denied",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL08",
+      "name": "client_selected_version_purpose_or_tier_no_bypass",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL09",
+      "name": "ordinary_actor_cannot_enable_plus",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL10",
+      "name": "ordinary_actor_cannot_assume_privileged_identity",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL11",
+      "name": "guardian_role_does_not_inherit_score_access",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "ACL12",
+      "name": "maintenance_and_repair_not_client_callable",
+      "group": "ACL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR01",
+      "name": "browse_no_raw_score_or_paid_entitlement",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR02",
+      "name": "standard_viewer_overall_only",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR03",
+      "name": "plus_same_snapshot_no_hidden_counts",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR04",
+      "name": "journey_same_snapshot_authority_preserved",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR05",
+      "name": "journey_read_does_not_mutate_stage_or_flags",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR06",
+      "name": "standard_before_plus_equals_plus_before_standard",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR07",
+      "name": "journey_before_after_paid_access_same_basis",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR08",
+      "name": "first_plus_policy_survives_response_loss",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR09",
+      "name": "later_policy_no_automatic_richer_projection",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR10",
+      "name": "guardian_lookup_failure_not_false_unlinked",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR11",
+      "name": "category_unavailability_neutral_projection",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "PR12",
+      "name": "repeated_surface_access_no_new_calculation",
+      "group": "PR",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL01",
+      "name": "all_categories_suppressed_no_debit",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL02",
+      "name": "guardian_only_no_debit",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL03",
+      "name": "one_category_symbolic_policy",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL04",
+      "name": "several_categories_symbolic_policy",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL05",
+      "name": "valid_zero_band_not_missing_data",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL06",
+      "name": "plus_default_off",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL07",
+      "name": "privileged_local_gate_enable_ordinary_purchase",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL08",
+      "name": "failed_preflight_no_entitlement_or_debit",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "VAL09",
+      "name": "demo_fixture_cannot_enter_purchase_path",
+      "group": "VAL",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "OBS01",
+      "name": "standard_only_single_unlock_inference",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS02",
+      "name": "standard_plus_each_symbolic_band",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS03",
+      "name": "hidden_category_subtraction",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS04",
+      "name": "small_category_answer_reconstruction",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS05",
+      "name": "old_projection_plus_new_policy_transcript",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS06",
+      "name": "repeated_preferences_purposes_roles_and_accounts",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS07",
+      "name": "browse_order_and_cross_surface_combination",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS08",
+      "name": "suppression_availability_error_and_timing_signals",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS09",
+      "name": "failed_preflight_preference_edit_probing",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS10",
+      "name": "guardian_states_combined_with_category_states",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "OBS11",
+      "name": "answer_narrowing_without_unique_reconstruction",
+      "group": "OBS",
+      "planned_status": "measurement_required_not_privacy_pass",
+      "stage": "stage2_synthetic_probe_and_stage3_full_measurement"
+    },
+    {
+      "id": "LIFE01",
+      "name": "evidence_purge_preserves_entitlement",
+      "group": "LIFE",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "LIFE02",
+      "name": "purge_does_not_enable_normal_refresh",
+      "group": "LIFE",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "LIFE03",
+      "name": "replacement_no_selectable_score_history",
+      "group": "LIFE",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "LIFE04",
+      "name": "deletion_suppresses_payload_under_fixture_policy",
+      "group": "LIFE",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "LIFE05",
+      "name": "no_unbounded_failed_candidate_archive",
+      "group": "LIFE",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    },
+    {
+      "id": "LIFE06",
+      "name": "re_registration_no_implicit_identity_transfer",
+      "group": "LIFE",
+      "planned_status": "planned_not_run",
+      "stage": "stage2_local_candidate"
+    }
+  ]
+}

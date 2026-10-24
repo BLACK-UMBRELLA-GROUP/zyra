@@ -6,188 +6,1000 @@
 // contexts without another sign-in; the server activation for that second
 // context remains behind the Founder's explicit migration gate.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import '../../dev/dev_role_choice_design.dart';
+import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_initial_signup_draft_service.dart';
+import '../../models/zyra_initial_signup_draft.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_onboarding_direction_style.dart';
+import '../../widgets/zyra_onboarding_continue_action.dart';
+import '../../widgets/zyra_onboarding_edge_swipe.dart';
+import '../../widgets/zyra_onboarding_account_exit.dart';
 import '../onboarding/onboarding_flow.dart';
 import '../onboarding/account_path_overview_screen.dart';
 
-class RoleSelectionScreen extends StatelessWidget {
-  const RoleSelectionScreen({super.key});
+class RoleSelectionScreen extends StatefulWidget {
+  final String? recoveryNotice;
+  final String? signupUserId;
+  final bool devPreview;
+  final bool animateDevEntrance;
+  const RoleSelectionScreen({
+    super.key,
+    this.recoveryNotice,
+    this.signupUserId,
+    this.devPreview = false,
+    this.animateDevEntrance = false,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(gradient: ZyraColors.brandGradient),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(26, 28, 26, 24),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight:
-                    MediaQuery.sizeOf(context).height -
-                    MediaQuery.paddingOf(context).vertical -
-                    52,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text('ZYRA', style: ZyraText.wordmark(size: 20)),
-                      const Spacer(),
-                      Text(
-                        'ACCOUNT SETUP · 1 OF 2',
-                        style: ZyraText.chapterLabel(color: Colors.white38),
-                      ),
-                    ],
+  State<RoleSelectionScreen> createState() => _RoleSelectionScreenState();
+}
+
+class _RoleSelectionScreenState extends State<RoleSelectionScreen>
+    with SingleTickerProviderStateMixin {
+  bool _saving = false;
+  bool _advancing = false;
+  String? _error;
+  String? _signupUserId;
+  ZyraSignupRole? _selectedRole;
+  final ScrollController _scrollController = ScrollController();
+  late final AnimationController _entrance;
+  bool _entranceStarted = false;
+  static const _roleFocusDuration = Duration(milliseconds: 480);
+  Timer? _roleFocusTimer;
+  int _roleFocusRevision = 0;
+  bool _roleFocusSettling = false;
+
+  bool get _reduceMotion =>
+      MediaQuery.disableAnimationsOf(context) ||
+      MediaQuery.accessibleNavigationOf(context);
+
+  bool get _motionReady =>
+      !_roleFocusSettling && _entrance.status == AnimationStatus.completed;
+
+  bool get _canAdvance =>
+      _selectedRole != null &&
+      _motionReady &&
+      !_advancing &&
+      !_saving &&
+      ModalRoute.of(context)?.isCurrent == true &&
+      (!widget.devPreview || ZyraDeveloperAccess.canUseDeveloperTools);
+
+  @override
+  void initState() {
+    super.initState();
+    _entrance = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 520),
+      value: widget.devPreview && widget.animateDevEntrance ? 0 : 1,
+    )..addStatusListener(_onEntranceStatus);
+    if (widget.devPreview) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ZyraDevSurfaceCoordinator.instance.attachRoleChoice(
+          this,
+          isCurrent: () => mounted && ModalRoute.of(context)?.isCurrent == true,
+        );
+      });
+    }
+    // A requested preview is never a live draft reader, even when denied.
+    if (widget.devPreview) return;
+    try {
+      final suppliedUserId = widget.signupUserId;
+      if (suppliedUserId != null) {
+        ZyraInitialSignupDraftService.repository.requireOwner(suppliedUserId);
+        _signupUserId = suppliedUserId;
+      } else {
+        _signupUserId = ZyraInitialSignupDraftService.captureUserId();
+      }
+    } catch (_) {
+      _signupUserId = null;
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_reduceMotion) {
+      _roleFocusTimer?.cancel();
+      _roleFocusRevision++;
+      _roleFocusSettling = false;
+    }
+    if (!widget.devPreview || !widget.animateDevEntrance) return;
+    if (_reduceMotion) {
+      _entrance.value = 1;
+    } else if (!_entranceStarted) {
+      _entranceStarted = true;
+      _entrance.forward();
+    }
+  }
+
+  void _onEntranceStatus(AnimationStatus status) {
+    if (mounted && status == AnimationStatus.completed) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _roleFocusTimer?.cancel();
+    _roleFocusRevision++;
+    if (widget.devPreview) {
+      ZyraDevSurfaceCoordinator.instance.detachRoleChoice(this);
+    }
+    _scrollController.dispose();
+    _entrance.removeStatusListener(_onEntranceStatus);
+    _entrance.dispose();
+    super.dispose();
+  }
+
+  void _select(ZyraSignupRole role) {
+    if (_advancing ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        (widget.devPreview && !ZyraDeveloperAccess.canUseDeveloperTools)) {
+      return;
+    }
+    _roleFocusTimer?.cancel();
+    final revision = ++_roleFocusRevision;
+    final settling = !_reduceMotion;
+    setState(() {
+      _selectedRole = _selectedRole == role ? null : role;
+      _error = null;
+      _roleFocusSettling = settling;
+    });
+    if (settling) {
+      _roleFocusTimer = Timer(_roleFocusDuration, () {
+        if (!mounted || revision != _roleFocusRevision) return;
+        // This only finishes local layout motion. Current-route and preview
+        // authority checks remain in the shared advance gate, including if
+        // another route covered this one while the cards were settling.
+        setState(() => _roleFocusSettling = false);
+      });
+    }
+  }
+
+  Future<void> _advanceSelected() async {
+    final role = _selectedRole;
+    if (role == null ||
+        !_motionReady ||
+        _advancing ||
+        _saving ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        (widget.devPreview && !ZyraDeveloperAccess.canUseDeveloperTools)) {
+      return;
+    }
+    setState(() => _advancing = true);
+    try {
+      if (role == ZyraSignupRole.seeker) {
+        await _proceedAsSeeker(context);
+      } else {
+        await _proceedAsWali(context);
+      }
+    } finally {
+      if (mounted) setState(() => _advancing = false);
+    }
+  }
+
+  Future<String?> _remember(ZyraSignupRole role) async {
+    if (widget.devPreview) return null;
+    if (_saving) return null;
+    setState(() {
+      _saving = true;
+      _error = null;
+    });
+    try {
+      final userId = _signupUserId;
+      if (userId == null) throw StateError('Missing signup principal.');
+      ZyraInitialSignupDraftService.repository.requireOwner(userId);
+      await ZyraInitialSignupDraftService.repository.save(
+        userId,
+        ZyraInitialSignupDraft(
+          role: role,
+          showIntroduction: role == ZyraSignupRole.seeker,
+        ),
+      );
+      if (!mounted) return null;
+      setState(() => _saving = false);
+      return userId;
+    } catch (error) {
+      debugPrint(
+        'ZYRA: role selection draft save failed (${error.runtimeType}).',
+      );
+      if (mounted) {
+        setState(() {
+          _saving = false;
+          _error =
+              "We couldn't save your setup securely. Please try again on this device.";
+        });
+      }
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: Listenable.merge([
+      ZyraDeveloperAccess.authorizationChanges,
+      if (widget.devPreview) ZyraDevRoleChoiceDesign.changes,
+    ]),
+    builder: (context, _) {
+      if (widget.devPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
+        return Scaffold(
+          key: const ValueKey('role_preview_denied'),
+          backgroundColor: ZyraColors.modalSheetSurface,
+          body: const SizedBox.expand(),
+        );
+      }
+      return _buildSelection(context);
+    },
+  );
+
+  Widget _buildSelection(BuildContext context) {
+    // Visual comparisons are protected and session-only. The live journey
+    // uses Guided paths; the protected toggle can still preview every design.
+    final previewStyle = OnboardingPreviewStyle.effectiveStyleOf(context);
+    final design = widget.devPreview
+        ? ZyraDevRoleChoiceDesign.current
+        : ZyraRoleChoiceDesign.guidedPaths;
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final cardHeight = design == ZyraRoleChoiceDesign.spotlight
+        ? (screenHeight * .16).clamp(150.0, 165.0).toDouble()
+        : design == ZyraRoleChoiceDesign.current
+        ? 104.0
+        : (screenHeight * .14).clamp(124.0, 176.0).toDouble();
+    final focusedCardHeight = (screenHeight * .34)
+        .clamp(cardHeight + 74, 310.0)
+        .toDouble();
+    final selectionDuration = _reduceMotion
+        ? Duration.zero
+        : _roleFocusDuration;
+    final setupLabel = Text(
+      'CHOOSE YOUR PATH',
+      textAlign: TextAlign.end,
+      style: ZyraText.chapterLabel(color: ZyraColors.ink(0.38)),
+    );
+    final foreground = SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, viewport) {
+                final content = SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: const ClampingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
                   ),
-                  const SizedBox(height: 12),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
-                    child: const LinearProgressIndicator(
-                      value: 0.5,
-                      minHeight: 1.5,
-                      backgroundColor: ZyraColors.progressTrack,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        ZyraColors.progressFill,
+                  padding: const EdgeInsets.fromLTRB(26, 28, 26, 18),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: (viewport.maxHeight - 46).clamp(
+                        0.0,
+                        double.infinity,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 62),
-                  Text(
-                    'CHOOSE WHERE TO BEGIN',
-                    style: ZyraText.chapterLabel(color: Colors.white54),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'How will you use ZYRA first?',
-                    style: ZyraText.heading(size: 28),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Start with the experience you need today. You can add '
-                    'the other later without creating another login.',
-                    style: ZyraText.subtext(size: 13.5),
-                  ),
-                  const SizedBox(height: 30),
-                  _RoleCard(
-                    icon: Icons.favorite_border,
-                    title: 'Seek marriage',
-                    description:
-                        'Build my profile and begin my own marriage journey.',
-                    onTap: () => _proceedAsSeeker(context),
-                  ),
-                  const SizedBox(height: 14),
-                  _RoleCard(
-                    icon: Icons.shield_outlined,
-                    title: 'Support as Guardian',
-                    description:
-                        'Guide someone I care for through their journey.',
-                    onTap: () => _proceedAsWali(context),
-                  ),
-                  const SizedBox(height: 26),
-                  Center(
-                    child: Text(
-                      'One identity · one secure sign-in · two experiences',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.subtext(
-                        size: 10.5,
-                        color: Colors.white38,
-                      ),
+                    child: _selectionContents(
+                      context,
+                      previewStyle: previewStyle,
+                      design: design,
+                      cardHeight: cardHeight,
+                      focusedCardHeight: focusedCardHeight,
+                      selectionDuration: selectionDuration,
+                      setupLabel: setupLabel,
                     ),
                   ),
-                ],
+                );
+                return ZyraOnboardingEdgeSwipe(
+                  controller: _scrollController,
+                  enabled: _canAdvance,
+                  onForward: () => _advanceSelected(),
+                  child: content,
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 78,
+            child: Center(
+              child: IgnorePointer(
+                ignoring: _selectedRole == null,
+                child: ExcludeSemantics(
+                  excluding: _selectedRole == null,
+                  child: AnimatedSwitcher(
+                    duration: selectionDuration,
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeInCubic,
+                    transitionBuilder: (child, animation) => FadeTransition(
+                      opacity: animation,
+                      child: ScaleTransition(
+                        scale: Tween<double>(
+                          begin: .9,
+                          end: 1,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    ),
+                    child: _selectedRole == null
+                        ? const SizedBox.shrink(
+                            key: ValueKey('role-choice-no-continue'),
+                          )
+                        : ZyraOnboardingArrowAction(
+                            key: const ValueKey('role-choice-continue'),
+                            active: _canAdvance,
+                            semanticLabel: 'Continue with selected experience',
+                            onPressed: _advanceSelected,
+                          ),
+                  ),
+                ),
               ),
             ),
           ),
+        ],
+      ),
+    );
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient:
+              previewStyle?.backgroundGradient ?? ZyraColors.brandGradient,
         ),
+        child: widget.devPreview && widget.animateDevEntrance
+            ? AnimatedBuilder(
+                animation: _entrance,
+                child: foreground,
+                builder: (context, child) {
+                  final progress = Curves.easeOutSine.transform(
+                    _entrance.value,
+                  );
+                  return Opacity(
+                    key: const ValueKey('dev_onboarding_downward_entry'),
+                    opacity: .08 + .92 * progress,
+                    child: Transform.translate(
+                      offset: Offset(0, 54 * (1 - progress)),
+                      child: child,
+                    ),
+                  );
+                },
+              )
+            : foreground,
       ),
     );
   }
 
-  void _proceedAsSeeker(BuildContext context) {
-    final firstName = ZyraAuth.onboardingFirstName;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => OnboardingFlow(welcomeName: firstName)),
+  Widget _selectionContents(
+    BuildContext context, {
+    required OnboardingPreviewStyle? previewStyle,
+    required ZyraRoleChoiceDesign design,
+    required double cardHeight,
+    required double focusedCardHeight,
+    required Duration selectionDuration,
+    required Widget setupLabel,
+  }) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          Text(
+            'ZYRA',
+            style: ZyraText.wordmark(
+              size: 20,
+              color: ZyraColors.splashWordmark,
+            ),
+          ),
+          const Spacer(),
+          Flexible(child: setupLabel),
+        ],
+      ),
+      SizedBox(height: 12),
+      // Path choice is a branch, not step one of an invented two-step bar.
+      // Keep the former rail's height so the cards do not jump vertically.
+      SizedBox(height: previewStyle == null ? 1.5 : 9),
+      if (previewStyle == null)
+        SizedBox(height: 62)
+      else ...[
+        SizedBox(height: previewStyle.spacious ? 23 : 16),
+        SizedBox(
+          key: ValueKey(
+            'onboarding-preview-role-${previewStyle.directionName}',
+          ),
+          width: double.infinity,
+          height: previewStyle.spacious ? 110 : 88,
+          child: Align(
+            alignment: previewStyle.centered
+                ? Alignment.center
+                : Alignment.centerLeft,
+            child: OnboardingPreviewAccent(
+              style: previewStyle,
+              size: previewStyle.spacious ? 108 : 84,
+              progress: .5,
+            ),
+          ),
+        ),
+        SizedBox(height: previewStyle.spacious ? 19 : 12),
+      ],
+      if (previewStyle?.centered == true)
+        Center(
+          child: Text(
+            'CHOOSE WHERE TO BEGIN',
+            textAlign: TextAlign.center,
+            style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+          ),
+        )
+      else
+        Text(
+          'CHOOSE WHERE TO BEGIN',
+          style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+        ),
+      SizedBox(height: 10),
+      if (previewStyle?.centered == true)
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            'How will you use ZYRA first?',
+            textAlign: TextAlign.center,
+            style: ZyraText.heading(size: previewStyle!.titleSize),
+          ),
+        )
+      else
+        Text(
+          'How will you use ZYRA first?',
+          style: ZyraText.heading(size: previewStyle?.titleSize ?? 28),
+        ),
+      SizedBox(height: 10),
+      if (previewStyle?.centered == true)
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            'Start with the experience you need today.',
+            textAlign: TextAlign.center,
+            style: ZyraText.subtext(size: 13.5),
+          ),
+        )
+      else
+        Text(
+          'Start with the experience you need today.',
+          style: ZyraText.subtext(size: 13.5),
+        ),
+      SizedBox(height: previewStyle?.sectionGap ?? 30),
+      if (widget.recoveryNotice != null) ...[
+        Text(widget.recoveryNotice!, style: ZyraText.subtext()),
+        const SizedBox(height: 16),
+      ],
+      if (_error != null) ...[
+        Text(_error!, style: ZyraText.subtext()),
+        const SizedBox(height: 16),
+      ],
+      Column(
+        key: const ValueKey('role-choice-options'),
+        children: [
+          _animatedRoleSlot(
+            ZyraSignupRole.seeker,
+            visible:
+                _selectedRole == null || _selectedRole == ZyraSignupRole.seeker,
+            previewStyle: previewStyle,
+            design: design,
+            minHeight: _selectedRole == ZyraSignupRole.seeker
+                ? focusedCardHeight
+                : cardHeight,
+            focused: _selectedRole == ZyraSignupRole.seeker,
+            duration: selectionDuration,
+          ),
+          AnimatedContainer(
+            duration: selectionDuration,
+            curve: Curves.easeInOutCubic,
+            height: _selectedRole == null
+                ? (previewStyle?.spacious == true ? 17 : 14)
+                : 0,
+          ),
+          _animatedRoleSlot(
+            ZyraSignupRole.guardian,
+            visible:
+                _selectedRole == null ||
+                _selectedRole == ZyraSignupRole.guardian,
+            previewStyle: previewStyle,
+            design: design,
+            minHeight: _selectedRole == ZyraSignupRole.guardian
+                ? focusedCardHeight
+                : cardHeight,
+            focused: _selectedRole == ZyraSignupRole.guardian,
+            duration: selectionDuration,
+          ),
+        ],
+      ),
+      if (_signupUserId != null)
+        Padding(
+          padding: const EdgeInsets.only(top: 24),
+          child: Center(
+            child: ZyraOnboardingAccountExit(expectedUserId: _signupUserId!),
+          ),
+        ),
+    ],
+  );
+
+  Widget _animatedRoleSlot(
+    ZyraSignupRole role, {
+    required bool visible,
+    required OnboardingPreviewStyle? previewStyle,
+    required ZyraRoleChoiceDesign design,
+    required double minHeight,
+    required bool focused,
+    required Duration duration,
+  }) {
+    final child = visible
+        ? _roleCard(
+            role,
+            key: ValueKey('role-choice-card-${role.name}'),
+            previewStyle: previewStyle,
+            design: design,
+            minHeight: minHeight,
+            focused: focused,
+            motionDuration: duration,
+          )
+        : SizedBox.shrink(key: ValueKey('role-choice-hidden-${role.name}'));
+    return IgnorePointer(
+      ignoring: !visible,
+      child: ExcludeSemantics(
+        excluding: !visible,
+        // A zero-duration switch can retain the outgoing child for one frame.
+        // Accessible/reduced-motion selection must hide it immediately.
+        child: duration == Duration.zero
+            ? child
+            : AnimatedSwitcher(
+                duration: duration,
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeInCubic,
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: SizeTransition(
+                    sizeFactor: animation,
+                    alignment: Alignment.topCenter,
+                    child: child,
+                  ),
+                ),
+                child: child,
+              ),
+      ),
     );
   }
 
-  void _proceedAsWali(BuildContext context) {
-    Navigator.of(context).pushReplacement(
+  Widget _roleCard(
+    ZyraSignupRole role, {
+    Key? key,
+    required OnboardingPreviewStyle? previewStyle,
+    required ZyraRoleChoiceDesign design,
+    required double minHeight,
+    bool focused = false,
+    required Duration motionDuration,
+  }) => _RoleCard(
+    key: key,
+    actionKey: ValueKey(
+      role == ZyraSignupRole.seeker
+          ? 'role-select-seeker'
+          : 'role-select-guardian',
+    ),
+    role: role,
+    title: role == ZyraSignupRole.seeker
+        ? 'Seek marriage'
+        : 'Support as Guardian',
+    description: role == ZyraSignupRole.seeker
+        ? 'Build my profile and begin my own marriage journey.'
+        : 'Guide someone I care for through their journey.',
+    previewStyle: previewStyle,
+    design: design,
+    selected: _selectedRole == role,
+    focused: focused,
+    minHeight: minHeight,
+    motionDuration: motionDuration,
+    onTap: () => _select(role),
+  );
+
+  Future<void> _proceedAsSeeker(BuildContext context) async {
+    if (widget.devPreview) {
+      if (!ZyraDeveloperAccess.canUseDeveloperTools) return;
+      await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          allowSnapshotting: false,
+          builder: (_) => OnboardingFlow(
+            // A local rehearsal must not inspect the signed-in member.
+            welcomeName: 'Shakeel',
+            devPreview: true,
+          ),
+        ),
+      );
+      return;
+    }
+    final userId = await _remember(ZyraSignupRole.seeker);
+    if (userId == null || !context.mounted) return;
+    final firstName = ZyraAuth.onboardingFirstName;
+    await Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => const GuardianOnboardingOverviewScreen(),
+        builder: (_) =>
+            OnboardingFlow(welcomeName: firstName, signupUserId: userId),
+      ),
+    );
+  }
+
+  Future<void> _proceedAsWali(BuildContext context) async {
+    if (widget.devPreview) {
+      if (!ZyraDeveloperAccess.canUseDeveloperTools) return;
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          allowSnapshotting: false,
+          builder: (_) =>
+              const GuardianOnboardingOverviewScreen(devPreview: true),
+        ),
+      );
+      return;
+    }
+    final userId = await _remember(ZyraSignupRole.guardian);
+    if (userId == null || !context.mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => GuardianOnboardingOverviewScreen(signupUserId: userId),
       ),
     );
   }
 }
 
 class _RoleCard extends StatelessWidget {
-  final IconData icon;
+  final Key actionKey;
+  final ZyraSignupRole role;
   final String title;
   final String description;
+  final OnboardingPreviewStyle? previewStyle;
+  final ZyraRoleChoiceDesign design;
+  final bool selected;
+  final bool focused;
+  final double minHeight;
+  final Duration motionDuration;
   final VoidCallback onTap;
 
   const _RoleCard({
-    required this.icon,
+    super.key,
+    required this.actionKey,
+    required this.role,
     required this.title,
     required this.description,
+    this.previewStyle,
+    required this.design,
+    required this.selected,
+    required this.focused,
+    required this.minHeight,
+    required this.motionDuration,
     required this.onTap,
   });
 
+  IconData get _roleIcon => role == ZyraSignupRole.seeker
+      ? Icons.person_outline_rounded
+      : Icons.shield_outlined;
+
+  String get _number => role == ZyraSignupRole.seeker ? '01' : '02';
+
+  Widget _selectionMark({double size = 28}) => AnimatedContainer(
+    duration: motionDuration,
+    curve: Curves.easeInOutCubic,
+    width: size,
+    height: size,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: selected
+          ? ZyraColors.journeyGold.withValues(alpha: .18)
+          : Colors.transparent,
+      border: Border.all(
+        color: ZyraColors.journeyGold.withValues(alpha: selected ? .9 : .45),
+      ),
+    ),
+    child: AnimatedSwitcher(
+      duration: motionDuration,
+      switchInCurve: Curves.easeOutCubic,
+      // Leave the transition root unkeyed so AnimatedSwitcher assigns its
+      // unique entry number. A rapid checked/unchecked/checked reversal can
+      // retain two outgoing states with the same child key briefly.
+      transitionBuilder: (child, animation) =>
+          FadeTransition(opacity: animation, child: child),
+      child: selected
+          ? Icon(
+              Icons.check_rounded,
+              key: ValueKey('role-choice-selected-${role.name}'),
+              size: size * .62,
+              color: ZyraColors.journeyGold,
+            )
+          : const SizedBox.shrink(key: ValueKey('role-choice-unchecked')),
+    ),
+  );
+
+  Widget get _title => AnimatedDefaultTextStyle(
+    duration: motionDuration,
+    curve: Curves.easeInOutCubic,
+    style: ZyraText.button(
+      size: focused ? 20 : 17,
+      color: ZyraColors.foreground,
+    ),
+    child: Text(title),
+  );
+
+  Widget get _description => AnimatedDefaultTextStyle(
+    duration: motionDuration,
+    curve: Curves.easeInOutCubic,
+    style: ZyraText.subtext(size: focused ? 14 : 12.5),
+    child: Text(description),
+  );
+
+  BoxDecoration _decoration(BorderRadius radius) {
+    if (design == ZyraRoleChoiceDesign.current) {
+      return previewStyle?.cardDecoration(selected: selected) ??
+          BoxDecoration(
+            color: selected
+                ? ZyraColors.journeyGold.withValues(alpha: .14)
+                : ZyraColors.iconButtonBg,
+            border: Border.all(
+              color: selected
+                  ? ZyraColors.journeyGold.withValues(alpha: .75)
+                  : ZyraColors.iconButtonBorder,
+              width: selected ? 1 : .5,
+            ),
+            borderRadius: radius,
+          );
+    }
+    return BoxDecoration(
+      color: switch (design) {
+        ZyraRoleChoiceDesign.quietRails =>
+          selected
+              ? ZyraColors.journeyGold.withValues(alpha: .09)
+              : Colors.transparent,
+        ZyraRoleChoiceDesign.spotlight =>
+          selected
+              ? ZyraColors.journeyGold.withValues(alpha: .13)
+              : ZyraColors.luxuryDarkPurple.withValues(alpha: .27),
+        _ =>
+          selected
+              ? ZyraColors.journeyGold.withValues(alpha: .13)
+              : ZyraColors.frostFill,
+      },
+      border: Border.all(
+        color: selected
+            ? ZyraColors.journeyGold.withValues(alpha: .85)
+            : ZyraColors.frostBorder,
+        width: selected ? 1.2 : .8,
+      ),
+      borderRadius: radius,
+    );
+  }
+
+  Widget _current() => Row(
+    children: [
+      Container(
+        width: 2,
+        height: 48,
+        decoration: BoxDecoration(
+          color: ZyraColors.journeyGold.withValues(alpha: .84),
+          borderRadius: BorderRadius.circular(2),
+        ),
+      ),
+      const SizedBox(width: 15),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [_title, const SizedBox(height: 5), _description],
+        ),
+      ),
+      const SizedBox(width: 12),
+      _selectionMark(size: 38),
+    ],
+  );
+
+  Widget _editorial() => Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        _number,
+        style: ZyraText.heading(size: 32, color: ZyraColors.journeyGold),
+      ),
+      const SizedBox(width: 18),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 1,
+              color: ZyraColors.journeyGold.withValues(alpha: .55),
+            ),
+            const SizedBox(height: 17),
+            _title,
+            const SizedBox(height: 9),
+            _description,
+          ],
+        ),
+      ),
+      const SizedBox(width: 12),
+      _selectionMark(),
+    ],
+  );
+
+  Widget _guidedPaths() => Row(
+    children: [
+      SizedBox(
+        width: 32,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(_roleIcon, color: ZyraColors.journeyGold, size: 25),
+            const SizedBox(height: 7),
+            AnimatedContainer(
+              duration: motionDuration,
+              curve: Curves.easeInOutCubic,
+              width: 1,
+              height: focused ? 116 : 36,
+              color: ZyraColors.journeyGold.withValues(alpha: .55),
+            ),
+            const SizedBox(height: 7),
+            _selectionMark(size: 20),
+          ],
+        ),
+      ),
+      const SizedBox(width: 19),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'PATH $_number',
+              style: ZyraText.chapterLabel(
+                color: ZyraColors.journeyGold.withValues(alpha: .82),
+              ),
+            ),
+            const SizedBox(height: 9),
+            _title,
+            const SizedBox(height: 8),
+            _description,
+          ],
+        ),
+      ),
+    ],
+  );
+
+  Widget _quietRails() => Row(
+    children: [
+      Icon(_roleIcon, size: 27, color: ZyraColors.journeyGold),
+      const SizedBox(width: 20),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [_title, const SizedBox(height: 8), _description],
+        ),
+      ),
+      const SizedBox(width: 13),
+      _selectionMark(),
+    ],
+  );
+
+  Widget _spotlight() => Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        width: 38,
+        height: 38,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: ZyraColors.journeyGold.withValues(alpha: .58),
+          ),
+        ),
+        child: Icon(_roleIcon, color: ZyraColors.journeyGold, size: 20),
+      ),
+      const SizedBox(height: 7),
+      _title,
+      const SizedBox(height: 5),
+      Text(
+        description,
+        textAlign: TextAlign.center,
+        style: ZyraText.subtext(size: 12.5),
+      ),
+      const SizedBox(height: 7),
+      _selectionMark(size: 20),
+    ],
+  );
+
+  Widget _framedChoice() => Container(
+    decoration: BoxDecoration(
+      border: Border.all(
+        color: ZyraColors.journeyGold.withValues(alpha: selected ? .65 : .3),
+        width: .7,
+      ),
+      borderRadius: BorderRadius.circular(9),
+    ),
+    padding: const EdgeInsets.fromLTRB(15, 12, 15, 12),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          children: [
+            Text(
+              '$_number / 02',
+              style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
+            ),
+            const Spacer(),
+            _selectionMark(size: 24),
+          ],
+        ),
+        const SizedBox(height: 7),
+        _title,
+        const SizedBox(height: 4),
+        _description,
+      ],
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: ZyraColors.iconButtonBg,
-        border: Border.all(color: ZyraColors.iconButtonBorder, width: 0.5),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ZyraColors.unlockDot.withValues(alpha: 0.08),
-                    border: Border.all(
-                      color: ZyraColors.unlockDot.withValues(alpha: 0.65),
+    final radius = switch (design) {
+      ZyraRoleChoiceDesign.current =>
+        previewStyle?.cardRadius ?? BorderRadius.circular(16),
+      ZyraRoleChoiceDesign.editorial => BorderRadius.circular(5),
+      ZyraRoleChoiceDesign.guidedPaths => BorderRadius.circular(20),
+      ZyraRoleChoiceDesign.quietRails => BorderRadius.circular(8),
+      ZyraRoleChoiceDesign.spotlight => BorderRadius.circular(32),
+      ZyraRoleChoiceDesign.framedChoice => BorderRadius.circular(19),
+    };
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: '$title. $description',
+      hint: selected
+          ? 'Selected. Tap again to show both choices, or swipe up or use the continue control.'
+          : 'Select this experience',
+      onTap: onTap,
+      excludeSemantics: true,
+      child: AnimatedContainer(
+        duration: motionDuration,
+        curve: Curves.easeInOutCubic,
+        constraints: BoxConstraints(minHeight: minHeight),
+        decoration: _decoration(radius).copyWith(
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: ZyraColors.journeyGold.withValues(alpha: .11),
+                    blurRadius: 26,
+                    offset: const Offset(0, 10),
+                  ),
+                ]
+              : const [],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            key: actionKey,
+            borderRadius: radius,
+            onTap: onTap,
+            child: Padding(
+              padding: design == ZyraRoleChoiceDesign.spotlight
+                  ? const EdgeInsets.symmetric(horizontal: 22, vertical: 8)
+                  : design == ZyraRoleChoiceDesign.framedChoice
+                  ? const EdgeInsets.symmetric(horizontal: 8, vertical: 8)
+                  : EdgeInsets.symmetric(
+                      horizontal: design == ZyraRoleChoiceDesign.current
+                          ? 18
+                          : 20,
+                      vertical: previewStyle?.cardVerticalPadding ?? 18,
                     ),
-                  ),
-                  child: Icon(icon, size: 20, color: ZyraColors.unlockText),
-                ),
-                const SizedBox(width: 13),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: ZyraText.body(size: 16, color: Colors.white),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(description, style: ZyraText.subtext(size: 11.5)),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Icon(
-                  Icons.chevron_right,
-                  color: Colors.white38,
-                  size: 21,
-                ),
-              ],
+              child: switch (design) {
+                ZyraRoleChoiceDesign.current => _current(),
+                ZyraRoleChoiceDesign.editorial => _editorial(),
+                ZyraRoleChoiceDesign.guidedPaths => _guidedPaths(),
+                ZyraRoleChoiceDesign.quietRails => _quietRails(),
+                ZyraRoleChoiceDesign.spotlight => _spotlight(),
+                ZyraRoleChoiceDesign.framedChoice => _framedChoice(),
+              },
             ),
           ),
         ),

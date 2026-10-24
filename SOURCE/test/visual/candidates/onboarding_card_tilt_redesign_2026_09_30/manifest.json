@@ -1,0 +1,10 @@
+{
+  "status": "FOUNDER_REVIEW_CANDIDATES_ONLY",
+  "date": "2026-09-30",
+  "scope": "Redesigned Card Tilt on the four Atoms welcome pages, including first-to-second and second-to-first 25/50/75 percent motion frames at 390x844",
+  "capture_command": "flutter test --no-pub --update-goldens --dart-define=ZYRA_ONBOARDING_TRANSITION_CAPTURE_CANDIDATES=true --plain-name 'Card tilt mid-frame review at 390×844' test/visual/onboarding_transition_visual_test.dart --reporter compact",
+  "expected_png_count": 13,
+  "previous_comparison_capture_preserved": "candidates/onboarding_transitions_2026_09_30",
+  "approved_baseline_replaced": false,
+  "founder_visual_acceptance": "PENDING"
+}

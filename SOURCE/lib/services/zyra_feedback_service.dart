@@ -17,24 +17,26 @@
 
 import 'package:flutter/foundation.dart'
     show debugPrint, defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../main.dart';
+import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
 
 enum ZyraFeedbackCategory { idea, problem, other }
 
 extension ZyraFeedbackCategoryX on ZyraFeedbackCategory {
   String get wire => switch (this) {
-        ZyraFeedbackCategory.idea => 'idea',
-        ZyraFeedbackCategory.problem => 'problem',
-        ZyraFeedbackCategory.other => 'other',
-      };
+    ZyraFeedbackCategory.idea => 'idea',
+    ZyraFeedbackCategory.problem => 'problem',
+    ZyraFeedbackCategory.other => 'other',
+  };
 
   String get label => switch (this) {
-        ZyraFeedbackCategory.idea => 'Idea',
-        ZyraFeedbackCategory.problem => 'Problem',
-        ZyraFeedbackCategory.other => 'Other',
-      };
+    ZyraFeedbackCategory.idea => 'Idea',
+    ZyraFeedbackCategory.problem => 'Problem',
+    ZyraFeedbackCategory.other => 'Other',
+  };
 }
 
 enum ZyraFeedbackResult { sent, empty, tooLong, rateLimited, failed }
@@ -42,17 +44,20 @@ enum ZyraFeedbackResult { sent, empty, tooLong, rateLimited, failed }
 class ZyraFeedbackService {
   ZyraFeedbackService._();
 
-  /// KNOWN DEBT, flagged rather than hidden: this is kept in sync with
-  /// pubspec.yaml BY HAND, and hand-synced constants go stale. It is here
-  /// because reading the real build number needs `package_info_plus`, and
-  /// adding a native dependency for one string in the middle of a device
-  /// testing session costs a full clean rebuild.
-  ///
-  /// Replace with PackageInfo.fromPlatform() when the next native
-  /// dependency lands anyway — the IAP work will need one. Until then, a
-  /// slightly stale version is still more useful in a bug report than no
-  /// version, which is what the alternative was.
-  static const String appVersion = '1.0.0+1';
+  /// Reads the version from the installed bundle, matching the Settings
+  /// footer. A lookup failure is sent as NULL rather than inventing a build.
+  static Future<String?> _installedAppVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      final version = info.version.trim();
+      final build = info.buildNumber.trim();
+      if (version.isEmpty) return null;
+      return build.isEmpty ? version : '$version+$build';
+    } catch (error) {
+      debugPrint('ZYRA: installed app version unavailable.\n$error');
+      return null;
+    }
+  }
 
   static String get _platform {
     if (kIsWeb) return 'web';
@@ -71,15 +76,38 @@ class ZyraFeedbackService {
     required String message,
     String? screen,
   }) async {
-    if (!ZyraAuth.isSignedIn) return ZyraFeedbackResult.failed;
+    final owner = ZyraAuth.currentUser?.id;
+    final generation = ZyraAccountState.generation;
+    final session = supabase.auth.currentSession;
+    bool current() =>
+        owner != null &&
+        !ZyraAccountState.isSigningOut &&
+        ZyraAccountState.generation == generation &&
+        ZyraAuth.currentUser?.id == owner &&
+        session?.user.id == owner &&
+        session?.expiresAt != null &&
+        !session!.isExpired;
+    if (!current()) return ZyraFeedbackResult.failed;
     try {
-      final res = await supabase.rpc('zyra_submit_feedback', params: {
-        'p_category': category.wire,
-        'p_message': message,
-        'p_app_version': appVersion,
-        'p_platform': _platform,
-        'p_screen': screen,
-      }) as Map<String, dynamic>;
+      final appVersion = await _installedAppVersion();
+      // Platform lookup yields before the request is built. Never attach a
+      // previous account's typed draft to a replacement session.
+      if (!current()) return ZyraFeedbackResult.failed;
+      final res =
+          await supabase
+                  .rpc(
+                    'zyra_submit_feedback',
+                    params: {
+                      'p_category': category.wire,
+                      'p_message': message,
+                      'p_app_version': appVersion,
+                      'p_platform': _platform,
+                      'p_screen': screen,
+                    },
+                  )
+                  .setHeader('Authorization', 'Bearer ${session!.accessToken}')
+              as Map<String, dynamic>;
+      if (!current()) return ZyraFeedbackResult.failed;
 
       return switch (res['status'] as String?) {
         'sent' => ZyraFeedbackResult.sent,

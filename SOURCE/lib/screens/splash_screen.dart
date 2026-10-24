@@ -1,8 +1,21 @@
 // Splash — the branded opening.
 //
-// NEW 2026-08-07. Founder-approved animation: two soft lights converge and
-// merge behind the name, the letters arrive one at a time, and the tagline
-// lands with the last of them.
+// CURRENT 2026-09-27: Founder selected Quiet Horizon as the main splash.
+// The gold wordmark and quiet drawn horizon reuse the selected shared artwork;
+// the canonical tagline, 2.4s motion and AuthGate callback stay. Founder
+// 2026-09-30 first reduced the completed-frame hold from 2.0s to 1.25s,
+// then reduced that still hold again to 0.65s. Motion remains 2.4s.
+// Explicit legacy motions remain comparison-only. Earlier design notes below
+// document their history and do not override this production choice.
+//
+// NEW 2026-08-07. The letters arrive one at a time and the tagline lands with
+// the last of them. The final motion is now the Founder-approved Soft Bloom +
+// Centre Draw (2026-08-26): warm light opens behind the name, then a short
+// gold line grows evenly from its centre beneath the tagline. No travelling
+// dot remains. Founder timing review later the same day slowed the motion from
+// 2.0s to 2.4s while preserving a 1.0s final hold. Founder 2026-09-18 then
+// asked for the complete splash to stay roughly one second longer, especially
+// the gold line. Motion remains 2.4s; the finished composition now holds 2.0s.
 //
 // ── IT NOW ALWAYS PLAYS. Founder, 2026-08-07: "every time I open the app I
 // want to start with the splash screen."
@@ -14,10 +27,9 @@
 // mid-way and it reads as a glitch.
 //
 // So the splash now runs for [_total] and the app waits for it. The cost is
-// real and it is a choice: launch is up to ~1.8s slower than it needs to be,
-// bought for a first impression. If that ever feels too long, [_total] is
-// the only number to change — every interval below is expressed as a
-// fraction of it, so the whole sequence rescales together.
+// real and it is a choice, bought for a first impression. If that ever feels
+// too long, [_total] and [_animFraction] are the two timing controls — every
+// visual interval below is expressed as a fraction of the motion phase.
 //
 // AuthGate holds the other half: it shows this until BOTH the animation has
 // finished AND the session has resolved. On a slow network the profile
@@ -34,12 +46,9 @@
 //
 // ── GRADIENT. THE BRAND PURPLE, ALWAYS. Never gender-matched.
 //
-// DR-ZYRA-094's ratified palette lists the Splash Screen under GLOBAL
-// BRAND — #8A6A9E -> #3D2A4A — alongside Main Navigation and core
-// branding. The MALE and FEMALE gradients are scoped to "Male/Female
-// Seeker" and "Male/Female Guardian", which are profile-context screens.
-// The splash is not one: it is the brand introducing itself, before the
-// app knows or should care who is holding the phone.
+// The Founder-directed 2026-09-27 palette is Hulu-inspired deep purple
+// #30203F → #160E20, shared by production, all twelve preview studies,
+// navigation and both roles. Gender never changes this presentation.
 //
 // ── THIS REVERSES THE 2026-08-07 CHANGE, deliberately. Founder,
 // 2026-08-08: "it's got the pink purple colour but it should be the purple
@@ -62,9 +71,9 @@
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
-import '../widgets/zyra_comet_rule.dart';
-import '../widgets/zyra_trails_meet_rule.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_splash_motion.dart';
+import '../widgets/zyra_splash_artwork.dart';
 
 /// Total time the splash owns the screen.
 ///
@@ -80,10 +89,18 @@ import '../theme/zyra_text.dart';
 /// interval below — a different composition, not a shorter one, and not
 /// what "make it 3 seconds" asks for.
 ///
-/// If 1000ms of stillness turns out to be too brief to read as an arrival,
-/// the honest fix is a shorter ANIMATION at 3000ms total (raise
-/// [_animFraction] back toward 0.5), not a longer splash.
-const Duration _total = Duration(milliseconds: 3000);
+/// 3000 -> 3400ms, Founder 2026-08-26: the approved Bloom + Draw composition
+/// was right but "everything happened too fast". The additional 400ms belongs
+/// entirely to motion; the final 1000ms hold remains unchanged.
+///
+/// 3400 -> 4400ms, Founder 2026-09-18: keep the whole splash about one second
+/// longer and let the completed gold line remain on screen. The motion is
+/// still 2400ms; the finished wordmark, tagline and line then held for
+/// 2000ms. Founder 2026-09-30 shortened only that still hold by 750ms:
+/// 2400ms motion + 1250ms hold = 3650ms total. Founder then found the
+/// static tail still too long: the current 2400ms motion + 650ms hold is
+/// 3050ms total. The shared artwork timing keeps protected previews faithful.
+const Duration _total = zyraSplashTotalDuration;
 
 /// How much of [_total] the animation occupies. The remainder is a
 /// deliberate STILL HOLD on the finished composition.
@@ -92,39 +109,32 @@ const Duration _total = Duration(milliseconds: 3000);
 /// An animation that finishes and immediately hands off reads as a
 /// transition — something on the way to somewhere. The same animation
 /// followed by stillness reads as an arrival. The pause is what turns
-/// motion into a statement, and it is why the composition ends on the
-/// wordmark alone with the orbs fully gone: there has to be something
-/// worth looking at while it holds.
+/// motion into a statement. The bloom and line therefore resolve before the
+/// still wordmark hold: there has to be something calm to look at while it
+/// holds.
 ///
 /// ── HOW IT WORKS. Every interval below is expressed as a fraction of the
 /// ANIMATION, not of [_total]. `_at()` divides the controller by this
-/// fraction and clamps, so the first 2000ms plays the whole sequence and
+/// fraction and clamps, so the first 2400ms plays the whole sequence and
 /// the remainder holds every value pinned at 1.0. One controller, no
 /// second timer, and the two numbers are independently adjustable.
 ///
-/// 0.5 -> 2/3 on 2026-08-08, alongside [_total] 4000 -> 3000. Deliberately
-/// expressed as `2 / 3` rather than `0.667`: the intent is "the animation
-/// keeps its 2000ms", and 2/3 of 3000 is exactly that. A rounded decimal
-/// would silently drift the sequence if [_total] ever changes again.
-const double _animFraction = 2 / 3;
+/// 2/3 -> 12/17 on 2026-08-26 alongside [_total] 3000 -> 3400. On
+/// 2026-09-18 this became 6/11: exactly 2400ms of motion within 4400ms.
+/// The current shared fraction is 2400/3050 (48/61), leaving a 650ms
+/// finished hold without rounded-decimal drift.
+const double _animFraction = zyraSplashMotionFraction;
 
 class SplashScreen extends StatefulWidget {
   /// Fired once when the animation completes. AuthGate uses it as one of
   /// the two conditions for moving on.
   final VoidCallback? onFinished;
 
-  /// The final sequence — see ZyraSplashEnding.
-  ///
-  /// TRAILS MEET, Founder-chosen 2026-08-20. Two gold points travel inward
-  /// and each draw one half of the finished connection behind them. This
-  /// replaces Pass Through without changing the approved wordmark,
-  /// typography, purple background, three-second duration or final hold.
-  final ZyraSplashEnding ending;
-  const SplashScreen({
-    super.key,
-    this.onFinished,
-    this.ending = ZyraSplashEnding.trailsMeet,
-  });
+  /// Null uses the Founder-selected Quiet Horizon production artwork.
+  /// Explicit motions preserve the original real-screen comparisons, with
+  /// the same lifecycle/timing and no change to the production choice.
+  final ZyraSplashMotion? motion;
+  const SplashScreen({super.key, this.onFinished, this.motion});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -133,7 +143,15 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _c =
-      AnimationController(vsync: this, duration: _total)
+      AnimationController(
+          vsync: this,
+          duration: _total,
+          // Quiet Horizon renders a still final frame for reduced motion;
+          // platform accessibility must not shorten AuthGate ownership.
+          animationBehavior: widget.motion == null
+              ? AnimationBehavior.preserve
+              : AnimationBehavior.normal,
+        )
         ..addStatusListener((s) {
           if (s == AnimationStatus.completed) widget.onFinished?.call();
         })
@@ -145,67 +163,12 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  // Fractions of the ANIMATION, so the whole sequence rescales from one
-  // number.
-  //
-  // ── COMET RULE, replacing the two orbs. Founder, 2026-08-09, having
-  // been shown five orb designs, five line designs and six variations of
-  // the two he liked: "below the tag line design."
-  //
-  // The orbs are gone, not disabled. What replaced them:
-  //
-  //   THE PROBLEM WITH THE ORBS. Two soft discs meeting concentrically
-  //   made a large area of a colour nobody chose — screen(#D4868F,
-  //   #3D5A80) over the mid-gradient lands on ~#EBC7E1, a pale lilac,
-  //   and it sat there for most of the screen. Founder: "I just don't
-  //   like the purple ball the pink and blue creates in end."
-  //
-  //   WHY A LINE FIXES IT RATHER THAN AVOIDS IT. The merge was never the
-  //   problem — the surface area was. Two lines meeting make the same
-  //   colour across a few pixels instead of a third of the display. The
-  //   two tails still overlap, deliberately, by 9% of a half-rule.
-  //
-  // The rail is drawn faintly BEFORE the comets arrive and stays after
-  // they have gone, so the still second at the end holds a composition
-  // rather than floating text.
-  static const _railIn = Interval(0.05, 0.22, curve: Curves.easeOut);
-  static const _cometTravel = Interval(
-    0.00,
-    0.62,
-    curve: Cubic(.25, .6, .3, 1),
-  );
-  static const _cometFade = Interval(0.62, 0.90, curve: Curves.easeIn);
-
-  // The Pass-through crossing, as ONE curve over nearly the whole
-  // animation — 2026-08-12, after the Founder's recording was measured
-  // frame by frame: _cometTravel's hard deceleration left the line
-  // visually FROZEN from ~0.6s to the hold, over a second of dead stop at
-  // the exact moment every eye is on the meeting point. easeInOutSine has
-  // no flat spot: the lights enter gently (offscreen), cross the centre
-  // near peak speed at ~0.78s, and decelerate only as they leave and
-  // fade. Seamless is a property of the velocity profile, not the length.
-  static const _journeySweep = Interval(
-    0.02,
-    0.96,
-    curve: Curves.easeInOutSine,
-  );
-
-  // Founder-selected 2026-08-20: the dots establish themselves, then draw
-  // their two halves inward as one continuous arrival. Both values pin at
-  // 1 during the still hold, leaving the completed gold connection visible.
-  static const _trailsMeetIn = Interval(0.02, 0.14, curve: Curves.easeOut);
-  static const _trailsMeetTravel = Interval(
-    0.05,
-    0.70,
-    curve: Cubic(.18, .82, .23, 1),
-  );
-
-  static const _letterStagger = 0.085; // ~150ms apart
+  static const _letterStagger = 0.085; // ~200ms apart at the 2.4s pace
   static const _letterStart = 0.16;
   static const _letterLen = 0.30;
 
   // Lands WITH the final letter rather than after it — the name completing
-  // and the promise appearing read as one gesture, and it saves ~400ms.
+  // and the promise appearing read as one gesture, without a separate beat.
   static const _tagline = Interval(0.66, 0.92, curve: Cubic(.22, .9, .3, 1));
 
   /// Controller progress remapped onto the animation phase. Past
@@ -220,7 +183,7 @@ class _SplashScreenState extends State<SplashScreen>
     final m = _SplashMetrics.of(context);
 
     return DecoratedBox(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         // GLOBAL BRAND, per DR-ZYRA-094. Not genderGradient() — see the
         // note at the top of this file before changing it back.
         gradient: ZyraColors.brandGradient,
@@ -230,6 +193,14 @@ class _SplashScreenState extends State<SplashScreen>
         body: AnimatedBuilder(
           animation: _c,
           builder: (context, _) {
+            if (widget.motion == null) {
+              return ZyraSplashArtworkFrame(
+                direction: zyraPrimarySplashDirection,
+                progress: MediaQuery.disableAnimationsOf(context) ? 1 : _anim,
+                // The launch design changes, not the canonical brand tagline.
+                tagline: 'Connecting Through Trust',
+              );
+            }
             // ONE BLOCK — 2026-08-09. Founder: "ZYRA and Connecting
             // Through Trust doesn't have space, so maybe the line is
             // below Connecting Through Trust."
@@ -244,7 +215,26 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _Wordmark(progress: _anim, size: m.wordmark),
+                  Stack(
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                        // Positioned light does not affect the wordmark's
+                        // measured size, so every preserved motion keeps the
+                        // approved centred composition in exactly one place.
+                        left: -m.wordmark * 1.15,
+                        right: -m.wordmark * 1.15,
+                        top: -m.wordmark * 0.42,
+                        bottom: -m.wordmark * 0.42,
+                        child: ZyraSplashBloom(
+                          motion: widget.motion!,
+                          progress: _anim,
+                        ),
+                      ),
+                      _Wordmark(progress: _anim, size: m.wordmark),
+                    ],
+                  ),
                   SizedBox(height: m.gap),
                   Opacity(
                     opacity: _at(_tagline),
@@ -254,30 +244,17 @@ class _SplashScreenState extends State<SplashScreen>
                         'Connecting Through Trust',
                         style: ZyraText.subtext(
                           size: m.tagline,
-                          color: Colors.white70,
+                          color: ZyraColors.ink(0.70),
                         ),
                       ),
                     ),
                   ),
                   SizedBox(height: m.ruleGap),
-                  if (widget.ending == ZyraSplashEnding.trailsMeet)
-                    ZyraTrailsMeetRule(
-                      width: m.ruleWidth,
-                      progress: _at(_trailsMeetTravel),
-                      opacity: _at(_trailsMeetIn),
-                    )
-                  else
-                    // Historical candidates remain available in the dev
-                    // Splash lab. Meet and Pass owns loading independently,
-                    // so previewing an old ending does not change wait states.
-                    ZyraCometRule(
-                      width: m.ruleWidth,
-                      travel: _at(_cometTravel),
-                      fade: _at(_cometFade),
-                      railOpacity: _at(_railIn),
-                      ending: widget.ending,
-                      journey: _at(_journeySweep),
-                    ),
+                  ZyraSplashDrawRule(
+                    width: m.ruleWidth,
+                    progress: _anim,
+                    motion: widget.motion!,
+                  ),
                 ],
               ),
             );
@@ -331,7 +308,7 @@ class _SplashMetrics {
   /// Tagline to the rule. The only generous space in the composition.
   final double ruleGap;
 
-  /// Total width of the comet rule.
+  /// Total width of the gold motion rule.
   final double ruleWidth;
 
   const _SplashMetrics._({

@@ -57,7 +57,6 @@ class ZyraCountryItem {
   const ZyraCountryItem(this.code, this.name, this.nationality);
 }
 
-
 /// 197 countries, ISO 3166-1 alpha-2.
 const List<ZyraCountryItem> zyraCountries = [
   ZyraCountryItem('AF', 'Afghanistan', 'Afghan'),
@@ -263,7 +262,9 @@ const List<ZyraCountryItem> zyraCountries = [
 List<String> get zyraCountryNames => [for (final c in zyraCountries) c.name];
 
 /// Display names for the nationality picker.
-List<String> get zyraNationalityNames => [for (final c in zyraCountries) c.nationality];
+List<String> get zyraNationalityNames => [
+  for (final c in zyraCountries) c.nationality,
+];
 
 /// 184 languages, ISO 639-1.
 const List<ZyraRefItem> zyraLanguages = [
@@ -333,7 +334,10 @@ const List<ZyraRefItem> zyraLanguages = [
   ZyraRefItem('io', 'Ido'),
   ZyraRefItem('ig', 'Igbo'),
   ZyraRefItem('id', 'Indonesian'),
-  ZyraRefItem('ia', 'Interlingua (International Auxiliary Language Association)'),
+  ZyraRefItem(
+    'ia',
+    'Interlingua (International Auxiliary Language Association)',
+  ),
   ZyraRefItem('ie', 'Interlingue'),
   ZyraRefItem('iu', 'Inuktitut'),
   ZyraRefItem('ik', 'Inupiaq'),
@@ -493,7 +497,9 @@ const List<ZyraRefItem> zyraEthnicities = [
   ZyraRefItem('prefer_not_to_say', 'Prefer not to say'),
 ];
 
-List<String> get zyraEthnicityNames => [for (final e in zyraEthnicities) e.name];
+List<String> get zyraEthnicityNames => [
+  for (final e in zyraEthnicities) e.name,
+];
 
 /// Location preference — Founder decision 2026-08-01, replacing mileage
 /// bands (10/25/50/100 miles).
@@ -508,8 +514,9 @@ const List<ZyraRefItem> zyraLocationPreferences = [
   ZyraRefItem('anywhere', 'Anywhere'),
 ];
 
-List<String> get zyraLocationPreferenceNames =>
-    [for (final l in zyraLocationPreferences) l.name];
+List<String> get zyraLocationPreferenceNames => [
+  for (final l in zyraLocationPreferences) l.name,
+];
 
 /// Code for a label, for the pickers that still hand back display strings.
 /// Returns null if the label is unknown — callers must treat that as a bug,
@@ -575,8 +582,9 @@ const List<ZyraRefItem> zyraGuardianRelationships = [
   ZyraRefItem('other', 'Other'),
 ];
 
-List<String> get zyraGuardianRelationshipNames =>
-    [for (final r in zyraGuardianRelationships) r.name];
+List<String> get zyraGuardianRelationshipNames => [
+  for (final r in zyraGuardianRelationships) r.name,
+];
 
 /// The FULL proposed list, grouped — Founder + ChatGPT, 2026-08-07.
 ///
@@ -602,7 +610,8 @@ List<String> get zyraGuardianRelationshipNames =>
 /// 2026-08-07), which is why Father and Son can both appear — a son acting
 /// as wali for his widowed mother is a real case. Add nothing here from the
 /// Seeker's point of view.
-const List<({String title, List<ZyraRefItem> items})> zyraGuardianRelationshipGroups = [
+const List<({String title, List<ZyraRefItem> items})>
+zyraGuardianRelationshipGroups = [
   (
     title: 'Immediate Family',
     items: [

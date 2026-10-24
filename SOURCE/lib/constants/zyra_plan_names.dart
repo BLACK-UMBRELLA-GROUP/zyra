@@ -36,6 +36,8 @@
 // (AppState.waliHasWaliOne via wali_network_screen.dart's "Get
 // Guardian+" button), not backed by this column at all.
 
+import '../data/zyra_membership_catalog.dart';
+
 /// The four real values `subscriptions.plan_type` accepts.
 enum ZyraSubscriptionPlanType {
   seekerBasic,
@@ -44,21 +46,24 @@ enum ZyraSubscriptionPlanType {
   waliPremium;
 
   String get dbValue => switch (this) {
-        ZyraSubscriptionPlanType.seekerBasic => 'seeker_basic',
-        ZyraSubscriptionPlanType.seekerPremium => 'seeker_premium',
-        ZyraSubscriptionPlanType.waliBasic => 'wali_basic',
-        ZyraSubscriptionPlanType.waliPremium => 'wali_premium',
-      };
+    ZyraSubscriptionPlanType.seekerBasic => 'seeker_basic',
+    ZyraSubscriptionPlanType.seekerPremium => 'seeker_premium',
+    ZyraSubscriptionPlanType.waliBasic => 'wali_basic',
+    ZyraSubscriptionPlanType.waliPremium => 'wali_premium',
+  };
 
   /// The name shown to users for this plan.
   String get displayName => switch (this) {
-        ZyraSubscriptionPlanType.seekerBasic => 'ZYRA Basic',
-        ZyraSubscriptionPlanType.seekerPremium => 'ZYRA One',
-        ZyraSubscriptionPlanType.waliBasic => 'Standard Guardian',
-        ZyraSubscriptionPlanType.waliPremium => 'Guardian+',
-      };
+    ZyraSubscriptionPlanType.seekerBasic => 'Seeker Basic',
+    ZyraSubscriptionPlanType.seekerPremium =>
+      ZyraMembershipCatalog.seekerOneTitle,
+    ZyraSubscriptionPlanType.waliBasic => 'Guardian Basic',
+    ZyraSubscriptionPlanType.waliPremium =>
+      ZyraMembershipCatalog.guardianOneTitle,
+  };
 
-  static ZyraSubscriptionPlanType? fromDbValue(String? value) => switch (value) {
+  static ZyraSubscriptionPlanType? fromDbValue(String? value) =>
+      switch (value) {
         'seeker_basic' => ZyraSubscriptionPlanType.seekerBasic,
         'seeker_premium' => ZyraSubscriptionPlanType.seekerPremium,
         'wali_basic' => ZyraSubscriptionPlanType.waliBasic,

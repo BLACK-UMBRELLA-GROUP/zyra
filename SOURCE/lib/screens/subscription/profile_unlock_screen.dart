@@ -1,4 +1,7 @@
 // Compatibility Unlock — ONE page, two sections.
+// CURRENT PRODUCT, 2026-10-11: one Compatibility Unlock includes the former
+// full-detail target. New attempts use the retained Plus entitlement and stay
+// held until trusted detail is available. Earlier overall-only access remains.
 //
 // REBUILT 2026-08-03/04. Was two swipeable tabs (Unlock / Unlock+) with a
 // sliding toggle, matching the Journeys/Activity gesture.
@@ -18,131 +21,62 @@
 //
 // FOUNDER DECISIONS BAKED IN HERE (2026-08-03, chosen from mockups):
 //
-//   • Balance shown in PLAIN WORDS, top-right of each section header
-//     ("5 left" / "none left"). No balance card, no subheading. The count
-//     sits beside the thing it applies to.
-//   • The plus is an ICON or is welded to the word — never the word
-//     "Plus". Button label is `Unlock Compatibility+`, no space, so the
-//     glyph cannot break onto its own line at any text size.
+//   • An available unlock balance is shown in PLAIN WORDS, top-right of its
+//     section header ("5 left" / "none left"). No balance card or subheading.
+//     The held Detail offer shows neither a balance nor a spend action.
 //   • Locked detail rows carry a PADLOCK EACH. The user sees the shape of
 //     what they'd get — six named categories — without any of the values.
-//   • Unlocked state is padlock-open + "Unlocked". Nothing else. The line
-//     "revisit any time, free" was cut (Founder: "the user will know each
-//     unlock is permanent").
+//   • The redundant padlock-open + "Unlocked" footer is removed once a
+//     result is visible; the visible result is already the state.
 //   • No BEST VALUE badge here. It belongs on the buy page, where there
 //     is something to compare it against.
-//   • "Buy more unlocks" is a TEXT LINK at the foot, not a second button
-//     competing with the two unlock buttons above it.
+//   • "Buy more unlocks" is a quiet GLASS PILL at the foot, below the
+//     available unlock action.
 //
-//   • GREEN / AMBER / RED MOVED UP TO PLUS. Founder: "unlock should only
-//     be % — no green, yellow or red, so it gives unlock plus more
-//     value." Compatibility Unlock is now the overall percentage and
-//     nothing else. This CHANGES the tier contents in APP/Premium/
-//     Profile Unlocks/Summary.md, which is updated to match.
+//   • ALIGNED / DISCUSS / OPPOSED is the current member language for the
+//     three compatibility states. Compatibility Unlock remains the overall
+//     percentage; Compatibility Unlock+ adds the detailed presentation.
 //
-// ============================ NOT REAL ==============================
-// No number on this screen is computed and nothing here can be bought.
-//
-// The score compares one Seeker's onboarding preferences against the
-// other's answers. `onboarding_answers` has zero rows for real users, and
-// the scoring method is still an open to-do in the spec. There is also no
-// payment SDK in the project — verified against pubspec.yaml: no
-// in_app_purchase, no StoreKit, no RevenueCat, no Stripe.
-//
-// The unlock RECORD is real (see ZyraUnlockService) — `profile_unlocks`
-// rows are written and read, and the once-per-profile rule is enforced by
-// a unique index. Only the payment and the numbers are pretend.
-//
-// The gold SAMPLE banner that used to say so on-screen was removed
-// 2026-08-03 at the Founder's instruction ("remove the yellow sample
-// logo"). Nothing on this page now marks the figures as fake. The buy
-// link still refuses honestly, but a screenshot of "81% overall" no
-// longer carries a warning with it — worth knowing before this screen is
-// shown to anyone outside the build.
-// ====================================================================
+// CURRENT DATA BOUNDARY, 2026-09-10: the overall percentage is real and comes
+// from score_candidates(). That RPC still exposes no per-category totals
+// (OA-ZYRA-192/193(d)), so Exact Trio now renders an honest unavailable state:
+// the six category names and three-column structure remain visible, no sample
+// percentages appear for persisted profiles, and Unlock+ cannot spend a real credit.
+// Existing Plus unlocks still retain their real Guardian visibility.
+// FOUNDER TESTING EXCEPTION, 2026-09-28: authorized sample routes alone have
+// a Plus button and clearly labelled illustrative result. State/credits are
+// route-local; this never opens the production fuse or writes an unlock.
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 
+import '../../dev/zyra_compatibility_demo.dart';
+import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../models/seeker_profile.dart';
 import '../../models/zyra_gender.dart';
 import '../../services/zyra_discovery_service.dart';
+import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_guardian_info_service.dart';
+import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
 import '../../services/zyra_unlock_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
-import '../../widgets/zyra_glass_dialog.dart';
+import '../../widgets/zyra_gold_action_pill.dart';
 
-/// Free Compatibility Unlock+ credits included with ZYRA One (Founder,
-/// 2026-08-03).
-///
-/// NO LONGER ADDED BY THIS SCREEN (2026-08-04). It used to be `+3` on top
-/// of a dev-panel count, which meant the number shown and the number the
-/// server would honour were computed in different places by different
-/// rules — and the server's rule was "there isn't one".
-///
-/// These credits are now granted into `unlock_credits` with
-/// reason 'zyra_one_included' when a ZYRA One subscription activates, so
-/// the balance is already correct without special-casing the plan here.
-/// The constant remains as the single definition of how many, read by the
-/// database grant, not by the UI.
-const int kZyraOneFreeUnlockPlus = 3;
-
-/// Pricing — Founder approved 2026-08-03.
-///
-/// NOT READ BY THIS SCREEN, deliberately. Prices, savings and the BEST
-/// VALUE badge all moved to the buy page (Founder: "best value isn't
-/// needed on that page"), and the same reasoning removes the prices — this
-/// screen's question is "spend one?", not "which pack?".
-///
-/// Kept here rather than deleted because these are the ratified figures
-/// and the buy page has not been built yet. Deleting them would mean
-/// retyping them from memory later, which is exactly how the app came to
-/// disagree with the pricing document in the first place.
-///
-/// The savings are stated, not estimated:
-///   standard  5 x 1.99 = 9.95, pack 7.99 -> 19.7%, shown as 20%
-///   plus      5 x 2.99 = 14.95, pack 9.99 -> 33.2%, shown as 33%
-class UnlockPricing {
-  UnlockPricing._();
-  static const single = '£1.99';
-  static const bundle = '£7.99';
-  static const singlePlus = '£2.99';
-  static const bundlePlus = '£9.99';
-  static const saving = 'Save 20%';
-  static const savingPlus = 'Save 33%';
-}
-
-/// The sample figures, in one place and internally consistent.
-///
-/// The old screen showed 81% on the Unlock tab and 89% on the Unlock+ tab
-/// — two different overall scores for the same pair of people, which is
-/// impossible. It went unnoticed because the tabs were never on screen
-/// together. Stacking them made it obvious in the first mockup.
-///
-/// One overall score, 81%. Everything else is derived so it holds up if
-/// the Founder does the arithmetic:
-///
-///   counts     (62 + 19x0.5) / 88 = 81.25%   [green=1, amber=0.5, red=0]
-///   categories (74+78+85+88+69+92) / 6 = 81
-///
-/// That weighting is an ASSUMPTION, not a ratified rule — the real scoring
-/// method is still open. It is written down here so whoever builds the
-/// scorer knows what these sample numbers were made to satisfy.
-class _Sample {
-  _Sample._();
-  static const green = 62;
-  static const amber = 19;
-  static const red = 7;
-  static const categories = <(String, int)>[
-    ('Lifestyle', 74),
-    ('Work & Education', 78),
-    ('Family Values', 85),
-    ('Marriage Goals', 88),
-    ('Personality', 69),
-    ('Deen', 92),
-  ];
-}
+/// Exact Trio's ruled category order. Names are safe to show; values are not
+/// available until the server returns real per-category totals.
+const _compatibilityCategoryNames = <String>[
+  'Lifestyle',
+  'Work & Education',
+  'Family Values',
+  'Marriage Goals',
+  'Personality',
+  'Deen',
+];
 
 class ProfileUnlockScreen extends StatefulWidget {
   final SeekerProfile profile;
@@ -159,6 +93,10 @@ class ProfileUnlockScreen extends StatefulWidget {
   /// Paused/Ended cards, the Timeline's Compatibility entry). Affects
   /// the OVERALL section alone; the Plus detail (categories, Guardians)
   /// stays gated exactly as before — the Journey never revealed those.
+  /// This display flag is not numeric-read authority: the legacy score read
+  /// additionally requires an existing owner/profile grant. A Journey without
+  /// that grant keeps its open/no-charge door but shows an unavailable figure
+  /// until the held saved Journey-result server contract is integrated.
   final bool journeyRevealed;
 
   const ProfileUnlockScreen({
@@ -173,8 +111,34 @@ class ProfileUnlockScreen extends StatefulWidget {
 
 class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   bool _busy = false;
+  bool _needsRecovery = false;
+  bool _accountExpired = false;
+  late final String? _ownerAtOpen;
+  late final int _generationAtOpen;
+  late final String _profileAtOpen;
+  StreamSubscription<dynamic>? _authSubscription;
+  int _balanceRequest = 0;
+  int _scoreRequest = 0;
+  int _guardianRequest = 0;
+  int _unlockRequest = 0;
+  int _accessRequest = 0;
+  bool _accessUnavailable = false;
+  late final bool _sampleMode;
+  bool _previewAuthorizedAtOpen = false;
+  ModalRoute<dynamic>? _route;
+  ZyraCompatibilityDevControls? _devControls;
+  int _previewPlus = 1;
+  // This is presentation state owned by this route, never profile_unlocks
+  // or the service's unlock cache. It cannot authorize real Guardian reads.
+  bool _previewPlusUnlocked = false;
 
-  /// Real credit balances from the `unlock_credits` ledger.
+  bool get _isDeveloperPreview =>
+      _sampleMode &&
+      _previewAuthorizedAtOpen &&
+      ZyraDeveloperAccess.canUseDeveloperTools;
+
+  /// Production balances come from `unlock_credits`; authorized non-persisted
+  /// sample routes use their own local preview balances only.
   ///
   /// REPLACED the dev panel's in-memory counts 2026-08-04. Those were the
   /// only notion of a balance that existed anywhere — which is exactly why
@@ -182,6 +146,8 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   /// screen is now the same number the server enforces against.
   Map<UnlockTier, int> _balance = const {};
   bool _loadingBalance = true;
+  bool _balanceUnavailable = false;
+  bool _balanceReadPending = false;
 
   /// Guardians of the profile being viewed. Three distinct states, and the
   /// difference between them matters (Founder decision, 2026-08-05):
@@ -193,28 +159,205 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   @override
   void initState() {
     super.initState();
+    _ownerAtOpen = _currentOwner();
+    _generationAtOpen = ZyraAccountState.generation;
+    _profileAtOpen = widget.profile.id;
+    // Raw sample identity never falls into live balance reads after revocation.
+    _sampleMode = ZyraUnlockService.isSampleProfile(widget.profile.id);
+    _previewAuthorizedAtOpen =
+        _sampleMode && ZyraDeveloperAccess.canUseDeveloperTools;
+    ZyraDeveloperAccess.authorizationChanges.addListener(_onAuthorityChanged);
+    AppState.instance.addListener(_onAccountChanged);
+    try {
+      _authSubscription = ZyraAuth.authStateChanges.listen(
+        (_) => _onAccountChanged(),
+        onError: (Object _, StackTrace _) => _expireAccount(),
+      );
+    } catch (_) {
+      // The protected local preview intentionally needs no Supabase runtime.
+    }
     _loadBalance();
-    _loadGuardians();
-    _loadRealScore();
+    _loadExistingAccess();
   }
 
-  /// THIS SEEKER'S OWN figure for the profile on screen. Null until loaded,
-  /// and null forever if they cannot be scored yet — the screen distinguishes
-  /// those two states, because "still working it out" and "not enough
-  /// answers between you" are different things to be told after paying.
+  static String? _currentOwner() {
+    try {
+      return ZyraAuth.currentUser?.id;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool get _lifetimeCurrent =>
+      mounted &&
+      !_accountExpired &&
+      !ZyraAccountState.isSigningOut &&
+      _generationAtOpen == ZyraAccountState.generation &&
+      _ownerAtOpen == _currentOwner() &&
+      _profileAtOpen == widget.profile.id;
+
+  void _onAccountChanged() {
+    if (!mounted || _accountExpired || _lifetimeCurrent) return;
+    _expireAccount();
+  }
+
+  void _expireAccount() {
+    if (!mounted || _accountExpired) return;
+    setState(() {
+      _accountExpired = true;
+      _busy = false;
+      _balance = const {};
+      _guardians = null;
+      _realScore = null;
+      _previewPlusUnlocked = false;
+    });
+    _balanceRequest++;
+    _scoreRequest++;
+    _guardianRequest++;
+    _unlockRequest++;
+    _accessRequest++;
+    ZyraDevSurfaceCoordinator.instance.detachCompatibility(this);
+  }
+
+  @override
+  void didUpdateWidget(covariant ProfileUnlockScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.profile.id != widget.profile.id) _onAccountChanged();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _route = ModalRoute.of(context);
+    if (!_lifetimeCurrent || !_isDeveloperPreview) return;
+    _devControls ??= ZyraCompatibilityDevControls(
+      profileId: widget.profile.id,
+      isCurrent: () =>
+          _lifetimeCurrent &&
+          _isDeveloperPreview &&
+          (_route?.isCurrent ?? false),
+      balance: (plus) => plus ? _previewPlus : 0,
+      setBalance: _setPreviewBalance,
+    );
+    // Route-current notifications occur during build. Notify the global
+    // controls only once that frame is complete, including cover/uncover.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_lifetimeCurrent || !_isDeveloperPreview) return;
+      ZyraDevSurfaceCoordinator.instance.attachCompatibility(
+        this,
+        _devControls!,
+      );
+    });
+  }
+
+  void _onAuthorityChanged() {
+    if (!mounted || !_sampleMode) return;
+    if (!_isDeveloperPreview) {
+      _previewPlusUnlocked = false;
+      _realScore = null;
+      _loadingScore = false;
+      ZyraDevSurfaceCoordinator.instance.detachCompatibility(this);
+    } else if (_devControls != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || !_isDeveloperPreview) return;
+        ZyraDevSurfaceCoordinator.instance.attachCompatibility(
+          this,
+          _devControls!,
+        );
+      });
+    }
+    setState(() {});
+  }
+
+  void _setPreviewBalance(bool plus, int count) {
+    if (!_lifetimeCurrent ||
+        !_isDeveloperPreview ||
+        !(_route?.isCurrent ?? false) ||
+        !plus ||
+        !const [0, 1, 5].contains(count)) {
+      return;
+    }
+    setState(() {
+      _previewPlus = count;
+      _balance = {ZyraUnlockService.currentTier: _previewPlus};
+    });
+    ZyraDevSurfaceCoordinator.instance.compatibilityChanged(this);
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    AppState.instance.removeListener(_onAccountChanged);
+    ZyraDeveloperAccess.authorizationChanges.removeListener(
+      _onAuthorityChanged,
+    );
+    ZyraDevSurfaceCoordinator.instance.detachCompatibility(this);
+    super.dispose();
+  }
+
+  /// This Seeker's owned figure. Null also covers failed/withheld access or
+  /// an unavailable calculation; the UI must not invent a reason or number.
   double? _realScore;
   bool _loadingScore = true;
 
+  /// Hydration may still be pending when this route opens. Confirm this
+  /// owner/profile grant independently instead of fetching a hidden number
+  /// first or treating an unloaded cache as proof that paid access was lost.
+  Future<void> _loadExistingAccess() async {
+    if (!_lifetimeCurrent) return;
+    final request = ++_accessRequest;
+    if (_sampleMode) {
+      // The isolated preview has no member data. Its fixture is calculated
+      // only after the existing local unlock action, never by a live RPC.
+      if (_isDeveloperPreview && _previewPlusUnlocked) {
+        await _loadRealScore();
+      } else {
+        setState(() => _loadingScore = false);
+      }
+      return;
+    }
+    final owned = await ZyraUnlockService.confirmOwnedAccess(
+      widget.profile.id,
+      UnlockTier.standard,
+    );
+    if (!_lifetimeCurrent || request != _accessRequest) return;
+    setState(() {
+      _accessUnavailable = owned == null;
+      if (owned != true) {
+        _realScore = null;
+        _loadingScore = false;
+      }
+    });
+    if (owned == true) {
+      _loadGuardians();
+      await _loadRealScore();
+    }
+  }
+
   Future<void> _loadRealScore() async {
-    // The sample profile is a fixture with no onboarding answers behind it,
-    // so it has no score and never will. Asking would just be a round trip
-    // to learn what isSampleProfile already knows.
+    if (!_lifetimeCurrent) return;
+    final request = ++_scoreRequest;
+    // Founder preview cards have no onboarding rows. Give only that isolated
+    // environment a deterministic fixture score so it can exercise the real
+    // locked -> unlocked presentation without contacting Supabase.
+    if (_isDeveloperPreview) {
+      setState(() {
+        _realScore = _previewPlusUnlocked
+            ? ZyraUnlockService.developerPreviewScore(widget.profile.id)
+            : null;
+        _loadingScore = false;
+      });
+      return;
+    }
+
+    // A non-authorised sample has no score and must never be passed to the
+    // UUID RPC. Production Browse does not supply sample profiles.
     if (ZyraUnlockService.isSampleProfile(widget.profile.id)) {
       if (mounted) setState(() => _loadingScore = false);
       return;
     }
     final s = await ZyraDiscoveryService.fetchMyScoreFor(widget.profile.id);
-    if (!mounted) return;
+    if (!_lifetimeCurrent || request != _scoreRequest) return;
     setState(() {
       _realScore = s;
       _loadingScore = false;
@@ -222,73 +365,69 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   }
 
   Future<void> _loadBalance() async {
-    final b = await ZyraUnlockService.balances();
-    if (!mounted) return;
+    if (!_lifetimeCurrent || _balanceReadPending) return;
+    final request = ++_balanceRequest;
+    if (_sampleMode) {
+      setState(() {
+        _balance = _isDeveloperPreview
+            ? {ZyraUnlockService.currentTier: _previewPlus}
+            : const {};
+        _loadingBalance = false;
+        _balanceUnavailable = false;
+      });
+      return;
+    }
+    _balanceReadPending = true;
+    setState(() => _loadingBalance = true);
+    final b = await ZyraUnlockService.readBalances();
+    if (!_lifetimeCurrent || request != _balanceRequest) return;
     setState(() {
-      _balance = b;
+      _balanceReadPending = false;
+      _balance = b.values;
+      _balanceUnavailable = !b.available;
       _loadingBalance = false;
     });
+    if (b.status == UnlockBalanceStatus.failed) {
+      // Same existing snackbar surface; no new card, price or layout.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_lifetimeCurrent || request != _balanceRequest) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Your unlock balance couldn’t be checked.'),
+            action: SnackBarAction(
+              label: 'Check again',
+              onPressed: () {
+                if (_lifetimeCurrent &&
+                    request == _balanceRequest &&
+                    !_balanceReadPending) {
+                  _checkBalance(); // read-only, never a debit
+                }
+              },
+            ),
+          ),
+        );
+      });
+    }
+  }
+
+  void _checkBalance() {
+    if (!_lifetimeCurrent || _busy || !(_route?.isCurrent ?? false)) return;
+    _loadBalance();
   }
 
   /// Only ever fetched when a Plus unlock is already held — the RPC would
   /// return nothing otherwise, and asking anyway would make "no Guardian"
   /// and "not unlocked" indistinguishable in the logs.
   Future<void> _loadGuardians() async {
+    if (!_lifetimeCurrent) return;
+    final request = ++_guardianRequest;
     if (!ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.plus)) {
       return;
     }
     if (ZyraUnlockService.isSampleProfile(widget.profile.id)) return;
     final g = await ZyraGuardianInfoService.fetchUnlocked(widget.profile.id);
-    if (!mounted) return;
+    if (!_lifetimeCurrent || request != _guardianRequest) return;
     setState(() => _guardians = g);
-  }
-
-  /// Offers Plus when the Seeker holds credits for BOTH tiers and is about
-  /// to spend the lesser one.
-  ///
-  /// Founder approved 2026-08-04. Shown only in that exact case: holding
-  /// only one tier means there is no choice to present, and prompting
-  /// anyway would be a nag rather than a question.
-  ///
-  /// Returns the tier to actually spend, or null if they backed out.
-  Future<UnlockTier?> _tierToSpend(UnlockTier tapped) async {
-    // Only ever offered as an upgrade from standard, never the reverse.
-    // Someone who tapped Plus chose the better one; second-guessing that
-    // is friction with nothing at the end of it.
-    if (tapped != UnlockTier.standard) return tapped;
-
-    final plus = _balance[UnlockTier.plus] ?? 0;
-    final std = _balance[UnlockTier.standard] ?? 0;
-    if (plus < 1 || std < 1) return tapped;
-
-    // Already holding the detail? Then Plus buys nothing here.
-    if (ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.plus)) {
-      return tapped;
-    }
-
-    final usePlus = await showZyraGlassChoice(
-      context: context,
-      // A padlock, not a star or a sparkle. Every icon in this feature is
-      // a padlock — locked rows, the unlocked marker — and an upsell glyph
-      // would make this read as an advert rather than a continuation of
-      // the thing they just tapped.
-      icon: Icons.lock_open_outlined,
-      title: 'Use an Unlock+ instead?',
-      body:
-          "For the same tap you'd also see the Green, Amber and Red "
-          'tallies and all six category scores.',
-      // The one question the prompt cannot answer by itself is "can I
-      // afford to be generous with the better one". One line settles it.
-      detail: _BalanceLine(standard: std, plus: plus),
-      primaryLabel: 'Yes, use Unlock+',
-      // Not "Not now" — that implies they will come back to this, and they
-      // will not; the unlock happens either way. It describes the outcome
-      // rather than deferring it.
-      secondaryLabel: 'No, just the overall',
-    );
-
-    if (usePlus == null) return null; // dismissed
-    return usePlus ? UnlockTier.plus : UnlockTier.standard;
   }
 
   /// Spends a credit, then rebuilds so the section swaps to the result.
@@ -296,15 +435,36 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   /// The outcome is no longer a bool (2026-08-04). "You have no credits"
   /// and "the network failed" used to produce the same retry message, and
   /// retrying will never fix the first one.
-  Future<void> _unlock(UnlockTier tapped) async {
-    if (_busy) return;
+  Future<void> _unlock() async {
+    const tier = ZyraUnlockService.currentTier;
+    if (!_lifetimeCurrent ||
+        !(_route?.isCurrent ?? false) ||
+        _busy ||
+        _needsRecovery ||
+        _balanceUnavailable ||
+        _loadingBalance) {
+      return;
+    }
+    if (_sampleMode &&
+        (!_isDeveloperPreview ||
+            !(_route?.isCurrent ?? false) ||
+            (_balance[tier] ?? 0) < 1)) {
+      return;
+    }
+    if (!ZyraUnlockService.isTierAvailable(tier)) return;
 
-    final tier = await _tierToSpend(tapped);
-    if (tier == null || !mounted) return;
-
+    final request = ++_unlockRequest;
+    // One product, one entitlement. Never downgrade to an earlier overall
+    // credit if the full-detail product is held or unavailable.
     setState(() => _busy = true);
+    if (_sampleMode &&
+        (!_isDeveloperPreview || !(_route?.isCurrent ?? false))) {
+      setState(() => _busy = false);
+      return;
+    }
+
     final outcome = await ZyraUnlockService.unlock(widget.profile.id, tier);
-    if (!mounted) return;
+    if (!mounted || !_lifetimeCurrent || request != _unlockRequest) return;
     setState(() => _busy = false);
 
     switch (outcome) {
@@ -312,17 +472,18 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       case UnlockOutcome.alreadyUnlocked:
         _loadBalance(); // a credit may have gone; re-read rather than guess
         _loadGuardians(); // Plus reveals Guardians — fetch them now it's open
+        _loadRealScore(); // the numeric read is now backed by owned access
       case UnlockOutcome.sampleProfile:
-        // Opened for the session so the screen can be seen, but say plainly
-        // that nothing real happened — a silent success here would teach the
-        // wrong thing about a feature that costs money in production.
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Sample profile — opened for preview. No unlock used.',
-            ),
-          ),
-        );
+        // Founder preview: the local service has already recorded the unlock
+        // for this session. Rebuilding reveals the deterministic test score;
+        // the global preview boundary is the disclosure, so no snackbar
+        // interrupts the feature itself.
+        if (_isDeveloperPreview) {
+          setState(() {});
+          _loadBalance();
+          ZyraDevSurfaceCoordinator.instance.compatibilityChanged(this);
+        }
+        return;
       case UnlockOutcome.insufficientCredits:
         _loadBalance(); // our count was stale if we got here at all
         ScaffoldMessenger.of(context).showSnackBar(
@@ -330,28 +491,114 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
             content: Text("You don't have an unlock left for this."),
           ),
         );
+      case UnlockOutcome.unavailable:
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Detailed compatibility isn’t available yet. No unlock was used.',
+            ),
+          ),
+        );
       case UnlockOutcome.failed:
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("That didn't go through. Please try again."),
+            content: Text(
+              'This unlock could not be requested. No new access was confirmed.',
+            ),
+          ),
+        );
+      case UnlockOutcome.recoveryRequired:
+        setState(() => _needsRecovery = true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'We couldn’t confirm this unlock. Check access before using another credit.',
+            ),
+            action: SnackBarAction(
+              label: 'Check access',
+              onPressed: _checkUnlockAccess,
+            ),
           ),
         );
     }
   }
 
-  void _buy() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Payments are not built yet — nothing has been charged.'),
-      ),
+  /// Recover a lost acknowledgement using reads only. Missing/failed evidence
+  /// never authorises another spend; a confirmed permanent row restores access.
+  Future<void> _checkUnlockAccess() async {
+    if (!_lifetimeCurrent || _busy || !(_route?.isCurrent ?? false)) return;
+    final request = ++_unlockRequest;
+    setState(() => _busy = true);
+    final recoveringSpend = _needsRecovery;
+    final overall = await ZyraUnlockService.confirmOwnedAccess(
+      widget.profile.id,
+      UnlockTier.standard,
     );
+    if (!mounted || !_lifetimeCurrent || request != _unlockRequest) return;
+    final confirmed = ZyraUnlockService.isUnlocked(
+      widget.profile.id,
+      ZyraUnlockService.currentTier,
+    );
+    setState(() {
+      _busy = false;
+      _accessUnavailable = overall == null;
+      _needsRecovery = recoveringSpend && !confirmed;
+    });
+    _loadBalance();
+    if (overall == true) {
+      _loadGuardians();
+      _loadRealScore();
+    }
+    if (overall == null || (recoveringSpend && !confirmed)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Access hasn’t been confirmed yet. No new unlock was requested.',
+          ),
+        ),
+      );
+    }
+  }
+
+  /// Founder-authorized demonstration, not a live unlock transaction.
+  /// Recheck the owner/authority at invocation, including saved callbacks.
+  void _unlockPreview() {
+    if (!_lifetimeCurrent ||
+        !_isDeveloperPreview ||
+        !(_route?.isCurrent ?? false) ||
+        _previewPlusUnlocked ||
+        _previewPlus < 1 ||
+        _busy) {
+      return;
+    }
+    setState(() {
+      _previewPlusUnlocked = true;
+      _previewPlus--;
+      _balance = {ZyraUnlockService.currentTier: _previewPlus};
+    });
+    _loadRealScore();
+    ZyraDevSurfaceCoordinator.instance.compatibilityChanged(this);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_lifetimeCurrent) {
+      return Scaffold(
+        key: const ValueKey('compatibility-account-expired'),
+        appBar: AppBar(title: const Text('Compatibility')),
+      );
+    }
+    if (_sampleMode && !_isDeveloperPreview) {
+      return Scaffold(
+        key: const ValueKey('compatibility-preview-denied'),
+        appBar: AppBar(title: const Text('Compatibility')),
+      );
+    }
     final name = widget.profile.firstName;
 
-    // Straight from the ledger. Previously `ZyraDevScenario.instance.unlocks
+    // Production values are straight from the ledger. The isolated sample
+    // route alone reads the local balances selected in its developer toggle.
+    // Previously `ZyraDevScenario.instance.unlocks
     // .count` — an in-memory dev-panel enum, which meant the number on
     // screen and the number the server would enforce had no relationship
     // to each other. They are now the same number.
@@ -361,14 +608,14 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     // count is already correct without special-casing the plan. Founder
     // rejected itemising where credits came from — that belongs on the buy
     // screen.
-    final standardLeft = _balance[UnlockTier.standard] ?? 0;
-    final plusLeft = _balance[UnlockTier.plus] ?? 0;
+    final unlocksLeft = _balance[ZyraUnlockService.currentTier] ?? 0;
 
     // Plus is a SUPERSET of Unlock, so holding Plus unlocks the overall
     // number too. Not a convenience — the spec defines Plus as "everything
     // in Compatibility Unlock, plus a category breakdown", and charging
     // again for the part they already bought would break the permanence
     // rule the unique index exists to enforce.
+    final demoUnlocked = _isDeveloperPreview && _previewPlusUnlocked;
     final detailUnlocked = ZyraUnlockService.isUnlocked(
       widget.profile.id,
       UnlockTier.plus,
@@ -377,190 +624,156 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     // the Journey already showed both people this number (see the field's
     // doc). It spends nothing and writes nothing; the ledger is untouched.
     final overallUnlocked =
+        demoUnlocked ||
         detailUnlocked ||
         widget.journeyRevealed ||
         ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.standard);
 
-    final everBought = standardLeft > 0 || plusLeft > 0;
-
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text('Compatibility', style: ZyraText.heading(size: 17)),
-        iconTheme: const IconThemeData(color: Colors.white70),
+    return DecoratedBox(
+      decoration: ZyraAppGoldDecoration(
+        gradient: ZyraColors.genderGradient(AppState.instance.gender),
       ),
-      body: Container(
-        // BoxConstraints.expand for the same reason as the report screen
-        // and transition_screen: the Scaffold background is now the gender
-        // gradient's first stop, so a short page would show a band of flat
-        // Rose Pink under the content.
-        constraints: const BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          scrolledUnderElevation: 0,
+          elevation: 0,
+          title: Text('Compatibility', style: ZyraText.heading(size: 17)),
+          iconTheme: const IconThemeData(color: Colors.white70),
         ),
-        child: SafeArea(
-          top: false,
-          child: ListView(
-            padding: EdgeInsets.fromLTRB(
-              20,
-              MediaQuery.of(context).padding.top + kToolbarHeight + 8,
-              20,
-              32,
-            ),
-            children: [
-              Text('You and $name', style: ZyraText.heading(size: 22)),
-              const SizedBox(height: 4),
-              Text(
-                'Built from what you both already told ZYRA. Neither of you '
-                'sees the other’s answers.',
-                style: ZyraText.subtext(size: 12.5),
-              ),
-              const SizedBox(height: 20),
+        body: Container(
+          // BoxConstraints.expand for the same reason as the report screen
+          // and transition_screen: the Scaffold background is now the gender
+          // gradient's first stop, so a short page would show a band of flat
+          // Rose Pink under the content.
+          constraints: const BoxConstraints.expand(),
+          child: SafeArea(
+            top: false,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+              children: [
+                Text('You and $name', style: ZyraText.heading(size: 22)),
+                const SizedBox(height: 4),
+                Text(
+                  _isDeveloperPreview
+                      ? 'Try Compatibility with a sample profile. Demo results '
+                            'are not calculated from anyone’s answers.'
+                      : 'Built from what you both already told ZYRA. Neither of you '
+                            'sees the other’s answers.',
+                  style: ZyraText.subtext(size: 12.5),
+                ),
+                const SizedBox(height: 20),
 
-              // ONE card, two sections, one divider. A card each would put
-              // a gap between them and read as two unrelated offers; the
-              // whole point of the single page is that the second section
-              // is the inside of the first.
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.16),
-                    width: 1,
+                // ONE card, two sections, one divider. A card each would put
+                // a gap between them and read as two unrelated offers; the
+                // whole point of the single page is that the second section
+                // is the inside of the first.
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.16),
+                      width: 1,
+                    ),
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _Section(
-                      label: 'OVERALL',
-                      // `left: null` while the ledger is still loading.
-                      // Showing 0 would render "none left" for a moment to
-                      // someone who has five — the exact complaint that
-                      // started this screen's rebuild, reintroduced by the
-                      // move to an async balance. The corner stays empty
-                      // until the real number arrives.
-                      left: _loadingBalance ? null : standardLeft,
-                      unlocked: overallUnlocked,
-                      buttonLabel: 'Unlock Compatibility',
-                      busy: _busy,
-                      onUnlock: () => _unlock(UnlockTier.standard),
-                      child: overallUnlocked
-                          ? _OverallResult(
-                              score: _realScore,
-                              loading: _loadingScore,
-                              name: name,
-                            )
-                          : _OverallLocked(name: name),
-                    ),
-                    Divider(
-                      color: Colors.white.withValues(alpha: 0.14),
-                      height: 1,
-                      thickness: 1,
-                    ),
-                    _Section(
-                      label: 'THE DETAIL',
-                      left: _loadingBalance ? null : plusLeft,
-                      unlocked: detailUnlocked,
-                      // Plus welded to the word — Founder's choice from
-                      // five treatments. No space means no break
-                      // opportunity, so the glyph can never end up on a
-                      // line of its own however the text is scaled.
-                      buttonLabel: 'Unlock Compatibility+',
-                      busy: _busy,
-                      // Same reasoning as OVERALL above.
-                      onUnlock: () => _unlock(UnlockTier.plus),
-                      child: _Detail(
-                        unlocked: detailUnlocked,
-                        guardians: _guardians,
-                        firstName: name,
-                        gender: widget.profile.gender,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _Section(
+                        label: 'OVERALL',
+                        // `left: null` while the ledger is still loading.
+                        // Showing 0 would render "none left" for a moment to
+                        // someone who has five — the exact complaint that
+                        // started this screen's rebuild, reintroduced by the
+                        // move to an async balance. The corner stays empty
+                        // until the real number arrives.
+                        left: null,
+                        unlocked: overallUnlocked,
+                        busy: _busy,
+                        child: overallUnlocked
+                            ? _OverallResult(
+                                score: _realScore,
+                                loading: _loadingScore,
+                              )
+                            : _OverallLocked(name: name),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 18),
-
-              // A GLASS PILL, not an underlined text link — 2026-08-06.
-              // Founder: "the buy more unlock word / sign, make it stand
-              // out more. Maybe the outer circle like we have on the app."
-              //
-              // Same tokens as the app's other glass controls
-              // (ZyraColors.iconButtonBg / iconButtonBorder, 50pt radius),
-              // so it reads as a control rather than as a hyperlink — an
-              // underline is web furniture and was the weakest thing on
-              // the screen.
-              //
-              // Still not a FilledButton. The primary actions here are the
-              // two unlock buttons; a third solid button would compete with
-              // the thing this screen is actually for. A bordered pill sits
-              // deliberately one step below them.
-              //
-              // "more" only once they have some — "Buy more unlocks" to
-              // someone who has never had one is quietly wrong.
-              Center(
-                child: Material(
-                  color: ZyraColors.iconButtonBg,
-                  borderRadius: BorderRadius.circular(50),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(50),
-                    onTap: _buy,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 26,
-                        vertical: 12,
+                      Divider(
+                        color: Colors.white.withValues(alpha: 0.14),
+                        height: 1,
+                        thickness: 1,
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color: ZyraColors.accentBorder,
-                          width: 1,
+                      _Section(
+                        label: 'THE DETAIL',
+                        left:
+                            (_loadingBalance ||
+                                _balanceUnavailable ||
+                                _accessUnavailable ||
+                                _needsRecovery)
+                            ? null
+                            : unlocksLeft,
+                        unlocked: demoUnlocked || detailUnlocked,
+                        busy: _busy,
+                        buttonLabel: 'Unlock Compatibility',
+                        recoveryLabel: _needsRecovery || _accessUnavailable
+                            ? 'Check access'
+                            : _balanceUnavailable
+                            ? 'Check balance'
+                            : null,
+                        buttonIcon: Icons.lock_open_outlined,
+                        readOnlyRecovery:
+                            _needsRecovery ||
+                            _accessUnavailable ||
+                            _balanceUnavailable,
+                        // The local fixture never calls a transaction service.
+                        // Ordinary full-detail attempts retain both spend fuses.
+                        onUnlock: _needsRecovery || _accessUnavailable
+                            ? _checkUnlockAccess
+                            : _balanceUnavailable
+                            ? _checkBalance
+                            : _isDeveloperPreview
+                            ? _unlockPreview
+                            : ZyraUnlockService.isTierAvailable(
+                                ZyraUnlockService.currentTier,
+                              )
+                            ? _unlock
+                            : null,
+                        child: _Detail(
+                          unlocked: detailUnlocked,
+                          developerPreview: _isDeveloperPreview,
+                          demoUnlocked: demoUnlocked,
+                          guardians: _guardians,
+                          firstName: name,
+                          gender: widget.profile.gender,
                         ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.add,
-                            size: 16,
-                            color: Colors.white.withValues(alpha: 0.85),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            everBought ? 'Buy more unlocks' : 'Buy unlocks',
-                            style: ZyraText.button(size: 13.5),
-                          ),
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
                 ),
-              ),
 
-              // REMOVED 2026-08-06, Founder: "the text at bottom an unlock
-              // never shows — remove that."
-              //
-              // It read: "An unlock never shows what either of you wrote,
-              // or which questions caused a Green, Amber or Red."
-              //
-              // The privacy promise it made is REAL and still holds — the
-              // screen shows percentages and tallies, never an answer. It
-              // is simply not this screen's job to keep saying so. Nothing
-              // above it claims otherwise, so the sentence was defending
-              // against a reading nobody was making, and it was the last
-              // thing on the page.
-              //
-              // NOTE FOR THE SOLICITOR REVIEW: this wording exists nowhere
-              // else in the product now. If the Privacy Policy or the
-              // Article 9 consent text relies on the user having been told
-              // this in-app, it needs a home — most likely the buy page,
-              // where the promise is part of what is being sold.
-            ],
+                // REMOVED 2026-08-06, Founder: "the text at bottom an unlock
+                // never shows — remove that."
+                //
+                // It read: "An unlock never shows what either of you wrote,
+                // or which questions caused an Aligned, Discuss or Opposed
+                // result."
+                //
+                // The privacy promise it made is REAL and still holds — the
+                // screen shows percentages and tallies, never an answer. It
+                // is simply not this screen's job to keep saying so. Nothing
+                // above it claims otherwise, so the sentence was defending
+                // against a reading nobody was making, and it was the last
+                // thing on the page.
+                //
+                // NOTE FOR THE SOLICITOR REVIEW: this wording exists nowhere
+                // else in the product now. If the Privacy Policy or the
+                // Article 9 consent text relies on the user having been told
+                // this in-app, it needs a home — most likely the buy page,
+                // where the promise is part of what is being sold.
+              ],
+            ),
           ),
         ),
       ),
@@ -576,20 +789,28 @@ class _Section extends StatelessWidget {
   /// Credits remaining, or null while the ledger is still loading.
   final int? left;
   final bool unlocked;
-  final String buttonLabel;
+  final String? buttonLabel;
+  final String? recoveryLabel;
+  final IconData? buttonIcon;
   final bool busy;
-  final VoidCallback onUnlock;
+  final bool readOnlyRecovery;
+  final VoidCallback? onUnlock;
   final Widget child;
 
   const _Section({
     required this.label,
     required this.left,
     required this.unlocked,
-    required this.buttonLabel,
+    this.buttonLabel,
+    this.recoveryLabel,
+    this.buttonIcon,
     required this.busy,
-    required this.onUnlock,
+    this.readOnlyRecovery = false,
+    this.onUnlock,
     required this.child,
-  });
+  }) : assert(onUnlock == null || (buttonLabel != null && buttonIcon != null));
+
+  String? get _actionLabel => recoveryLabel ?? buttonLabel;
 
   /// Plain words, Founder's choice. "none left" rather than "0 left"
   /// because a zero in a corner reads as a score, not a stock level.
@@ -620,7 +841,10 @@ class _Section extends StatelessWidget {
               ),
               // The count disappears once unlocked. It answers "can I
               // afford this", and there is nothing left to afford.
-              if (!unlocked && _balance != null)
+              if (!unlocked &&
+                  !readOnlyRecovery &&
+                  onUnlock != null &&
+                  _balance != null)
                 Text(
                   _balance!,
                   style: ZyraText.subtext(
@@ -634,92 +858,27 @@ class _Section extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           child,
-          const SizedBox(height: 14),
-          if (unlocked)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.lock_open_outlined,
-                  size: 14,
-                  color: Colors.white.withValues(alpha: 0.6),
-                ),
-                const SizedBox(width: 7),
-                Text('Unlocked', style: ZyraText.subtext(size: 12.5)),
-              ],
-            )
-          else
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                // Disabled at zero rather than relabelled. The corner
-                // already says why, and the foot link says what to do —
-                // swapping this to a buy button would put the same offer
-                // on screen twice.
-                // `left == null` means the balance has not arrived yet.
-                // Disabled until it does — an enabled button whose result
-                // we cannot predict is worse than a brief dim one.
-                onPressed: (left == null || left == 0 || busy)
-                    ? null
-                    : onUnlock,
-                style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 13),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                ),
-                child: Text(
-                  buttonLabel,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: ZyraText.button(size: 14),
-                ),
-              ),
+          if (!unlocked && onUnlock != null) ...[
+            const SizedBox(height: 14),
+            ZyraGoldActionPill(
+              // Disabled at zero rather than relabelled. The corner already
+              // says why, and the foot link says what to do — swapping this
+              // to a buy button would put the same offer on screen twice.
+              // `left == null` means the balance has not arrived yet.
+              // Disabled until it does — an enabled button whose result we
+              // cannot predict is worse than a brief dim one.
+              key: ValueKey<String>('compatibility-unlock-$_actionLabel'),
+              label: _actionLabel!,
+              icon: readOnlyRecovery ? Icons.refresh_rounded : buttonIcon!,
+              busy: busy,
+              onPressed:
+                  (busy || (!readOnlyRecovery && (left == null || left == 0)))
+                  ? null
+                  : onUnlock,
             ),
+          ],
         ],
       ),
-    );
-  }
-}
-
-/// "Unlock 5 | Unlock+ 5" — both balances, quietly, inside the Unlock+
-/// prompt. Deliberately not a table or a pair of cards: the reader is
-/// answering one yes/no question and only needs to know they can afford
-/// either answer.
-class _BalanceLine extends StatelessWidget {
-  final int standard;
-  final int plus;
-  const _BalanceLine({required this.standard, required this.plus});
-
-  @override
-  Widget build(BuildContext context) {
-    Widget part(String label, int n) => RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: '$label  ',
-            style: ZyraText.subtext(size: 11.5, color: Colors.white54),
-          ),
-          TextSpan(
-            text: '$n',
-            style: ZyraText.body(size: 12.5, color: Colors.white),
-          ),
-        ],
-      ),
-    );
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        part('Unlock', standard),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            '|',
-            style: ZyraText.subtext(size: 11.5, color: Colors.white24),
-          ),
-        ),
-        part('Unlock+', plus),
-      ],
     );
   }
 }
@@ -759,7 +918,7 @@ class _OverallLocked extends StatelessWidget {
 
 /// Unlocked overall — the percentage, and nothing else.
 ///
-/// Green/Amber/Red used to live here. Founder moved them to Plus so that
+/// Aligned/Discuss/Opposed detail lives in Plus so that
 /// Plus has more to sell. Compatibility Unlock is now exactly one number,
 /// which is also the easiest thing in the app to explain.
 class _OverallResult extends StatelessWidget {
@@ -773,13 +932,8 @@ class _OverallResult extends StatelessWidget {
   /// person has their own, and it is not yours to see.
   final double? score;
   final bool loading;
-  final String name;
 
-  const _OverallResult({
-    required this.score,
-    required this.loading,
-    required this.name,
-  });
+  const _OverallResult({required this.score, required this.loading});
 
   @override
   Widget build(BuildContext context) {
@@ -787,11 +941,8 @@ class _OverallResult extends StatelessWidget {
       return Text('Working it out…', style: ZyraText.subtext(size: 13));
     }
 
-    // NO NUMBER RATHER THAN A MADE-UP ONE. Reachable today because the
-    // onboarding completeness gate (OA-ZYRA-193c) is decided but unbuilt, so
-    // a half-finished profile can still be looked at. When that gate exists
-    // this branch becomes unreachable — and it should STILL be here, because
-    // the alternative is inventing a figure the moment it is.
+    // Withheld access, a failed read and an unscoreable pair all withhold the
+    // figure. None proves a particular missing-answer cause to the client.
     if (score == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -799,8 +950,7 @@ class _OverallResult extends StatelessWidget {
           Text('—', style: ZyraText.heading(size: 44, color: Colors.white38)),
           const SizedBox(height: 6),
           Text(
-            'Not enough answers between you yet. This fills in as you and '
-            '$name both cover more ground.',
+            'Your compatibility score isn’t available right now.',
             style: ZyraText.subtext(size: 12.5),
           ),
         ],
@@ -813,87 +963,22 @@ class _OverallResult extends StatelessWidget {
       children: [
         Text('${score!.round()}%', style: ZyraText.heading(size: 44)),
         const SizedBox(width: 12),
-        Text('overall', style: ZyraText.subtext(size: 13)),
+        Text('aligned', style: ZyraText.subtext(size: 13)),
       ],
-    );
-  }
-}
-
-/// Says out loud that the figures above are not this person's score.
-///
-/// RESTORED 2026-08-10 (Founder decision, OA-ZYRA-192). A marker was removed
-/// on 2026-08-03 — "remove the yellow sample banner" — and that was the right
-/// call at the time: the screen was a mockup under review, and a real number
-/// was impossible because `onboarding_answers` held zero rows.
-///
-/// That stopped being true on 2026-08-10. The table now holds 144 rows,
-/// `seeker_details` another 144, and `score_candidates()` returns real
-/// per-pair numbers that TWO live services already consume — Browse curation
-/// (`zyra_discovery_service`) and the Journey reveal (`zyra_journey_service`).
-/// So the app computes a real score in two places and shows a constant in the
-/// one the Seeker pays a credit for. The unlock transaction is real;
-/// `_Sample.overall` is not.
-///
-/// THE SECOND SENTENCE IS THE ONE THAT MATTERS. "Example figures" alone would
-/// read as "not final". The problem is not that 81% is provisional — it is
-/// that it is IDENTICAL FOR EVERY PROFILE, so without saying so a Seeker
-/// reads it as a fact about this particular person.
-///
-/// Deliberately not a banner. This is the same idiom as the onboarding
-/// privacy indicator — a small coloured dot and plain text, no card, no box —
-/// and it borrows that system's amber, which already means "conditional, not
-/// yet". Same tokens, so it stays in step if the palette moves.
-///
-/// STILL LIVE, AND MOVED — 2026-08-11. The overall percentage became real
-/// (OA-ZYRA-192 closed by OA-ZYRA-193), so this came off it and went onto the
-/// category breakdown, which is still a constant and stays one until
-/// OA-ZYRA-193(d) settles what the categories are.
-///
-/// DELETE THIS WIDGET when the BREAKDOWN is real too. Not before: the earlier
-/// instruction said to delete it when the screen showed a real number, which
-/// on the day would have removed the qualifier from six sample figures
-/// because a seventh had been fixed.
-class _SampleMarker extends StatelessWidget {
-  const _SampleMarker();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, right: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 6,
-            height: 6,
-            margin: const EdgeInsets.only(top: 5),
-            decoration: const BoxDecoration(
-              color: ZyraColors.unlockDot,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 7),
-          Expanded(
-            child: Text(
-              'This breakdown is an example — the same for every profile. '
-              'Your overall figure above is real.',
-              style: ZyraText.privacyText(color: ZyraColors.unlockText),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
 
 /// The lower section, locked or not.
 ///
-/// Locked, every row keeps its name and loses its value to a padlock —
-/// the Founder's pick from four treatments. It shows the buyer exactly
-/// what they are buying (six named areas plus the colour tallies) without
-/// leaking a single figure, and it needs no sentence explaining itself.
+/// The ruled Exact Trio structure remains visible, but no category value is
+/// rendered for a persisted profile until real server totals exist. The
+/// explicitly marked developer sample is separate presentation state.
+/// `unlocked` governs only already-real Guardian disclosure below it.
 class _Detail extends StatelessWidget {
   final bool unlocked;
+  final bool developerPreview;
+  final bool demoUnlocked;
 
   /// Guardians of the profile being viewed, or null while locked/unknown.
   /// An empty list is a real answer — "No Guardian linked" — not a gap.
@@ -907,6 +992,8 @@ class _Detail extends StatelessWidget {
 
   const _Detail({
     required this.unlocked,
+    this.developerPreview = false,
+    this.demoUnlocked = false,
     required this.guardians,
     required this.firstName,
     required this.gender,
@@ -917,48 +1004,225 @@ class _Detail extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          children: [
-            _Tally(
-              colour: const Color(0xFF6FBF8A),
-              label: 'Green',
-              value: unlocked ? _Sample.green : null,
-            ),
-            _Tally(
-              colour: const Color(0xFFE0C070),
-              label: 'Amber',
-              value: unlocked ? _Sample.amber : null,
-            ),
-            _Tally(
-              colour: ZyraColors.destructive,
-              label: 'Red',
-              value: unlocked ? _Sample.red : null,
-            ),
-          ],
+        if (developerPreview) ...[
+          const _DemoNotice(),
+          const SizedBox(height: 14),
+        ],
+        _ExactTrioBreakdown(
+          developerPreview: developerPreview,
+          demoUnlocked: demoUnlocked,
         ),
-        const SizedBox(height: 14),
-        for (final row in _Sample.categories)
-          _CategoryRow(name: row.$1, value: unlocked ? row.$2 : null),
-        // MOVED HERE 2026-08-11, not deleted. The overall figure above is
-        // real now; THIS breakdown still is not, and cannot be until
-        // OA-ZYRA-193(d) decides how many categories there are and which —
-        // the screen shows six, onboarding has nine, and they do not map.
-        // score_candidates returns no category detail at all.
-        //
-        // Plus charges MORE than Unlock, and what it charges more for is
-        // exactly this. So the marker belongs on the part that is still a
-        // sample, and it would have been quietly deleted along with the 81%
-        // if its own doc comment had been followed literally.
-        if (unlocked) const _SampleMarker(),
-        _GuardianSection(
-          unlocked: unlocked,
-          guardians: guardians,
-          firstName: firstName,
-          gender: gender,
-        ),
+        if (demoUnlocked)
+          const _DemoGuardian()
+        else
+          _GuardianSection(
+            unlocked: unlocked,
+            guardians: guardians,
+            firstName: firstName,
+            gender: gender,
+          ),
       ],
     );
   }
+}
+
+abstract final class _BreakdownPalette {
+  static const aligned = Color(0xFF6FBF8A);
+  static const discuss = Color(0xFFE0C070);
+  static const opposed = ZyraColors.destructive;
+}
+
+class _ExactTrioBreakdown extends StatelessWidget {
+  final bool developerPreview;
+  final bool demoUnlocked;
+  const _ExactTrioBreakdown({
+    this.developerPreview = false,
+    this.demoUnlocked = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Widget value(Color colour, int? percentage) => SizedBox(
+      width: 51,
+      child: Text(
+        percentage == null ? '—' : '$percentage%',
+        textAlign: TextAlign.center,
+        style: ZyraText.body(
+          size: 11.5,
+          color: colour.withValues(alpha: percentage == null ? 0.55 : 1),
+        ),
+      ),
+    );
+    Widget heading(String label) => SizedBox(
+      width: 51,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label,
+            maxLines: 1,
+            softWrap: false,
+            textAlign: TextAlign.center,
+            style: ZyraText.subtext(size: 9.5),
+          ),
+        ),
+      ),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (!demoUnlocked)
+          Text(
+            developerPreview
+                ? 'Unlock Compatibility to reveal the sample result.'
+                : 'Detailed compatibility isn’t available yet.',
+            key: const ValueKey('compatibility-detail-unavailable'),
+            style: ZyraText.subtext(size: 12.5),
+          )
+        else
+          Text(
+            'Sample category percentages',
+            key: const ValueKey('compatibility-demo-result'),
+            style: ZyraText.subtext(size: 12.5),
+          ),
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            const Expanded(child: SizedBox.shrink()),
+            heading('Aligned'),
+            heading('Discuss'),
+            heading('Opposed'),
+          ],
+        ),
+        const SizedBox(height: 4),
+        for (var index = 0; index < _compatibilityCategoryNames.length; index++)
+          Semantics(
+            label: demoUnlocked
+                ? '${_compatibilityCategoryNames[index]}, developer demo: '
+                      '${ZyraCompatibilityDemo.categories[index].aligned}% aligned, '
+                      '${ZyraCompatibilityDemo.categories[index].discuss}% discuss, '
+                      '${ZyraCompatibilityDemo.categories[index].opposed}% opposed'
+                : '${_compatibilityCategoryNames[index]}, detailed compatibility not available',
+            excludeSemantics: true,
+            child: Container(
+              key: ValueKey<String>(
+                'compatibility-exact-row-${_compatibilityCategoryNames[index]}',
+              ),
+              constraints: const BoxConstraints(minHeight: 41),
+              decoration: index < _compatibilityCategoryNames.length - 1
+                  ? BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.white.withValues(alpha: 0.10),
+                        ),
+                      ),
+                    )
+                  : null,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _compatibilityCategoryNames[index],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: ZyraText.body(size: 11.5),
+                    ),
+                  ),
+                  value(
+                    _BreakdownPalette.aligned,
+                    demoUnlocked
+                        ? ZyraCompatibilityDemo.categories[index].aligned
+                        : null,
+                  ),
+                  value(
+                    _BreakdownPalette.discuss,
+                    demoUnlocked
+                        ? ZyraCompatibilityDemo.categories[index].discuss
+                        : null,
+                  ),
+                  value(
+                    _BreakdownPalette.opposed,
+                    demoUnlocked
+                        ? ZyraCompatibilityDemo.categories[index].opposed
+                        : null,
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// Narrow seam for rendering the truthful Compatibility Unlock+ unavailable
+/// state in widget tests without loading credits, Supabase or a profile route.
+@visibleForTesting
+Widget buildZyraCompatibilityBreakdownTestSurface({
+  bool unlocked = true,
+  bool demoUnlocked = false,
+}) => _Detail(
+  unlocked: unlocked,
+  developerPreview: demoUnlocked,
+  demoUnlocked: demoUnlocked,
+  guardians: [],
+  firstName: 'Hana',
+  gender: 'female',
+);
+
+class _DemoNotice extends StatelessWidget {
+  const _DemoNotice();
+
+  @override
+  Widget build(BuildContext context) => Container(
+    key: const ValueKey('compatibility-demo-notice'),
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: ZyraColors.journeyGold.withValues(alpha: 0.08),
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Developer demo',
+          style: ZyraText.body(size: 12, color: ZyraColors.journeyGold),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Sample values, not calculated from answers or the final scoring '
+          'rules. No real unlocks are used.',
+          style: ZyraText.subtext(size: 11.5),
+        ),
+      ],
+    ),
+  );
+}
+
+class _DemoGuardian extends StatelessWidget {
+  const _DemoGuardian();
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    key: const ValueKey('compatibility-demo-guardian'),
+    padding: const EdgeInsets.only(top: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Divider(color: Colors.white.withValues(alpha: 0.10), height: 1),
+        const SizedBox(height: 14),
+        Text('GUARDIAN EXAMPLE', style: ZyraText.chapterLabel()),
+        const SizedBox(height: 10),
+        Text('Demo Guardian · Father', style: ZyraText.body(size: 13)),
+        const SizedBox(height: 4),
+        Text(
+          'Main Guardian · Fictional example',
+          style: ZyraText.subtext(size: 11.5),
+        ),
+      ],
+    ),
+  );
 }
 
 /// Guardian visibility — Founder decision, 2026-08-05: "I want the Guardian
@@ -971,8 +1235,8 @@ class _Detail extends StatelessWidget {
 ///
 /// Plus tier only, matching `guardians_for_unlocked()`, which will return
 /// nothing for a standard unlock however this widget is called. Locked, it
-/// keeps the same padlock treatment as every row above it, so a buyer can
-/// see this is part of what Plus includes before paying for it.
+/// keeps the same padlock treatment as every row above it. Previously held
+/// Plus rows retain this real disclosure while new Plus spending is fused.
 class _GuardianSection extends StatelessWidget {
   final bool unlocked;
   final List<GuardianInfo>? guardians;
@@ -1079,127 +1343,6 @@ class _GuardianSection extends StatelessWidget {
               style: ZyraText.subtext(size: 12),
             ),
           ],
-        ],
-      ),
-    );
-  }
-}
-
-class _Tally extends StatelessWidget {
-  final Color colour;
-  final String label;
-
-  /// null = locked, and a padlock stands where the count would.
-  final int? value;
-
-  const _Tally({
-    required this.colour,
-    required this.label,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: value == null ? colour.withValues(alpha: 0.4) : colour,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 7),
-          if (value == null)
-            Icon(
-              Icons.lock_outline,
-              size: 13,
-              color: Colors.white.withValues(alpha: 0.35),
-            )
-          else
-            Text('$value', style: ZyraText.body(size: 15, color: Colors.white)),
-          const SizedBox(width: 5),
-          Flexible(
-            child: Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: ZyraText.subtext(size: 11.5),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CategoryRow extends StatelessWidget {
-  final String name;
-
-  /// null = locked: empty track, padlock where the percentage would be.
-  final int? value;
-
-  const _CategoryRow({required this.name, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    final locked = value == null;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 9),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 118,
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: ZyraText.subtext(
-                size: 12.5,
-                color: Colors.white.withValues(alpha: locked ? 0.55 : 0.70),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(3),
-              child: LinearProgressIndicator(
-                // Locked draws the track and no fill — the row is clearly
-                // a measurement, with the measurement missing.
-                //
-                // `0.0` not `0`: the two branches of a conditional are
-                // unified before the context type is applied, so `0` and
-                // `value! / 100` would infer as `num` and fail to assign
-                // to a `double?` parameter.
-                value: locked ? 0.0 : value! / 100,
-                minHeight: 5,
-                backgroundColor: Colors.white.withValues(alpha: 0.10),
-                valueColor: AlwaysStoppedAnimation(
-                  Colors.white.withValues(alpha: 0.55),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          SizedBox(
-            width: 34,
-            child: locked
-                ? Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(
-                      Icons.lock_outline,
-                      size: 13,
-                      color: Colors.white.withValues(alpha: 0.35),
-                    ),
-                  )
-                : Text(
-                    '$value%',
-                    textAlign: TextAlign.right,
-                    style: ZyraText.body(size: 12.5, color: Colors.white),
-                  ),
-          ),
         ],
       ),
     );

@@ -1,0 +1,11 @@
+                    onOption1: () {
+                      if (!_callbackCurrent(epoch)) return;
+                      ZyraDevLocalPreview.open(
+                        context,
+                        isWali: _guardianRole,
+                        premium: _guardianRole
+                            ? !widget.initialGuardianBasic
+                            : !widget.initialSeekerBasic,
+                        appStyle: 'option1',
+                      );
+                    },

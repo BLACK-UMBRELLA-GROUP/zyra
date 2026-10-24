@@ -6,7 +6,7 @@
 import 'package:flutter/material.dart';
 import '../models/onboarding_question.dart';
 import '../theme/zyra_colors.dart';
-import '../theme/zyra_text.dart';
+import 'zyra_onboarding_choice_card.dart';
 
 class FlexibilityChoice extends StatelessWidget {
   final String greenText;
@@ -35,33 +35,21 @@ class FlexibilityChoice extends StatelessWidget {
       children: entries.map((e) {
         final selected = value == e.$1;
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: SizedBox(
-            width: double.infinity,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-                border: Border.all(color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder, width: 1),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(14),
-                  onTap: () => onChanged(e.$1),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                    child: Row(
-                      children: [
-                        Text(e.$1.emoji, style: const TextStyle(fontSize: 16)),
-                        const SizedBox(width: 10),
-                        Expanded(child: Text(e.$2, style: ZyraText.option())),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+          padding: const EdgeInsets.only(bottom: 14),
+          child: ZyraOnboardingChoiceCard(
+            key: ValueKey('profile_flexibility_${e.$1.name}'),
+            label: e.$2,
+            selected: selected,
+            leading: Icon(
+              Icons.circle,
+              size: 14,
+              color: switch (e.$1) {
+                TrafficLight.green => ZyraColors.positiveGreen,
+                TrafficLight.yellow => ZyraColors.journeyGold,
+                TrafficLight.red => ZyraColors.negativeRed,
+              },
             ),
+            onTap: () => onChanged(e.$1),
           ),
         );
       }).toList(),

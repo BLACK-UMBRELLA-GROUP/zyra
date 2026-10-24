@@ -27,7 +27,8 @@ import 'package:flutter/material.dart';
 void showAnchoredCard({
   required BuildContext context,
   required GlobalKey anchorKey,
-  required Widget Function(BuildContext context, VoidCallback close) cardBuilder,
+  required Widget Function(BuildContext context, VoidCallback close)
+  cardBuilder,
   double cardWidth = 240,
 }) {
   final overlayState = Overlay.of(context);
@@ -39,8 +40,10 @@ void showAnchoredCard({
   final screenSize = MediaQuery.of(context).size;
 
   final top = anchorTopLeft.dy + anchorSize.height + 8;
-  final left = (anchorTopLeft.dx + anchorSize.width - cardWidth)
-      .clamp(12.0, (screenSize.width - cardWidth - 12.0).clamp(12.0, double.infinity));
+  final left = (anchorTopLeft.dx + anchorSize.width - cardWidth).clamp(
+    12.0,
+    (screenSize.width - cardWidth - 12.0).clamp(12.0, double.infinity),
+  );
 
   late final OverlayEntry entry;
   void close() {

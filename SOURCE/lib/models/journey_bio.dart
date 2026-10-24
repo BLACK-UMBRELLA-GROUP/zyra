@@ -12,11 +12,15 @@ class JourneyBio {
   final Set<String> visibleFieldIds;
   final bool showAboutMe;
 
+  /// The optional section has been reviewed, even when left intentionally empty.
+  final bool reviewed;
+
   const JourneyBio({
     this.aboutMe = '',
     this.fieldValues = const {},
     this.visibleFieldIds = const {},
     this.showAboutMe = false,
+    this.reviewed = false,
   });
 
   bool get isEmpty =>
@@ -34,6 +38,7 @@ class JourneyBio {
     Map<String, String>? fieldValues,
     Set<String>? visibleFieldIds,
     bool? showAboutMe,
+    bool? reviewed,
   }) => JourneyBio(
     aboutMe: aboutMe ?? this.aboutMe,
     fieldValues: Map<String, String>.unmodifiable(
@@ -43,11 +48,13 @@ class JourneyBio {
       visibleFieldIds ?? this.visibleFieldIds,
     ),
     showAboutMe: showAboutMe ?? this.showAboutMe,
+    reviewed: reviewed ?? this.reviewed,
   );
 
   /// Stored alongside the private onboarding JSON. The `bio_` namespace
   /// prevents these display choices being mistaken for scored question IDs.
   Map<String, dynamic> toOnboardingAnswers() => {
+    'bio_reviewed': reviewed,
     'bio_about_me': aboutMe.trim(),
     'bio_show_about_me': showAboutMe && aboutMe.trim().isNotEmpty,
     'bio_fields': {
@@ -58,6 +65,35 @@ class JourneyBio {
         .where((id) => (fieldValues[id] ?? '').trim().isNotEmpty)
         .toList(growable: false),
   };
+
+  /// Restores the Journey-only biography from the private onboarding JSON.
+  /// Unknown or malformed values are ignored so an older draft cannot make
+  /// the rest of onboarding unreadable after the schema evolves.
+  factory JourneyBio.fromOnboardingAnswers(Map<String, dynamic> answers) {
+    final rawFields = answers['bio_fields'];
+    final fields = <String, String>{};
+    if (rawFields is Map) {
+      for (final entry in rawFields.entries) {
+        if (entry.key is String && entry.value is String) {
+          fields[entry.key as String] = entry.value as String;
+        }
+      }
+    }
+
+    final visible = <String>{};
+    final rawVisible = answers['bio_visible_field_ids'];
+    if (rawVisible is List) {
+      visible.addAll(rawVisible.whereType<String>());
+    }
+
+    return JourneyBio(
+      aboutMe: answers['bio_about_me'] as String? ?? '',
+      fieldValues: Map<String, String>.unmodifiable(fields),
+      visibleFieldIds: Set<String>.unmodifiable(visible),
+      showAboutMe: answers['bio_show_about_me'] == true,
+      reviewed: answers['bio_reviewed'] == true,
+    );
+  }
 }
 
 class JourneyBioFieldDefinition {

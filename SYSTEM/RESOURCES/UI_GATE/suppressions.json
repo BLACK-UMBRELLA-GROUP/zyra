@@ -1,0 +1,18 @@
+[
+ {"fingerprint": "dcf8df47cb8e", "reason": "UIG-07 connections dev-seed message: reachable only via selected.isMock (dev-scenario journeys) — verified gated", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "625faa64aaec", "reason": "UIG-07 upgrade screen 'preview build — no payment taken' disclaimer: deliberate pre-launch honesty. UNSUPPRESS at payments launch (ZYRA_PRICING V2 to-do)", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "fac6976b9348", "reason": "UIG-07 'sharing isn't wired up yet in this preview build' honest-limitation copy: deliberate. Revisit when sharing ships; launch copy sweep re-checks all 'preview build' strings", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "3163a37bc89a", "reason": "UIG-07 same sharing-not-wired copy, link_wali_screen — deliberate, see fac6976b9348", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "7a8231dd4f4f", "reason": "UIG-07 same sharing-not-wired copy, wali_invite_seeker_screen — deliberate, see fac6976b9348", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "62009849480e", "reason": "UIG-07 GN library PROVISIONAL strings: rendered only in the canUseDeveloperTools D14 preview (release-impossible), per GN contract Rule 44", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "422d77120af1", "reason": "UIG-07 GN library dev-sheet title: dev-gated sheet only (Rule 44)", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "b63aa45fd9f3", "reason": "UIG-07 network locked-view 'Preview build — no real payment is taken.': deliberate pre-launch honesty; launch sweep unsuppresses", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "d5e4827d475c", "reason": "UIG-07 Discover PROVISIONAL footnote: dev-gated D14 preview path only", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "46bcf20da216", "reason": "UIG-07 Discover mock-data footnote: dev-gated D14 preview path only", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "e6642ce38e26", "reason": "UIG-03 fontSize 13 sizes an EMOJI glyph, not typography", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "84a997c6cee1", "reason": "UIG-03 fontSize 16 sizes an EMOJI glyph, not typography", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "7b5a3b2c2491", "reason": "UIG-03 GN VERIFIED badge 7.5: deliberate micro-label via chapterLabel.copyWith, Founder-seen on device (D14 drafts)", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "a41e6baf992a", "reason": "UIG-03 GN PHOTO seal label 6: deliberate micro-label (D14 drafts)", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "4fafa298d337", "reason": "UIG-03 GN band pill 8: deliberate micro-label (D14 drafts)", "reviewed_by": "Fable", "date": "2026-08-23"},
+ {"fingerprint": "93387fff0bd0", "reason": "UIG-03 FloatingNavBar badge counter 9: ratified shared-component badge typography (both shells)", "reviewed_by": "Fable", "date": "2026-08-23"}
+]

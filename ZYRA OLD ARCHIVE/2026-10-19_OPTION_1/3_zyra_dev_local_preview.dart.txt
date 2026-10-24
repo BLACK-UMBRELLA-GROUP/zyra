@@ -1,0 +1,21 @@
+  Widget buildDestination() => founder && style == 'request'
+      ? ZyraFounderReviewSurface(
+          ownerId: ownerId!,
+          ownerGeneration: generation,
+          initialGuardianRole: guardian,
+          initialSeekerBasic: !guardian && !premium,
+          initialGuardianBasic: guardian && !premium,
+        )
+      : guardian
+      ? const WaliHomeShell()
+      : const HomeShell(
+          initialTab: 2,
+          deferredOnboardingDevPreview: true,
+          initialOnboardingProgress: ZyraOnboardingProgress(
+            complete: true,
+            due: 0,
+            missing: 0,
+            hasChapter2: true,
+            basicProfile: true,
+          ),
+        );

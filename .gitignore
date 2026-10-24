@@ -14,3 +14,8 @@ __pycache__/
 
 # Website lives in its own repo (SITE/.git) — see SITE/README.md
 SITE/
+
+# Review evidence — screenshots and run snapshots stay on the Mac and the
+# encrypted USB backup, never in git (Fable step 2, Founder approval 2026-10-24).
+SYSTEM/RESOURCES/REVIEWS/
+SYSTEM/RESOURCES/TEMPORARY/

@@ -5,6 +5,21 @@ import '../theme/zyra_text.dart';
 
 enum ZyraAccountContext { seeker, guardian }
 
+/// Product boundary for one login that owns both ZYRA experiences.
+///
+/// Identity and account security are deliberately shared. Everything that
+/// can change independently between Seeker and Guardian stays in its own
+/// context, including the paid plan. This is display guidance only; server
+/// authorisation must continue to come from owned rows and Guardian links.
+class ZyraAccountContextPolicy {
+  ZyraAccountContextPolicy._();
+
+  static const sharedSummary =
+      'One login · identity check and security stay shared';
+  static const separateSummary =
+      'Profiles, activity and memberships stay separate';
+}
+
 class ZyraAccountSwitchOption {
   final ZyraAccountContext context;
   final String title;
@@ -33,79 +48,157 @@ class ZyraAccountSwitchOption {
   }
 }
 
-/// The shared account-context picker for Seeker and Guardian surfaces.
+/// Opens the shared full-screen account-context picker.
 ///
 /// This deliberately returns a selection rather than performing navigation.
 /// The caller owns the current shell and decides whether a selection opens a
 /// completed context or its first-time onboarding.
-Future<ZyraAccountContext?> showZyraAccountSwitchSheet({
+Future<ZyraAccountContext?> showZyraAccountSwitchPage({
   required BuildContext context,
   required List<ZyraAccountSwitchOption> options,
 }) {
-  return showModalBottomSheet<ZyraAccountContext>(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    barrierColor: Colors.black38,
-    builder: (sheetContext) => _AccountSwitchSheet(options: options),
+  return Navigator.of(context).push<ZyraAccountContext>(
+    MaterialPageRoute(
+      builder: (_) => ZyraAccountSwitchScreen(options: options),
+    ),
   );
 }
 
-class _AccountSwitchSheet extends StatelessWidget {
+class ZyraAccountSwitchScreen extends StatelessWidget {
   final List<ZyraAccountSwitchOption> options;
 
-  const _AccountSwitchSheet({required this.options});
+  const ZyraAccountSwitchScreen({super.key, required this.options});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: ZyraColors.sheetGradient,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 11, 20, 22),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+        child: SafeArea(
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
             children: [
-              Center(
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                    borderRadius: BorderRadius.circular(4),
+              Row(
+                children: [
+                  IconButton(
+                    key: const ValueKey('switch-account-back'),
+                    tooltip: 'Back',
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: Icon(Icons.chevron_left, color: ZyraColors.ink(0.70)),
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Switch Account',
+                      textAlign: TextAlign.center,
+                      style: ZyraText.heading(size: 17),
+                    ),
+                  ),
+                  const SizedBox(width: 48),
+                ],
+              ),
+              SizedBox(height: 42),
+              Text(
+                'CHOOSE YOUR ACCOUNT',
+                style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Move between your Seeker and Guardian experiences without signing out.',
+                style: ZyraText.subtext(size: 13),
+              ),
+              SizedBox(height: 26),
+              for (final option in options)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _AccountOption(
+                    option: option,
+                    onTap: option.selectable
+                        ? () => Navigator.of(context).pop(option.context)
+                        : null,
                   ),
                 ),
-              ),
-              const SizedBox(height: 18),
-              Text('Switch Account', style: ZyraText.heading(size: 22)),
-              const SizedBox(height: 5),
-              Text(
-                'Choose which ZYRA experience you want to enter.',
-                style: ZyraText.subtext(size: 12),
-              ),
-              const SizedBox(height: 16),
-              for (final option in options)
-                _AccountOption(
-                  option: option,
-                  onTap: option.selectable
-                      ? () => Navigator.of(context).pop(option.context)
-                      : null,
+              SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: ZyraColors.surfaceFill,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: ZyraColors.surfaceBorder,
+                    width: 0.6,
+                  ),
                 ),
-              const SizedBox(height: 11),
-              Center(
-                child: Text(
-                  'No sign-out · your trusted identity remains shared',
-                  textAlign: TextAlign.center,
-                  style: ZyraText.subtext(size: 10, color: Colors.white38),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.verified_user_outlined,
+                          size: 18,
+                          color: ZyraColors.unlockText,
+                        ),
+                        SizedBox(width: 9),
+                        Text(
+                          'ONE TRUSTED IDENTITY',
+                          style: ZyraText.chapterLabel(
+                            color: ZyraColors.unlockText,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      ZyraAccountContextPolicy.sharedSummary,
+                      style: ZyraText.subtext(
+                        size: 11.5,
+                        color: ZyraColors.ink(0.56),
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      ZyraAccountContextPolicy.separateSummary,
+                      style: ZyraText.subtext(
+                        size: 11.5,
+                        color: ZyraColors.ink(0.46),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Compact, explicit entry point used in both Profile headers.
+class ZyraAccountSwitchButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const ZyraAccountSwitchButton({super.key, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: 'Switch Account',
+      child: OutlinedButton.icon(
+        key: const ValueKey('switch-account-button'),
+        onPressed: onPressed,
+        icon: const Icon(Icons.swap_horiz_rounded, size: 16),
+        label: Text('Switch', style: ZyraText.subtext(size: 11.5)),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: ZyraColors.foreground,
+          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          side: BorderSide(color: ZyraColors.ink(0.22), width: 0.7),
+          shape: const StadiumBorder(),
         ),
       ),
     );
@@ -129,17 +222,22 @@ class _AccountOption extends StatelessWidget {
       selected: option.current,
       label: '${option.title}. ${option.subtitle}. $action',
       child: Material(
-        color: Colors.transparent,
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(16),
           child: Opacity(
             opacity: contentOpacity,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 13),
-              decoration: const BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: Colors.white12, width: 0.5),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 17),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: option.current
+                      ? ZyraColors.accentBorder
+                      : ZyraColors.surfaceBorder,
+                  width: option.current ? 0.9 : 0.6,
                 ),
               ),
               child: Row(
@@ -149,11 +247,11 @@ class _AccountOption extends StatelessWidget {
                     height: 42,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.08),
+                      color: ZyraColors.iconButtonBg,
                       border: Border.all(
                         color: option.current
                             ? ZyraColors.unlockDot
-                            : Colors.white12,
+                            : ZyraColors.iconButtonBorder,
                       ),
                     ),
                     child: Icon(
@@ -161,35 +259,35 @@ class _AccountOption extends StatelessWidget {
                       size: 19,
                       color: option.current
                           ? ZyraColors.unlockText
-                          : Colors.white70,
+                          : ZyraColors.ink(0.70),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(option.title, style: ZyraText.body(size: 14)),
-                        const SizedBox(height: 3),
+                        SizedBox(height: 3),
                         Text(
                           option.subtitle,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: ZyraText.subtext(
                             size: 10.5,
-                            color: Colors.white38,
+                            color: ZyraColors.ink(0.38),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 10),
                   Text(
                     action,
                     style: ZyraText.chapterLabel(
                       color: option.current || option.enabled
                           ? ZyraColors.unlockText
-                          : Colors.white30,
+                          : ZyraColors.ink(0.30),
                     ),
                   ),
                 ],

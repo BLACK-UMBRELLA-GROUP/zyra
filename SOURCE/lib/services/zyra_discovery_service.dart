@@ -2,16 +2,9 @@
 // the real `profiles`/`profile_photos` tables for candidate discovery,
 // and to `saves`/`likes` for decision persistence.
 //
-// Real other-Seeker accounts don't exist yet in this preview build —
-// realistically only the Founder's own test account is signed in
-// today. fetchCandidates() falls back to the existing mockProfiles
-// pool whenever the real query returns nothing (not signed in, RLS
-// denies, network error, or genuinely zero other real Seekers yet) —
-// same graceful-mock-fallback pattern as chapter2_flow.dart's dev/
-// no-auth photo path. This keeps Browse always testable while still
-// being genuinely live: the moment a second real Seeker signs up and
-// completes their profile, they appear for real, no code change
-// needed.
+// Real reads never fall back to fabricated people. Browse consumes the typed
+// candidate result so a failed read is not presented as a successful empty
+// search. Only the separately authorised developer UI composes fixtures.
 //
 // Decline is deliberately NOT persisted anywhere, per PROFILE
 // DECISION SYSTEM/Summary.md ("no record, no notification") — only
@@ -35,13 +28,74 @@ import 'package:flutter/foundation.dart' show debugPrint;
 
 import '../main.dart';
 import '../models/seeker_profile.dart';
+import '../models/zyra_known_person_code.dart';
 import '../models/zyra_gender.dart';
 import 'zyra_auth.dart';
+import 'zyra_unlock_service.dart';
 import 'zyra_photo_service.dart';
 import 'zyra_ages_service.dart';
+import 'zyra_wali_link_service.dart' show ZyraSourceFailure, ZyraSourceResult;
 
 class ZyraDiscoveryService {
   ZyraDiscoveryService._();
+
+  /// Resolves a bearer-held permanent ZYRA Code through the dedicated
+  /// Seeker-only server boundary. An authoritative empty result deliberately
+  /// does not reveal whether the code was unknown or the pair was ineligible.
+  static Future<ZyraKnownPersonCodeLookup> previewKnownPersonCode(
+    String code,
+  ) async {
+    final user = ZyraAuth.currentUser;
+    if (!supabaseReady || user == null) {
+      return const ZyraKnownPersonCodeLookup.unavailable();
+    }
+    try {
+      final raw = await supabase.rpc(
+        'zyra_preview_match_code',
+        params: {'p_code': code},
+      );
+      if (raw is! List) return const ZyraKnownPersonCodeLookup.unavailable();
+      if (raw.isEmpty) return const ZyraKnownPersonCodeLookup.available(null);
+      if (raw.length != 1 || raw.single is! Map) {
+        return const ZyraKnownPersonCodeLookup.unavailable();
+      }
+      final person = ZyraKnownPersonCodePreview.fromRow(
+        Map<String, dynamic>.from(raw.single as Map),
+      );
+      return person == null
+          ? const ZyraKnownPersonCodeLookup.unavailable()
+          : ZyraKnownPersonCodeLookup.available(person);
+    } catch (e) {
+      debugPrint('ZYRA: previewKnownPersonCode failed — $e');
+      return const ZyraKnownPersonCodeLookup.unavailable();
+    }
+  }
+
+  /// Creates the same Consider fact as a Browse swipe. The server resolves the
+  /// code and rechecks identity, visibility and matching rules at write time.
+  static Future<ZyraKnownPersonConsiderOutcome> considerKnownPersonCode(
+    String code,
+  ) async {
+    final user = ZyraAuth.currentUser;
+    if (!supabaseReady || user == null) {
+      return ZyraKnownPersonConsiderOutcome.failed;
+    }
+    try {
+      final raw = await supabase.rpc(
+        'zyra_consider_match_code',
+        params: {'p_code': code},
+      );
+      return switch (raw) {
+        'considered' => ZyraKnownPersonConsiderOutcome.considered,
+        'matched' => ZyraKnownPersonConsiderOutcome.matched,
+        null => ZyraKnownPersonConsiderOutcome.noLongerAvailable,
+        _ => ZyraKnownPersonConsiderOutcome.failed,
+      };
+    } catch (e) {
+      debugPrint('ZYRA: considerKnownPersonCode failed — $e');
+      return ZyraKnownPersonConsiderOutcome.failed;
+    }
+  }
 
   /// Real candidates only. Returns an EMPTY LIST when there are none.
   ///
@@ -62,12 +116,17 @@ class ZyraDiscoveryService {
   /// `mockProfiles` still exists in seeker_profile.dart for widget tests
   /// and the dev colour deck. It is no longer reachable from the real path.
   static Future<List<SeekerProfile>> fetchCandidates() async {
+    return (await fetchCandidatesResult()).valueOr(const []);
+  }
+
+  static Future<ZyraSourceResult<List<SeekerProfile>>>
+  fetchCandidatesResult() async {
     final user = ZyraAuth.currentUser;
     if (user == null) {
       debugPrint(
         'ZYRA: fetchCandidates — not signed in, returning no candidates.',
       );
-      return const [];
+      return const ZyraSourceResult.unavailable(ZyraSourceFailure.signedOut);
     }
 
     try {
@@ -87,7 +146,7 @@ class ZyraDiscoveryService {
           'ZYRA: fetchCandidates — no gender on own profile, so no '
           'target gender to search for. Returning no candidates.',
         );
-        return const [];
+        return const ZyraSourceResult.unavailable(ZyraSourceFailure.notReady);
       }
       final targetGender = ZyraGender.oppositeCode(myGender);
 
@@ -117,7 +176,7 @@ class ZyraDiscoveryService {
         // A genuinely empty result. Early in a launch this is the normal
         // state, and saying so is more useful than pretending otherwise.
         debugPrint('ZYRA: fetchCandidates — 0 $targetGender candidates match.');
-        return const [];
+        return const ZyraSourceResult.available([]);
       }
 
       // Raw date_of_birth is no longer selectable by the client (see
@@ -214,24 +273,34 @@ class ZyraDiscoveryService {
           'ZYRA: fetchCandidates — ${rows.length} candidate row(s) '
           'matched but none survived photo resolution.',
         );
-        return const [];
+        // A genuinely photo-less population can be empty. Failed signing of
+        // existing photos is unavailable, not "everyone has been seen".
+        return allPaths.isEmpty
+            ? const ZyraSourceResult.available([])
+            : const ZyraSourceResult.unavailable(
+                ZyraSourceFailure.requestFailed,
+              );
       }
 
-      return await _applyCompatibility(user.id, results);
+      return ZyraSourceResult.available(
+        await _applyCompatibility(user.id, results),
+      );
     } catch (e) {
       // LOGGED 2026-08-04. This was `catch (_) { return mockProfiles; }` —
       // an exception anywhere above produced a full, plausible-looking
       // Browse deck of people who do not exist, with no trace in the
       // console. The single most misleading line in the codebase.
-      debugPrint('ZYRA: fetchCandidates FAILED — showing no candidates. $e');
-      return const [];
+      debugPrint('ZYRA: candidate read unavailable (${e.runtimeType}).');
+      return const ZyraSourceResult.unavailable(
+        ZyraSourceFailure.requestFailed,
+      );
     }
   }
 
   /// Excludes candidates who fail a Hard Requirement and orders the
   /// rest by compatibility score, without ever exposing the score
-  /// itself. Best-effort — on any failure, returns [candidates]
-  /// unchanged rather than breaking Browse over a scoring problem.
+  /// itself. A failed check propagates to the unavailable result above:
+  /// showing unfiltered candidates would bypass the Hard Requirements.
   ///
   /// FIXED 2026-07-26 (Founder decision — see ZYRA_FABLE_BUILD_REVIEW_
   /// 2026-07-19_V1.md §Open Decisions item 1): scoring now happens
@@ -285,7 +354,7 @@ class ZyraDiscoveryService {
       });
       return scored.map((e) => e.key).toList();
     } catch (_) {
-      return candidates;
+      rethrow;
     }
   }
 
@@ -296,24 +365,51 @@ class ZyraDiscoveryService {
   /// of a constant. Deliberately the same call Browse curation makes, not a
   /// second scorer — the price of a credit should not buy a different method.
   ///
-  /// Null means one of two honest things and the screen says so rather than
-  /// guessing which: nothing scoreable yet, or excluded outright by a Hard
-  /// Requirement (in which case no row comes back at all).
+  /// The caller must already own access to this profile. Null covers an
+  /// unconfirmed/expired grant, failed read or unavailable calculation; it
+  /// does not prove a particular missing-answer cause. This client gate does
+  /// not close the separate legacy scorer/Browse server-disclosure hold.
   static Future<double?> fetchMyScoreFor(String otherId) async {
+    // This legacy numeric endpoint is still awaiting its server cutover.
+    // Do not request a figure merely to hide it beneath a locked widget.
+    // A caller's Journey UI flag and a positive credit balance are not grants.
+    if (ZyraUnlockService.isSampleProfile(otherId)) return null;
+    final current = ZyraUnlockService.ownedReadGuard(
+      otherId,
+      UnlockTier.standard,
+    );
+    final owned = await ZyraUnlockService.confirmOwnedAccess(
+      otherId,
+      UnlockTier.standard,
+    );
+    if (owned != true || !current()) return null;
     try {
       final rows =
-          await supabase.rpc(
-                'score_candidates',
-                params: {
-                  'p_candidate_ids': [otherId],
-                },
-              )
+          await supabase
+                  .rpc(
+                    'score_candidates',
+                    params: {
+                      'p_candidate_ids': [otherId],
+                    },
+                  )
+                  .timeout(const Duration(seconds: 8))
               as List;
-      if (rows.isEmpty) return null;
-      return ((rows.first as Map<String, dynamic>)['score'] as num?)
-          ?.toDouble();
-    } catch (e) {
-      debugPrint('ZYRA: fetchMyScoreFor($otherId) failed - $e');
+      if (!current() || rows.length != 1 || rows.single is! Map) {
+        return null;
+      }
+      final row = rows.single as Map;
+      final candidate = row['candidate_id'];
+      if (candidate is! String ||
+          ZyraUnlockService.isSampleProfile(candidate) ||
+          candidate.toLowerCase() != otherId.toLowerCase()) {
+        return null;
+      }
+      final score = row['score'];
+      return score is num && score.isFinite && score >= 0 && score <= 100
+          ? score.toDouble()
+          : null;
+    } catch (_) {
+      debugPrint('ZYRA: the owned compatibility score is unavailable.');
       return null;
     }
   }
@@ -424,7 +520,14 @@ class ZyraDiscoveryService {
   /// Made public 2026-08-03 for BlockedUsersScreen, which needs the same
   /// id-to-profile lookup and must not reimplement the batched photo
   /// signing that lives here.
-  static Future<List<SeekerProfile>> profilesByIds(List<String> ids) async {
+  /// [includeWithoutPhotos] is for already-linked identity surfaces: retain
+  /// readable profile fields even when no photo row is visible or signing
+  /// fails. Other callers keep their established photo-backed deck behavior.
+  /// This does not bypass profile or photo RLS; both reads remain caller-scoped.
+  static Future<List<SeekerProfile>> profilesByIds(
+    List<String> ids, {
+    bool includeWithoutPhotos = false,
+  }) async {
     if (ids.isEmpty) return const [];
     try {
       final rows =
@@ -449,7 +552,7 @@ class ZyraDiscoveryService {
         final photosRaw = List<Map<String, dynamic>>.from(
           (map['profile_photos'] as List?) ?? const [],
         );
-        if (photosRaw.isEmpty) continue;
+        if (photosRaw.isEmpty && !includeWithoutPhotos) continue;
         photosRaw.sort(
           (a, b) =>
               (a['display_order'] as int).compareTo(b['display_order'] as int),
@@ -473,7 +576,7 @@ class ZyraDiscoveryService {
           for (final path in photoPathsPerRow[i])
             if (signedByPath[path] != null) signedByPath[path]!,
         ];
-        if (photos.isEmpty) continue;
+        if (photos.isEmpty && !includeWithoutPhotos) continue;
         final id = map['id'] as String;
         byId[id] = SeekerProfile(
           id: id,

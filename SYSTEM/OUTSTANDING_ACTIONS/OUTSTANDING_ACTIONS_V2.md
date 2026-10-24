@@ -6,8 +6,14 @@ APPROVED WORK REGISTER
 ============================================================
 Version: V2
 Status: Approved — Active Baseline
-Lead Architect: Codex
-Architectural Reviewer: Claude
+Historical roles (AD-AIOS-107): ChatGPT — Lead Product & Systems Architect;
+  Fable — Lead Operations, Governance & Delivery; Codex — Product Designer &
+  Implementation Engineer
+Current model (AD-AIOS-109): Founder ↔ Codex is the active route; Codex also
+  holds Operations, Governance & Delivery; Fable remains stepped back;
+  ChatGPT is Founder-request-only; only the Founder approves. Active stale
+  owner, relay and review labels are interpreted through this overlay without
+  rewriting historical authorship.
 Project Owner: Shakeel
 ============================================================
 
@@ -95,15 +101,16 @@ until they have completed the governance approval process.
 
 Document Owner
 
-This document is maintained by the Lead Architect as
-part of the governance documentation suite.
+Under the historical AD-AIOS-107 role model this document was maintained
+by Lead Operations, Governance & Delivery. Under the current AD-AIOS-109
+Founder–Codex model, Codex performs that filing duty.
 
 The Project Owner approves additions, removals and
 completion of actions.
 
-The Architectural Reviewer provides independent review
-for consistency, ownership, terminology and architectural
-integrity.
+Codex internal verification remains separate from maintenance and Founder
+approval. ChatGPT or Fable participates only when the Founder explicitly
+requests it for a named matter.
 
 Action Ownership
 
@@ -4370,8 +4377,19 @@ Description: Implement Supabase Auth in the ZYRA Flutter
              complete before implementation began — satisfied.
 Target:      Working auth flow in Flutter (Google sign-in,
              Apple sign-in, sign out, session persistence) —
-             ACHIEVED, live in `zyra_auth.dart` / `welcome_
-             screen.dart`.
+             ACHIEVED for Google/sign-out/session, live in
+             `zyra_auth.dart` / `welcome_screen.dart`.
+             CORRECTED 2026-08-23 (Fable, from ZYRA_APPLE_
+             SIGNIN_HANDOVER_CURRENT_VERSION_V1.md — the
+             earlier blanket "ACHIEVED" overstated Apple):
+             Apple sign-in is PREPARED, not device-verified —
+             Supabase Apple provider enabled, nonce flow and
+             diagnostics correct in Dart, but the Sign in
+             with Apple entitlement cannot be added under the
+             current Personal Team signing; real Apple login
+             stays blocked until the Founder joins the paid
+             Apple Developer Programme (same membership also
+             unblocks push notifications, OA-ZYRA-254).
 Dependencies: OA-101 (Supabase project setup), DR-ZYRA-102
 Automation:  None — implemented directly.
 
@@ -6594,10 +6612,31 @@ OA-ZYRA-156
 Title:       Introduce journey_attempts Beneath matches, and
              attempt_visible_to() as the Single Authorisation Helper
 Category:    Engineering / Architecture
-Priority:    High — the core migration. Cheapest now; all ten tables are
-             empty.
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — approved. Blocked by OA-ZYRA-155.
-Owner:       Opus (Implementation Lead)
+Priority:    HIGH — core Journey integrity and release blocker whenever
+             Request New Journey can create attempt 2. It is no longer the
+             empty-table migration described in the 2026-08-06 estimate.
+Status:      REOPENED / UNBLOCKED 2026-09-10 / TEMPORARY HOLD LIVE AND
+             POST-VERIFIED 2026-09-11 — the recorded blocker,
+             OA-ZYRA-155, closed on 2026-08-06. Stages 1 through 4e were
+             only partially completed: conversations and timelines became
+             attempt-keyed, but compatibility, Salams and stage/phase
+             checkpoints still conflict on match-keyed primary keys. A live
+             source/catalog audit proved that authenticated
+             respond_to_journey_request() can create attempt 2 while those
+             old rows survive, after which the trusted client is stuck and
+             modified callers may satisfy fresh-attempt ritual gates with
+             prior-attempt facts. The remaining per-attempt conversion is a
+             release blocker for Request New Journey, not a documentation
+             cleanup. DR-ZYRA-227 records the Founder's 2026-09-10 interim
+             ruling: the bounded Founder-only TestFlight must hold Request
+             New Journey at both client and server while this permanent work
+             remains open. The client hold and grants-only server migration
+             are live and post-verified. Migration `20260910195642` now
+             revokes PUBLIC, anon and authenticated execution from the four
+             Request New Journey RPCs while retaining postgres and
+             service_role. The temporary hold does not close or narrow this
+             OA; the permanent per-attempt conversion remains open.
+Owner:       Founder / Codex (Operating Partner under AD-AIOS-109)
 Raised:      2026-08-06
 Completed:   —
 Source:      DR-ZYRA-121 / ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md
@@ -6623,12 +6662,16 @@ Description: Move from 'a match that reopens' to 'a pair that can have
              2026-08-06: matches holds 0 rows and all nine dependants
              hold 0 rows, so this is DDL and code only — no data
              migration.
-Target:      Build after OA-ZYRA-155 completes. One Decision Record of
-             its own for the migration mechanics. Two fixes come free:
-             the one-Active-Journey rule becomes schema-enforceable
-             rather than depending on every write path checking it, and
-             the unreachable 'paused' value leaves the CHECK constraint.
-Dependencies: OA-ZYRA-155 (blocking); OA-ZYRA-157; DR-ZYRA-121; the
+Target:      OA-ZYRA-155 and DR-ZYRA-122 already supply the classification
+             and migration-mechanics decisions. Audit every partially moved
+             table, key, policy, RPC, trigger and client call against the
+             live populated schema; stage a history-preserving attempt-key
+             completion with real two-attempt tests; and retain separate
+             hash-specific apply authority. Until that work lands, a release
+             must disable Request New Journey at both server and UI under an
+             explicit temporary Founder ruling.
+Dependencies: OA-ZYRA-155 (closed/unblocked); OA-ZYRA-157; DR-ZYRA-121;
+             DR-ZYRA-122; OA-ZYRA-159; OA-ZYRA-283; the
              2026-08-05 profile-photos storage policy defect, which is
              the live precedent for duplicated authorisation logic
              failing quietly.
@@ -6775,8 +6818,18 @@ Status:      COMPLETED 2026-08-10, verified not assumed. FIVE
              server says you may ask.
              Migrations 20260810091414, 091517, 091643, 092650, 092734,
              143519, 144418, 150000, 150500.
-             OUTSTANDING: no flutter analyze has run on any of the
-             Dart. That is the one thing not verified.
+             The historical analyzer gap was closed by a whole-repository
+             `flutter analyze` on 2026-09-10: no issues found.
+
+             TEMPORARY RELEASE ANNOTATION 2026-09-10: DR-ZYRA-227 preserves
+             this permanent mutual-consent design but suspends its
+             availability for the bounded Founder-only TestFlight until
+             OA-ZYRA-156 completes the remaining per-attempt conversion.
+             Client entry points are held in source; the grants-only server
+             revoke is live and post-verified on production as of 2026-09-11.
+             Re-enablement requires the
+             permanent attempt-scoped persistence plus its own verified,
+             Founder-authorised release action.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
 Completed:   2026-08-10
@@ -7536,15 +7589,33 @@ Automation:  None — parked, awaiting Founder-confirmed conditions.
 OA-ZYRA-145
 Title:       Build Surname Capture UI (Onboarding / Profile Settings)
 Category:    Product / Onboarding
-Priority:    Low
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
-Owner:       Founder (Shakeel)
+Priority:    Medium — required new-signup identity display and recovery
+Status:      OPEN — bounded onboarding capture verified and signed local
+             build ready under Founder GO; iPhone unavailable, installation
+             pending (§90). Physical acceptance/live integration separate.
+Owner:       Codex (implementation/evidence); Founder (acceptance)
 Raised:      2026-07-27
 Completed:   —
 Source:      Founder's 3rd report that surnames "still aren't showing"
              on the Browse identity block.
 
-Description: Root cause of the repeated report: Browse renders whatever
+Current 2026-10-02 update (DR-ZYRA-251):
+             Founder explicitly requires public, non-optional last name.
+             New Seeker/Guardian name questions now capture required first
+             and last names with open gold-underlined Poppins fields. The
+             existing surname_line column is saved and exact own-row
+             confirmed before admission. Protected v2 drafts retain both;
+             valid unfinished v1 drafts recollect surname without losing
+             later answers. Existing Male/Female questions remain required.
+             This replaces the queued onboarding build portion below.
+             Profile Settings capture is not implemented or authorized by
+             this narrower request. No existing-account backfill, database
+             NOT NULL enforcement, migration, live member-data write or
+             provider activation occurred. §90 and its named verification
+             receipt separate internal checks/local delivery from physical
+             acceptance and live new-member integration.
+
+Historical baseline (2026-07-27): Browse renders whatever
              ZyraDiscoveryService.fetchCandidates() returns, and once 26
              real seeded `profiles` rows existed (Amina, Noor, etc.),
              those — not SOURCE/lib/models/seeker_profile.dart's
@@ -7555,7 +7626,7 @@ Description: Root cause of the repeated report: Browse renders whatever
              all 26 seeded rows; zyra_discovery_service.dart now
              selects and passes it through.
 
-             What's still missing, and what this OA tracks: no
+             What was missing at that historical checkpoint: no
              onboarding step or profile-settings screen lets a real NEW
              user enter their own surname — checked, confirmed no such
              field exists anywhere in SOURCE/lib/screens/onboarding/ or
@@ -7563,15 +7634,15 @@ Description: Root cause of the repeated report: Browse renders whatever
              nothing currently writes to it except this one-time
              backfill of known seed accounts.
 
-Target:      Founder to prioritise against #20/#33 and the rest of the
-             standing build list. Low priority — cosmetic/display field,
-             not blocking any relationship-state or safety behaviour.
+Target:      Deliver the signed required/public onboarding name update when
+             the iPhone is available, then obtain Founder acceptance;
+             separately scope Settings editing and real integration proof.
 Dependencies: SOURCE/lib/models/seeker_profile.dart (surnameLine),
              SOURCE/lib/services/zyra_discovery_service.dart, `profiles.
              surname_line` column, SOURCE/lib/screens/onboarding/,
              SOURCE/lib/screens/settings/ (likely destinations for the
              capture field).
-Automation:  None — awaiting Founder go-ahead to build.
+Automation:  None.
 
 ------------------------------------------------------------
 
@@ -7879,8 +7950,216 @@ Title:       Browse Interaction-Mechanic Review — Should the
              Swipe Layer Evolve, Separately from Candidate
              Selection
 Category:    Product / UX
-Priority:    Low — unscoped, no urgency stated
-Status:      Parked — open question, not yet scoped
+Priority:    High — blocks truthful real-member non-swipe adoption
+Status:      OPEN — Founder real-member direction accepted 2026-10-09;
+             local preparation tested; real integration and live GO outstanding
+Update 2026-10-14 (later contained delivery / latest candidate still held):
+             Packet OA151_CIRCLE_DISCUSSION_ACTIONS_2026_10_13.nqocW0 records
+             4522passes/336scoped suites and installed/native-launched POST
+             at01:57:44UTC14October after Founder home/unlock. The later
+             SnRGNt packet records4583passes/339scoped suites, zero fail/skip,
+             a new built candidate but NOT installed; its02:49:35UTC lock
+             receipt is negative. Earlier delivery is not latest delivery.
+             Both are current Dart payload plus retained measured native host,
+             fullXcodeBuild=false, not full native-source rebuild/acceptance.
+             Counts overlap; no addition to4522/4583/earlier191. ADMIN's dated
+             Apple delta report in SYSTEM/RESOURCES/REPORTS/ records matched
+             handover/build hashes and13current pins/10stage preimages/3new
+             tests. Existing real Circle/Past authority OA298, physical UI
+             OA304 and all ordinary/public release gates remain OPEN.
+Update 2026-10-10 (DR273 Current Browse photo dismissal):
+             Founder requested downward dismissal of Current Browse's full
+             photo inspection, returning to the same Browse person/filter/style.
+             Navigation Haptics §39 and packet
+             OA151_BROWSE_PHOTO_DISMISS_2026_10_10.oBKHHu own this scoped gesture
+             and measured checks/delivery. Request confirmations, galleries,
+             unrelated viewers and all lifecycle authority stay unchanged.
+             Final source-aligned checks pass 644/644 across 21 suites, no
+             analysis issues, zero format changes across 33 scoped paths and
+             159/159 capture checks. All 21 existing candidate PNGs are unchanged;
+             only four Dart/test files differ. Failed/superseded receipts remain
+             retained. The same checked main PROFILE build and signature pass;
+             BUILT/PREINSTALL retain the identical artifact. The paired phone
+             is freshly confirmed locked, so no install/launch is attempted.
+             Native delivery awaits unlock; this is not physical acceptance.
+             This existing action owns the viewing change; no new action or
+             real-member activation/acceptance is implied.
+Update 2026-10-10 (DR272 multi-person gallery comparisons):
+             Founder replaced the ten single-person photo studies in the
+             protected toggle with ten simultaneous multi-person galleries,
+             retaining Current/default, theme, public-only inputs, exact-card
+             request/profile targets and caller-owned eligibility/authority.
+             Navigation Haptics §38 and packet
+             OA151_PEOPLE_GALLERIES_2026_10_10.Q0Xe12 own this bounded work.
+             Final checks pass608/608 tests, no analysis issues, unchanged
+             formatting and159/159 capture checks; ten candidate styles were
+             inspected. The same checked main artifact was installed and
+             native launch/post-verified on the paired unlocked iPhone.
+             This is internal verification, not physical Founder acceptance.
+             The original enum/renderers and receipts remain compatibility/
+             historical evidence, not visible choices or persistent preferences.
+             This does not activate real-member discovery, resolve OA306's
+             projection/disclosure, select OA308's icon or close this action.
+Update 2026-10-10 (DR271 Browse footer refinement):
+             Founder requested centred nicer Request Journey text, a larger
+             Next than Back but smaller than Request, and one-profile Back.
+             Navigation Haptics §37 and packet
+             OA151_BROWSE_CONTROLS_2026_10_10.OQkbYT own this bounded refinement
+             and measured checks/native delivery. Existing current-deck index
+             step and stale-handler guard remain; no eligibility, backend,
+             relationship or ordinary Option1 change is selected. OA308 icon
+             choice remains pending. Routine visual/device checks do not close
+             this real-member integration action or prove Founder acceptance.
+Update 2026-10-10 (DR267/268 Browse and archive extension):
+             Founder requested compact Back/Request/Next pills, swipeable
+             bounded photos with identity over them, Current plus ten gallery
+             choices, consistent main titles and centred Journey empty state.
+             Both Browse helper sentences stay removed. OA306 owns separate
+             public answers/private location and real filter authority; OA307
+             owns the requested later three-dot placement/content review.
+             Ended archive presentation belongs only in My ZYRA, read-only
+             and without restart actions. Real rediscovery/new-attempt mapping
+             must preserve old messages and block/visibility authority; no
+             old attempt, paid grant or compatibility permission is revived.
+             Current packet OA151_BROWSE_GALLERY_FILTERS_2026_10_09.oJsSp1
+             retains the earlier copy-only prestate/checks separately from
+             expanded final-source tests and delivery. Native results are
+             filed only when measured. Real-member integration remains OPEN.
+             Post-review: blocked pending cards/counts/badge/notification and
+             addressed routes now share one read projection; retained records
+             survive, while Hide keeps request attention. TEST_FINAL_5 passes
+             440/440, CAPTURE_3 passes53/53, ANALYZE_FINAL_3 is clean and
+             FORMAT_FINAL_4 checks22 files unchanged, with matching input pins.
+             The first successful build was withheld before this counter repair;
+             final native delivery requires the fresh checked BUILD_2 artifact.
+             Founder then requested the Journey navigation glyph redesign
+             (DR269). BUILD_2 passed and was sealed as historical, not installed;
+             final delivery instead includes the new glyph after renewed gates.
+             Ordinary member and backend authority remain unchanged/open.
+             Final glyph-inclusive checkpoint: TEST_FINAL_7 passes462/462
+             across17 suites; CAPTURE_5 passes71/71; analysis clean; format27
+             files unchanged; matching final input pins. TEST_FINAL_6's older
+             heart/menu glyph finder failures remain evidence history. §35 and
+             this packet own the new BUILD_3 and measured native delivery.
+             BUILD_3/main PROFILE passed55.1s; final177-file c8af94d7... sealed.
+             Signature/identity/profile and fresh same-phone LOCK_3 passed;
+             INSTALL/LAUNCH/POST confirm main1.0.0(5), new containerBFA8FB66...
+             and exact RunnerPID89157. No app-data clear or live activation.
+             §35/DELIVERED/VERIFICATION retain the final source/artifact/docs;
+             physical Founder acceptance and real-member gates remain OPEN.
+Update 2026-10-09 (DR266 local phone launch-default clarification):
+             Founder clarified that the existing new toggle style should
+             open on launch, with old style retained as Option 1. The guarded
+             Founder router entry now uses an account-owned presentation
+             choice: missing/invalid defaults to new; explicit old/new choice
+             persists only for that bound account. Old/new persona navigation
+             rechecks fresh authority and owner/generation/route; existing
+             preview network latch and isolation remain. Successful refresh
+             creates a new disposable owner; stale callbacks remain inert.
+             Peer-found Guardian reset/host-role mismatch repaired. Switch
+             tests measured Developer Home build-phase redraw failure;
+             safe-frame menu repaint/removal and explicit preview-root disposal
+             repair it while retaining synchronous denial and the network latch.
+             Native-plugin/cross-zone test fixtures and stale startup destination
+             expectation repaired without weakening ordinary member recovery.
+             Existing page/card styling retained. Ordinary member routes, request
+             transport/bridge, receipts, IDV and moderation are not activated.
+             Handovers and immutable test/build/native results belong to §33
+             and OA151_LAUNCH_STYLE_DEFAULT_2026_10_09.RvK3wJ. This narrower
+             local-default override does not close OA151 or replace DR265's
+             real-member direction and exact later live/acceptance gates.
+             Final-source347+74PASS, clean analysis and zero-change format
+             align with the checked main PROFILE build/signature/identity.
+             Fresh phone probe is locked again: no install/launch attempted
+             at this checkpoint; same-artifact delivery awaits unlock.
+             Subsequent same-artifact delivery completed after Founder replied
+             “Uncloked now”: PREINSTALL and fresh signature/unlock pass;
+             INSTALL/LAUNCH/POST verify main1.0.0(5), containerCC833121...
+             and RunnerPID88938. DELIVERED/VERIFICATION retain exact checked
+             pins; original held checkpoint remains history. No source edit,
+             data clear, live activation or inferred visual acceptance.
+Update 2026-10-09 (real-member client integration preparation):
+             Founder directly continued “SO DO THUS”. Navigation handover §32
+             and OA151_REAL_INTEGRATION_PREP_2026_10_09.tgjYDx own bounded
+             local preparation: typed held request ports/account controller;
+             unchanged Browse layouts with required photo-renderer injection;
+             original sample network-denial wrapper; real Journey surname,
+             batched signing and neutral missing-photo correction. No HomeShell
+             switch, real transport, canonical bridge or payment grant exists.
+             Final fourteen-suite208PASS/clean analysis/zero-change formatting
+             retain exact nine authored pins. Two SDK-query expectation failures
+             and peer-found UUID/stale-read defects are retained and repaired;
+             no production query semantics were changed for those failures.
+             Fresh scoped read-only backend metadata/applied migrations/advisor
+             results are retained; provider/receipt/moderation producers are
+             absent or held. Exact live target/payload GO remains separate.
+             Requested pending-limit/expiry/reservation choices and non-secret
+             provider/store setup details remain unanswered, not assumed.
+             All legacy capacity-entry paths, canonical lock/ritual/chat/attempt
+             isolation, durable retry recovery and actual member wiring remain
+             required. No SQL/member/provider/config write or VM start occurred.
+             Native build/delivery, if measured, has separate packet receipts;
+             local tests do not clear OA151/253/266/293/302/303/305 or acceptance.
+Update 2026-10-09 (local first-contact preparation / synthetic replay):
+             Navigation handover §31 and immutable packet
+             OA151_LOCAL_REQUEST_CONTRACT_2026_10_09.73UCzg own private
+             prepared-only kernel527lines SHA85b72a0b9bb613865663fe9cb2687577590e08294c366ce5585fbea08fc6fe7b.
+             BEGIN-before-guard repair prevents persistent DDL on refusal even
+             with a continuing client; candidate is outside automatic migrations.
+             RUN_1 test-lint alias failure retained; only test alias corrected.
+             RUN_2 fourteen frozen SQL inputs PASS, including genuine Basic
+             competing accepts, unrelated-pair throughput, deliberately stale
+             RR40001, ownership/ACL/RLS, retry/expiry/readiness/cap/proof/block
+             denials and exact fake canonical preservation. All values/adapters
+             synthetic; no real canonical bridge or entitlement grant exists.
+             Both owned containers removed after tests; VM stopped, no mounts/
+             app forwards, saved config unchanged. Raw evidence retained.
+             Required still: trusted funding/admission/moderation, legacy pair
+             uniqueness/mapping and every admission route, atomic canonical
+             bridge with fresh eligibility recheck (inbox token not authority),
+             policy/abuse/retention/readiness-withdrawal decisions, actual member
+             wiring, separately approved live deployment and acceptance.
+             Real default/Option1 stays unchanged; OA151/253/303 remain OPEN.
+Update 2026-10-09 (bounded local backend preparation GO):
+             Founder replied “YEH ARRPVED AND UPDATE PHONE” to the precise
+             local authoring/isolated fake-record test proposal. Local kernel
+             preparation may proceed; no live deployment, production writes,
+             request/time-limit policy values, payment/IDV activation or
+             canonical lifecycle conversion is authorized. Trusted Basic
+             receipt authority and end-to-end legacy admission integration
+             remain required. Navigation handover §30 records the separate
+             checked phone delivery; real default/Option1 activation stays
+             held pending a truthful, checked and separately activated backend.
+Update 2026-10-09 (DR-ZYRA-265 / real-member adoption audit):
+             Founder expressly requested the new design as the real member
+             flow, not an automatically opened sample preview. Existing
+             direct-source audit found Consider→likes→mutual Potential, not
+             first-contact recipient acceptance. Existing request_new_journey
+             applies to already-ended pairs; the client return fuse remains
+             held. Latest staged paid-only capacity gives paid Seekers3/others0
+             and needs funded Basic1 reconciliation; live schema/deployment
+             state was not inspected. No migration/live write was performed.
+             Required: caller-owned request send/cancel/decline/accept/inbox;
+             atomic two-person place authority including accepted preparation;
+             independent readiness and existing ritual/chat safeguards; funded
+             Basic1/One3/FamilySeeker3 authority; availability-only Browse
+             filtering which preserves existing participant/Guardian reads.
+             First-contact limits/expiry, reserved-place abandonment/expiry,
+             and legacy Potential/Paused/pending/Ended mapping need decisions.
+             Do not invent a canonical preparing status or remove old records.
+             Reuse real controllers, account scopes, signed photos and truthful
+             unavailable reads; neutral navigation must not consume the old
+             Basic swipe allowance. Same methodology applies to protected old
+             Option1 so visual switching cannot bypass the server contract.
+             Runtime default remains unchanged pending these gates. Separate
+             database-authoring/isolated fake-record test approval requested;
+             live deployment needs an exact later Founder GO.
+             Navigation handover §29 and sealed
+             OA151_REAL_FLOW_DECISION_TOGGLE_CLEANUP_2026_10_09 own the audit and
+             separately scoped toggle-description cleanup; OA286 owns tooling.
+             Older description/parked target below is retained as history,
+             superseded to this explicit re-raised scope. No OA closure or
+             release/physical acceptance is implied.
 Owner:       Founder (Shakeel)
 Raised:      2026-08-01
 Completed:   —
@@ -10252,6 +10531,28 @@ Description: Onboarding Direction B shipped across six Dart files
 ------------------------------------------------------------
 
 OA-ZYRA-192
+Update 2026-10-05 — LOCAL CREDIT REPAIR PROOF, LIVE GATES OPEN:
+             Founder authorised the OA305 local repairs and isolated database
+             tests. F06/F07 candidate passes53 named PG17.6 synthetic checks:
+             default-off Plus hold, observed same/different-target account-lock
+             waits, last-credit conservation, no-charge retry, batch/partial
+             failure rollback and stale-snapshot40001. No live migration,
+             balance/payment/provider change or saved scoring result exists
+             from this work. F36 privileged reset/Delete, receipt retention,
+             legacy reconciliation and real JWT/REST remain open. Evidence:
+             ZYRA_APP_GATE_REPAIRS_HANDOVER_CURRENT_VERSION_V1 and its dated
+             2026-10-05 receipt. Internal proof is not Founder acceptance.
+Update 2026-09-28 — CURRENT DISPOSITION / DR-ZYRA-250:
+             The historical invented-81 overall defect is not current source
+             behavior: Standard reads a real directional overall. Remaining
+             work is truthful validated snapshot/legacy/entitlement/debit
+             integration under the approved D1–D6 policy. Stage0 documentation
+             only; no implementation, SQL/database, credit or activation GO.
+             Existing entitlements remain permanent; legacy transition must
+             be bounded/free and never promote fictional category fixtures.
+             Older descriptions/status/targets below are dated history where
+             conflicting. Codex owns current work under AD-AIOS-111, not the
+             old Opus/Fable routing. No engineering closure claimed.
 Title:       Compatibility Unlock Charges a Real Credit and
              Shows Everyone the Same Invented 81%
 Category:    Product Integrity / Premium
@@ -10382,6 +10683,59 @@ Description: profile_unlock_screen.dart shows a hardcoded
 ------------------------------------------------------------
 
 OA-ZYRA-193
+Update 2026-10-05 — LOCAL PURPOSE BOUNDARY PREPARATION ONLY:
+             OA305's F04 package passes baseline+8 synthetic groups for a
+             private canonical legacy scorer, ID-only Browse ordering and
+             retained Journey gates. It refuses non-synthetic execution and
+             is not deployable alone. Existing app numeric callers are not
+             rewired. Shared immutable directional results, strict validation,
+             corrected measurement, gateway/client encoding, retention and
+             inference acceptance remain open. F06/F07 bookkeeping receipts
+             are not scoring snapshots. No production apply or activation.
+             See ZYRA_APP_GATE_REPAIRS_HANDOVER_CURRENT_VERSION_V1 and dated
+             2026-10-05 receipt; no scoring-method/product-policy change.
+Update 2026-09-28 — STAGE 1 LOCAL BUILD/EVIDENCE COMPLETE:
+             Exact Founder GO recorded below was executed for fifteen new unwired
+             research/test files. Final seven synthetic suites: 206 passed;
+             scoped analyzer: no issues. All 26 focused SOURCE baselines and
+             four added metadata/dependency/configuration hashes still match.
+             Current as-built: ZYRA_COMPATIBILITY_CALCULATION_STAGE1_HANDOVER
+             CURRENT_VERSION_V1; run evidence: COMPATIBILITY_UNLOCK_STAGE1_
+             EXECUTION_EVIDENCE_2026-09-28 (MD/JSON, RESOURCES/REVIEWS).
+             Manifest, typed validation, targeted legacy review simulations
+             and rational contribution totals are local only. Production
+             capture, shared snapshots, grants, server fuse, ledger, privacy,
+             retention and activation remain open. No OA closure or Stage2 GO;
+             internal verification is not Founder acceptance. Earlier Stage0
+             preparation/hold statements below are historical for Stage1 only.
+Update 2026-09-28 — STAGE 1 LOCAL EXECUTION GO RECEIVED:
+             Founder directly replied "Proceed i authorsie" to the bounded
+             Stage 1 request. Exact reviewed local brief pre-execution hash:
+             6067114eec02e3845b1024531a1823dfb147e1bbe11d7258d3bbc51099e6d23a.
+             Authorised: fifteen new unwired tools/test files, synthetic
+             verification and scoped documentation handover. No existing
+             SOURCE edit, SQL/database work, runtime wiring, credit/debit,
+             purchase, install, distribution or activation. Execution and
+             internal checks remain distinct from Founder acceptance. This
+             supersedes the Stage 1 hold below only for that exact local scope.
+             D1–D6 / DR-ZYRA-250 and later launch/privacy gates are unchanged.
+Update 2026-09-28 — POLICY APPROVED / ENGINEERING HELD:
+             DR-ZYRA-250 records the Founder's D1–D6 product approval. Twelve
+             internal categories and reduced-disclosure Plus direction are
+             decided; Chapter2 weight 1 is PROVISIONAL V1 pending corrected
+             measurement. This supersedes older active category/weight
+             decision requests below, not their historical evidence.
+             Canonical mapping/validation, calculation snapshots, semantic
+             capture, strict repair, corrected measurement and launch gates
+             remain open. No exact tallies/category percentages, bands or
+             suppression thresholds are authorised by filing. Stage0 policy/
+             specification reconciliation completed; Stage1 brief DRAFT.
+             App/service hold is not fresh proof of the required server fuse.
+             No build/test/SQL/database/spending/activation occurred.
+             Plan and local brief: SYSTEM/RESOURCES/REVIEWS/COMPATIBILITY_
+             UNLOCK_IMPLEMENTATION_AND_EVIDENCE_PLAN and
+             COMPATIBILITY_UNLOCK_STAGE1_LOCAL_BUILD_BRIEF (2026-09-28 drafts).
+             Engineering/risk/evidence gates are not closed by policy approval.
 Title:       The Compatibility Scoring METHOD Has Never Been
              Agreed — Two Different Ones Are Already Live
 Category:    Product / Compatibility Engine
@@ -10391,7 +10745,23 @@ Priority:    HIGH as a decision. Nothing is broken, but every
              what it is
 Status:      PARTIALLY RESOLVED (a)(a2)(b)(c) 2026-08-11 —
              Founder decided from his phone. (d) and (e) remain
-             Open. Originally raised because the Founder called
+             Open. The whole of (d)'s hard TestFlight TRUTH gate
+             was SATISFIED 2026-09-10: Exact Trio is honest-empty
+             with a two-layer Unlock+ spend fuse, and Journey
+             Reveal now keeps the caller-owned real overall score
+             while withholding all unproven category detail.
+             (d) GAINED THE ORIGINAL HARD GATE 2026-08-29: the last
+             on-screen sample marker for the unlock category
+             breakdown was removed at Founder instruction
+             (conflict reported by Codex, reconciled by Fable
+             per AD-AIOS-106, Founder ruled same day) — the
+             copy stays removed during live testing, AND
+             before TestFlight distribution or any external
+             viewing either real category data ships under
+             (d) or the category percentages hide entirely
+             (honest-empty). This gate is a TestFlight
+             blocker and joins the Runbook Phase 5 checks.
+             Codex keeps the sample-data boundary in code. Originally raised because the Founder called
              for it 2026-08-10: "if you're setting a score system
              we gotta talk about that soon"
 Owner:       Founder (Shakeel) — this is a product decision, not
@@ -10422,11 +10792,24 @@ Description: THE FOUNDER IS RIGHT AND THIS SHOULD HAVE BEEN
                 compatible". A red answer costs more than a green
                 one earns — deliberate, never ratified.
 
-             2. profile_unlock_screen.dart's sample figures,
-                whose own header documents the weighting they
-                were built to satisfy:
+             2. profile_unlock_screen.dart's historical sample
+                figures, whose header documented the weighting
+                they were built to satisfy:
                   green 1, amber 0.5, red 0, over 88 items
                 A plain 0-100 count. No centring, no penalty.
+                REMOVED FROM RUNTIME 2026-09-10. Exact Trio now
+                shows its ruled structure without values.
+
+             3. Journey Reveal historically persisted five
+                category rows by copying the caller's real overall
+                score into every row. Those rows were rendered as
+                exact percentages. REMOVED FROM THE PRODUCTION
+                CLIENT 2026-09-10: new reveals no longer write a
+                category map; reads do not select either legacy
+                category column; UI caches, rows and category-
+                derived insight were removed. The genuine overall
+                score remains. Historical JSON is left intact but
+                unreachable pending a versioned real-data contract.
 
              These are not different numbers, they are different
              SCALES. 81% under (2) and 81% under (1) describe
@@ -10650,6 +11033,56 @@ RESOLVED (a)(a2)(b)(c) 2026-08-11 — Founder, by phone.
              scores 100 for the same reason nobody scores 40: the
              average of ~70 bounded terms cannot reach either end.
              The worry in (c) did not go away — it moved.
+
+             UPDATE 2026-09-10 — FOUNDER-DIRECT RELEASE SAFETY
+             STEP 1 COMPLETED. `profile_unlock_screen.dart`
+             retains the Exact Trio headings and all six ruled
+             category names but renders eighteen neutral dashes
+             and the truthful status "Detailed compatibility
+             isn’t available yet." No sample category values or
+             percentage semantics remain. The Detail balance and
+             action are absent. A standard unlock can no longer
+             enter the old standard-to-Plus chooser while the
+             data is unavailable. `zyra_unlock_service.dart`
+             independently refuses every new Plus attempt before
+             mock, sample or RPC write paths while preserving an
+             already-held Plus row and its real Guardian access.
+             Focused tests 12/12 pass at 320px and 130% text,
+             including both locked and previously-unlocked states
+             plus semantic labels; analyzer passes with zero
+             issues. Full suite reached 791 passes and retained
+             exactly the known 60 unrelated Dashboard golden
+             mismatches; no approved pixels were changed.
+
+             SAME-DAY AUDIT FINDING: `zyra_journey_service.dart`
+             still builds five `categoryScores` entries by
+             assigning each the overall score, and
+             `journey_flow_screen.dart` renders them as exact
+             percentages. This is now explicitly owned by this
+             OA's open (d). TestFlight upload remains held until
+             that surface is made truthful or real category data
+             is implemented. No new OA identifier created.
+
+             UPDATE 2026-09-10 — FOUNDER-DIRECT RELEASE SAFETY
+             STEP 2 COMPLETED. Journey Reveal now writes and reads
+             only the caller's real overall score plus the mutual
+             reveal lifecycle. It does not request the other
+             Seeker's score, and it does not write, select, cache,
+             render or interpret category JSON. The UI says
+             "Detailed compatibility isn’t available yet." The
+             score-only ZYRA Insight also dropped unsupported
+             strongest/weakest, population-comparison and marriage-
+             outcome language. Historical synthetic category JSON
+             stays byte-preserved in the database and is ignored;
+             no migration or live database write was performed.
+             Focused Journey/app-shell tests, analyzer and the
+             repository checker pass. The full suite remains at
+             exactly the known 60 unrelated Dashboard golden
+             mismatches; no approved pixel was regenerated or
+             changed. Product question (d) remains Open for a real
+             category method, but no false category percentage now
+             ships. Separate shared-row authorization and truthful-
+             failure risks are recorded as OA-ZYRA-283/284.
 
 ------------------------------------------------------------
 
@@ -10968,11 +11401,180 @@ Description: Browse now tells a gated Seeker how many questions
 ------------------------------------------------------------
 
 OA-ZYRA-198
-Title:       Repo/Live Migration Reconciliation — 87 Applied
-             Migrations Have No Repo File
+Title:       Repo/Live Migration Reconciliation — Clean Replay and
+             Reconstructed Replay Bridges
 Category:    Engineering / Governance
 Priority:    HIGH (pairs with OA-ZYRA-134's no-git-remote risk)
-Status:      Completed — 2026-08-21 (OA-AIOS-329 solo round,
+Status:      FOUNDER ACCEPTED / CLOSED — 2026-09-11. The Founder directly
+             accepted message 086's post-verified clean-replay result in the
+             Codex chat; message 087 records that acceptance and closure.
+             PRODUCTION APPLY + APPLE UPLOAD REMAIN SEPARATELY GATED. Under
+             the exact single-use
+             Founder authority quoted in message 085, one fresh disposable,
+             seedless, isolated PostgreSQL 17.6 reset ran the unchanged
+             207-file active set plus question-bank V2 bridge
+             `337b342d...66aa1` and probe-score bridge
+             `9f9a818f...46b46`: 209 unique versions. The reset exited 0,
+             applied every version exactly once and reached both staged
+             September migrations. No repair or retry occurred. No database
+             query followed the first result. The project, unique network and
+             VM were torn down; production, Apple, git and private credentials
+             were untouched. Message 086 is the execution and teardown record.
+             The one-use replay authority is consumed.
+
+             At the message-085 checkpoint, the schema-only probe bridge was
+             internally verified but the 209-version replay had not yet run.
+             That historical checkpoint remains accurate. The bridge stays
+             quarantined outside the active migration path at artificial
+             version `20260811233812`, 7,302 bytes, mode 0600, SHA-256
+             `9f9a818f3370b849ba1ff21f1d4ea9c3adb9ab866b22e15f6ba7a03454b46b46`.
+             It reconstructs only the catalog-proven three-column schema with
+             zero rows and leaves unchanged 11233813 to perform its historical
+             hardening.
+
+             Prior measured V2 replay — the Founder gave the exact single-use
+             reset authorisation naming V2 SHA-256 `337b342d...66aa1`. One
+             fresh, seedless, credential-free PostgreSQL 17.6 scratch reset
+             ran once from 208 unique versions: the unchanged 207-file active
+             set plus V2 only. V2 passed, as did successors 153416, 153547,
+             153643, 172021 and 173212. The runner then entered
+             `20260811233813_oa186c_function_execute_hygiene_and_probe_rls.sql`
+             and stopped at statement 7 with SQLSTATE `42P01` because relation
+             `public.zyra_probe_score` does not exist. The last fully completed
+             predecessor was `20260811233755`. Neither staged September
+             migration was reached. No repair, retry or post-failure database
+             query followed. Message 084 is the execution record and the
+             one-replay authority it records is consumed.
+
+             Prior V2 internal checkpoint —
+             2026-09-11 — under the Founder's exact V2 creation/test approval,
+             the rejected V1 artifact remains immutable and a successor is
+             quarantined at `SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_
+             2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE_V2/`. V2 changes exactly
+             the failing column-ACL query: PostgreSQL's canonical
+             `aclexplode(COALESCE(attacl, acldefault('c', relowner)))`
+             replaces the invalid dimensionless empty-array fallback. The
+             V2 SQL is 28,501 bytes, mode 0600, SHA-256
+             `337b342df347b7e902d8da32bafd0a2b21516550b9234213298079304ca66aa1`.
+             A read-only PostgreSQL 17 runtime harness reproduced the V1
+             `22023`, proved NULL/valid-empty/nonempty results 0/0/1 and kept
+             malformed two-dimensional ACLs fail-closed. The exact V2 bridge
+             then passed a separate minimal-predecessor integration execution
+             without loading the 207 application migrations. Four V2
+             artifact tests and the combined 35 replay/release tests pass;
+             analyzer and repository checks pass. Both disposable containers
+             were removed and the isolated VM is stopped. This was not yet the
+             full 208-file replay. Production was not accessed, and the
+             staged September migrations, TestFlight, git state/history and
+             private credentials remain untouched. One read-only `git status`
+             inspection changed no repository state but breached the
+             categorical no-AI-git process rule; no further git invocation
+             followed. Message 082 is the pre-execution V2 evidence. Its
+             separate reset gate was later consumed exactly once as recorded
+             in message 084.
+
+             Historical failed V1 replay —
+             2026-09-11 — the Founder gave the exact single-use destructive-
+             reset authorisation naming bridge SHA-256 `461c3bd0...9055`.
+             One fresh, seedless, isolated PostgreSQL 17.6 reset ran once
+             from a 208-file scratch set and stopped inside bridge version
+             `20260811153415`, statement 11, with SQLSTATE `22023`: `ACL
+             arrays must be one-dimensional`. The failing context is the
+             column-ACL postcondition's `aclexplode(COALESCE(attacl,
+             '{}'::aclitem[]))`. Successor `20260811153416` did not start,
+             and the later static `zyra_probe_score` gap was not reached.
+             No repair, retry or post-failure database query followed. The
+             exact scratch stack/network was removed, the named VM stopped,
+             and the raw 23,055-byte log is retained at SHA-256
+             `4acacdd4e3ca77de2ff5763d896a042fddec5cc25f400e909bfd998a0a8ef0f6`.
+             Active production-path inventory remains 207 files at digest
+             `8a36926a...8861`; production, both staged September migrations,
+             TestFlight, git and private credentials were untouched. Message
+             081 is the execution record. The executed bridge hash is now
+             rejected for execution; any corrected artifact needs a new
+             identity, a real PostgreSQL 17 null/empty-column-ACL runtime
+             test, internal verification and a new exact Founder replay GO.
+
+             2026-09-11 — the Founder approved message 079's recommended
+             replay-only route. The reconstructed question-bank bridge is now
+             quarantined outside `SOURCE/supabase/migrations` under
+             `SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_
+             RECONSTRUCTED_REPLAY_BRIDGE/`. Its SQL is 28,387 bytes, SHA-256
+             `461c3bd0e4ef4692229027c5659756983ed2048e1e78cf71e2148009d6729055`;
+             the embedded 72-row / 71-qid projection remains byte-pinned at
+             `eb355693f50651c7090aeaa5e7eb15187eb9a37855a785aaa259991cb1b43f90`.
+             The selected minimal four-column catalog and RLS/ACL-denial
+             contract are explicitly reconstruction, not historical fact.
+             Three separate internal static reviews found no blocker against the
+             exact SQL hash. Focused tests pass 16/16, all non-visual tests pass
+             549/549, analyzer and repository checks pass. The full Flutter
+             run passed 824 tests and retained 60 pre-existing visual-golden
+             mismatches; no approved pixel was regenerated or changed.
+             No replay, apply, production access, TestFlight change, git use or
+             private credential access had occurred at that checkpoint.
+             Message 080 is the pre-execution bridge report. Its separate
+             one-replay gate was later consumed exactly once as recorded in
+             message 081; the failure did not authorise a retry.
+
+             Earlier on 2026-09-11, the Founder continued the exact provenance-recovery
+             gate recorded in message 078. Exhaustive read-only recovery found
+             no retained CREATE/INSERT statement, migration version or
+             schema_migrations row for either
+             `public.zyra_seed_ch4_questions` or
+             `public.zyra_onboarding_questions`. The retained 153416 statement
+             itself describes the predecessor as ad-hoc SQL. Creating the next
+             replay input would therefore be reconstruction, not exact-history
+             recovery, and was a materially different action requiring a new
+             Founder ruling. At that checkpoint no bridge had been created and
+             no third replay had run.
+
+             Strong reconstruction evidence is preserved: the byte-identical
+             2026-08-10 `chapter3_categories.dart` source in three snapshots is
+             32,290 bytes, SHA-256
+             `232cdf3e70f7e739fedda2a0004e57ffa346686347c86cc2b67e9c895a8677ce`.
+             Its scored subset deterministically yields 72 rows / 71 qids; the
+             canonical four-field row projection is 12,927 bytes, SHA-256
+             `eb355693f50651c7090aeaa5e7eb15187eb9a37855a785aaa259991cb1b43f90`.
+             Those are reconstruction anchors, not original database bytes.
+             OA-ZYRA-190 proves only that the old scaffold had RLS enabled and
+             grants revoked; original constraints, defaults, policies, ACL,
+             owner, statement boundaries and execution timestamp remain
+             unknowable. Message 079 is the governing evidence and decision
+             request.
+
+             2026-09-11 — the Founder approved message 077 §9's exact
+             byte-preserved archive/exclusion and one-result replay. Versions
+             20260811102840 and 20260811103056 now live as evidence under
+             SYSTEM/RESOURCES/MIGRATION_HISTORY/OA-ZYRA-198_2026-09-11_
+             CHRONOLOGY_ARCHIVE, outside the active CLI directory. Filename,
+             bytes, SHA-256, mode and original mtime are preserved; the
+             manifest pins the reverse map. Active SQL inventory is 209 -> 207.
+             Production migration history is unchanged.
+
+             A fresh, seedless, unlinked PostgreSQL 17 scratch reset used those
+             207 byte-identical active files on a named Docker network whose
+             published ports were bound to 127.0.0.1. It passed the corrected
+             20260811104500 -> 20260811110300
+             -> 20260811111500 sequence and the first three recovered
+             OA-ZYRA-193 statements through 20260811152809. It then stopped at
+             the first new database
+             error: `20260811153416_oa193c_onboarding_question_bank_and_
+             completeness.sql`, SQLSTATE 42P01, because relation
+             `zyra_onboarding_questions` has no earlier repository creator.
+             No repair or retry followed.
+
+             The previously static question-bank prediction is therefore now
+             a measured replay result. The original populated table/72-row,
+             71-distinct-qid direct-DDL provenance was then searched under the
+             Founder's continuation and proved absent from the retained record.
+             The later
+             `public.zyra_probe_score` gap remains static and was not reached.
+             The isolated database, network and VM are stopped; no listeners
+             remain. Production, both staged September migrations, TestFlight,
+             git and the private credential store were untouched.
+             The earlier 2026-08-21 completion record follows as historical
+             file-presence evidence, not proof of replayability.
+             Completed — 2026-08-21 (OA-AIOS-329 solo round,
              Founder standing instruction). Full reconciliation run
              against the live project: 195 applied migrations, 111
              repo files. Result: 82 exact version matches; 27
@@ -10993,11 +11595,12 @@ Status:      Completed — 2026-08-21 (OA-AIOS-329 solo round,
              raised (§6.3)
 Owner:       Engineering
 Raised:      2026-08-12
+Completed:   2026-09-11
 Source:      Stewardship pass. CLAUDE.md §5 recorded "78 migrations
              exist only in the live database... needs an OA" — this
              is that OA, re-measured.
 
-Description: The live database holds 178 applied migrations, every
+Description: Historical baseline at raising: the live database held 178 applied migrations, every
              one with verbatim statements preserved in
              supabase_migrations.schema_migrations. The repo holds
              files for ~91 of them by NAME (several under different
@@ -11012,16 +11615,32 @@ Description: The live database holds 178 applied migrations, every
              all missing files verbatim from the schema_migrations
              rows via the SQL editor.
 
-             Remaining: run the export for the ~84 older rows
+             Historical next step at raising: run the export for the ~84 older rows
              (2026-07-27 → 2026-08-08 span) and commit. Two live
              rows are deliberately NOT wanted as files —
              20260811102840/20260811103056 — the repo carries them
              hand-split as 20260811110300 + 20260811111500.
 
-Target:      Repo replays the full schema; supabase db reset works
-             from a clean clone.
-Dependencies: OA-ZYRA-134 (git remote); tools/
-             export_missing_migrations.sql
+Target:      ACHIEVED / FOUNDER ACCEPTED / CLOSED — the governed 209-version
+             zero-state input replayed through both staged September
+             migrations with reset exit 0, and the Founder accepted the
+             post-verified result on 2026-09-11. This establishes local
+             replayability only: both replay bridges remain quarantined
+             outside the active production path, both September migrations
+             remain unapplied to production, and neither production apply nor
+             Apple archive/upload is authorised. OA-ZYRA-283 owns the separate
+             production cutover gate. Do not overwrite or rerun V1, alter V2
+             or the eight exact historical statements, or place replay-only
+             artifacts in the active production migration path.
+Dependencies: Message 081 measured the V1 result; message 082 records V2
+             internal verification; message 084 measures the V2 full-replay
+             frontier; message 085 records the catalog-backed probe-score
+             reconstruction and consumed authority; message 086 records the
+             clean 209-version result; message 087 records Founder acceptance
+             and OA-ZYRA-198 closure; OA-ZYRA-283 owns the next separate
+             release gate.
+             OA-ZYRA-134 and `tools/export_missing_migrations.sql` remain
+             historical reconciliation dependencies.
 
 ------------------------------------------------------------
 
@@ -12480,6 +13099,27 @@ Update 2026-08-15: Targets 1-3 built (DR-ZYRA-167) — typed
 ------------------------------------------------------------
 
 OA-ZYRA-226
+Update 2026-09-28 — LOCAL RESEARCH PROOF, LIVE FIX STILL OPEN:
+             OA193's authorised Stage1 now tests q24/q26/q39 counterpart
+             targeting, complete raw validation and affected-only Chapter2/
+             Chapter4 review receipts, cancellation and peer preservation.
+             Both q26 aliases are rejected in validated/review-editable state.
+             Production capture/restore/prune/save/decoder were not edited;
+             registered custom-sect research vocabulary is not a live capture
+             policy. No closure; separate integration/server GO still required.
+Update 2026-09-28 — TARGETING POLICY SETTLED / BUILD HELD:
+             DR-ZYRA-250 D2 settles canonical counterpart-target targeting,
+             including q24/q26/q39, dependencies, gender variants and Hard
+             Requirements. Older "choose inversion or exclusion" and blanket
+             "clear all144 rows" targets below are historical, not current
+             execution authority. Use explicit target vocabulary/applicability;
+             reject ambiguous aliases and partial data. Reconfirm affected
+             legacy Amber controls only; structural repair/recollection is
+             separate and must preserve unrelated data. No bulk reset approved.
+             Stage0 reconciled Onboarding Summary/References/Rules & UX;
+             old auto-Green Chapter4 Skip and colour wording are historical.
+             Legitimate Chapter2 skip conditions remain separate. Stage1 new-
+             files-only synthetic brief is DRAFT; no app or database edits/tests.
 Title:       Chapter 4 Gates On YOUR Gender When It Should Gate On
              THEIRS — Two Required Questions Score Nothing
 Category:    Compatibility Engine / Onboarding
@@ -12613,6 +13253,21 @@ Dependencies: OA-ZYRA-223 (superseded framing), OA-ZYRA-193(e) (the
 ------------------------------------------------------------
 
 OA-ZYRA-227
+Update 2026-09-28 — LOCAL ARITHMETIC VERIFIED, DISTRIBUTION PENDING:
+             Stage1 independent rational oracle and whole-bank synthetic
+             structural cases pass within OA193's 206-test result. No corrected
+             population/distribution, rounding presentation or privacy-risk
+             measurement was performed. Historical Stage1-GO-pending statement
+             below is superseded only for the exact local executed harness;
+             Chapter2 weight 1 remains provisional and this OA remains open.
+Update 2026-09-28 — CORRECTED MEASUREMENT PENDING:
+             DR-ZYRA-250 preserves exact Standard directional overall and
+             question-based arithmetic. Historical options to remove the
+             percentage, choose fewer questions, add weights or stretch the
+             scale below are not adopted. Remeasure after strict targeting/
+             validation fixes; Chapter2 weight 1 stays provisional. Synthetic
+             distributions cannot stand for real population evidence. No new
+             measurements or scope execution occurred; Stage1 GO remains pending.
 Title:       The Compatibility Score Cannot Separate People — Its
              Spread Is Set By The QUESTION COUNT, Not By Compatibility
 Category:    Compatibility Engine / Product
@@ -12721,11 +13376,13 @@ Status:      Completed (2026-08-22, filed under OA-AIOS-342) — Codex
              then 75.0 with a red option added (old per-
              option denominator would say 66.7); migration
              20260821122000 applied + repo file; fixtures
-             rolled back. NOTE: the pack asked for the
-             (a)/(b) one-liner to reach the Founder BEFORE
-             building; Codex built recommended (a) directly
-             — flagged for the Founder's one-word
-             ratification. Trail: Open → Assigned — Codex
+             rolled back. Founder RATIFIED option (a)
+             2026-08-22 in his own words ("One question =
+             one contribution to the compatibility score"),
+             filed as DR-ZYRA-211 — the pre-build one-liner
+             deviation is cured; deliberate per-question
+             weighting stays a separate future decision.
+             Trail: Open → Assigned — Codex
              2026-08-21 (handoff pack Batch 1) → Completed
              on evidence.
 Owner:       Engineering
@@ -12810,6 +13467,20 @@ Dependencies: —
 ------------------------------------------------------------
 
 OA-ZYRA-230
+Update 2026-09-28 — INTERNAL CATEGORY TOTALS ONLY:
+             Stage1 reconstructs exact internal category/overall contribution
+             totals. No app category projection, exact tallies, Plus bands,
+             suppression thresholds, usefulness or privacy acceptance exists.
+             Original exact-display target stays superseded; no closure.
+Update 2026-09-28 — ORIGINAL DISPLAY TARGET SUPERSEDED:
+             DR-ZYRA-250 D4 replaces the old exact Green/Amber/Red tallies and
+             category percentages as future Plus V1 outputs. Do not execute the
+             older counter-return/display target below. Reduced-disclosure
+             bands, fixed order, neutral unavailable and separate current
+             Guardian data are the direction only; names/thresholds/suppression,
+             usefulness and measured risk remain Founder decisions. Relevant
+             work continues with OA193/285; no exact-tally implementation or
+             engineering closure is claimed. Documentation only this session.
 Title:       Green / Amber / Red Tallies Can Be Real Today Without
              Waiting On OA-ZYRA-193(d)
 Category:    Compatibility Engine / Subscription
@@ -13111,8 +13782,11 @@ Title:       Check Toonbee Before Marketing Begins
 Category:    Marketing / Brand
 Priority:    Low until marketing starts — then blocking, because the
              point of it is to be checked BEFORE anything goes out.
-Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — dormant by design. Nothing to do until the
-             marketing phase begins.
+Status:      ANSWERED AND CLOSED 2026-09-24. The Founder said what Toonbee is.
+             The open question this action existed to hold is now resolved and
+             the work it points to has moved to OA-ZYRA-301.
+             (Previously: Deferred, restamped 2026-08-20 under OA-AIOS-326;
+             before that Open — dormant by design.)
 Owner:       Founder (Shakeel)
 Raised:      2026-08-15
 Completed:   —
@@ -13136,6 +13810,35 @@ Description: A standing reminder, logged now so it survives the gap
              Toonbee is and what "check" means for it. That one
              sentence turns this into a real task; without it the OA
              can only be a reminder.
+
+THE ANSWER, 2026-09-24
+             The Founder, in his own words: Toonbee "was a website to make
+             animated ai videos - (if it helped with advertising)".
+             So Toonbee is a TOOL HE WAS CONSIDERING, not a risk to clear. He
+             had come across a service for generating animated AI video and
+             wanted to remember it when the time came to make advertising
+             material. "Check Toonbee" means: look at it again and decide
+             whether it is worth using to produce ZYRA's ad creative.
+             Note the past tense in his answer. He may already have moved on
+             from it, and the tool may not still exist or still be good; this
+             market changes fast. That is part of the checking, not a reason
+             to skip it.
+
+WHAT THIS CORRECTS, AND FABLE OWNS THE ERROR
+             On 2026-09-23 Fable raised OA-ZYRA-301 and wrote this action into
+             it as a BLOCKING gate on the whole marketing programme - nothing
+             public until Toonbee was resolved. That was wrong, and it was
+             wrong because Fable reasoned from this action's own strong wording
+             ("a check that happens after the first thing ships is a check that
+             found out too late") without knowing what was being checked.
+             Reserving a social media handle has nothing whatever to do with a
+             video tool. The gate has been removed from OA-ZYRA-301 and the
+             real task - evaluate the tool when ad creative is being made -
+             carried across as an ordinary item.
+             The lesson is the one this action already stated in 2026-08-15 and
+             Fable did not apply: an unknown should be written down as an
+             unknown and asked about, not given a shape that seems safe. A
+             cautious guess is still a guess, and this one blocked real work.
 
 Target:      Surface this OA at the START of the marketing phase —
              before any campaign, listing, channel setup or public
@@ -13209,6 +13912,37 @@ Description: The app accepts reports and can block profiles, but a
              tell a user their report was submitted without anyone being
              operationally responsible for acting on it — a safety
              promise the operation cannot currently keep.
+
+             DATED EVIDENCE RECONCILIATION 2026-10-06 — the description above
+             preserves the original 17 August finding; it is not a claim that
+             no technical work has subsequently occurred. The hash-bound
+             5 October APP evidence records status UI/RPC input and locally
+             tested safety-retention repairs. A recorded RPC input hash is not
+             deployment evidence. The local-delivery receipt expressly remains
+             LOCAL_TESTED_NOT_LIVE_DEPLOYED_NOT_RELEASE_ACCEPTED. This progress
+             does not establish a deployed, staffed moderation workflow, real
+             reviewer delivery/assignment, lawful expiry/holds, restricted-note
+             denial paths or end-to-end operational acceptance.
+
+             The 6 October safety-response and paper safety/rights tabletop
+             drafts under Group SYSTEM/RESOURCES/REPORTS/ prepare that acceptance
+             work. All eight tabletop scenarios remain NOT RUN; no human lead,
+             responder or backup is appointed, no case is executed and no new
+             application/deployment GO is inferred. Scoped DR-ZYRA-248 retention
+             intentions are not reversed, but lawful lifecycle and activation
+             proof remain separate. This action remains BLOCKED and Critical
+             for real-member release; existing owner/exact-action gates stand.
+
+             Evidence: SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_APP_GATE_REPAIRS_2026-10-05_EVIDENCE.json
+             SHA-256: 8d2c9a3bf3383abc9fc38126e6f992a96c4e05ef858cd38ce6967e2fc8fa9858
+             ZYRA_APP_GATE_REPAIRS_LOCAL_DELIVERY_2026-10-05_VERIFICATION.json
+             SHA-256: e3b71795024bed9b0981606d9b918572c8bab046111fc72ebdd4e68e0e8ff81d
+             Group SYSTEM/RESOURCES/REPORTS/
+             ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md
+             SHA-256: 4c121cfc1f7e7c1a08ee9413c964844da39ccd463599dee5d0ee47645369dcf2
+             ZYRA_SAFETY_RIGHTS_TABLETOP_DRAFT_2026-10-06_V1.md
+             SHA-256: f555208c7670a0b34fc15c73d9736ad220c0ff904dc665b0aeb26034026e943f
 
              The eventual brief must require, at minimum:
              1. A defined moderation owner and response process.
@@ -13658,11 +14392,11596 @@ Dependencies: AD-AIOS-099 seat assignments; Supabase project access;
 
 ------------------------------------------------------------
 
+OA-ZYRA-244
+Title:       Guardian Network — source-of-truth specification V1
+             (Fable's half of the joint Founder directive;
+             Codex builds the first-draft UI in parallel)
+Status:      Completed (2026-08-22) — specification delivered;
+             13 Founder decisions (D1-D13) and 7 surfaced
+             contradictions (C1-C7) await ratification before
+             any rule in it is enforced in production
+Priority:    High
+Raised:      2026-08-22
+Raised by:   Founder ("I want to begin the Guardian Network
+             properly now... Fable — you own defining exactly
+             how Guardian Network works. Review all existing
+             ZYRA documentation and produce the Guardian
+             Network source-of-truth specification... Do not
+             silently overwrite contradictions. Surface them.")
+Owner:       Fable (spec); Founder (D-list ratification);
+             Codex (first-draft UI now, Phase-2 alignment
+             after ratification)
+Initiative:  ZYRA product
+Description: ZYRA_GUARDIAN_NETWORK_CURRENT_VERSION_V1.md
+             (SYSTEM/DOCUMENTS) — Purpose, Eligibility (E1-E8
+             + the can_introduce() predicate formalised from
+             Romantic Rules SS1 and Adversarial Pass 2 A3),
+             Seeker-preference authority (Founder's instinct
+             confirmed: the Guardian searches as agent, hard
+             dealbreakers unwidenable), Ranking, the
+             discovery model (the 2026-07-04 ratified
+             architecture RESTATED, not reinvented: unit of
+             discovery = a represented Seeker's
+             system-controlled card, unit of contact =
+             Guardian-to-Guardian), card visibility ladder,
+             Actions matrix (View/Save/Pass/Suggest/Family
+             Introduction Request with the merged consent
+             chain: Seeker A approves before her card
+             travels; both Guardians AND both Seekers say yes
+             independently), consent architecture (C3-C5
+             separate opt-ins default OFF), Main-vs-
+             Additional authority, plans (no new upsell
+             gates; FIRs share the Seeker's existing
+             outstanding-interest cap), 13-vector abuse
+             model, notifications under the ratified P/S
+             rules (digest, no push for recommendations),
+             named UI states GN-* for Codex's dev tooling,
+             and Phase-2 alignment checklist. KEY REUSE: the
+             wali_suggestions table + Introductions card
+             system (DR-ZYRA-157/160) already implement the
+             Suggest pipe; zyra_can_match/Tier-0/Tier-1/
+             blocks already gate eligibility; the Guardian
+             home shell + Guardian+ gate already exist —
+             the spec builds ON five ratified systems and
+             invents none.
+Evidence:    Spec file committed; sources section lists the
+             30+ documents and 25+ decision-register entries
+             reviewed. Contradictions surfaced, not resolved
+             silently: stale CONNECTIONS block in WALI_ARCH
+             V6 (C1), card-city vs counterpart-card
+             discipline (C2), bundled vs separate Network
+             consent (C3), stale no-dual-role line (C4),
+             Primary-vs-Main guardian concepts (C5),
+             DR-ZYRA-104 still PROPOSED as a boundary (C6),
+             truth-in-selling on the Guardian+ lock screen
+             (C7).
+Target:      Founder ratifies/amends D1-D13 (one word per
+             line is enough); then Codex Phase-2 alignment
+             against the ratified spec; WALI_ARCHITECTURE
+             V6->V7 bump propagates C1-C5 corrections
+
+------------------------------------------------------------
+
+OA-ZYRA-245
+Title:       Guardian Network first draft — LIVE in the app,
+             built by the first Fable+Codex API run under the
+             Founder's directive
+Status:      Completed (2026-08-23) — first draft in
+             SOURCE/lib/screens/wali/wali_network_screen.dart,
+             flutter analyze clean; Founder on-device testing
+             next; Phase-2 alignment pending
+Priority:    High
+Raised:      2026-08-22
+Raised by:   Founder (the joint Guardian Network directive +
+             "the first draft needs to physically exist in
+             the ZYRA app and be testable on-device")
+Owner:       Codex-via-API (implementation) + Fable (rules,
+             review, deterministic finish); Founder (test +
+             ratify D1-D13); Codex (Phase-2 alignment)
+Initiative:  ZYRA product
+Description: The screen implements the AGREED_RULES build
+             contract derived from ZYRA_GUARDIAN_NETWORK_
+             CURRENT_VERSION_V1.md: Seeker-context selector,
+             recommendation cards in the ZYRA card language,
+             Suggest/Pass first-draft actions, and a
+             kDebugMode-only dev state switcher covering the
+             Founder's nine test states (1 Seeker / multiple
+             / recommendations / suggested / passed / empty /
+             loading / error / Basic / ZYRA One) on mock data
+             marked PROVISIONAL. No new packages, no new
+             server permissions, class + constructor surface
+             preserved. WORKING RULES ONLY where the spec's
+             D1-D13 remain unratified — nothing here is a
+             permanent product rule yet. Pre-run original
+             preserved at OVERNIGHT_GN_2026-08-23/ORIGINAL_
+             wali_network_screen.dart; every iteration kept.
+Evidence:    flutter analyze rc=0 on the applied draft
+             (ANALYZE_apply.txt); zyra_check findings all
+             pre-existing elsewhere, zero in this file;
+             handoff READY printed in the Founder's own
+             terminal 2026-08-23 09:49 UTC. Full trail in
+             SYSTEM/RESOURCES/OVERNIGHT_GN_2026-08-23/ and
+             group register OA-AIOS-354/358.
+Target:      Founder tests on phone; ratifies/amends D1-D13
+             (spec §16); Codex runs the Phase-2
+             implementation-vs-documentation pass (spec §17)
+
+------------------------------------------------------------
+
+OA-ZYRA-246
+Title:       Guardian Network draft v6 — contradiction-review
+             findings + build-contract completion
+Status:      Open — reconciled to current Draft 3.x code and
+             handover 2026-08-23. CLOSED within this OA:
+             initial-only name, verified badge, compatibility
+             band, populated profile sheet, complete 44-rule
+             build contract. OPEN: availability field; served-
+             card Save and own-Seeker Suggest actions; pricing/
+             Guardian-profile decisions.
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Fable re-review (06_CONTRADICTION_REVIEW_v6)
+             after Codex's F8 verdict proved the overnight t7
+             check reviewed the restored ORIGINAL, not the
+             draft
+Owner:       Fable (deterministic fixes + contract v1.1);
+             Codex (verifies v1.1 via Founder relay)
+Initiative:  ZYRA product
+Description: Live draft v6 (sha256 73382e1d..., byte-
+             identical to the applied candidate) reviewed
+             rule-by-rule against the written contract.
+             Findings: (1) Rule 12 VIOLATED — full first name
+             on the Discover card (line 960) and Requests row
+             (1314) where the rule approves first-name
+             initial only; deterministic two-site fix
+             available. (2) Three approved card fields
+             uniformly absent: verified-Guardian badge,
+             availability indicator, compatibility band —
+             completeness gap, not a sparseness leak. (3)
+             _GuardianNetworkProfileSheet is an analyze-clean
+             EMPTY STUB (lines 1341-1371): View opens a blank
+             sheet; content lost in the run's truncation
+             battles. (4) Save missing from the v1 action set
+             (View/Pass/Suggest present, FIR correctly
+             deferred with honest copy). (5) Pricing copy in
+             the locked view (£9.99/month, ZYRA One bundling)
+             must be verified against PRICING documentation
+             before any non-preview build. (6) The build
+             contract is itself cap-truncated — AGREED_RULES
+             v1.1 must complete rules 22-47 from the ratified
+             GN spec (rules 1-21 unchanged), Codex to verify.
+             Rules 23-47 were NOT ASSESSABLE in this review.
+             Production path stays safe (entitlement gate +
+             empty state only). CURRENT RECONCILIATION: the
+             responsive card now shows initial, band and
+             verified Guardian; showGNProfileSheet is populated;
+             the complete D14 contract is 44/44. Availability
+             remains absent, and the served card exposes View /
+             Set aside / Request connection but no Save or
+             own-Seeker Suggest despite Rule 17. Pricing copy
+             and final Guardian-profile field set still await
+             their governed decisions.
+Evidence:    06_CONTRADICTION_REVIEW_v6_2026-08-23.md and
+             05_FABLE_RESPONSE (F13-F16) in SYSTEM/RESOURCES/
+             OVERNIGHT_GN_2026-08-23/.
+Target:      Founder phone test; D1-D13 ratification; Phase-2
+             closes the remaining Rule-17/field/pricing gaps
+             against ZYRA_GN_HANDOVER_CURRENT_VERSION_V1
+
+------------------------------------------------------------
+
+OA-ZYRA-247
+Title:       Guardian Network interaction model — Founder
+             proposes symmetric double-blind mutual interest
+             (amends the Suggest/FIR working rules)
+Status:      Open — RATIFIED IN FULL by Founder 2026-08-23
+             ("Ratify all" + clarifications: live-process cap
+             meaning confirmed; photo default after-connect
+             with Seeker override; per-stage analytics; no-
+             search documented; Guardian+ per guardian, One
+             covers Main only). EXECUTED same day: spec V2
+             with D14 section (V1 archived), build contract
+             completed as ZYRA_GN_BUILD_CONTRACT_CURRENT_
+             VERSION_V1.md (44 rules, passes AC-18 gate),
+             Draft 2 implemented (02_DRAFT_v8_d14.dart, 2129
+             lines, structural checks all pass), pre-apply
+             contradiction review 08 READY, apply job armed
+             with base-sha guard. Remaining: Founder runs the
+             apply line (analyze gate), phone-tests, then
+             close
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Founder ("you cant just suggest... both guardians
+             gota agree and then it shows on both seekers at
+             same time"), after choosing slider option 2E
+Owner:       Fable (docs check, mockups, amendment draft);
+             Founder (decision)
+Initiative:  ZYRA product
+Description: Documents checked per Founder request. FINDINGS:
+             (1) Suggest as documented (spec section 7, Rule
+             20) is advisory Guardian -> OWN Seeker only and
+             never reaches the other family — the draft's
+             data model is right, but the bare "Suggest"
+             button reads as a cross-family action (UX
+             defect, not a rules defect). (2) The Founder's
+             core principle already exists verbatim in the
+             ratified spec: "nothing reaches either Seeker
+             until both Guardians have agreed". (3) GENUINE
+             DIVERGENCES needing ratification: spec's FIR is
+             initiator-led (G_A sends, Seeker A consents to
+             card transmission BEFORE G_B sees it, G_B can
+             explicitly decline with cooldown) vs Founder's
+             symmetric double-blind interest (neither
+             Guardian ever receives a declinable request;
+             non-mutual interest lapses silently; on
+             mutuality the introduction surfaces to BOTH
+             Seekers SIMULTANEOUSLY — changes C5-outbound
+             timing, D5 action set, decline semantics).
+             (4) "View other Guardian": guardian-profile
+             field set is undefined in written rules (22-47
+             gap) — new decision needed; mockups use a
+             conservative system-controlled set marked
+             PROVISIONAL. (5) D6 stands: no free-text
+             Guardian chat in v1; all mockup interaction is
+             structured. Five interactive options (A-E)
+             delivered on the chosen 2E chrome, all double-
+             blind, all with Guardian view, Pass-wording
+             variants (Not now / Skip / Set aside / Hide /
+             Not now+Undo).
+             FOUNDER RULINGS during UI iteration (2026-08-23,
+             provisional until ratified in the amendment):
+             (R1) Connect chain refined — on mutuality the
+             two MAIN Walis connect FIRST (guardian-to-
+             guardian stage, structured per D6); only when
+             both Walis agree to proceed do the Seekers see
+             it, simultaneously. Main-Wali authority per D7.
+             (R2) Discover order is ALGORITHM-SERVED, one
+             family at a time — no browse-ahead, no swipe-
+             next; advancement only by acting (Skip/Connect).
+             (R3) PHOTOS: a Seeker may authorise their photo
+             for the Guardian page — authorised photos SHOW
+             on cards (amends working Rule 12 "photo never",
+             resolves D2 direction); unauthorised stays
+             sealed with no gap shown.
+Evidence:    gn_mutual_options.html, gn_optionB_radical.html,
+             gn_deck_variants.html (chat, 2026-08-23); spec
+             lines re actions table + "both Guardians have
+             agreed" principle; AGREED_RULES 17/20/22.
+Target:      Founder picks A-E (or mix) -> Fable implements
+             in the draft + drafts the rule amendment (D14
+             candidate: symmetric mutual-interest chain) into
+             the GN spec for ratification; AGREED_RULES v1.1
+             incorporates the ratified version
+
+------------------------------------------------------------
+
+OA-ZYRA-248
+Title:       Guardian Network Draft 3 — Connections moves to
+             the Dashboard; Seekers-by-name slider shared
+             across both pages
+Status:      Open — built and committed 2026-08-23: new
+             shared GN library wali_gn_shared.dart (GNContext
+             selection/state singleton, GNSeekerSlider,
+             GNConnectionsPanel, shared sheets), Dashboard
+             gains the slider + CONNECTIONS section (pre-
+             change backup 03_BACKUP_wali_dashboard_pre_
+             draft3.dart), Network rebuilt Discover-only
+             (02_DRAFT_v11_dashboard_merge.dart; supersedes
+             unapplied v10, whose six fixes are folded in);
+             apply job re-armed against live v9 base sha.
+             Same-day Founder phone feedback (Draft 3.1):
+             no-Seeker states use the Seeker-page blank
+             pattern (message + Invite your Seeker button);
+             the slider is the Seeker Connections page's own
+             pill (ZyraSegmentedToggle) and the Network
+             screen swipes between Seekers (PageView, fill
+             travelling with the finger); the bar persists
+             with no Seeker as "Waiting for your Seeker";
+             the served family card fills the screen (no
+             dead bottom area). Second same-day round (from
+             Founder screenshots, Draft 3.2): every blank
+             Wali surface copies the Guardians page's "+"
+             pattern — new ZyraAddCircle in zyra_state_
+             widgets.dart, used by Dashboard, Network and
+             Seekers empty states — and the 3.1 waiting-bar
+             is REVERSED: no Seeker means no top bar at all.
+             Candidate now v13 (02_DRAFT_v13_founder_fb3.
+             dart); crash fix folded in (OA-ZYRA-250).
+             APPLY HISTORY (2026-08-23): Founder's first
+             apply run put v11 live (analyze passed); Fable
+             then armed v12/v13 against the stale v9 base
+             sha, so the second run was correctly refused by
+             AC-10 at $0.00 (Fable configuration error,
+             owned). Resolution: Fable applied v13 DIRECTLY
+             to SOURCE; the armed job is now a verify-only
+             pass (candidate == live, base sha == v13).
+             Remaining: Founder rebuilds with flutter run
+             --profile and phone-tests (blank states, swipe
+             slider, cross-page sync, crash repro), then
+             close with OA-ZYRA-247
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Founder ("add connections info in dashboard...
+             changing the top slider to guardians seekers
+             name... if a guardian slides to one seeker in
+             dashboard then they click on network the system
+             selects the same seeker and vice versa...
+             dashboard is where everything lives about user")
+Owner:       Fable (build, docs); Founder (apply + test)
+Initiative:  ZYRA product
+Description: Restructure of the two Wali surfaces around one
+             shared Seeker context. (1) The Connections
+             context (Incoming/Sent/Connected/History + live
+             count) renders on the Wali Dashboard as its
+             CONNECTIONS section. (2) The top slider on BOTH
+             pages is the Guardian's Seekers by name (gold
+             dot = incoming waiting). (3) Seeker selection is
+             one GNContext ChangeNotifier — select on either
+             page, the other follows (IndexedStack keeps both
+             mounted). (4) Network page is Discover-only; the
+             merge card reviews the incoming request in place
+             via a sheet. (5) Contract amendment (GN DRAFT 3)
+             records the deltas; Rule 44 "in-file" now reads
+             "in the GN library". Release builds render none
+             of it (developer preview until GN backend
+             exists).
+Evidence:    wali_gn_shared.dart + wali_dashboard_screen.dart
+             (SOURCE, committed, sha-verified), 02_DRAFT_v11_
+             dashboard_merge.dart + job.json (armed), and
+             contract/spec amendments — all 2026-08-23
+Target:      Apply + phone test, then close; real GN backend
+             remains Phase-2 scope (OA-ZYRA-245)
+
+------------------------------------------------------------
+
+OA-ZYRA-249
+Title:       Tablet optimisation — how ZYRA behaves on iPad
+             and large screens (strategy decision needed)
+Status:      Open — audit complete 2026-08-23 (raised by
+             Founder: "how are we ensuring the app is
+             optimised for tablets"). TODAY'S TRUTH: iPad is
+             an enabled native target (TARGETED_DEVICE_
+             FAMILY "1,2"), runtime-locked to portrait on
+             every device (main.dart setPreferredOrientations
+             portraitUp; Android manifest portrait). Two
+             deliberate large-screen behaviours exist: the
+             splash composes at min(shortestSide, 480) so an
+             iPad gets a phone-scale centred composition, and
+             the tagline type ramp clamps at 480 design
+             width. Everything else is a phone-first single
+             column stretched to tablet width — no
+             breakpoints, no adaptive/two-pane layouts, no
+             global content-width cap (only local caps: chat
+             bubbles 72% width, several journey cards 350,
+             one wali detail 280). No tablet in the test
+             cadence (Founder tests on iPhone). Decision
+             needed — options in Description.
+Priority:    Medium
+Raised:      2026-08-23
+Raised by:   Founder
+Owner:       Fable (strategy + docs); build per decision
+Initiative:  ZYRA product
+Description: Because the iPad family is enabled, the App
+             Store lists ZYRA on iPad and users WILL run it
+             full-screen there, where stretched phone
+             layouts read sparse and oversized. Options for
+             ratification:
+             (A) PHONE-FRAME — one shared wrapper caps
+             content width (~480-520pt) and centres it on
+             the gender gradient on any wide screen;
+             portrait lock stays; cheapest, ships app-wide
+             in one pass, and generalises the rule the
+             splash already follows.
+             (B) TRUE ADAPTIVE — breakpointed tablet
+             layouts (e.g. Dashboard list + detail two-pane,
+             wider Discover card grid); the real tablet
+             experience; significant design + build cost
+             per screen.
+             (C) DROP THE TARGET — device family iPhone-
+             only; ZYRA leaves the iPad listing; cheapest,
+             but guardians/parents skew tablet-heavy, so it
+             cuts against the Wali side of the product.
+             RECOMMENDATION: A now (plus an iPad-simulator
+             pass in the release checklist), B later for
+             Wali surfaces if tablet usage shows up in
+             analytics; C not recommended for a guardian-
+             centred product.
+Evidence:    ios/Runner.xcodeproj TARGETED_DEVICE_FAMILY;
+             main.dart orientation lock; splash_screen.dart
+             design-width notes; zyra_text.dart taglineSize
+             clamp; grep audit 2026-08-23 (11 LayoutBuilder
+             files, 7 local maxWidth caps, no breakpoint
+             constants anywhere in lib/)
+Target:      Founder picks A / B / C (or phased A then B) ->
+             Fable writes the tablet rules into the UI
+             architecture docs -> implementation scheduled;
+             an iPad pass joins the test cadence either way
+
+------------------------------------------------------------
+
+OA-ZYRA-250
+Title:       Crash on account switch — dev-gated listener
+             leak in wali screens (Null check operator on a
+             null value in setState)
+Status:      Open — FIXED IN CODE 2026-08-23, awaiting
+             Founder apply + retest. Found from the
+             Founder's own flutter run log: after switching
+             accounts through the dev panel, a tap on the
+             SEEKER-side nav crashed with "Null check
+             operator used on a null value" at
+             State.setState via _WaliNetworkScreenState.
+             _onChange <- ZyraDevScenario.setCurrentPage,
+             then repeated ErrorSummary exceptions.
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Founder (pasted run log) — diagnosed by Fable
+Owner:       Fable (fix shipped with GN Draft 3.2)
+Initiative:  ZYRA product
+Description: ROOT CAUSE: wali screens added dev listeners
+             under "if (ZyraDeveloperAccess.
+             canUseDeveloperTools)" and removed them under
+             the SAME gate in dispose. That gate reads auth
+             state, so the dev account switcher can flip it
+             between initState and dispose — dispose then
+             skips the remove, the listener outlives its
+             State, and the next notifyListeners calls
+             setState on a defunct element. Live instance:
+             wali_network_screen (Draft 2.x) ZyraDevScenario
+             listener with an unguarded "_onChange() =>
+             setState((){})". The new Dashboard GNContext
+             listener (Draft 3) repeated the pattern and is
+             fixed in the same pass. THE FIX (both files):
+             listener REMOVES are now ungated
+             (removeListener on a never-registered listener
+             is a documented no-op) and _onChange is
+             mounted-guarded. AUDIT of the same pattern
+             elsewhere: wali_home_shell's gated remove has a
+             mounted-guarded callback (benign leak only);
+             all "!kReleaseMode"-gated pairs are safe — that
+             gate is a compile-time constant and cannot
+             flap. NOTE: the Founder's pub-get output listing
+             26 newer package versions is informational and
+             harmless — no action needed.
+Evidence:    Founder terminal log 2026-08-23 (stack trace:
+             framework.dart:1219, wali_network_screen.dart
+             _onChange, zyra_dev_scenario.dart:166,
+             home_shell.dart:237); fix in 02_DRAFT_v13_
+             founder_fb3.dart + wali_dashboard_screen.dart
+             dispose blocks
+Target:      v13 applied directly by Fable 2026-08-23 (see
+             OA-ZYRA-248 apply history); Founder rebuilds
+             and retests the exact repro (open Wali pages,
+             switch account via dev panel, tap Seeker nav)
+             -> close with OA-ZYRA-248
+
+------------------------------------------------------------
+
+OA-ZYRA-251
+Title:       Retired GN preview model — dev controls/tests
+             drift cleanup (Codex-identified)
+Status:      Completed (2026-08-23) — Codex flagged that old developer
+             controls/tests still used the retired 2026-08-22
+             preview model while the app now runs on
+             GNContext/GNScene. DONE: zyra_dev_scenario.dart
+             GN plan/scene preview state removed (retirement
+             note left in place; anyWaliStaged and reset
+             updated); wali_dev_scenario_panel.dart Network
+             card migrated — Linked Seekers control kept
+             (still real: it composes the wards GN works on),
+             plan/scene controls and _NetworkSceneRow
+             removed, card now points to the GNContext DEV
+             chip; retired module archived with provenance
+             note in SYSTEM/RESOURCES/OVERNIGHT_GN_2026-08-23
+             /ARCHIVE_RETIRED_PREVIEW/. CONCURRENCY: the
+             module and its test were deleted from the tree
+             by the parallel Codex-side cleanup minutes
+             before Fable's archive move — same end state,
+             invisible process; archive copy is a same-day
+             byte-faithful reconstruction, the test (retired-
+             model-only coverage) is preserved as history;
+             the live test was rebuilt for D14/GNContext.
+             Zero references to GuardianNetworkPreview*,
+             guardianNetworkPlan, guardianNetworkScene or
+             old control labels remain in lib/ or test/.
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Codex (drift finding) via Founder directive;
+             executed by Fable
+Owner:       Fable
+Initiative:  ZYRA product / AIOS governance
+Description: Exactly the drift class the implementation handover standard
+             exists to catch: controls that drive retired
+             state waste future debugging time and imply a
+             model the app no longer has. Remaining GN
+             staging surface is ONE place: GNContext behind
+             the DEV chip (scenes, role, reset, analytics),
+             plus the panel's ward composition. Follow-up
+             noted in handover §5: dev/wali_dashboard_
+             preview.dart (non-GN) not audited in this pass.
+Evidence:    zyra_dev_scenario.dart 46e89e22..., wali_dev_
+             scenario_panel.dart bbb51b62..., current test
+             54e27c43...; ARCHIVE_RETIRED_PREVIEW/; stale-ref
+             grep count 0. Before: focused 0/4 plus 155px
+             overflow. After: focused 5/5; GN+Journey+
+             onboarding regression 18/18; flutter analyze
+             PASS/no issues.
+Target:      Completed; device crash repro remains separately
+             under OA-ZYRA-250
+
+------------------------------------------------------------
+
+OA-ZYRA-252
+Title:       Guardian Network handover package + single
+             source of truth (Founder directive: BUILD ->
+             DOCUMENT -> TRACE -> HANDOVER)
+Status:      Completed (2026-08-23) — DONE: (1) ZYRA_GN_HANDOVER_
+             CURRENT_VERSION_V1.md created in SYSTEM/
+             DOCUMENTS — Product / actual Implementation
+             (live-file shas, GNContext-GNScene-GNStage,
+             navigation, data flow, dev controls, mock vs
+             production) / Testing (before 0/4 + 155px
+             overflow; after 5/5 focused, 18/18 regression,
+             analyze clean) / Migrations / Remaining work /
+             Concurrency note. (2) SINGLE SOURCE OF TRUTH
+             FIXED: APP/Guardian Network/GUARDIAN_NETWORK_
+             CURRENT_VERSION_V1.md was a SECOND current GN
+             doc — archived as GUARDIAN_NETWORK_2026-08-22_
+             V1.md with a supersession banner; the ONE spec
+             is SYSTEM/DOCUMENTS/ZYRA_GUARDIAN_NETWORK_
+             CURRENT_VERSION_V2.md. (3) Group standard
+             created: IMPLEMENTATION_HANDOVER_STANDARD_
+             CURRENT_VERSION_V1.md (OA-AIOS-363); concurrent
+             duplicate archived explicitly.
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Founder (handover-principle directive)
+Owner:       Fable
+Initiative:  ZYRA product / AIOS governance
+Description: The spec says how GN works; the contract says
+             how it must be built; the handover says what
+             exists. All three verified in agreement as of
+             the listed shas, with every known delta
+             documented in the contract's GN DRAFT 3
+             amendment and the spec's surface-layout note.
+             Standing rule from the standard: Fable re-
+             verifies the three-document agreement at every
+             handover update; disagreements become register
+             actions, never hidden assumptions.
+Evidence:    ZYRA_GN_HANDOVER_CURRENT_VERSION_V1.md; archived
+             APP doc with banner; IMPLEMENTATION_HANDOVER_
+             STANDARD_CURRENT_VERSION_V1.md; live-file SHA
+             table + measured suites in handover §§2.1/3
+Target:      Completed; three-document check re-runs at every
+             future meaningful GN change
+
+------------------------------------------------------------
+
+OA-ZYRA-253
+Title:       Paid Membership and Entitlement Activation — current model:
+             Seeker One £29.99/month; Guardian One £19.99/month;
+             configurable role-count Family; Basic £4.99 once (DR-ZYRA-252)
+Update 2026-10-04 (Family onboarding introduction / DR-ZYRA-263):
+             Both protected signup roles show the explicit introductory
+             comparison, separate from normal renewal. Pricing/Onboarding
+             §108/Paid Membership §12/named Family receipt own scope/checks.
+             No commercial activation or trial change. Current selected role
+             places assume one person per place; verified-person eligibility,
+             dual-role treatment and StoreKit products/receipts remain OPEN
+             here before checkout. No deduplication or actual billing inferred.
+Status:      Open — DR-ZYRA-248 client presentation and forward server
+             contract are implemented locally. Real billing, receipt truth,
+             verified-person IDV/trial callbacks, regional price points,
+             Family operations, server replay and production activation remain
+             outstanding.
+Current amendment — 2026-10-03 / DR-ZYRA-252:
+             Founder restored Seeker/Guardian Basic at £4.99 once, with no
+             monthly subscription, and requested signup membership choice
+             after account details before IDV. Client implementation and
+             affected verification are BUILT / INTERNALLY VERIFIED; the new
+             main PROFILE app is installed, with native launch awaiting a
+             fresh unlock after auto-lock. Physical acceptance is pending.
+             Onboarding Preview §93 / Paid Membership §11 and
+             ONBOARDING_BASIC_MEMBERSHIP_CHOICE_2026-10-03_VERIFICATION.json
+             record the exact client/source/delivery evidence.
+             Preserve the historical paid-only
+             evidence below. New choice is private intent, not paid proof;
+             default/legacy Basic state must not be advertised as confirmed
+             purchased access. Existing staged server contract, products and
+             receipts need reconciliation before separate live activation.
+             No £4.99 introductory One/Family month or universal extra fee is
+             inferred. OA-ZYRA-303 owns signup; OA-ZYRA-293 owns retained quotas
+             and non-live adverts. No duplicate action or closure is raised.
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Founder ("ZYRA One is now 39.99 a month and
+             Guardian standing alone is 24.99 a month.. we
+             also include ZYRA One for a week for 19.99 a week
+             and Guardian stand alone for week 14.99")
+Owner:       Codex (client and implementation contract); Founder (commercial
+             activation and final acceptance)
+Initiative:  ZYRA product
+Description: Implement DR-ZYRA-248 without fake checkout. Catalogue,
+             Membership, Help and website expose only Seeker One £29.99/month,
+             Guardian One £19.99/month and the independent 0–10-per-role Family
+             formula capped at 40%. A person may hold separate Seeker and
+             Guardian accounts, but each role needs its own entitlement/place.
+             Keep legacy Basic values parseable only during migration so stale
+             rows fail safely with zero product entitlement. Register matching
+             regional store products, validate receipts/webhooks, bind the
+             one-lifetime Seeker trial to the verified person and enforce paid
+             capabilities on the server before activation.
+Evidence:    ZYRA_PRICING_CURRENT_VERSION_V6.md; DR-ZYRA-248;
+             `20260924100231_founder_paid_only_returns_guardian_circle_contract.sql`
+             staged at SHA-256
+             `f6af8a28e1b0ce319a8daaa39ff22fc30574bd6c9d47f70a5de8cfec49374006`;
+             all 121 Family calculations, final non-visual Flutter suite and
+             website pricing/browser checks pass. Production is unchanged.
+Target:      Verified store products, receipt pipeline, authoritative Guardian
+             entitlement, comment service and server-enforced paid capability
+             boundaries; separate exact production activation approval.
+
+------------------------------------------------------------
+
+OA-ZYRA-254
+Title:       Push notification pop-ups — deferred build
+             (Founder: "add to OA and we do another time")
+Status:      Deferred — Founder decision 2026-08-23. TODAY'S
+             TRUTH (verified in tree same day): ZYRA has
+             IN-APP notifications only — server-written rows
+             (new_match / new_message / wali_request) read by
+             zyra_notification_service.dart into the
+             Notifications tab with a badge on a 20s poll. No
+             push packages in pubspec, no OS banners/lock-
+             screen alerts, no iOS permission prompt anywhere
+             (correct — nothing needs it yet).
+Priority:    Medium (deferred — not scheduled)
+Raised:      2026-08-23
+Raised by:   Founder (notification pop-ups question via the
+             Codex chat; answered by Fable, mailbox convention
+             created at SYSTEM/RESOURCES/MESSAGES/ the same
+             day)
+Owner:       Unassigned until scheduled (build brief needed;
+             Codex implements per AD-AIOS-099)
+Initiative:  ZYRA product
+Description: Scope when picked up: (1) DEPENDENCY — paid
+             Apple Developer Programme membership (Founder,
+             ~£79/yr): APNs push capability is blocked by the
+             current Personal Team exactly like Sign in with
+             Apple (ZYRA_APPLE_SIGNIN_HANDOVER V1) — one
+             membership unblocks both. (2) BUILD — push
+             plumbing (APNs/FCM), permission prompt asked at
+             the right moment (post-sign-up, never first
+             launch), server-side senders, token storage.
+             (3) PRODUCT DECISIONS (Founder, at brief):
+             which Seeker-side events earn a pop-up (new
+             match? new message?); quiet hours; sounds.
+             (4) STANDING CONSTRAINT already ratified:
+             Guardian Network Rule 36 calm delivery — NO
+             per-request GN push, one badge, at most one
+             daily digest, zero Seeker identifiers in any
+             notification copy ("You have a new Guardian
+             Network request." is the model sentence).
+Evidence:    zyra_notification_service.dart (in-app only);
+             pubspec.yaml (no push packages); GN spec Rule
+             36; ZYRA_APPLE_SIGNIN_HANDOVER_CURRENT_VERSION_
+             V1.md (Personal Team blocker)
+Target:      Founder schedules it ("we do another time") ->
+             Apple Developer membership -> brief -> build ->
+             handover per IMPLEMENTATION_HANDOVER_STANDARD
+
+------------------------------------------------------------
+
+OA-ZYRA-255
+Title:       Build the app-local respectful promotion and permission
+             engine, Guardian Network locked states and notification
+             Settings parity
+Status:      Handover Complete / Founder Device Review Pending — NOT CLOSED.
+             App-local implementation, documentation reconciliation and
+             automated/device-deployment gates passed 2026-08-23; the
+             Founder's human walkthrough across both roles and all four
+             Guardian Network access states remains pending
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Founder
+Owner:       Founder (remaining phone walkthrough); Codex (repair if the
+             walkthrough finds a defect); Fable documentation reconciliation
+             complete
+Initiative:  ZYRA product / subscriptions / notifications
+Description: Build only the local scope authorised by DR-ZYRA-213:
+             one role-aware evaluator; exact cadence/dismiss/permanent
+             rules; first-value notification education; ZYRA One vs
+             Guardian+ context mapping; privacy-safe GN lock/dependency/
+             unavailable states; Seeker/Guardian notification Settings
+             through the existing persisted five-category service; and
+             a developer-only in-memory evidence log using the governed
+             taxonomy. No automatic paywall, hidden-person bait or
+             safety/compatibility input. Prompt UI state may persist in
+             SharedPreferences and must clear on sign-out/switch/delete;
+             plan/entitlement remains server-only.
+Evidence:    ZYRA_RESPECTFUL_PROMOTION_AND_PERMISSION_CURRENT_VERSION_V1.md;
+             ZYRA_PROMOTION_ENGINE_BUILD_CONTRACT_CURRENT_VERSION_V1.md;
+             ZYRA_PROMOTION_ENGINE_HANDOVER_CURRENT_VERSION_V1.md. Fable
+             independently matched all 24 live-file SHA-256 values, reran
+             flutter test = 174/174 PASS and flutter analyze = no issues;
+             focused acceptance = 27/27 PASS. Final wireless iPhone profile
+             build/install/launch passed (iOS 26.6; Xcode 31.8s; install/
+             launch 305.1s after terminating only a stale earlier Flutter
+             deployment). No migration/backend/provider/analytics SDK.
+             Manual two-role/four-GN-state observation remains explicitly
+             PENDING and the deployment result is not represented as it.
+Target:      Founder completes the remaining phone walkthrough; record the
+             measured result and close only if both role contexts and all four
+             GN access states pass without a new defect
+Dependencies: DR-ZYRA-213; OA-ZYRA-254 remains separate/deferred real push;
+              OA-ZYRA-256 remains separate production telemetry gate
+
+------------------------------------------------------------
+
+OA-ZYRA-256
+Title:       Decide and govern production promotion analytics and
+             cross-device cadence persistence before any collection
+Status:      PHASE 2 LOCAL/STAGED CONTROLS + AIOS FOUNDER SURFACE COMPLETE /
+             COLLECTION OFF — production privacy, independent security
+             review, isolated replay, exact apply, aggregate-feed and
+             compile-enable gates remain open
+Priority:    Pre-launch / Privacy
+Raised:      2026-08-23
+Raised by:   Fable from the Founder-directed promotion review
+Owner:       Founder (production/privacy gates); Codex (implementation and
+             evidence); solicitor/privacy review where required
+Initiative:  ZYRA privacy / analytics / subscriptions
+Description: DR-ZYRA-239 selects first-party, identifier-free fixed events.
+             Phase 1 added typed bounded memory, a truthful Founder view,
+             initial shell/ZYRA-Code evidence and one staged private-table/
+             authenticated-RPC migration. Phase 2 adds completed/failed ZYRA
+             Code funnel evidence, fixed 30-day staged raw retention, a
+             service-role-only aggregate function, transaction-scoped caller
+             serialization and an identifier-free project circuit breaker.
+             Phase 2B adds fixed funnel coverage for Membership, Support,
+             Identity Check and Guardian management without adding any event
+             field or member/action payload.
+             Phase 2C adds a separate fixed action enum, zero-inclusive
+             Founder feature/action counts and matching staged `action_key`
+             storage/aggregation. This distinguishes what control was used
+             without recording button copy, ids, text or person data.
+             The existing AIOS portal now includes a Founder-only Health &
+             Usage page and read-only aggregate API. Both truthfully report
+             collection off; AIOS has no Supabase credential or live feed.
+             Normal builds keep the remote gate OFF. Before any event leaves
+             memory, finish lawful basis/privacy wording and objection
+             design; independent retention/access/abuse review; isolated replay and
+             direct-call security tests; exact migration apply GO; post-apply
+             probes; and a separate compile-enable release gate. Cross-device
+             promotion cadence persistence remains unbuilt and must not be
+             inferred from the event table.
+Evidence:    ZYRA_PRODUCT_OBSERVABILITY;
+             ZYRA_PRODUCT_OBSERVABILITY_BUILD_CONTRACT;
+             ZYRA_PRODUCT_OBSERVABILITY_HANDOVER;
+             BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/
+             AIOS_ZYRA_HEALTH_USAGE_PHASE1_2026-09-18_V1.md;
+             migration `20260918171910_oa256_product_telemetry_foundation.sql`;
+             Phase 2C focused tests 36/36 PASS; analyzer clean; profile build,
+             device catalog verification and direct iPhone launch PASS;
+             production unchanged.
+Target:      Independent SQL/privacy review of the staged controls,
+             exact-file/hash apply gate, post-apply verification and separate
+             compile-enable release decision.
+Dependencies: DR-ZYRA-213; DR-ZYRA-239; OA-ZYRA-255; OA-ZYRA-297
+
+------------------------------------------------------------
+
+OA-ZYRA-257
+Title:       UI Consistency & Visual Regression Gate — the
+             permanent anti-drift system (Founder directive,
+             22 sections, 2026-08-23)
+Update 2026-10-10 (Journey menu no-heart regression):
+             The expanded OA151/DR269 navigation checks found an existing
+             favorite_border in the local Journey compatibility menu. Original
+             TEST_FINAL_6 failure is retained in the Browse/gallery packet;
+             the existing Sep30 app-wide no-heart instruction authorizes its
+             neutral balance-scale replacement. Label, callback and mutual
+             disclosure remain unchanged. Navigation handover §35 owns the
+             later final-source checks/delivery, not an unrelated UI redesign
+             or a new app-wide/native visual acceptance claim. OA257 stays OPEN.
+Update 2026-10-08 (Home controls cleanup / bounded local evidence):
+             OA286 owns the delivery; receipt in SYSTEM/RESOURCES/REVIEWS/:
+             OA286_HOME_TOGGLE_CLEANUP_LOCAL_DELIVERY_2026_10_08_VERIFICATION.json
+             38642B SHA256 b96c681dd5bb9571a14a79bf918b2167dc4e4c23977d3bc6e84146c0f2b893dd.
+             Home removed Preview gender, App gold accents, Mobile menu,
+             Opening slide motion and App icon directions. Member-bound
+             Personalisation Gold accents and separate Entry Actions motion
+             controls remain. Six retained Home sections and canonical shared
+             navigation/session hosts remain; no baseline promotion.
+             Receipt records initial239PASS/1obsolete assertion failure,
+             corrected final240PASS/0fail/0skip across16focused suites,
+             analyzer0issues/format clean, main PROFILE install and native
+             launch POST-VERIFIED. ADMIN matched44named physical pins and
+             unchanged complete21359B prior handover prefix; did not rerun
+             tests or inspect physical UI. Founder visual/saved-data/native
+             accessibility acceptance and full release suite remain separate.
+             Earlier cancelled-menu undo, no-swipe and onboarding delivery/
+             failed/pending stages stay historical and unchanged; OA257 OPEN.
+Update 2026-10-04 (Family first month comparison / DR-ZYRA-263):
+             §108/named Family receipt:184focused/6real-font PASS,18fresh
+             both-role100/140/200% candidates inspected; no baseline change.
+             Analysis/format/independent review PASS. L16639f588 unchanged
+             308findings/zero critical/high/new/reopened/resolved. Prior guided
+             source/tests/captures/receipt retained. PROFILE55.9s/56MB checked,
+             fresh unlocked install6316/native fresh exact-container PID69078
+             PASS. Source/native/identity/signature postchecks match; earlier
+             locked check remains receipt history. Existing debt/acceptance OPEN.
+Update 2026-10-04 (guided answer cards / DR-ZYRA-262):
+             §107/named guided-choice receipt: separate cards/soft entry/gold
+             checks align onboarding answer lists; approved copy/flow stay.
+             Final208focused/2624functional+2existing skips/10visual cases,
+             19inspected candidates, clean analysis/format PASS. No promotion.
+             L1c0009234:0critical/high/23med/285low,1new/0reopened/2resolved.
+             Written disposition for new low a6061e72e919: legitimate shared
+             widget import string, retain without suppression or unrelated
+             refactor. Prior visual fixture/baseline maintenance stays OA257.
+             Main PROFILE53.7s/56MB/signature/identity/profile PASS; phone
+             locked/unlock requested, no install/launch for this amendment.
+             Physical/saved-data acceptance separate; OA257 OPEN.
+Update 2026-10-04 (account-handoff icon / DR-ZYRA-261):
+             §106/named icon receipt: decorative gold person outline replaces
+             only account_essentials artwork;70px anchor and all copy/layout/
+             other artwork/motion/routes/policy remain. Focused166/166,
+             two real-font checks/three candidates, analysis/format PASS.
+             L1bf4abb59 no new/reopened/resolved; previous visual debt remains.
+             Main PROFILE installed6300/native PID68709 exact new container
+             0ECB2DA3-2919-4A75-8BE1-CC2C38D46575; pins/signature PASS.
+             Physical/saved-data acceptance separate; OA257 OPEN.
+Update 2026-10-04 (down-arrow/finger-swipe repair / DR-ZYRA-260):
+             §105/named smoothness receipt record release-frame scroll cleanup,
+             role clamping/readiness/rapid-switch key fix, full-pager locks,
+             retry and Guardian callback lifetime guards. No design/copy drift.
+             Final2592functional PASS/2existing skips,55gesture/218focused PASS,
+             clean analysis/format. L167c03c32 unchanged308existing findings.
+             Exhaustive historical visual run NOT PASS:3238pass/2skip/143fail;
+             124existing approved-image mismatches,13stale opening/progress,
+             4old developer-label and2Home fixture failures. All124approved
+             PNG hashes remain intact. Written disposition: fixture/baseline
+             maintenance stays OA257; no restoring superseded product or
+             overwriting/promoting approval pixels in this scoped motion fix.
+             Existing main PROFILE installed6292/native PID68560 exact new
+             container551F159A-4E41-4973-BFEB-948461685B62; pins/identity/signature
+             PASS. Physical gesture/VoiceOver/saved-data acceptance pending.
+             OA257 OPEN; no Git/backend/signing/upload/release change.
+Update 2026-10-04 (four-slide opening local phone delivery):
+             Founder confirms unlock; unchanged checked §103 artifact/pins
+             installed under DR257/259. No rebuild/source change;61 original
+             receipt file pins and signature match. Independent11 source/test,
+             13 retained and4 native hashes PASS. Install6284/native launch/
+             fresh exact-container PID68477 PASS, container8F9855B6-E06F-
+             4456-9B34-EA2D3BE7EF7B; identity/source/artifact postchecks PASS.
+             Onboarding§104/UI Gate/FOUR_SLIDE_INTRO_LOCAL_DELIVERY_
+             2026-10-04_VERIFICATION.json own evidence. Prior phone-lock and
+             implementation receipt remain immutable. Founder physical
+             acceptance pending; OA257 OPEN. No backend/signing/release change.
+Update 2026-10-04 (four-slide opening group / DR-ZYRA-259):
+             Verified joins Photos/Compatibility/Guardian as1/4–4/4 with
+             four completed/current-gold dots and ordinary within-section
+             next/tap/swipe/motion; Welcome and final Guardian down exits
+             remain. Copy/fonts/art/anchors and prior Personalisation unchanged.
+             Final406/406 regression/22/22 capture checks PASS, full analysis
+             clean14.9s/format clean;30 new candidate PNGs inspected; no
+             approved baseline replaced. L1bc2ac820 no new/reopened/resolved;
+             existing23med/285low remain OA257; unsafe structural helper not
+             rerun. Main PROFILE54.0s/56MB/signature/pins PASS, phone locked;
+             unlock requested, no install/launch yet. Onboarding§103/UI Gate/
+             FOUR_SLIDE_INTRO_2026-10-04_VERIFICATION.json own evidence.
+             Physical acceptance/delivery pending; OA257 OPEN. No backend,
+             provider/payment/signing/upload/release change.
+Update 2026-10-04 (member Personalisation gold and latest phone delivery):
+             DR-ZYRA-258 adds shared default-Off Gold accents On/Off for both
+             roles, owner-bound local storage, stale/account/signout guards;
+             temporary developer override stays independent. Existing live
+             diagonal composition, content/routes/fonts/onboarding unchanged.
+             Final300/300 regression PASS; full analysis clean6.3s; format
+             zero changes; four capture/four final visual tests PASS, eight
+             fresh real-font standard/compact140% candidate PNGs inspected.
+             L1c9fbac0f PASS-WITH-FINDINGS,0critical/high,23med/285low,new4
+             pre-existing LOW heuristics. Written refusal to change repeated
+             imports/prior56px CTA or lexical checker false positives (2/4/25);
+             retain under OA257. Structural checker not PASS or PRIVATE-pruned
+             evidence; unsafe basename walk identified, no contents/credentials
+             read, no rerun. New switch-refresh/no-op revision defects fixed
+             before final checks. Same main PROFILE build55.4s/56MB PASS,
+             existing signature/profile; install6268/native PID68406 in exact
+             new containerABEAD813-F1A9-40DD-A400-2DDDB8350BA6 PASS. UI Gate
+             and MEMBER_GOLD_PERSONALISATION_2026-10-04_VERIFICATION.json own
+             source/candidate/native hashes and limits. Founder acceptance
+             PENDING; OA257 OPEN. No backend/provider/payment/release change.
+Update 2026-10-04 (latest account-ready phone delivery):
+             Founder accepted installation and DR-ZYRA-257 home/away default.
+             Fresh 193/193 focused cases PASS, full analysis clean (25.8s),
+             three current SOURCE pins unchanged before/after QA/build/install.
+             Same main PROFILE build PASS76.9s/56.0MB, existing signature and
+             profile retained. Install6132/native launch PASS, fresh PID67990
+             in exact container4E5C6020-BF2C-4E7A-8FE2-4465027B89BF; identity
+             and artifact postchecks PASS. Onboarding§102/UI Gate/named
+             ACCOUNT_READY_LOCAL_DELIVERY_2026-10-04_VERIFICATION.json own
+             evidence. Supersedes presentation's not-installed limit only.
+             Physical visual/flow/VoiceOver acceptance PENDING; OA257 OPEN.
+             No backend/provider/payment/migration/upload/release change.
+Update 2026-10-04 (account-ready page presentation):
+             Founder requested better Seeker post-IDV choice design/colour.
+             Page-only warmed-plum/gold-edge FilledButton, quiet finish-later
+             TextButton and opaque consequence card built; text, keys, guarded
+             routes, Guardian/shared CTA code unchanged. 193 focused cases
+             PASS; final combined focused/capture 7/7 PASS; final full analysis
+             clean (9.0s), format clean; three new real-font standard/compact
+             140% PNGs inspected. Onboarding §101/named ACCOUNT_READY_
+             PRESENTATION_2026-10-04_VERIFICATION.json own evidence. Earlier
+             candidates/goldens preserved. No native build/install, backend,
+             provider/payment or release change. Delivery and Founder visual
+             acceptance PENDING; OA257 remains OPEN.
+Update 2026-10-04 (latest verification trust phone delivery):
+             Founder answered “Yea” to explicit install offer. Fresh 309/309
+             focused cases PASS, full analysis clean; trust SOURCE 11/11,
+             retained app-gold 53/53 and Membership 4/4 pins match. Signed
+             main PROFILE build PASS 74.6s/56.0MB; deep/strict signature PASS.
+             Install 6116, native launch and fresh exact-container PID 67612
+             PASS, container 39567302-4977-42DE-B634-2C61DA3D696E. Compiled
+             trust copy present/removed Welcome sentence absent. Onboarding
+             §100/UI Gate and ONBOARDING_VERIFICATION_TRUST_LOCAL_DELIVERY_
+             2026-10-04_VERIFICATION.json own artifact evidence. No new source,
+             backend/provider/payment activation, upload or release. Founder
+             physical visual/flow acceptance PENDING; OA257 remains OPEN.
+Update 2026-10-04 (Founder home — earlier combined app delivered):
+             Founder directly requested the phone update. Fresh 156-case
+             app-gold/photos-first/Membership regression PASS, full analysis
+             clean, all 53 existing gold source/test/dependency pins unchanged.
+             Signed main PROFILE build PASS 55.9s/56.0MB; deep/strict signature
+             PASS; install sequence 6108, new container 622122B6-6741-488E-
+             95DB-51684A6EA6A1; native launch PASS and exact-container PID 67328
+             freshly observed. UI Gate handover/named APP_LATEST_LOCAL_
+             DELIVERY_2026-10-04_VERIFICATION.json own artifact hashes and
+             commands. Supersedes earlier app-gold not-installed status only.
+             App gold remains default-Off and session-local. Founder visual,
+             motion/performance and VoiceOver acceptance PENDING; OA257 OPEN.
+             No backend/provider/payment activation, upload or release.
+Update 2026-10-04 (app gold accents comparison):
+             DR-ZYRA-255 authorizes a separate App gold accents On/Off
+             control in Entry/Seeker/Guardian Developer Home. Default Off,
+             session-local; existing Diagonal edge / Live drift paints
+             below normal app content, not over photos or input controls.
+             Opening/login selections and ordinary palette/fonts are
+             unchanged. Existing authorization/account guards reset Off;
+             reduced motion is still and background tickers pause. Complete
+             functional suite 2510 PASS/two existing skips; full analysis
+             clean; ten real-font cases/20 fresh candidates cover actual
+             Settings/Dashboards and the picker for both roles at standard
+             and compact 140% text. Final expanded app-gold suite passed 25/25;
+             this includes the actual three Home panels, ordinary-account
+             exclusion and busy-panel disablement. Integration evidence is
+             in the UI Gate handover/APP_GOLD_ACCENTS_PREVIEW_2026-10-04_
+             VERIFICATION.json. All 47 canvas files preserve prior work
+             outside the scoped decorator/import/two line-wrap changes.
+             No approved golden promoted or phone installation attempted.
+             Founder visual acceptance, physical motion/performance review
+             and later phone delivery remain PENDING; OA257 stays OPEN.
+Update 2026-10-02 (unified seven-screen intro):
+             Founder moved “Let’s begin, insha’Allah” after Guardian
+             support, before role choice, and requested the first three
+             welcome screens use the selected story's large artwork.
+             The continuous preview now shows seven counted screens;
+             reported Imam Ahmad source remains inside photo-first.
+             Twelve affected suites 264/264 PASS, scoped analysis clean,
+             signed main PROFILE installed/launched. The previously
+             recorded 320 px/2×-text pulse-picker overflow is repaired
+             and regression-tested; no residual action is raised for it.
+             Founder physical visual acceptance and approved golden
+             baselines remain PENDING; OA257 OPEN. Onboarding Preview
+             §66/receipt hold as-built evidence.
+Update 2026-10-02 (quote-first intro reveal grouping):
+             Protected quote card loses the visible “TRANSLATED EXCERPT”
+             label; its principle line arrives with the reported quote.
+             All three subsequent intro cards show their closing note
+             with explanatory text instead of a short isolated reveal.
+             Photo-first final clause is clarified. Twelve suites
+             312/312 PASS; scoped analysis clean; signed main PROFILE
+             installed/launched. No approved golden baseline promoted.
+             Onboarding Preview §65/receipt hold evidence. Founder
+             physical visual acceptance and the §64 narrow-toggle
+             overflow remain PENDING; OA257 OPEN.
+Update 2026-10-01 (centred welcome and selected live diagonal):
+             Founder selected Live drift as protected gold-motion
+             default and reaffirmed the original full Diagonal edge
+             spread. Short and long staged welcome messages now centre
+             consistently. Three focused suites 43/43 PASS, scoped
+             analysis clean, signed main PROFILE installed/launched;
+             Onboarding Preview §64/receipt hold evidence. Wider testing
+             identified a 320 px/2×-text overflow in the existing
+             Developer direction-picker row at
+             `dev_onboarding_directions.dart:348`; it remains open in
+             this visual-regression OA. Founder visual acceptance
+             PENDING; OA257 OPEN.
+Update 2026-10-01 (opening-story completed dots):
+             Founder showed page 2/4 with only the active dot gold and
+             requested page 1 remain gold as completed. The protected
+             four-dot indicator now colours all prior dots gold, keeps
+             the active dot elongated, and leaves future dots muted;
+             accessibility announces Completed/Current/Upcoming. Three
+             suites 115/115 PASS, scoped analysis clean, signed main
+             PROFILE installed/launched. Onboarding Preview §63/receipt
+             hold evidence. Founder visual acceptance PENDING; OA257 OPEN.
+Update 2026-10-01 (Founder correction — diagonal spread restored):
+             Founder rejected the edge-gutter geometry as over-corrected.
+             Removed that clamp and restored Diagonal edge's original
+             full-page point spread and radii/halos. It remains the
+             protected design default; both motion comparisons remain.
+             Prior §60/61 no-overlap claims are superseded, not silently
+             treated as still true. Three suites 115/115 PASS, scoped
+             analysis clean, signed main PROFILE installed/launched.
+             Onboarding Preview §62/receipt hold evidence. Founder
+             visual acceptance PENDING; OA257 OPEN.
+Update 2026-10-01 (gold animation comparison):
+             Founder requested two opening-gold motion choices. Protected
+             toggle now offers Page entrance (default) and Live drift;
+             Diagonal edge remains the design default. Motion changes
+             opacity/vertical position only, preserving 24 px text
+             clearance. Reduced motion is still. Three affected suites
+             115/115 PASS; scoped analysis clean; signed main PROFILE
+             installed/launched. Onboarding Preview §61/receipt hold
+             evidence. Founder selection/visual acceptance PENDING;
+             OA257 OPEN.
+Update 2026-10-01 (Diagonal edge content clearance):
+             Founder chose Diagonal edge for the protected gold accent
+             and required no dots behind page text. It is the local
+             default across preview sign-in/welcome/story; full flecks
+             and halos stay outside the 24 px reading inset. Four
+             viewport sizes passed the pixel-clearance test, while gold
+             remains visible. Three suites 112/112 PASS, scoped analysis
+             clean; signed main PROFILE installed/launched. Onboarding
+             Preview §60/receipt hold evidence. Founder visual acceptance
+             PENDING; OA257 OPEN.
+Update 2026-10-01 (gold accents on sign-in preview):
+             Founder reported the opening accent toggle had no visible
+             effect and requested the selected design on the login page.
+             The protected sign-in preview now shares the live backdrop;
+             full-page flecks were strengthened with soft halos. Ordinary
+             OAuth entry remains unchanged. Three affected suites 111/111
+             PASS; scoped analysis clean; signed main PROFILE installed
+             and launched. Onboarding Preview §59/receipt hold evidence.
+             Founder visual acceptance PENDING; OA257 OPEN.
+Update 2026-10-01 (named preview welcome regression):
+             Founder reported missing name on opening welcome. The
+             protected preview had regressed to a literal unnamed line;
+             restored its safe first-name greeting with Shakeel as the
+             local sample and explicit supplied-name support. The Current
+             comparator also receives the sample. Gold-dust toggle chips
+             now avoid narrow-width overflow. Twelve suites 240 PASS,
+             one skip; scoped analysis clean; delivery traced in
+             Onboarding Preview §58/receipt. Founder on-screen acceptance
+             PENDING; OA257 OPEN.
+Update 2026-10-01 (Founder Gold dust backdrop direction):
+             Founder selected Gold dust as the protected opening-backdrop
+             default and requested ten more dust-based comparisons in
+             place of the nine other backdrop choices. The toggle now
+             contains eleven point-based designs; pulse selection remains
+             Soft bloom/Balanced. Five focused suites 145/145 PASS; scoped
+             analysis clean; local delivery traced in Onboarding Preview
+             §57/receipt. Founder visual review/acceptance PENDING; OA257
+             OPEN.
+Update 2026-10-01 (five more scattered-gold backdrops):
+             Founder requested more protected gold accent choices based
+             on Scattered gold. Gold dust, Rising drift, Edge scatter,
+             Quiet constellation and Falling flecks join the original
+             five, with live swatches and session-local selection. Soft
+             halo stays the provisional default. Five focused suites
+             145/145 PASS; scoped analysis clean; local device delivery
+             traced in Onboarding Preview §56/receipt. Founder visual
+             comparison and backdrop selection PENDING; OA257 OPEN.
+Update 2026-10-01 (Founder selected welcome pulse):
+             Founder selected Soft bloom at Balanced (level 3) as the
+             protected onboarding welcome-pulse default. The other four
+             designs and five intensity levels remain available in the
+             Developer comparison toggle. Soft halo remains a provisional
+             backdrop default, with Founder backdrop selection/visual
+             acceptance pending; OA257 stays OPEN. Onboarding Preview §55
+             and its receipt trace verification and local delivery.
+Update 2026-10-01 (five gold pulse and backdrop comparisons):
+             Founder requested Bold pulse default, a gold ring, five pulse
+             designs and five gold backdrop designs in the protected toggle,
+             plus splash-gold ZYRA headers across preview onboarding. All
+             choices are local, guard-checked and previewed; Gold ring and
+             Soft halo are provisional defaults. Fifteen affected suites
+             342/342 PASS; scoped analyzer clean; signed main PROFILE
+             installed/native-launched. Founder visual selection/acceptance
+             PENDING, OA257 OPEN. Onboarding Preview §54/receipt hold exact
+             evidence. No TestFlight, backend, migration, payment or Git.
+Update 2026-10-01 (opening-card first beat):
+             Founder reported an icon-only initial beat on the quote card
+             and requested icon plus first heading together on every
+             staged opening card. All ten protected visual directions now
+             start each of four cards at reveal step 1; later content stays
+             paced. Eleven affected suites 301/301 PASS; scoped analyzer
+             clean; signed main PROFILE installed/native-launched. Founder
+             visual acceptance PENDING, OA257 OPEN. Onboarding Preview §53
+             and receipt hold exact evidence. No TestFlight, backend,
+             migration, credit/purchase or Git action.
+Update 2026-10-01 (typewriter comparison and pulse intensity):
+             Founder requested ten new welcome-text motions: five
+             typewriter-only and five Slow-descent/typewriter blends, with
+             existing five descent choices retained. Protected toggle also
+             gains labelled pulse slider levels 1–5, default 3 matching old
+             strength. Nine affected suites 262/262 PASS; scoped analyzer
+             clean; signed main PROFILE installed/native-launched. Founder
+             visual selection/acceptance PENDING, OA257 OPEN. Onboarding
+             Preview §52/receipt hold exact evidence. No TestFlight,
+             backend, migration, credit/purchase or Git action.
+Update 2026-10-01 (Slow-descent family and Luma default):
+             Founder set Slow descent as protected welcome-text default,
+             narrowed toggle to five close variations, and set Luma as the
+             protected onboarding direction default. Eleven directions
+             remain selectable; ordinary signup unchanged. Nine affected
+             suites 248/248 PASS, scoped analyzer clean; signed main PROFILE
+             installed/native-launched. Founder visual acceptance PENDING;
+             OA257 OPEN. Onboarding Preview §51/receipt hold exact evidence.
+             No TestFlight, backend, migration, credit/purchase or Git action.
+Update 2026-10-01 (focused welcome-text comparison):
+             Founder retained Gentle dissolve and Feather drop, replaced
+             nine others with four fade/downward variations. Six protected
+             options now appear in toggle. Six affected suites 152/152 PASS,
+             scoped analyzer clean; signed PROFILE installed on paired
+             iPhone. Native launch denied by Locked device; Founder visual
+             acceptance PENDING and OA257 OPEN. Onboarding Preview §50 and
+             receipt hold exact evidence. No TestFlight, backend, migration,
+             credit/purchase or Git action.
+Update 2026-10-01 (continuous final-welcome pulse):
+             Founder reported the protected gold cue stopped after four
+             cycles. It now repeats until navigation, with static reduced-
+             motion behaviour, and copy reads “Let’s begin, insha’Allah.”
+             Five affected suites 187/187 PASS, scoped analyzer clean;
+             signed main PROFILE installed/native-launched. Founder visual
+             acceptance PENDING; OA257 OPEN. Onboarding Preview §49/receipt
+             hold exact evidence. No TestFlight, backend, migration, credit/
+             purchase or Git action.
+Update 2026-10-01 (softer welcome and provider-entry motion):
+             Founder found all ten text motions harsh and the §47 fade
+             briefly overlapping. Eleven protected options now use a soft
+             non-overlap handoff; new Gentle dissolve is provisional default.
+             First welcome line automatically enters after the selected
+             six-option Intro page transition from provider finishes.
+             Combined eight-suite 175/175 PASS, compact visuals and scoped
+             analyzer clean. Signed main PROFILE installed/native-launched;
+             Founder on-device feel/acceptance PENDING, OA257 OPEN.
+             Onboarding Preview §48/receipt hold exact evidence. No
+             TestFlight, backend, migration, credit/purchase or Git action.
+Update 2026-10-01 (welcome/story restoration after Founder report):
+             Default protected Atoms signup path rechecked through provider,
+             four welcome lines and four story cards. Welcome text-motion
+             visibility handoff corrected; Back DEV now reaches provider
+             from first line and previous content through the story. First
+             compact visual run found a 32px footer overflow; repaired before
+             combined 139/139 PASS and clean scoped analyzer. Final signed
+             main PROFILE app installed/native-launched on paired iPhone;
+             no welcome pixels captured, so Founder acceptance PENDING and
+             OA257 OPEN. Onboarding Preview §47/receipt hold exact evidence.
+             No TestFlight, backend, migration, credit/purchase or Git action.
+Update 2026-10-01 (Back DEV welcome replay):
+             Founder asked for Back · DEV alongside Skip · DEV on the four
+             protected welcome lines. Back steps to the previous line,
+             disabled on first; Skip retains direct story shortcut. Footer
+             fits compact 2x text after an initial overflow was repaired.
+             Focused53/53 and adjacent visual21/21 PASS, scoped analyzer/
+             formatter clean. Signed main PROFILE app installed and native-
+             launched; Flutter wireless VM attachment timed out. Founder
+             interaction acceptance PENDING; OA257 OPEN. Onboarding Preview
+             §46 and named receipt hold exact evidence. No TestFlight,
+             backend, migration, credit/purchase or Git action.
+Update 2026-10-01 (ten welcome-text motion comparisons):
+             Founder requested better transitions between four protected
+             welcome lines and ten selectable options. Developer Home/
+             Actions toggle now offers ten text-only, session-local motions;
+             Soft rise is temporary default. Old line clears before next is
+             readable; canvas/header/copy/pacing fixed. Focused52/52 and
+             adjacent visual21/21 PASS; scoped analyzer/formatter clean.
+             Signed main PROFILE installed/launched on paired iPhone. Final
+             felt-motion selection and Founder acceptance PENDING; OA257
+             OPEN. Onboarding Preview §45 and named receipt hold exact facts.
+             No TestFlight, backend, migration, credit/purchase or Git action.
+Update 2026-10-01 (splash/header wordmark proportions):
+             Founder selected the small onboarding-header ZYRA as the
+             reference mark. Code-native splash marks now scale that Syne
+             mark's 4/18 tracking ratio with display size, with compact-width
+             fitting. Sentence-level ZYRA and tagline remain Poppins; gold,
+             gradient, timing and icon unchanged. Four focused suites 88/88
+             PASS; scoped analyzer clean. Signed main PROFILE installed and
+             launched on paired iPhone. Actual screen pixels and Founder
+             acceptance PENDING; OA257 OPEN. Style Default §13 and named
+             receipt hold hashes. No backend, migration, credit/purchase,
+             TestFlight or Git action.
+Update 2026-10-01 (fixed Poppins and bundled Syne wordmark):
+             Founder clarified ordinary app text is Poppins and standalone
+             ZYRA lettering keeps its own font. Member font choice removed;
+             legacy font cache ignored/cleared at startup. Existing local
+             Syne face bundled for offline brand display, with four missed
+             standalone marks corrected. Seven focused suites passed 59/59,
+             scoped analysis clean; signed main PROFILE app installed/
+             native-launched on paired iPhone. Actual font pixels and Founder
+             acceptance PENDING; OA257 OPEN. Style Default §12/receipt hold
+             hashes and device facts. No TestFlight, backend, migration,
+             credit/purchase or Git action.
+Update 2026-10-01 (role-neutral four-line welcome):
+             Founder approved separate praise/blessings and role-neutral
+             prayer before choosing Seeker or Guardian; removed the
+             family assumption and name-dependent preview greeting. Four
+             screens now advance by tap; only “Let’s begin” has the pulse
+             and visible cue. Five affected suites passed 182/182, scoped
+             analysis clean. Signed main PROFILE app installed/launched
+             on paired iPhone. Actual welcome pixels and Founder acceptance
+             PENDING; OA257 OPEN. Onboarding Preview §44/receipt hold hashes.
+             No TestFlight, backend, migration, credit/purchase or Git action.
+Update 2026-10-01 (tap-paced welcoming prelude):
+             Founder replaced the §42 timed welcome with three deliberate
+             screen taps: greeting, prayer, then “Let’s begin” with the
+             only visible tap cue and a verified pulsing gold dot. Five
+             affected suites passed 182/182 and scoped analysis clean.
+             Correct signed main PROFILE app installed and native-launched
+             on paired iPhone; actual welcome pixels and Founder acceptance
+             remain PENDING. Onboarding Preview §43 and named receipt hold
+             hashes and device evidence. OA257 remains OPEN; no TestFlight,
+             backend/member data, migration, purchase/credit or Git action.
+Update 2026-10-01 (welcoming prelude and two opening-story methods):
+             Founder requested an earlier named welcome, timed prayer and
+             “Let’s begin” with a pulsing gold dot and explicit tap cue.
+             The existing quote remains card 1/4 after this unnumbered
+             prelude. Protected toggle offers Tap through (default) and
+             Scroll down as coherent four-card methods; the later form CTA
+             toggle is separate. Ten affected suites passed 281/281,
+             including compact 1.4x text after an overflow correction;
+             scoped analysis clean. Signed main PROFILE app 1.0.0 (5)
+             installed/launched on paired iPhone; actual welcome/card
+             pixels, interaction feel and Founder acceptance remain
+             PENDING. Onboarding Preview §42 and named receipt record
+             exact hashes/limits. OA257 remains OPEN; no TestFlight,
+             backend/member data, migration, purchase/credit or Git change.
+Update 2026-10-01 (quote-first opening story, local delivery):
+             Founder chose to open the ten protected themed onboarding
+             introductions with the existing qualified Imam Ahmad excerpt,
+             then his selected “Match on attraction. Connect on deen.”
+             photo-first explanation. Compatibility and Guardian cards now
+             follow; card four retains the final down-arrow. Focused
+             widgets 43/43, real-font visual/layout checks 46/46, broader
+             onboarding/signup regressions 183/183 and full opt-in capture/
+             replay 46/46 each PASS; 168 new candidate-only PNGs, Atoms
+             first two inspected;
+             scoped analyzer clean. Correct signed PROFILE artifact was
+             explicitly reinstalled as main app 1.0.0 (5) into iPhone
+             container EC07E250-F78D-48C9-9AD1-68E2BF979D68 and native-
+             launched as PID58191. Fresh capture reached Developer Access,
+             not opening cards. Onboarding Preview §41/receipt hold exact
+             hashes and limits. Founder physical copy/motion acceptance
+             PENDING; OA257 remains OPEN. No TestFlight or backend change.
+Update 2026-10-01 (repeat caption report, explicit reinstall):
+             Founder reported the protected opening cards still showed
+             visible tap/swipe instructions. The previously attached
+             12:39 screenshots predated the §39 source edit/build, but
+             no new opening-card screenshot has yet verified the current
+             installed pixels. Source and the correct compiled PROFILE
+             Dart AOT contain neither exact phrase; a stale generic
+             Runner artifact still contains old copy and is not the
+             selected PROFILE build. The correct signed PROFILE app was
+             explicitly reinstalled into iPhone container EBFD7D8A-D6E8-
+             423E-A7F9-F3BAD7B10299 and native-launched as PID57971.
+             A fresh capture reached Developer Access only; the opening
+             card itself and its gesture feel remain unmeasured on device.
+             Onboarding Preview §40 and the amended §39 named receipt hold
+             the evidence boundary. Founder acceptance PENDING; OA257 OPEN.
+             No further product-code change, new test run or TestFlight.
+Update 2026-10-01 (all-four-card gesture captions removed, source verified):
+             Founder screenshots showed the protected third opening card
+             displaying “Tap the page to continue reading” before reveal
+             and “Swipe right for the next page” afterward. He requested
+             these visible footer directions be removed across all four
+             cards and clarified that builder interaction instructions are
+             not automatically user-facing copy. The arrow-mode footer is
+             clear until the fourth card's actual arrow appears; tap/swipe
+             reveal, reverse swipe, dots/count, Skip DEV and screen-reader
+             hints remain. The protected transition-toggle description now
+             explains motion choice and place persistence without narrating
+             card gestures. Two focused
+             test files passed 72/72; a wider five-file onboarding/signup
+             run passed 202/202; candidate visual replay passed 1/1 with
+             two inspected phone-sized PNGs; scoped Dart analysis clean.
+             Full-project analysis had only an unrelated existing info-level
+             photo-test import. Onboarding Preview §39 records source and
+             forward copy rule. A new main PROFILE build completed in 58.4s
+             and installed in a fresh paired-iPhone container; a separate
+             native launch was denied because the phone was locked. Correct
+             PROFILE Runner passed strict signing and both Runner/App hashes
+             are filed in §39 and its named receipt. Founder visual/gesture
+             acceptance is PENDING. §38 receipt hashes came from a stale
+             default Runner path and cannot verify its installed PROFILE
+             binary; the receipt retracted them. OA257 remains OPEN.
+Update 2026-10-01 (onboarding progress semantics, local install verified):
+             Founder screenshots showed role choice “1 of 2” with seven
+             gold cells, followed by an unnumbered Welcome, then “1 of 4”
+             with another cell count. Ordinary/protected shared screens now
+             treat role choice and Welcome as unnumbered; the pre-identity
+             Account Essentials intro is distinct from the subsequent four-
+             stage profile journey. Later stage intros show STAGE x OF 4
+             with exactly four segments; fractional preview progress is a
+             continuous rail rather than decorative cells. Final-source
+             focused tests 115/115 PASS, wider onboarding 344 PASS with one
+             pre-existing SKIP, visual-candidate tests 4/4 PASS and five
+             390x844 captures inspected. Twelve-runtime-file scoped analyzer
+             clean; whole analyzer had one unrelated existing info-level
+             photo-test import. PROFILE build and fresh paired-iPhone
+             install verified; native launch was denied because the phone
+             was locked. Onboarding Preview §38/named receipt hold exact
+             evidence. Founder on-screen visual/interaction acceptance and
+             post-unlock launch PENDING; OA257 remains OPEN. Installed §37
+             binary predates this correction; no acceptance is inferred.
+Update 2026-10-01 (fourth-card downward handoff, local delivery verified):
+             Founder asked to improve the protected opening story's
+             “scroll down” motion. Source now lifts/fades only the final
+             card foreground for 240ms over the fixed purple canvas, then
+             raises/fades the role-choice foreground for 420ms with a faint
+             route-boundary bridge. Gold arrow, first-three Card Tilt,
+             Continue alternative and ordinary signup remain unchanged;
+             reduced-motion/accessibility handoff is immediate. Stale
+             Home/restart exits are guarded. Onboarding Preview §37 records
+             source and five unapproved visual candidates; final eight-suite
+             regression 200/200 PASS, standalone signup 94/94 PASS, scoped
+             analyzer/formatter clean and opt-in candidate capture/replay
+             PASS. Fresh signed main PROFILE app installed and native-
+             launched on paired iPhone; §37/named receipt hold measured
+             build, hash and device facts. Founder physical motion
+             acceptance PENDING; OA257 OPEN. No TestFlight, backend,
+             migration, credit/payment or Git action.
+Update 2026-10-01 (stationary-background Card Tilt):
+             Founder asked to keep Card Tilt's content movement but stop
+             the purple page background moving. The protected default now
+             tilts/translates/fades transparent story text and artwork
+             above a fixed full-screen gradient; its travelling panel,
+             gold border and shadow are removed. Other five choices,
+             staged taps/swipes, fourth-card arrow and reduced motion
+             remain. Five focused suites passed 181/181, candidate visual
+             capture 7/7 with 17 new unapproved PNGs, scoped analyzer and
+             formatter clean. Fresh main PROFILE build was installed and
+             direct-launched on the paired iPhone; Onboarding Preview §36
+             and named receipt contain exact checks. Founder physical
+             motion acceptance PENDING; OA257 OPEN. No TestFlight,
+             backend/member-data, migration, credit/payment or Git action.
+Update 2026-10-01 (tap-anywhere card progression):
+             Founder found that tapping after full text reveal did not
+             advance the first three protected opening cards, leaving gold
+             dots as the apparent only tap route. A page-bound tap now
+             reveals remaining text then advances one card; non-control
+             wordmark and empty footer/card space share the action. The
+             fourth card still requires its final down-arrow action. Seven
+             onboarding/signup suites passed 215/215 and scoped analyzer
+             was clean. Fresh main PROFILE app installed/direct-launched on
+             the paired iPhone; exact evidence in Onboarding Preview §35
+             and named receipt. Founder on-screen acceptance PENDING;
+             OA257 OPEN. No TestFlight, backend, migration or Git action.
+Update 2026-10-01 (first-card prompts and forward swipe):
+             Founder device feedback found the completed first-card swipe
+             cue remained, and forward swipes appeared inert without button
+             taps. Both first-card footer prompts are now absent. Unread
+             rightward swipes reveal one text stage; a later swipe advances.
+             Short fast flicks and lighter 40px horizontal drags register.
+             Seven focused onboarding/signup suites passed 213/213; scoped
+             analyzer clean. Fresh main PROFILE app installed and native-
+             launched from a new paired-iPhone bundle container; Onboarding
+             Preview §34/named receipt hold exact evidence. Founder physical
+             gesture and visual acceptance remains PENDING; OA257 OPEN.
+Update 2026-10-01 (progressive Onboarding local-device delivery):
+             Unchanged §31 source was rebuilt and locally installed on the
+             paired iPhone after the Founder's return-home update request.
+             Main PROFILE app signed under Team9Y7Z8F36SJ and bundle
+             app.zyraconnect.zyra; fresh device inventory and running PID
+             from the new bundle container verify install/launch. The
+             source's split regression255/255 + 88/88 and scoped analyzer
+             remain the applicable pre-build evidence. Onboarding Preview
+             §32/named 2026-10-01 delivery receipt own exact build, hash,
+             device and signing facts. Founder on-screen pacing, layout,
+             gesture and cold-reopen acceptance remains PENDING; OA257 OPEN.
+             No TestFlight, backend/data, migration, credit/payment or Git.
+Update 2026-09-30 (six protected intro-page transitions):
+             Founder requested five alternatives to the first three
+             Onboarding story-page handoffs for swipes and down-arrow taps.
+             Separate protected Home/Actions toggle now offers Current
+             slide (default), Quiet fade, Soft lift, Side glide, Focus
+             zoom and Card tilt. Session-local/access-gated choice leaves
+             the same pager, three pages and ordinary member signup
+             unchanged; reduced motion jumps without the added effect.
+             Change-focused seven-suite129/129 clean PASS; opt-in visual
+             candidate6/6 PASS, 48 unapproved PNGs and no approved-
+             golden replacement. Broader signup-inclusive run reached
+             203 completed test cases with no assertion failures, but its
+             `dev_signup_process_test.dart` tearDownAll remained
+             pending >4 minutes and required interruption; investigate
+             this QA-harness limitation under OA257; cause unverified and
+             not classified as a transition failure. Scoped nine-file
+             analyzer/formatter clean. L1 report
+             de8841ae ATTENTION: 0 new/reopened/resolved findings;
+             known stale pricing-rule high remains. Same signed main app
+             installed5064 and direct launch PASS. Onboarding Preview
+             §26/named receipt hold exact facts. Founder six-way physical
+             visual/gesture acceptance PENDING; OA257 OPEN. No new OA,
+             TestFlight, backend/data, migration, credit/payment or Git.
+Update 2026-09-30 (further completed splash hold reduction):
+             Founder found the 1250ms still frame still too long and
+             requested 650ms after the unchanged 2400ms animation,
+             nominal total3050ms. Production and protected preview must
+             retain one shared timing value; Quiet Horizon artwork and
+             brand colours remain unchanged. Focused82/82 + startup14/14
+             + candidate visual14/14 = 110/110 PASS, no approved-golden
+             replacement; scoped analyzer5 clean. UI-gate582280e2 ATTENTION:
+             0 critical/
+             1 known stale pricing-rule high/23 medium/263 low, 0 new/
+             reopened/resolved. Signed one-main-app PROFILE build56.2s/
+             55.7MB and deep/strict codesign PASS; Runner SHA
+             3f17324bc22c526c3f17a8489332c1b156c37d6b157b47f4f03b67d7957093eb;
+             AOT SHA
+             1c5522afd16929b6d3b20fffc34e148f9c648d099a62dec14110a05886617831.
+             Paired iPhone install5056 PASS; direct launch DENIED only
+             because phone locked. Running-screen timing and Founder
+             acceptance PENDING. AuthGate may still hold the frame
+             longer for session resolution. Splash Screen handover's
+             latest overlay owns implementation/delivery facts; OA257
+             remains OPEN for Founder device timing acceptance. No
+             TestFlight, backend, migration, credit/payment or Git.
+Update 2026-09-30 (icon wordmark matches main splash):
+             Founder requested the app icon's ZYRA letters match Quiet
+             Horizon. Generator now tints the locked Syne stencil to the
+             splash's exact #E5CE8E gold across Current plus ten selectable
+             iOS alternatives; composition, decorative accents and
+             #30203F→#160E20 purple background remain. Primary/eleven
+             previews/iOS sets, Android adaptive and Android/macOS/web/
+             Windows icons regenerated from one source. Primary and iOS
+             1024px hashes match: 82e7640156ae2ef3658519bd1a5292768ec72
+             f75e8f1d059c27b3f11ba1eefd0. Focused 13/13 + gallery/
+             visual 18/18 PASS; splash palette/motion 17/17 PASS; icon-test
+             analyzer clean. Independent asset QA found all eleven native
+             masters, previews, and cross-platform exports consistent.
+             Whole-project analyzer exits 1 solely for an unrelated info-only
+             photo-test unnecessary import; cosmetic, no icon/runtime impact,
+             so no new action within this scope. UI-gate invocation
+             skipped the scan because no Flutter UI source changed—not a
+             full-gate pass. Signed one-main-app PROFILE build PASS, compiled
+             AppIcon + ten iPhone/iPad alternates; installed iPhone sequence
+             5048. Two launch attempts BLOCKED by locked device: physical icon
+             appearance and Founder acceptance PENDING. App Logo Summary and
+             UI Consistency Gate handover own product/as-built facts. OA257
+             remains OPEN; no new OA, TestFlight, backend, migration,
+             payment/credit or Git action.
+Update 2026-09-30 (animated arrow default in protected Onboarding):
+             Founder chose Animated down arrow as the initial protected
+             Onboarding navigation style while keeping Continue selectable
+             in the same toggle. Shared session-local developer controller
+             now defaults/resets to arrow; full/standalone preview inherit
+             it. Ordinary live signup has no arrow scope and remains
+             unchanged. Five-suite184/184 PASS across default/Continue,
+             account reset, access denial, signup and CTA coverage; scoped
+             analyzer/formatter clean. L1 report fddb6ea3: 0 new/reopened/
+             resolved, 0 critical/1 known stale pricing-rule high/23 med/
+             263 low. Same signed main app installed5040/launched new
+             container PID53361. Onboarding Preview §24/named receipt
+             hold facts. Founder visual/gesture acceptance PENDING;
+             OA257 OPEN. No TestFlight, backend, migration, credit/payment
+             or Git action.
+Update 2026-09-30 (shorter completed splash hold):
+             Founder found the finished Quiet Horizon frame too slow and
+             requested 0.5-1.0s less pause. Production and protected
+             design studies now share unchanged 2400ms motion + 1250ms
+             still hold, total3650ms; AuthGate can still wait longer for
+             session resolution. Focused motion/preview79/79 PASS and
+             palette/visual/startup31/31 PASS; scoped analyzer/formatter
+             clean. L1 report cb568e6e ATTENTION: 0 critical, 1 known
+             stale pricing-rule high, 23 medium, 263 low; 0 new/reopened/
+             resolved. Same signed main app installed5032/launched new
+             container PID53348. Splash handover/Onboarding Preview §23/
+             named receipt hold facts. Founder timing acceptance PENDING;
+             OA257 OPEN. No TestFlight, backend, migration, credit/payment
+             or Git action.
+Update 2026-09-30 (splash/Welcome lockup colour alignment):
+             Founder requested the sign-in/Onboarding Welcome wordmark
+             and Connecting Through Trust match the current Quiet
+             Horizon splash. Shared palette tokens now keep the existing
+             splash gold #E5CE8E and 78%-white tagline on both ordinary
+             and protected Welcome; fonts, timing, gradient, provider
+             actions and legacy Original comparison are unchanged.
+             Final seven-suite204/204 PASS, scoped analyzer/formatter
+             clean; 18 real-font candidate checks and 4 normal-auth
+             visual regressions passed without approved-golden changes.
+             UI gate1290ccee: 0 new/0 reopened/1 resolved, 0 critical/
+             1 known stale pricing-rule high/23 medium/263 low. Signed
+             same main app installed5008; launch denied by locked phone.
+             Splash handover/Onboarding Preview §22/named receipt hold
+             facts. Founder device acceptance PENDING; OA257 OPEN.
+             No TestFlight, backend, migration, credit/payment or Git.
+Update 2026-09-30 (role choice select-then-swipe and six layouts):
+             Founder requested card tap to select in place, then bottom
+             chevron/upward swipe to advance, and Current plus five new
+             role-card presentations in this page's own protected toggle.
+             Current/Editorial/Guided paths/Quiet rails/Spotlight/Framed
+             choice update in place; ordinary live signup uses Current
+             design and the same two-step choice. No live draft save until
+             deliberate advance. Standard 390x844 shows both roles; compact
+             large-text scrolls. Focused194 PASS/1 existing SKIP, broader
+             28-suite434 PASS/1 existing SKIP, real-font16 PASS, scoped
+             analyzer/formatter clean. L1 report80c79b79: 0 critical,
+             1 high, 23 medium, 264 low, 3 new/3 resolved low fingerprints;
+             stale pricing-rule high persists and remains owned here.
+             Signed same main app installed5000; direct launch denied by
+             Locked phone. Onboarding Preview §21/named receipt hold facts.
+             Founder six-way visual/gesture acceptance PENDING; OA257 OPEN.
+             No TestFlight, backend, migration, credit/payment or Git.
+Update 2026-09-30 (swipe-mode intro Back removal):
+             Founder requested removal of the bottom-left Back text on
+             Atoms intro, leaving backward scroll. Protected arrow/swipe
+             mode now hides that action on all three-page studies while
+             retaining the centered-dot spacer; downward swipe returns
+             one page. Continue mode still has Back; forward arrow, dots,
+             Skip · DEV and form validation remain. Focused92/92, wider
+             13-suite162/162, real-font4/4, scoped analyzer/formatter
+             PASS. L1 report fcbd5731: 0 new/reopened/resolved, known
+             stale pricing-rule high unchanged. Signed one-main-app
+             PROFILE installed4992; launch denied by Locked iPhone.
+             Onboarding Preview §20/named receipt hold evidence. Founder
+             physical interaction acceptance PENDING; OA257 OPEN. No
+             TestFlight, backend, migration, credit/payment or Git.
+Update 2026-09-30 (lighter protected onboarding intro swipe):
+             Founder reported heavy/unresponsive onboarding scroll. The
+             ten visual stories and Current intro now use 56px actual
+             finger travel on release, replacing 50px iOS-damped
+             overscroll. Substantial text overflow is read first, one
+             drag moves at most one slide, and later answer/form pages
+             retain deliberate validation-gated actions. Focused98/98,
+             final13-suite276/276, real-font layout4/4 PASS; seven-file
+             analyzer/formatter clean. L1 report b26dbc86: 0 new,
+             0 reopened, 0 resolved; prior 1 high pricing-rule false
+             positive unchanged and still tracked here. Onboarding
+             Preview §19/named receipt hold architecture and evidence.
+             Signed one-main-app PROFILE installed4984/launched PID52236.
+             Founder physical gesture acceptance PENDING; OA257 OPEN.
+             No TestFlight, backend, migration, credit/payment or Git.
+Update 2026-09-30 (Atoms-first roles and app-wide no-heart rule):
+             Founder selected Atoms as the protected Onboarding preview
+             default while retaining all11 selectable styles, requested
+             clearer Seek marriage/Support as Guardian cards and reaffirmed
+             no heart icon in the whole app. Fresh entry, direct preview and
+             standalone comparator now default Atoms; explicit selection
+             wins, ordinary public signup unchanged. Role cards replace
+             boxed pictograms with gold rail/text hierarchy/trailing cue;
+             single accessible full-card actions and routes retained. Audit
+             removed13 live heart icons across7 Flutter files, replacing
+             each with a neutral context-specific symbol. Static no-heart
+             guard added; app/splash/icon-preview assets visually inspected
+             without heart motif. Final21-suite449 PASS/0 FAIL; scoped15-
+             file analyzer and formatter clean. Candidate-only Atoms role
+             capture inspected; approved goldens untouched. Signed main
+             PROFILE app installed4976/launched PID52140 from new container.
+             L1 deterministic report27fed2e6 = ATTENTION: 0 critical, 1
+             high, 23 medium, 264 low across259 files/214 changed since the
+             prior state. High UIG-06 wrongly calls Help's Seeker One £29.99
+             retired despite current Founder-approved Pricing V6/Product
+             Spec V5. This is stale gate config, not a Help price defect;
+             repair/retest the rule and triage report under OA257 without
+             changing the approved price or silently suppressing evidence.
+             Onboarding Preview §18, UI Consistency Gate handover and named
+             receipt hold evidence. Founder physical visual/interaction
+             acceptance PENDING; OA257 OPEN. No TestFlight, backend,
+             migration, credit/payment or Git action.
+Update 2026-09-30 (swipe-first onboarding arrow polish, launched):
+             Founder found the circular arrow/centered Skip layout awkward
+             and requested content swipes without mandatory arrow taps.
+             Protected arrow mode now uses a bare gold chevron with its
+             accessible 52px hit target, centered below story dots, with
+             dim Skip at bottom right. All ten alternative stories and the
+             Current comparator advance on fresh bottom-edge upward swipes;
+             compact unread content scrolls first. Forms remain tap/validity
+             gated. Async stage completion blocks duplicate in-flight
+             actions but permits failed-save retry. Standalone Current opt-in
+             and stale outgoing-route guards were added after independent
+             review. Final14-suite285 PASS/0 FAIL, scoped7-file analyzer and
+             formatter clean; signed PROFILE main app installed as sequence
+             4968 and launched from new container/PID52013. Onboarding
+             Preview §17 and named receipt hold exact evidence. Founder
+             physical visual/gesture acceptance PENDING; OA257 remains OPEN.
+             No new OA, TestFlight, backend, migration, payment or Git action.
+Update 2026-09-30 (onboarding navigation comparison, local launch):
+             Founder requested an independent Continue/down-arrow toggle
+             across all11 Onboarding directions. Founder-only, session-local
+             scope now gives the ten alternative stories vertical swiping
+             in arrow mode and gives simple forward actions a bounded,
+             reduced-motion-aware 52px down-arrow. Current's opening route,
+             explicit provider/role/consent decisions, question order,
+             validation and ordinary member flow remain unchanged. New50-
+             case style×mode×role/route matrix and7 arrow widget tests pass;
+             final13 suites268 PASS/0 FAIL, scoped16-file analyzer and
+             formatter clean. One intermediate old-key swipe regression was
+             repaired before the final green gate. Main PROFILE build/sign
+             PASS; install4960 and direct launch/new-container process51981
+             PASS. Onboarding Preview §16 and named receipt hold exact facts.
+             Founder physical/visual interaction acceptance is PENDING;
+             OA257 remains OPEN. No new OA, TestFlight, backend, migration,
+             payment or Git action.
+Update 2026-09-29 (developer skips/progressive Seeker entry, installed):
+             Founder directly requested protected Skip · DEV through
+             onboarding, role-correct final destinations and an explicit
+             Seeker finish-later decision after real IDV. Implemented in the
+             existing local one-app preview; live IDV still requires its
+             server result and Seeker live choice binds original account.
+             Incomplete My ZYRA presents Continue setup; Guardian final
+             preview opens a fresh zero-linked home without a false pending
+             chapter card. Deferred preview consent/photo paths remain local
+             and capability revocation fails closed. Final30 suites501 PASS/
+             0 FAIL/1 existing SKIP, scoped24-file analyzer and formatter
+             clean. Signed main PROFILE app installed as sequence4952;
+             launch twice DENIED by iOS Locked. Onboarding Preview §15 and
+             named verification JSON contain as-built/device evidence.
+             Universal later-chapter finish-later exit and specialised
+             deferred-page visual consistency remain review observations;
+             Founder screen/interaction acceptance is PENDING. No new OA,
+             closure, TestFlight, backend, migration, payment or Git action.
+Update 2026-09-29 (onboarding direction continuity, launch held): Founder
+             found the ten alternative onboarding styles distinctive only
+             in their introductory pages and requested each style continue
+             through the real-feeling local initial journey. A session-local,
+             preview-only direction scope now applies original ZYRA-coloured
+             motifs, card/action/progress geometry and layout treatment to
+             role selection and initial Seeker/Guardian, IDV and completion
+             surfaces. Common Welcome, Current comparator, ordinary live
+             onboarding content, routes and validation remain unchanged.
+             Wise/Uber card contrast and centred-role text alignment were
+             corrected after internal visual review. Frozen-source functional/
+             guard112/112 PASS; candidate capture44/44 and no-update replay
+             44/44 PASS across141 PNGs. Scoped12-runtime/two-test analyzer
+             clean; final25 suites431 PASS/0 FAIL/1 pre-existing SKIP. Whole
+             analyzer exit1 solely for unrelated pre-existing unnecessary-
+             import info in the photo-processor test, with no errors/warnings.
+             Main PROFILE build and strict signature PASS; new Runner/AOT
+             hashes and candidate aggregate in Onboarding Preview §14. Paired
+             iPhone install4944 PASS into new container8FD60BC3-8CEC-437A-
+             8C5D-8A8BF311CD10; launch DENIED because device Locked. The
+             previous §13 signed/device receipt belongs to the Home/no-top-
+             bar update, not this delta. NEW SOURCE INSTALLED, NOT LAUNCHED;
+             Founder physical/visual acceptance remains open.
+             No new OA identifier or closure, and no live backend, payment,
+             permission, TestFlight, migration or Git action.
+Update 2026-09-29 (Home/no-top-bar delivered locally): Founder returned and
+             directly requested the app update. Fresh25 suites431 PASS/
+             0 FAIL/1 existing SKIP, scoped21-file analyzer clean; whole
+             analyzer only known unrelated photo-test info. Main production
+             Founder-enabled PROFILE built with existing Team/signing,
+             codesign deep/strict PASS, ZYRA app.zyraconnect.zyra 1.0.0(5).
+             New Runner SHA b117ccd5436102126b5b328fff0436430f7343ac
+             04635a20ee8ec6e0efe4b15c; Dart AOT SHA c92258e192d01fd9
+             df8c99a46201c3ab352f4ef8bda27810e10ace9b8bf7e2ac.
+             Paired iPhone install4936 into new container3B7EC59A-CA29-
+             4C1A-A5ED-8DF835FBBBA0 PASS; direct launch/new PID50766 and
+             main app inventory PASS. Stale prior-container PID50679 softly
+             terminated; final process inventory contained only new PID.
+             Source §11/§12 hold is superseded by Onboarding Preview §13;
+             dated delivery JSON contains exact evidence. LOCAL DELIVERY
+             POST-VERIFIED — FOUNDER PHYSICAL/VISUAL ACCEPTANCE PENDING.
+             No TestFlight, git, SQL, backend/account, trust-policy or new
+             signing-asset workflow; any automatic local Xcode profile-metadata
+             refresh was not independently inventoried. OA286 remains open.
+             No new identifier or OA closure.
+Update 2026-09-29 (Home returns to Developer Access, delivery held): Founder
+             clarified toggle Home must return to the three-action developer
+             landing, not simply exit onboarding to its invoking page.
+             Shared isolated Home action on Entry/Seeker/Guardian; top strip
+             stays removed. Fresh proof/root navigator/account-generation/
+             owner/current/mounted/duplicate guards; no sign-out, account/
+             sample reset or preview-latch release. Internal review found
+             captured-null stale Home could close a new owner; repaired with
+             before/after owner-presence checks and regression cases.
+             Final25 suites431 PASS/0 FAIL/1 existing SKIP; separate visual2
+             PASS/four new real-font PNGs inspected; analyzer21 clean and
+             formatter21/0. Whole analyzer only known unrelated photo-import
+             info; earlier load/fixture failures preserved in receipt.
+             All22 style-role journeys retained, actual both-role Home routes
+             and10 focused access/race cases pass. Prior21 PNGs,65 protected
+             Compatibility hashes, two prior receipts and native Runner
+             unchanged. Seven runtime/ten existing+two new test changes,
+             true pre/post hashes and limits in Onboarding Preview §12 and
+             DEV_HOME_NAVIGATION_2026-09-29_VERIFICATION.json.
+             SOURCE INTERNALLY VERIFIED — NOT INSTALLED. No native/device/
+             TestFlight/git/backend/account/credit action. §10's4824 receipt
+             remains previous delivery. Fresh install/launch and Founder
+             acceptance pending return under OA286. NEXT unchanged; no new
+             identifier or closure.
+Update 2026-09-29 (top strip removed, delivery held): Founder requested
+             removal of the remaining dark bar/X and said they were away.
+             Source now full-viewport; children own OS safe insets. Safe exit
+             moved into developer Home → Exit onboarding, capability/current/
+             mounted/isolation/closing and exact-registration guarded.
+             Stale rendered exit cannot close a replacement owner. Real
+             account/session/transport and preview latch unchanged.
+             Final21 suites318 PASS/0 FAIL/1 existing SKIP; separate visual3
+             PASS; analyzer10 clean, formatter10/0. Initial undefined color
+             compile/load failure repaired and retained in evidence.
+             Seven new real-font PNGs inspected; prior14 PNGs,65 protected
+             Compatibility hashes and previous native Runner unchanged.
+             Three runtime/seven test files, true pre/post hashes and limits
+             in Onboarding Preview §11 and edge-to-edge verification JSON.
+             CODE INTERNALLY VERIFIED — NOT INSTALLED. No native build,
+             device query/install/launch or TestFlight attempted. §10's4824
+             receipt is previous delivery only. Local update/Founder physical
+             acceptance deferred until return; OA286 delivery boundary remains.
+             No new identifier/closure or live backend/account change.
+Update 2026-09-29 (continuous Onboarding): Founder requested common provider
+             entry for every style and removal of diagnostic preview headers.
+             Landing remains Seeker/Guardian/Onboarding. All11 choices start
+             at Welcome; alternatives continue their3 slides into actual role
+             choice and existing initial setup/local completion. Style changes
+             reset the nested flow at Welcome without adding outer routes.
+             Protected proof, raw preview/network-deny latch and real account
+             remain unchanged. Completed/stale intro callbacks and reproduced
+             global-overlay mount/disposal notification defect repaired.
+             Final21 suites300 PASS/0 FAIL/1 existing SKIP; visual3 PASS,
+             analyzer16 clean, formatter16/0. Earlier293/7 binding-fixture
+             run retained; unrelated existing photo-test import info untouched.
+             Seven final real-font candidates inspected,14 PNGs preserved;
+             approved baselines unchanged. All65 protected Compatibility
+             hashes match. Exact16 source/test hashes, limits and receipt in
+             Onboarding Preview §10 and dated verification JSON.
+             Native main PROFILE58.4s/55.4MB,signature1.0.0(5) identity PASS;
+             install4824, container19216182-05DF-4433-B2F9-232BF2EA6AB8,
+             direct launch/exact executable PID47579 PASS. Local delivery
+             only; no TestFlight/git/SQL/live backend/account/permission
+             mutation. Founder physical acceptance and downstream5-chapter/
+             native-provider/photo rehearsal gaps remain; this is initial
+             setup completion, not certification of all onboarding. OA286
+             retains one-app delivery boundary; no new identifier or closure.
+Update 2026-09-28 (Unlock+ demo authorized): Founder clarified the button
+             and a demo result are required for testing before live rules.
+             Implemented sample-only route-owned Plus reveal/local debit,
+             default1/1 and exact independent0/1/5 controls in both Seeker and
+             retained Entry/signup hosts. Persistent sample disclosure, six
+             coherent display triples and fictional Guardian; no real Plus
+             ownership, backend call, scoring-rule approval or live spend.
+             UUID/covered/disposed/revoked gates retained; revocation clears
+             revealed demo. Eight source/test files and limits in Developer
+             Control §36. Final192 distinct PASS/0 FAIL;44 overlapping focused
+             PASS after Preview copy; analyzer8 PASS,formatter8/0; six candidate
+             PNGs inspected,10 hashes verified,approved baselines untouched.
+             Initial186/6 fixture failures recorded, not hidden. Native final
+             PROFILE52.5s/55.4MB,signature/main1.0.0(5) identity PASS;
+             install4808/post-install identity PASS, launch BLOCKED device
+             locked, no PID claimed. §36 owns artifact/container/receipt and
+             intermediate4800 history. Founder unlock/acceptance outstanding;
+             no TestFlight/git/migration. Existing
+             OA192/OA193(d) retain real method/data work; this OA owns UI and
+             Founder acceptance. §35 clarification resolved; no new ID.
+Update 2026-09-28 (missing Unlock+ choice diagnosis): Founder reported no
+             Plus choice on Browse's Compatibility page. Existing sample
+             sliders groups independently offer Standard/Plus0/1/5; product
+             Detail intentionally omits balance/spending while real category
+             data is unavailable. Clarification requested: missing sliders
+             option versus main-page button. Developer Control §35 records
+             read-only diagnosis and18 focused PASS/0 FAIL with native/live
+             proof limits. No application edit, fuse enablement, invented
+             score, credit/backend write or new build/install/upload. Latest
+             receipt remains4792. This OA owns discoverability/Founder choice;
+             OA192/OA193(d) retain real category-contract work. No new ID.
+Update 2026-09-28 (three doors restored): Founder clarified Codex's mistaken
+             sole-CTA interpretation. Dev home needs Seeker/Guardian/Sign up;
+             signup is one neutral flow, not separate role signup actions.
+             Restored original protected local-preview buttons/import/gaps;
+             Welcome/account choice/helper/wrapper/proof/isolation/Close and
+             all11 comparisons remain. No dev-only signup role sheet. Final
+             13 suites176 distinct PASS, analyzer3 PASS, formatter3/0; all13
+             functional cases retained and actual three buttons exercised.
+             Four new real-font candidates inspected; original/sole-CTA
+             history and approved pixels untouched. Existing rail edge overlap
+             retained here, not a new claimed repair. Onboarding Preview §9
+             owns files/hashes/commands/limits/receipt; Developer Control §34
+             points there. Actual-source independent review found no new
+             blocker (internal QA only). Main PROFILE production Founder-opt-in
+             build PASS51.3s/55.4MB, strict signature/main1.0.0(5) identity PASS.
+             Physical install4792 PASS, launch/post-install identity PASS and
+             exact new executable PID44155; container/hash in §9, supersedes
+             mistaken sole-CTA local4784.
+             Prior onboarding/static-fixture findings remain here; broader
+             References/retired-two-app Script reconciliation remains OA286.
+             No new OA/DR, git, migration, live backend/Auth write/configuration,
+             payment, permission/signing/trust reset or TestFlight. Founder
+             physical acceptance separate. Prior sole-CTA entry is dated
+             implementation evidence, not the clarified product intent.
+Update 2026-09-28 (Sign up only): Founder explicitly chose the sole Sign up
+             developer landing for the actual first-use experience. Removed
+             Seeker/Guardian quick-jumps; genuine role choice stays inside
+             Welcome/onboarding. Existing helper/process, protected proof,
+             isolation/Close/disclosure and all11 comparisons unchanged.
+             Local provider simulation remains; no live account/data/auth
+             action. Home controls retained. Final13 suites176 distinct PASS,
+             analyzer3 PASS, formatter3/0; all13 functional landing/helper
+             cases retained,4 real-font candidates inspected in new dated
+             directory, approved/old pixels untouched. Onboarding Preview
+             handover §8 owns files/hashes/commands/limits; Developer Control
+             §33 points there. Prior onboarding limits retained. Older tooling
+             static-fixture drift remains here, not run/claimed passing;
+             missing References/stale retired two-app ScriptV4 remain OA286.
+             Independent final review found no new blocker (internal only).
+             Main PROFILE production Founder-opt-in build PASS52.6s/55.4MB,
+             strict signature/main1.0.0(5) identity PASS. Physical install4784
+             PASS, launch/post-install identity PASS, exact new executable
+             PID44124; container/hash in §8, supersedes Compatibility4776.
+             No new OA/DR, git, migration, live backend/Auth write/configuration, payment,
+             permissions/signing/trust change or TestFlight. Founder physical
+             acceptance separate; this supersedes only the former landing.
+Update 2026-09-28 (Compatibility route toggle): Founder requested five
+             Compatibility Unlock and five Unlock+ choices on the page opened
+             from Browser's three-dot action. Authorized sample routes now
+             own Actions/Preview context; separate Standard/Plus categories
+             each0/1/5 set exact independent route-only balances. Defaults1/0;
+             successful first Standard unlock debits once. Browser restores
+             on Close; stale/covered/disposed/revoked controls fail closed.
+             Raw sample cannot fall back to real readers or gain authority
+             later; UUID ledger/score/service paths remain unchanged. Held
+             Plus fuse remains OFF with no spend/fake detail/balance label.
+             No purchase, basket, membership or real grant. Initial14-case
+             run9 PASS/5 FAIL exposed dispose-time locked-tree notification;
+             repaired with synchronous owner removal and deferred/deduped
+             Compatibility notification, plus two fixture corrections. Final
+             standalone14 PASS; combined12 suites172 distinct PASS/0 FAIL;
+             analyzer6 PASS, formatter6/0. Geometry checks are text-stubbed
+             at390×844 and320×568/1.3×, not native visual acceptance or live
+             UUID end-to-end proof; no new approved baseline/PNG change.
+             Developer Control handover §32 and UI Gate handover carry exact
+             scope, hashes, commands and review limitations. Repaired-source
+             main PROFILE production Founder-opt-in build PASS52.4s/55.4MB,
+             deep strict signature/main1.0.0(5) PASS. Physical install4776
+             PASS, launch/post-install identity PASS, exact new executable
+             PID44118; container/hash in §32, supersedes signup local4768.
+             Earlier pre-repair binary not installed. Founder physical
+             acceptance separate. No git, live backend/config/Auth write, migration,
+             payment, signing/trust reset or TestFlight. Legacy commercial
+             Profile Unlocks documentation reconciliation remains here;
+             category/provider work retains OA192/193. No duplicate OA/DR.
+Update 2026-09-28 (Sign up correction): Founder removed the extra developer
+             role picker and requested all onboarding options inside signup.
+             One neutral Sign up rehearses existing Welcome/account choice/
+             initial role setup/IDV/local completion. Landing sample shortcuts
+             remain; signup Actions has a separate first all11-directions group,
+             Home access retained. Closing a design returns to the current step.
+             Fresh proof/isolation before sample reset; raw requested-preview
+             guards fail closed under denial/revocation/stale callbacks, nested
+             navigation preserves Close and coordinator restores mounted owners.
+             Guardian completion code is fictional pure local orientation with
+             no camera/clipboard-content/share/link/request side effects. Real
+             defaultfalse paths remain; sample memory may change but no member
+             session/draft/durable preferences change. Latch retained on Close.
+             Final94 primary PASS plus174 regressions PASS/1 existing policy skip,
+             seven coordinator tests overlap; analyzer22 PASS, formatter22/0.
+             Seven real-font candidates inspected, actual Close pixels asserted
+             against viewer-cache ambiguity; approved baselines untouched. Fixed
+             compact CTA/Google label limits, downstream Seeker raw-mode/native
+             photo gaps and launch-cancellation caveat retained here. Dedicated
+             Onboarding Preview handover §7 carries initial failures/repairs,
+             files/hashes/commands and bounded scope; no all-onboarding claim.
+             Fresh main PROFILE production Founder-opt-in build PASS51.6s/55.4MB,
+             strict signature/main1.0.0(5) PASS, physical install PASS4768, launch/
+             post-install identity PASS and exact new executable PID44111.
+             Supersedes local4760; container/Runner hash filed in §7. No git,
+             migration/live backend/Auth configuration/write, permission/trust/
+             signing change, payment or TestFlight. Founder physical acceptance
+             and live onboarding selection pending; no new OA/DR allocated.
+Update 2026-09-28 (onboarding lab): Founder authorised ten connected-Mobbin
+             welcome comparisons. Home now has a separate onboarding category,
+             Current Seeker + Structured/Luma/Revolut/Headspace/Mozi/Wise/Uber/
+             Ahead/How We Feel/Atoms, each new direction three local swipe slides.
+             All entry/Seeker/Guardian hosts inherit it; no login/signup/reset/
+             Auth refresh/permissions/persistence side effects. Existing picker
+             and already-open revocation gates remain. Quiet Horizon4400ms,
+             current theme/fonts and live question flow unchanged; no design
+             promoted to production. Defaultfalse preview scrolling opt-in only
+             in lab accommodates Current compact overflow. Dot44px/Syne/current
+             label findings repaired; panel tests assert offscreen closure rather
+             than incorrect unmount. Final70 new +118 existing focused tests PASS,
+             analyzer8 PASS, format8/0,96 new candidate PNGs/approved pixels untouched.
+             Internal review is not Founder acceptance. Dedicated current Onboarding
+             Preview handover carries all references/files/hashes/measurements.
+             No GPS/mic/ATT need found; no onboarding permission prompts. Real push
+             remains OA254/256, future IDV OA266, image privacy OA302. Retained GPS
+             shortcut design residue, save-library purpose copy without caller and
+             legacy live onboarding large-text debt owned here; no native change
+             authorised by this visual task. Fresh main PROFILE production build
+             PASS (Xcode52.8s/55.4MB), strict signature/main1.0.0(5) identity PASS.
+             Physical iPhone install PASS4760, main launch/post-install identity
+             PASS, exact new executable PID43876; dedicated handover carries
+             container/Runner SHA256. No git/backend/payment/Auth/TestFlight action.
+             Founder visual acceptance/live onboarding choice remains open.
+Update 2026-09-27 (Network default/actions): Founder selected Portrait focus
+             as temporary default; all5 card choices remain. A separate Network
+             Browser actions group offers Current, Quiet Next, Speak first and
+             Profile first. Current stays action default until Founder chooses;
+             design and arrangement are independent. Next still sets aside the
+             captured family and advances, profile/contact callbacks remain,
+             Additional contact disabled, Sent/Received and production access
+             unchanged. Review-found existing38px Browser targets repaired to44px
+             in all variants, within this OA. Six focused suites50 PASS, analyzer6
+             PASS, formatter6/0; all20 combinations checked at390×844 and320×568/
+             1.4x. Eight new real-font candidates inspected, approved baselines
+             unchanged. Compact captures prove scroll reachability/target size,
+             not untruncated labels or no-scroll fit. Initial Ahem title-row-only
+             failure resolved by real-font fixture, assertions retained. Current
+             UI/GN handovers carry as-built hashes/evidence. Fresh main PROFILE
+             production Founder-opt-in build PASS50.4s/55.3MB, strict signature
+             and main1.0.0(5) identity PASS. Physical iPhone install PASS4688,
+             direct launch/post-install identity PASS; exact new PID43242.
+             No git/backend/Auth/payment/TestFlight change. Physical acceptance
+             and action-layout choice remain separate.
+Update 2026-09-27 (Network top spacing): Founder showed the Network card
+             crowding its Browser/Sent/Received pill and requested clean
+             separation without deciding among the five card designs. A shared
+             fixed16px gutter below the mode pill, outside the vertically
+             scrollable PageView children, gives about20px initial clearance
+             and persists on scroll. Expanded viewport/full-height card reduce
+             together, preserving normal bottom controls. All5 designs and3
+             tabs retain state/actions; no-Seeker/production access untouched.
+             Three focused suites26 PASS, analyzer2 PASS, formatter2/0; 15
+             new real-font candidates inspected, approved baselines untouched.
+             Current UI and GN handovers record as-built source/evidence. No
+             backend/Auth/payment/TestFlight or product-choice change; physical
+             Founder acceptance remains separate. Fresh main PROFILE production
+             Founder-opt-in build PASS53.0s/55.3MB; strict signature and main
+             app1.0.0(5) identity PASS. Physical iPhone install PASS4680,
+             direct launch/post-install identity PASS; exact new PID43135.
+Update 2026-09-27 (Guardian Dashboard profile card): Founder requested a
+             compact card beneath the selected Seeker name with circular photo,
+             relationship, age, location and View profile. First name repeats
+             for confirmation; large duplicate SEEKER snapshot removed, Right
+             now stays below. Card/profile viewer bind by linked ID and viewer
+             is read-only, not Browse/deciding or a shell-tab jump. Main and
+             Additional roles keep recorded relationship semantics. Unknown
+             fields stay unavailable and missing real rows never borrow demos.
+             Profile reads are batched and stale/foreign rows rejected. Existing
+             photo-backed reader has linked-Dashboard-only opt-in to retain
+             authorized basic profile fields without an accessible/signed photo;
+             other callers and server photo visibility remain unchanged. Final
+             ten focused suites148 PASS, analyzer6 PASS, formatter6/0; 26 real-font
+             candidates generated/inspected without approved-baseline change.
+             Fresh final main PROFILE production Founder-opt-in build PASS40.8s/
+             55.3MB, strict signature and app.zyraconnect.zyra1.0.0(5) PASS.
+             Physical iPhone install PASS4672, direct launch/post-install
+             identity PASS; exact new executable PID43113 observed.
+             Source/executable hashes and native delivery evidence live in the
+             current UI handover. Founder physical acceptance remains separate;
+             no git/migration/RLS/Auth write/trust reset/TestFlight action.
+Update 2026-09-27 (Dashboard View Seeker): Founder reported selected person's
+             action opening first Seekers page. Singular action now passes actual
+             personID through shell and cached Seekers pager, with revision for
+             repeat requests and final sorted-roster ID lookup. Plural route
+             remains generic; generic navigation clears stale intent. Unknown
+             target notice, delayed loading and request/roster queued-jump guards
+             prevent false identity selection. Role/authorization/data unchanged.
+             Final focused6 suites96 PASS, analyzer6 PASS, formatter6/0,
+             independent source review PASS. Current UI handover records files,
+             hashes, boundaries and corrected initial compile/test-harness failures.
+             Fresh final main PROFILE production Founder-opt-in build
+             PASS24.6s/55.3MB; deep strict signature/main1.0.0(5) identity PASS.
+             Physical iPhone install PASS4664, launch/post-install identity PASS,
+             exact new process PID42932; handover records executable hash/container.
+             No git/backend/migration/Auth reset/trust/TestFlight. Founder
+             acceptance separate.
+Update 2026-09-27 (Guardian management fixed slots): Founder requested
+             balanced full-page spacing, Manage always bottom and three visible
+             Journey rows regardless of actual count. Main/Additional now share
+             expanded equal-height table and bottom Manage. Unused slots say
+             Awaiting a Journey with off/disabled controls, no synthetic records
+             or writes. Real permissions remain per-attempt; Main required only
+             on real rows. Loading/failure truth and retry preserved. Zero-Journey
+             developer preview added. Enlarged-text Retry/Unavailable overflow
+             fixed with bounded flex, including shared error banner. Seven focused
+             suites129 PASS plus shared-banner8 PASS (137 focused total);
+             analyzer8 PASS, final formatter8/0, independent review PASS;
+             eighteen real-font candidates inspected, approved baselines intact.
+             Current UI handover records source hashes and verification. Remaining
+             compact320x568 no-scroll scale-down readability debt stays owned here;
+             no compact visual/physical Founder acceptance claimed. Final main
+             PROFILE production Founder-opt-in build PASS52.1s/55.3MB; signature
+             and main1.0.0(5) identity PASS. Physical iPhone install PASS4656,
+             direct launch/post-install identity PASS; exact process PID42895.
+             UI handover records final executable hash/container. Previous50.2s
+             candidate predates last text fix and was not delivered. Physical
+             acceptance remains Founder. No git/backend/migration/Auth reset/
+             trust/TestFlight.
+Update 2026-09-27 (Dashboard carousel): Founder accepted current >3-name feel
+             and requested continuous looping. Selector/body now wrap both ways
+             with 3 whole cells at rest, same pill/theme/motion, release-only
+             commit, correct per-person data, cancellation/RTL/a11y preserved.
+             Counts 1–3 remain bounded; no auto-rotation. Idle 100-lap rebase
+             prevents end bounds. Roster selection preserves ID; fresh keyed
+             Scrollable fixes old offset absorption on controller replacement.
+             Final focused 95 PASS, analyzer 5 PASS, formatter 5/0 changes,
+             independent source review PASS. Five font-backed candidate captures
+             inspected, no approved golden change. Navigation Summary/UI handover
+             record as-built files/hashes/boundaries. Fresh main PROFILE production
+             Founder-opt-in build PASS60.8s/55.3MB; signature/main1.0.0(5) identity
+             PASS. Physical iPhone installation PASS sequence4648; direct launch,
+             post-install identity/version query PASS; exact new process PID42765
+             observed. UI handover records executable hash/container. Physical
+             smoothness/acceptance remain Founder. No git/backend/migration/auth
+             reset/trust/TestFlight action.
+Update 2026-09-27 (Quiet Horizon main): Founder explicitly selected option6
+             as main while retaining all12 Home comparisons. Neutral shared
+             artwork now drives production; former Current preserved as
+             Original, Quiet Horizon marked Main. Canonical Through Trust
+             tagline, existing4400ms lifecycle and AuthGate handoff unchanged.
+             Independent review caught platform reduced-motion deadline
+             compression; preserve-duration controller plus final-frame
+             rendering fixed and platform-feature regression added. Final
+             focused127 PASS, analyzer7 PASS, formatter7/0 changes; two new
+             main visual candidates inspected, approved baselines untouched.
+             Existing Splash/Messaging/UI handovers updated with source/hash
+             evidence. No icon selection, git, backend/migration/auth reset,
+             trust change or TestFlight action. Final fresh main PROFILE
+             production Founder-opt-in build PASS65.3s/55.3MB; signature and
+             app.zyraconnect.zyra1.0.0(5) identity PASS. Paired physical iPhone
+             install PASS sequence4640; direct launch and post-install app
+             identity/version query PASS. UI handover records executable hash
+             and exact installed container. Visual acceptance remains Founder.
+Update 2026-09-27 (home installation): Founder returned and explicitly
+             requested update. Seven focused suites153 PASS; fresh main PROFILE
+             production Founder-opt-in build PASS56.4s/55.3MB, deep strict
+             signature PASS, bundle app.zyraconnect.zyra 1.0.0(5) verified.
+             Paired physical iPhone available/unlocked. Direct installation
+             PASS sequence4632, launch PASS, post-install app identity/version
+             query PASS; exact newly installed Runner observed PID42623.
+             Includes latest swipe/copy/category/splash/icon/theme
+             work. Current UI handover records target/hash and measured checks.
+             Previous away hold lifted for this exact local update; no git,
+             backend/migration/auth/trust change or TestFlight action. Physical
+             smoothness/visual acceptance and approved-baseline debt remain
+             pending; successful installation is not Founder acceptance.
+Update 2026-09-27 (compact picker copy): Founder requested removal of
+             "Your relationship:" in Choose Seeker. Shared identity now shows
+             relationship and Main/Additional role directly, e.g. Father · Main
+             Guardian, covering Network dropdown and overflow picker. Honest
+             missing relationship fallback and actual role unchanged. Focused
+             Network suite21 PASS, analyzer2 PASS, formatter2/0 changes. Files
+             and hashes recorded in current UI handover. Source only; preceding
+             native build predates this edit and needs rebuilding on return.
+             No device installation while Founder away, no auth/backend write,
+             git or TestFlight action. Physical acceptance pending.
+Update 2026-09-27 (Seeker header swipe): Founder rejected remaining jumpy
+             ten-Seeker Dashboard bar. New continuous three-visible name strip
+             translates names and highlight inside unchanged rounded capsule;
+             exact first/last windows, release-only body selection, taps and
+             body swipes synchronized. Roster changes/cancel/interruptions
+             bounded; RTL, reduced motion and semantics supported. Independent
+             review caught interrupted-animation stale highlight; explicit
+             owner takeover fixed and regression tested. Final combined122
+             focused tests PASS, analyzer5 PASS, formatter5/0 changes. Four
+             unapproved font-backed candidates inspected; no baseline promoted.
+             UI handover contains files/hashes/measured behaviour. Founder is
+             away: prepare/build only, installation held until return. No git,
+             backend/migration/auth change, TestFlight export/upload/invitation
+             or installation performed. Physical smoothness/acceptance pending.
+             Fresh main iOS profile-production Founder-opt-in build PASS
+             53.6s/55.3MB; executable hash recorded in current UI handover.
+             No device installation/launch attempt while Founder away.
+Update 2026-09-27 (toggle sections): Founder requested all developer controls
+             separated by their own categories instead of one mixed dropdown.
+             Shared labelled section/dropdown per option.group implemented
+             app-wide/both roles/entry; each category shows its own selected
+             state and opens only its own options. Home gender/splash/icons/
+             accounts and independent Journey toggle also separate surfaces.
+             Same readers/callbacks, authorization, stale context and async
+             guards preserved. Non-contiguous categories merge, honest empty
+             catalog retained. 219 focused tests PASS after stale fixture
+             corrections; analyzer PASS16, additional Journey/visual suite
+             PASS39. Two candidate renders inspected, approved goldens intact.
+             Current UI handover contains files/hashes, boundary review and
+             limitations. Final format PASS16/0 changes; fresh main iOS profile
+             build PASS54.4s/55.3MB. Device unavailable; no new installation
+             claimed. No TestFlight export/upload/invitation performed.
+Update 2026-09-27 (icon comparison): Founder requested Current + ten new
+             app icons alongside twelve splash studies in shared Home. Eleven
+             exact PNG previews and ten matching native iPhone alternatives
+             implemented; current icon SHA256 unchanged. Opening/browsing is
+             visual-only; explicit Use on iPhone controls native switching.
+             Old assets preserved, not active; legacy selected alternate can
+             explicitly restore Current. Public guard/revocation/session stack
+             retained; no isolated TestFlight survey, upload or backend change.
+             Combined controller/gallery/Home/splash tests PASS 90; focused
+             analyzer PASS. Generator/plist lint PASS; candidate gallery
+             captures/contact sheet checked. App Logo/Colour summaries and
+             UI handover updated. Final gallery/overlay/route suites PASS 29,
+             six-file formatting PASS; native profile-production build PASS
+             58.5s/55.3 MB, built plist exactly primary + ten alternates.
+             One direct install FAILED CoreDevice4016: phone unavailable,
+             trusted connectivity/services absent. No installation/launch
+             success claimed; previous theme install4624 still last confirmed.
+             Founder reconnect needed for local install; no TestFlight upload.
+             Founder selection/physical switching/visual acceptance pending.
+Update 2026-09-27 (whole-app clarification): Founder reiterates the entire
+             app must adopt Hulu purple. Shared gradient coverage verified
+             across both roles/all main route families; gap was saved older
+             palette overriding the new default at startup. Account-owned
+             one-time palette revision adoption now updates old installations
+             before runApp without resetting any member/account data or
+             non-colour preferences. Later deliberate personalisation survives.
+             Ten new adoption tests; combined focused suites PASS 36. Current
+             Colour Summary and UI handover record supersession of earlier
+             preserve-old-palette handling. Developer chrome/final install
+             verification tracked separately, Founder acceptance pending.
+             Developer panels/rail/dropdowns/opaque shield/Journey dev panel
+             now share matching theme surfaces, preserving translucency and
+             safety. Overlay/panel/dropdown tests PASS 59; extra adoption/
+             profile/Membership/Circle/Network tests PASS 52; focused analyzers
+             PASS, format PASS 11 files. As-built hashes recorded in handover.
+             Final active-screen old-purple sweep clean; fresh main iOS
+             profile-production build PASS 52.0s/42.6 MB. Direct installation
+             and separate launch recorded in current UI handover.
+             Direct iPhone replacement PASS, sequence 4624/new bundle container;
+             contains theme adoption and developer chrome correction, replacing
+             previous 4616 install. Founder visual acceptance remains pending.
+             Automatic launch denied because iPhone locked, not install failure.
+             Founder to unlock/open ZYRA; no runtime success claimed.
+Update 2026-09-27 (dark Hulu app): Founder authorises whole-app palette,
+             all twelve splash bases and launcher icons #30203F→#160E20.
+             Shared popup/sheet/toast #241A2F, old private purple surfaces
+             audited/fixed, native launch/PWA/adaptive backing #160E20.
+             Canonical icon glyph preserved across eight iPhone variants
+             plus Android/macOS/web/Windows. Xcode alternate-icon generator
+             corruption fixed and repeat overwrite prevented. Saved Midnight
+             preferences update without account reset; explicit other
+             member choices survive. Colour Summary/UI handover reconciled.
+             Focused regression PASS 133, final icon tests PASS 6, Network/
+             My ZYRA PASS 168, twelve real-font splash candidates PASS.
+             Whole-suite/final build/install and Founder review tracked
+             separately; no approved baselines promoted or git/backend work.
+             Post-check: final theme/splash/icon PASS 77; 143 app candidates
+             PASS, no render exceptions. Whole sweep has 1903 passes/2 skips,
+             124 old screenshot mismatches and four stale test assertions.
+             Two off-screen Home tap setups fixed (PASS 7); static profile
+             alias assertion corrected separately; old release build-3 pin
+             is outside this UI task (written refusal in handover, not rolled
+             back from existing build 5). No clean whole-suite claim or
+             self-promoted screenshot baseline. Changed-file analyzer PASS.
+             Final corrected Home/alias tests PASS 9; final source/native build
+             PASS 14.4s/42.6 MB, built bundle verifies primary plus exactly seven
+             active alternates (historical sets excluded, files preserved).
+             Format PASS 19 files, plist/project lint PASS. Direct iPhone install
+             PASS sequence 4616/new bundle container. Hulu candidate unchanged
+             byte-for-byte; Current now uses chosen darker purple. Founder
+             device visual acceptance and screenshot-baseline refresh pending.
+             Separate launch PASS for newly installed main app. Founder review
+             remains pending; no physical-device screenshot claimed.
+Update 2026-09-27 (Hulu family): latest Founder direction replaces the original
+             seven-way picker with exactly Current + Hulu + ten original
+             Hulu-family studies. Other five reference options/artwork retired
+             from live picker/code, historical captures preserved. Visual-only
+             behavior unchanged. Combined preview/splash/overlay/gate suites
+             PASS 73; twelve real-font candidates captured. Current/Hulu settled
+             image hashes match earlier captures. Brand Messaging and UI gate
+             handover reconciled; device delivery/Founder selection pending.
+             Delivery: final focused analyzer/format PASS; final iOS build
+             PASS 48.5s after width fix; direct install PASS sequence 4608/new
+             bundle container. 73 regression tests + 12 real-font captures
+             PASS. Founder visual acceptance/final launch selection pending.
+             Automatic launch denied solely because iPhone was locked;
+             installation succeeded. Founder to unlock/open for review.
+Update 2026-09-27 (splash correction): static seven-direction comparison no
+             longer starts Auth refresh or replaces the Navigator stack.
+             Existing capability/authorization listener still deny and hide
+             unauthorized artwork; real developer operations unchanged.
+             Disney arc and tip now share live sweep geometry and wordmark
+             layout. Preview/splash/guard/overlay suites PASS 52; candidate
+             render suite PASS 7; focused analyzer PASS. UI gate handover
+             records supersession and pending delivery/Founder review.
+             Delivery: iOS build PASS 58.0s, direct device install PASS
+             sequence 4600/new bundle container; final no-refresh regression
+             fixture PASS. Founder device review remains pending.
+Update 2026-09-27 (Mobbin splash study): Founder requested six ZYRA-themed
+             comparison previews plus Current under shared Home controls.
+             Protected seven-option picker and original code-native studies
+             implemented; panel closes before preview. Production/native
+             launch and existing Splash Lab unchanged. Headspace references
+             are onboarding, explicitly marked inspired, not exact splash.
+             Preview tagline differs only within Founder-requested study;
+             canonical brand wording unchanged. UI Gate handover and Brand
+             Messaging record scope, references, tests and pending selection.
+             Device delivery and Founder acceptance remain separate.
+             Post-verification: final focused analyzer PASS, 55 focused tests
+             PASS, 7 real-font candidate captures inspected. Final iOS
+             profile-production build PASS 53.2s; direct device install PASS,
+             sequence 4592, new bundle container. Founder selection/visual
+             acceptance pending. No migrations or live data changes.
+Update 2026-09-27 (picker identity): both Seeker pickers now show recorded
+             relationship and link-specific Main/Additional Guardian role
+             beneath the name. Relationship direction explicitly describes
+             the Guardian; no Seeker gender is inferred. Wrapping rows and
+             list budgets updated. Network suite PASS 18; focused analyze PASS.
+             Same-day UI gate handover records limitation and source paths.
+Update 2026-09-27 (selector correction): latest Founder instruction supersedes
+             free scrolling: at most three complete names, live drag highlight,
+             page changes on release. Actual Dashboard gesture test proves
+             those behaviors and access to the tenth Seeker. Focused analyzer
+             PASS; Dashboard/motion suites PASS 17. Earlier scroll-strip
+             parameters and test retired; same-day UI handover records current
+             behavior. Device delivery and Founder acceptance remain separate.
+Update 2026-09-27 (Network sheet spacing): duplicate bottom safe-area inset
+             plus 22 pixels created the Choose Seeker sheet's blank bottom band.
+             GNSheetShell now uses one SafeArea inset with 12-pixel minimum.
+             Same-day UI gate handover records the scoped correction; Founder
+             visual acceptance pending. No separate OA because this action
+             already owns component consistency defects.
+Update 2026-09-27 (Seeker selector): Founder requested a fixed rounded outer
+             pill with names scrolling inside. Guardian Dashboard previously
+             scrolled the whole pill. Shared segmented widget now supports an
+             internal scrolling strip; Dashboard uses it with its existing
+             selection controller. Focused analyzer PASS; slider, Dashboard
+             and Network tests PASS 35. Same-day UI gate handover records
+             source and behavior; device delivery/Founder acceptance tracked
+             separately. Existing action owns this finding; no duplicate OA.
+Update 2026-09-27: Founder reported the Network Choose Seeker sheet still
+             showing the older light gradient after an alleged device update.
+             Source audit confirms all 24 active bottom-sheet calls resolve to
+             modalSheetSurface (#2A1F33 in the app's dark palettes). Previous
+             Flutter run timed out during install/launch; installed app listing
+             and launch alone did not prove replacement. Direct fresh-build
+             installation and separate launch verification are required.
+             Colour Theme records the Founder's approved dark-surface override.
+             Focused Network, Guardian, personalisation, Circle and membership
+             tests: 50 passed. Whole-source analyzer: one unrelated redundant
+             import in photo processor test; no action raised for that import
+             here because it has no popup rendering effect. Device verification
+             and acceptance remain distinct. Programme remains OPEN.
+             Post-verification: fresh profile-production build PASS; direct
+             devicectl install PASS, sequence 4552, new application container;
+             separate launch PASS. Founder visual acceptance PENDING. Evidence
+             in UI Consistency Gate handover 2026-09-27 follow-up.
+Status:      Open — Phase P0 COMPLETE same day: governed spec
+             ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md;
+             deterministic layer LIVE (SOURCE/tools/
+             zyra_ui_gate.py — token/colour/radius/height
+             drift, retired terminology, price budgets, dev-
+             wording leaks, duplicate strings, orphan files,
+             duplicate widget names; change-gated, fingerprint
+             dedup ledger, permanent reports, $0.00/run, no AI
+             calls); FIRST AUDIT RUN 1daa7708: PASS-WITH-
+             FINDINGS — 178 findings (0 crit, 0 high, 41 med,
+             137 low) across 154 files in 0.3s. Zero high =
+             recent governance held. Remaining phases: P1
+             Fable triage of run 1daa7708 + token/component/
+             terminology inventories; P2 Codex golden/
+             screenshot matrix + dev-toggle validation (brief
+             issued via Founder relay); P3 Founder baseline
+             approval THEN overnight arming (never before —
+             directive section 21); P4 AIOS dashboard area;
+             P5 steady state. P1 TRIAGE EXECUTED same day
+             (Founder "GO"): 87 colour literals promoted to 6
+             new ZyraColors tokens across 16 files (value-
+             preserving, count-asserted, zero residuals);
+             duplicate-of-token literals swapped (destructive,
+             primaryAction, luxuryDarkPurple); 3 imports
+             added; tool refined (white/black alpha veils +
+             dev-panel palette exempted, fingerprint-grouped
+             reports); 16 reviewed suppressions filed. Run
+             ac2c1eea: 41 med -> 11, 0 crit/high, 20
+             resolved, 132 low queued. Remaining mediums are
+             ALL human decisions: 8 dead-file candidates +
+             near-duplicate colour families + 2 typography
+             stragglers — decision table in SYSTEM/RESOURCES/
+             UI_GATE/P1_TRIAGE_2026-08-23.md. Analyze proof
+             lands on next Founder build or force-line run.
+             NOTE: filed as 257 — 255/256
+             were taken by the concurrent promotion/
+             permission-engine filing while this entry was
+             being drafted (read-before-write guard held).
+             UPDATE 2026-09-10 (SEPARATE DASHBOARD VISUAL
+             DEBT, NOT OA-ZYRA-282): the 073 closure run
+             re-executed the complete visual gate after the
+             2026-09-09 My ZYRA / Now | Insights work. The
+             result is 275 pass / 60 existing Dashboard
+             golden mismatches: 15 Dashboard families x 4
+             variants. None is a Guardian Manager or
+             Guardian Detail Phase 1 v2 target. Approved
+             pixels were not regenerated or changed. The
+             whole-source format audit also identifies one
+             pre-existing would-format file,
+             test/zyra_dashboard_updates_migration_test.dart.
+             Both findings remain owned by this permanent
+             anti-drift action; no duplicate OA was opened
+             and no acceptance is implied.
+Priority:    High
+Raised:      2026-08-23
+Raised by:   Founder ("I do not want consistency to depend on
+             me noticing these issues manually while testing")
+Owner:       Fable (spec, L1 tool, triage, inventories,
+             dashboard, register queue); Codex (L2 goldens/
+             screenshots, comparisons, L3 interpretation);
+             Founder (baseline approvals)
+Initiative:  ZYRA product / AIOS governance
+Description: Three-layer, deterministic-first design per the
+             directive: L1 local lint (live) -> L2 local
+             golden/screenshot rendering vs approved
+             baselines -> L3 AI interpretation ONLY for
+             findings needing judgement. Reports are
+             evidence; THIS register is the queue; findings
+             carry stable fingerprints so the same issue is
+             never re-filed nightly; suppressions.json holds
+             reviewed false-positives. A changed screenshot
+             never auto-replaces a baseline (Codex explains,
+             Fable checks intent, Founder approves, versions
+             archived). Automated changes limited to proven
+             deterministic reversible corrections; never
+             redesigns, copy, pricing, entitlements,
+             permissions, flows or baseline swaps.
+Evidence:    ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md;
+             tools/zyra_ui_gate.py; SYSTEM/RESOURCES/UI_GATE/
+             REPORTS/ZYRA_UI_AUDIT_2026-08-23_1daa7708.md +
+             state.json ledger; DR-ZYRA-214
+Target:      P1 triage -> P2 harness -> P3 Founder baseline
+             approval + overnight arming -> P4 dashboard ->
+             steady state; close when P3 arms cleanly
+
+------------------------------------------------------------
+
+OA-ZYRA-258
+Title:       Payments architecture — Apple IAP for in-app,
+             Stripe for web; ZYRA CONNECT Stripe onboarding
+Status:      Open — Stripe connector added by Founder
+             2026-08-23; Fable read-only audit same day.
+             ACCOUNT STATE (live acct_1U7jIT..., Standard,
+             GB): country/currency/timezone CORRECT (GB, GBP,
+             Europe/London); name ZYRA CONNECT, url
+             zyraconnect.app, statement descriptor
+             ZYRACONNECT.APP; payouts daily after 7 days
+             (default). NOT READY TO CHARGE: charges_enabled
+             false, payouts_enabled false, disabled_reason
+             requirements.past_due — Stripe still needs
+             business type, representative identity (name,
+             DOB, address, phone, email), MCC + product
+             description + support phone, a bank account for
+             payouts, and ToS acceptance. ALL Founder-only
+             items completed in the Stripe Dashboard — Fable
+             never enters identity, bank or ToS data. No
+             products/prices defined yet (correct at this
+             stage). A separate "ZYRA CONNECT sandbox" test
+             account exists for development.
+Priority:    High (pre-revenue launch blocker chain)
+Raised:      2026-08-23
+Raised by:   Founder ("I'm guessing this will be payment for
+             App Store... check if the settings are correct")
+Owner:       Founder (Stripe onboarding + Apple Developer
+             membership); Fable (architecture docs, product/
+             price mirroring once decided); Codex (client
+             integration when briefed)
+Initiative:  ZYRA product
+Description: ARCHITECTURE (the answer to the Founder's
+             question): Stripe does NOT process App Store
+             payments. Apple requires In-App Purchase for
+             digital subscriptions sold INSIDE an iOS app
+             (ZYRA One, Guardian+, Compatibility Unlocks) —
+             so the app itself uses Apple IAP (and Google
+             Play Billing on Android); Apple/Google take
+             their commission (Apple 15% under the Small
+             Business Program while under $1M). STRIPE'S
+             correct role: subscriptions sold on the WEB
+             (zyraconnect.app checkout, the Netflix/Spotify
+             model where the app honours a subscription
+             bought outside), plus any future non-digital
+             payments. Both rails share ONE entitlement
+             source (Supabase) so the app never cares where
+             a subscription was bought. RECOMMENDED ORDER:
+             (1) Apple Developer Programme membership — the
+             same GBP79/yr already blocking Apple Sign-In
+             and push (OA-102, OA-ZYRA-254) also gates IAP:
+             one decision clears three blockers plus
+             payments; (2) IAP products mirroring
+             ZYRA_PRICING V2 (39.99/mo, 399.90/yr, 19.99/wk;
+             Guardian+ 24.99/mo, 14.99/wk; unlock packs);
+             (3) Founder completes Stripe onboarding
+             (identity/bank/ToS); (4) Stripe web checkout as
+             phase 2. Pricing doc note: Apple/Google
+             commission does not change retail prices;
+             margin impact is a Founder awareness item.
+Evidence:    Stripe live account read 2026-08-23 (account
+             object, requirements.past_due list, empty
+             products); ZYRA_PRICING_CURRENT_VERSION_V2.md
+             to-do "Finalise payment provider implementation
+             (Stripe — OA pending)" -> THIS OA
+Target:      Founder: Apple Developer membership + Stripe
+             Dashboard onboarding -> architecture ratified ->
+             IAP build brief -> Stripe web phase 2
+
+------------------------------------------------------------
+
+OA-ZYRA-259
+Title:       ZYRA Learning Loop — adaptive Dashboard insights
+             (Founder directive 2026-08-25; existing-Dashboard
+             correction honoured: a learning layer in the
+             EXISTING Seeker Dashboard, not a new Dashboard)
+Status:      Open — P0 COMPLETE same day: rules draft
+             ZYRA_LEARNING_LOOP_CURRENT_VERSION_V1.md filed
+             (learning model + loop states; permitted data
+             sources with message-content and Guardian-data
+             exclusions; evidence tiers 0/1/2 with 3/5-
+             counterpart floors, anonymity floor, 7-day
+             dignity cool-off, 90-day decay; observation-not-
+             cause wording law incl. entitlement language
+             rule; auto-vs-user-confirmed boundary — NO
+             behavioural change without confirmed learning,
+             preferences never auto-edited; Basic 1 insight /
+             One up-to-3 depth split, same honesty both
+             tiers; privacy/retention/DSR + Seeker-only rule,
+             Guardian surfaces receive nothing; contradiction
+             check vs compatibility, Journey, entitlement and
+             data-protection docs — clean, two obligations
+             imported: Article 9 gate + automated-processing
+             disclosure). PRODUCTION LEARNING INACTIVE until
+             Founder ratifies rules (P3 gate); Article 9
+             families additionally solicitor-gated. Codex
+             briefed (MESSAGES/001) for P1: historic-data
+             audit, per-family feasibility, missing-
+             aggregation list, mock insight cards in the
+             existing Dashboard (positive / neutral /
+             insufficient-data / preference-review; Basic vs
+             One shown), mock clearly separated from
+             production learning.
+Evidence:    Founder directive 2026-08-25 (Fable + Codex);
+             SYSTEM/DOCUMENTS/ZYRA_LEARNING_LOOP_CURRENT_
+             VERSION_V1.md; SYSTEM/RESOURCES/MESSAGES/001_
+             FABLE-CODEX_2026-08-25_LEARNING_LOOP_BRIEF.md
+Target:      Founder ratifies rules + insight copy -> Codex
+             P1 data audit + mocks -> P2 silent aggregation
+             -> P3 Seeker-visible insights -> P4 confirmed-
+             learning recommendation influence
+
+------------------------------------------------------------
+
+OA-ZYRA-260
+Title:       Website design ownership -> Codex (Founder
+             instruction 2026-08-25): Codex to propose his
+             own zyraconnect.app design and take over site
+             design from Fable
+Current:     2026-09-18 — complete public-site redesign implemented
+             locally; same-day Founder follow-up changes the review
+             candidate to app purple/gold, white ZYRA and cinematic
+             scroll chapters throughout. The latest revision adds a
+             Seeker/Guardian focus switch, Basic/One comparisons and
+             configurable Family pricing. 184 browser checks pass;
+             six automated accessibility contexts report no violations.
+             Awaiting Founder visual/copy review; NOT DEPLOYED.
+             Codex owns implementation/operations under AD-AIOS-109;
+             the historical Fable handoff below remains provenance,
+             not a renewed external-review gate. The new brief replaces
+             the old verbatim-copy/dark-layout restrictions for this
+             candidate. True pre-state archive and handover filed in
+             ZYRA_PUBLIC_WEBSITE_REDESIGN_HANDOVER_CURRENT_VERSION_V3.md.
+             V1/V2 are byte-preserved in DOCUMENTS/ARCHIVE. Nine fit-based
+             desktop pins plus Experience story; mobile/reduced-motion
+             and read-without-motion retain complete normal-flow content.
+             Prior pricing contradiction RESOLVED against current V5
+             and the saved app reconciliation: Seeker One £29.99/month,
+             Guardian One £19.99/month, each Basic £9.99 one-time;
+             Family uses independently chosen One counts and the ruled
+             discount formula, not a fixed price. All 121 combinations
+             checked against the app. Trial applies only to Seeker One.
+             Purchases remain unavailable; Founder acceptance and exact
+             publication GO are still required. No app-source, billing,
+             database, DNS, deployment or git changes made in this round.
+Status:      Awaiting Review — 2026-09-18 local redesign; publication held.
+History:     Open — handover message filed 2026-08-25
+             (MESSAGES/002): full design history D1 approved
+             2026-08-20 -> D2 Daylight static REJECTED (too
+             static) -> D3 scroll-driven scenes -> D3.1
+             Midnight Plum (LIVE, commit a5b1e37, verified
+             on the deployed site); stack/pipeline (Astro in
+             SITE/, GitHub zyra-site, Cloudflare Pages,
+             Founder-only git), as-built engine notes,
+             readability-verification method, and binding
+             constraints (Founder-approved copy verbatim;
+             privacy page + no-tracker statement; no-JS/
+             reduced-motion fallback; waitlist 501
+             degradation path; SITE/README design-of-record).
+             AWAITING: Codex design concept -> Founder
+             approval -> ownership transfer effective. Fable
+             retains ops: DNS/Cloudflare estate, D1 waitlist
+             backend round, documentation.
+Evidence:    Founder instruction 2026-08-25 ("give his design
+             and take over the design of the website");
+             SYSTEM/RESOURCES/MESSAGES/002_FABLE-CODEX_
+             2026-08-25_WEBSITE_DESIGN_HANDOVER.md;
+             SITE/README.md ownership note
+Target:      Founder visual/copy acceptance -> exact publication GO -> Founder-controlled
+             delivery -> public post-verification. Current handover:
+             ZYRA_PUBLIC_WEBSITE_REDESIGN_HANDOVER_CURRENT_VERSION_V3.md.
+History target: Codex design proposal -> Founder approves ->
+             Codex owns site design; Fable closes out with
+             archive note in SITE/README (2026-08-25, superseded route).
+
+------------------------------------------------------------
+
+OA-ZYRA-261
+Title:       Shared Pause Decision — implementation,
+             activation gates and documentation (Founder
+             brief to Codex 2026-08-25; supersedes the
+             asymmetric personal-hold pause UX)
+Status:      Open — Codex build CODE COMPLETE same day:
+             5-state server-enforced decision machine
+             (none/pause_requested/continue_requested/paused/
+             resume_requested, CAS pause_version, single RPC
+             door transition_journey_pause, retired RPCs
+             refuse, direct writes revoked, content locked
+             while pending, slot freed ONLY at settled
+             Pause, paused caps 5/10 both-side checked,
+             13-state dev matrix x plan axis, neutral
+             Guardian projection, final-outcome-only
+             Timeline). Handover ZYRA_PAUSE_DECISION_
+             HANDOVER_CURRENT_VERSION_V1.md filed; Fable
+             verified 2026-08-25: 22/22 SHA-256 hashes match
+             disk (3 shared dev files later moved under the
+             separately-authorised Active-count toggle; new
+             hashes re-verified, recorded handover §13); live
+             DB probe confirms migration unapplied (new RPC
+             absent, legacy RPCs live, no pause_version); independent retired-wording sweep clean
+             (zero Paused-by-you/them/both, Pause too,
+             unilateral Resume Journey, old RPC calls);
+             cap numbers traced to ratified sources
+             (entitlements matrix 2026-08-09; DR-ZYRA-138).
+             Fable documentation pass DONE: JOURNEY_
+             SUSPENSION_CURRENT_VERSION_V4.md issued
+             (V3 archived as JOURNEY_SUSPENSION_2026-08-25_
+             V3.md), DR-ZYRA-215 filed, entitlement decision
+             record annotated (superseded-in-part pause slot
+             note), documentation index regenerated.
+             MIGRATION STAGED NOT APPLIED (20260825120000_
+             shared_pause_decision_state_machine.sql) —
+             production pause requests fail truthfully until
+             applied. REMAINING: (1) Founder: ratify decision
+             deadline duration + responder-silence outcome +
+             requester-silence outcome (no auto-outcomes
+             exist by design); (2) Founder: authorise live
+             migration application + rollback policy once
+             shared Pause states exist (none authored yet,
+             deliberately); (3) Codex post-apply:
+             run zyra_pause_decision_state_machine_suite.sql,
+             re-probe live, update handover, two-account
+             physical device flow; (4) Architecture Reviewer:
+             independent pass on transition/lock ordering/
+             privacy projection/rollback policy; (5) Fable:
+             split-or-archive legacy pause sections of
+             zyra_journey_suite.sql during a later
+             reconciliation.
+Evidence:    ZYRA_PAUSE_DECISION_HANDOVER_CURRENT_VERSION_
+             V1.md (verification evidence + live read-only
+             probes); Fable disk verification 2026-08-25;
+             APP/Journey/JOURNEY SUSPENSION/JOURNEY_
+             SUSPENSION_CURRENT_VERSION_V4.md; DR-ZYRA-215
+Target:      Founder deadline + migration decisions -> Codex
+             applies + verifies live -> Architecture Review
+             -> Founder device acceptance -> close
+
+------------------------------------------------------------
+
+OA-ZYRA-262
+Title:       MASTER OA — Subscription Architecture Review: Readout,
+             Recommendations, Founder Decisions, Risks
+Category:    Product / Commercial / Architecture — MASTER OA for one
+             report (REPORT -> OA governance, OA-AIOS-370)
+Priority:    High — sets the pricing and entitlement architecture.
+Status:      🟠 REVIEW COMPLETE, VERIFIED WITH CONDITIONS —
+             PENDING FOUNDER. **THIS OA IS DECISION PREPARATION, NOT
+             IMPLEMENTATION AUTHORITY.** Nothing below may be built.
+             Founder instruction 2026-08-26: "Do not change prices,
+             entitlements, billing, ZYRA One, Guardian+, ZYRA Family,
+             weekly plans, database/schema or production behaviour
+             until I go through the OA and ratify the decisions."
+             ZYRA_PRICING_CURRENT_VERSION_V2 REMAINS AUTHORITATIVE.
+Owner:       Founder (ratifies); Fable (maintains this OA)
+Raised:      2026-08-25
+Completed:   — (review complete; decisions outstanding)
+
+════════════════════════════════════════════════════════════════════
+REPORT
+════════════════════════════════════════════════════════════════════
+Report:      ZYRA Subscription Architecture Final Review
+Location:    SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/
+             SUBSCRIPTION_REVIEW_2026-08-26/08_FINAL_VERIFIED_REVIEW.md
+Date:        2026-08-26
+Run IDs:     subrev-20260826T000000Z (pass 1),
+             subrev-recovery-20260826 (pass 2),
+             subrev-repair-20260826 (pass 3)
+Project:     ZYRA · Company: Black Umbrella Group
+Agents:      Fable (claude-sonnet-4-6) · Codex (gpt-4o), adversarial
+Verification: PASSED — Codex independent verification delivered.
+             Assembly gate passed: sections 1-18, each exactly once,
+             in order, terminator present, 78,962 chars.
+Verdict:     **SIGN OFF WITH CONDITIONS** (three, listed below)
+Cost:        $1.1915 across three passes. Engine failures and their
+             corrections are OA-AIOS-367; they do not affect the
+             validity of the verified deliverable.
+Evidence:    00_BRIEF.md (Part A verified baseline, Part B Founder
+             brief) · 01-05 the adversarial exchange · 06_CODEX_
+             VERIFY.md the verdict · 07/07b the deliverable parts ·
+             RUN/RECOVERY/REPAIR_LEDGER.json
+
+════════════════════════════════════════════════════════════════════
+READOUT — what the review concluded
+════════════════════════════════════════════════════════════════════
+WHAT WAS REVIEWED: whether to replace the current subscription
+architecture (ZYRA One at 39.99 with the D14 Main-Wali Guardian+
+bundle, plus Guardian+ standalone at 24.99) with a personal,
+non-transferable model at 34.99, and whether to introduce ZYRA Family
+at approximately 99.
+
+HEADLINE RECOMMENDATION — retain the current model and complete it
+before changing it:
+  · Retain ZYRA One at 39.99/month.
+  · Retain the D14 Main-Wali bundle, bounded and unchanged.
+  · Do NOT reinstate 34.99 at present.
+  · Do NOT launch ZYRA Family yet — design it now.
+  · Basic remains genuinely free, permanently, including every safety
+    function and all essential Guardian participation.
+
+CODEX VERDICT: SIGN OFF WITH CONDITIONS. Three binding conditions,
+all accepted by Fable in section 18 without contest:
+  C1  Complete the weekly billing surfaces and ensure app store
+      compliance.
+  C2  Document and finalise the rationale for Guardian+ at 24.99.
+  C3  Provide a more detailed plan for resolving multi-role account
+      architecture ambiguities before launch.
+
+WHY THE PROPOSED 34.99 MODEL WAS NOT RECOMMENDED: three of the
+proposal's premises were out of date (34.99 is a retired figure;
+Guardian+ standalone already exists at 24.99; the bundle is already
+bounded to the Main Wali by D14 and payment already buys access, never
+authority). Its structural advantages are real but are either already
+addressed, or exist equally under both architectures. It also requires
+Guardian conversion at an unknown rate before it outperforms
+commercially.
+
+CONFIDENCE: the report is verified, but its commercial modelling is
+explicitly ESTIMATE ONLY. No subscriber, conversion, churn or
+willingness-to-pay data exists from a preview build. Codex separately
+challenged the conversion assumptions as speculative and Fable
+conceded the point. Treat every revenue figure in section 8 as
+illustrative.
+
+════════════════════════════════════════════════════════════════════
+RECOMMENDATIONS — extracted from all 18 sections
+════════════════════════════════════════════════════════════════════
+Status of every item below: PENDING FOUNDER. Source = report section.
+
+── PRICING (REC-001 to REC-007)
+REC-001  Retain ZYRA One at 39.99/month. No structural change. [§3,5]
+REC-002  Retain the D14 Main-Wali bundle exactly as implemented in
+         wali_has_wali_one(). Not modified by this review. [§3]
+REC-003  Do not reinstate 34.99. If 39.99 is believed wrong, the
+         correct process is a DOCUMENTED REPRICING against market
+         comparables — not a reversion to a retired figure. [§3,5]
+REC-004  34.99 must not appear on any pricing-facing surface. [§5]
+REC-005  Confirm 399.90/year. The 17% saving label (79.98 on 479.88 =
+         16.7%) is accurate once confirmed. [§5]
+REC-006  Guardian+ at 24.99 — document the rationale BEFORE any
+         billing surface is built. Two defensible positions: value
+         parity (~60% of ZYRA One) keeps 24.99; adoption support
+         indicates 14.99-19.99. [§3b]
+REC-007  No price change is recommended by this document. All prices
+         remain as ZYRA_PRICING_CURRENT_VERSION_V2. [§5]
+
+── WHAT STAYS FREE PERMANENTLY (REC-008 to REC-012)
+REC-008  ZYRA Basic remains free permanently for every account holder
+         regardless of role. [§2,14]
+REC-009  Seeker free tier: profile with photos; 50 profiles per 4-hour
+         browse window; 10 saves/day; 10 likes/day; one Active
+         Journey; unlimited Potential Journeys; standard Compatibility
+         Unlock on Active Journey creation; no sponsored cards while
+         browsing; link a Guardian; 7-day ZYRA One trial on the first
+         Active Journey. [§2,14]
+REC-010  Guardian free tier: accept an invitation and establish the
+         relationship; view the Seeker's profile and Active Journey;
+         milestone notifications requiring Guardian input; **ALL
+         Guardian Network authority — send, accept, withdraw, proceed
+         (GN Rules 37/38) — authority is NEVER paywalled**;
+         communicate within the Guardian Network; view match outcomes
+         and give substantive input; withdraw Guardian status at any
+         time. [§2,14]
+REC-011  Safety free unconditionally: block any user; report any user
+         or content; all privacy controls; immediate withdrawal of
+         Guardian authority. [§2,14]
+REC-012  THE TEST THIS TIER MUST PASS: a father who accepts his
+         daughter's invitation and uses only Basic must be able to
+         genuinely exercise his role as Wali. If he cannot, "Basic is
+         genuinely useful" is not credible and the adoption argument
+         for the entire commercial architecture collapses. [§2,9]
+
+── WHAT BECOMES PREMIUM (REC-013 to REC-016)
+REC-013  Seeker premium: unlimited browse/save/like; Incoming
+         Potentials; Mutual Save Detection; higher Active and Paused
+         Journey limits; Priority Discovery; Compatibility Unlock Plus
+         on Active Journey creation; 3 free Unlock Plus credits; ZYRA
+         Intelligence (Recommendations, Insights, Summaries). [§3,15]
+REC-014  Guardian premium: Advanced Guardian Dashboard with Journey
+         analytics; multi-Seeker intelligence; deeper family and
+         compatibility insights; advanced recommendation and workflow
+         tools; ZYRA Intelligence on the Guardian view; additional
+         premium Guardian Network tools. [§3,15]
+REC-015  Premium must ADD genuine capability, never merely remove a
+         Basic limitation on something already available. [§15]
+REC-016  Compatibility Unlocks stay purchasable separately and are NOT
+         subscription-gated. [§15]
+
+── GUARDIAN ADOPTION (REC-017 to REC-020)
+REC-017  Guardian adoption is THE architectural constraint. Section 9
+         states: "This is the most important section in the document.
+         Everything else is second-order." [§9]
+REC-018  CULTURAL CONSTRAINT: a Wali is participating in a family
+         religious and social obligation, not shopping for a
+         subscription. Asking him to make a payment decision to
+         participate meaningfully is a category mismatch NO PRICING
+         LEVEL RESOLVES. The answer is not free premium — it is Basic
+         so useful he never faces the decision. [§9]
+REC-019  **CRITICAL BEFORE ANY SUBSCRIPTION LAUNCH:** conduct a full
+         Basic/premium feature audit against the Guardian journey
+         specification. Map every Guardian-facing function against the
+         line. Any function required for genuine Guardian
+         participation that sits behind a paywall is A PRODUCT DEFECT,
+         NOT A PRICING STRATEGY. [§2,9,15]
+REC-020  Instrument four numbers from day one — they determine whether
+         the commercial architecture works: Guardian activation rate;
+         Guardian engagement depth; Guardian conversion to paid;
+         Guardian churn on paid tiers. None exist today. [§9,17]
+
+── ZYRA FAMILY (REC-021 to REC-027)
+REC-021  Design Family now; do NOT launch it yet. A Family plan
+         launched prematurely and then restructured damages trust more
+         than one that launches later and cleanly. [§4]
+REC-022  Four trigger conditions for launch: (1) real App Store and
+         Play billing live and stable; (2) at least 90 days of
+         individual-subscription data; (3) multi-role architecture
+         resolved and documented; (4) Guardian+ price rationale
+         documented and confirmed. [§4,17]
+REC-023  Recommended structure — MODIFIED FAMILY-D: a defined number
+         of FULL ZYRA One identities at a bundle price. Each member
+         holds their own account with full entitlements. It creates a
+         BILLING GROUP, not a shared-entitlement pool. No second-class
+         members. D14 applies inside the plan identically. [§4]
+REC-024  Rejected: Model A (limited premium Seeker seats — creates a
+         two-class family and recreates the adoption friction the
+         bundle avoids); Model B (5 full ZYRA One at 99 = a 51%
+         discount — unsustainable and invites abuse; appropriate as a
+         LAUNCH PROMOTION only, never a permanent price); Model C
+         (shared Guardian infrastructure — architecturally vague,
+         risks recreating bundled-entitlement complexity). [§4]
+REC-025  Indicative parameters FOR DESIGN, NOT RATIFICATION: up to 5
+         members; full ZYRA One each; 99/month (cheaper than 3
+         individual at 119.97 — the natural conversion point is 3+
+         members); ~990/year; organiser role = BILLING ONLY;
+         additional seats ~24.99/month each. [§4]
+REC-026  **The organiser's billing authority creates NO authority over
+         any other member's account, Journey or Guardian
+         relationships.** A father who organises the plan cannot use
+         that role to gain oversight beyond what his Guardian
+         relationship already provides. [§4,10]
+REC-027  Family abuse controls: relationship declaration at enrolment
+         (self-declared — makes abuse a conscious misrepresentation
+         rather than an incidental side effect); the Wali structure
+         itself acts as a partial filter; invitation links expiring in
+         48 hours; membership capped at 5 with paid seats beyond;
+         removal reverts the member to Basic with FULL continuity of
+         relationships, history and configuration. Note honestly what
+         this does NOT prevent: five motivated people who agree to
+         declare false relationships. The countermeasure is that the
+         discount is meaningful but not extreme enough to create a
+         mass-market incentive. [§10]
+
+── TECHNICAL / BILLING (REC-028 to REC-035)
+REC-028  Nothing needs to change in: entitlement resolution logic; the
+         D14 boundary; Subscription Continuity implementation;
+         authority separation (GN 37/38); the pricing document. [§11]
+REC-029  Build weekly billing surfaces: store SKU registration on both
+         consoles; upgrade screen weekly toggle; extend
+         wali_has_wali_one() to recognise weekly wali_premium and
+         seeker_premium identifiers. [§11,12]
+REC-030  Replace the mock purchase paths (mockSetWaliPlan,
+         mockPurchaseWaliPremium) with real store-mediated flows
+         before any real subscriber is acquired. [§11]
+REC-031  Adopt RevenueCat or equivalent as the subscription management
+         abstraction — recommended OVER direct store SDK integration,
+         for cross-platform consistency, receipt validation, grace
+         periods and webhook-driven events. [§11,17]
+REC-032  Test entitlement resolution against ALL subscription states:
+         active monthly, active annual, active weekly (if in scope),
+         grace period, lapsed, cancelled. [§17]
+REC-033  Confirm lapsed state reduces capability to Basic WITHOUT
+         affecting any relationship, history or configuration data
+         (Continuity V1). [§17]
+REC-034  Implement the multi-role resolution BEFORE any subscription
+         is offered to an account that could be both Seeker and
+         Guardian. [§17]
+REC-035  Upgrade screen must show ONLY SKUs with live billing
+         surfaces. If weekly is deferred, the weekly toggle must not
+         appear. The screen must never display 34.99. [§17]
+
+── APP STORE / GOOGLE PLAY (REC-036 to REC-040)
+REC-036  Apple: 15-30% revenue share (15% after year one under the
+         Small Business Programme). Both ZYRA One and Guardian+ must
+         be registered as auto-renewable subscriptions. [§12]
+REC-037  Google Play: substantively similar requirements and share.
+         Base plans and offers map reasonably to monthly/weekly/
+         annual. [§12]
+REC-038  **A Family plan cannot use native store family billing on
+         either platform.** It must be a single auto-renewable
+         subscription on the organiser's account plus a SERVER-SIDE
+         ENTITLEMENT BROKER distributing entitlements to linked
+         accounts, maintaining group state in real time and handling
+         organiser lapse, member removal and mid-cycle seat additions.
+         Achievable but not trivial — a further reason to delay
+         Family until individual billing is proven. [§12]
+REC-039  Weekly subscriptions are supported by both stores but carry
+         higher admin overhead per subscriber and may differ in
+         promotional-offer eligibility. Not a blocker; a design
+         consideration. [§12]
+REC-040  **Setting the price correctly BEFORE billing is built is
+         substantially easier than adjusting it after.** Price changes
+         to existing subscriptions trigger subscriber notifications on
+         both platforms and require notice; raising a price requires
+         even more care. Directly relevant to DECISION-001. [§12]
+
+── SEQUENCING (REC-041 to REC-046)
+REC-041  PHASE 0 — Founder decisions before any build begins. [§17]
+REC-042  PHASE 1 — core billing before the first subscriber:
+         entitlement service extension; RevenueCat; store SKU
+         registration; multi-role implementation; upgrade screen
+         audit; **Guardian Basic feature audit — any function failing
+         it moves to Basic before the upgrade screen goes live**. [§17]
+REC-043  PHASE 2 — within 90 days post-launch: weekly surfaces if
+         deferred; annual if confirmation arrives late; metrics
+         instrumentation; Guardian+ price validation. [§17]
+REC-044  At 60 days post-launch, review Guardian+ conversion against
+         the activation base. **This is a scheduled DATA REVIEW, not a
+         scheduled price change.** [§17]
+REC-045  PHASE 3 — Family, 90+ days after individual launch, gated on
+         all four trigger conditions. Design happens in Phase 0 in
+         parallel; the output is a specification ready for engineering
+         when Phase 3 triggers. [§17]
+REC-046  No existing subscribers to migrate — a clean slate. [§17]
+
+TOTAL: 46 recommendations.
+
+════════════════════════════════════════════════════════════════════
+FOUNDER DECISIONS REQUIRED — all PENDING FOUNDER
+════════════════════════════════════════════════════════════════════
+
+DECISION-001 · Guardian+ standalone price and its rationale   [§3b,16]
+  Question:     Is 24.99/month correct, and WHY? The rationale must be
+                documented either way.
+  Recommended:  Do not build any Guardian+ billing surface until the
+                rationale is recorded. If the reason is value parity
+                (~60% of ZYRA One), 24.99 stands with its reasoning
+                written down. If the reason is to be an accessible
+                on-ramp for Guardians outside a D14 bundle,
+                14.99-19.99 fits that goal better.
+  Alternatives: 24.99 stands · 19.99 · 14.99 (the ratified weekly
+                price is a useful internal anchor) · retire the SKU.
+  Why it matters: The single most commercially sensitive price in the
+                architecture. Both reviewers flagged it independently
+                — the one strong convergence in the whole review. It
+                is the fallback for every Guardian who loses a bundle,
+                and 8c warns that if it is above the willingness
+                threshold, that fallback exists on paper only.
+  Blocking:     YES — blocks the Guardian+ standalone billing surface.
+  When:         Phase 0, before any build. REC-040: far easier now
+                than after real subscribers exist.
+  If deferred:  Guardian+ billing cannot be built; the Guardian
+                fallback path stays theoretical; Family Phase 3
+                trigger 4 cannot be met.
+  Codex:        Condition C2. Binding.
+
+DECISION-002 · Confirm the 399.90 yearly price                 [§5,16]
+  Question:     Is 399.90/year ratified, or corrected?
+  Recommended:  Confirm 399.90. Arithmetically consistent with the
+                10-for-12 model; produces a 16.7% saving shown as 17%.
+                No change recommended.
+  Alternatives: A different figure (requires updating the toggle copy,
+                the saving calculation and all external material).
+  Why it matters: It already appears in the upgrade screen. Open since
+                OA-ZYRA-253(a).
+  Blocking:     YES — blocks annual SKU registration on both stores.
+  When:         Phase 0.
+  If deferred:  Annual billing cannot launch; the displayed saving
+                remains unconfirmed.
+
+DECISION-003 · Multi-role account architecture              [§11,16,17]
+  Question:     How is an account holder who is simultaneously a
+                Seeker and a Guardian handled by entitlements, billing
+                and the interface? Does one ZYRA One cover both
+                contexts, or must they resolve separately?
+  Recommended:  ONE ZYRA One subscription covers both contexts —
+                consistent with "one subscription, all your contexts"
+                and it removes the current ambiguity. Implementation
+                details still need product specification: how the
+                entitlement service determines the active context, how
+                the upgrade screen presents options to a dual-role
+                user, and how the Guardian context is triggered.
+  Alternatives: Separate resolution per context.
+  Why it matters: A man seeking marriage who is also a Wali is NOT an
+                edge case in this market. The ambiguity will surface
+                immediately in practice.
+  Blocking:     YES — blocks any subscription launch serving the
+                target market.
+  When:         Phase 0 decision, Phase 1 implementation.
+  If deferred:  No launch. Risk 4 (High) stays open.
+  Codex:        Condition C3. Binding.
+
+DECISION-004 · The Basic vs premium GUARDIAN boundary       [§2,9,15,16]
+  ** THE REPORT CALLS THIS THE MOST CONSEQUENTIAL DECISION ON THE LIST.
+     GIVEN ITS OWN SECTION BELOW. **
+  Question:     Exactly which Guardian functions are free, and which
+                require premium — audited function by function against
+                the Guardian journey specification.
+  Recommended:  Participation is free; enhancement is paid. Every
+                function required for genuine Guardian participation
+                sits in the free tier. Premium adds intelligence,
+                analytics, multi-Seeker views and depth. It does not
+                add participation.
+  Alternatives: A more restrictive Basic tier that drives conversion.
+  Why it matters: "If the Basic/premium line is drawn at participation
+                rather than enhancement, the product's central claim —
+                that family involvement is built into the product — is
+                not credible to the Guardians the product needs."
+  Blocking:     YES — blocks any Guardian-facing upgrade prompt or
+                paywall.
+  When:         Phase 0 decision; Phase 1 audit before the upgrade
+                screen is live.
+  If deferred:  No Guardian-facing monetisation can ship safely.
+  NOTE:         The review states it CANNOT complete this audit from
+                the information available. This decision therefore has
+                WORK attached, not just a choice: someone must map the
+                real product against the Guardian journey spec first.
+
+DECISION-005 · Weekly billing surfaces — launch or after?      [§16,17]
+  Question:     Are the weekly surfaces (19.99 One, 14.99 Guardian+)
+                in scope at launch, or Phase 2?
+  Recommended:  If weekly pricing has been communicated to ANY
+                external audience — beta users, community, social —
+                build before launch. If it has not, Phase 2 is
+                acceptable PROVIDED the upgrade screen does not
+                display weekly pricing until the surface exists.
+  Alternatives: Build at launch · defer to Phase 2 · retire weekly.
+  Why it matters: Ratified pricing with no infrastructure. Risk 3
+                (High) is a trust and expectation problem.
+  Blocking:     Partially — blocks the weekly toggle, not the launch.
+  When:         Phase 0.
+  If deferred:  OA-ZYRA-253(c) stays open; the scoping decision and a
+                target date must be recorded either way.
+  Codex:        Condition C1 covers building them. Binding.
+
+DECISION-006 · Family plan design commencement                 [§4,16]
+  Question:     When does Family design begin, and who owns it?
+  Recommended:  Design in Phase 0 in parallel with Phase 1 build;
+                launch only when all four trigger conditions are met.
+                Output is a specification, not a build.
+  Alternatives: Defer design entirely · design and build together.
+  Why it matters: Family at 99 becomes cheaper than individual
+                subscriptions at 3+ premium members; it is a real
+                commercial opportunity that is not ready.
+  Blocking:     No — Phase 3.
+  If deferred:  No immediate harm. The 99 and 5-member figures remain
+                indicative and unratified.
+
+DECISION-007 · Whether to reinstate 34.99                       [§5,16]
+  Question:     Does ZYRA One return to 34.99?
+  Recommended:  NO. It is a retired figure. If 39.99 is believed
+                wrong, do a documented repricing against market
+                comparables — not a reversion.
+  Alternatives: Reinstate 34.99 (requires explicit ratification with
+                recorded rationale) · a different documented price.
+  Why it matters: 34.99 was the price until 2026-08-23. Reverting
+                inside a fortnight without a recorded reason sets a
+                precedent that prices move without rationale — the
+                precise problem DECISION-001 exists to fix.
+  Blocking:     No — but the upgrade screen must never show 34.99
+                unless this decision reinstates it.
+  When:         Before any external pricing communication.
+
+TOTAL: 7 Founder decisions. All PENDING FOUNDER.
+
+════════════════════════════════════════════════════════════════════
+SPECIAL FOCUS — THE GUARDIAN BASIC / PREMIUM BOUNDARY (DECISION-004)
+════════════════════════════════════════════════════════════════════
+Given prominence at Founder request. NOT decided here.
+
+WHAT A GUARDIAN MUST ALWAYS BE ABLE TO DO FOR FREE (recommended):
+  · Accept an invitation and establish the relationship.
+  · View the Seeker's profile and Active Journey.
+  · Receive notifications for milestones needing Guardian input.
+  · Exercise ALL Guardian Network authority — send, accept, withdraw,
+    proceed. Authority is never paywalled (GN 37/38).
+  · Communicate within the Guardian Network.
+  · View match outcomes and give substantive input on compatibility.
+  · Withdraw Guardian status at any time.
+
+WHAT CAN REASONABLY BECOME PREMIUM:
+  · Advanced Guardian Dashboard with Journey analytics.
+  · Multi-Seeker intelligence where a Guardian serves several Seekers.
+  · Deeper family and compatibility insights.
+  · Advanced recommendation and workflow tools.
+  · ZYRA Intelligence applied to the Guardian view.
+
+WHAT WOULD DAMAGE GUARDIAN ADOPTION:
+  · Gating ANY Guardian Network authority function.
+  · Gating the ability to review matches or give substantive input.
+  · Gating communication within the Guardian Network.
+  · Any design where a father on Basic cannot meaningfully fulfil the
+    Wali role — because he is not, in his own understanding, shopping
+    for a subscription. He is meeting a family obligation.
+
+WHAT MUST NEVER BE MONETISED:
+  · Block, report, all privacy controls.
+  · Immediate withdrawal of Guardian authority.
+  · Any function required for genuine Guardian participation.
+
+WHAT WOULD MAKE PREMIUM GENUINELY WORTH PAYING FOR:
+  Intelligence, depth, multi-Seeker views, analytics and workflow —
+  capability ADDED, never a Basic limitation removed (REC-015).
+
+THE OUTSTANDING WORK: the review could not complete the audit from
+available information. Before this decision can be made properly,
+someone must map every Guardian-facing function in the built product
+against the Guardian journey specification and the line above. Any
+function required for participation that currently sits behind a
+paywall is a product defect.
+
+════════════════════════════════════════════════════════════════════
+RISKS
+════════════════════════════════════════════════════════════════════
+RISK-1  Guardian activation failure — CRITICAL. Invited Guardians do
+        not activate, do not engage, or disengage before a meaningful
+        milestone. The product's core differentiation collapses if the
+        Guardian layer is populated by inactive accounts.
+        Mitigation: REC-019 audit; REC-020 instrumentation. OPEN.
+RISK-2  Guardian+ at 24.99 above the willingness threshold — HIGH. The
+        fallback path exists on paper and fails in practice.
+        Mitigation: DECISION-001; REC-044 60-day data review. OPEN.
+RISK-3  Weekly surfaces not built at launch — HIGH. Ratified pricing
+        with no infrastructure; a trust and expectation problem.
+        Mitigation: DECISION-005. OPEN.
+RISK-4  Multi-role architecture unresolved — HIGH.
+        Mitigation: DECISION-003. OPEN.
+RISK-5  Organiser authority leakage in Family — MODERATE, deferred.
+        Architecture prohibits it; the INTERFACE must make the
+        boundary clear. Mitigation: REC-026. DEFERRED to Phase 3.
+RISK-6  Store billing failure states unhandled — MODERATE. Renewals
+        will fail; grace and lapse transitions must match Continuity
+        V1. Mitigation: REC-031, REC-032, REC-033. OPEN.
+RISK-7  399.90 not formally confirmed — LOW currently.
+        Mitigation: DECISION-002. OPEN.
+
+════════════════════════════════════════════════════════════════════
+ADDITIONAL FABLE RECOMMENDATIONS
+**POST-REPORT RECOMMENDATIONS — NOT CLAIMED TO BE PART OF THE
+  ORIGINAL REVIEW. CODEX HAS NOT REVIEWED ANY OF THESE.**
+════════════════════════════════════════════════════════════════════
+Produced by a final read asking: what would I recommend that the
+report did not put in its own recommendation or decision sections?
+
+FABLE-001 · Draw the Basic/premium line GENEROUSLY at launch
+  Reason:    The report says Decision 4 is most consequential but
+             never prices being wrong. The two errors are not
+             symmetric: moving a feature premium -> free later is a
+             goodwill gain; free -> premium is experienced as a
+             betrayal, and in this cohort it lands on a father who
+             already feels the app is asking him to pay to be a
+             father.
+  Evidence:  §9 cultural analysis; §15 "premium must add capability".
+  Benefit:   The recoverable error becomes the one you make.
+  Risk:      Leaves revenue on the table at launch.
+  Urgency:   HIGH — it shapes DECISION-004.
+  Codex:     Not reviewed. Founder ratification needed.
+
+FABLE-002 · Analyse the 7-day ZYRA One trial before launch
+  Reason:    §2 lists the trial as a Basic feature and NOTHING in the
+             report analyses it. It is a significant giveaway that
+             interacts directly with Guardian adoption: during the
+             trial the Main Wali receives the D14 bundle and premium
+             Guardian tools, and on day 8 loses them. That downgrade
+             is the Guardian's first commercial experience of ZYRA.
+  Evidence:  §2 free-tier list; §3 D14 bundle; §9 activation risk.
+  Benefit:   Avoids engineering a bad first impression into the
+             adoption-critical cohort.
+  Risk:      May show the trial needs restructuring, adding scope.
+  Urgency:   HIGH — before any launch.
+  Codex:     Not reviewed. Founder ratification needed.
+
+FABLE-003 · Specify what a Guardian SEES when the bundle ends
+  Reason:    Continuity V1 protects the data. Nothing specifies the
+             EXPERIENCE. When a Seeker cancels mid-journey, her Main
+             Wali silently loses Guardian+ — and that is the exact
+             moment the 24.99 decision bites. The report treats the
+             fallback as a pricing question; it is also a UX one.
+  Evidence:  §8c fallback analysis; §11 lapsed-state handling.
+  Benefit:   Turns an invisible downgrade into an informed choice.
+  Risk:      None material.
+  Urgency:   MEDIUM — Phase 1.
+  Codex:     Not reviewed. Founder ratification needed.
+
+FABLE-004 · Get real competitor prices before DECISION-001
+  Reason:    §8 says market data is required and the report then
+             recommends no way of getting any. A competitor price scan
+             of Muslim matrimonial apps with family/guardian features
+             is cheap, fast, and would materially inform both
+             DECISION-001 and DECISION-007. REC-003 tells you to
+             reprice "against market comparables" without naming a
+             single one.
+  Evidence:  §8b/8c "real data required"; REC-003.
+  Benefit:   Replaces the weakest input in the review with fact.
+  Risk:      Comparables may be poor matches for a guardian-led
+             product; treat as a floor and ceiling, not a target.
+  Urgency:   HIGH — it is an input to a blocking decision.
+  Codex:     Not reviewed. Founder ratification needed.
+  Link:      OA-ZYRA-235 (check Toonbee before marketing) may be
+             related; the Founder has not yet said what Toonbee is.
+
+FABLE-005 · Add a RATIONALE field to ZYRA_PRICING
+  Reason:    The whole of DECISION-001 exists because a price was set
+             without a recorded reason. A document that records prices
+             but not why they are those prices will produce this
+             problem again at the next repricing.
+  Evidence:  §3b "lacks documented commercial rationale"; OA-ZYRA-253.
+  Benefit:   Structural — makes the failure non-repeatable rather than
+             fixing one instance of it.
+  Risk:      None. A column in a document.
+  Urgency:   MEDIUM — do it with the V3 that follows ratification.
+  Codex:     Not reviewed. Founder ratification needed.
+
+FABLE-006 · Treat DECISION-004 as work, not a choice
+  Reason:    The review states plainly it "cannot complete that audit
+             from the information available", then hands the decision
+             over. Reading that quickly, it looks like six decisions
+             the Founder can make at a desk and one he cannot. Someone
+             must first map every Guardian-facing function in the
+             built product against the Guardian journey specification.
+             Until that exists, DECISION-004 cannot honestly be made.
+  Evidence:  §2 "This review cannot complete that audit"; §15 audit
+             requirement; §17 Phase 1.
+  Benefit:   Stops the most consequential decision being answered from
+             an assumption about what the product currently does.
+  Risk:      Adds a task before a decision the Founder may want to
+             make immediately.
+  Urgency:   HIGH — it gates DECISION-004.
+  Codex:     Not reviewed. Founder ratification needed.
+
+TOTAL: 6 additional Fable recommendations, none Codex-reviewed.
+
+════════════════════════════════════════════════════════════════════
+ACTIONS
+════════════════════════════════════════════════════════════════════
+NONE. Actions are created only after Founder ratification. This OA is
+decision preparation, not implementation authority.
+
+════════════════════════════════════════════════════════════════════
+FOUNDER OUTCOME
+════════════════════════════════════════════════════════════════════
+Ratified:  —
+Rejected:  —
+Modified:  —
+Deferred:  —
+Reason:    —
+Date:      —
+(To be completed by the Founder. Until then every item above is
+PENDING FOUNDER and nothing may be implemented.)
+
+Dependencies: OA-ZYRA-253 (the 2026-08-23 repricing and its three open
+             remainders); OA-ZYRA-247 (D14 entitlement mirror);
+             ZYRA_PRICING_CURRENT_VERSION_V2 (authoritative);
+             SUBSCRIPTION_CONTINUITY_PRINCIPLE_CURRENT_VERSION_V1;
+             OA-AIOS-367 (engine failures and corrections during the
+             three passes); OA-AIOS-370 (the REPORT -> OA rule this OA
+             is the first instance of).
+------------------------------------------------------------
+
+
+OA-ZYRA-263
+Title:       MASTER OA — Identity, Face and Photo Verification:
+             Readout, Recommendations, Founder Decisions, Risks
+Category:    Security / Privacy / Product / Commercial — MASTER OA for
+             one report (REPORT -> OA governance, OA-AIOS-370)
+Priority:    CRITICAL. Two separable things sit in this OA: a defect
+             that is live on production onboarding today, and a
+             biometric procurement/legal programme that will take
+             months. Do not let the second delay the first.
+Status:      🔴 REVIEW COMPLETE — CODE FINDINGS INDEPENDENTLY VERIFIED
+             BY FABLE AGAINST SOURCE; PROVIDER, PRICING AND LEGAL
+             CLAIMS SOURCED BUT NOT INDEPENDENTLY VERIFIED —
+             PENDING FOUNDER. **THIS OA IS DECISION PREPARATION, NOT
+             IMPLEMENTATION AUTHORITY.** Nothing below may be built,
+             no provider account may be opened, no migration applied
+             and no credential created until the Founder records an
+             outcome. Codex has stopped at the Phase 3/4 gate and
+             must stay stopped.
+Owner:       Founder (ratifies) · Fable (maintains this OA, owns the
+             register) · Codex (executes Phase 4 only on approval)
+Raised:      2026-08-26
+Completed:   — (review complete; decisions outstanding)
+
+════════════════════════════════════════════════════════════════════
+REPORT
+════════════════════════════════════════════════════════════════════
+Report:      ZYRA Identity, Face and Photo Verification —
+             Phases 1-3 (audit, provider landscape, architecture)
+Location:    BLACK UMBRELLA GROUP/REPORTS/CURRENT/CODEX_ZYRA_IDENTITY_
+             FACE_PHOTO_VERIFICATION_PHASES_1_3_2026-08-26_V1.md
+Date:        2026-08-26
+Project:     ZYRA · Company: Black Umbrella Group
+Author:      Codex (single-agent technical review, not an adversarial
+             two-model run — see VERIFICATION STATE below)
+Size:        41,328 bytes · 641 lines
+SHA-256:     82967a34792372d8a3f9249de7870eb30e439675686cb5d5bbfdb415
+             c61a45ad — recomputed by Fable on 2026-08-26 and matching
+             the digest Codex published. The document reviewed is the
+             document Codex wrote.
+Trace labels: Codex used temporary labels F01-F12 and deliberately
+             refused to mutate the register. Correct behaviour: the
+             register has one owner. They are carried into this OA as
+             REC-001..REC-012 with the F-label preserved on each line
+             so the report and the OA remain traceable to each other.
+Evidence:    203 migration files · 39 test files · 0 Edge Functions ·
+             0 IDV dependencies · 0 verification tables, columns, RPCs
+             or webhooks · exact source paths cited inline · official
+             Veriff / Sumsub / Entrust / Persona / Stripe / FaceTec /
+             iProov / ICO / SDAIA / Supabase documentation linked.
+Changes made by the report: NONE. No source file, migration, provider
+             account, credential or live data was touched. No real
+             identity document or biometric media was processed.
+
+════════════════════════════════════════════════════════════════════
+VERIFICATION STATE — read this before trusting anything below
+════════════════════════════════════════════════════════════════════
+REPORT_TO_OA_STANDARD §7 requires the verification state to be stated
+plainly rather than implied by the existence of a long document. It is
+mixed, and the two halves deserve different levels of confidence.
+
+VERIFIED — the code findings.
+Fable re-derived F01 and F02 directly from the ZYRA source tree on
+2026-08-26 rather than accepting them. Both are confirmed. Method and
+exact evidence are in the FABLE REVIEW VERDICT block below. The
+repository counts (203/39/0/0/0) were also re-run and match.
+
+NOT VERIFIED — the provider, pricing and legal halves.
+Phases 2 and 3 rest on Codex's reading of vendor and regulator
+documentation. That reading is properly sourced and internally
+consistent, but no second reviewer has checked it, and vendor
+documentation is the weakest link in the chain precisely where the
+decision is hardest: the report's own central claim is that NO
+finalist publishes evidence of the one capability ZYRA needs.
+
+CONSEQUENCE: every item in this OA drawn from Phase 1 carries normal
+confidence. Every item drawn from Phases 2-3 is PROVISIONAL and must
+survive a live vendor demonstration before it is treated as fact. The
+prices in the cost model are list prices, not quotes, and must not be
+used for a budget decision.
+
+════════════════════════════════════════════════════════════════════
+READOUT — what was reviewed and what was found
+════════════════════════════════════════════════════════════════════
+WHAT WAS REVIEWED: whether ZYRA can build identity verification, face
+matching and profile-photo ownership checking itself; if not, which
+specialist provider it should use; and what the production
+architecture, legal position and cost would be.
+
+THE HEADLINE, IN ONE LINE: ZYRA today tells users their profile is
+verified when nothing has been verified, and the review stopped
+before choosing a provider because no candidate could be shown to do
+the one thing ZYRA most needs.
+
+FINDING 1 — ZYRA currently simulates verification on the live
+onboarding path. The final onboarding screen runs two timers of two
+seconds each, marks photos approved and identity verified, and then
+calls the real database publication RPC. There is no check behind
+either. Every account finishing onboarding is published on the
+strength of four seconds of animation.
+
+FINDING 2 — the server cannot save this, because the server is not
+checking either. Publication requires a non-empty first name, a
+gender, a date of birth and, for Seekers, one photo row. All four are
+self-declared and the photo is self-uploaded. No verification state is
+consulted because none exists.
+
+FINDING 3 — there is no verification system to consult. Across 203
+migrations there is no verification table, column, RPC or webhook;
+there are no Edge Functions at all; and there is no identity provider
+dependency in the app. This is not a broken integration. Nothing has
+been built.
+
+FINDING 4 — the photo path has no quarantine. The same private bucket
+is both upload target and display source, so an uploaded photo is
+displayable at the moment it lands. There is no moderation state, no
+MIME or EXIF handling, and no face-count or ownership state. The UI
+asks for three photos; the server accepts one.
+
+FINDING 5 — Guardian trust language is unbacked. Guardian identity is
+self-declared, the relationship is a claim, and the Guardian Network
+preview contains hard-coded VERIFIED strings that are not derived from
+any check.
+
+FINDING 6 — deletion is not provider-aware, and cannot become so
+without the architecture that does not yet exist.
+
+FINDING 7 — documentation has drifted ahead of the code. IMAGE_
+HANDLING V2 describes a pipeline that was never built, and OA-ZYRA-131
+was marked actioned on a wording change. A reader trusting the
+documents would conclude ZYRA verifies people. It does not.
+
+THE PROVIDER CONCLUSION: build none of this in-house. Document
+authenticity, presentation-attack detection and face matching are
+specialist, adversarial, regulated problems with a permanent
+maintenance burden, and ZYRA has no reason to carry biometric custody
+it can avoid. Veriff and Entrust are co-finalists; Sumsub is
+conditional on answering open questions about Flutter recurring-auth
+parity, retention and 2026 incident remediation. NO PROVIDER WAS
+SELECTED, because the decisive capability — comparing an arbitrary
+uploaded gallery photo 1:1 against the verified identity reference —
+is not evidenced by any of them. Most vendor "face match" products
+compare a NEW LIVE CAPTURE against a reference, which is a different
+operation and does not solve ZYRA's problem.
+
+THE ARCHITECTURE CONCLUSION: ZYRA must remain server-authoritative.
+The client may never write verification state or publish a profile.
+Identity media goes device-to-provider; the provider returns a signed
+webhook; the backend validates it and writes minimal coarse state into
+a private schema outside the exposed Data API; publication becomes an
+invariant the server evaluates, never a flag the app sets.
+
+THE LEGAL CONCLUSION: facial images processed to identify a person are
+special-category biometric data in the UK, requiring an Article 6
+basis AND a separate Article 9 condition, with a DPIA before
+production. Saudi PDPL treats biometric identification as sensitive
+processing, requires an impact assessment, and excludes legitimate
+interest as a basis. Both need counsel. This is a gate, not a
+formality — it can invalidate a provider choice after it is made.
+
+THE COMMERCIAL CONCLUSION: initial ID+selfie checks are affordable and
+predictable at ZYRA's scale. Repeated profile-photo matching is the
+unpriced risk: no finalist publishes a rate for it, and re-running a
+full identity flow per photo is both commercially and experientially
+unsuitable.
+
+════════════════════════════════════════════════════════════════════
+FABLE REVIEW VERDICT — the review the Founder asked for
+════════════════════════════════════════════════════════════════════
+Founder instruction 2026-08-26: "I will await Claude's review and your
+explicit provider approval before Phase 4."
+
+VERDICT: **ACCEPT THE REPORT. WITHHOLD PROVIDER APPROVAL.**
+Those are two separate answers and both are deliberate.
+
+--- 1. Method: what I actually did rather than read ---------------
+
+I did not accept F01 or F02 on trust. I opened the source.
+
+  SHA-256 of the report recomputed and matched the published digest.
+
+  lib/screens/onboarding/profile_ready_screen.dart read in full.
+  initState() starts Timer(2s) -> _photosChecking=false,
+  _photosApproved=true -> _goLiveIfReady().
+  _startIdVerification() starts Timer(2s) -> _idVerified=true ->
+  _goLiveIfReady().
+  _goLiveIfReady() calls ZyraProfileService.setProfileComplete(true).
+
+  lib/services/zyra_profile_service.dart:215-236 confirms that is a
+  real call: supabase.rpc('zyra_set_profile_complete').
+  It is not a mock. The write is real.
+
+  Reachability: grep for ProfileReadyScreen returns
+  lib/screens/onboarding/values_preferences_flow.dart:193 pushing it
+  as the terminal onboarding route. THIS IS ON THE LIVE PATH. It is
+  not dead code and not a lab screen.
+
+  Guards: grep for kDebugMode, kReleaseMode, DeveloperAccess, devAccess
+  and assert( in that file returns NOTHING. There is no guard of any
+  kind.
+
+  supabase/migrations/20260807183341_freeze_identity_on_first_
+  publication.sql holds the current definition of
+  zyra_set_profile_complete. Its publication preconditions, in full:
+  signed in; profile exists; first_name non-empty; gender non-null;
+  date_of_birth non-null; and for role='seeker', count of
+  profile_photos >= 1. Then it writes profile_complete=true.
+  No verification state is read, because none exists.
+
+  Repository counts re-run: 203 migrations, 0 Edge Functions, 0 IDV
+  dependencies in pubspec.yaml, and no verification column or table in
+  any migration DDL.
+
+F01: CONFIRMED. F02: CONFIRMED. The counts: CONFIRMED.
+
+--- 2. Where I correct Codex ---------------------------------------
+
+CORRECTION 1 — the "Simulate a failed check (test only)" control.
+Codex folded this into F01 as part of a critical publication defect.
+It is a real defect and it genuinely has no release guard, so it does
+ship to users. But it CANNOT cause a false publication, and the
+distinction matters for how it is prioritised. _goLiveIfReady() fires
+only when _photosApproved AND _idVerified are both true; the simulate
+control renders only while !_idVerified; and _simulateFailedCheck()
+sets _idFailed=true without touching the publication path. It is a
+visible test affordance shipped to real users — a credibility and
+trust defect — not a bypass. Fix it in the same change, but do not
+let it inflate the count of publication-bypass routes from one to two.
+
+CORRECTION 2 — the age gate is understated, and the precise version is
+more useful. It would be wrong to say ZYRA has no age gate. Migration
+20260804104339_c4_minimum_age_enforcement.sql adds a real CHECK
+constraint: date_of_birth <= current_date - interval '18 years', and
+its own comment calls itself "final authority — client validation is a
+courtesy, this is the guarantee." That guarantee is real. What it
+guarantees is that the number the user typed is at least eighteen
+years ago. The constraint is sound; the input is unverified. So the
+accurate statement is not "no age gate" but "a correctly enforced age
+gate over self-declared data" — which is exactly why adult_18_plus
+from a verified document is worth buying.
+
+CORRECTION 3 — scope of the word "mock". The report describes the
+mocks as blocking Phase 4. They are not on the same clock. See
+FABLE-01 and DECISION-011: F01 is fixable this week without a
+provider, a DPIA or a single line of the Phase 3 architecture.
+
+Nothing else in the report is contradicted by the source I read.
+Where Codex hedged, it hedged in the right direction, and its refusal
+to select a provider on marketing claims is the single best judgement
+in the document.
+
+--- 3. What I did NOT verify ---------------------------------------
+
+I did not verify any vendor claim, price, retention term, SDK
+capability, regulatory citation or the 2026 Sumsub incident reference.
+I have no independent evidence for Phases 2 and 3 beyond their
+internal consistency. Treat them as a well-argued brief, not as
+findings.
+
+--- 4. Provider approval: WITHHELD ---------------------------------
+
+I am not approving Veriff, Entrust, Sumsub, Persona, Stripe Identity,
+FaceTec or iProov, and I would advise the Founder against approving
+one now. The reason is narrow and I want it on the record:
+
+The capability that decides this purchase — matching an arbitrary
+photo a user picks from their camera roll against their verified
+identity reference — is not evidenced by ANY candidate. Choosing a
+provider before that demonstration means choosing on price and
+marketing for a product whose central feature may not exist. If it
+turns out none of them can do it, the correct response is a product
+decision about what "verified" is allowed to mean, not a quiet
+weakening of the requirement after money has been spent and an
+integration written.
+
+What I do approve, and recommend the Founder authorise:
+  (a) the immediate remediation of F01 and the truthfulness defect in
+      FABLE-01, which need no provider and no legal gate; and
+  (b) a scripted, non-production demonstration and commercial RFP with
+      Veriff and Entrust, on the six-point acceptance test in the
+      report, with Sumsub admitted only after it answers its three
+      open questions.
+
+Provider approval becomes a live question again when a finalist has
+passed that test in front of us. Not before.
+
+════════════════════════════════════════════════════════════════════
+RECOMMENDATIONS — extracted from the report
+════════════════════════════════════════════════════════════════════
+Every item defaults to PENDING FOUNDER. F-labels are Codex's; they are
+preserved so the report and this OA stay traceable.
+
+REC-001 [F01] CRITICAL — Remove the mock verification timers from
+  ProfileReadyScreen and stop the client writing publication state.
+  Replace with a fail-closed backend state that the screen reads.
+  Source: Phase 1 · Owner: Codex · Status: PENDING FOUNDER
+  Note: Fable verified this defect directly. See DECISION-011 — this
+  does not need to wait for a provider.
+
+REC-002 [F02] CRITICAL — The publication RPC must consult verification
+  state, not four self-declared fields and one self-uploaded photo.
+  Source: Phase 1 · Owner: Codex · Status: PENDING FOUNDER
+
+REC-003 [F03] CRITICAL — Build photo quarantine, server-owned photo
+  state and exact-photo promotion, so no unverified image is ever
+  displayable and a verdict binds to specific immutable bytes.
+  Source: Phase 1/3 · Owner: Codex · Status: PENDING FOUNDER
+
+REC-004 [F04] HIGH — Separate Guardian identity from Guardian
+  relationship. Remove the hard-coded VERIFIED strings from the
+  Guardian Network preview; they are not derived from any check.
+  Source: Phase 1 · Owner: Codex · Status: PENDING FOUNDER
+
+REC-005 [F05] HIGH — Build provider-aware correction, recovery,
+  re-verification and deletion, including queued external erasure with
+  retry and confirmation.
+  Source: Phase 1/3 · Owner: Codex · Status: PENDING FOUNDER
+
+REC-006 [F06] HIGH — Build a protected deterministic developer state
+  matrix plus adversarial tests. Mock states must be reachable for
+  testing but structurally unable to reach production transitions.
+  Source: Phase 1/3 · Owner: Codex · Status: PENDING FOUNDER
+
+REC-007 [F07] HIGH — Reconcile IMAGE_HANDLING, Profile Completion,
+  Settings/Identity, Wali and legal documents with what the code
+  actually does. Documentation currently promises a pipeline that was
+  never built.
+  Source: Phase 1 · Owner: Fable · Status: PENDING FOUNDER
+
+REC-008 [F08] HIGH — Run the Entrust/Veriff RFP and scripted demo;
+  admit Sumsub conditionally; Founder and Claude select.
+  Source: Phase 2 · Owner: Founder · Status: PENDING FOUNDER
+
+REC-009 [F09] CRITICAL — Complete UK and Saudi DPIAs, lawful-basis
+  determination, transfer mechanism and retention schedule with
+  counsel, BEFORE production biometric processing.
+  Source: Privacy gates · Owner: Founder + counsel · PENDING FOUNDER
+
+REC-010 [F10] CRITICAL — Build the server-authoritative foundation:
+  authenticated session-creation Edge Function, signature-verifying
+  webhook Edge Function, private verification schema outside the
+  exposed Data API, deletion/review worker.
+  Source: Phase 3 · Owner: Codex · Status: PENDING FOUNDER
+
+REC-011 [F11] HIGH — Define duplicate-account and ban-evasion policy
+  WITHOUT building a ZYRA face database. Tenant-scoped provider-side
+  matching only, opaque results, human review, no automatic ban.
+  Source: Phase 3 · Owner: Founder + counsel · PENDING FOUNDER
+
+REC-012 [F12] MEDIUM — Add privacy-safe monitoring and a cost ledger
+  containing no identity or biometric content. Note: the current
+  privacy UI states that no analytics exists; that disclosure and its
+  lawful basis must be corrected before any monitoring is switched on.
+  Source: Phase 3 · Owner: Codex · Status: PENDING FOUNDER
+
+--- Recommendations the findings table did not carry ---------------
+
+REC-013 MEDIUM — Adopt the seven-record minimum server-owned data
+  model (verification subject, case, identity result, photo job,
+  webhook ledger, deletion job, audit event) as the schema baseline
+  once a provider is approved. Source: Phase 3.
+
+REC-014 MEDIUM — Adopt the two published state machines (identity and
+  profile-photo) as the canonical state model, including the invariant
+  that a pending replacement photo never removes the currently
+  verified one. Source: Phase 3.
+
+REC-015 HIGH — Adopt the publication invariant as the single
+  server-side gate for Seeker visibility: document verified AND
+  adult_18_plus AND face/liveness verified AND no reverify required
+  AND minimum photo count AND every visible photo safety-verified AND
+  ownership-verified. Source: Phase 3.
+
+REC-016 HIGH — Adopt the six internal trust facts and keep them
+  distinct rather than collapsing them into one badge. The public
+  "Verified person" wording must not imply background checks,
+  character, safety, marital status or kinship. Source: Phase 3.
+
+REC-017 MEDIUM — Adopt the risk-based re-verification trigger list,
+  and equally its exclusion list: time passing, a new phone, one poor
+  photo, biography edits and random periodic checks are NOT sufficient
+  grounds to re-verify a person. Source: Phase 3.
+
+REC-018 MEDIUM — Adopt the seven-category failure language table.
+  Every category must be able to say honestly that nothing has been
+  decided, and none may imply fraud. Source: Phase 3.
+
+REC-019 HIGH — Adopt the photo edge-case rules, in particular:
+  religious and cultural head coverings are NOT a failure; require
+  only the facial area technically necessary; provide private guidance
+  and a human route; and demand demographic and head-covering accuracy
+  evidence from the vendor. For a Muslim matrimonial product this is
+  not an edge case, it is a core case. Source: Phase 3.
+
+REC-020 MEDIUM — Adopt the accessibility requirement: a supported
+  assisted or manual path, with no mandatory gestures or movements
+  where a reasonable alternative exists. Source: Phase 3.
+
+REC-021 MEDIUM — Provide a visible appeal with a human empowered to
+  overturn, and monitor overturn rates as a quality signal on the
+  provider. Source: Phase 3.
+
+REC-022 MEDIUM — Build the vendor-neutral VerificationGateway
+  interface with production and mock adapters, so ZYRA is not
+  structurally married to one provider. Source: Phase 3.
+
+REC-023 HIGH — Implement the eleven required test families before
+  launch, including release-build absence tests for mock controls and
+  SQL grant/RLS tests proving no client can write verification state.
+  Source: Phase 3.
+
+REC-024 MEDIUM — Adopt the provisional retention targets as the
+  negotiating position with vendors and counsel: immediate deletion of
+  raw capture where feasible, otherwise a 30-day appeal window;
+  7 days for abandoned sessions; auditable queued provider deletion.
+  Source: Privacy gates.
+
+REC-025 MEDIUM — Budget from the real formula, not the headline unit
+  price: initial checks + billable retries + photo-ownership checks +
+  risk-based re-verifications + manual reviews and appeals + fixed
+  minimums, storage, support and tax. Source: Cost model.
+
+--- Recommendations AGAINST action (extracted deliberately) ---------
+REPORT_TO_OA_STANDARD §5: a recommendation against an action is a
+decision the organisation has already paid for, and it is the category
+routinely lost. These are not optional cautions.
+
+REC-N01 Do NOT build document authenticity, liveness or face matching
+  in-house. Specialist, adversarial, regulated, permanent burden.
+REC-N02 Do NOT perform one-to-many facial search inside Supabase.
+REC-N03 Do NOT enable cross-customer fraud-network matching without
+  separate necessity analysis, controller-role clarity, notice and
+  transfer approval.
+REC-N04 Do NOT permanently ban anyone on an automated biometric result
+  alone, and never reveal which account matched.
+REC-N05 Do NOT silently weaken the profile-photo requirement if no
+  finalist can prove it. Return to the Founder instead.
+REC-N06 Do NOT re-run a full identity flow for each profile photo —
+  commercially and experientially unsuitable.
+REC-N07 Do NOT retain raw ID images, document numbers, provider
+  selfies or liveness recordings, biometric templates or embeddings,
+  full provider responses or raw confidence scores in ordinary tables,
+  logs, analytics, crash reports or ANY AI system.
+REC-N08 Do NOT send religion, ethnicity, compatibility answers,
+  Journey content, Guardian relationship or subscription data to a
+  verification provider.
+REC-N09 Do NOT treat an unknown webhook state as success. Reject it.
+REC-N10 Do NOT let a provider outage become a fake success. Fail
+  closed to provider_unavailable and recover truthfully.
+REC-N11 Do NOT auto-select a face from a group photo.
+REC-N12 Do NOT accept generic "Face Match", "Biometric Authentication"
+  or "Known Faces" marketing as proof of the required capability.
+REC-N13 Do NOT assume Persona's startup pricing, or treat any figure
+  in the cost model as a quote.
+REC-N14 Do NOT let the mock adapter reach the production verification
+  transition or the publish RPC — enforce it structurally, not by
+  convention.
+
+════════════════════════════════════════════════════════════════════
+DECISIONS FOR THE FOUNDER
+════════════════════════════════════════════════════════════════════
+Ten come from the report. Two are Fable's and are marked as such.
+
+DECISION-001  Which finalist proves arbitrary uploaded-profile-photo
+              ownership matching?
+  Recommended:  None yet. Run the scripted demo with Veriff and
+                Entrust; admit Sumsub only after its three open
+                questions are answered.
+  Alternatives: Pick Veriff now on price and Flutter fit; pick Entrust
+                on platform breadth; add FaceTec as a separate
+                biometric service.
+  Why:          This one capability decides whether "verified" means
+                anything. No finalist publishes evidence of it.
+  Blocking:     YES — blocks Phase 4 entirely.
+  When:         Before any Phase 4 work is authorised.
+  If deferred:  The photo-ownership promise stays unbuildable and the
+                badge cannot honestly ship.
+  Source:       Phase 2 · acceptance test · Required decisions 1
+  Status:       PENDING FOUNDER
+
+DECISION-002  May ZYRA require biometric verification to publish a
+              profile, or must a non-biometric alternative exist?
+  Recommended:  Obtain counsel before committing. UK explicit consent
+                must be freely given, which may require a viable
+                alternative; a hard requirement may undermine the
+                consent it depends on.
+  Alternatives: Mandatory for all; mandatory for Seekers only;
+                optional with a visibly reduced trust state.
+  Why:          It determines both the legal basis and the product.
+  Blocking:     YES for legal design; shapes REC-015.
+  When:         Before the DPIA is finalised.
+  If deferred:  The DPIA cannot conclude and provider scoping is
+                guesswork.
+  Source:       Privacy gates · Required decisions 2
+  Status:       PENDING FOUNDER
+
+DECISION-003  UK Article 6 lawful basis and Article 9 condition?
+  Recommended:  Explicit consent as the Article 9 condition, subject to
+                counsel and to DECISION-002.
+  Alternatives: Substantial public interest conditions, if any apply.
+  Why:          Facial images used to identify a person are special-
+                category data even transiently.
+  Blocking:     YES — production biometric processing without this is
+                unlawful.
+  When:         Before any live processing.
+  If deferred:  Phase 4 cannot lawfully go live at all.
+  Source:       Privacy gates (ICO) · Required decisions 3
+  Status:       PENDING FOUNDER
+
+DECISION-004  UK and Saudi DPIAs, transfer mechanisms, DPO and
+              registration implications?
+  Recommended:  Commission both DPIAs now, in parallel with the RFP,
+                not after provider selection.
+  Alternatives: UK first and Saudi at market entry — cheaper, but
+                risks a provider chosen on a UK-only view.
+  Why:          Saudi PDPL treats biometric identification as
+                sensitive, requires an impact assessment and excludes
+                legitimate interest. It can invalidate a choice made
+                on UK reasoning alone.
+  Blocking:     YES.
+  When:         Start now; complete before launch.
+  If deferred:  Provider selection may be redone after integration.
+  Source:       Privacy gates (SDAIA) · Required decisions 4
+  Status:       PENDING FOUNDER
+
+DECISION-005  Provider and controller roles, model-training and
+              fraud-network use, and subprocessors?
+  Recommended:  Refuse provider use of ZYRA users' biometrics for its
+                own model improvement or cross-customer fraud network
+                unless separately justified and approved.
+  Alternatives: Permit for a commercial discount — record explicitly
+                if so.
+  Why:          Such use may make the provider an independent or joint
+                controller, changing ZYRA's obligations.
+  Blocking:     YES for the Article 28 agreement.
+  When:         During contract negotiation.
+  If deferred:  ZYRA may sign away a controller position by default.
+  Source:       Privacy gates · Required decisions 5
+  Status:       PENDING FOUNDER
+
+DECISION-006  Exact retention and deletion, including the
+              duplicate/ban-evasion exception?
+  Recommended:  Adopt REC-024 as the opening position; resolve the
+                erasure-versus-ban-evasion tension with counsel. Note a
+                hashed document number is still personal data.
+  Alternatives: Longer retention for stronger fraud defence.
+  Why:          Deletion promises made to users must be true.
+  Blocking:     Not for the RFP; YES before launch.
+  When:         Before the privacy notice is rewritten.
+  If deferred:  ZYRA risks a deletion promise it cannot keep.
+  Source:       Privacy gates · Required decisions 6
+  Status:       PENDING FOUNDER
+
+DECISION-007  Who owns manual review and appeals, and to what SLA?
+  Recommended:  Name a human owner before launch and publish a
+                response window. Do not launch biometric rejection
+                without a person able to overturn it.
+  Alternatives: Provider-managed review, at cost and with less control.
+  Why:          A false rejection with no appeal is, for a matrimonial
+                product, an exclusion from marriage prospects.
+  Blocking:     YES before launch.
+  When:         Before the first real verification.
+  If deferred:  Real users are rejected with no route back.
+  Source:       Phase 3 · Required decisions 7
+  Status:       PENDING FOUNDER
+
+DECISION-008  Is the displayed name a chosen display name or an
+              ID-verified fact?
+  Recommended:  Treat it as a display name for now and say so, because
+                first and surname remain casually editable. The badge
+                must not imply the name was verified.
+  Alternatives: Freeze the name on first publication, as gender and
+                date of birth already are.
+  Why:          Until this is decided, "verified" cannot honestly
+                include the name.
+  Blocking:     Blocks the badge wording only.
+  When:         Before badge copy is written.
+  If deferred:  The badge silently over-claims.
+  Source:       Phase 3 · Required decisions 8
+  Status:       PENDING FOUNDER
+
+DECISION-009  Guardian public trust language, and is reciprocal
+              confirmation enough for a relationship label?
+  Recommended:  Display "Identity verified" for Guardians and keep
+                "Father", "Brother" etc. explicitly a claimed
+                relationship. Identity verification never proves
+                kinship.
+  Alternatives: Build a distinct evidence standard for kinship;
+                or drop relationship labels from public view.
+  Why:          Guardian authority is the trust spine of ZYRA. A
+                wrongly implied kinship is the most damaging false
+                claim the product could make.
+  Blocking:     Blocks REC-004 wording.
+  When:         With badge copy.
+  If deferred:  The existing unbacked VERIFIED strings stay live.
+  Source:       Phase 3 · Required decisions 9
+  Status:       PENDING FOUNDER
+
+DECISION-010  Binding prices for initial check, retry, manual review,
+              recurring authentication, duplicate search and each new
+              profile-photo match?
+  Recommended:  Require all six as binding line items in the RFP.
+                Refuse a proposal that prices only the initial check.
+  Alternatives: Negotiate photo matching later — leaves the largest
+                recurring cost unbounded.
+  Why:          Profile-photo matching is the unpriced, recurring,
+                scale-proportional cost. It is where this becomes
+                expensive.
+  Blocking:     YES for the commercial decision.
+  When:         In the RFP.
+  If deferred:  ZYRA commits to a per-user cost it cannot forecast.
+  Source:       Cost model · Required decisions 10
+  Status:       PENDING FOUNDER
+
+DECISION-011  [FABLE] Do we fix the live mock-publication defect NOW,
+              separately from the Phase 4 programme?
+  Recommended:  YES. Authorise a small, self-contained change that
+                removes the two timers, removes the simulate control
+                from release builds, and stops the screen claiming a
+                profile is live when the server refused. This needs no
+                provider, no DPIA, no Edge Function and no migration.
+  Alternatives: Bundle it into Phase 4 — which means the defect stays
+                live for the months the procurement and legal work
+                takes.
+  Why:          Every account completing onboarding today is published
+                after four seconds of animation, and is told it was
+                verified. That is a safeguarding and truthfulness
+                problem now, on a product for arranging marriages.
+  Blocking:     Nothing. It unblocks itself.
+  When:         This week.
+  If deferred:  The known defect keeps producing falsely-badged live
+                profiles, and each one is a person who was told
+                something untrue about themselves and about others.
+  Source:       Fable review · REC-001 · FABLE-01
+  Status:       PENDING FOUNDER
+
+DECISION-012  [FABLE] What does ZYRA tell users in the interim —
+              between the fix and a working provider?
+  Recommended:  Say nothing that is not true. Remove verification
+                claims from onboarding, the Guardian preview and the
+                documents, and do not replace them with a softer claim.
+                An absent badge is honest; a vague one is not.
+  Alternatives: Keep a "checks in progress" state — attractive, and it
+                would be a second false statement.
+  Why:          The gap could be months. Users make marriage decisions
+                inside it.
+  Blocking:     Depends on DECISION-011.
+  When:         With the fix.
+  If deferred:  The product keeps making a claim it cannot support.
+  Source:       Fable review · FABLE-01/02
+  Status:       PENDING FOUNDER
+
+════════════════════════════════════════════════════════════════════
+RISKS
+════════════════════════════════════════════════════════════════════
+RISK-1  CRITICAL — LIVE NOW. Profiles publish on mock timers and are
+  presented to the user as verified. Mitigation: REC-001, DECISION-011.
+  Status: OPEN, unmitigated, on the production onboarding path.
+
+RISK-2  CRITICAL — LIVE NOW. The publication RPC will publish anyone
+  who typed four fields and uploaded one image. Mitigation: REC-002.
+  Status: OPEN.
+
+RISK-3  CRITICAL — LIVE NOW. An uploaded photo is displayable the
+  moment it lands; upload bucket and display source are the same.
+  Mitigation: REC-003. Status: OPEN.
+
+RISK-4  HIGH — LIVE NOW. Hard-coded VERIFIED strings in the Guardian
+  Network preview assert a check that does not exist, in the part of
+  the product where trust matters most. Mitigation: REC-004,
+  DECISION-009. Status: OPEN.
+
+RISK-5  HIGH — LIVE NOW. Documentation asserts a verification pipeline
+  that was never built, so anyone reading the documents — including a
+  future agent — will build on a false premise. Mitigation: REC-007.
+  Status: OPEN. Fable owns this and it is cheap to fix.
+
+RISK-6  HIGH — legal. Production biometric processing without an
+  Article 9 condition and a completed DPIA is unlawful in the UK, and
+  Saudi PDPL adds a separate sensitive-processing regime. Mitigation:
+  REC-009, DECISION-003/004. Status: OPEN.
+
+RISK-7  HIGH — commercial. Recurring profile-photo matching is unpriced
+  by every finalist and scales with active users, not signups.
+  Mitigation: DECISION-010, REC-025. Status: OPEN.
+
+RISK-8  HIGH — programme. The decisive capability may not exist at any
+  vendor. Mitigation: prove it before selecting (DECISION-001) and
+  return to the Founder rather than weakening it (REC-N05).
+  Status: OPEN and, on the report's own evidence, reasonably likely.
+
+RISK-9  MEDIUM — fairness. Biometric false rejection falls unevenly
+  across demographics, and head coverings are common in ZYRA's core
+  audience. An unmonitored false-reject rate is a discrimination risk
+  and a product risk simultaneously. Mitigation: REC-019, REC-021,
+  DECISION-007. Status: OPEN.
+
+RISK-10 MEDIUM — security. Webhook forgery, replay, misbinding to the
+  wrong user, and photo substitution after a verdict. Mitigation: the
+  threat-model table, REC-010, REC-023. Status: NOT YET APPLICABLE —
+  becomes live the moment Phase 4 starts.
+
+RISK-11 MEDIUM — custody. Once biometric processing begins, ZYRA holds
+  a category of risk it does not hold today. Mitigation: keep the
+  reference at the provider, retain only coarse state, never download
+  a template. Status: OPEN by design; must stay a deliberate choice.
+
+RISK-12 MEDIUM — governance. Phase 4 is large and touches migrations,
+  Edge Functions, storage policy and legal posture at once. Mitigation:
+  stage it, and require every applied migration to have a matching
+  repository file, as the report already demands. Status: OPEN.
+
+════════════════════════════════════════════════════════════════════
+POST-REPORT RECOMMENDATIONS — NOT CLAIMED TO BE PART OF THE ORIGINAL
+REVIEW
+════════════════════════════════════════════════════════════════════
+REPORT_TO_OA_STANDARD §6. These are Fable's, found while verifying the
+report. Codex has NOT seen them. They carry the weight of one agent's
+reading, not of a reviewed document, and they are separated here for
+exactly that reason.
+
+FABLE-01  HIGH — The screen tells the user their profile is live even
+  when the server refused to publish it. This is a distinct defect
+  from F01 and Codex did not report it.
+  Evidence: build() gates the "You are all set — your profile is live"
+  message on _liveReady, which is _photosApproved && _idVerified —
+  two client-side mock flags. It does not depend on the RPC result.
+  setProfileComplete() returns false on refusal and reports it only
+  through debugPrint, which is stripped in release builds. So if
+  zyra_set_profile_complete returns status 'incomplete' — for example
+  a Seeker with zero photo rows — the user is told they are live, is
+  sent to Browse, and is invisible to everyone, permanently and
+  silently.
+  Why it matters: this is exactly the failure the 2026-08-01 C3 audit
+  fixed once already, returning in a different form. It is also a
+  direct breach of ZYRA_TRUTHFUL_FAILURE_DESIGN.
+  Benefit: honest failure state; removes a silent permanent-invisibility
+  path. Risk of fixing: none — it is strictly more truthful.
+  Urgency: fix in the same change as REC-001. Ratification: with
+  DECISION-011.
+
+FABLE-02  MEDIUM — There is a comment in the code instructing the
+  future engineer to do the wrong thing.
+  Evidence: _goLiveIfReady() carries a NOTE reading "for whoever
+  replaces the mocks with real photo moderation and real ID
+  verification: keep the write here, attached to the same condition."
+  That instruction was right for its own moment and is now directly
+  contrary to the architecture this review recommends, in which the
+  client never writes publication state and the server evaluates an
+  invariant. The comment is well-reasoned, well-intentioned and would
+  lead the next engineer — or the next agent — straight into F02.
+  Benefit: prevents a documented trap. Risk: none.
+  Urgency: with REC-001. Ratification: not required, it is a comment.
+
+FABLE-03  MEDIUM — Decouple the programme. The report presents F01-F12
+  as one body of work behind one gate. Twelve items are not on one
+  clock. F01, F04, F07 and FABLE-01/02 need no provider, no DPIA, no
+  migration and no money, and could be done in days. F02, F03, F05,
+  F06, F10-F12 depend on provider selection. F08, F09 and F11 depend
+  on counsel and commercial negotiation. Treating them as one gate
+  means the cheapest, most urgent, most truthful fixes wait for the
+  slowest. Recommend splitting into: (i) TRUTHFULNESS NOW,
+  (ii) PROCUREMENT AND LEGAL, (iii) BUILD ON APPROVAL.
+  Ratification: DECISION-011.
+
+FABLE-04  MEDIUM — Ask the vendors the fairness question in writing,
+  as a scored RFP item rather than a diligence topic. The report asks
+  for demographic and head-covering evidence, which is right, but
+  places it among many other requirements. For a Muslim matrimonial
+  product with a UK and Saudi user base, false-reject rates on covered
+  faces and on darker skin tones are a primary selection criterion,
+  not a compliance checkbox. Recommend requiring published or
+  contractually warranted per-demographic false-reject figures, and
+  treating a vendor that cannot produce them as failing the test.
+  Ratification: with REC-008.
+
+FABLE-05  LOW — Record what "no analytics" currently means. The
+  privacy UI states no analytics exists. REC-012 would change that.
+  Before monitoring is switched on, the change of position should be
+  a deliberate, dated, disclosed decision rather than a side effect of
+  an engineering ticket. Ratification: with REC-012.
+
+FABLE-06  LOW — The Guardian photo model is an unstated dependency.
+  The publication invariant says Guardian photo requirements "depend
+  on the approved Guardian photo model", but no decision in the report
+  produces that model. It is a gap rather than an error, and it will
+  surface as a blocker during Phase 4 if it is not raised now.
+  Ratification: to be added as a decision if the Founder agrees it is
+  missing.
+
+════════════════════════════════════════════════════════════════════
+ACTIONS
+════════════════════════════════════════════════════════════════════
+NONE. Actions are created only after Founder ratification. This OA is
+decision preparation, not implementation authority. Codex is stopped
+at the Phase 3/4 gate and must remain stopped. No provider account, no
+credential, no migration, no Edge Function.
+
+════════════════════════════════════════════════════════════════════
+FOUNDER OUTCOME
+════════════════════════════════════════════════════════════════════
+Ratified:  —
+Rejected:  —
+Modified:  —
+Deferred:  —
+Reason:    —
+Date:      —
+(To be completed by the Founder. Until then every item above is
+PENDING FOUNDER and nothing may be implemented. The one item worth
+answering first is DECISION-011, because it is the only one that is
+both live and cheap.)
+
+Dependencies: OA-ZYRA-131 (marked actioned on wording only — see
+             REC-007/RISK-5, it needs reopening); IMAGE_HANDLING
+             CURRENT_VERSION_V2 (describes an unbuilt pipeline);
+             ZYRA_TRUTHFUL_FAILURE_DESIGN_2026-08-14 (FABLE-01 is a
+             breach of it); ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_
+             VERSION_V1 / DR-ZYRA-080; ZYRA_ENGINEERING_INVARIANTS_
+             CURRENT_VERSION_V3; OA-AIOS-370 (the REPORT -> OA rule
+             this OA is the second instance of); OA-ZYRA-262 (first
+             instance).
+Target:      Founder answers DECISION-011 -> truthfulness fix ships
+             -> RFP and DPIAs run in parallel -> provider demonstrates
+             the acceptance test -> Fable and Founder approve a
+             provider -> Codex reconciles this OA against the code
+             audit -> Phase 4 authorised.
+
+------------------------------------------------------------
+
+OA-ZYRA-264
+Title:       Production Dashboard resolver + Guardian truth-
+             boundary slice (DR-ZYRA-216; no-migration scope;
+             Codex authorised by Founder instruction
+             2026-08-28 on filing of this trace)
+Status:      Open — scope agreed via MESSAGES/007/008/009:
+             (1) typed source layer available/empty/
+             unavailable for Guardian links, activity and
+             pending invites (repairs failure-as-empty in
+             fetchActivity {}, fetchLinkedPeople [],
+             fetchPendingInvites [], SeekerWaliTab no-
+             unavailable-state); (2) pure IO-free resolver
+             per DR-216 contract with exhaustive priority/
+             failure tests; (3) Seeker production adapter
+             reusing existing truthful reads; (4) ONE
+             approved production renderer (Answer -> Journey
+             -> Other actions -> Worth Knowing; compact
+             Notifications header utility keeps manager
+             reachable); (5) Lab concepts become renderers
+             of the same DashboardResolution; (6) Guardian
+             Pulse refined into the Route-2 role/activity
+             card per DR-216 wording matrix, four sibling
+             renderers dev-only pending Founder phone
+             acceptance then archived; (7) no gated claims:
+             no migration, no git, no entitlement gating,
+             learning inactive, pause "whose move" omitted.
+             ACCEPTANCE BAR = 008 "Tests and evidence"
+             section verbatim (resolver suites incl.
+             simultaneous actions/expiry precedence/no
+             passive demotion/calm prohibition under partial
+             failure; truthful-failure matrix; production
+             dashboard states; routing; Guardian page
+             unavailable-vs-empty, 0/1/6 links, four
+             activity types, malformed type, no raw
+             decision, large-text + nav clearance; focused +
+             full Flutter, analyzer, structural checker,
+             visual matrix, paired-device observation;
+             handover with exact files/hashes/commands,
+             Fable disk verification).
+Evidence:    Founder instruction 2026-08-28 (relayed, chat);
+             DR-ZYRA-216; MESSAGES/007-009; drift
+             reconciliation in DASHBOARD_LAB_HANDOVER V5 +
+             DEVELOPER_CONTROL_SYSTEM_HANDOVER V1 (Sectioned
+             Status current-summary references corrected
+             2026-08-28)
+Target:      Codex implements -> measured handover -> Fable
+             disk verification -> Claude architecture pass ->
+             Founder device acceptance
+
+------------------------------------------------------------
+
+OA-ZYRA-265
+Title:       Dashboard-as-Home definition round — module
+             inventory before any further visual design
+             (Founder direction 2026-08-28, 25 sections,
+             after ChatGPT review of the current-state
+             handover)
+Status:      Open — Founder redefined the Dashboard's
+             purpose: the resolver stays as the BRAIN, the
+             page becomes the user's ZYRA HOME (Right Now ->
+             Journey/Search -> My ZYRA -> Family -> Recently
+             -> ZYRA Intelligence; show the right thing at
+             the right time; the page must breathe). VISUAL
+             DESIGN FROZEN until the module inventory is
+             agreed. Fable deliverable filed same day:
+             ZYRA_DASHBOARD_MODULE_INVENTORY_CURRENT_
+             VERSION_V1.md — 26 Seeker + 12 Guardian modules
+             classified (presence/plan/interaction/weight/
+             data source/exists-today/real-vs-mock/Founder-
+             decision), with challenges as requested:
+             three recency mechanisms merged to one; a
+             second "one thing" (Recommends Next) folded
+             into the calm answer; the since-last-visit
+             bookmark flagged as an explicit DR-ZYRA-216
+             gate-2 amendment, never a drift; Discovery
+             Health honesty ceiling (no location-narrowing
+             claim; Article 9 exclusions); momentum without
+             scoreboard pressure; snapshot must not
+             resurrect navigation cards; Guardian
+             intelligence tier = Guardian+ not ZYRA One;
+             Basic/One gates intelligence depth never
+             orientation. DECISIONS RECEIVED 2026-08-28 — all
+             nine ruled (S4 merge YES; unread-backed
+             recency, gate-2 bookmark rejection REAFFIRMED;
+             stable Guardian state + My ZYRA RATIFIED with
+             intelligent zero-suppression and Saved
+             de-emphasis; Discovery Health DESIGN-ONLY with
+             five pre-production conditions; Basic/One
+             principle ratified — depth of intelligence
+             only, never orientation/safety/truth; Guardian
+             Browse activity HELD for dedicated privacy
+             review, proposal drafted; guardian_premium
+             CAPABILITY gating, pricing untouched; Guardian
+             resolver move YES sequenced after Seeker;
+             deadlines unchanged). DR-ZYRA-217 filed
+             (DR-216 amendments recorded, nothing silent);
+             inventory V2 issued as the BINDING CONTENT
+             CONTRACT (V1 archived); Guardian Browse privacy
+             proposal filed as a Founder review item.
+             FOUNDER GO GIVEN 2026-08-28 (build brief
+             MESSAGES/011). CODE COMPLETE 2026-08-28 (Codex
+             handover MESSAGES/012). FABLE DISK VERIFICATION
+             PASSED 2026-08-29: 39/39 SHA-256 claims across
+             handovers 012-015 match disk (device-parsed,
+             zero transcription; later-cycle supersession
+             resolved correctly); six-level conditional Home
+             order verified in the production renderer
+             (RIGHT NOW -> JOURNEY -> MY ZYRA conditional ->
+             FAMILY always -> RECENTLY conditional ->
+             INTELLIGENCE conditional); no last_seen_at
+             (comments documenting the prohibition only); no
+             entitlement/plan read in dashboard code; Saved
+             null-omitted in production (Lab/dev-only
+             supply); Guardian dashboard untouched (mtime
+             pre-dates build, content intact); no new
+             migrations (newest remains the staged 20260825
+             pause machine). REMAINING: independent Claude
+             architecture pass; Founder device acceptance of
+             the Home build (supersedes the OA-ZYRA-264
+             acceptance subject, which moved to this
+             version); visual baselines stay zero-approved
+             under OA-ZYRA-257.
+Evidence:    Founder direction message 2026-08-28;
+             SYSTEM/DOCUMENTS/ZYRA_DASHBOARD_MODULE_
+             INVENTORY_CURRENT_VERSION_V1.md;
+             ZYRA_DASHBOARD_CURRENT_STATE_HANDOVER_
+             2026-08-28_V1.md; DR-ZYRA-216
+Target:      Claude architecture pass -> Founder device
+             acceptance -> close. Baseline approvals run
+             separately under OA-ZYRA-257.
+
+------------------------------------------------------------
+
+OA-ZYRA-266
+Title:       Identity verification in the app — photo
+             verification, ID-document verification, face
+             verification (Founder directive 2026-08-28,
+             recorded; definition round pending)
+Status:      OPEN — Stripe enquiry HELD by Founder 2026-09-13;
+             Gmail draft retained for the Founder to send manually
+             when ready. No provider message has been sent by Codex.
+             Current outreach note and release condition below.
+             HISTORICAL INTAKE STATUS (2026-08-28):
+             RECORDED, NOT YET SCOPED. Founder: "we
+             gotta add into app identification. photo
+             verification / id verification / face
+             verification." Nothing is built or promised in
+             current Terms wording (Legal Research V1
+             explicitly requires a best-efforts verification
+             disclaimer BECAUSE none exists). Definition
+             round must settle, in order: (1) product scope
+             — which of the three layers at launch, which
+             users (Seekers only? Guardians?), mandatory vs
+             badge; (2) provider vs in-house (candidates to
+             evaluate: Stripe Identity, Onfido, Veriff,
+             Persona — costs per check are a real unit-
+             economics input to pricing); (3) LEGAL GATE:
+             face verification/biometric matching is UK GDPR
+             special-category (Article 9) biometric data —
+             explicit consent + DPIA required; ID-document
+             images carry their own retention/security
+             duties; joins the existing solicitor
+             instruction list alongside the Art. 9
+             compatibility axes (OA-ZYRA-259 gate, Chapter 2
+             review section 6 — one instruction can cover
+             all); (4) "verified" badge product rules —
+             Guardian Page Review V1 gap 1 refusal ("no
+             verified badge — nothing to verify against")
+             becomes closable once this exists; (5) Terms/
+             privacy-policy wording update at build time;
+             (6) ADDED 2026-08-29 per DR-ZYRA-219 item 8:
+             the "full account activation" CAPABILITY MATRIX
+             — define exactly which capabilities require a
+             verified person identity, ruling at minimum on
+             onboarding, Browse, Consider/Save/Pass,
+             matching, Potential Journey, Active Journey,
+             Guardian linking, messaging, purchases;
+             ambiguity prohibited.
+             NOTE: Apple Developer membership (OA-ZYRA-267)
+             is unrelated technically but both were directed
+             in the same Founder message toward App Store
+             readiness.
+Evidence:    Founder chat directive 2026-08-28; ZYRA_LEGAL_
+             RESEARCH_CURRENT_VERSION_V1.md (verification
+             disclaimer + Art. 9 handling); ZYRA_GUARDIAN_
+             PAGE_REVIEW_CURRENT_VERSION_V1.md gap 1
+             PROGRESS 2026-08-29: provider evaluation
+             COMPLETE (OA-ZYRA-280 closed; 027 verified).
+             Sumsub = conditional launch lead per 027 §11;
+             eight acceptance conditions recorded there.
+             FOUNDER ACTIONS NOW THE CRITICAL PATH:
+             (a) create a Sumsub sandbox/trial account
+             (Founder-only — accounts/keys never touch the
+             AI seats) and request the written all-in quote
+             (IDV + liveness + face match + Similar Search
+             API + manual-review routing, chargeable-event
+             definitions) plus the DPA/retention/data-
+             location pack; (b) optionally request Stripe
+             Identity test access via the existing Stripe
+             onboarding + written answer on exposing
+             duplicate-selfie insight as an account-local
+             API/webhook flag (fallback path); (c) the
+             capability matrix (DR-ZYRA-219 item 8, listed
+             at (6) below) — Fable will draft the decision
+             sheet on request; (d) SUPERSEDED by DR-ZYRA-220
+             (2026-08-29): NO solicitor engagement — the
+             prepared pack was withdrawn/archived the same
+             day; its seven questions became the IN-HOUSE
+             compliance checklist (Fable drafts consent
+             wording, privacy policy and DPIA; Founder
+             reviews, accepts provider terms and signs;
+             risk acceptance recorded in DR-ZYRA-220). All
+             earlier "solicitor gate" mentions across this
+             register are historical text and read as
+             "DR-ZYRA-220 self-serve compliance path" from
+             2026-08-29 onward.
+             Profile-photo-vs-selfie matching stays OFF
+             until separately proved and approved (027 §11
+             condition 8).
+             FOUNDER DIRECTION 2026-08-29 (post-027 ruling,
+             recorded verbatim-in-substance): (1) Sumsub
+             stays CONDITIONAL lead — not finally selected
+             until written confirmation of: duplicate-person
+             detection capability; programmatic/API access
+             to the duplicate signal; duplicate = review/
+             flag only, NEVER automatic ban; human-review
+             workflow; search limited to ZYRA's own
+             population where required; full pricing; DPA;
+             retention; data location/residency;
+             sub-processors; deletion behaviour; UK/GDPR
+             position. Founder handles the account creation
+             when ready. (2) Stripe Identity stays LIVE
+             FALLBACK — route stays open; written answer
+             still needed on API/programmatic exposure of
+             the duplicate insight; no test access created
+             yet. (3) Veriff OUT while its documented
+             behaviour auto-declines duplicates — product
+             rule restated: duplicate signal -> human review
+             -> Founder/authorised resolution; NEVER an
+             automatic ban solely from duplicate detection.
+             Re-entry only on written non-blocking
+             configuration. (4) GO: Fable drafts the
+             capability matrix (Founder-first decision
+             sheet; UNKNOWN where written provider evidence
+             is absent). (5) GO: Fable prepares the
+             solicitor instruction pack from 027 §9 —
+             PREPARED ONLY, sent nowhere; engineering
+             assumptions separated from legal questions.
+             (6) OA-ZYRA-266 is the MASTER IDV record — no
+             further IDV OAs unless something becomes a
+             genuinely independent project. (7) CHECKPOINT:
+             matrix + solicitor pack return to the Founder
+             TOGETHER; he then rules on required
+             capabilities, Sumsub sandbox/commercial pack,
+             Stripe fallback status, and what goes to the
+             solicitor. No production implementation before
+             those decisions; no provider commitment; no new
+             Codex implementation.
+             GO-FORWARD PLAN SAVED AS DIRECTED (Founder,
+             2026-08-29, post-DR-ZYRA-220): (i) DONE 2026-08-29 —
+             matrix RULED as DR-ZYRA-221: verification
+             mandatory AT ONBOARDING, app closed to
+             unverified users; all rows inherit REQUIRED; (ii) Founder
+             creates the Sumsub account (Fable drives the
+             browser; Founder types credentials), sandbox
+             keys collected, written all-in quote requested
+             (Similar Search API inclusion + chargeable-
+             event definitions); (iii) Google Cloud Vision
+             SafeSearch API enabled on the existing ZYRA App
+             project for the nudity/NSFW profile-photo
+             checker (Edge Function at upload; ~1,000 free/
+             month then ~$1.50/1,000; also satisfies App
+             Store Guideline 1.2 moderation with a Report
+             button); (iv) PHASE A CODE COMPLETE +
+             FABLE-VERIFIED 2026-08-29 (030/031): consent
+             screen (verbatim copy, versioned consent),
+             fail-closed new-account onboarding for Seeker +
+             Guardian, coarse state machine (verified +
+             duplicate-clear needed for Active Journey),
+             report UI + dev-only INTERNAL PREVIEW
+             moderation queue, migration STAGED at
+             supabase/migrations/20260829183507_* and
+             LIVE-PROBED NOT APPLIED (0 tables/routines);
+             existing-account retrofit fuse dormant
+             (defaultValue: false) so current members are
+             not locked out pre-provider. 656/656 tests.
+             MIGRATION APPLIED 2026-08-29 under written
+             Founder GO (scope as stated: private schema, no
+             enforcement, no user impact, no provider
+             dependency, fuse off, reversible pre-
+             production). Applied by Fable via the Supabase
+             MCP with the byte-identical staged SQL (hash
+             re-verified 78eb82c8... before apply); history
+             row inserted under the EXACT local version
+             20260829183507 so the CLI stays in sync.
+             SIX-POINT POST-APPLY VERIFICATION ALL PASS:
+             (1) 2 private tables + 8 IDV routines created;
+             (2) RLS on both tables, zero anon/authenticated
+             grants, schema USAGE false for anon+
+             authenticated / true for service_role;
+             (3) auth/onboarding untouched (auth.users 150,
+             purely additive DDL); (4) no user blocked
+             (fuse dormant, 0 attempt rows, nothing live
+             reads the tables); (5) no provider call
+             possible (attach/record functions refuse
+             authenticated, no Edge Functions, no keys);
+             (6) feature OFF pending explicit Founder
+             activation — applying ≠ enabling, recorded.
+             FOUNDER ACTION — SUMSUB FORM NOT YET CONFIRMED:
+             mailbox searched in:anywhere for sumsub — ZERO
+             threads, so no submission acknowledgement
+             exists; treat the form as NOT submitted until
+             the Founder confirms or a Sumsub email lands
+             (daily triage watches). No provider keys/
+             accounts/commercial terms without the Founder.
+             VISION: GO to technically prepare/enable the
+             SafeSearch API at next console session
+             (required by the approved photo-checker
+             architecture); BEHAVIOURAL THRESHOLDS remain
+             Founder-controlled — 030 §8 values presented
+             for approval, NOT ratified. PENDING FOUNDER:
+             Sumsub form/account; threshold ruling. PENDING
+             FABLE: privacy policy + DPIA drafts. Codex
+             activation-audit release blocker recorded (030
+             §6): server-wide RLS/RPC enforcement audit
+             required before production enforcement.
+             DEV-SIGNUP CHECK ANSWERED (Codex, 2026-08-30,
+             accepted): dev signup completes VISUALLY via a
+             local verified state despite the unavailable
+             provider adapter, and devPreview deliberately
+             skips both profile-creation calls — no new
+             Supabase auth/profile test account is minted
+             (pre-existing preview behaviour, not an IDV
+             regression); seeded-account switching remains;
+             8/8 focused tests. PRACTICAL CONSEQUENCE:
+             visual flows + seeded accounts cover Founder
+             testing in the interim; creating NEW real test
+             accounts waits for Phase B (provider live).
+             Original brief: MESSAGES/029 (phased: A now;
+             B on keys; C on Vision). Plan history:
+             explicit-consent screen (DR-ZYRA-220 in-house
+             wording by Fable), Sumsub Flutter SDK
+             bank-style ID+face flow, verification gates per
+             the ruled matrix, SafeSearch photo pipeline +
+             review queue + report mechanism. Fable also
+             drafts privacy policy + DPIA for Founder
+             sign-off alongside.
+             CURRENT OUTREACH UPDATE 2026-09-13 — Founder prefers
+             Stripe for a small launch, with Sumsub a possible later
+             option; this is not provider activation or clearance of
+             eligibility, duplicate-review, privacy or spending gates.
+             Codex prepared and read-back verified one Gmail draft:
+             From admin@zyraconnect.app;
+             To shefat.fatma@growth.stripe.com (existing Stripe UKI
+             Growth contact); subject "ZYRA — Stripe Identity
+             eligibility and launch setup"; no CC/BCC, attachments
+             or links. Draft ID r-6221284074265540589;
+             message/thread ID 1a09a5c49f8230e4. Questions cover
+             matrimonial-use eligibility, duplicate API/manual review,
+             charge/retry bounds, and data-processing/retention terms.
+             FOUNDER HOLD: do not send. Founder wants to avoid further
+             external disclosure of the business name before securing
+             the company name; this records his stated concern, not
+             an independent company-name or trade-mark status check.
+             He has seen the draft and will send it himself when ready.
+             Gmail recheck: retained as DRAFT, unchanged and unsent.
+             Owner: Founder (manual send/readiness); Codex (record).
+             Release: Founder manually sends, or issues a fresh exact
+             instruction to send the then-reviewed draft. "Soon" is
+             not a deadline or authority to auto-send or schedule a send.
+             No alias/account, provider, app, database or pricing change;
+             no new OA identifier. Existing OA-ZYRA-266 remains OPEN.
+             PUBLIC-WEBSITE FOLLOW-UP 2026-09-20 — once mandatory identity
+             verification is genuinely provider-backed, enforced before app
+             use and post-verified, add prominent evidence-backed website copy
+             explaining that ZYRA members are verified before they can use the
+             member experience. Do not publish an absolute verification claim
+             while the provider, enforcement fuse, exceptions, terminology or
+             legal wording remain unresolved. The final website statement must
+             match the implemented capability and approved disclaimer exactly.
+             True pre-state and verification receipt: task-local
+             reviews/idv-2026/oa266-stripe-hold-prestate.VE6QA3/ and
+             reviews/idv-2026/OA_ZYRA_266_STRIPE_OUTREACH_HOLD_2026-09-13.md
+             under /Users/shakeelahmad/Documents/Codex/2026-08-29/
+             supabase-plugin-supabase-openai-curated-remote-3/.
+Target:      Fable definition brief (scope/provider/legal
+             gates) -> Founder decisions -> solicitor
+             confirmation for biometric path -> Codex build
+             OA(s)
+
+------------------------------------------------------------
+
+OA-ZYRA-267
+Title:       Apple Developer Programme enrolment — Founder
+             GO (GBP 79/yr) so ZYRA can ship to the App
+             Store
+Status:      CLOSED 2026-08-29 — COMPLETE. Membership
+             ACTIVE, confirmed by Founder and verified by
+             Fable on developer.apple.com/account
+             2026-08-29: "(Pending)" cleared, full Program
+             resources unlocked (App Store Connect,
+             Certificates/IDs/Profiles, Push Notifications,
+             Xcode Cloud). Team ID: 9Y7Z8F36SJ. Enrolled as:
+             Individual. Developer emails -> admin@
+             zyraconnect.app. RENEWAL RISK filed as
+             OA-ZYRA-272 (no card on Apple Online Store for
+             auto-renew). Downstream now unblocked: Runbook
+             Phase 2 (gated on OA-ZYRA-268 bundle
+             unification), OA-102 Apple Sign-In, OA-ZYRA-254
+             push, OA-ZYRA-258 IAP step 1.
+             ENROLMENT EXECUTED 2026-08-29: business Apple
+             Account created (admin@zyraconnect.app, 2FA on,
+             1 trusted phone number; Founder typed all
+             identity/credential/payment fields, Fable drove
+             navigation); Apple Developer Agreement accepted
+             by Founder; entity = Individual / Sole
+             Proprietor (Founder decision 2026-08-29 —
+             Organisation path deferred, migratable later);
+             Program License Agreement accepted by Founder;
+             membership purchased via web enrolment — Apple
+             Store Order No. W1578479196, GBP 79/yr
+             auto-renewing, Founder-paid. Activation +
+             receipt emails due at admin@zyraconnect.app
+             (usually < 48h for Individual). Finance record
+             filed 2026-08-29 (AIOS finance store, entity
+             zyra, ref W1578479196). History: Founder GO
+             2026-08-28 ("get apple 79gbp yearly thing");
+             single blocker named by OA-102 (Apple Sign-In),
+             OA-ZYRA-254 (push), OA-ZYRA-258 (IAP step 1).
+Evidence:    Founder GO 2026-08-28 (chat); OA-102;
+             OA-ZYRA-254; OA-ZYRA-258 recommended order
+Target:      DONE. Successor work: OA-ZYRA-268 (bundle
+             unification, precondition of any App ID) ->
+             Runbook Phase 2 (Founder ASC sign-in +
+             agreements; reserve name; App ID) ->
+             OA-ZYRA-258 order. Renewal card: OA-ZYRA-272.
+
+------------------------------------------------------------
+
 # Register Metadata (added 2026-07-12)
 
-TOTAL REGISTERED (this file): 243 (OA-001 through OA-ZYRA-243,
+OA-ZYRA-268
+Title:       Bundle ID unification — app.zyraconnect.zyra
+             on iOS + Android (Codex)
+Status:      Open — CODE COMPLETE (Codex handover 017,
+             hash relayed by Founder and MATCHED) and
+             FABLE-VERIFIED on disk 2026-08-29. Remaining
+             scope = EXTERNAL provider remainder only, kept
+             open as a measured gate per 017 §9 (never
+             closed by inference). VERIFICATION: 11/11 live-
+             file hashes match; legacy com/example/app
+             MainActivity removed; identifiers confirmed
+             independently (iOS Runner 3 configs + tests,
+             Android namespace/applicationId, Kotlin
+             package, both app-icon MethodChannel ends =
+             app.zyraconnect.zyra); migrations dir unchanged
+             (204, newest = staged 20260825 pause machine);
+             zero .entitlements files — no Apple capability/
+             signing work, boundary held; 616/616 tests,
+             both platforms debug+release builds, simulator
+             launch per 017. ONE PRECISION CORRECTION to
+             017 §7: the independent sweep found TWO
+             additional legacy hits beyond the declared
+             pair — macos/Runner.xcodeproj/project.pbxproj
+             (com.example.app.RunnerTests x3, dormant macOS
+             TEST bundle) and linux/CMakeLists.txt
+             (com.example.app, dormant Linux target). Same
+             category as the declared macOS xcconfig
+             (scaffold defaults in non-shipping desktop
+             targets, outside DR-218 iOS+Android scope) —
+             no boundary crossed, sweep statement
+             incomplete. Codex to fold desktop-target
+             cleanup into any future desktop-platform OA.
+             EXTERNAL REMAINDER PROGRESS 2026-08-29 (Fable
+             drove browser, Founder performed all sign-ins/
+             2FA): (1) DONE — Google iOS client REBOUND IN
+             PLACE (bundle -> app.zyraconnect.zyra, Team ->
+             9Y7Z8F36SJ; client ID UNCHANGED, so no Codex
+             three-location pairing update is needed);
+             Android client CREATED ("ZYRA Android", package
+             app.zyraconnect.zyra, Codex-measured SHA-1),
+             client ID 734578322486-1o7jvjl39cnhaqm30akdn9kg
+             8ph89kgs.apps.googleusercontent.com. Google
+             warns settings may take 5 min - few hours to
+             propagate. (2) NOT NEEDED (client ID kept).
+             (3) DONE — Supabase Google allow-list saved and
+             re-verified as web,iOS,Android (3 IDs, order
+             preserved; a mid-string paste error was caught
+             by pre-save verification and corrected). REAL
+             Google login measurement still owed (Codex,
+             after propagation). (4)
+             Apple remainder belongs to Runbook Phase 2
+             under Team 9Y7Z8F36SJ (App ID, Sign in with
+             Apple, entitlements, signing team, Supabase
+             Apple client, real Apple login). ANDROID
+             RELEASE SIGNING: release currently uses the
+             debug key deliberately; production keystore +
+             its own Google OAuth registration = pre-release
+             gate. CROSS-REF: Supabase provider allow-lists
+             and linking behaviour interact with OA-ZYRA-273
+             (single-account policy) — settle 273 before any
+             Sign-In ships. HISTORY — Founder ruled
+             2026-08-29 (DR-ZYRA-218):
+             canonical identifier app.zyraconnect.zyra,
+             unified on both platforms BEFORE App Store
+             Connect / App ID creation (identifier is
+             permanent once a store record exists). Current
+             state to replace: iOS Runner
+             com.shakeelahmed.zyraapp; iOS tests
+             com.zyra.app.RunnerTests; Android
+             applicationId/namespace com.zyra.app. Codex
+             implements and verifies ALL dependent
+             configuration: Xcode build configs (Runner +
+             RunnerTests -> app.zyraconnect.zyra.RunnerTests),
+             Info.plist, entitlements/URL schemes, Android
+             gradle applicationId + namespace + manifest +
+             Kotlin package path, repo-wide grep for old
+             identifiers, OAuth/deep-link callback schemes
+             (Supabase/Google Sign-In) still functional,
+             debug + release builds compile and run on both
+             platforms (fresh install; old dev installs
+             appear as a separate app — expected, dev-only).
+             Handover message back with evidence on
+             completion; Fable verifies. No store records,
+             no signing beyond the identifier, no git
+             (Founder runs git).
+Evidence:    DR-ZYRA-218; Founder decision message
+             2026-08-29; ZYRA_APP_STORE_RUNBOOK_CURRENT_
+             VERSION_V1.md Phase 2 pre-check; brief
+             015_FABLE-CODEX_2026-08-29_BUNDLE_ID_
+             UNIFICATION_GO.md
+Target:      DONE: implementation, handover 017, Fable
+             verification (018). OPEN: Google credential
+             registration (Founder-guided) -> Codex pairing
+             + Supabase allow-list -> real Google login
+             measured; Apple remainder via Runbook Phase 2.
+             Close only when real Google AND Apple logins
+             are measured on the canonical identifiers.
+
+------------------------------------------------------------
+
+OA-ZYRA-269
+Title:       Brand execution record — gold loaders +
+             Midnight Plum app icons (Founder-directed,
+             Codex-executed 2026-08-28)
+Status:      CLOSED 2026-08-29 — COMPLETE, filed as the
+             register trace Codex requested in MESSAGES/012
+             (the work was Founder-authorised via relay but
+             sat outside the DR-ZYRA-217 content contract):
+             all ten shared animated + reduced-motion
+             loaders use ZYRA gold #E8C98A; Meet & pass
+             stays release/Reset default; primary + seven
+             live app-icon variants use Midnight Plum
+             #684D78 -> #241A2C retaining Golden/Gold
+             Horizon treatments across regenerated
+             iOS/Android/macOS/web assets. Fable disk
+             verification 2026-08-29 covered the containing
+             handovers (SPLASH_SCREEN V1, DEVELOPER_CONTROL
+             V1 hashes matched).
+Evidence:    MESSAGES/012 companion section; ZYRA_SPLASH_
+             SCREEN_HANDOVER_CURRENT_VERSION_V1.md §12;
+             Founder relay 2026-08-28
+Target:      DONE — record only
+
+------------------------------------------------------------
+
+OA-ZYRA-270
+Title:       Member fonts — bundle vs runtime retrieval
+             decision before release (Personalisation)
+Status:      OPEN — Founder directly selected fixed Poppins app reading text
+             and a separate Syne ZYRA wordmark on 2026-10-01. Codex pruned
+             the member font picker, ignored/cleared legacy account-local
+             font choices, and bundled the existing Syne face for offline
+             first paint. Poppins was already bundled. Seven focused suites
+             passed 59/59 and scoped analysis was clean. The previous
+             pre-release choice among bundling all seventeen member fonts,
+             pruning the list or accepting runtime retrieval is resolved
+             in favour of pruning; protected/retired comparison code remains
+             historical only. Current main-app phone installation and
+             Founder physical acceptance are tracked in the new Style
+             Default §12 receipt; keep OA open until that acceptance.
+Evidence:    MESSAGES/013 §7.1; ZYRA_STYLE_DEFAULT_
+             HANDOVER_CURRENT_VERSION_V1.md §§11–12;
+             ZYRA_POPPINS_SYNE_FONT_LOCK_LOCAL_DELIVERY_2026-10-01_VERIFICATION.json
+Target:      Founder physical acceptance of fixed Poppins/Syne presentation
+
+------------------------------------------------------------
+
+OA-ZYRA-271
+Title:       Founder-direct UI cycles 013/014/015 —
+             record + Fable verification trace
+Status:      CLOSED 2026-08-29 — verification COMPLETE;
+             Founder device acceptance tracked on-device.
+             Three Codex cycles under Founder direct
+             instruction (AD-AIOS-104 path, no product OA
+             supplied): (1) MESSAGES/013 style locks +
+             shared Personalisation (Comet line, Midnight
+             Plum default + nine dark member palettes,
+             Floating Glass, Subtle haptics + five choices,
+             Poppins + eighteen member fonts, Compact
+             Chips/Accent Marker/Glass Signals locks,
+             three-door dev rail, account-local persistence
+             with sign-out clear, double light-palette
+             defence — VERIFIED on disk incl.
+             selectAppPalette refusal + restoreAppPalette
+             filter + ZyraLocalPrefs.clear in sign-out);
+             (2) MESSAGES/014 Connections context controls +
+             Activity previews (segment-contextual dev
+             panel, Home-first rail, 0-5 clamped
+             session-only preview composer with kReleaseMode
+             bypass — VERIFIED); (3) MESSAGES/015 pause
+             control moved to Active Journey context +
+             collapsed-card Report visibility for
+             Potential/Paused/Ended, Active unchanged —
+             VERIFIED (picker lives only in
+             _activeJourneyTools; dedicated visibility test
+             present). Hash evidence: within the 39/39
+             device-parsed match set 2026-08-29. No
+             migration, git, SQL or server mutation in any
+             cycle (verified: migrations dir unchanged).
+Evidence:    MESSAGES/013, 014, 015; MESSAGES/016 Fable
+             verification reply; DEVELOPER_CONTROL V1
+             §25-§27; STYLE_DEFAULT V1 §11
+Target:      DONE — Founder device acceptance of the open
+             iPhone build is the only outstanding step and
+             is tracked with the build, not this record
+
+------------------------------------------------------------
+
+OA-ZYRA-272
+Title:       Apple Developer membership auto-renew — add a
+             payment card before 2027-08 renewal
+Status:      Open — Apple banner on developer.apple.com/
+             account 2026-08-29: "There's no credit/debit
+             card on the Apple Online Store associated with
+             your Apple Account to auto-renew your
+             membership." Membership (Team 9Y7Z8F36SJ,
+             activated 2026-08-29, Order W1578479196) lapses
+             at renewal without a card or manual payment;
+             lapse pulls live apps from the App Store.
+             NUANCE (mailbox, 2026-08-29): Apple ALSO sent
+             "You've enabled automatic renewal" the same
+             morning — so auto-renew is ON at the membership
+             level while the Apple Online Store holds no
+             card. Reconcile when adding the card: the
+             renewal will fail without a stored payment
+             method despite the toggle. FOUNDER-ONLY
+             (payment). No urgency this year; must not
+             still be open by 2027-07.
+Evidence:    developer.apple.com/account banner 2026-08-29;
+             OA-ZYRA-267 (closed)
+Target:      Founder adds card (or diarises manual renewal)
+             -> close. Suggested check at Runbook Phase 6
+             submission at the latest
+
+------------------------------------------------------------
+
+OA-ZYRA-273
+Title:       Single account per person across sign-in
+             providers — no duplicate-identity loophole
+             (Founder security directive 2026-08-29)
+Status:      CLOSED 2026-08-29 — RULED as DR-ZYRA-219: all
+             seven points approved with two Founder wording
+             clarifications (server-authority wording
+             permanent, config behaviour not an eternal
+             invariant; "full account activation" must be a
+             defined capability matrix -> OA-ZYRA-266).
+             Follow-ups: OA-ZYRA-277 (Settings copy fix,
+             authorised). Original scope: RECORDED, AWAITING
+             CODEX CURRENT-STATE REPLY (report only, no
+             build). Founder: one
+             person must not be able to register or sign in
+             "twice" — an account created with Google sign-
+             in (his example: admin@zyraconnect.app) must
+             not become a SECOND account when the same email
+             later arrives via Apple Sign-In; users must not
+             find a provider loophole. Stakes beyond generic
+             duplicates — a second identity could bypass the
+             active-Journey slot rule, blocks, pauses,
+             Guardian oversight, reports and per-account
+             entitlements (IAP), and undermines identity
+             verification (OA-ZYRA-266). Codex to answer
+             from the current codebase/Supabase state:
+             (1) which providers exist today and whether
+             Supabase automatic identity linking is active —
+             same verified email = one user or two accounts;
+             (2) exact behaviour on email collision at
+             sign-up AND sign-in, including whether any path
+             trusts an UNVERIFIED provider email (classic
+             account-takeover vector: linking must require
+             provider-verified email — the loophole cuts
+             both ways: duplicate accounts AND hostile
+             claim of an existing account);
+             (3) the Apple wrinkle: Hide My Email hands the
+             same person a private-relay address, so email
+             matching alone cannot stop a deliberate second
+             account — state what if anything detects
+             duplicate PERSONS (real control = OA-ZYRA-266
+             identity verification);
+             (4) a policy proposal: automatic linking on
+             verified email + single-account enforcement +
+             any manual link/unlink UX, or alternative.
+             GATE: policy must be settled BEFORE Apple
+             Sign-In ships (OA-102, imminent now OA-ZYRA-267
+             is closed). No auth-setting or schema change
+             without explicit Founder authorisation.
+             CODEX REPORT RECEIVED (019_CODEX-FABLE) and
+             FABLE-VERIFIED 2026-08-29: source hashes match;
+             independent read-only re-run of the live
+             aggregate probe returned IDENTICAL numbers (150
+             users; 149 email seeded + 1 Google + 0 Apple
+             identities; 0 multi-identity users; 0 duplicate
+             emails; 0 unconfirmed/anonymous/email-less).
+             FINDINGS: same provider-verified email ->
+             Supabase auto-links to ONE user (server-side,
+             not client); different emails (Apple Hide My
+             Email relay) CAN create a second user — the
+             one-person rule is not technically enforceable
+             until OA-ZYRA-266 identity verification exists;
+             no client-side merge exists and none may be
+             added; recovery OTP cannot create users; no
+             public email/password signup (149 email
+             identities are seeded dev/test rows — future
+             hardening must retire that path server-side).
+             DRIFT FOUND: SignInSecurityScreen promises "Add
+             Apple/Google" while manual linking is OFF
+             (unfulfillable promise — fix direction depends
+             on the ruling); no unlink path exists; no
+             integration tests for the collision matrix.
+             RULING DELIVERED 2026-08-29 -> DR-ZYRA-219; the
+             seven points as put to the Founder (Codex's 7-point
+             policy (019 §6): (1) keep automatic
+             same-verified-email linking as continuity; (2)
+             never merge from client-supplied email/
+             metadata; (3) manual linking only via a
+             separately approved change (re-auth + fixed
+             Settings copy + security notification); (4) no
+             unlink in v1 (later: re-auth + never remove the
+             last method); (5) relay-duplicates resolved
+             only via OA-ZYRA-266 (tenant-scoped opaque
+             duplicate signal, human review, no ZYRA face
+             database, no auto-ban/auto-merge); (6) gate
+             full activation on one verified person once 266
+             ships; (7) existing-duplicate remediation needs
+             its own governed merge design. LIVE DATA POINT
+             (Fable, read-only): "Allow manual linking" OFF;
+             "Allow users without an email" OFF.
+Evidence:    Founder security directive 2026-08-29 (chat);
+             OA-102; OA-ZYRA-266; OA-ZYRA-267 (closed);
+             Supabase dashboard observation 2026-08-29
+Target:      Codex current-state reply -> Founder policy
+             decision -> design/build OA under that
+             decision, sequenced with OA-102
+
+------------------------------------------------------------
+
+OA-ZYRA-274
+Title:       Release app.zyraconnect.zyra App ID — held by
+             another team; blocks App Store Connect record
+Status:      COMPLETED — 2026-09-11. Authenticated read-only Apple portal
+             verification closes the historical collision. Apple Developer
+             shows explicit App ID `app.zyraconnect.zyra` owned by paid Team
+             `9Y7Z8F36SJ`, description ZYRA, with In-App Purchase, Push
+             Notifications and Sign in with Apple enabled. App Store Connect
+             shows the existing app record `ZYRA Connect`, Apple ID
+             `6810741513`, and at the 2026-09-11 collision-closure checkpoint
+             TestFlight had `No Builds` and no internal-testing group. No Apple
+             setting was changed. The bundle-
+             ID release/App-record target is therefore achieved; signed build
+             and upload remain the separate TestFlight sequence, not this OA.
+
+             Subsequent upload and internal-testing configuration are tracked
+             under OA-ZYRA-283 and message 089; OA-ZYRA-274 remains completed.
+
+             Earlier local re-measurement 2026-09-11:
+             Runner Debug/Profile/Release all use automatic signing, paid
+             Team `9Y7Z8F36SJ` and canonical bundle
+             `app.zyraconnect.zyra`; `Runner.entitlements` includes Sign in
+             with Apple `Default`. A local 2026-09-10 19:13 Store export
+             carries application identifier
+             `9Y7Z8F36SJ.app.zyraconnect.zyra`, `get-task-allow=false`,
+             `beta-reports-active=true` and an iOS Team Store provisioning
+             profile expiring 2027-09-10. This is strong byte-level evidence
+             that the original paid-team App ID/capability blocker was
+             resolved externally. It does not prove the present App Store
+             Connect app record or upload state. The old IPA predates the
+             Request New Journey hold and is forbidden for upload. A fresh
+             At that earlier checkpoint a Chrome window reached App Store
+             Connect but redirected to login, so no portal truth or account
+             change was then claimed. The completed status above supersedes
+             that checkpoint with authenticated read-only evidence.
+
+             OFFLINE RELEASE PREP 2026-09-11: source version is now
+             `1.0.0+2`; source Info.plist carries the audited standard-
+             encryption exemption; a governed export plist enforces
+             `testFlightInternalTestingOnly=true`, `destination=export`,
+             automatic paid-team signing and no automatic build-number
+             mutation; feedback reads the installed bundle version. The
+             dedicated release contract passes 7/7, 560 non-visual tests pass,
+             analyzer/repository/plist checks are clean and a fresh unsigned
+             release compile proves ZYRA / canonical bundle / 1.0.0 (2).
+             The old build-1 IPA remains byte-preserved and forbidden. No
+             signed archive, portal access, upload, replay, migration apply or
+             production access occurred; OA status and Founder gates are
+             unchanged. Message 083 records the measured evidence.
+
+             Historical blocker — registering
+             the canonical App ID on paid Team 9Y7Z8F36SJ
+             failed 2026-08-29: "An App ID with Identifier
+             'app.zyraconnect.zyra' is not available."
+             DIAGNOSTIC RUN (Fable, same session):
+             app.zyraconnect.diag1 registered instantly on
+             the paid team then was removed — so the prefix
+             is fine and the rejection is a genuine
+             COLLISION: some team already holds the exact
+             identifier. Prime suspect per Codex 017 §6: the
+             old Personal (free) Team (JB25YJ2T3N) via
+             Xcode automatic signing implicitly reserving it
+             after the bundle rename. CODEX DIAGNOSIS ASKED
+             (MESSAGES/019_FABLE-CODEX): inspect local
+             provisioning profiles + project DEVELOPMENT_
+             TEAM, report holder + profile creation date, NO
+             changes. PATH (a) EXECUTED
+             2026-08-29 (Founder chose it and pre-authorised
+             the submission; Fable drove): Apple Developer
+             Support case raised from the paid account via
+             Contact Us -> App Setup -> Other -> email.
+             CASE ID 20000150964412. Request: release
+             app.zyraconnect.zyra from the holding team
+             (believed own former Personal Team JB25YJ2T3N)
+             so it can be registered under 9Y7Z8F36SJ;
+             ownership verification offered. Apple replies
+             by email to admin@zyraconnect.app — Founder to
+             watch the mailbox and answer verification
+             questions. HOLDER CONFIRMED
+             (Codex 020, Fable-verified 2026-08-29): Xcode
+             automatic signing implicitly registered the
+             identifier under free Personal Team JB25YJ2T3N
+             at 2026-08-29T08:15:23Z (Update Signing log
+             shows the POST + success; Apple bundle resource
+             LRA4MP2658, profile 9Q2PFG4M65; Xcode-managed
+             profile UUID 2f961137-11b3-4cc6-948f-
+             57d14b2fb551, expires 2026-09-05T08:15:23Z).
+             Fable-verified from the VM: pbxproj hash
+             unchanged from 017; DEVELOPMENT_TEAM =
+             JB25YJ2T3N at Runner lines 393/579/604; zero
+             9Y7Z8F36SJ refs. Mac-local profile/log evidence
+             accepted as Codex-measured (hashes in 020).
+             CAVEAT (Codex, correct): profile expiry does
+             NOT guarantee Apple releases the bundle-ID
+             object — support case 20000150964412 remains
+             the primary path; fallback (b) = retry
+             registration after 2026-09-05T08:15:23Z
+             accepting it may still fail. PROCESS LESSON: at
+             the Phase-2 team switch, set DEVELOPMENT_TEAM
+             to 9Y7Z8F36SJ (or disable automatic signing)
+             BEFORE opening Xcode, so the old team cannot
+             implicitly re-register anything. Never a
+             bundle-ID change — DR-ZYRA-218 stands. FOUNDER
+             RATIFIED 2026-08-29: support case stays active;
+             the pre-Xcode team-selection rule is now
+             DR-ZYRA-219 item 10. ASC app record + name
+             reservation wait on this.
+             UPDATE 2026-09-08 (Codex interim takeover,
+             read-only Gmail evidence): the Apple Developer
+             membership is NOT unpaid. Order W1578479196 for
+             GBP79/year was processed 2026-08-29; Apple sent
+             the Developer Program welcome, App Store Connect
+             access and automatic-renewal confirmations. The
+             2026-09-03 reply from senior Developer Support
+             advisor Niall concerns this Bundle ID collision.
+             Apple requires contact from the Apple Account
+             associated with the old Personal Team/Bundle ID,
+             because the case was opened from the different
+             paid-program account. SAFE NEXT SEQUENCE: first
+             retry canonical App ID registration on paid Team
+             9Y7Z8F36SJ now the free profile has expired; if
+             still unavailable, continue case 20000150964412
+             while signed into the old Personal-Team Apple
+             Account. No reply, registration or account change
+             was made during intake.
+Evidence:    Apple portal rejection 2026-08-29; diag1
+             register+remove evidence (same session); Codex
+             017 §6 Personal-Team warning; DR-ZYRA-218
+Target:      Founder signs into App Store Connect -> Codex verifies the
+             canonical app record and current build state read-only. If the
+             paid-team identifier/capability seen in the local Store profile
+             is present, reconcile and close this historical collision OA;
+             otherwise continue support case 20000150964412. ACHIEVED
+             2026-09-11; no support continuation required for this identifier.
+
+------------------------------------------------------------
+
+OA-ZYRA-275
+Title:       Google OAuth consent screen — Testing mode ->
+             Production before launch
+Status:      Open — pre-release gate. Google Cloud shows the
+             ZYRA App consent screen in TESTING mode:
+             "OAuth access is restricted to the test users
+             listed on your OAuth consent screen" (surfaced
+             during Android client creation 2026-08-29).
+             Until published to Production, only listed test
+             users can complete Google sign-in. Publishing
+             may trigger Google verification review
+             (branding/scopes). Founder-guided action at
+             TestFlight-external/launch time.
+Evidence:    Google Cloud console banner 2026-08-29;
+             OA-ZYRA-268 external remainder
+Target:      Publish consent screen to Production (+ any
+             verification) before public release; until
+             then keep testers on the test-user list
+
+------------------------------------------------------------
+
+OA-ZYRA-276
+Title:       Supabase plan/quota — "Grace period is over"
+             banner on the production project
+Status:      Open — infrastructure risk. The Supabase
+             dashboard for the ZYRA project (org ZYRA-APP-
+             LAB, FREE plan) showed 2026-08-29: "Grace
+             period is over — Your projects will not be able
+             to serve requests when you use up your quota."
+             A quota stop would take auth/data down for any
+             real device testing or TestFlight wave. Founder
+             decision: upgrade plan (or confirm quota
+             headroom) BEFORE inviting external testers.
+             Sequencing note: sits beside OA-ZYRA-258 money
+             plumbing; no change made today.
+             QUOTA HEADROOM MEASURED 2026-09-24 by Fable,
+             on the Founder's instruction, reading the live
+             usage page in his browser. Billing cycle
+             18 Sep - 18 Oct 2026, Free plan, one project:
+               Storage        0.384 / 1 GB      38%
+               Database       0.041 / 0.5 GB     8%
+               Egress         0.001 / 5 GB      <1%
+               Monthly users  3 / 50,000        <1%
+               Edge functions, Realtime messages,
+               Realtime connections, cached egress: all ZERO
+             NOTHING IS NEAR A LIMIT AND NOTHING IS IN
+             OVERAGE. The banner is not a warning about this
+             account. Supabase ended the grace period for
+             every Free-plan organisation on 2026-08-17 and
+             shows the same notice to all of them. The risk
+             recorded on 2026-08-29 was real as a question
+             and is now answered by measurement.
+             WHAT IS ACTUALLY WORTH WATCHING, AND IT IS NOT
+             THE BANNER: STORAGE. It is the only metric with
+             meaningful consumption, and its daily chart
+             shows it climbing across the period. It holds
+             member photographs, so it grows with every
+             profile - and it stands at 38% of the free
+             allowance on THREE monthly active users. Every
+             other metric would take tens of thousands of
+             users to trouble. Storage will not.
+             This reframes the action. The question was
+             never "will a quota stop happen before
+             TestFlight" - at three users, no. It is "what
+             does storage do at two hundred users", and that
+             is an arithmetic question the Founder can
+             answer before he needs to, rather than an
+             infrastructure emergency.
+             DATABASE SIZE, for the record: 38.87 MB.
+Evidence:    Supabase dashboard banner observed 2026-08-29
+             during OA-ZYRA-268 allow-list work. Full usage
+             page read 2026-09-24 (org pdekarsldtaqlqdthgwh,
+             project sxoaxonzjqkgajmlagyk); figures above.
+Target:      Quota headroom confirmed 2026-09-24 -> Founder
+             decides whether to upgrade before opening
+             testing, knowing storage is the binding
+             constraint and not the banner -> close
+
+------------------------------------------------------------
+
+OA-ZYRA-277
+Title:       Sign-in & Security Settings copy fix — remove
+             the unfulfillable "Add Apple/Google" promise
+             (DR-ZYRA-219 item 5, Codex)
+Status:      Open — CODE COMPLETE (Codex 023, own hash
+             matched Founder relay) and FABLE-VERIFIED
+             2026-08-29: both live-file hashes match;
+             zyra_auth.dart byte-identical to the 019 hash
+             (auth untouched, dormant link plumbing intact
+             at lines 256/298/611); zero "Add Apple/Google"
+             or "Not connected" strings; settings screen
+             references no link function; three fixtures
+             covered in the hash-matched test file;
+             619/619 suite per 023. Fable doc
+             reconciliation DONE per 023 §7.4: APP/Settings/
+             SUMMARY.md approved-model paragraph and
+             SETTINGS_AND_IDENTITY V2 §3.3 + prerequisite 5
+             now carry the DR-ZYRA-219 V1 ruling (future
+             enablement text retained as design). REMAINING:
+             Founder device acceptance of the screen;
+             collision-matrix integration evidence stays
+             blocked on OA-ZYRA-274 / Phase 2 real Apple
+             identity. Original scope: AUTHORISED by
+             DR-ZYRA-219. Scope:
+             SignInSecurityScreen must truthfully reflect
+             that manual identity linking is OFF in V1 —
+             present the member's current sign-in method as
+             information, remove/replace controls that
+             promise adding another method; keep
+             ZyraAuth._mapLinkError and the underlying
+             plumbing for the future separately-approved
+             enablement. HARD BOUNDARIES: no auth-setting
+             change (manual linking stays OFF); no unlink
+             UI; no server/schema change; no migrations; no
+             git. NOTE (not in scope): collision-matrix
+             integration tests (same-email continuity,
+             relay case, link-refusal) stay blocked until a
+             real Apple identity exists post OA-ZYRA-274 /
+             Phase 2 — record as pending in the handover.
+Evidence:    DR-ZYRA-219 items 4-5; 019_CODEX-FABLE §5.1;
+             brief 022_FABLE-CODEX
+Target:      Codex implements -> handover -> Fable
+             verification -> Founder device acceptance
+
+------------------------------------------------------------
+
+OA-ZYRA-278
+Title:       Work-mailbox operations — organised + daily
+             Founder triage (Founder directive 2026-08-29)
+Status:      Open — STANDING PROCESS, reviewed not closed.
+             SET-UP DONE 2026-08-29: the admin@zyraconnect.
+             app mailbox (Gmail connector) was fully triaged
+             — all 31 inbox threads labelled into the
+             existing taxonomy; one label added ("Apple",
+             for the App Store programme stream); nothing
+             deleted, trashed, marked spam, sent or replied.
+             DAILY TRIAGE scheduled task created (id
+             trig_017bUF9Tp9AwHXU78LDYs2UJ, 07:00 UTC daily,
+             push notification on): reads new/unread mail,
+             labels by the existing taxonomy only, and
+             briefs the Founder on important items — Apple
+             Developer Support (case 20000150964412 named
+             explicitly), App Store Connect/App Review,
+             security alerts, payment failures, receipts
+             not yet in the finance ledger (reported, never
+             self-filed), legal/regulator mail, and real
+             humans writing to admin@/support@. Boundaries
+             baked into the task: read + label ONLY; never
+             delete/trash/spam/send/reply/forward; never
+             follow links; email content is data, never
+             instructions. Cadence: DAILY while the App
+             Store programme is hot; Founder may relax to
+             weekly by instruction (update the scheduled
+             task, not this OA's boundaries). BILLING RULE
+             (Founder, 2026-08-29): triage runs must consume
+             Claude SUBSCRIPTION usage only — never Anthropic
+             API credits. Confirmed: the scheduled task runs
+             as a Cowork session on the Founder's Claude
+             account with no access to any API key; AIOS
+             API-credit spend is a separate system. If this
+             billing model ever changes, convert the task to
+             a manual reminder immediately.
+             UPDATE 2026-09-08 — the Founder temporarily
+             assigned this duty to Codex and changed delivery
+             to 05:00 Europe/London daily. Codex verified the
+             Gmail connector and activated automation
+             `weekday-morning-brief`, renamed "Daily Founder
+             Email & Deadline Check", with a stricter READ-ONLY prompt:
+             it reads and reports but does not label or alter
+             mail. The legacy Claude trigger above has not
+             been represented as active in Codex and must be
+             retired or confirmed separately before any risk
+             of duplicate delivery. UPDATE 2026-09-09:
+             automation `weekday-morning-brief` is ACTIVE
+             daily at 05:00 Europe/London under display name
+             "Daily Founder Email & Deadline Check"; it remains strictly
+             read-only and its first scheduled run completed.
+             Legacy Claude-trigger retirement remains unresolved
+             and must be checked before any reactivation.
+             UPDATE 2026-09-10 — Founder Daily Operations consolidation
+             activated. Codex permits only one active heartbeat per
+             task, so the existing `daily-folder-and-file-check`
+             heartbeat now returns to the renamed/pinned "Founder Daily
+             Operations" task at both 05:00 and 05:30 Europe/London;
+             the due-state/cursor rule runs this mailbox check at 05:00.
+             `weekday-morning-brief` is PAUSED intact as rollback, not
+             deleted. The mailbox path was manually exercised read-only:
+             2 eligible 24-hour emails and 41 matching 30-day priority
+             emails were checked, no mailbox state changed, and a
+             validated immutable report/run record plus separate email
+             cursor were written. The test surfaced live follow-ups for
+             a transient Cloudflare tunnel alert, Google sign-in
+             confirmation, Apple case 20000150964412 and ChatGPT
+             renewal dates. A same-morning read-only probe found the
+             local AIOS service and cloudflared healthy again behind
+             the unauthenticated Access redirect; authenticated
+             end-to-end continuity remains under OA-AIOS-379. The
+             first combined scheduled 05:00 delivery is due 2026-09-11
+             and still needs Scheduled/task visibility verification.
+Evidence:    Founder directive 2026-08-29 (chat); historical
+             task trig_017bUF9Tp9AwHXU78LDYs2UJ; mailbox
+             label state 2026-08-29; AD-AIOS-108/OA-AIOS-379;
+             Codex automation and first run 2026-09-09; Founder
+             activation instruction and validated task-local report
+             2026-09-10
+Target:      Standing process — review cadence/rules when
+             the Founder asks or volume changes materially
+
+------------------------------------------------------------
+
+OA-ZYRA-279
+Title:       Business Google avatar — Codex design round
+             (Founder directive 2026-08-29)
+Status:      Open — Codex GO via MESSAGES/025. Fable's first
+             pass (static PNG + comet-line animated GIF from
+             the 1024 icon) sits in SYSTEM/RESOURCES/BRAND/;
+             Founder directed a Codex design round: bring
+             the avatar up to ZYRA's modern look, with the
+             GOLD made more accurate to the #E8C98A / Gold
+             Horizon family (current GIF glow runs too
+             white). Options land in the SAME folder;
+             constraints: circle-crop safe at 28-40px,
+             animated frame 1 must equal the static mark
+             (Google freezes animation on many surfaces),
+             subtle professional motion, GIF format, brand
+             truth only. Upload path already unblocked:
+             Workspace profile-editing policy flipped ON
+             2026-08-29 (Founder-approved admin change);
+             Founder picks the design, Fable performs the
+             upload.
+Evidence:    Founder directive 2026-08-29 (chat); MESSAGES/
+             025; BRAND/ first-pass files
+Target:      Codex options + 026 reply -> Founder picks ->
+             Fable uploads to the Google account -> close
+
+------------------------------------------------------------
+
+OA-ZYRA-280
+Title:       Identity-verification provider evaluation —
+             Codex report (OA-ZYRA-266 definition round,
+             step 2)
+Status:      CLOSED 2026-08-29 — report delivered (027,
+             hash matched Founder relay) and FABLE-VERIFIED:
+             both corrections to Fable's 026 assumptions
+             independently confirmed against primary sources
+             (Stripe biometric-duplicate insight EXISTS but
+             is a Dashboard review surface — no documented
+             API/webhook duplicate field; the only
+             programmatic output is the status webhook after
+             a HUMAN override. Veriff's service description
+             states verbatim that a recurring already-
+             approved user's session "shall be declined" —
+             automatic decline, conflicting with DR-ZYRA-219
+             unless contractually altered; Industry
+             CrossLinks crosses customers and must be
+             disabled). Boundaries verified: migrations dir
+             unchanged (204), zero IDV dependencies in
+             pubspec, no accounts/keys/consent screens/git.
+             CONCLUSION ACCEPTED: Sumsub = CONDITIONAL
+             launch lead (single provider, dedicated ZYRA
+             source key, server-side Similar Search
+             collapsed to one opaque duplicate_review_
+             required boolean, human review in provider
+             console, hit details discarded); Stripe
+             Identity = operational fallback (Dashboard-only
+             duplicate handling); Veriff = challenger only
+             with written non-blocking duplicate mode. All
+             eight §11 conditions must pass before
+             selection; successor work lives in OA-ZYRA-266
+             (no new OA per 027 §13). Original scope: Codex
+             GO via MESSAGES/026, REPORT ONLY.
+             Founder directive 2026-08-29 to progress
+             identity verification today. Candidates:
+             Stripe Identity (~$1.50/check, no minimum,
+             Stripe account already in onboarding; duplicate
+             signal believed ABSENT — confirm), Sumsub
+             (~$1.35 + ~$150/mo min, Flutter SDK, applicant
+             deduplication — test fit against DR-ZYRA-219
+             item 7 opaque-signal rule), Veriff (~$0.80 +
+             ~$49/mo min, Flutter plugin); Persona/Onfido/
+             Yoti desk-noted. Deliverable 027_CODEX-FABLE:
+             integration paths, no-biometrics-at-rest data
+             flow, duplicate-signal capability, costs,
+             UK/GDPR posture, recommendation. BOUNDARIES: no
+             provider accounts/keys/SDKs/migrations/consent
+             screens/git; sandbox needs Founder-created
+             accounts. GATES UNCHANGED: build blocked until
+             Founder capability matrix (DR-ZYRA-219 item 8,
+             in OA-ZYRA-266) + solicitor Article 9 gate.
+Evidence:    Founder directive 2026-08-29 (chat); OA-ZYRA-
+             266; DR-ZYRA-219 items 7-8; MESSAGES/026;
+             pricing research 2026-08-29
+Target:      Codex report -> Founder provider + scope
+             decisions -> solicitor gate -> build OA
+
+------------------------------------------------------------
+
+OA-ZYRA-281
+Title:       Dashboard Insights V1 + three-tab presentation
+             migration — programme master (DR-ZYRA-222)
+Status:      CLOSED 2026-08-30 — PROGRAMME COMPLETE (closure
+             update at the end of this entry). Opened the same
+             day — DR-ZYRA-222 ratified (Founder
+             rulings D1-D6 on the co-signed Joint Fable x
+             ChatGPT Dashboard Insights Position V1).
+             SCOPE: (1) D1 presentation migration of the
+             Seeker Dashboard from the six-level single page
+             to TODAY · UPDATES · INSIGHTS (presentation/
+             routing only; resolver, state authorities,
+             update projection and insights architecture
+             preserved; Guardian Dashboard untouched);
+             (2) Insights V1 per ZYRA_INSIGHTS_SYSTEM_
+             CURRENT_VERSION_V1.md — insight_facts +
+             insight_feedback stores, template renderer,
+             explainability, user controls; Discovery Health
+             as SOLE candidate family behind validation
+             gates; honest-empty otherwise; zero LLM; LEVEL
+             0 display-only; identical on every plan.
+             SEQUENCE: Fable drafts the bounded Codex
+             implementation contract -> FOUNDER REVIEWS THE
+             CONTRACT (no mailbox send before his approval)
+             -> Codex design/validation phase (validation
+             precedes construction; physical schema is a
+             Codex proposal) -> Founder-gated build -> Fable
+             verification (incl. measured write ceiling
+             <=1-1.25 writes/active user/day) -> Founder
+             device acceptance. GATES: no state cards in
+             Insights; no Article 9 derivation beyond the
+             DR-ZYRA-222 D3 exception (risk-accepted;
+             precedent lock absolute); no speculative
+             infrastructure without a consuming family; no
+             migrations applied without explicit Founder GO;
+             DPIA + privacy-policy insights sections must
+             document the D3 processing before enablement.
+             UPDATE 2026-08-30 (Codex pre-review of draft
+             032; Fable disk-verified): the three-tab
+             renderer is ALREADY LIVE in production code —
+             zyra_resolved_dashboard.dart carries the
+             Today/Updates/Insights sections and the
+             production route in seeker_dashboard_screen.
+             dart mounts it; file mtimes 2026-08-30
+             ~10:30-10:41, post-dating the 2026-08-29
+             six-level verification and preceding the
+             DR-ZYRA-222 filing. Build authority/date/
+             instruction source to be stated by Codex in
+             Phase 1 for this record. Insights stores,
+             Discovery Health and the Updates RPC remain
+             UNBUILT (no insight migrations on disk).
+             Workstream A is RECAST: AUDIT + CORRECTION +
+             VERIFICATION of the existing three-tab
+             implementation against inventory V3 — not a
+             new build. Known drift: RECENT MOVEMENT renders
+             on Today AND Updates; inventory V3 assigns the
+             changes class exclusively to UPDATES; the
+             current test encodes the duplicate. Contract
+             draft corrected per the eight Codex points
+             (audit recast, file inventory, Today-baseline
+             honest-empty scoping, 12-variant visual scope,
+             dev-panel acceptance selector + rebuild revert
+             instead of a flag, hardened RPC contract,
+             boundary-crossing differencing proof).
+             Founder confirmed the pre-review was authored
+             by Codex and approved sending 2026-08-30;
+             contract FILED as 032_FABLE-CODEX_2026-08-30_
+             DASHBOARD_THREE_TAB_AUDIT_AND_INSIGHTS_V1_
+             CONTRACT.md. NOW AWAITING: Codex Phase 1
+             (audit + design + validation) report.
+             UPDATE 2026-08-30 (later): Codex 033 Phase 1
+             received and FABLE-VERIFIED PASSED (034; hash
+             matched; wali three-tab, S8 live, no insight
+             tables/RPC on live DB, score_candidates
+             search_path=public all independently
+             confirmed; 667/667 accepted as measured).
+             DISCOVERY HEALTH: VALIDATION FAILED/DEFERRED —
+             (a) no real verified onboarding-complete
+             population (149/150 test-domain; 0 onboarding-
+             complete; 0 verified); (b) the absolute one-
+             person differencing invariant is unprovable for
+             any deterministic count/bucket output (every
+             multi-value output has a boundary; epochs/
+             hysteresis move, not remove it). Ruled fallback
+             operating: NO insight stores/migration/RPC/
+             production card; Insights honest-empty. Return
+             path = real verified population + NEW Founder
+             ruling on a materially different mechanism.
+             GUARDIAN CONFLICT (C1) OPEN: production
+             Guardian is ALSO three-tab under a separate
+             Founder-direct instruction while DR-ZYRA-222
+             D6/032 said untouched — Founder disposition
+             pending; no Guardian edits meanwhile.
+             LEGACY-COMPARISON SELECTOR WITHDRAWN (no
+             truthful six-level renderer on disk; git
+             prohibited): acceptance = device acceptance +
+             reversible-patch evidence. score_candidates
+             hardening observation recorded against the 030
+             §6 activation audit. AWAITING FOUNDER: C1
+             Guardian confirm/revert; C3 Updates RPC
+             authorise/defer; Phase 2 GO for the accepted
+             patch surface (Today-preview removal, S4
+             advisory disposition, MY ZYRA/FAMILY label
+             renames, per-tab failure truth, S20 copy fix,
+             fixture additions to a 24-variant matrix); S4
+             sub-choice (remove advisory vs amendment).
+             UPDATE 2026-08-30 (rulings): Founder ruled ALL
+             FOUR — DR-ZYRA-223 filed. 1A Guardian three-tab
+             CONFIRMED both roles (D6 not reopened; Guardian
+             Insights honestly empty; no filler); 2 Updates
+             projection AUTHORISED (empty-vs-failed ruled UI
+             law; one Updates system; migration staged only
+             — apply needs separate Founder GO after Fable
+             verification); 3 PHASE 2 GO (correction/
+             reconciliation only); 4A calm advisory REMOVED
+             (calm state carries no behavioural suggestion).
+             Discovery Health failure ACCEPTED (invariant
+             not weakened; nothing built under the
+             fallback; return path = new Founder ruling).
+             score_candidates stays in the 030 §6 audit
+             blocker unless the patch genuinely needs it.
+             Codex RELEASED via 035_FABLE-CODEX. NOW
+             AWAITING: Codex Phase 2 completion report ->
+             Fable independent verification -> Founder
+             device acceptance + migration apply GO.
+             UPDATE 2026-08-30 (Phase 2): Codex 036
+             completion received and FABLE-VERIFIED PASSED
+             (037): 14/14 post-hashes, patch/README/manifest
+             hashes, code spot-checks (Today preview gone +
+             exclusivity test; MY ZYRA/FAMILY labels; calm
+             copy without advisory; S20 copy exact; typed
+             updatesState/insightsState; Guardian typed
+             boundaries), full 352-line migration SQL audit
+             conforms to the ruled RPC contract, live
+             probes confirm staged-only (RPC/indexes absent;
+             history ends 20260829183507), §12.1 composite
+             key verified against live schema (no id column;
+             PK review_id+wali_id), participation view
+             confirmed auth.uid()-scoped (safe under
+             SECURITY DEFINER), §12.2 tab-state fix
+             accepted. ONE OPEN QUESTION to Codex: seeker_
+             dashboard_screen.dart pre-hash (036: a2cd21ab)
+             differs from the 033 audit hash (b40ab5c6) —
+             explanation owed on the record before/with the
+             apply GO; does not block device acceptance.
+             REMAINING GATES: (1) Founder device acceptance
+             (24 candidates, approved:false, no auto-
+             promotion); (2) Founder apply GO for
+             20260830145711; (3) post-apply Fable
+             verification (incl. meeting/nikah dedup
+             assumption) before client RPC wiring.
+             UPDATE 2026-08-30 (provenance closed): Codex
+             explained the seeker_dashboard_screen pre-hash
+             gap — no unauthorised edit; a2cd21ab was a
+             reconstructed pre-file (omitted explicit
+             <DashboardSignal> generic on the two changed
+             insight-state lines); Fable PROVED it in
+             scratch: reverse hunk -> a2cd21ab; restoring
+             the generic on those two lines -> b40ab5c6
+             byte-exact (= the 033 audit hash). Chain
+             unbroken. 038 filed: canonical pre-hash =
+             b40ab5c6; reverse.patch restores a semantically
+             identical (not byte-exact) pre-state for that
+             one file — caveat recorded; standing practice
+             adopted: snapshot true pre-files at edit time.
+             SEQUENCE ADDITION per Founder: external ChatGPT
+             review of the Phase 2 package occurs BEFORE the
+             migration apply GO.
+             UPDATE 2026-08-30 (external review): ChatGPT
+             review returned — HOLD on the staged migration
+             as written; source patch explicitly not
+             blocked. Fable dispositions: ACCEPTED HIGH-1
+             (explicit per-role/per-class audience — no new
+             exposure vs shipped behaviour, but explicitness
+             required under SECURITY DEFINER), HIGH-2
+             (canonical-source registry replaces the dedup
+             heuristic; pause/continue/end double-render
+             found REAL), all mediums (nullable domain
+             is_unread; RPC-as-one-source health mapping;
+             participation-view static assertion + post-
+             apply catalog checks; reviews index access-path
+             fix) and lows (pseudonymous-key wording; null/
+             integrity guards) + Q6 stale-visible rule.
+             REJECTED HIGH-3 (full read-notification
+             history) as re-litigating ruled unread-backed
+             recency (DR-216 gate 2; DR-217 item 4; DR-222
+             map) — Notifications manager is the history
+             surface; contract comment added instead.
+             039_FABLE-CODEX filed: revise staged migration
+             IN PLACE (never applied) per R1-R7; per-class
+             canonical/audience tables with write-path
+             evidence required. SEQUENCE: revised migration
+             -> Fable verify -> ChatGPT second pass ->
+             Founder apply GO. Device acceptance proceeds in
+             parallel (24 candidates pending).
+             UPDATE 2026-08-30 (review round 2): ChatGPT
+             ACCEPTED all Fable dispositions and WITHDREW
+             the read-notification history requirement
+             (unread-backed recency confirmed as ruled law;
+             contract comment will state it). HOLD remains
+             on the migration until 039 R1/R2 + accepted
+             hardening land. 040_FABLE-CODEX filed with the
+             accepted implementation conditions: retain
+             authority dimensions (role/Main-Additional/
+             attempt/match) through caller_participation to
+             branch predicates with a fixed evidence-table
+             format; semantic-duplication audit (new_match
+             vs match_created etc. — "same thing happening"
+             test); unread-fate columns per converted
+             class; three-state is_unread contract (NULL
+             never rendered as read); post-apply role-case
+             + isolation probes. SEQUENCE: revised SQL + two
+             evidence tables -> Fable verify -> ChatGPT
+             narrow second pass -> Founder apply GO.
+             UPDATE 2026-08-30 (revision verified): Codex 041
+             received and FABLE-VERIFIED PASSED (042). Revised
+             migration 4f11c53b... satisfies 039 R1-R7 + 040
+             A1-A5: per-role/per-class audience predicates
+             with authority dimensions retained (Additional
+             Guardians excluded from domain rows; dual-role
+             via specific participation); canonical-source
+             registry replaces the heuristic (six notification
+             classes removed as domain-canonical; decision
+             classes excluded — confirmed absent from the live
+             type constraint); three-state is_unread (domain
+             NULL); attempt-led reviews index; NOT NULL +
+             double-key integrity guards; static pins against
+             silent widening. Write-path and audience evidence
+             spot-verified; live probes still staged-only.
+             NOW: ChatGPT narrow second pass -> Founder apply
+             GO -> post-apply verification (10-point matrix)
+             -> client wiring authorisation.
+             RE-SEQUENCED 2026-08-30 (Founder): DEVICE
+             ACCEPTANCE MOVES TO THE END — the Founder will
+             visually inspect ONCE, after everything else is
+             finished. Final gate order: ChatGPT second pass
+             -> Founder apply GO (chat approval; no visual
+             needed) -> migration applied + Fable post-apply
+             verification -> Codex client wiring of the
+             Updates tab + fixture refresh -> ONE final
+             Founder visual inspection (device acceptance +
+             baseline approval of the candidate set) ->
+             close. The 24 candidates stay approved:false
+             until that final inspection.
+             UPDATE 2026-08-30 (second pass): ChatGPT
+             returned a CLEAN PASS — "APPLY GO — CONDITIONAL
+             ON THE PRE-APPLY HASH/TAIL CHECK"; no further
+             SQL revision required; client wiring HOLD until
+             the post-apply matrix passes and the Founder
+             separately authorises wiring. PRE-APPLY
+             INTEGRITY CHECK EXECUTED BY FABLE 2026-08-30:
+             staged file hash = 4f11c53b... EXACT MATCH;
+             exactly one comment-on-function statement; file
+             tail is precisely the approved revoke(public,
+             anon)/grant(authenticated,service_role) pair.
+             STANDING CONDITIONS RECORDED: (a) the milestone-
+             subtype allowlist is authority-controlled — any
+             new milestone_type requires a per-role
+             visibility review before entering the
+             projection; (b) canonical-source registry
+             invariant — any new notification/domain pair
+             enters the registry before projection; no
+             timestamp heuristics ever; (c) the static
+             participation-view assertion stays mandatory;
+             (d) post-apply matrix extended with index-
+             DEFINITION identity checks (IF NOT EXISTS can
+             adopt a same-named wrong index) and the §9
+             isolation/semantics/cursor items; (e) wiring
+             gate additionally needs representative-scale
+             EXPLAIN, multi-Seeker Guardian + long-Journey +
+             multi-page keyset probes, latency budget, and a
+             governed answer for Guardian multi-Seeker
+             display context (no ungoverned names in the
+             definer projection). NOW AWAITING: Founder
+             APPLY GO (explicit, in chat).
+             UPDATE 2026-08-30 (APPLIED + VERIFIED): Founder
+             said "apply go". Pre-apply integrity re-check
+             passed at apply time (hash 4f11c53b... exact).
+             Migration APPLIED via the connected project;
+             history row recorded under EXACT version
+             20260830145711 with the source hash in the
+             statements note. POST-APPLY MATRIX ALL PASS
+             (evidence in 043): catalog identity (owner
+             postgres, prosecdef, stable, search_path empty,
+             comment, grants authenticated+service_role
+             only); all five index DEFINITIONS structurally
+             match; Seeker probe 18 rows with clean three-
+             state semantics and own-match ownership; Main
+             Guardian probe correct classes only, zero
+             suggestions; Additional Guardian 0 rows AND
+             structurally 0 participation rows (dual-layer
+             exclusion); null caller 0 rows; anon 42501
+             denied; clamps 1/20; partial cursor 22023;
+             keyset pages disjoint; advisors show only the
+             architecture-wide definer WARN on the new
+             function (pre-existing advisories stay in the
+             030 §6 audit bucket, incl. 1 security_definer_
+             view ERROR noted there). CLIENT WIRING
+             AUTHORISED per the re-sequenced order —
+             043_FABLE-CODEX filed (one source both roles;
+             health mapping; last-known law; NULL-unread
+             rendering; template fail-closed; replace-not-
+             parallel; no ungoverned names for Guardian
+             context; wiring-gate performance evidence;
+             fixture refresh). REMAINING: Codex wiring
+             completion -> Fable verification -> Founder
+             SINGLE final visual inspection -> close.
+             UPDATE 2026-08-30 (wiring): Codex 045 received
+             and FABLE-VERIFIED PASSED (046): 19/19 true
+             pre/post hashes; both roles on the single live
+             RPC via ZyraDashboardUpdatesService; old
+             client assembly removed (proven on disk);
+             health mapping + LAST-KNOWN law implemented;
+             three-state unread preserved; unknown keys and
+             malformed pages fail closed; Guardian person
+             context from the authorised roster only; live
+             performance evidence 14.986-19.543 ms server
+             execution, zero temp spill, all five indexes
+             proven eligible; four disjoint keyset pages;
+             migration untouched (4f11c53b). Manifest now 10
+             fixtures / 40 variants, all approved:false.
+             Latency-budget deviation dispositioned: no
+             ruled numeric budget exists; measured range
+             accepted; a budget would be its own future
+             ruling. NOW: THE FINAL GATE — Founder single
+             visual inspection (both roles + 40 candidates)
+             -> baseline promotion -> OA-ZYRA-281 CLOSES ->
+             per the recorded hold, Fable immediately
+             re-issues the 044 guardian security relay.
+             UPDATE 2026-08-30 (ACCEPTED): Founder replied
+             "accepted" after his single final visual
+             inspection — both roles' wired three-tab
+             Dashboards ACCEPTED. 047_FABLE-CODEX filed:
+             promote all 40 candidates to Founder-approved
+             baselines and confirm; on Fable verification
+             of that confirmation THIS OA CLOSES. The held
+             OA-ZYRA-282 security relay (044) was released
+             in the same message per the recorded hold.
+             Remaining in this OA: baseline-promotion
+             confirmation only.
+             UPDATE 2026-08-30 (CLOSED): Codex 048 promoted
+             all 40 candidates, versioned OA-ZYRA-281-v1,
+             byte-exact copies; Fable verified independently
+             (049): all three manifests hash-match
+             (candidates c17209b7; UI_GATE baselines
+             56cd7f5f; approved 23547aaf), 40/40 approved
+             PNGs hash- and byte-verified and byte-equal to
+             their accepted candidates (2,328,325 bytes),
+             approved manifest founder_approved / active
+             version OA-ZYRA-281-v1 / automatic updates
+             false, device_acceptance_pending false,
+             approval reference 047 §2. Promotion confirmed
+             -> THIS OA IS CLOSED. The Dashboard programme
+             completed end to end: DR-ZYRA-222/223 -> audit
+             (033/034) -> patch (036-038) -> externally
+             reviewed migration applied under Founder GO
+             with an all-pass post-apply matrix -> client
+             wiring (045/046) -> Founder device acceptance
+             -> 40 baselines promoted and Fable-verified
+             (048/049).
+Evidence:    DR-ZYRA-222; ZYRA_INSIGHTS_SYSTEM_CURRENT_
+             VERSION_V1.md; ZYRA_DASHBOARD_MODULE_INVENTORY_
+             CURRENT_VERSION_V3.md; Founder rulings
+             2026-08-30 (chat); joint position co-signed
+             2026-08-30
+Target:      Contract approved -> Codex validation report ->
+             gated build -> Fable verification -> Founder
+             device acceptance -> close
+
+------------------------------------------------------------
+
+OA-ZYRA-282
+Title:       Guardian Relationship Surfaces V1 — programme
+             master (DR-ZYRA-224): early server-truth
+             security batch + held UI rebuild
+Status:      CLOSED 2026-09-10 — Founder directly ordered the final
+             promotion round and this programme's closure; DR-ZYRA-224
+             ratified (F1-F7).
+             UPDATE 2026-09-09 (AD-AIOS-109 HOLD RELEASED): the Founder
+             explicitly replaced the standing ChatGPT/Fable route and
+             released all unexecuted opinion, relay and verification holds.
+             The 2026-08-31 "wait for ChatGPT" hold below is therefore no
+             longer active and no ChatGPT response or Fable relay is required.
+             The Founder's prior device acceptance and exact 24-candidate
+             promotion authority remain valid. The next programme action is
+             that recorded promotion/finalised supersession round, with Codex
+             internal verification and Founder acceptance kept distinct.
+             TWO WORKSTREAMS. (A) EARLY SECURITY BATCH —
+             contract 044 FILED and ready. FOUNDER CHOICE
+             2026-08-30: the Codex relay is HELD until
+             OA-ZYRA-281 closes; Fable re-issues the paste
+             at Dashboard close as the reminder. Once
+             relayed, it is the only Guardian-related
+             production work: one
+             staged "guardian server truth" micro-migration
+             (tighten zyra_attempt_summary_for_guardian to
+             Main-only — verified live exposure: authenticated
+             EXECUTE + any-active-guardian predicate; correct
+             the false final-Guardian-removal hint; logic
+             unchanged). Gated: Fable brief (044) -> Codex
+             staged migration -> Fable verification ->
+             ChatGPT external security review -> Founder
+             apply GO -> post-apply verification. (B)
+             GUARDIAN UI REBUILD — HELD until OA-ZYRA-281
+             fully closes: Guardianship Manager page
+             (Main-first vertical; Pulse retired at
+             acceptance), Seeker Workspace roster (tappable
+             cards; thin role-aware workspace; role-aware
+             grouping — Additional Guardianships neutral
+             section, no Journey-state leakage through
+             grouping/ordering/badges/counts/aggregates),
+             invitation lifecycle relocation (supersedes the
+             2026-08-26 split), typed Result fix, matrix-
+             driven Role & Access, Dashboard thinning LAST
+             after device acceptance. Truth laws per F7
+             (incl. authority-applies-to-aggregates).
+             FUTURE ITEMS RECORDED, NOT IMPLEMENTED:
+             resignation/unlink rule gap; Additional cap;
+             DR-168 expansion; Seeker-initiated profile
+             sharing; verification display; search/
+             filtering; Guardian Insights; premium tools;
+             shell redesign.
+             UPDATE 2026-08-30 (WORKSTREAM A
+             ADVANCED): held
+             relay released in 047 at Dashboard close. Codex
+             staged the micro-migration
+             20260830183151_oa282_guardian_server_truth_
+             security.sql (2c85d429; report 048) plus a
+             static-pin test (4a411a4a) and a post-apply
+             harness (39139651: catalog/ACL checks + the
+             twelve 044 §4 direct-call cases, transaction +
+             rollback). Fable verified (049): staged-only
+             proven live (0 schema_migrations rows; latest
+             applied still 20260830145711); Change A meets
+             every 044/F6 requirement (caller-bound
+             materialized CTE, Main-only, potential
+             excluded, empty search_path, four fields,
+             explicit revoke public+anon / grant
+             authenticated+service_role) and
+             EXPLAIN-validates against the live schema;
+             Change B hint replacement exact. ONE RECORDED
+             NON-BLOCKING FINDING: 048's byte-equality claim
+             for Change B holds vs the repo pre-state, not
+             vs live prosrc — one comment codepoint (live em
+             dash vs ASCII '--' in the unchanged NEW
+             comment; pre-existing live-vs-repo drift from
+             the DR-136 apply). md5-proven: restoring that
+             single character makes the hint-redacted bodies
+             identical. Disposition: staged file accepted
+             UNCHANGED (applying converges live to
+             repo-canonical bytes; zero enforcement impact);
+             claim scope corrected in 049; disclosed
+             verbatim to the external reviewer. RELEASED TO
+             CHATGPT EXTERNAL SECURITY REVIEW -> Founder
+             apply GO -> apply -> post-apply harness.
+             UPDATE 2026-08-30 (EXTERNAL REVIEW RETURNED —
+             APPLY GO CONDITIONAL): ChatGPT verdict: the
+             security micro-migration has APPLY GO,
+             conditional on (1) pre-apply hash gate
+             (2c85d429, no file change between check and
+             apply, exactly the two authorised
+             replacements), and (2) the full post-apply
+             catalog/ACL/direct-call matrix, extended with
+             EXACT ACL set equality (non-owner execute =
+             authenticated + service_role only) and
+             removal-function catalog-unchanged +
+             new-hint-present/old-hint-absent checks.
+             PASSES: Main-only authority; four-field shape
+             (attempt_id is a routing key only — every
+             downstream RPC/route must enforce
+             Main-Guardian authority independently);
+             SECURITY DEFINER hardening; hint correction;
+             baseline promotion (no objection); the
+             one-codepoint comment-dash disposition
+             ACCEPTED (apply heals live to repo-canonical
+             bytes; recorded as provenance, not an
+             unauthorised logic change). SEPARATE WIRING
+             HOLD (blocks app consumption of the function,
+             NOT the apply): (1) FOUNDER RULING REQUIRED on
+             historical/temporal attempt visibility —
+             Option A current-process only / Option B
+             relationship-period history / Option C
+             all-history. Fable live-checked feasibility
+             2026-08-30: B is NOT currently provable
+             server-side (no wali history table;
+             wali_links carries created_at only, no
+             Main-period record — B needs schema work); A
+             and C are implementable, C needs an explicit
+             privacy ruling. (2) Status-rule future-safety:
+             the live check constraint pins status to
+             potential/active/ended, so the staged
+             '<> potential' predicate is provably
+             equivalent to the positive allowlist
+             ('active','ended') TODAY; before wiring,
+             either flip to the allowlist in a governed
+             migration or pin the constraint in a test so
+             any future status expansion fails closed.
+             TWO TESTS REQUIRED BEFORE WIRING:
+             historical-scope (a pre-link ended attempt
+             must not be auto-visible unless C is ruled);
+             future-status (a non-allowlisted status must
+             not become visible). NON-BLOCKING RESIDUAL
+             RECORDED: zyra_remove_guardian keeps
+             search_path=public (pre-existing; assigned to
+             the standing pre-production SECURITY DEFINER
+             audit bucket, 030 §6; any hardening is its own
+             governed pass — never folded into the
+             hint-only migration). If Option A is ruled,
+             note a likely follow-up narrowing migration so
+             SERVER truth matches the ruled scope (UI
+             hiding must not substitute — reviewer's and
+             DR-224's shared law). These wiring conditions
+             are MANDATORY questions in the Guardian UI
+             build contract round. AWAITING FOUNDER APPLY
+             GO; after apply + verification the evidence
+             package returns to ChatGPT.
+             UPDATE 2026-08-30 (APPLIED + VERIFIED 12/12):
+             Founder said "apply go" in chat. Pre-apply
+             gate passed: device re-hash 2c85d429 with
+             mtime unchanged; the content ran only behind
+             an in-database md5 self-check (0d37305c,
+             refuse-on-mismatch); DDL + history insert
+             atomic. Applied 2026-08-30 — exactly one
+             history row, version 20260830183151, single
+             statement, statements-md5 = file md5. POST-
+             APPLY PASS: summary fn owner postgres /
+             definer / STABLE / stored search_path="" /
+             new DR-224 comment / EXACT ACL authenticated+
+             postgres+service_role with PUBLIC and anon
+             absent / def md5 50797b32->025ea233 / all
+             semantic pins present. Removal fn: owner,
+             definer, volatility, ACL, search_path=public,
+             DR-136 comment ALL unchanged; def md5
+             6aae55b8->0d3bf252; hint-redacted body md5 =
+             staged 011da0e3 (enforcement byte-identical);
+             new hint present, old hint absent; ASCII
+             comment drift healed to repo bytes. DIRECT-
+             CALL MATRIX 12/12 PASS — but the 39139651
+             harness itself failed on THREE defects before
+             any case ran (function never at fault): H1
+             wrong expected config literal (search_path=
+             vs canonical search_path=""); H2 trigger-
+             blind isolation vs auto_designate_main_wali
+             (mid-statement auto-promotion -> one-main
+             23505); H3 non-existent pause columns (real
+             model journey_attempts.paused_by/paused_at,
+             status stays active). Fable ran the matrix on
+             a corrected instrument (identical assertions;
+             deviations D1 delete-then-insert isolation,
+             D2 real pause columns), rollback-isolated,
+             residue-verified restored. Advisors: baseline
+             classes only, nothing new. Harness fix
+             ordered in 050 (NON-GATING). Evidence package
+             handed to the Founder for ChatGPT final
+             sign-off; wiring holds unchanged.
+             UPDATE 2026-08-30 (EXTERNAL FINAL SIGN-OFF —
+             WORKSTREAM A COMPLETE): ChatGPT reviewed the
+             post-apply evidence package and returned PASS
+             — final security sign-off. Verbatim required
+             closure record: "Post-apply behaviour
+             independently verified 12/12. Original Codex
+             harness was defective; canonical harness
+             correction remains a recorded non-gating
+             evidence-maintenance task." WORKSTREAM A (the
+             early security batch) IS COMPLETE AND CLOSED:
+             the Additional-Guardian exposure is closed
+             (Main-only), the removal hint corrected,
+             enforcement logic unchanged, integrity gate /
+             catalog + exact ACL / 12-case direct-call
+             matrix all PASS, no advisor regression.
+             EXPLICITLY LINKED, NOT LOST: (1) the harness-
+             maintenance chore stays OPEN and NON-GATING
+             (050): correct only H1/H2/H3, preserve the
+             twelve assertion meanings, re-hash, Fable
+             re-runs it transactionally and records the
+             result; the record must never claim the
+             original harness passed. REOPEN RULE: if the
+             corrected canonical harness ever produces a
+             security-result mismatch, OA-ZYRA-282 reopens
+             immediately. (2) WIRING HOLDS STAND: no
+             client wiring of
+             zyra_attempt_summary_for_guardian; the
+             Founder must first rule historical scope
+             (A current-only / B own-Guardian-period,
+             which needs new historical-role data / C all
+             history) and a fail-closed positive status
+             allowlist is REQUIRED before wiring (today
+             provably equivalent to active/ended via the
+             check constraint); no Flutter implementation
+             may treat the function as final workspace
+             authority until both gates are resolved.
+             THIS OA REMAINS OPEN for those holds and for
+             workstream B (Guardian UI rebuild — awaiting
+             the Founder's start; the UI build contract
+             must carry both wiring questions).
+             UPDATE 2026-08-30 (WORKSTREAM B STARTED —
+             DR-ZYRA-225 RULED): Founder said "start";
+             Fable drafted the Guardian UI build contract
+             (held for Founder review, not sent) with one
+             open decision, D-1 historical scope. Founder
+             ruled same day — DR-ZYRA-225: default = the
+             current active/paused Journey ALWAYS visible
+             to the current Main plus ended Journeys whose
+             ending falls after their link began; ONE
+             Seeker-facing full-history toggle (ON = all
+             past summaries), consent bound server-side to
+             the current Main link and AUTO-RESET OFF on
+             any Main change; toggle OFF = immediate
+             revert; Additional Guardians remain at zero;
+             four-field cap in every mode. BOTH WIRING
+             GATES ARE NOW RULED: historical scope (DR-225)
+             and the positive status allowlist (the ruled
+             predicate is an allowlist by construction —
+             future statuses fail closed). The wiring hold
+             converts from awaiting-ruling to
+             awaiting-implementation: Phase 0 of the build
+             contract (consent storage + predicate
+             migration + corrected/extended harness) under
+             the unchanged gate chain, ChatGPT security
+             review included. Contract redrafted around
+             DR-225 and returned to the Founder for final
+             approval before any Codex send.
+             UPDATE 2026-08-30 (CONTRACT APPROVED + FILED):
+             Founder replied "approved". The binding
+             Guardian UI build contract is filed as
+             051_FABLE-CODEX (sha 3f24b1cb; substance
+             byte-faithful to the approved draft — only the
+             header/status block and timeline steps 1-2
+             changed to reflect approval and filing).
+             WORKSTREAM B IS ACTIVE. Phase 0 released:
+             Codex proposes the consent mechanism and
+             stages consent schema + Seeker-only consent
+             RPC + DR-225 predicate migration + the
+             corrected/extended canonical harness
+             (H1-H3 + the DR-225 cases); then Fable
+             verification -> ChatGPT security review ->
+             Founder apply GO -> post-apply (Fable runs the
+             canonical harness). Phases 1-3 sequenced per
+             the contract; single Founder visual inspection
+             at the very end; Pulse/sibling cleanup only
+             after acceptance. Codex's next report number:
+             052.
+             UPDATE 2026-08-30 (PHASE 0 STAGED + VERIFIED):
+             Codex filed 052 (91c24d3d) — one staged
+             migration 20260830200416_oa282_dr225_guardian_
+             history_consent.sql (2725f510): authority-epoch
+             column + state constraint on wali_links,
+             hardened auto_designate_main_wali (empty
+             search_path; epoch rotates on every fresh Main
+             assignment incl. removed-then-relinked row
+             reuse), deny-all consent table (RLS on, no
+             policies, service_role only), Seeker-only
+             target-free consent RPC (NULL read / TRUE
+             grant / FALSE revoke; no-Main TRUE raises),
+             and the summary rewritten to the EXACT DR-225
+             positive predicate (active always; ended if
+             ended_at >= link created_at OR valid
+             link+epoch consent). Harness corrected for
+             H1-H3 and extended with the eight DR-225 cases
+             proven per attempt id (27e9c608); dart pins
+             extended (e559334); Codex-measured 12/12 dart,
+             analyzer clean. Fable verified independently
+             (053): hashes match, SQL conforms to 051 §1 +
+             DR-225 exactly, staged-only proven live (0
+             history rows; workstream-A functions
+             unchanged; no consent objects live). NOTES
+             RECORDED: N1 relink window nuance
+             (accept_wali_invite reuses rows without
+             refreshing created_at, so a relinked
+             Guardian's default window spans their removed
+             gap — conforms to the filed created_at ruling;
+             disclosed to the reviewer; possible future
+             refinement out of Phase 0 scope); N2 the eight
+             full-suite golden failures are PRE-EXISTING
+             wall-clock fixture drift on guardian-dashboard
+             -updates-populated/-last-known (sources +
+             baselines + manifests hash-proven untouched);
+             clock-freeze chore assigned to Phase 1
+             visual-gate work; approved pixels stay. 052
+             count claims live-confirmed (21/12/8).
+             RELEASED TO CHATGPT EXTERNAL SECURITY REVIEW
+             -> Founder apply GO -> apply + canonical
+             harness run -> only then Phase 1 UI.
+             UPDATE 2026-08-30 (PHASE 0 REVIEW RETURNED):
+             ChatGPT verdict — CONDITIONAL APPLY GO for
+             20260830200416 (pre-apply hash gate; complete
+             post-apply §11 matrix; TWO REQUIRED HARNESS
+             ADDITIONS in the canonical evidence record:
+             (a) demote-then-repromote the same active link
+             — old consent stays invalid; (b) unrelated
+             current-Main field update — epoch and consent
+             preserved). PASSES: epoch mechanism (A2 fully
+             solved, incl. row reuse and re-promotion; UUID
+             not a bearer credential); trigger hardening +
+             correct migration order; deny-all consent
+             table; target-free consent RPC; predicate
+             implements the ruled table exactly (A1 active
+             branch confirmed; positive allowlist resolves
+             the old fail-open concern); N2 null ended_at
+             fail-closed (UI must never invent a date —
+             Phase 2 note); clock failures non-blocking
+             (Phase 1 freezes time; never regenerate
+             pixels). N1 RELINK WINDOW — NOT ACCEPTED AS
+             FINAL V1: created_at-boundary after
+             removal/relinking spans the removed gap,
+             contradicting "their own period" and
+             private-by-default. REQUIRED FINAL MODEL: do
+             NOT refresh created_at (provenance); add a
+             separate server-authoritative current-link-
+             period timestamp (active_since: set on
+             activation; preserved across continuous
+             activity and Main/Additional switches; cleared
+             on removal; fresh on reactivation) and use IT
+             as the default ended-history boundary.
+             ENDED-HISTORY CLIENT WIRING HELD until the
+             refinement is implemented + independently
+             reviewed (Option A, recommended) or the
+             Founder explicitly accepts gap-inclusive
+             behaviour (Option B). Other Phase 1 work may
+             proceed after a clean apply; the workspace may
+             show current active/paused Journey to Mains
+             meanwhile. FOUNDER DECISION PENDING on N1
+             path + apply sequencing.
+             UPDATE 2026-08-30 (N1 RULED — OPTION A, FIX IN
+             STAGED FILE): Founder chose the recommended
+             path. DR-ZYRA-225 annotated (boundary = the
+             Guardian's current continuous active period,
+             active-since semantics, fresh on every
+             reactivation; created_at never repurposed);
+             master doc §6 amended. 054 filed ordering the
+             revision on the still-staged 20260830200416:
+             R1 active-period timestamp (+state constraint
+             +backfill of active rows), R2 boundary switch
+             in the predicate, R3 the two ChatGPT harness
+             additions + active-since cases, R4 dart pins
+             + re-hash, report 055. NO interim apply.
+             Gates after 055: Fable verification -> ChatGPT
+             delta review -> ONE Founder apply GO -> apply
+             + canonical harness + full §11 matrix.
+             UPDATE 2026-08-30 (055 VERIFIED — PASS, NO
+             FINDINGS): Codex revised the staged file in
+             place (2725f510 -> 12605745). Fable proved the
+             delta mechanically (byte-exact reconstruction
+             of the reviewed pre-file + unified diff): it
+             is EXACTLY R1+R2 — active_since column,
+             backfill-before-constraint, trigger period
+             block (fresh on activation/reactivation,
+             preserved across continuous role switches and
+             unrelated updates, null when inactive), state
+             constraint, comments, and the two-line
+             boundary switch; consent table/RPC/epoch/ACLs
+             byte-identical to the reviewed version.
+             Harness (7f25476c) gained R3(a)/(b), the R1
+             lifecycle and the away-gap case, and now
+             REJECTS the old created_at boundary; dart
+             13/13 (283b5a9b). Staged-only re-proven live.
+             056 filed; RELEASED TO CHATGPT DELTA REVIEW ->
+             ONE Founder apply GO -> apply + harness + §11
+             matrix -> Phase 1 unlocks with ended-history
+             wiring hold lifted.
+             UPDATE 2026-08-30 (DELTA REVIEW — CLEAN PASS):
+             ChatGPT: REVISED PHASE 0 MIGRATION APPLY GO,
+             conditional on (1) exact revised hash gate
+             12605745 (old 2725f510 is provenance only and
+             must be REJECTED by the apply gate), (2) the
+             complete canonical harness + §11/§14 matrix,
+             (3) AUTHORITY-FIELD DIRECT-WRITE RESISTANCE
+             probes added post-apply: an authenticated
+             actor attempting to set active_since
+             (earlier/later/NULL-while-active) or
+             main_guardian_authority_id directly must not
+             have any client-supplied value survive — the
+             trigger must restore server-authoritative
+             state or the write be denied, (4) full
+             catalog/ACL verification, (5) clean residue.
+             ALL FIVE REVIEW QUESTIONS ANSWERED YES/no-
+             concern; the active_since model, backfill
+             (migration-only proxy), period-vs-epoch
+             separation, state constraints, boundary
+             semantics (ending-based visibility of
+             pre-link-started ended attempts explicitly
+             accepted as per the ruled table), consent
+             architecture, all three new harness cases and
+             trigger security each PASS. THE N1 ENDED-
+             HISTORY WIRING HOLD LIFTS once this exact
+             revision is applied and post-apply-verified.
+             AWAITING FOUNDER APPLY GO — the final gate;
+             after a clean post-apply evidence package
+             Phase 0 closes and Phase 1 UI opens under the
+             ruled Journey-summary model.
+             UPDATE 2026-08-30 (APPLIED UNDER FOUNDER GO —
+             VERIFIED EXCEPT ONE HARNESS SCENE): Founder
+             said "Apply go". Pre-apply gate passed
+             (device re-hash 12605745 unchanged; old
+             2725f510 rejected as provenance-only);
+             applied via in-database md5 self-check
+             (68dcd4e9, refuse-on-mismatch, DDL + history
+             row atomic; exactly one row, statements-md5 =
+             file md5). CATALOG MATRIX PASS (trigger/
+             summary/RPC identity, exact ACLs, both
+             constraints, consent table RLS-on zero-
+             policies deny-all, backfill 20/20 + 12/12,
+             zero violations). CANONICAL HARNESS run
+             VERBATIM behind an in-database md5 gate
+             (b4ed9b76 — byte-fidelity machine-proven):
+             catalog blocks + all twelve 044 meanings +
+             the ENTIRE DR-225/N1 extension PASSED; the
+             run aborted at the FINAL case (6, dual-role)
+             on H4 — a latent harness actor collision
+             (v_recent_match pairs seeker_a with
+             unrelated_user since 052; the live romance-
+             exclusion guard rightly raises
+             romantic_edge_exists on case 6's link
+             insert). Function not implicated; rollback
+             clean (residue probe exact). FABLE
+             SUPPLEMENTARY PROBES ALL PASS: T1
+             authenticated direct writes to active_since/
+             epoch = zero rows; T2 forged period+epoch
+             overridden by trigger; T3 NULL-while-active
+             restored; T4/T4b independent case-6 meaning
+             proven. ADVISORS: baseline + exactly the two
+             designed additions (consent-table
+             rls_enabled_no_policy INFO by design; consent
+             RPC in the standing WARN class). 057 filed
+             ordering the one-scene H4 fix (058) ->
+             Fable re-runs the corrected harness -> then
+             the Phase 0 closure evidence package goes to
+             ChatGPT. Ended-history wiring hold lifts at
+             that closure.
+             UPDATE 2026-08-31 (CANONICAL CLEAN PASS —
+             PHASE 0 VERIFICATION COMPLETE): Codex fixed
+             H4 (058; one eight-line scene, 7f25476c ->
+             ffc42329; migration frozen at 12605745; dart
+             unchanged). Fable proved the delta
+             mechanically (new slice minus the block ==
+             proven old slice, md5 b4ed9b76) and re-ran
+             the corrected harness END-TO-END verbatim
+             behind an in-database md5 gate (6d1cf2a5):
+             FULL CLEAN PASS — both catalog blocks, all
+             twelve 044 meanings, the whole DR-225/N1
+             extension, the fixed case 6. Residue exact;
+             zero invariant violations; consent table
+             empty; one history row (now latest). With
+             057's catalog matrix, tamper probes and
+             advisors, EVERY external-reviewer closure
+             condition is satisfied. 059 filed; closure
+             evidence package handed to the Founder for
+             ChatGPT. On its sign-off: PHASE 0 CLOSES,
+             the ended-history wiring hold LIFTS, and
+             Phase 1 (Guardianship Manager) opens per 051.
+             UPDATE 2026-08-31 (PHASE 0 CLOSED — EXTERNAL
+             SIGN-OFF): ChatGPT approved the closure
+             evidence (Founder relayed in chat). PHASE 0
+             IS CLOSED: migration 20260830200416 applied +
+             fully verified (catalog matrix, complete
+             canonical harness clean pass, tamper
+             resistance, advisors, residue). THE ENDED-
+             HISTORY WIRING HOLD IS LIFTED — the workspace
+             may use the ruled DR-225 Journey-summary
+             model. PHASE 1 (Guardianship Manager, 051 §2)
+             RELEASED to Codex with standing notes: N2
+             null-ended_at UI rule; freeze the golden
+             clock in the Phase 1 visual gate (fix the two
+             guardian-dashboard fixtures there); approved
+             pixels never regenerated for clock drift;
+             Pulse + siblings stay until Founder
+             acceptance. Remaining sequence: Phase 1 build
+             -> 060 report -> Fable verification -> Phase
+             2 (roster + workspace, Journey module wired)
+             -> Phase 3 (Dashboard thinning) -> single
+             Founder visual inspection -> baselines ->
+             OA-ZYRA-282 CLOSES.
+             UPDATE 2026-08-31 (PHASE 1 BUILT + VERIFIED —
+             PHASE 2 RELEASED): Codex 060 (0d48a09e):
+             Main-first Guardianship Manager live in
+             source (Pulse retired as default, five
+             designs retained byte-identical — tail hash
+             proven), invitation lifecycle owned in-page,
+             detail split obligation/history with governed
+             role copy and verbatim server hint, DR-225
+             consent toggle wired via service layer to the
+             live RPC rendering only server-confirmed
+             state with the C3 Main-match guard, linked
+             date = active_since ("Linked date not
+             recorded" when null), truthful states
+             throughout; frozen-clock fixture matrix (7
+             fixtures / 28 candidates filed unapproved,
+             manifest 37ae4457, 28/28 Fable-verified);
+             the two guardian-dashboard golden fixtures
+             fixed by clock injection (production default
+             DateTime.now() unchanged — verified) closing
+             the old 8-failure drift; OA-281 baselines +
+             manifests untouched at verified hashes;
+             migration frozen; 776/776 + 276/276 measured.
+             Fable verified all thirteen changed-file
+             hashes (061, no findings); Phase 2
+             pre-anchors recorded (wali_seekers_screen
+             300fe486; zyra_ward_card 9511c951). PHASE 2
+             RELEASED per 051 §3 (report 062).
+             UPDATE 2026-08-31 (PHASE 2 BUILT + VERIFIED —
+             PHASE 3 RELEASED): Codex 062 (c580328c):
+             typed Guardian roster with the ruled grouping
+             (NEEDS YOU oldest-first -> IN A JOURNEY ->
+             PAUSED OR WAITING -> OTHER SEEKERS), one
+             neutral ADDITIONAL GUARDIANSHIPS section
+             built with null Journey context before any
+             Journey read (leakage-injection tests prove
+             headings/order/copy/badges/counts immune),
+             thin role-aware per-Seeker workspace, DR-225
+             summary wired live for Main only (service-
+             layer RPC; isMain-gated loader early-returns;
+             server rows rendered verbatim in order; N2
+             null-date wording; attempt_id opaque);
+             frozen-clock Guardian matrix (9 fixtures / 36
+             candidates unapproved, manifest 078353f8,
+             36/36 Fable-verified); all prior manifests +
+             40 baselines + retained designs + migration
+             untouched; 827/827 measured. Fable verified
+             all ten changed-file hashes (063, no
+             findings). TWO SCOPED FINDINGS DISPOSITIONED:
+             C1 Guardian Gate lacks a Guardian-side
+             execution primitive — recorded FUTURE ITEM
+             needing its own ruled contract (master §9);
+             C2 pre-existing failure-to-empty collapse in
+             the existing Wali Journey detail — ONE
+             bounded F7 truth-state correction ORDERED
+             WITH PHASE 3 (presentation truth only; no
+             redesign). PHASE 3 RELEASED per 051 §4 + 063
+             §4 (thinning both Dashboards, removing
+             Dashboard invitation cancel controls,
+             aggregate-authority law, C2 correction,
+             thinned-Dashboard candidates with the
+             baseline-supersession question reserved for
+             the Founder at acceptance; report 064).
+             UPDATE 2026-08-31 (PHASE 3 BUILT + VERIFIED —
+             BUILD COMPLETE; FOUNDER INSPECTION RELEASED):
+             Codex 064 (f7837fb7): both Dashboards thinned
+             per F5 (Seeker: compact FAMILY + Manage
+             Guardians only; Guardian: one priority +
+             authority-safe snapshot + View Seekers;
+             rosters/invitation-cancel/role-management/
+             per-person Journey context removed from
+             Dashboards); Main-before-Journey aggregation
+             proven leak-free by injection tests; C2 Wali
+             Journey-detail truth correction delivered
+             (typed Timeline/Conversation/Family-Review
+             states, section-local Retry, presentation
+             only); Codex self-caught + fixed C1 (the
+             open-review failure bridge that could render
+             a false calm Dashboard — F7-required, inside
+             the thinning boundary, regression-pinned);
+             frozen-clock matrix (8 fixtures / 32
+             candidates unapproved, manifest 761a3839,
+             32/32 Fable-verified). SUPERSESSION DELTA
+             RECORDED: 3 OA-281 Seeker-Today fixtures / 12
+             variants superseded by thinned successors —
+             old PNGs byte-preserved (12/12 re-verified),
+             ruling reserved to the Founder. All 20
+             changed-file hashes verified with pre-chain
+             continuity; shared experience untouched at
+             the accepted hash; 861/861 + 334/334
+             measured; migration frozen. 065 filed: BUILD
+             COMPLETE (Phases 0-3), programme candidate
+             total 96 unapproved, acceptance semantics
+             recorded (accept = promote 96 + supersession
+             ruling + Pulse/sibling cleanup + close on
+             promotion verification; report 066). NOW WITH
+             THE FOUNDER: the single visual inspection.
+             UPDATE 2026-08-31 (FOUNDER ACCEPTED): after
+             his single visual inspection the Founder
+             replied "Accepted" (verbatim, chat). Per the
+             recorded 065 §3 semantics: device acceptance
+             of all four surfaces; promotion of all 96
+             candidates approved; SUPERSESSION RULED (the
+             twelve old OA-281 Seeker-Today variants
+             archive, never deleted; 28 continue); Pulse +
+             four-sibling deletion authorised (the only
+             authorised deletion); OA-ZYRA-282 closes on
+             Fable's verification of the promotion round.
+             066 filed releasing the round (Codex report
+             067: promote + archive + cleanup with
+             blast-radius report + full gates).
+             UPDATE 2026-08-31 (067 VERIFIED + FOUNDER-
+             DIRECT DELTA — ONE FINAL GATE): Codex 067
+             (9a42f28e) executed the promotion: 96/96
+             byte-copied to three phase-versioned approved
+             dirs; both approved manifests now 124 active
+             rows (28+28+36+32) + 12 archived Seeker-Today
+             rows byte-preserved with successors; Pulse +
+             four siblings DELETED (the only authorised
+             deletion; designs file 2163->430 lines; zero
+             production symbol residue); 842/842 + 334/334
+             measured. Fable verified independently (068):
+             124/124 + 12/12 byte-verified, arrays
+             canonically identical runtime<->governed,
+             disjoint IDs, cleanup + boundaries confirmed.
+             THEN the Founder DIRECTLY ordered further
+             Guardian UI changes post-067 (title
+             "Guardian"; top-right add; CONSENT CONTROL
+             MOVED to Main Guardian detail, relabelled
+             "Share full Journey history", collapsed
+             explanation). Fable verified the delta on
+             disk (roster zero consent reads — loader
+             forwarded only, preview-isolated; detail
+             isMain-gated; server model intact; approved
+             pixels untouched); DR-ZYRA-225 Annotation2 +
+             master §6 amended; delta actually spanned
+             EIGHT files (three beyond the relay — proven,
+             pre-states = 067 posts); no numbered report
+             yet (record note). 068 filed ordering 069:
+             formal delta report + successor candidates
+             for the stale phase1-v1 states + staged
+             supersession. CLOSURE HELD for: 069 -> Fable
+             verification -> SMALL second Founder look at
+             just the changed screens -> acceptance ->
+             successor promotion -> CLOSE.
+             UPDATE 2026-08-31 (069 VERIFIED — FOUNDER
+             SECOND LOOK RELEASED): Codex 069 (95e013a1)
+             formally filed the eight-file Founder-delta
+             ledger (matching Fable's 068 proofs; harness
+             two-hop chain recorded), determined the stale
+             set (6 families / 24 rows; detail-additional
+             correctly continues), captured 24
+             collision-free successor candidates at the
+             frozen clock (v2 manifest c354d8fa; 24/24
+             Fable-verified; 0 approved) and staged 24
+             pending supersession rows (null actor/date —
+             acceptance reserved to the Founder; 24/24
+             successor-mapped). Approved state re-proven
+             untouched (124/124 + 12/12). Two cosmetic
+             record notes (one-char pre-hash transcription
+             slip between 067/069; compact-hash formula
+             variance — per-row proofs authoritative).
+             070 filed. NOW: Founder small look at the
+             changed screens -> "accepted" -> 071 promote
+             24 + finalize supersessions (active stays
+             124; archive 12->36) -> Fable verifies ->
+             OA-ZYRA-282 CLOSES.
+             UPDATE 2026-08-31 (SECOND ACCEPTANCE GIVEN —
+             071 RELAY HELD): the Founder inspected the
+             changed screens and replied verbatim
+             "accepted. but dont write to codex, wait for
+             chat gpts update for next taks. say ready".
+             The 071 promotion round IS authorised by that
+             acceptance but its Codex relay is HELD at
+             Founder instruction — he is bringing
+             ChatGPT's update for the next task first.
+             When he releases it, Fable hands the 071
+             paste (promote the 24 v2 candidates +
+             finalize the staged supersessions; active
+             stays 124, archive 12->36), verifies, and
+             OA-ZYRA-282 closes. Fable standing ready.
+             RENUMBER NOTE 2026-08-31: mailbox slot 071 was
+             taken same day by the AD-AIOS-107 routing/role-
+             titles briefing (Founder-directed governance
+             task, unrelated to this programme). The held
+             promotion relay, when the Founder releases it,
+             therefore files as 072. Numbering is strictly
+             by filing order; the hold itself is unchanged.
+             070 §4 defines the round's content regardless
+             of its final number.
+             UPDATE 2026-09-10 (073 PROMOTED + FOUNDER-
+             DIRECT CLOSURE): immediately before editing,
+             Codex captured true pre-files and reconciled
+             the later visual-harness hash to only the
+             independent 2026-09-09 Dashboard callback/
+             merged-Now work; no OA-282 promotion block
+             overlapped. The Founder then directed work item
+             1 to proceed and said this section may close,
+             with any further Guardian issue opened
+             separately. The exact 24 accepted Phase 1 v2
+             candidates were byte-copied into their
+             versioned approved directory; 24 Phase 1 v1
+             rows were replaced in place and finalized to
+             superseded_byte_preserved without moving or
+             deleting the old pixels. Post truth is 124
+             active / 36 archived; 4 guardian-detail-
+             additional Phase 1 v1 rows continue; runtime
+             and governed ledgers match. All four promotion/
+             archive governance checks, the 14 focused
+             Guardian tests, analyzer and both repository
+             checkers pass. The complete visual/full suite
+             retain exactly 60 unrelated Dashboard golden
+             failures from the later work; those are
+             explicitly owned by OA-ZYRA-257 and no approved
+             pixels were changed for them. No migration,
+             database/RPC/network write, UI change or git.
+Evidence:    DR-ZYRA-224; ZYRA_GUARDIAN_RELATIONSHIP_
+             SURFACES_CURRENT_VERSION_V1.md; handover
+             2026-08-30 V1; joint position co-signed
+             2026-08-30; Founder rulings 2026-08-30 (chat)
+Target:      CLOSED — 24-candidate Phase 1 v2 promotion and finalised
+             supersession recorded in 073; any newly observed Guardian issue
+             requires a separate OA and fresh scope.
+
+------------------------------------------------------------
+
+OA-ZYRA-283
+Update 2026-09-28 — PRESERVE EXISTING BOUNDARY:
+             DR-ZYRA-250's shared saved-result policy does not replace the
+             historical applied/post-verified caller/consent boundary or grant
+             a new migration GO. Later integration must reuse one directional
+             snapshot without altering reveal flags/stages/timers, while
+             retaining permitted held-Plus early sight. Original-input-only
+             proved-defect repair requires fresh exact scope/authority.
+             This session performed no SQL or live catalog/runtime verification;
+             historical post-verification and acceptance status below stand.
+Title:       Journey Compatibility Shared Row Does Not Enforce
+             Caller-Owned Score and Consent Columns Server-Side
+Category:    Security / Authorization
+Priority:    HIGH — blocker before any untrusted real-user or
+             external-tester release; Founder-only internal
+             TestFlight may proceed only as a controlled test
+Status:      EXECUTED / POST-VERIFIED / FOUNDER ACCEPTANCE PENDING — under
+             the Founder's exact single-use 2026-09-11 GO, migrations
+             `20260910184252` and `20260910195642` were applied atomically,
+             byte-identically and in that order to production project
+             `sxoaxonzjqkgajmlagyk`. Both transactional harnesses, catalog and
+             ACL checks, the two-session concurrency/idempotency probe,
+             denial cases, zero-state checks, application-health checks and
+             advisor comparison passed. The original compatibility fixture
+             row was restored exactly. ZYRA remained closed. The exact
+             internal-only `1.0.0 (2)` IPA was subsequently uploaded and is
+             `Ready to Test`; the sole internal group is configured and only
+             Founder installation and acceptance remain pending.
+Owner:       Founder / Engineering
+Raised:      2026-09-10
+Completed:   —
+Source:      Journey Reveal release audit; pre-existing
+             ZYRA_CONTRADICTION_AUDIT_2026-08-08 finding 2.5
+
+Description: `journey_compatibility` is a shared row. Current row-level
+             SELECT permits a participating Seeker to receive the row,
+             which means a direct Data API caller can request the other
+             Seeker's private score even though the trusted Flutter client
+             no longer does. Current UPDATE authorization is likewise
+             row-wide: a direct caller can attempt to set the counterpart's
+             reveal flag or score. A client choosing the right columns is
+             data minimisation, not server authorization.
+
+             The 2026-09-10 client correction narrows
+             fetchCompatibility() to both mutual flags plus only the caller's
+             score and stops all category reads/writes. That reduces ordinary
+             exposure but deliberately does not claim to close this OA.
+
+Target:      Stage a dedicated caller-scoped read/write RPC boundary;
+             revoke direct authenticated table access that bypasses it;
+             harden any definer function (empty search_path, schema-qualified
+             objects, explicit PUBLIC/anon revoke, exact authenticated grant);
+             and prove direct-call cases for Seeker A, Seeker B, counterpart
+             score denial, counterpart reveal/score mutation denial, null
+             caller, non-party and Guardian roles. Separate Founder apply GO
+             is required. Do not infer ownership from client input.
+Dependencies: OA-ZYRA-193(a2); ZYRA_CONTRADICTION_AUDIT finding 2.5;
+             live schema/policy verification before design.
+
+Prepared:    Migration `20260910184252_oa283_journey_compatibility_rpc_
+             boundary.sql` creates caller-relative state/reveal RPCs,
+             hardens the existing Plus doorway, revokes every anon/
+             authenticated table privilege, and drops all three permissive
+             table policies. `zyra_journey_service.dart` now uses the RPCs
+             for reveal, state and counterpart-dev readback and sends only
+             `p_match_id`; its retained positional counterpart argument is
+             never sent to or trusted by the database. The current-state
+             boundary requires the authenticated Seeker, active/unpaused
+             match, active/unpaused Compatibility Reveal attempt, and exact
+             attempt binding. A stale per-match row fails closed rather than
+             being rebound or erased. Focused Flutter/static tests pass. The
+             transactional direct-call harness passed against production
+             after the byte-identical apply; catalog, privilege, denial and
+             data-restoration checks also pass.
+
+Blocker:     Request New Journey creates a fresh `journey_attempts` row while
+             `journey_compatibility`, `journey_salams` and Journey checkpoint
+             uniqueness/gating remain match-keyed. Preserving the prior row
+             is required history, but the current trusted and definer paths
+             then either fail on an attempt mismatch or consume the prior
+             attempt's Salams, reveal flags and Continue checkpoints. The
+             OA-ZYRA-283 RPCs correctly fail stale compatibility rows closed;
+             they cannot make the second attempt fresh without completing
+             OA-ZYRA-156. The trusted Flutter client exposes the request
+             action; its acceptance service has no production UI caller, but
+             the authenticated server acceptance RPC remains directly
+             callable. This blocks a technically ready TestFlight unless
+             Request New Journey is temporarily disabled at both layers or
+             the full per-attempt conversion is separately completed.
+
+             ROUTE RULED 2026-09-10: the Founder selected the temporary hold
+             for the bounded Founder-only TestFlight (DR-ZYRA-227). The app
+             now hides the request control, removes the 60-day availability
+             promise and short-circuits request/response/eligibility calls.
+             Migration `20260910195642_oa156_request_new_journey_testflight_
+             hold.sql` revokes authenticated access to the four request and
+             eligibility RPC signatures while retaining postgres and
+             service_role. It is live and post-verified on production; direct
+             PUBLIC, anon and authenticated execution is closed. OA-ZYRA-198's
+             clean-replay prerequisite passed in message 086. The permanent
+             OA-ZYRA-156 repair remains separately open.
+
+Release:     The controlled production cutover completed on 2026-09-11 in the
+             ruled order while the Founder app remained closed: exact
+             byte-identical OA-ZYRA-283 migration `20260910184252`, then exact
+             byte-identical Request New Journey hold `20260910195642`, then
+             both post-apply harnesses plus catalog, advisor, denial,
+             concurrency/idempotency and zero-state checks. A fresh RPC-wired,
+             request-held Founder-internal `1.0.0 (2)` IPA was subsequently
+             archived, exported and locally verified. At that 2026-09-11
+             checkpoint it had not been sent to Apple and remained behind a
+             separate exact Founder Upload GO.
+             Regranting shared-table client access is not an acceptable
+             release rollback; repair forward or hold the new binary.
+             Any preflight drift, non-zero request/notification/multi-attempt
+             state, harness failure or unexpected grantee is a hard stop.
+             The production Apply GO is consumed. Any future database change,
+             retry or repair needs new exact authority.
+
+             OFFLINE BINARY PREP 2026-09-11: build 2 is now source-owned;
+             the internal-only export contract, truthful encryption flag,
+             dynamic feedback-version read and seven release-preflight guards
+             are in place. A fresh unsigned 1.0.0 (2) release compile, 560
+             non-visual tests, analyzer and repository checks pass. The known
+             60 visual-baseline mismatches remain recorded; no approved pixel
+             changed. That was the pre-cutover state recorded by message 083.
+             After the successful production cutover, a fresh internal-only
+             `1.0.0 (2)` IPA passed identity, archive-integrity, distribution-
+             signature, entitlement, profile and hash checks. Its SHA-256 is
+             `1e17a1c3475db1bcb01e59415768d94480538bb601aedcdc8fdd706ea1a7b673`.
+             At that pre-upload checkpoint it remained local and was not yet
+             authorised for Apple upload.
+
+             TESTFLIGHT DELIVERY UPDATE — 2026-09-12: that exact IPA is now
+             uploaded and `Ready to Test` in App Store Connect for Team
+             `9Y7Z8F36SJ`, Apple ID `6810741513`, bundle
+             `app.zyraconnect.zyra`. The sole internal-testing group is
+             `Founder Internal`; automatic distribution is OFF; its only
+             listed tester is `admin@zyraconnect.app`; and its only assigned
+             build is ZYRA `1.0.0 (2)`. No external tester/group or public App
+             Store release was authorised or changed. Founder invitation
+             acceptance, installation/device result and OA-ZYRA-283 acceptance
+             remain pending. Apple's delivery email also reported the
+             non-blocking warning `ITMS-90068: MinimumOSVersion too low`: build
+             2 is immutable at iOS 13.0 and remains valid for this internal
+             test, while all three source build configurations are corrected
+             to iOS 15.0 for the next build. Any new archive or upload requires
+             a new build number and separate exact Founder authority.
+
+------------------------------------------------------------
+
+OA-ZYRA-284
+Update 2026-09-28 — OPEN / TYPED FAILURE CONTRACT PENDING:
+             DR-ZYRA-250 D2 and the evidence plan retain truthful typed
+             unavailable/repair/configuration/forbidden/transient outcomes.
+             Do not infer consent or target missing fields from a failed read.
+             Existing confirmed state/cache requires scoped revalidation on
+             safety/block/deletion/auth loss, including offline/failure cases;
+             no instantaneous remote erasure is promised. Documentation only;
+             no client fix or new tests are claimed complete.
+Title:       Compatibility Reveal Read Failure Is Rendered as
+             "Neither Revealed" Instead of FAILED
+Category:    Journey / Truthful State
+Priority:    Medium — visible retry and consent-state ambiguity
+Status:      Open — found during the 2026-09-10 Journey truth fix;
+             not expanded into that bounded category correction
+Owner:       Engineering
+Raised:      2026-09-10
+Completed:   —
+Source:      `ZyraJourneyService.fetchCompatibility()` catch path
+
+Description: On auth/network/server failure fetchCompatibility() returns
+             `(mine:false, theirs:false, overallScore:null)`, the same shape
+             as a successful row saying neither person revealed. The screen
+             can therefore offer Reveal again and cannot tell the member the
+             read failed. This violates the established EMPTY != FAILED law.
+
+Target:      Introduce a typed compatibility-read result with available,
+             empty and unavailable states; retain last-known confirmed state
+             on refresh failure; render an explicit Retry state without
+             guessing either person's consent; preserve Plus early sight,
+             mutual reveal, no-score and Continue lifecycle. Add focused
+             tests for first-load failure and retained-state refresh failure.
+             No database change expected.
+Dependencies: OA-ZYRA-193; DR-ZYRA-179 truthful Journey reads.
+
+PUBLIC CALLER OWNERSHIP FINDING — 2026-10-06
+             Attributed active APP BUILD characterization, not ADMIN-reproduced
+             or completed repair: an old in-flight mutual/null-score completion
+             triggered Reveal on the actual public Journey screen while its
+             outgoing 480ms subtree remained after a known parent-stage change.
+             This caller ownership gap is additional to the existing failed-read
+             versus neither-revealed ambiguity; neither person's consent or
+             current surface ownership may be inferred from a stale completion.
+             APP BUILD reports a separately backed-up narrow private surface-
+             ownership guard ACTIVE under the verified human routine-local GO.
+             Backend, motion and readiness/test-seam expansion are outside that
+             scope. Parent-refetch null ambiguity remains explicit FOLLOW-UP.
+             No sealed caller repair packet, final green test count, installed
+             artifact or Founder acceptance is available at this batch snapshot;
+             no receipt path/hash is invented for that unsealed work. OA-ZYRA-284
+             remains OPEN. The separate Journey controller-disposal findings
+             belong to OA-ZYRA-305 and are not assigned to this compatibility OA.
+
+COMPATIBILITY TYPED-READ / KNOWN-CONTEXT CALLER MILESTONE — 2026-10-06
+             Later sealed local execution, not a rewrite of the earlier PENDING
+             snapshots: the 13:22:59 UTC continuation and compatibility handover
+             section 16 now record the typed read and bounded public-caller repair.
+             fetchCompatibility returns immutable available/empty/unavailable;
+             available alone carries a scoped snapshot, unavailable a safe failure.
+             Actual Auth actor, account generation and match identity are checked
+             at entry, after awaits and on failure. Exactly one valid map with
+             explicit boolean flags and finite-or-null my_score is required;
+             empty, malformed or failed reads never invent either person's consent.
+             Legacy overallScore means viewer-directional my_score, not a shared
+             score. RPC/payload, mapper, Reveal and Plus semantics are preserved;
+             the counterpart helper and current lib consumers use the typed result.
+             The current visit's actual read precedes cached paint. Only confirmed
+             same-actor/generation/match state may remain after an actual transient
+             refresh failure, display-only behind IgnorePointer. Definitive empty,
+             auth/access/malformed/context failures clear cache and celebration.
+             Retry is explicit/coalesced; invalid/unavailable/history paths cannot
+             dispatch Reveal, Plus or mutation. A valid live mutual/null-score
+             first-score recovery remains existing behavior; explicit Retry skips
+             that Reveal recovery. Retry is NOT universally database-read-only:
+             the validated live one-sided valid-Plus fixture obtains score 74
+             with two reads/one Plus/zero Reveal; Plus may persist viewer-owned
+             score. No commerce change or DR-ZYRA-250 D5 implementation GO follows.
+             Captured Reveal/Continue/Retry actions fence account/request generation
+             and parent ownership before dispatch and after await. Known stage,
+             pause/review/Guardian/identity/end/profile/match/account changes retire
+             the outgoing surface and its admitted cache; monotonic observed
+             generation prevents same-section return reviving an old callback.
+             Initial unchanged-context revisit loading is not retirement, and
+             intentional initial prefetch is not gated on action-page visibility.
+             Observed reset hides protected old scores immediately while retaining
+             the unprotected account warning. Callback replacement alone adds no
+             immediate read; existing later polling policy is unchanged.
+             Saved final evidence: 47 distinct service PASS/44 strict scripted
+             reads/zero unexpected requests; 33 original + 11 disjoint added
+             public-screen mock cases = 44 distinct PASS, no skips/errors.
+             The 21 retained controls (18 logic/three preview) and Main's repeated
+             47/33/11 runs are separate overlaps, not new cases or a project total.
+             Main's 119 broader retained passes/13-file selection remain owner-
+             attributed; ADMIN did not reconstruct that command selection.
+             Saved source analyzer zero issues is separate from the two external
+             caller fixtures' 26 unsuppressed placement warnings/zero errors.
+             Earlier fixture/plugin/SQLite/teardown/filename failures remain
+             failed evidence. Original lifecycle 33-PASS log/events are retained
+             but their historical fixture-to-run binding and stronger original
+             no-suppression/default-disposal claims remain UNVERIFIED; later
+             pinned reruns cannot certify historical bytes or add coverage.
+             Tests use synthetic in-memory sessions, fake preferences and strict
+             invalid-host HTTP mocks, developer/preview disabled. Guardian loader
+             is fake-ready and identity rollout OFF. Family Review, enforced
+             identity and Guardian recheck are static-reviewed, not new runtime
+             or provider-admission acceptance. Parent refetchOne null still mixes
+             absence with auth/transport failure and retains older parent fields.
+             Unseen remote/offline revocation, read refresh ownership, history
+             without polling, real provider/JWT/RLS/committed writes, commerce,
+             native/accessibility/network/restore, production GO, public/legal/
+             release and Founder acceptance remain OPEN. Founder AWAY: no phone.
+             The separate controller-disposal and layout findings stay OA305.
+             ADMIN read the complete sealed packet/section 16 and bounded evidence;
+             main immutable anchors and the read-only checker's 61 references
+             across 57 unique files match. No tests or live actions were rerun.
+             Historical stage pins do not freeze moving app source. The separately
+             sealed later Wali wrapper and active RoundAction lane are EXCLUDED
+             from this finite reconciliation; no layout repair is promoted here.
+             OA284 remains OPEN; no original fields, status, ID or score changes.
+             ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_CONTINUATION_HANDOVER.json — 35,901 bytes
+             SHA-256: 3c770b351acc570978b11f7999ec745f0dd244e8f1295c4f7b49dd9c4fec5c34
+             NEXT_COMPATIBILITY_SERVICE_ACCEPTANCE.json
+             SHA-256: abe5eb04080537a6b372022dc1aadefd62a3afc320cd66e58af74cee3f732e68
+             NEXT_OA284_CALLER_REPAIR.json
+             SHA-256: 063f930a6356308214a33c1d717476d2b4023da2343843c82eb15db292294d89
+             NEXT_OA284_RETRY_REPAIR.json
+             SHA-256: f768c67f45b2730c73dfd0cfe03d9278982c646c89fb7060775c13fb35fd1c7f
+             NEXT_JOURNEY_LIFECYCLE_PROVENANCE_CLARIFICATION.json
+             SHA-256: 86bf778a0ae7e66922697184e3e2d44b4ca3410bb27c5ccb14d1fdef38af21a6
+             Dated stage service SHA-256:
+             f2f395e615bf6dd55e8208c422d2fdd95b8bd52f25419a7933b281b1704a559c
+             Dated stage Journey screen SHA-256:
+             468863f89851fd59089e6176f1f9eb448d6d19a421a4ec718560aa4d39db6449
+
+------------------------------------------------------------
+
+OA-ZYRA-285
+Update 2026-10-05 — ISOLATED PREPARATION PASS, NO LIVE CLOSURE:
+             Founder-approved local OA305 F04 preparation has private numeric
+             authority and ID-only Browse output tested against fake records,
+             with8 assertion groups and retained Journey positive gates. The
+             artifact deliberately refuses a non-synthetic database. Existing
+             Browse/Unlock numeric callers and shared saved-result integration
+             require a coordinated cutover; observable ID-order inference,
+             full transcripts, retention and risk acceptance remain open.
+             Separate F06/F07 candidate passes53 synthetic credit/hold/race
+             checks, but is not live and does not create a paid scoring result.
+             No ordinary raw-score call, member data or credit was exercised
+             against production. Exact production GO remains required. See
+             ZYRA_APP_GATE_REPAIRS_HANDOVER_CURRENT_VERSION_V1 and receipt.
+Update 2026-09-28 — LOCAL ISOLATION PASS, SERVER/PRIVACY GATES OPEN:
+             Stage1 static import/synthetic fixture isolation passes; production
+             code does not reach the new harness. This is not an ACL, RLS,
+             snapshot, ledger or inference proof. No database/API/catalog query,
+             raw production scorer call or real spend occurred. Existing server
+             permissions and desired default-off fuse remain unverified here.
+             OA193 local-only GO does not authorise this server/security stage;
+             all later execution and measured risk/activation gates remain open.
+Update 2026-09-28 — OPEN / APPROVED POLICY, NO EXECUTION GO:
+             DR-ZYRA-250 settles D1–D6, not this security/evidence work. Private
+             internal scorer and purpose-scoped Browse/Standard/Plus/Journey,
+             one saved directional result, server-owned default-off Plus gate,
+             atomic/idempotent debit/entitlement and different-target balance
+             serialization still need implementation/proof under separate GO.
+             Measure complete transcripts: Standard baseline plus incremental
+             Plus, Browse inclusion/order, preflight/errors/timing, remembered
+             old/new projections across policy versions and multiple accounts.
+             Original-input-only defect replacement cannot become a refresh
+             oracle; absent reproducible originals means unavailable/review.
+             Category thresholds/suppression/minimum usefulness, exact retention
+             and measured risk acceptance remain Founder decisions. No live
+             scorer grants or server fuse reverified here; no spending occurred.
+             No new OA is raised for these gates: this action already owns the
+             access/inference boundary, alongside OA193's calculation contract.
+Title:       Direct score_candidates Access Is a Repeatable Preference-
+             Inference Oracle Outside UI Presentation Gates
+Category:    Security / Sensitive Inference / Authorization
+Priority:    HIGH — block untrusted or external testing until the
+             server-owned discovery/scoring boundary is ruled and built;
+             Founder-only internal TestFlight may proceed as a controlled
+             test with this residual recorded
+Status:      Open — discovered during OA-ZYRA-283 live boundary audit
+Owner:       Founder / Engineering
+Raised:      2026-09-10
+Completed:   —
+Source:      Live `public.score_candidates(uuid[])` catalog/ACL audit;
+             `zyra_discovery_service.dart`
+
+Description: Browse legitimately calls `score_candidates(uuid[])` to exclude
+             hard-requirement failures and order visible candidates without
+             displaying the number. The function is also directly executable
+             by `authenticated`, however, and returns the numeric caller-
+             perspective score for each profile that
+             `zyra_can_view_profile()` permits. A crafted Data API caller can
+             bypass the UI's non-display rule, query one candidate repeatedly
+             while changing their own preference matrix, and use score changes
+             to infer sensitive facts about that candidate. The same raw call
+             also bypasses when the Compatibility Reveal and paid Unlock
+             surfaces choose to present the caller-owned score. OA-ZYRA-283
+             closes the shared-row counterpart-score and consent-write defect;
+             it cannot honestly close this broader scoring oracle without
+             redesigning Browse's server boundary.
+
+Target:      Replace public raw scoring with server-owned purpose-specific
+             paths: a Browse projection that performs exclusion/order without
+             returning per-candidate scores, and entitlement/stage-scoped
+             score paths for Profile Unlock and Journey. The internal scorer
+             must not be directly executable by client roles. Preserve the
+             ratified OA-ZYRA-193 scoring method, hard-requirement exclusion,
+             null/no-score semantics and current Browse order. Threat-model
+             repeated preference mutation and direct RPC calls; prove PUBLIC,
+             anon and authenticated ACLs plus positive Browse/Unlock/Journey
+             cases. Separate design/build scope and Founder apply GO required.
+Dependencies: OA-ZYRA-193; OA-ZYRA-283; `zyra_can_view_profile`;
+             ZYRA_CONTRADICTION_AUDIT sensitive-inference precedent.
+
+------------------------------------------------------------
+
+OA-ZYRA-286
+Title:       One Main ZYRA App — Local Founder Preview Tooling and
+             Retirement of the Separate Test App and Cloud Resources
+Category:    Architecture / Security / Test Infrastructure
+Priority:    High — enables secure Founder testing without weakening
+             the production release boundary
+Update 2026-10-13 (contained Flutter update prepared / Founder away):
+             Navigation Haptics sections82–83 and packet
+             OA151_CIRCLE_DISCUSSION_ACTIONS_2026_10_13.KwzRQV retain the exact
+             old signed host and matching genuine profile engine. The guarded
+             staged-host recipe is prepared, not a full Xcode repair. Read-only
+             inspection passes source/identity lineage but disk-space guard
+             holds compile/signing; scoped cache cleanup awaits Founder reply.
+             No new artifact, phone install/launch or deletion. Founder away:
+             defer delivery until home and fresh paired/unlocked verification.
+             Existing full native and live release gates remain OPEN.
+Update 2026-10-13 (Option2 / native build held):
+             Navigation Haptics sections80–81 and scoped delivery packet
+             OA305_NO_GIT_OPTION2_DELIVERY_2026_10_13.yqJ0ef record782client
+             checks PASS, no skip/failure, clean analysis and27format-zero files.
+             Native attemptexit74 at package loading: sandbox_apply refused.
+             Old Circle artifact/source after-stop verified unchanged; no
+             new signed artifact/install/launch. Native mode now refuses before
+             execution. Preserved run.sh remains explicitly Founder-operated;
+             AI wrapper/Git and validation-bypass routes remain prohibited.
+             MANUAL_ROUTE_RESTORED confirms three native files/executable
+             runner body exactPRE after only owned native edits restored;
+             checked app Dart unchanged. Original human route is preserved,
+             not an untested environment-marker-dependent replacement.
+             Founder install hold was revoked, not signing/security gates.
+             No cache deletion, data clearing, SDK/trust/provider/backend,
+             upload/public-release or Founder acceptance. OA286 stays OPEN;
+             OA305 owns toolchain repair, OA151/304 client/visual acceptance.
+Update 2026-10-09 (OA151 isolated-kernel runtime cleanup):
+             Navigation handover §31 records explicit local GO and fresh
+             effective VM attestation: no host mounts/SSH agent/application
+             forwarding. Both new network-none/tmpfs/non-root fake PostgreSQL
+             containers cleaned after failed/final runs; exact owned VM stopped
+             and socket absence/saved configuration unchanged verified. Final
+             RUN_2 PASS is only bounded synthetic SQL/function/concurrency proof,
+             not Supabase advisor, production version, release or live authority.
+             Developer narrow-panel/native acceptance debt remains OPEN.
+Update 2026-10-09 (same-artifact home phone continuation):
+             Navigation handover §30: fresh unlock/identity/source/artifact
+             checks passed; first install failed CoreDevice4000 disconnect.
+             Founder reconnected/unlocked; scoped retry passed fresh gates,
+             installed and launched same main PROFILE1.0.0(5) artifact,
+             SHA c34554153439320978f45ee41580c51a48c895abaf3d92bbb17e8e92e0595ad3.
+             NativePOST exact new containerA0C3594A-A096-4FA6-A9F5-6B4658DEE751
+             and PID88368 PASS; DELIVERED source/test/assets/protected pins
+             unchanged. Both failed/retry packets retained. No rebuild, new
+             signing, account-data clearing, upload or physical acceptance.
+             Local backend preparation separately approved under OA151; this
+             phone update does not activate the new real-member methodology.
+Update 2026-10-09 (DR265 / all-toggle subtext cleanup):
+             Navigation Haptics handover §29 and sealed packet
+             OA151_REAL_FLOW_DECISION_TOGGLE_CLEANUP_2026_10_09 own nine
+             developer-renderer changes, four test changes and sixteen fresh
+             retained/corrected capture PNGs. Descriptions/duplicate headings
+             removed; compact min44 rows, labels/keys/callbacks/guards and
+             confirmations retained. Sample safety remains concise. Real
+             non-swipe direction accepted under DR265/OA151, but real default
+             is not changed or replaced with fictional account state.
+             Final22suite385PASS, analyzer0issues, thirteen format pins clean;
+             final26case capture is repeated coverage. Eight final real-font
+             PNGs independently reviewed, normal393/430 no introduced overlap.
+             Unchanged310panel+36rail at320 clips open developer rail: retain
+             this OA's narrow-panel accessibility debt, not full-width/native
+             acceptance. Exact color/device/Founder acceptance not measured.
+             Existing main PROFILE build64.4s/60.8MB; identity/signature/same
+             provision PASS. Fresh same-phone unlock gate FAILED; no install
+             or launch.177-fileartifactSHA
+             c34554153439320978f45ee41580c51a48c895abaf3d92bbb17e8e92e0595ad3.
+             BLOCKED/VERIFICATION retain checked13pins, whole lib/test/assets,
+             native inputs and119121-byte prior handover prefix. Earlier
+             failures/captures retained; final internal peer reconcile PASS.
+             Founder unlock requested; resume exact checked-artifact delivery
+             only with fresh unlock under DR257. No live/member-data writes,
+             SQL/migration/provider/payment/signing/upload/public release,
+             app-data clearing or OA closure. Local DB preparation requested
+             separately; real backend activation remains OA151/253/303 held.
+Update 2026-10-08 (Home controls cleanup / checked local delivery):
+             Existing navigation handover §15 and sealed receipt:
+             SYSTEM/RESOURCES/REVIEWS/
+             OA286_HOME_TOGGLE_CLEANUP_LOCAL_DELIVERY_2026_10_08_VERIFICATION.json
+             Captured2026-10-08T10:46:42.595Z;38642B SHA256
+             b96c681dd5bb9571a14a79bf918b2167dc4e4c23977d3bc6e84146c0f2b893dd.
+             Five Home-only sections removed: Preview gender, App gold
+             accents, Mobile menu, Opening slide motion, App icon directions.
+             Home navigation, Discovery direction, Splash directions,
+             Onboarding directions, Settings design, Account controls stay.
+             Member Personalisation Gold accents remains account-bound and
+             persisted; separate Entry Actions onboarding motion stays.
+             Canonical FloatingNavBar/session/shell, approved Poppins/Syne/
+             gold design, member data and production request flows preserved.
+             Initial239PASS/1obsolete Home icon-gallery expectation failure
+             retained; only obsolete assertion corrected after truePRE.
+             Final16focused suites240PASS/0fail/0skip;analyzer0issues/format
+             clean. Existing main production PROFILE60.1s/56.3MB/1.0.0(5),
+             identity/signature/existing provision checks PASS; install6664
+             then native PID81911 matches fresh installed container. Source/
+             artifact/signature after-pins match. This is local checked
+             install/native-launch POST-VERIFICATION, not Founder UI/saved-
+             data acceptance, full release-suite clearance or TestFlight.
+             ADMIN independently matched44named physical pins:9truePRE,
+             8changed Dart files,11package/native inputs,12protected files,
+             4built artifacts. Handover §15 matches; full21359B PRE prefix
+             retained unchanged. Whole-tree aggregate preservation remains
+             dated builder evidence; raw complete test/analyzer logs not
+             separately named; no tests/install were rerun by ADMIN.
+             Earlier cancelled-menu undo/no-swipe/onboarding stages and
+             exact-action gates remain. No backend/migration/payment/provider/
+             signing/data reset/public/store/Git change; OA286 stays OPEN.
+Update 2026-10-04 (combined Family/cards checked build / DR-ZYRA-263):
+             Existing main PROFILE55.9s/56MB/1.0.0(5)/identity/signature/
+             profile PASS; includes prior undelivered guided-card amendment.
+             Initial phone lock, then fresh unlocked install6316/native launch/
+             fresh exact-container PID69078 in2B2A4617-A537-49D7-841C-9E55C19A195B
+             PASS. Source/native/signature postchecks match; no data deletion.
+             §108/named Family receipt own checks. Standing home DR257 remains;
+             no new signing/registration/security/backend/payment/release
+             authority. Physical/saved-data acceptance and OA286 remain OPEN.
+Update 2026-10-04 (guided choices checked build / DR-ZYRA-262):
+             Standing home DR257; existing main PROFILE53.7s/56MB/1.0.0(5),
+             deep-strict signature/identity/existing profile PASS. Fresh phone
+             checks report locked; unlock requested, no install/native launch
+             for this amendment. §107/named guided-choice receipt owns bounded
+             checks and preserved motion/role/editor pins. Prior6300 is older
+             icon artifact. No data deletion/new signing/registration/security/
+             backend/payment/upload/release; OA286 OPEN, acceptance separate.
+Update 2026-10-04 (account icon checked local delivery / DR-ZYRA-261):
+             Standing home DR257; existing main PROFILE55.6s/56MB, identity/
+             signature/profile PASS. Fresh unlocked phone install6300,
+             launch/fresh PID68709 in exact0ECB2DA3-2919-4A75-8BE1-CC2C38D46575
+             container PASS. §106/named icon receipt owns bounded checks and
+             unchanged motion/member-gold pins. No app-data deletion, new
+             signing/registration/security, backend/payment/release changes.
+             Physical/saved-data acceptance distinct; OA286 OPEN.
+Update 2026-10-04 (checked swipe/arrow local delivery / DR-ZYRA-260):
+             Standing home DR257 and Founder unlock; existing main PROFILE
+             recipe55.9s/56MB/1.0.0(5)/existing Team+profile. Deep/strict
+             signature/identity/source pins/native posthashes PASS. Install6292,
+             launch and fresh PID68560 in exact container551F159A-4E41-4973-
+             BFEB-948461685B62 PASS. §105/UI Gate/named smoothness receipt owns
+             motion/callback repair and exact functional/visual-debt limits.
+             No data deletion/Git/Auth/backend/provider/payment/migration/
+             changed signing/registration/security/upload/TestFlight/release.
+             Saved-data/physical acceptance distinct; OA286 OPEN.
+Update 2026-10-04 (four-slide opening exact artifact delivery):
+             Founder confirms unlock. Existing main signed PROFILE artifact
+             unchanged from §103;61 original file pins/identity/signature
+             match. Install6284/native launch/fresh exact-container PID68477
+             PASS, container8F9855B6-E06F-4456-9B34-EA2D3BE7EF7B. Postchecks
+             PASS; no rebuild/new product source. §104/UI Gate/named four-slide
+             local delivery receipt supersede only the earlier phone-lock
+             limit. No app-data deletion or new signing/registration/security,
+             backend/provider/payment/migration/upload/TestFlight/release.
+             Physical acceptance remains separate; OA286 OPEN.
+Update 2026-10-04 (four-slide intro checked local build):
+             DR-ZYRA-259 scoped cosmetic navigation/count update internally
+             checked under standing home delivery DR-ZYRA-257. Same main
+             PROFILE/Founder pin/identity/signing recipe54.0s/56MB PASS;
+             deep-strict signature/source/retention checks PASS. Paired phone
+             available but locked; unlock requested. No install/native launch
+             for this amendment; installed6268 is earlier artifact. §103/UI
+             Gate/FOUR_SLIDE_INTRO_2026-10-04_VERIFICATION.json own evidence.
+             Delivery/physical acceptance pending; OA286 OPEN. No new
+             signing/registration/security, Auth/backend/provider/payment,
+             migration/upload/TestFlight/release or app-data deletion.
+Update 2026-10-04 (member gold option latest local delivery):
+             Direct DR-ZYRA-258 scoped cosmetic request installed under the
+             standing DR-ZYRA-257 home default after independent internal checks.
+             Main production PROFILE/existing Founder pin/signing recipe;
+             build55.4s/56MB, signature/source/artifact checks PASS. Install6268,
+             native launch and fresh exact-container PID68406 PASS, container
+             ABEAD813-F1A9-40DD-A400-2DDDB8350BA6. Identity/version verified.
+             UI Gate/MEMBER_GOLD_PERSONALISATION_2026-10-04_VERIFICATION.json
+             hold evidence; earlier deliveries are history. No signing/identity,
+             registration/security, SDK/Auth/backend/provider, payment/migration,
+             upload/TestFlight or release change. No app-data deletion; saved
+             data/physical UI acceptance not inferred. OA286 remains OPEN.
+Update 2026-10-04 (latest account-ready local phone delivery):
+             DR-ZYRA-257 includes immediate account-ready install approval.
+             Same main production PROFILE/Founder pin/existing signing recipe;
+             no product source change. Fresh193-case regression/analysis/source
+             hashes PASS; build/signature PASS. Install6132/native launch and
+             fresh exact-container PID67990 PASS, container4E5C6020-BF2C-4E7A-
+             8FE2-4465027B89BF. Onboarding§102/UI Gate/named account-ready local
+             receipt hold evidence. No upload, signing/registration, backend or
+             provider change. Physical acceptance remains distinct; OA286 OPEN.
+Update 2026-10-04 (home/away routine local delivery default):
+             Founder instructs always install checked routine app changes
+             while home; he will report away, including late corrections.
+             DR-ZYRA-257/domain bootstrap/Developer Control §37/One-App
+             Runbook §3 record this preference. No repeat install approval
+             for the same scoped change, but connected/unlocked/signature/
+             identity/install/process checks remain; stop on failure/drift.
+             No upload/TestFlight, new signing/registration, backend/payment,
+             provider/migration authority or physical acceptance is implied.
+             This also authorizes the pending account-ready install now.
+Update 2026-10-04 (latest verification trust local phone delivery):
+             Founder explicitly approved installation with “Yea”. Same main
+             production PROFILE recipe and existing signing/Founder pin;
+             no source change. Build/signature PASS; install 6116/native
+             launch PASS, fresh PID 67612 in exact new container
+             39567302-4977-42DE-B634-2C61DA3D696E. Onboarding §100/UI Gate
+             and named trust local-delivery receipt record source/artifact
+             hashes, 309-case regression and clean analysis. Earlier 6108
+             receipt remains history. Native delivery does not prove physical
+             page/flow acceptance or saved-data continuity. No Git, provider,
+             Auth/backend, Apple upload or TestFlight change; OA286 OPEN.
+Update 2026-10-04 (earlier combined main local phone delivery):
+             Founder home update executed against the same main identity,
+             PROFILE production scheme and existing Founder opt-in/UUID pin.
+             Signed build installed as 6108 and native-launched; PID 67328
+             matches new container 622122B6-6741-488E-95DB-51684A6EA6A1.
+             APP_LATEST_LOCAL_DELIVERY_2026-10-04_VERIFICATION.json and UI
+             Gate handover record checks/hashes. No new signing identity,
+             provider, account, backend, Apple upload or TestFlight change.
+             Current source boundary remains; physical account/flow/design
+             acceptance and unrelated retirement/release gates remain OPEN.
+Update 2026-10-02 (canonical progressive onboarding cleanup):
+             Founder requested a full review/build against essentials → real
+             IDV → optional app entry → deferred four-part profile setup.
+             New OA-ZYRA-303 owns this coherence pass, its save/resume/review
+             findings and Founder acceptance. Onboarding Preview §89 is the
+             current as-built record; previous §87–88 pre-IDV roadmap and
+             account/profile handoff descriptions are superseded where they
+             conflict. Protected preview remains isolated and never grants
+             real IDV, member writes, publication or backend activation.
+             OA286 remains OPEN; this is not retirement/release closure.
+Update 2026-10-02 (concise four-category Seeker handoffs):
+             The stage-intro screen after the four-card overview no longer
+             repeats “Account Essentials” and three detail rows. It says
+             “Let’s begin with your profile” before the first question.
+             Journey Bio, Compatibility and Review now use the same one-line
+             handoff style. Duplicate stage counters on these transition
+             pages were removed; questions, local question progress, routes
+             and Guardian flow stay unchanged. Affected tests, scoped
+             analysis, signed PROFILE build and paired-iPhone install passed.
+             Native launch check awaits phone unlock. Founder on-screen
+             acceptance PENDING, OA286 OPEN. Onboarding Preview §88/receipt.
+Update 2026-10-02 (four-press Seeker overview):
+             Founder requested the “Together, we’ll build four things”
+             overview to reveal each roadmap card only on a separate press,
+             with the down arrow appearing after the fourth. Shared Seeker
+             intro now gates both arrow/Continue and page-swipe advance;
+             revealed cards persist when returning from Account Essentials.
+             Copy, destination and Guardian flow unchanged; no extra gesture
+             caption added. Affected tests, scoped analysis and signed
+             PROFILE build passed; main app installed/launched on paired
+             iPhone. Founder on-screen acceptance PENDING, OA286 OPEN.
+             Onboarding Preview §87/receipt is the as-built evidence.
+Update 2026-10-02 (physical vertical checkpoint; edge rebound removed):
+             Founder still felt buggy scroll after §85. Root cause was the
+             default horizontal PageView under a vertical-arrow checkpoint,
+             plus bouncing edge scroll on Guardian/final cards. Continuous
+             intro now uses a vertical internal track; ordinary card frames
+             retain chosen tap/right-swipe content motion, while the
+             Guardian ⇄ final checkpoint physically scrolls vertically.
+             Guardian, final and prayer-arrow edge views clamp rather than
+             rubber-band. Copy, progress, routes and accessibility unchanged.
+             Ten affected suites PASS 289/289; scoped analyzer clean. Signed
+             PROFILE build installed and native-launched on paired iPhone.
+             Founder feel acceptance PENDING, OA286 OPEN. Onboarding Preview
+             §86/receipt supersedes §85 checkpoint-animation detail.
+Update 2026-10-02 (continuous arrow-page handoffs):
+             Founder found arrow/swipe section transitions fast and buggy.
+             Guardian → final introduction now uses a continuous 1,050 ms
+             PageView transition with no midpoint jump or duplicate outer
+             motion. Prayer → story uses a 1,000 ms untilted foreground
+             handoff; final introduction → role uses joined 480/520 ms
+             foreground exit/entrance. Fixed canvas, copy, three-dot
+             progress, destinations and reduced-motion paths remain.
+             Midpoint regression and eight affected suites PASS 244/244;
+             scoped analyzer clean. Signed PROFILE build installed and
+             native-launched on paired iPhone. Founder feel acceptance
+             PENDING, OA286 OPEN. Onboarding Preview §85/receipt supersedes
+             §83's two-half checkpoint implementation.
+Update 2026-10-02 (Guardian shared-Journey introduction copy):
+             Guardian Support now describes a shared Journey with more than
+             one possible Guardian, guidance through its stages and support
+             for decisions, without introducing message access in this
+             welcome card. The explicit Journey-start conversation-access
+             disclosure remains. All 206 affected tests PASS, including
+             real-font layout; scoped analyzer clean. Signed PROFILE build
+             installed and native-launched on paired iPhone after unlock.
+             Founder on-screen acceptance PENDING, OA286 OPEN.
+             Onboarding Preview §84/receipt.
+Update 2026-10-02 (smoother upward section handoff):
+             Guardian Support → final Let's begin section now has a joined
+             350 ms accelerating exit and 350 ms decelerating entry, with
+             a fixed background and unchanged arrow/progress/navigation.
+             The former midpoint stop and slow text-motion coupling are
+             removed. Targeted regression and 177 affected tests PASS;
+             scoped analyzer clean. Signed PROFILE build installed and
+             native-launched on paired iPhone. Founder on-screen feel
+             acceptance PENDING, OA286 OPEN. Onboarding Preview §83/receipt.
+Update 2026-10-02 (three-dot How ZYRA works progress):
+             Protected continuous Photo-first, Compatibility and Guardian
+             Support cards now show three dots and 1/3–3/3. Guardian keeps
+             its down arrow; the subsequent Let's begin transition is no
+             longer counted as a fourth explanatory page. Standalone
+             four-card comparison is unchanged. Focused 17/17 and affected
+             suites PASS, scoped analyzer clean; signed PROFILE build
+             installed and native-launched on paired iPhone. Founder visual
+             acceptance PENDING, OA286 OPEN. Onboarding Preview §82/receipt.
+Update 2026-10-02 (photo-card split reverted):
+             Founder rejected the extra reading step introduced in §79.
+             The same 1/4 card again shows the Imam Ahmad report and Start
+             with photos explanation together after one reveal; the next
+             action goes to Compatibility. No other intro copy, progress,
+             choice or role path changed. Real-Poppins layout and affected
+             navigation/visual/CTA/signup tests PASS; scoped analyzer clean.
+             Signed PROFILE build installed and native-launched on paired
+             iPhone. Founder on-screen acceptance PENDING, OA286 OPEN.
+             Onboarding Preview §81/receipt supersedes §79's split.
+Update 2026-10-02 (latest protected onboarding build installed):
+             Paired iPhone reconnected. The signed §80 PROFILE build, which
+             also contains §79 photo-card/final-arrow changes, was verified,
+             installed as app.zyraconnect.zyra and native-launched. Device
+             install/launch COMPLETE; Founder visual/feel acceptance still
+             PENDING, OA286 OPEN. Onboarding Preview §80 post-verification.
+Update 2026-10-02 (role-selected Seeker overview copy):
+             After Seeker selection, the setup overview now reads “SEEKER
+             SETUP · OVERVIEW” and “Your next steps, [first name].” instead
+             of repeating the opening ZYRA greeting. Guardian's distinct
+             overview is unchanged. The shorter final copy passes the
+             iPhone SE-sized regression after a longer candidate overflowed.
+             Three affected suites 101/101 PASS, scoped analyzer clean,
+             signed PROFILE build and strict signature verification PASS.
+             Paired iPhone unavailable to CoreDevice (install error 4016);
+             install/launch and Founder visual acceptance PENDING. OA286
+             OPEN. Onboarding Preview §80/receipt.
+Update 2026-10-02 (photo reading stages and final arrow):
+             Protected photo-first card now reveals the reported Imam Ahmad
+             quote, then replaces it with the photo explanation on the same
+             1/4 card. Compatibility heading wraps cleanly to two lines in
+             real Poppins. Final card says “Let’s begin the onboarding,
+             [name].” and has no pulse dot; obsolete pulse controls are
+             removed from the protected toggle. Ten affected test files
+             255/255 PASS, scoped analyzer clean, signed main PROFILE build
+             and strict signature verification PASS. Paired iPhone was
+             unavailable to CoreDevice; install/launch and Founder visual
+             acceptance PENDING. OA286 OPEN. Onboarding Preview §79/receipt.
+Update 2026-10-02 (prayer-card arrow reading pause):
+             Protected third Welcome card now waits three seconds before
+             showing and animating its down arrow. Downward swipe and
+             Skip · DEV remain available during the pause; Back/exit resets
+             it, and reduced-motion accessibility shows a stationary arrow
+             immediately. Eleven affected suites 258/258 PASS, scoped
+             analyzer clean; signed main PROFILE installed/launched on
+             paired iPhone. Founder visual/feel acceptance PENDING; OA286
+             OPEN. Onboarding Preview §78/receipt.
+Update 2026-10-02 (unified continuous-intro motion):
+             Protected seven-card introduction now uses the selected
+             Opening slide motion for Welcome and later explanation cards,
+             including artwork/copy timing and later-card typewriter
+             variants. Section-change downward scrolls remain intentional;
+             the separate four-card comparison/sign-in selector is labelled
+             separately. Ten affected suites 290/290 PASS, scoped analyzer
+             clean; signed main PROFILE installed/launched on paired iPhone.
+             Founder visual/feel acceptance PENDING; OA286 OPEN. Onboarding
+             Preview §77/receipt.
+Update 2026-10-02 (photo-card reading type and attribution):
+             Founder screen review found the one-card quote/explanation too
+             small and asked to identify Imam Ahmad without restoring the
+             bibliographic reference. Protected card now displays “Reported
+             from Imam Ahmad” and uses 16–17 px quote/body type; original
+             seven-card icon geometry is retained. Real-Poppins 390×844
+             visibility check, ten affected suites 243/243 PASS and scoped
+             analyzer clean. Signed main PROFILE installed/launched on the
+             paired iPhone. Founder visual acceptance PENDING; OA286 OPEN.
+             Onboarding Preview §76/receipt.
+Update 2026-10-02 (one-card quote and fixed intro artwork):
+             The protected photo-first card now keeps its illustration
+             visible while revealing Imam Ahmad's excerpt, explanation and
+             closing line on the same page; the next tap moves to
+             Compatibility. All seven continuous intro artworks occupy one
+             measured top slot. Ten affected suites 243/243 PASS and scoped
+             analyzer clean; signed main PROFILE installed/launched on the
+             paired iPhone. Founder visual acceptance PENDING; OA286 OPEN.
+             Onboarding Preview §75/receipt.
+Update 2026-10-02 (praise-to-prayer page-turn repair):
+             The third protected Welcome card no longer replaces the
+             AnimatedSwitcher subtree on entry. Its edge-swipe wrapper
+             stays structurally present across all three cards, with the
+             downward gesture enabled only on card three; text-height change
+             now eases instead of jumping. All fifteen motion styles and
+             phone-size art transition checked; ten suites 242/242 PASS,
+             scoped analyzer clean. Signed main PROFILE installed/launched
+             on paired iPhone. Founder on-device acceptance PENDING; OA286
+             OPEN. Onboarding Preview §74/receipt.
+Update 2026-10-02 (section-arrow animation repair):
+             Protected prayer-to-photo and later section-change arrows now
+             repeat their gentle movement while waiting; ordinary/non-
+             checkpoint arrows remain finite and reduced-motion users see
+             a stationary action. Ten affected suites 242/242 PASS, scoped
+             analyzer clean; signed main PROFILE installed on paired iPhone.
+             Native launch retry awaits device unlock after iOS denied the
+             locked-device request. Founder on-device acceptance PENDING;
+             OA286 OPEN. Onboarding Preview §73/receipt.
+Update 2026-10-02 (separate welcome/story progress):
+             Founder-requested protected continuous preview now counts the
+             three welcome/prayer cards as 1/3–3/3 with three dots. Existing
+             downward section handoff then starts How ZYRA works at 1/4
+             with four dots through 4/4. Seven cards, section-only gestures,
+             photo-card quotation and ordinary onboarding are unchanged.
+             Nine affected suites 234/234 PASS, scoped analyzer clean;
+             signed main PROFILE installed/launched on paired iPhone.
+             Founder on-device acceptance PENDING; OA286 OPEN. Onboarding
+             Preview §72/receipt supersedes only the seven-dot/count display
+             described in §70–71.
+Update 2026-10-02 (continuous photo-page quote correction):
+             Founder clarified that the prior removal was too broad. The
+             original Imam Ahmad excerpt is restored on the protected 4/7
+             photo-first card; the visible lead-in and al-Mardawi reference
+             line remain absent. The quote replaces the illustration at the
+             final reading stage, preserving photo copy visibility. Five
+             affected suites 173/173 PASS, scoped analyzer clean; signed
+             main PROFILE installed/launched on paired iPhone. Founder
+             on-device acceptance PENDING; OA286 OPEN. Onboarding Preview
+             §71/receipt corrects §69 for this surface.
+Update 2026-10-02 (section-only downward checkpoints):
+             Founder rejected the 3 + 4 dot separator and transient gold
+             line from §68. Protected continuous intro now keeps seven
+             uninterrupted dots and uses downward swipe/arrow only at
+             3/7→4/7, 6/7→7/7 and 7/7→role choice. Ordinary pages retain
+             selected navigation. Six affected suites 179/179 PASS, scoped
+             analyzer clean; signed main PROFILE installed/launched on paired
+             iPhone. Founder on-device acceptance PENDING; OA286 OPEN.
+             Onboarding Preview §70/receipt supersedes §68 divider behaviour.
+Update 2026-10-02 (continuous photo-card reference removal):
+             Founder-directed local preview 4/7 no longer shows the Imam
+             Ahmad lead-in, quotation or al-Mardawi source. Photo-first
+             explanation remains; standalone sourced quote comparison
+             remains. Focused 56/56 and wider 175/175 PASS; scoped analyzer
+             clean. Signed main PROFILE installed/launched on paired iPhone.
+             Founder visual acceptance PENDING; OA286 OPEN. Onboarding
+             Preview §69/receipt supersedes §65–66 for this surface.
+Update 2026-10-02 (welcome-to-approach section marker local delivery):
+             Protected continuous onboarding now marks the prayer-to-
+             approach boundary with a short gold line and a 3 + 4 grouped
+             seven-dot progress display. Its first approach card says
+             HOW ZYRA WORKS; standalone comparison remains unchanged.
+             Four section/direction suites 72/72 and five wider suites
+             213/213 PASS; scoped analyzer clean. Signed main PROFILE
+             installed/launched on paired iPhone. Founder on-device feel
+             acceptance PENDING; OA286 OPEN. Onboarding Preview §68/receipt.
+Update 2026-10-02 (opening page-turn motion local delivery):
+             Welcome illustrations now hand off with their lines; the
+             welcome/story boundary and Card Tilt move artwork and copy
+             together over the stationary brand canvas. Three focused
+             suites 51/51 and four wider suites 204/204 PASS; scoped
+             analyzer clean. Signed main PROFILE installed and launched
+             on paired iPhone. Founder on-device feel acceptance PENDING;
+             ordinary member onboarding and external systems unchanged.
+             OA286 OPEN. Onboarding Preview §67/receipt.
+Update 2026-10-02 (Settings visual-study local delivery):
+             Founder-only Home toggle compares Current and Smooth cards
+             Settings layouts, adapting the linked DailyFlutterUI reference
+             without its unsupported appearance/language/staged-save
+             controls. Existing Seeker/Guardian routes and actions remain
+             intact; ordinary users remain on Current. Focused 4/4 PASS,
+             scoped analyzer clean, signed main PROFILE installed and
+             launched on paired iPhone. Wider Developer Access suite is
+             12 PASS / 3 pre-recorded stale onboarding-route FAIL; no
+             full-suite PASS claimed. Founder device review PENDING,
+             OA286 OPEN. Settings Visual Study handover V1 holds facts.
+Update 2026-10-02 (seven-screen local preview delivery):
+             Protected continuous introduction now counts welcome,
+             praise, prayer, photo-first, Compatibility, Guardian and
+             final “Let’s begin” before role choice. Standalone design
+             comparison stays separate; ordinary member onboarding,
+             backend and account data unchanged. Twelve suites 264/264
+             PASS, scoped analysis clean, signed main PROFILE installed
+             and launched on paired iPhone. The three earlier stale
+             Developer Access route assertions remain open here;
+             Founder on-screen acceptance and wider one-app boundary
+             PENDING. OA286 OPEN. Onboarding Preview §66/receipt.
+Update 2026-10-02 (paired intro reveals local delivery):
+             Quote/photo-first/Compatibility/Guardian intro copy and
+             reveal grouping updated only inside the protected preview.
+             Twelve suites 312/312 PASS, scoped analysis clean; signed
+             main PROFILE installed and launched on paired iPhone.
+             Onboarding Preview §65/receipt hold evidence. Founder
+             visual acceptance and wider one-app boundary PENDING;
+             §64's three stale Developer Access route assertions remain
+             open here. OA286 OPEN.
+Update 2026-10-01 (live diagonal/centred welcome local delivery):
+             Signed main PROFILE with Live drift default, restored
+             Diagonal edge spread and centred staged welcome installed
+             and launched on paired iPhone. Onboarding Preview §64 and
+             receipt hold delivery evidence. Three existing Developer
+             Access route tests still expect the old immediate story
+             sequence instead of the staged welcome; this test debt
+             remains open here. Founder visual acceptance and wider
+             one-app boundary PENDING; OA286 OPEN.
+Update 2026-10-01 (opening-progress local delivery):
+             Protected four-card progress dots now retain gold for prior
+             pages. Three suites 115/115 PASS, scoped analysis clean,
+             signed main PROFILE installed/native-launched. Onboarding
+             Preview §63/receipt record delivery. Founder on-screen
+             acceptance and wider one-app boundary PENDING; OA286 OPEN.
+Update 2026-10-01 (restored diagonal local delivery):
+             Gutter clamp removed from protected Diagonal edge design;
+             original full-page spread restored while motion choices
+             remain. Three suites 115/115 PASS, scoped analysis clean,
+             signed main PROFILE installed/native-launched. Onboarding
+             Preview §62/receipt hold delivery. Founder visual acceptance
+             and wider one-app boundary PENDING; OA286 OPEN.
+Update 2026-10-01 (gold animation local delivery):
+             Two protected motion comparisons added without changing
+             ordinary signup; Diagonal edge stays default. Three suites
+             115/115 PASS, scoped analysis clean, signed main PROFILE
+             installed/native-launched. Onboarding Preview §61/receipt
+             hold delivery. Founder visual acceptance and wider one-app
+             boundary PENDING; OA286 OPEN.
+Update 2026-10-01 (Diagonal edge local delivery):
+             Selected Diagonal edge as protected preview default, with
+             edge-gutter clearance verified across four sizes. Three
+             suites 112/112 PASS, scoped analysis clean, signed main
+             PROFILE installed/native-launched. Onboarding Preview §60
+             and receipt hold delivery. Founder on-screen acceptance
+             and wider one-app boundary PENDING; OA286 OPEN.
+Update 2026-10-01 (gold accents on sign-in local delivery):
+             Protected login and opening story now share the live gold
+             selection; ordinary OAuth login remains unchanged. Three
+             suites 111/111 PASS, scoped analysis clean, signed main
+             PROFILE installed/native-launched. Onboarding Preview §59
+             and receipt record delivery. Founder on-screen acceptance
+             and wider one-app boundary PENDING; OA286 OPEN.
+Update 2026-10-01 (named welcome local delivery):
+             The protected welcome greeting now uses the safe named
+             sample, preserving preview isolation from the signed-in
+             account. Twelve affected suites 240 PASS, one existing
+             skip; scoped analysis clean. Signed main PROFILE delivery
+             recorded in Onboarding Preview §58/receipt. Founder on-
+             screen acceptance and wider one-app boundary remain pending;
+             OA286 OPEN.
+Update 2026-10-01 (Gold dust family local delivery):
+             Protected backdrop default changed to Gold dust, with ten
+             new dust variations replacing other background options.
+             Five focused suites 145/145 PASS; scoped analysis clean;
+             signed main PROFILE delivery recorded in Onboarding Preview
+             §57/receipt. Founder on-screen acceptance and wider one-app
+             boundary remain pending; OA286 OPEN.
+Update 2026-10-01 (scattered-gold comparisons local delivery):
+             Five additional static backdrops added to the protected
+             toggle. Five focused suites 145/145 PASS; scoped analysis
+             clean; signed main PROFILE delivery recorded in Onboarding
+             Preview §56/receipt. Founder on-screen acceptance and the
+             wider one-app delivery boundary remain pending; OA286 OPEN.
+Update 2026-10-01 (Soft bloom/Balanced local default):
+             Founder-selected protected welcome-pulse default is Soft
+             bloom at Balanced (level 3). Focused onboarding tests and
+             analysis passed; signed main PROFILE delivery is recorded in
+             Onboarding Preview §55/receipt. Founder on-screen acceptance
+             and the wider one-app delivery boundary remain pending;
+             OA286 stays OPEN.
+Update 2026-10-01 (gold comparison local delivery):
+             Protected five-by-five pulse/background comparison and gold
+             preview wordmarks passed 342/342 affected tests and scoped
+             analysis. Signed main PROFILE built, verified, installed and
+             native-launched on paired iPhone. Founder acceptance PENDING;
+             OA286 OPEN. Onboarding Preview §54/receipt hold exact evidence.
+Update 2026-10-01 (opening-card first-beat local delivery):
+             Protected staged opening-card reveal adjustment passed
+             301/301 affected tests and scoped analysis. Signed main
+             PROFILE built, verified, installed and native-launched on
+             paired iPhone. Founder acceptance PENDING; OA286 OPEN.
+             Onboarding Preview §53/receipt hold exact evidence.
+Update 2026-10-01 (typewriter/pulse local delivery):
+             Fifteen protected welcome-text choices and five-level gold
+             pulse slider passed 262/262 affected tests and scoped analysis.
+             Signed main PROFILE built, verified, installed and native-
+             launched on paired iPhone. Founder acceptance PENDING; OA286
+             OPEN. Onboarding Preview §52/receipt hold exact evidence.
+Update 2026-10-01 (Slow-descent/Luma local delivery):
+             Five protected welcome-text comparisons and Luma preview
+             default passed 248/248 affected tests and scoped analysis.
+             Signed main PROFILE built, verified, installed and native-
+             launched on paired iPhone. Founder acceptance PENDING; OA286
+             OPEN. Onboarding Preview §51/receipt hold exact evidence.
+Update 2026-10-01 (focused welcome-motion local delivery):
+             Six protected text-transition options passed 152/152 affected
+             tests and scoped analysis. Signed main PROFILE built, verified
+             and installed on paired iPhone. Native launch denied while
+             device Locked; Founder acceptance PENDING, OA286 OPEN.
+             Onboarding Preview §50/receipt hold exact evidence.
+Update 2026-10-01 (final-welcome cue local delivery):
+             Continuous protected pulse and “Let’s begin, insha’Allah.”
+             copy passed 187/187 affected tests and scoped analysis. Signed
+             main PROFILE built, verified, installed and native-launched on
+             paired iPhone; no TestFlight upload. Founder device acceptance
+             PENDING; OA286 remains OPEN. Onboarding Preview §49/receipt
+             hold exact evidence.
+Status:      OPEN — ONE MAIN APP / TEST RESOURCES RETIRED / THREE CLOUD
+             DELETIONS POST-VERIFIED / BUILD 3 UPLOADED, READY TO TEST AND
+             ASSIGNED ONCE TO FOUNDER INTERNAL / PRECEDING §38 PROGRESS
+             SOURCE BUILT/INSTALLED BUT LAUNCH BLOCKED BY PHONE LOCK; §39
+             GESTURE-CAPTION SOURCE VERIFIED, BUILT AND INSTALLED; §40
+             EXPLICIT PROFILE REINSTALL AND NATIVE LAUNCH VERIFIED; NEWER
+             §41 QUOTE-FIRST, §42 WELCOME/NAVIGATION, §43 TAP-PACED,
+             §44 ROLE-NEUTRAL WELCOME AND FIXED-FONT PROFILES INSTALLED/
+             LAUNCHED, BUT OPENING CARDS NOT YET
+             VISUALLY CHECKED; FOUNDER ACCEPTANCE
+             PENDING. The separate ZYRA Test app is withdrawn;
+             protected Founder preview tools remain local to an explicit
+             internal build of the main app. Main ZYRA 1.0.0 (3) passed export
+             and IPA verification, completed exactly one Apple upload, became
+             Ready to Test, and was added once to the existing manual Founder
+             Internal group. That group retains its sole tester
+             admin@zyraconnect.app and builds 2 and 3 in Internal Testing. The
+             previous developer-skip/progressive-entry profile was installed
+             but launch was denied by phone lock. The light-swipe correction
+             profile was installed and launched; the later Back-removal
+             profile and then-current role-choice profile were installed,
+             but their launches were denied by phone lock under the same
+             main bundle.
+             The earlier 1250ms splash-timing and arrow-default profiles
+             installed and launched under the same main bundle. The prior
+             650ms splash profile was installed but iOS denied direct launch
+             while the device was locked. The newer six-transition profile
+             installed and direct-launched; felt timing/navigation remain
+             not Founder-accepted.
+             Founder interaction acceptance is pending.
+             TestFlight-build acceptance,
+             account-switch interaction acceptance and the shared Google
+             Branding-domain discrepancy remain open; no programme closure
+             claim
+Update 2026-10-01 (soft welcome entry PROFILE delivery):
+             Provider-to-first-welcome route now follows the selected Intro
+             page transition; first line enters automatically after it.
+             Eleven soft non-overlap welcome-text options, default Gentle
+             dissolve. Combined 175/175 PASS; scoped analyzer clean.
+             Correct signed main PROFILE bundle installed in iPhone
+             container 3C456B33-AD59-4919-B329-E9FAEB10C0C6 and native
+             launch command succeeded. Actual opening pixels/feel and
+             Founder acceptance PENDING; OA286 OPEN. Onboarding Preview
+             §48/receipt hold hashes. No TestFlight, backend/member-data
+             write, migration, credit/purchase or Git action.
+Update 2026-10-01 (restored opening route PROFILE delivery):
+             Provider → four welcome lines → four Atoms cards and DEV Back
+             paths tested; five-suite 139/139 PASS and scoped analysis clean.
+             Corrected signed PROFILE main app installed in bundle container
+             DD4887EA-0A5F-4800-A6A8-374BDE10608C; native launch command
+             succeeded, but phone was displaying another foreground app, so
+             opening-screen pixels/gestures remain Founder-unverified. OA286
+             OPEN. Onboarding Preview §47/receipt hold exact hashes. No
+             TestFlight, backend/member-data write, migration, credit or Git.
+Update 2026-10-01 (Back DEV PROFILE delivery):
+             Four-line welcome Back · DEV control and compact footer fix
+             passed 53/53 focused plus 21/21 adjacent visual checks. Signed
+             production-flavour PROFILE bundle installed on paired iPhone
+             in container B8958C71-787E-4F44-8970-4A2F5A96A18A; Flutter
+             wireless VM attach timed out, then separate native launch
+             succeeded. Main app remains ZYRA 1.0.0 (5). Onboarding Preview
+             §46 and receipt hold hashes. Founder review PENDING; OA286
+             OPEN. No TestFlight, backend/member-data write, migration,
+             credit/purchase or Git.
+Update 2026-10-01 (welcome-text motion PROFILE delivery):
+             Ten new protected welcome-line motions in the shared Onboarding
+             transition toggle; default Soft rise pending Founder choice.
+             Focused52/52 plus adjacent visual21/21 PASS, scoped analyzer
+             clean. Correct signed production-flavour PROFILE main app
+             installed and launched on paired iPhone, inventory ZYRA
+             1.0.0 (5), container B7597202-93CD-40E2-9B73-C82547FA50E4.
+             Onboarding Preview §45 and named receipt own hashes. On-device
+             feel and Founder acceptance PENDING; OA286 OPEN. No TestFlight,
+             backend/member-data write, migration, credit/purchase or Git.
+Update 2026-10-01 (splash/header wordmark main-app PROFILE delivery):
+             Four focused suites 88/88 PASS; scoped analyzer clean. Signed
+             production-flavour PROFILE main app installed and launched on
+             paired iPhone; inventory remains ZYRA 1.0.0 (5), container
+             FE22BF25-32F4-4ED9-95F5-2414E218A5F0. Style Default §13
+             and its receipt hold hashes and exact checks. Physical-screen
+             visual and Founder acceptance PENDING; OA286 OPEN. No
+             TestFlight, backend/member-data write, migration, credit/
+             purchase or Git action.
+Update 2026-10-01 (fixed-font main-app PROFILE delivery):
+             Seven focused suites passed 59/59; scoped analysis clean.
+             Signed production-flavour PROFILE artifact, with Poppins
+             weights 200–700 and Syne weight 600 in its built font manifest,
+             installed into paired-iPhone container 5A426D67-AC3C-4FCB-
+             B133-DFABC7915C37, database sequence 5548. Native launch
+             succeeded; main app remains ZYRA 1.0.0 (5). Style Default §12
+             and its named receipt hold exact hashes. Actual font pixels
+             and Founder acceptance PENDING; OA286 OPEN. No TestFlight,
+             backend/member-data write, migration, credit/purchase or Git.
+Update 2026-10-01 (role-neutral welcome main-app PROFILE delivery):
+             Four tap-paced role-neutral lines, ending with the pulsing
+             dot/cue, passed 182 affected tests and scoped analysis.
+             Correct signed production-flavour PROFILE artifact explicitly
+             installed into paired-iPhone container ECEBFEA9-CD2A-4744-
+             9DB8-067216D97E3A, database sequence 5524; native launch
+             succeeded. Main ZYRA inventory remains 1.0.0 (5). Exact
+             hashes and evidence are in Onboarding Preview §44 and receipt.
+             On-device welcome pixels and Founder acceptance PENDING;
+             OA286 remains OPEN. No TestFlight, backend/member-data write,
+             migration, credit/purchase or Git action.
+Update 2026-10-01 (tap-paced welcome main-app PROFILE delivery):
+             The timed protected welcome was replaced by three user-paced
+             taps, with the gold pulse/cue only at “Let’s begin.” Five
+             affected suites passed 182/182 and scoped analysis clean.
+             Signed production-flavour PROFILE app explicitly installed
+             into paired-iPhone container 530A6A3E-A644-4D08-A1D1-
+             3CF03303DDB9, database sequence 5508; separate native
+             launch succeeded. Device inventory remains the one main ZYRA
+             1.0.0 (5) bundle. Onboarding Preview §43 and named receipt
+             record exact hashes. Device-level welcome interaction and
+             Founder acceptance PENDING; OA286 remains OPEN. No TestFlight,
+             backend, migration, member data, credit/purchase or Git action.
+Update 2026-10-01 (new welcome/navigation main-app PROFILE delivery):
+             Founder-authorised protected onboarding prelude and story
+             toggle built through SOURCE/./run.sh. Ten affected suites
+             passed 281/281 and scoped analysis clean. The correct
+             production-flavour PROFILE Runner/AOT hashes, strict signing,
+             49.5s final Xcode build, explicit devicectl install after the
+             Flutter wireless install was stopped, and separate native launch are
+             recorded in Onboarding Preview §42 and its named
+             receipt. Current paired-iPhone inventory shows the single
+             main bundle app.zyraconnect.zyra version 1.0.0 (5).
+             No actual prelude/card device capture or Founder interaction
+             acceptance yet; OA286 remains OPEN. TestFlight, backend,
+             migrations, member data, credits/purchases and Git untouched.
+Update 2026-10-01 (quote-first PROFILE build and exact reinstall):
+             The Founder's latest protected onboarding copy/order change
+             built through the single main ZYRA PROFILE route. The correct
+             signed production-flavour Runner/AOT hashes and 43 focused,
+             46 real-font, 183 broader and 46 opt-in capture/replay passes
+             are recorded in Onboarding Preview §41/named receipt. After
+             an initial devicectl timeout while Flutter remained attached,
+             the exact PROFILE artifact was explicitly installed into new
+             paired-iPhone container EC07E250-F78D-48C9-9AD1-68E2BF979D68;
+             native launch succeeded as PID58191 from that container.
+             Fresh capture showed Developer Access only; physical opening
+             card and Founder acceptance are PENDING. OA286 remains OPEN;
+             no TestFlight upload, migration, production data, credit,
+             purchase or Git action.
+Update 2026-10-01 (correct PROFILE bundle explicitly reinstalled/launched):
+             Following the Founder's repeat report of visible captions,
+             Codex verified that the older 12:39 screenshots predated the
+             §39 fix. The correct signed production-flavour PROFILE artifact
+             contains neither old instruction in compiled Dart AOT; the
+             stale generic iphoneos artifact is not the selected install.
+             `devicectl` explicitly reinstalled the correct PROFILE bundle
+             to new paired-iPhone container EBFD7D8A-D6E8-423E-A7F9-
+             F3BAD7B10299. Current app catalog shows the main ZYRA
+             1.0.0 (5); native launch succeeded with PID57971 from that
+             exact container. The fresh device capture showed Developer
+             Access only, not an opening card. Card pixels and Founder
+             acceptance remain PENDING; OA286 stays OPEN. Onboarding
+             Preview §40 and the amended §39 receipt record the bounded
+             evidence. No TestFlight upload, backend/member-data change,
+             migration, credit/payment action or Git.
+Update 2026-10-01 (all-four-card caption source installed; launch pending):
+             The protected opening story's visible tap/swipe footer hints
+             were removed on all four cards under the Founder's latest
+             instruction; the transition-toggle explanation now describes
+             motion choice and place persistence, not gestures. Existing
+             gesture and accessibility actions remain.
+             Source verification passed focused 72/72, wider five-file
+             onboarding/signup 202/202, candidate visual replay 1/1 and
+             scoped Dart analysis. Onboarding
+             Preview §39 contains the exact as-built boundary. This source
+             was built through the main PROFILE route in 58.4s and paired-
+             iPhone inventory shows a fresh installed container distinct
+             from §38. Flutter wireless attach did not finish; separate
+             native launch was denied explicitly because the phone was
+             locked. The correct PROFILE Runner passed deep/strict codesign;
+             Runner and App-framework hashes are filed in §39 and its named
+             receipt. Founder on-device acceptance remains pending; OA286
+             stays OPEN. §38's earlier receipt hashed a stale default Runner
+             path, so those hashes cannot verify the §38 installed PROFILE
+             artifact; the prior receipt now retracts that evidence. No
+             TestFlight upload or production-system change.
+Update 2026-10-01 (onboarding progress source built and installed):
+             §38 aligns role/Welcome/Account Essentials and four-stage
+             profile-journey progress in the shared ordinary/protected
+             Flutter widgets; final-source focused tests 115/115 PASS,
+             broader onboarding 344 PASS plus one pre-existing SKIP, visual
+             candidates 4/4 PASS, and scoped analyzer clean. Main signed
+             production-flavor PROFILE Xcode build completed in 52.2s.
+             The then-reported codesign/hash check used a stale default
+             Runner path and is retracted in §38's receipt and §39. Fresh
+             paired-iPhone inventory
+             confirms ZYRA 1.0.0 (5) in new container A0888971-A7D9-477F-
+             BBB7-9B297062F50F. Separate native launch was attempted but
+             denied solely because the iPhone was locked; do not claim a
+             running process. §38/named receipt contain the retracted stale
+             hashes and exact tests, not valid §38 PROFILE artifact hashes.
+             The §37 device proof applies only to its earlier
+             binary. Post-unlock launch, Founder physical review, TestFlight
+             update and broader one-app acceptance remain pending; OA286
+             OPEN. No new distribution or production-system action claimed.
+Update 2026-10-01 (downward handoff final-source local delivery):
+             The protected fourth-card downward-handoff source was built
+             using documented ./run.sh as the main production-flavour PROFILE
+             app (Xcode 57.3s; install/launch phase 36.8s). Fresh paired
+             iPhone 15 Pro Max inventory confirms ZYRA 1.0.0 (5), main
+             bundle app.zyraconnect.zyra, in new container 4220689D-2630-
+             4423-95E1-70E72550AEED. A separate native launch succeeded;
+             PID57124 ran from that exact container. Deep/strict codesign
+             passed under Team9Y7Z8F36SJ. Wireless Flutter debugger attach
+             did not promptly complete, so the exact tool process was
+             interrupted after install; no full debugger-session success
+             is claimed. Onboarding Preview §37/named receipt contain Runner
+             and Dart AOT hashes and final 200/200 regression. The prior §36
+             binary was stale and not counted. No TestFlight upload or
+             Founder physical acceptance; OA286 remains OPEN.
+Update 2026-10-01 (content-only Card Tilt local Onboarding build):
+             Main ZYRA 1.0.0 (5) PROFILE build installed in fresh paired-
+             iPhone container 42CF91BD-B28B-4B27-BC4D-B3262B3BBAE9.
+             Separate native launch returned success and PID56903 ran
+             from that container. Deep/strict signing passed; Flutter's
+             wireless debugger did not attach promptly and its CLI was
+             interrupted after installation, not counted as a complete
+             debugger session. Onboarding Preview §36/named receipt carry
+             artifact hashes and tests. Founder physical visual acceptance
+             and TestFlight update remain pending; OA286 OPEN.
+Update 2026-10-01 (tap-anywhere local Onboarding build):
+             Main ZYRA 1.0.0 (5) PROFILE build installed in a fresh paired-
+             iPhone container and native direct-launch reported a running
+             process from that container. Wireless Flutter debugger attach
+             again did not complete promptly, so the CLI was interrupted
+             after installation; full debugger-session success is not
+             claimed. Deep/strict signature and Onboarding Preview §35/named
+             receipt verify the artifact. Founder gesture acceptance and
+             TestFlight update remain pending; OA286 OPEN.
+Update 2026-10-01 (latest local Onboarding gesture build):
+             The first-card prompt/swipe correction built and installed as
+             main ZYRA 1.0.0 (5) in PROFILE mode. Fresh device inventory
+             showed a new bundle container; native direct launch returned
+             success and a matching running PID. The Flutter wireless
+             debugger did not attach promptly after install, so its CLI was
+             interrupted; this is not represented as a full debugger-session
+             success. Deep/strict signature and the §34 receipt verify the
+             artifact. No TestFlight upload or Founder physical acceptance;
+             OA286 remains OPEN.
+Owner:       Codex (implementation and evidence) · Founder (all live
+             service gates, distribution and final acceptance)
+Raised:      2026-09-12
+Completed:   —
+Source:      Founder approval in Codex chat, 2026-09-12, including the
+             explicit shared-by-default clarification
+
+Update 2026-10-01 (progressive Onboarding local main-app update):
+             Founder directly requested installation after returning home.
+             Six runtime source hashes matched the §31 verified receipt;
+             the pre-existing Runner.app was stale and not reused. The
+             documented ./run.sh built the same production-flavour PROFILE
+             main app (Xcode98.0s), installed and launched it wirelessly
+             (183.2s). Strict/deep codesign PASS for Team9Y7Z8F36SJ and
+             app.zyraconnect.zyra. Fresh device inventory confirms
+             ZYRA1.0.0(5) in container 27B18303-9D7D-4406-9B87-
+             878C950ECD8F; PID56550 ran from that container. The wireless
+             Dart VM discovery was delayed but ultimately connected and
+             Flutter exited0. Onboarding Preview §32 and the named local-
+             delivery receipt carry hashes and exact checks. Founder visual/
+             gesture/cold-reopen acceptance PENDING; OA286 OPEN. Existing
+             TestFlight build3 unchanged. No second app, upload, backend,
+             migration, payment/credit, credential or Git action.
+Update 2026-09-30 (six-transition local main-app delivery):
+             Same one production-flavor PROFILE main bundle
+             app.zyraconnect.zyra rebuilt with Current plus five protected
+             first-three-page transition comparisons; ordinary signup
+             remains unchanged. Build54.6s/55.7MB; deep/strict codesign
+             PASS. Runner SHA
+             69548d7d53df8301c60bb016bf5e4621f5e681e39c33deff88572f0cd509778e;
+             AOT SHA
+             a6a6a880495e3295d95153c417bdb320e3a00a7e8741c726efac70f6ff237806.
+             Paired physical iPhone install5064 and direct launch PASS.
+             Change-focused seven-suite129/129 clean PASS, candidate6/6
+             and scoped nine-file analyzer/formatter PASS; gate de8841ae
+             0 new/reopened/resolved. Broader signup-inclusive run reached
+             203 completed cases without assertion failures but stalled
+             in that test suite's teardown and was interrupted; OA257 owns
+             QA follow-up. Onboarding Preview §26/named receipt own the
+             source/delivery facts. Founder visual/feel acceptance and
+             existing programme gaps remain PENDING; OA286 OPEN. No
+             TestFlight upload, second app, backend/member-data,
+             migration, credit/payment or Git action.
+Update 2026-09-30 (650ms splash hold local delivery):
+             Existing one-main-app production-flavor PROFILE rebuilt with
+             2400ms Quiet Horizon motion/650ms completed hold. Build56.2s,
+             Runner.app55.7MB; deep/strict codesign PASS. Runner SHA
+             3f17324bc22c526c3f17a8489332c1b156c37d6b157b47f4f03b67d7957093eb;
+             AOT SHA
+             1c5522afd16929b6d3b20fffc34e148f9c648d099a62dec14110a05886617831.
+             Paired iPhone install database sequence5056 PASS. Direct
+             launch was denied only because the device was Locked;
+             physical timing and Founder acceptance remain PENDING.
+             Focused/startup/candidate-visual tests 110/110 PASS, scoped
+             analyzer clean; approved goldens unchanged.
+             Splash Screen handover and Onboarding Preview §25 own exact
+             timing evidence. OA286 OPEN; no second app, TestFlight,
+             backend, migration, payment/credit or Git action.
+Update 2026-09-30 (animated arrow default local delivery):
+             Same single app app.zyraconnect.zyra 1.0.0(5) PROFILE rebuilt
+             with protected Onboarding arrow default. Xcode53.0s,
+             Team9Y7Z8F36SJ, deep/strict signature PASS. Runner SHA
+             eed44f47254603848276300bccaf7b714f3d7f7b458640abbd01a372becb5792;
+             AOT SHA
+             052b7ec6b82793628517c33e020d749ca5ec068d53a919c5538893db8e9be791.
+             Paired iPhone install5040/new container 3FAD0B03-B817-
+             4A59-97A4-F24483D38EE0 PASS; direct launch/new container
+             PID53361 and installed version query PASS. Five-suite184/184
+             tests and scoped analyzer/formatter PASS. Onboarding Preview
+             §24/named receipt hold facts. Founder feel/visual acceptance
+             PENDING; OA286 OPEN. No second app, TestFlight, backend,
+             migration, credit/payment or Git.
+Update 2026-09-30 (shorter splash hold local delivery):
+             Same single app app.zyraconnect.zyra 1.0.0(5) PROFILE rebuilt
+             with 2400ms motion/1250ms final still hold. Xcode59.7s,
+             Team9Y7Z8F36SJ, deep/strict signature PASS. Runner SHA
+             3077f4db23748cfac65d59aacb06d963e118502ef9536faab0e5bcdef4af0635;
+             AOT SHA
+             51a4ebf552ea3381c4b5482a441f8b7a4eba73c323a6387860b91be39454c34a.
+             Paired iPhone install5032/new container A50611AB-E7B3-
+             43A1-8C27-CAE9BCF3F259 PASS; direct launch PASS/new
+             container PID53348, installed version query PASS. Focused
+             79/79 + wider31/31 tests and scoped analyzer/formatter PASS.
+             Splash handover/Onboarding Preview §23/named receipt hold
+             facts. Founder timing acceptance PENDING; OA286 OPEN. No
+             second app, TestFlight, backend, migration, credit/payment
+             or Git.
+Update 2026-09-30 (splash/Welcome colour local delivery):
+             Same single app app.zyraconnect.zyra 1.0.0(5) PROFILE rebuilt
+             with splash-authoritative Welcome text colours. Xcode53.6s,
+             Team9Y7Z8F36SJ, deep/strict signature PASS. Runner SHA
+             bc1cef7696e17ec94a165910b7ae44098b623e07c3a1b56cf14c2ef4e9604085;
+             AOT SHA
+             b45d5a6635fb174721f3d817f8c98c076034eb55b237ccd88be2228798aaa7bd.
+             Paired iPhone install5008/new container FDFCCD9C-5B88-
+             49B1-A68B-F1E19C1542CC PASS; installed version query PASS.
+             Direct launch denied by Locked phone; running-screen proof
+             and Founder visual acceptance PENDING. Final seven-suite
+             204/204 tests and scoped analyzer/formatter PASS. Splash
+             handover/Onboarding Preview §22/named receipt hold facts.
+             OA286 remains OPEN. No second app, TestFlight, backend,
+             migration, credit/payment or Git.
+Update 2026-09-30 (role-choice six-layout local delivery):
+             Same single app app.zyraconnect.zyra 1.0.0(5) PROFILE rebuilt
+             after Founder's select-then-swipe/six-design request.
+             Xcode53.1s, Team9Y7Z8F36SJ, deep/strict signature PASS.
+             Runner SHA
+             e50d5ec61f6145f19dfcf28f2f5b7c8f36dc65df2aa0983bdede5c66724f0ae9;
+             AOT SHA
+             207415dcdedcb558a11c609e940031e460efee674bd561c8e72f18e3afb7f31b.
+             Paired iPhone install5000/new container DF2FCAA8-AFAB-42CC-
+             BEEE-107DFC09016F PASS. Direct launch denied by Locked phone;
+             running-screen proof and Founder visual acceptance PENDING.
+             Broader28-suite434 PASS/1 existing SKIP and real-font16 PASS;
+             scoped analyzer/formatter PASS. Onboarding Preview §21/named
+             receipt hold facts. OA286 remains OPEN. No second app,
+             TestFlight, backend, migration, credit/payment or Git.
+Update 2026-09-30 (swipe-mode Back removal local delivery):
+             The existing single app app.zyraconnect.zyra 1.0.0(5)
+             PROFILE was rebuilt after the Founder's Back-text feedback.
+             Xcode55.8s, Team9Y7Z8F36SJ, deep/strict signature PASS.
+             Runner SHA
+             db9da4f7cb302841f4691a54f99536dc838cff82301ddca2c13d2032b7132707;
+             AOT SHA
+             5991919259f903bf0ce435a2b44c8697df151d8bf457428148ac91e71479e836.
+             Paired iPhone install4992/new container 194F2094-99AB-4EAE-
+             8089-28476625F12A PASS. Direct launch was attempted but
+             denied because the phone was Locked; running-screen proof
+             and Founder visual acceptance PENDING. Focused92/92, wider
+             13-suite162/162, real-font4/4, scoped analyzer/formatter
+             PASS. Onboarding Preview §20 and named receipt hold exact
+             facts. OA286 remains OPEN. No second app, TestFlight,
+             backend, migration, credit/payment or Git.
+Update 2026-09-30 (lighter onboarding swipe local main-app delivery):
+             The existing single app app.zyraconnect.zyra 1.0.0(5) PROFILE
+             was rebuilt after the Founder's heavy-swipe feedback; no
+             separate test app or public signup change. Xcode54.3s,
+             Team9Y7Z8F36SJ, deep/strict signature PASS. Runner SHA
+             be9cd5a5cde098224e312374f012ad3485acbb3c141ca662fb47a51670050074;
+             AOT SHA
+             0c119cd7a0c88ad156ad6c2bb1b5957008362b0f1181efb99fa1819f037e1dd5.
+             Paired iPhone install4984/new container 545FBC24-AF4A-4AB3-
+             8DE3-5BE468293892 PASS. Inventory confirms the main
+             bundle/version; direct launch PASS, PID52236 from that new
+             container. Final13-suite276/276 and real-font layout4/4,
+             seven-file analyzer/formatter PASS. Onboarding Preview §19
+             and named receipt hold exact facts. Founder on-device feel
+             acceptance PENDING; OA286 remains OPEN. No TestFlight,
+             backend, migration, credit/payment or Git.
+
+Update 2026-09-30 (Atoms/role/no-heart local main-app delivery):
+             Same single app app.zyraconnect.zyra 1.0.0(5) PROFILE rebuilt
+             after Founder-selected protected Atoms default and no-heart
+             visual correction. Xcode52.1s, Team9Y7Z8F36SJ, deep/strict
+             signature PASS. Runner SHA
+             8c12ac051beaf02217c1856efb9a61c16f00795098f88a576d088ad2a789c06f;
+             AOT SHA
+             61ba89362b567074f0fdd9dc264851e695e6ad8ce066fb409daf404c5e0d682b.
+             Paired iPhone install4976/new container 204A29F8-D34A-40D8-
+             8FE7-94CAF574C938 PASS; inventory confirms one intended main
+             bundle/version. Direct launch PASS; PID52140 from that new
+             container. Merged21-suite449 PASS/0 FAIL and scoped15-file
+             analyzer/formatter PASS. Onboarding Preview §18/named receipt
+             holds exact evidence. Founder device appearance/interaction
+             acceptance pending; OA286 OPEN. No TestFlight, second app,
+             backend, migration, credit/payment or Git action.
+
+Update 2026-09-30 (swipe-arrow local main-app delivery):
+             The same single app app.zyraconnect.zyra 1.0.0(5) PROFILE was
+             rebuilt for the protected swipe-first onboarding correction.
+             Xcode51.4s, Team9Y7Z8F36SJ, deep/strict signature PASS.
+             Runner SHA
+             59e6261d1d68fbefabaf4f4ea9655d430515f905c622f3f478991db63663c252;
+             AOT SHA
+             ade76e4a73fb299ede4b213e494c6792d128d57fc377f9f8fddf638f7c1500db.
+             Paired iPhone install4968 into new container C78248BD-F910-
+             4C35-B2A7-9639B3F9584E PASS; inventory confirms intended
+             bundle/version, direct launch PASS and process PID52013 from
+             that container. Final14-suite285 PASS/0 FAIL and scoped7-file
+             analyzer/formatter PASS. Onboarding Preview §17/named receipt
+             contain exact evidence. Founder device interaction/appearance
+             acceptance is still pending; OA286 remains OPEN. No TestFlight,
+             second app, backend, migration, credit/payment or Git action.
+
+Update 2026-09-30 (onboarding navigation local main-app delivery):
+             Existing bundle app.zyraconnect.zyra 1.0.0(5) PROFILE rebuilt
+             with the two-mode Founder-only onboarding control. Xcode52.7s,
+             deep/strict signature PASS, Team9Y7Z8F36SJ. Runner SHA
+             c95ffb56473ae6f60b9f68a2c82b0f71dfb3b4f404eff2fdd9aba22c98c09c06;
+             AOT SHA18c7e32c19f2885ecf742d2334323410fa3ea840a15410ba0329082a036c88ec.
+             Paired iPhone install4960/new container E2ECD09B-AE5B-49BF-
+             AB7A-0AFD19A59C84 PASS; inventory confirms only the intended
+             main ZYRA bundle/version. Direct launch PASS; PID51981 points
+             at that exact new container. Final13-suite268/0 regression and
+             scoped16-file analyzer PASS. Onboarding Preview §16 and named
+             receipt record source/device proof. Device launch is not Founder
+             physical acceptance; OA286 remains OPEN, as do its older
+             programme gaps. No TestFlight upload, second app, remote
+             backend, migration, account/payment or Git action.
+Update 2026-09-29 (developer skips/progressive entry main-app install):
+             Existing `app.zyraconnect.zyra` 1.0.0(5) PROFILE rebuilt for
+             the Founder's bounded local onboarding request; strict/deep
+             signature and bundle identity PASS. Runner SHA
+             f9a190fabe4ab38a003a8bc9ace576a92ae71b9e5a2fe06ce56b747c7edc4076;
+             AOT SHA
+             e580d8ea6f81db2f57f8a6f235e5dd7bb6d723332a6382d84275076c43c28b6c.
+             Paired iPhone install4952/new container07B85DA1-EEA4-455E-
+             8198-0526A96A9812 PASS; app inventory confirms one main
+             bundle. Two launch attempts DENIED Locked, so running-process
+             and Founder visual proof remain outstanding. 30 suites501 PASS/
+             0 FAIL/1 existing SKIP and scoped analysis PASS before build.
+             This supersedes §14's4944 installed binary, not its evidence.
+             No TestFlight upload or other distribution, second app, live
+             service, migration, SQL, account, payment or Git operation.
+             OA286 remains OPEN pending unlock/launch and Founder acceptance.
+
+Update 2026-09-29 (onboarding style continuation, launch pending):
+             The main-app protected Onboarding comparison has a preview-only
+             direction scope so all ten Mobbin-inspired choices remain
+             visually distinct through local role/Seeker/Guardian initial
+             setup; Current and ordinary live paths remain unchanged.
+             This is the one existing main bundle, not a second app or
+             TestFlight candidate. The prior local PROFILE install/launch
+             (sequence4936) proves only the earlier no-top-bar/Home version.
+             Fresh25-suite431/0/1 existing-skip and112/112 functional/source-
+             guard gates pass; visual capture/replay each44/44 pass, scoped
+             analyzer clean. Whole analyzer has only pre-existing unrelated
+             photo-test info, no errors/warnings. Fresh main PROFILE app
+             1.0.0(5), Team9Y7Z8F36SJ, strict/deep signature PASS and new
+             Runner/AOT hashes in Onboarding Preview §14. Paired-iPhone
+             install4944/new container8FD60BC3-8CEC-437A-8C5D-8A8BF311CD10
+             PASS; inventory main bundle/version PASS. Immediate launch was
+             denied by device Locked, so running-process proof and Founder
+             visual acceptance remain OPEN. The pre-existing OA286 programme
+             gaps also remain. Onboarding Preview §14 and
+             OA257 own the source/visual record. No backend/account/provider,
+             credit, migration, live distribution or Git action is claimed.
+
+Update 2026-09-29 (latest main local profile delivery): Direct Founder GO
+             “ok im at home now so update app pelase” consumed for the
+             existing-signing local update only. Fresh source gate431 PASS/
+             0 FAIL/1 existing SKIP and scoped analyzer clean. Signed ZYRA
+             app.zyraconnect.zyra 1.0.0(5), Team9Y7Z8F36SJ, strict/deep
+             signature PASS; Runner SHA b117ccd5436102126b5b328fff0436430f
+             7343ac04635a20ee8ec6e0efe4b15c and AOT SHA c92258e192d01
+             fd9df8c99a46201c3ab352f4ef8bda27810e10ace9b8bf7e2ac.
+             Paired iPhone install sequence4936/new container3B7EC59A-
+             CA29-4C1A-A5ED-8DF835FBBBA0 PASS, new PID50766 exact path,
+             stale prior PID50679 softly ended; final only new PID running.
+             Onboarding Preview §13 and dated local delivery receipt own
+             complete evidence. No TestFlight upload or public release;
+             Founder device visual acceptance and existing OA286 gaps remain.
+
+Description: This is the canonical implementation owner for
+             DR-ZYRA-228: one shared Flutter product source producing
+             ZYRA Production and a visibly separate, Founder-only
+             ZYRA Test app. Ordinary product/design instructions are
+             implemented once and therefore reach both targets by
+             default. Only identity/configuration/backend/test tooling
+             and their unavoidable signing/store metadata may differ.
+
+             REGISTER CORRECTION: DR-ZYRA-210 and derivative documents
+             historically point to OA-ZYRA-245 for Developer Access.
+             That identifier belongs to the completed Guardian Network
+             first draft. OA-ZYRA-245 and DR-ZYRA-210 remain immutable;
+             this entry prospectively replaces the erroneous linkage.
+
+             UPDATE 2026-09-12 — DR-ZYRA-229: Founder confirmed the
+             narrow one-use token_hash exchange and the documented
+             auth.sessions defence-in-depth limitation. These two
+             design rulings are no longer pending. Existing Supabase
+             organisation pdekarsldtaqlqdthgwh is selected for staging
+             preparation; project creation is still separately gated.
+             Supabase quotes zero/month on the Free plan; this quote
+             is not payment or creation authority. Message 091 records
+             11/11 Deno policy tests and clean Edge type-check after
+             two local typing corrections. Both SQL runtime harnesses
+             remain unrun. Message 092 records the ruling/reconciliation.
+
+             UPDATE 2026-09-12 — Founder directed "so continue so both
+             are avaliable" after the exact zero-cost ZYRA Test creation
+             proposal. Cost was rechecked at zero/month, inventory proved
+             no existing Test project, and one create call returned
+             xqweloifosbwfgctzros, "ZYRA Test", in organisation
+             pdekarsldtaqlqdthgwh, eu-west-1. A separate get-project check
+             reports ACTIVE_HEALTHY / PostgreSQL 17.6.1.166. Count-only
+             SQL confirms zero public relations/functions, Auth users/
+             sessions and Storage buckets/objects; security advisors []
+             on this empty project. Production remains separately listed
+             and untouched. Message 093 records this stage. Creation GO
+             is consumed, not authority for schema replay, credentials,
+             Founder-role assignment, provider changes or Apple delivery.
+
+             LOCAL CORRECTION 2026-09-12 — preparation caught seven
+             invalid pg_catalog.coalesce calls (two in staged persona
+             SQL; five in the staged developer-RPC overlay). Replaced
+             only those qualifiers; empty search_path, grants, identity
+             guards and inert pins unchanged. New regression first failed
+             on old source then passed after correction. The next prepared
+             persona-only offline package is not a full schema replay;
+             it and all SQL runtime execution remain held for exact GO.
+             Full evidence and immutable package hash are in message 093.
+
+             OFFLINE ATTEMPT 2026-09-12 — Founder approved the exact
+             persona-only package 9f3fc926… with one named VM start,
+             no host mounts/port forwarding, no reset/cloud/Apple action
+             and no retry. Single Colima start at 14:12 BST exited 1:
+             sandbox denied its Lima network-state/config writes before
+             VM boot. Read-only follow-up confirms VM stopped; Docker
+             socket, host-agent PID and execution-v1 tombstone absent.
+             No container or SQL runner started. Generated lima.yaml
+             now has no host mounts and ignore-all port forwarding;
+             saved profile and approved package hashes are unchanged.
+             No automatic retry, cleanup deletion or repair occurred.
+             Message 094 records the stop. New exact startup retry GO
+             and appropriate local runtime permissions are required;
+             SQL runtime proof and every live delivery gate remain open.
+
+             AUTHORISED STARTUP RETRY 2026-09-12 — Founder answered
+             yes to one startup retry with required local permissions,
+             unchanged isolated check once, and cleanup. Command-scoped
+             escalated Colima start succeeded once (14:15:28–14:15:38
+             BST); no host mounts/application forwarding; container
+             inventory empty. The single narrow image-metadata preflight
+             failed because the runner's .Config.Volumes Go-template
+             lookup errors on an omitted optional key. No execute-mode
+             runner, container creation or SQL occurred. VM stopped once,
+             exit 0 at 14:16:15; stopped/socket absent reverified. No
+             repair/retry followed; pinned V1 package preserved. Message
+             095 records this test-tool defect, not a database failure.
+             Prepare and internally test a corrected successor before
+             seeking any new execution GO. Both SQL harnesses remain
+             unrun; ZYRA Test is not delivered; no live change occurred.
+
+             WRAPPER V2 PREPARED 2026-09-12 — Founder authorised local
+             correction/tests only, preserving V1 with no database run.
+             Corrected optional Volumes lookup; matching Binds/PortBindings
+             handling retains strict types; exact container Id prevents
+             typed-default masking and is checked before start/cleanup.
+             All five SQL/bootstrap/shell payloads remain byte-identical.
+             41 local tests PASS (27 mocked-wrapper, 14 real Docker CLI
+             against synthetic Unix-socket HTTP fixtures), including actual
+             reproduction of V1's missing-key failure. No real daemon,
+             VM, database, Supabase or Apple action; real V1/V2 execution
+             markers absent. New V2 manifest SHA-256
+             2f84c5e286c39bbeace7f105862e77536077b48fdacd13013a57614f984f486f.
+             Default hash-only validation PASS; internal review found no
+             material issue. Message 096 holds hashes/results and exact
+             future execution proposal. Actual cached-image/runtime/SQL
+             proof still outstanding; V2 execution needs separate GO.
+
+             V2 EXECUTED / STOPPED 2026-09-12 — Founder approved one
+             isolated V2 run. Named VM started once; zero existing
+             containers; approved image/optional metadata and one newly
+             created container's isolation checks passed. Start command4
+             exited1 with a zero-byte log, without any PostgreSQL/harness
+             output. Exact early prerequisite cause is not established;
+             no database/harness PASS is claimed. The exact owned container
+             was removed, a separate inventory was empty, and VM stop
+             completed at14:32:01 BST; stopped/socket absent verified.
+             V2 execution marker is retained and consumed. No retry,
+             repair, cloud, production or Apple action. Message097 holds
+             full result/hash/cleanup evidence. Next proposed action is
+             read-only runtime-prerequisite diagnosis, not another SQL
+             run; new execution authority is required. OA remains open.
+
+             RUNTIME DIAGNOSED 2026-09-12 — Founder authorised the
+             read-only diagnostic proposed in097. One fresh isolated
+             diagnostic container proved postgres user; V2's hard-coded
+             /usr/lib/postgresql/17/bin executables are absent/not
+             executable, while PATH resolves PostgreSQL17.6 tools under
+             /nix/var/nix/profiles/default/bin. Temporary directory
+             permission and absent-data-directory checks passed. This
+             identifies the first failing V2 shell guard (initdb path),
+             not a SQL or application failure. No PostgreSQL start,
+             initdb, SQL, repair or database retry was performed.
+             Exact diagnostic container removed; inventory empty; named
+             VM stopped14:42:23 BST, status/socket/PID absence verified.
+             V1/V2 package and consumed execution evidence preserved.
+             Message098 holds measured paths, hashes and cleanup proof.
+             Next: prepare a separately versioned runner correction
+             using the measured paths, then seek exact new execution GO;
+             diagnosis alone does not establish database-test success.
+             ZYRA Test remains undelivered; existing ZYRA untouched.
+
+             V3 PREPARED / INTERNALLY VERIFIED 2026-09-12 — Founder
+             authorised local script correction and internal checks only.
+             New successor uses the measured fixed Nix PostgreSQL17.6
+             paths, explicit user/executable/version/temp guards and
+             labelled failure stages; SQL/initialization/startup flags
+             unchanged. V3 label/name/tombstone is new; consumed V1/V2
+             and diagnostic evidence preserved. All four SQL payloads
+             remain byte-identical. Final 55 local tests PASS (27 mocked
+             wrapper,14 synthetic-socket CLI,14 synthetic shell-stub),
+             34.936s exit0. Initial internal suite's one fixture-collector
+             permission error was corrected; initial log retained.
+             No actual VM/container/database/SQL/cloud/Apple execution.
+             Manifest SHA-256
+             6975e5045da2e7635777f407f31f6197eedf356111727f7b82d4bfdccff5154f;
+             hash-only validation PASS, real execution-v3 absent.
+             Message099 holds full hashes/pre-states, review caveats
+             and the exact separately gated isolated execution proposal.
+             Actual image-shell/startup/SQL proof remains outstanding;
+             no app delivery or database-test success is claimed.
+
+             V3 EXECUTED / PERSONA SQL PASS 2026-09-12 — Founder
+             approved one isolated run of099's exact V3 package. All
+             paths/versions, fresh initdb, PostgreSQL startup, boundary,
+             full persona harness and rollback postchecks passed; one
+             final marker, exited0. Exact-owned container removed;
+             separate inventory empty. Named VM started14:58:02 and
+             stopped14:58:57 BST; status/socket/PID absence verified.
+             Manifest unchanged, real execution-v3 retained and consumed.
+             No reset of existing DB, retry, production/cloud/Apple action.
+             Message100 records raw-log hashes, true pre-state and limits.
+             This closes only the narrow persona SQL runtime proof;
+             full209-version replay with the15-RPC overlay, live Auth/
+             persona/IDV setup, exact resource pins, Apple Test identity
+             and delivery remain open. Existing ZYRA TestFlight unchanged.
+
+             NEXT SETUP PREPARED 2026-09-12 — Message101 records the
+             read-only Google inventory, unsubmitted Test Web-client form,
+             bounded normal-provider PKCE bootstrap helper (23 local tests
+             PASS; no listener/Auth call), and official CLI full-replay
+             source/config packet (six static tests PASS; not an executable
+             runner). Root rechecked both manifests and default no-permission
+             bootstrap preflight. The proposed27 synthetic-fixture roster is
+             draft only, with no UUIDs, grants, provider receipts or rows.
+             Authentication ScriptV3 now reflects100's narrow persona PASS.
+             Google company sign-in succeeded; the existing project has only
+             its three Production-named clients and one listed test user,
+             admin@zyraconnect.app. No credential was created. Its aggregate
+             secure-flows warning and incomplete Branding notice require
+             disposition in this OA; no existing-client/billing/publication
+             change was made. Test Google nonce-skip compatibility is only a
+             documented proposal, not an applied setting or maximum-security
+             claim. Supabase dashboard's GitHub login was blocked by browser
+             automatic safety review pending the Founder's company-login
+             handoff; no workaround was used. Live provider pre-state is not
+             verified. Full replay still needs its one-use runner, exact
+             loopback exposure/cache evidence and combined postconditions
+             before any execution GO. No new VM/container, migration, Auth user,
+             role, credential, deployment, Apple action or git operation.
+
+             GOOGLE SETUP / FOUNDER HANDOFF 2026-09-12 — Message102
+             records creation of ZYRA Test iOS and ZYRA Test Supabase Web
+             under the exact approved action, and the stop before a Codex
+             provider Save. After the Founder's later "DONE", a fresh
+             independent Supabase page showed Google Enabled, exact new
+             Web/iOS IDs in that order, nonce-skip ON and email-less OFF.
+             Email remained Enabled, Apple Disabled, signup/confirm-email
+             ON, manual-linking/anonymous OFF. Codex submitted no additional
+             save. This supersedes the earlier provider-save hold as live
+             configuration status only; secret equality and actual fresh
+             Google sign-in are not proven. Masked-field observations do
+             not establish plaintext equality or that a field was empty.
+             The approved Test callback domain was added to shared Google
+             Branding; existing Production client identities and domain
+             remained. No production app/backend change was made.
+
+             SECURITY FOLLOW-UP — RECORDED 2026-09-12, HIGH PRIORITY:
+             Founder requests precautionary rotation of the ZYRA Test
+             Google Web OAuth client secret because it MAY have been
+             exposed. Exposure is UNCONFIRMED; do not record a confirmed
+             leak, completed rotation or tested login without evidence.
+             This is work within OA-ZYRA-286, not a new OA identifier.
+
+             Exact target: Google project zyra-app-506315 (ZYRA App),
+             company account admin@zyraconnect.app, existing OAuth Web
+             client ZYRA Test Supabase Web, public client ID
+             734578322486-k3v6akqgv55pv3ukgj521lh7ebokja6r.apps.googleusercontent.com;
+             destination is only the Google provider on Test Supabase
+             xqweloifosbwfgctzros. Rotate this client's secret; do not
+             create another OAuth client, change either client ID, or
+             touch Production credentials, iOS identity or other providers.
+
+             MANUAL-ONLY FOUNDER PREFERENCE: for this rotation and future
+             credential-handling steps, Codex gives short, plain, numbered
+             instructions ONE STEP AT A TIME and waits for confirmation.
+             Founder controls the Mac/browser and privately generates,
+             enters and retires secrets. No Codex Mac/browser takeover,
+             secret-field inspection/entry, credential screenshots, secret
+             values in chat/evidence, or automatic credential operations.
+             A later explicit Founder instruction is required to change
+             that mode. Non-secret labels/status are enough for guidance.
+
+             Completion evidence must distinguish: replacement secret
+             generated for the SAME client; new secret saved privately in
+             Test Supabase; fresh Google sign-in proven with the agreed
+             Test principal; obsolete secret disabled/deleted by Founder;
+             sign-in still works after retirement; unchanged Test IDs/
+             provider flags and untouched Production. Check current
+             provider-supported rotation/overlap behaviour before giving
+             the action-time steps. Minimise any overlap; stop at target
+             drift, failed save or failed test. Do not silently restore a
+             possibly exposed old secret or infer session revocation from
+             secret rotation. Any required Test Auth-user creation must be
+             separately identified/authorised; no implicit Founder-role,
+             persona, helper-execution, database or Apple authority.
+
+             This request records future work and the manual working mode;
+             NO secret rotation, deletion, login, provider change or Mac
+             takeover is performed by this filing. Keep the rotation OPEN
+             until the non-secret evidence and Founder completion confirm
+             every applicable check. Local resource pins remain unassigned.
+
+Required work, in order:
+  1. AUDIT + DESIGN. Inventory every current Developer Access route,
+     release/build guard, embedded test credential, persona switch,
+     Supabase target, Apple identity and documentation dependency.
+     Propose the smallest scheme/flavour and configuration matrix that
+     preserves one shared product implementation.
+  2. DOCUMENT RECONCILIATION. In a separately bounded documentation
+     edit, replace future OA-ZYRA-245 implementation references with
+     this OA; reconcile the current Developer Mode, Authentication,
+     Settings/Identity, build/runbook and handover documents; and add
+     the missing current Summary documents required for Developer Mode
+     and Authentication. Historical entries remain unchanged.
+  3. SHARED TARGETS. Implement explicit Production and Test targets
+     from shared source. Pin names, bundle identifiers, icon marker,
+     compile-time environment values and release assertions. Add a
+     change-contract test proving an ordinary shared UI change is
+     consumed by both targets rather than copied.
+  4. ISOLATED STAGING. After its separate Founder gate, create/use a
+     dedicated staging Supabase project with no production linkage and
+     synthetic/test data only. Replay only a reviewed, version-pinned
+     schema set; keep project identifiers, redirect configuration and
+     deploy/apply actions behind their own exact gates.
+  5. FOUNDER AUTHORISATION. Implement a staging-only Founder role set
+     server-side on one exact Auth principal, refresh and verify the
+     signed claim before Developer Access, and enforce it again at the
+     route and privileged server calls. Prove null, unauthenticated,
+     ordinary-member, stale-token, wrong-project and removed-role
+     denials.
+  6. PERSONA TOOLING. Remove every shared/seeded credential from the
+     binary. Reuse or replace persona switching only through a staging-
+     only, server-mediated, exact-allowlisted and audited boundary that
+     never returns/logs service credentials, OTPs, action links or
+     tokens except the DR-ZYRA-229 one-use token_hash response for
+     immediate native Auth redemption. That hash is never logged,
+     displayed or persisted; all expiry/replay/audit checks remain.
+     Test fixture verification state must be explicit and may never
+     imply a real provider check.
+  7. APPLE DELIVERY. After separate read-only preflight and exact
+     Founder approval, create the Test app identity/record and deliver
+     it only to internal TestFlight with automatic distribution off and
+     only the Founder account. Production ZYRA and build 2 stay
+     untouched unless a separate instruction explicitly changes them.
+  8. EVIDENCE + HANDOVER. Return true pre/post file hashes, target and
+     endpoint matrices, absence searches for credentials and production
+     reachability, focused/full tests, analyzer/build results, direct-
+     call denial evidence, archive/IPA identity evidence where later
+     authorised, and a short Founder test script. No self-approval.
+
+Gates:       Local audit/design and bounded shared-source implementation
+             may proceed under DR-ZYRA-228. No Apple App ID/App Store
+             Connect record, Supabase project, Auth-role mutation,
+             provider setting, Edge Function deployment, migration,
+             signed archive or upload without its own exact Founder GO.
+             Stop on identifier, account/team, project, backend, signing,
+             entitlement, hash or authorization drift. No public or
+             external TestFlight distribution. No production data copy.
+             No paid plan is authorised by this OA.
+
+Acceptance:
+  - ZYRA and ZYRA Test install side by side with the exact ruled names,
+    identities and a visible Test marker.
+  - Both compile from one common product source; an ordinary style/copy/
+    behaviour change reaches both from the same implementation, and no
+    duplicate screen or feature fork exists.
+  - Production contains no Developer Access route or embedded privileged
+    credential and can reach only production. Test can reach only its
+    staging project; runtime switching and mixed configuration fail
+    closed; test validation produces no production read or write.
+  - An authenticated current Founder claim can enter the staging-only
+    operator shell after refresh. Every unauthorized, stale, direct and
+    deep-link case is denied, and role removal revokes access.
+  - Persona actions are exact-allowlisted, server-mediated and synthetic-
+    only, with negative authorization and secret-leak tests.
+  - ZYRA Test remains Founder-only internal TestFlight; no external group,
+    public listing or production release is created by this work.
+  - The reconciled documentation names this OA as the canonical owner and
+    preserves OA-ZYRA-245 as Guardian Network history.
+
+Dependencies: DR-ZYRA-228; DR-ZYRA-229; DR-ZYRA-210; DR-ZYRA-218;
+             DR-ZYRA-221; OA-ZYRA-184; OA-ZYRA-245;
+             OA-ZYRA-268; OA-ZYRA-283; OA-ZYRA-285
+
+Target:      Audited two-target contract -> shared-source implementation
+             -> separately gated staging/Apple setup -> security evidence
+             -> Founder-only TestFlight acceptance. Public release remains
+             governed by the existing launch blockers.
+
+             CURRENT RECONCILIATION — 2026-09-12: the Founder withdrew the
+             two-app direction. ZYRA now has one main app. The protected
+             company Founder account receives local preview tools only in an
+             explicit internal build; a personal/ordinary member remains on
+             normal product behaviour. Message 112 records the completed,
+             byte-preserved source/native/runtime/server Test retirement.
+
+             Under the Founder's fresh action-time "Confirm", exactly three
+             approved Test-only cloud resources were deleted and
+             post-verified, as recorded in message 113:
+               - Supabase Test project xqweloifosbwfgctzros is absent; the
+                 only listed project is main sxoaxonzjqkgajmlagyk,
+                 ACTIVE_HEALTHY.
+               - Google OAuth client ZYRA Test Supabase Web,
+                 734578322486-k3v6akqgv55pv3ukgj521lh7ebokja6r.apps.googleusercontent.com,
+                 is deleted.
+               - Google OAuth client ZYRA Test iOS,
+                 734578322486-lk30rpiog0gh01f679qvmpgen8a0jak8.apps.googleusercontent.com,
+                 is deleted.
+             The three main Google clients were preserved: Android
+             734578322486-1o7jvjl39cnhaqm30akdn9kg8ph89kgs.apps.googleusercontent.com,
+             iOS 734578322486-eoh5ba4usl0svs9ihqh2ltagqfgusnft.apps.googleusercontent.com,
+             and Web
+             734578322486-gvi63m04ogd7bbmsunokuq2klkepetq1.apps.googleusercontent.com.
+             No separate Apple Test registration ever existed.
+
+             The possible Test Web secret-exposure item is resolved by client
+             retirement, NOT rotation; exposure remained unconfirmed. The
+             manual-only Founder credential-handling preference remains in
+             force. This does not claim erasure of every Test reference:
+             shared Google Branding still lists
+             xqweloifosbwfgctzros.supabase.co. Removing that row warned it was
+             used by the main Web client; all unsaved changes were discarded.
+             A fresh read of that main client showed only the main callback
+             https://sxoaxonzjqkgajmlagyk.supabase.co/auth/v1/callback and no
+             JavaScript origins. The contradictory dependency is unresolved;
+             no main-client or Branding value was saved or changed.
+
+             OA-ZYRA-286 therefore remains OPEN. TestFlight still serves
+             ZYRA 1.0.0 (2); the internal developer-access candidate 1.0.0
+             (3) has only an unsigned compile. Signing/export, exact build-3
+             upload, processing/group verification, Founder installation and
+             Founder acceptance remain separately gated. No public release,
+             Test-app revival or all-cloud-reference-erasure claim is made.
+
+             CURRENT DELIVERY AUTHORITY — 2026-09-12, FOUNDER GO / NOT YET
+             EXECUTED: the Founder approved one complete delivery of main ZYRA
+             1.0.0 (3). This single-use approval permits Apple cloud signing,
+             creation or use of the necessary Apple-managed signing
+             certificate/profile, final IPA identity and integrity checks,
+             recording its SHA-256, exactly one Apple upload, and assignment
+             only to admin@zyraconnect.app in the existing Founder Internal
+             group with automatic distribution OFF. It replaces the earlier
+             separate signing and hash-then-upload approvals for this build
+             only.
+
+             The authority is bound to the existing main app: ZYRA Connect,
+             Apple ID 6810741513, Team 9Y7Z8F36SJ and bundle
+             app.zyraconnect.zyra. It does not authorise a new App ID, device
+             registration, database change, Test-app revival, external/public
+             distribution, a second upload or any automatic retry. Stop on a
+             failed verification or drift in app, team, bundle, build,
+             signing, artifact identity, group, tester or distribution mode.
+             Any repair, retry, replacement archive or further upload requires
+             new exact Founder authority. This paragraph records the approval
+             only: no signing, archive/export, managed-asset change, upload or
+             Apple post-verification is claimed by this documentation update.
+
+             CURRENT DELIVERY OUTCOME — 2026-09-12, EXECUTED TO REQUIRED STOP
+             / NOT EXPORTED OR UPLOADED: the eight-part preflight passed for
+             the pinned package state, Team 9Y7Z8F36SJ, main bundle/build 3
+             and exact internal-Founder defines. The archive completed at
+             2026-09-12T19:23:03Z at
+             /private/tmp/zyra-main-internal-1.0.0-build3-20260912.HvNXDL/
+             ZYRA-1.0.0-3.xcarchive. All 478 pinned source/package files
+             remained unchanged.
+
+             The first required `codesign --verify --deep --strict` ran once
+             in the default sandbox and exited 1 with
+             CSSMERR_TP_NOT_TRUSTED. In that same environment signing
+             authority display was unavailable, while the earlier normal-
+             keychain preflight had two valid identities; archive metadata
+             names the correct company Development identity and team. The
+             cause is not proven. This result does not establish that the
+             archive is untrustworthy and does not establish an Apple cloud-
+             signing failure.
+
+             The stop rule applied immediately. There was no verification
+             retry, export, IPA/hash, upload, processing or Founder Internal
+             assignment. Existing TestFlight build 2 is unchanged. Fresh
+             Apple state showed only the existing main bundle on the correct
+             team: App ID 3B2LH9N6VS, with In-App Purchase (Default), Push
+             Notifications and Sign in with Apple enabled and unchanged; no
+             App ID or device was registered. No database change occurred.
+             The preceding one-use GO cannot resume this sequence. A narrowly
+             scoped retry/resume approval is required before any further
+             signature verification, export or upload; no automatic retry is
+             authorised. OA-ZYRA-286 remains OPEN and Founder acceptance has
+             not occurred.
+
+             CURRENT DELIVERY RESUME — 2026-09-12, EXPORTED / VERIFIED /
+             UPLOAD NOT STARTED: the Founder approved the narrowly scoped
+             normal-keychain recheck and resume. The signature recheck passed
+             at 2026-09-12T19:41:15Z, export succeeded at
+             2026-09-12T19:42:40Z, and the exported IPA's signature,
+             identity and embedded profile passed final verification at
+             2026-09-12T19:43:27Z.
+
+             Artifact: /private/tmp/zyra-main-internal-1.0.0-build3-
+             20260912.HvNXDL/export/ZYRA.ipa; 24,621,273 bytes; SHA-256
+             c7a984d9a2c3ea486a28717c6f276cab0a1bcac452a1138e16866681cd08958b.
+             It is main ZYRA 1.0.0 (3), Team 9Y7Z8F36SJ, bundle
+             app.zyraconnect.zyra, signed with the same existing Distribution
+             certificate A27EAF3659989C7DF469F1A10B1C11F799E4FC73 and profile
+             07c3e51d-0bc9-41a9-8b54-ce5be5c94a19 used by build 2.
+             `get-task-allow` is false and internal-TestFlight-only export is
+             true. All 478 pinned source/package files remain unchanged.
+
+             Export logged an account-null Store configuration lookup warning
+             (Code 1085, no provider), but export and final signature/profile
+             verification passed. This warning is not a newly proven cloud-
+             signing failure and does not prove upload authentication works.
+             Fresh post-export Apple reads retained only the exact existing
+             main App ID 3B2LH9N6VS on the correct team/bundle with In-App
+             Purchase (Default), Push Notifications and Sign in with Apple
+             enabled and unchanged. The company account remained
+             admin@zyraconnect.app; App Store Connect still showed only build
+             2 in Testing and no build 3. No App ID/device registration or
+             database change occurred.
+
+             The bounded uploader helper was prepared offline and passed
+             12/12 tests after its cleanup correction; helper SHA-256
+             80641e251ec5d0dcb6e6a64e6d23272efd884f5d0ab195f41e05ae622121853f.
+             That is preparation only. No upload-session/start/result marker
+             exists and the uploader executed nothing. The Founder has been
+             asked to make the private, manual app-specific-password handoff;
+             no reply or credential handoff has arrived. Exactly one upload
+             and its subsequent processing/group/Founder-device checks remain
+             pending under the existing bounded delivery authority. This
+             action remains OPEN; no upload or Founder acceptance is claimed.
+
+             CURRENT DELIVERY COMPLETION — 2026-09-13, UPLOADED / APPLE
+             POST-VERIFIED / FOUNDER DEVICE ACCEPTANCE PENDING: after the
+             Founder confirmed readiness with a freshly generated company
+             app-specific password, the unchanged approved IPA and bounded
+             uploader helper were reverified before use. The IPA remained
+             SHA-256
+             c7a984d9a2c3ea486a28717c6f276cab0a1bcac452a1138e16866681cd08958b;
+             the helper remained SHA-256
+             80641e251ec5d0dcb6e6a64e6d23272efd884f5d0ab195f41e05ae622121853f.
+             The Founder used the reviewed local-Terminal handoff; no
+             credential value is recorded here.
+
+             Exactly one upload started at
+             2026-09-13T05:27:42.200617Z. Its result recorded exit 0 and
+             PROCESSING at 2026-09-13T05:30:27.267263Z. The upload response
+             returned UUIDs 67ea7f35-6a3d-633a-d823-82b6855f5804 and
+             f3da4df4-9113-48d0-9ac7-0ae96e437156; subsequent Apple
+             post-verification mapped the latter to the main ZYRA Connect
+             app, Apple ID 6810741513, build 1.0.0 (3). At approximately
+             2026-09-13T05:34Z, Build Uploads was Complete and build 3 was
+             Ready to Test. The other response UUID is retained only as
+             upload-response metadata and is not evidence of a second upload
+             or second build.
+
+             Before assignment, the existing Founder Internal group
+             37600523-1fe0-4911-aeef-10502dc8a35b was freshly verified with
+             sole tester admin@zyraconnect.app and distribution setting
+             Manual for Xcode Builds. Only build 3 was selected and added,
+             once. Post-assignment verification returned one group, one
+             tester and two builds: build 3 Internal Testing and retained
+             build 2 Internal Testing. No tester or group-setting change was
+             made. There was no public/external distribution, second upload,
+             automatic retry, new App ID, device registration, database
+             change or source/package change.
+
+             The Founder accepted the working model of local Terminal for
+             frequent UI changes and batched TestFlight updates for remote
+             access. This does not authorise or establish persistent upload
+             authentication: no upload credential was persistently stored or
+             configured, and any secure persistent setup requires its own
+             credential approval. Actual Founder-device installation and
+             acceptance remain pending. The shared Google Branding-domain
+             discrepancy also remains open. OA-ZYRA-286 therefore remains
+             OPEN; successful upload and internal-group assignment are not a
+             Founder acceptance or programme-closure claim.
+
+             CURRENT LOCAL ACCOUNT-SWITCH DELIVERY — 2026-09-17, INSTALLED /
+             LAUNCHED / FOUNDER INTERACTION ACCEPTANCE PENDING: after the
+             Founder reported entering first-time setup with the wrong personal
+             account and having no escape, the shared main app gained a
+             principal-bound **Use a different account** action across role
+             selection, both roles' initial setup pages and every IDV state.
+             Confirmation clears only the active account's protected unfinished
+             setup and local session on that device, never the account or
+             server data. Google-linked sessions also clear the app-local
+             remembered chooser identity with `signOut`, not grant-revoking
+             `disconnect`. Completed-account signout remains in Account/Profile.
+
+             Focused verification passed 117 tests with one compile-gated skip
+             and zero focused failures; whole-tree analyzer is clean. The full
+             suite remains non-green at 1,602 passed, one skipped and 100
+             pre-existing unrelated dashboard/developer/visual failures. A
+             signed Founder profile binary, SHA-256
+             8de690f13c6e6629e149fdc1e15198c6a8b6fad65d6b377650f8be065cfed4d5,
+             replaced the prior local install and launched successfully on the
+             Founder iPhone. Inventory shows one `ZYRA`, bundle
+             `app.zyraconnect.zyra`, version 1.0.0 build 2. The replacement
+             clears the superseded local app sandbox/session but does not
+             delete server data. No TestFlight/App Store upload, provider,
+             database, migration or git action occurred. Build 3 in TestFlight
+             remains the older separately governed artifact and did not receive
+             this local source update. OA-ZYRA-286 remains OPEN pending Founder
+             interaction acceptance and its previously recorded external
+             discrepancy; no new OA identifier is created.
+
+             FOUNDER-PREVIEW PERSONAL-CODE DELIVERY — 2026-09-17, INSTALLED /
+             LAUNCHED / MARKET-ISOLATED: the four local sample personas now
+             receive deterministic `ZYRA-DEMO-*` display codes on the shared
+             Add Guardian/Add Seeker surface. The branch requires both active
+             preview isolation and the refreshed Founder-only capability. The
+             demo strings deliberately fail the production personal-code
+             parser, create no Supabase member/code/request row, and cannot be
+             resolved by live RPCs. The existing preview client continues to
+             deny non-auth network traffic. The compile capability remains
+             default-OFF, so an ordinary market build cannot expose this path.
+             Focused fixture/render/release-boundary and preview-client suites
+             passed 28/28; whole-tree analyzer passed. The Founder profile
+             binary was installed and launched as the sole iPhone bundle
+             `app.zyraconnect.zyra`, version 1.0.0 build 2. TestFlight, App
+             Store, Supabase, migrations and git were untouched. OA-ZYRA-286
+             remains OPEN; no new OA identifier is created.
+
+             PERSONAL-CODE FULL-HEIGHT UI FOLLOW-UP — 2026-09-17, INSTALLED /
+             LAUNCHED: after Founder device review identified concentrated
+             dead space, the shared Add Guardian/Add Seeker page was reflowed
+             into three evenly distributed full-height zones with taller code
+             and action surfaces. QR, requests, errors and smaller devices
+             retain scrolling. The security/data branch was not altered.
+             Focused tests passed 16/16; analyzer passed; the signed profile
+             build replaced the prior local install and launched as the sole
+             `app.zyraconnect.zyra` bundle. No cloud, migration, TestFlight,
+             App Store or git action occurred.
+
+             COMPACT-SPACING ACCEPTANCE CANDIDATE — 2026-09-17, INSTALLED /
+             LAUNCHED: the Founder's second device review approved the overall
+             direction but found the two expanded inter-section gaps too wide.
+             The page now centres the complete composition and fixes both gaps
+             at 28 pixels, retaining the taller cards, scrolling and all
+             security boundaries. Focused tests passed 16/16 and analyzer
+             passed. The revised profile build is installed and launched as
+             the sole ZYRA app; no external system was changed.
+
+             SURFACE-FILLED ACCEPTANCE CANDIDATE — 2026-09-17, INSTALLED /
+             LAUNCHED: the Founder then ruled that the remaining outer free
+             space should be occupied by the controls themselves. The default
+             page now expands the code card and both lower actions, enlarges
+             sharing controls and supporting type, and retains compact fixed
+             gaps. QR, request, error and short-height states fall back to the
+             scroll-safe composition. Focused tests passed 16/16 and analyzer
+             passed. The profile build is installed/launched as the sole app;
+             security boundaries and all external systems are unchanged.
+
+------------------------------------------------------------
+
+OA-ZYRA-287
+Title:       My ZYRA — Supportive Language first-view candidate
+Category:    Feature
+Priority:    High
+Status:      Awaiting Review — candidate implemented locally;
+             Founder visual review and acceptance pending.
+Owner:       Codex (implementation, evidence and reconciliation);
+             Founder (visual decisions and acceptance)
+Dependencies: OA-ZYRA-257 (existing visual-baseline debt only)
+Decision:    Founder direct instruction, 2026-09-14; attached
+             MY ZYRA FIRST-VIEW BUILD: OPTION 4 SUPPORTIVE LANGUAGE.
+Automation:  Manual
+Description: Seeker-only reversible first-view candidate in the existing
+             Dashboard developer controls. Now uses What Needs You / Where
+             You Stand / What Changed / From ZYRA; Insights uses What's
+             Working / What Keeps Happening / What You've Learned / What
+             May Help. Fifteen scenarios and grouped per-content options;
+             current-view rollback retained. New candidate and examples
+             require non-release plus existing developer authority; no
+             fixture enters a release user interface. Existing-source mode
+             uses the current resolver; Insights/editorial/billing examples
+             remain mock-only. No database, migration, matching, billing,
+             Guardian Dashboard, approved-pixel or TestFlight change.
+
+             REVIEW BOUNDARY: the new presentation is not product acceptance
+             or authorisation to activate real Insight families. Exact-item
+             navigation remains a disclosed gap: current-source cards use
+             canonical owner-tab callbacks; sample cards open a labelled
+             local destination preview, never a live request or Journey.
+             Missing billing/editorial/reflection/Insight sources are not
+             implemented by this visual instruction. No construction OA is
+             raised for those explicitly excluded future capabilities; this
+             action tracks review of their design examples only. Historic
+             OA-ZYRA-281 remains closed; this is a new first-view programme.
+
+             Evidence: ZYRA_MY_ZYRA_SUPPORTIVE_FIRST_VIEW_HANDOVER_CURRENT_
+             VERSION_V1.md contains true pre-states, file hashes, routing
+             limits, named verification results and the frozen-clock
+             candidate manifest. All 72 candidate captures remain
+             approved:false. Existing full-suite Dashboard golden mismatches
+             remain OA-ZYRA-257; no approved pixels regenerated or promoted.
+Target:      Founder opens the Supportive first view, reviews every scenario
+             and returns changes/acceptance. Only a later explicit acceptance
+             can promote candidates or replace the current production view.
+
+------------------------------------------------------------
+
+OA-ZYRA-288
+Title:       All-Guardian Data-Minimised Journey Summary — client correction
+             and staged server-authority change
+Category:    Feature / Privacy / Security
+Priority:    High
+Status:      LIVE AND POST-APPLY VERIFIED — exact migration applied;
+             corrected profile build installed and launched on Founder iPhone;
+             Founder visual acceptance pending
+Owner:       Codex (implementation, evidence and reconciliation);
+             Founder (migration apply GO and acceptance)
+Dependencies: DR-ZYRA-230 · DR-ZYRA-225 · OA-ZYRA-282
+Decision:    Direct Founder instruction, 2026-09-17: every Guardian has
+             Journey information; no Guardian is described or implemented as
+             receiving none.
+Automation:  Manual
+Description: Replace the Additional-Guardian no-Journey copy on the Seeker
+             roster/detail surfaces; make both role workspaces load and render
+             the four-field server-confirmed Journey summary; retain Main-only
+             current-context routes and decisions. Stage a new replacement of
+             zyra_attempt_summary_for_guardian that admits any current active
+             caller link while retaining the current/ended positive allowlist,
+             per-link temporal boundary, four-field cap, Main-only bound full-
+             history consent, empty search_path, qualification and ACL.
+
+             The screenshot that triggered this action is a local developer
+             fixture, not evidence of a live member row. The copy reflects the
+             former server rule accurately; both layers therefore change
+             together. The Founder subsequently authorised the reviewed exact
+             migration and it is now the live server boundary.
+Target:      ACHIEVED THROUGH SERVER AND DEVICE DELIVERY — focused Flutter/
+             static SQL tests and analyzer passed; exact-hash apply completed;
+             the live role matrix proves Additional access and preserves
+             unrelated/removed denial; the profile build is on the Founder
+             iPhone for final visual acceptance.
+
+Evidence:    2026-09-17 — 36 focused Guardian UI/roster/developer-control and
+             staged-SQL contract tests passed; analyzer reported no issues
+             across all 12 changed Dart/test files. iOS profile build completed
+             and `flutter install --profile` returned exit 0 on the Founder's
+             connected iPhone. The staged file is
+             `20260917133709_guardian_journey_summary_for_all_active_guardians.sql`,
+             SHA-256 `886b3e0ff17b968f8575a976c32d338ee43a3c7e0372f5a491da6951c70b6c9c`.
+             At that implementation stage no database apply, cloud mutation,
+             approved-pixel replacement, TestFlight upload or git operation
+             occurred. Message 120 carries the full implementation ledger and
+             pre-state evidence.
+             2026-09-17 production cutover — exact migration version
+             `20260917133709`, file SHA-256
+             `886b3e0ff17b968f8575a976c32d338ee43a3c7e0372f5a491da6951c70b6c9c`,
+             history name `guardian_journey_summary_for_all_active_guardians`
+             and statements MD5 `a691f9f5d520fc87d53f29ec8e640fbf`
+             were recorded once. Live catalog/ACL/definition checks and the
+             transaction-only Seeker/Main/Additional/removed/unrelated/
+             current/paused/ended/consent role matrix passed. The signed
+             profile build was installed as the sole
+             `app.zyraconnect.zyra` app and launched successfully. Message 131
+             carries the cutover and post-apply evidence. No TestFlight upload
+             or git operation occurred.
+
+------------------------------------------------------------
+
+OA-ZYRA-289
+Title:       Permanent ZYRA Codes and Two-Sided Guardian Requests
+Category:    Feature / Security / Guardian Relationships
+Priority:    High
+Status:      LIVE AND POST-APPLY VERIFIED — exact migration applied; corrected
+             profile build installed and launched on Founder iPhone; Founder
+             visual acceptance pending
+Owner:       Codex (implementation and evidence); Founder (apply GO and
+             product acceptance)
+Dependencies: DR-ZYRA-231 · DR-ZYRA-226 · OA-ZYRA-282
+Decision:    Founder selected Option 1 on 2026-09-17: stable role-specific
+             code, Copy/QR/Share, safe preview, request first, code-owner
+             approval before link.
+Automation:  Manual
+Description: Replace new one-use bearer-code creation on the Seeker Guardian
+             and Guardian Seeker pages with one permanent-code surface. Add
+             free local QR rendering/scanning and native sharing; add typed
+             first-name/role preview and addressed incoming/outgoing request
+             lifecycle. Evolve wali_invites rather than creating a competing
+             request authority. Preserve legacy seven-day acceptance during
+             the transition.
+
+             The staged server boundary mints random 80-bit handles, retains
+             hash-only retired-code non-reuse, rate-limits preview, applies
+             block/romantic/role checks at every mutation, and creates
+             wali_links only from code-owner acceptance. The Founder later
+             authorised the exact production cutover recorded below.
+Target:      ACHIEVED THROUGH SERVER AND DEVICE DELIVERY — isolated replay and
+             SQL harness passed; exact-hash live apply completed; post-apply
+             role/ACL/IDV/rate-limit/rotation/request probes passed; governed
+             profile build installed and launched for Founder visual
+             acceptance.
+Evidence:    Flutter analyzer clean. Focused permanent-code, Guardian manager
+             and service suites pass. Full suite was executed and remains
+             non-green because of the existing broad visual/developer test
+             debt; directly affected invitation expectations were updated and
+             pass in isolation. Exact hashes and the staged/apply state are
+             filed in Message 121. Message 122 records the first authorised
+             run stopping before reset because the empty local stack had not
+             been started; no reset occurred. Message 123 records the corrected
+             run: the exact 211-version PostgreSQL 17 reset passed 211/211,
+             including both staged migrations, but the one OA-ZYRA-289 harness
+             execution stopped before product assertions because its seedless
+             fixture lookup found no eligible Seeker/Guardian pair. No retry or
+             repair occurred; production remains unchanged. Under the
+             Founder's next bounded approval, Codex then changed only that SQL
+             harness: it now creates unique temporary auth/profile Seeker and
+             Guardian actors inside its existing transaction, keeps the
+             product assertions unchanged, and rolls every row back. Harness
+             SHA-256 is
+             fa4da023e930603140939b8daa1e83a3a4e332d9c0becc951b6e2b680dc7a19c;
+             migration SHA-256 remains
+             f214179184b8c13a95d52f088719b47e24037b73c6f53c3938918e386ed18575.
+             This repair was statically checked only. It has not been re-run;
+             Message 124 records that exact replay gate. The authorised replay
+             then stopped during empty-stack startup, before migrations were
+             copied, reset or harness execution: Colima had been started with
+             `--port-forwarder none`, so Supabase CLI could not reach the
+             disposable guest Postgres on host loopback `127.0.0.1:54322`
+             (`LegacyDbConnectError`, connection refused). The partial stack
+             and VM were removed; no retry or repair occurred and production
+             remains unchanged. Message 125 records the consumed authority and
+             the separately gated localhost-forwarding correction. The next
+             approved corrected replay started cleanly, copied the frozen
+             211-file union byte-identically and passed the one reset 211/211.
+             The repaired harness then executed exactly once: its permanent-
+             code, safe-preview, request-without-link, owner-acceptance and
+             governed-link assertions completed, but the final output-shape
+             assertion referenced nonexistent PostgreSQL relation
+             `information_schema.routine_columns`. It failed and rolled the
+             transaction back. No retry/repair or production access followed;
+             stack and VM were removed. Message 126 records the result and the
+             bounded catalog-assertion repair gate. Under the Founder's next
+             approval, Codex changed only that final assertion: the harness
+             now targets the exact text-signature function through
+             `pg_catalog.pg_proc`, expands its output arguments with
+             `pg_catalog.unnest`, and requires the ordered JSON contract
+             `owner_first_name text`, `owner_role text`. No migration, replay
+             or production action occurred. Revised harness SHA-256:
+             `731936de8004c89767f0e9ac952619f1c46bb966d09960ff5df29458a0818018`;
+             Message 127 records that replay gate. The authorised replay again
+             passed its frozen reset 211/211 and reached the harness's final
+             output-shape check after the core product assertions. The check
+             then failed because PostgreSQL does not expose a three-array
+             `pg_catalog.unnest(oid[], "char"[], text[])` overload; qualifying
+             `unnest` bypassed the FROM-clause multiple-array form. The
+             transaction rolled back, no retry/repair followed, and the stack
+             and VM were removed. Message 128 records this harness-only defect
+             and the next bounded repair gate; production remains unchanged.
+             Under the Founder's repair approval, Codex changed only that
+             array expansion to `pg_catalog.generate_subscripts` and indexed
+             the existing type/mode/name arrays at each supported position.
+             The exact ordered two-text-output comparison is unchanged. New
+             harness SHA-256:
+             `7d429c4ad720eb6c8c22845d6203b55bfc8bb4f48bc6c10f103fd1acc760b73f`.
+             No replay or production action occurred; Message 129 records the
+             next exact replay gate. Subsequent security review found four
+             production-edge defects before apply: mandatory IDV was not
+             enforced at the new RPC boundary; acceptance did not recheck an
+             already-active link; the legacy day-five warning rule would
+             mislabel a thirty-day personal request; and logically expired
+             requests could still be declined/cancelled. Codex corrected the
+             still-staged migration in place and extended the transactional
+             harness. Revised migration SHA-256 is
+             `edeaf6086caf136ae579691235c46007abb234e1ee1f135629a8b23b5511565a`;
+             revised harness SHA-256 is
+             `75af0a0971de35d1c6847bc2fa6034043eb82be7a14c43c56b5f92aa7b50b428`.
+             A fresh seed-disabled PostgreSQL 17 stack then applied the exact
+             211-version union once during empty-stack initialisation (211
+             migration markers; union manifest
+             `b965a56aa5976fdda321b5ed416763b257b4819582e1c6471b594be3fefe51c3`).
+             The OA-ZYRA-289 harness executed once and passed before rollback.
+             Read-only catalog verification proved 211 history rows ending at
+             `20260917144606`, owner `postgres`, SECURITY DEFINER plus empty
+             search_path on the public RPCs, exact authenticated/service_role
+             execute grants, private-table RLS, and zero retained fixture
+             users. The isolated stack and VM were removed. Sanitised evidence
+             is under `SYSTEM/RESOURCES/REPORTS/OA-ZYRA-289_2026-09-17_FINAL_REPLAY/`;
+             Message 130 carries the exact ledger. At that point production
+             remained unchanged pending the DR-ZYRA-231 item 10 exact-file/
+             hash GO.
+             2026-09-17 production cutover — after that exact GO, migration
+             version `20260917144606`, file SHA-256
+             `edeaf6086caf136ae579691235c46007abb234e1ee1f135629a8b23b5511565a`,
+             history name `oa289_permanent_personal_codes_guardian_requests`
+             and statements MD5 `47b0ff0a179af818caebe9a47f9c1cec`
+             were recorded once, immediately after OA-ZYRA-288 and with no
+             other migration. Live catalog, owner, SECURITY DEFINER,
+             empty-search-path, ACL, private-RLS and direct-write-denial checks
+             passed. The canonical harness and focused stable-code, rotation,
+             exact 10/hour and 30/day rate, neutral lookup, current-IDV,
+             counterpart-recheck and request-lifecycle probes passed with
+             terminal rollback. No test users, codes, hashes, attempt rows or
+             personal requests remain. Sequence value 97 is the expected
+             harmless non-transactional test gap; it is not member data. The
+             signed profile build was installed as the sole
+             `app.zyraconnect.zyra` app and launched successfully. Message 131
+             is the cutover record. No TestFlight upload or git operation
+             occurred.
+
+             2026-09-17 Founder-preview follow-up — the local demo personas
+             now render fixed `ZYRA-DEMO-*` codes without calling the live
+             personal-code RPC. They are not persisted, are rejected by the
+             production parser, and exist only behind the active preview latch
+             plus Founder capability. This does not alter the live OA-ZYRA-289
+             server contract or create an IDV bypass. The updated local build
+             is installed and launched; Founder visual acceptance remains the
+             only product gate.
+
+             The same 2026-09-17 Founder UI follow-up redistributed the shared
+             personal-code page across the full viewport and enlarged its
+             touch surfaces without altering any service, RPC, parser, IDV or
+             preview-isolation logic. The revised local profile build is
+             installed and launched for visual acceptance.
+
+GUARDIAN MUTATION LIFETIME PROGRESS — 2026-10-06
+             Two separately sealed local service stages are now recorded under
+             the bounded Founder execution authority, not a new server cutover.
+             At 12:06:02 UTC the request-only repair passed nine lifetime cases
+             and 67 controls. A separate late-acceptance A-to-B failure was
+             reproduced, retained and left UNFIXED at that stage; the same-actor
+             acceptance-reset case was then HELD/UNRUN. That receipt remains
+             immutable, including its failure and historical service hash.
+             At 12:13:01 UTC the separately scoped acceptGuardianLinkRequest
+             extension fixed that acceptance body only. The already-repaired
+             request body and every byte outside the acceptance body were
+             preserved. Both mutation paths now capture owner/generation and
+             recheck at entry, after the capacity await, immediately before
+             dispatch, after ACK and at catch entry. Observed account switch,
+             logout initiation or generation reset prevents stale local success
+             and revision publication. Wholly unobserved SDK A-B-A transitions
+             are not claimed detected. A dispatched server mutation may still
+             have committed; a discarded stale ACK does not prove rollback.
+             Existing RPC names/payloads, request-ID ACK, acceptance null/204
+             void-success, current-owner errors, roles/relationships/capacities,
+             server-owned duplicate policy and no automatic retry are preserved.
+             Latest packet: 11 original lifetime + nine added acceptance + 67
+             controls = 87 distinct measured passes, zero failures/skips. This
+             is NOT additive to prior packets. Only ten cases were newly measured
+             since the sealed request stage: nine added fixtures and the previously
+             held same-actor reset. The original acceptance failure now passes
+             but is not new coverage. APP BUILD main separately reran the same
+             11 + nine; those passes overlap, not another 20 unique cases.
+             Source analysis is clean. Request evidence analysis retained 23
+             warnings/exit 1; the added acceptance harness retained 11 warnings/
+             exit 1. These expected visibleForTesting-outside-test warnings were
+             not suppressed or relabelled as analyzer-clean evidence.
+             Strict intercepted .invalid fake sessions had zero unexpected
+             requests. Only local beginSignOut/account-generation invalidation
+             and reset were tested, not real SDK logout, process persistence,
+             live RLS/authoritative capacity/row uniqueness, server rollback,
+             widgets/native/release artifacts or Founder acceptance. This packet
+             did not build/install the later Dart repairs or close this whole OA.
+             OA-ZYRA-303/305 record linked progress without new responsibility;
+             compatibility OA-ZYRA-284 remains separate active work.
+             Root checked 38/39 request pins, the sole mismatch being intentional
+             historical service drift; 28/28 acceptance pins and all seven APP
+             BUILD root-review pins matched. Exact acceptance-only outside-body
+             byte preservation was independently checked within Codex, not a
+             Founder approval or outside independent audit.
+             ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_GUARDIAN_REPAIR.json
+             SHA-256: 0f3ec3e19296f1b60952ad32321fd86ecde8adfa720df32995dd0e54257ab59a
+             NEXT_GUARDIAN_ACCEPT_REPAIR.json
+             SHA-256: f3fd2094ad816f136ca3d9272888d97a2566cc73ef175b68c5e1dd8268c720ec
+             NEXT_GUARDIAN_ACCEPT_ROOT_REVIEW.json
+             SHA-256: 364f5d5a9c317f85ae951047671e68424e2e055c63e1e682a65c11b07c00a294
+             Service post SHA-256 (sealed receipt-bound):
+             0929842abbccce5e628202b9a9911664a7a4ad11cce5e5b6e5a89f678df28a72
+
+GUARDIAN HANDOVER / LATER LOGOUT EVIDENCE — 2026-10-06
+             APP BUILD appended only dated section 8 to the current Guardian
+             handover: the original 23,614-byte prefix is unchanged and the
+             addition is exactly 6,039 bytes. Main read the full 29,653-byte
+             handover and both small reconciliation/clarification receipts;
+             seven reconciliation references matched and original P3 evidence
+             remained unchanged. Historical production and installed-build facts
+             are preserved, not restated as delivery of the new October repairs.
+             A later separate request/logout ACK fixture passed two assertions,
+             but adds exactly ONE newly measured case: a successful REQUEST
+             acknowledgement arriving after observed public beginSignOut.
+             The current-owner positive control overlaps prior evidence; earlier
+             request-exception/logout and acceptance-ACK/logout cases already
+             existed. No grand total is added to the earlier 87-case packet.
+             First integration compile failure is retained with zero accepted
+             tests; the next run passed both cases and fixture analysis reported
+             zero issues. Seven logout-receipt pins were separately matched.
+             Synthetic Auth deliberately remained installed during local account-
+             lifetime invalidation. The client blocks NULL-SUCCESS and invitation
+             revision publication, returning the non-null stale message without
+             automatic retry. This is not provider revocation, server rollback,
+             live/member data, process/device or Founder acceptance proof.
+             The original receipt's inverted wording was corrected by a separate
+             immutable clarification; original receipt/logs/counts were untouched.
+             Guardian service remained at the sealed acceptance-stage source pin.
+             The Founder is away: these new repairs are NOT installed, and this
+             filing neither changes the earlier delivery history nor closes OA289.
+             Current ZYRA document: SYSTEM/DOCUMENTS/
+             ZYRA_PERSONAL_CODE_AND_GUARDIAN_REQUEST_HANDOVER_CURRENT_VERSION_V1.md
+             SHA-256: 1af1effabc1c9971f0de5e535f478dfc84646d51f85cffafcc9498931517c4ea
+             True handover prebackup / remaining evidence under
+             SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_GUARDIAN_HANDOVER_BEFORE.md
+             SHA-256: fbecb2842f0af7c715d781775d29bfa85f4ace659476a9dff674af7f00352244
+             NEXT_GUARDIAN_HANDOVER_RECONCILIATION.json
+             SHA-256: 608f7f90ad8281e3e23763300b7d61e22d7a2cf235ad46d2be7218fc262bef5a
+             NEXT_GUARDIAN_REQUEST_LOGOUT.json
+             SHA-256: aec0f1dfc493e0769489c28bda629331351d4dcc2dc91b54ca355fa2c42c0681
+             NEXT_GUARDIAN_REQUEST_LOGOUT_CLARIFICATION.json
+             SHA-256: 4ded31bd78b5495002091c2caa86aa30aa3d0d8e0648b29558aa56bdf7be1a92
+
+GUARDIAN PREFLIGHT / AUTH TEST-ONLY MILESTONE — 2026-10-06
+             The separately assigned three-case evidence-only stage is COMPLETE
+             within its local service-fixture scope. Writer first run: three
+             new cases PASS, zero failures/skips; APP BUILD main separately
+             repeats the same three PASS. The 72 retained Guardian reruns also
+             pass, but are overlaps, not 72 new cases or a whole-app total.
+             Embedded not-ready positive controls and previously measured
+             acceptance Auth-before-sync coverage are not counted again.
+             Two cases invoke request/accept under the current owner, then
+             synchronously call public beginSignOut before the existing completed
+             NOT-READY capacity Future/microtasks resume. Both return the exact
+             non-null stale message, with zero mutation RPCs and unchanged
+             invitation/link revisions. This is NOT arbitrarily held, delayed-
+             ready or authoritative server-capacity evidence.
+             The third case dispatches one original request, installs synthetic
+             Auth B WITHOUT AccountState synchronization, proves original owner/
+             generation/currentness remain unchanged, then releases the valid ACK.
+             The actual Auth mismatch blocks null-success/revision publication.
+             Recorded mutation RPC counts are 0/0/1; unexpected HTTP is zero.
+             No automatic retry occurred in the strict fixture. Provider JWT
+             validation/logout/revocation, committed-server rollback, live RLS/
+             admission, native/widget/device, commerce, release or Founder
+             acceptance is NOT proved by these synthetic intercepted tests.
+             Selected two-source analyzer: zero issues. External fixture analyzer:
+             11 unsuppressed placement warnings, zero errors, exit 2; not clean.
+             At the sealed stage, source/package inputs, earlier receipts and
+             both current handovers were unchanged. The writer/Main 553-Dart
+             manifest is dated evidence, not a new ADMIN tree enumeration or a
+             permanent freeze of a subsequently assigned source lane. ADMIN's
+             read-only helper matched 85 declared references / 32 unique named
+             files across this bounded packet; ADMIN ran no Flutter/Dart tests.
+             Next decline/cancel candidate is STATIC at assignment, not reproduced
+             or patched by these receipts. Root subsequently assigned APP BUILD a
+             separate test-first two-file lane: only the two service mutations and
+             Code-screen completion handlers, plus necessary imports; patch only a
+             demonstrated stale-local lifetime defect. Outcome is PENDING here.
+             The candidate's exact service/Code-screen pins are assignment BEFORE
+             hashes, not asserted permanent current bytes. No source fix,
+             new RPC/backend authority, install, whole-OA closure or acceptance is
+             created by this additive filing. Existing OA-ZYRA-305 owns the audit
+             follow-up; wider compatibility/continuation reconciliation is separate.
+             Exact ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_GUARDIAN_PREFLIGHT_AUTH_RECEIPT.json
+             SHA-256: 6ff2fe0b31198124b5fa3fe5d3e35d2592eb1b758acaa67ea29328e9ba750e32
+             NEXT_GUARDIAN_PREFLIGHT_AUTH_ROOT_VERIFY.json
+             SHA-256: 40101a6a10f7ff30a8d97d8d6b308d2625b027e03537ab9cc483cfe19c156c23
+             NEXT_GUARDIAN_PREFLIGHT_AUTH_INDEPENDENT_REVIEW.json
+             SHA-256: 26ba0478168751fd30dc7420ea14d0fe54b7b32f049000c01c82f53268a69f9c
+             NEXT_GUARDIAN_DECLINE_CANCEL_CANDIDATE.json
+             SHA-256: 8e5abd044741281ea1c4ad0c21dae068a34b7ec70b8e384df1535c47749e5f86
+
+GUARDIAN DECLINE/CANCEL SERVICE REPAIR / CALLER HELD — 2026-10-06
+             The separately sealed 14:21:51 UTC APP BUILD packet records a
+             bounded local repair, not a second production cutover or delivery
+             of the October source to the phone. Only declineGuardianLinkRequest
+             and cancelGuardianLinkRequest bodies changed: actual Auth owner and
+             observed account generation are captured inside the original safe
+             false-return boundary; invalid entry is rejected before dispatch;
+             late ACK/exception is fenced before success/invitation publication.
+             Original boolean API, RPC names and p_request_id, current-owner
+             true/false/error mapping, link revision and no-retry behavior remain.
+             Request/accept/capacity and all other service bytes are unchanged;
+             the complete Code-screen caller is unchanged. Discarding a stale
+             local ACK is NOT proof of server failure, cancellation or rollback.
+             The frozen new 28-case fixture first reproduced 14 failures and
+             14 passes. Original failures/assertions/logs remain immutable.
+             After the service repair the same 28 cases pass; four separate
+             SDK-uninitialised/Auth-absent entry controls pass: exactly 32 NEW
+             service cases. FIRST/POST and entry-cleanup repeats are overlaps.
+             The 75 retained service checks and 17 existing preview/boundary
+             reruns pass separately; neither is new ordinary UI acceptance.
+             APP BUILD main repeats 28 service + two readiness + four entry
+             controls = 34 overlaps, with zero additional unique coverage.
+             Two ordinary public role mounts pass with zero HTTP and no rendered
+             Decline/Cancel buttons. They prove NOT-READY admission only, not
+             mutation settlement: public caller acceptance cases remain ZERO.
+             Initialising the fake SDK cannot set private application readiness;
+             preview clears requests. No bootstrap/readiness bypass, private
+             callback/state injection or new reader seam was introduced.
+             Old error publication, newer busy clearing and stale reload remain
+             UNMEASURED/UNFIXED. A separately bounded production-default-preserving
+             public generated-request fixture path is the next test-first
+             candidate; _load/_accept/read-refresh lifetime remain separate.
+             Full/targeted source analyzer: zero issues. External fixture analysis
+             retains 22 service and 13 readiness placement warnings, zero errors;
+             warnings were not suppressed or presented as analyzer-clean tests.
+             ADMIN matched all 19 final packet pins and counted saved raw visible
+             service events: 14/14 FIRST, 28 POST, four entry and 75 retained;
+             frozen FIRST/POST case names match. ADMIN ran no new app tests.
+             The packet's five tree comparisons and independent Codex 16-check/
+             64-pin review are attributed saved evidence, reviewer runtime ZERO,
+             not fresh ADMIN tree enumeration or outside/Founder approval.
+             Guardian handover section 9 is additive: true 29,653-byte prefix
+             preserved; current handover is 35,848 bytes. Earlier service/doc
+             pins remain historical snapshots, not drift to erase or re-seal.
+             Compatibility handover remains unchanged; OA-ZYRA-284 continuation
+             reconciliation is separate. True service/caller backups and exact
+             two-method diff remain; rollback was not performed.
+             Founder AWAY: no install/launch. Live authorization/JWT/RLS/restore,
+             IDV/moderation, paid receipt/lifecycle, native accessibility/layout,
+             public/release and Founder acceptance gates remain OPEN. No OA
+             status, identifier, score or earlier delivery history is changed.
+             Exact ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_GUARDIAN_DECLINE_CANCEL_HANDOVER.json — 22,954 bytes
+             SHA-256: f84482d3add4cd75588e12160005c4693f9b0a424bd351a12e0ca9f12fa95145
+             Service post SHA-256:
+             41e8d60505d3db7526d73b97574077e284c8b0507475d264ec223513a438c339
+             Unchanged Code-screen caller SHA-256:
+             029839431c16126c978a93fefb65b7d635bdc28880dde45491826bdaf2db226e
+             Guardian handover section 9 SHA-256 (whole current document):
+             68564a6d0793e7afd292d3644e8a067a968619a64c6ef5a6776bc2b220676630
+
+------------------------------------------------------------
+
+OA-ZYRA-290
+Title:       Per-Journey Additional Guardian Access with Main Leadership
+Category:    Feature / Security / Guardian Relationships
+Priority:    High
+Status:      LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
+             visual acceptance of the revised Guardian detail page
+Update 2026-10-10 (DR268 Basic Chat boundary):
+             Restored Guardian Basic must have disabled Journey Chat, including
+             Main. Main View remains required. Local per-Guardian plan controls
+             are samples, not entitlements. The client now requires a separate
+             guardian_chat_entitled=true server field plus current chat/view
+             availability; legacy or missing proof retains View but denies Chat.
+             A direct Chat-enable call first reads current target availability
+             and rechecks the same account generation before write/return.
+             Existing Main 'Chat required' marks must respect unavailable Chat.
+             This is client fail-closed preparation, not deployment of billing
+             or message authority. The Sep24 staged paid-only contract's true
+             chat_available/default Main chat cannot establish the new rule;
+             F02 remains staged and concerns reads, not paid send authority.
+             OA253/303/305 and this action retain trusted linked-Guardian paid
+             producer, grant/write/send/read policy reconciliation and tests
+             with exact later live GO/post-verification. Do not relabel the
+             historical View-policy LIVE status as new Chat enforcement LIVE.
+Owner:       Codex (implementation/evidence); Founder (device acceptance)
+Dependencies: DR-ZYRA-232 · DR-ZYRA-225 · DR-ZYRA-230 · OA-ZYRA-288
+Decision:    Main Guardian is always included and leads protected Guardian
+             decisions. A Seeker may include/remove each own Additional
+             Guardian per active Journey; included Additional receives the
+             same existing read-only Journey routes as Main, not Main-only
+             decisions and not message sending.
+Automation:  Manual
+Description: Add a private audited assignment ledger and one hardened
+             Seeker-owned RPC. Reconcile canonical participation, direct
+             Journey read policies, restricted counterpart-card authority,
+             Seeker Guardian controls, Guardian roster/workspace routing and
+             the Journey conversation disclosure. Preserve the DR-ZYRA-230
+             four-field summary outside active assignment.
+Target:      Founder visually accepts the installed Guardian detail layout.
+             The first production Journey naturally containing both a Main
+             and Additional Guardian supplies the remaining positive live-role
+             observation; production contained no such fixture at cutover, so
+             no relationship data was fabricated for verification.
+Evidence:    Exact migration `20260918075737` applied from SHA-256
+             `347e32e901b266cd4a6e7fa98fd077e51b4963f2b5e3c6620f1645577847a282`.
+             Exact history, catalog, RLS, ACL, indexes, hardened RPCs, private
+             unscoped participation, caller-scoped access and all six read
+             policies passed. Null caller, Main immutable/included, partial
+             arguments and cross-Seeker Guardian direct calls passed inside a
+             rolled-back transaction; zero probe rows persisted. The sole
+             security-definer-view advisory is the pre-existing caller-scoped
+             participation finding already held in the audit bucket. Analyzer
+             and 55 focused tests pass. Signed profile build installed and
+             launched on the Founder iPhone; bundle `app.zyraconnect.zyra`,
+             version `1.0.0 (2)`, executable SHA-256
+             `0d5a5ba4d1ec3aae9c3ba14450e140483bfa896cb9a2bbbf87d070d41a2b5284`.
+
+------------------------------------------------------------
+
+OA-ZYRA-291
+Title:       Per-Guardian Past Journey Summary Permission
+Category:    Feature / Security / Guardian Relationships
+Priority:    High
+Status:      LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
+             visual acceptance of the live per-Guardian controls
+Owner:       Codex (implementation/evidence); Founder (device acceptance)
+Dependencies: DR-ZYRA-233 · DR-ZYRA-225 · DR-ZYRA-230 · DR-ZYRA-232
+Decision:    Every current Guardian may individually receive all past
+             four-field Journey summaries; the permission is Seeker-owned,
+             OFF by default, immediately revocable and bound to that person's
+             current continuous link epoch.
+Automation:  Manual
+Description: Generalise the existing Main-only history-consent store without
+             creating a second authority. Add a role-neutral link epoch,
+             preserve valid existing Main consent, expose one hardened
+             Seeker-owned per-Guardian RPC, retain the legacy Main wrapper and
+             replace the summary predicate. The Seeker Guardian page shows a
+             per-person "Share past Journey summaries" control; Additional
+             current-Journey controls remain separately collapsed under
+             "Active Journey access". Add prominent membership/linking/help
+             disclosure that paid capacity is not Journey authority.
+Target:      Founder visually accepts the already installed live controls.
+Evidence:    Message 139 records the staged client/device delivery. Message
+             140 records the 212-version PostgreSQL 17 replay, rollback-only
+             Main/Additional/outsider/null-caller matrix, 62/62 focused tests,
+             clean analyzer and one-file production dry-run. Message 141
+             records exact production apply, repeated rollback-only matrix,
+             catalog/grant/history verification, zero persistent probe rows
+             and the expected one-notice advisor delta.
+
+------------------------------------------------------------
+
+OA-ZYRA-292
+Title:       Guardian Notes and Reciprocal Journey-Access Transparency
+Category:    Product Design / Privacy / Guardian Relationships
+Priority:    Medium
+Status:      HELD — design and authority contract required; no implementation
+Owner:       Founder (product ruling); Codex (future design/security review)
+Dependencies: DR-ZYRA-233 · DR-ZYRA-232 · OA-ZYRA-291
+Decision:    Guardian comments must not become couple-chat messages. Design a
+             separate auditable Guardian Notes boundary and a truthful surface
+             showing each Seeker which authorised Guardians can access their
+             shared Journey.
+Automation:  Manual
+Description: Specify note authorship, readers, editing/deletion, retention,
+             reporting, notifications and revocation; specify the reciprocal
+             access list without leaking unrelated family data. No code,
+             migration, UI or policy change is authorised under this action.
+Target:      Founder-approved design and security contract before build.
+Evidence:    Created from the accepted DR-ZYRA-233 recommendation so these
+             privacy/legal questions cannot be mistaken for completed scope.
+
+------------------------------------------------------------
+
+OA-ZYRA-293
+Title:       Seeker Basic Authoritative Quotas and Live Advertising
+Category:    Membership / Security / Advertising / Privacy
+Priority:    High before commercial activation
+Status:      REOPENED 2026-10-03 — DR-ZYRA-252 restores Basic client policy;
+             authoritative quotas/receipts and live advertising remain held
+Current scope:
+             Verify the restored Basic limits and preserve safe over-cap data.
+             Reconcile server quotas/role access with the £4.99 joining product
+             before launch. Live adverts require separate provider/privacy/
+             consent approvals. No production migration or activation is
+             authorized by the client-restoration request. The retired text
+             below remains historical evidence, not current instruction.
+Current client evidence — 2026-10-03:
+             Basic capacities/presentation are restored and internally tested.
+             No authoritative quota, receipt or live advertising activation
+             occurred. DR-ZYRA-252 / Paid Membership handover §11 /
+             ONBOARDING_BASIC_MEMBERSHIP_CHOICE_2026-10-03_VERIFICATION.json.
+Owner:       Codex (future implementation/evidence); Founder (provider,
+             commercial and privacy approval)
+Dependencies: DR-ZYRA-235 · DR-ZYRA-243 · OA-ZYRA-253
+Decision:    Preserve this record as evidence of the retired Basic proposal.
+             Do not promote its quota or advertising work to production.
+Automation:  Manual
+Description: The retired proposal would have required atomic server-side
+             quota checks and a separately approved advertising provider.
+             Neither is now to be built or activated. Do not treat existing
+             SharedPreferences, preview adverts, Basic enums or developer
+             fixtures as a commercial product or production authority.
+Target:      Closed by DR-ZYRA-243. Remove remaining public Basic/ad copy as
+             affected surfaces are reconciled; retain only migration-safe
+             parsing and clearly isolated developer boundary fixtures.
+Evidence:    ZYRA_PRICING_CURRENT_VERSION_V5.md;
+             JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V6.md;
+             ZYRA_PAID_MEMBERSHIP_HANDOVER_CURRENT_VERSION_V3.md.
+
+------------------------------------------------------------
+
+OA-ZYRA-294
+Title:       Optional Main Guardian with Active-Journey Hold
+Category:    Feature / Security / Guardian Relationships / Journey Authority
+Priority:    High
+Status:      CLIENT BUILT / DEVICE INSTALLED / MIGRATION STAGED — production
+             enforcement awaits isolated replay, review and exact apply GO
+Owner:       Codex (implementation/evidence); Founder (production apply and
+             visual acceptance)
+Dependencies: DR-ZYRA-236 · DR-ZYRA-232 · OA-ZYRA-290 · OA-ZYRA-291
+Decision:    Permit deliberate no-Main Guardian state without unlinking;
+             surface the missing-Main action in My ZYRA; hold ordinary Active
+             Journey participation until both Seekers have Main leadership;
+             preserve Pause and End.
+Automation:  Manual
+Description: Replace Guardian management dialogs/expanding warnings with
+             same-footprint Cancel/Confirm pills; add caller-bound demotion;
+             project no-Main into Now; add a caller-relative two-side Journey
+             gate and server write enforcement over current Journey surfaces.
+             Do not auto-promote a replacement and do not expose Guardian
+             identity through the gate.
+Target:      Founder visually accepts the installed interaction; staged
+             migration passes isolated PostgreSQL 17 replay, direct-call and
+             write-surface matrix, security review, then receives a separate
+             exact-file/hash production GO.
+Evidence:    Client focused suite 160/160 PASS; analyzer clean; signed Founder
+             profile installed and launched on 2026-09-18. Migration
+             `20260918140508_oa294_main_guardian_optional_journey_hold.sql`
+             remains staged at SHA-256
+             `67683db6045e42e2ae691321b8a35676913c69433392276a07551138dbc8004b`.
+             Message 142 carries the file ledger and verification boundary.
+             Founder preview management was subsequently completed: Make
+             Main, Remove as Main and Remove Guardian confirmations now
+             mutate isolated local cards with no auto-promotion. The latest
+             Guardian-page/live-truth set passes 17/17; analyzer is clean;
+             signed build 1.0.0 (2), executable SHA-256
+             `2159caee43bb7a06bc9e839247f2d3118b19919e034b363082ce4aacd6892759`,
+             was installed in place and launched on the Founder iPhone.
+             The subsequent visual cleanup removed the Main access card,
+             reused the Additional disclosure row and neutralised the
+             non-destructive Manage actions. The latest focused set passes
+             18/18; analyzer is clean; internal-Founder executable SHA-256
+             `3bccd098a58e0b0738443051fb83c93b6b15d55e6e3f4fccf2afb807b5bf73a6`
+             was installed in place with the existing app data preserved.
+
+------------------------------------------------------------
+
+OA-ZYRA-295
+Title:       Known-Person Matching by Permanent ZYRA Code
+Category:    Feature / Matching / Privacy / Security
+Priority:    High
+Status:      CLIENT BUILT / MIGRATION STAGED — production remains unchanged
+Owner:       Codex (implementation/evidence); Founder (production apply and
+             visual acceptance)
+Dependencies: DR-ZYRA-237 · DR-ZYRA-231 · DR-ZYRA-221 · DR-ZYRA-123 ·
+              OA-ZYRA-289 · OA-ZYRA-293
+Decision:    Add a Seeker-only ZYRA Code route to Browse action mode. Safe
+             preview may lead to an ordinary Consider; a Match remains mutual.
+Automation:  Manual
+Description: Add the fifth action-bar destination; scan/enter, neutral lookup,
+             Browse-level confirmation and Consider result states; add separate
+             hardened preview/mutation RPCs rather than widening Guardian-link
+             APIs. Reuse the permanent-code attempt budget and recheck IDV,
+             visibility, matching, block, onboarding, gender and Guardian-
+             conflict boundaries at write time.
+Target:      Founder visually accepts the installed preview. The staged
+             migration passes isolated PostgreSQL 17 replay, direct-call and
+             mutation/reciprocity tests, security review, then receives a
+             separate exact-file/hash production GO. If any usage-limited
+             membership remains available at launch, OA-ZYRA-293's server-
+             authoritative quota must close before this direct mutation RPC
+             can apply; the client must never be the quota authority.
+Evidence:    Migration
+             `20260918145126_oa295_known_person_code_matching.sql` remains
+             staged. Focused Flutter/static tests and analyzer are recorded in
+             Message 143; production history has not been changed.
+
+------------------------------------------------------------
+
+OA-ZYRA-296
+Title:       Separate Additional-Guardian View and Chat Authority
+Category:    Feature / Security / Guardian Relationships / Membership
+Priority:    High before Guardian One commercial activation
+Status:      CLIENT + FORWARD SERVER CONTRACT BUILT / LOCALLY VERIFIED —
+             production migration and enforcement not authorised
+Owner:       Codex (future implementation/evidence); Founder (production
+             migration approval and visual acceptance)
+Dependencies: DR-ZYRA-238 · DR-ZYRA-232 · DR-ZYRA-234 · OA-ZYRA-253 ·
+              OA-ZYRA-290
+Decision:    Additional Guardian View and Chat are separate Seeker-owned
+             per-active-Journey permissions, both ON by default; Chat requires
+             View. Main View and Chat are always ON while the person is Main.
+Automation:  Manual
+Description: Replay the now-staged separate View/Chat state, server-confirmed
+             read/write RPC and message-write RLS. Turning View off atomically
+             revokes Chat. No Basic tier exists; Guardian paid access remains
+             separate from link/Journey authority. Preserve Main access,
+             Main-only decisions, reciprocal privacy, blocks and EMPTY !=
+             FAILED. Complete legal/privacy review before activation.
+Target:      Founder approves the authority contract; a generated migration
+             passes isolated PostgreSQL replay, direct-call/RLS/advisor tests
+             and exact-file/hash review; production apply receives a separate
+             explicit GO. Client then replaces preview-only Chat state with
+             server-confirmed state.
+Evidence:    Guardian page preview now uses separate View and Chat switches,
+             View-off disables Chat, Main renders both as Required, membership
+             and Help copy disclose eligibility rather than guaranteed access,
+             and the scroll viewport now fades into the pager with bottom
+             clearance instead of exposing a hard clipped purple seam. The
+             latest 16/16 focused Guardian-page/live-truth tests pass and
+             analyzer is clean. Signed
+             profile build 1.0.0 (2), executable SHA-256
+             `7991954d588dd5e0b53bd0aca0fc9dca68a731103f50f35bde3d0461233b399b`,
+             was installed and launched on the Founder iPhone. No migration or
+             production database change was made by this implementation.
+             The subsequent Guardian visual cleanup uses the same collapsible
+             Active Journey access row for Main and Additional cards, removes
+             the translucent Main access block and retains the Required
+             authority labels. The latest focused set passes 18/18 and the
+             analyzer remains clean.
+             2026-09-24: the canonical client service now reads and confirms
+             both live View and Chat state; a forward contract migration
+             defaults both ON for Additional Guardians, forces Main ON and
+             adds Guardian message-write RLS only where Chat is enabled.
+             The forward migration is
+             `20260924100231_founder_paid_only_returns_guardian_circle_contract.sql`
+             at SHA-256
+             `f6af8a28e1b0ce319a8daaa39ff22fc30574bd6c9d47f70a5de8cfec49374006`.
+             Focused Guardian truth tests and analyzer pass. PostgreSQL replay
+             remains pending; production is unchanged.
+
+------------------------------------------------------------
+
+OA-ZYRA-297
+Title:       Complete Production Reliability, Crash Diagnostics and Founder
+             Health Reporting
+Category:    Reliability / Privacy / Operations / Observability
+Priority:    High before public launch
+Status:      Open — bounded local technical fingerprints, Founder session
+             health and live-local AIOS reporting exist; production aggregate
+             ingestion, remote crash provider, service health feed and
+             scheduler activation remain held
+Owner:       Codex (technical design/implementation); Founder (provider,
+             privacy, cost and activation decisions)
+Dependencies: DR-ZYRA-239 · OA-ZYRA-169 · OA-ZYRA-256
+Decision:    Complete ZYRA reliability evidence without screenshots, replay,
+             user content, email/IP retention or automatic production change.
+Automation:  Manual until separately activated through the existing daily
+             Founder operation; no duplicate schedule
+Description: Phase 2 now captures only four fixed technical categories in
+             bounded current-process memory and exposes their counts to the
+             Founder. It sends no diagnostics remotely and stores no raw
+             exception, stack, route or member data. Next evaluate Apple
+             diagnostics and a strictly scrubbed EU-region
+             error provider; define technical error fingerprints that contain
+             no member payload; ingest supported Supabase service-health
+             signals; connect the now-built AIOS Health & Usage surface to an
+             approved aggregate feed; and permit agents to detect, classify
+             and prepare tested repairs.
+             Agents must never deploy, apply migrations, release or approve
+             fixes automatically. Resolve OA-ZYRA-169 silent catches through
+             explicit typed outcomes or approved diagnostics, not raw logs.
+Target:      Founder-approved provider/cost/privacy choice; data-processing,
+             retention/deletion and access controls; implementation and test
+             evidence; then a separate activation GO for the existing daily
+             report. Keep production collection off until all gates pass.
+Evidence:    ZYRA_PRODUCT_OBSERVABILITY_CURRENT_VERSION_V1.md;
+             `SOURCE/lib/services/zyra_reliability_monitor.dart`;
+             AIOS `zyra_observability_engine.py`, `/zyra-health` and
+             `/api/zyra-health`; AIOS observability/dashboard checks 12/12
+             PASS; local live verification PASS with collection off;
+             BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/
+             AIOS_ZYRA_HEALTH_USAGE_PHASE1_2026-09-18_V1.md;
+             current app has no remote crash reporter or diagnostics provider;
+             focused Phase 2 checks 22/22 PASS; analyzer clean; Apple and
+             Supabase first-party signals researched 2026-09-18.
+             WEBSITE-CAPTURE FINDING 2026-09-18: current synthetic Active
+             Journey with photos: [] throws StateError via
+             SeekerProfile.photoUrl (seeker_profile.dart:79), consumed
+             by _ActiveJourneyCard (connections_screen.dart:4562).
+             Reproduction/provenance is retained in the website handover
+             and app-captures/notes.md. Review under this reliability
+             action; no app repair or wider app testing was performed by
+             the bounded website work. Public preview uses valid
+             Potential/Paused fixtures, never a suppressed exception.
+
+------------------------------------------------------------
+
+OA-ZYRA-298
+Title:       Complete and Activate Shared Guardian Circle Messaging
+Category:    Feature / Messaging / Privacy / Guardian Relationships
+Priority:    High before paid family messaging is advertised
+Status:      CLIENT PREVIEW BUILT / RETENTION + PAID-PARTICIPANT CONTRACT
+             STAGED — production unchanged
+Update 2026-10-13 (clear discussion and bounded Past action):
+             Family Messaging section11 / Navigation Haptics section82 add
+             clearer Now discussing cards and an explicitly supplied date-only
+             Past summary. Same Circle/draft retained; no inferred profile,
+             archived messages or real history grant. Current/Past resolver
+             separation, exact identity/date, Basic/readiness, foreground,
+             terminal withdrawal and white-theme checks pass locally.
+             Real topic delivery/persistence and authorized Past projection
+             remain held here. Native delivery is not measured for this delta;
+             Founder away, build/space holds remain OA305/286. No closure.
+Owner:       Codex (implementation/evidence); Founder (production apply and
+             visual acceptance)
+Dependencies: DR-ZYRA-242 · DR-ZYRA-238 · OA-ZYRA-296
+Decision:    Build one canonical text-only shared Guardian Circle per Seeker,
+             containing the Seeker and every active linked Guardian, with no
+             private one-to-one Guardian conversation.
+Automation:  Manual
+Description: Complete isolated PostgreSQL replay, RLS/direct-call role matrix,
+             membership-epoch and pre-join-history denial tests, link/block/
+             relink transitions, concurrency/rate tests, retention/deletion,
+             report evidence review, Realtime/private-channel review and
+             unread notification design. Preserve Journey-chat separation.
+             Do not activate from client state.
+Target:      Founder visually accepts the preview; reviewed migration receives
+             an exact-file/hash production GO; post-apply verification passes;
+             only then enable the client release gate.
+Evidence:    Founder corrected the former pair interpretation on 2026-09-20.
+             Client service, shared Circle surface and relationship routes are
+             staged. The Seeker has one Guardian Circle entry; each Guardian
+             enters the selected Seeker's Circle. Sender attribution and
+             per-message reporting are present. Focused Circle/Guardian/
+             Browser suite passed 34/34 and analyzer is clean.
+             Migration
+             `20260919185927_oa298_family_messaging_foundation.sql` remains
+             unapplied at SHA-256
+             `893f621b79f6956a5a4f50e957767c924957dd042b9f5c6ed70e8a31f489c073`.
+             The superseded pair artifact was never applied. Client release
+             gate remains false; production is unchanged.
+             DR-ZYRA-248 now resolves the open contract: every current Circle
+             participant needs their own paid role entitlement; removal closes
+             access immediately; relink starts a fresh readable epoch;
+             deleted-sender messages retain a neutral label for 12 months;
+             protected reported-message evidence plus bounded context retains
+             for 24 months after case closure unless legal/safety hold extends
+             it. These rules are staged in the 2026-09-24 forward migration
+             `20260924100231_founder_paid_only_returns_guardian_circle_contract.sql`
+             at SHA-256
+             `f6af8a28e1b0ce319a8daaa39ff22fc30574bd6c9d47f70a5de8cfec49374006`.
+             Static contract tests pass; PostgreSQL replay remains pending.
+
+------------------------------------------------------------
+
+OA-ZYRA-299
+Title:       Complete Journey Return Authority and Ended-Attempt Safety
+Category:    Feature / Journey / Membership / Security
+Priority:    High
+Status:      PRODUCT RULES RESOLVED / CLIENT + FORWARD SERVER CONTRACT STAGED
+             — Ended execution and production migration remain held
+Owner:       Codex (implementation/evidence); Founder (production apply and
+             visual acceptance)
+Dependencies: DR-ZYRA-241 · DR-ZYRA-244 · DR-ZYRA-227 · OA-ZYRA-156
+Decision:    Keep Active/Potential/Paused/Ended separate and expired history
+             in Profile. Paid initiation is limited to each member's five most
+             recent Paused and five most recent Ended rows, with no age limit.
+             Requests expire in 30 days; decline creates a 30-day cooldown;
+             withdrawal has none. Incoming requests remain visible. Both
+             people must be below the three-Active cap before send/accept.
+             Paused resumes the same record; Ended creates a fresh attempt.
+Automation:  Manual
+Description: Complete isolated replay, direct-call/RLS/concurrency tests and
+             OA-ZYRA-156 attempt ownership. Prove incoming pinning, sender
+             withdrawal, recipient-unavailable closure without billing-detail
+             leakage, permanent no-future-request, and three-cap races. Keep
+             Ended RPC execution revoked until the fresh-attempt ritual audit
+             passes. Preserve block/safety exclusions.
+Target:      Exact reviewed migrations pass isolated replay, direct-call/RLS
+             and concurrency tests, then receive separate production GOs.
+Evidence:    Connections again uses separate Active, Potential, Paused and
+             Ended sections. Profile now owns a Past Journeys Paused/Ended
+             selector. Incoming Paused requests have their own Requests for
+             you subsection. Migration
+             `20260919191016_oa299_journey_return_initiation_gate.sql` remains
+             unapplied at SHA-256
+             `0ff28ae7c6d98da43b1b6d608c93c9dfb2039b4bde0c28ad5a78e63d58111460`.
+             Existing Request New Journey client/server holds remain intact.
+             DR-ZYRA-248 resolved the limits on 2026-09-24. Client age copy was
+             removed; a privacy-preserving Available / Not currently available
+             lookup and the staged 30-day/five-recent/cap authority now live in
+             `20260924100231_founder_paid_only_returns_guardian_circle_contract.sql`.
+             Its SHA-256 is
+             `f6af8a28e1b0ce319a8daaa39ff22fc30574bd6c9d47f70a5de8cfec49374006`.
+             Focused contract tests and analyzer pass. PostgreSQL replay
+             remains pending; production unchanged.
+
+------------------------------------------------------------
+
+OA-ZYRA-300
+Title:       Add the Founding Imam Ahad Quotation to the Public Website
+Category:    Website / Brand / Editorial
+Priority:    Medium before public launch
+Status:      OPEN — exact quotation, source and publication wording pending;
+             nothing published by this action
+Owner:       Founder (exact quote/source and final acceptance); Codex
+             (website implementation and evidence)
+Dependencies: Public website current version and Founder-supplied source
+Decision:    Present the Imam Ahad quotation that informed ZYRA's purpose as
+             a deliberate trust-and-purpose moment on the public website.
+Automation:  Manual
+Description: Obtain and preserve the exact approved quotation, speaker name,
+             original source/context, attribution format and any required
+             publication permission. Design it into the website's narrative
+             without implying endorsement beyond the verified source and
+             without altering the quotation. Check responsive layout,
+             accessibility and reduced-motion presentation.
+Target:      Founder confirms the exact quote and source; Codex prepares the
+             final website placement; Founder visually accepts the live copy.
+Evidence:    Founder direction in Codex task, 2026-09-20. Repository search
+             found no governed copy of the quotation, so no wording was
+             invented or published.
+
+------------------------------------------------------------
+
+OA-ZYRA-301
+Title:       Set Up ZYRA's Marketing Channels — Facebook, Instagram, TikTok
+             and Any Other Channel Worth Having
+Category:    Marketing / Brand / Accounts
+Priority:    Medium now, High as the launch date approaches. Nothing here
+             blocks the app being built. All of it blocks the app being
+             found.
+Status:      IN PROGRESS — Marketing Command Centre V4 implemented and
+             internally verified 2026-10-04. The non-secret nine-platform
+             account register, master-idea variants and 1–3-idea calendar are
+             live locally. Real handles/security facts still require Founder
+             reconciliation; no external connection or public post is
+             recorded or authorised.
+Owner:       Founder (handles, human-only account/credential steps and every
+             public approval) · Codex (main operator: research, planning,
+             content, administration, security/compliance coordination,
+             records, app and website integration) · ChatGPT (bounded support
+             only when engaged)
+Raised:      2026-09-23
+Raised by:   Founder, 2026-09-23: "also add to oa for us to make facebook,
+             instagram, tiktko and any other amerketing to get zyra marteked"
+Initiative:  INI-002 / ZYRA
+Authority:   AD-AIOS-111 (Codex full operating control; Founder sole approval)
+
+CURRENT IMPLEMENTATION UPDATE 2026-10-04
+             Founder GO: "ok do those", following Codex's inspection and
+             recommendation to build the social control centre, master-idea
+             variant model and calendar without connecting live accounts.
+             ZYRA Marketing System V4 now adds:
+               - nine non-secret account rows for Facebook, Instagram,
+                 Threads, TikTok, YouTube, X, Pinterest, Reddit and Snapchat;
+               - owner, public profile, login-identity label, business status,
+                 MFA, passkey, recovery, delegated-access and integration state;
+               - explicit rejection of password, token, recovery-code and API-
+                 key fields;
+               - master ideas with linked platform variants;
+               - a Europe/London calendar capped at three distinct ideas per
+                 day while permitting reused platform variants;
+               - exact approval identity expanded to destination account,
+                 schedule, media reference and optional media SHA-256;
+               - fail-closed live connection, automated publishing and public-
+                 reply policy with no corresponding execution route.
+             Eleven engine tests and four AIOS bridge tests pass; Python
+             compilation passes. No social account, scheduler, credential,
+             payment or publishing API was connected. The running AIOS process
+             still holds its earlier bridge module until its next authorised
+             restart; static interface assets are already on disk.
+
+PREVIOUS IMPLEMENTATION UPDATE 2026-09-25
+             The ZYRA Marketing System V3 was current at that date. AIOS exposed the
+             Founder-only Marketing Command Centre at `/marketing/`, backed by
+             the governed ZYRA workflow and one atomic state store. It contains
+             the eight-role team, content pipeline, research, exact-preview
+             approval, manual publishing packs, community escalation,
+             analytics and a `COLLECT_ONLY` Inspiration inbox. Saved-video
+             URLs are retained in order; identical URLs are marked as repeats;
+             no video is fetched, analysed or implemented during collection.
+             Eight workflow tests, three bridge tests and live HTTP/UI probes
+             passed. No social, model, advertising, payment or publishing API
+             is connected.
+
+WHAT THIS COVERS
+             The named three, plus the channels that usually matter for an
+             app like this one. Written out so the list is a decision and not
+             an assumption:
+               Facebook      — page, not a personal profile
+               Instagram     — the main visual channel for this audience
+               TikTok        — the main reach channel for this audience
+               YouTube       — for longer explanation, and it is where
+                               search sends people who want to understand
+                               what an app actually does
+               X / Twitter   — low effort to hold the name, low priority to
+                               use
+               LinkedIn      — for the business, not the product
+               WhatsApp      — a business account, because a large part of
+                               this audience will want to message rather
+                               than fill in a form
+               Pinterest     — worth a look, not worth assuming
+             Whether each one is actually used is the Founder's call. Whether
+             the NAME is reserved on each one is a different question and the
+             answer is usually yes, early, because names are taken by
+             strangers and cannot be bought back cheaply.
+
+WHY THIS IS BEING RAISED NOW RATHER THAN AT LAUNCH
+             Two reasons, and neither is impatience.
+             First, handles. "zyra" is a short, pronounceable, already-popular
+             word. The exact handle is very unlikely to be free everywhere,
+             which means the real decision is what the consistent fallback is
+             across all channels — and that decision is much cheaper to make
+             once, now, than to discover one channel at a time later.
+             Second, the app store listings and the website will both want to
+             link to these, and the links have to exist before the listing is
+             written.
+
+THE TOONBEE GATE IS REMOVED - CORRECTED 2026-09-24
+             As first written on 2026-09-23 this action said nothing could go
+             public until OA-ZYRA-235 was resolved. THAT GATE WAS FABLE'S
+             MISTAKE AND IT IS NOW LIFTED. The Founder has said what Toonbee
+             is: a website for making animated AI videos, which he noted in
+             case it helped with advertising. It is a tool he might use, not a
+             risk to clear, and it has no bearing on reserving a handle or
+             opening an account.
+             Fable built the gate from OA-ZYRA-235's forceful wording without
+             knowing what the word meant - treating an unknown as a hazard
+             because that felt like the careful choice. It was not careful; it
+             blocked real work for no reason. Recorded plainly so the register
+             shows both the error and its correction.
+             THE REAL TASK SURVIVES, as ordinary work rather than a gate: when
+             ad creative is being produced, look at Toonbee and decide whether
+             it is worth using. See ACTION 7 below.
+
+WHAT THIS MUST NOT DO
+             A constraint, from the Founder's own governance: ZYRA is a
+             Muslim matrimonial product. Marketing copy carries a trust and
+             modesty standard that ordinary app marketing does not. Nothing in
+             this action authorises any wording; every public sentence is the
+             Founder's to approve.
+
+ACTIONS
+  1. DONE 2026-09-24 — OA-ZYRA-235 answered and closed. Toonbee is a website
+     for making animated AI videos. It gates nothing.
+  2. OPEN — Codex checks handle availability across the channels listed above
+     and reports which exact names are free, so one consistent handle can be
+     chosen rather than a different one per channel.
+  3. IN PROGRESS — Founder states that the social accounts have been created.
+     Exact handle, public URL, login identity, business status, recovery and
+     access evidence remain to be reconciled one platform at a time.
+  4. IN PROGRESS — Codex implemented the nine-platform non-secret account
+     register on 2026-10-04. Its rows intentionally start as
+     NEEDS_RECONCILIATION; completing them requires the Founder/account evidence
+     and the acceptance controls in OA-AIOS-392 REC-004/014.
+  5. OPEN — Codex adds the links, share behaviour and link-preview images on
+     the website and in the app, once the handles are fixed.
+  6. OPEN — Codex prepares a written plan for what each channel is FOR. A channel with no
+     stated purpose becomes a channel nobody posts to, and an abandoned
+     account is worse than no account because it looks like an abandoned
+     company.
+  7. OPEN — evaluate Toonbee when ad creative is being made, carried across
+     from OA-ZYRA-235. Whether an AI animated-video tool suits ZYRA is a real
+     question and not only a cost one: a Muslim matrimonial product is judged
+     on whether it feels trustworthy and respectful, and generated video can
+     read as cheap in a way that damages exactly that. Worth trying, worth
+     looking at honestly before it goes out under the ZYRA name.
+  8. OPEN — MARKETING PAGES, raised by the Founder 2026-09-24 alongside the
+     channels. Distinct from the public website: landing pages a specific
+     advert points at, an app-store-facing page, and whatever a campaign
+     needs. Codex owns the build under AD-AIOS-110 since it is product
+     surface. Two things must be settled before any is built - what each page
+     is trying to get the visitor to DO, and what happens to the details of
+     anyone who fills something in on it, which is where OA-AIOS-381 and the
+     data protection position stop being theoretical.
+
+Dependencies: OA-ZYRA-235 (Toonbee — ANSWERED AND CLOSED 2026-09-24; it was
+             never a blocker and the gate Fable wrote here has been removed) ·
+             OA-AIOS-383 (business account and credential
+             discipline) · OA-AIOS-381 (ICO registration — a public marketing
+             presence that collects any enquiry data makes the data
+             protection position more visible, not less) · existing material
+             in BUSINESS/BRAND MESSAGING, BUSINESS/COMPETITOR RESEARCH,
+             BUSINESS/APP NAME CREATION, BUSINESS/ZYRA LAUNCH GUIDE,
+             BUSINESS/WEBSITE
+Target:      Handles checked and one consistent name chosen -> accounts
+             created by the Founder under the business identity -> recorded in
+             the account register -> links live on the website and in the app
+             -> a written purpose per channel -> marketing pages specified and
+             built -> Toonbee looked at when ad creative is made -> close
+Evidence:    Founder instruction in chat, 2026-09-23. No account created, no
+             handle reserved and no copy written under this action as at the
+             date it was raised.
+
+MARKETING CLAIMS / MEDIA PROGRESS — 2026-10-06
+             Under bounded private preparation authority, two original drafts
+             now exist: 18 evidence-linked proposed claim decisions with 19
+             source pins, and a dated manifest of 54 asset paths / 13,687,230
+             bytes across exactly five roots (14 website, 11 brand, 13 icon,
+             one splash and 15 font assets). All 18 claim publication decisions
+             are HOLD. These counts describe the original dated inventory, not
+             a freshly measured asset set or cleared public deliverables.
+             Root rechecked 19/19 source pins and four provenance pins; 53/54
+             original asset pins match. The one changed original app Syne notice
+             belongs to APP BUILD's separately authorised local packaging repair,
+             not corruption. Both original drafts and their historical hashes
+             are preserved; no replacement manifest is claimed by this filing.
+             Marketing's later provenance check matched official Google Fonts
+             commit 54fb97bd69162b95b2aa2c3996ffd71466c1aec2 to the published
+             2017 Syne OFL and a 2019 version-2.200 binary. No erroneous website
+             year was established; no 2017 -> 2019 website notice rewrite occurred.
+             Exact Syne inclusion, app-to-website transfer, 1 October receipt and
+             5 October ledger linkage were strengthened, not original acquisition
+             or instancing proof. Six Jost 3.710/copyright-2020 binaries are
+             compatible with the cited notice; exact acquisition remains unproven.
+             Marketing reported an initial old-ledger drift stop, followed by
+             one authorised stable retry at 13:00 BST. Cause is unknown; the
+             retry did not expand scope or silently discard the first outcome.
+             APP BUILD's later sealed receipt records three exact font-text
+             targets and two pubspec asset-registration lines changed only;
+             all 13 TTFs, dependency lock/config and retained signed IPA remain
+             unchanged. Root read the complete 266-line receipt and verified 36
+             exact pins, including true prebackups and three physical unsigned
+             UTF-8 text matches/manifest entries. The first iOS bundle command
+             failed on the SdkRoot tooling requirement and its log is retained.
+             The second unsigned android-arm debug bundle completed with exit
+             zero and --no-pub: platform-neutral local asset packaging, NOT a
+             signed iOS artifact, store submission or intended-release proof.
+             These text/manifest checks are not additional runtime tests.
+             Final acquisition/instancing and commercial rights, choice of assets,
+             final content/claims, channel/territory permission, the exact final
+             artifact and Founder acceptance remain OPEN. No account, public
+             copy/post, campaign, live integration, legal clearance or launch
+             acceptance is asserted. OA-AIOS-392 REC-009 records the coordinated
+             readiness progress; this existing specialist OA retains ownership.
+             Original Group evidence under SYSTEM/RESOURCES/REPORTS/:
+             ZYRA_MARKETING_CLAIMS_DRAFT_2026-10-06_V1.md
+             SHA-256: 0055efc0a2fd80c24e3bbd05b1acda8154cde554dba448fdb9167bb268f710f3
+             ZYRA_MARKETING_MEDIA_RIGHTS_MANIFEST_DRAFT_2026-10-06_V1.md
+             SHA-256: f8ff00bd993cb5eb8d59c5a2641b8cdd1ae7ed641fa5351a1177f76a17961db8
+             Later ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_FONT_NOTICE_REPAIR.json
+             SHA-256: 1f26b5bb52d15e8707fab688f9e7d49c47d9c9cf5ca84569a3378d931e2eacd7
+             App pubspec post SHA-256 (receipt-bound, not reread in this filing):
+             3023a05e77d2f7f3b4d698a4d5fe1ace2f725787befff0923262fe32cf2d8588
+
+ACTION 6 CHANNEL-PURPOSE PREPARATION — 2026-10-06
+             Codex created and internally checked a private channel-purpose
+             draft for the union of nine modelled channels plus LinkedIn and
+             WhatsApp Business. It records audience/purpose hypotheses, format/
+             reuse and qualified website handoff, estimated workload, proposed
+             first/hold/reserve ordering, explicit claim/source mappings and all
+             18 publication holds. This is local preparation executed, not
+             Founder-selected channels, account reconciliation, public activity
+             or acceptance. Action 6 remains OPEN pending Founder choices and
+             acceptance; no whole OA or REC is closed.
+             Root read the complete 260-line draft and verified six source pins,
+             11 unique channel rows, all 18 HOLD decisions and the existing
+             maximum of three master ideas per Europe/London day. This cap is
+             not a daily quota or three posts on every platform. LinkedIn and
+             WhatsApp are outside the current nine-platform model; this draft
+             adds neither to its engine. Website is a destination, not a twelfth
+             channel. FIRST/HOLD/RESERVE are recommendations, not activated or
+             Founder-selected priorities, topics, cadence, workload or staffing.
+             Account identity/security, channel/territory, exact final claims,
+             media rights, destination/public/legal gates and Founder GO retain
+             their separate acceptance requirements. No source, account,
+             provider, public post, engine, state or calendar change was executed
+             for this draft. No readiness score or launch clearance is inferred.
+             OA-AIOS-392 REC-009 records coordinated progress only; this existing
+             specialist OA and Action 6 retain ownership.
+             Exact Group evidence under SYSTEM/RESOURCES/REPORTS/:
+             ZYRA_MARKETING_CHANNEL_PURPOSE_DRAFT_2026-10-06_V1.md
+             SHA-256: 576d34efe5217ce41c0021cb941b7f73f5afe0cd5fa895bf99d1ea75981fea06
+
+ADMIN ACTION6 CONTENT-PREPARATION RECONCILIATION — 2026-10-07
+             Later private preparation under the renewed Founder local-work
+             instruction, not approved campaign/channel selection. One text-only
+             pack has three complete candidate briefs: B01 intent before an
+             introduction; B02 optional practical Seeker–Guardian conversation;
+             B03 Founder-introduction template. Each includes hook, script,
+             caption, audience, production checklist and claim restrictions.
+             Founder name/motivation/background are unfilled, not invented.
+             All18 individual publication HOLDs remain. Zero media assets,
+             accounts/channels/cadence/response owners/schedules selected;
+             no render, measured speaking duration, public account or legal/IP
+             acceptance. Root checked structure and10 input pins; ADMIN and a
+             separate read-only Codex check matched this exact packet, not a
+             fresh product/provider or promotional-rights audit.
+             Action6 remains OPEN for Founder choice, personal facts, exact
+             media/rights/destination/export checks and separate public-content GO.
+             OA-AIOS-392 REC009 is coordination only. No app/website/AIOS engine,
+             account/security/provider/calendar/publication/spend action.
+             Group SYSTEM/RESOURCES/REPORTS/
+             ZYRA_MARKETING_CONTENT_BRIEF_PACK_DRAFT_2026-10-06_V1.md — 21,975B
+             SHA-256: 30a4689d011ccce49bae9e548048faab170c8184f2b069cd5d792516b822ae3c
+             Root dated internal receipt:
+             release-resume-marketing-verified-2026-10-06-2346.json — 5,261B
+             SHA-256: 3449109e49e4f551127ff713937f3fed39010e59e401266d9ce50e45852cb440
+             No new ID, owner/status/closure/score change or Founder acceptance.
+
+ADMIN ACTION6 PRIVATE PLATFORM VARIANTS COMPLETED — 2026-10-07
+             Later routine-local away-work preparation is EXECUTED and internally
+             checked, not pending execution of this finite documentary packet.
+             Three unchanged master briefs now have nine private candidates:
+             B01/B02/B03 × TikTok/Instagram/Facebook, with hooks/scripts/captions,
+             restrictions and39 sequential TEXT storyboard beats. The companion
+             index binds all9 exact sections and eight unchanged input anchors.
+             It is informational/non-executable, not an engine/state import,
+             approval token, publishing route, calendar or activated campaign.
+             All C01–C18 publication decisions remain HOLD. Seven root selections
+             stay empty; GO/Founder/release acceptance null. Every variant retains
+             empty assets/null account,destination,owner,schedule,budget,GO and
+             acceptance. B01/B03 scripts/captions preserve full development/
+             unconfirmed-launch qualification; B02 preserves optional/advice/
+             not-live-feature/privacy boundaries. B03 requires actual Founder
+             public name/own motivation/recording; optional background unfilled.
+             No biography, likeness, rights, asset, account or channel chosen.
+             ADMIN read both complete outputs, matched9 section bytes/hashes,
+             all39 beats and8 named input pins. Separate read-only internal check
+             agrees. Root's305 support assertions are ATTRIBUTED documentary
+             support evidence, not305 runtime tests or a new ADMIN execution.
+             Byte bindings do not prove current capability truth. No render,
+             speaking/read-time/mobile legibility, actual media rights, account/
+             platform/territory/destination acceptance, response staffing/cadence,
+             public copy GO or public operation has occurred.
+             Action6 and this whole OA remain OPEN for Founder selection/revision,
+             approved production inputs and exact final preview/public GO and
+             acceptance. Private candidate preparation is complete; repeated
+             unchanged holds must not launch more unselected campaigns/loops.
+             OA-AIOS-392 REC009 coordinates only; OA-AIOS-390 keeps destination.
+             No shared engine/AIOS state/app/website/account/security/provider/
+             native-job/calendar/public/spend change, new ID/status/owner/
+             closure/score or Founder acceptance.
+             Group SYSTEM/RESOURCES/REPORTS/:
+             ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md —33,941B
+             SHA-256: 0b28de6e8e66b4c58ce3502f508f6dac6381ce9a217c16edb81cdbe0b341c2ae
+             ZYRA_MARKETING_APPROVAL_LIBRARY_DRAFT_2026-10-07_V1.json —17,393B
+             SHA-256: 2e86d4c2385f32c0f33f6fc5bbe63a5869a6a043d68501fe36225c894d7c765b
+             Root receipt release-marketing-platform-variants-verified-2026-10-07.json
+             —9,402B / SHA-256:
+             6d7bdf807dc6ffbd4f54aea8e2c7dad71abb9a8d997daae1e519d011ef13b6fa
+
+------------------------------------------------------------
+
+OA-ZYRA-302
+Title:       Profile photo uploads have no dimension cap - agree the bounding
+             box, then harden the bucket
+Category:    App / Storage / Cost control
+Priority:    MEDIUM. Nothing is broken today and no real member has been
+             affected. It is a latent defect that becomes expensive the moment
+             real members upload from modern phones, which is precisely when
+             it would be hardest to fix quietly.
+Status:      OPEN - awaiting the Founder's decision on the cap. Codex
+             recommends 1440 on both axes. No code and no Supabase
+             configuration has been changed by anyone.
+Owner:       Codex (implementation, both parts) - Founder (decides the cap and
+             approves the bucket limits) - Fable (raised it, holds the record)
+Raised:      2026-09-24
+Raised by:   Fable, while measuring Supabase quota headroom for OA-ZYRA-276
+Initiative:  INI-002 / ZYRA
+Authority:   AD-AIOS-110
+
+THE DEFECT
+             `lib/services/zyra_photo_service.dart:274`, in `pickAndUpload()`,
+             calls ImagePicker with `imageQuality: 85` and NO `maxWidth` or
+             `maxHeight`. The JPEG is re-encoded but the pixel dimensions are
+             whatever the camera produced. Bytes are then read straight to
+             `uploadBinary` with no resize step anywhere in between.
+             A 12-megapixel photo therefore uploads at 4032 px wide to be
+             shown, at most, in a full-screen phone view.
+
+FABLE'S HEADLINE NUMBER WAS MEASURING THE WRONG THING - CORRECTED
+             Fable reported "average 3.65 MB per photo" from the storage table
+             and built the case on it. THAT AVERAGE WAS DOMINATED BY SEED
+             DATA. Codex checked rather than accepting it, and a re-query by
+             Fable confirms him exactly:
+               99 objects  image/png   uploaded 2026-07-25   366 MB
+                                       average 3,782 kB each
+                4 objects  image/jpeg  uploaded 2026-08-19   1.79 MB
+                                       average 447 kB each
+             The 99 PNGs are seeded test assets that never went through the
+             app's picker, and the ImagePicker setting cannot affect them.
+             THE ONLY OBJECTS THAT CAME THROUGH THE UPLOAD PATH ARE THE FOUR
+             JPEGs, AND THEY AVERAGE 447 kB - which is unremarkable.
+             So the defect is real and the arithmetic about what it would cost
+             is real, but the measurement Fable used to dramatise it was
+             measuring something else. Four samples is also too few to
+             characterise user behaviour. This is the third time in two days
+             that a number has been repeated without interrogating what it was
+             counting; it is recorded here for that reason as much as this
+             one.
+             WHAT SURVIVES THE CORRECTION: the code has no cap, so the
+             exposure is latent rather than absent. It has not bitten because
+             only four real uploads exist.
+
+CODEX'S RECOMMENDATION, AND WHY IT BEAT FABLE'S
+             1440 on BOTH axes, keeping quality 85.
+             BOTH AXES ARE NECESSARY. ImagePicker preserves aspect ratio, so a
+             portrait photo capped on width alone keeps its long edge. Fable
+             proposed `maxWidth` only in the first pass and raised the
+             question in message 152; Codex confirmed it as a defect in the
+             proposal, not a preference.
+             1440 RATHER THAN 1080 because Browse, Profile Preview,
+             Connections and Guardian Network all present full-screen,
+             edge-to-edge photographs. Fable recommended 1080 on the
+             assumption that photos appear in small circles and cards. That
+             assumption was wrong and it came from not knowing the screens.
+             This is the authority split working: Fable found the defect from
+             the infrastructure side and got the remedy wrong from the product
+             side, which is Codex's.
+
+IDENTITY AND MODERATION - NO FORENSIC ORIGINAL IS NEEDED
+             Profile photos are NOT identity-verification evidence. The
+             approved IDV architecture sends the document and selfie from the
+             device straight to the specialist provider, and ZYRA is
+             specifically not meant to retain either. Photo-to-selfie
+             comparison is not implemented and is a separate legal and product
+             question. The moderation queue is a developer preview and 1440 px
+             is ample for the screening planned. If a future process ever
+             needs forensic originals, that belongs on a separate controlled
+             evidence path - not achieved by silently keeping every member's
+             profile photograph at camera resolution.
+
+A SECOND GAP CODEX FOUND, WHICH FABLE HAD NOT CHECKED
+             The live `profile-photos` bucket has NO server-side file-size
+             limit and NO MIME-type allow-list. A client resize only governs
+             the app behaving normally; a modified or outdated client can
+             still upload whatever it likes. The client fix is therefore
+             necessary and not sufficient.
+
+EGRESS - FABLE'S FIGURES NARROWED
+             Fable's estimate treated the Free plan's 5 GB as a single pool.
+             Supabase provides SEPARATE 5 GB cached and 5 GB uncached
+             allowances. The bucket is private, and private objects have a
+             poorer shared-CDN hit rate because access is checked per user.
+             The app also holds a seven-day on-device byte cache keyed WITHOUT
+             the signed-URL token, so re-signing a URL does not force the same
+             device to re-download - which Fable did not know and which
+             materially softens repeat browsing. It does not help first views,
+             new devices, cleared caches or other members.
+             Codex confirms the preload behaviour that drives the worst case:
+             Browse preloads every photo of the current profile plus the first
+             photo of the next. Fable's "250 loads for 50 profiles" therefore
+             holds as a FIRST-LOAD EQUIVALENT, and should be described that
+             way rather than as a monthly capacity forecast.
+             Codex also cautions that 200-350 kB per resized photo is
+             plausible but not guaranteed - it varies by content and format,
+             and should be measured across a representative iPhone and Android
+             sample before any capacity figure is published.
+
+RE-EXAMINATION ON UPGRADED MODELS - 2026-09-24, MESSAGE 154
+             The Founder moved both agents to higher models and asked for each
+             matter to be re-examined before he approves. Fable re-checked its
+             side and put eight matters to Codex for CONFIRM or REVISE. Two are
+             new.
+             NEW - LOCATION DATA IN PHOTOS. THE MOST IMPORTANT ITEM ON THIS OA
+             IF IT PROVES TRUE. There is no EXIF or metadata stripping anywhere
+             in lib/; bytes go from readAsBytes() straight to uploadBinary.
+             Resolved versions: image_picker 1.2.3, image_picker_android
+             0.8.13+19, image_picker_ios 0.8.13+6. Fable's understanding is
+             that image_picker copies the original EXIF, including GPS, onto
+             the resized image on both platforms. THIS IS NOT PROVEN for these
+             versions and is recorded as a hypothesis awaiting a real-device
+             test, not as a finding. If true: every real member's photo carries
+             where it was taken, the whole file reaches other members' devices
+             through signed URLs and the image cache, and for a matrimonial
+             product with women members that is a safety exposure as well as a
+             UK GDPR data-minimisation failure. The fix would belong in the same
+             change as the resize.
+             NEW - A SEQUENCING TRAP between the bucket hardening and the seed
+             replacement: a size ceiling or MIME allow-list applied first could
+             reject the replacement uploads. Proposed order: app cap, measure,
+             replace seeds, then apply bucket limits.
+             VERIFIED BY FABLE THIS TURN: storage.buckets shows profile-photos
+             private, file_size_limit NULL, allowed_mime_types NULL - Codex's
+             hardening finding confirmed. Separate cached and uncached 5 GB
+             egress allowances confirmed from the usage page.
+             OPEN QUESTION FOR CODEX: the seed PNGs, if replaced "under the
+             same paths", stay PNG and stay comparatively large; converting to
+             JPEG requires updating profile_photos.storage_path in the same
+             step.
+
+CODEX'S RE-EXAMINATION RETURNED - 2026-09-24, MESSAGE 155
+             Three CONFIRM (1 the cap, 2 both axes, 6 egress), five REVISE, all
+             of them tightening rather than reversing:
+             MATTER 3 - LOCATION. SOURCE-LEVEL CONFIRMATION, DEVICE TEST NOT
+             RUN. Codex read the exact installed picker source: the Android
+             implementation EXPLICITLY copies GPS EXIF onto the resized image;
+             the iOS implementation reattaches the original metadata with no
+             GPS exclusion. Fable's hypothesis is therefore upgraded from
+             recollection to a credible retention path established in code.
+             It is still NOT proof that a given photo leaks location; that
+             needs GPS-positive originals compared against downloaded stored
+             objects on both platforms. Codex has an iPhone connected but no
+             physical Android and no verified GPS-tagged captures, and
+             declined to give a completion date he could not stand behind.
+             Codex also states that resizing, or requestFullMetadata:false,
+             is NOT a reliable safeguard - explicit sanitisation is required,
+             with orientation applied before the orientation tag is removed.
+             WHO HAS BEEN EXPOSED: NO REAL MEMBER. Codex established that
+             every one of the 103 stored objects belongs to a test-domain
+             account, and storage.buckets holds only this one bucket, and the
+             only upload path in lib/ is zyra_photo_service.dart. The defect
+             has been caught before it reached a member - which holds only
+             while no real member uploads before the fix ships.
+             MATTER 4 - seeds to JPEG q85 under NEW .jpg paths, matching MIME;
+             upload and verify, transactionally update every storage_path row,
+             check Browse, then retire originals. New paths also defeat the
+             app's path-keyed cache showing stale files.
+             MATTER 5 - order revised: measure and privacy-test the candidate
+             BEFORE shipping; then ship, replace seeds, then bucket limits after
+             checking older-client behaviour. Size and MIME limits neither strip
+             metadata nor make a file safe.
+             MATTER 7 - Codex withdrew his own earlier claim that 1440 is ample
+             for moderation. Adequacy is untested against a real moderation
+             system.
+             MATTER 8 - test set widened again: JPEG and PNG, orientation, a
+             genuine low-memory Android, confirm the high-megapixel source
+             really is that resolution, inspect downloaded stored objects not
+             picker previews, record bytes, processing time and failures.
+             FAIL CLOSED: a processing failure must never fall back to
+             uploading the unprocessed original.
+
+             FABLE'S VIEW ON WHAT THIS MEANS FOR THE DECISION: the source
+             evidence is enough to decide the FIX now. The device test is what
+             proves the fix works; it is not needed to justify building it.
+             Waiting for the test before deciding would leave the retention
+             path open for no gain.
+
+TEST INPUTS MEASURED 2026-09-24 - THE ORIGINALS DO CARRY LOCATION
+             The Founder took three photographs away from his home and placed
+             them in SYSTEM/RESOURCES/TEMPORARY/PHOTO_PRIVACY_TEST_2026-09-24
+             under BLACK UMBRELLA GROUP. Fable read them directly.
+             ALL THREE CARRY A FULL GPS BLOCK - fifteen tags each. Coordinates
+             deliberately NOT transcribed into this register or into chat; the
+             finding is that they exist, not what they say.
+               IMG_0444.HEIC  5,367,472 bytes
+               IMG_0445.HEIC  1,314,348 bytes
+               IMG_0446.HEIC  5,464,018 bytes
+             Each carries: latitude and longitude with hemisphere refs,
+             altitude, GPSHPositioningError of about TWO METRES, the direction
+             the camera was pointing, walking speed at the moment of capture,
+             and a GPS timestamp to the second.
+             ALSO CARRIED, AND WORTH ITS OWN LINE: Make "Apple", Model
+             "iPhone 15 Pro Max", the exact lens, ISO, aperture, shutter, and
+             DateTimeOriginal to the second. EVEN WITH GPS REMOVED, that set
+             is a device fingerprint - it links photographs from one handset to
+             each other across different profiles. Stripping location alone is
+             therefore not the whole job; the sanitisation in ACTION 2 should
+             remove all non-essential metadata, keeping only what is needed to
+             display the image correctly.
+             THE SIZE CASE IS ALSO NOW EVIDENCED PROPERLY. These are 5712 x
+             4284, roughly 24 megapixels, at up to 5.5 MB. Fable's earlier
+             "average 3.65 MB" was measuring seed PNGs and the only four real
+             uploads averaged 447 kB, which had weakened the argument. A real
+             modern handset produces FIVE MEGABYTE originals, so the uncapped
+             upload path is exactly the exposure it was claimed to be - now
+             shown from a real device rather than inferred.
+             WHAT THIS DOES AND DOES NOT PROVE: it establishes the test inputs
+             are valid. It does NOT yet show what the app does with them. That
+             is the upload comparison still outstanding.
+             HANDLING: the folder is now excluded in BLACK UMBRELLA GROUP/
+             .gitignore and carries a written warning. The three files are the
+             Founder's real location and are to be DELETED once Codex reports.
+
+ACTIONS
+  0. DONE 2026-09-24 - Codex returned CONFIRM/REVISE on all eight matters,
+     message 155. Matter 3's device test remains OPEN and is not a privacy
+     sign-off.
+  0a. WITHDRAWN 2026-09-24 - the Founder cancelled the approval message Fable
+     had drafted: "TASK 2 IS NOT NEEDED. CANCEL THAT". No approval has been
+     given and none is now being sought.
+     WHAT THAT MEANS, STATED PLAINLY SO NOBODY LATER ASSUMES OTHERWISE: the
+     1440 x 1440 cap and the metadata sanitisation are NOT authorised and are
+     NOT being built. Both agents recommend them; neither has been approved.
+     The evidence behind the recommendation is unaffected and remains in this
+     entry - the picker source copies GPS on both platforms, and the Founder's
+     own three photographs carry fifteen GPS tags plus a device fingerprint.
+     This is a deferral of the decision, not a finding that the decision was
+     wrong. It returns when the Founder wants it.
+  0b. PART DONE 2026-09-24 - iPhone GPS-tagged captures SUPPLIED AND VERIFIED
+     (three HEIC files, full GPS confirmed by Fable). STILL OPEN: an Android
+     route for the location test, and a real low-memory Android for Matter 8
+     before launch.
+  0f. ANSWERED 2026-09-24 - WHY THE UPLOADS DID NOT LAND. Codex: the Founder
+     was uploading through a DEVELOPER path, not a real member account, so the
+     photos never went to the production bucket. None of Fable's four guesses
+     was right; it was a fifth option nobody outside the app could have seen.
+     Recorded because the guessing cost a round of checks that a single line
+     from Codex settled - when the question is "what did the app do", ask the
+     agent who owns the app before measuring the database.
+     CONSEQUENCE: the end-to-end privacy test CANNOT run until the Founder
+     tests on a real account. PARKED until then on his instruction.
+     THE THREE VERIFIED ORIGINALS KEEP THEIR VALUE - they proved the inputs
+     carry GPS and that a current handset produces 5 MB files. That evidence
+     stands whatever happens to the upload test.
+
+  0g. NOTED 2026-09-24 - CODEX HAS SHIPPED THE SUPABASE KEY MIGRATION
+     (message 151) WITHOUT WAITING TO BE CHASED. Fable read
+     lib/config/supabase_config.dart directly: the app now uses
+     `_productionPublishableKey` in `sb_publishable_` format, the field is
+     renamed from anonKey to publishableKey, and
+     zyra_supabase_config_policy.dart now REJECTS any key not matching
+     ^sb_publishable_[A-Za-z0-9_-]+$ - so the app cannot start on a legacy
+     JWT or a privileged secret key even by mistake. That guard is more than
+     message 151 asked for.
+     WHAT THIS DOES NOT YET DO: revoking the exposed legacy service_role key
+     still requires disabling legacy JWT keys at Supabase, and that waits on a
+     shipped build being confirmed on a real device. OA-AIOS-383 stays open.
+
+  0e. OPEN 2026-09-24 - THE FOUNDER'S THREE UPLOADS NEVER REACHED PRODUCTION.
+     He reported adding three photos to the app. Fable measured immediately
+     after: storage.objects still 103 objects with newest created_at
+     2026-08-19; profile_photos still 597 rows with newest 2026-08-05; and
+     exactly ONE Supabase project exists on the account, so there is no
+     second destination they could have reached. NOTHING ARRIVED.
+     Candidate explanations, undetermined from Fable's side: a local or dev
+     Supabase stack; a silent upload failure; a screen that never calls
+     pickAndUpload; or an RLS rejection.
+     A DEFECT FOUND WHILE LOOKING: pickAndUpload() ends `catch (_) { return
+     const ZyraPhotoResult.error(); }`. Every failure mode collapses into one
+     untyped error with the reason discarded. This is why the question cannot
+     be answered from outside the app, and it is worth fixing on its own
+     merits - at minimum log the caught error in debug builds.
+     Referred to Codex in message 156.
+
+  0d. PARKED 2026-09-24 ON FOUNDER INSTRUCTION - the upload comparison. The
+     Founder reports the photo-upload step is not reachable in the current
+     build, so the end-to-end test cannot run yet. Deferred to whenever that
+     surface is available.
+     WHAT PARKING THIS DOES NOT DO: it does not weaken the case for the fix.
+     The Android picker source explicitly copies GPS; the iOS source
+     reattaches metadata with no GPS exclusion; and the originals are now
+     measured as carrying fifteen GPS tags plus a device fingerprint. The
+     remedy is decided on that evidence. The upload comparison proves the
+     remedy WORKS - it is acceptance testing, not the reason to build.
+     Codex must not treat this as a reason to defer the implementation.
+     THE TEST FILES STAY. Fable recommended deleting them and retaking
+     them later; the FOUNDER RULED OTHERWISE on 2026-09-24 - they remain in
+     place as part of this action. Settled, and not to be raised again. The
+     folder is gitignored and carries a written warning, which is the
+     protection that was actually needed.
+  0c. RECOMMENDED - no external tester uploads real photos until the
+     sanitising change ships. Founder decision.
+  1. OPEN - Founder decides the cap. Both Codex and Fable now recommend
+     1440 x 1440 at quality 85.
+  2. OPEN - Codex implements it, with tests proving the output dimensions and
+     the upload behaviour.
+  3. OPEN - measure real output across representative iPhone and Android
+     photos; record median and worst case. No capacity figure is published
+     before this.
+  4. OPEN - separately approve a bucket file-size ceiling and an image
+     MIME allow-list, sized from action 3.
+  5. OPEN - the 99 seeded PNGs. They do NOT age out; they sit there until
+     replaced. They power the Browse test deck, so deleting them breaks that
+     deck. Codex recommends resize-and-replace under the same paths as its own
+     maintenance action once the cap is live. Fable's earlier suggestion to
+     "let it age out" was wrong and is withdrawn.
+
+Dependencies: OA-ZYRA-276 (Supabase plan and quota - this is where the
+             question came from) · mailbox messages 152 and 153 · AD-AIOS-110
+Target:      Founder picks the cap -> Codex ships it with tests -> real output
+             measured -> bucket limits approved and applied -> seeded assets
+             resized -> close
+Evidence:    storage.objects queried by Fable 2026-09-24, twice - the second
+             query by mimetype and date is what exposed the seed-versus-real
+             split. Codex's independent verification of owners, domains and
+             sign-in recency, message 153.
+
+------------------------------------------------------------
+
+OA-ZYRA-303
+Title:       Canonical Progressive Onboarding — Full Client Flow Cleanup
+Category:    Product / UX / Persistence / Verification
+Priority:    High — remove contradictory account/profile sequencing and
+             prevent unconfirmed saves or stale-owner navigation
+Status:      OPEN — local implementation and internal verification recorded
+             in the handover; Founder physical acceptance and separate
+             backend/provider gates remain outstanding
+Owner:       Codex (implementation/evidence); Founder (acceptance/approvals)
+Raised:      2026-10-02
+Completed:   —
+Source:      Founder direct instruction in the current chat: full onboarding
+             review/cleanup for essentials, verification, enter-now/finish-
+             later, smooth coherent four-section profile setup
+
+Findings / disposition:
+  21. BUILT / INTERNALLY VERIFIED 2026-10-04 — DR-ZYRA-264
+      adds one mandatory first Seeker photo after DOB before Membership.
+      Owner-bound private staging/v4 recovery/confirmed post-IDV attachment
+      reuse the existing privacy pipeline without early profile creation.
+      Guardian remains identity-only; later Profile three-photo completion,
+      prices/opening/visibility and existing-account routing stay unchanged.
+      Pending marker survives sign-out without form/photo/choice data. Narrow
+      recovery reuses saved photos, refuses a seventh, bounds load/sign to10s,
+      retries failures without skipping unfinished identity questions. Busy,
+      owner/epoch/dispose guards and failed replacement retention are tested.
+      §109/new named receipt:2672functional PASS/2existing skips/232files,
+      147core/198navigation/30photo-artwork PASS;3real-font/18new candidates
+      inspected, format21files and analysis7.1s clean. Main PROFILE63.8s/
+      56.1MB/signature/identity/existing provisioning profile PASS; source/
+      native postchecks match. Fresh phone remains locked, unlock requested.
+      Found early-step recovery/retry and six-photo deadlocks are corrected;
+      regression also fixes photo-load error intercepting intro Continue.
+      test-only async/cache/503 retry fixtures are not treated as runtime PASS.
+      Cross-device/erased-store partial server creation remains non-atomic
+      under OA303/193; same-device marker is not a backend admission guarantee.
+      Staged-object retention/cleanup, later nontransactional photo reorder,
+      real moderation/provider activation remain held; no live write inferred.
+      L1 8c31e21c retains0critical/high/23med/287low: new low8ca075b924d9
+      is a legitimate shared model import;7ef3de2e564b is a request-scoped
+      bearer-header template, not credential data or duplicated product copy.
+      Written disposition: retain both without suppressing or broad refactor;
+      final L15c7f9e78 has no new/reopened/resolved findings.
+      OA257 owns existing/historical visual debt and physical acceptance.
+      Device install/native launch remains pending fresh unlock;6316/PID69078
+      is not this photo update. OA303/193/257/286 remain OPEN.
+  20. BUILT / INTERNALLY VERIFIED 2026-10-04 — DR-ZYRA-263 explicitly
+      adds Family first-month comparison in both protected signup roles.
+      Intro total and unchanged renewal formula/saving are separate; counts/
+      callbacks/saves/routes/trials/ordinary prices/no-activation stay. Pricing
+      owns amount/boundary; OA253 retains person eligibility/dual-role billing.
+      §108/named Family receipt:184focused/6real-font PASS,18fresh candidates,
+      clean analysis/format/independent review, unchanged L1 findings. Existing
+      guided source/tests/captures/receipt remain intact. Combined PROFILE
+      built55.9s/56MB/signature/profile PASS; initial lock followed by fresh
+      unlocked install6316/native launch/fresh exact-container PID69078 PASS.
+      Source/native/signature postchecks match; prior guided receipt remains
+      immutable. This also delivers its unchanged cards; no app-data deletion.
+      Physical motion/VoiceOver/saved-data acceptance separate; OAs stay OPEN.
+  19. BUILT / INTERNALLY VERIFIED 2026-10-04 — DR-ZYRA-262 adapts the
+      role-choice card language to onboarding gender/relationship and
+      equivalent profile/CompatibilityPart1 lists. Separate readable cards,
+      soft group entry/gold check transitions, native Flexibility circles;
+      no collapse/auto-advance. Copy/values/order/cardinality/privacy/saves/
+      routes and existing guards stay. Generic editor default is unchanged.
+      §107/named receipt:208focused/2624functional+2existing skips/10visual
+      cases,19inspected candidates, clean analysis/format PASS. New async/
+      scroll fixture and missing-glyph issues corrected, no runtime-flow fix.
+      L1new low shared-import suggestion is retained under OA257; historical
+      visual debt remains separate. Main signed PROFILE built53.7s/56MB;
+      phone locked/unlock requested, no new install/launch. Physical motion/
+      VoiceOver/saved-data acceptance separate; OA303/257/286 OPEN.
+  18. BUILT / INTERNALLY VERIFIED / LOCALLY DELIVERED 2026-10-04 —
+      DR-ZYRA-261 changes only the account handoff top icon to a decorative
+      gold person outline/halo in its existing70px space. Text/layout/fonts,
+      other stage artwork, transitions/arrows/routes/admission remain.
+      §106/named icon receipt:166/166 focused + two real-font checks PASS,
+      three new candidate captures, clean analysis/format, unchanged L1debt.
+      Corrected new synchronous-callback test fixture, no runtime guard change.
+      Twelve prior motion/thirteen post-motion member-gold/Account-ready pins
+      match. Main PROFILE installed6300/native fresh exact-container PID68709.
+      Physical/motion/VoiceOver/saved-data acceptance separate; OA303/257/286 OPEN.
+  17. BUILT / INTERNALLY VERIFIED / LOCALLY DELIVERED 2026-10-04 —
+      DR-ZYRA-260 responds to buggy role-choice finger swipes and all down
+      arrows. Release-frame outgoing-scroll cleanup, role clamping/focus/
+      entrance locks and rapid-switch unique keys, full-pager settlement,
+      failed-save retry rebuilds, Guardian overview/support one-shot route
+      guards and matching final downward role entry are built. No copy,
+      count/order/design/policy/provider changes or new consent/form swipe.
+      §105/named smoothness receipt:2592functional PASS/2existing skips,
+      final55gesture+218focused PASS, clean analysis/format, unchanged L1debt.
+      Full older visual matrix remains NOT PASS (143stale/baseline failures);
+      triage/written fixture-maintenance disposition under OA257, all approved
+      pixels retained. Main signed PROFILE installed6292/native-launched with
+      fresh exact-container PID68560. Physical motion/VoiceOver/saved-data and
+      provider/enforcement acceptance remain separate. OA303/257/286 OPEN.
+  16. BUILT / INTERNALLY VERIFIED / 2026-10-04 — DR-ZYRA-259 groups
+      Verified people with Photos/Compatibility/Guardian as one four-slide
+      section, numbered1/4–4/4. Welcome remains separate; no trust-only down
+      delay; common Next/tap/swipe/motion, four completed/current-gold dots,
+      final Guardian down exit. Copy/art/fonts/Auth/account/IDV unchanged.
+      §103/named four-slide receipt record406/406 regression,22/22 capture
+      checks/30 fresh PNGs, clean analysis/format and existing main signed
+      PROFILE build. Phone locked/unlock requested; no new install/launch.
+      Physical acceptance/delivery pending; OA303/257/286 OPEN, provider/
+      existing-account enforcement and public-claim gates remain separate.
+      Later same-day delivery: Founder confirms unlock; unchanged checked
+      main artifact/pins/signature installed6284 and native-launched, fresh
+      PID68477 in exact new container8F9855B6-E06F-4456-9B34-EA2D3BE7EF7B.
+      §104/named local delivery receipt supersede only the pending delivery
+      limit. Original receipt remains history; physical acceptance pending.
+  15. BUILT / INTERNALLY VERIFIED / 2026-10-04 — Founder screenshot asks
+      for a cleaner Account ready Seeker page, especially its gold bottom
+      button. Local plum/gold-edge primary, quiet secondary text action and
+      opaque consequence card retain every label/key/guarded route. No other
+      onboarding screen, Guardian layout, shared button or palette changes.
+      §101/named account-ready receipt record 193 focused functional passes,
+      final 7/7 focused/candidate pass, clean final full analysis/format and
+      three inspected real-font screenshots. Physical acceptance/delivery
+      PENDING; no native install or backend/provider/billing/release action.
+      Later DR-ZYRA-257 approval/delivery: fresh193-case regression PASS,
+      analysis clean; unchanged source built/signed and installed6132/native-
+      launched with fresh exact-container PID67990. §102/named account-ready
+      local receipt supersede only the preceding not-installed limit.
+      Original implementation evidence remains immutable; physical acceptance
+      and separate backend/provider/billing/release gates remain OPEN.
+  14. BUILT / INTERNALLY VERIFIED / 2026-10-04 — DR-ZYRA-256 removes
+      the sign-up verification sentence from Welcome and inserts a meaningful
+      unnumbered Our community trust page before the three unchanged themes.
+      Every Seeker/Guardian must verify before joining is an admission-policy
+      statement, not a claim that all existing live accounts have verified
+      identities or intentions. Gold shield, shared anchor/motion, owned
+      three-second checkpoint timer, Back/Skip and three-theme progress are
+      checked; §99/named trust receipt record 2524 functional passes/two
+      existing skips, final 22/22 trust/visual cases, five capture cases/30
+      new PNGs, clean full-source analysis and unchanged 53 app-gold pins.
+      No public-route
+      adoption, provider/enforcement activation, migration, commerce or new
+      phone install is inferred. §98's current device artifact predates this
+      amendment. Physical acceptance and separate OA-ZYRA-266 gates stay open.
+      Later explicit approval/delivery: Founder answered “Yea” to install.
+      §100/named trust local-delivery receipt now records 309/309 focused
+      passes, clean analysis, unchanged source pins and signed main PROFILE
+      build/install 6116/native launch/exact-container PID 67612. This
+      supersedes only the preceding not-installed limit; original §99 receipt
+      remains history. Physical acceptance and OA-ZYRA-266 remain OPEN.
+  13. BUILT / INTERNALLY VERIFIED / 2026-10-04 — Founder approved replacing
+      only the photos-first body paragraph with the agreed ZYRA-introduces-you
+      wording. Both opening and standalone comparison readers match exactly;
+      heading, Imam Ahmad quote, motion/layout and account flow are unchanged.
+      §97 records 64 focused passes, clean six-item analysis and new real-font
+      candidates including the scrolled compact paragraph. No migration,
+      build or phone install occurred; physical acceptance remains pending.
+      Later delivery 2026-10-04: Founder home update installed/native-launched
+      the same approved copy as sequence 6108/PID 67328; §98/named latest local
+      delivery receipt supersede only the preceding not-installed status.
+  12. BUILT / INTERNALLY VERIFIED / 2026-10-03 — DR-ZYRA-254 adds the
+      protected Seeker One £4.99 first-month design comparison, £29.99 renewal
+      disclosure and optional Basic-to-One action. Basic remains selected
+      until an explicit switch; saving disables choices and the suggestion.
+      Poppins/gold/full-width card copy is checked with real fonts through
+      200% text. Ordinary catalog/trial, Guardian/Family pricing, receipts,
+      access and backend remain unchanged. Trial replacement and Founder
+      design acceptance are pending. §96 / SIGNUP_MEMBERSHIP_FIRST_MONTH_
+      PREVIEW_2026-10-03_VERIFICATION.json record 2493 functional passes/two
+      skips, 50 focused passes, 6 candidate cases/33 PNGs and clean analysis.
+      This follow-up was not built, installed or launched on the phone.
+      Later delivery 2026-10-04: the same Membership source is included in the
+      sequence 6108/PID 67328 local main update (§98/named delivery receipt).
+      Trial decision, commercial activation and visual acceptance stay open.
+  11. BUILT / INTERNALLY VERIFIED / 2026-10-03 — DR-ZYRA-253 responds
+      to the Founder's gap-filling/typed-opening finding with one purposeful
+      named welcome and three complete themes. Optional same-page quotation,
+      no extra final handoff, local three-dot progress and one latched
+      icon/text foreground motion replace the seven-screen/reveal model.
+      Denied-entry lazy-controller disposal and retained disposed-arrow
+      callbacks were found by internal regressions and fixed eagerly/mounted-
+      guarded. No ordinary OAuth, membership, IDV, answer or backend changes.
+      Final15-suite363/363, scoped13-item analysis and2/2 real-font cases pass;
+      main PROFILE installed and native-launched after the earlier phone-lock
+      refusal. §94 and
+      ONBOARDING_PURPOSE_LED_OPENING_2026-10-03_VERIFICATION.json record exact
+      checks/delivery; physical acceptance and existing live gates stay open.
+  10. BUILT / INTERNALLY VERIFIED / 2026-10-03 — DR-ZYRA-252 adds saved role-aware membership
+      choice after mandatory account details and before IDV, without shifting
+      essentials indices or granting payment, trial or verified access. Basic
+      returns at £4.99 once. Receipt/server/commercial activation remains
+      separately OA-ZYRA-253/293; accepted opening copy/motion is untouched.
+      Native secure preference/recovery and stale-owner boundaries are tested;
+      480 integrated affected passes/one held-configuration skip, with final
+      111 focused passes after the two-operation epoch repair. Real-font
+      candidates4/4 and scoped analyzers report no issues. Main PROFILE build
+      is installed; native launch waits for a fresh unlock after auto-lock.
+      §93/receipt distinguishes installed source from Founder acceptance and
+      live-provider/payment authority. Existing open gates are not waived.
+  1. BUILT — old four-section roadmap appeared before mandatory account
+     essentials and then repeated another model after IDV. Account admission
+     now has its own orientation; the four-profile roadmap follows verified
+     admission and the explicit now/later choice.
+  2. BUILT — has_chapter_2 meant a partial saved preferences row, while
+     basic_profile meant publication, not completion of profile questions.
+     Resume now checks actual saved fields/photos/location/consent and the
+     Bio-reviewed checkpoint before choosing the first unfinished section.
+  3. BUILT — several saves advanced without confirmation; failed restores
+     could become blank writable drafts; final review implied automatic
+     completion/verification. Awaited own-row-confirmed saves, strict reads,
+     retained retryable drafts and explicit server-confirmed Go live replace
+     those paths. Duplicate/account-change callbacks are guarded.
+  4. BUILT — actual questions and Guardian retained old layouts, labels and
+     misleading setup instructions. Luma/gold wordmarks/arrows and local
+     question progress are unified. Guardian orientation describes its
+     actual essentials, IDV and responsibilities, not unbuilt Seeker stages.
+  5. BUILT — deferred profile setup lacked a clear mid-section exit. Profile,
+     Bio and Compatibility now offer Finish later, saving a valid draft and
+     rechecking IDV before My ZYRA. Mandatory essentials/IDV do not gain this
+     bypass. Accepted protected opening copy/motion remains preserved.
+  6. OPEN / BACKEND AUTHORITY NOT EXPANDED — existing Article9-refusal path
+     skips sensitive questions, but the current combined details store does
+     not save even non-sensitive language/distance fields without consent.
+     That can prevent an explicitly declined profile from finishing/resuming
+     cleanly. Safe client review does not invent consent or publication.
+     Separate schema/privacy-policy design and exact execution GO are needed;
+     trace with OA-ZYRA-193, not an implicit migration in this cleanup.
+  7. OPEN / EXISTING GATES — live IDV provider remains unconfigured and
+     existing-account enforcement remains default-off/held (OA-ZYRA-266).
+     Server publication's older minimum-one-photo contract differs from
+     current three-photo client readiness; current photo reorder replacement
+     remains non-transactional. These need separate backend review/GO and
+     real end-to-end proof. No waiver or activation occurred here.
+  8. OPEN / ACCEPTANCE — affected regression suites and candidate-only real-
+     font layouts are recorded in §89/receipt. Approved goldens were not
+     rewritten; known unrelated stale-golden/release-preflight failures do
+     not become a claim of full-repository certification. Founder reviews the
+     installed flow and feel before closure (also OA-ZYRA-257/286).
+  9. BUILT / FOLLOW-UP — DR-ZYRA-251 and existing OA-ZYRA-145 govern required
+     public first/last names in one account question for both roles. Open
+     gold-underlined Poppins fields replace the bulky name block. Required
+     gender/DOB/relationship sequencing and the §89 flow stay unchanged.
+     Surname save/readback, legacy unfinished-draft recovery and queued
+     same-ID generation guards are internally checked in §90; no database
+     constraint, backfill or live member-data execution is inferred.
+
+Evidence:    ZYRA_ONBOARDING_PREVIEW_HANDOVER_CURRENT_VERSION_V1.md §89;
+             ONBOARDING_FULL_CLEANUP_LOCAL_DELIVERY_2026-10-02_VERIFICATION.json;
+             current APP onboarding/authentication/developer summaries.
+             613 affected behavioral passes, one configuration skip separately
+             passed with the mock IDV fuse enabled; 12 real-font visual passes;
+             73-item scoped analysis clean. Signed production-flavour PROFILE
+             build installed and native-launched on paired iPhone 15 Pro Max.
+             Internal verification/local delivery only; Founder acceptance
+             and real provider/backend end-to-end evidence remain outstanding.
+             Name follow-up: §90 / DR-ZYRA-251 / OA-ZYRA-145 and
+             ONBOARDING_REQUIRED_PUBLIC_NAMES_LOCAL_DELIVERY_2026-10-02_
+             VERIFICATION.json: 684 affected passes, one configuration skip
+             separately mock-tested enabled, 14 real-font visual passes and
+             clean 81-item scoped analysis. See that receipt for actual build,
+             device availability and installation/launch status, not §89's
+             earlier installed artifact.
+Dependencies: OA-ZYRA-193; OA-ZYRA-257; OA-ZYRA-266; OA-ZYRA-286;
+             DR-ZYRA-221; DR-ZYRA-252; DR-ZYRA-250 remains policy-only/held
+Target:      Internal client verification → signed local device delivery →
+             Founder acceptance; separately scope/approve open backend gates
+
+GUARDIAN DEPENDENCY LIFETIME PROGRESS — 2026-10-06
+             The linked Guardian service follow-through now has two sealed local
+             stages: request repair first with an acceptance failure preserved,
+             then separately scoped acceptance repair and Codex rerun.
+             OA-ZYRA-289 owns the permanent-code/request contract and detailed stage
+             evidence; OA-ZYRA-305 owns the wider audit. This entry records the
+             shared stale-owner/generation dependency, not another implementation
+             or duplicate coverage count. The Guardian lane left approved
+             onboarding copy/layout/routes unchanged and created no IDV/provider,
+             backend, native delivery or Founder acceptance proof. Existing
+             onboarding physical acceptance and separate backend gates remain
+             OPEN; local Guardian beginSignOut/reset fixtures are not real SDK
+             logout or cross-process onboarding recovery acceptance.
+             Evidence: SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/
+             NEXT_GUARDIAN_ACCEPT_REPAIR.json
+             SHA-256: f3fd2094ad816f136ca3d9272888d97a2566cc73ef175b68c5e1dd8268c720ec
+             No OA status, approval, historical delivery fact or score is changed.
+
+------------------------------------------------------------
+
+OA-ZYRA-304
+Title:       Full Seeker/Guardian/onboarding client flow and UI review
+Raised:      2026-10-03
+Raised by:   Founder direct full-app review request
+Owner:       Codex under Founder authority / AD-AIOS-111
+Status:      OPEN — bounded client repairs internally verified; Founder
+             physical acceptance and existing held integrations separate
+Update 2026-10-13 (Circle discussion refinement):
+             Navigation Haptics section82 / packet
+             OA151_CIRCLE_DISCUSSION_ACTIONS_2026_10_13.KwzRQV record 191
+             frozen client cases passing, clean analysis/zero-change format,
+             18 final real-font captures. Same-chat archive/profile return,
+             large text, covered controls and Current/Option2 verified locally.
+             Denied-return repaint repaired without removing identity guards.
+             No service/schema/member-history grant; physical acceptance and
+             native delivery pending while Founder away. Existing OA298 owns
+             live Circle/Past authority; no new identifier or action closure.
+Update 2026-10-13 (Wafa white Option2 client comparison):
+             Navigation Haptics section80 / the OA305 scoped delivery packet
+             record21focused+761retainedchecks PASS and18real-Poppins captures.
+             Both role tabs,320wide/200% controls, photograph ink, same Circle
+             transcript/composer/draft/discussion profile and compatibility
+             reader verified locally. Captured resolver identity fixes Theme
+             replay blanking without relaxing strict caller withdrawal.
+             Current tokens/default non-swipe methodology/Option1 retained;
+             Option2 is session-only protected local presentation, not member
+             rollout. Widget/HTML/native/physical evidence remain distinct;
+             phone delivery blocked at native build, no acceptance or closure.
+Scope:       Both role shells, onboarding/auth recovery, profile/settings
+             parity, navigation/action truth, font/palette/shared popup and
+             button consistency. No new pricing/privacy policy, server
+             activation, migration, payment or release approval.
+Actions:
+  1. BUILT / CHECKED — R01–R17 in the App Flow/UI Review handover repair
+     failed visibility/hidden/linked/preferences truth, partial-map crashes,
+     account/request/generation races, unread coordination including hung
+     mark-read, restored DOB and late dialog safety, stale post-IDV buttons,
+     thrown Welcome provider/router recovery, fabricated/no-op empty-state
+     callbacks, narrow profile wrapping and no-op root Back.
+  2. BUILT / CHECKED — shared centred dialogs now use the current opaque
+     #241A2F surface, one quiet gold edge, Poppins and scroll-safe large text.
+     Shared empty-state FilledButtons have a 48px minimum target. Approved
+     Glass Signals cards/Floating Glass navigation remain intentional;
+     splash #E5CE8E and Journey #E8C98A have separate approved uses.
+  3. RECONCILED — R18–R20 correct obsolete seven-page/+3/glass-dialog test
+     expectations, stale UI detector pricing and the summary's inaccurate
+     stored-consent claim. No product route, price or consent rule invented.
+     The unused test import and formatter-only debt are separate hygiene.
+  4. VERIFIED INTERNAL — full non-visual suite 2487 passed / 2 conditional
+     skips; 335 candidate-only full render checks and 3 real-Poppins modal
+     checks passed. Whole-source analyzer is clean. Final format/gate,
+     signed artifact and local device state are in the receipt. No absolute
+     zero-bug, approved pixel, native accessibility or live E2E claim.
+  5. WRITTEN REFUSAL — no blanket deletion of 416 repeated-copy candidates,
+     17 reachability candidates or approved glass/comparator designs.
+     No exact duplicates in the 270 pre-edit Dart units and no duplicate
+     widget names; search candidates alone are not bugs. The 304 static
+     findings (0 critical/high, 23 medium, 281 low) remain OA-ZYRA-257's
+     governed candidate backlog, not 304 demonstrated defects. The broad
+     structural walker was not run because it does not prune PRIVATE.
+  6. EXISTING HOLDS — notification Go remains Founder-deferred under
+     OA-ZYRA-216; real IDV/provider OA-ZYRA-266; receipt/store/Basic activation
+     OA-ZYRA-253/293; consent-refusal/photo/server readiness OA-ZYRA-193/303;
+     earlier Full Health staged backend/live capability gates remain.
+     These are not cured by client test success. No fabricated destinations,
+     payment success, verification, consent or publication bypass.
+  7. OPEN / ACCEPTANCE — Founder reviews the final local device roles,
+     readable flow and visual consistency. Local install/launch, internal
+     verification and Founder acceptance are distinct. Continue open work
+     with OA-ZYRA-257/286/303 rather than self-closing this audit.
+Evidence:    ZYRA_APP_FLOW_UI_REVIEW_HANDOVER_CURRENT_VERSION_V1.md;
+             SYSTEM/RESOURCES/REVIEWS/ZYRA_APP_FLOW_UI_REVIEW_2026-10-03_
+             VERIFICATION.json; onboarding §95; UI-gate handover and current
+             Colour Theme modal overlay. Source/test/tool hashes and actual
+             check/device commands are recorded, not inferred.
+Target:      Internal checks → local delivery → Founder acceptance;
+             separate exact scope/GO for held external/backend activation
+
+------------------------------------------------------------
+
+OA-ZYRA-305
+Title:       Full app authority/security/readiness audit and repair programme
+Raised:      2026-10-03
+Raised by:   Founder direct full-app audit brief, relayed in build chat
+Owner:       Codex under Founder authority / AD-AIOS-111
+Status:      OPEN — local repairs and isolated tests authorised/performed;
+             critical live risks remain until exact production execution,
+             post-verification and separate Founder acceptance
+Update 2026-10-14 (measured retained-host delivery; full native hold retained):
+             ADMIN checked nqocW0 POST_DELIVERY_HANDOVER and later SnRGNt
+             FINAL_HANDOVER/HOST_PROFILE.n7ACfo/BUILD hashes against supplied
+             bindings. Earlier4522/336 stage installed/launched; later4583/339
+             stage built but not installed after recorded locked-phone hold.
+             Both explicitly retain the measured native host/fullXcodeBuild
+             false. Scoped client/contained build evidence does not repair
+             the full Xcode route or establish ordinary/live acceptance.
+             Current13target pins and10physical stage preimages match;
+             three new tests were absent before. These do not recover the
+             historical missing KwzRQV discussion-test preimage or prove
+             complete historical rollback. Report:
+             SYSTEM/RESOURCES/REPORTS/
+             ZYRA_RELEASE_REQUIREMENTS_DELTA_2026-10-14_APPLE_V1.md.
+             F01/F02/F03, provider/purchase/photo/recovery/native-accessibility
+             and public acceptance remain OPEN; no score uplift or OA closure.
+Update 2026-10-13 (measured sandbox conflict / contained delivery prepared):
+             Navigation Haptics section83 confirms nested sandbox refusal with
+             harmless true, no Git/platform-validation bypass. A guarded
+             Dart-only payload/staged-native-host recipe is prepared; five pure
+             tool contracts pass, not compile/signing proof. Exact old177-file
+             host, genuine profile engine and frozen current191 client cases
+             pass read-only inspection, but only 334,864,384 bytes are free against
+             the 2 GiB guard. No build/install/launch or cache deletion occurred;
+             scoped test-cache cleanup awaits Founder reply. Original host and
+             current Runner.app unchanged. Full Xcode hold and future native
+             changes remain here/OA286; do not claim this prototype repaired
+             Xcode or delivered Option2. No identifier or action closure.
+Update 2026-10-13 (no-Git checks prepared / native execution held):
+             Navigation Haptics section81 records cached SDK5pins and immediate/
+             nested harmless exec-denial PASS; format/analyze/test are measured
+             under project policy, never Git or original shell SDK launchers.
+             Frozen all-local native overlay has8source packages/9manifests,
+             12external plugin trees/1735overlay files, full source inventory
+             and named aliases preserved; copied test-only OCMock graph removed.
+             SDK implementation Private headers are public inputs, not the
+             prohibited credential directory. No SDK/cache/version forgery.
+             BUILD_PROFILE exit74: Xcode manifest sandbox application refused.
+             No protections disabled/unprotected AI native retry; native mode
+             held before execution. Old177file Circle artifact SHA8f9041a5dd1d124c
+             fa3aa0c2d334f4ce840c5c4baa1e00093dbf5a313773130a unchanged; no install.
+             Earlier parallel ENOSPC is retained, not recast as a test PASS;
+             serial761+focused21passed. Request to clear only regenerable8GB
+             Flutter test cache awaits Founder reply; no deletion performed.
+             Packet OA305_NO_GIT_OPTION2_DELIVERY_2026_10_13.yqJ0ef preserves
+             failed/prepared/final evidence and exact source pins. Toolchain/
+             delivery holds OA305/286 remain, alongside all earlier live gates.
+Update 2026-10-09 (OA151 scoped fresh read-only integration audit):
+             OA151_REAL_INTEGRATION_PREP_2026_10_09.tgjYDx retains connector
+             metadata for pinned project sxoaxonzjqkgajmlagyk, PG17.6.1.147,
+             latest applied migration20260925202103 and raw security advisors.
+             Signals:16 no-policy informational tables,1 definer-view error,
+             98 authenticated-definer RPC warnings,1 leaked-password-protection
+             warning. Counts are not confirmed exploits or a security PASS;
+             RPC-private/no-policy tables may deliberately deny ordinary reads.
+             No ACL/policy/config/version change or member-row inspection was
+             performed. Review these against existing F02/F35/F36/F37 and exact
+             caller/ownership boundaries before any separate repair GO.
+             Existing zyra_ages_service.dart:83–86 logs raw backend exception
+             text on best-effort age-read failure; logging review stays here,
+             unchanged by OA151's narrow Journey hydration repair.
+             IDV producer, trusted moderation, funded Basic/One/Family receipts,
+             staged migration incompatibilities and exact-attempt/server-stage
+             message INSERT remain open dependencies, not cleared by208 client
+             tests or a local phone build. No new finding/OA number is consumed.
+Update 2026-10-08 (Home delivery cross-reference / prerequisites held):
+             OA286 Home-cleanup receipt,38642B SHA256
+             b96c681dd5bb9571a14a79bf918b2167dc4e4c23977d3bc6e84146c0f2b893dd,
+             is reconciled under OA286 and UI acceptance under OA257 only.
+             Its240focused passes/checked native local delivery do not clear
+             F01-F03,F21,recovery,provider,store or public-release gates.
+             Internal minimum decision/evidence sheet:
+             BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/
+             ZYRA_MINIMUM_RELEASE_DECISIONS_2026-10-08_112421Z_V1.md.
+             F21 atomic replacement remains APP local work pending evidence;
+             7October498/597 failing bindings across124profiles are dated
+             compatibility counts, not seed/real classification or confirmed
+             exposure. Accepted matched database/private-blob recovery and
+             exact production GO remain absent. No live/export/restore/apply,
+             OA closure or score promotion under this ADMIN reconciliation.
+Scope:       Seeker/Guardian/onboarding, membership/credits, compatibility,
+             messages/history, safety, storage, truth states, UI/accessibility,
+             performance, native/release and documentation. October3 was
+             audit-only. October5 Founder instruction authorises scoped local
+             repair/testing and separately the existing isolated test VM.
+             No live migration/data mutation, provider/payment activation,
+             charge or Apple upload is authorised by that local instruction.
+Actions:
+  1. AUDITED / PRESERVED — 61 finding groups in the Full App Audit handover:
+     3 critical, 23 high, 30 medium, 2 low and 3 informational; 18 contradiction
+     topics, 24 security/privacy finding/evidence-gap groups. Each F01–F61
+     has explicit evidence, live/staged state, impact, minimum reproduction,
+     repair/tests and its existing OA or this action. Documentation does not
+     close or implicitly reopen the linked OAs.
+  2. URGENT / FOUNDER GO REQUIRED — F01 live deletion cascades safety reports;
+     F02 current Main can inherit ended-attempt chat without temporal/history
+     boundary; F03 own photo row can reference a known foreign private file.
+     Minimum catalog proof only; stopped affected inspection and reported
+     immediately. No member messages/photos read, path enumerated, report
+     deleted or containment silently applied. Prepare narrow rights-preserving
+     local repairs/synthetic replay, then separate exact production GO.
+  3. PHASE 0 / OPEN — F04/F05 raw scoring/progress caller-purpose gaps;
+     F06/F07 server Plus hold and atomic/idempotent ledger; F19 ordinary dev
+     Guardian override; F27/F28 notification privacy/integrity; F35 unsafe
+     staged INSERT replacement; F36 legacy seeded mock authority; F37/F39
+     PG security-minor/session-backup review. F58/F60 retain separate policy
+     reconciliation and measured privacy-risk activation holds.
+  4. VERIFIED INTERNAL / LIMITS — fresh explicit nonvisual inventory:
+     2487 passed, 2 conditional skips, 0 failed; analyzer 0 issues. Fresh
+     approved-pixel comparison: 211 passed / 124 failed; separate real-font
+     modal checks 3 passed. No baseline overwrite. Stage2 current baseline
+     stops at 4/45 anchor drift; historical results are not fresh replay.
+     Native/provider/JWT/store/physical acceptance is not established by
+     this suite. No public/external release clearance.
+  5. RECONCILED / NO POLICY CHANGE — DR-ZYRA-252 Basic £4.99 once supersedes
+     supplied brief's stale no-Basic rule. DR-ZYRA-253 protected four-page
+     opening is intentionally not ordinary OAuth; do not restore retired
+     seven-slide flow. Preserve Poppins/Syne, approved gold roles and glass
+     cards/navigation versus opaque centred dialogs. Existing unfinished
+     services remain held; local intent is not payment/IDV proof.
+  6. OPEN / DEPENDENCY ORDER — handover Phases 0–4 specify engineering,
+     truth states, native accessibility/performance, controlled cleanup and
+     documentary currency. Only genuine new choices: iPad scope, unresolved
+     future Plus Guardian disclosure, measured compatibility residual-risk
+     acceptance. Engineering fixes still need bounded execution GO, not new
+     product-policy votes. No wholesale Sep24 migration apply.
+  7. DOCUMENTED / NO PRODUCT CHANGE — safe source/test/native/migration/
+     asset/tool aggregate hashes match across captured audit window. Existing
+     dirty/index-absent work preserved; no Git commands or PRIVATE traversal.
+     Comparator failure PNGs/tool caches are separate diagnostics. Receipt
+     contains safe catalog definitions/queries, drift and full finding ledger,
+     not credentials/member contents. Evidence and report indexed; product
+     contracts/legal drafts unchanged.
+  8. LOCAL REPAIRS / 2026-10-05 — F01/F02/F03/F05 and F06/F07 candidates
+     prepared and verified with fake records on network-isolated PG17.6.
+     F02's nine drift cases refuse unchanged; F06/F07's53 named checks include
+     observed concurrent lock contention and controlled stale-snapshot refusal.
+     F04 is preparation-only with8 groups, not deployable alone or live closure.
+     F19 ordinary Guardian preview and retained-state repair is implemented;
+     final101 focused/2703 nonvisual passed with2 conditional skips/no failures,
+     analyzer0 and18 real-font layouts passed. UI gate remains311 findings
+     (0 critical/high); broader pixel acceptance is not closed. Signed main
+     PROFILE build verified; at14:00BST iPhone unavailable. Later Founder home
+     instruction plus fresh paired/unlocked/source/signature checks permitted
+     install6420/native launch/PID73931 at23:40BST; exact new-container process
+     observed. Separate local-delivery receipt preserves the earlier snapshot.
+     No rebuild/data deletion/backend activation/Apple upload; full physical
+     acceptance remains separate. Exact measurements are in the dated receipts.
+     All test containers removed; VM stopped with unchanged configuration.
+     Approved onboarding files/copy/design remain unchanged. No live mutation,
+     real verification/moderation/commerce or physical restore is claimed.
+  9. RELEASE GATES / STILL OPEN — critical production packets need exact
+     payload GO, fresh affected catalog and verified backup/restore conditions.
+     Compatibility cutover/privacy/retention, real identity provider, trusted
+     moderation, paid receipt/lifecycle authority and ordinary release-artifact
+     login/OTP/accessibility/network/database-plus-photo acceptance still need
+     their own measured proof. Local tests and introductory pricing are not
+     release readiness. Findings stay in this action and named companions.
+Evidence:    ZYRA_FULL_APP_AUDIT_HANDOVER_CURRENT_VERSION_V1.md;
+             SYSTEM/RESOURCES/REVIEWS/ZYRA_FULL_APP_AUDIT_2026-10-03_EVIDENCE.json;
+             ZYRA_APP_GATE_REPAIRS_HANDOVER_CURRENT_VERSION_V1.md;
+             SYSTEM/RESOURCES/REVIEWS/ZYRA_APP_GATE_REPAIRS_2026-10-05_EVIDENCE.json;
+             SYSTEM/RESOURCES/REVIEWS/ZYRA_APP_GATE_REPAIRS_LOCAL_DELIVERY_2026-10-05_VERIFICATION.json
+Dependencies: OA-ZYRA-193/253/257/266/283/285/286/290/291/292/293/298/299/302/
+             303/304 and finding-specific existing actions; DR-ZYRA-248/250/
+             251/252/253. Exact independent gates remain in the handover.
+Target:      Founder scoped Phase 0 GO → local/synthetic proof → separate
+             exact production GO → post-verification → Founder acceptance
+
+GUARDIAN AUDIT FOLLOW-THROUGH — 2026-10-06
+             The separately authorised local Guardian request/acceptance service
+             lifetime repair is now documented against existing OA-ZYRA-289,
+             with onboarding dependency linkage under OA-ZYRA-303. The immutable
+             12:06:02 UTC request receipt retains nine lifetime + 67 control
+             passes and its separate UNFIXED acceptance failure at that stage.
+             The 12:13:01 UTC acceptance-only extension subsequently passes the
+             original failure and previously held reset, without rewriting the
+             earlier outcome or altering the request body/outside acceptance bytes.
+             Latest 11 original + nine added + 67 controls = 87 packet-distinct
+             passes; only ten newly measured cases since the request seal.
+             APP BUILD main's overlapping 11 + nine rerun is not additive, and
+             this filing does not replace the dated whole-app inventory/counts
+             above. Source analyzer is clean; evidence-harness warnings/exit-1
+             results remain retained and explicitly not analyzer-clean passes.
+             Root verified the receipt pins and exact bounded body preservation;
+             this is internal Codex verification, not independent approval.
+             Strict fake intercepted sessions tested observed owner/generation
+             lifetimes only. Real SDK logout, native persistence, widget flows,
+             live RLS/capacity/uniqueness, committed server effects/rollback,
+             intended release artifacts and Founder acceptance remain unmeasured.
+             Critical live repair/backup/production-GO gates and whole-action
+             status stay OPEN. Compatibility OA-ZYRA-284 and other concurrent
+             repair lanes are separate; no unrelated finding or test is bundled.
+             Exact ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_GUARDIAN_REPAIR.json
+             SHA-256: 0f3ec3e19296f1b60952ad32321fd86ecde8adfa720df32995dd0e54257ab59a
+             NEXT_GUARDIAN_ACCEPT_REPAIR.json
+             SHA-256: f3fd2094ad816f136ca3d9272888d97a2566cc73ef175b68c5e1dd8268c720ec
+             NEXT_GUARDIAN_ACCEPT_ROOT_REVIEW.json
+             SHA-256: 364f5d5a9c317f85ae951047671e68424e2e055c63e1e682a65c11b07c00a294
+
+ATTRIBUTED JOURNEY FINDINGS / GUARDIAN DOCUMENTATION — 2026-10-06
+             The Guardian current handover now records the sealed local stages
+             and later request/logout ACK fixture, with exact immutable
+             clarification of the original wording. OA-ZYRA-289 owns that detailed
+             evidence: two assertions pass but only one new request/logout case;
+             no additive whole-app total, install, release or acceptance follows.
+             Two separate APP BUILD-attributed public Journey disposal findings
+             are tracked here, not independently reproduced by ADMIN:
+             (1) with disableAnimations=true, _JourneyAtmosphereState disposal
+             first creates its lazy controller after context deactivation;
+             (2) default-motion unmount likewise affects
+             _JourneyVerticalStageSwapState. The initial raw log also retains a
+             separate missing app_links fixture failure; it is not erased or
+             conflated with either controller defect.
+             Main verified only the two raw log sizes/hashes, not their complete
+             stacks or a fresh test rerun. The exact two-class eager-initState
+             lifecycle fix is ACTIVE under verified human routine-local GO;
+             Atmosphere 12s/.5 and Vertical 480ms/1 remain unchanged in scope.
+             Sealed repair evidence, final tests and device/accessibility/Founder
+             acceptance remain PENDING at this finite snapshot. No finding is
+             called repaired, green or closed from this attributed report alone.
+             The old in-flight mutual/null-score public-caller completion and
+             narrow surface-ownership guard remain ACTIVE under OA-ZYRA-284;
+             parent-refetch null ambiguity is FOLLOW-UP. Controller failures are
+             not moved into OA284, and no unsealed caller receipt/hash is claimed.
+             No score, previous inventory, status or existing exact-action gate
+             changes in this filing. Later stages require separate attribution.
+             Raw ZYRA logs under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA284_CALLER_INITIAL.log — 50,387 bytes
+             SHA-256: 9970cdf9f35540b20351b19d8cae8e74ac980a350ec0580d051f03ac11ff06e3
+             NEXT_OA284_CALLER_DEFAULT_MOTION.log — 49,269 bytes
+             SHA-256: 546e219728f399f026122a3d05cec7df3fa51ed06c6bf249dfeab8a530d242d6
+             Guardian linkage: SYSTEM/DOCUMENTS/
+             ZYRA_PERSONAL_CODE_AND_GUARDIAN_REQUEST_HANDOVER_CURRENT_VERSION_V1.md
+             SHA-256: 1af1effabc1c9971f0de5e535f478dfc84646d51f85cffafcc9498931517c4ea
+
+GUARDIAN THREE-CASE AUDIT STAGE / OPEN FOLLOW-UPS — 2026-10-06
+             OA-ZYRA-289 now records the completed, sealed evidence-only request/
+             acceptance preflight and unsynchronized-Auth stage: exactly three
+             new passing cases, three overlapping Main repeats and 72 retained
+             reruns. RPC counts 0/0/1, zero unexpected HTTP, exact non-null stale
+             results and unchanged revisions are local service observations only.
+             Completed NOT-READY Future/microtask timing is not delayed-ready or
+             server-capacity proof. Source analyzer zero issues is separate from
+             external-fixture 11 warnings/zero errors/exit 2. Read-only reviews
+             run no additional tests; no dated whole-app count is replaced.
+             The decline/cancel document remains a STATIC candidate at assignment.
+             The separately root-assigned APP BUILD two-file test-first lane is
+             PENDING at this filing; only a reproduced local lifetime issue may
+             receive its bounded repair. Earlier source pins are BEFORE evidence,
+             not a freeze or proof that later source has already been repaired.
+             Existing parent-null/read-refresh ownership, live critical repair,
+             backup/production GO, real provider/JWT/RLS/rollback, commerce,
+             native/device/accessibility, public/legal and Founder gates stay OPEN.
+             Separate layout follow-ups also remain OPEN: raw evidence attributes
+             143px bottom overflow to _WaliGateView; its 800x600 context is the
+             recorded fixture context. Raw ribbon evidence records 61px right
+             overflow, but source/430x1000 context remains owner-attributed, not
+             independently reproduced or fully source-bound by ADMIN. No layout
+             repair or physical pixel acceptance is recorded in this packet.
+             Historical lifecycle clarification preserves the original 33-PASS
+             log/events but cannot bind the original fixture implementation to
+             that run. Original no-suppression/default-disposal claims remain
+             UNVERIFIED; later pinned fixtures/reruns cannot retrospectively prove
+             historical bytes. This qualification adds zero coverage and does not
+             promote the broader continuation bundle, which is separately reviewed.
+             Exact ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             Guardian stage: the three PREFLIGHT_AUTH receipts cited in OA289.
+             NEXT_JOURNEY_LIFECYCLE_PROVENANCE_CLARIFICATION.json
+             SHA-256: 86bf778a0ae7e66922697184e3e2d44b4ca3410bb27c5ccb14d1fdef38af21a6
+             NEXT_OA284_SURFACE_EXPANDED_SECOND.log — 6,440 bytes
+             SHA-256: cc6c2b8fc145926b3642c69530f24f502ce434bb7920305b9fad37ff2ba04e1b
+             NEXT_OA284_SURFACE_FINAL.log — 8,869 bytes
+             SHA-256: 20b525fe70dfbdfff2793e8e2998d7a0c57c6c01f59078cead5697c942cfaa6e
+
+GUARDIAN DECLINE/CANCEL AUDIT MILESTONE / SCREEN BLOCKER — 2026-10-06
+             OA-ZYRA-289 now records the sealed service-only decline/cancel
+             lifetime repair and additive Guardian handover section 9. This
+             later stage follows the earlier STATIC/PENDING snapshots without
+             rewriting them. Exactly two mutation bodies were repaired; actual
+             Auth/account generation guards now reject invalid entry and stale
+             ACK/exception publication. APIs/RPCs/payloads/mappings/no-retry,
+             request/accept/capacity and the whole Code-screen caller are preserved.
+             Frozen FIRST28 retains 14 failures/14 passes; unchanged POST28 and
+             four separate entry controls pass: 32 distinct NEW service cases.
+             The 75 retained service checks, 17 separate retained preview checks
+             and APP BUILD main's 34 overlapping repeats add no unique coverage
+             to those 32. No dated whole-app inventory or readiness score changes.
+             Two public role mounts prove zero-HTTP NOT-READY admission only;
+             no pending request buttons were reachable. Ordinary public caller
+             mutation-settlement acceptance remains ZERO. The caller is unchanged:
+             old error, newer busy and stale reload assertions remain held and
+             unmeasured, not a green screen repair. No private state injection,
+             bootstrap/readiness bypass or new fixture seam was added.
+             Next engineering candidate needs separately bounded ordinary public
+             generated-request fixture access with production defaults preserved,
+             then both public-button tests before any proven caller-only patch.
+             _load/_accept/read lifetime, parent-null and compatibility continuation
+             remain separate. Existing 143px bottom/61px right layout findings and
+             historical lifecycle provenance qualifications remain unchanged.
+             Source analysis zero issues is distinct from 22+13 unsuppressed
+             external-fixture placement warnings/zero errors. ADMIN matched 19
+             packet anchors and saved visible service counts, not a fresh runtime
+             or tree audit. Packet source-tree/reviewer checks remain attributed;
+             original failed runs and true backups are retained.
+             All critical live repair/backup/production GO, provider/JWT/RLS/
+             restore, identity/moderation, real commerce/native/accessibility,
+             legal/public/release and Founder acceptance gates stay OPEN.
+             Founder AWAY: no phone delivery. No closure/status/ID/score change.
+             ZYRA evidence: SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/
+             NEXT_GUARDIAN_DECLINE_CANCEL_HANDOVER.json
+             SHA-256: f84482d3add4cd75588e12160005c4693f9b0a424bd351a12e0ca9f12fa95145
+             Current Guardian handover: 35,848 bytes; exact 29,653-byte old prefix
+             preserved, compatibility handover unchanged. Detailed source hashes,
+             original failure receipts, rollback and caller blocker are in OA289.
+
+COMPATIBILITY / TWO-CONTROLLER AUDIT MILESTONE — 2026-10-06
+             The sealed 13:22:59 UTC continuation is now reconciled as later local
+             progress, not completion of earlier dated PENDING snapshots or this
+             whole audit. OA284 records the typed compatibility service and known-
+             parent lifetime/Retry caller repair, preserved directional score/
+             consent authority, counts and outstanding boundaries. No Guardian
+             decline/cancel filing is repeated; its unchanged-caller blocker stays.
+             The separately reproduced Atmosphere and VerticalStageSwap lazy
+             disposal faults have bounded eager initState controller repairs.
+             Atmosphere 12s/.5 and Vertical 480ms/1, existing scenes/easing/layout/
+             durations and disposal policy are unchanged in that historical stage.
+             The two lifecycle cases overlap the original 33, not 35 distinct
+             cases. Original 33-PASS log/events do not bind original fixture
+             implementation to that run; no-suppression and other 31 default-
+             disposal claims remain UNVERIFIED. Later pinned successful fixtures/
+             reruns are later evidence, not reconstruction of missing provenance.
+             Service 47 PASS/44 strict reads/zero unexpected calls and caller
+             33 + 11 = 44 distinct ordinary public mock cases are separate suites.
+             Main repeat runs overlap; 21 retained logic/preview controls are
+             separate. Broader 119 retained passes/13-file command selection is
+             owner-attributed, not newly reconstructed or additive coverage.
+             Saved full source analyzer zero issues is distinct from 26 preserved
+             external-caller placement warnings/zero errors. Earlier failed
+             plugin/SQLite/teardown/filename commands remain failures.
+             Retry's validated one-sided Plus score74/two reads/one Plus/zero
+             Reveal is existing score-persistence behavior, not universally read-
+             only and not DR250 D5 GO. Invalid/unavailable/history actions are
+             fenced. Current-read/cache/known-context/reset behavior is described
+             in OA284; parent-null/read-refresh ownership remains open.
+             Raw 143px bottom overflow is attributed to _WaliGateView with
+             owner-recorded 800x600 fixture context. Raw 61px right overflow
+             has no source-line binding; ribbon/430x1000 attribution remains
+             owner-recorded. No layout or phone/pixel acceptance is inferred.
+             The later separately sealed Wali wrapper and active RoundAction
+             repair are excluded from this historical-stage filing, not frozen.
+             Synthetic Auth, fake-ready Guardian loader and identity-OFF mocks
+             cannot prove live provider admission, Family/IDV/Guardian enforcement,
+             JWT/RLS/committed effects, real moderation or paid receipt authority.
+             All critical repair/backup/exact production GO, commerce/native/
+             accessibility/network/restore, privacy/legal/public/release and
+             Founder acceptance gates remain OPEN. Founder AWAY: no phone delivery.
+             ADMIN verification is bounded saved-evidence/pin/byte review, not new
+             runtime, approval, readiness score, whole-OA closure or status change.
+             Compatibility section 16 preserved its exact 50,086-byte prefix and
+             appended 9,725 bytes to the dated 59,811-byte stage. ADMIN confirms
+             that stage remains an exact prefix of the later current document;
+             later section 17 is not accepted or filed by this batch.
+             Evidence: OA284's continuation, service/caller/Retry/provenance refs;
+             NEXT_JOURNEY_LIFECYCLE_REPAIR.json
+             SHA-256: 6b57029445e2d75fe760528c73f06eafa7a6c70d10dafe7ebd9da3c2b8423006
+             NEXT_COMPATIBILITY_INDEPENDENT_REVIEW_FINAL.json
+             SHA-256: 15fe17558b62d748d0f6338bcfbd1f11ca9f8a911d89642baf621a61b42995e6
+             ZYRA SYSTEM/DOCUMENTS/
+             ZYRA_JOURNEY_COMPATIBILITY_BOUNDARY_HANDOVER_CURRENT_VERSION_V1.md
+             Dated 59,811-byte stage SHA-256:
+             61329fecb5b5b656b82f650287d41c9ef9d013745f56af82cb16f3f7ccaedd9e
+
+GUARDIAN FOCUS SCROLL WRAPPER / PARTIAL SCREEN RESULT — 2026-10-06
+             The later sealed Wali focus packet and compatibility handover section
+             17 record a bounded local wrapper repair, not a green screen suite,
+             whole-audit closure or supersession of earlier failed evidence.
+             Only the unrevealed reason-null Expanded focus wrapper changed:
+             Center becomes LayoutBuilder/SingleChildScrollView/
+             ConstrainedBox(minHeight: available height)/Center around unchanged
+             focus contents. The 114-byte span becomes 501 bytes. Immutable PRE/
+             POST snapshots reverse exactly; all 354,074 outside bytes match.
+             Revealed focus, fixed 96px Reveal area, 218px horizontal Guardian
+             pager, fonts/copy/role gates, services, load/accept/lifetimes, Retry,
+             global gestures, separate ribbon and 420/480ms timing are preserved
+             within that dated stage. Five-tree/config preservation is APP BUILD-
+             attributed; ADMIN did not rerun a current tree inventory.
+             Exactly 12 distinct new public cases: validated FIRST two PASS/
+             ten FAIL becomes POST five PASS/seven FAIL, zero skipped, both exit1.
+             Three previous failures become passes; repeated attempts are not
+             36 cases and five POST passes are not five newly repaired cases.
+             Normal-motion 800x600 neither/mine/gesture checks remove the measured
+             479px-content/336px-space, 143px bottom overflow without changing
+             viewport or suppressing framework exceptions. Inner scroll, fixed
+             hittable Reveal, horizontal two-Guardian paging 0→1→0 and existing
+             arrival boundary pass; two roomy 800x1000 baseline passes remain.
+             Seven POST failures remain OPEN: two narrow390x844 ribbon/portrait
+             cases; two enlarged-text1.3/long-name/24px-safe-inset portrait cases;
+             three reduced-motion RoundAction lazy _breath disposal cases.
+             Baseline mine reproduces the disposal fault; baseline neither/
+             gesture stopped earlier, so identical baseline teardown for all
+             three was not established. Two secondary pending-timer errors are
+             not separately isolated defects. The active separately assigned
+             RoundAction initializer repair is UNSEALED/excluded from this filing.
+             Ordinary theirsWaiting/mutual/Salam remain HELD/unmeasured rather
+             than skipped or reached by private/DEV injection. Horizontal-edge
+             notification-axis risk and old61px ribbon finding stay separate/open.
+             Public Journey uses synthetic Auth/preferences, fake-ready Guardian
+             admission, disabled DEV/preview/telemetry and strictly intercepted
+             invalid-host HTTPS. Initial entry makes seven fake requests; the
+             family-review RPC may mutate in production, so this is not proof
+             of a wholly read-only production graph. Actual Reveal adds zero
+             HTTP here; zero unexpected HTTP does not prove live admission.
+             The 77 retained PASS (33 caller/11 lifetime/33 existing) and Main's
+             three overlapping normal-motion PASS add no new coverage. Full
+             source PRE/POST analyzer zero issues is distinct from13 new plus26
+             retained unsuppressed fixture warnings/zero errors/exit2.
+             FIRST0/12 premature-frame failures, old143px/ambiguous-PageView log,
+             two pre-case native test-asset runner failures and absent reporters
+             remain preserved. Sequential unchanged retries pass; concurrency
+             cause is unproven. The old valid-FIRST SYSTEM/SOURCE path is wrong;
+             correct ZYRA/SOURCE/PRE backup hash is explicitly recorded later,
+             never retroactively repaired in the immutable first receipt.
+             Earlier no-pipefail analyzer exit0 is not a clean pass; final exit2
+             governs. Main metadata-verifier errors remain chat-only records,
+             not fabricated raw logs or app defects.
+             ADMIN read all550 packet lines, complete section17, diff/doc receipt
+             and saved core event ledgers;39 selected immutable pins, exact source
+             span reversal/outside bytes and dated document prefix match. Separate
+             bounded read-only checker agrees, with no runtime/live-source test.
+             Section17 adds11,263 bytes to exact59,811-byte old prefix, reaching
+             dated71,074B. Active moving source/later documents are not frozen.
+             Guardian handover is unchanged at the packet stage. Source stage:
+             PRE468863f89851fd59089e6176f1f9eb448d6d19a421a4ec718560aa4d39db6449
+             POST66b50249939cb818eaf7a931bf3ba596c8205a84ec0c71e1ebb77a18fe34cd3f
+             All earlier parent-null/read-refresh, Guardian caller-settlement,
+             critical backup/repair/exact production GO, real provider/JWT/RLS/
+             moderation/commerce, native/accessibility/orientation/network/restore,
+             privacy/legal/public/release and Founder acceptance gates stay OPEN.
+             Founder AWAY: no phone delivery, native build/install/launch or live
+             action. No status/owner/ID/score change or new finding duplication.
+             ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_WALI_FOCUS_SCROLL_HANDOVER.json — 27,763 bytes
+             SHA-256: afa9e72e90a743163772ded18936d023f4e99ac963f1ee6fd6c14e0e65029ee9
+             NEXT_OA305_WALI_FOCUS_PUBLIC_RECEIPT.json
+             SHA-256: 9719eb8475b22af7586aa9d69c1cada35dde40bd4ad9437488346500346966c2
+             NEXT_GUARDIAN_FOCUS_RETAINED_RECEIPT.json
+             SHA-256: 813bba34ac5475ce026936ced3d20378bee5e208521a162081608375c0288925
+             NEXT_WALI_FOCUS_SCROLL_INDEPENDENT_REVIEW.json
+             SHA-256: 21175e1ec41d6b894f0299529de5103a7187f1623d9f6fe7b33764b6c784a759
+
+ROUND ACTION LIFECYCLE / LATER PARTIAL MATRIX — 2026-10-06
+             The sealed 15:24:09 UTC RoundAction packet is later local progress
+             after the dated Wali five-PASS/seven-FAIL stage above. Earlier
+             stages, failures, receipts and qualifications remain unchanged.
+             Only _JourneyRoundActionState's lazy inline _breath initializer
+             becomes a late field assigned in initState after super.initState.
+             The exact 152-byte span becomes 234 bytes. Saved immutable PRE
+             354,575B / 66b50249939cb818eaf7a931bf3ba596c8205a84ec0c71e1ebb77a18fe34cd3f
+             and POST 354,657B /
+             631eef3d73d4edf200573bb8b76195082bf69ba7cd4f811cb22b3134cd3b15a2
+             reverse exactly; all 354,423 outside bytes match. No rollback was
+             executed. 1800ms / value0.5 / vsync, no repeat/forward/start,
+             existing build/dispose/easing/copy/styles/semantics/callbacks,
+             Wali wrapper, fixed96px Reveal, 218px pager, 420/480ms timing,
+             consent/roles/services/lifetimes/Retry/global gestures/ribbon and
+             portrait/enlarged content remain preserved in that dated stage.
+             Fresh SAME THREE reduced-motion baseline: zero PASS/three FAIL,
+             zero skips, runner failed. All three show _breath disposal /
+             deactivated-context failure; secondary timers remain recorded,
+             not independently isolated defects. Unchanged POST three PASS/
+             zero FAIL, zero skips, runner succeeds. SAME TWELVE frozen matrix
+             subsequently records eight PASS/four FAIL, zero skips, runner
+             fails. This repairs three previously failing cases, creates ZERO
+             new unique cases, and does not make the whole matrix green.
+             Four geometry failures remain OPEN: two normal390x844 narrow
+             ribbon/portrait cases and two enlarged1.3/long-name/24px-inset
+             portrait cases. The older61px ribbon finding remains separate.
+             Retained 33 caller +11 lifetime +33 existing =77 PASS and Main's
+             three overlapping normal-motion PASS are repeats, not additional
+             coverage. Fixture19,089B and viewport/assertion/error policy are
+             unchanged; no private state/readiness/bootstrap seam, timer or
+             framework-exception suppression was added.
+             Saved source analysis reports zero issues. External fixture logs
+             retain13 core +26 retained placement warnings, zero errors; the
+             separate fresh core analyzer receipt records exit2. Warnings are
+             not suppressed or relabelled source errors. Literal core command
+             summaries place set -o pipefail after their pipelines; ADMIN does
+             not certify shell ordering or those exits from that string.
+             Raw runner events independently establish failed/successful runs;
+             the later pipefail execution clarification remains owner-attributed.
+             Root-verification's copied no-SOURCE/doc-edits-by-this-writer line
+             applies only to the core fixture evidence writer, not Main, who
+             performed the bounded source edit and section18. The original
+             receipt is preserved with that explicit attribution erratum.
+             Documentation reconciliation's pre-Wali-handover label means the
+             sealed71,074B stage including section17 BEFORE lifecycle, not
+             before Wali. That immutable PRE prefix is directly verified.
+             Section18's exact-prefix/addition claim is dated Main/reviewer
+             evidence: 9,588B addition reaches80,662B, SHA-256
+             098b66c6ff3388105426cf6a27a4623dc219ec9f2bd54c0d7ab520f8cf54ceec.
+             No immutable POST-document snapshot is named in this packet.
+             ADMIN therefore does not claim fresh verification of those POST
+             document bytes or open the active moving handover to manufacture it.
+             Guardian35,848B unchanged and five-tree preservation are dated
+             owner/reviewer evidence, not a new ADMIN current-source/tree audit.
+             ADMIN read all756 packet lines, complete diff/reconciliation and
+             saved core event ledgers;69 immutable review pins match,14 current
+             source/document pins excluded. ADMIN and separate read-only internal
+             checks confirm exact source span/outside/reversal and case counts.
+             A JSON-versus-JSONL diagnostic parse first failed without writes;
+             corrected per-line parsing separates hidden loading from real cases.
+             No runtime/test suite was rerun by ADMIN. The final packet was
+             composed after its earlier internal reviewer; its future bytes
+             were not claimed already reviewed by that earlier reviewer.
+             Ordinary theirsWaiting/mutualRevealed/optionalSalam remain HELD
+             and unmeasured, not skipped or reached by a private/developer bypass.
+             Horizontal-edge notification-axis risk remains unmeasured.
+             Public mocks use synthetic Auth/admission and intercepted invalid-
+             host HTTPS. Existing Family-review RPC may persist in production:
+             zero unexpected mock HTTP is not a wholly read-only production
+             graph or live provider/JWT/RLS/Guardian/identity acceptance.
+             Active subsequent responsive SOURCE/document work is UNSEALED
+             and excluded, not frozen or filed as completed in this stage.
+             Parent-null/read-refresh and Guardian caller settlement, critical
+             repair/backup/exact production GO, moderation/commerce/native/
+             accessibility/network/restore, privacy/legal/public/release and
+             Founder acceptance gates stay OPEN. Founder AWAY: no phone
+             delivery/build/install/launch, provider/live/store/public action.
+             One additive OA305 block only: no new ID, status/owner/score change,
+             whole-OA closure, release GO or new finding duplication.
+             ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_ROUND_LIFECYCLE_HANDOVER.json — 41,203B
+             SHA-256: bbad0aa8bb0632e57bd23eb492946614d4fb8e65fd56ec0553dac279847f57e5
+             NEXT_OA305_ROUND_LIFECYCLE_RECEIPT.json
+             SHA-256: acc86b8df31c87c8d9fb78935e3f6eef06b6c93c76705e0aeef7f54100844e93
+             NEXT_OA305_ROUND_LIFECYCLE_DOCUMENT_RECONCILIATION.json
+             SHA-256: 972eb30f1b11287163d2863048aa71775e09e55f6ff6dcc7dc75724bc92c98c7
+             NEXT_OA305_ROUND_LIFECYCLE_INDEPENDENT_REVIEW.json
+             SHA-256: 4bfbe819fe8a3dbf9354d08a3ef136e51cb585a4d01916b77c0ba10ce0c6708a
+
+             2026-10-06 ADMIN reconciliation — sealed responsive stage only
+             (evidence sealed 16:18:44 UTC; internally checked 16:26 UTC).
+             Founder-authorised away-work programme; OPEN, no release approval.
+             Earlier lifecycle/Wali blocks remain dated history, not overwritten.
+             Immutable source PRE 354,657B
+             SHA-256: 631eef3d73d4edf200573bb8b76195082bf69ba7cd4f811cb22b3134cd3b15a2
+             -> portrait-only 355,002B
+             SHA-256: e3b119c80e60da8a8f238487b5753436e5d9e6301ae0c52c5ba38103b4eb5ed7
+             -> FINAL 355,277B
+             SHA-256: 10b679778c9bcd7c1b8a1fe51b4194d3c31d4cfcf0798b78808623b46de77266
+             EXACTLY three spans: avatar 563->793B, protected footer 233->348B,
+             selected ribbon pill 723->998B. Loose Flexible/scaleDown preserves
+             the 82px portrait and 52px icon at normal available size; footer
+             wraps centred; pill uses IntrinsicWidth/minHeight24 and centred text.
+             Copy/fonts/gold/borders/roles/consent/revealed path and nonselected
+             marks remain unchanged. Same 96px Reveal,218px pager and 420/480ms
+             timing; prior lifecycle fix retained. Not a new ribbon redesign.
+             All 353,138 outside bytes identical; reverse restores TRUE PRE.
+             Outside SHA-256:
+             8430b785c50a658353c12a39e5f2d71bfa7392c2d1c3bac43459ccfd9ff9cc7d
+             SAME frozen focused four: 0PASS/4FAIL -> portrait2PASS/2FAIL
+             -> FINAL4PASS/0FAIL. SAME old twelve now12PASS/0FAIL,0skips,exit0.
+             Retained77 first-attempt PASS; these are repeats, not new coverage.
+             Exactly18 NEW distinct controls; old12+new18=30 distinct in core.
+             100 executions across attempts are NOT100 unique coverage cases.
+             NEW FIRST1PASS/17FAIL is preserved as fixture-invalid, not seventeen
+             established product bugs. Missing legitimate mock GET allow-list
+             and over-strict selection rounding were corrected BEFORE freeze.
+             New-only read-only empty-record routes: journey_salams,phase_answers,
+             checkpoints,ratings,family_answers; no mutation/live fallback.
+             Intermediate1px allowance tightened to FINAL0.25px before freeze.
+             Old fixture unchanged; SAME frozen NEW PRE10PASS/8FAIL ->
+             POST14PASS/4FAIL,0skips,exit1. Assertions not weakened after POST.
+             Separate diagnostic0PASS/4FAIL overlaps four NEW cases, not extra.
+             Four narrow enlarged phase1/phase2/phase3/family selection-bounds
+             predicates still FAIL. Per-character saved metrics place only
+             trailing SPACE rectangles outside; non-whitespace letters/middle
+             dot fit full paragraph bounds. Full copy,no maxLines/ellipsis and
+             didExceed=false do not prove real-device/native-font ink rendering.
+             Preserve4FAIL: neither18green nor four proven letter-clipping bugs.
+             A separate genuine chapter-briefing lock/count Row overflows68px
+             at width326 in three narrow phase cases (JourneyFlow line4384).
+             Outside authorised two-component spans and byte-unchanged; no
+             isolated PRE briefing measurement. OPEN here under OA305. Subsequent
+             bounded question-footer repair is UNSEALED/excluded from this stage.
+             Saved wide canonical geometry/navigation controls remain measured;
+             FamilyReview override readiness is false/query never reached,
+             so canonical family_stage is NOT FamilyReview execution evidence.
+             Selected LifeSnapshot0cases; ordinary8server stages vs9display marks
+             are distinct. Ordinary theirs/mutual/Salam remain HELD/unmeasured.
+             Source analyzer0issues. External old13/new14/diagnostic14+1info/
+             retained26 warnings overlap;0errors,exit2,not summed/suppressed.
+             Historical RoundAction pipefail-order correction is additive owner
+             attestation, not retrieved shell evidence. New printed commands
+             put pipefail BEFORE pipelines; saved raw runner events prove outcomes.
+             Immutable handover PRE80,662B directly verified. ONE dated section19
+             addition9,099B -> POST89,761B is owner/reviewer-attributed: no immutable
+             POST document snapshot named. Prior lifecycle provenance limit stays.
+             ADMIN verifies packet, immutable spans and raw event counts; separate
+             read-only internal audit matches208 reference checks/59unique files.
+             Active SOURCE/current handover excluded; no runtime/tests rerun here.
+             Owner-dated current-source inventories are NOT fresh ADMIN acceptance.
+             Missing personal_code_screen probe was a wrong filename: actual
+             CodeScreen is wali/zyra_code_screen, not evidence it was removed.
+             Public tests are synthetic/intercepted; production FamilyReview RPC
+             may persist. No live provider/JWT/RLS/identity/Guardian acceptance.
+             Native/fonts/accessibility/performance/network/security/commerce/
+             restore, parent-null/caller settlement and exact production GO remain
+             OPEN. No private/developer bypass,phone build/install/store/public
+             action,spend/destruction,Founder acceptance or score/status change.
+             ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_RESPONSIVE_HANDOVER.json — 20,617B
+             SHA-256: 14229e0f4411e9acdbd2f68def967cb7ff2b7fcbadd9e6455278a80e4ad561b1
+             NEXT_OA305_RESPONSIVE_CORE_RECEIPT.json — 78,004B
+             SHA-256: 046d1fe1b710c82b7ea19c21161c401e6151ecc94ec77ab0bbf46ef2e7970e9a
+             NEXT_OA305_RESPONSIVE_RETAINED_RECEIPT.json — 27,146B
+             SHA-256: d8f372db1c8f580d20e40569500b4b9b9394852f00c7d1160034dab902f4e469
+             NEXT_OA305_RESPONSIVE_ROOT_VERIFICATION.json — 105,788B
+             SHA-256: c722ff36e555a67faa30cd5d72c06bdae40c579e2c7b22c7d7510cca90b714d4
+             NEXT_OA305_RESPONSIVE_INDEPENDENT_RECEIPT.json — 62,256B
+             SHA-256: a3af6c192714cec4cd7e18630abd4e6e74585c77ab7a1b7caa0125adcaa5f11d
+             NEXT_OA305_RESPONSIVE_DOCUMENT_PROOF.json — 1,950B
+             SHA-256: 90e6e550a2f3c00b9739f8272732a46daf796fa0abd7c47396daebb99879f4c9
+
+DOWN-CUE LATCH TRIAL / FAILED, REVERSED AND HELD — 2026-10-06
+             ADMIN additive reconciliation of the sealed 19:06:07 UTC stage.
+             Founder away-work and local-execution instructions were verified
+             as direct human text in the original turn; this filing is internal
+             factual reconciliation, not new product policy or Founder acceptance.
+             Outcome: FAILED_REVERSED_HOLD; acceptedFix=false. Clean focused
+             twelve is historical candidate evidence, NOT an accepted repair.
+             The candidate 355,934B was exactly reversed to TRUE PRE 355,277B:
+             SHA-256: 10b679778c9bcd7c1b8a1fe51b4194d3c31d4cfcf0798b78808623b46de77266
+             Root independently checked that complete live-source equality at
+             19:08:02.928 UTC; ADMIN did not rerun app tests or broad tree scans.
+             Earlier responsive/lifecycle fixes survive the exact reversal.
+             The candidate's sole class hunk grew 1,678->2,335B; all 353,599
+             outside bytes matched. No candidate reapplication is accepted here.
+             The corrected frozen focused fixture retained PRE 3PASS/9FAIL and
+             POST 12PASS/0FAIL, zero skips. Seven copied DC plus five DL cases
+             are twelve packet-distinct cases, not twelve new product flows.
+             Six retained suites executed 153 cases: 140PASS/13FAIL. FOOTER21
+             repeats within ARRIVAL43, leaving 132 distinct packet case names,
+             not 153 new coverage cases. Retained77 subset is 76PASS/1FAIL.
+             The unsuppressed EXISTING33 failure is in "revocation and refreshed
+             gate reject the earlier late result": MissingPluginException for
+             listen on com.llfbandit.app_links/events. Candidate causation,
+             flakiness and pre-existing attribution remain UNESTABLISHED.
+             Wider failure governs the reversal/HOLD; no absorption, assertion
+             weakening or exploratory rerun after STOP is accepted by this stage.
+             Raw geometry has 44 records: 38 whole-exact; only six records /
+             eighteen approved cue leaves differ, with no tolerance or other
+             geometry change. Ordinary body/footer/FamilyConversation layout
+             remains unchanged and held, not repaired by a visible-pose latch.
+             Restored-source-only analysis: zero issues, exit0. The failed
+             candidate was NOT analyzed after STOP. Six external copied fixtures:
+             zero errors, eighty unsuppressed warnings, exit2, NOT analyzer-clean.
+             Root's 19:08:56.882 UTC saved-log recomputation separates 78
+             visible-for-testing warnings and two unused warnings; no fresh
+             runtime. Other live-tree inventories remain APP BUILD-recorded
+             metadata, not fresh Root or ADMIN broad traversal/acceptance.
+             Current handover's sealed 130,277B stage:
+             SHA-256: cae00ee27ea4b51e9c0aeec12a25f8e871b35d1e6496c3f868ebe33bb9af64c3
+             retains the complete 112,084B true PRE prefix:
+             SHA-256: 2f1f168dda6fd6fe234cb09369bedac32b969301c2e2954de0566c015eb08e49
+             Only section23 adds 18,193B:
+             SHA-256: 61dd722232ddde1be87f60d71cf88b655956baebe3e8b6e59d1204f54c5ceefc
+             Root fully read that addition and checked prefix equality. ADMIN's
+             filing does not edit or backfill the handover/independent receipt.
+             Preserve FINAL-manifest errata: Core authored original36,780B
+             fixture; Main authored subsequent selector/API/lifecycle copies
+             and owned runtime, source and document work. Section23's overbroad
+             sole-fixture-writer sentence is qualified, not rewritten.
+             Frozen MAIN_SCOPE 7,850B:
+             SHA-256: 61bb408d5de3f029b81a393bbadaec1c5680fedbe4c24a3d381d036d97293ac1
+             is the ELEVENTH packet, as freshly read by Main and Root. The
+             independent receipt's qualification0 "tenth" is superseded ONLY by
+             the final exact-readback erratum. Earlier unsealed7,847B draft is
+             preparation history, not later frozen authority or a new GO.
+             Preserve original PRE empty-finder misclassification/erratum,
+             unsupported selector API/runtime0, API-only 11PASS/1FAIL cleanup
+             failure, clean focused12 and latest retained failure, together with
+             every recorded metadata-projection/guard error and old document
+             snapshot qualification. Later corrected copies do not rewrite them.
+             Separately queued existing33 read-only diagnosis was ACTIVE/
+             UNSEALED at assignment. Its result is excluded from this filing;
+             no new fixture/runtime, reapplication or accepted fix follows.
+             Private callback literal multiplicity, internal ticker shutdown
+             and native Reduce Motion remain unmeasured. Existing layout,
+             provider/backend/payment/device, critical production/restore,
+             privacy/legal/public/release and Founder acceptance gates stay OPEN.
+             Founder AWAY: no phone/native build/install/launch, live/provider/
+             security/store/spend/public action. No OA closure, owner/status/
+             identifier/index/footer or readiness-score change; provisionally30%.
+             ADMIN matched both complete sealed JSON bytes/hashes, inspected the
+             complete owning OA section and used a collision-safe whole true-PRE
+             register backup. Separate read-only evidence check agrees; neither
+             check is Founder approval or a fresh app/runtime acceptance test.
+             ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_DOWN_CUE_LATCH_FINAL_HANDOVER.json — 22,748B
+             SHA-256: 4c7cd4bdbcb97c6f15e4f846778152a6d6994d827dbe32eadc72d8536ab79743
+             NEXT_OA305_DOWN_CUE_LATCH_INDEPENDENT_RECEIPT.json — 40,809B
+             SHA-256: 7e14282ecfc87c89f77fdf9631adc44c682ce3db283a7713f44ababb97e09bab
+
+SOURCE-CONTEXT ARROW LATCH / EXECUTED, INTERNALLY POST-VERIFIED — 2026-10-06
+             Later sealed local stage, FINAL_SEAL 21:39:15.345 UTC. Earlier
+             FAILED_REVERSED_HOLD, failed/reverted attempts, preparation holds
+             and ancillary tooling errata remain immutable dated history.
+             This stage does not retrospectively make the earlier trial PASS.
+             Original direct Founder away/bidirectional and reversible-local
+             execution instructions were verified as human text; Root routing
+             is not new approval. ADMIN files facts only, not Founder acceptance.
+             APP BUILD's sealed Source is 355,934B:
+             SHA-256: 9c648ede7589aa97e3ef391c035c8746a7caa69021c6341ab37fd625732fbf98
+             Actual TRUE PRE backup is 355,277B:
+             SHA-256: 10b679778c9bcd7c1b8a1fe51b4194d3c31d4cfcf0798b78808623b46de77266
+             Only _JourneyDownCue changed at UTF-8 byte164588: 1,678->2,335B.
+             All 353,599 outside bytes match:
+             SHA-256: b39ed752ea8bfb1fcf12c5a48bbb888d3e2a4d75bfafd9b8f2408f12c0ec9bab
+             Whole inverse equals the real pre-edit backup; this is recorded
+             sealed source proof, not a fresh ADMIN app/runtime or tree audit.
+             The mounted State latches reduced-motion visible pose: opacity1/
+             translation0 survives true->false; remount resets the latch.
+             Normal560ms easeOutCubic motion and existing child/semantics/
+             InkWell/callback/focus/held-pointer structures remain as tested.
+             No other widget, layout, copy, font, colour, API or entitlement
+             repair is included. Underlying ticker cessation and native iOS
+             Reduce Motion/accessibility are NOT proven by final visible pose.
+             One FIRST cached SOURCE analyze --no-pub: exit0, zero errors/
+             warnings/info; no static retry or config/dependency alteration.
+             Exactly three sequential FIRST candidate-state invocations:
+             FIRST12 = 12PASS/0FAIL/0SKIP, exit0; full108rows/body exact.
+             FIRST43 = 34PASS/9KNOWN layoutFAIL/0SKIP, expected exit1.
+             Full195rows/body and all27 ordered diagnostics remain exact:
+             nine68px RIGHT overflows at SOURCE4384:13, exact retained frames.
+             All44 geometry records match the frozen projection:38 whole-exact,
+             six records/exactly18 approved numeric leaves; no tolerance shift.
+             FIRST33 = 33ordinaryPASS + five hiddenSuccess, 0FAIL/0SKIP/errors,
+             exit0; complete91rows/50-node semantic graph and streams exact.
+             Final frozen expanded helper used, not older inMemoryCheck;
+             all37 actual reporter lines/wrappers/interleaving/partial count
+             associations remain. Printed labels are not fabricated starts or
+             exact timestamp-causality/completed-test identity.
+             Total88 ORDINARY EXECUTIONS = 79PASS/9knownFAIL; overlapping
+             inventories, NOT88 unique coverage or93 ordinary passes.
+             All nine retained layout failures remain OPEN under OA-ZYRA-305;
+             their frozen FIRST43 signature is linked, not freshly reproduced
+             or reclassified here. The three named filing artifacts do not
+             enumerate the nine individual names; none are invented by ADMIN.
+             Earlier plugin-listen failure/cause qualifications are retained;
+             later source-context FIRST33 is not native auth/plugin acceptance.
+             Preserve ancillary sample-counter0: it searched nonexistent
+             DOWN_CUE_LATCH_SAMPLE. Separate erratum records46 DOWN_CUE_SAMPLE
+             prints; sealed full rows/body/135 typed identities already matched.
+             No oracle edit or runtime retry. Unexecuted FIRST43 factory
+             assembly failed on missing lexical B/protectedPins binding with
+             runtime0; original binding restored before its single FIRST43.
+             FIRST33 comparison export truncation was read-only transport:
+             immutable result transferred in bounded slices, no rerun,
+             discarded raw rows, oracle broadening or error suppression.
+             Optional historical authority lookup failures/HOLD and reviewer's
+             inapplicable inline substring checks retain their separate errata.
+             RESULT's evidenceSealPending=true is its 21:38:39.708 UTC pre-seal
+             state. Separate matching FINAL_SEAL resolves release/readback at
+             21:39:15.345 UTC; RESULT is not rewritten. Recorded source/reviewer
+             writers released and all four owned process groups absent then;
+             this is dated packet evidence, not fresh ADMIN process inspection.
+             The 6,949B as-built delta remains a PREPARED point-in-time artifact.
+             Its link below does NOT prove CURRENT governed handover filed.
+             App's separate finite append owns that reconciliation.
+             ADMIN whole-byte-read/parsed the three sealed filing artifacts,
+             inspected the complete owning OA section, matched exact pins and
+             used a collision-safe whole true-PRE register backup. Separate
+             read-only internal evidence check agrees; neither is approval.
+             Existing critical production/backup/restore, provider/auth/
+             identity/photo/privacy, moderation, payments/membership, native/
+             device/release, legal/public and Founder acceptance gates stay OPEN.
+             Founder AWAY: no phone build/install/launch or live/provider/store/
+             account/security/legal/public/spend action. No new OA, status/
+             owner/NEXT/footer/closure/acceptance/score change; all six regular
+             jobs unchanged. Root alone owns release ledger/scoring/dashboard.
+             ZYRA evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_LATCH_SOURCE_CONTEXT_RESULT.json — 194,533B
+             SHA-256: bcc0307d0641c161feb46c990d70d58cce05cfad886f70f143c2f060f32e36a0
+             NEXT_OA305_LATCH_SOURCE_CONTEXT_AS_BUILT_HANDOVER_DELTA_PREPARED.md — 6,949B
+             SHA-256: d927add67246af6ff4af9a836367531c5cdead460eedf4e86f07b35eb2cb8411
+             [Prepared as-built delta](/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_LATCH_SOURCE_CONTEXT_AS_BUILT_HANDOVER_DELTA_PREPARED.md)
+             NEXT_OA305_LATCH_SOURCE_CONTEXT_FINAL_SEAL.json — 1,905B
+             SHA-256: 9067e529dcda568974ae86b3e83e9c19a8aec249905f53ddf434339c84543a36
+
+ADMIN FRESH-LIFETIME FIX / DISPOSED-PENDING SUPPLEMENT — 2026-10-07
+             Later sealed local progress under renewed direct human authority;
+             Founder BACK. Earlier failed/PENDING/AWAY stages remain dated history.
+             APP BUILD changed exactly two journey_flow_screen.dart methods:
+             Phase _submitAll bounds pending drafts to actor/account generation/
+             mounted lifetime; public compatibility Auth onError retires local
+             read flights, retains confirmed same-owner display-only state and
+             explicit Retry. No new scoring/logout/automatic-retry policy.
+             Packet source357,006B/f641a9a7bbaa2fa8909535bb2d019cc1e1ca5888fbab82bbcd85e46e801049cd;
+             TRUE PRE355,934B/9c648ede7589aa97e3ef391c035c8746a7caa69021c6341ab37fd625732fbf98;
+             all354,476 outside bytes match; exact two-region inverse recorded.
+             Eight unique synthetic controls finally PASS; analyzer0issues.
+             The22 PRE/POST executions are16PASS/6FAIL, NOT22 unique controls.
+             Preserve zero-case initial compile failure and PREV2 2PASS/4FAIL.
+             POSTV2 6PASS/2timingFAIL remains Main-attributed transcript evidence,
+             not independently pinned raw output. V3 changes only two normal
+             2600ms settling waits; assertions/mocks unchanged. Guardian lost-ACK
+             decline/cancel controls are client/fake-ledger evidence only, service
+             unchanged; OA-ZYRA-289 cross-reference, no standalone state update.
+             FINAL_SEAL qualifies RESULT's earlier pending fields: section26
+             preserves143,922B handover prefix +7,800B ->151,722B. This is saved
+             packet proof, not a new ADMIN moving-source or runtime comparison.
+             A separate TEST-ONLY packet later adds TWO unique disposed-pending
+             controls, two executions/twoPASS, no compile failures/repeats:
+             Phase unmount before first normal ACK leaves its already-dispatched
+             ONE synthetic write unrevokable but dispatches no remaining drafts
+             or stale reload/feedback; public compatibility unmount before a
+             malformed refresh safely catches the actual SDK FormatException,
+             with no extra disposed read/framework/unsuppressed teardown error.
+             Same-scope remount displays confirmed72 during typed503, explicit
+             Retry83 adds no Reveal/Plus mutation; ordinary2600ms timing retained.
+             No Source/current-handover/config/dependency/native/phone change,
+             analyzer or larger-suite rerun in this two-test supplement.
+             Initial protected41 +three later resolved SDK pins =final44;
+             final55 physical files include11 new artifacts. Not initial44.
+             Existing public Guardian loader supplies a prerequisite fixture,
+             NOT ordinary real Guardian readiness/admission. Observable widgets/
+             SDK tests do not prove zero internal cache mutation, which lifetime
+             guard/canceled listener prevented publication, real offline/provider
+             expiry/JWT revocation, server rollback or live database authority.
+             RUN.json retains381 exact output bytes; displayed RUN.txt382 adds
+             one LF. Explicit erratum retained, not a product failure or rerun.
+             Saved phone preflight STOPPED_ON_LOCK; no build/install/launch.
+             SDK reason discrepancy remains OPEN, no blind upgrade/privacy-reason
+             substitution. All9 enlarged-text findings and critical live repair/
+             backup/restore, provider/security/identity/photo/moderation/commerce/
+             native/device/store/legal/public/Founder acceptance gates stay OPEN.
+             ADMIN/second-reader whole-file pin checks are internal documentary
+             review, not fresh app tests, independent approval or release proof.
+             No OA closure, owner/status/headings/NEXT/history/score change;
+             Root scores unchanged provisionally30%. Paper safety walkthroughs
+             are filed under OA-AIOS-392; all eight operational rehearsals NOT RUN.
+             ZYRA SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_FRESH_LIFETIME_2026_10_06_RESULT.json —23,360B
+             SHA-256: 014f2180f8f140dd17c0621c5a62e4e2fb6de91d0ce18e8812ae0d7939aae403
+             NEXT_OA305_FRESH_LIFETIME_2026_10_06_FINAL_SEAL.json —7,261B
+             SHA-256: 063fd3694a817bae4341ce76d0eac8fe4921d75a54dece479e808f6576a1a13b
+             NEXT_OA305_DISPOSED_PENDING_2026_10_07_RESULT.json —6,360B
+             SHA-256: 984bac889a80641d9f2db06f9130e08592001c4a52f8b824737829740c3ae0d6
+             NEXT_OA305_DISPOSED_PENDING_2026_10_07_AS_BUILT_SUPPLEMENT.json —10,169B
+             SHA-256: f43caa8cde2537cfeacb62aa056b3cb5879b56844085f750b7b550f94ea1bb28
+             NEXT_OA305_DISPOSED_PENDING_2026_10_07_FINAL_SEAL.json —6,457B
+             SHA-256: 37472cf9aeefb6591c368cf40da8f33f89acf4ebf1eefe37a74adf21c73dcdcb
+
+ADMIN CHANGED-OWNER TESTS / COMPLETED PLATFORM REVIEW — 2026-10-07
+             Later sealed evidence under direct human routine-local instruction
+             turn01a115fa-d7cb-70c0-817e-cddf4563af9a; Founder AWAY again.
+             APP BUILD's separate TEST-ONLY stage adds TWO distinct synthetic
+             pending malformed public SDK refresh controls: A→B and A→B→A.
+             Exactly2 executions/2PASS/0FAIL/0compile failures, no product defect,
+             Source repair, CURRENT handover edit or old-control rerun. Combined
+             targeted coverage is earlier8 + disposal2 + new2 =12 distinct controls,
+             not12 new tests or a whole-app acceptance total.
+             The actual SDK FormatException is caught; advanced actor/generation
+             remains, retired confirmed72 absent. A declared500ms observation ends
+             before normal5s polling. Compatibility-read equality is asserted;
+             total requests8/8/8 are raw-observed, not separately asserted.
+             No Reveal/Plus mutation, unexpected transport, framework or suppressed
+             teardown error recorded. Synthetic Guardian-ready prerequisite and
+             intercepted transport do not prove live admission/OAuth/logout,
+             token expiry/revocation, server rollback, zero internal cache mutation
+             or a permanent no-polling/ignore-all-old-errors policy.
+             Platform/grants documentary review is COMPLETED, not pending.
+             Six prepared Oct5 candidates introduce no new public-table default-
+             grant dependency; F06/F07 bookkeeping stays private/direct-revoked.
+             Future clean provisioning needs deliberate least-privilege object
+             grants. Proposed list is UNAPPLIED/non-executable: zero SQL/runtime/
+             grants/revoke/upgrade action. Official existing-object grants remain
+             distinct from30Oct future-table changes. Saved Oct3 PG17.6/pgcrypto1.3
+             metadata and attributed441-file scan do not establish fresh live
+             applicability or vulnerability clearance; F37/OA297 gates stay OPEN.
+             ADMIN whole-byte-read/parsed all12 new primary artifacts, matched
+             their named pins and inspected complete affected OA content. Separate
+             read-only internal checker matched40 platform inputs/58 protected app
+             pins; broad scan provenance remains attributed, not reconstructed.
+             Historical root dashboard pin resolves to its dated before-update
+             copy, not mutable current HTML. No fresh app tests/tree audit here.
+             Group OA-AIOS-392 separately records new private mock-rule results:
+             nine groups/102 checks only; eight operational rehearsals NOT RUN.
+             All9 enlarged-text findings and exact critical repair/backup/restore,
+             SDK/privacy/provider/admission/photo/moderation/commerce/native/
+             device/store/legal/public/Founder acceptance gates remain OPEN.
+             No new OA, closure, status, owner, NEXT/history/score or live approval.
+             Root alone owns the release visual; schedules/preferences unchanged.
+             Root .codex/visualizations/2026/10/04/
+             01a107c5-892f-7862-a354-09d22d3e62eb/:
+             release-changed-owner-auth-tests-verified-2026-10-07.json —20,928B
+             SHA-256: 241be5ffb69b85d528f7608d3cb724559b0f437dbf282721d6779ac474a14928
+             release-platform-review-and-next-app-tests-2026-10-07.json —27,448B
+             SHA-256: e7fdd75c7fede3b97479861eef2f666258be06f0fd951be0ed8526bb1eed2a4a
+             New APP evidence under SYSTEM/RESOURCES/REVIEWS/
+             ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_CHANGED_OWNER_AUTH_ERROR_2026_10_07_RESULT.json —9,859B
+             SHA-256: d7a5b8a66015c21a4d94824a1e039e6eec65e48ce7acbbf1f7835b7f089b392b
+             NEXT_OA305_CHANGED_OWNER_AUTH_ERROR_2026_10_07_FINAL_SEAL.json —9,564B
+             SHA-256: e6f5c2d48fc9b4a9d60f44a9a4ce6f18040204ce9b0df54aa3ed84b61fa214c9
+             PLATFORM_APPLICABILITY_2026_10_07_REPORT.json —62,658B
+             SHA-256: 0abd07759c1fffac3a0c94f2c36e177244e518dfbd10bdc7b0e168413cd804b4
+             PLATFORM_APPLICABILITY_2026_10_07_PROPOSED_GRANTS.json —13,199B
+             SHA-256: 60191a9c93d56b32d20a63ca9a2f184c9bd0f4c08611c211df5a36564c810795
+             PLATFORM_APPLICABILITY_2026_10_07_SEAL.json —17,272B
+             SHA-256: 25c49019cc83457c9952838e7b3b35914c86be8e3c345bfb7d43579f949603f2
+
+ADMIN FAMILY SUBMISSION REPAIR / COUPLED LAYOUT CORRECTION — 2026-10-07
+             Later sealed local stage under verified human routine-local turn
+             01a115fa-d7cb-70c0-817e-cddf4563af9a; Founder AWAY. ONE new defect:
+             a pending first Family answer ACK resumed three old drafts after
+             A→B,A→B→A or disposal. Only _FamilyStageViewState._submit repaired:
+             capture starting SDK actor/generation; mounted/current checks before
+             draft/controller dispatch, after each awaited write and before
+             feedback/reload. First already-dispatched write may settle; no
+             cancellation/server rollback promise. Same-owner ordering survives;
+             failed-write/duplicate/retry behavior preserved statically, not
+             separately measured by these four controls.
+             Four distinct NEW public synthetic controls: same-owner,A→B,A→B→A,
+             disposal. PRE1PASS/3FAIL, exit1; frozen POST4PASS/0FAIL, exit0; final
+             POST4PASS/0FAIL after print→debugPrint plus one terminal LF only.
+            12 executions =9PASS/3FAIL across three runs, NOT12 new cases.
+             Earlier12 controls were NOT rerun; targeted cohort now16 distinct,
+             not16 accepted gates or a whole-app inventory. PRE retired cases
+             fail the first length assertion; later assertions not all reached.
+             POST retired cases allow only first synthetic commit,17→17 requests/
+            4→4 Family reads versus PRE17→25/4→6; same owner keeps four ordered
+             writes/reload.500ms window ends1752ms from mount before8s poll,
+             not permanent no-polling behavior or real logout/provider authority.
+             First targeted analyzer exit1 is test-only avoid_print info, no
+             Source diagnostic; final TWO-FILE analyzer exit0/no issues, not
+             full-app/native acceptance. Raw PRE and both POST captures retained;
+             both2283B POST logs equal original saved tool outputs.
+             Sealed true Source PRE357006B/f641a9a7bbaa2fa8909535bb2d019cc1e1ca5888fbab82bbcd85e46e801049cd
+             ->POST357417B/ef2effd3e0364eb9274c8c77ea3a167440df66d4f122a1a8fb16e7b155b40146.
+             Only method989→1400B; all356017 outside bytes exact, inverse equals
+             true PRE. Handover section27 adds6945B to exact151722B prefix,
+             sealed158667B/277cfd374f55c92687289d969fe9cdfc7c9fdf1c148167962796e3143fc4f38b.
+             ADMIN matches immutable backups/proof and reconstructs these SEALED
+             post hashes; no fresh moving SOURCE/current-handover acceptance.
+             Root/reader68 protected inputs+16 outputs are named-file checks,
+             not a complete tree inventory. Source remains unshipped: existing
+             IPA unchanged, not rebuilt/asserted to contain this repair.
+             Synthetic strict.invalid/public SDK/widgets, font stubs and disclosed
+             synthetic Guardian-ready prerequisite are not live admission, real
+             Guardian/IDV/provider/JWT/RLS/committed-effects/native proof.
+             CORRECTION TO EARLIER ROOT WORDING: all NINE enlarged-text identities
+             are COUPLED across Phase1/2/3 QUESTION-ARRIVAL routes: six ordinary/
+             reduced whole-body-fit, three canonical count-text containment.
+             Not six independent fixes, nine independent defects or three Welcome
+             pages. Status-wrap-only increases the body deficit; sourceEditCount0.
+             All9 HELD for Founder body-scroll between unchanged fixed-cue choice.
+             No layout/font/copy/oracle change or physical acceptance. Separate
+             small Family/Conversation rectangle overlaps remain observations,
+             not established painted-glyph/interaction failures.
+             Family _loadOnce read-lifetime is separately ACTIVE in APP BUILD
+             after Root's bounded assignment; still UNMEASURED at this filing,
+             not a second reproduced defect, accepted fix or screen clearance.
+             ADMIN/second-reader sealed documentary checks are internal; no
+             runtime rerun, source edit, duplicate assignment or new live apply.
+             Earlier platform completion/proposed UNAPPLIED grants and mock/paper
+             stages stay preserved. Critical F01/F02/F03, production/backup/
+             restore, SDK/privacy/provider/auth/identity/photo/moderation/
+             payments/native/device/store/legal/public and Founder acceptance
+             gates remain OPEN. No closure/status/owner/NEXT/history/score or
+             schedule/preferences/paused-away-job change; Root alone owns visual.
+             Root release-family-submission-verified-2026-10-07.json —19,056B
+             SHA-256: 8bf6ae3d6012f2eb8cd53b2cb59d4b42636db9614c5a4692029abaf471b0313f
+             ZYRA SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_FAMILY_LIFETIME_2026_10_07_RESULT.json —30,046B
+             SHA-256: 982c55edad359e7ed577c41f75f47c0c5fff24732a8465099753755b016ff620
+             NEXT_OA305_FAMILY_LIFETIME_2026_10_07_FINAL_SEAL.json —32,622B
+             SHA-256: bab6ca7b9bee59a8bb9f4f9260baf0c98604c94035063d9e0722a5f77293a3ad
+             No public release clearance; provisional overall30%, uplift0pp.
+
+ADMIN FIRST FAMILY-ANSWER READ REPAIR / TARGETED COHORT20 — 2026-10-07
+             Later finite stage under independently verified direct human
+             7Oct routine-local away-work authority; renewed human message
+             01a11636-37dd-7f73-86c5-c162e2a60211 inspected in release-review chat.
+             Earlier _submit/cohort16 is preserved dated history. _loadOnce's
+             FIRST pending Family-answer criterion is now locally reproduced,
+             conditionally repaired, executed and targeted post-verified;
+             not an active unmeasured criterion at this later stage.
+             ONE new read-lifetime defect: after first Family await, old load
+             dispatched opposite-direction Family GET plus three ratings GETs.
+             PRE A→B/ABA also published stale completion; disposal stopped
+             publication via mounted but still dispatched later reads.
+             Only _FamilyStageViewState._loadOnce captures initial actor/
+             generation and checks mounted/current before initial work and after
+             each Family and aggregate-ratings await before visible publication.
+             First already-dispatched request may settle, not client-revoked.
+             Same-owner loading/completion retained; _load/coalescing/polling/
+             lifecycle/constructors/parent, _submit, services, schemas/API/roles,
+             layout/font/copy/navigation/motion unchanged in this packet.
+             Four NEW frozen public controls: same-owner,A→B,A→B→A,disposal.
+             PRE4executions=1PASS/3FAIL,exit1; POST4newread+4existing_submit
+             =8PASS/0FAIL,exit0. Two Flutter invocations/12executions=9PASS/
+             3PREfail/0compile failures, not12 new controls or20 rerun cases.
+             Distinct targeted cohort16→20; existing submission4 rerun but
+             not new; other previous12 NOT rerun. Three-file analyzer exit0/
+             no issues only, not whole-app/native acceptance.
+             PRE all cases7→11 total requests/1→2 Family/0→3 rating reads;
+             A→B later requests use B; ABA/disposal A. POST same-owner retains
+             those reads/completion; all retired cases7→7/1→1/0→0 with no
+             stale completion/feedback. Failed PRE cases stop at first extra-
+             Family-read assertion; printed later observations are not passed
+             assertions.500ms observation ends1752ms after mount before8s
+             initial poll, not a permanent no-polling/zero-request guarantee.
+             Strict generated.invalid/public SDK/widget, synthetic Guardian
+             prerequisite and font stubs are not live admission/JWT/RLS or
+             native/server/provider proof. No teardown/error suppression.
+             Sealed true screen PRE357417B/ef2effd3e0364eb9274c8c77ea3a167440df66d4f122a1a8fb16e7b155b40146
+             →POST357806B/9edc0341a1bd70d10c11704b82788ee48d82a86f72846818f2e681ca6bdd6c5d.
+             Exact method1263→1652B(+389); all356154 outside bytes match,
+             SHA-256: 30d1bfcb0210c7cd2d006e2190db3082cccc54a9e40ed1ab560388c8417e94a2
+             Inverse equals true PRE. Earlier _submit1400B/e0c8fbabafdcd7ac619a9319c45222b06e5a070fec884fc49e3cb056cb12d299
+             unchanged. Handover section28 adds7367B to exact158667B prefix,
+             sealed166034B/bac0332cce3b69b5c512b6d5b13bb51af0a9166661cf003ac3d14caee46d5e45.
+             ADMIN reconstructed sealed Source/document from immutable PRE+
+             recorded replacement/append, not fresh current moving artifacts.
+             Root/worker13outputs+seal/87named-input checks stay attributable,
+             not a whole-tree inventory or independent historical runtime proof.
+             Existing IPA only pinned unchanged; no rebuild/install/launch or
+             assumption it includes either Family repair.
+             Remaining: later Family await boundaries, service-internal
+             fetchAllMyRatings sequential actor recapture, already-visible
+             snapshots/native AuthGate remount. Root assigned service test-first
+             packet to APP BUILD; concern UNPROVEN at this filing. Three planned
+             controls count0; not23 accumulated or a third established defect.
+             All9 COUPLED Phase1/2/3 question-arrival fit/count-text identities
+             remain HELD for Founder body-scroll/unchanged-fixed-cue decision.
+             No Welcome-page/layout/physical acceptance. Critical F01/F02/F03,
+             production/backup/restore, SDK/privacy/auth/admission/photo/
+             moderation/commerce/native/device/store/legal/public and Founder
+             acceptance remain OPEN. No whole-OA closure/status/owner/NEXT/
+             history/score change; carried provisional30%,+0pp,0acceptedgates.
+             No ADMIN runtime/source/live/public/store/schedule/security action;
+             Root alone owns release visual/scores and APP BUILD owns Source.
+             Root release-family-first-read-verified-2026-10-07.json —27,184B
+             SHA-256: 2be7a7f30fe1d1478fccdac8774dfb48870cf64deb829db379cb90155469372a
+             ZYRA SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_FAMILY_READ_LIFETIME_2026_10_07_RESULT.json —63,244B
+             SHA-256: d0f2498f87e0fefcba8b2d3826b4f8e81299021e8da6fab7227f5ec33d343779
+             NEXT_OA305_FAMILY_READ_LIFETIME_2026_10_07_FINAL_SEAL.json —38,102B
+             SHA-256: 1602d73d6fd6822d59de283592585486f1c5f63cc075d5dd6effe331be45dad8
+
+ADMIN RATINGS AGGREGATE REPAIR / TARGETED COHORT23 — 2026-10-07
+             Later finite stage under verified human7Oct away-work authority;
+             message01a11636-37dd-7f73-86c5-c162e2a60211 independently read.
+             Earlier cohort20 and then-unproven ratings concern stay immutable
+             history. ONE new service-internal defect reproduced: phase2/3
+             continued after heldphase1 under changed actor/account generation.
+             Earlier widget _loadOnce ALREADY rejected stale UI in both retired
+             PRE cases. Do not describe this as a newly reproduced UI defect.
+             Only fetchAllMyRatings now captures starting actor/generation and
+             checks current before/after each phase await; retired returns{}.
+             Already-dispatched phase1 may settle; no request revocation or
+             aggregate widget-disposal API. Same-owner3phase merge unchanged.
+             Three NEW distinct frozen public controls: same-owner,A→B,A→B→A;
+             both FamilyGETs complete before FIRSTphase1ratingGET is held.
+             PRE3executions=1PASS/2FAIL,exit1; POST3new+4existing first-read
+             regressions=7PASS/0FAIL,exit0. Two Flutter invocations/10executions
+             =8PASS/2intentionalPREfail; no additional/compilation failures.
+             Accumulated distinct20→23; previous16 NOT rerun, not23executed
+             release gates/whole-app/native acceptance. Three-file analyzer
+             exit0/no issues only. Four older first-read controls are regressions,
+             not new ratings-disposal coverage.
+             PRE all3:requests9→11,Family2→2,ratings1→3. Retiredphase2/3
+             actor/rater B or returned A/newgeneration. Both retired UIs already
+             hidden; first failing assertion expects1ratingread vs3 atline549;
+             later unreached assertions not credited. POSTsameowner retains
+             3phases/exact ratings-dependent summary/completion; retired cases
+             requests9→9,Family2→2,ratings1→1, no later calls/publication.
+             500ms fake-clock window ends1752ms after mount before8s initial
+             poll, not production latency or permanent polling guarantee.
+             Strict generated.invalid SDK/widget and synthetic Guardian-ready/
+             font prerequisites; existing public mock One setter SAME-OWNER
+             ONLY for exact returned-value-dependent summary. No live paid
+             receipt/admission/JWT/RLS/server proof or suppressed errors.
+             Main full root/RESULT/seal/fixture/section29 reads and fresh
+             released-artifact pins; source PRE76285B/f2f395e615bf6dd55e8208c422d2fdd95b8bd52f25419a7933b281b1704a559c
+             →POST76687B/a2ebb51830cccaceb87d9000bb8af0a94401e9e67df165de7b8da72a3596a39d.
+             Exactmethod240→642B(+402), inverse matches wholetruePRE;
+             outside76045B identical:
+             aec18d69d1daab6f321ab3bf640fb971e129c67c60a983f71606ef20ad7ffc9c.
+             fetchMyRatings743B unchanged:
+             b263e76cfda419b00c8bf232a01e7322c00e0ec2cd83de848526b52133497c57.
+             Newfixture23018B/8026239cb740e6891b776a48ce12469c3938895bcca0be9ac7550d7acd0de9ee
+             frozen through PRE/POST. Prior JourneyScreen/Family fixtures exact.
+             Section29 append8576B preserves166034B prefix; current174610B/
+             e9f1933c9e46080a0d7b7805d4320136b5c0bbf5d4978d18aac3ac484728ba11.
+             13outputs+seal+106protected+3live named-file evidence, not whole-tree
+             or fresh historical-runtime proof. Existing IPA unchanged only;
+             no rebuild/install/launch or claim it contains any repair.
+             Later-phase holds, other callers/polls, already-visible snapshots,
+             native remount and widget disposal afterratingdispatch unmeasured.
+             All9 coupled Phase1/2/3 question-arrival fit/count-text identities
+             HELD for Founder body-scroll/unchanged-fixed-cue decision.
+             Critical F01/F02/F03 and auth/recovery/privacy/photo/admission/
+             moderation/commerce/restore/native/store/legal/public gates remain
+             OPEN. No migration/live/public/store/schedule/security action or
+             status/owner/NEXT/ID/closure/score/Founderacceptance change.
+             Carried provisional30%,+0pp,0newacceptedgates; release BLOCKED.
+             Root release-family-ratings-read-verified-2026-10-07.json —40,025B
+             SHA-256: e9fa1e287e55df558dc7c19fba8a8ac699a858506c4361ae062d50bb6bd3fb1d
+             ZYRA SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:
+             NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_RESULT.json —31,641B
+             SHA-256: beed4ea756f3ac0f5772b1f04b500f0e4c2841a01c036bbfd02114588011992e
+             NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_FINAL_SEAL.json —86,326B
+             SHA-256: 01f29871a15abb0c517e0d6e496132a297d3cdb6e31991f953d57a7a378a0cb8
+
+------------------------------------------------------------
+
+OA-ZYRA-306
+Title:       Separate Public Browse Answers and Private Radius Search
+Category:    Product / Privacy / Discovery
+Priority:    High before real-member filter activation
+Status:      OPEN — Founder direction accepted; local sample UI only
+Update 2026-10-17 (real Filters request; read-only verification):
+             Founder asks to remove sample-only copy, replace City pills
+             with typed dropdown selection and Distance pills with a slider,
+             and make selected-area distances genuinely operational, not
+             guessed or display-only. Current concept Filters independently
+             combines exact city equality with a fixed Manchester sample
+             radius; changing City does not change its radius origin.
+             Existing valid-point/Haversine/null-unknown handling is reusable,
+             but fictional coordinates are not member-location evidence.
+             Public Source has no real geocoder/location acquisition or
+             trusted candidate-radius reader. Own location persistence and
+             ordinary discovery currently use profiles.location_text.
+             A read-only metadata query on the runbook-pinned main project
+             confirms location_text is text, the inspected public/private
+             location-column projection has no member-coordinate field and
+             the named radius/distance/place-search function projection is
+             empty. No member rows or precise locations were read; this is
+             scoped metadata evidence, not an exhaustive live security audit.
+             No Source/UI, provider, location collection, schema, stored data,
+             device or native build change is made. Removing the warning
+             alone would misrepresent the current fixture-only behavior.
+             Next Founder decision: authorize preparation of verified chosen-
+             city selection and a private location-backed radius contract,
+             alongside the UI changes, with no inferred/backfilled coordinates
+             from legacy free text and no public candidate coordinates. The
+             selected area must own the radius origin; exact-city equality
+             must not silently exclude surrounding radius matches. Any city-
+             centre-only precision contract must be explicit, not described
+             as exact person/GPS or road distance. Exact production migration,
+             real collection/provider activation and live GO remain separate.
+             This finding stays with OA306/OA151; no duplicate OA or closure.
+Owner:       Codex (implementation and evidence); Founder (exact live GO)
+Authority:   DR-ZYRA-267; Founder explicitly chose separate public answers.
+Description: Capture public nationality and ethnicity separately with a
+             clear Browser disclosure notice and a fresh versioned member
+             choice, never migrate or expose private compatibility answers.
+             Withdrawal must immediately remove display and filter inference.
+             Use a narrow caller-bound eligible Browser projection; keep raw
+             seeker_details policies unchanged. Filter results must not infer
+             an unconsented private answer. Existing Article9 grants and the
+             has_article9_consent helper do not prove this new public purpose.
+             Reconcile historical unlocked-reader/never-show consent drift
+             with OA305's compatibility/privacy boundary, not by widening it.
+             Country means residence, not birth/nationality. Actual radius
+             requires user-initiated while-in-use location, private trusted
+             candidate location/distance predicates, provenance/freshness,
+             denied/revoked/offline/unknown handling and no public coordinates.
+             Preserve blocks, admission, full capacity and unavailable!=empty.
+Prepared:    Protected preview supports invented public labels, composed
+             age/country/heritage/distance filters and explicit sample origin;
+             it collects no device location or real member answer. This is
+             not real data capture, consent grant, server filtering or SQL.
+Target:      Owner/withdrawal/direct-role tests, narrow-field/RLS and radius
+             query/index tests, exact payload review, Founder live GO, actual
+             deployment and post-verification before real-member activation.
+Dependencies: OA-ZYRA-151/303/305; DR-ZYRA-267.
+Automation:  Manual; no external action or recurring notification scheduled.
+
+------------------------------------------------------------
+
+OA-ZYRA-307
+Title:       Review Browse Three Dot Menu and Ended Archive Boundaries
+Category:    Product / UX / Safety
+Priority:    High before adopting a gallery for real members
+Status:      OPEN — Founder requested reminder after gallery selection
+Owner:       Codex (review and implementation); Founder (gallery choice)
+Authority:   DR-ZYRA-268 and direct request to retain/revisit the three dots.
+Description: Once the Founder chooses a gallery, prompt him to check the
+             Browse three-dot placement and Hide/Block actions. Preserve
+             Report access and safe confirmations without photo/navigation
+             collision. Hiding is reversible private feed exclusion; blocking
+             removes counterpart access and shows User not found. Do not
+             remove safety authority because the swipe system was retired.
+             Confirm Ended archives are only in My ZYRA, read-only and without
+             old restart requests; archive messages must retain attempt/owner
+             authorization and become inaccessible when blocked. OA151 owns
+             any fresh request after rediscovery and legacy attempt mapping.
+Target:      Founder chooses a gallery -> menu review reminder -> scope and
+             exact implementation -> navigation/permission tests -> scoped
+             phone delivery/Founder acceptance. This entry is the requested
+             outstanding-action reminder, not an invented scheduled date.
+Dependencies: OA-ZYRA-151/290/299/305; DR-ZYRA-267/268.
+Automation:  Manual.
+
+------------------------------------------------------------
+
+OA-ZYRA-308
+Title:       Founder Choice of Journey Navigation Icon
+Category:    Product / UX
+Priority:    Normal
+Status:      OPEN — Couple selected, client verified and locally delivered;
+             Founder physical acceptance pending
+Update 2026-10-13 (Founder Couple selection):
+             Founder directly selected Couple, requested removal of the other
+             toolbar/toggle choices and matching navigation glyph sizes.
+             This resolves the choice, not physical acceptance or app release.
+             Navigation Haptics section77 / scoped quiet-launch packet retain
+             client/source measurements and exact local delivery separately.
+             Existing selected highlight, tint, routing, semantics, targets,
+             badges and haptics remain; no launcher artwork or authority change.
+             Final31-suite617/0/0 regression, clean analysis/format and12
+             inspected candidate images pass. Same-main PROFILE installed and
+             immediately native-launched at00:14 BST on13 October; exact new
+             container/processPID3189 and unchanged source/artifact verified.
+             Section77 and its immutable packet own the detailed receipts.
+             No public release, authority grant or OA closure is implied.
+Owner:       Codex (implementation and checks); Founder (visual choice)
+Authority:   DR-ZYRA-270 and direct request to show ten options here first.
+Description: Replace the rejected shared-path icon only after the Founder
+             chooses from the ten conversation concepts or gives a new design
+             direction. Retain the existing navigation theme, icon footprint,
+             selected highlight, haptics, routing and accessibility. The title
+             correction is independent and does not select an icon. Keep the
+             prior delivery record without treating native launch as acceptance.
+Target:      Founder choice -> scoped glyph implementation -> rendering and
+             navigation checks -> standing scoped phone delivery -> acceptance.
+Dependencies: OA-ZYRA-151; Navigation Haptics handover §36.
+Automation:  Manual; no scheduled reminder or external message.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): 308 (OA-001 through OA-ZYRA-308,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-244 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-309 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

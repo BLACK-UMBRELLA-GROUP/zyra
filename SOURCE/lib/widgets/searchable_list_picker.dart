@@ -8,23 +8,40 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_state_widgets.dart';
 
-Future<String?> showSingleSearchPicker(BuildContext context, List<String> items, {String? current}) {
+Future<String?> showSingleSearchPicker(
+  BuildContext context,
+  List<String> items, {
+  String? current,
+}) {
   return showModalBottomSheet<String>(
     context: context,
-    backgroundColor: ZyraColors.luxuryDarkPurple,
+    backgroundColor: ZyraColors.modalSheetSurface,
     isScrollControlled: true,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-    builder: (context) => _PickerSheet(items: items, multi: false, initialSelection: current == null ? const [] : [current]),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) => _PickerSheet(
+      items: items,
+      multi: false,
+      initialSelection: current == null ? const [] : [current],
+    ),
   );
 }
 
-Future<List<String>?> showMultiSearchPicker(BuildContext context, List<String> items, {List<String> current = const []}) {
+Future<List<String>?> showMultiSearchPicker(
+  BuildContext context,
+  List<String> items, {
+  List<String> current = const [],
+}) {
   return showModalBottomSheet<List<String>>(
     context: context,
-    backgroundColor: ZyraColors.luxuryDarkPurple,
+    backgroundColor: ZyraColors.modalSheetSurface,
     isScrollControlled: true,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-    builder: (context) => _PickerSheet(items: items, multi: true, initialSelection: current),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) =>
+        _PickerSheet(items: items, multi: true, initialSelection: current),
   );
 }
 
@@ -33,7 +50,11 @@ class _PickerSheet extends StatefulWidget {
   final bool multi;
   final List<String> initialSelection;
 
-  const _PickerSheet({required this.items, required this.multi, required this.initialSelection});
+  const _PickerSheet({
+    required this.items,
+    required this.multi,
+    required this.initialSelection,
+  });
 
   @override
   State<_PickerSheet> createState() => _PickerSheetState();
@@ -41,14 +62,20 @@ class _PickerSheet extends StatefulWidget {
 
 class _PickerSheetState extends State<_PickerSheet> {
   final TextEditingController _search = TextEditingController();
-  late final List<String> _selected = List<String>.from(widget.initialSelection);
+  late final List<String> _selected = List<String>.from(
+    widget.initialSelection,
+  );
 
   @override
   Widget build(BuildContext context) {
-    final filtered = widget.items.where((i) => i.toLowerCase().contains(_search.text.toLowerCase())).toList();
+    final filtered = widget.items
+        .where((i) => i.toLowerCase().contains(_search.text.toLowerCase()))
+        .toList();
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           child: Column(
@@ -61,11 +88,21 @@ class _PickerSheetState extends State<_PickerSheet> {
                   style: ZyraText.body(size: 15, color: Colors.white),
                   decoration: InputDecoration(
                     hintText: 'Search…',
-                    hintStyle: ZyraText.body(size: 15, color: Colors.white38),
-                    prefixIcon: const Icon(Icons.search, color: Colors.white38, size: 18),
+                    hintStyle: ZyraText.body(
+                      size: 15,
+                      color: ZyraColors.ink(0.38),
+                    ),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: ZyraColors.ink(0.38),
+                      size: 18,
+                    ),
                     filled: true,
                     fillColor: ZyraColors.iconButtonBg,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
@@ -73,26 +110,43 @@ class _PickerSheetState extends State<_PickerSheet> {
                 child: filtered.isEmpty
                     ? ZyraEmptyState(
                         icon: Icons.search_off,
-                        message: "No matches for that — try a different spelling.",
+                        message:
+                            "No matches for that — try a different spelling.",
                       )
                     : ListView.builder(
-                  itemCount: filtered.length,
-                  itemBuilder: (context, index) {
-                    final item = filtered[index];
-                    final selected = _selected.contains(item);
-                    return ListTile(
-                      title: Text(item, style: ZyraText.body(size: 14, color: Colors.white)),
-                      trailing: selected ? const Icon(Icons.check, color: Colors.white70, size: 18) : null,
-                      onTap: () {
-                        if (widget.multi) {
-                          setState(() => selected ? _selected.remove(item) : _selected.add(item));
-                        } else {
-                          Navigator.of(context).pop(item);
-                        }
-                      },
-                    );
-                  },
-                ),
+                        itemCount: filtered.length,
+                        itemBuilder: (context, index) {
+                          final item = filtered[index];
+                          final selected = _selected.contains(item);
+                          return ListTile(
+                            title: Text(
+                              item,
+                              style: ZyraText.body(
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ),
+                            trailing: selected
+                                ? Icon(
+                                    Icons.check,
+                                    color: ZyraColors.ink(0.70),
+                                    size: 18,
+                                  )
+                                : null,
+                            onTap: () {
+                              if (widget.multi) {
+                                setState(
+                                  () => selected
+                                      ? _selected.remove(item)
+                                      : _selected.add(item),
+                                );
+                              } else {
+                                Navigator.of(context).pop(item);
+                              }
+                            },
+                          );
+                        },
+                      ),
               ),
               if (widget.multi)
                 Padding(

@@ -2,11 +2,17 @@ FEATURE NAME
 DEVELOPER MODE
 
 SCRIPT VERSION: V3
-STATUS: Approved Specification — CURRENT
+STATUS: Superseded 2026-09-12 by Script_V4.md
 DATE: 2026-08-20
 SUPERSEDES: Script_V2.md
 GOVERNING REFERENCES: DR-013; DR-ZYRA-087; DR-ZYRA-210;
 ZYRA_SETTINGS_AND_IDENTITY
+
+SUPERSESSION NOTE (2026-09-12): DR-ZYRA-228 replaces this version's
+one-application/one-backend and non-release-build rules with one shared
+product source producing an isolated ZYRA Production app and an isolated,
+Founder-only ZYRA Test app. OA-ZYRA-286, not OA-ZYRA-245, is the canonical
+implementation action. This file remains historical evidence.
 
 ============================================================
 PURPOSE
@@ -117,7 +123,7 @@ IMPLEMENTATION RULES
   state.
 • Server-mediated developer actions default-deny and keep explicit test-data
   guards.
-• The app binary contains no shared developer/test password after OA-ZYRA-245
+• The app binary contains no shared developer/test password after OA-ZYRA-286
   closes.
 • Tokens, provider credentials, service-role keys and one-time codes are
   never logged or documented.
@@ -137,4 +143,4 @@ LIVE PREREQUISITES
 • Allowed-account, denied-account, release-build and deep-link evidence
 
 Until these exist, the design is approved but the upgraded Developer Access
-capability is not complete. Tracked by OA-ZYRA-245.
+capability is not complete. Tracked by OA-ZYRA-286.

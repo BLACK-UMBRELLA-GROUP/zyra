@@ -1,11 +1,13 @@
-// Reusable Chapter Transition Screen — Onboarding Rules & UX §TRANSITION
-// SCREENS. Scrollable, glass pill button below the fold, bouncing
-// chevron hint. Used at all four chapter boundaries (Ch1->2, Ch2->3,
-// Ch3->4, Ch4->5), each supplying its own copy per Flow Diagram.md.
+// Shared Guardian support/consent handoff. The selected onboarding style keeps
+// the reading area scrollable and its continuation consistently reachable.
 
 import 'package:flutter/material.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_internal_preview_client.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_onboarding_direction_style.dart';
+import '../../widgets/zyra_onboarding_continue_action.dart';
 
 class TransitionScreen extends StatelessWidget {
   final ZyraBackgroundVariant background;
@@ -14,6 +16,8 @@ class TransitionScreen extends StatelessWidget {
   final String? citation;
   final String buttonLabel;
   final VoidCallback onContinue;
+  final bool devPreview;
+  final VoidCallback? onDevSkip;
 
   const TransitionScreen({
     super.key,
@@ -21,12 +25,23 @@ class TransitionScreen extends StatelessWidget {
     required this.body,
     required this.buttonLabel,
     required this.onContinue,
+    this.devPreview = false,
+    this.onDevSkip,
     this.background = ZyraBackgroundVariant.neutral,
     this.citation,
   });
 
   @override
   Widget build(BuildContext context) {
+    final previewStyle = OnboardingPreviewStyle.effectiveStyleOf(context);
+    final showDevSkip =
+        devPreview &&
+        ZyraDeveloperAccess.canUseDeveloperTools &&
+        ZyraInternalPreviewClient.isActive &&
+        onDevSkip != null;
+    if (previewStyle != null) {
+      return _styledTransition(context, previewStyle, showDevSkip);
+    }
     return Scaffold(
       // `constraints` added 2026-08-03 alongside the same fix on the
       // report screen. SingleChildScrollView sizes to its content, so this
@@ -42,32 +57,87 @@ class TransitionScreen extends StatelessWidget {
       // nicely — but the gradient no longer depends on it being right.
       body: Container(
         constraints: const BoxConstraints.expand(),
-        decoration: BoxDecoration(gradient: ZyraColors.backgroundFor(background)),
+        decoration: BoxDecoration(
+          gradient:
+              previewStyle?.backgroundGradient ??
+              ZyraColors.backgroundFor(background),
+        ),
         child: SafeArea(
           child: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height - 80),
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height - 80,
+              ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 32),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 28,
+                  vertical: 32,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 20),
-                    Text(title, style: ZyraText.heading(size: 26)),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 20),
+                    if (showDevSkip) ...[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          key: const ValueKey('onboarding_dev_skip'),
+                          onPressed: () {
+                            if (!ZyraDeveloperAccess.canUseDeveloperTools ||
+                                !ZyraInternalPreviewClient.isActive) {
+                              return;
+                            }
+                            onDevSkip?.call();
+                          },
+                          icon: const Icon(Icons.skip_next_rounded, size: 17),
+                          label: Text(
+                            'Skip · DEV',
+                            style: ZyraText.subtext(size: 11.5),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                    if (previewStyle != null) ...[
+                      OnboardingPreviewAccent(
+                        style: previewStyle,
+                        size: 64,
+                        progress: 1,
+                      ),
+                      const SizedBox(height: 22),
+                    ],
+                    Text(
+                      title,
+                      style: ZyraText.heading(
+                        size: previewStyle?.titleSize ?? 26,
+                      ),
+                    ),
+                    SizedBox(height: 18),
                     Text(body, style: ZyraText.body(size: 15)),
                     if (citation != null) ...[
-                      const SizedBox(height: 18),
+                      SizedBox(height: 18),
                       Text(citation!, style: ZyraText.subtext()),
                     ],
-                    const SizedBox(height: 260),
+                    SizedBox(height: previewStyle == null ? 260 : 140),
                     Center(
                       child: Column(
                         children: [
-                          _GlassPillButton(label: buttonLabel, onTap: onContinue),
-                          const SizedBox(height: 10),
-                          const _BouncingChevron(),
+                          if (ZyraOnboardingArrowScope.enabledOf(context))
+                            ZyraOnboardingArrowAction(
+                              key: const ValueKey('transition_continue'),
+                              active: true,
+                              onPressed: onContinue,
+                              semanticLabel: buttonLabel,
+                            )
+                          else ...[
+                            _GlassPillButton(
+                              label: buttonLabel,
+                              onTap: onContinue,
+                            ),
+                            const SizedBox(height: 10),
+                            const _BouncingChevron(),
+                          ],
                         ],
                       ),
                     ),
@@ -80,6 +150,113 @@ class TransitionScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _styledTransition(
+    BuildContext context,
+    OnboardingPreviewStyle style,
+    bool showDevSkip,
+  ) => Scaffold(
+    body: Container(
+      constraints: const BoxConstraints.expand(),
+      decoration: BoxDecoration(gradient: style.backgroundGradient),
+      child: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
+              child: Text(
+                'ZYRA',
+                style: ZyraText.wordmark(
+                  size: 17,
+                  color: ZyraColors.splashWordmark,
+                ),
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
+                child: Column(
+                  crossAxisAlignment: style.centered
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
+                  children: [
+                    if (showDevSkip) ...[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          key: const ValueKey('onboarding_dev_skip'),
+                          onPressed: () {
+                            if (ZyraDeveloperAccess.canUseDeveloperTools &&
+                                ZyraInternalPreviewClient.isActive) {
+                              onDevSkip?.call();
+                            }
+                          },
+                          icon: const Icon(Icons.skip_next_rounded, size: 17),
+                          label: const Text('Skip · DEV'),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                    OnboardingPreviewAccent(
+                      style: style,
+                      size: 64,
+                      progress: 1,
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        title,
+                        textAlign: style.centered
+                            ? TextAlign.center
+                            : TextAlign.left,
+                        style: ZyraText.heading(size: style.titleSize),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(18),
+                      decoration: style.cardDecoration(),
+                      child: Text(
+                        body,
+                        style: ZyraText.body(size: 15).copyWith(height: 1.5),
+                      ),
+                    ),
+                    if (citation != null) ...[
+                      const SizedBox(height: 18),
+                      Text(citation!, style: ZyraText.subtext()),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 24, 14),
+              child: ZyraOnboardingArrowScope.enabledOf(context)
+                  ? ZyraOnboardingArrowAction(
+                      key: const ValueKey('transition_continue'),
+                      active: true,
+                      onPressed: onContinue,
+                      semanticLabel: buttonLabel,
+                    )
+                  : SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: FilledButton(
+                        key: const ValueKey('transition_continue'),
+                        style: style.primaryButtonStyle,
+                        onPressed: onContinue,
+                        child: Text(buttonLabel, style: ZyraText.button()),
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 class _GlassPillButton extends StatelessWidget {
@@ -90,6 +267,17 @@ class _GlassPillButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previewStyle = OnboardingPreviewStyle.effectiveStyleOf(context);
+    if (previewStyle != null) {
+      return SizedBox(
+        height: 51,
+        child: FilledButton(
+          onPressed: onTap,
+          style: previewStyle.primaryButtonStyle,
+          child: Text(label, style: ZyraText.button()),
+        ),
+      );
+    }
     return DecoratedBox(
       decoration: BoxDecoration(
         color: ZyraColors.iconButtonBg,
@@ -118,7 +306,8 @@ class _BouncingChevron extends StatefulWidget {
   State<_BouncingChevron> createState() => _BouncingChevronState();
 }
 
-class _BouncingChevronState extends State<_BouncingChevron> with SingleTickerProviderStateMixin {
+class _BouncingChevronState extends State<_BouncingChevron>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 900),
@@ -138,7 +327,11 @@ class _BouncingChevronState extends State<_BouncingChevron> with SingleTickerPro
         offset: Offset(0, 4 * _controller.value),
         child: child,
       ),
-      child: const Icon(Icons.keyboard_arrow_down, color: Colors.white38, size: 20),
+      child: Icon(
+        Icons.keyboard_arrow_down,
+        color: ZyraColors.ink(0.38),
+        size: 20,
+      ),
     );
   }
 }

@@ -1,0 +1,6 @@
+        _previewAction('concept_current', 'Option 1', () {
+          if (_allowed) {
+            ZyraVisualComparison.instance.release(_appearanceOwner);
+            (widget.onOption1 ?? widget.onExit)();
+          }
+        }, icon: Icons.arrow_back),

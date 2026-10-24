@@ -8,9 +8,9 @@
 //     behind whichever icon is active and slides/morphs to the newly
 //     selected tab rather than each item having its own static state.
 //
-// This widget combines both: a single circular highlight that slides
-// between evenly-spaced tab cells, plus per-icon AnimatedScale so the
-// active icon is visibly larger. Used by both HomeShell (Seeker) and
+// The single circular highlight slides between evenly-spaced tab cells.
+// Founder 2026-10-13 supersedes glyph shrinking: every icon stays 22 px;
+// the existing highlight and tint still identify selection. Both HomeShell and
 // WaliHomeShell so the two navs stay visually identical, per WALI
 // ARCHITECTURE's "floating glass pill: same design as Seeker nav."
 //
@@ -40,11 +40,30 @@
 // deleted) in case a future context wants labels back; both current
 // call sites (HomeShell, WaliHomeShell) rely on the new default.
 
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show HapticFeedback;
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_interaction_style.dart';
 import '../theme/zyra_text.dart';
+import 'zyra_journey_icon.dart';
+import 'zyra_keyboard_dismiss_scope.dart';
+
+bool _quietNavigationMotion(BuildContext context) {
+  final media = MediaQuery.maybeOf(context);
+  return (media?.disableAnimations ?? false) ||
+      (media?.accessibleNavigation ?? false);
+}
+
+TextStyle _confirmationLabelStyle(BuildContext context, {Color? color}) {
+  var style = (Theme.of(context).textTheme.bodyMedium ?? const TextStyle())
+      .merge(ZyraText.button(size: 13, color: color))
+      .copyWith(inherit: false);
+  if (MediaQuery.boldTextOf(context)) {
+    style = style.merge(const TextStyle(fontWeight: FontWeight.bold));
+  }
+  return style;
+}
 
 /// THE BAR'S GEOMETRY, in one place — DR-ZYRA-155, 2026-08-13.
 ///
@@ -125,25 +144,83 @@ class ZyraNavBarMetrics {
 /// toggling `dragging` would snap the badge to its new size instead
 /// of resizing smoothly alongside the bar's own 220ms transition.
 class ZyraNavHighlight extends StatelessWidget {
-  final double size;
-  const ZyraNavHighlight({super.key, required this.size});
+  final double width;
+  final double height;
+  final ZyraNavStyle style;
+
+  const ZyraNavHighlight({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.style,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final quietMotion = _quietNavigationMotion(context);
     return AnimatedContainer(
-      duration: ZyraNavBarMetrics.breath,
+      key: ValueKey('nav-highlight-quiet-$quietMotion'),
+      duration: quietMotion ? Duration.zero : ZyraNavBarMetrics.breath,
       curve: Curves.easeOut,
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
+      width: width,
+      height: height,
+      decoration: _decoration,
+    );
+  }
+
+  BoxDecoration get _decoration {
+    final accent = ZyraColors.isLightPalette
+        ? ZyraColors.devLightAccent.color
+        : ZyraColors.primaryAction;
+    return switch (style) {
+      ZyraNavStyle.floatingGlass => BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withValues(alpha: 0.28),
+        color: ZyraColors.isLightPalette
+            ? accent.withValues(alpha: 0.16)
+            : ZyraColors.frostSelectedFill,
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.12),
-          width: 1,
+          color: ZyraColors.isLightPalette
+              ? accent.withValues(alpha: 0.42)
+              : ZyraColors.frostSelectedBorder,
         ),
       ),
-    );
+      ZyraNavStyle.labelledDock => BoxDecoration(
+        color: ZyraColors.surfaceEmphasisFill,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
+      ),
+      ZyraNavStyle.accentRing => BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.transparent,
+        border: Border.all(color: accent, width: 2),
+      ),
+      ZyraNavStyle.softTiles => BoxDecoration(
+        color: accent.withValues(
+          alpha: ZyraColors.isLightPalette ? 0.13 : 0.22,
+        ),
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(color: accent.withValues(alpha: 0.42)),
+      ),
+      ZyraNavStyle.goldUnderline => BoxDecoration(
+        color: ZyraColors.journeyGold,
+        borderRadius: BorderRadius.circular(3),
+      ),
+      ZyraNavStyle.raisedCapsule => BoxDecoration(
+        color: accent,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: accent.withValues(alpha: 0.30),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      ZyraNavStyle.quietDot => BoxDecoration(
+        color: accent,
+        shape: BoxShape.circle,
+      ),
+    };
   }
 }
 
@@ -151,35 +228,34 @@ class FloatingNavItem {
   final IconData icon;
   final String label;
 
-  /// Unread count rendered as a small dot on the icon's shoulder —
-  /// ADDED 2026-08-13 (DR-ZYRA-149) when Notifications became a tab and
-  /// the Bell's badge had to survive the move. 0 renders nothing.
-  final int badge;
+  /// Only the new-style Journey destination opts in. Existing material icons,
+  /// destination metadata and all ordinary navigation stay unchanged.
+  final bool useJourneyGlyph;
 
-  /// A plain dot with NO NUMBER — "there is something here", nothing
-  /// more.
-  ///
-  /// ADDED 2026-08-13 (DR-ZYRA-154). Counts and dots answer different
-  /// questions and the app already knew that: the Connections segment
-  /// badges were changed from numbers to a bare dot on 2026-08-06 —
-  /// "the heading already says how many; the dot only has to answer
-  /// whether there is anything." A navigation indicator is that same
-  /// question one level up. Notifications keeps its COUNT because it is
-  /// an inbox and the size of the pile is the useful fact; Connections
-  /// and Guardian get a DOT because "3 things happened over there"
-  /// changes nothing about whether you go and look.
-  ///
-  /// [badge] wins if both are set — a real count is strictly more
-  /// information than a dot, so silently showing less would be the
-  /// wrong way to resolve it.
+  /// Keeps a destination visible but visually quieter. It remains tappable so
+  /// the destination itself can explain any access boundary in proper context.
+  final bool dimmed;
+
+  /// Legacy unread inputs, retained for callers and screen-reader detail.
+  /// Only the glyph becomes gold; no notification dot, count or ring is drawn.
+  final int badge;
   final bool dot;
+
+  bool get hasUnread => badge > 0 || dot;
 
   const FloatingNavItem({
     required this.icon,
     required this.label,
+    this.useJourneyGlyph = false,
     this.badge = 0,
     this.dot = false,
+    this.dimmed = false,
   });
+
+  Widget buildIcon({required Color color, required double size}) =>
+      useJourneyGlyph
+      ? ZyraJourneyIcon(color: color, size: size)
+      : Icon(icon, color: color, size: size);
 }
 
 class FloatingNavBar extends StatefulWidget {
@@ -187,6 +263,15 @@ class FloatingNavBar extends StatefulWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
   final bool showLabels;
+
+  /// A protected/local caller may own its feedback setting independently.
+  /// Null preserves the ordinary member's shared Personalisation choice.
+  final ZyraHapticLevel? hapticLevel;
+
+  /// Optional alignment with the caller's content edges. When supplied, the
+  /// bar keeps its full width at rest; height and touch feedback are unchanged.
+  /// Null retains the original inset and resting-width breathing.
+  final double? contentEdgeInset;
 
   /// When false (tabs), [onTap] fires the MOMENT a scrub crosses into a
   /// new cell — that is the scrubbing feel, and switching tab as your
@@ -209,10 +294,210 @@ class FloatingNavBar extends StatefulWidget {
     required this.onTap,
     this.showLabels = false,
     this.commitOnRelease = false,
-  });
+    this.contentEdgeInset,
+    this.hapticLevel,
+  }) : assert(
+         contentEdgeInset == null ||
+             (contentEdgeInset >= 0 && contentEdgeInset < double.infinity),
+       );
 
   @override
   State<FloatingNavBar> createState() => _FloatingNavBarState();
+}
+
+/// Browse's deliberate second-step confirmation state.
+///
+/// It occupies the normal navigation footprint but replaces destination
+/// icons with two equal, full-width pills. Cancel stays visually neutral;
+/// Hide profile carries the app's destructive colour because it performs the
+/// hide.
+class FloatingNavConfirmationBar extends StatelessWidget {
+  final VoidCallback onCancel;
+  final VoidCallback onConfirm;
+  final bool showOuterSurface;
+  final double? contentEdgeInset;
+  final ZyraHapticLevel? hapticLevel;
+
+  const FloatingNavConfirmationBar({
+    super.key,
+    required this.onCancel,
+    required this.onConfirm,
+    this.showOuterSurface = true,
+    this.contentEdgeInset,
+    this.hapticLevel,
+  }) : assert(
+         contentEdgeInset == null ||
+             (contentEdgeInset >= 0 && contentEdgeInset < double.infinity),
+       );
+
+  /// Shared with a caller that reserves space above this temporary footer.
+  /// Ordinary text keeps the existing footprint; enlarged labels may wrap
+  /// without being shrunk, clipped or laid over the content above the bar.
+  static double layoutHeight(
+    BuildContext context, {
+    required double viewportWidth,
+    bool showOuterSurface = true,
+    double? contentEdgeInset,
+  }) {
+    final border = showOuterSurface ? 2.0 : 0.0;
+    final width =
+        viewportWidth -
+        2 * (contentEdgeInset ?? ZyraNavBarMetrics.sideInset) -
+        border -
+        (contentEdgeInset == null ? 10 : 0);
+    final labelWidth = math.max(1.0, (width - 6) / 2 - 16 - 18 - 7);
+    final style = _confirmationLabelStyle(context);
+    var labelHeight = 18.0;
+    for (final label in ['Cancel', 'Hide profile']) {
+      final painter = TextPainter(
+        text: TextSpan(text: label, style: style),
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+        locale: Localizations.maybeLocaleOf(context),
+      )..layout(maxWidth: labelWidth);
+      labelHeight = math.max(labelHeight, painter.height);
+      painter.dispose();
+    }
+    return math.max(
+      ZyraNavBarMetrics.height,
+      border + 10 + math.max(44, labelHeight + 16),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final height = layoutHeight(
+      context,
+      viewportWidth: MediaQuery.sizeOf(context).width,
+      showOuterSurface: showOuterSurface,
+      contentEdgeInset: contentEdgeInset,
+    );
+    final actions = SizedBox(
+      // The legacy surface's 1px border contributes its own layout inset.
+      height: height - (showOuterSurface ? 2 : 0),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: contentEdgeInset == null ? 5 : 0,
+          vertical: 5,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: _ConfirmationPill(
+                key: const ValueKey('browse-hide-cancel'),
+                label: 'Cancel',
+                icon: Icons.close_rounded,
+                onTap: onCancel,
+                hapticLevel: hapticLevel,
+              ),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: _ConfirmationPill(
+                key: const ValueKey('browse-hide-confirm'),
+                label: 'Hide profile',
+                icon: Icons.visibility_off_outlined,
+                destructive: true,
+                onTap: onConfirm,
+                hapticLevel: hapticLevel,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    return Positioned(
+      left: contentEdgeInset ?? ZyraNavBarMetrics.sideInset,
+      right: contentEdgeInset ?? ZyraNavBarMetrics.sideInset,
+      bottom: 0,
+      child: SafeArea(
+        top: false,
+        minimum: const EdgeInsets.only(bottom: ZyraNavBarMetrics.bottomInset),
+        child: !showOuterSurface
+            ? actions
+            : ClipRRect(
+                key: const ValueKey('browse-hide-outer-surface'),
+                borderRadius: BorderRadius.circular(ZyraNavBarMetrics.radius),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: ZyraNavBarMetrics.blurSigma,
+                    sigmaY: ZyraNavBarMetrics.blurSigma,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ZyraColors.surfaceFill,
+                      borderRadius: BorderRadius.circular(
+                        ZyraNavBarMetrics.radius,
+                      ),
+                      border: Border.all(color: ZyraColors.surfaceBorder),
+                    ),
+                    child: actions,
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+}
+
+class _ConfirmationPill extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool destructive;
+  final VoidCallback onTap;
+  final ZyraHapticLevel? hapticLevel;
+
+  const _ConfirmationPill({
+    super.key,
+    required this.label,
+    required this.icon,
+    this.destructive = false,
+    required this.onTap,
+    this.hapticLevel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final tint = destructive ? ZyraColors.destructive : ZyraColors.foreground;
+    return Material(
+      color: destructive
+          ? ZyraColors.destructive.withValues(alpha: 0.16)
+          : ZyraColors.ink(0.08),
+      shape: StadiumBorder(
+        side: BorderSide(
+          color: destructive
+              ? ZyraColors.destructive.withValues(alpha: 0.62)
+              : ZyraColors.ink(0.18),
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          ZyraInteractionStyle.emitSelectionHaptic(level: hapticLevel);
+          onTap();
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, size: 18, color: tint),
+                const SizedBox(width: 7),
+                Flexible(
+                  child: Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: _confirmationLabelStyle(context, color: tint),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _FloatingNavBarState extends State<FloatingNavBar> {
@@ -229,6 +514,48 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   // highlight falls back to the eased, animated position for
   // widget.currentIndex (tap or programmatic change).
   double? _touchX;
+  int _semanticsEpoch = 0;
+  bool? _lastQuietMotion;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final quietMotion = _quietNavigationMotion(context);
+    if (_lastQuietMotion != null && quietMotion != _lastQuietMotion) {
+      // Recreating an implicit-animation subtree settles any in-flight visual
+      // motion. An interrupted pointer preview must not remain latched to it.
+      _touchX = null;
+      _lastIndex = null;
+      _semanticsEpoch++;
+    }
+    _lastQuietMotion = quietMotion;
+  }
+
+  @override
+  void didUpdateWidget(covariant FloatingNavBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // A retained accessibility callback must not invoke a destination/action
+    // from the previous bar after its caller, selection or contents change.
+    _semanticsEpoch++;
+  }
+
+  void _activateSemanticItem(int index, int epoch) {
+    if (!mounted || epoch != _semanticsEpoch) return;
+    if (index < 0 || index >= widget.items.length) return;
+    final changed = index != widget.currentIndex;
+    // A semantic tap identifies one cell directly, not a coordinate scrub.
+    // Cancel any pointer preview so its later release cannot repeat an action.
+    if (_touchX != null) {
+      setState(() => _touchX = null);
+    }
+    _lastIndex = null;
+    if (!changed && !widget.commitOnRelease) return;
+    dismissZyraKeyboardAfterNavigation();
+    if (changed) {
+      ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
+    }
+    widget.onTap(index);
+  }
 
   int _indexForX(double x, double barWidth) {
     final cellWidth = barWidth / widget.items.length;
@@ -236,11 +563,21 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
     return i.clamp(0, widget.items.length - 1);
   }
 
+  void _beginTouchAt(double x, double barWidth) {
+    // The shell uses IndexedStack so the field in the previous tab remains
+    // mounted. Dismiss before changing the visible child or its native iOS
+    // keyboard can otherwise remain painted over the destination tab.
+    dismissZyraKeyboardAfterNavigation();
+    _lastIndex = widget.currentIndex;
+    setState(() => _touchX = x.clamp(0, barWidth));
+  }
+
   void _handleTouchAt(double x, double barWidth) {
     setState(() => _touchX = x.clamp(0, barWidth));
     final index = _indexForX(x, barWidth);
+    final previousIndex = _lastIndex ?? widget.currentIndex;
     _lastIndex = index;
-    if (index != widget.currentIndex) {
+    if (index != previousIndex) {
       // 2026-07-26 (nav bar refinement pass — CHATGPT_REPLY_NAVBAR_
       // PHOTO_MENU_2026-07-26.md §1): a small, cheap "premium app"
       // detail that was simply missing — every native tab bar (iOS
@@ -248,10 +585,11 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
       // light tap on selection change. Fires on crossing into a new
       // cell during a drag-scrub too, not just a discrete tap, since
       // both paths call this same method.
-      HapticFeedback.selectionClick();
-      // The haptic still fires on every crossing — feeling the cells go
-      // by is the feedback that makes a scrub legible. Only the ACTION
-      // waits (see [commitOnRelease]).
+      ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
+      // The haptic fires once per crossed cell — feeling the cells go by
+      // makes a scrub legible, while comparing against _lastIndex prevents
+      // repeated ticks when several pointer updates remain inside one cell.
+      // Only the ACTION waits (see [commitOnRelease]).
       if (!widget.commitOnRelease) widget.onTap(index);
     }
   }
@@ -264,18 +602,45 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   /// fired live and there is nothing left to do here.
   void _endTouch({bool commit = false}) {
     final x = _touchX;
+    final index = _lastIndex;
     setState(() => _touchX = null);
+    _lastIndex = null;
     if (!widget.commitOnRelease || !commit || x == null) return;
     // barWidth is not in scope here, and does not need to be: the index
     // was resolved on the last move, so recompute from the same clamped
     // x against the width the layout last reported.
-    final index = _lastIndex;
     if (index != null) widget.onTap(index);
   }
 
   /// The cell the finger was last over. Written by [_handleTouchAt] so
   /// [_endTouch] does not need the bar's width to resolve it again.
   int? _lastIndex;
+
+  Color _barFill(ZyraNavStyle style, bool dragging) => switch (style) {
+    ZyraNavStyle.labelledDock =>
+      dragging ? ZyraColors.surfaceEmphasisFill : ZyraColors.surfaceFill,
+    ZyraNavStyle.softTiles when ZyraColors.devPalette.usesWhiteGlass =>
+      dragging ? ZyraColors.surfaceEmphasisFill : ZyraColors.surfaceFill,
+    ZyraNavStyle.goldUnderline || ZyraNavStyle.quietDot =>
+      dragging ? ZyraColors.surfaceEmphasisFill : ZyraColors.surfaceFill,
+    _ => dragging ? ZyraColors.surfaceEmphasisFill : ZyraColors.surfaceFill,
+  };
+
+  Color _barBorder(ZyraNavStyle style, bool dragging) => switch (style) {
+    ZyraNavStyle.labelledDock =>
+      dragging ? ZyraColors.surfaceEmphasisBorder : ZyraColors.surfaceBorder,
+    _ => dragging ? ZyraColors.surfaceEmphasisBorder : ZyraColors.surfaceBorder,
+  };
+
+  Color _iconColor(ZyraNavStyle style, bool selected) {
+    if (style == ZyraNavStyle.labelledDock) {
+      return selected ? ZyraColors.foreground : ZyraColors.foregroundSecondary;
+    }
+    if (style == ZyraNavStyle.raisedCapsule && selected) {
+      return ZyraColors.onAction;
+    }
+    return selected ? ZyraColors.foreground : ZyraColors.ink(0.45);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -286,6 +651,9 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
     // LayoutBuilder's builder) since the container's decoration needs
     // it too, and it never actually depended on `constraints` anyway.
     final dragging = _touchX != null;
+    final navStyle = ZyraInteractionStyle.navStyle;
+    final quietMotion = _quietNavigationMotion(context);
+    final semanticsEpoch = _semanticsEpoch;
     // FIXED 2026-07-26 (Founder screenshot: "when it's smaller the blob
     // is out of place now so that needs to be fixed to match new size
     // also"). The highlight's size and vertical centring were still
@@ -302,8 +670,8 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
         ? _highlightSize
         : ZyraNavBarMetrics.restingHighlightSize;
     return Positioned(
-      left: ZyraNavBarMetrics.sideInset,
-      right: ZyraNavBarMetrics.sideInset,
+      left: widget.contentEdgeInset ?? ZyraNavBarMetrics.sideInset,
+      right: widget.contentEdgeInset ?? ZyraNavBarMetrics.sideInset,
       bottom: 0,
       child: SafeArea(
         top: false,
@@ -322,24 +690,29 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
         // active drag — touch to expand to full size, release to
         // shrink back, matching "smaller when not clicked."
         child: AnimatedPadding(
-          duration: const Duration(milliseconds: 220),
+          key: ValueKey('floating-nav-quiet-$quietMotion'),
+          duration: quietMotion ? Duration.zero : ZyraNavBarMetrics.breath,
           curve: Curves.easeOut,
-          padding: EdgeInsets.symmetric(horizontal: dragging ? 0 : 10),
+          padding: EdgeInsets.symmetric(
+            horizontal: widget.contentEdgeInset != null || dragging
+                ? 0
+                : ZyraNavBarMetrics.restingSideSqueeze,
+          ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(28),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
+                duration: quietMotion
+                    ? Duration.zero
+                    : ZyraNavBarMetrics.breath,
                 curve: Curves.easeOut,
                 height: currentBarHeight,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: dragging ? 0.20 : 0.10),
+                  color: _barFill(navStyle, dragging),
                   borderRadius: BorderRadius.circular(28),
                   border: Border.all(
-                    color: Colors.white.withValues(
-                      alpha: dragging ? 0.30 : 0.18,
-                    ),
+                    color: _barBorder(navStyle, dragging),
                     width: 1,
                   ),
                 ),
@@ -376,225 +749,250 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
                     // badge now stays centred during the transition, not just at
                     // each end of it.
                     final innerHeight = constraints.maxHeight;
-                    final highlightTop =
-                        (innerHeight - currentHighlightSize) / 2;
                     final cellWidth = barWidth / widget.items.length;
+                    final highlightWidth = switch (navStyle) {
+                      ZyraNavStyle.labelledDock => cellWidth - 5,
+                      ZyraNavStyle.softTiles => 41.0,
+                      ZyraNavStyle.goldUnderline => 28.0,
+                      ZyraNavStyle.raisedCapsule => cellWidth - 10,
+                      ZyraNavStyle.quietDot => 6.0,
+                      _ => currentHighlightSize,
+                    };
+                    final highlightHeight = switch (navStyle) {
+                      ZyraNavStyle.labelledDock => 42.0,
+                      ZyraNavStyle.softTiles => 41.0,
+                      ZyraNavStyle.goldUnderline => 3.0,
+                      ZyraNavStyle.raisedCapsule => 38.0,
+                      ZyraNavStyle.quietDot => 6.0,
+                      _ => currentHighlightSize,
+                    };
+                    final highlightTop = switch (navStyle) {
+                      ZyraNavStyle.goldUnderline => innerHeight - 7,
+                      ZyraNavStyle.quietDot => innerHeight - 9,
+                      _ => (innerHeight - highlightHeight) / 2,
+                    };
                     final highlightLeft = dragging
-                        ? (_touchX! - currentHighlightSize / 2).clamp(
+                        ? (_touchX! - highlightWidth / 2).clamp(
                             0.0,
-                            barWidth - currentHighlightSize,
+                            barWidth - highlightWidth,
                           )
                         : cellWidth * widget.currentIndex +
-                              (cellWidth - currentHighlightSize) / 2;
+                              (cellWidth - highlightWidth) / 2;
                     final liveIndex = dragging
                         ? _indexForX(_touchX!, barWidth)
                         : widget.currentIndex;
 
-                    return GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTapDown: (d) =>
-                          _handleTouchAt(d.localPosition.dx, barWidth),
-                      onTapUp: (_) => _endTouch(commit: true),
-                      onTapCancel: _endTouch,
-                      onHorizontalDragStart: (d) =>
-                          _handleTouchAt(d.localPosition.dx, barWidth),
-                      onHorizontalDragUpdate: (d) =>
-                          _handleTouchAt(d.localPosition.dx, barWidth),
-                      onHorizontalDragEnd: (_) => _endTouch(commit: true),
-                      onHorizontalDragCancel: _endTouch,
-                      child: Stack(
-                        // FIXED 2026-07-26 (root cause identified in
-                        // CHATGPT_REPLY_NAVBAR_PHOTO_MENU_2026-07-26.md §1
-                        // — this one line was the entire "icon sits too
-                        // high" / "circle feels like it's sitting on top
-                        // of the bar rather than belonging to it" bug).
-                        // Stack's default alignment is topStart. The
-                        // highlight circle below is wrapped in its own
-                        // Positioned/AnimatedPositioned so it was already
-                        // correctly centred — but the icon+label Row is a
-                        // plain (non-Positioned) Stack child, so without
-                        // this line it fell back to topStart and pinned
-                        // to the top of the 62px bar instead of sitting in
-                        // the middle with the (correctly centred) circle
-                        // behind it. The two symptoms were one bug.
-                        alignment: Alignment.center,
-                        children: [
-                          // The sliding highlight — Lovable-style single blob,
-                          // not a per-item background. Follows the finger
-                          // directly (no easing) while actively touching;
-                          // eases to the settled tab centre otherwise.
-                          dragging
-                              ? Positioned(
-                                  left: highlightLeft,
-                                  top: highlightTop,
-                                  child: ZyraNavHighlight(
-                                    size: currentHighlightSize,
-                                  ),
-                                )
-                              : AnimatedPositioned(
-                                  // FIXED 2026-07-26 (Founder reference videos —
-                                  // "gets smaller when user clicks off it" /
-                                  // shrink transition should feel smooth, not
-                                  // mechanical). easeOutCubic arrives and stops
-                                  // dead on time; easeOutBack overshoots very
-                                  // slightly past the target then settles,
-                                  // which is what a spring-driven native tab
-                                  // bar actually does. Slowed 260ms→320ms to
-                                  // give that overshoot room to read instead
-                                  // of feeling rushed.
-                                  duration: const Duration(milliseconds: 320),
-                                  curve: Curves.easeOutBack,
-                                  left: highlightLeft,
-                                  top: highlightTop,
-                                  child: ZyraNavHighlight(
-                                    size: currentHighlightSize,
-                                  ),
-                                ),
-                          Row(
-                            children: List.generate(widget.items.length, (i) {
-                              final selected = i == liveIndex;
-                              final item = widget.items[i];
-                              final color = selected
-                                  ? Colors.white
-                                  : Colors.white.withValues(alpha: 0.45);
-                              // REVISED 2026-07-26 (Founder, after testing
-                              // the previous tuning on-device: "still not
-                              // showing... I want the WHOLE navigation tab
-                              // to shrink. It's as simple as that"). The
-                              // prior pass deliberately held inactive icons
-                              // at normal size and only grew the active
-                              // one — a correct read of the brief at the
-                              // time, but too subtle to register on a real
-                              // screen. This flips the baseline: the
-                              // SELECTED icon sits at normal size (1.0) and
-                              // every unselected icon visibly shrinks
-                              // (0.78) — matching the Instagram reference
-                              // videos, where inactive icons read as
-                              // distinctly smaller, not just "not bigger."
-                              final icon = Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  AnimatedScale(
-                                    scale: selected ? 1.0 : 0.78,
-                                    duration: const Duration(milliseconds: 280),
+                    return Listener(
+                      // Flutter can report an accepted drag's cancellation as
+                      // drag-end. Clear the raw pointer state before that end
+                      // callback so an OS interruption can never commit it.
+                      onPointerCancel: (_) => _endTouch(),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        // The bar-wide coordinate recognizer owns real pointer
+                        // scrubs only. Each cell exposes its own semantic action.
+                        excludeFromSemantics: true,
+                        onTapDown: (d) =>
+                            _beginTouchAt(d.localPosition.dx, barWidth),
+                        onTapUp: (d) {
+                          _handleTouchAt(d.localPosition.dx, barWidth);
+                          _endTouch(commit: true);
+                        },
+                        onTapCancel: _endTouch,
+                        onHorizontalDragStart: (d) =>
+                            _handleTouchAt(d.localPosition.dx, barWidth),
+                        onHorizontalDragUpdate: (d) =>
+                            _handleTouchAt(d.localPosition.dx, barWidth),
+                        onHorizontalDragEnd: (_) => _endTouch(commit: true),
+                        onHorizontalDragCancel: _endTouch,
+                        child: Stack(
+                          // FIXED 2026-07-26 (root cause identified in
+                          // CHATGPT_REPLY_NAVBAR_PHOTO_MENU_2026-07-26.md §1
+                          // — this one line was the entire "icon sits too
+                          // high" / "circle feels like it's sitting on top
+                          // of the bar rather than belonging to it" bug).
+                          // Stack's default alignment is topStart. The
+                          // highlight circle below is wrapped in its own
+                          // Positioned/AnimatedPositioned so it was already
+                          // correctly centred — but the icon+label Row is a
+                          // plain (non-Positioned) Stack child, so without
+                          // this line it fell back to topStart and pinned
+                          // to the top of the 62px bar instead of sitting in
+                          // the middle with the (correctly centred) circle
+                          // behind it. The two symptoms were one bug.
+                          alignment: Alignment.center,
+                          children: [
+                            // The sliding highlight — Lovable-style single blob,
+                            // not a per-item background. Follows the finger
+                            // directly (no easing) while actively touching;
+                            // eases to the settled tab centre otherwise.
+                            dragging
+                                ? Positioned(
+                                    left: highlightLeft,
+                                    top: highlightTop,
+                                    child: ZyraNavHighlight(
+                                      width: highlightWidth,
+                                      height: highlightHeight,
+                                      style: navStyle,
+                                    ),
+                                  )
+                                : AnimatedPositioned(
+                                    // FIXED 2026-07-26 (Founder reference videos —
+                                    // "gets smaller when user clicks off it" /
+                                    // shrink transition should feel smooth, not
+                                    // mechanical). easeOutCubic arrives and stops
+                                    // dead on time; easeOutBack overshoots very
+                                    // slightly past the target then settles,
+                                    // which is what a spring-driven native tab
+                                    // bar actually does. Slowed 260ms→320ms to
+                                    // give that overshoot room to read instead
+                                    // of feeling rushed.
+                                    duration: quietMotion
+                                        ? Duration.zero
+                                        : const Duration(milliseconds: 320),
                                     curve: Curves.easeOutBack,
-                                    child: Icon(
-                                      item.icon,
-                                      color: color,
-                                      size: 22,
+                                    left: highlightLeft,
+                                    top: highlightTop,
+                                    child: ZyraNavHighlight(
+                                      width: highlightWidth,
+                                      height: highlightHeight,
+                                      style: navStyle,
                                     ),
                                   ),
-                                  // The badge sits OUTSIDE the scale so an
-                                  // unselected tab's count doesn't shrink
-                                  // with its icon (DR-ZYRA-149).
-                                  // The bare dot — same shoulder, same
-                                  // colour, no number. Sized to the
-                                  // numbered badge's minWidth so the two
-                                  // sit on the same optical line when a
-                                  // bar carries one of each.
-                                  if (item.badge == 0 && item.dot)
-                                    const Positioned(
-                                      top: -2,
-                                      right: -3,
-                                      child: SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Center(
-                                          child: SizedBox(
-                                            width: 7,
-                                            height: 7,
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                color: ZyraColors.unlockDot,
-                                                shape: BoxShape.circle,
-                                              ),
-                                            ),
-                                          ),
+                            Row(
+                              children: List.generate(widget.items.length, (i) {
+                                final selected = i == liveIndex;
+                                final item = widget.items[i];
+                                final color = _iconColor(navStyle, selected);
+                                final iconColor = item.hasUnread
+                                    ? ZyraColors.journeyGold
+                                    : item.dimmed
+                                    ? color.withValues(
+                                        alpha: selected ? 0.58 : 0.28,
+                                      )
+                                    : color;
+                                // Selection owns the existing highlight. Unread
+                                // owns only the common-size artwork's tint.
+                                final icon = AnimatedScale(
+                                  scale: 1,
+                                  duration: quietMotion
+                                      ? Duration.zero
+                                      : const Duration(milliseconds: 280),
+                                  curve: Curves.easeOutBack,
+                                  child: item.buildIcon(
+                                    color: iconColor,
+                                    size: ZyraNavBarMetrics.iconSize,
+                                  ),
+                                );
+                                return Expanded(
+                                  child: Semantics(
+                                    key: ValueKey('floating-nav-item-$i'),
+                                    container: true,
+                                    button: true,
+                                    selected: i == widget.currentIndex,
+                                    label: item.label,
+                                    value: item.badge > 0
+                                        ? '${item.badge} unread'
+                                        : item.dot
+                                        ? 'New activity'
+                                        : null,
+                                    onTap: () => _activateSemanticItem(
+                                      i,
+                                      semanticsEpoch,
+                                    ),
+                                    excludeSemantics: true,
+                                    child: SizedBox(
+                                      height: innerHeight,
+                                      child: Center(
+                                        child: IgnorePointer(
+                                          // Touch handling now lives on the bar-wide
+                                          // GestureDetector above so a press/drag
+                                          // anywhere on the bar is tracked as one
+                                          // continuous gesture — individual cells no
+                                          // longer need (or intercept) their own taps.
+                                          //
+                                          // FIXED 2026-07-26 (Founder: blob looks
+                                          // "unprofessional" — icon sits with more
+                                          // space below it than above, inside the
+                                          // highlight). `Center` here guarantees
+                                          // true geometric centring regardless of
+                                          // any Column min-size quirk — the
+                                          // showLabels branch below still needs the
+                                          // Column (two children to stack
+                                          // vertically), but the far more common
+                                          // icon-only case no longer goes through it
+                                          // at all. If the badge still looks
+                                          // off-centre after this on a specific
+                                          // icon (e.g. a shield glyph), that's the
+                                          // glyph's own optical weight, not layout —
+                                          // see the Guardian icon swap note in
+                                          // home_shell.dart from this same pass.
+                                          child: widget.showLabels
+                                              ? Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    icon,
+                                                    SizedBox(height: 2),
+                                                    AnimatedDefaultTextStyle(
+                                                      duration: quietMotion
+                                                          ? Duration.zero
+                                                          : ZyraNavBarMetrics
+                                                                .breath,
+                                                      style: ZyraText.subtext(
+                                                        size: 10,
+                                                        color: color,
+                                                      ),
+                                                      child: Text(item.label),
+                                                    ),
+                                                  ],
+                                                )
+                                              : navStyle ==
+                                                        ZyraNavStyle
+                                                            .labelledDock &&
+                                                    selected
+                                              ? Center(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 5,
+                                                        ),
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          icon,
+                                                          const SizedBox(
+                                                            width: 5,
+                                                          ),
+                                                          Text(
+                                                            item.label,
+                                                            maxLines: 1,
+                                                            style:
+                                                                ZyraText.button(
+                                                                  size: 11,
+                                                                  color: color,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Center(child: icon),
                                         ),
                                       ),
                                     ),
-                                  if (item.badge > 0)
-                                    Positioned(
-                                      top: -5,
-                                      right: -7,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 4,
-                                          vertical: 1,
-                                        ),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 15,
-                                          minHeight: 15,
-                                        ),
-                                        decoration: const BoxDecoration(
-                                          color: ZyraColors.unlockDot,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Text(
-                                          item.badge > 9
-                                              ? '9+'
-                                              : '${item.badge}',
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            color: ZyraColors.luxuryDarkPurple,
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              );
-                              return Expanded(
-                                child: IgnorePointer(
-                                  // Touch handling now lives on the bar-wide
-                                  // GestureDetector above so a press/drag
-                                  // anywhere on the bar is tracked as one
-                                  // continuous gesture — individual cells no
-                                  // longer need (or intercept) their own taps.
-                                  //
-                                  // FIXED 2026-07-26 (Founder: blob looks
-                                  // "unprofessional" — icon sits with more
-                                  // space below it than above, inside the
-                                  // highlight). `Center` here guarantees
-                                  // true geometric centring regardless of
-                                  // any Column min-size quirk — the
-                                  // showLabels branch below still needs the
-                                  // Column (two children to stack
-                                  // vertically), but the far more common
-                                  // icon-only case no longer goes through it
-                                  // at all. If the badge still looks
-                                  // off-centre after this on a specific
-                                  // icon (e.g. a shield glyph), that's the
-                                  // glyph's own optical weight, not layout —
-                                  // see the Guardian icon swap note in
-                                  // home_shell.dart from this same pass.
-                                  child: widget.showLabels
-                                      ? Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            icon,
-                                            const SizedBox(height: 2),
-                                            AnimatedDefaultTextStyle(
-                                              duration: const Duration(
-                                                milliseconds: 220,
-                                              ),
-                                              style: ZyraText.subtext(
-                                                size: 10,
-                                                color: color,
-                                              ),
-                                              child: Text(item.label),
-                                            ),
-                                          ],
-                                        )
-                                      : Center(child: icon),
-                                ),
-                              );
-                            }),
-                          ),
-                        ],
+                                  ),
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

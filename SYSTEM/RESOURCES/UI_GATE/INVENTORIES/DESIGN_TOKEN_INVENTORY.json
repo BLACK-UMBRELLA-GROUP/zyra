@@ -1,0 +1,1084 @@
+{
+  "authority_note": "Observed from live token sources; this file does not approve new values.",
+  "card_metrics": [
+    {
+      "name": "thumb",
+      "value": 52.0
+    },
+    {
+      "name": "thumbRadius",
+      "value": 10.0
+    },
+    {
+      "name": "padding",
+      "value": 12.0
+    },
+    {
+      "name": "cardRadius",
+      "value": 14.0
+    },
+    {
+      "name": "gap",
+      "value": 14.0
+    },
+    {
+      "name": "spacing",
+      "value": 10.0
+    }
+  ],
+  "colors_and_gradients": [
+    {
+      "first_literal": "0xFF30203F",
+      "kind": "color",
+      "name": "royalPurple"
+    },
+    {
+      "first_literal": "0xFF160E20",
+      "kind": "color",
+      "name": "luxuryDarkPurple"
+    },
+    {
+      "first_literal": "0xFF241A2F",
+      "kind": "color",
+      "name": "darkPlumSurface"
+    },
+    {
+      "first_literal": "0xFFE5CE8E",
+      "kind": "color",
+      "name": "splashWordmark"
+    },
+    {
+      "first_literal": null,
+      "kind": "color",
+      "name": "splashTagline"
+    },
+    {
+      "first_literal": "0x249A72BE",
+      "kind": "color",
+      "name": "accentBg"
+    },
+    {
+      "first_literal": "0x669A72BE",
+      "kind": "color",
+      "name": "accentBorder"
+    },
+    {
+      "first_literal": "0xFFE8C98A",
+      "kind": "color",
+      "name": "journeyGold"
+    },
+    {
+      "first_literal": "0xFF84D0A8",
+      "kind": "color",
+      "name": "positiveGreen"
+    },
+    {
+      "first_literal": "0xFF78C69D",
+      "kind": "color",
+      "name": "journeyDotGreen"
+    },
+    {
+      "first_literal": "0xFFE18A91",
+      "kind": "color",
+      "name": "negativeRed"
+    },
+    {
+      "first_literal": "0xFF50B478",
+      "kind": "color",
+      "name": "successTick"
+    },
+    {
+      "first_literal": "0xFFF7F2F8",
+      "kind": "color",
+      "name": "modalSheetSurface"
+    },
+    {
+      "first_literal": null,
+      "kind": "color",
+      "name": "waliSheetBg"
+    },
+    {
+      "first_literal": "0xE63D2A4A",
+      "kind": "color",
+      "name": "foreground"
+    },
+    {
+      "first_literal": "0xE63D2A4A",
+      "kind": "color",
+      "name": "foregroundBody"
+    },
+    {
+      "first_literal": "0xB33D2A4A",
+      "kind": "color",
+      "name": "foregroundSecondary"
+    },
+    {
+      "first_literal": "0x8A3D2A4A",
+      "kind": "color",
+      "name": "foregroundMuted"
+    },
+    {
+      "first_literal": null,
+      "kind": "color",
+      "name": "surfaceSignal"
+    },
+    {
+      "first_literal": null,
+      "kind": "color",
+      "name": "progressCompleteFill"
+    },
+    {
+      "first_literal": "0xFFCEA2D1",
+      "kind": "color",
+      "name": "primaryAction"
+    },
+    {
+      "first_literal": "0xFFE08080",
+      "kind": "color",
+      "name": "onPrimaryAction"
+    },
+    {
+      "first_literal": "0xFFE08080",
+      "kind": "color",
+      "name": "destructive"
+    },
+    {
+      "first_literal": "0x66E08080",
+      "kind": "color",
+      "name": "destructiveBorder"
+    },
+    {
+      "first_literal": "0x8FFFFFFF",
+      "kind": "color",
+      "name": "frostFill"
+    },
+    {
+      "first_literal": "0xD9FFFFFF",
+      "kind": "color",
+      "name": "frostBorder"
+    },
+    {
+      "first_literal": "0xF7FCFAFD",
+      "kind": "color",
+      "name": "menuSurface"
+    },
+    {
+      "first_literal": "0xFFFCFAFD",
+      "kind": "color",
+      "name": "sheetSurface"
+    },
+    {
+      "first_literal": "0xFFFCFAFD",
+      "kind": "color",
+      "name": "toastSurface"
+    },
+    {
+      "first_literal": "0x0A3D2A4A",
+      "kind": "color",
+      "name": "fabDimmedBg"
+    },
+    {
+      "first_literal": "0x173D2A4A",
+      "kind": "color",
+      "name": "fabDimmedBorder"
+    },
+    {
+      "first_literal": "0x663D2A4A",
+      "kind": "color",
+      "name": "fabDimmedArrow"
+    },
+    {
+      "first_literal": "0x143D2A4A",
+      "kind": "color",
+      "name": "fabActiveBg"
+    },
+    {
+      "first_literal": "0x473D2A4A",
+      "kind": "color",
+      "name": "fabActiveBorder"
+    },
+    {
+      "first_literal": "0xD9FFFFFF",
+      "kind": "color",
+      "name": "fabActiveArrow"
+    },
+    {
+      "first_literal": "0xD93D9A6A",
+      "kind": "color",
+      "name": "publicDot"
+    },
+    {
+      "first_literal": "0x80C8DC8C",
+      "kind": "color",
+      "name": "publicText"
+    },
+    {
+      "first_literal": "0xD9C49A44",
+      "kind": "color",
+      "name": "unlockDot"
+    },
+    {
+      "first_literal": "0x73DCB964",
+      "kind": "color",
+      "name": "unlockText"
+    },
+    {
+      "first_literal": "0xB38A6A9E",
+      "kind": "color",
+      "name": "privateDot"
+    },
+    {
+      "first_literal": "0x73B496D2",
+      "kind": "color",
+      "name": "privateText"
+    },
+    {
+      "first_literal": null,
+      "kind": "color",
+      "name": "actionFill"
+    },
+    {
+      "first_literal": null,
+      "kind": "color",
+      "name": "onAction"
+    },
+    {
+      "first_literal": null,
+      "kind": "color",
+      "name": "accentOnCanvas"
+    },
+    {
+      "first_literal": null,
+      "kind": "gradient",
+      "name": "brandGradient"
+    },
+    {
+      "first_literal": null,
+      "kind": "gradient",
+      "name": "brandGradientMale"
+    },
+    {
+      "first_literal": null,
+      "kind": "gradient",
+      "name": "brandGradientFemale"
+    }
+  ],
+  "gaps_requiring_design_authority": [
+    "Spacing, icon size, navigation dimension, shadow and animation values are observed but are not yet all named tokens.",
+    "Observed frequency is evidence, not approval; one-off values require review before consolidation."
+  ],
+  "generated": "2026-10-03T14:49:25.441425+00:00",
+  "observed_usage": {
+    "animation_durations_ms": [
+      {
+        "uses": 25,
+        "value": "180"
+      },
+      {
+        "uses": 15,
+        "value": "220"
+      },
+      {
+        "uses": 11,
+        "value": "320"
+      },
+      {
+        "uses": 10,
+        "value": "420"
+      },
+      {
+        "uses": 9,
+        "value": "280"
+      },
+      {
+        "uses": 8,
+        "value": "260"
+      },
+      {
+        "uses": 7,
+        "value": "160"
+      },
+      {
+        "uses": 7,
+        "value": "480"
+      },
+      {
+        "uses": 5,
+        "value": "200"
+      },
+      {
+        "uses": 5,
+        "value": "450"
+      },
+      {
+        "uses": 5,
+        "value": "520"
+      },
+      {
+        "uses": 4,
+        "value": "300"
+      },
+      {
+        "uses": 4,
+        "value": "900"
+      },
+      {
+        "uses": 3,
+        "value": "40"
+      },
+      {
+        "uses": 2,
+        "value": "140"
+      },
+      {
+        "uses": 2,
+        "value": "2800"
+      },
+      {
+        "uses": 2,
+        "value": "400"
+      },
+      {
+        "uses": 2,
+        "value": "620"
+      },
+      {
+        "uses": 2,
+        "value": "700"
+      },
+      {
+        "uses": 2,
+        "value": "760"
+      },
+      {
+        "uses": 1,
+        "value": "1000"
+      },
+      {
+        "uses": 1,
+        "value": "1050"
+      },
+      {
+        "uses": 1,
+        "value": "110"
+      },
+      {
+        "uses": 1,
+        "value": "120"
+      },
+      {
+        "uses": 1,
+        "value": "1450"
+      },
+      {
+        "uses": 1,
+        "value": "150"
+      },
+      {
+        "uses": 1,
+        "value": "1800"
+      },
+      {
+        "uses": 1,
+        "value": "240"
+      },
+      {
+        "uses": 1,
+        "value": "2600"
+      },
+      {
+        "uses": 1,
+        "value": "2900"
+      },
+      {
+        "uses": 1,
+        "value": "3000"
+      },
+      {
+        "uses": 1,
+        "value": "3100"
+      },
+      {
+        "uses": 1,
+        "value": "340"
+      },
+      {
+        "uses": 1,
+        "value": "380"
+      },
+      {
+        "uses": 1,
+        "value": "440"
+      },
+      {
+        "uses": 1,
+        "value": "4800"
+      },
+      {
+        "uses": 1,
+        "value": "500"
+      },
+      {
+        "uses": 1,
+        "value": "560"
+      },
+      {
+        "uses": 1,
+        "value": "600"
+      }
+    ],
+    "border_constructors": 310,
+    "box_shadows": 31,
+    "button_heights": [
+      {
+        "uses": 3,
+        "value": "52"
+      },
+      {
+        "uses": 1,
+        "value": "50"
+      }
+    ],
+    "corner_radii": [
+      {
+        "uses": 77,
+        "value": "14"
+      },
+      {
+        "uses": 44,
+        "value": "18"
+      },
+      {
+        "uses": 40,
+        "value": "12"
+      },
+      {
+        "uses": 40,
+        "value": "16"
+      },
+      {
+        "uses": 37,
+        "value": "20"
+      },
+      {
+        "uses": 31,
+        "value": "999"
+      },
+      {
+        "uses": 20,
+        "value": "50"
+      },
+      {
+        "uses": 15,
+        "value": "17"
+      },
+      {
+        "uses": 14,
+        "value": "10"
+      },
+      {
+        "uses": 14,
+        "value": "15"
+      },
+      {
+        "uses": 12,
+        "value": "24"
+      },
+      {
+        "uses": 9,
+        "value": "11"
+      },
+      {
+        "uses": 9,
+        "value": "13"
+      },
+      {
+        "uses": 8,
+        "value": "2"
+      },
+      {
+        "uses": 8,
+        "value": "26"
+      },
+      {
+        "uses": 7,
+        "value": "22"
+      },
+      {
+        "uses": 7,
+        "value": "28"
+      },
+      {
+        "uses": 7,
+        "value": "8"
+      },
+      {
+        "uses": 6,
+        "value": "9"
+      },
+      {
+        "uses": 5,
+        "value": "19"
+      },
+      {
+        "uses": 5,
+        "value": "99"
+      },
+      {
+        "uses": 4,
+        "value": "4"
+      },
+      {
+        "uses": 3,
+        "value": "30"
+      },
+      {
+        "uses": 2,
+        "value": "3"
+      },
+      {
+        "uses": 1,
+        "value": "21"
+      },
+      {
+        "uses": 1,
+        "value": "32"
+      },
+      {
+        "uses": 1,
+        "value": "42"
+      },
+      {
+        "uses": 1,
+        "value": "5"
+      },
+      {
+        "uses": 1,
+        "value": "6"
+      },
+      {
+        "uses": 1,
+        "value": "7"
+      }
+    ],
+    "gradient_constructors": 55,
+    "icon_sizes": [
+      {
+        "uses": 44,
+        "value": "18"
+      },
+      {
+        "uses": 27,
+        "value": "16"
+      },
+      {
+        "uses": 27,
+        "value": "17"
+      },
+      {
+        "uses": 24,
+        "value": "19"
+      },
+      {
+        "uses": 23,
+        "value": "20"
+      },
+      {
+        "uses": 14,
+        "value": "15"
+      },
+      {
+        "uses": 12,
+        "value": "14"
+      },
+      {
+        "uses": 12,
+        "value": "21"
+      },
+      {
+        "uses": 11,
+        "value": "30"
+      },
+      {
+        "uses": 9,
+        "value": "25"
+      },
+      {
+        "uses": 7,
+        "value": "34"
+      },
+      {
+        "uses": 6,
+        "value": "22"
+      },
+      {
+        "uses": 6,
+        "value": "23"
+      },
+      {
+        "uses": 6,
+        "value": "24"
+      },
+      {
+        "uses": 5,
+        "value": "13"
+      },
+      {
+        "uses": 4,
+        "value": "26"
+      },
+      {
+        "uses": 3,
+        "value": "12"
+      },
+      {
+        "uses": 3,
+        "value": "27"
+      },
+      {
+        "uses": 2,
+        "value": "104"
+      },
+      {
+        "uses": 2,
+        "value": "11"
+      },
+      {
+        "uses": 2,
+        "value": "36"
+      },
+      {
+        "uses": 1,
+        "value": "28"
+      },
+      {
+        "uses": 1,
+        "value": "29"
+      },
+      {
+        "uses": 1,
+        "value": "32"
+      },
+      {
+        "uses": 1,
+        "value": "38"
+      },
+      {
+        "uses": 1,
+        "value": "42"
+      },
+      {
+        "uses": 1,
+        "value": "46"
+      },
+      {
+        "uses": 1,
+        "value": "48"
+      },
+      {
+        "uses": 1,
+        "value": "52"
+      },
+      {
+        "uses": 1,
+        "value": "6"
+      },
+      {
+        "uses": 1,
+        "value": "7"
+      }
+    ],
+    "raw_font_sizes": [
+      {
+        "uses": 1,
+        "value": "10"
+      },
+      {
+        "uses": 1,
+        "value": "13"
+      },
+      {
+        "uses": 1,
+        "value": "16"
+      },
+      {
+        "uses": 1,
+        "value": "6"
+      },
+      {
+        "uses": 1,
+        "value": "7.5"
+      },
+      {
+        "uses": 1,
+        "value": "9"
+      }
+    ],
+    "spacing_values": [
+      {
+        "uses": 245,
+        "value": "20"
+      },
+      {
+        "uses": 159,
+        "value": "12"
+      },
+      {
+        "uses": 142,
+        "value": "8"
+      },
+      {
+        "uses": 138,
+        "value": "10"
+      },
+      {
+        "uses": 132,
+        "value": "14"
+      },
+      {
+        "uses": 124,
+        "value": "24"
+      },
+      {
+        "uses": 122,
+        "value": "16"
+      },
+      {
+        "uses": 76,
+        "value": "18"
+      },
+      {
+        "uses": 74,
+        "value": "4"
+      },
+      {
+        "uses": 51,
+        "value": "0"
+      },
+      {
+        "uses": 47,
+        "value": "22"
+      },
+      {
+        "uses": 44,
+        "value": "7"
+      },
+      {
+        "uses": 42,
+        "value": "15"
+      },
+      {
+        "uses": 41,
+        "value": "28"
+      },
+      {
+        "uses": 41,
+        "value": "6"
+      },
+      {
+        "uses": 38,
+        "value": "32"
+      },
+      {
+        "uses": 37,
+        "value": "2"
+      },
+      {
+        "uses": 33,
+        "value": "3"
+      },
+      {
+        "uses": 33,
+        "value": "9"
+      },
+      {
+        "uses": 26,
+        "value": "11"
+      },
+      {
+        "uses": 25,
+        "value": "13"
+      },
+      {
+        "uses": 24,
+        "value": "5"
+      },
+      {
+        "uses": 20,
+        "value": "26"
+      },
+      {
+        "uses": 17,
+        "value": "30"
+      },
+      {
+        "uses": 17,
+        "value": "40"
+      },
+      {
+        "uses": 13,
+        "value": "17"
+      },
+      {
+        "uses": 13,
+        "value": "27"
+      },
+      {
+        "uses": 7,
+        "value": "34"
+      },
+      {
+        "uses": 7,
+        "value": "36"
+      },
+      {
+        "uses": 7,
+        "value": "90"
+      },
+      {
+        "uses": 6,
+        "value": "1"
+      },
+      {
+        "uses": 6,
+        "value": "100"
+      },
+      {
+        "uses": 4,
+        "value": "60"
+      },
+      {
+        "uses": 3,
+        "value": "130"
+      },
+      {
+        "uses": 3,
+        "value": "25"
+      },
+      {
+        "uses": 3,
+        "value": "48"
+      },
+      {
+        "uses": 3,
+        "value": "64"
+      },
+      {
+        "uses": 2,
+        "value": "110"
+      },
+      {
+        "uses": 2,
+        "value": "112"
+      },
+      {
+        "uses": 2,
+        "value": "116"
+      },
+      {
+        "uses": 2,
+        "value": "19"
+      },
+      {
+        "uses": 2,
+        "value": "38"
+      },
+      {
+        "uses": 2,
+        "value": "42"
+      },
+      {
+        "uses": 2,
+        "value": "44"
+      },
+      {
+        "uses": 2,
+        "value": "84"
+      },
+      {
+        "uses": 2,
+        "value": "88"
+      },
+      {
+        "uses": 2,
+        "value": "96"
+      },
+      {
+        "uses": 1,
+        "value": "104"
+      },
+      {
+        "uses": 1,
+        "value": "108"
+      },
+      {
+        "uses": 1,
+        "value": "118"
+      },
+      {
+        "uses": 1,
+        "value": "120"
+      },
+      {
+        "uses": 1,
+        "value": "220"
+      },
+      {
+        "uses": 1,
+        "value": "29"
+      },
+      {
+        "uses": 1,
+        "value": "31"
+      },
+      {
+        "uses": 1,
+        "value": "46"
+      },
+      {
+        "uses": 1,
+        "value": "52"
+      },
+      {
+        "uses": 1,
+        "value": "56"
+      },
+      {
+        "uses": 1,
+        "value": "61"
+      },
+      {
+        "uses": 1,
+        "value": "68"
+      },
+      {
+        "uses": 1,
+        "value": "70"
+      },
+      {
+        "uses": 1,
+        "value": "72"
+      },
+      {
+        "uses": 1,
+        "value": "8.0"
+      }
+    ],
+    "transition_curves": [
+      {
+        "uses": 79,
+        "value": "easeOutCubic"
+      },
+      {
+        "uses": 14,
+        "value": "easeInOutCubic"
+      },
+      {
+        "uses": 14,
+        "value": "easeOut"
+      },
+      {
+        "uses": 13,
+        "value": "easeInCubic"
+      },
+      {
+        "uses": 10,
+        "value": "easeInOut"
+      },
+      {
+        "uses": 10,
+        "value": "easeInOutSine"
+      },
+      {
+        "uses": 4,
+        "value": "easeOutBack"
+      },
+      {
+        "uses": 3,
+        "value": "easeIn"
+      },
+      {
+        "uses": 1,
+        "value": "easeInQuad"
+      },
+      {
+        "uses": 1,
+        "value": "easeInSine"
+      },
+      {
+        "uses": 1,
+        "value": "easeOutQuad"
+      },
+      {
+        "uses": 1,
+        "value": "easeOutSine"
+      },
+      {
+        "uses": 1,
+        "value": "linear"
+      }
+    ]
+  },
+  "programme": "OA-ZYRA-257",
+  "schema_version": 1,
+  "sources": [
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "sha256": "d11e575aeff0d6a05040c33bb6abc57a5f5a9828488ec99eb61576fd5853cb67"
+    },
+    {
+      "file": "lib/theme/zyra_text.dart",
+      "sha256": "fa105dcb3818ea0d2ad96b42f18ba1d4773897c543ee5cf9d343937b872b0931"
+    },
+    {
+      "file": "lib/theme/zyra_card_metrics.dart",
+      "sha256": "cb27e3d7341cbc20907d7d20999821bbb4b98a78715ae86dedd6b80168a55928"
+    }
+  ],
+  "typography_api": [
+    {
+      "name": "_appStyle",
+      "parameters": "{ required double size, required FontWeight weight, required Color? color, double? letterSpacing, ZyraAppFont? font, }"
+    },
+    {
+      "name": "preview",
+      "parameters": "ZyraAppFont font, { double size = 14, FontWeight weight = FontWeight.w300, Color? color, }"
+    },
+    {
+      "name": "heading",
+      "parameters": "{double size = 20, Color? color}"
+    },
+    {
+      "name": "wordmark",
+      "parameters": "{double size = 34, Color? color}"
+    },
+    {
+      "name": "body",
+      "parameters": "{double size = 13, Color? color}"
+    },
+    {
+      "name": "subtext",
+      "parameters": "{double size = 12.5, Color? color}"
+    },
+    {
+      "name": "taglineSize",
+      "parameters": "BuildContext context"
+    },
+    {
+      "name": "option",
+      "parameters": "{double size = 14, Color? color}"
+    },
+    {
+      "name": "button",
+      "parameters": "{double size = 15, Color? color}"
+    },
+    {
+      "name": "chapterLabel",
+      "parameters": "{Color? color}"
+    },
+    {
+      "name": "privacyText",
+      "parameters": "{Color? color}"
+    }
+  ]
+}

@@ -72,7 +72,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text('App lock', style: ZyraText.heading(size: 17)),
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -81,7 +81,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
         child: SafeArea(
           child: ListView(
             physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
             children: [
               Container(
@@ -96,8 +97,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                     Expanded(
                       child: Text(
                         'Require Face ID, Touch ID or your passcode',
-                        style:
-                            ZyraText.body(size: 15, color: Colors.white),
+                        style: ZyraText.body(size: 15, color: Colors.white),
                       ),
                     ),
                     if (_busy)
@@ -107,16 +107,18 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       // gradient while every other spinner is
                       // white54/white70.
                       //
-                      // Colors.white70 rather than white.withValues(0.7):
+                      // ZyraColors.ink(0.70) rather than white.withValues(0.7):
                       // identical value (0xB3FFFFFF), but a const, so the
-                      // enclosing const SizedBox survives. withValues() is
+                      // enclosing SizedBox survives. withValues() is
                       // a method call and cannot appear in a const
                       // expression.
-                      const SizedBox(
+                      SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white70),
+                          strokeWidth: 2,
+                          color: ZyraColors.ink(0.70),
+                        ),
                       )
                     else
                       Switch(
@@ -126,7 +128,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 18),
+              SizedBox(height: 18),
 
               if (supported == false)
                 _Note(
@@ -142,13 +144,13 @@ class _AppLockScreenState extends State<AppLockScreen> {
                   'app — even when your phone is already unlocked. Useful if '
                   'your phone gets passed around.',
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 _Note(
                   'ZYRA never sees your face or fingerprint, and there is no '
                   'ZYRA passcode to forget. Your phone does the checking and '
                   'only tells us yes or no.',
                 ),
-                const SizedBox(height: 14),
+                SizedBox(height: 14),
                 _Note(
                   'This hides ZYRA from someone holding your phone. It is '
                   'not what keeps your account secure — that is your Apple '
@@ -171,10 +173,10 @@ class _Note extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        text,
-        style: ZyraText.subtext(
-          size: 12.5,
-          color: warn ? const Color(0xFFFFAB91) : Colors.white38,
-        ),
-      );
+    text,
+    style: ZyraText.subtext(
+      size: 12.5,
+      color: warn ? const Color(0xFFFFAB91) : ZyraColors.ink(0.38),
+    ),
+  );
 }

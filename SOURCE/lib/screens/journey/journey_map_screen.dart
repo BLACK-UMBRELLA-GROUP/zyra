@@ -18,6 +18,7 @@
 // comes from knowing the shape of the road, not its contents.
 
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../data/zyra_journey_stages.dart';
 import '../../models/seeker_profile.dart';
@@ -32,8 +33,11 @@ class JourneyMapScreen extends StatelessWidget {
   /// The stage value the Journey is currently standing on.
   final String currentStage;
 
-  const JourneyMapScreen(
-      {super.key, required this.profile, required this.currentStage});
+  const JourneyMapScreen({
+    super.key,
+    required this.profile,
+    required this.currentStage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +46,9 @@ class JourneyMapScreen extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-            gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: ZyraAppGoldDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -53,8 +58,11 @@ class JourneyMapScreen extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () => Navigator.of(context).maybePop(),
-                      icon: const Icon(Icons.arrow_back_ios_new,
-                          color: Colors.white70, size: 18),
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: ZyraColors.ink(0.70),
+                        size: 18,
+                      ),
                     ),
                     Expanded(
                       child: Text(
@@ -64,7 +72,7 @@ class JourneyMapScreen extends StatelessWidget {
                       ),
                     ),
                     // Balances the back button so the title truly centres.
-                    const SizedBox(width: 48),
+                    SizedBox(width: 48),
                   ],
                 ),
               ),
@@ -78,30 +86,36 @@ class JourneyMapScreen extends StatelessWidget {
                         state: hereIdx < 0
                             ? _PlaceState.ahead
                             : i < hereIdx
-                                ? _PlaceState.behind
-                                : i == hereIdx
-                                    ? _PlaceState.here
-                                    : _PlaceState.ahead,
+                            ? _PlaceState.behind
+                            : i == hereIdx
+                            ? _PlaceState.here
+                            : _PlaceState.ahead,
                         isFirst: i == 0,
                         isLast: i == stages.length - 1,
                       ),
-                    const SizedBox(height: 18),
+                    SizedBox(height: 18),
                     Text(
                       'The Map is the road. Your Timeline is the story — '
                       'everything you have already lived, kept with its dates.',
-                      style:
-                          ZyraText.subtext(size: 12, color: Colors.white54),
+                      style: ZyraText.subtext(
+                        size: 12,
+                        color: ZyraColors.ink(0.54),
+                      ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Center(
                       child: OutlinedButton(
                         onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (_) => JourneyTimelineScreen(
-                                    withProfile: profile))),
-                        child: Text('Read your Timeline',
-                            style: ZyraText.button(size: 13)),
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                JourneyTimelineScreen(withProfile: profile),
+                          ),
+                        ),
+                        child: Text(
+                          'Read your Timeline',
+                          style: ZyraText.button(size: 13),
+                        ),
                       ),
                     ),
                   ],
@@ -122,11 +136,12 @@ class _MapRow extends StatelessWidget {
   final _PlaceState state;
   final bool isFirst;
   final bool isLast;
-  const _MapRow(
-      {required this.stage,
-      required this.state,
-      required this.isFirst,
-      required this.isLast});
+  const _MapRow({
+    required this.stage,
+    required this.state,
+    required this.isFirst,
+    required this.isLast,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -140,9 +155,9 @@ class _MapRow extends StatelessWidget {
         height: 18,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white.withValues(alpha: 0.85),
+          color: ZyraColors.foreground.withValues(alpha: 0.85),
         ),
-        child: const Icon(Icons.check, size: 12, color: Color(0xFF3D2A4A)),
+        child: Icon(Icons.check, size: 12, color: ZyraColors.luxuryDarkPurple),
       );
     } else if (here) {
       marker = Container(
@@ -150,7 +165,7 @@ class _MapRow extends StatelessWidget {
         height: 18,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: ZyraColors.primaryAction,
+          color: ZyraColors.actionFill,
           border: Border.all(color: Colors.white, width: 2),
         ),
       );
@@ -161,20 +176,22 @@ class _MapRow extends StatelessWidget {
         margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border:
-              Border.all(color: Colors.white.withValues(alpha: 0.35), width: 1.5),
+          border: Border.all(
+            color: ZyraColors.foreground.withValues(alpha: 0.35),
+            width: 1.5,
+          ),
         ),
       );
     }
 
     Widget line(bool draw) => Expanded(
-          child: Container(
-            width: 1.5,
-            color: draw
-                ? Colors.white.withValues(alpha: behind ? 0.5 : 0.18)
-                : Colors.transparent,
-          ),
-        );
+      child: Container(
+        width: 1.5,
+        color: draw
+            ? ZyraColors.foreground.withValues(alpha: behind ? 0.5 : 0.18)
+            : Colors.transparent,
+      ),
+    );
 
     return IntrinsicHeight(
       child: Row(
@@ -182,15 +199,9 @@ class _MapRow extends StatelessWidget {
         children: [
           SizedBox(
             width: 30,
-            child: Column(
-              children: [
-                line(!isFirst),
-                marker,
-                line(!isLast),
-              ],
-            ),
+            child: Column(children: [line(!isFirst), marker, line(!isLast)]),
           ),
-          const SizedBox(width: 14),
+          SizedBox(width: 14),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 13),
@@ -203,33 +214,41 @@ class _MapRow extends StatelessWidget {
                         ? ZyraText.heading(size: 16)
                         : ZyraText.body(
                             size: 14,
-                            color: Colors.white
-                                .withValues(alpha: behind ? 0.85 : 0.5),
+                            color: Colors.white.withValues(
+                              alpha: behind ? 0.85 : 0.5,
+                            ),
                           ),
                   ),
                   if (here) ...[
-                    const SizedBox(height: 2),
-                    Text('You are here',
-                        style: ZyraText.subtext(
-                            size: 11, color: ZyraColors.primaryAction)),
+                    SizedBox(height: 2),
+                    Text(
+                      'You are here',
+                      style: ZyraText.subtext(
+                        size: 11,
+                        color: ZyraColors.actionFill,
+                      ),
+                    ),
                   ],
                   if (stage.guidingQuestion != null) ...[
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
                       stage.guidingQuestion!,
                       style: ZyraText.subtext(
-                          size: 11.5,
-                          color:
-                              Colors.white.withValues(alpha: behind ? 0.5 : 0.38)),
+                        size: 11.5,
+                        color: ZyraColors.foreground.withValues(
+                          alpha: behind ? 0.5 : 0.38,
+                        ),
+                      ),
                     ),
                   ],
                   if (isLast) ...[
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
                       'Where this road leads.',
                       style: ZyraText.subtext(
-                          size: 11.5,
-                          color: Colors.white.withValues(alpha: 0.38)),
+                        size: 11.5,
+                        color: ZyraColors.foreground.withValues(alpha: 0.38),
+                      ),
                     ),
                   ],
                 ],

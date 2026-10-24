@@ -12,30 +12,45 @@
 // difference is that the labels are a parameter now, so the fill divides by
 // however many there are.
 //
-// The design decisions it carries, all Founder-ratified and unchanged:
+// The retained Founder-ratified design decisions:
 //
 //  · A SLIDING FILL, not independently-tinted segments (2026-08-03). The
 //    old version coloured whichever segment was selected, which cannot
 //    render "60% of the way across". One box positioned by `position` can,
 //    which is what lets it travel with a swipe instead of snapping at the
 //    end of it.
-//  · AN UNSEEN DOT, not a numbered badge (2026-08-06). The heading already
-//    says how many; the dot only has to answer whether there is anything.
-//    White, not lavender and not gold — white belongs to both gender
-//    gradients equally, and gold already means PREMIUM in this app.
-//  · THE DOT SITS IN THE ROW, not over it. The words nearly fill their
-//    share of the width, so anything absolutely positioned lands on the
-//    text. Laid out inline it cannot collide with anything.
+//  · Unseen counts remain available to accessibility without painting
+//    notification dots. Selection fill, lock icons and swipe motion remain.
 
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
+/// The Connections selector is the app-wide motion reference.
+///
+/// Keep tap travel and swipe settling here so two-, three- and four-segment
+/// controls differ only in distance, never in timing or resistance.
+abstract final class ZyraSegmentedMotion {
+  static const Duration selectionDuration = Duration(milliseconds: 260);
+  static const Curve selectionCurve = Curves.easeOutCubic;
+  static const ScrollPhysics pagePhysics = PageScrollPhysics(
+    parent: BouncingScrollPhysics(),
+  );
+
+  static Future<void> animateToPage(PageController controller, int page) =>
+      controller.animateToPage(
+        page,
+        duration: selectionDuration,
+        curve: selectionCurve,
+      );
+}
+
 class ZyraSegmentedToggle extends StatelessWidget {
-  /// Segment labels, left to right. Two or three; the fill divides by
-  /// however many are given.
+  /// Segment labels, left to right. The fill divides by however many are
+  /// given; callers currently use between two and four.
   final List<String> labels;
 
   /// 0.0 = first segment, 1.0 = second, and so on — fractional values are
@@ -46,15 +61,23 @@ class ZyraSegmentedToggle extends StatelessWidget {
   /// Segment index to move to.
   final ValueChanged<int> onChanged;
 
-  /// Unseen count per segment, same order as [labels]. 0 = no dot. Omit
-  /// entirely where nothing is ever unseen.
+  /// Accessibility unseen count per segment, same order as [labels].
+  /// Omit entirely where nothing is ever unseen. No visual badge is painted.
   final List<int> badges;
 
   /// Label size. 11.5 is right for three segments — at 13pt
   /// "Introductions" ellipsises inside a third of a phone, and a truncated
   /// label on a control this small reads as a bug. With two segments there
-  /// is room for 13.
+  /// is room for 13. Four-segment callers use a smaller explicit size.
   final double labelSize;
+
+  /// Optional keys for each interactive segment. This preserves direct
+  /// accessibility and test targets for screens using this shared control.
+  final List<Key> segmentKeys;
+
+  /// Segments that remain visible but need a higher membership. A small gold
+  /// lock communicates the boundary without changing the app's structure.
+  final Set<int> lockedIndexes;
 
   // [icons] and [showFill] lived here for a few hours on 2026-08-13
   // (DR-ZYRA-153), added so Browse's action bar could be this control.
@@ -71,6 +94,8 @@ class ZyraSegmentedToggle extends StatelessWidget {
     required this.onChanged,
     this.badges = const [],
     this.labelSize = 11.5,
+    this.segmentKeys = const [],
+    this.lockedIndexes = const {},
   });
 
   @override
@@ -81,10 +106,9 @@ class ZyraSegmentedToggle extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.10),
+            color: ZyraColors.frostFill,
             borderRadius: BorderRadius.circular(20),
-            border:
-                Border.all(color: Colors.white.withValues(alpha: 0.18), width: 1),
+            border: Border.all(color: ZyraColors.frostBorder, width: 1),
           ),
           child: Padding(
             padding: const EdgeInsets.all(3),
@@ -102,10 +126,18 @@ class ZyraSegmentedToggle extends StatelessWidget {
                         width: seg,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.28),
+                            color: ZyraColors.isLightPalette
+                                ? ZyraColors.devLightAccent.color.withValues(
+                                    alpha: 0.14,
+                                  )
+                                : ZyraColors.frostSelectedFill,
                             borderRadius: BorderRadius.circular(17),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.12),
+                              color: ZyraColors.isLightPalette
+                                  ? ZyraColors.devLightAccent.color.withValues(
+                                      alpha: 0.38,
+                                    )
+                                  : ZyraColors.frostSelectedBorder,
                               width: 1,
                             ),
                           ),
@@ -124,6 +156,8 @@ class ZyraSegmentedToggle extends StatelessWidget {
                                 (1 - (position - i).abs()).clamp(0.0, 1.0),
                                 () => onChanged(i),
                                 badges.length > i ? badges[i] : 0,
+                                segmentKeys.length > i ? segmentKeys[i] : null,
+                                lockedIndexes.contains(i),
                               ),
                             ),
                         ],
@@ -141,54 +175,48 @@ class ZyraSegmentedToggle extends StatelessWidget {
 
   /// `weight` runs 0..1 with the fill, so labels brighten and dim
   /// continuously rather than swapping at the end of the gesture.
-  Widget _label(String text, double weight, VoidCallback onTap, int badge) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Text(
-                text,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: ZyraText.button(
-                  size: labelSize,
-                  color: Colors.white.withValues(alpha: 0.45 + (0.55 * weight)),
+  Widget _label(
+    String text,
+    double weight,
+    VoidCallback onTap,
+    int badge,
+    Key? key,
+    bool locked,
+  ) {
+    return Semantics(
+      label: locked ? '$text, locked, upgrade available' : text,
+      value: badge > 0 ? (badge == 1 ? '1 unseen' : '$badge unseen') : null,
+      button: true,
+      child: GestureDetector(
+        key: key,
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: Text(
+                  text,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: ZyraText.button(
+                    size: labelSize,
+                    color: ZyraColors.ink(0.45 + (0.55 * weight)),
+                  ),
                 ),
               ),
-            ),
-            if (badge > 0) _UnseenDot(count: badge),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// The unseen-work dot. Not rendered as a number — see the header note.
-class _UnseenDot extends StatelessWidget {
-  /// Not rendered. Carried for the screen reader, which cannot see a dot.
-  final int count;
-  const _UnseenDot({required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: count == 1 ? '1 unseen' : '$count unseen',
-      child: Padding(
-        // Left gap separates it from the word; the bottom padding lifts it
-        // against the cap height like a superscript rather than leaving it
-        // floating on the baseline.
-        padding: const EdgeInsets.only(left: 4, bottom: 7),
-        child: Container(
-          width: 5,
-          height: 5,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
+              if (locked)
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Icon(
+                    Icons.lock_rounded,
+                    key: ValueKey('segmented-$text-lock'),
+                    size: 11,
+                    color: ZyraColors.journeyGold,
+                  ),
+                ),
+            ],
           ),
         ),
       ),

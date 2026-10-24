@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../models/journey_bio.dart';
 import '../../services/zyra_onboarding_answers_service.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_auth.dart';
+import '../../services/zyra_account_state.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/onboarding_scaffold.dart';
 import '../../widgets/privacy_indicator.dart';
+import '../../widgets/zyra_loading.dart';
 import 'onboarding_stage_intro_screen.dart';
 import 'values_preferences_flow.dart';
+import 'seeker_setup_navigation.dart';
 
 /// Optional, Journey-only Bio chapter.
 ///
@@ -39,11 +44,85 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
 
   int _step = 0;
   bool _saving = false;
+  bool _leaving = false;
+  bool _restoring = false;
+  String? _owner;
+  late int _ownerGeneration;
+  String? _restoreError;
+  String? _saveError;
   final _aboutController = TextEditingController();
   final Map<String, TextEditingController> _freeTextControllers = {};
   final Map<String, String> _values = {};
   final Set<String> _visibleFieldIds = {};
   bool _showAboutMe = false;
+
+  // Requested preview is sticky even after authorization changes. It may
+  // become unavailable, but must never begin saving as a live member flow.
+  bool get _devPreview => widget.devPreview;
+  bool get _canProceed =>
+      mounted &&
+      !_leaving &&
+      (!_devPreview || ZyraDeveloperAccess.canUseDeveloperTools) &&
+      (_devPreview ||
+          (_owner != null &&
+              ZyraAuth.currentUser?.id == _owner &&
+              ZyraAccountState.isCurrent(_owner!, _ownerGeneration)));
+
+  @override
+  void initState() {
+    super.initState();
+    _ownerGeneration = ZyraAccountState.generation;
+    if (!_devPreview) {
+      try {
+        _owner = ZyraAuth.currentUser?.id;
+      } catch (_) {
+        /* Restore fails closed. */
+      }
+    }
+    final current = AppState.instance.journeyBio;
+    if (!current.isEmpty || current.showAboutMe) {
+      _applySavedBio(current);
+    }
+    if (!_devPreview) _restoreSavedBio();
+  }
+
+  void _applySavedBio(JourneyBio bio) {
+    _aboutController.text = bio.aboutMe;
+    _values
+      ..clear()
+      ..addAll(bio.fieldValues);
+    _visibleFieldIds
+      ..clear()
+      ..addAll(bio.visibleFieldIds);
+    _showAboutMe = bio.showAboutMe;
+  }
+
+  Future<void> _restoreSavedBio() async {
+    setState(() => _restoring = true);
+    try {
+      final snapshot = await ZyraOnboardingAnswersService.fetchOwn(
+        expectedUserId: _owner,
+        throwOnError: true,
+      ).timeout(const Duration(seconds: 10));
+      if (!_canProceed) throw StateError('Account changed.');
+      if (snapshot != null) {
+        _applySavedBio(snapshot.journeyBio);
+        AppState.instance.saveJourneyBio(snapshot.journeyBio);
+      }
+      setState(() {
+        _restoring = false;
+        _restoreError = null;
+      });
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _restoring = false;
+          _restoreError =
+              'Your saved Bio could not be loaded. Try again before continuing.';
+        });
+      }
+    }
+  }
 
   ZyraBackgroundVariant get _background => switch (widget.gender) {
     'male' => ZyraBackgroundVariant.male,
@@ -79,35 +158,87 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
   }
 
   void _back() {
+    if (!_canProceed || _saving || _restoring || _restoreError != null) return;
     if (_step > 0) setState(() => _step--);
   }
 
+  Future<void> _finishLater() async {
+    if (!_canProceed || _saving || _restoring || _restoreError != null) return;
+    setState(() {
+      _saving = true;
+      _saveError = null;
+    });
+    final draft = _draft.copyWith(
+      reviewed: AppState.instance.journeyBio.reviewed,
+    );
+    final saved =
+        _devPreview ||
+        await ZyraOnboardingAnswersService.syncJourneyBio(
+          draft,
+          expectedUserId: _owner,
+        );
+    if (!mounted) return;
+    if (saved && _canProceed) {
+      AppState.instance.saveJourneyBio(draft);
+      final opened = await returnToMyZyra(
+        context,
+        devPreview: _devPreview,
+        expectedUserId: _owner,
+        expectedGeneration: _ownerGeneration,
+      );
+      if (opened) return;
+    }
+    if (mounted) {
+      setState(() {
+        _saving = false;
+        _saveError = 'Your progress could not be confirmed. Please try again.';
+      });
+    }
+  }
+
   Future<void> _next() async {
-    if (_step < _totalSteps - 1) {
+    if (!_canProceed ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        _saving ||
+        _restoring ||
+        _restoreError != null) {
+      return;
+    }
+    setState(() {
+      _saving = true;
+      _saveError = null;
+    });
+    final finalStep = _step == _totalSteps - 1;
+    final draft = _draft.copyWith(
+      reviewed: finalStep || AppState.instance.journeyBio.reviewed,
+    );
+    final saved = _devPreview
+        ? true
+        : await ZyraOnboardingAnswersService.syncJourneyBio(
+            draft,
+            expectedUserId: _owner,
+          );
+    if (!mounted || !_canProceed) return;
+    setState(() => _saving = false);
+    if (ModalRoute.of(context)?.isCurrent != true) return;
+
+    if (!saved) {
+      setState(
+        () => _saveError = 'Your Bio could not be saved. Please try again.',
+      );
+      return;
+    }
+    AppState.instance.saveJourneyBio(draft);
+    if (!finalStep) {
       setState(() => _step++);
       return;
     }
 
-    setState(() => _saving = true);
-    final draft = _draft;
-    AppState.instance.saveJourneyBio(draft);
-    final saved = widget.devPreview
-        ? true
-        : await ZyraOnboardingAnswersService.syncJourneyBio(draft);
-    if (!mounted) return;
-    setState(() => _saving = false);
-
-    if (!saved) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Your Bio is safe for this session. ZYRA will try saving it again with your Values.',
-          ),
-        ),
-      );
-    }
-
     final gender = widget.gender;
+    final devPreview = _devPreview;
+    final owner = _owner;
+    final ownerGeneration = _ownerGeneration;
+    var stageLeaving = false;
     if (gender == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -118,19 +249,41 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
       );
       return;
     }
+    setState(() => _leaving = true);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (stageContext) => OnboardingStageIntroScreen(
-          stage: SeekerOnboardingStage.compatibility,
-          onContinue: () => Navigator.of(stageContext).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => ValuesPreferencesFlow(
-                gender: gender,
-                devPreview: widget.devPreview,
+        builder: (stageContext) {
+          void openCompatibility() {
+            if (stageLeaving ||
+                !stageContext.mounted ||
+                ModalRoute.of(stageContext)?.isCurrent != true) {
+              return;
+            }
+            if (devPreview
+                ? !ZyraDeveloperAccess.canUseDeveloperTools
+                : owner == null ||
+                      ZyraAuth.currentUser?.id != owner ||
+                      !ZyraAccountState.isCurrent(owner, ownerGeneration)) {
+              return;
+            }
+            stageLeaving = true;
+            Navigator.of(stageContext).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => ValuesPreferencesFlow(
+                  gender: gender,
+                  devPreview: devPreview,
+                ),
               ),
-            ),
-          ),
-        ),
+            );
+          }
+
+          return OnboardingStageIntroScreen(
+            stage: SeekerOnboardingStage.compatibility,
+            devPreview: devPreview,
+            onDevSkip: devPreview ? openCompatibility : null,
+            onContinue: openCompatibility,
+          );
+        },
       ),
     );
   }
@@ -145,7 +298,53 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: ZyraDeveloperAccess.authorizationChanges,
+    builder: (context, _) {
+      if (_devPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
+        return Scaffold(
+          key: const ValueKey('bio_preview_denied'),
+          backgroundColor: ZyraColors.modalSheetSurface,
+          body: const SizedBox.expand(),
+        );
+      }
+      return _buildFlow(context);
+    },
+  );
+
+  Widget _buildFlow(BuildContext context) {
+    if (_restoring) {
+      return const ZyraLoading.fullScreen(label: 'Restoring your saved Bio…');
+    }
+    if (_restoreError != null) {
+      return Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _restoreError!,
+                    textAlign: TextAlign.center,
+                    style: ZyraText.body(),
+                  ),
+                  TextButton(
+                    onPressed: _restoreSavedBio,
+                    child: const Text('Try again'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    child: const Text('Back'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     late String question;
     late String subtext;
     late Widget content;
@@ -173,7 +372,7 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
             decoration: InputDecoration(
               hintText:
                   'Your character, the life you hope to build, and what matters to you…',
-              hintStyle: ZyraText.subtext(color: Colors.white30),
+              hintStyle: ZyraText.subtext(color: ZyraColors.ink(0.30)),
               filled: true,
               fillColor: ZyraColors.iconButtonBg,
               enabledBorder: OutlineInputBorder(
@@ -184,10 +383,13 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(color: ZyraColors.unlockText),
               ),
-              counterStyle: ZyraText.subtext(size: 11, color: Colors.white38),
+              counterStyle: ZyraText.subtext(
+                size: 11,
+                color: ZyraColors.ink(0.38),
+              ),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           _JourneyShareSwitch(
             label: 'Include this biography in my Journey profile',
             value: _showAboutMe,
@@ -224,7 +426,7 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
                 }
               }),
             ),
-            if (field != fields.last) const SizedBox(height: 12),
+            if (field != fields.last) SizedBox(height: 12),
           ],
         ],
       );
@@ -246,9 +448,9 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
 
     return OnboardingScaffold(
       background: _background,
-      chapterName: 'Your Bio',
+      chapterName: 'Journey Bio',
       chapterProgress: (_step + 1) / _totalSteps,
-      chapterComplete: _step == _totalSteps - 1,
+      progressLabel: 'STEP ${_step + 1} OF $_totalSteps',
       question: question,
       subtext: subtext,
       privacy: PrivacyLevel.private,
@@ -256,11 +458,28 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
           'Journey only — shown after both Seekers choose to reveal.',
       fabActive: !_saving,
       onContinue: _next,
-      devPreview: widget.devPreview,
+      devPreview: _devPreview,
       onDevSkip: _next,
       devSkipLabel: 'Skip page',
       onSwipeBack: _step > 0 ? _back : null,
-      content: content,
+      onFinishLater: _finishLater,
+      content: IgnorePointer(
+        ignoring: _saving,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (_saveError != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  _saveError!,
+                  style: ZyraText.subtext(color: ZyraColors.destructive),
+                ),
+              ),
+            content,
+          ],
+        ),
+      ),
     );
   }
 }
@@ -296,7 +515,7 @@ class _BioFieldEditor extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(definition.prompt, style: ZyraText.body(size: 13.5)),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           if (definition.usesFreeText)
             TextField(
               controller: controller,
@@ -304,9 +523,9 @@ class _BioFieldEditor extends StatelessWidget {
               style: ZyraText.body(size: 14.5),
               decoration: InputDecoration(
                 hintText: 'Optional answer',
-                hintStyle: ZyraText.subtext(color: Colors.white30),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white24),
+                hintStyle: ZyraText.subtext(color: ZyraColors.ink(0.30)),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ZyraColors.ink(0.24)),
                 ),
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: ZyraColors.unlockDot),
@@ -321,9 +540,9 @@ class _BioFieldEditor extends StatelessWidget {
               style: ZyraText.body(size: 14),
               decoration: InputDecoration(
                 hintText: 'Choose an optional answer',
-                hintStyle: ZyraText.subtext(color: Colors.white30),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white24),
+                hintStyle: ZyraText.subtext(color: ZyraColors.ink(0.30)),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: ZyraColors.ink(0.24)),
                 ),
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: ZyraColors.unlockDot),
@@ -335,7 +554,7 @@ class _BioFieldEditor extends StatelessWidget {
               ],
               onChanged: (next) => onChanged(next ?? ''),
             ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           _JourneyShareSwitch(
             label: 'Show ${definition.label.toLowerCase()} in my Journey',
             value: shared && hasValue,
@@ -370,7 +589,7 @@ class _JourneyShareSwitch extends StatelessWidget {
         label,
         style: ZyraText.subtext(
           size: 11.5,
-          color: enabled ? Colors.white70 : Colors.white30,
+          color: enabled ? ZyraColors.ink(0.70) : ZyraColors.ink(0.30),
         ),
       ),
       value: enabled && value,
@@ -408,10 +627,10 @@ class _BioVisibilityReview extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const Icon(Icons.notes_rounded, color: Colors.white54, size: 30),
-            const SizedBox(height: 10),
+            Icon(Icons.notes_rounded, color: ZyraColors.ink(0.54), size: 30),
+            SizedBox(height: 10),
             Text('No Bio added', style: ZyraText.heading(size: 18)),
-            const SizedBox(height: 6),
+            SizedBox(height: 6),
             Text(
               'That is completely fine. Your Journey will simply explain that you chose not to add one.',
               textAlign: TextAlign.center,
@@ -439,7 +658,7 @@ class _BioVisibilityReview extends StatelessWidget {
             shared: bio.visibleFieldIds.contains(field.id),
             onChanged: (shared) => onFieldChanged(field.id, shared),
           ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -482,7 +701,7 @@ class _ReviewToggle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: ZyraText.body(size: 13.5)),
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 Text(
                   value,
                   maxLines: 2,

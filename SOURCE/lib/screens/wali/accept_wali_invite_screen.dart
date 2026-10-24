@@ -6,24 +6,31 @@
 // ZyraWaliLinkService's doc comment.
 
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../data/zyra_reference_data.dart';
 import '../../services/zyra_wali_link_service.dart';
+import '../../services/zyra_promotion_engine.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_guardian_capacity_notice.dart';
+import '../../widgets/zyra_glass_dialog.dart';
 
 class AcceptWaliInviteScreen extends StatefulWidget {
-  const AcceptWaliInviteScreen({super.key});
+  final String? initialCode;
+
+  const AcceptWaliInviteScreen({super.key, this.initialCode});
 
   @override
   State<AcceptWaliInviteScreen> createState() => _AcceptWaliInviteScreenState();
 }
 
 class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
-  final _controller = TextEditingController();
+  late final TextEditingController _controller;
   bool _checking = false;
   bool _accepting = false;
+  bool _declining = false;
   String? _error;
   Map<String, String>? _preview;
 
@@ -37,6 +44,12 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
   /// database, because this is the moment the link exists to hang it on.
   String? _relationshipCode;
   bool _changingRelationship = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialCode);
+  }
 
   /// Only a Guardian states a relationship, and only about the Seeker they
   /// are being linked to. When the inviter is a Guardian the accepter is the
@@ -85,14 +98,62 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
     final error = await ZyraWaliLinkService.acceptInvite(
       _controller.text.trim(),
       relationship: _needsRelationship ? _relationshipCode : null,
+      currentSeekerPlan: _needsRelationship ? null : AppState.instance.plan,
     );
     if (!mounted) return;
     setState(() => _accepting = false);
     if (error != null) {
       setState(() => _error = error);
+      showZyraGuardianCapacityNotice(context, error);
       return;
     }
+    if (_needsRelationship) {
+      // The signed-in member is the Guardian accepting their first/new
+      // Seeker link. Mark eligibility after the server write, never inside
+      // the acceptance decision itself.
+      await ZyraPromotionEngine.instance.markNotificationValueMoment(
+        role: ZyraPromotionRole.guardian,
+        trigger: ZyraPromotionTrigger.firstSeekerLink,
+      );
+      await ZyraPromotionEngine.instance.markUpgradeValueMoment(
+        role: ZyraPromotionRole.guardian,
+        product: ZyraPromotionProduct.guardianPlus,
+        placement: ZyraPromotionPlacement.home,
+        feature: ZyraPromotionFeature.guardianNetwork,
+        trigger: ZyraPromotionTrigger.firstSeekerLink,
+      );
+      if (!mounted) return;
+    }
     Navigator.of(context).pop(true);
+  }
+
+  Future<void> _decline() async {
+    final inviter = _preview?['inviterFirstName'] ?? 'them';
+    final confirmed = await showZyraGlassChoice(
+      context: context,
+      icon: Icons.person_remove_outlined,
+      title: 'Decline invitation?',
+      body:
+          '$inviter will be told that you declined. You can still link later '
+          'with a new invitation.',
+      primaryLabel: 'Decline',
+      secondaryLabel: 'Keep it',
+      destructivePrimary: true,
+    );
+    if (confirmed != true || !mounted) return;
+
+    setState(() {
+      _declining = true;
+      _error = null;
+    });
+    final error = await ZyraWaliLinkService.declineInvite(_controller.text);
+    if (!mounted) return;
+    setState(() => _declining = false);
+    if (error != null) {
+      setState(() => _error = error);
+      return;
+    }
+    Navigator.of(context).pop(false);
   }
 
   @override
@@ -116,7 +177,7 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text('Enter Invite Code', style: ZyraText.heading(size: 17)),
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
         // FILLS ITS BOX — 2026-08-13 (DR-ZYRA-165). Scaffold lays its
@@ -135,7 +196,7 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         // is only ever reached by an already-signed-in account (Seeker
         // or Guardian) linking the other party, so gender is always known
         // here — see ZyraColors.genderGradient() doc comment.
-        decoration: BoxDecoration(
+        decoration: ZyraAppGoldDecoration(
           gradient: ZyraColors.genderGradient(AppState.instance.gender),
         ),
         child: SafeArea(
@@ -147,12 +208,12 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 Text(
                   "Enter the code they shared with you.",
                   style: ZyraText.subtext(),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 TextField(
                   controller: _controller,
                   textCapitalization: TextCapitalization.characters,
@@ -178,7 +239,7 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                     _changingRelationship = false;
                   }),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 if (_preview != null)
                   Container(
                     padding: const EdgeInsets.all(14),
@@ -197,18 +258,18 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                     ),
                   ),
                 if (_preview != null && _needsRelationship) ...[
-                  const SizedBox(height: 22),
+                  SizedBox(height: 22),
                   Text(
                     'How are you related to ${_preview!['inviterFirstName']}?',
                     style: ZyraText.body(size: 15, color: Colors.white),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: 6),
                   Text(
                     'This is shown to Seekers who unlock their profile, so they '
                     'know who they may be speaking with.',
                     style: ZyraText.subtext(size: 12.5),
                   ),
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14),
                   // Confirm-or-change, not a seventh question. The answer is
                   // already known from onboarding, so the common path is one
                   // tap on Confirm Link. Expanding the full list is the
@@ -236,13 +297,13 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                     ),
                 ],
                 if (_error != null) ...[
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   ZyraErrorBanner(
                     message: _error!,
                     onDismiss: () => setState(() => _error = null),
                   ),
                 ],
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -263,7 +324,7 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(50),
-                        onTap: _checking || _accepting
+                        onTap: _checking || _accepting || _declining
                             ? null
                             : (_preview == null
                                   ? _checkCode
@@ -284,7 +345,24 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                if (_preview != null) ...[
+                  SizedBox(height: 10),
+                  Center(
+                    child: TextButton(
+                      onPressed: _checking || _accepting || _declining
+                          ? null
+                          : _decline,
+                      child: Text(
+                        _declining ? 'Declining…' : 'Decline invitation',
+                        style: ZyraText.body(
+                          size: 13.5,
+                          color: ZyraColors.foreground.withValues(alpha: 0.65),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                SizedBox(height: 24),
               ],
             ),
           ),

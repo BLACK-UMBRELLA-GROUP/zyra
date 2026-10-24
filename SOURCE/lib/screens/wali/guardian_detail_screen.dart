@@ -10,27 +10,43 @@
 //
 // So this page has no Verified row (no verification concept exists in
 // ZYRA), no photo (Guardian onboarding never asks for one), no Permissions
-// section (the Wali One capability model is documented but unbuilt), and no
-// Remove Guardian (destructive, and removing a Main Guardian mid-Journey
-// has consequences nothing currently handles — approved for a second pass).
+// section (the Wali One capability model is documented but unbuilt). Remove
+// Guardian is available through the guarded confirmation flow below; a Main
+// Guardian must first be replaced when another active Guardian exists.
 //
 // Each of those is a real product decision recorded in
 // ZYRA_GUARDIAN_PAGE_REVIEW_CURRENT_VERSION_V1.md, not an oversight. If you
 // are here to add one of them, read that first.
 
 import 'package:flutter/material.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../services/zyra_report_service.dart';
+import '../../services/zyra_product_telemetry.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/report_profile_sheet.dart';
 import '../../widgets/zyra_fade_edges.dart';
+import '../../widgets/zyra_state_widgets.dart';
 import '../../theme/zyra_card_metrics.dart';
+import '../../widgets/zyra_glass_dialog.dart';
+
+typedef GuardianDetailActivityLoader =
+    Future<ZyraSourceResult<List<GuardianActivity>>> Function();
+typedef GuardianDetailHistoryConsentLoader =
+    Future<ZyraSourceResult<GuardianHistoryConsentState>> Function({
+      bool? enabled,
+    });
 
 class GuardianDetailScreen extends StatefulWidget {
   final WaliLinkedPerson person;
   final List<GuardianActivity> activity;
+  final bool activityAvailable;
+  final GuardianDetailActivityLoader? activityLoader;
+  final GuardianDetailHistoryConsentLoader? historyConsentLoader;
+  final bool historyConsentPreview;
+  final DateTime? comparisonNow;
 
   /// How many OTHER Guardians are linked. Decides two things: whether
   /// "Make Main Guardian" is offered at all, and whether removing this one
@@ -44,6 +60,11 @@ class GuardianDetailScreen extends StatefulWidget {
     super.key,
     required this.person,
     required this.activity,
+    this.activityAvailable = true,
+    this.activityLoader,
+    this.historyConsentLoader,
+    this.historyConsentPreview = false,
+    this.comparisonNow,
     required this.otherGuardianCount,
     required this.onChanged,
   });
@@ -54,6 +75,13 @@ class GuardianDetailScreen extends StatefulWidget {
 
 class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
   bool _busy = false;
+  bool _historyBusy = false;
+  late bool _historyAvailable;
+  late List<GuardianActivity> _detailActivity;
+  bool _consentLoading = false;
+  bool _consentAvailable = true;
+  bool _consentBusy = false;
+  GuardianHistoryConsentState? _consentState;
 
   /// The Remove row has been tapped once and is showing Confirm / Cancel.
   ///
@@ -67,7 +95,155 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
   bool _confirmingRemove = false;
 
   WaliLinkedPerson get person => widget.person;
-  List<GuardianActivity> get activity => widget.activity;
+  List<GuardianActivity> get activity => _detailActivity;
+
+  @override
+  void initState() {
+    super.initState();
+    _recordGuardianEvent(
+      ZyraTelemetryEventName.opened,
+      ZyraTelemetryAction.pageView,
+    );
+    _historyAvailable = widget.activityAvailable;
+    _detailActivity = widget.activity;
+    if (person.isMain) {
+      if (widget.historyConsentPreview) {
+        _consentState = GuardianHistoryConsentState(
+          enabled: false,
+          activeGuardianLinkId: 'dev-main-link',
+          guardianId: person.id,
+          guardianIsMain: true,
+        );
+      } else {
+        _consentLoading = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) => _loadConsent());
+      }
+    }
+  }
+
+  bool _consentMatchesPerson(GuardianHistoryConsentState state) =>
+      state.guardianId == person.id &&
+      state.activeGuardianLinkId != null &&
+      state.guardianIsMain == true;
+
+  Future<void> _loadConsent() async {
+    if (!person.isMain || _consentBusy) return;
+    final loader = widget.historyConsentLoader;
+    if (loader == null) {
+      if (!mounted) return;
+      setState(() {
+        _consentLoading = false;
+        _consentAvailable = false;
+        _consentState = null;
+      });
+      return;
+    }
+
+    if (!_consentLoading) setState(() => _consentLoading = true);
+    ZyraSourceResult<GuardianHistoryConsentState> result;
+    try {
+      result = await loader(enabled: null);
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _consentLoading = false;
+        _consentAvailable = false;
+      });
+      return;
+    }
+    if (!mounted) return;
+    final next = result.valueOrNull;
+    final confirmed =
+        result.isAvailable && next != null && _consentMatchesPerson(next);
+    setState(() {
+      _consentLoading = false;
+      _consentAvailable = confirmed;
+      if (confirmed) {
+        _consentState = next;
+      } else if (result.isAvailable) {
+        // A successful response for another/no active Main link must not
+        // leave an earlier Guardian's state visible on this detail page.
+        _consentState = null;
+      }
+    });
+  }
+
+  Future<void> _setConsent(bool enabled) async {
+    if (widget.historyConsentPreview) return _previewConsent(enabled);
+    final loader = widget.historyConsentLoader;
+    if (!person.isMain ||
+        loader == null ||
+        _consentLoading ||
+        _consentBusy ||
+        !_consentAvailable ||
+        _consentState == null) {
+      return;
+    }
+
+    _recordGuardianEvent(
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryAction.guardianHistoryConsent,
+    );
+    setState(() => _consentBusy = true);
+    ZyraSourceResult<GuardianHistoryConsentState> result;
+    try {
+      result = await loader(enabled: enabled);
+    } catch (_) {
+      _recordGuardianEvent(
+        ZyraTelemetryEventName.failed,
+        ZyraTelemetryAction.guardianHistoryConsent,
+      );
+      if (!mounted) return;
+      setState(() {
+        _consentBusy = false;
+        _consentAvailable = false;
+      });
+      return;
+    }
+    if (!mounted) return;
+    final next = result.valueOrNull;
+    final matchesPerson =
+        result.isAvailable && next != null && _consentMatchesPerson(next);
+    final confirmed = matchesPerson && next.enabled == enabled;
+    _recordGuardianEvent(
+      confirmed
+          ? ZyraTelemetryEventName.completed
+          : ZyraTelemetryEventName.failed,
+      ZyraTelemetryAction.guardianHistoryConsent,
+    );
+    setState(() {
+      _consentBusy = false;
+      _consentAvailable = confirmed;
+      if (confirmed) {
+        _consentState = next;
+      } else if (result.isAvailable && !matchesPerson) {
+        // Identity/link mismatch is not a failed toggle; it means this state
+        // does not belong on the open Guardian page at all.
+        _consentState = null;
+      }
+      // Transport and echoed-value failures retain the last confirmed value.
+    });
+  }
+
+  Future<void> _previewConsent(bool _) async {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Preview state — no server change made.')),
+    );
+  }
+
+  Future<void> _retryHistory() async {
+    final loader = widget.activityLoader;
+    if (loader == null || _historyBusy) return;
+    setState(() => _historyBusy = true);
+    final result = await loader();
+    if (!mounted) return;
+    setState(() {
+      _historyBusy = false;
+      _historyAvailable = result.isAvailable;
+      if (result.isAvailable) _detailActivity = result.valueOr(const []);
+    });
+  }
 
   /// When they became a Guardian. Derived from the activity feed rather
   /// than passed separately — `linked` is always present, because a link is
@@ -79,10 +255,20 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
     return null;
   }
 
-  /// Everything except the linking event, which is shown as a fact above
-  /// rather than repeated as news.
-  List<GuardianActivity> get _feed =>
-      [for (final a in activity) if (a.type != 'linked') a];
+  /// Current obligations are present state, never relationship history.
+  List<GuardianActivity> get _currentObligations => [
+    for (final a in activity)
+      if (a.type == 'review_waiting' && a.line != null) a,
+  ];
+
+  /// Only the three governed relationship-history classes. Unknown events
+  /// fail closed and a waiting review remains solely in current obligations.
+  List<GuardianActivity> get _history => [
+    for (final a in activity)
+      if (const {'linked', 'suggested', 'review_answered'}.contains(a.type) &&
+          a.line != null)
+        a,
+  ];
 
   /// Dev Guardians have no server rows, so every action here would fail
   /// against a database that has never heard of them. Better to say so than
@@ -90,10 +276,12 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
   bool get _isDev => person.id.startsWith('dev-guardian-');
 
   void _devNotice() => ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Preview Guardian — sign in as a real account to try this. (dev)'),
-        ),
-      );
+    const SnackBar(
+      content: Text(
+        'Preview Guardian — sign in as a real account to try this. (dev)',
+      ),
+    ),
+  );
 
   // Report and Remove are INDEPENDENT (Founder, 2026-08-06). Reporting says
   // "this person broke the rules"; removing says "I no longer want them
@@ -102,34 +290,55 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
   // and never blocks.
   Future<void> _report() async {
     if (_isDev) return _devNotice();
-    await showReportProfileSheet(
+    _recordGuardianEvent(
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryAction.guardianReport,
+    );
+    final completed = await showReportProfileSheet(
       context,
       profileId: person.id,
       firstName: person.firstName,
       source: ZyraReportSource.guardian,
     );
+    if (completed == true) {
+      _recordGuardianEvent(
+        ZyraTelemetryEventName.completed,
+        ZyraTelemetryAction.guardianReport,
+      );
+    }
   }
 
   Future<void> _makeMain() async {
     if (_isDev) return _devNotice();
     final confirmed = await _confirm(
       title: 'Make ${person.firstName} your Main Guardian?',
-      body: 'Your Main Guardian is the one asked to act on your Journey. '
+      body:
+          'Your Main Guardian is the one asked to act on your Journey. '
           'Whoever holds it now becomes an Additional Guardian.',
       action: 'Make Main Guardian',
     );
     if (confirmed != true) return;
 
+    _recordGuardianEvent(
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryAction.guardianMakeMain,
+    );
     setState(() => _busy = true);
     final ok = await ZyraWaliLinkService.setMainGuardian(person.id);
     if (!mounted) return;
     setState(() => _busy = false);
+    _recordGuardianEvent(
+      ok ? ZyraTelemetryEventName.completed : ZyraTelemetryEventName.failed,
+      ZyraTelemetryAction.guardianMakeMain,
+    );
     if (ok) {
       widget.onChanged();
       Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("That didn't go through. Please try again.")),
+        const SnackBar(
+          content: Text("That didn't go through. Please try again."),
+        ),
       );
     }
   }
@@ -161,7 +370,8 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
     if (person.isMain && widget.otherGuardianCount > 0) {
       _confirm(
         title: 'Choose a new Main Guardian first',
-        body: '${person.firstName} is your Main Guardian. Make one of your '
+        body:
+            '${person.firstName} is your Main Guardian. Make one of your '
             'other Guardians Main, then remove ${person.firstName}.',
         action: null,
       );
@@ -178,16 +388,40 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
       setState(() => _confirmingRemove = false);
       return _devNotice();
     }
+    _recordGuardianEvent(
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryAction.guardianRemove,
+    );
     setState(() => _busy = true);
     final error = await ZyraWaliLinkService.removeGuardian(person.id);
     if (!mounted) return;
     setState(() => _busy = false);
+    _recordGuardianEvent(
+      error == null
+          ? ZyraTelemetryEventName.completed
+          : ZyraTelemetryEventName.failed,
+      ZyraTelemetryAction.guardianRemove,
+    );
     if (error == null) {
       widget.onChanged();
       Navigator.of(context).pop();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error)));
     }
+  }
+
+  void _recordGuardianEvent(
+    ZyraTelemetryEventName name,
+    ZyraTelemetryAction action,
+  ) {
+    ZyraProductTelemetry.instance.record(
+      feature: ZyraTelemetryFeature.guardian,
+      name: name,
+      action: action,
+      surface: ZyraTelemetrySurface.seeker,
+    );
   }
 
   Future<bool?> _confirm({
@@ -196,33 +430,22 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
     required String? action,
     bool destructive = false,
   }) {
-    return showDialog<bool>(
+    if (action == null) {
+      return showZyraGlassNotice(
+        context: context,
+        icon: Icons.info_outline_rounded,
+        title: title,
+        body: body,
+      ).then((_) => false);
+    }
+    return showZyraGlassChoice(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF2A1F33),
-        title: Text(title, style: ZyraText.heading(size: 17)),
-        content: Text(body, style: ZyraText.subtext(size: 13.5, color: Colors.white70)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(
-              action == null ? 'OK' : 'Cancel',
-              style: ZyraText.body(size: 14, color: Colors.white70),
-            ),
-          ),
-          if (action != null)
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: Text(
-                action,
-                style: ZyraText.body(
-                  size: 14,
-                  color: destructive ? Colors.redAccent.shade100 : Colors.white,
-                ),
-              ),
-            ),
-        ],
-      ),
+      icon: destructive ? Icons.person_remove_outlined : Icons.shield_outlined,
+      title: title,
+      body: body,
+      primaryLabel: action,
+      secondaryLabel: 'Cancel',
+      destructivePrimary: destructive,
     );
   }
 
@@ -241,7 +464,7 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
       // `appBarTheme` in main.dart — see the note there. Only the icon
       // colour is set here.
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white70),
+        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
         actions: [
           // Top right, matching every other report entry point in the app.
           IconButton(
@@ -250,10 +473,10 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
             icon: Icon(
               Icons.flag_outlined,
               size: 20,
-              color: Colors.white.withValues(alpha: 0.7),
+              color: ZyraColors.foreground.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(width: 4),
+          SizedBox(width: 4),
         ],
       ),
       // NO GRADIENT HERE, 2026-08-06 (Founder: "can we still remove that
@@ -279,7 +502,9 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
       // and vanishing as you reach either end. ScrollConfiguration below
       // removes it, which is what makes the page feel like one surface.
       body: Container(
-        decoration: BoxDecoration(gradient: ZyraColors.genderGradient(AppState.instance.gender)),
+        decoration: ZyraAppGoldDecoration(
+          gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        ),
         child: SafeArea(
           child: ZyraFadeEdges(
             // Fades where content meets the viewport edge, so a monogram
@@ -288,220 +513,519 @@ class _GuardianDetailScreenState extends State<GuardianDetailScreen> {
             // actually was.
             top: 34,
             child: ScrollConfiguration(
-            behavior: const _SeamlessScroll(),
-            child: ListView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 60),
-            children: [
-              Center(child: _Monogram(letter: person.firstName)),
-              const SizedBox(height: 18),
-              Center(child: Text(person.firstName, style: ZyraText.heading(size: 27))),
-              // NO relationship line and NO chips here. Removed 2026-08-07
-              // (Founder: "the screen repeats the same information —
-              // Abdul / Brother / Active … Brother / Active").
-              //
-              // The DETAILS rows below carry Relationship, Role and Status
-              // in full. Repeating two of them under the avatar said the
-              // same thing twice within one screenful, which is the exact
-              // duplication this pass removes. The name stands alone.
-
-              const SizedBox(height: 32),
-              Text('DETAILS', style: ZyraText.chapterLabel(color: Colors.white54)),
-              const SizedBox(height: 12),
-              _Row(
-                label: 'Relationship',
-                value: person.relationshipLabel ?? 'Not recorded',
-                dim: person.relationshipLabel == null,
-              ),
-              _Row(
-                label: 'Role',
-                value: person.isMain ? 'Main Guardian' : 'Additional Guardian',
-              ),
-              // "Linked 3 March" is what a Verified chip was reaching for —
-              // it makes the relationship feel established — with the
-              // difference that every word of it is true.
-              _Row(
-                label: 'Linked',
-                value: _linked == null ? 'Not recorded' : _linked!.whenLabel,
-                dim: _linked == null,
-              ),
-              _Row(label: 'Status', value: 'Active'),
-
-              const SizedBox(height: 30),
-              Text('TIMELINE', style: ZyraText.chapterLabel(color: Colors.white54)),
-              const SizedBox(height: 4),
-              Text(
-                person.isMain
-                    ? 'What ${person.firstName} has done on your Journey.'
-                    : 'What ${person.firstName} has done. Only your Main '
-                        'Guardian is asked to act on your Journey.',
-                style: ZyraText.subtext(size: 11.5, color: Colors.white38),
-              ),
-              const SizedBox(height: 14),
-              if (_feed.isEmpty)
-                // An honest nothing. Founder: "If there is no activity,
-                // don't invent it." A Guardian who has only just linked has
-                // genuinely done nothing yet, and saying so is better than
-                // padding the page with a fabricated milestone.
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.04),
-                    borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.10), width: 0.5),
-                  ),
-                  child: Text(
-                    'Nothing yet. This fills in as '
-                    '${person.firstName} takes part in your Journey.',
-                    style: ZyraText.subtext(size: 12.5, color: Colors.white38),
-                  ),
-                )
-              else
-                ..._feed.map((a) => _ActivityRow(activity: a)),
-
-              // ── Manage ──────────────────────────────────────────────
-              //
-              // Last on the page, and deliberately. These are the only two
-              // things that change a real relationship, and neither should
-              // sit where a thumb lands while reading.
-              const SizedBox(height: 34),
-              Text('MANAGE', style: ZyraText.chapterLabel(color: Colors.white54)),
-              const SizedBox(height: 12),
-
-              // PROMOTE — offered to any Additional Guardian.
-              //
-              // The `otherGuardianCount > 0` condition was removed
-              // 2026-08-07. It was wrong: a Seeker with ONE Guardian who is
-              // not Main has nobody acting on their Journey, and that is
-              // exactly when promoting matters most. The old test hid the
-              // button in the case that needed it.
-              if (!person.isMain) ...[
-                _ActionRow(
-                  icon: Icons.shield_outlined,
-                  label: 'Make Main Guardian',
-                  hint: 'They become the one asked to act on your Journey.',
-                  onTap: _busy ? null : _makeMain,
+              behavior: const _SeamlessScroll(),
+              child: ListView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
                 ),
-                const SizedBox(height: 10),
-              ],
-
-              // "MAKE ADDITIONAL GUARDIAN" REMOVED 2026-08-10 — DR-ZYRA-136,
-              // contradiction-audit finding 2.9.
-              //
-              // Added 2026-08-07 at the Founder's request ("with main
-              // guardian we need a button to make additional guardian"), and
-              // the comment here read: "no Main is a legitimate state, just
-              // an unfinished one." The Founder has now ruled the opposite —
-              // that state is not acceptable and the action must stop being
-              // offered.
-              //
-              // What it produced: Family Review reads is_main, so with nobody
-              // Main a review has no voter and cannot be resolved at all, and
-              // the Guardian's message access closes in the same moment.
-              // Oversight ending with nothing said.
-              //
-              // NOT REPLACED BY A DISABLED ROW. The capability people wanted —
-              // changing WHICH Guardian is Main — already exists on the other
-              // Guardian's page: "Make Main Guardian" demotes the incumbent
-              // and promotes the replacement in one transaction. So this is a
-              // removal, not a loss; the same outcome is one tap away in a
-              // place where it cannot leave a gap.
-              //
-              // zyra_clear_main_guardian and ZyraWaliLinkService
-              // .clearMainGuardian both refuse now, so nothing can
-              // reintroduce this by accident without failing loudly.
-
-              // Two states, same card. Tapping Remove turns the row into the
-              // question rather than opening one somewhere else.
-              if (!_confirmingRemove)
-                _ActionRow(
-                  icon: Icons.person_remove_outlined,
-                  label: 'Remove Guardian',
-                  hint: person.isMain && widget.otherGuardianCount > 0
-                      ? 'Choose a new Main Guardian first.'
-                      : 'They will no longer be linked to you.',
-                  destructive: true,
-                  onTap: _busy ? null : _askRemove,
-                )
-              else
-                // EXPANDS TO FIT (Founder, 2026-08-07: "make it so the box
-                // expands if needed").
-                //
-                // No fixed height anywhere: the Column sizes to its children,
-                // the body text wraps to as many lines as the name and the
-                // context need, and the buttons below grow with their labels
-                // rather than truncating. A confirmation that clips the
-                // sentence explaining what you are confirming is worse than
-                // no confirmation.
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 180),
-                  curve: Curves.easeOutCubic,
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: ZyraColors.destructive.withValues(alpha: 0.10),
-                    borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-                    border: Border.all(
-                        color: ZyraColors.destructive.withValues(alpha: 0.34),
-                        width: 1),
+                padding: const EdgeInsets.fromLTRB(24, 8, 24, 60),
+                children: [
+                  Center(child: _Monogram(letter: person.firstName)),
+                  SizedBox(height: 18),
+                  Center(
+                    child: Text(
+                      person.firstName,
+                      style: ZyraText.heading(size: 27),
+                    ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Remove ${person.firstName}?',
-                          style: ZyraText.body(
-                              size: 15, color: ZyraColors.destructive)),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.otherGuardianCount == 0
-                            ? "You'll have no Guardian until you add another. "
-                                'You can invite them again at any time.'
-                            : "They'll no longer follow your Journey. You can "
-                                'invite them again at any time.',
-                        style: ZyraText.subtext(size: 12, color: Colors.white54),
+
+                  // NO relationship line and NO chips here. Removed 2026-08-07
+                  // (Founder: "the screen repeats the same information —
+                  // Abdul / Brother / Active … Brother / Active").
+                  //
+                  // The DETAILS rows below carry Relationship, Role and Status
+                  // in full. Repeating two of them under the avatar said the
+                  // same thing twice within one screenful, which is the exact
+                  // duplication this pass removes. The name stands alone.
+                  SizedBox(height: 32),
+                  Text(
+                    'DETAILS',
+                    style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+                  ),
+                  SizedBox(height: 12),
+                  _Row(
+                    label: 'Relationship',
+                    value: person.relationshipLabel ?? 'Not recorded',
+                    dim: person.relationshipLabel == null,
+                  ),
+                  _Row(
+                    label: 'Role',
+                    value: person.isMain
+                        ? 'Main Guardian'
+                        : 'Additional Guardian',
+                  ),
+                  // "Linked 3 March" is what a Verified chip was reaching for —
+                  // it makes the relationship feel established — with the
+                  // difference that every word of it is true.
+                  _Row(
+                    label: 'Linked',
+                    value:
+                        person.linkedDateLabel ??
+                        (_linked == null
+                            ? 'Not recorded'
+                            : _linked!.whenLabelAt(
+                                widget.comparisonNow ?? DateTime.now(),
+                              )),
+                    dim: person.linkedDateLabel == null && _linked == null,
+                  ),
+                  _Row(label: 'Status', value: 'Active'),
+
+                  SizedBox(height: 30),
+                  Text(
+                    'ROLE & ACCESS',
+                    style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+                  ),
+                  SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: ZyraColors.foreground.withValues(alpha: 0.04),
+                      borderRadius: BorderRadius.circular(
+                        ZyraCardMetrics.cardRadius,
                       ),
-                      const SizedBox(height: 14),
-                      Row(
-                        children: [
-                          // Cancel FIRST and to the left — the safe option
-                          // sits where a thumb rests, and the destructive one
-                          // takes a deliberate reach.
-                          Expanded(
-                            child: _SmallAction(
-                              label: 'Cancel',
-                              onTap: _busy
-                                  ? null
-                                  : () => setState(() => _confirmingRemove = false),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: _SmallAction(
-                              label: _busy ? 'Removing…' : 'Confirm',
-                              destructive: true,
-                              onTap: _busy ? null : _remove,
-                            ),
-                          ),
-                        ],
+                      border: Border.all(
+                        color: ZyraColors.foreground.withValues(alpha: 0.10),
+                        width: 0.5,
+                      ),
+                    ),
+                    child: Text(
+                      person.isMain
+                          ? '${person.firstName} is asked to act on your '
+                                'Journey. Journey-summary history follows the '
+                                'server-confirmed setting below.'
+                          : '${person.firstName} stays linked as an Additional '
+                                'Guardian. When you include them in an active '
+                                'Journey, they can view its current context. '
+                                'Protected decisions remain led by your Main '
+                                'Guardian.',
+                      style: ZyraText.subtext(
+                        size: 12.5,
+                        color: ZyraColors.ink(0.54),
+                      ),
+                    ),
+                  ),
+
+                  if (person.isMain) ...[
+                    SizedBox(height: 20),
+                    _GuardianHistoryConsentCard(
+                      state: _consentState,
+                      loading: _consentLoading,
+                      available: _consentAvailable,
+                      busy: _consentBusy,
+                      onRetry:
+                          _consentLoading ||
+                              _consentBusy ||
+                              widget.historyConsentLoader == null
+                          ? null
+                          : _loadConsent,
+                      onChanged: _setConsent,
+                    ),
+                  ],
+
+                  if (!_historyAvailable) ...[
+                    SizedBox(height: 24),
+                    ZyraErrorBanner(
+                      key: const ValueKey(
+                        'guardian-detail-history-unavailable',
+                      ),
+                      message: 'Guardian history could not be refreshed.',
+                      onRetry: widget.activityLoader == null
+                          ? null
+                          : _retryHistory,
+                    ),
+                    if (_historyBusy) ...[
+                      SizedBox(height: 8),
+                      Text('Refreshing…', style: ZyraText.subtext(size: 11.5)),
+                    ],
+                  ] else ...[
+                    if (_currentObligations.isNotEmpty) ...[
+                      SizedBox(height: 30),
+                      Text(
+                        'CURRENT OBLIGATION',
+                        style: ZyraText.chapterLabel(
+                          color: ZyraColors.ink(0.54),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      ..._currentObligations.map(
+                        (a) => _ActivityRow(
+                          activity: a,
+                          comparisonNow: widget.comparisonNow,
+                        ),
                       ),
                     ],
-                  ),
-                  ),
-                ),
+                    SizedBox(height: 30),
+                    Text(
+                      'RELATIONSHIP HISTORY',
+                      style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Recorded link, suggestion and completed Family Review '
+                      'events for ${person.firstName}.',
+                      style: ZyraText.subtext(
+                        size: 11.5,
+                        color: ZyraColors.ink(0.38),
+                      ),
+                    ),
+                    SizedBox(height: 14),
+                    if (_history.isEmpty)
+                      // An honest nothing. Founder: "If there is no activity,
+                      // don't invent it." A Guardian who has only just linked has
+                      // genuinely done nothing yet, and saying so is better than
+                      // padding the page with a fabricated milestone.
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          color: ZyraColors.foreground.withValues(alpha: 0.04),
+                          borderRadius: BorderRadius.circular(
+                            ZyraCardMetrics.cardRadius,
+                          ),
+                          border: Border.all(
+                            color: ZyraColors.foreground.withValues(
+                              alpha: 0.10,
+                            ),
+                            width: 0.5,
+                          ),
+                        ),
+                        child: Text(
+                          'No recorded relationship history yet.',
+                          style: ZyraText.subtext(
+                            size: 12.5,
+                            color: ZyraColors.ink(0.38),
+                          ),
+                        ),
+                      )
+                    else
+                      ..._history.map(
+                        (a) => _ActivityRow(
+                          activity: a,
+                          comparisonNow: widget.comparisonNow,
+                        ),
+                      ),
+                  ],
 
-              // The reporting explainer that sat here is gone (Founder,
-              // 2026-08-07: "if reporting behaviour needs explaining, it
-              // belongs inside the reporting flow, not permanently on the
-              // Guardian profile"). Correct — it is read once and then
-              // becomes furniture on a page visited often.
-            ],
+                  // ── Manage ──────────────────────────────────────────────
+                  //
+                  // Last on the page, and deliberately. These are the only two
+                  // things that change a real relationship, and neither should
+                  // sit where a thumb lands while reading.
+                  SizedBox(height: 34),
+                  Text(
+                    'MANAGE',
+                    style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+                  ),
+                  SizedBox(height: 12),
+
+                  // PROMOTE — offered to any Additional Guardian.
+                  //
+                  // The `otherGuardianCount > 0` condition was removed
+                  // 2026-08-07. It was wrong: a Seeker with ONE Guardian who is
+                  // not Main has nobody acting on their Journey, and that is
+                  // exactly when promoting matters most. The old test hid the
+                  // button in the case that needed it.
+                  if (!person.isMain) ...[
+                    _ActionRow(
+                      icon: Icons.shield_outlined,
+                      label: 'Make Main Guardian',
+                      hint: 'They become the one asked to act on your Journey.',
+                      onTap: _busy ? null : _makeMain,
+                    ),
+                    SizedBox(height: 10),
+                  ],
+
+                  // "MAKE ADDITIONAL GUARDIAN" REMOVED 2026-08-10 — DR-ZYRA-136,
+                  // contradiction-audit finding 2.9.
+                  //
+                  // Added 2026-08-07 at the Founder's request ("with main
+                  // guardian we need a button to make additional guardian"), and
+                  // the comment here read: "no Main is a legitimate state, just
+                  // an unfinished one." The Founder has now ruled the opposite —
+                  // that state is not acceptable and the action must stop being
+                  // offered.
+                  //
+                  // What it produced: Family Review reads is_main, so with nobody
+                  // Main a review has no voter and cannot be resolved at all, and
+                  // the Guardian's message access closes in the same moment.
+                  // Oversight ending with nothing said.
+                  //
+                  // NOT REPLACED BY A DISABLED ROW. The capability people wanted —
+                  // changing WHICH Guardian is Main — already exists on the other
+                  // Guardian's page: "Make Main Guardian" demotes the incumbent
+                  // and promotes the replacement in one transaction. So this is a
+                  // removal, not a loss; the same outcome is one tap away in a
+                  // place where it cannot leave a gap.
+                  //
+                  // zyra_clear_main_guardian and ZyraWaliLinkService
+                  // .clearMainGuardian both refuse now, so nothing can
+                  // reintroduce this by accident without failing loudly.
+
+                  // Two states, same card. Tapping Remove turns the row into the
+                  // question rather than opening one somewhere else.
+                  if (!_confirmingRemove)
+                    _ActionRow(
+                      icon: Icons.person_remove_outlined,
+                      label: 'Remove Guardian',
+                      hint: person.isMain && widget.otherGuardianCount > 0
+                          ? 'Choose a new Main Guardian first.'
+                          : 'They will no longer be linked to you.',
+                      destructive: true,
+                      onTap: _busy ? null : _askRemove,
+                    )
+                  else
+                    // EXPANDS TO FIT (Founder, 2026-08-07: "make it so the box
+                    // expands if needed").
+                    //
+                    // No fixed height anywhere: the Column sizes to its children,
+                    // the body text wraps to as many lines as the name and the
+                    // context need, and the buttons below grow with their labels
+                    // rather than truncating. A confirmation that clips the
+                    // sentence explaining what you are confirming is worse than
+                    // no confirmation.
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOutCubic,
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: ZyraColors.destructive.withValues(alpha: 0.10),
+                          borderRadius: BorderRadius.circular(
+                            ZyraCardMetrics.cardRadius,
+                          ),
+                          border: Border.all(
+                            color: ZyraColors.destructive.withValues(
+                              alpha: 0.34,
+                            ),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Remove ${person.firstName}?',
+                              style: ZyraText.body(
+                                size: 15,
+                                color: ZyraColors.destructive,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              widget.otherGuardianCount == 0
+                                  ? "You'll have no Guardian until you add another. "
+                                        'You can invite them again at any time.'
+                                  : "They'll no longer follow your Journey. You can "
+                                        'invite them again at any time.',
+                              style: ZyraText.subtext(
+                                size: 12,
+                                color: ZyraColors.ink(0.54),
+                              ),
+                            ),
+                            SizedBox(height: 14),
+                            Row(
+                              children: [
+                                // Cancel FIRST and to the left — the safe option
+                                // sits where a thumb rests, and the destructive one
+                                // takes a deliberate reach.
+                                Expanded(
+                                  child: _SmallAction(
+                                    label: 'Cancel',
+                                    onTap: _busy
+                                        ? null
+                                        : () => setState(
+                                            () => _confirmingRemove = false,
+                                          ),
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: _SmallAction(
+                                    label: _busy ? 'Removing…' : 'Confirm',
+                                    destructive: true,
+                                    onTap: _busy ? null : _remove,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  // The reporting explainer that sat here is gone (Founder,
+                  // 2026-08-07: "if reporting behaviour needs explaining, it
+                  // belongs inside the reporting flow, not permanently on the
+                  // Guardian profile"). Correct — it is read once and then
+                  // becomes furniture on a page visited often.
+                ],
+              ),
             ),
           ),
-          ),
         ),
+      ),
+    );
+  }
+}
+
+class _GuardianHistoryConsentCard extends StatefulWidget {
+  final GuardianHistoryConsentState? state;
+  final bool loading;
+  final bool available;
+  final bool busy;
+  final VoidCallback? onRetry;
+  final ValueChanged<bool> onChanged;
+
+  const _GuardianHistoryConsentCard({
+    required this.state,
+    required this.loading,
+    required this.available,
+    required this.busy,
+    required this.onRetry,
+    required this.onChanged,
+  });
+
+  @override
+  State<_GuardianHistoryConsentCard> createState() =>
+      _GuardianHistoryConsentCardState();
+}
+
+class _GuardianHistoryConsentCardState
+    extends State<_GuardianHistoryConsentCard> {
+  bool _detailsExpanded = false;
+
+  void _toggleDetails() => setState(() => _detailsExpanded = !_detailsExpanded);
+
+  @override
+  Widget build(BuildContext context) {
+    final confirmed = widget.state;
+    return Container(
+      key: const ValueKey('guardian-history-consent'),
+      padding: const EdgeInsets.all(17),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Semantics(
+                  button: true,
+                  expanded: _detailsExpanded,
+                  label: 'About sharing past Journey summaries',
+                  excludeSemantics: true,
+                  onTap: _toggleDetails,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      key: const ValueKey(
+                        'guardian-history-consent-details-toggle',
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: _toggleDetails,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minHeight: 48),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Share past Journey summaries',
+                                  style: ZyraText.body(size: 14),
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              AnimatedRotation(
+                                turns: _detailsExpanded ? 0.5 : 0,
+                                duration: const Duration(milliseconds: 180),
+                                curve: Curves.easeOutCubic,
+                                child: Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  key: const ValueKey(
+                                    'guardian-history-consent-details-arrow',
+                                  ),
+                                  size: 20,
+                                  color: ZyraColors.ink(0.56),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              if (widget.loading && confirmed == null)
+                const SizedBox.square(
+                  dimension: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else if (confirmed != null)
+                Semantics(
+                  label: 'Share past Journey summaries',
+                  child: Switch.adaptive(
+                    key: const ValueKey('guardian-history-consent-toggle'),
+                    value: confirmed.enabled,
+                    onChanged:
+                        widget.available && !widget.loading && !widget.busy
+                        ? widget.onChanged
+                        : null,
+                  ),
+                ),
+            ],
+          ),
+          AnimatedSize(
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOutCubic,
+            alignment: Alignment.topCenter,
+            child: _detailsExpanded
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 7),
+                    child: Text(
+                      'When off, this Guardian sees your active Journey and '
+                      'ended Journeys from this link period. When on, they can '
+                      'also see older Journey summaries. Names, messages, '
+                      'answers, notes, reasons and safety information are '
+                      'never included.',
+                      key: const ValueKey(
+                        'guardian-history-consent-explanation',
+                      ),
+                      style: ZyraText.subtext(
+                        size: 11.5,
+                        color: ZyraColors.ink(0.48),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          if (widget.busy) ...[
+            const SizedBox(height: 10),
+            Text('Confirming with ZYRA…', style: ZyraText.subtext(size: 11.5)),
+          ],
+          if (!widget.available) ...[
+            const SizedBox(height: 12),
+            ZyraErrorBanner(
+              message: confirmed == null
+                  ? 'Past-summary permission could not be refreshed.'
+                  : 'The last change was not confirmed. Showing the last '
+                        'server-confirmed state.',
+              onRetry: widget.onRetry,
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -515,8 +1039,10 @@ class _SeamlessScroll extends ScrollBehavior {
 
   @override
   Widget buildOverscrollIndicator(
-          BuildContext context, Widget child, ScrollableDetails details) =>
-      child;
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) => child;
 }
 
 /// A compact button for the inline confirm pair.
@@ -524,7 +1050,11 @@ class _SmallAction extends StatelessWidget {
   final String label;
   final bool destructive;
   final VoidCallback? onTap;
-  const _SmallAction({required this.label, required this.onTap, this.destructive = false});
+  const _SmallAction({
+    required this.label,
+    required this.onTap,
+    this.destructive = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -532,7 +1062,7 @@ class _SmallAction extends StatelessWidget {
     return Material(
       color: destructive
           ? ZyraColors.destructive.withValues(alpha: 0.16)
-          : Colors.white.withValues(alpha: 0.07),
+          : ZyraColors.foreground.withValues(alpha: 0.07),
       borderRadius: BorderRadius.circular(50),
       child: InkWell(
         borderRadius: BorderRadius.circular(50),
@@ -554,8 +1084,9 @@ class _SmallAction extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 2,
             style: ZyraText.body(
-                size: 14,
-                color: tint.withValues(alpha: onTap == null ? 0.4 : 1)),
+              size: 14,
+              color: tint.withValues(alpha: onTap == null ? 0.4 : 1),
+            ),
           ),
         ),
       ),
@@ -582,7 +1113,7 @@ class _ActionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final tint = destructive ? Colors.redAccent.shade100 : Colors.white;
     return Material(
-      color: Colors.white.withValues(alpha: 0.05),
+      color: ZyraColors.foreground.withValues(alpha: 0.05),
       borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
       child: InkWell(
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
@@ -592,21 +1123,27 @@ class _ActionRow extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.11),
+              color: ZyraColors.foreground.withValues(alpha: 0.11),
               width: 0.5,
             ),
           ),
           child: Row(
             children: [
               Icon(icon, size: 19, color: tint.withValues(alpha: 0.85)),
-              const SizedBox(width: 14),
+              SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(label, style: ZyraText.body(size: 15, color: tint)),
-                    const SizedBox(height: 2),
-                    Text(hint, style: ZyraText.subtext(size: 11.5, color: Colors.white38)),
+                    SizedBox(height: 2),
+                    Text(
+                      hint,
+                      style: ZyraText.subtext(
+                        size: 11.5,
+                        color: ZyraColors.ink(0.38),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -620,12 +1157,13 @@ class _ActionRow extends StatelessWidget {
 
 class _ActivityRow extends StatelessWidget {
   final GuardianActivity activity;
-  const _ActivityRow({required this.activity});
+  final DateTime? comparisonNow;
+  const _ActivityRow({required this.activity, this.comparisonNow});
 
   @override
   Widget build(BuildContext context) {
     final line = activity.line;
-    if (line == null) return const SizedBox.shrink();
+    if (line == null) return SizedBox.shrink();
     final outstanding = activity.isOutstanding;
 
     return Padding(
@@ -641,19 +1179,21 @@ class _ActivityRow extends StatelessWidget {
               width: 22,
               child: Column(
                 children: [
-                  const SizedBox(height: 5),
+                  SizedBox(height: 5),
                   Container(
                     width: 7,
                     height: 7,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: outstanding ? 0.95 : 0.35),
+                      color: ZyraColors.foreground.withValues(
+                        alpha: outstanding ? 0.95 : 0.35,
+                      ),
                     ),
                   ),
                   Expanded(
                     child: Container(
                       width: 0.5,
-                      color: Colors.white.withValues(alpha: 0.12),
+                      color: ZyraColors.foreground.withValues(alpha: 0.12),
                     ),
                   ),
                 ],
@@ -669,13 +1209,18 @@ class _ActivityRow extends StatelessWidget {
                       line,
                       style: ZyraText.body(
                         size: 14,
-                        color: Colors.white.withValues(alpha: outstanding ? 1 : 0.8),
+                        color: ZyraColors.foreground.withValues(
+                          alpha: outstanding ? 1 : 0.8,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
-                      activity.whenLabel,
-                      style: ZyraText.subtext(size: 11, color: Colors.white38),
+                      activity.whenLabelAt(comparisonNow ?? DateTime.now()),
+                      style: ZyraText.subtext(
+                        size: 11,
+                        color: ZyraColors.ink(0.38),
+                      ),
                     ),
                   ],
                 ),
@@ -700,12 +1245,17 @@ class _Row extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 9),
       child: Row(
         children: [
-          Expanded(child: Text(label, style: ZyraText.subtext(size: 13, color: Colors.white54))),
+          Expanded(
+            child: Text(
+              label,
+              style: ZyraText.subtext(size: 13, color: ZyraColors.ink(0.54)),
+            ),
+          ),
           Text(
             value,
             style: ZyraText.body(
               size: 14,
-              color: Colors.white.withValues(alpha: dim ? 0.35 : 0.95),
+              color: ZyraColors.foreground.withValues(alpha: dim ? 0.35 : 0.95),
             ),
           ),
         ],
@@ -729,11 +1279,14 @@ class _Monogram extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.white.withValues(alpha: 0.30),
-            Colors.white.withValues(alpha: 0.10),
+            ZyraColors.foreground.withValues(alpha: 0.30),
+            ZyraColors.foreground.withValues(alpha: 0.10),
           ],
         ),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.30), width: 0.5),
+        border: Border.all(
+          color: ZyraColors.foreground.withValues(alpha: 0.30),
+          width: 0.5,
+        ),
       ),
       child: Center(
         child: Text(

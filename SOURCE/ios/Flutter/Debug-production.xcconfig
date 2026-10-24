@@ -1,0 +1,12 @@
+#include "Debug.xcconfig"
+
+APP_BUNDLE_NAME = ZYRA
+APP_DISPLAY_NAME = ZYRA
+CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements
+CURRENT_PROJECT_VERSION = $(FLUTTER_BUILD_NUMBER)
+DEVELOPMENT_TEAM = 9Y7Z8F36SJ
+GOOGLE_IOS_CLIENT_ID = 734578322486-eoh5ba4usl0svs9ihqh2ltagqfgusnft.apps.googleusercontent.com
+GOOGLE_IOS_URL_SCHEME = com.googleusercontent.apps.734578322486-eoh5ba4usl0svs9ihqh2ltagqfgusnft
+GOOGLE_SERVER_CLIENT_ID = 734578322486-gvi63m04ogd7bbmsunokuq2klkepetq1.apps.googleusercontent.com
+PRODUCT_BUNDLE_IDENTIFIER = app.zyraconnect.zyra
+ZYRA_APP_FLAVOR = production

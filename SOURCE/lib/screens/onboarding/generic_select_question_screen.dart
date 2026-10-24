@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../models/onboarding_question.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_onboarding_choice_card.dart';
 
 class GenericSelectQuestionScreen extends StatefulWidget {
   final String prompt;
@@ -15,6 +16,10 @@ class GenericSelectQuestionScreen extends StatefulWidget {
   final dynamic initialValue; // String for single, List<String> for multi
   final ValueChanged<dynamic> onChanged;
 
+  /// Explicit onboarding-only presentation. Profile editors retain their
+  /// existing renderer rather than inheriting a signup design change.
+  final bool guidedChoices;
+
   const GenericSelectQuestionScreen({
     super.key,
     required this.prompt,
@@ -22,27 +27,34 @@ class GenericSelectQuestionScreen extends StatefulWidget {
     required this.selectionType,
     required this.onChanged,
     this.initialValue,
+    this.guidedChoices = false,
   });
 
   @override
-  State<GenericSelectQuestionScreen> createState() => _GenericSelectQuestionScreenState();
+  State<GenericSelectQuestionScreen> createState() =>
+      _GenericSelectQuestionScreenState();
 }
 
-class _GenericSelectQuestionScreenState extends State<GenericSelectQuestionScreen> {
-  late String? _single = widget.initialValue is String ? widget.initialValue as String : null;
-  late final List<String> _multi =
-      widget.initialValue is List<String> ? List<String>.from(widget.initialValue as List<String>) : <String>[];
+class _GenericSelectQuestionScreenState
+    extends State<GenericSelectQuestionScreen> {
+  late String? _single = widget.initialValue is String
+      ? widget.initialValue as String
+      : null;
+  late final List<String> _multi = widget.initialValue is List<String>
+      ? List<String>.from(widget.initialValue as List<String>)
+      : <String>[];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final choices = Column(
       children: widget.options.map((option) {
-        final selected =
-            widget.selectionType == QuestionSelectionType.single ? _single == option : _multi.contains(option);
+        final selected = widget.selectionType == QuestionSelectionType.single
+            ? _single == option
+            : _multi.contains(option);
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: _OptionButton(
-            label: option,
+          padding: EdgeInsets.only(bottom: widget.guidedChoices ? 14 : 10),
+          child: _choice(
+            option: option,
             selected: selected,
             onTap: () {
               setState(() {
@@ -63,7 +75,27 @@ class _GenericSelectQuestionScreenState extends State<GenericSelectQuestionScree
         );
       }).toList(),
     );
+    return widget.guidedChoices
+        ? ZyraOnboardingChoiceEntrance(
+            key: ValueKey('compatibility_choice_entrance_${widget.prompt}'),
+            child: choices,
+          )
+        : choices;
   }
+
+  Widget _choice({
+    required String option,
+    required bool selected,
+    required VoidCallback onTap,
+  }) => widget.guidedChoices
+      ? ZyraOnboardingChoiceCard(
+          key: ValueKey('compatibility_choice_$option'),
+          label: option,
+          selected: selected,
+          multiple: widget.selectionType == QuestionSelectionType.multi,
+          onTap: onTap,
+        )
+      : _OptionButton(label: option, selected: selected, onTap: onTap);
 }
 
 class _OptionButton extends StatelessWidget {
@@ -71,7 +103,11 @@ class _OptionButton extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  const _OptionButton({required this.label, required this.selected, required this.onTap});
+  const _OptionButton({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +116,12 @@ class _OptionButton extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: selected ? ZyraColors.accentBg : ZyraColors.iconButtonBg,
-          border: Border.all(color: selected ? ZyraColors.accentBorder : ZyraColors.iconButtonBorder, width: 1),
+          border: Border.all(
+            color: selected
+                ? ZyraColors.accentBorder
+                : ZyraColors.iconButtonBorder,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(14),
         ),
         child: Material(
@@ -93,7 +134,12 @@ class _OptionButton extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(child: Text(label, style: ZyraText.option())),
-                  if (selected) const Icon(Icons.check_circle, color: Colors.white70, size: 18),
+                  if (selected)
+                    Icon(
+                      Icons.check_circle,
+                      color: ZyraColors.ink(0.70),
+                      size: 18,
+                    ),
                 ],
               ),
             ),

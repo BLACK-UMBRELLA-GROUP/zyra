@@ -1,29 +1,77 @@
 // Template for lib/config/oauth_config.dart — copy this file to
-// oauth_config.dart (without .example) and fill in real values.
+// oauth_config.dart (without .example) and fill in the PRODUCTION values.
 //
 // oauth_config.dart is gitignored — never commit real client IDs
 // (they're not secret the way an API key is, but keeping the pattern
 // consistent with supabase_config.dart avoids two different rules).
 //
 // Where these values come from:
-//   googleWebClientId  — Google Cloud Console > APIs & Services >
+//   _productionGoogleWebClientId  — Google Cloud Console > APIs & Services >
 //     Credentials > OAuth 2.0 Client IDs > the "Web application" client.
 //     This is the one Supabase's Google provider settings also need.
-//   googleIosClientId  — the "iOS" OAuth client from the same page.
-//     Required by google_sign_in on iOS/macOS specifically.
+//   _productionGoogleIosClientId  — the "iOS" OAuth client from the same page.
+//     Required by google_sign_in on iOS/macOS specifically. Its Google Cloud
+//     registration must use the live iOS bundle ID (currently
+//     app.zyraconnect.zyra), and Info.plist must carry this client ID plus its
+//     exact reversed-client-ID URL scheme.
 //
-// Apple needs no client ID here — sign_in_with_apple talks to Apple
-// directly using your app's bundle ID + the Sign In with Apple
-// capability (see macOS/iOS entitlements), and Supabase's Apple
-// provider is configured separately in the Supabase Dashboard with a
-// Services ID + private key, not anything from this Flutter app.
+// Android does not read an Android client ID from this Dart file. Google Cloud
+// still needs an Android OAuth client registered for the live application ID
+// (currently app.zyraconnect.zyra) and every signing SHA-1 used to run it.
+// Supabase's Google provider allow-list should keep the web client first, then
+// include every accepted iOS and Android client ID.
+//
+// Apple needs no client ID here — sign_in_with_apple talks to Apple directly
+// using the app's bundle ID + the Sign In with Apple capability. For native
+// sign-in, Supabase's Apple provider must allow that bundle ID. A Services ID
+// and private key are needed only when Apple OAuth/web flow is also used.
+
+import 'zyra_app_variant.dart';
 
 class OAuthConfig {
   OAuthConfig._();
 
-  static const String googleWebClientId = 'YOUR-WEB-CLIENT-ID.apps.googleusercontent.com';
-  static const String googleIosClientId = 'YOUR-IOS-CLIENT-ID.apps.googleusercontent.com';
+  static const String _productionGoogleWebClientId =
+      'YOUR-WEB-CLIENT-ID.apps.googleusercontent.com';
+  static const String _productionGoogleIosClientId =
+      'YOUR-IOS-CLIENT-ID.apps.googleusercontent.com';
 
-  static bool get isGoogleConfigured =>
-      !googleWebClientId.contains('YOUR-WEB-CLIENT-ID') && !googleIosClientId.contains('YOUR-IOS-CLIENT-ID');
+  static String get googleWebClientId => _productionGoogleWebClientId;
+  static String get googleIosClientId => _productionGoogleIosClientId;
+
+  static bool get isGoogleConfigured => isGoogleConfigurationAllowed(
+    variant: ZyraAppVariantPolicy.current,
+    webClientId: googleWebClientId,
+    iosClientId: googleIosClientId,
+  );
+
+  static bool isGoogleConfigurationAllowed({
+    required ZyraAppVariant variant,
+    required String webClientId,
+    required String iosClientId,
+  }) {
+    if (variant != ZyraAppVariant.production) return false;
+    final web = webClientId.trim();
+    final ios = iosClientId.trim();
+    final webProject = _googleProjectNumber(web);
+    final iosProject = _googleProjectNumber(ios);
+    if (webProject == null || iosProject == null || webProject != iosProject) {
+      return false;
+    }
+    return true;
+  }
+
+  static String? _googleProjectNumber(String value) {
+    final match = RegExp(
+      r'^([0-9]+)-[A-Za-z0-9_-]+\.apps\.googleusercontent\.com$',
+    ).firstMatch(value);
+    if (match == null) return null;
+    final lower = value.toLowerCase();
+    if (lower.contains('your-') ||
+        lower.contains('not_configured') ||
+        lower.contains('placeholder')) {
+      return null;
+    }
+    return match.group(1);
+  }
 }

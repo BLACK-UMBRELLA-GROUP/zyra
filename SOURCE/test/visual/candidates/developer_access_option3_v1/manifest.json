@@ -1,0 +1,63 @@
+{
+  "status": "REVIEW_CANDIDATE_NOT_FOUNDER_ACCEPTED",
+  "approved": false,
+  "approved_baselines_changed": false,
+  "capture_command": "flutter test --no-pub --update-goldens --dart-define=ZYRA_DEV_ACCESS_CAPTURE_CANDIDATES=true test/visual/zyra_developer_access_visual_test.dart",
+  "captured_at_utc": "2026-09-14T11:26:25.949742Z",
+  "palette": "midnightPlum",
+  "surface": "glassSignals",
+  "reading_font": "PoppinsAudit (bundled Poppins)",
+  "device_pixel_ratio": 1,
+  "fixture_data_only": true,
+  "active_preview_latch": true,
+  "includes_global_developer_controls": true,
+  "source_sha256": {
+    "lib/screens/dev/developer_access_screen.dart": "50b00ce59a6c66efc9bfbe93b8e066da01f8b04bc2cc4b3330d9a63b3f1a27e5",
+    "lib/dev/zyra_dev_local_preview.dart": "e2678be3c280c19e23647cf86dd083dcb99ddf0f607b50377be85a1c662d1c58",
+    "lib/dev/zyra_dev_surface_coordinator.dart": "15ad378af382a843c060ce40cbef2157a7723ae1e75a9ecae502dbaaf44d7a5d",
+    "lib/dev/zyra_global_dev_overlay.dart": "6ef090e6f2dac4b1cc3b529f899845947a4a34fb4daf17cfe83566126fb54f1a",
+    "test/visual/zyra_developer_access_visual_test.dart": "f94ac8ea214bd50d9d43272ced5c263ee4fa9df5e009c0132e197465f1f179b8"
+  },
+  "captures": [
+    {
+      "id": "small",
+      "approved": false,
+      "path": "small.png",
+      "width": 320,
+      "height": 568,
+      "text_scale": 1.0,
+      "sha256": "017533f19c0961e6881846e3a581c1bce923e7910db278a5ebb336017022dd79",
+      "bytes": 28053
+    },
+    {
+      "id": "standard",
+      "approved": false,
+      "path": "standard.png",
+      "width": 390,
+      "height": 844,
+      "text_scale": 1.0,
+      "sha256": "e7b102735496307922901ed5b3318a2e9b9c46258f1b65611a92275abe83086f",
+      "bytes": 32427
+    },
+    {
+      "id": "large",
+      "approved": false,
+      "path": "large.png",
+      "width": 430,
+      "height": 932,
+      "text_scale": 1.0,
+      "sha256": "ceb23b55443ec123d3150b6a06fdd1ad32f875c9af6340a781eee05bd5ea9c0c",
+      "bytes": 34377
+    },
+    {
+      "id": "standard__text-130",
+      "approved": false,
+      "path": "standard__text-130.png",
+      "width": 390,
+      "height": 844,
+      "text_scale": 1.3,
+      "sha256": "7b125d28b8d58c15099e532650e0b38795a276178293afdc8c656a3793a5abb8",
+      "bytes": 36198
+    }
+  ]
+}

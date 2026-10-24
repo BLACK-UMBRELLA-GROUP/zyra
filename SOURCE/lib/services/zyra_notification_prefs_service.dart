@@ -24,20 +24,36 @@
 import 'package:flutter/foundation.dart';
 import '../main.dart';
 import 'zyra_auth.dart';
+import 'zyra_internal_preview_client.dart';
 
 /// The five categories. Codes match the CHECK constraint on
 /// `notification_preferences.category` — store the code, never the label.
 enum ZyraNotifyCategory {
-  matchesJourneys('matches_journeys', 'Matches & Journeys',
-      'Mutual interest, and movement on an Active Journey'),
-  guardianActivity('guardian_activity', 'Guardian Activity',
-      'When a Guardian acts on something of yours'),
-  introductions('introductions', 'Introductions',
-      'When a Guardian puts someone forward'),
-  marketingEmails('marketing_emails', 'Marketing Emails',
-      'Offers and news from ZYRA. Off unless you turn it on'),
-  productUpdates('product_updates', 'Product Updates',
-      "What's new in the app. Off unless you turn it on");
+  matchesJourneys(
+    'matches_journeys',
+    'Matches & Journeys',
+    'Mutual interest, and movement on an Active Journey',
+  ),
+  guardianActivity(
+    'guardian_activity',
+    'Guardian Activity',
+    'When a Guardian acts on something of yours',
+  ),
+  introductions(
+    'introductions',
+    'Introductions',
+    'When a Guardian puts someone forward',
+  ),
+  marketingEmails(
+    'marketing_emails',
+    'Marketing Emails',
+    'Offers and news from ZYRA. Off unless you turn it on',
+  ),
+  productUpdates(
+    'product_updates',
+    'Product Updates',
+    "What's new in the app. Off unless you turn it on",
+  );
 
   const ZyraNotifyCategory(this.code, this.label, this.hint);
   final String code;
@@ -63,12 +79,42 @@ enum ZyraNotifyCategory {
 class ZyraNotificationPrefsService {
   ZyraNotificationPrefsService._();
 
+  /// Founder/external previews are deliberately blocked from every data API
+  /// request by [ZyraInternalPreviewClient]. Give that isolated experience a
+  /// complete, mutable local preference model rather than sending a request
+  /// we know will be denied and rendering an empty error page.
+  ///
+  /// This map is never consulted for a real member. Marketing still begins
+  /// off, and real consent remains append-only in Supabase.
+  static Map<ZyraNotifyCategory, bool>? _previewValues;
+  static int? _previewSession;
+
+  static Map<ZyraNotifyCategory, bool> _previewDefaults() => {
+    ZyraNotifyCategory.matchesJourneys: true,
+    ZyraNotifyCategory.guardianActivity: true,
+    ZyraNotifyCategory.introductions: true,
+    ZyraNotifyCategory.marketingEmails: false,
+    ZyraNotifyCategory.productUpdates: false,
+  };
+
+  static Map<ZyraNotifyCategory, bool> _localPreviewValues() {
+    final session = ZyraInternalPreviewClient.previewSession;
+    if (_previewSession != session) {
+      _previewSession = session;
+      _previewValues = _previewDefaults();
+    }
+    return _previewValues ??= _previewDefaults();
+  }
+
   /// Current state for all five categories, defaults applied server-side.
   ///
   /// On failure returns null rather than an empty map: rendering every
   /// switch as off would misstate what the user has agreed to, which is
   /// exactly the failure this table exists to prevent.
   static Future<Map<ZyraNotifyCategory, bool>?> fetch() async {
+    if (ZyraInternalPreviewClient.isActive) {
+      return Map.of(_localPreviewValues());
+    }
     if (ZyraAuth.currentUser == null) return null;
     try {
       final rows = await supabase.rpc('zyra_notification_preferences') as List;
@@ -92,12 +138,16 @@ class ZyraNotificationPrefsService {
   /// showing "on" for a consent we failed to record is the one outcome
   /// worse than the switch not working.
   static Future<bool> set(ZyraNotifyCategory category, bool enabled) async {
+    if (ZyraInternalPreviewClient.isActive) {
+      _localPreviewValues()[category] = enabled;
+      return true;
+    }
     if (ZyraAuth.currentUser == null) return false;
     try {
-      final ok = await supabase.rpc('zyra_set_notification_preference', params: {
-        'p_category': category.code,
-        'p_enabled': enabled,
-      });
+      final ok = await supabase.rpc(
+        'zyra_set_notification_preference',
+        params: {'p_category': category.code, 'p_enabled': enabled},
+      );
       return ok == true;
     } catch (e) {
       debugPrint('ZYRA: set ${category.code} = $enabled failed — $e');

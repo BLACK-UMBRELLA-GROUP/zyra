@@ -82,6 +82,32 @@ BRAND PRINCIPLES
 SPLASH SCREEN
 ------------------------------------------------------------
 
+Founder selection — 2026-09-27 (OA-ZYRA-257): **6 · Quiet Horizon** is now
+the main production cold-start splash. Its gold wordmark and quiet horizon
+use the current deep-purple brand gradient and the canonical
+"Connecting Through Trust" tagline. The 2.4-second motion and AuthGate/session
+handoff remain. Founder 2026-09-30 shortened only the completed-frame hold
+first from 2.0 to 1.25 seconds, then further to the current **0.65 seconds**.
+With the unchanged 2.4-second motion, the nominal current splash lifecycle
+is **3.05 seconds**. A slower session resolution may still hold the final
+frame longer. The Splash Screen handover owns measured implementation and
+device evidence; the earlier 1.25-second delivery remains dated history.
+
+All **twelve** developer comparison options remain under shared Home — the
+former Current is now labelled Original, alongside Hulu and ten Hulu-family
+designs; Quiet Horizon is marked Main. Disney+, Moonly, Luma, Headspace and Tinder
+options have been removed from the live picker on direct Founder instruction.
+The studies use ZYRA, "Connecting with trust", purple/gold and the
+existing Syne/Poppins type system. Two new studies combine gold Hulu branding
+with original letter arrival and centre-drawn rule; eight explore original
+light/layout treatments. This is
+one-off authority for comparison previews, not a canonical tagline change:
+the approved "Connecting Through Trust" text remains the production copy.
+Preview selection never promotes a launch choice
+or performs login/session refresh; Close returns to the previous page.
+Original code-native artwork only, no source-app logos or commercial assets.
+As-built source, references and verification: UI Consistency Gate handover.
+
 Display:
 ZYRA
 Connecting Through Trust

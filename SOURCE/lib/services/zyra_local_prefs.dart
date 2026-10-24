@@ -1,41 +1,8 @@
-// On-device cache of the few values the FIRST FRAME needs.
-//
-// Founder, 2026-08-01: "when the app loads there's a second where it shows
-// purple UI then the actual colour... I don't want to see that quick
-// colour change at all."
-//
-// THE PROBLEM, precisely: main.dart paints the neutral brand gradient
-// behind everything on frame one. The gender-matched gradient can only
-// replace it once the app knows the gender, and the gender lives in
-// Postgres. So the sequence was: paint purple, wait for a network round
-// trip, repaint pink.
-//
-// That gap is latency, not build mode. A release build does not shorten a
-// round trip — and a real user on mobile data will see it for LONGER than
-// the Founder does on home wifi. It was never going to fix itself at
-// launch.
-//
-// THE FIX: cache the gender the moment it is known, read it back before
-// runApp(), and paint the right gradient on frame one with no network at
-// all. Launch one after install still flashes, because there is genuinely
-// nothing cached yet. Every launch after that does not.
-//
-// WHY shared_preferences IS NOT A NEW DEPENDENCY: it was already in
-// pubspec.lock as a transitive dependency of supabase_flutter, which uses
-// it to persist the auth session. Promoting it to a direct dependency
-// downloads nothing and adds no native code — it stops us depending on
-// another package's transitive tree by accident, which would break
-// silently on a Supabase version bump.
-//
-// SCOPE RULE FOR THIS FILE: only values needed to paint correctly BEFORE
-// the network answers. It is not a general local database and it is not a
-// cache of the profile. Anything that can wait for a round trip should
-// wait for one — a second source of truth for profile data is how the two
-// drift apart.
-//
-// NOT A SECURE STORE. SharedPreferences is plain text on disk. Never put a
-// token, a date of birth or anything else sensitive here. Gender is
-// already public on every profile card.
+// First-frame presentation preferences, owned by one authenticated account.
+// SharedPreferences is not a secure store: no tokens, DOB or signup drafts.
+// A legacy cache without an owner cannot be attributed to the next sign-in.
+
+import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,180 +10,278 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ZyraLocalPrefs {
   ZyraLocalPrefs._();
 
+  static const _kOwner = 'zyra.cached_account_owner';
   static const _kGender = 'zyra.cached_gender';
-  static const _kAppLock = 'zyra.app_lock_enabled';
-
-  /// The last role this device resolved — 'seeker' or 'wali'.
-  ///
-  /// ADDED 2026-08-14 (DR-ZYRA-166). Cached for exactly one purpose:
-  /// zyra_session_router's failure path. When the profile lookup fails it
-  /// used to send EVERY account to the Seeker shell, so a Guardian on a
-  /// bad connection was handed someone else's app. A remembered role is
-  /// a better guess than a hardcoded one.
-  static const _kRole = 'zyra.cached_role';
-
-  /// ADDED 2026-08-15 (DR-ZYRA-169 Phase 2). Same contract as gender:
-  /// the Profile tab paints the real first name on frame one instead of
-  /// "Your Profile" while hydration is still in flight. A first name is
-  /// already on every card the person shows other Seekers; caching your
-  /// own, on your own device, is within this file's sensitivity rule.
   static const _kFirstName = 'zyra.cached_first_name';
-
-  /// ADDED 2026-08-15 (DR-ZYRA-169). The image cache's generation
-  /// number — plumbing, not profile data, and the ONE key clear() leaves
-  /// alone: it describes the app's cache format on this device, not the
-  /// person who signed out. See zyra_image_cache.dart, which wipes the
-  /// cache once when this doesn't match its compiled-in version.
+  static const _kRole = 'zyra.cached_role';
+  static const _kAppLock = 'zyra.app_lock_enabled';
+  static const _kPromotionPolicy = 'zyra.promotion_policy_v1';
+  static const _kAppSurfaceStyle = 'zyra.app_surface_style';
+  static const _kAppPalette = 'zyra.app_palette';
+  static const _kAppPaletteRevision = 'zyra.app_palette_revision';
+  static const _kAppFont = 'zyra.app_font';
+  static const _kHapticLevel = 'zyra.haptic_level';
+  static const _kAppGold = 'zyra.app_gold_enabled';
+  static const _kAvatarAlignmentX = 'zyra.avatar_alignment_x';
+  static const _kAvatarAlignmentY = 'zyra.avatar_alignment_y';
+  static const _kFounderPreviewRole = 'zyra.founder_preview_role';
+  // Device format metadata survives all account changes.
   static const _kCacheSchema = 'zyra.cache_schema_version';
+  static const _accountKeys = [
+    _kGender,
+    _kFirstName,
+    _kRole,
+    _kAppLock,
+    _kPromotionPolicy,
+    _kAppSurfaceStyle,
+    _kAppPalette,
+    _kAppPaletteRevision,
+    _kAppFont,
+    _kHapticLevel,
+    _kAppGold,
+    _kAvatarAlignmentX,
+    _kAvatarAlignmentY,
+    _kFounderPreviewRole,
+  ];
 
   static SharedPreferences? _prefs;
+  static String? _accountOwner;
+  static String? _persistenceOwner;
+  static bool _hasBoundAccount = false;
+  static int _bindingGeneration = 0;
+  static final Map<String, Object> _values = {};
+  static Future<void> _writes = Future<void>.value();
 
-  /// Read once in main(), before runApp(). Local disk, no network —
-  /// single-digit milliseconds, unlike the round trip it replaces.
-  ///
-  /// Never throws: a failure here must degrade to the old flash, not stop
-  /// the app booting. That is the same rule main.dart's Supabase guard
-  /// follows, and for the same reason.
+  static String? get accountOwner => _accountOwner;
+  static bool get hasBoundAccount => _hasBoundAccount;
+  static int get bindingGeneration => _bindingGeneration;
+
+  /// A matching persisted owner is the only permitted cold-start restore.
+  static bool canRestoreAccount(String userId) =>
+      !_hasBoundAccount && _prefs?.getString(_kOwner) == userId;
+
+  /// Initializes storage without exposing any previous account's values.
+  /// Bind the restored Auth principal before restoring presentation state.
   static Future<void> init() async {
+    await _writes;
+    _bindingGeneration++;
+    _hasBoundAccount = false;
+    _accountOwner = null;
+    _persistenceOwner = null;
+    _values.clear();
     try {
       _prefs = await SharedPreferences.getInstance();
-    } catch (e) {
-      // Logged rather than swallowed — silent catches are why launch
-      // problems stayed invisible in this codebase for a month.
-      debugPrint('ZYRA: SharedPreferences unavailable — first paint will '
-          'fall back to the neutral gradient.\n$e');
-    }
-  }
-
-  /// 'male' | 'female' | null. Null means genuine first launch, a signed
-  /// out user, or storage being unavailable — all three correctly fall
-  /// back to the neutral gradient.
-  static String? get cachedGender {
-    final v = _prefs?.getString(_kGender);
-    return (v == 'male' || v == 'female') ? v : null;
-  }
-
-  /// Written whenever the profile is hydrated. Fire-and-forget: the value
-  /// is for the NEXT launch, so nothing this session depends on it
-  /// landing.
-  static void setCachedGender(String? gender) {
-    if (_prefs == null) return;
-    try {
-      if (gender == 'male' || gender == 'female') {
-        _prefs!.setString(_kGender, gender!);
-      } else {
-        _prefs!.remove(_kGender);
-      }
     } catch (_) {
-      // See init() — a cache miss costs a flash, nothing more.
+      _prefs = null;
+      debugPrint('ZYRA: presentation preferences unavailable.');
     }
   }
 
-  /// First name for frame one, or null (first launch / signed out /
-  /// storage unavailable) — all of which correctly fall back to the
-  /// generic heading until hydration lands.
-  static String? get cachedFirstName {
-    final v = _prefs?.getString(_kFirstName);
-    return (v == null || v.trim().isEmpty) ? null : v;
-  }
-
-  static void setCachedFirstName(String? name) {
-    if (_prefs == null) return;
-    try {
-      final v = name?.trim();
-      if (v != null && v.isNotEmpty) {
-        _prefs!.setString(_kFirstName, v);
-      } else {
-        _prefs!.remove(_kFirstName);
+  /// Changes the visible owner synchronously. Disk removals and writes share
+  /// one queue; stale operations never erase or stamp a newer owner's cache.
+  /// Only a matching persisted owner on first binding may restore values.
+  static Future<void> bindAccount(String? userId) {
+    if (_hasBoundAccount && _accountOwner == userId) return _writes;
+    final prefs = _prefs;
+    final preserve =
+        !_hasBoundAccount &&
+        userId != null &&
+        prefs?.getString(_kOwner) == userId;
+    final version = ++_bindingGeneration;
+    _accountOwner = userId;
+    _persistenceOwner = preserve ? userId : null;
+    _hasBoundAccount = true;
+    _values.clear();
+    if (preserve && prefs != null) {
+      for (final key in _accountKeys) {
+        final value = prefs.get(key);
+        if (value is String || value is bool) _values[key] = value!;
       }
-    } catch (_) {
-      // Same cost as a gender miss: one generic heading, once.
     }
+    return _enqueue(() async {
+      if (prefs == null || version != _bindingGeneration) return;
+      if (!preserve) {
+        // Remove attribution first. A failed cleanup must never leave a
+        // previous owner's stamp on values written by the next principal.
+        if (!await prefs.remove(_kOwner)) {
+          throw StateError('Preference owner removal failed.');
+        }
+        for (final key in _accountKeys) {
+          if (version != _bindingGeneration) return;
+          if (!await prefs.remove(key)) {
+            throw StateError('Preference cleanup failed.');
+          }
+        }
+      }
+      if (version != _bindingGeneration) return;
+      if (userId == null) {
+        await prefs.remove(_kOwner);
+      } else {
+        if (!await prefs.setString(_kOwner, userId)) {
+          throw StateError('Preference owner binding failed.');
+        }
+        if (version == _bindingGeneration) _persistenceOwner = userId;
+      }
+    });
   }
 
-  /// See [_kCacheSchema]. 0 = never stamped, which always mismatches and
-  /// triggers the one-time wipe — correct for a device upgrading from a
-  /// build that had no image cache at all.
-  static int get cacheSchemaVersion => _prefs?.getInt(_kCacheSchema) ?? 0;
-
-  static Future<void> setCacheSchemaVersion(int version) async {
-    if (_prefs == null) return;
-    try {
-      await _prefs!.setInt(_kCacheSchema, version);
-    } catch (e) {
-      debugPrint('ZYRA: could not stamp the cache schema version.\n$e');
-    }
+  static Future<void> _enqueue(Future<void> Function() operation) {
+    final result = _writes.then((_) => operation()).catchError((Object _) {
+      debugPrint('ZYRA: presentation preference update could not be saved.');
+    });
+    _writes = result;
+    return result;
   }
 
-  // ── App lock ─────────────────────────────────────────────────────────
-  //
-  // ADDED 2026-08-07 (Founder: treat App Lock as a flagship privacy
-  // feature, not another setting).
-  //
-  // WHY THIS BELONGS IN A FILE WITH A DELIBERATELY NARROW SCOPE. The rule
-  // above is "only values needed to paint correctly BEFORE the network
-  // answers". This is the purest example of one: the lock screen has to be
-  // the first thing drawn, and asking Postgres whether to draw it would
-  // mean showing the app for a round trip first — which is the entire
-  // thing the lock exists to prevent.
-  //
-  // AND WHY PLAIN TEXT IS FINE HERE. The file's other rule is "never put a
-  // token, a date of birth or anything else sensitive here". A boolean
-  // preference is none of those. There is no PIN and no secret stored —
-  // see zyra_app_lock.dart, which deliberately delegates ALL authentication
-  // to the OS and keeps no credential of its own. Someone who can edit this
-  // file's contents on disk is not the threat this feature addresses.
-
-  /// Defaults to false — off until deliberately turned on. A lock the user
-  /// did not ask for, on an app they may be opening in a hurry, is a way to
-  /// lose them.
-  /// The last resolved role, or null on a device that has never signed
-  /// in. See [_kRole].
-  static String? get cachedRole {
-    final v = _prefs?.getString(_kRole);
-    return (v == null || v.isEmpty) ? null : v;
-  }
-
-  static void setCachedRole(String? role) {
-    if (_prefs == null) return;
-    if (role != null && role.isNotEmpty) {
-      _prefs!.setString(_kRole, role);
+  static Future<void> _set(String key, Object? value) {
+    // Pre-auth local previews can use ephemeral preferences, but can never
+    // persist them or claim a pre-existing account's cache.
+    if (value == null) {
+      _values.remove(key);
     } else {
-      _prefs!.remove(_kRole);
+      _values[key] = value;
     }
+    final owner = _accountOwner;
+    final version = _bindingGeneration;
+    final prefs = _prefs;
+    if (!_hasBoundAccount || owner == null || prefs == null) {
+      return Future<void>.value();
+    }
+    return _enqueue(() async {
+      if (version != _bindingGeneration ||
+          _accountOwner != owner ||
+          _persistenceOwner != owner) {
+        return;
+      }
+      if (value == null) {
+        await prefs.remove(key);
+      } else if (value is bool) {
+        await prefs.setBool(key, value);
+      } else {
+        await prefs.setString(key, value as String);
+      }
+    });
   }
 
-  static bool get appLockEnabled => _prefs?.getBool(_kAppLock) ?? false;
-
-  static Future<void> setAppLockEnabled(bool value) async {
-    if (_prefs == null) return;
-    try {
-      await _prefs!.setBool(_kAppLock, value);
-    } catch (e) {
-      debugPrint('ZYRA: could not persist the app lock preference.\n$e');
-    }
+  static String? _string(String key) {
+    final value = _values[key];
+    return value is String && value.isNotEmpty ? value : null;
   }
 
-  /// Called on sign-out. Without this the next person to sign in on the
-  /// same device gets the previous user's gradient for one frame — a
-  /// small leak of someone else's data, and visibly wrong.
-  ///
-  /// The app lock preference is REMOVED here for the same reason: it is a
-  /// setting belonging to the person who signed out, and leaving it behind
-  /// would put the next user behind a lock they never enabled — and, worse,
-  /// one they can pass, which would look like an endorsement.
-  static Future<void> clear() async {
-    if (_prefs == null) return;
-    try {
-      await _prefs!.remove(_kGender);
-      await _prefs!.remove(_kRole);
-      await _prefs!.remove(_kAppLock);
-      // Same reasoning as gender: the next person's Profile must not
-      // greet them by the previous person's name, even for one frame.
-      await _prefs!.remove(_kFirstName);
-      // _kCacheSchema deliberately survives — it describes this DEVICE's
-      // cache format, not the account. The cache CONTENTS are emptied by
-      // ZyraImageCache.clearForSignOut() in the same sign-out block.
-    } catch (_) {}
+  static String? get cachedGender {
+    final value = _string(_kGender);
+    return value == 'male' || value == 'female' ? value : null;
+  }
+
+  static void setCachedGender(String? value) => unawaited(
+    _set(_kGender, value == 'male' || value == 'female' ? value : null),
+  );
+
+  static String? get cachedFirstName => _string(_kFirstName);
+  static void setCachedFirstName(String? value) => unawaited(
+    _set(
+      _kFirstName,
+      value == null || value.trim().isEmpty ? null : value.trim(),
+    ),
+  );
+
+  static String? get cachedRole => _string(_kRole);
+  static void setCachedRole(String? value) =>
+      unawaited(_set(_kRole, value == null || value.isEmpty ? null : value));
+
+  static double get cachedAvatarAlignmentY {
+    final parsed = double.tryParse(_string(_kAvatarAlignmentY) ?? '');
+    if (parsed == null || !parsed.isFinite) return 0;
+    return parsed.clamp(-1.0, 1.0).toDouble();
+  }
+
+  static Future<void> setAvatarAlignmentY(double value) =>
+      _set(_kAvatarAlignmentY, value.clamp(-1.0, 1.0).toDouble().toString());
+
+  static double get cachedAvatarAlignmentX {
+    final parsed = double.tryParse(_string(_kAvatarAlignmentX) ?? '');
+    if (parsed == null || !parsed.isFinite) return 0;
+    return parsed.clamp(-1.0, 1.0).toDouble();
+  }
+
+  static Future<void> setAvatarAlignmentX(double value) =>
+      _set(_kAvatarAlignmentX, value.clamp(-1.0, 1.0).toDouble().toString());
+
+  static bool get appLockEnabled => _values[_kAppLock] == true;
+  static Future<void> setAppLockEnabled(bool value) => _set(_kAppLock, value);
+
+  static String? get promotionPolicy => _string(_kPromotionPolicy);
+  static Future<void> setPromotionPolicy(String value) =>
+      _set(_kPromotionPolicy, value);
+  static Future<void> clearPromotionPolicy() => _set(_kPromotionPolicy, null);
+
+  static String? get cachedAppSurfaceStyleName => _string(_kAppSurfaceStyle);
+  static Future<void> setCachedAppSurfaceStyleName(String? value) =>
+      _set(_kAppSurfaceStyle, value);
+  static String? get cachedAppPaletteName => _string(_kAppPalette);
+  static Future<void> setCachedAppPaletteName(String? value) =>
+      _set(_kAppPalette, value);
+  static String? get cachedAppPaletteRevision => _string(_kAppPaletteRevision);
+  static Future<void> setCachedAppPaletteRevision(String? value) =>
+      _set(_kAppPaletteRevision, value);
+  static String? get cachedAppFontName => _string(_kAppFont);
+  static Future<void> setCachedAppFontName(String? value) =>
+      _set(_kAppFont, value);
+  static String? get cachedHapticLevelName => _string(_kHapticLevel);
+  static Future<void> setCachedHapticLevelName(String? value) =>
+      _set(_kHapticLevel, value);
+
+  static bool get cachedAppGoldEnabled => _values[_kAppGold] == true;
+  static Future<void> setCachedAppGoldEnabled(bool value) =>
+      _set(_kAppGold, value);
+
+  // Presentation choice only: this preference never grants Founder authority,
+  // an account role, admission, paid access or permission to use real data.
+  // The caller owns authorization and the separate account-generation guard.
+  static String get cachedFounderPreviewRole =>
+      _string(_kFounderPreviewRole) == 'guardian' ? 'guardian' : 'seeker';
+
+  static Future<void> setFounderPreviewRole(
+    String value, {
+    required String expectedOwner,
+    required int expectedBindingGeneration,
+  }) {
+    if (value != 'seeker' && value != 'guardian') {
+      return Future<void>.value();
+    }
+    return _setOwnedPresentation(
+      _kFounderPreviewRole,
+      value,
+      expectedOwner: expectedOwner,
+      expectedBindingGeneration: expectedBindingGeneration,
+    );
+  }
+
+  static Future<void> _setOwnedPresentation(
+    String key,
+    String value, {
+    required String expectedOwner,
+    required int expectedBindingGeneration,
+  }) {
+    // Check before touching memory as well as the existing queued disk guard.
+    // The same owner returning after A -> B -> A is a different binding.
+    if (!_hasBoundAccount ||
+        expectedOwner.isEmpty ||
+        _accountOwner != expectedOwner ||
+        _bindingGeneration != expectedBindingGeneration) {
+      return Future<void>.value();
+    }
+    return _set(key, value);
+  }
+
+  static int get cacheSchemaVersion => _prefs?.getInt(_kCacheSchema) ?? 0;
+  static Future<void> setCacheSchemaVersion(int version) => _enqueue(() async {
+    await _prefs?.setInt(_kCacheSchema, version);
+  });
+
+  /// Drops account preferences and ownership, preserving device format data.
+  static Future<void> clear() {
+    _hasBoundAccount = false;
+    return bindAccount(null);
   }
 }

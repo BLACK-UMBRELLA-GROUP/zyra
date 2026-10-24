@@ -32,68 +32,316 @@
 // here once, under Support, because two routes to one document is the same
 // duplication in miniature.
 
-import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'dart:async';
+
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show AuthChangeEvent, AuthState, Supabase;
+import '../../data/zyra_membership_catalog.dart';
+import '../../dev/zyra_app_gold_preview.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../../services/zyra_account_state.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_internal_preview_client.dart';
+import '../../dev/dev_settings_design_state.dart';
+import '../../dev/zyra_dev_local_preview.dart';
+import '../../services/zyra_developer_access.dart';
+import '../../services/zyra_notification_prefs_service.dart';
+import '../../services/zyra_promotion_engine.dart';
+import '../../services/zyra_product_telemetry.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../theme/zyra_card_metrics.dart';
-import '../../widgets/zyra_account_switch_sheet.dart';
-import '../onboarding/account_path_overview_screen.dart';
 import '../subscription/upgrade_screen.dart';
-import '../wali/wali_home_shell.dart';
 import '../../services/zyra_app_lock.dart';
 import 'account_advanced_screen.dart';
 import 'app_lock_screen.dart';
-import 'blocked_users_screen.dart';
+import 'hidden_profiles_screen.dart';
 import 'feedback_screen.dart';
 import 'help_support_screen.dart';
 import 'notification_settings_screen.dart';
 import 'privacy_and_data_screen.dart';
 import 'privacy_settings_screen.dart';
 import 'sign_in_security_screen.dart';
+import '../../widgets/zyra_glass_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final bool guardian;
+  final bool? guardianHasOne;
+
+  /// Presentation only: the originating Profile owns the typed read and its
+  /// lifetime. Sharing its display avoids a duplicate entitlement flight.
+  final ValueListenable<String>? guardianMembershipDisplay;
+  final Future<Map<ZyraNotifyCategory, bool>?> Function()?
+  loadNotificationPreferences;
+  final Future<bool> Function(ZyraNotifyCategory, bool)?
+  saveNotificationPreference;
+  final Future<ZyraSourceResult<List<WaliLinkedPerson>>> Function(bool asWali)?
+  loadLinkedPeople;
+
+  const SettingsScreen({
+    super.key,
+    this.guardian = false,
+    this.guardianHasOne,
+    this.guardianMembershipDisplay,
+    this.loadNotificationPreferences,
+    this.saveNotificationPreference,
+    this.loadLinkedPeople,
+  });
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  int _guardians = 0;
-  bool _hasMain = false;
-  List<WaliLinkedPerson> _guardianOf = const [];
+  List<WaliLinkedPerson>? _linkedPeople;
+  bool _linksLoaded = false;
+  late final String? _membershipOwner;
+  late final int _membershipGeneration;
+  late final bool _membershipPreview;
+  late final SettingsScreen _openingSettings;
+  late final (bool, String?) _openingSdk;
+  late final bool _openingPreviewActive;
+  late final int _openingPreviewSession;
+  String? _initialAccessToken;
+  StreamSubscription<AuthState>? _authSubscription;
+  ModalRoute<dynamic>? _settingsRoute;
+  bool _navigationRevoked = false;
 
   @override
   void initState() {
     super.initState();
-    ZyraWaliLinkService.fetchLinkedPeople(asWali: false).then((people) {
-      if (!mounted) return;
-      setState(() {
-        _guardians = people.length;
-        _hasMain = people.any((p) => p.isMain);
-      });
+    _membershipOwner = _ownerId();
+    _membershipGeneration = ZyraAccountState.generation;
+    _membershipPreview = ZyraDeveloperAccess.isMainAppFounderPreview;
+    _openingSettings = widget;
+    _openingSdk = _sdkOwner();
+    _openingPreviewActive = ZyraInternalPreviewClient.isActive;
+    _openingPreviewSession = ZyraInternalPreviewClient.previewSession;
+    AppState.instance.addListener(_onAccountChange);
+    ZyraInternalPreviewClient.changes.addListener(_onAccountChange);
+    ZyraDeveloperAccess.authorizationChanges.addListener(_onAccountChange);
+    _watchAuthLifetime();
+    _loadLinkedPeople();
+  }
+
+  (bool, String?) _sdkOwner() {
+    try {
+      return (true, ZyraAuth.currentUser?.id);
+    } catch (_) {
+      return (false, null);
+    }
+  }
+
+  bool get _openingBindingsCurrent =>
+      widget.guardian == _openingSettings.guardian &&
+      identical(
+        widget.guardianMembershipDisplay,
+        _openingSettings.guardianMembershipDisplay,
+      ) &&
+      identical(
+        widget.loadNotificationPreferences,
+        _openingSettings.loadNotificationPreferences,
+      ) &&
+      identical(
+        widget.saveNotificationPreference,
+        _openingSettings.saveNotificationPreference,
+      ) &&
+      identical(widget.loadLinkedPeople, _openingSettings.loadLinkedPeople) &&
+      ZyraDeveloperAccess.isMainAppFounderPreview == _membershipPreview &&
+      ZyraInternalPreviewClient.isActive == _openingPreviewActive &&
+      ZyraInternalPreviewClient.previewSession == _openingPreviewSession;
+
+  bool get _openingLifetimeCurrent =>
+      !_navigationRevoked &&
+      _openingBindingsCurrent &&
+      _sdkOwner() == _openingSdk &&
+      !ZyraAccountState.isSigningOut &&
+      ZyraAccountState.generation == _membershipGeneration &&
+      _ownerId() == _membershipOwner;
+
+  bool get _canNavigate {
+    // Check the State before any ancestor lookup: callbacks may outlive their
+    // row, route, member or injected preference sources. A cover is temporary;
+    // a changed opening lifetime is permanently unavailable to this route.
+    if (!mounted || _navigationRevoked) return false;
+    if (!_openingLifetimeCurrent) {
+      _navigationRevoked = true;
+      return false;
+    }
+    if (_membershipOwner == null ||
+        !_ordinaryOpeningAccountCurrent ||
+        _membershipPreview ||
+        _openingPreviewActive) {
+      return false;
+    }
+    final route = _settingsRoute;
+    return route != null && route.isCurrent && route.navigator != null;
+  }
+
+  void _watchAuthLifetime() {
+    if (!_openingSdk.$1) return;
+    _initialAccessToken =
+        Supabase.instance.client.auth.currentSession?.accessToken;
+    _authSubscription = ZyraAuth.authStateChanges.listen(
+      (state) {
+        if (!mounted || _navigationRevoked) return;
+        if (_sdkOwner() != _openingSdk ||
+            (state.session != null &&
+                state.session!.user.id != _membershipOwner) ||
+            state.event == AuthChangeEvent.signedIn ||
+            state.event == AuthChangeEvent.signedOut ||
+            state.event == AuthChangeEvent.passwordRecovery ||
+            (state.event == AuthChangeEvent.initialSession &&
+                state.session?.accessToken != _initialAccessToken)) {
+          _navigationRevoked = true;
+        }
+        _onAccountChange();
+      },
+      onError: (Object _, StackTrace _) {
+        _navigationRevoked = true;
+        _onAccountChange();
+      },
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _settingsRoute = ModalRoute.of(context);
+  }
+
+  @override
+  void didUpdateWidget(covariant SettingsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_openingBindingsCurrent) _navigationRevoked = true;
+  }
+
+  Future<void> _openSettingsPage(
+    WidgetBuilder builder, {
+    bool refreshOnReturn = false,
+  }) async {
+    if (!_canNavigate) return;
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (childContext) => mounted && _openingLifetimeCurrent
+            ? builder(childContext)
+            : const SizedBox.shrink(
+                key: ValueKey('settings-destination-unavailable'),
+              ),
+      ),
+    );
+    if (refreshOnReturn && _canNavigate) setState(() {});
+  }
+
+  void _back() {
+    if (!_canNavigate || !Navigator.of(context).canPop()) return;
+    Navigator.of(context).pop();
+  }
+
+  bool get _ordinaryOpeningAccountCurrent {
+    final owner = _membershipOwner;
+    return !_navigationRevoked &&
+        owner != null &&
+        _ownerId() == owner &&
+        ZyraAccountState.isCurrent(owner, _membershipGeneration);
+  }
+
+  void _onAccountChange() {
+    if (!mounted) return;
+    if (!_openingLifetimeCurrent) _navigationRevoked = true;
+    // Recheck the opening account even if a retained display source is quiet.
+    // The originating Profile still owns the only entitlement read.
+    if ((widget.guardian && widget.guardianMembershipDisplay != null) ||
+        (!_membershipPreview && !_ordinaryOpeningAccountCurrent)) {
+      final binding = WidgetsBinding.instance;
+      if (binding.schedulerPhase != SchedulerPhase.persistentCallbacks) {
+        setState(() {});
+      } else {
+        binding.addPostFrameCallback((_) {
+          if (mounted) setState(() {});
+        });
+        binding.ensureVisualUpdate();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _navigationRevoked = true;
+    AppState.instance.removeListener(_onAccountChange);
+    ZyraInternalPreviewClient.changes.removeListener(_onAccountChange);
+    ZyraDeveloperAccess.authorizationChanges.removeListener(_onAccountChange);
+    _authSubscription?.cancel().ignore();
+    super.dispose();
+  }
+
+  String? _ownerId() {
+    try {
+      return ZyraAuth.currentUser?.id;
+    } catch (_) {
+      return null; // Local preview or widget test without a client.
+    }
+  }
+
+  Future<void> _loadLinkedPeople() async {
+    final owner = _ownerId();
+    final generation = ZyraAccountState.generation;
+    ZyraSourceResult<List<WaliLinkedPerson>> result;
+    try {
+      result =
+          await (widget.loadLinkedPeople?.call(widget.guardian) ??
+              ZyraWaliLinkService.fetchLinkedPeopleResult(
+                asWali: widget.guardian,
+              ));
+    } catch (_) {
+      result = const ZyraSourceResult.unavailable(
+        ZyraSourceFailure.requestFailed,
+      );
+    }
+    if (!mounted) return;
+    final sameOwner =
+        _openingLifetimeCurrent &&
+        !ZyraAccountState.isSigningOut &&
+        ZyraAccountState.generation == generation &&
+        _ownerId() == owner;
+    setState(() {
+      _linkedPeople = sameOwner ? result.valueOrNull : null;
+      _linksLoaded = true;
     });
-    // The server cannot create this state until the account-context
-    // migration lands, but reading it is safe and makes the client ready:
-    // once an active wali_link exists with this identity as wali_id, the
-    // Guardian option becomes a real full-shell switch with no sign-out.
-    ZyraWaliLinkService.fetchLinkedPeople(asWali: true).then((people) {
-      if (!mounted) return;
-      setState(() => _guardianOf = people);
-    });
+  }
+
+  String get _relationshipValue {
+    if (!_membershipPreview && !_ordinaryOpeningAccountCurrent) {
+      return 'Unavailable';
+    }
+    if (!_linksLoaded) return 'Checking…';
+    final people = _linkedPeople;
+    if (people == null) return 'Unavailable';
+    if (people.isEmpty) return 'None linked';
+    if (widget.guardian) return '${people.length} linked';
+    return people.any((p) => p.isMain)
+        ? '${people.length} linked · 1 Main'
+        : '${people.length} linked · no Main';
   }
 
   /// The provider the user actually signed in with. Shown rather than
   /// inferred: ZYRA has no password, so "how do I get in" is a question
   /// only the provider can answer, and saying so is more useful than
   /// hiding it.
-  String? get _providerRaw =>
-      ZyraAuth.currentUser?.appMetadata['provider'] as String?;
+  String? get _providerRaw {
+    try {
+      return ZyraAuth.currentUser?.appMetadata['provider'] as String?;
+    } catch (_) {
+      // Settings must still render in local previews and widget tests where
+      // Supabase is intentionally not initialised.
+      return null;
+    }
+  }
 
   /// Short label — the summary card and the ACCOUNT row. Kept to one or
   /// two words so neither overflows.
@@ -115,74 +363,88 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return switch (_providerRaw) {
       'google' => 'Google',
       'apple' => 'Apple',
-      'email' => kReleaseMode ? 'Email' : 'Test account',
-      null => kReleaseMode ? 'Unknown' : 'NOT SET',
+      'email' =>
+        ZyraDeveloperAccess.canUseDeveloperTools ? 'Test account' : 'Email',
+      null => ZyraDeveloperAccess.canUseDeveloperTools ? 'NOT SET' : 'Unknown',
       _ => _providerRaw ?? 'Unknown',
     };
   }
 
-  /// One identity, two application contexts — Founder, 2026-08-19.
-  ///
-  /// No authentication call occurs here. A context selection replaces the
-  /// whole application shell. In profile builds, when the server cannot yet
-  /// express the Guardian context, the same row opens the approved first-time
-  /// setup preview instead of signing the user out or pretending activation
-  /// succeeded.
-  Future<void> _switchAccount(BuildContext context) async {
-    final names = _guardianOf.map((person) => person.firstName).join(' · ');
-    final selection = await showZyraAccountSwitchSheet(
-      context: context,
-      options: [
-        const ZyraAccountSwitchOption(
-          context: ZyraAccountContext.seeker,
-          title: 'Seeker',
-          subtitle: 'Your marriage journey',
-          icon: Icons.favorite_border,
-          current: true,
-        ),
-        ZyraAccountSwitchOption(
-          context: ZyraAccountContext.guardian,
-          title: 'Guardian',
-          subtitle: _guardianOf.isEmpty
-              ? 'First-time Guardian setup'
-              : 'Supporting $names',
-          icon: Icons.shield_outlined,
-          actionLabel: _guardianOf.isEmpty ? 'SET UP ›' : 'SWITCH ›',
-        ),
-      ],
-    );
-    if (selection != ZyraAccountContext.guardian || !context.mounted) return;
+  bool get _hasMembership => widget.guardian
+      ? (widget.guardianHasOne ?? AppState.instance.waliHasWaliOne)
+      : AppState.instance.plan == ZyraPlan.one;
 
-    if (_guardianOf.isEmpty) {
-      await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => const GuardianOnboardingOverviewScreen(
-            migrationGatedPreview: true,
-          ),
-        ),
-      );
-      return;
+  String get _membershipLabel {
+    final display = widget.guardian ? widget.guardianMembershipDisplay : null;
+    if (display != null) {
+      final current = _membershipPreview
+          ? ZyraDeveloperAccess.isMainAppFounderPreview
+          : _ordinaryOpeningAccountCurrent;
+      return current ? display.value : 'Unavailable';
     }
+    return _hasMembership
+        ? (widget.guardian
+              ? ZyraMembershipCatalog.guardianOneTitle
+              : ZyraMembershipCatalog.seekerOneTitle)
+        : (ZyraDevLocalPreview.basicMembershipPreviewLabel(
+                guardian: widget.guardian,
+              ) ??
+              'No active membership');
+  }
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const WaliHomeShell()),
-      (route) => false,
+  void _showGuardianPrivacy(BuildContext context) {
+    if (!_canNavigate) return;
+    showZyraGlassNotice(
+      context: context,
+      icon: Icons.shield_outlined,
+      title: 'Guardian privacy',
+      body:
+          "Guardian accounts don't appear in Profiles. Your identity is shared "
+          'only with a Seeker who has linked you, and with the other Guardians '
+          'in a Journey where your access applies.',
+      buttonLabel: 'Got it',
+      bodyTextAlign: TextAlign.left,
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      ValueListenableBuilder<ZyraSettingsDesign>(
+        valueListenable: ZyraDevSettingsDesign.selection,
+        builder: (context, design, _) {
+          final smoothCards =
+              ZyraDeveloperAccess.isMainAppFounderPreview &&
+              design == ZyraSettingsDesign.smoothCards;
+          final display = widget.guardian
+              ? widget.guardianMembershipDisplay
+              : null;
+          if (display == null) return _buildSettings(context, smoothCards);
+          return ValueListenableBuilder<String>(
+            valueListenable: display,
+            builder: (context, value, _) =>
+                _buildSettings(context, smoothCards),
+          );
+        },
+      );
+
+  Widget _buildSettings(BuildContext context, bool smoothCards) {
     final state = AppState.instance;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text('Settings', style: ZyraText.heading(size: 17)),
-        iconTheme: const IconThemeData(color: Colors.white70),
+        automaticallyImplyLeading: false,
+        leading: Navigator.of(context).canPop()
+            ? BackButton(onPressed: _back)
+            : null,
+        title: smoothCards
+            ? null
+            : Text('Settings', style: ZyraText.heading(size: 17)),
+        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: ZyraAppGoldDecoration(
           gradient: ZyraColors.genderGradient(state.gender),
         ),
         child: SafeArea(
@@ -192,50 +454,55 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
             children: [
+              if (smoothCards) ...[
+                const SizedBox(height: 38),
+                _SettingsReveal(
+                  key: const ValueKey('settings_smooth_header'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Settings', style: ZyraText.heading(size: 30)),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Your account, your choices.',
+                        style: ZyraText.subtext(
+                          size: 13,
+                          color: ZyraColors.ink(.58),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 22),
+              ],
               // §1 — the page answers "what can I control?" before it offers
               // anything to control. Every value here is real; nothing is a
               // placeholder for a feature that does not exist.
-              _SummaryCard(
-                membership: state.plan == ZyraPlan.basic ? 'Free' : 'ZYRA One',
-                guardians: _guardians == 0
-                    ? 'None linked'
-                    : _hasMain
-                    ? '$_guardians linked · 1 Main'
-                    : '$_guardians linked · no Main',
-                signedInWith: _provider,
+              _SettingsReveal(
+                key: ValueKey('settings_summary_$smoothCards'),
+                enabled: smoothCards,
+                child: _SummaryCard(
+                  membership: _membershipLabel,
+                  relationshipLabel: widget.guardian
+                      ? 'Linked Seekers'
+                      : 'Guardians',
+                  relationshipValue: _relationshipValue,
+                  signedInWith: _provider,
+                ),
               ),
 
-              const SizedBox(height: 28),
+              SizedBox(height: 28),
               _Section(
                 title: 'ACCOUNT',
                 children: [
                   _Row(
-                    label: 'Personal information',
-                    value: state.name,
-                    onTap: () => _todo(context, 'Personal information'),
-                  ),
-                  _Row(
                     label: 'Sign-in & security',
                     value: _provider,
-                    onTap: () async {
-                      await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const SignInSecurityScreen(),
-                        ),
-                      );
-                      if (mounted) setState(() {});
-                    },
-                  ),
-                  // Preview-gated until the account-context migration is
-                  // explicitly authorised. Profile builds are what the
-                  // Founder tests on device; release builds must not expose
-                  // a second context the current server cannot create yet.
-                  if (!kReleaseMode)
-                    _Row(
-                      label: 'Switch Account',
-                      value: 'Seeker · Guardian',
-                      onTap: () => _switchAccount(context),
+                    onTap: () => _openSettingsPage(
+                      (_) => const SignInSecurityScreen(),
+                      refreshOnReturn: true,
                     ),
+                  ),
                   // ADDED 2026-08-07. Sits in ACCOUNT rather than PRIVACY
                   // deliberately: it protects the account as a whole, not
                   // one aspect of what other people can see, and it is the
@@ -244,22 +511,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _Row(
                     label: 'App lock',
                     value: ZyraAppLock.instance.enabled ? 'On' : 'Off',
-                    onTap: () async {
-                      await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const AppLockScreen(),
-                        ),
-                      );
-                      if (mounted) setState(() {}); // the row shows On/Off
-                    },
+                    onTap: () => _openSettingsPage(
+                      (_) => const AppLockScreen(),
+                      refreshOnReturn: true,
+                    ),
                   ),
                   // §5 — Delete is two levels down, never in the main list.
                   _Row(
                     label: 'Advanced',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const AccountAdvancedScreen(),
-                      ),
+                    onTap: () => _openSettingsPage(
+                      (_) => AccountAdvancedScreen(guardian: widget.guardian),
                     ),
                   ),
                 ],
@@ -288,21 +549,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: 'PRIVACY',
                 children: [
                   _Row(
-                    label: 'Discovery & visibility',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const PrivacySettingsScreen(),
+                    label: 'Pause My Profile',
+                    onTap: () =>
+                        _openSettingsPage((_) => const PrivacySettingsScreen()),
+                  ),
+                  if (widget.guardian)
+                    _Row(
+                      label: 'Guardian privacy',
+                      value: 'Not discoverable',
+                      onTap: () => _showGuardianPrivacy(context),
+                    ),
+                  if (!widget.guardian)
+                    _Row(
+                      label: 'Hidden Profiles',
+                      onTap: () => _openSettingsPage(
+                        (_) => const HiddenProfilesScreen(),
                       ),
                     ),
-                  ),
-                  _Row(
-                    label: 'Blocked users',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const BlockedUsersScreen(),
-                      ),
-                    ),
-                  ),
                 ],
               ),
 
@@ -311,9 +574,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   _Row(
                     label: 'Notifications & emails',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const NotificationSettingsScreen(),
+                    onTap: () => _openSettingsPage(
+                      (_) => NotificationSettingsScreen(
+                        role: widget.guardian
+                            ? ZyraPromotionRole.guardian
+                            : ZyraPromotionRole.seeker,
+                        loadPreferences: widget.loadNotificationPreferences,
+                        savePreference: widget.saveNotificationPreference,
                       ),
                     ),
                   ),
@@ -324,10 +591,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: 'MEMBERSHIP',
                 children: [
                   _Row(
-                    label: 'Manage subscription',
-                    value: state.plan == ZyraPlan.basic ? 'Free' : 'ZYRA One',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const UpgradeScreen()),
+                    label: 'Membership',
+                    value: _membershipLabel,
+                    onTap: () => _openSettingsPage(
+                      (_) => UpgradeScreen(
+                        telemetrySurface: widget.guardian
+                            ? ZyraTelemetrySurface.guardian
+                            : ZyraTelemetrySurface.seeker,
+                      ),
                     ),
                   ),
                 ],
@@ -338,9 +609,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   _Row(
                     label: 'Help & support',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const HelpSupportScreen(),
+                    onTap: () => _openSettingsPage(
+                      (_) => HelpSupportScreen(
+                        telemetrySurface: widget.guardian
+                            ? ZyraTelemetrySurface.guardian
+                            : ZyraTelemetrySurface.seeker,
                       ),
                     ),
                   ),
@@ -354,9 +627,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // door marked "problem".
                   _Row(
                     label: 'Send feedback',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const FeedbackScreen()),
-                    ),
+                    onTap: () =>
+                        _openSettingsPage((_) => const FeedbackScreen()),
                   ),
                 ],
               ),
@@ -376,63 +648,82 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   _Row(
                     label: 'Privacy & data',
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const PrivacyAndDataScreen(),
-                      ),
+                    onTap: () => _openSettingsPage(
+                      (_) => PrivacyAndDataScreen(guardian: widget.guardian),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 10),
-              const Center(child: _VersionFooter()),
+              SizedBox(height: 10),
+              Center(child: _VersionFooter()),
             ],
           ),
         ),
       ),
     );
   }
-
-  /// Honest placeholder. These editors are the next increment and the rows
-  /// are here because the structure is the deliverable — but a row that
-  /// silently does nothing is worse than one that says so.
-  void _todo(BuildContext context, String what) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('$what — editor coming next.')));
-  }
 }
 
 // ── Summary card ───────────────────────────────────────────────────────
 class _SummaryCard extends StatelessWidget {
   final String membership;
-  final String guardians;
+  final String relationshipLabel;
+  final String relationshipValue;
   final String signedInWith;
 
   const _SummaryCard({
     required this.membership,
-    required this.guardians,
+    required this.relationshipLabel,
+    required this.relationshipValue,
     required this.signedInWith,
   });
 
   @override
   Widget build(BuildContext context) {
+    final smoothCards = _settingsSmoothCards;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+      padding: EdgeInsets.symmetric(
+        horizontal: smoothCards ? 20 : 18,
+        vertical: smoothCards ? 22 : 18,
+      ),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.09),
-        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+        color: ZyraColors.foreground.withValues(alpha: smoothCards ? .11 : .09),
+        borderRadius: BorderRadius.circular(
+          smoothCards ? 24 : ZyraCardMetrics.cardRadius,
+        ),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.14),
+          color: smoothCards
+              ? ZyraColors.unlockText.withValues(alpha: .28)
+              : ZyraColors.foreground.withValues(alpha: .14),
           width: 0.5,
         ),
       ),
       child: Column(
         children: [
+          if (smoothCards) ...[
+            Row(
+              children: [
+                Icon(
+                  Icons.tune_rounded,
+                  color: ZyraColors.unlockText,
+                  size: 20,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Your account',
+                    maxLines: 2,
+                    style: ZyraText.body(size: 16),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
           _line('Membership', membership),
           _divider(),
-          _line('Guardians', guardians),
+          _line(relationshipLabel, relationshipValue),
           _divider(),
           _line('Signed in with', signedInWith),
         ],
@@ -447,10 +738,21 @@ class _SummaryCard extends StatelessWidget {
         Expanded(
           child: Text(
             k,
-            style: ZyraText.subtext(size: 13, color: Colors.white54),
+            style: ZyraText.subtext(size: 13, color: ZyraColors.ink(0.54)),
           ),
         ),
-        Text(v, style: ZyraText.body(size: 14, color: Colors.white)),
+        if (_settingsSmoothCards)
+          Flexible(
+            child: Text(
+              v,
+              textAlign: TextAlign.right,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: ZyraText.body(size: 14, color: Colors.white),
+            ),
+          )
+        else
+          Text(v, style: ZyraText.body(size: 14, color: Colors.white)),
       ],
     ),
   );
@@ -458,7 +760,7 @@ class _SummaryCard extends StatelessWidget {
   Widget _divider() => Container(
     height: 0.5,
     margin: const EdgeInsets.symmetric(vertical: 3),
-    color: Colors.white.withValues(alpha: 0.08),
+    color: ZyraColors.foreground.withValues(alpha: 0.08),
   );
 }
 
@@ -511,14 +813,17 @@ class _VersionFooterState extends State<_VersionFooter> {
   Widget build(BuildContext context) => Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      Text('ZYRA', style: ZyraText.subtext(size: 11, color: Colors.white24)),
+      Text(
+        'ZYRA',
+        style: ZyraText.wordmark(size: 11, color: ZyraColors.ink(0.24)),
+      ),
       if (_line != null) ...[
-        const SizedBox(height: 3),
+        SizedBox(height: 3),
         // SelectableText, not Text: the one thing anybody ever does
         // with a version number is send it to support.
         SelectableText(
           _line!,
-          style: ZyraText.subtext(size: 11, color: Colors.white24),
+          style: ZyraText.subtext(size: 11, color: ZyraColors.ink(0.24)),
         ),
       ],
     ],
@@ -532,26 +837,42 @@ class _Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final smoothCards = _settingsSmoothCards;
+    final content = Padding(
       padding: const EdgeInsets.only(bottom: 26),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: ZyraText.chapterLabel(color: Colors.white54)),
-          const SizedBox(height: 10),
+          Text(
+            title,
+            style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+          ),
+          SizedBox(height: smoothCards ? 12 : 10),
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+              color: ZyraColors.foreground.withValues(
+                alpha: smoothCards ? .085 : .05,
+              ),
+              borderRadius: BorderRadius.circular(
+                smoothCards ? 23 : ZyraCardMetrics.cardRadius,
+              ),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.10),
+                color: ZyraColors.foreground.withValues(
+                  alpha: smoothCards ? .16 : .10,
+                ),
                 width: 0.5,
               ),
             ),
+            clipBehavior: smoothCards ? Clip.antiAlias : Clip.none,
             child: Column(children: children),
           ),
         ],
       ),
+    );
+    return _SettingsReveal(
+      key: ValueKey('settings_section_${title}_$smoothCards'),
+      enabled: smoothCards,
+      child: content,
     );
   }
 }
@@ -569,14 +890,34 @@ class _Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final smoothCards = _settingsSmoothCards;
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+          padding: EdgeInsets.symmetric(
+            horizontal: smoothCards ? 18 : 16,
+            vertical: smoothCards ? 17 : 15,
+          ),
           child: Row(
             children: [
+              if (smoothCards) ...[
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: ZyraColors.unlockText.withValues(alpha: .11),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    _settingsIcon(label),
+                    size: 18,
+                    color: ZyraColors.unlockText,
+                  ),
+                ),
+                const SizedBox(width: 13),
+              ],
               Expanded(
                 child: Text(
                   label,
@@ -589,20 +930,67 @@ class _Row extends StatelessWidget {
                     value!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: ZyraText.subtext(size: 13, color: Colors.white38),
+                    style: ZyraText.subtext(
+                      size: 13,
+                      color: ZyraColors.ink(0.38),
+                    ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8),
               ],
               Icon(
                 Icons.chevron_right,
                 size: 18,
-                color: Colors.white.withValues(alpha: 0.3),
+                color: ZyraColors.foreground.withValues(alpha: 0.3),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+bool get _settingsSmoothCards =>
+    ZyraDeveloperAccess.isMainAppFounderPreview &&
+    ZyraDevSettingsDesign.current == ZyraSettingsDesign.smoothCards;
+
+IconData _settingsIcon(String label) => switch (label) {
+  'Sign-in & security' => Icons.verified_user_outlined,
+  'App lock' => Icons.lock_outline_rounded,
+  'Advanced' => Icons.tune_rounded,
+  'Pause My Profile' => Icons.pause_circle_outline,
+  'Guardian privacy' => Icons.shield_outlined,
+  'Hidden Profiles' => Icons.person_off_outlined,
+  'Notifications & emails' => Icons.notifications_outlined,
+  'Membership' => Icons.workspace_premium_outlined,
+  'Help & support' => Icons.help_outline_rounded,
+  'Send feedback' => Icons.chat_bubble_outline_rounded,
+  'Privacy & data' => Icons.shield_outlined,
+  _ => Icons.chevron_right_rounded,
+};
+
+class _SettingsReveal extends StatelessWidget {
+  const _SettingsReveal({super.key, this.enabled = true, required this.child});
+
+  final bool enabled;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!enabled || MediaQuery.disableAnimationsOf(context)) return child;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 440),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) => Opacity(
+        opacity: value,
+        child: Transform.translate(
+          offset: Offset(0, 12 * (1 - value)),
+          child: child,
+        ),
+      ),
+      child: child,
     );
   }
 }

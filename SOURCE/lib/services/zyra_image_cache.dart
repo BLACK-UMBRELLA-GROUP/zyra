@@ -59,12 +59,12 @@ class ZyraImageCache {
   /// so the prefetch and the render can never disagree about where bytes
   /// live.
   static CacheManager get manager => _manager ??= CacheManager(
-        Config(
-          'zyraImages',
-          stalePeriod: const Duration(days: 7),
-          maxNrOfCacheObjects: 500,
-        ),
-      );
+    Config(
+      'zyraImages',
+      stalePeriod: const Duration(days: 7),
+      maxNrOfCacheObjects: 500,
+    ),
+  );
 
   /// The cache key for a display URL: everything before the query
   /// string. A re-signed URL differs only in its ?token=…, so this is
@@ -84,8 +84,10 @@ class ZyraImageCache {
         await ZyraLocalPrefs.setCacheSchemaVersion(_schemaVersion);
       }
     } catch (e) {
-      debugPrint('ZYRA: image cache schema check failed — continuing '
-          'without a wipe. $e');
+      debugPrint(
+        'ZYRA: image cache schema check failed — continuing '
+        'without a wipe. $e',
+      );
     }
   }
 

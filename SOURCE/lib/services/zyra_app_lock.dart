@@ -49,7 +49,6 @@
 // tools/zyra_check.py validates imports and member names, not type
 // resolution. widgets re-exports foundation, so ChangeNotifier and
 // debugPrint still come along.
-import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter/widgets.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -57,6 +56,15 @@ import 'zyra_local_prefs.dart';
 
 class ZyraAppLock extends ChangeNotifier {
   ZyraAppLock._();
+
+  /// Fresh state for lifecycle and delayed native-authentication regression
+  /// tests. Authentication still uses the same local_auth platform boundary.
+  @visibleForTesting
+  ZyraAppLock.forTesting({bool enabled = true, bool locked = false}) {
+    _enabled = enabled;
+    _locked = locked;
+  }
+
   static final ZyraAppLock instance = ZyraAppLock._();
 
   final LocalAuthentication _auth = LocalAuthentication();
@@ -66,10 +74,15 @@ class ZyraAppLock extends ChangeNotifier {
   bool _obscured = false;
   bool _authenticating = false;
   bool? _deviceSupported;
+  int _generation = 0;
+  bool _disposed = false;
+
+  bool _isCurrent(int generation) => !_disposed && generation == _generation;
 
   /// Read from disk in main(), before runApp() — the lock has to be the
   /// first thing painted, so it cannot wait on anything.
   void hydrate() {
+    _generation++;
     _enabled = ZyraLocalPrefs.appLockEnabled;
     // Locked from the very first frame when enabled. Starting unlocked and
     // locking a moment later would show the app first, which is the whole
@@ -94,15 +107,23 @@ class ZyraAppLock extends ChangeNotifier {
   bool? get deviceSupported => _deviceSupported;
 
   Future<bool> checkDeviceSupport() async {
+    if (_disposed) return false;
+    final generation = _generation;
+    bool supported;
     try {
       // isDeviceSupported() is the right question, not canCheckBiometrics:
       // the latter is false on a phone with a passcode and no enrolled
       // biometrics, which is a device this feature works perfectly well on.
-      _deviceSupported = await _auth.isDeviceSupported();
-    } on PlatformException catch (e) {
+      supported = await _auth.isDeviceSupported();
+    } on LocalAuthException catch (e) {
       debugPrint('ZYRA: app lock support check failed.\n$e');
-      _deviceSupported = false;
+      supported = false;
+    } catch (e) {
+      debugPrint('ZYRA: app lock support check failed unexpectedly.\n$e');
+      supported = false;
     }
+    if (!_isCurrent(generation)) return false;
+    _deviceSupported = supported;
     notifyListeners();
     return _deviceSupported ?? false;
   }
@@ -115,23 +136,29 @@ class ZyraAppLock extends ChangeNotifier {
   /// unlocked phone could simply switch the lock off, which would make the
   /// whole feature decorative.
   Future<bool> setEnabled(bool value) async {
+    if (_disposed) return false;
+    final generation = _generation;
     final ok = await _authenticate(
       value
           ? 'Confirm it works before turning on App Lock'
           : 'Confirm to turn off App Lock',
     );
-    if (!ok) return false;
+    if (!ok || !_isCurrent(generation)) return false;
 
     _enabled = value;
     _locked = false; // just proved themselves either way
     await ZyraLocalPrefs.setAppLockEnabled(value);
+    if (!_isCurrent(generation)) return false;
     notifyListeners();
     return true;
   }
 
   Future<bool> unlock() async {
+    if (_disposed) return false;
     if (!_locked) return true;
+    final generation = _generation;
     final ok = await _authenticate('Unlock ZYRA');
+    if (!_isCurrent(generation)) return false;
     if (ok) {
       _locked = false;
       _obscured = false;
@@ -148,6 +175,9 @@ class ZyraAppLock extends ChangeNotifier {
   /// holds for EVERY route out — Settings, Developer Access, a session that
   /// expired — not just the one that happened to be built first.
   void clearForSignOut() {
+    // A prompt may still finish after sign-out. Its result belongs only to the
+    // old lifetime, even if the next account enables App Lock in the meantime.
+    _generation++;
     _enabled = false;
     _locked = false;
     _obscured = false;
@@ -160,26 +190,35 @@ class ZyraAppLock extends ChangeNotifier {
     try {
       return await _auth.authenticate(
         localizedReason: reason,
-        options: const AuthenticationOptions(
-          // The point of the whole design — see the header. Device passcode
-          // fallback, no credential of ours.
-          biometricOnly: false,
-          // The OS prompt backgrounds the app on Android; without this the
-          // authentication is cancelled by our own lifecycle handling.
-          stickyAuth: true,
-          useErrorDialogs: true,
-        ),
+        // The point of the whole design — see the header. Device passcode
+        // fallback, no credential of ours.
+        biometricOnly: false,
+        // The OS prompt backgrounds the app on Android; without this the
+        // authentication is cancelled by our own lifecycle handling.
+        persistAcrossBackgrounding: true,
       );
-    } on PlatformException catch (e) {
+    } on LocalAuthException catch (e) {
       // notEnrolled / passcodeNotSet / lockedOut / permanentlyLockedOut all
       // land here. Logged rather than swallowed — a silent false here looks
       // identical to the user changing their mind, and that ambiguity is
       // exactly what made the pending-invite bug take three attempts.
-      debugPrint('ZYRA: app lock authentication failed — ${e.code}.\n$e');
+      debugPrint('ZYRA: app lock authentication failed — ${e.code.name}.\n$e');
+      return false;
+    } catch (e) {
+      debugPrint('ZYRA: app lock authentication failed unexpectedly.\n$e');
       return false;
     } finally {
+      // Keep the native single-flight held across clear/hydrate until this
+      // actual prompt finishes; a replacement must not start a second prompt.
       _authenticating = false;
     }
+  }
+
+  @override
+  void dispose() {
+    _generation++;
+    _disposed = true;
+    super.dispose();
   }
 
   /// ── THE LIFECYCLE SPLIT, which is the fiddly part.

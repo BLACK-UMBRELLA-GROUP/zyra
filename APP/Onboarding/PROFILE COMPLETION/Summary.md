@@ -2,6 +2,27 @@ FEATURE NAME
 PROFILE COMPLETION
 Group: 4 — Page Responsibilities
 
+CURRENT PROGRESSIVE ENTRY / FINAL REVIEW — 2026-10-02
+Founder-approved current flow supersedes the historical sequence below:
+account essentials → mandatory identity verification → Continue profile setup
+or enter My ZYRA and finish later → Your Profile / optional Journey Bio /
+Compatibility / Review & go live. Account admission is not profile publication.
+An unfinished Seeker profile stays hidden; Discovery/Journeys remain gated.
+
+The final review reads actual saved profile fields (including three photos),
+existing server compatibility progress and identity state. It never marks a
+profile complete merely because the page was visited. Go live is explicit,
+rechecked and confirmed by the existing server RPC; failed or uncertain
+confirmation remains a retry/recovery state, not a success message. Bio prose
+is optional. Review choices uses the existing profile editor, with strict
+owner-bound restore/save. DOB/gender are fixed with account essentials, not
+with first publication. My ZYRA remains an explicit safe exit.
+
+No production IDV provider, database policy, membership activation or new
+compatibility calculation is implemented by this client cleanup. As-built,
+verification and open safety gates: Onboarding Preview handover §89;
+OA-ZYRA-303, linked OA-ZYRA-193/266. Founder acceptance remains separate.
+
 ============================================================
 SUMMARY
 ============================================================

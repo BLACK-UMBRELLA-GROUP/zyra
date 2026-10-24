@@ -1,0 +1,22 @@
+  // Presentation choices only: neither preference grants Founder authority,
+  // an account role, admission, paid access or permission to use real data.
+  // The caller owns authorization and the separate account-generation guard.
+  static String get cachedFounderAppStyleName =>
+      _string(_kFounderAppStyle) == 'option1' ? 'option1' : 'request';
+
+  static Future<void> setFounderAppStyleName(
+    String value, {
+    required String expectedOwner,
+    required int expectedBindingGeneration,
+  }) {
+    if (value != 'request' && value != 'option1') {
+      return Future<void>.value();
+    }
+    return _setOwnedPresentation(
+      _kFounderAppStyle,
+      value,
+      expectedOwner: expectedOwner,
+      expectedBindingGeneration: expectedBindingGeneration,
+    );
+  }
+

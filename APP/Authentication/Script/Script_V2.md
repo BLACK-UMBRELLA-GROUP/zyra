@@ -2,11 +2,16 @@ FEATURE NAME
 AUTHENTICATION
 
 SCRIPT VERSION: V2
-STATUS: Approved Specification — CURRENT
+STATUS: Superseded 2026-09-12 by Script_V3.md
 DATE: 2026-08-20
 SUPERSEDES: Script_V1.md
 GOVERNING REFERENCES: ZYRA_SETTINGS_AND_IDENTITY; DR-ZYRA-209;
 DR-ZYRA-210
+
+SUPERSESSION NOTE (2026-09-12): DR-ZYRA-228 replaces this version's
+non-release-only Developer Access rule with the isolated Founder-only ZYRA Test
+target. OA-ZYRA-286, not OA-ZYRA-245, is the canonical implementation action.
+Public member authentication remains unchanged. This file is historical.
 
 ============================================================
 WELCOME SCREEN
@@ -112,4 +117,4 @@ to a persona.
 Persona switching must move to a protected server-mediated action that
 keeps the `@zyra.test` guard and does not embed a shared password in the app
 binary. The current shared-password flow is technical debt and remains open
-under OA-ZYRA-245 until replaced and proven.
+under OA-ZYRA-286 until replaced and proven.

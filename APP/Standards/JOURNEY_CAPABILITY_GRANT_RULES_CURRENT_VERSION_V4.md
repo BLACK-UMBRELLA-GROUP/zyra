@@ -1,3 +1,14 @@
+> **SUPERSEDED — NOT CURRENT. DO NOT USE AS A SOURCE OF TRUTH.**
+> Superseded on 2026-09-18 by `JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V5.md`.
+> The current version is `JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V7.md`, in this folder.
+> This file keeps its `CURRENT_VERSION` filename deliberately. Renaming it
+> would break references held in the registers and in sealed mailbox messages,
+> which are never edited after filing. Recorded under **OA-AIOS-384**.
+> Banner added by Fable 2026-09-23 under AD-AIOS-110. **The body below is
+> unchanged** and remains the truthful record of what was current at the time.
+
+---
+
 # ZYRA — Journey Capability Grant Rules
 
 **Version:** V4
