@@ -54,7 +54,7 @@ Bootstrap pointer for AI agent sessions working in `ZYRA/`.
 > directly in `DEVELOPMENT/` — `ZYRA`, `AZMARA`, `SELAH`, `WAFA`, `AI CONSULTANCY TBC`. Older documents
 > and registers still say `SUB BUSINESS/<venture>`: read that as `DEVELOPMENT/<venture>`.
 > Never recreate `SUB BUSINESS/`. Folder guide:
-> `BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/DEVELOPMENT_FOLDER_GUIDE_CURRENT_VERSION_V2.md`
+> `BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/KNOWLEDGE_ROUTING_STANDARD_CURRENT_VERSION_V2.md`
 Rules live in the documents below, not here. Read them in this order:
 
 > **LOCAL PHONE DELIVERY DEFAULT — Founder direct instruction, 2026-10-04 /
@@ -110,8 +110,8 @@ Rules live in the documents below, not here. Read them in this order:
 0. Core rules at the top of this file — roles and non-negotiables; they win on
    any conflict. Master copy:
    `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V2.md`.
-   `FOUNDER_CODEX_OPERATING_MODEL_CURRENT_VERSION_V2.md` (same folder) still
-   governs exact-action safety gates; its role allocation is superseded.
+   Then `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/OPERATING_MODEL_CURRENT_VERSION_V1.md`
+   — roles, how work flows, exact-action GO, reporting.
    Then read `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V1.md`
    — lessons from Aug–Oct 2026 and Codex's standing first task.
 1. This `AGENTS.md` is the active ZYRA bootstrap. Archived Claude/Fable files
@@ -120,16 +120,12 @@ Rules live in the documents below, not here. Read them in this order:
    — authority, decision framework, findings-become-actions (§6).
 3. `SYSTEM/DOCUMENTS/MASTER_CONTRACTS/ZYRA_EXECUTION_CURRENT_VERSION_V5.md` — how work moves
    from idea to code; the §3.2 pre-implementation checklist.
-4. `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md` — decisions register
-   (permanent team structure: AD-AIOS-107; superseded overlays
-   AD-AIOS-108/109/110/111 — current roles are in the Core rules at the top;
-   check the live NEXT IDENTIFIER before
-   drafting entries).
-5. `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md` — open actions
-   register.
+4. `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md` (827 KB) and
+   `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md` (1.4 MB) — **search by
+   DR/OA ID, never read whole.** Check the live NEXT IDENTIFIER before drafting entries.
 6. `SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md` —
-   generated map of every governed document ("where does X live").
-7. `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md`
+   generated list of every governed document. (ZYRA's `MAP.md` replaces it in phase 4.)
+7. `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`
    — required as-built repository memory for meaningful work.
 
 Roles: the Core rules at the top of this file (V2). AD-AIOS-097 → 099 → 100 → 105 →

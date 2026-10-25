@@ -25979,9 +25979,35 @@ Automation:  Manual; no scheduled reminder or external message.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): 308 (OA-001 through OA-ZYRA-308,
+OA-ZYRA-309
+Title:       ZYRA blueprint — record every screen, action, rule, table and behaviour so
+             the app could be rebuilt from the documents alone
+Category:    Product documentation / Continuity
+Priority:    HIGH (Founder request, 25 Oct 2026)
+Status:      OPEN - starts after group phase 3 (OA-AIOS-406). Documentation only, allowed
+             under the build freeze.
+Owner:       Fable writes from the code and existing specs · Founder confirms intent
+             where the code and documents disagree
+Authority:   Founder direction 25 Oct 2026; AD-AIOS-112 decision (n)
+Scope:       342 Dart files / 171,658 lines; 90 screens; 62 tables, 210 database
+             functions, 229 migrations; 459 tests; 23 APP feature folders; 46 handovers.
+Sections:    1 screen map (every screen, how you reach it, who sees it, every button and
+             its effect, empty/loading/error states) · 2 rules and behaviour per feature ·
+             3 data (tables, links, security rules, functions, storage, server functions) ·
+             4 outside connections · 5 look and feel (colours, fonts, spacing, components,
+             haptics, motion) · 6 build and release · 7 trace (DR links + code paths)
+Method:      Generated inventories from code first (screens, navigation, schema, theme),
+             then one plain-words document per feature with a Knowledge Routing header,
+             filed in ZYRA's new PRODUCT/ folder; the code wins where documents disagree
+             and every difference is flagged to the Founder.
+Acceptance:  For sample screens, the blueprint alone explains everything the screen shows
+             and does; MAP.md routes to every feature document.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-309 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-310 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

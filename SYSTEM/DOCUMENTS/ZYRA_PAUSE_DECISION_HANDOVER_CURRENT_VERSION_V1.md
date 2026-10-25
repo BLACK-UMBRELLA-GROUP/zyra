@@ -8,7 +8,7 @@
 **Documentation verifier:** PENDING — Fable has not yet reconciled this handover against disk  
 **Authority:** Founder direct Shared Pause Decision brief, 2026-08-25  
 **Register:** OA-ZYRA-261 (assigned by Fable, 2026-08-25 — see §13)  
-**Governance:** `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md`  
+**Governance:** `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`  
 **Migration authority:** repository migration authorised; live application was not authorised and did not occur
 
 ---
@@ -339,7 +339,7 @@ performed.
 | Truth layer | Current authority/status |
 |---|---|
 | Founder intent | Direct Shared Pause Decision brief, 2026-08-25 |
-| Shared implementation governance | `BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md` |
+| Shared implementation governance | `BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md` |
 | Product Pause specification | **PENDING Fable supersession**; V3 is now documented as implementation-stale |
 | As-built implementation | This handover plus the live hashes in §8 |
 | Database production state | Old live schema; staged migration explicitly unapplied |

@@ -7,7 +7,7 @@
 **Owner:** Founder
 **Author:** Fable (Documentation Owner)
 **Latest addenda:** Codex under AD-AIOS-111; historical authorship retained.
-**Standard:** `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md` (`BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/`) — the ONE group-wide authority for BUILD → DOCUMENT → TRACE → HANDOVER. The concurrently-created `AIOS_HANDOVER_STANDARD_2026-08-23_V1.md` is archived and superseded.
+**Standard:** `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md` (`BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/`) — the ONE group-wide authority for BUILD → DOCUMENT → TRACE → HANDOVER. The concurrently-created `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md` is archived and superseded.
 **Register:** OA-ZYRA-247 (D14 ratification/build) · OA-ZYRA-248 (Draft 3.x restructure) · OA-ZYRA-249 (tablets, open) · OA-ZYRA-250 (listener-leak crash fix) · OA-ZYRA-251 (retired-preview cleanup) · OA-ZYRA-252 (this handover + single-source fix) · DR-ZYRA-213 / OA-ZYRA-255 (four-state production access correction).
 
 ---
@@ -228,8 +228,8 @@ Two concurrency events are preserved. First, the retired preview cleanup was
 performed in parallel; the module was removed from SOURCE and archived, while
 the test was subsequently rebuilt against current D14/GNContext architecture.
 Second, two handover standards were drafted concurrently. The duplicate
-`AIOS_HANDOVER_STANDARD_2026-08-23_V1.md` is explicitly superseded; the ONE
-authority is `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md`. No OA
+`IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md` is explicitly superseded; the ONE
+authority is `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`. No OA
 identifier collision occurred: the live registers were re-read and existing
 OA-AIOS-363/OA-ZYRA-251/252 entries were updated instead of appended again.
 
