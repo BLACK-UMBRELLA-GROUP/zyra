@@ -1,0 +1,651 @@
+{
+  "schema_version": 1,
+  "record_kind": "finite-local-evidence-reconciliation",
+  "date": "2026-10-07",
+  "coordinator_chat": {
+    "title": "ZYRA ADMIN",
+    "thread_id": "01a0d8fc-c55d-7b01-ae20-e4b293c7885b"
+  },
+  "started_at": "2026-10-07T11:28:12Z",
+  "authority": {
+    "type": "previously independently verified direct Founder instruction",
+    "turn_id": "01a115fa-d7cb-70c0-817e-cddf4563af9a",
+    "human_message_id": "01a115fa-d868-7000-8887-7438092859c9",
+    "scope": "bounded reversible private local work while Founder away; stop when unsure",
+    "new_authority_from_other_ai": false,
+    "reply_to_root_authority_not_established": true
+  },
+  "state": {
+    "private_evidence_filed": true,
+    "internal_verification_only": true,
+    "founder_acceptance": false,
+    "public_release": "blocked",
+    "overall_percent": 30,
+    "score_basis": "carried provisional release-workstream position, not newly calculated",
+    "uplift_percentage_points": 0,
+    "new_accepted_gates": 0,
+    "score_dashboard_owner": "ZYRA FINAL REALEASE"
+  },
+  "record_changes": {
+    "shared_register_writer": "ZYRA ADMIN",
+    "owning_actions": [
+      "OA-AIOS-392",
+      "OA-ZYRA-301 Action 6",
+      "OA-ZYRA-305"
+    ],
+    "new_notes": 3,
+    "new_ids": 0,
+    "status_changes": 0,
+    "owner_changes": 0,
+    "closures": 0,
+    "next_identifiers_unchanged": [
+      "OA-AIOS-394",
+      "OA-ZYRA-306"
+    ],
+    "verification": {
+      "group": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V1.md",
+        "before": {
+          "bytes": 1028567,
+          "sha256": "9455b15d00f47ee1598693283c65e3dbc03dee8f7073df77124f86e7f938d536"
+        },
+        "after": {
+          "bytes": 1031831,
+          "sha256": "2702684f9fa88ea63086cf5cae6822d7ebecc0e3780ebc46e25ae36b72757a75"
+        },
+        "backup": {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/ARCHIVE/REGISTER_BACKUPS/20261007113338Z_admin-new-completions/GROUP_OUTSTANDING_ACTIONS_V1.before.md",
+          "bytes": 1028567,
+          "sha256": "9455b15d00f47ee1598693283c65e3dbc03dee8f7073df77124f86e7f938d536"
+        },
+        "notes": [
+          {
+            "oa": "OA-AIOS-392",
+            "occurrences": 1,
+            "bytes": 3264,
+            "correctOwner": true
+          }
+        ],
+        "addedBytes": 3264,
+        "inverseExact": true,
+        "allOtherBytesUnchanged": true,
+        "nextIdentifierLines": [
+          "NEXT IDENTIFIER:\\s+(AD-\\d+)` extraction regex with the same",
+          "NEXT IDENTIFIER are held only in the footer at end of file.",
+          "NEXT IDENTIFIER:      OA-AIOS-394"
+        ]
+      },
+      "zyra": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md",
+        "before": {
+          "bytes": 1375579,
+          "sha256": "430fbb7b887ae7850f38b092b61a6d2614ef6702d56814beec995400b7d7a1e2"
+        },
+        "after": {
+          "bytes": 1384080,
+          "sha256": "243f45dbbcb9fe640d6966b110c8e6436543673392b3359de619525682559069"
+        },
+        "backup": {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/ARCHIVE/REGISTER_BACKUPS/20261007113338Z_admin-new-completions/ZYRA_OUTSTANDING_ACTIONS_V2.before.md",
+          "bytes": 1375579,
+          "sha256": "430fbb7b887ae7850f38b092b61a6d2614ef6702d56814beec995400b7d7a1e2"
+        },
+        "notes": [
+          {
+            "oa": "OA-ZYRA-301",
+            "occurrences": 1,
+            "bytes": 3144,
+            "correctOwner": true
+          },
+          {
+            "oa": "OA-ZYRA-305",
+            "occurrences": 1,
+            "bytes": 5357,
+            "correctOwner": true
+          }
+        ],
+        "addedBytes": 8501,
+        "inverseExact": true,
+        "allOtherBytesUnchanged": true,
+        "nextIdentifierLines": [
+          "NEXT IDENTIFIER: OA-ZYRA-306 (Enterprise format, active"
+        ]
+      }
+    }
+  },
+  "family": {
+    "local_defects_repaired": 1,
+    "method": "_submit",
+    "new_unique_cases": 4,
+    "case_names": [
+      "same owner",
+      "A→B",
+      "A→B→A",
+      "disposal"
+    ],
+    "executions": 12,
+    "pre": {
+      "pass": 1,
+      "fail": 3
+    },
+    "post": {
+      "pass": 4,
+      "fail": 0
+    },
+    "final": {
+      "pass": 4,
+      "fail": 0
+    },
+    "previous_targeted_cohort": 12,
+    "cumulative_targeted_cohort": 16,
+    "previous_cases_rerun": false,
+    "whole_app_test": false,
+    "main_runtime_rerun": false,
+    "main_moving_source_read": false,
+    "sealed_outputs_freshly_verified": 16,
+    "protected_inputs_count": 68,
+    "protected_inputs_guard": "dated worker/internal-reader evidence, not fresh ADMIN whole-tree verification",
+    "observation_ms": 500,
+    "elapsed_from_mount_ms": 1752,
+    "first_poll_ms": 8000,
+    "already_dispatched_write_may_settle": true,
+    "failure_retry_preservation": "static, not separately measured controls",
+    "analyzer_scope": "source and fixture only",
+    "final_analyzer_exit": 0,
+    "analyzer_no_issues": true,
+    "new_ipa_or_physical_or_provider_acceptance": false,
+    "static_proof": {
+      "staticSealedReconstruction": {
+        "sourceBeforeBytes": 357006,
+        "sourceAfterBytes": 357417,
+        "sourceAfterSHA256": "ef2effd3e0364eb9274c8c77ea3a167440df66d4f122a1a8fb16e7b155b40146",
+        "outsideBytes": 356017,
+        "outsideSHA256": "91be8f933d0f45cecfa9a9638003155dce1b02ffa0330abbf545c98c5d197f37",
+        "inverse": true,
+        "notFreshMovingSource": true,
+        "documentBeforeBytes": 151722,
+        "documentAfterBytes": 158667,
+        "documentAfterSHA256": "277cfd374f55c92687289d969fe9cdfc7c9fdf1c148167962796e3143fc4f38b",
+        "notFreshMovingHandover": true
+      },
+      "rawPostChecks": [
+        {
+          "name": "POST_RUN",
+          "bytes": 2283,
+          "sha256": "4772da7acd97b0b2fd149b1aab3d6b5892f5ff0c15537e41cc7c1826caa9dddd",
+          "equal": true,
+          "exit": 0,
+          "counts": {
+            "uniqueNew": 4,
+            "executions": 4,
+            "pass": 4,
+            "fail": 0,
+            "compileFailures": 0
+          }
+        },
+        {
+          "name": "POST_FINAL_RUN",
+          "bytes": 2283,
+          "sha256": "4772da7acd97b0b2fd149b1aab3d6b5892f5ff0c15537e41cc7c1826caa9dddd",
+          "equal": true,
+          "exit": 0,
+          "counts": {
+            "uniqueNew": 4,
+            "executions": 4,
+            "pass": 4,
+            "fail": 0,
+            "compileFailures": 0
+          }
+        }
+      ],
+      "PREMeasured": {
+        "uniqueNewCases": 4,
+        "flutterInvocations": 1,
+        "executions": 4,
+        "pass": 1,
+        "fail": 3,
+        "compileFailures": 0,
+        "exitCode": 1,
+        "passed": [
+          "Family submission retains its starting lifetime: same owner"
+        ],
+        "failed": [
+          "Family submission retains its starting lifetime: A-B",
+          "Family submission retains its starting lifetime: A-B-A",
+          "Family submission retains its starting lifetime: disposed"
+        ],
+        "observationWindowMs": 500,
+        "elapsedFromMountMs": 1752,
+        "firstPollMs": 8000,
+        "sourceChangeByThisAgent": false,
+        "fixtureAssertionRelaxation": false,
+        "errorSuppression": false,
+        "qualification": "PRE expected-length assertion fails first in three cases. Printed request/actor/commit/read counters are raw observations; subsequent assertions in failed cases were not all executed."
+      }
+    }
+  },
+  "layout": {
+    "identities": 9,
+    "coupled": true,
+    "whole_body_fit": 6,
+    "count_text_containment": 3,
+    "phase_routes": [
+      1,
+      2,
+      3
+    ],
+    "held_for_founder": true,
+    "decision": "body-scroll between unchanged fixed cues",
+    "independent_repairs": 0,
+    "welcome_pages": false,
+    "source_edit_count": 0
+  },
+  "active_followup": {
+    "lead_chat": "ZYRA APP BUILD",
+    "method": "_loadOnce",
+    "status": "active and unmeasured as of packet status read",
+    "proven_second_defect": false,
+    "overlapped_by_admin": false
+  },
+  "marketing": {
+    "private_variants": 9,
+    "master_briefs": 3,
+    "text_storyboard_beats": 39,
+    "beats_by_brief": {
+      "B01": 12,
+      "B02": 15,
+      "B03": 12
+    },
+    "candidate_platforms": [
+      "TikTok",
+      "Instagram",
+      "Facebook"
+    ],
+    "informational_index_only": true,
+    "section_bindings": [
+      {
+        "id": "V01",
+        "sha256": "20ce4b3a78352a8aec45430c0f894bcb0350d5b9959f1afdf992d539d8538d62",
+        "bytes": 1792,
+        "beats": 4
+      },
+      {
+        "id": "V02",
+        "sha256": "2d5914058dfbb3fd203f0d75d0a9cb8873bbe705afadc39fbc223424795f4eaf",
+        "bytes": 1905,
+        "beats": 4
+      },
+      {
+        "id": "V03",
+        "sha256": "61400ca997f652f5aec5ad04c1ebae2c2e6a8b3442a2151046c0219f2924032b",
+        "bytes": 2055,
+        "beats": 4
+      },
+      {
+        "id": "V04",
+        "sha256": "ffdb8be403eacf25c0bf4d816e03c21c9563b57e958a569aca157af7b4d47156",
+        "bytes": 2142,
+        "beats": 5
+      },
+      {
+        "id": "V05",
+        "sha256": "f8c5c938ef5e87cf4b13fe02a8e6ce81d9d2181605021bd93428f42020e9ee85",
+        "bytes": 2376,
+        "beats": 5
+      },
+      {
+        "id": "V06",
+        "sha256": "422afa27b6477892881bf087138412f34a786be4e747e0993d3af85b7353a644",
+        "bytes": 2351,
+        "beats": 5
+      },
+      {
+        "id": "V07",
+        "sha256": "7ada2e5b72844444c0688fb8e87da94c91fb212581381e939cffd13e3f1ade4e",
+        "bytes": 1901,
+        "beats": 4
+      },
+      {
+        "id": "V08",
+        "sha256": "1b2905273cf49ffd6506ac247d5acce9fde350884b2d67a2acbb0b45e626bc5a",
+        "bytes": 1913,
+        "beats": 4
+      },
+      {
+        "id": "V09",
+        "sha256": "cc6c6c4836c765e04a53d583a1d29124c94bd6d3e2543637fe2642e5218a7ad5",
+        "bytes": 2045,
+        "beats": 4
+      }
+    ],
+    "input_bindings": 8,
+    "publication_holds": 18,
+    "selected_assets": 0,
+    "selected_accounts": 0,
+    "selected_destinations": 0,
+    "selected_owners": 0,
+    "selected_schedules": 0,
+    "selected_budget": false,
+    "founder_go": false,
+    "founder_acceptance": false,
+    "founder_story_input": "public name, motivation and recording not supplied; optional background unfilled",
+    "support_assertions": 305,
+    "support_assertions_basis": "attributed internal reader; not additional main executions or independent acceptance",
+    "render_rights_legibility_eligibility_public_operation_proof": false,
+    "finite_private_packet_exhausted": true
+  },
+  "primary_anchors": [
+    {
+      "path": "/Users/shakeelahmad/.codex/visualizations/2026/10/04/01a107c5-892f-7862-a354-09d22d3e62eb/release-family-submission-verified-2026-10-07.json",
+      "bytes": 19056,
+      "sha256": "8bf6ae3d6012f2eb8cd53b2cb59d4b42636db9614c5a4692029abaf471b0313f"
+    },
+    {
+      "path": "/Users/shakeelahmad/.codex/visualizations/2026/10/04/01a107c5-892f-7862-a354-09d22d3e62eb/release-marketing-platform-variants-verified-2026-10-07.json",
+      "bytes": 9402,
+      "sha256": "6d7bdf807dc6ffbd4f54aea8e2c7dad71abb9a8d997daae1e519d011ef13b6fa"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_RESULT.json",
+      "bytes": 30046,
+      "sha256": "982c55edad359e7ed577c41f75f47c0c5fff24732a8465099753755b016ff620"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_FINAL_SEAL.json",
+      "bytes": 32622,
+      "sha256": "bab6ca7b9bee59a8bb9f4f9260baf0c98604c94035063d9e0722a5f77293a3ad"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_SOURCE_PROOF.json",
+      "bytes": 3171,
+      "sha256": "de1ba7657e9d39083aee2ef466c5c34a93fa0ee8f2aeb027d4cad9c478b516fc"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_ANALYZE_FINAL.json",
+      "bytes": 850,
+      "sha256": "c65155f1587feadfb087099bb8d4de83205453bc166a11d912675c65eb25aa58"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md",
+      "bytes": 33941,
+      "sha256": "0b28de6e8e66b4c58ce3502f508f6dac6381ce9a217c16edb81cdbe0b341c2ae"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_APPROVAL_LIBRARY_DRAFT_2026-10-07_V1.json",
+      "bytes": 17393,
+      "sha256": "2e86d4c2385f32c0f33f6fc5bbe63a5869a6a043d68501fe36225c894d7c765b"
+    }
+  ],
+  "fresh_named_checks": [
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_MAIN_SCOPE.json",
+      "bytes": 30961,
+      "sha256": "fc73833af1412b015f1369f335de611e8aca49106f0afe139e8e353acf3e7fe8",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_TRUE_PRE_SOURCE.dart.txt",
+      "bytes": 357006,
+      "sha256": "f641a9a7bbaa2fa8909535bb2d019cc1e1ca5888fbab82bbcd85e46e801049cd",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_TRUE_PRE_HANDOVER.md",
+      "bytes": 151722,
+      "sha256": "2e68b09c2154817310c49481f52a6c26f4c8298aa2bc032157645061e124bba3",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_POST_RUN.json",
+      "bytes": 4058,
+      "sha256": "bd4ce47f4cea688b6df3049fb8ea3023023e41342cdcedfe89c494e73b3701f8",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_SOURCE_PROOF.json",
+      "bytes": 3171,
+      "sha256": "de1ba7657e9d39083aee2ef466c5c34a93fa0ee8f2aeb027d4cad9c478b516fc",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_POST_RUN.log",
+      "bytes": 2283,
+      "sha256": "4772da7acd97b0b2fd149b1aab3d6b5892f5ff0c15537e41cc7c1826caa9dddd",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_FIXTURE_V1_test.dart.txt",
+      "bytes": 21760,
+      "sha256": "a3ca68986ce2b20bbec5a519c437dd24c368a0dc3ee0a139c70c76c156c99a3c",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_ANALYZE_V1.json",
+      "bytes": 1003,
+      "sha256": "1c3713a53a538b62e9ab49e21e66fb54f40808c5e2e689db4aa8acbfe6e2a3c7",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_POST_FINAL_RUN.json",
+      "bytes": 4089,
+      "sha256": "a59c7f56f050c10aff9ba0b48e105816cb868b82369bd2398626645d06f818de",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_ANALYZE_FINAL.json",
+      "bytes": 850,
+      "sha256": "c65155f1587feadfb087099bb8d4de83205453bc166a11d912675c65eb25aa58",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_FIXTURE_LOGGING_PROOF.json",
+      "bytes": 1212,
+      "sha256": "669fa95412265378e712174380dd8533aa247c8c818bc13594125a0a88d66029",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_POST_FINAL_RUN.log",
+      "bytes": 2283,
+      "sha256": "4772da7acd97b0b2fd149b1aab3d6b5892f5ff0c15537e41cc7c1826caa9dddd",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_PRE_RUN.json",
+      "bytes": 24247,
+      "sha256": "49162b6d96d88c968f9c8b2c20b80509163184c2bb93e9f5f09490228d409c2b",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_HANDOVER_PROOF.json",
+      "bytes": 7877,
+      "sha256": "f7501fc61bb8264dafe9b5e6e708afa083be531ab1c38b1607053c3a5d40f80b",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_POST_GUARD.json",
+      "bytes": 29978,
+      "sha256": "80d24796a96451e0f78ff8c1d83d9cf9a962351dbd5e8433754d4623bdc5244f",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_LIFETIME_2026_10_07_RESULT.json",
+      "bytes": 30046,
+      "sha256": "982c55edad359e7ed577c41f75f47c0c5fff24732a8465099753755b016ff620",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_CONTENT_BRIEF_PACK_DRAFT_2026-10-06_V1.md",
+      "bytes": 21975,
+      "sha256": "30a4689d011ccce49bae9e548048faab170c8184f2b069cd5d792516b822ae3c",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_CLAIMS_DRAFT_2026-10-06_V1.md",
+      "bytes": 26165,
+      "sha256": "0055efc0a2fd80c24e3bbd05b1acda8154cde554dba448fdb9167bb268f710f3",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_MEDIA_RIGHTS_MANIFEST_DRAFT_2026-10-06_V1.md",
+      "bytes": 31503,
+      "sha256": "f8ff00bd993cb5eb8d59c5a2641b8cdd1ae7ed641fa5351a1177f76a17961db8",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_CHANNEL_PURPOSE_DRAFT_2026-10-06_V1.md",
+      "bytes": 24003,
+      "sha256": "576d34efe5217ce41c0021cb941b7f73f5afe0cd5fa895bf99d1ea75981fea06",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/BUSINESS/ZYRA MARKETING SYSTEM/ZYRA_MARKETING_SYSTEM_CURRENT_VERSION_V4.md",
+      "bytes": 10111,
+      "sha256": "6ee1a484a05e4fde68e57409aebda5417e5dd1c98817402ea9877fbe11d6698d",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/DOCUMENTS/ZYRA_MARKETING_COMMAND_CENTRE_HANDOVER_CURRENT_VERSION_V1.md",
+      "bytes": 9907,
+      "sha256": "f7451d826314746005bfc93e95b8215092715e97fa83cf1af25f9b9ae1f3b2b0",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/BUSINESS/ZYRA PRICING/ZYRA_PRICING_CURRENT_VERSION_V6.md",
+      "bytes": 10420,
+      "sha256": "7efea28db1723223cb6da15b4a316b059ccf0c8a8c58dae5b0f96e2b7db090fb",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/DOCUMENTS/ZYRA_GN_HANDOVER_CURRENT_VERSION_V3.md",
+      "bytes": 30913,
+      "sha256": "603b0c7d0a642a36a8ae2342f4c884b444150385070804ce560b2bd8782c0efd",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/.codex/visualizations/2026/10/04/01a107c5-892f-7862-a354-09d22d3e62eb/release-family-submission-verified-2026-10-07.json",
+      "bytes": 19056,
+      "sha256": "8bf6ae3d6012f2eb8cd53b2cb59d4b42636db9614c5a4692029abaf471b0313f",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/.codex/visualizations/2026/10/04/01a107c5-892f-7862-a354-09d22d3e62eb/release-marketing-platform-variants-verified-2026-10-07.json",
+      "bytes": 9402,
+      "sha256": "6d7bdf807dc6ffbd4f54aea8e2c7dad71abb9a8d997daae1e519d011ef13b6fa",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md",
+      "bytes": 33941,
+      "sha256": "0b28de6e8e66b4c58ce3502f508f6dac6381ce9a217c16edb81cdbe0b341c2ae",
+      "matched": true
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_APPROVAL_LIBRARY_DRAFT_2026-10-07_V1.json",
+      "bytes": 17393,
+      "sha256": "2e86d4c2385f32c0f33f6fc5bbe63a5869a6a043d68501fe36225c894d7c765b",
+      "matched": true
+    }
+  ],
+  "retained": {
+    "prior_mock_groups": 9,
+    "prior_mock_assertions": 102,
+    "mock_rerun_here": false,
+    "operational_traces_not_run": 8,
+    "founder_holds": [
+      "operator/controller and initial scope",
+      "trained duty/backup/appeal/privacy human coverage",
+      "applicable completed privacy/safety/child-access assessments",
+      "lawful purpose-specific lifecycle/retention/rights/backup policy",
+      "exact isolated future operational-rehearsal package plus separate GO"
+    ],
+    "critical_production_gates": [
+      "F01",
+      "F02",
+      "F03"
+    ]
+  },
+  "boundaries": {
+    "live_changes": 0,
+    "app_source_edits_by_admin": 0,
+    "dashboard_edits": 0,
+    "public_actions": 0,
+    "store_actions": 0,
+    "spend": 0,
+    "other_chat_messages": 0,
+    "schedule_or_preference_changes": 0,
+    "paused_job_resumption": false,
+    "new_scheduled_run": false,
+    "duplicate_aios_schedule_receipt": false,
+    "git": false,
+    "private_credentials_access": false
+  },
+  "diagnostics": [
+    {
+      "kind": "read-only verifier owner-heading assumption",
+      "result": "stopped before writes; corrected owner-line parser passed"
+    }
+  ],
+  "verified_at": "2026-10-07T11:45:25Z",
+  "report": {
+    "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_ADMIN_NEW_COMPLETIONS_RECONCILIATION_2026-10-07_V1.md",
+    "bytes": 11361,
+    "sha256": "3b96a48f8d9448f6567d36f71b205c93c7498efdca43cf4be3f4d43d7be4a7ea"
+  },
+  "post_filing_internal_reader": {
+    "result": "PASS",
+    "scope": "finite read-only post-filing check",
+    "report_reviewed": {
+      "bytes": 11032,
+      "sha256": "79628d14602699a1ff22a7e840a25eea94005b4ec553240ff146c4c9a5bb6ba9"
+    },
+    "registers_match": true,
+    "inverse_full_backups": true,
+    "correct_oa_bindings": true,
+    "all_other_bytes_unchanged": true,
+    "no_substantive_discrepancy": true,
+    "no_moving_source_or_dashboard_reads": true,
+    "no_writes": true,
+    "independent_founder_acceptance": false,
+    "notes": [
+      {
+        "oa": "OA-AIOS-392",
+        "line": 19705,
+        "lines": 43,
+        "bytes": 3264
+      },
+      {
+        "oa": "OA-ZYRA-301 Action 6",
+        "line": 23614,
+        "lines": 42,
+        "bytes": 3144
+      },
+      {
+        "oa": "OA-ZYRA-305",
+        "line": 25180,
+        "lines": 68,
+        "bytes": 5357
+      }
+    ]
+  },
+  "final_main_readback": {
+    "passed": true,
+    "files": [
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_ADMIN_NEW_COMPLETIONS_RECONCILIATION_2026-10-07_V1.md",
+        "bytes": 11361,
+        "sha256": "3b96a48f8d9448f6567d36f71b205c93c7498efdca43cf4be3f4d43d7be4a7ea"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V1.md",
+        "bytes": 1031831,
+        "sha256": "2702684f9fa88ea63086cf5cae6822d7ebecc0e3780ebc46e25ae36b72757a75"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md",
+        "bytes": 1384080,
+        "sha256": "243f45dbbcb9fe640d6966b110c8e6436543673392b3359de619525682559069"
+      }
+    ]
+  },
+  "filing_outcome": "complete; public release remains blocked"
+}

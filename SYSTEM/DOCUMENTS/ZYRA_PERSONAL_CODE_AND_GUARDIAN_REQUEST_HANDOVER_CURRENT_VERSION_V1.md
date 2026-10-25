@@ -367,7 +367,7 @@ thirty-day request is not warned at day five, and proves logically expired
 requests cannot be declined or cancelled. It executed once and passed.
 
 Sanitised replay evidence is retained at
-`SYSTEM/RESOURCES/REPORTS/OA-ZYRA-289_2026-09-17_FINAL_REPLAY/`:
+`REPORTS/CURRENT/OA-ZYRA-289_2026-09-17_FINAL_REPLAY/` (was `SYSTEM/RESOURCES/REPORTS/…` until 25 Oct 2026):
 
 - `replay-migration-markers.log` — 214 lines: three setup markers plus 211
   migration markers; SHA-256

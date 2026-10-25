@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**294 actions: 124 open or unclear, 170 closed.**
+**295 actions: 125 open or unclear, 170 closed.**
 
 ## Open
 
@@ -142,6 +142,7 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-307 | Review Browse Three Dot Menu and Ended Archive Boundaries | OPEN — Founder requested reminder after gallery selection | High before adoptin… |
 | OA-ZYRA-308 | Founder Choice of Journey Navigation Icon | OPEN — Couple selected, client verified and locally delivered; Founde… | Normal |
 | OA-ZYRA-309 | ZYRA blueprint — record every screen, action, rule, table and behaviour so the app could … | OPEN - starts after group phase 3 (OA-AIOS-406). Documentation only, … | HIGH (Founder reque… |
+| OA-ZYRA-310 | Visual regression baselines are out of date - all 124 approved goldens fail | OPEN - found by Fable on 25 Oct while checking OA-AIOS-408. The Found… | MEDIUM - the visual… |
 
 ⚠️ = status wording not recognised as open or closed (19). Fix the wording in the register.
 

@@ -1,0 +1,523 @@
+{
+  "title": "ZYRA private platform-variant approval library",
+  "date": "2026-10-07",
+  "timezone": "Europe/London",
+  "version": 1,
+  "status": "UNAPPROVED_NOT_FOR_PUBLICATION",
+  "artifactPurpose": "Informational offline review index only; not an import, state file, schedule or approval token.",
+  "documentOnly": true,
+  "nonExecutable": true,
+  "notAnAIOSStateFile": true,
+  "runtimeImportAuthorised": false,
+  "authority": {
+    "model": "AD-AIOS-111 / Founder–Codex V2",
+    "localPreparationOnly": true,
+    "humanRestartTurn": "01a115fa-d7cb-70c0-817e-cddf4563af9a",
+    "humanRestartMessage": "01a115fa-d868-7000-8887-7438092859c9",
+    "founderAway": true,
+    "publicExecutionAuthorised": false
+  },
+  "trace": [
+    "OA-ZYRA-301 Action 6",
+    "OA-AIOS-392 REC-009",
+    "OA-AIOS-390 — destination dependency"
+  ],
+  "report": {
+    "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md",
+    "bytes": 33941,
+    "sha256": "0b28de6e8e66b4c58ce3502f508f6dac6381ce9a217c16edb81cdbe0b341c2ae",
+    "exactSectionHashRule": "UTF-8 bytes from variant heading through the byte immediately before the next level-two heading, including trailing newlines."
+  },
+  "coverage": {
+    "masterBriefs": 3,
+    "candidateVariants": 9,
+    "candidatePlatforms": [
+      "TikTok",
+      "Instagram",
+      "Facebook"
+    ],
+    "storyboardBeats": 39,
+    "selectedPlatformCount": 0
+  },
+  "selectedAssets": [],
+  "selectedChannels": [],
+  "selectedPublicAccounts": [],
+  "selectedDestinations": [],
+  "selectedPublicOwners": [],
+  "selectedSchedules": [],
+  "selectedBudgets": [],
+  "founderGo": null,
+  "founderAccepted": null,
+  "releaseGateAcceptance": null,
+  "holds": [
+    {
+      "id": "C01",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C02",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C03",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C04",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C05",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C06",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C07",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C08",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C09",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C10",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C11",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C12",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C13",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C14",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C15",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C16",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C17",
+      "status": "HOLD",
+      "publicationCleared": false
+    },
+    {
+      "id": "C18",
+      "status": "HOLD",
+      "publicationCleared": false
+    }
+  ],
+  "inputAnchors": [
+    {
+      "id": "BRIEF",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_CONTENT_BRIEF_PACK_DRAFT_2026-10-06_V1.md",
+      "sha256": "30a4689d011ccce49bae9e548048faab170c8184f2b069cd5d792516b822ae3c",
+      "bytes": 21975
+    },
+    {
+      "id": "CLAIMS",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_CLAIMS_DRAFT_2026-10-06_V1.md",
+      "sha256": "0055efc0a2fd80c24e3bbd05b1acda8154cde554dba448fdb9167bb268f710f3",
+      "bytes": 26165
+    },
+    {
+      "id": "RIGHTS",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_MEDIA_RIGHTS_MANIFEST_DRAFT_2026-10-06_V1.md",
+      "sha256": "f8ff00bd993cb5eb8d59c5a2641b8cdd1ae7ed641fa5351a1177f76a17961db8",
+      "bytes": 31503
+    },
+    {
+      "id": "PLAN",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MARKETING_CHANNEL_PURPOSE_DRAFT_2026-10-06_V1.md",
+      "sha256": "576d34efe5217ce41c0021cb941b7f73f5afe0cd5fa895bf99d1ea75981fea06",
+      "bytes": 24003
+    },
+    {
+      "id": "MARKETING",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/BUSINESS/ZYRA MARKETING SYSTEM/ZYRA_MARKETING_SYSTEM_CURRENT_VERSION_V4.md",
+      "sha256": "6ee1a484a05e4fde68e57409aebda5417e5dd1c98817402ea9877fbe11d6698d",
+      "bytes": 10111
+    },
+    {
+      "id": "HANDOVER",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/DOCUMENTS/ZYRA_MARKETING_COMMAND_CENTRE_HANDOVER_CURRENT_VERSION_V1.md",
+      "sha256": "f7451d826314746005bfc93e95b8215092715e97fa83cf1af25f9b9ae1f3b2b0",
+      "bytes": 9907
+    },
+    {
+      "id": "S01",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/BUSINESS/ZYRA PRICING/ZYRA_PRICING_CURRENT_VERSION_V6.md",
+      "sha256": "7efea28db1723223cb6da15b4a316b059ccf0c8a8c58dae5b0f96e2b7db090fb",
+      "bytes": 10420
+    },
+    {
+      "id": "S09",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/DOCUMENTS/ZYRA_GN_HANDOVER_CURRENT_VERSION_V3.md",
+      "sha256": "603b0c7d0a642a36a8ae2342f4c884b444150385070804ce560b2bd8782c0efd",
+      "bytes": 30913
+    }
+  ],
+  "observedCoordinatorEvidence": {
+    "path": "/Users/shakeelahmad/.codex/visualizations/2026/10/04/01a107c5-892f-7862-a354-09d22d3e62eb/release-readiness-update-2026-10-07.json",
+    "observedSha256": "bac2c8e1f960f2e0b658cc7f156d82868b24ae9442f1e4ad7ac52337a10f9936",
+    "observedAt": "2026-10-07 approximately 11:55 Europe/London",
+    "mutablePointInTimeEvidence": true,
+    "humanAuthoritySource": false,
+    "newReadinessScoreFromThisPacket": false
+  },
+  "variants": [
+    {
+      "id": "V01",
+      "masterBrief": "B01",
+      "candidatePlatform": "TikTok",
+      "status": "UNAPPROVED_PRIVATE_DRAFT",
+      "publicationAllowed": false,
+      "reportHeading": "V01 — B01 / TikTok",
+      "exactSectionSha256": "20ce4b3a78352a8aec45430c0f894bcb0350d5b9959f1afdf992d539d8538d62",
+      "storyboardBeatCount": 4,
+      "claimBoundary": "K01",
+      "founderPersonalInputsRequired": false,
+      "requiredUnfilledPersonalInputs": [],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V02",
+      "masterBrief": "B01",
+      "candidatePlatform": "Instagram",
+      "status": "UNAPPROVED_PRIVATE_DRAFT",
+      "publicationAllowed": false,
+      "reportHeading": "V02 — B01 / Instagram",
+      "exactSectionSha256": "2d5914058dfbb3fd203f0d75d0a9cb8873bbe705afadc39fbc223424795f4eaf",
+      "storyboardBeatCount": 4,
+      "claimBoundary": "K01",
+      "founderPersonalInputsRequired": false,
+      "requiredUnfilledPersonalInputs": [],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V03",
+      "masterBrief": "B01",
+      "candidatePlatform": "Facebook",
+      "status": "UNAPPROVED_PRIVATE_DRAFT",
+      "publicationAllowed": false,
+      "reportHeading": "V03 — B01 / Facebook",
+      "exactSectionSha256": "61400ca997f652f5aec5ad04c1ebae2c2e6a8b3442a2151046c0219f2924032b",
+      "storyboardBeatCount": 4,
+      "claimBoundary": "K01",
+      "founderPersonalInputsRequired": false,
+      "requiredUnfilledPersonalInputs": [],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V04",
+      "masterBrief": "B02",
+      "candidatePlatform": "TikTok",
+      "status": "UNAPPROVED_PRIVATE_DRAFT",
+      "publicationAllowed": false,
+      "reportHeading": "V04 — B02 / TikTok",
+      "exactSectionSha256": "ffdb8be403eacf25c0bf4d816e03c21c9563b57e958a569aca157af7b4d47156",
+      "storyboardBeatCount": 5,
+      "claimBoundary": "K02",
+      "founderPersonalInputsRequired": false,
+      "requiredUnfilledPersonalInputs": [],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V05",
+      "masterBrief": "B02",
+      "candidatePlatform": "Instagram",
+      "status": "UNAPPROVED_PRIVATE_DRAFT",
+      "publicationAllowed": false,
+      "reportHeading": "V05 — B02 / Instagram",
+      "exactSectionSha256": "f8c5c938ef5e87cf4b13fe02a8e6ce81d9d2181605021bd93428f42020e9ee85",
+      "storyboardBeatCount": 5,
+      "claimBoundary": "K02",
+      "founderPersonalInputsRequired": false,
+      "requiredUnfilledPersonalInputs": [],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V06",
+      "masterBrief": "B02",
+      "candidatePlatform": "Facebook",
+      "status": "UNAPPROVED_PRIVATE_DRAFT",
+      "publicationAllowed": false,
+      "reportHeading": "V06 — B02 / Facebook",
+      "exactSectionSha256": "422afa27b6477892881bf087138412f34a786be4e747e0993d3af85b7353a644",
+      "storyboardBeatCount": 5,
+      "claimBoundary": "K02",
+      "founderPersonalInputsRequired": false,
+      "requiredUnfilledPersonalInputs": [],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V07",
+      "masterBrief": "B03",
+      "candidatePlatform": "TikTok",
+      "status": "UNAPPROVED_TEMPLATE_HOLD",
+      "publicationAllowed": false,
+      "reportHeading": "V07 — B03 / TikTok",
+      "exactSectionSha256": "7ada2e5b72844444c0688fb8e87da94c91fb212581381e939cffd13e3f1ade4e",
+      "storyboardBeatCount": 4,
+      "claimBoundary": "K03",
+      "founderPersonalInputsRequired": true,
+      "requiredUnfilledPersonalInputs": [
+        "publicName",
+        "ownMotivation",
+        "ownRecording",
+        "optionalVerifiedBackgroundOrOmit"
+      ],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V08",
+      "masterBrief": "B03",
+      "candidatePlatform": "Instagram",
+      "status": "UNAPPROVED_TEMPLATE_HOLD",
+      "publicationAllowed": false,
+      "reportHeading": "V08 — B03 / Instagram",
+      "exactSectionSha256": "1b2905273cf49ffd6506ac247d5acce9fde350884b2d67a2acbb0b45e626bc5a",
+      "storyboardBeatCount": 4,
+      "claimBoundary": "K03",
+      "founderPersonalInputsRequired": true,
+      "requiredUnfilledPersonalInputs": [
+        "publicName",
+        "ownMotivation",
+        "ownRecording",
+        "optionalVerifiedBackgroundOrOmit"
+      ],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    },
+    {
+      "id": "V09",
+      "masterBrief": "B03",
+      "candidatePlatform": "Facebook",
+      "status": "UNAPPROVED_TEMPLATE_HOLD",
+      "publicationAllowed": false,
+      "reportHeading": "V09 — B03 / Facebook",
+      "exactSectionSha256": "cc6c6c4836c765e04a53d583a1d29124c94bd6d3e2543637fe2642e5218a7ad5",
+      "storyboardBeatCount": 4,
+      "claimBoundary": "K03",
+      "founderPersonalInputsRequired": true,
+      "requiredUnfilledPersonalInputs": [
+        "publicName",
+        "ownMotivation",
+        "ownRecording",
+        "optionalVerifiedBackgroundOrOmit"
+      ],
+      "unresolvedChecks": [
+        "visualAudioFontTemplateRights",
+        "likenessVoiceConsentIfApplicable",
+        "finalRenderReadTimeAndPrivacy",
+        "exactAccountAndSecurity",
+        "destinationOrNoPublicRoute",
+        "eligibilityAndResponseCapacity",
+        "finalFounderGo"
+      ],
+      "selectedAssets": [],
+      "exactPublicAccount": null,
+      "acceptedPublicDestination": null,
+      "publicOwner": null,
+      "publicationSchedule": null,
+      "advertisingBudget": null,
+      "founderGo": null,
+      "founderAccepted": null
+    }
+  ],
+  "internalDocumentaryChecks": {
+    "requiredFieldsPassed": 9,
+    "coveragePassed": true,
+    "sourcePinMatches": 8,
+    "completeC01QualifiedCopies": 12,
+    "b02QualifiedCopies": 6,
+    "founderTemplatesHeld": 3,
+    "explicitClaimHolds": 18,
+    "storyboardBeatCount": 39,
+    "selectedMediaCount": 0,
+    "publicUrlInCandidateCopyCount": 0,
+    "boundedSecretPatternScan": "PASS — no pattern found; not exhaustive",
+    "performedBy": "Codex internal checks/support; not independent or Founder acceptance",
+    "doesNotProve": [
+      "mediaRights",
+      "currentRuntimeCapabilities",
+      "actualRendering",
+      "mobileLegibility",
+      "platformEligibility",
+      "accountAccess",
+      "publicGo",
+      "releaseAcceptance"
+    ]
+  },
+  "prestate": {
+    "reportDestinationPreviouslyAbsent": true,
+    "libraryDestinationAbsentAtPreflight": true,
+    "existingSourceFilesOverwritten": false,
+    "preEditHash": null,
+    "backup": "Not applicable: new absent destinations"
+  },
+  "recovery": "Retain/archive only these exact new drafts after checking later user changes. No source or production rollback required. Deletion needs separate authority.",
+  "nextGate": "Founder chooses or revises a candidate; supplies missing personal facts if B03; exact approved media/rights and final production preview before scoped public GO.",
+  "limitations": "No campaigns, calendars, runtime records, new accounts, public posts, provider changes, spend, legal or policy changes are created or authorised by this artifact."
+}

@@ -1,0 +1,632 @@
+{
+  "schema_version": 1,
+  "record_kind": "finite_admin_changed_evidence_reconciliation",
+  "date": "2026-10-07",
+  "owner": {
+    "chat": "ZYRA ADMIN",
+    "thread_id": "01a0d8fc-c55d-7b01-ae20-e4b293c7885b"
+  },
+  "started_at": "2026-10-07T12:29:29Z",
+  "authority": {
+    "human_turn_id": "01a1162d-16cf-71e0-a1cb-8572d814a212",
+    "human_message_id": "01a11636-37dd-7f73-86c5-c162e2a60211",
+    "independently_read": true,
+    "scope": "Routine reversible settled private/local work while Founder away; no live/public/device/security/legal/store/spend authority expansion.",
+    "only_founder_approves": true,
+    "root_packet_not_new_authority": true
+  },
+  "writer": {
+    "admin": "Only writer of the two shared OA files during this bounded filing.",
+    "release_review": "ZYRA FINAL REALEASE alone owns dashboard, scores and release evidence.",
+    "app": "ZYRA APP BUILD released Source/fixture/handover writer; idle physical pins were safely read, not edited.",
+    "website": "ZYRA WESBITE complete; no wake, Source change or runtime rerun.",
+    "messaging": "No message sent to the root chat; no independently recovered human authorization to reply there."
+  },
+  "result": {
+    "filing": "executed_and_internally_post_verified",
+    "app": "qualified_local_repair_unshipped",
+    "website": "qualified_local_measurements_unpublished",
+    "founder_go_for_shipping": false,
+    "founder_accepted": false,
+    "whole_oa_closures": 0,
+    "new_oa_ids": 0,
+    "readiness_score_changes": 0,
+    "new_accepted_gates": 0,
+    "carried_overall_percent": 30,
+    "release": "blocked",
+    "dashboard_changed": false,
+    "schedule_receipt_created": false
+  },
+  "ratings": {
+    "source_boundary": {
+      "onlyMethodChanged": "fetchAllMyRatings",
+      "sourcePre": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/lib/services/zyra_journey_service.dart",
+        "bytes": 76285,
+        "sha256": "f2f395e615bf6dd55e8208c422d2fdd95b8bd52f25419a7933b281b1704a559c",
+        "dev": 16777232,
+        "inode": 11104463,
+        "nlink": 1
+      },
+      "sourcePost": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/lib/services/zyra_journey_service.dart",
+        "bytes": 76687,
+        "sha256": "a2ebb51830cccaceb87d9000bb8af0a94401e9e67df165de7b8da72a3596a39d",
+        "dev": 16777232,
+        "inode": 11104463,
+        "nlink": 1
+      },
+      "methodPre": {
+        "bytes": 240,
+        "sha256": "9616e23fc95330eaae994657fdbb39e1894ed6f61666a93df5c1383255a9a4a4",
+        "text": "  static Future<Map<String, String>> fetchAllMyRatings(String matchId) async {\n    final out = <String, String>{};\n    for (final phase in const [1, 2, 3]) {\n      out.addAll(await fetchMyRatings(matchId, phase));\n    }\n    return out;\n  }\n"
+      },
+      "methodPost": {
+        "bytes": 642,
+        "sha256": "f81d79bc7b503ada072c715a6ed00207e00251ad9ad9eb193fb49554422b4765",
+        "text": "  static Future<Map<String, String>> fetchAllMyRatings(String matchId) async {\n    final startingUser = ZyraAuth.currentUser;\n    if (startingUser == null) return {};\n    final startingGeneration = ZyraAccountState.generation;\n    bool isCurrent() =>\n        ZyraAuth.currentUser?.id == startingUser.id &&\n        ZyraAccountState.isCurrent(startingUser.id, startingGeneration);\n\n    final out = <String, String>{};\n    for (final phase in const [1, 2, 3]) {\n      if (!isCurrent()) return {};\n      final ratings = await fetchMyRatings(matchId, phase);\n      if (!isCurrent()) return {};\n      out.addAll(ratings);\n    }\n    return out;\n  }\n"
+      },
+      "outside": {
+        "bytes": 76045,
+        "sha256": "aec18d69d1daab6f321ab3bf640fb971e129c67c60a983f71606ef20ad7ffc9c",
+        "identical": true
+      },
+      "inverse": {
+        "bytes": 76285,
+        "sha256": "f2f395e615bf6dd55e8208c422d2fdd95b8bd52f25419a7933b281b1704a559c",
+        "identicalToTruePre": true
+      },
+      "fetchMyRatings": {
+        "bytes": 743,
+        "sha256": "b263e76cfda419b00c8bf232a01e7322c00e0ec2cd83de848526b52133497c57",
+        "unchanged": true
+      },
+      "rootIndependentlyRecomputed": true,
+      "priorJourneyScreen": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/lib/screens/journey/journey_flow_screen.dart",
+        "bytes": 357806,
+        "sha256": "9edc0341a1bd70d10c11704b82788ee48d82a86f72846818f2e681ca6bdd6c5d",
+        "dev": 16777232,
+        "inode": 12594669,
+        "nlink": 1
+      },
+      "priorFirstFamilyFixture": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/test/journey_family_read_lifetime_test.dart",
+        "bytes": 21941,
+        "sha256": "e9a16c461b6c2c4c895cc068d1da3d3275b800a54d737e5e8ca93090bfcad1da",
+        "dev": 16777232,
+        "inode": 21302058,
+        "nlink": 1
+      },
+      "priorSubmissionFixture": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/test/journey_family_submission_lifetime_test.dart",
+        "bytes": 21764,
+        "sha256": "072d0ef364a28d9549b1be04acf52ec0d4f930cc9bd041320e151e70b70a00bb",
+        "dev": 16777232,
+        "inode": 21295876,
+        "nlink": 1
+      },
+      "previousScreenMethodsUnchanged": {
+        "loadOnceBytes": 1652,
+        "submitBytes": 1400
+      },
+      "oldIPA": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/build/ios/ipa/ZYRA.ipa",
+        "bytes": 25581029,
+        "sha256": "da89aff38201eee83bb0f3685b09a6c1350b9853e34bee831c99e9a44940fca0",
+        "dev": 16777232,
+        "inode": 19038780,
+        "nlink": 1
+      },
+      "oldIPAOnly": true
+    },
+    "main_fresh_precise_proof": {
+      "outsideBytes": 76045,
+      "outsideSha256": "aec18d69d1daab6f321ab3bf640fb971e129c67c60a983f71606ef20ad7ffc9c",
+      "inverseTrue": true,
+      "beforeMethodBytes": 240,
+      "afterMethodBytes": 642,
+      "fetchMyRatingsBytes": 743,
+      "fetchMyRatingsSha256": "b263e76cfda419b00c8bf232a01e7322c00e0ec2cd83de848526b52133497c57",
+      "fetchMyRatingsUnchanged": true
+    },
+    "fresh_pins": [
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/lib/services/zyra_journey_service.dart",
+        "bytes": 76687,
+        "sha256": "a2ebb51830cccaceb87d9000bb8af0a94401e9e67df165de7b8da72a3596a39d"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE/test/journey_family_ratings_read_lifetime_test.dart",
+        "bytes": 23018,
+        "sha256": "8026239cb740e6891b776a48ce12469c3938895bcca0be9ac7550d7acd0de9ee"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/DOCUMENTS/ZYRA_JOURNEY_COMPATIBILITY_BOUNDARY_HANDOVER_CURRENT_VERSION_V1.md",
+        "bytes": 174610,
+        "sha256": "e9f1933c9e46080a0d7b7805d4320136b5c0bbf5d4978d18aac3ac484728ba11"
+      }
+    ],
+    "document": {
+      "prior_prefix_bytes": 166034,
+      "append_bytes": 8576,
+      "current_bytes": 174610,
+      "current_sha256": "e9f1933c9e46080a0d7b7805d4320136b5c0bbf5d4978d18aac3ac484728ba11",
+      "prefix_exact": true,
+      "section": 29
+    },
+    "controls": {
+      "new_distinct": 3,
+      "new_cases": [
+        "same owner",
+        "A-B",
+        "A-B-A"
+      ],
+      "hold": "First phase-one rating GET after both Family answer GETs finish.",
+      "pre": {
+        "executions": 3,
+        "pass": 1,
+        "fail": 2,
+        "exit_code": 1,
+        "first_failed_fixture_line": 549,
+        "expected_rating_reads": 1,
+        "actual_rating_reads": 3,
+        "later_unreached_assertions_not_credited": true
+      },
+      "post": {
+        "executions": 7,
+        "pass": 7,
+        "fail": 0,
+        "exit_code": 0,
+        "new": 3,
+        "existing_first_family_read_regressions": 4
+      },
+      "totals": {
+        "invocations": 2,
+        "executions": 10,
+        "pass": 8,
+        "intentional_pre_fail": 2
+      },
+      "accumulated": {
+        "before": 20,
+        "after": 23,
+        "other_previous_not_rerun": 16,
+        "not_release_gates": true
+      },
+      "analyzer": "Only service/new fixture/first-read fixture; exit0, no issues. Not whole-app/native."
+    },
+    "observations": {
+      "pre_all_cases": {
+        "requests": [
+          9,
+          11
+        ],
+        "family_reads": [
+          2,
+          2
+        ],
+        "rating_reads": [
+          1,
+          3
+        ]
+      },
+      "post_same_owner": {
+        "requests": [
+          9,
+          11
+        ],
+        "family_reads": [
+          2,
+          2
+        ],
+        "rating_reads": [
+          1,
+          3
+        ],
+        "exact_summary_and_completion": true
+      },
+      "post_retired": {
+        "requests": [
+          9,
+          9
+        ],
+        "family_reads": [
+          2,
+          2
+        ],
+        "rating_reads": [
+          1,
+          1
+        ],
+        "later_calls": 0,
+        "stale_publication": false
+      },
+      "retired_ui_was_already_hidden_in_pre": true,
+      "synthetic_observation_ms": 500,
+      "end_from_mount_ms": 1752,
+      "initial_poll_ms": 8000
+    },
+    "limits": [
+      "Phase-one hold only; later phases, other callers/polls, already-visible snapshots, native remount and widget disposal after rating dispatch not newly measured.",
+      "Existing public mock-only One setter only in same-owner for exact returned-value-dependent summary; synthetic Guardian-ready and font prerequisites. No receipt, admission, RLS or real JWT proof.",
+      "Empty return implemented/source-verified; already-dispatched request may settle, not cancelled.",
+      "Old IPA unchanged only; not a new build, install, launch or repair delivery."
+    ],
+    "evidence": {
+      "root_receipt": {
+        "path": "/Users/shakeelahmad/.codex/visualizations/2026/10/04/01a107c5-892f-7862-a354-09d22d3e62eb/release-family-ratings-read-verified-2026-10-07.json",
+        "bytes": 40025,
+        "sha256": "e9fa1e287e55df558dc7c19fba8a8ac699a858506c4361ae062d50bb6bd3fb1d"
+      },
+      "worker_result": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_RESULT.json",
+        "bytes": 31641,
+        "sha256": "beed4ea756f3ac0f5772b1f04b500f0e4c2841a01c036bbfd02114588011992e"
+      },
+      "worker_seal": {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_FINAL_SEAL.json",
+        "bytes": 86326,
+        "sha256": "01f29871a15abb0c517e0d6e496132a297d3cdb6e31991f953d57a7a378a0cb8"
+      },
+      "embedded_raw_readback_equals_structured_seal": true,
+      "outputs": [
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_MAIN_SCOPE.json",
+          "bytes": 43123,
+          "sha256": "e99cd674ab0ef6a62ef78babbf22672e3a6a848adbebf22eaeb43cf5b0ccfcda",
+          "dev": 16777232,
+          "inode": 21306316,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_TRUE_PRE_SERVICE.dart.txt",
+          "bytes": 76285,
+          "sha256": "f2f395e615bf6dd55e8208c422d2fdd95b8bd52f25419a7933b281b1704a559c",
+          "dev": 16777232,
+          "inode": 21306317,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_TRUE_PRE_HANDOVER.md",
+          "bytes": 166034,
+          "sha256": "bac0332cce3b69b5c512b6d5b13bb51af0a9166661cf003ac3d14caee46d5e45",
+          "dev": 16777232,
+          "inode": 21306318,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_ORACLE.json",
+          "bytes": 5890,
+          "sha256": "b078eff986b7a7c721f9059b3cf933f8a382406adb1efb6cb22a7f3fbca32b7e",
+          "dev": 16777232,
+          "inode": 21306354,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_PRE_RUN.json",
+          "bytes": 47491,
+          "sha256": "a398c05f8e227fc8bfc6d7673a59ec6d0214ab335718cf0cc6284eea575340d0",
+          "dev": 16777232,
+          "inode": 21306603,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_SOURCE_PROOF.json",
+          "bytes": 5253,
+          "sha256": "8e2d732ad247485bd37f37ff5ada27e457c852a23ceb5869446ef292181a7bda",
+          "dev": 16777232,
+          "inode": 21306723,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_POST_RUN.json",
+          "bytes": 25419,
+          "sha256": "1a33f37f5f76a8a2dc30c18bfeefe86820feecdd0646639251bbe95b7dc34ad6",
+          "dev": 16777232,
+          "inode": 21307327,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_POST_RUN.log",
+          "bytes": 10431,
+          "sha256": "ee8d8ac9eabd59e67c6d5f7b68b7f2ffe9a167838ab2f728dc7fe5d1bfea34c3",
+          "dev": 16777232,
+          "inode": 21307328,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_ANALYZE.json",
+          "bytes": 1233,
+          "sha256": "259c6c97d09c6cdabe522d2c3e60ed1548ced225f68bfb03eefd48380238a949",
+          "dev": 16777232,
+          "inode": 21307499,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_HANDOVER_PROOF.json",
+          "bytes": 3650,
+          "sha256": "b54c2c78f72d11344e5cd22b44e4a4047a9e87f0b10fc4fe2edbfaf72c8c5784",
+          "dev": 16777232,
+          "inode": 21307590,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_POST_GUARD.json",
+          "bytes": 83059,
+          "sha256": "a0fbb711572fa45b6957a5e12f8dffc2016fc06c7dc8a6590f1f3eabd413777c",
+          "dev": 16777232,
+          "inode": 21307635,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_INTERNAL_REVIEW.json",
+          "bytes": 6290,
+          "sha256": "fea0ca61a651d6489f9eb51bbd1e3b4c7c3dfaa40d34493d7a7e211b83db4153",
+          "dev": 16777232,
+          "inode": 21307749,
+          "nlink": 1
+        },
+        {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_RESULT.json",
+          "bytes": 31641,
+          "sha256": "beed4ea756f3ac0f5772b1f04b500f0e4c2841a01c036bbfd02114588011992e",
+          "dev": 16777232,
+          "inode": 21307750,
+          "nlink": 1
+        }
+      ]
+    },
+    "internal_support": {
+      "reviewer": "aios_records_audit",
+      "result": "qualified PASS; no in-scope discrepancy",
+      "fresh_named_files": 123,
+      "breakdown": {
+        "protected": 106,
+        "outputs": 13,
+        "seal": 1,
+        "live": 3
+      },
+      "raw_pre_post_and_post_log_matched": true,
+      "not_whole_tree_or_fresh_historical_execution": true,
+      "no_tests_or_writes": true,
+      "writer_released": true
+    }
+  },
+  "website": {
+    "packet": "WEBSITE_READINESS_2026-10-07.6Vu03l",
+    "primary": [
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/WEBSITE_READINESS_2026-10-07.6Vu03l/REPORT.md",
+        "bytes": 7029,
+        "sha256": "0e72ba8525db76bf432ba7b6e86378de7b0755f52dd58a83a5af64ef4f96dced"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/WEBSITE_READINESS_2026-10-07.6Vu03l/DEPLOYMENT_CHECKLIST.md",
+        "bytes": 3736,
+        "sha256": "4574f79301538262af72de049b687cb994ba8d8280daf6faeebe22c8e42da313"
+      }
+    ],
+    "dedup_before": "Specific stage absent from existing OA390/OA392; older dNsRj7 stage retained.",
+    "changed_site_files": 0,
+    "pure_selector_cases": 22,
+    "source_identity_guards": 4,
+    "saved_evidence_consistency_predicates": 24,
+    "raw_resize_events": 4,
+    "stability_ms": [
+      965.7,
+      966.7,
+      967.4,
+      967.5
+    ],
+    "first_sample_limit_retained": true,
+    "duplicate_family_captures_not_independent": true,
+    "script_blocked_not_js_disabled_or_noscript": true,
+    "instrumentation_not_zero_impact_or_first_paint": true,
+    "old_build_pricing_scroll_routes_not_rerun": true,
+    "owner_attributed_preservation": "71 SITE map and25 dist copied files unchanged. V4 handover date/authority/section11 only; no publication.",
+    "internal_support": {
+      "reviewer": "aios_navigation_audit",
+      "result": "qualified PASS; no integrity/interpretation blocker",
+      "new_output_pins_matched": 66,
+      "new_manifest": {
+        "bytes": 18890,
+        "sha256": "ee243c7e7f3c989c94a276843930fdf17efd20ef7776cc3963689ac05b2a8f2a"
+      },
+      "final_observations": {
+        "bytes": 13064,
+        "sha256": "7fdc7b5512d16bb39a4b33045b93718e9b0273212f8886ba7e40764c02256cd2"
+      },
+      "final_input_pins_matched": 11,
+      "copied_dist_files_fresh_matched": 25,
+      "not_freshly_checked": [
+        "live71SITEscan",
+        "archive members",
+        "all76 prior pins",
+        "current handover",
+        "runtime cleanup"
+      ],
+      "no_writes_or_tests": true,
+      "writer_released": true
+    },
+    "remaining": [
+      "Real reduced-motion/browser-disabled-JS/noscript/Safari Family keyboard-outline-rotation/physical device/live-provider checks.",
+      "Operator/controller/privacy/operative terms/support and deletion routes/contact-only versus managed-waitlist/exact publication GO/Founder acceptance."
+    ]
+  },
+  "records": {
+    "backups": [
+      {
+        "source": {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V1.md",
+          "bytes": 1034542,
+          "sha256": "5eb38558f68e7fe28afd4d90ee87b613d952eaccdb71c021c541ddfdfa8fbf57"
+        },
+        "backup": {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/ARCHIVE/REGISTER_BACKUPS/20261007123708Z_admin-ratings-website/OUTSTANDING_ACTIONS_V1.before.md",
+          "bytes": 1034542,
+          "sha256": "5eb38558f68e7fe28afd4d90ee87b613d952eaccdb71c021c541ddfdfa8fbf57"
+        },
+        "byteExact": true
+      },
+      {
+        "source": {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md",
+          "bytes": 1389634,
+          "sha256": "c9b2d34ce681422f08c225d5d4c4c73647ad57ef270451e90e988885eb668cae"
+        },
+        "backup": {
+          "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/ARCHIVE/REGISTER_BACKUPS/20261007123708Z_admin-ratings-website/OUTSTANDING_ACTIONS_V2.before.md",
+          "bytes": 1389634,
+          "sha256": "c9b2d34ce681422f08c225d5d4c4c73647ad57ef270451e90e988885eb668cae"
+        },
+        "byteExact": true
+      }
+    ],
+    "post_verification": [
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V1.md",
+        "beforeBytes": 1034542,
+        "beforeSha256": "5eb38558f68e7fe28afd4d90ee87b613d952eaccdb71c021c541ddfdfa8fbf57",
+        "afterBytes": 1039677,
+        "afterSha256": "b2d57d6e78b7c362527ce5f7707c0ffb07bc11c92f7fdf44681391033485b9c0",
+        "addedBytes": 5135,
+        "byteExactInverse": true,
+        "allOtherBytesPreserved": true,
+        "statusOwnerAuthorityNextFieldsPreserved": true,
+        "unchangedSuffixCharacters": 20310,
+        "footerPreservedByInverse": true,
+        "actions": [
+          {
+            "id": "OA-AIOS-390",
+            "noteHeader": "ADMIN LATER WEBSITE MEASUREMENTS — 2026-10-07",
+            "addedBytes": 2525,
+            "noteSha256": "9b91a80849bdd0bbe10c484c7636dcb14f4e3a07b19849beb46af8e9ea653c7b",
+            "occurrences": 1
+          },
+          {
+            "id": "OA-AIOS-392",
+            "noteHeader": "REC013 RATINGS AGGREGATE / REC006 WEBSITE LATER EVIDENCE — 2026-10-07",
+            "addedBytes": 2610,
+            "noteSha256": "a400be012b37622e13168a98c8d87518b863454876d98f49ed20de28ea0ad3b5",
+            "occurrences": 1
+          }
+        ],
+        "tail": "FFICE_COLLABORATION_PROTOCOL V6 — all archives byte-exact; org_structure.json v5; live references retargeted; ZYRA doc index regenerated; repo-wide sweep clean with historical wording preserved).\n```\n"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md",
+        "beforeBytes": 1389634,
+        "beforeSha256": "c9b2d34ce681422f08c225d5d4c4c73647ad57ef270451e90e988885eb668cae",
+        "afterBytes": 1394631,
+        "afterSha256": "f1d12a4de0929039c26a0ada796f7013963258386fd5fc26f6ff2d29a479f28b",
+        "addedBytes": 4997,
+        "byteExactInverse": true,
+        "allOtherBytesPreserved": true,
+        "statusOwnerAuthorityNextFieldsPreserved": true,
+        "unchangedSuffixCharacters": 490,
+        "footerPreservedByInverse": true,
+        "actions": [
+          {
+            "id": "OA-ZYRA-305",
+            "noteHeader": "ADMIN RATINGS AGGREGATE REPAIR / TARGETED COHORT23 — 2026-10-07",
+            "addedBytes": 4997,
+            "noteSha256": "6f71dd0d0e9f27409b156c6cd31082ea56f6717224df8b073a923cc83b43da6a",
+            "occurrences": 1
+          }
+        ],
+        "tail": "ANDING_\n  ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)\nGOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_\n  CURRENT_VERSION_V1.md (BLACK UMBRELLA GROUP/SYSTEM/\n  ARCHITECTURE/), active 2026-07-12\n"
+      }
+    ],
+    "exact_changes": [
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V1.md",
+        "oa": "OA-AIOS-390",
+        "anchor": "             SHA-256: 714af83345af3dd3a1f42e31abf0be9cb1cdce527f0a86acb831edc7ad24d782\n\n",
+        "note": "ADMIN LATER WEBSITE MEASUREMENTS — 2026-10-07\n             Qualified local WEBSITE_READINESS_2026-10-07.6Vu03l stage only;\n             prior resize/accessibility/sitemap evidence stays dated history.\n             No new settled regression, SITE/source/test/dependency/price/copy/\n             dist change or publication. All71 scoped SITE and25 copied built\n             files match the preceding candidate; prior build/121pricing/\n             24scroll/61route results NOT rerun or counted as fresh.\n             New22 pure-selector threshold cases +4 source identity guards\n             pass; separate24 saved-observation consistency assertions pass,\n             not accessibility/device acceptance or additive browser events.\n             Exactly4 raw instrumented resize events; Family duplicate captures\n             are not independent repetitions. First observer frame retains\n             settling/offscreen Family focus; second restores full outline.\n             Frames2–60 stay corrected 965.7–967.5ms. Observer adds DOM/\n             layout/RAF work; not zero-impact, first-paint or synchronous proof.\n             CSP script-blocked local response retains4 story containers/\n             headings and disabled Family controls, native FAQ/fragments and\n             no horizontal overflow at390x844. NOT browser-JS-disabled/noscript,\n             complete body/onscreen visibility or successful initial image proof.\n             Real reduced-motion, Safari Family keyboard/outline/rotation,\n             physical device/live provider/operator/controller/privacy/terms/\n             support/deletion/contact-only-versus-waitlist/publication GO and\n             Founder acceptance remain HELD/OPEN. REC006 and whole OA stay OPEN.\n             Only V4 handover date/authority and additive section11 changed;\n             original documentary/candidate/evidence stages remain preserved.\n             Fresh main full REPORT/checklist reads; finite support pin checks\n             are internal artifact verification, not fresh runtime reruns.\n             REPORT.md —7,029B\n             SHA-256: 0e72ba8525db76bf432ba7b6e86378de7b0755f52dd58a83a5af64ef4f96dced\n             DEPLOYMENT_CHECKLIST.md —3,736B\n             SHA-256: 4574f79301538262af72de049b687cb994ba8d8280daf6faeebe22c8e42da313\n             Both under ZYRA SYSTEM/RESOURCES/REVIEWS/\n             WEBSITE_READINESS_2026-10-07.6Vu03l/. OA-AIOS-392 coordinates.\n             No status/owner/NEXT/ID/score/acceptance or public authority change.\n\n"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V1.md",
+        "oa": "OA-AIOS-392",
+        "anchor": "             Detailed worker pins/qualifications are filed in OA-ZYRA-305.\n\n",
+        "note": "REC013 RATINGS AGGREGATE / REC006 WEBSITE LATER EVIDENCE — 2026-10-07\n             Additive later stage only; earlier cohort20 and its then-unproven\n             service concern remain unchanged dated history. Existing OA305\n             now has ONE separately reproduced service-internal later-phase\n             account-lifetime defect locally repaired in fetchAllMyRatings.\n             Widget stale-publication rejection already worked before this\n             repair; this is NOT a newly reproduced stale-UI defect.\n             Three new frozen controls: same-owner,A→B,A→B→A. PRE3=1PASS/\n             2intentionalFAIL; POST3new+4first-Family-read regressions=7PASS.\n             Two invocations/10executions=8PASS/2PREfail. Accumulated20→23\n             distinct local identities, not23 rerun or accepted release gates;\n             previous16 NOT rerun. Targeted three-file analyzer clean only.\n             Main freshly matched released service/fixture/handover and exact\n             method240→642B(+402), outside76045B and inverse; fetchMyRatings\n             unchanged. No runtime/native rerun by ADMIN. Unshipped, old IPA\n             only pinned; already-dispatched phase1 may settle, not cancelled.\n             All9 coupled Phase1/2/3 question-arrival fit/count-text identities\n             remain HELD for Founder body-scroll/unchanged-fixed-cue decision.\n             Root receipt —40,025B\n             SHA-256: e9fa1e287e55df558dc7c19fba8a8ac699a858506c4361ae062d50bb6bd3fb1d\n             release-family-ratings-read-verified-2026-10-07.json.\n             REC006: qualified7Oct.6Vu03l local website evidence is now filed\n             once under existing OA390:22pureselector+4guards and separate24\n             consistency assertions;4rawresizeevents only, first-frame limits\n             retained. CSP script blocking NOT disabled-JS/noscript; instrumented\n             RAF NOT zero-impact/first-paint. Prior build/pricing/routes NOT\n             rerun; real reduced-motion/Safari/device/provider/publication HELD.\n             Both shared registers backed up whole/byte-exact before additive\n             notes. Earlier stages/status/owners/authority/NEXT/footer retained.\n             No new OA, closure, duplicate schedule receipt or workstream wake.\n             Root alone owns dashboard/scores; carried provisional30%,+0pp,\n             0newacceptedgates; critical public-release gates remain BLOCKED.\n             Worker details/remaining tests in OA305; website pins/holds in OA390.\n             Internal verification is not Founder GO/acceptance or legal clearance.\n\n"
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md",
+        "oa": "OA-ZYRA-305",
+        "anchor": "             SHA-256: 1602d73d6fd6822d59de283592585486f1c5f63cc075d5dd6effe331be45dad8\n\n",
+        "note": "ADMIN RATINGS AGGREGATE REPAIR / TARGETED COHORT23 — 2026-10-07\n             Later finite stage under verified human7Oct away-work authority;\n             message01a11636-37dd-7f73-86c5-c162e2a60211 independently read.\n             Earlier cohort20 and then-unproven ratings concern stay immutable\n             history. ONE new service-internal defect reproduced: phase2/3\n             continued after heldphase1 under changed actor/account generation.\n             Earlier widget _loadOnce ALREADY rejected stale UI in both retired\n             PRE cases. Do not describe this as a newly reproduced UI defect.\n             Only fetchAllMyRatings now captures starting actor/generation and\n             checks current before/after each phase await; retired returns{}.\n             Already-dispatched phase1 may settle; no request revocation or\n             aggregate widget-disposal API. Same-owner3phase merge unchanged.\n             Three NEW distinct frozen public controls: same-owner,A→B,A→B→A;\n             both FamilyGETs complete before FIRSTphase1ratingGET is held.\n             PRE3executions=1PASS/2FAIL,exit1; POST3new+4existing first-read\n             regressions=7PASS/0FAIL,exit0. Two Flutter invocations/10executions\n             =8PASS/2intentionalPREfail; no additional/compilation failures.\n             Accumulated distinct20→23; previous16 NOT rerun, not23executed\n             release gates/whole-app/native acceptance. Three-file analyzer\n             exit0/no issues only. Four older first-read controls are regressions,\n             not new ratings-disposal coverage.\n             PRE all3:requests9→11,Family2→2,ratings1→3. Retiredphase2/3\n             actor/rater B or returned A/newgeneration. Both retired UIs already\n             hidden; first failing assertion expects1ratingread vs3 atline549;\n             later unreached assertions not credited. POSTsameowner retains\n             3phases/exact ratings-dependent summary/completion; retired cases\n             requests9→9,Family2→2,ratings1→1, no later calls/publication.\n             500ms fake-clock window ends1752ms after mount before8s initial\n             poll, not production latency or permanent polling guarantee.\n             Strict generated.invalid SDK/widget and synthetic Guardian-ready/\n             font prerequisites; existing public mock One setter SAME-OWNER\n             ONLY for exact returned-value-dependent summary. No live paid\n             receipt/admission/JWT/RLS/server proof or suppressed errors.\n             Main full root/RESULT/seal/fixture/section29 reads and fresh\n             released-artifact pins; source PRE76285B/f2f395e615bf6dd55e8208c422d2fdd95b8bd52f25419a7933b281b1704a559c\n             →POST76687B/a2ebb51830cccaceb87d9000bb8af0a94401e9e67df165de7b8da72a3596a39d.\n             Exactmethod240→642B(+402), inverse matches wholetruePRE;\n             outside76045B identical:\n             aec18d69d1daab6f321ab3bf640fb971e129c67c60a983f71606ef20ad7ffc9c.\n             fetchMyRatings743B unchanged:\n             b263e76cfda419b00c8bf232a01e7322c00e0ec2cd83de848526b52133497c57.\n             Newfixture23018B/8026239cb740e6891b776a48ce12469c3938895bcca0be9ac7550d7acd0de9ee\n             frozen through PRE/POST. Prior JourneyScreen/Family fixtures exact.\n             Section29 append8576B preserves166034B prefix; current174610B/\n             e9f1933c9e46080a0d7b7805d4320136b5c0bbf5d4978d18aac3ac484728ba11.\n             13outputs+seal+106protected+3live named-file evidence, not whole-tree\n             or fresh historical-runtime proof. Existing IPA unchanged only;\n             no rebuild/install/launch or claim it contains any repair.\n             Later-phase holds, other callers/polls, already-visible snapshots,\n             native remount and widget disposal afterratingdispatch unmeasured.\n             All9 coupled Phase1/2/3 question-arrival fit/count-text identities\n             HELD for Founder body-scroll/unchanged-fixed-cue decision.\n             Critical F01/F02/F03 and auth/recovery/privacy/photo/admission/\n             moderation/commerce/restore/native/store/legal/public gates remain\n             OPEN. No migration/live/public/store/schedule/security action or\n             status/owner/NEXT/ID/closure/score/Founderacceptance change.\n             Carried provisional30%,+0pp,0newacceptedgates; release BLOCKED.\n             Root release-family-ratings-read-verified-2026-10-07.json —40,025B\n             SHA-256: e9fa1e287e55df558dc7c19fba8a8ac699a858506c4361ae062d50bb6bd3fb1d\n             ZYRA SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDENT_APP_CHECKS_2026-10-06/:\n             NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_RESULT.json —31,641B\n             SHA-256: beed4ea756f3ac0f5772b1f04b500f0e4c2841a01c036bbfd02114588011992e\n             NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_FINAL_SEAL.json —86,326B\n             SHA-256: 01f29871a15abb0c517e0d6e496132a297d3cdb6e31991f953d57a7a378a0cb8\n\n"
+      }
+    ],
+    "next_identifiers_preserved": {
+      "group": "OA-AIOS-394",
+      "zyra": "OA-ZYRA-306"
+    },
+    "earlier_20_stage_and_history_preserved": true
+  },
+  "remaining": {
+    "nine_coupled_layout_identities": "HELD: six fit and three count-text containment identities across phase1/2/3 question-arrival pages, pending Founder body-scroll/unchanged-fixed-cue choice.",
+    "critical_production_findings": [
+      "F01 report cascade",
+      "F02 new Main Guardian history",
+      "F03 foreign photo association"
+    ],
+    "release_gates": "Auth/recovery, SDK/privacy, photo/identity/admission/moderation, paid lifecycle/receipt authority, database-plus-photo restore, native/device/store, business/legal/public and Founder acceptance remain open.",
+    "five_founder_holds": "Operator/first-market scope; trained human cover; applicable completed privacy/safety/child-access assessments; lawful purpose/lifecycle/retention/rights/backups; exact isolated eight-case operational package and GO."
+  },
+  "prohibited_actions_performed": 0,
+  "diagnostics": {
+    "initial_method_extraction": "First diagnostic extraction included adjacent comments; exact source method strings then verified 240/642 and precise76045 outside proof. No Source writes.",
+    "truncated_register_display": "Initial 40k-limited register output was truncated; fetched complete50000-token result before parsing/reading OA390.",
+    "backup_path_check": "Initial absence checker stopped on absent parent before any write; corrected existing-ancestor check and verified absence.",
+    "patch_retry": "Tool rejected duplicate operations for same physical file before any write; regrouped two hunks under one file operation.",
+    "footer_check": "Initial location/length assumption produced false diagnostic failure; full inverse and all governance fields showed no drift. Exact unchanged suffix20310/490 chars and byte-exact inverse verified."
+  },
+  "verified_at": "2026-10-07T12:44:06Z",
+  "report": {
+    "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_ADMIN_RATINGS_AND_WEBSITE_RECONCILIATION_2026-10-07_V1.md",
+    "bytes": 9307,
+    "sha256": "647c4cdc9e5693b43cc5a0c9e58a5067fd851d07ac0b978f8ff3f6c36f0316d2"
+  },
+  "post_filing_internal_reader": {
+    "reviewer": "aios_records_audit",
+    "result": "qualified PASS",
+    "finished": true,
+    "exact_insertions": [
+      {
+        "oa": "OA-AIOS-390",
+        "lines": [
+          19001,
+          19035
+        ],
+        "bytes": 2525
+      },
+      {
+        "oa": "OA-AIOS-392",
+        "lines": [
+          19819,
+          19853
+        ],
+        "bytes": 2610
+      },
+      {
+        "oa": "OA-ZYRA-305",
+        "lines": [
+          25319,
+          25383
+        ],
+        "bytes": 4997
+      }
+    ],
+    "inverse_backups_exact": true,
+    "all_history_and_governance_preserved": true,
+    "current_register_pins_matched": true,
+    "report_pin_matched": true,
+    "required_qualifications_retained": true,
+    "companion_json_not_checked_by_reader": true,
+    "no_writes_tests_or_live_actions": true,
+    "released": true,
+    "not_founder_acceptance": true
+  },
+  "finished_at": "2026-10-07T12:47:34Z",
+  "filing_outcome": "Complete finite local filing; release remains blocked. No duplicate scheduled receipt or root-chat reply."
+}

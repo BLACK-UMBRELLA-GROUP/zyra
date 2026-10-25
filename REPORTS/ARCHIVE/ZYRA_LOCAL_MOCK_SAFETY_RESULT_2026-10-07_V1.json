@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-07",
+  "owner": "ZYRA ADMIN / Codex",
+  "stage": "FIRST_LOCAL_MOCK_RUN_NOT_OPERATIONAL_ACCEPTANCE",
+  "authority": {
+    "human_turn": "01a115fa-d7cb-70c0-817e-cddf4563af9a",
+    "human_message": "01a115fa-d868-7000-8887-7438092859c9",
+    "scope": "Routine reversible private local work; no draft policy adoption or live action."
+  },
+  "trace": [
+    "OA-AIOS-392",
+    "OA-ZYRA-305",
+    "OA-ZYRA-237",
+    "OA-AIOS-381",
+    "OA-AIOS-386"
+  ],
+  "fixture": {
+    "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_LOCAL_MOCK_SAFETY_RULES_2026-10-07_V1.cjs",
+    "bytes": 10237,
+    "sha256": "dd96f93ffb7af2c805cfef967f2c2edbc25aa08fa0ccdc062b804f4f6a0b5fbe"
+  },
+  "sources": [
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_PAPER_WALKTHROUGHS_2026-10-07_V1.md",
+      "bytes": 13467,
+      "sha256": "27621c90b871be75fa4cd1f5469defa4699c474b48b6eca57b3602a34cb3efed"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md",
+      "bytes": 37227,
+      "sha256": "4c121cfc1f7e7c1a08ee9413c964844da39ccd463599dee5d0ee47645369dcf2"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_PRIVACY_DPIA_DRAFT_2026-10-06_V1.md",
+      "bytes": 52823,
+      "sha256": "50ed99eda5954c99dcad6d20086498e62657a413afd5fb7cbe08cc311f5f4263"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_SAFETY_RIGHTS_TABLETOP_DRAFT_2026-10-06_V1.md",
+      "bytes": 10666,
+      "sha256": "f555208c7670a0b34fc15c73d9736ad220c0ff904dc665b0aeb26034026e943f"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_OPERATOR_LAUNCH_DECISION_PACKET_2026-10-06_V1.md",
+      "bytes": 18538,
+      "sha256": "5f908740e9d0250301570607ac429866619118b382cea1411219019b60b2028e"
+    }
+  ],
+  "execution": {
+    "started": {
+      "current_time": "2026-10-07 11:05:13 UTC"
+    },
+    "finished": {
+      "current_time": "2026-10-07 11:05:13 UTC"
+    },
+    "runtime": "v24.19.0",
+    "command": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node /Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_LOCAL_MOCK_SAFETY_RULES_2026-10-07_V1.cjs",
+    "exit_code": 0,
+    "chunk_id": "08f590",
+    "stdout_exact": "{\n  \"schema_version\": 1,\n  \"type\": \"PRIVATE_FICTIONAL_MOCK_RULE_CHECK\",\n  \"passed_groups\": 9,\n  \"failed_groups\": 0,\n  \"assertions\": 88,\n  \"groups\": [\n    {\n      \"id\": \"W01\",\n      \"source\": \"Safety draft §§4–5; tabletop scenario 1\",\n      \"assertions\": 9,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"W02\",\n      \"source\": \"Safety draft §5 step 1 / §6; tabletop scenario 2\",\n      \"assertions\": 18,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"W03\",\n      \"source\": \"Safety draft §§4–6; tabletop scenario 3\",\n      \"assertions\": 10,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"W04\",\n      \"source\": \"Safety draft §7; tabletop scenario 4\",\n      \"assertions\": 6,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"W05\",\n      \"source\": \"Privacy draft §6 / Safety draft §7; tabletop scenario 5\",\n      \"assertions\": 16,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"W06\",\n      \"source\": \"Privacy draft §9 / Safety draft §7; tabletop scenario 6\",\n      \"assertions\": 7,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"W07\",\n      \"source\": \"Privacy draft §9; tabletop scenario 7\",\n      \"assertions\": 6,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"W08\",\n      \"source\": \"Safety draft §§4–5; tabletop scenario 8\",\n      \"assertions\": 9,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    },\n    {\n      \"id\": \"R01\",\n      \"source\": \"Privacy draft §6 recovery; separate from eight operational scenarios\",\n      \"assertions\": 5,\n      \"outcome\": \"PASS_LOCAL_RULE_CHECK_ONLY\"\n    }\n  ],\n  \"operational_scenarios\": \"ALL_EIGHT_NOT_RUN\",\n  \"operational_rehearsals\": 0,\n  \"human_appointments\": 0,\n  \"production_imports\": 0,\n  \"external_calls\": 0,\n  \"real_person_records\": 0,\n  \"release_gate_acceptance\": 0,\n  \"founder_acceptance\": false,\n  \"qualification\": \"Only this isolated mock checker is tested, not app enforcement, staffing, lawfulness or delivery.\"\n}\n"
+  },
+  "result": {
+    "schema_version": 1,
+    "type": "PRIVATE_FICTIONAL_MOCK_RULE_CHECK",
+    "passed_groups": 9,
+    "failed_groups": 0,
+    "assertions": 88,
+    "groups": [
+      {
+        "id": "W01",
+        "source": "Safety draft §§4–5; tabletop scenario 1",
+        "assertions": 9,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "W02",
+        "source": "Safety draft §5 step 1 / §6; tabletop scenario 2",
+        "assertions": 18,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "W03",
+        "source": "Safety draft §§4–6; tabletop scenario 3",
+        "assertions": 10,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "W04",
+        "source": "Safety draft §7; tabletop scenario 4",
+        "assertions": 6,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "W05",
+        "source": "Privacy draft §6 / Safety draft §7; tabletop scenario 5",
+        "assertions": 16,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "W06",
+        "source": "Privacy draft §9 / Safety draft §7; tabletop scenario 6",
+        "assertions": 7,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "W07",
+        "source": "Privacy draft §9; tabletop scenario 7",
+        "assertions": 6,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "W08",
+        "source": "Safety draft §§4–5; tabletop scenario 8",
+        "assertions": 9,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      },
+      {
+        "id": "R01",
+        "source": "Privacy draft §6 recovery; separate from eight operational scenarios",
+        "assertions": 5,
+        "outcome": "PASS_LOCAL_RULE_CHECK_ONLY"
+      }
+    ],
+    "operational_scenarios": "ALL_EIGHT_NOT_RUN",
+    "operational_rehearsals": 0,
+    "human_appointments": 0,
+    "production_imports": 0,
+    "external_calls": 0,
+    "real_person_records": 0,
+    "release_gate_acceptance": 0,
+    "founder_acceptance": false,
+    "qualification": "Only this isolated mock checker is tested, not app enforcement, staffing, lawfulness or delivery."
+  },
+  "preservation": "Old four drafts and eight paper traces unchanged; no application or provider imported."
+}

@@ -16,7 +16,7 @@ first to-decide list.** Rule (lesson S8): every draft is decided or withdrawn wi
 
 | # | Draft | Date | Where | Why it matters |
 |---|---|---|---|---|
-| 1 | Privacy inventory and DPIA preparation packet | 6 Oct | group `SYSTEM/RESOURCES/REPORTS/ZYRA_PRIVACY_DPIA_DRAFT_2026-10-06_V1.md` | **Needed before launch** (UK GDPR) |
+| 1 | Privacy inventory and DPIA preparation packet | 6 Oct | `REPORTS/CURRENT/ZYRA_PRIVACY_DPIA_DRAFT_2026-10-06_V1.md` | **Needed before launch** (UK GDPR) |
 | 2 | Safety, NCII and human response packet | 6 Oct | group `…/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md` | **Needed before launch** |
 | 3 | Safety and rights tabletop | 6 Oct | group `…/ZYRA_SAFETY_RIGHTS_TABLETOP_DRAFT_2026-10-06_V1.md` | Tests #2 |
 | 4 | Ofcom crisis applicability addendum | 12 Oct | group `…/ZYRA_OFCOM_CRISIS_APPLICABILITY_ADDENDUM_DRAFT_2026-10-12_V1.md` | Online Safety Act duties |

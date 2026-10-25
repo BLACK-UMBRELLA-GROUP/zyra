@@ -26005,9 +26005,31 @@ Acceptance:  For sample screens, the blueprint alone explains everything the scr
 
 ------------------------------------------------------------
 
+OA-ZYRA-310
+Title:       Visual regression baselines are out of date - all 124 approved goldens fail
+Category:    Testing / UI consistency gate
+Priority:    MEDIUM - the visual safety net is not working until this is fixed
+Date:        2026-10-25
+Status:      OPEN - found by Fable on 25 Oct while checking OA-AIOS-408. The Founder ran
+             test/visual/zyra_visual_regression_test.dart: 194 pass, 124 fail, every
+             failure a 99.99% pixel difference. Cause checked by looking at one pair: the
+             approved image (30 Aug, OA-ZYRA-282 phase 3) shows the old "Dashboard" (Today /
+             Updates / Insights); the app now draws "My ZYRA" (Now / Insights). The
+             baselines predate the October redesign; the path move did not cause this (the
+             manifest-audit test, which reads the moved UI_GATE files, passes).
+Owner:       Fable prepares the review set · Founder approves each new baseline
+             (automatic_updates_allowed = false)
+Next:        After the build freeze review: list which of the 124 variants still exist,
+             retire the ones whose screens are gone, capture candidates for the rest, Founder
+             approves visually, then the approved manifest and the governed copy in
+             SYSTEM/tools/ui_gate/BASELINES are replaced together.
+Acceptance:  zyra_visual_regression_test.dart passes with Founder-approved baselines.
+
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-310 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-311 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
