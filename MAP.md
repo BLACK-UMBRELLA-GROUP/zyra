@@ -29,7 +29,7 @@ task-routes block by hand, then re-run the tool.
 | Evidence, reviews, tool state | `SYSTEM/RESOURCES/` — not mapped; open only the folder a task names | Tests pin some of these files byte for byte |
 <!-- ROUTES END -->
 
-## Documents (267 live)
+## Documents (268 live)
 
 ### APP: AUTHENTICATION
 
@@ -557,10 +557,11 @@ task-routes block by hand, then re-run the tool.
 
 ### REPORTS
 
-| ID | File | Type | Purpose | KB |
-|---|---|---|---|---|
-| DOC-ZYRA-0256 | `REPORTS/CURRENT/ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md` | REPORT | ZYRA — Journey Lifecycle Architecture | 24 |
-| DOC-ZYRA-0257 | `REPORTS/CURRENT/ZYRA_OPEN_DRAFTS_FOR_DECISION_2026-10-24.md` | REPORT · DRAFT | ZYRA — open drafts waiting for a Founder decision (2026-10-24) | 2 |
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-0256 | `REPORTS/CURRENT/ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md` | REPORT | ZYRA — Journey Lifecycle Architecture |  | 24 |
+| DOC-ZYRA-0257 | `REPORTS/CURRENT/ZYRA_OPEN_DRAFTS_FOR_DECISION_2026-10-24.md` | REPORT · DRAFT | ZYRA — open drafts waiting for a Founder decision (2026-10-24) |  | 2 |
+| DOC-ZYRA-0274 | `REPORTS/CURRENT/ZYRA_RESTRUCTURE_PLAN_2026-10-25_V1.md` | PLAN · DRAFT | Where each folder in SYSTEM/RESOURCES should live under the app foundation layout, what reads it, and which… | OA-AIOS-406, OA-AIOS-397 | 4 |
 
 ### SAFETY AND PRIVACY
 
