@@ -121,8 +121,9 @@ Rules live in the documents below, not here. Read them in this order:
 3. `SYSTEM/DOCUMENTS/MASTER_CONTRACTS/ZYRA_EXECUTION_CURRENT_VERSION_V5.md` — how work moves
    from idea to code; the §3.2 pre-implementation checklist.
 4. `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md` (827 KB) and
-   `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md` (1.4 MB) — **search by
-   DR/OA ID, never read whole.** Check the live NEXT IDENTIFIER before drafting entries.
+   `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md` (1.4 MB) — **never read whole.**
+   Start from `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` (open actions) and
+   `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` (every decision on one line), then search by ID. Check the live NEXT IDENTIFIER before drafting entries.
 6. `SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md` —
    generated list of every governed document. (ZYRA's `MAP.md` replaces it in phase 4.)
 7. `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`
