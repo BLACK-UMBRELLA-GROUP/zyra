@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'support/oa198_historical_inventory.dart';
 
 const _artifactDir =
-    '../SYSTEM/RESOURCES/MIGRATION_HISTORY/'
+    '../REPORTS/EVIDENCE/OA-ZYRA-198_2026-09-11/'
     'OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE';
 const _bridgeFilename =
     '20260811153415_oa198_reconstructed_question_bank_replay_bridge.sql';

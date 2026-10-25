@@ -1,9 +1,9 @@
 ---
 id: DOC-ZYRA-0275
 type: GUIDE
-status: CURRENT
+status: SUPERSEDED
 feature: REPORTS
-purpose: Codex brief - change every code and test path that points into ZYRA SYSTEM/RESOURCES, move those folders to their new homes, run every affected test
+purpose: Not used - Fable did this job on 25 Oct (Founder decision). Codex brief - change every code and test path that points into ZYRA SYSTEM/RESOURCES, move those folders to their new homes, run every affected test
 links: [OA-AIOS-408, OA-AIOS-406, DOC-ZYRA-0274]
 owner: Fable
 ---

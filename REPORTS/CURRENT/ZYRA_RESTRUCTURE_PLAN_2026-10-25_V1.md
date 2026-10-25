@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0274
 type: PLAN
-status: DRAFT
+status: CURRENT
 feature: REPORTS
 purpose: Where each folder in SYSTEM/RESOURCES should live under the app foundation layout, what reads it, and which moves need a code-path fix first
 links: [OA-AIOS-406, OA-AIOS-397]
@@ -38,8 +38,8 @@ reads a folder before moving it — done below).
 | Step | What | Who | Needs |
 |---|---|---|---|
 | 1 | Move #1, #3, #6, #10 and `.DS_Store` (nothing reads them) | Fable | **DONE 25 Oct** (Founder GO) — BRAND → `BUSINESS/APP LOGO/ASSETS/`, MEMORY → `REPORTS/ARCHIVE/2026-07_AIOS_RUN_MEMORY/`, OVERNIGHT_GN → `REPORTS/ARCHIVE/`, TEMPORARY and `.DS_Store` → `_to_delete/2026-10-25_zyra_resources` |
-| 2 | One Codex brief (Founder said write it, 25 Oct — `ZYRA/REPORTS/CURRENT/CODEX_BRIEF_RESOURCES_PATHS_2026-10-25_V1.md`): change the paths for #2, #4, #5, #7, #8, #9, #11, run every affected test, then Fable moves the folders and re-runs the tests | Codex, then Fable | Founder GO on the brief (an approved fix under the build freeze) |
+| 2 | **DONE 25 Oct by Fable** (Founder: "you do it" — Codex comes last). Originally: one Codex brief (Founder said write it, 25 Oct — `ZYRA/REPORTS/CURRENT/CODEX_BRIEF_RESOURCES_PATHS_2026-10-25_V1.md`): change the paths for #2, #4, #5, #7, #8, #9, #11, run every affected test, then Fable moves the folders and re-runs the tests | Codex, then Fable | Founder GO on the brief (an approved fix under the build freeze) |
 | 3 | REVIEWS runs older than 30 days → USB | Fable | USB plugged in |
-| 4 | `SYSTEM/RESOURCES/` removed; `.mapignore` line dropped; the moved documents get headers; MAP regenerated | Fable | — |
+| 4 | `SYSTEM/RESOURCES/` removed; `.mapignore` line dropped; MAP regenerated | Fable | **DONE 25 Oct** — Flutter tests and `flutter analyze` run by the Founder |
 
 After step 4 ZYRA matches the app foundation (`BLACK UMBRELLA GROUP/SYSTEM/TEMPLATES/APP_FOUNDATION`).

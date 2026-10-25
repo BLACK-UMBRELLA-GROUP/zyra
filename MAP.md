@@ -554,6 +554,7 @@ task-routes block by hand, then re-run the tool.
 |---|---|---|---|---|
 | DOC-ZYRA-0254 | `SYSTEM/DOCUMENTS/ZYRA_APP_STORE_RUNBOOK_CURRENT_VERSION_V2.md` | GUIDE | ZYRA — One-App Internal Delivery Runbook | 192 |
 | DOC-ZYRA-0255 | `SYSTEM/DOCUMENTS/ZYRA_DEVELOPER_CONTROL_SYSTEM_HANDOVER_CURRENT_VERSION_V2.md` | HANDOVER | ZYRA — Developer Control System: One-App Implementation Handover | 228 |
+| DOC-ZYRA-0276 | `REPORTS/CURRENT/ZYRA_RELEASE_REQUIREMENTS_DELTA_2026-10-14_APPLE_V1.md` | REPORT | ZYRA release requirements delta — Apple and build evidence | 7 |
 
 ### REPORTS
 
@@ -561,8 +562,7 @@ task-routes block by hand, then re-run the tool.
 |---|---|---|---|---|---|
 | DOC-ZYRA-0256 | `REPORTS/CURRENT/ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md` | REPORT | ZYRA — Journey Lifecycle Architecture |  | 24 |
 | DOC-ZYRA-0257 | `REPORTS/CURRENT/ZYRA_OPEN_DRAFTS_FOR_DECISION_2026-10-24.md` | REPORT · DRAFT | ZYRA — open drafts waiting for a Founder decision (2026-10-24) |  | 2 |
-| DOC-ZYRA-0274 | `REPORTS/CURRENT/ZYRA_RESTRUCTURE_PLAN_2026-10-25_V1.md` | PLAN · DRAFT | Where each folder in SYSTEM/RESOURCES should live under the app foundation layout, what reads it, and which… | OA-AIOS-406, OA-AIOS-397 | 4 |
-| DOC-ZYRA-0275 | `REPORTS/CURRENT/CODEX_BRIEF_RESOURCES_PATHS_2026-10-25_V1.md` | GUIDE | Codex brief - change every code and test path that points into ZYRA SYSTEM/RESOURCES, move those folders to… | OA-AIOS-408, OA-AIOS-406, DOC-ZYRA-0274 | 6 |
+| DOC-ZYRA-0274 | `REPORTS/CURRENT/ZYRA_RESTRUCTURE_PLAN_2026-10-25_V1.md` | PLAN | Where each folder in SYSTEM/RESOURCES should live under the app foundation layout, what reads it, and which… | OA-AIOS-406, OA-AIOS-397 | 4 |
 
 ### SAFETY AND PRIVACY
 
@@ -605,7 +605,7 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0272 | `SYSTEM/DOCUMENTS/MASTER_STANDARDS/ZYRA_ENGINEERING_INVARIANTS_CURRENT_VERSION_V3.md` | STANDARD | ZYRA — Engineering Invariants | 12 |
 | DOC-ZYRA-0273 | `SYSTEM/DOCUMENTS/MASTER_STANDARDS/ZYRA_STANDARDS_LIBRARY_V1.md` | STANDARD | ZYRA — Standards Library | 1 |
 
-## Old versions (8) — superseded or retired; open only to check history
+## Old versions (9) — superseded or retired; open only to check history
 
 - DOC-ZYRA-0001 `APP/Authentication/Script/Script_V1.md`
 - DOC-ZYRA-0002 `APP/Authentication/Script/Script_V2.md`
@@ -615,6 +615,7 @@ task-routes block by hand, then re-run the tool.
 - DOC-ZYRA-0032 `APP/Navigation/SEEKER NAVIGATION/Script/Script_V1.md`
 - DOC-ZYRA-0138 `SYSTEM/DOCUMENTS/TREEVIEW.md`
 - DOC-ZYRA-0253 `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_2026-06-20_V1.md`
+- DOC-ZYRA-0275 `REPORTS/CURRENT/CODEX_BRIEF_RESOURCES_PATHS_2026-10-25_V1.md`
 
 ## Needs attention
 

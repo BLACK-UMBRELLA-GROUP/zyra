@@ -29,7 +29,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_DATA_DIR = PROJECT_ROOT / "SYSTEM" / "RESOURCES" / "MARKETING_COMMAND_CENTER"
+DEFAULT_DATA_DIR = PROJECT_ROOT / "SYSTEM" / "tools" / "state" / "marketing_center"
 WEB_DIR = Path(__file__).resolve().parent / "zyra_marketing_web"
 SEED_PATH = WEB_DIR / "seed.json"
 CONTENT_FIELDS = (

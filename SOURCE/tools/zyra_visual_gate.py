@@ -31,7 +31,7 @@ from pathlib import Path
 TOOLS = Path(__file__).resolve().parent
 SOURCE = TOOLS.parent
 ZYRA = SOURCE.parent
-GATE = ZYRA / "SYSTEM" / "RESOURCES" / "UI_GATE"
+GATE = ZYRA / "SYSTEM" / "tools" / "ui_gate"
 REPORTS = GATE / "REPORTS"
 CANDIDATES = GATE / "CANDIDATES"
 VISUAL_STATE = GATE / "visual_state.json"

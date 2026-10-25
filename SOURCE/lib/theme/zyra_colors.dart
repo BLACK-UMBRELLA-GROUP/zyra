@@ -215,7 +215,7 @@ class ZyraColors {
   //    moved by this change. NOTE the near-duplicate families (greens
   //    84D0A8 / 78C69D / 50B478, soft reds E08080 / E18A91 / DF7D82):
   //    whether they merge is a Founder design decision recorded in
-  //    SYSTEM/RESOURCES/UI_GATE/P1_TRIAGE_2026-08-23.md — do not unify
+  //    SYSTEM/tools/ui_gate/P1_TRIAGE_2026-08-23.md — do not unify
   //    values here without that ruling.
   static const Color journeyGold = Color(0xFFE8C98A);
   static const Color positiveGreen = Color(0xFF84D0A8);

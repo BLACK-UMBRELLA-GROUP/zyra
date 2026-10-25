@@ -15,7 +15,7 @@ Usage:
   python3 tools/zyra_ui_gate.py            # change-gated (skips if no UI change)
   python3 tools/zyra_ui_gate.py --force    # full run regardless
 
-Outputs (SYSTEM/RESOURCES/UI_GATE/):
+Outputs (SYSTEM/tools/ui_gate/):
   REPORTS/ZYRA_UI_AUDIT_<date>_<runid>.md  — permanent report per run
   state.json                               — per-file shas + finding ledger
   suppressions.json                        — reviewed false-positives (by fingerprint)
@@ -36,7 +36,7 @@ TOOLS_DIR = Path(__file__).resolve().parent
 SOURCE = TOOLS_DIR.parent                      # .../ZYRA/SOURCE
 ZYRA = SOURCE.parent                           # .../ZYRA
 LIB = SOURCE / "lib"
-GATE_DIR = ZYRA / "SYSTEM" / "RESOURCES" / "UI_GATE"
+GATE_DIR = ZYRA / "SYSTEM" / "tools" / "ui_gate"
 REPORTS = GATE_DIR / "REPORTS"
 STATE_F = GATE_DIR / "state.json"
 SUPPRESS_F = GATE_DIR / "suppressions.json"

@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'support/oa198_historical_inventory.dart';
 
-const _historyRoot = '../SYSTEM/RESOURCES/MIGRATION_HISTORY';
+const _historyRoot = '../REPORTS/EVIDENCE/OA-ZYRA-198_2026-09-11';
 const _v1Dir =
     '$_historyRoot/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE';
 const _v2Dir =
@@ -21,7 +21,7 @@ const _runtimePath =
 const _testPath =
     'test/fixtures/oa198/zyra_oa198_replay_bridge_v2_artifact_test.dart.txt';
 const _message081Path =
-    '../SYSTEM/RESOURCES/MESSAGES/'
+    '../REPORTS/ARCHIVE/MESSAGES_2026-08_TO_10/'
     '081_CODEX-FOUNDER_2026-09-11_OA-ZYRA-198_ONE_REPLAY_FIRST_RESULT_'
     'BRIDGE_ACL_POSTCONDITION_FAILED.md';
 const _activeMigrationDir = 'supabase/migrations';

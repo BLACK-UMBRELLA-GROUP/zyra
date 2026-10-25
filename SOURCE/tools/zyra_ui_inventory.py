@@ -3,7 +3,7 @@
 
 This is an evidence generator, not a design authority. It observes the live
 Flutter tree and overlays only the statuses explicitly listed in
-SYSTEM/RESOURCES/UI_GATE/ui_gate_config.json. Unknown widgets stay
+SYSTEM/tools/ui_gate/ui_gate_config.json. Unknown widgets stay
 ``observed``; unreferenced files stay ``candidate`` until Fable/Founder decide
 what to archive or keep.
 
@@ -25,7 +25,7 @@ TOOLS = Path(__file__).resolve().parent
 SOURCE = TOOLS.parent
 ZYRA = SOURCE.parent
 LIB = SOURCE / "lib"
-GATE = ZYRA / "SYSTEM" / "RESOURCES" / "UI_GATE"
+GATE = ZYRA / "SYSTEM" / "tools" / "ui_gate"
 INVENTORIES = GATE / "INVENTORIES"
 CONFIG_FILE = GATE / "ui_gate_config.json"
 

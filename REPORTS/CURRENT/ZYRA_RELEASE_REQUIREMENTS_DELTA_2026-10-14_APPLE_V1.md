@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0276
+type: REPORT
+status: CURRENT
+feature: RELEASE
+purpose: ZYRA release requirements delta — Apple and build evidence
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA release requirements delta — Apple and build evidence
 
 14 October 2026 · Private, dated, non-governing evidence report · ZYRA ADMIN

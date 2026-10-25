@@ -2217,7 +2217,7 @@ class ZyraDevScenario extends ChangeNotifier {
   // GUARDIAN NETWORK PREVIEW CONTROLS RETIRED — 2026-08-23 (OA-ZYRA-251).
   // The first-draft plan/scene state that lived here drove the retired
   // 2026-08-22 preview model (dev/guardian_network_preview.dart, archived
-  // in SYSTEM/RESOURCES/OVERNIGHT_GN_2026-08-23/ARCHIVE_RETIRED_PREVIEW/
+  // in REPORTS/ARCHIVE/OVERNIGHT_GN_2026-08-23/ARCHIVE_RETIRED_PREVIEW/
   // with its test). The current Guardian Network (D14, GN Draft 3.x)
   // keeps ALL of its staging in GNContext — lib/screens/wali/
   // wali_gn_shared.dart — behind the DEV chip on the Network and

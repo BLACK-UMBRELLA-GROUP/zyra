@@ -1478,7 +1478,7 @@ void main() {
   test('active approved manifests are identical and fully byte-audited', () {
     final runtime = _readManifest('test/visual/approved/manifest.json');
     final governed = _readManifest(
-      '../SYSTEM/RESOURCES/UI_GATE/BASELINES/manifest.json',
+      '../SYSTEM/tools/ui_gate/BASELINES/manifest.json',
     );
     expect(runtime['automatic_updates_allowed'], isFalse);
     expect(governed['automatic_updates_allowed'], isFalse);
@@ -1629,7 +1629,7 @@ void main() {
     ];
     for (final phase in phases) {
       final manifest = _readManifest(
-        '../SYSTEM/RESOURCES/UI_GATE/CANDIDATES/${phase.file}',
+        '../SYSTEM/tools/ui_gate/CANDIDATES/${phase.file}',
       );
       expect(manifest['comparison_clock'], '2026-08-30T18:00:00Z');
       expect(manifest['automatic_promotion_allowed'], isFalse);
@@ -1721,7 +1721,7 @@ void main() {
 
   test('Phase 1 v2 successors are promoted and supersessions finalized', () {
     final manifest = _readManifest(
-      '../SYSTEM/RESOURCES/UI_GATE/CANDIDATES/'
+      '../SYSTEM/tools/ui_gate/CANDIDATES/'
       'OA-ZYRA-282_PHASE_1_V2_manifest.json',
     );
     expect(manifest['programme'], 'OA-ZYRA-282');

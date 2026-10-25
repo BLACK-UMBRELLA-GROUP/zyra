@@ -67,7 +67,7 @@ function validateManifest(text) {
 }
 
 export function prepareLocalIosOverlay(source,packet,label) {
-  const review=path.resolve(source,'../SYSTEM/RESOURCES/REVIEWS');
+  const review=path.resolve(source,'../REPORTS/EVIDENCE');
   if(path.dirname(packet)!==review||!path.basename(packet).startsWith('OA305_NO_GIT_OPTION2_DELIVERY_'))throw Error('Use the exact scoped delivery packet');
   if(!/^LOCAL_IOS_PROJECTION(?:_\d+)?$/.test(label)||fs.existsSync(path.join(packet,label+'.json')))throw Error('Use a new immutable projection label');
   const root=fs.mkdtempSync(path.join(packet,'LOCAL_IOS.'));
@@ -174,7 +174,7 @@ export function verifyLocalIosOverlay(source,projectionFile) {
   const packet=path.dirname(projectionFile);
   if(!/^LOCAL_IOS_PROJECTION(?:_\d+)?\.json$/.test(path.basename(projectionFile)))throw Error('Unknown offline projection receipt');
   const receipt=JSON.parse(fs.readFileSync(projectionFile,'utf8'));
-  const review=path.resolve(source,'../SYSTEM/RESOURCES/REVIEWS');
+  const review=path.resolve(source,'../REPORTS/EVIDENCE');
   if(path.dirname(packet)!==review||!path.basename(packet).startsWith('OA305_NO_GIT_OPTION2_DELIVERY_')||receipt.schema!==3||receipt.sourceFilter!=='exact credential directory only'||receipt.source!==source||path.dirname(receipt.root)!==packet||!path.basename(receipt.root).startsWith('LOCAL_IOS.'))throw Error('Wrong offline projection owner');
   for(const domain of ['ios','tooling','packages']) {
     const current=tree(path.join(receipt.root,domain));

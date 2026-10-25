@@ -9,7 +9,7 @@ import {fileURLToPath} from 'node:url';
 
 const tooling = path.dirname(fileURLToPath(import.meta.url));
 const source = path.dirname(tooling);
-const reviews = path.resolve(source, '../SYSTEM/RESOURCES/REVIEWS');
+const reviews = path.resolve(source, '../REPORTS/EVIDENCE');
 const sdk = '/opt/homebrew/share/flutter';
 const oldPacket = path.join(reviews, 'OA151_CIRCLE_DISCUSSION_BUBBLE_2026_10_13.QnUZDh');
 const oldReceipt = path.join(oldPacket, 'BUILT.json');

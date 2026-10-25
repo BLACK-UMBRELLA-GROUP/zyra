@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'support/oa198_historical_inventory.dart';
 
-const _historyRoot = '../SYSTEM/RESOURCES/MIGRATION_HISTORY';
+const _historyRoot = '../REPORTS/EVIDENCE/OA-ZYRA-198_2026-09-11';
 const _artifactDir =
     '$_historyRoot/'
     'OA-ZYRA-198_2026-09-11_RECONSTRUCTED_PROBE_SCORE_REPLAY_BRIDGE';
