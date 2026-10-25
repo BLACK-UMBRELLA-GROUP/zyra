@@ -180,7 +180,7 @@ Future<void> _capture(WidgetTester tester, String name) async {
   if (_captures.isEmpty) return;
   expect(
     RegExp(
-      r'^/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/OA305_GALLERY_MODES_2026_10_22\.[A-Za-z0-9]+/FRAMES_GALLERY$',
+      r'^/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SYSTEM/RESOURCES/REVIEWS/OA305_GALLERY_MODES_2026_10_22\.[A-Za-z0-9]+/FRAMES_GALLERY$',
     ).hasMatch(_captures),
     isTrue,
   );

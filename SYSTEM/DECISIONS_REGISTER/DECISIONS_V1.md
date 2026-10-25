@@ -6948,7 +6948,7 @@ Reasoning:
 Impact:
   APP/Standards/SUBSCRIPTION_CONTINUITY_PRINCIPLE_CURRENT_VERSION_V1.md
     — new.
-  APP/Standards/JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md
+  APP/Standards/ARCHIVE/JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V4.md
     — new, supersedes V3, resolves V3's own flagged placeholder.
     Previous version archived as JOURNEY_CAPABILITY_GRANT_RULES_
     2026-07-27_V3.md.
@@ -15403,8 +15403,8 @@ Supersession: Replaces the pricing and Guardian-allocation model in
               Additional Guardian capacity product; the per-person history
               permission and Guardian Notes boundaries remain unchanged.
 
-Implementation: ZYRA_PRICING_CURRENT_VERSION_V4.md;
-                JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V5.md;
+Implementation: ZYRA_PRICING_2026-09-21_V4.md;
+                JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V5.md;
                 OA-ZYRA-253.
 
 ------------------------------------------------------------
@@ -15442,9 +15442,9 @@ Supersession: Amends DR-ZYRA-234 items 3 and 5 only by replacing Guardian Free
               with the paid one-time Guardian Basic product. Adds Seeker Basic
               without changing the approved ZYRA One or Family prices.
 
-Implementation: ZYRA_PRICING_CURRENT_VERSION_V5.md;
-                JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V6.md;
-                ZYRA_PAID_MEMBERSHIP_HANDOVER_CURRENT_VERSION_V3.md;
+Implementation: ZYRA_PRICING_2026-09-24_V5.md;
+                JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V6.md;
+                ZYRA_PAID_MEMBERSHIP_HANDOVER_2026-09-18_V3.md;
                 OA-ZYRA-253; OA-ZYRA-293.
 
 ------------------------------------------------------------

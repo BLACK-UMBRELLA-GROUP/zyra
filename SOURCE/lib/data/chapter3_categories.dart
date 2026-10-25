@@ -1,4 +1,4 @@
-// Chapter 3 — Your Values. Transcribed from SUB BUSINESS/ZYRA/APP/Onboarding/
+// Chapter 3 — Your Values. Transcribed from ZYRA/APP/Onboarding/
 // SEEKER ONBOARDING QUESTIONS/Questions Chapter 3 Your Values.md (Draft V2,
 // 2026-06-28) — Q1-Q104. ch4Status per Chapter 3
 // Classification — Ch4 Mapping.md (V3 Approved). This is the single

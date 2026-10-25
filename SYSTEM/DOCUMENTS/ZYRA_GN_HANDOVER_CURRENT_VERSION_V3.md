@@ -72,7 +72,7 @@ before. It is internally checked, not a Founder design acceptance.
 
 **The build contract:** `ZYRA_GN_BUILD_CONTRACT_CURRENT_VERSION_V1.md` — Rules 1–44 plus two in-place amendments: Rule 44 amended for profile-mode dev switching (the Founder tests unplugged), and the "GN DRAFT 3" amendment recording the surface moves, the shared GN library, and the retirement of the Discover/Connections toggle.
 
-**Approved and open decisions:** D14 ratified in full 2026-08-23 ("Ratify all", R-a…R-g + clarifications; record in `SYSTEM/RESOURCES/GN_MODEL_DEBATE/` — three Fable↔ChatGPT rounds + FINAL_JOINT_RECOMMENDATION.md). **D1–D13 remain open** (spec §16) — notably the Guardian-profile field set (blocks part of OA-ZYRA-246), monetisation surfaces beyond the entitlement gate, and Phase-2 alignment scope.
+**Approved and open decisions:** D14 ratified in full 2026-08-23 ("Ratify all", R-a…R-g + clarifications; record in `REPORTS/ARCHIVE/GN_MODEL_DEBATE_2026-08-23/` — three Fable↔ChatGPT rounds + FINAL_JOINT_RECOMMENDATION.md). **D1–D13 remain open** (spec §16) — notably the Guardian-profile field set (blocks part of OA-ZYRA-246), monetisation surfaces beyond the entitlement gate, and Phase-2 alignment scope.
 
 **Superseded models (do not build against these):**
 - The 2026-08-22 first-draft preview ("Suggest"/"Pass" vocabulary, plan/scene preview enums) — retired; module archived (see §5).

@@ -3390,7 +3390,7 @@ retire. A single protected “Open app preview” entry remains, not a style cho
 Old shared member shells/services stay live; mandatory Founder-attention white
 pages and member palettes/haptics remain distinct and unchanged in purpose.
 Old comparison excerpts/provenance are outside SOURCE in
-`ZYRA OLD ARCHIVE/2026-10-19_OPTION_1/`; history is not deleted. Old stored style
+`ARCHIVE/OPTION_1_COMPARISON_2026-10-19/`; history is not deleted. Old stored style
 text is inert, not a migration or an access grant.
 
 The Photos picker return now has a separate root-owned memory-only pending

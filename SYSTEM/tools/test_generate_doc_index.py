@@ -8,6 +8,9 @@ import generate_doc_index as index
 
 
 PRICING = Path(__file__).parent.parent.parent / "BUSINESS" / "ZYRA PRICING"
+# Superseded versions were renamed into ARCHIVE on 2026-10-24 (one-CURRENT rule).
+PRICING_ARCHIVE = PRICING / "ARCHIVE"
+ARCHIVED = {3: "ZYRA_PRICING_2026-09-18_V3.md", 4: "ZYRA_PRICING_2026-09-21_V4.md", 5: "ZYRA_PRICING_2026-09-24_V5.md"}
 CURRENT_NAME = "EXAMPLE_CURRENT_VERSION_V2.md"
 OLD_BANNER = "> **SUPERSEDED — NOT CURRENT. DO NOT USE AS A SOURCE OF TRUTH.**"
 DATED_BANNER = "> **SUPERSEDED — 2026-09-24.** Replaced by a later contract."
@@ -25,8 +28,8 @@ class DocumentationIndexCurrencyTests(unittest.TestCase):
         return index.classify_currency(rel, self.metadata(text))
 
     def test_actual_pricing_v5_explicit_banner_is_not_current(self):
-        name = "ZYRA_PRICING_CURRENT_VERSION_V5.md"
-        meta = index.read_meta(PRICING / name)
+        name = ARCHIVED[5]
+        meta = index.read_meta(PRICING_ARCHIVE / name)
         self.assertTrue(meta["SupersededFlag"])
         self.assertIn("CURRENT_VERSION", meta["Status"])
         self.assertEqual(index.classify_currency(name, meta), (False, True))
@@ -41,8 +44,8 @@ class DocumentationIndexCurrencyTests(unittest.TestCase):
     def test_retained_v3_and_v4_banners_remain_non_current(self):
         for version in (3, 4):
             with self.subTest(version=version):
-                name = f"ZYRA_PRICING_CURRENT_VERSION_V{version}.md"
-                meta = index.read_meta(PRICING / name)
+                name = ARCHIVED[version]
+                meta = index.read_meta(PRICING_ARCHIVE / name)
                 self.assertEqual(index.classify_currency(name, meta), (False, True))
 
     def test_old_lead_banner_preserves_existing_classification(self):

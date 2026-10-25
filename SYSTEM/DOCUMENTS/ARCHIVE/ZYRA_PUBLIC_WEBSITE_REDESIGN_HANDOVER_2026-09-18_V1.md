@@ -86,7 +86,7 @@ The review candidate implements the explicit prices in this brief:
 | Trial / Free | Planned 14-day trial; no permanent consumer Free/Basic plan in this candidate |
 
 **This is not the current app commercial model.**
-`BUSINESS/ZYRA PRICING/ZYRA_PRICING_CURRENT_VERSION_V5.md` lines 15–19 instead
+`BUSINESS/ZYRA PRICING/ARCHIVE/ZYRA_PRICING_2026-09-24_V5.md` lines 15–19 instead
 specifies One Seeker £29.99/month, Seeker Basic £9.99 one-time, One Guardian
 £19.99/month and Guardian Basic £9.99 one-time; Family is unchanged by that ruling.
 Lines 63–64 limit the planned trial to One Seeker and do not authorise a Guardian trial.

@@ -473,7 +473,7 @@ test/family_membership_pricing_test.dart` — **16/16 PASS**, including all 121
 valid combinations, invalid bounds, zero/one-role selections, 40% ceiling,
 penny reconciliation, inert entitlements and layouts at widths 320/390 with
 text scales 1/2. Full analyzer result and pre/post SHA-256 ledger are filed in
-`SYSTEM/RESOURCES/PRICING_RECONCILIATION_2026-09-18/REPORT.md`.
+`REPORTS/ARCHIVE/PRICING_RECONCILIATION_REPORT_2026-09-18.md`.
 
 Scope/status: client source and governed pricing corrected; no database,
 store product, payment, git, TestFlight upload, phone install or publication

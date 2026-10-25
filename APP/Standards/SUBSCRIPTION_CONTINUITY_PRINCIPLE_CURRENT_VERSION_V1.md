@@ -7,7 +7,7 @@
 **Supersedes:** None (new document)
 **Governing Standards:**
   DR-ZYRA-118 — Subscription Continuity Ratified as Product Principle
-  JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md
+  JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V4.md
 
 ---
 
@@ -90,7 +90,7 @@ This principle governs what persists. JOURNEY_CAPABILITY_GRANT_RULES governs wha
 - Entitlement resolution answers: "What can this account do right now?"
 - Subscription Continuity answers: "What still exists regardless of the answer to that question?"
 
-JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md's Entitlement Change Behaviour section defers exact timing, grace periods, and in-flight-activity handling during revocation to this principle at the policy level. The precise mechanics (grace period lengths, in-flight activity handling) remain to be specified when real subscription backend work begins (see Task #20 — blocked on payment processing credentials).
+JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V4.md's Entitlement Change Behaviour section defers exact timing, grace periods, and in-flight-activity handling during revocation to this principle at the policy level. The precise mechanics (grace period lengths, in-flight activity handling) remain to be specified when real subscription backend work begins (see Task #20 — blocked on payment processing credentials).
 
 ---
 
@@ -115,7 +115,7 @@ JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md's Entitlement Change Behavi
 ## References
 
 - DR-ZYRA-118 — ratifying decision
-- JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md
+- JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V4.md
 - WALI_ARCHITECTURE_CURRENT_VERSION_V6.md
 - SYSTEM/RESOURCES/TEMPORARY/CHATGPT_REPLY_MULTIROLE_ACCOUNTS_2026-07-27.md (origin discussion)
 

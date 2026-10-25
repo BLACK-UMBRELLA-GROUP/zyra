@@ -1,9 +1,0 @@
-{
-  "status": "FOUNDER_REVIEW_CANDIDATES_ONLY",
-  "date": "2026-09-30",
-  "scope": "Current plus five protected transition options on the first three Atoms welcome pages, forward and reverse at 390x844",
-  "capture_command": "flutter test --no-pub --update-goldens --dart-define=ZYRA_ONBOARDING_TRANSITION_CAPTURE_CANDIDATES=true test/visual/onboarding_transition_visual_test.dart",
-  "expected_png_count": 48,
-  "approved_baseline_replaced": false,
-  "founder_visual_acceptance": "PENDING"
-}

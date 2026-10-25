@@ -10556,7 +10556,7 @@ real services and privacy/auth/isolation guards remain required. Ordinary palett
 font/haptic choices and mandatory Founder Launch Attention white remain distinct.
 
 Exact old Option1 comparison excerpts/provenance are archived outside SOURCE in
-`ZYRA OLD ARCHIVE/2026-10-19_OPTION_1/`;58preimages are retained in76vv6v. Historical
+`ARCHIVE/OPTION_1_COMPARISON_2026-10-19/`;58preimages are retained in76vv6v. Historical
 records are not erased; old non-sensitive stored style values are inert, not
 loaded, written or migrated. This does not roll the local presentation out to
 real members or authorize live/backend/provider/upload activity.

@@ -114,7 +114,7 @@ The revised appearance does not add functionality or change prices/authority.
 **Commercial publication conflict remains OA-ZYRA-260.** The website brief requests
 One £39.99/month (Seeker + Guardian), Additional Guardian £19.99/month, Family
 £99.99/month (five unique people), a planned 14-day trial and no permanent Basic
-plan. Current `BUSINESS/ZYRA PRICING/ZYRA_PRICING_CURRENT_VERSION_V5.md` instead
+plan. Current `BUSINESS/ZYRA PRICING/ARCHIVE/ZYRA_PRICING_2026-09-24_V5.md` instead
 rules One Seeker £29.99, Seeker Basic £9.99 one-time, One Guardian £19.99 and Guardian
 Basic £9.99 one-time; Family unchanged and trial limited to One Seeker. The website
 candidate implements its explicit brief, but cannot be published until the Founder

@@ -4,7 +4,7 @@
 **Status:** CURRENT_VERSION — Founder-approved product contract; commerce activation remains gated  
 **Date:** 2026-10-21 (Halo focus percentage savings; catalogue and earlier rulings retained)  
 **Owner / approval authority:** Founder  
-**Supersedes:** ZYRA_PRICING_CURRENT_VERSION_V5.md in full  
+**Supersedes:** ZYRA_PRICING_2026-09-24_V5.md in full  
 **Decision:** DR-ZYRA-248, amended by DR-ZYRA-252; protected design previews DR-ZYRA-254 and DR-ZYRA-263
 
 **Unlocks savings presentation — Founder direct instruction, 2026-10-21:**

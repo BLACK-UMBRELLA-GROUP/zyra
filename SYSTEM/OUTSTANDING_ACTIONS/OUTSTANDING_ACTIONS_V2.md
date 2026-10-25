@@ -14947,7 +14947,7 @@ Description: The spec says how GN works; the contract says
              verifies the three-document agreement at every
              handover update; disagreements become register
              actions, never hidden assumptions.
-Evidence:    ZYRA_GN_HANDOVER_CURRENT_VERSION_V1.md; archived
+Evidence:    ZYRA_GN_HANDOVER_2026-09-19_V1.md; archived
              APP doc with banner; IMPLEMENTATION_HANDOVER_
              STANDARD_CURRENT_VERSION_V1.md; live-file SHA
              table + measured suites in handover §§2.1/3
@@ -23382,9 +23382,9 @@ Description: The retired proposal would have required atomic server-side
 Target:      Closed by DR-ZYRA-243. Remove remaining public Basic/ad copy as
              affected surfaces are reconciled; retain only migration-safe
              parsing and clearly isolated developer boundary fixtures.
-Evidence:    ZYRA_PRICING_CURRENT_VERSION_V5.md;
-             JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V6.md;
-             ZYRA_PAID_MEMBERSHIP_HANDOVER_CURRENT_VERSION_V3.md.
+Evidence:    ZYRA_PRICING_2026-09-24_V5.md;
+             JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V6.md;
+             ZYRA_PAID_MEMBERSHIP_HANDOVER_2026-09-18_V3.md.
 
 ------------------------------------------------------------
 

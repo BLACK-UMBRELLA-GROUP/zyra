@@ -6,7 +6,7 @@
 # installs a DEBUG build, iOS kills debug/JIT apps when the cable is
 # unplugged and refuses to cold-launch them from the icon — looks like
 # "the app is broken", is actually build mode). Docs in README.md §Device
-# testing; incident history in REPORTS/CURRENT/ZYRA_FABLE_BUILD_REVIEW_
+# testing; incident history in REPORTS/ARCHIVE/ZYRA_FABLE_BUILD_REVIEW_
 # 2026-07-19_V1.md §7.
 #
 # Usage (from anywhere):

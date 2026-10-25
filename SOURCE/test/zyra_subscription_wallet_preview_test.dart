@@ -1077,7 +1077,7 @@ void main() {
       const directory = String.fromEnvironment('ZYRA_WALLET_EMPTY_CAPTURE_DIR');
       expect(
         directory,
-        '/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/OA305_QUIET_EMPTY_2026_10_22.LWSWe3/FRAMES_WALLET',
+        '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SYSTEM/RESOURCES/REVIEWS/OA305_QUIET_EMPTY_2026_10_22.LWSWe3/FRAMES_WALLET',
       );
       const family = 'PoppinsWalletEmptyEvidence';
       final font = FontLoader(family);

@@ -7,7 +7,7 @@
 > `ZYRA/SYSTEM/DOCUMENTS/ZYRA_GUARDIAN_NETWORK_CURRENT_VERSION_V2.md`
 > (D14 ratified + binding), with the build contract
 > (`ZYRA_GN_BUILD_CONTRACT_CURRENT_VERSION_V1.md`) and the implementation
-> handover (`ZYRA_GN_HANDOVER_CURRENT_VERSION_V1.md`) beside it. Nothing
+> handover (`ZYRA_GN_HANDOVER_2026-09-19_V1.md`) beside it. Nothing
 > in this file overrides those. Reference-only.
 
 # ZYRA — Guardian Network
@@ -17,7 +17,7 @@
 > `SYSTEM/DOCUMENTS/ZYRA_GUARDIAN_NETWORK_CURRENT_VERSION_V2.md`. The build
 > contract is `SYSTEM/DOCUMENTS/ZYRA_GN_BUILD_CONTRACT_CURRENT_VERSION_V1.md`;
 > actual implementation is recorded in
-> `SYSTEM/DOCUMENTS/ZYRA_GN_HANDOVER_CURRENT_VERSION_V1.md`. This dated file is
+> `SYSTEM/DOCUMENTS/ARCHIVE/ZYRA_GN_HANDOVER_2026-09-19_V1.md`. This dated file is
 > preserved only as the historical APP-level reconciliation draft.
 
 **Version:** 1  
@@ -646,7 +646,7 @@ after Founder decisions.
 
 - `APP/Standards/WALI_ARCHITECTURE_CURRENT_VERSION_V6.md`
 - `APP/Standards/WALI_REQUIREMENT_AND_ACCESS_POLICY_CURRENT_VERSION_V1.md`
-- `APP/Standards/JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V4.md`
+- `APP/Standards/ARCHIVE/JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V4.md`
 - `APP/Standards/SUBSCRIPTION_CONTINUITY_PRINCIPLE_CURRENT_VERSION_V1.md`
 - `APP/Safety/SAFETY_RESPECT_SYSTEM_CURRENT_VERSION_V3.md`
 - `APP/Matching/MATCH UX/MATCH_UX_SPEC_CURRENT_VERSION_V1.md`

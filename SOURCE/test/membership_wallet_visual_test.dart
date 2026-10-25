@@ -20,7 +20,7 @@ const _captureDirectory = String.fromEnvironment(
   'ZYRA_MEMBERSHIP_WALLET_CAPTURE_DIR',
 );
 const _reviews =
-    '/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/REVIEWS/';
+    '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SYSTEM/RESOURCES/REVIEWS/';
 const _captureKey = ValueKey('membership-wallet-component-capture');
 const _fontFamily = 'PoppinsMembershipWalletVisual';
 const _paid = ZyraMembershipPaymentHistory.paidBefore;

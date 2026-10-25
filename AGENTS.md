@@ -1,10 +1,14 @@
 # AGENTS.md — ZYRA
 
-<!-- BLACK-UMBRELLA-CORE-RULES v1 START — master copy: BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V1.md. Edit the master, then re-sync every copy. -->
+<!-- BLACK-UMBRELLA-CORE-RULES v2 START — master copy: BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V2.md. Edit the master, then re-sync every copy. -->
 ## Core rules — every AI agent, every Black Umbrella Group project
 
 These rules sit above every other instruction in this tree. Where any older
 document, overlay or AD says otherwise, this block wins.
+
+> **BUILD FREEZE — Founder, 24 Oct 2026.** No app feature building in any business
+> until Shakeel lifts it in writing. Allowed meanwhile: review, documentation, and
+> fixes Shakeel approves one by one. Tracked as OA-AIOS-406.
 
 1. **Only the Founder (Shakeel) approves.** Agreement between AIs is never
    approval. His direct instruction in conversation is approval.
@@ -24,21 +28,33 @@ document, overlay or AD says otherwise, this block wins.
    and a text BUILD.json (commit SHA, Flutter version, build mode,
    timestamp). Never copy compiled apps (`Runner.app`, build products) or
    source trees into registers or evidence folders.
+9. **`AGENTS.md` holds standing rules only.** Progress, round status and
+   decisions go in the registers. Keep every `AGENTS.md` under 16 KB —
+   Codex stops reading at 32 KiB.
+10. **End every working session with a commit.** Agents never run git; they
+    end each session by giving the Founder one commit line per changed repo.
+    Never copy files as a backup instead — git and the USB are the backups.
 
-### Roles — Founder direction, 2026-10-24 (supersedes AD-AIOS-111; formal AD filing pending)
+### Roles — Founder direction, 2026-10-24 (AD-AIOS-112, filed 2026-10-24; supersedes AD-AIOS-111)
 
 | Seat | Holder | Scope |
 |---|---|---|
 | Founder | Shakeel | Sole approver |
 | Lead Architect | Fable (Claude) | Architecture, governance, registers, schedules, review and verification |
 | Design & Implementation | Codex | Product design and code execution only — no admin, governance, mailbox or schedules |
-| Admin | Pending Founder decision | — |
+| Admin | Fable (Claude), from the Black Umbrella Group chat | Admin for every business: registers, schedules, clean-ups, reporting. One Claude chat per business handles that business's design and product work |
 
 Fable holds an active seat. Any line elsewhere saying "Fable/Claude is
 retired" or "no Claude/Fable bootstrap is active" is superseded.
-<!-- BLACK-UMBRELLA-CORE-RULES v1 END -->
+<!-- BLACK-UMBRELLA-CORE-RULES v2 END -->
 
-Bootstrap pointer for AI agent sessions working in `SUB BUSINESS/ZYRA/`.
+Bootstrap pointer for AI agent sessions working in `ZYRA/`.
+
+> **Path change, 2026-10-24:** the `SUB BUSINESS/` folder was removed. Each venture now sits
+> directly in `DEVELOPMENT/` — `ZYRA`, `AZMARA`, `SELAH`, `WAFA`, `AI CONSULTANCY TBC`. Older documents
+> and registers still say `SUB BUSINESS/<venture>`: read that as `DEVELOPMENT/<venture>`.
+> Never recreate `SUB BUSINESS/`. Folder guide:
+> `BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/DEVELOPMENT_FOLDER_GUIDE_CURRENT_VERSION_V2.md`
 Rules live in the documents below, not here. Read them in this order:
 
 > **LOCAL PHONE DELIVERY DEFAULT — Founder direct instruction, 2026-10-04 /
@@ -93,10 +109,10 @@ Rules live in the documents below, not here. Read them in this order:
 
 0. Core rules at the top of this file — roles and non-negotiables; they win on
    any conflict. Master copy:
-   `../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V1.md`.
+   `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V2.md`.
    `FOUNDER_CODEX_OPERATING_MODEL_CURRENT_VERSION_V2.md` (same folder) still
    governs exact-action safety gates; its role allocation is superseded.
-   Then read `../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V1.md`
+   Then read `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V1.md`
    — lessons from Aug–Oct 2026 and Codex's standing first task.
 1. This `AGENTS.md` is the active ZYRA bootstrap. Archived Claude/Fable files
    remain historical evidence only.
@@ -113,43 +129,17 @@ Rules live in the documents below, not here. Read them in this order:
    register.
 6. `SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md` —
    generated map of every governed document ("where does X live").
-7. `../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md`
+7. `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md`
    — required as-built repository memory for meaningful work.
 
-Historical roles and routing baseline (AD-AIOS-107, 2026-08-31 — final titles;
-supersedes the
-AD-AIOS-099/100 titles and AD-AIOS-106's ChatGPT-on-call-only standing;
-history preserved in the AD register: AD-AIOS-097 -> 099 -> 100 -> 105 ->
-106 -> 107). Its active-seat/default-route clauses are superseded by
-AD-AIOS-111:
-Shakeel = Founder & Final Authority — only the Founder approves.
-ChatGPT = Lead Product & Systems Architect — STANDING product/system-design
-partner; shapes Founder change requests; its proposals become operational
-only after Founder acceptance + Fable reconciliation/filing.
-Fable = Lead Operations, Governance & Delivery — governance, all registers
-and source-of-truth documentation, schedules, email triage, delivery/relay,
-verification of implemented work; owns and may directly implement
-architecture/governance/AIOS-machinery files (AD-AIOS-105 unchanged); the
-former separate Architecture Reviewer seat is folded into Fable's
-verification ownership.
-Codex = Product Designer & Implementation Engineer — ZYRA production code
-(Flutter/UI, Supabase/migrations/RPCs, entitlement, navigation, tests,
-build); EXPECTED to challenge and flag risk before building; still no git,
-no migrations without explicit written Founder authorisation, no
-self-approval.
-HISTORICAL DEFAULT CHANGE ROUTE: Founder -> ChatGPT (shapes) -> Fable (checks against
-approved decisions/docs/in-flight work; CLEAN = relay to Codex, intent
-undistorted; CONFLICT = contradiction report to the Founder, no relay) ->
-Codex builds -> Fable verifies -> Founder. DIRECT Founder -> Codex remains
-fully allowed at any time; Codex implements and files its handover; Fable
-reconciles documentation afterward. Canonical statement + status labels:
-"Founder Change-Request Routing" in
-IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V3.md.
+Roles: the Core rules at the top of this file (V2). AD-AIOS-097 → 099 → 100 → 105 →
+106 → 107 → 111 are historical — read them in the AD register. The long historical
+role and routing text that sat here was removed on 2026-10-24; git keeps it.
 
 Current operating state: the Founder replaced the AD-AIOS-111 / OA-AIOS-379
 model on 2026-10-24 — see Core rules at the top of this file. Fable is Lead
-Architect; Codex is design and implementation only. Preparation, internal
+Architect and admin; Codex is design and implementation only. Preparation, internal
 read-only verification, Founder GO, execution, post-verification and Founder
 acceptance remain separate; no agent self-approves.
 Group-wide non-negotiables: Core rules at the top of this file (master:
-`../../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V1.md`).
+`../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V2.md`).

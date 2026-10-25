@@ -15,7 +15,7 @@ wrong about what exists — only about what things mean, which is what the
 curated notes below are for.
 
 USAGE
-    cd "SUB BUSINESS/ZYRA"
+    cd "ZYRA"
     python3 SYSTEM/tools/generate_doc_index.py
 
 Writes SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md.
@@ -177,7 +177,7 @@ been regenerated or when a source document's own metadata is wrong.
 Regenerate after adding, superseding or relocating any governed document:
 
 ```
-cd "SUB BUSINESS/ZYRA" && python3 SYSTEM/tools/generate_doc_index.py
+cd "ZYRA" && python3 SYSTEM/tools/generate_doc_index.py
 ```
 
 ## Reading the Status column

@@ -757,7 +757,7 @@ SHA-256:
 `47756a93f53494fc6e37fbc4380940db78c480caf9f2da84932291e1fc2a4648`
 
 Candidates remain unapproved and cannot auto-promote. Forward/reverse evidence
-is under `SYSTEM/RESOURCES/PATCHES/OA-ZYRA-281_PHASE_2/`. The documented
+is under `ARCHIVE/PATCHES_OA-ZYRA-281_2026-08-30/OA-ZYRA-281_PHASE_2/`. The documented
 reverse command restored 12 files to exact pre-edit SHA-256 values and both
 new files to absent: **14/14**. The restored tree passed clean analysis and
 the original **667/667** suite. Forward restoration then matched every

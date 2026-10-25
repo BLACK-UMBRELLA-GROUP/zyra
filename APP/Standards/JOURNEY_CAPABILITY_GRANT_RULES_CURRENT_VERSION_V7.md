@@ -28,7 +28,7 @@
 **Status:** CURRENT_VERSION
 **Date:** 2026-09-18
 **Owner:** ZYRA Product Governance
-**Supersedes:** JOURNEY_CAPABILITY_GRANT_RULES_CURRENT_VERSION_V6.md
+**Supersedes:** JOURNEY_CAPABILITY_GRANT_RULES_2026-09-18_V6.md
 **Decisions:** DR-ZYRA-235; DR-ZYRA-238
 
 ## Purpose

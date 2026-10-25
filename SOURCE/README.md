@@ -49,7 +49,7 @@ flutter run --profile -d 00008130-001A2C1E26F8001C
 - Plain `flutter run` (debug, hot reload) is fine ONLY while the cable
   stays connected. Avoid iPhone Mirroring during a debug session — the
   two interfere.
-- Full background: `../REPORTS/CURRENT/ZYRA_FABLE_BUILD_REVIEW_2026-07-19_V1.md` §7.
+- Full background: `../REPORTS/ARCHIVE/ZYRA_FABLE_BUILD_REVIEW_2026-07-19_V1.md` §7.
 
 ## Developer Mode
 

@@ -29,7 +29,7 @@ No concurrent app or phone build was started here.
 ## 2. Current commercial source and resolved discrepancy
 
 Authoritative source:
-`BUSINESS/ZYRA PRICING/ZYRA_PRICING_CURRENT_VERSION_V5.md`, including the same-day
+`BUSINESS/ZYRA PRICING/ARCHIVE/ZYRA_PRICING_2026-09-24_V5.md`, including the same-day
 §1.1 Family reconciliation; implementation source
 `SOURCE/lib/data/zyra_membership_catalog.dart`. The user's explicit correction
 replaces the superseded website brief's combined/fixed-price model.
