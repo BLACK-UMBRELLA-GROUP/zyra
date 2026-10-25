@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0045
+type: SPEC
+status: CURRENT
+feature: APP: PERFORMANCE
+purpose: Performance — ONDEVICE DATA CURRENT VERSION V1: ZYRA — On-Device Data & Performance Standard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — On-Device Data & Performance Standard
 
 **Date:** 2026-08-15

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0187
+type: REPORT
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Relationship List: Review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Relationship List: Review
 
 **Status:** FOR DECISION — do not lock the list yet

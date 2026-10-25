@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0191
+type: STANDARD
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian & Romantic Eligibility Rules
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian & Romantic Eligibility Rules
 
 **Status:** APPROVED — Founder, 2026-08-07 · **Version:** V1

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0022
+type: SPEC
+status: CURRENT
+feature: APP: JOURNEY
+purpose: Journey / Pre-Journey Ritual — Summary: JOURNEY STAGES (Match to Conversation): Defines the structured stages a matched pair progresses through before and during the Conversation Stage.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 JOURNEY STAGES (Match to Conversation)
 Group: 4 — Page Responsibilities

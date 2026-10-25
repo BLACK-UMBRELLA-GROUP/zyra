@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0173
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Write-Path & can_match() Migration: AS APPLIED
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Write-Path & `can_match()` Migration: AS APPLIED
 
 **Status:** ⚠️ **ALREADY APPLIED** — presented for retrospective review

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0058
+type: SPEC
+status: CURRENT
+feature: APP: SAFETY
+purpose: Safety — Summary: SAFETY — RATE LIMITING & COOLDOWN SYSTEM: Protect the platform from abuse, spam, bots, and excessive usage while minimising impact on genuine users.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SAFETY — RATE LIMITING & COOLDOWN SYSTEM
 Group: 5 — Application Architecture

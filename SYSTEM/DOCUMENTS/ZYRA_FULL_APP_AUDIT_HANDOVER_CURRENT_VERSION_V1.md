@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0142
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: CODEX HANDOVER — ZYRA FULL APP AUDIT
+links: []
+owner: ZYRA chat
+---
+
 # CODEX HANDOVER — ZYRA FULL APP AUDIT
 
 **Version:** V1  

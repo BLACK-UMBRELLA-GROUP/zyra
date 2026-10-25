@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0204
+type: REPORT
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Identity-Verification Capability Matrix
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Identity-Verification Capability Matrix
 
 **Version:** V1

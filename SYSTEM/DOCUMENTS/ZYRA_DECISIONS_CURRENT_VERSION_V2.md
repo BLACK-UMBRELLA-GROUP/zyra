@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0251
+type: DECISION
+status: CURRENT
+feature: PRODUCT
+purpose: ZYRA — Decisions of 2026-08-01 to 2026-08-04
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Decisions of 2026-08-01 to 2026-08-04
 
 > **Compatibility supersession — DR-ZYRA-250, 2026-09-28:**

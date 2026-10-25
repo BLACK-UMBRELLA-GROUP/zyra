@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0042
+type: SPEC
+status: CURRENT
+feature: APP: ONBOARDING
+purpose: Onboarding / Seeker Onboarding Questions — Questions Section 3 Core Compatibility
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER ONBOARDING QUESTIONS
 Document: Questions — Section 3 Core Compatibility

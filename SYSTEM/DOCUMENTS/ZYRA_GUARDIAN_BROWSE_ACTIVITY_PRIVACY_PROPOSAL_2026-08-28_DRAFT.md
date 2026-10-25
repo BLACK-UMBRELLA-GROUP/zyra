@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0177
+type: SPEC
+status: DRAFT
+feature: GUARDIAN NETWORK
+purpose: Guardian visibility of Seeker Browse activity — privacy proposal
+links: []
+owner: ZYRA chat
+---
+
 # Guardian visibility of Seeker Browse activity — privacy proposal
 
 **Status:** DRAFT — Founder review item (Decision 6, 2026-08-28). Nothing is built; the staged dev chips remain dev-only; no RLS path exists or is designed until the Founder rules on this document.

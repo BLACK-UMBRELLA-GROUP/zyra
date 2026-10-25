@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0155
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Shared Pause Decision: Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Shared Pause Decision: Implementation Handover
 
 **Document:** `ZYRA_PAUSE_DECISION_HANDOVER_CURRENT_VERSION_V1.md`  

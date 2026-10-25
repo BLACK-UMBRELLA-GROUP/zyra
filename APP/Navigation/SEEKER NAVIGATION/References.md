@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0031
+type: GUIDE
+status: CURRENT
+feature: APP: NAVIGATION
+purpose: Navigation / Seeker Navigation — References
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER NAVIGATION
 

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0249
+type: STANDARD
+status: CURRENT
+feature: PRODUCT
+purpose: ZYRA PROJECT
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA PROJECT
 ============================================================

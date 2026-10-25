@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0188
+type: PLAN
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Relationship
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Relationship
 
 **Status:** PROPOSED — for Founder review. Nothing built.

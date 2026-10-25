@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0166
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA Splash Screen — As-Built Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Splash Screen — As-Built Implementation Handover
 
 **Version:** V1  

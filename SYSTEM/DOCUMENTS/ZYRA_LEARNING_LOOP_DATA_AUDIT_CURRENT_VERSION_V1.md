@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0147
+type: REPORT
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA Learning Loop — P1 Historic-Data Audit
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Learning Loop — P1 Historic-Data Audit
 
 **Version:** V1  

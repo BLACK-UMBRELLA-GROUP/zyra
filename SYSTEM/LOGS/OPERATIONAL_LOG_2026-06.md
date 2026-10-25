@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0224
+type: REPORT
+status: CURRENT
+feature: LOGS
+purpose: ZYRA — Operational Log — June 2026
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Operational Log — June 2026
 **Scope:** HOLDINGS/PROJECTS/ZYRA/
 **Governing Reference:** LOGGING_STANDARD_V1

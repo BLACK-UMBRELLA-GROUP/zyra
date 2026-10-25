@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0190
+type: SPEC
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA Guardian Relationship Surfaces — Source of Truth
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Guardian Relationship Surfaces — Source of Truth
 
 **Version:** V2 · **Status:** CURRENT_VERSION — RATIFIED (DR-ZYRA-224 F1–F7; F2 amended by DR-ZYRA-226/231; Journey authority amended by **DR-ZYRA-230/232/233/236**) · **Author:** Fable, amended by Codex under the Founder's direct rulings · **Programme:** OA-ZYRA-282 / OA-ZYRA-289 / OA-ZYRA-290 / OA-ZYRA-291 / OA-ZYRA-294 · **Current-state evidence:** `ZYRA_GUARDIAN_RELATIONSHIP_SURFACES_CURRENT_STATE_HANDOVER_2026-08-30_V1.md` · **Related:** DR-ZYRA-104 (CLOSED) · DR-ZYRA-136/137/123 (relationship rules) · DR-ZYRA-224/225/226/230/231/232/233/236 · OA-ZYRA-263 (IDV remains separate) · OA-ZYRA-274 (deep links remain separate)

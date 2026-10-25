@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0066
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — SUBSCRIPTION CONTINUITY PRINCIPLE CURRENT VERSION V1: ZYRA — Subscription Continuity Principle: This document defines Subscription Continuity: a cross-cutting product principle governing what happens to relationships, history, and...
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Subscription Continuity Principle
 
 **Version:** V1

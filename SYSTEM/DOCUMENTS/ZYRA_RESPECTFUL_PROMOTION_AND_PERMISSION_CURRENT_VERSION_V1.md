@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0164
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Respectful Promotion & Permission Standard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Respectful Promotion & Permission Standard
 
 **Version:** V1  

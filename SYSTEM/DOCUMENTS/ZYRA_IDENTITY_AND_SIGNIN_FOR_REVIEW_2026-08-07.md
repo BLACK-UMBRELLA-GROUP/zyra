@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0203
+type: REPORT
+status: DRAFT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Identity Changes & the Sign-in Section
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Identity Changes & the Sign-in Section
 
 **Status:** FOR DISCUSSION — nothing built, nothing decided

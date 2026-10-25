@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0205
+type: SPEC
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Data Protection Impact Assessment: Identity Verification & Photo Moderation (DRAFT)
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Data Protection Impact Assessment: Identity Verification & Photo Moderation (DRAFT)
 
 **Version:** V1

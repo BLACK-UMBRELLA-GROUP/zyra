@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0259
+type: REPORT
+status: CURRENT
+feature: SAFETY AND PRIVACY
+purpose: ZYRA — Response to Fable: dual-role, and the surveillance leg
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Response to Fable: dual-role, and the surveillance leg
 
 **Status:** FINDINGS + ANSWERS — nothing built. For Founder ratification.

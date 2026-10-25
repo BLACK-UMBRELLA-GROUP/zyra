@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0015
+type: GUIDE
+status: CURRENT
+feature: APP: IOS WIDGETS
+purpose: iOS Widgets — References
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA PROJECT
 ============================================================

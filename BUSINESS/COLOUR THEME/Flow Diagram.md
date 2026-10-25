@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0100
+type: BRAND
+status: CURRENT
+feature: BUSINESS: COLOUR THEME
+purpose: Colour Theme — Flow Diagram
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 COLOUR THEME
 

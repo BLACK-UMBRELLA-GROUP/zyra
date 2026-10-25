@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0215
+type: HANDOVER
+status: CURRENT
+feature: JOURNEY
+purpose: ZYRA — Journey Compatibility Boundary Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Journey Compatibility Boundary Handover
 
 **Version:** V1

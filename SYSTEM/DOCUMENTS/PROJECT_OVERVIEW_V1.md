@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0248
+type: SPEC
+status: CURRENT
+feature: PRODUCT
+purpose: ZYRA — Project Overview
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Project Overview
 **Version:** V1
 **Status:** CURRENT_VERSION

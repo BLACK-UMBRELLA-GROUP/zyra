@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0103
+type: RESEARCH
+status: CURRENT
+feature: BUSINESS: COMPETITOR RESEARCH
+purpose: Competitor Research — COMPETITOR REVIEW MUSLIM MARRIAGE PLATFORMS CURRENT VERSION V1: Competitor Review — Muslim Marriage Platforms: Review the Muslim marriage platform landscape to inform ZYRA's product direction, positioning, and feature prioritisation.
+links: []
+owner: ZYRA chat
+---
+
 # Competitor Review — Muslim Marriage Platforms
 ## Version: CURRENT_VERSION_V1
 ## Date: 2026-07-10

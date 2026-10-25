@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0077
+type: SPEC
+status: CURRENT
+feature: ARCHITECTURE AND DATA
+purpose: ZYRA — Infrastructure Stack
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Infrastructure Stack
 
 **Version:** V1

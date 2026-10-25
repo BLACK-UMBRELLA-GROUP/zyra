@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0110
+type: SPEC
+status: CURRENT
+feature: BUSINESS: WEBSITE
+purpose: Website — WEBSITE IA AND LEGAL PAGES CURRENT VERSION V1: ZYRA — Website Information Architecture & Legal Pages Blueprint
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Website Information Architecture & Legal Pages Blueprint
 
 **Version:** V1

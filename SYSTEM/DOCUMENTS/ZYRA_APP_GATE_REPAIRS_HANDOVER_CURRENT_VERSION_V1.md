@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0139
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA app gate repair handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA app gate repair handover
 
 **Version:** V1  

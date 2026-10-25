@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0072
+type: SPEC
+status: CURRENT
+feature: ARCHITECTURE AND DATA
+purpose: ZYRA — Technical Architecture
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Technical Architecture
 **Version:** V2
 **Status:** CURRENT_VERSION

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0150
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: OA-ZYRA-168 — grant sweep: as applied
+links: []
+owner: ZYRA chat
+---
+
 # OA-ZYRA-168 — grant sweep: as applied
 
 **Status:** APPLIED and VERIFIED — 2026-08-08

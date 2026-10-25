@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0208
+type: STANDARD
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Privacy Policy: Identity Verification & Photo Moderation Sections (DRAFT)
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Privacy Policy: Identity Verification & Photo Moderation Sections (DRAFT)
 
 **Version:** V1

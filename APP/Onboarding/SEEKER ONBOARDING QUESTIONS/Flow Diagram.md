@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0038
+type: SPEC
+status: CURRENT
+feature: APP: ONBOARDING
+purpose: Onboarding / Seeker Onboarding Questions — Flow Diagram
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER ONBOARDING QUESTIONS
 Document: Flow Diagram

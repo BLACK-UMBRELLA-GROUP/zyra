@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0192
+type: HANDOVER
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: FEATURE NAME
+links: []
+owner: ZYRA chat
+---
+
 # FEATURE NAME
 
 > **Scoped Seeker-side permission amendment — 2026-10-20 / OA-ZYRA-305:**

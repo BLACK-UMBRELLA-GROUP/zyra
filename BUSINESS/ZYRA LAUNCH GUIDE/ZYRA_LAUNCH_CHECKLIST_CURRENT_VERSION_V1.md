@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0114
+type: PLAN
+status: CURRENT
+feature: BUSINESS: ZYRA LAUNCH GUIDE
+purpose: Zyra Launch Guide — ZYRA LAUNCH CHECKLIST CURRENT VERSION V1: ZYRA — Launch Checklist
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Launch Checklist
 
 **Version:** V1

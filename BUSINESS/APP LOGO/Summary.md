@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0092
+type: BRAND
+status: CURRENT
+feature: BUSINESS: APP LOGO
+purpose: App Logo — Summary: Owns the visual identity and branding of the ZYRA application.
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA — APP LOGO (GOVERNED SUMMARY)
 ============================================================

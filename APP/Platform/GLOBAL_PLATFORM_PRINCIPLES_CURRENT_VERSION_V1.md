@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0046
+type: SPEC
+status: CURRENT
+feature: APP: PLATFORM
+purpose: Platform — GLOBAL PLATFORM PRINCIPLES CURRENT VERSION V1: ZYRA Global Platform Principles: These principles govern how ZYRA expands internationally.
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Global Platform Principles
 **GLOBAL_PLATFORM_PRINCIPLES_CURRENT_VERSION_V1**
 Last updated: 2026-06-28

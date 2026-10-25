@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0200
+type: REPORT
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — ACCOUNT TYPE UX REVIEW
+links: []
+owner: ZYRA chat
+---
+
 ZYRA — ACCOUNT TYPE UX REVIEW
 =============================
 Status:  CURRENT_VERSION

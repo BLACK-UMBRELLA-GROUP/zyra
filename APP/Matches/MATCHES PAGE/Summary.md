@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0023
+type: SPEC
+status: CURRENT
+feature: APP: MATCHES
+purpose: Matches / Matches Page — Summary: Houses all of the user's matches and provides entry into each Relationship Space (Journey).
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 MATCHES PAGE
 Group: 4 — Page Responsibilities

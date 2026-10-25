@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0210
+type: SPEC
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Settings & Identity
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Settings & Identity
 
 **Status:** CURRENT_VERSION — quiet collections/Hidden inspection/Journey-slot round installed in tGfhAj/native POST-verified; backend privacy/public and Founder physical acceptance gates open

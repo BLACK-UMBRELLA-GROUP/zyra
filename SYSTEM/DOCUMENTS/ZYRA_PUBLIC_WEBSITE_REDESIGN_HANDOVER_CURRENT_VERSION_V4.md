@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0197
+type: HANDOVER
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: CODEX HANDOVER — ZYRA PUBLIC WEBSITE
+links: []
+owner: ZYRA chat
+---
+
 # CODEX HANDOVER — ZYRA PUBLIC WEBSITE
 
 **Version:** V4

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0271
+type: STANDARD
+status: CURRENT
+feature: ZYRA STANDARDS
+purpose: [Feature name in uppercase]
+links: []
+owner: ZYRA chat
+---
+
 # Summary Standard — APP and BUSINESS Documents
 **Document:** SUMMARY_STANDARD_CURRENT_VERSION_V3
 **Version:** V3

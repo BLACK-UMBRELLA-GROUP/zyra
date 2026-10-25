@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0222
+type: PLAN
+status: CURRENT
+feature: JOURNEY
+purpose: ZYRA — Step 1b plan: blocking ends the Journey
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Step 1b plan: blocking ends the Journey
 
 **Status:** PLAN ONLY — not applied. For approval.

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0062
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — IMAGE HANDLING CURRENT VERSION V2
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 ZYRA — Platform Standards
 Document: Image Handling Standard

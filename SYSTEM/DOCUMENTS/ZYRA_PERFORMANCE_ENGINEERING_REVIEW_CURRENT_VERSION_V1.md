@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0078
+type: REPORT
+status: CURRENT
+feature: ARCHITECTURE AND DATA
+purpose: ZYRA — Performance, Efficiency & User Experience Engineering Review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Performance, Efficiency & User Experience Engineering Review
 
 **Version:** V1

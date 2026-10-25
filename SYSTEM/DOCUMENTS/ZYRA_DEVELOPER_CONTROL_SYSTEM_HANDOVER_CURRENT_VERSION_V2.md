@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0255
+type: HANDOVER
+status: CURRENT
+feature: RELEASE
+purpose: ZYRA — Developer Control System: One-App Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Developer Control System: One-App Implementation Handover
 
 ## Current bounded client polish — 22 October 2026 (native POST verified)

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0027
+type: GUIDE
+status: CURRENT
+feature: APP: MATCHING
+purpose: Matching / Profile Decision System — References
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 PROFILE DECISION SYSTEM
 

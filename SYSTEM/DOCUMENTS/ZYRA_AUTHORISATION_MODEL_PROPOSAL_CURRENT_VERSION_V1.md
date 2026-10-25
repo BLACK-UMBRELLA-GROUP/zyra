@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0073
+type: SPEC
+status: DRAFT
+feature: ARCHITECTURE AND DATA
+purpose: ZYRA — Unified Authorisation Model
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Unified Authorisation Model
 
 **Status:** PROPOSED — awaiting Founder approval. Nothing built.

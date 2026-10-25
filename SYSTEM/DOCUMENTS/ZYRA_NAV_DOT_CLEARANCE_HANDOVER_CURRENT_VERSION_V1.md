@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0231
+type: HANDOVER
+status: CURRENT
+feature: NAVIGATION
+purpose: ZYRA Navigation Dot Clearance Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Navigation Dot Clearance Handover
 
 **Version:** V1  

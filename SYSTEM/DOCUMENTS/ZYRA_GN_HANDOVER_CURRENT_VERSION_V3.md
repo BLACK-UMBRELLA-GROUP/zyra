@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0176
+type: HANDOVER
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Network: Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Network: Implementation Handover
 
 **Document:** ZYRA_GN_HANDOVER_CURRENT_VERSION_V3.md

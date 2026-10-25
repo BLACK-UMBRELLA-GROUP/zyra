@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0065
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — SIX LAYER REVIEW STANDARD CURRENT VERSION V1: ZYRA — The Six-Layer Review Standard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — The Six-Layer Review Standard
 
 **Status:** APPROVED — Founder, 2026-08-06

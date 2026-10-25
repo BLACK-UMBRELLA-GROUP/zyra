@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0138
+type: GUIDE
+status: SUPERSEDED
+feature: GENERAL
+purpose: ZYRA — Repository Tree View (July snapshot - replaced by MAP.md)
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Repository Tree View
 
 **Generated:** 2026-07-26

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0214
+type: HANDOVER
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA Settings visual study — current as-built handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Settings visual study — current as-built handover V1
 
 **Status:** CODE BUILT / POST-VERIFIED LOCALLY / FOUNDER VISUAL ACCEPTANCE PENDING  

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0247
+type: SPEC
+status: CURRENT
+feature: PRODUCT
+purpose: ADVANCEMENT CONDITIONS: This document defines the evidence that must exist before a feature can advance from one execution Group to the next.
+links: []
+owner: ZYRA chat
+---
+
 # ADVANCEMENT CONDITIONS
 ## CURRENT_VERSION_V1
 

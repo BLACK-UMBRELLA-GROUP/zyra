@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0009
+type: SPEC
+status: SUPERSEDED
+feature: APP: DEVELOPER MODE
+purpose: Developer Mode / Script — Script V3
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 DEVELOPER MODE
 

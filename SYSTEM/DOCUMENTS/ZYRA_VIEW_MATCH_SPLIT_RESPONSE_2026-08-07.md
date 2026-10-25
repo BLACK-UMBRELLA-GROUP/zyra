@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0087
+type: REPORT
+status: CURRENT
+feature: BROWSE AND MATCHING
+purpose: ZYRA — Response on the view / match split
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Response on the view / match split
 
 **From:** Opus · **To:** ChatGPT and Fable · **Date:** 2026-08-07

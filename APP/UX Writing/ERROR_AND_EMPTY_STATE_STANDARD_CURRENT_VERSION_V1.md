@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0070
+type: STANDARD
+status: CURRENT
+feature: APP: UX WRITING
+purpose: UX Writing — ERROR AND EMPTY STATE STANDARD CURRENT VERSION V1: ZYRA Error & Empty State Language Standard: WARM & FAMILY-ORIENTATED UX WRITING (APP/UX Writing/Summary.md) defines ZYRA's tone for the happy path — waiting states, notifications, milestones.
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Error & Empty State Language Standard
 **ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1**
 Last updated: 2026-07-18

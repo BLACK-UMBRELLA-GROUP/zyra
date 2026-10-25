@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0225
+type: SPEC
+status: CURRENT
+feature: MESSAGING AND NOTIFICATIONS
+purpose: ZYRA — Email Architecture
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Email Architecture
 
 **Version:** V2

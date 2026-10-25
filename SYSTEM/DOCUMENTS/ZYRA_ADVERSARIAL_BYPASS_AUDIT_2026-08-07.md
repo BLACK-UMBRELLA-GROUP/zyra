@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0258
+type: REPORT
+status: CURRENT
+feature: SAFETY AND PRIVACY
+purpose: ZYRA — Adversarial Bypass Audit
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Adversarial Bypass Audit
 
 **Status:** FINDINGS ONLY — nothing changed, awaiting Founder authorisation

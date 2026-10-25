@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0169
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA Current Style Default — Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Current Style Default — Implementation Handover
 
 **Version:** V1  

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0108
+type: SPEC
+status: CURRENT
+feature: BUSINESS: USER FEATURES
+purpose: User Features — Summary: Defines subscription tiers, feature entitlements, and business rules for Seekers and Guardians.
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA — USER FEATURES (GOVERNED SUMMARY)
 ============================================================

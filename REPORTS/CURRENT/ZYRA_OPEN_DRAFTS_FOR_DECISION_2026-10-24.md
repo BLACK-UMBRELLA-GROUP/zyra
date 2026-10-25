@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0257
+type: REPORT
+status: DRAFT
+feature: REPORTS
+purpose: ZYRA — open drafts waiting for a Founder decision (2026-10-24)
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — open drafts waiting for a Founder decision (2026-10-24)
 
 Found in the second clean on 24 Oct 2026. Each is a draft that nobody approved, changed or

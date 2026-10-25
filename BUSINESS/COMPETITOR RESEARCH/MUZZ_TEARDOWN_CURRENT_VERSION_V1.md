@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0104
+type: RESEARCH
+status: CURRENT
+feature: BUSINESS: COMPETITOR RESEARCH
+purpose: Competitor Research — MUZZ TEARDOWN CURRENT VERSION V1: MUZZ — Founder-Level Product Teardown & ZYRA Strategic Response
+links: []
+owner: ZYRA chat
+---
+
 # MUZZ — Founder-Level Product Teardown & ZYRA Strategic Response
 
 **Version:** V1

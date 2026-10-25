@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0057
+type: SPEC
+status: CURRENT
+feature: APP: SAFETY
+purpose: Safety — SAFETY RESPECT SYSTEM CURRENT VERSION V3: ZYRA Safety & Respect System
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Safety & Respect System
 **SAFETY_RESPECT_SYSTEM_CURRENT_VERSION_V3**
 Last updated: 2026-06-28

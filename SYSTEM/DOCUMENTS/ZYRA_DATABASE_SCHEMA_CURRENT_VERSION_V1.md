@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0074
+type: SPEC
+status: CURRENT
+feature: ARCHITECTURE AND DATA
+purpose: ZYRA Database Schema
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Database Schema
 **Document:** ZYRA_DATABASE_SCHEMA_CURRENT_VERSION_V1
 **Version:** V1

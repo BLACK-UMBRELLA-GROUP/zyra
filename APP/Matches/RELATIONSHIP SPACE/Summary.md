@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0024
+type: SPEC
+status: CURRENT
+feature: APP: MATCHES
+purpose: Matches / Relationship Space — Summary: The permanent home of a relationship between two matched users.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 RELATIONSHIP SPACE
 Group: 4 — Page Responsibilities

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0133
+type: HANDOVER
+status: CURRENT
+feature: DASHBOARD
+purpose: ZYRA Dashboard Lab — Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Dashboard Lab — Implementation Handover
 
 **Version:** V5  

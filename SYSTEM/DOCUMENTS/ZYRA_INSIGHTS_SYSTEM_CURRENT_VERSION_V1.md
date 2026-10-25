@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0265
+type: SPEC
+status: CURRENT
+feature: UI AND DESIGN
+purpose: ZYRA Insights System — Source of Truth
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Insights System — Source of Truth
 
 **Version:** V1

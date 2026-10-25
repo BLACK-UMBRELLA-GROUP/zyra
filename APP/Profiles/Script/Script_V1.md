@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0055
+type: SPEC
+status: CURRENT
+feature: APP: PROFILES
+purpose: Profiles / Script — Script V1: PROFILE PAGE
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 PROFILE PAGE
 

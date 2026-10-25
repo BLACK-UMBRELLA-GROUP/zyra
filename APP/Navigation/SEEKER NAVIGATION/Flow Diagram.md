@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0030
+type: SPEC
+status: CURRENT
+feature: APP: NAVIGATION
+purpose: Navigation / Seeker Navigation — Flow Diagram
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER NAVIGATION
 

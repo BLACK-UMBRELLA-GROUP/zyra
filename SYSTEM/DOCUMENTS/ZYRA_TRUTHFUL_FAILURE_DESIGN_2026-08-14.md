@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0199
+type: SPEC
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: Truthful Failure Handling — Design
+links: []
+owner: ZYRA chat
+---
+
 # Truthful Failure Handling — Design
 
 **OA-ZYRA-225** · 14 August 2026 · design only, nothing built

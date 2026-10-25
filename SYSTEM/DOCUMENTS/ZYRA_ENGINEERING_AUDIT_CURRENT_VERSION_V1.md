@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0076
+type: REPORT
+status: CURRENT
+feature: ARCHITECTURE AND DATA
+purpose: ZYRA — Comprehensive Engineering, Architecture, Security & Product Quality Audit
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Comprehensive Engineering, Architecture, Security & Product Quality Audit
 
 **Version:** V1

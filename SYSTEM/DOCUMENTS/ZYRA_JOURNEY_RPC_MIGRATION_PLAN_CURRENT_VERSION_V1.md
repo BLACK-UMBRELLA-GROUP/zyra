@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0219
+type: PLAN
+status: CURRENT
+feature: JOURNEY
+purpose: ZYRA — Stage 4e: Journey RPC Layer Migration
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Stage 4e: Journey RPC Layer Migration
 
 **Status:** APPROVED 2026-08-08 (DR-ZYRA-122) — was PROPOSED — for Founder review. Nothing built.

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0061
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — BADGE STANDARD CURRENT VERSION V1: ZYRA — Badge Standard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Badge Standard
 
 **Status:** APPROVED — Founder, 2026-08-06

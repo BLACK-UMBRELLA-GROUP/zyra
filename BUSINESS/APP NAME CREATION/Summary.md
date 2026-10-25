@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0095
+type: BRAND
+status: CURRENT
+feature: BUSINESS: APP NAME CREATION
+purpose: App Name Creation — Summary: Define and approve the official brand name for the application.
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA — APP NAME CREATION (GOVERNED SUMMARY)
 ============================================================

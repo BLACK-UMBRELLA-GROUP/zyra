@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0029
+type: SPEC
+status: CURRENT
+feature: APP: MESSAGING
+purpose: Messaging — SUMMARY
+links: []
+owner: ZYRA chat
+---
+
 # Messaging
 
 **Status:** Built and working

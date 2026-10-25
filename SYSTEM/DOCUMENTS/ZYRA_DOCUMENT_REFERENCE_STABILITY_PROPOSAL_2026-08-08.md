@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0141
+type: SPEC
+status: DRAFT
+feature: GENERAL
+purpose: ZYRA — Stable document references: proposal
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Stable document references: proposal
 
 **Status:** PROPOSAL — nothing changed. For decision, not urgent.

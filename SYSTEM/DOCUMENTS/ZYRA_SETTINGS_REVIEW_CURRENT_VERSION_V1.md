@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0212
+type: REPORT
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Settings: Holistic Review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Settings: Holistic Review
 
 **Status:** HISTORICAL REVIEW — Settings built; Profile Personalisation added 2026-08-29

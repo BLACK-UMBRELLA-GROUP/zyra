@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0162
+type: PLAN
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Reference stability: implementation plan
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Reference stability: implementation plan
 
 **Status:** PLAN ONLY — nothing changed. For approval.

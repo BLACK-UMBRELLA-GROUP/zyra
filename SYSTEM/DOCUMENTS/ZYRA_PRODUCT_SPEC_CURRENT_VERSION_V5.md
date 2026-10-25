@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0252
+type: SPEC
+status: CURRENT
+feature: PRODUCT
+purpose: ZYRA MASTER PRODUCT SPECIFICATION
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA MASTER PRODUCT SPECIFICATION
 
 > **Quiet halo presentation — 22 October 2026 / O8XRQc; DELIVERED, native POST-verified:**

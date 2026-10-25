@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0183
+type: REPORT
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Page: Six-Layer Dependency Review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Page: Six-Layer Dependency Review
 
 **Status:** IMPLEMENTED — 2026-08-06

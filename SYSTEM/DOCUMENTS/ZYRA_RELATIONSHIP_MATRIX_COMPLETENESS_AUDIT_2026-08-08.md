@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0163
+type: REPORT
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Completeness audit of the Relationship-State Master Matrix
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Completeness audit of the Relationship-State Master Matrix V1
 
 **Status:** AUDIT — completeness challenge only. **No solutions proposed, no redesign**, per instruction.

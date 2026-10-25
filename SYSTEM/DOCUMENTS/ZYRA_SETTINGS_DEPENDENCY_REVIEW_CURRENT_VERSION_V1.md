@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0211
+type: REPORT
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Settings: Six-Layer Dependency Review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Settings: Six-Layer Dependency Review
 
 **Status:** FOR REVIEW — two blockers before implementation

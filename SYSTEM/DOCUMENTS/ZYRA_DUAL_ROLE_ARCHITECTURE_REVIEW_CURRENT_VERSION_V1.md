@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0075
+type: REPORT
+status: CURRENT
+feature: ARCHITECTURE AND DATA
+purpose: ZYRA — Dual Role & Guardian Exclusion: Architectural Review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Dual Role & Guardian Exclusion: Architectural Review
 
 **Status:** CLOSED — all questions resolved, Founder 2026-08-07.

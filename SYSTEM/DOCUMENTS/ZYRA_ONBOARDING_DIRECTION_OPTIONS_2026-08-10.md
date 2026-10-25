@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0243
+type: SPEC
+status: CURRENT
+feature: ONBOARDING
+purpose: ZYRA — Onboarding Redesign: Direction Options
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Onboarding Redesign: Direction Options
 
 **Document:** ZYRA_ONBOARDING_DIRECTION_OPTIONS_2026-08-10.md

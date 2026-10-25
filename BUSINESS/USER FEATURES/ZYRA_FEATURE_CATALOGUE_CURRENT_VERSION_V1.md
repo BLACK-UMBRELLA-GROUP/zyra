@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0109
+type: SPEC
+status: CURRENT
+feature: BUSINESS: USER FEATURES
+purpose: User Features — ZYRA FEATURE CATALOGUE CURRENT VERSION V1: ZYRA — Feature Catalogue
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Feature Catalogue
 
 **Version:** V1

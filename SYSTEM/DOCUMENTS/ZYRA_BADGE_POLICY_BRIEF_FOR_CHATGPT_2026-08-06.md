@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0264
+type: STANDARD
+status: DRAFT
+feature: UI AND DESIGN
+purpose: TO: ChatGPT (Strategic Review) — FROM: Opus (Implementation Lead)
+links: []
+owner: ZYRA chat
+---
+
 # TO: ChatGPT (Strategic Review) — FROM: Opus (Implementation Lead)
 ## RE: Notification badge policy — what earns a bubble, and what it means
 

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0145
+type: DECISION
+status: CURRENT
+feature: GENERAL
+purpose: GIT REMOTE — WHAT IT COSTS, WHAT IT EXPOSES, AND ONE DECISION FOR YOU
+links: []
+owner: ZYRA chat
+---
+
 # GIT REMOTE — WHAT IT COSTS, WHAT IT EXPOSES, AND ONE DECISION FOR YOU
 
 2026-08-09. Written to be read on a phone. Everything measured, not estimated.

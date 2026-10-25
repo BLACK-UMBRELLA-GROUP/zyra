@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0035
+type: SPEC
+status: CURRENT
+feature: APP: NOTIFICATIONS
+purpose: Notifications — SUMMARY
+links: []
+owner: ZYRA chat
+---
+
 # Notifications
 
 **Status:** In-app delivery built. Push not built.

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0262
+type: PLAN
+status: CURRENT
+feature: SAFETY AND PRIVACY
+purpose: ZYRA — Step 0 migration plan: safety_concern disclosure
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Step 0 migration plan: `safety_concern` disclosure
 
 **Status:** PLAN ONLY — not applied. For approval before execution.

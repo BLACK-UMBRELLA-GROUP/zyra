@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0194
+type: SPEC
+status: DRAFT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Visibility & Trust Model
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Visibility & Trust Model
 
 **Status:** DRAFT FOR REVIEW — nothing built. Supersedes nothing until approved.

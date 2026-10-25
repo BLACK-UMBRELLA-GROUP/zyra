@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0161
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA Quiet Refresh Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Quiet Refresh Implementation Handover
 
 **Version:** V1  

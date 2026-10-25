@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0172
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Shared Widget Library
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Shared Widget Library
 **Version:** V1
 **Status:** CURRENT_VERSION

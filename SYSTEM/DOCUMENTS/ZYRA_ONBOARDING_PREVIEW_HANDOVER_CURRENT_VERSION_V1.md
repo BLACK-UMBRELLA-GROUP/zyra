@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0245
+type: HANDOVER
+status: CURRENT
+feature: ONBOARDING
+purpose: ZYRA — Onboarding Preview Lab Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Onboarding Preview Lab Handover
 
 **Version:** V1  

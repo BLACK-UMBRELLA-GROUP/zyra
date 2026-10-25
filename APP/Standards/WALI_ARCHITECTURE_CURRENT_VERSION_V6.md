@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0067
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — WALI ARCHITECTURE CURRENT VERSION V6: ZYRA — Platform Architecture
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 ZYRA — Platform Architecture
 Document: Guardian Architecture

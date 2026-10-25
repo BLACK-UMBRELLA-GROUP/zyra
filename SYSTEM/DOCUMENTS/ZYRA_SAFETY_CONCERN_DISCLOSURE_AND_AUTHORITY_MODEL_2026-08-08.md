@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0261
+type: SPEC
+status: CURRENT
+feature: SAFETY AND PRIVACY
+purpose: ZYRA — Safety-concern disclosure, and the authority model
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Safety-concern disclosure, and the authority model
 
 **Status:** ONE URGENT FINDING + a design response. Nothing built.

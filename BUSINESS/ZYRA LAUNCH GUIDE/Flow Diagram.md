@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0111
+type: PLAN
+status: CURRENT
+feature: BUSINESS: ZYRA LAUNCH GUIDE
+purpose: Zyra Launch Guide — Flow Diagram
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 ZYRA LAUNCH GUIDE
 

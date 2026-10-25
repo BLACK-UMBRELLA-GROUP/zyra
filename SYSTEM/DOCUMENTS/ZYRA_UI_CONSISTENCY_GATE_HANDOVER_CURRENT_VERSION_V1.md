@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0267
+type: HANDOVER
+status: CURRENT
+feature: UI AND DESIGN
+purpose: ZYRA UI Consistency & Visual Regression Gate — Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA UI Consistency & Visual Regression Gate — Implementation Handover
 
 **Document:** ZYRA_UI_CONSISTENCY_GATE_HANDOVER_CURRENT_VERSION_V1.md  

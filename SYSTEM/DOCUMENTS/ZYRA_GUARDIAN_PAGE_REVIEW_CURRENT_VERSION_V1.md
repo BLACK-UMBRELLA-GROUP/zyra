@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0184
+type: REPORT
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Page: Review and Current Implementation
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Page: Review and Current Implementation
 
 **Status:** CURRENT_VERSION — QUIET SECTIONS APPROVED AND PROMOTED AS THE OFFICIAL SEEKER GUARDIAN PAGE

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0134
+type: REPORT
+status: CURRENT
+feature: DASHBOARD
+purpose: ZYRA Dashboard — Module Inventory ("What can exist, and when")
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Dashboard — Module Inventory ("What can exist, and when")
 
 **Version:** V3

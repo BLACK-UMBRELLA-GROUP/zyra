@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0253
+type: REGISTER
+status: SUPERSEDED
+feature: REGISTERS
+purpose: OUTSTANDING ACTIONS
+links: []
+owner: ZYRA chat
+---
+
 
 
 # OUTSTANDING ACTIONS

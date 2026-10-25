@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0064
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — PROFILE ACTIONS MENU STANDARD CURRENT VERSION V1: ZYRA — Profile Actions (⋮) Menu Standard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Profile Actions (⋮) Menu Standard
 
 **Version:** V1

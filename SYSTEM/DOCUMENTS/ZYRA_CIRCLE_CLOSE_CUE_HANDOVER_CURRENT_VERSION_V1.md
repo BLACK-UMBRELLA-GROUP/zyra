@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0080
+type: HANDOVER
+status: CURRENT
+feature: BROWSE AND MATCHING
+purpose: ZYRA Circle Close Cue Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Circle Close Cue Handover
 
 **Version:** V1  

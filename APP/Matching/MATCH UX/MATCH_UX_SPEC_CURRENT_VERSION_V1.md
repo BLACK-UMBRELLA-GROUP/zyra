@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0025
+type: SPEC
+status: CURRENT
+feature: APP: MATCHING
+purpose: Matching / Match Ux — MATCH UX SPEC CURRENT VERSION V1: ZYRA — Match UX Specification: The Match event fires when two Seekers have mutually Liked each other.
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Match UX Specification
 
 **Version:** V1

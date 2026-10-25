@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0063
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — JOURNEY CAPABILITY GRANT RULES CURRENT VERSION V7: ZYRA — Journey Capability Grant Rules: This version preserves the four membership products and Basic limits while clarifying that Guardian membership creates capability eligibility, not...
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Journey Capability Grant Rules
 
 > **2026-10-20 controlling amendment — Founder direct instruction and reply:**

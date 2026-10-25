@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0086
+type: SPEC
+status: CURRENT
+feature: BROWSE AND MATCHING
+purpose: ZYRA — "One identity, two profiles": an adversarial review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — "One identity, two profiles": an adversarial review
 
 **Status:** CHALLENGE — requested by the Founder, nothing built

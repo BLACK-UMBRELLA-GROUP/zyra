@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0090
+type: BRAND
+status: CURRENT
+feature: BUSINESS: APP LOGO
+purpose: App Logo — Flow Diagram
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 APP LOGO
 

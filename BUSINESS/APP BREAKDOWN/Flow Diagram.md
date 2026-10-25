@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0089
+type: SPEC
+status: CURRENT
+feature: BUSINESS: APP BREAKDOWN
+purpose: App Breakdown — Flow Diagram
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 APP BREAKDOWN
 

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0041
+type: SPEC
+status: CURRENT
+feature: APP: ONBOARDING
+purpose: Onboarding / Seeker Onboarding Questions — Questions Section 2 Profile Information
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER ONBOARDING QUESTIONS
 Document: Questions — Section 2 Profile Information

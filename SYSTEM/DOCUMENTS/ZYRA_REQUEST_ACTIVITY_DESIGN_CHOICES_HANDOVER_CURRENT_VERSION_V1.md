@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0198
+type: HANDOVER
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Journey requests and Introductions design choices
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Journey requests and Introductions design choices
 
 **Version:** V1  

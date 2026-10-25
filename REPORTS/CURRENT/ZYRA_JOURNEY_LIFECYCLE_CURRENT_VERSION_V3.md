@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0256
+type: REPORT
+status: CURRENT
+feature: REPORTS
+purpose: ZYRA — Journey Lifecycle Architecture
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Journey Lifecycle Architecture
 
 **Document:** ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md

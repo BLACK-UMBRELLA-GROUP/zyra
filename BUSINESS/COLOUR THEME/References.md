@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0101
+type: BRAND
+status: CURRENT
+feature: BUSINESS: COLOUR THEME
+purpose: Colour Theme — References
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 COLOUR THEME
 

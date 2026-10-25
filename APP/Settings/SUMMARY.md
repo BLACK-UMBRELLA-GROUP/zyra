@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0060
+type: SPEC
+status: CURRENT
+feature: APP: SETTINGS
+purpose: Settings — SUMMARY
+links: []
+owner: ZYRA chat
+---
+
 # Settings
 
 **2026-10-19 privacy/account integration — client checked/built; phone unreachable:**

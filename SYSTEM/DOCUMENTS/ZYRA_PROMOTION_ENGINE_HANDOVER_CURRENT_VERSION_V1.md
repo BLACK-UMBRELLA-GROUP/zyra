@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0160
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Respectful Promotion and Permission: Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Respectful Promotion and Permission: Implementation Handover
 
 **Document:** `ZYRA_PROMOTION_ENGINE_HANDOVER_CURRENT_VERSION_V1.md`  

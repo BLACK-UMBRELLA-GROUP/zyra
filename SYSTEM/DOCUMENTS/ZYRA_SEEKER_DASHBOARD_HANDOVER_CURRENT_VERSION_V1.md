@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0137
+type: HANDOVER
+status: CURRENT
+feature: DASHBOARD
+purpose: ZYRA Seeker Dashboard — Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Seeker Dashboard — Implementation Handover
 
 **Version:** V1  

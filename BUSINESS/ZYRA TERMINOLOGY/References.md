@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0124
+type: BRAND
+status: CURRENT
+feature: BUSINESS: ZYRA TERMINOLOGY
+purpose: Zyra Terminology — References
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 ZYRA TERMINOLOGY
 

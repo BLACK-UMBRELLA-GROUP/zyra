@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0011
+type: SPEC
+status: CURRENT
+feature: APP: DEVELOPER MODE
+purpose: Developer Mode — Summary
+links: []
+owner: ZYRA chat
+---
+
 # Developer Mode
 
 ## Current selected presentation — 20 October 2026 (built locally; not installed)

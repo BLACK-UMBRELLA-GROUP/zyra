@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0151
+type: PLAN
+status: CURRENT
+feature: GENERAL
+purpose: OA-ZYRA-168 — Grant sweep: implementation plan
+links: []
+owner: ZYRA chat
+---
+
 # OA-ZYRA-168 — Grant sweep: implementation plan
 
 **Status:** PLAN ONLY — nothing applied. For approval.

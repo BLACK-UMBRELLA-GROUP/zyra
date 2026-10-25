@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0118
+type: PLAN
+status: CURRENT
+feature: BUSINESS: ZYRA MARKETING SYSTEM
+purpose: Zyra Marketing System — Summary: ZYRA MARKETING SYSTEM — SUMMARY
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA MARKETING SYSTEM — SUMMARY
 
 ## PROJECT LOCATION

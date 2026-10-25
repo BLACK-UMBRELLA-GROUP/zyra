@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0004
+type: SPEC
+status: CURRENT
+feature: APP: AUTHENTICATION
+purpose: Authentication — Summary
+links: []
+owner: ZYRA chat
+---
+
 # Authentication
 
 > CURRENT SIGNUP MEMBERSHIP AMENDMENT — 2026-10-03 / DR-ZYRA-252:

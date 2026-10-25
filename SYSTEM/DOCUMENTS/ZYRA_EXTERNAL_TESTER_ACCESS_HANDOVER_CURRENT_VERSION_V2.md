@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0202
+type: HANDOVER
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA External Tester Access — Current Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA External Tester Access — Current Handover V2
 
 **Date:** 2026-09-24  

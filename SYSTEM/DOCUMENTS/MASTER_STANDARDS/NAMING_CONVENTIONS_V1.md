@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0270
+type: STANDARD
+status: CURRENT
+feature: ZYRA STANDARDS
+purpose: ZYRA — Naming Conventions
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Naming Conventions
 **Version:** V1
 **Status:** CURRENT_VERSION

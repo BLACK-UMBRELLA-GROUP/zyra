@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0094
+type: BRAND
+status: CURRENT
+feature: BUSINESS: APP NAME CREATION
+purpose: App Name Creation — References
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 App Name Creation
 

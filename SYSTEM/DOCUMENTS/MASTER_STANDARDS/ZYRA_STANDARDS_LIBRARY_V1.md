@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0273
+type: STANDARD
+status: CURRENT
+feature: ZYRA STANDARDS
+purpose: ZYRA — Standards Library
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Standards Library
 **Version:** V1
 **Status:** CURRENT_VERSION

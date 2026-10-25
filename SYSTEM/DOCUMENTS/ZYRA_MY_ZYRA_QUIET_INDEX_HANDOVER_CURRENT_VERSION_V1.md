@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0135
+type: HANDOVER
+status: CURRENT
+feature: DASHBOARD
+purpose: CODEX HANDOVER — MY ZYRA QUIET INDEX + PERSONAL JOURNEY COPY
+links: []
+owner: ZYRA chat
+---
+
 # CODEX HANDOVER — MY ZYRA QUIET INDEX + PERSONAL JOURNEY COPY
 
 > **Activity checklist — Founder direct instruction, 2026-10-20 / OA-ZYRA-305:**

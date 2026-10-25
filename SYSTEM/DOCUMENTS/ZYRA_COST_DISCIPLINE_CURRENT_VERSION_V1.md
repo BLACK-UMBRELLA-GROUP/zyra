@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0250
+type: STANDARD
+status: CURRENT
+feature: PRODUCT
+purpose: ZYRA COST DISCIPLINE — TESTING AND REAL LIFE
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 Black Umbrella Group AI ORGANISATION — ZYRA
 ============================================================

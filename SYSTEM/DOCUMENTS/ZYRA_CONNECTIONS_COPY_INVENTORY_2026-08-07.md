@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0081
+type: REPORT
+status: CURRENT
+feature: BROWSE AND MATCHING
+purpose: ZYRA — Connections Screen: Complete UX Copy Inventory
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Connections Screen: Complete UX Copy Inventory
 
 **Purpose:** independent UX writing review. **No changes proposed here.**

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0240
+type: REPORT
+status: CURRENT
+feature: ONBOARDING
+purpose: ZYRA — Chapter 2 Backfill, and What It Says About v_ch2_weight
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Chapter 2 Backfill, and What It Says About `v_ch2_weight`
 
 **Document:** ZYRA_CHAPTER2_BACKFILL_AND_WEIGHT_FINDINGS_2026-08-10.md

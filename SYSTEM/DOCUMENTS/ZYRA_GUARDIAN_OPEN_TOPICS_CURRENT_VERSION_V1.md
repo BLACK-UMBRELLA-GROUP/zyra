@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0182
+type: SPEC
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian: Open Topics
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian: Open Topics
 
 **Status:** PARKED — raised, not resolved. Nothing here is decided.

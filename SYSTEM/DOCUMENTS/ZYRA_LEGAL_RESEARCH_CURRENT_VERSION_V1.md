@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0148
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Legal Document Research & Clause Coverage Matrix
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Legal Document Research & Clause Coverage Matrix
 
 **Version:** V1

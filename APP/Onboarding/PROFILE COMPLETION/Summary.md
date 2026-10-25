@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0036
+type: SPEC
+status: CURRENT
+feature: APP: ONBOARDING
+purpose: Onboarding / Profile Completion — Summary: The Profile Completion Stage begins immediately after onboarding.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 PROFILE COMPLETION
 Group: 4 — Page Responsibilities

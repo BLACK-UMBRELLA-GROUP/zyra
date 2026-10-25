@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0154
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Paid Membership Client Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Paid Membership Client Handover
 
 **Version:** V5

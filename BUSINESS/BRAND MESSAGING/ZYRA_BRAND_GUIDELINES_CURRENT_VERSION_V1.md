@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0099
+type: BRAND
+status: CURRENT
+feature: BUSINESS: BRAND MESSAGING
+purpose: Brand Messaging — ZYRA BRAND GUIDELINES CURRENT VERSION V1: ZYRA — Brand Guidelines
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Brand Guidelines
 
 **Version:** V1

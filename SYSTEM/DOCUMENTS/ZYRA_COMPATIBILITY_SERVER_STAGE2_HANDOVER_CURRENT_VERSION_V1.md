@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0131
+type: HANDOVER
+status: CURRENT
+feature: COMPATIBILITY
+purpose: ZYRA — Compatibility Server Stage 2 Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Compatibility Server Stage 2 Handover
 
 **Version:** V1  

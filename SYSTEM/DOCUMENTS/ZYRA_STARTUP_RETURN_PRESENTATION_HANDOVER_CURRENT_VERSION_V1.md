@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0167
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Interrupted startup return presentation
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Interrupted startup return presentation
 
 Version: V1  

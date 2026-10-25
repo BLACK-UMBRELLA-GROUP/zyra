@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0001
+type: SPEC
+status: SUPERSEDED
+feature: APP: AUTHENTICATION
+purpose: Authentication / Script — Script V1
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 AUTHENTICATION
 

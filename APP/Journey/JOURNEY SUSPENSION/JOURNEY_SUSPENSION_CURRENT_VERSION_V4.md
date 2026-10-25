@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0021
+type: SPEC
+status: CURRENT
+feature: APP: JOURNEY
+purpose: Journey / Journey Suspension — JOURNEY SUSPENSION CURRENT VERSION V4: ZYRA — Journey Suspension Specification
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Journey Suspension Specification
 
 **Version:** V4

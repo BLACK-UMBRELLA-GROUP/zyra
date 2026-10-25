@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0193
+type: REPORT
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Surveillance Audit
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Surveillance Audit
 
 **Status:** FINDINGS — nothing changed, awaiting authorisation

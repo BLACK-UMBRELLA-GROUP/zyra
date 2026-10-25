@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0174
+type: HANDOVER
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Compatibility design choices handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Compatibility design choices handover
 
 **Version:** V2  

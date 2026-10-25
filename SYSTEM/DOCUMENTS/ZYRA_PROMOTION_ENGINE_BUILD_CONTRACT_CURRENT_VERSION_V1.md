@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0159
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Promotion Engine Build Contract
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Promotion Engine Build Contract
 
 **Version:** V1  

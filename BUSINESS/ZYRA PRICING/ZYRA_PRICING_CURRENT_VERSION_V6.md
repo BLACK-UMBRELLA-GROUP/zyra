@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0123
+type: SPEC
+status: CURRENT
+feature: BUSINESS: ZYRA PRICING
+purpose: Zyra Pricing — ZYRA PRICING CURRENT VERSION V6: ZYRA — Membership and Pricing
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Membership and Pricing
 
 **Version:** V6  

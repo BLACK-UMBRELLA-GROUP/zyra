@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0113
+type: PLAN
+status: CURRENT
+feature: BUSINESS: ZYRA LAUNCH GUIDE
+purpose: Zyra Launch Guide — Summary: End-to-end development, business, launch and operational guide for ZYRA.
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA — ZYRA LAUNCH GUIDE (GOVERNED SUMMARY)
 ============================================================

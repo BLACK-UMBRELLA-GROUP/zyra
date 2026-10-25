@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0158
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Product Observability Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Product Observability Implementation Handover
 
 **Version:** V1  

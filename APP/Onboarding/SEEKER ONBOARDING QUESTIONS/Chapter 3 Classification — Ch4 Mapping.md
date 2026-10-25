@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0037
+type: SPEC
+status: CURRENT
+feature: APP: ONBOARDING
+purpose: Onboarding / Seeker Onboarding Questions — Chapter 3 Classification — Ch4 Mapping
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER ONBOARDING QUESTIONS
 Document: Chapter 3 Classification — Chapter 4 Mapping

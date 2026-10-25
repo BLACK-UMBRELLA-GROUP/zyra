@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0213
+type: REPORT
+status: DRAFT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Settings Round 2: Six Proposals for Review
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Settings Round 2: Six Proposals for Review
 
 **Status:** FOR DISCUSSION — nothing built, nothing decided

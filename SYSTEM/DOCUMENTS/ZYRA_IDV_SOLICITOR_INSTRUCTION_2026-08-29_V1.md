@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0206
+type: GUIDE
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Solicitor Instruction Pack: Identity Verification & Biometric Processing
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Solicitor Instruction Pack: Identity Verification & Biometric Processing
 
 **Version:** V1

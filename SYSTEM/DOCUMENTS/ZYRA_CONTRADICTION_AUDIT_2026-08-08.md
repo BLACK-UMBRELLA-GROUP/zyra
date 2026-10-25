@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0140
+type: REPORT
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Full Contradiction Audit
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Full Contradiction Audit
 
 **Date:** 2026-08-08

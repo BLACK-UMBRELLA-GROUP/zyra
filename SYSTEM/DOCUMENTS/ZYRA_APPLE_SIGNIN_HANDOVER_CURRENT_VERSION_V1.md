@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0201
+type: HANDOVER
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA Apple Sign-In — As-Built Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Apple Sign-In — As-Built Handover
 
 **Version:** V1  

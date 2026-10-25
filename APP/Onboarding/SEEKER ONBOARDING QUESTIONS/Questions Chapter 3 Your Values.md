@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0040
+type: SPEC
+status: CURRENT
+feature: APP: ONBOARDING
+purpose: Onboarding / Seeker Onboarding Questions — Questions Chapter 3 Your Values
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER ONBOARDING QUESTIONS
 Document: Questions — Chapter 3: Your Values

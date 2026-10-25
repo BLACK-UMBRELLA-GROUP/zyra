@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0127
+type: GUIDE
+status: CURRENT
+feature: CODE AND TOOLS
+purpose: ZYRA — Flutter Source
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Flutter Source
 
 Muslim matrimonial platform. Specs live in `../APP/`, decisions in

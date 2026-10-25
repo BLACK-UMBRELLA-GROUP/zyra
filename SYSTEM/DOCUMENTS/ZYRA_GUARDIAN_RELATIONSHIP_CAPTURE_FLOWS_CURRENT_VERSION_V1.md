@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0185
+type: SPEC
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Relationship: Where Is It Captured?
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Relationship: Where Is It Captured?
 
 **Status:** DECIDED — Founder, 2026-08-07

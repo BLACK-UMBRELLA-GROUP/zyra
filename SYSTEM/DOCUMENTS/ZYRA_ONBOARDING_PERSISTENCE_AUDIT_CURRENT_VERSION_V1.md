@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0244
+type: REPORT
+status: CURRENT
+feature: ONBOARDING
+purpose: ZYRA — Onboarding Persistence Audit
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Onboarding Persistence Audit
 
 **Version:** V1

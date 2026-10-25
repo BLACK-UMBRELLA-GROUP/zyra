@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0136
+type: HANDOVER
+status: CURRENT
+feature: DASHBOARD
+purpose: CODEX HANDOVER — MY ZYRA SUPPORTIVE FIRST VIEW
+links: []
+owner: ZYRA chat
+---
+
 # CODEX HANDOVER — MY ZYRA SUPPORTIVE FIRST VIEW
 
 **Version:** V1

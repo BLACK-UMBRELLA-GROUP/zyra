@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0105
+type: PLAN
+status: CURRENT
+feature: BUSINESS: PRODUCT PLANNING
+purpose: Product Planning — Summary: ZYRA — PRODUCT PLANNING (GOVERNED SUMMARY)
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA — PRODUCT PLANNING (GOVERNED SUMMARY)
 ============================================================

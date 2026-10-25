@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0156
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Product Observability Build Contract
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Product Observability Build Contract
 
 **Version:** V1  

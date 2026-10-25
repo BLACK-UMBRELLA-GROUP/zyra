@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0003
+type: SPEC
+status: CURRENT
+feature: APP: AUTHENTICATION
+purpose: Authentication / Script — Script V3
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 AUTHENTICATION
 

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0209
+type: HANDOVER
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Profile Account & Safety Controls Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Profile Account & Safety Controls Handover
 
 **Version:** V1  

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0052
+type: SPEC
+status: CURRENT
+feature: APP: PREMIUM
+purpose: Premium / Profile Unlocks — Summary: Compatibility Unlock
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 Compatibility Unlock
 

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0084
+type: HANDOVER
+status: CURRENT
+feature: BROWSE AND MATCHING
+purpose: ZYRA Own Profile Browse Preview Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Own Profile Browse Preview Handover
 
 **Version:** V1  

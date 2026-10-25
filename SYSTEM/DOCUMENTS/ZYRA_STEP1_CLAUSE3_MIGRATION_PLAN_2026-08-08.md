@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0168
+type: PLAN
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Step 1 migration plan: the clause 3 status guard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Step 1 migration plan: the clause 3 status guard
 
 **Status:** PLAN ONLY — not applied. For approval.

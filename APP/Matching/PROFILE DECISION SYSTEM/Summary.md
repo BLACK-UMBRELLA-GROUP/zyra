@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0028
+type: SPEC
+status: CURRENT
+feature: APP: MATCHING
+purpose: Matching / Profile Decision System — Summary: Defines the profile decision system used by Seekers on Browse.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 PROFILE DECISION SYSTEM
 Group: 4 — Page Responsibilities

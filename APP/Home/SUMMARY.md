@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0013
+type: SPEC
+status: CURRENT
+feature: APP: HOME
+purpose: Home — SUMMARY
+links: []
+owner: ZYRA chat
+---
+
 # Home
 
 **Status:** Placeholder — Approved Application Structure

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0269
+type: RULES
+status: CURRENT
+feature: ZYRA GOVERNANCE
+purpose: ZYRA — Project Governance
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Project Governance
 
 **Version:** V6

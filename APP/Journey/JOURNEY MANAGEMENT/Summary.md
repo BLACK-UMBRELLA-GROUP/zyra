@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0019
+type: SPEC
+status: CURRENT
+feature: APP: JOURNEY
+purpose: Journey / Journey Management — Summary: Defines how Journeys (active relationships) are managed, transitioned, and concluded.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 JOURNEY MANAGEMENT
 Group: 4 — Page Responsibilities

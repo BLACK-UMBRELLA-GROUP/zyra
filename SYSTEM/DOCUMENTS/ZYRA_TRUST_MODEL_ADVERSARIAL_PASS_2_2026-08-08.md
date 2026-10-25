@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0171
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Adversarial pass 2: attacking the PROPOSED model
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Adversarial pass 2: attacking the PROPOSED model
 
 **Status:** FINDINGS — nothing built

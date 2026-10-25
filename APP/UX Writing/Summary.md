@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0071
+type: SPEC
+status: CURRENT
+feature: APP: UX WRITING
+purpose: UX Writing — Summary: Defines ZYRA's unique tone of voice and UX writing principles across the entire application.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 WARM & FAMILY-ORIENTATED UX WRITING
 Category: UX / Content Design

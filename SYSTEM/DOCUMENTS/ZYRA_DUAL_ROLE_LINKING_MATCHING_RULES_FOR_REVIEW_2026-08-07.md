@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0083
+type: REPORT
+status: DRAFT
+feature: BROWSE AND MATCHING
+purpose: ZYRA — Guardian / Seeker Dual Role, Linking & Matching: What Actually Exists
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian / Seeker Dual Role, Linking & Matching: What Actually Exists
 
 **Status:** FOR REVIEW — a statement of the CURRENT system, not a proposal

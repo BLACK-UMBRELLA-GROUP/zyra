@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0218
+type: HANDOVER
+status: CURRENT
+feature: JOURNEY
+purpose: ZYRA Journey Returns Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Journey Returns Handover
 
 **Version:** V1  

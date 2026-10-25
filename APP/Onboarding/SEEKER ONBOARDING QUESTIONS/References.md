@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0043
+type: GUIDE
+status: CURRENT
+feature: APP: ONBOARDING
+purpose: Onboarding / Seeker Onboarding Questions — References
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER ONBOARDING QUESTIONS
 

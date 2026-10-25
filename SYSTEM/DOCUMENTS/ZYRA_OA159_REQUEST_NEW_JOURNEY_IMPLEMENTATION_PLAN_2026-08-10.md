@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0221
+type: PLAN
+status: CURRENT
+feature: JOURNEY
+purpose: OA-ZYRA-159 — Request New Journey · Implementation Plan
+links: []
+owner: ZYRA chat
+---
+
 # OA-ZYRA-159 — Request New Journey · Implementation Plan
 
 **Date:** 2026-08-10 · **Status:** PLAN — nothing built, nothing migrated

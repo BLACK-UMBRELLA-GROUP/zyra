@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0026
+type: SPEC
+status: CURRENT
+feature: APP: MATCHING
+purpose: Matching / Profile Decision System — Flow Diagram
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 PROFILE DECISION SYSTEM
 

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0079
+type: HANDOVER
+status: CURRENT
+feature: ARCHITECTURE AND DATA
+purpose: Supabase key migration
+links: []
+owner: ZYRA chat
+---
+
 # Supabase key migration
 
 ## PROJECT LOCATION

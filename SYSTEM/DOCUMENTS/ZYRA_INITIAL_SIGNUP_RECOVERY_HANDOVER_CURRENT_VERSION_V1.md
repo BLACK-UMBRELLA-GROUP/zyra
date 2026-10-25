@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0207
+type: HANDOVER
+status: CURRENT
+feature: IDENTITY AND SIGN-IN
+purpose: ZYRA — Initial Signup Recovery and IDV Truth — As-built Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Initial Signup Recovery and IDV Truth — As-built Handover
 
 **Version:** V1

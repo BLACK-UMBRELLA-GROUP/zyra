@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0152
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: OA-ZYRA-170 — Function EXECUTE sweep: as applied
+links: []
+owner: ZYRA chat
+---
+
 # OA-ZYRA-170 — Function EXECUTE sweep: as applied
 
 **Status:** APPLIED — **objective NOT met.** Awaiting approval to complete.

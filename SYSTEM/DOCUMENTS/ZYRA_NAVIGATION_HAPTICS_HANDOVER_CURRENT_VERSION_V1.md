@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0230
+type: HANDOVER
+status: CURRENT
+feature: NAVIGATION
+purpose: ZYRA — Navigation Haptics Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Navigation Haptics Implementation Handover
 
 ## Circle caption and Journey-only floating picker — 23 October 2026 / QZALFp (BUILT; local install HELD)

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0088
+type: PLAN
+status: CURRENT
+feature: BUSINESS: AI STRATEGY
+purpose: Ai Strategy — Summary: ZYRA — AI STRATEGY (GOVERNED SUMMARY)
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA — AI STRATEGY (GOVERNED SUMMARY)
 ============================================================

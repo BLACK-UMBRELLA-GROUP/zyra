@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0226
+type: HANDOVER
+status: CURRENT
+feature: MESSAGING AND NOTIFICATIONS
+purpose: ZYRA Guardian Circle Messaging Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Guardian Circle Messaging Handover
 
 ## Discussing caption and Journey-only picker — 23 October 2026 / QZALFp (BUILT; local install HELD)

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0157
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Product Observability
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Product Observability
 
 **Version:** V1  

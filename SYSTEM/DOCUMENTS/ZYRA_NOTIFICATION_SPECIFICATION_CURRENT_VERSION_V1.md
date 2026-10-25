@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0228
+type: SPEC
+status: CURRENT
+feature: MESSAGING AND NOTIFICATIONS
+purpose: ZYRA Notification Specification
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Notification Specification
 
 **Version:** V1 · **Status:** CURRENT_VERSION · **Date:** 2026-08-14

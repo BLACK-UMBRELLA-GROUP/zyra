@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0056
+type: SPEC
+status: CURRENT
+feature: APP: PROFILES
+purpose: Profiles — Summary: PROFILE PHOTO — DISPLAY, CROPPING & MODERATION
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 PROFILE PHOTO — DISPLAY, CROPPING & MODERATION
 

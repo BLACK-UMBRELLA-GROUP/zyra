@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0054
+type: SPEC
+status: CURRENT
+feature: APP: PREMIUM
+purpose: Premium / Wali Premium — Summary: GUARDIAN ONE: Define how Guardian+ capabilities work in relation to a Seeker's ZYRA One entitlement, seeker authorisation, and the guardian network.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 GUARDIAN ONE
 Group: 4 — Page Responsibilities

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0128
+type: GUIDE
+status: CURRENT
+feature: CODE AND TOOLS
+purpose: Compatibility Stage 2 — isolated synthetic server candidate
+links: []
+owner: ZYRA chat
+---
+
 # Compatibility Stage 2 — isolated synthetic server candidate
 
 Founder execution authority: direct **“no proceed with execution”**, 2026-09-28,

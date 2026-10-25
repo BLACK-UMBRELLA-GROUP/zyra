@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0144
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: CODEX HANDOVER — ZYRA FULL HEALTH CHECK AND REPAIR
+links: []
+owner: ZYRA chat
+---
+
 # CODEX HANDOVER — ZYRA FULL HEALTH CHECK AND REPAIR
 
 **Version:** V1  

@@ -1,0 +1,5 @@
+# Left out of MAP.md on purpose (generate_map.py). Say why on each line.
+SYSTEM/RESOURCES   # evidence, review outputs and tool state; tests pin the exact bytes of some READMEs (OA-ZYRA-198). Rehomed in the ZYRA restructure (OA-AIOS-406 phase 4)
+SITE   # its own repo (zyra-site); mapped there if needed
+SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md   # written whole by SYSTEM/tools/generate_doc_index.py; replaced by MAP.md
+SOURCE/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md   # Flutter template file

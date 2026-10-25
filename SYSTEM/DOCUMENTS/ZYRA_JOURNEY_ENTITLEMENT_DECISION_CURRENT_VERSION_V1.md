@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0216
+type: DECISION
+status: CURRENT
+feature: JOURNEY
+purpose: ZYRA — Journey Entitlement: Decision Record
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Journey Entitlement: Decision Record
 
 **Status:** APPROVED — Founder, 2026-08-06. **Not yet built** (see sequence)

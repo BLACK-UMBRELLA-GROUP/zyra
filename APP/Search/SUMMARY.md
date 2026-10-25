@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0059
+type: SPEC
+status: CURRENT
+feature: APP: SEARCH
+purpose: Search — SUMMARY
+links: []
+owner: ZYRA chat
+---
+
 # Search
 
 **Founder extension (DR-ZYRA-267, 2026-10-10):** approved filters are age,

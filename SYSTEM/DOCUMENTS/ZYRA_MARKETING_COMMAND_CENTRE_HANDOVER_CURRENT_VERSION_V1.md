@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0149
+type: HANDOVER
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA Marketing Command Centre — As-Built Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Marketing Command Centre — As-Built Handover
 
 **Version:** V1  

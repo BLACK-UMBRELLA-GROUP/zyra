@@ -116,17 +116,16 @@ Rules live in the documents below, not here. Read them in this order:
    — lessons from Aug–Oct 2026 and Codex's standing first task.
 1. This `AGENTS.md` is the active ZYRA bootstrap. Archived Claude/Fable files
    remain historical evidence only.
-2. `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_GOVERNANCE_CURRENT_VERSION_V6.md`
-   — authority, decision framework, findings-become-actions (§6).
-3. `SYSTEM/DOCUMENTS/MASTER_CONTRACTS/ZYRA_EXECUTION_CURRENT_VERSION_V5.md` — how work moves
-   from idea to code; the §3.2 pre-implementation checklist.
-4. `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md` (827 KB) and
+2. `MAP.md` — every live ZYRA document by ID with one line each, and the **task routes**:
+   which 2–5 documents to open for your kind of task. Open only those. Re-run
+   `python3 "../BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_map.py" .` after adding, renaming
+   or retiring a document.
+3. `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md` (827 KB) and
    `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2.md` (1.4 MB) — **never read whole.**
    Start from `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` (open actions) and
    `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` (every decision on one line), then search by ID. Check the live NEXT IDENTIFIER before drafting entries.
-6. `SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md` —
-   generated list of every governed document. (ZYRA's `MAP.md` replaces it in phase 4.)
-7. `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`
+4. Building or changing the app: the MAP route "Building a feature" (ZYRA execution contract
+   §3.2 checklist), and `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`
    — required as-built repository memory for meaningful work.
 
 Roles: the Core rules at the top of this file (V2). AD-AIOS-097 → 099 → 100 → 105 →

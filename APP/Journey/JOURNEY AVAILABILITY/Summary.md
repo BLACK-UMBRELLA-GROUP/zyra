@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0017
+type: SPEC
+status: CURRENT
+feature: APP: JOURNEY
+purpose: Journey / Journey Availability — Summary: Defines how Journey slots work, how ZYRA determines which Journey Queue are eligible to begin, and how the AI recommends the next Journey.
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 JOURNEY AVAILABILITY
 Group: 4 — Page Responsibilities

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0229
+type: HANDOVER
+status: CURRENT
+feature: NAVIGATION
+purpose: ZYRA Back Navigation Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Back Navigation Implementation Handover
 
 **Version:** V1  

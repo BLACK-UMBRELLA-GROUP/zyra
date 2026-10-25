@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0033
+type: SPEC
+status: CURRENT
+feature: APP: NAVIGATION
+purpose: Navigation / Seeker Navigation / Script — Script V2
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 SEEKER NAVIGATION
 

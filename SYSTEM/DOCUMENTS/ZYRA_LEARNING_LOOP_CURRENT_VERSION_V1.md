@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0146
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA Learning Loop — Adaptive Dashboard Insights
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Learning Loop — Adaptive Dashboard Insights
 
 **Version:** V1

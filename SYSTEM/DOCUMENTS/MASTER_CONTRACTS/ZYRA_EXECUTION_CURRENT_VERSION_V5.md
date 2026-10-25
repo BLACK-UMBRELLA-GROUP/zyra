@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0268
+type: RULES
+status: CURRENT
+feature: ZYRA CONTRACTS
+purpose: ZYRA — Execution Contract
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Execution Contract
 **Version:** V5
 **Status:** CURRENT_VERSION

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0048
+type: SPEC
+status: CURRENT
+feature: APP: PREMIUM
+purpose: Premium / Ai Tiering — TIERING CURRENT VERSION V1: ZYRA AI Tiering — Product Principles
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA AI Tiering — Product Principles
 **CURRENT_VERSION_V1** | Status: Approved | Authors: Lead Architect + Architectural Reviewer
 

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0050
+type: SPEC
+status: CURRENT
+feature: APP: PREMIUM
+purpose: Premium / Profile Unlocks — Flow Diagram: Compatibility Unlocks (Name TBC)
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 Compatibility Unlocks (Name TBC)
 

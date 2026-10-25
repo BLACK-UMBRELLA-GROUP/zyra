@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0254
+type: GUIDE
+status: CURRENT
+feature: RELEASE
+purpose: ZYRA — One-App Internal Delivery Runbook
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — One-App Internal Delivery Runbook
 
 ## Circle Discussing/Journey-only picker — 23 October 2026 / QZALFp (BUILT; local install HELD)

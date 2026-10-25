@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0053
+type: SPEC
+status: CURRENT
+feature: APP: PREMIUM
+purpose: Premium / Subscription Transparency — TRANSPARENCY CURRENT VERSION V1: ZYRA Subscription Transparency Standard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Subscription Transparency Standard
 **CURRENT_VERSION_V1** | Status: Approved | Authors: Lead Architect + Architectural Reviewer
 

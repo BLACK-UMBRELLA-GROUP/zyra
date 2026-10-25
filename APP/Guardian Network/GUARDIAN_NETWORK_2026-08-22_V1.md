@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0012
+type: SPEC
+status: CURRENT
+feature: APP: GUARDIAN NETWORK
+purpose: Guardian Network — GUARDIAN NETWORK 2026-08-22 V1
+links: []
+owner: ZYRA chat
+---
+
 > **SUPERSEDED — ARCHIVED 2026-08-23 (OA-ZYRA-252).** This was the
 > 2026-08-22 governed reconciliation draft, and for one day it carried
 > CURRENT_VERSION in the APP folder while the ratified lineage lived in

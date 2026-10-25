@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0266
+type: SPEC
+status: CURRENT
+feature: UI AND DESIGN
+purpose: ZYRA UI Consistency & Visual Regression Gate
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA UI Consistency & Visual Regression Gate
 
 **Document:** ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md

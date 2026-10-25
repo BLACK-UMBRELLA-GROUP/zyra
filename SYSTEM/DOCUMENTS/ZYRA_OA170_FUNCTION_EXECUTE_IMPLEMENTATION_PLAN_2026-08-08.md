@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0153
+type: PLAN
+status: CURRENT
+feature: GENERAL
+purpose: OA-ZYRA-170 — Function EXECUTE sweep: implementation plan
+links: []
+owner: ZYRA chat
+---
+
 # OA-ZYRA-170 — Function EXECUTE sweep: implementation plan
 
 **Status:** PLAN ONLY — nothing applied. For approval.

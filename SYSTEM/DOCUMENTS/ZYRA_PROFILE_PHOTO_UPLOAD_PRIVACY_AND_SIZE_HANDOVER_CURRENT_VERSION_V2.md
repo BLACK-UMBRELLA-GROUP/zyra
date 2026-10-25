@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0260
+type: HANDOVER
+status: CURRENT
+feature: SAFETY AND PRIVACY
+purpose: ZYRA — Profile Photo Upload Privacy and Size Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Profile Photo Upload Privacy and Size Implementation Handover
 
 **Version:** V2  

@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0068
+type: STANDARD
+status: CURRENT
+feature: APP: STANDARDS
+purpose: Standards — WALI REQUIREMENT AND ACCESS POLICY CURRENT VERSION V1: ZYRA — Guardian Requirement, Access & Consent Policy
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Requirement, Access & Consent Policy
 
 **Version:** V1

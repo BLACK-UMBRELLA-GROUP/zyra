@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0115
+type: PLAN
+status: CURRENT
+feature: BUSINESS: ZYRA MARKETING SYSTEM
+purpose: Zyra Marketing System — Flow Blueprint: ZYRA MARKETING SYSTEM — FLOW BLUEPRINT
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA MARKETING SYSTEM — FLOW BLUEPRINT
 
 ## PROJECT LOCATION

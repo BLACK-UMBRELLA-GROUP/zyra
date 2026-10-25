@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0223
+type: REPORT
+status: CURRENT
+feature: LOGS
+purpose: ZYRA — Changelog — July 2026
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Changelog — July 2026
 
 **Format:** Keep a Changelog (Added / Changed / Fixed / Removed)

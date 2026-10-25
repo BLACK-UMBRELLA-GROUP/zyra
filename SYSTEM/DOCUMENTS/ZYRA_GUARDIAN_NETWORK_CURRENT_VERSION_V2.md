@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0178
+type: SPEC
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA — Guardian Network: Source of Truth
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Guardian Network: Source of Truth
 
 **Version:** V2

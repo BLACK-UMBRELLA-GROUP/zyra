@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0049
+type: SPEC
+status: CURRENT
+feature: APP: PREMIUM
+purpose: Premium / Dependency Communication — DEPENDENCY CURRENT VERSION V1: ZYRA Dependency Communication Principle
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Dependency Communication Principle
 **CURRENT_VERSION_V1** | Status: Approved | Authors: Lead Architect + Architectural Reviewer
 

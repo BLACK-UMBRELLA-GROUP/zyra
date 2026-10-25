@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0132
+type: HANDOVER
+status: CURRENT
+feature: DASHBOARD
+purpose: ZYRA Dashboard — Current-State Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Dashboard — Current-State Handover
 
 > **SUPERSEDED 2026-08-29 (point-in-time snapshot).** This document describes

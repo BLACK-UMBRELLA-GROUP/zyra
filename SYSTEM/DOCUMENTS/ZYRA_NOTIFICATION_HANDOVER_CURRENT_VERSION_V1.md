@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0227
+type: HANDOVER
+status: CURRENT
+feature: MESSAGING AND NOTIFICATIONS
+purpose: ZYRA Notification — Implementation Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Notification — Implementation Handover
 
 **Version:** V1  

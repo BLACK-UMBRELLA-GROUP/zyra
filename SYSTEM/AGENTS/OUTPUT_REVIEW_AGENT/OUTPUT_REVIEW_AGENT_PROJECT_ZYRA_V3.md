@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0235
+type: SPEC
+status: CURRENT
+feature: OLD AGENT CONTRACTS
+purpose: AGENT CONTRACT — OUTPUT REVIEW AGENT (PROJECT:ZYRA IMPLEMENTATION) (old AIOS agent design - under review in OA-AIOS-397)
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 Black Umbrella Group AI ORGANISATION
 ============================================================

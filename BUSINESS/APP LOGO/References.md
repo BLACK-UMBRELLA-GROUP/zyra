@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0091
+type: BRAND
+status: CURRENT
+feature: BUSINESS: APP LOGO
+purpose: App Logo — References
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 APP LOGO
 

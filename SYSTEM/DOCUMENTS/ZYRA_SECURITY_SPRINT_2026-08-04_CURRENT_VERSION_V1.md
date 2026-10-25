@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0165
+type: SPEC
+status: CURRENT
+feature: GENERAL
+purpose: ZYRA — Security Sprint, 2026-08-04
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Security Sprint, 2026-08-04
 
 **Status:** COMPLETE — every finding closed and re-tested

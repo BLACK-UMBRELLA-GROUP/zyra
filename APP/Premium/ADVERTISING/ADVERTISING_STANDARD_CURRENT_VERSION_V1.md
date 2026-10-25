@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0047
+type: STANDARD
+status: CURRENT
+feature: APP: PREMIUM
+purpose: Premium / Advertising — ADVERTISING STANDARD CURRENT VERSION V1: ZYRA Advertising Standard
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Advertising Standard
 **ADVERTISING_CURRENT_VERSION_V1**
 Last updated: 2026-06-28

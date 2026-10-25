@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0217
+type: SPEC
+status: CURRENT
+feature: JOURNEY
+purpose: ZYRA — Journey Field Classification (Mine / Theirs / Joint)
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Journey Field Classification (Mine / Theirs / Joint)
 
 **Status:** **APPROVED** — Founder 2026-08-06, with amendments. Two items

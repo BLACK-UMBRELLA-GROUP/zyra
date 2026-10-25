@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0098
+type: BRAND
+status: CURRENT
+feature: BUSINESS: BRAND MESSAGING
+purpose: Brand Messaging — Summary: Define the official ZYRA brand identity, including logo direction, tagline, splash screen branding, and brand positioning.
+links: []
+owner: ZYRA chat
+---
+
 ============================================================
 ZYRA — BRAND MESSAGING (GOVERNED SUMMARY)
 ============================================================

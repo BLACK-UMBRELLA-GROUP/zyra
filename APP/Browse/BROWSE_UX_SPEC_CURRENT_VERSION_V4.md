@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0005
+type: SPEC
+status: CURRENT
+feature: APP: BROWSE
+purpose: Browse — BROWSE UX SPEC CURRENT VERSION V4: ZYRA — Browse UX Specification
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Browse UX Specification
 
 > **Two protected gallery choices — 22 October 2026:** Profiles Page options

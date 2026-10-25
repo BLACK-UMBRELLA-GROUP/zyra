@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0082
+type: SPEC
+status: DRAFT
+feature: BROWSE AND MATCHING
+purpose: ZYRA — Counterpart card: joint spec draft
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Counterpart card: joint spec draft
 
 **Status:** DRAFT — engineering constraints settled, product questions open.

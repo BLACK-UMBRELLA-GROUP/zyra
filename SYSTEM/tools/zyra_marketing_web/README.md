@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0129
+type: GUIDE
+status: CURRENT
+feature: CODE AND TOOLS
+purpose: ZYRA Marketing Command Centre
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Marketing Command Centre
 
 This is a local-only operating workspace for the ZYRA marketing team. It does

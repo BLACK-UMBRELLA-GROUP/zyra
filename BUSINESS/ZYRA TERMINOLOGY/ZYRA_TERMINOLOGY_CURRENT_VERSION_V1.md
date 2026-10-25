@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0126
+type: BRAND
+status: CURRENT
+feature: BUSINESS: ZYRA TERMINOLOGY
+purpose: Zyra Terminology — ZYRA TERMINOLOGY CURRENT VERSION V1: Owns official ZYRA terminology, definitions, language standards, terminology relationships, and terminology usage throughout the platform.
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Terminology
 
 **Version:** V1

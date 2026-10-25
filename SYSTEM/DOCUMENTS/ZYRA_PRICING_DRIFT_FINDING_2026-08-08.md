@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0246
+type: SPEC
+status: CURRENT
+feature: PRICING AND MEMBERSHIP
+purpose: ZYRA — Pricing drift on the upgrade screen
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA — Pricing drift on the upgrade screen
 
 **Status:** FINDING — for your decision. No prices changed.

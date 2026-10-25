@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0196
+type: HANDOVER
+status: CURRENT
+feature: GUARDIAN NETWORK
+purpose: ZYRA Personal Code and Guardian Request Handover
+links: []
+owner: ZYRA chat
+---
+
 # ZYRA Personal Code and Guardian Request Handover
 
 ## Current Scan-copy round —22 October2026 / LahQ4a

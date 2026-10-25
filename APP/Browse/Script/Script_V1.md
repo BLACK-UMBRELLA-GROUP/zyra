@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0006
+type: SPEC
+status: CURRENT
+feature: APP: BROWSE
+purpose: Browse / Script — Script V1
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 BROWSE
 

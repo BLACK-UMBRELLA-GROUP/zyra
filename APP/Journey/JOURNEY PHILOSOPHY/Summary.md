@@ -1,3 +1,13 @@
+---
+id: DOC-ZYRA-0020
+type: SPEC
+status: CURRENT
+feature: APP: JOURNEY
+purpose: Journey / Journey Philosophy — Summary
+links: []
+owner: ZYRA chat
+---
+
 FEATURE NAME
 ZYRA JOURNEY PHILOSOPHY
 Group: 0 — Governing Philosophy
