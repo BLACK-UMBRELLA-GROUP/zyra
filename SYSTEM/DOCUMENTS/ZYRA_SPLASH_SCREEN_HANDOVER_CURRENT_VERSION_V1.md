@@ -361,7 +361,7 @@ No new unresolved runtime defect or migration requirement was introduced.
 | Brand identity/background/wordmark direction | `BUSINESS/BRAND MESSAGING/ZYRA_BRAND_GUIDELINES_CURRENT_VERSION_V1.md` |
 | Splash versus loading and AuthGate handoff | DR-ZYRA-125 and DR-ZYRA-126 |
 | Current implementation reality | This handover plus the live files/hashes above |
-| Implementation/handover process | `ZYRA_EXECUTION_CURRENT_VERSION_V5.md`; `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md` |
+| Implementation/handover process | `ZYRA_RULES_CURRENT_VERSION_V1.md` (replaced ZYRA_EXECUTION V5 on 25 Oct 2026); `IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md` |
 
 Ordered next steps:
 

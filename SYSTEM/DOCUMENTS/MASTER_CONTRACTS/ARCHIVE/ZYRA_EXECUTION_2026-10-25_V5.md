@@ -1,12 +1,14 @@
 ---
 id: DOC-ZYRA-0268
 type: RULES
-status: CURRENT
+status: SUPERSEDED
 feature: ZYRA CONTRACTS
 purpose: ZYRA — Execution Contract
 links: []
 owner: ZYRA chat
 ---
+
+> **SUPERSEDED 25 Oct 2026** by `MASTER_GOVERNANCE/ZYRA_RULES_CURRENT_VERSION_V1.md` (DOC-ZYRA-0277). History only — its roles table describes the old team.
 
 # ZYRA — Execution Contract
 **Version:** V5

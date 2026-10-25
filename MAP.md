@@ -11,7 +11,7 @@ task-routes block by hand, then re-run the tool.
 |---|---|---|
 | Any task | `AGENTS.md`, then this map | Registers are never read whole |
 | What ZYRA is, the whole product | DOC-ZYRA-0248 project overview → DOC-ZYRA-0252 master product spec (87 KB — search it) | |
-| Building a feature | The feature's section below → DOC-ZYRA-0268 execution contract §3.2 → DOC-ZYRA-0072 architecture → DOC-ZYRA-0074 database schema | 0268 and 0269 still name old roles: the core rules win |
+| Building a feature | DOC-ZYRA-0277 ZYRA rules (§2 check before building) → the feature's section below → DOC-ZYRA-0072 architecture → DOC-ZYRA-0074 database schema | |
 | Open actions, past decisions | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` or `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` → search the register for the ID | |
 | Drafts waiting for the Founder | DOC-ZYRA-0257 open drafts list | |
 | Guardian network (wali, family) | DOC-ZYRA-0178 guardian network source of truth → APP: STANDARDS wali architecture | |
@@ -29,7 +29,7 @@ task-routes block by hand, then re-run the tool.
 | Evidence, reviews, tool state | `SYSTEM/RESOURCES/` — not mapped; open only the folder a task names | Tests pin some of these files byte for byte |
 <!-- ROUTES END -->
 
-## Documents (277 live)
+## Documents (276 live)
 
 ### APP: AUTHENTICATION
 
@@ -582,17 +582,11 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0266 | `SYSTEM/DOCUMENTS/ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md` | SPEC | ZYRA UI Consistency & Visual Regression Gate | 10 |
 | DOC-ZYRA-0267 | `SYSTEM/DOCUMENTS/ZYRA_UI_CONSISTENCY_GATE_HANDOVER_CURRENT_VERSION_V1.md` | HANDOVER | ZYRA UI Consistency & Visual Regression Gate — Implementation Handover | 149 |
 
-### ZYRA CONTRACTS
-
-| ID | File | Type | Purpose | KB |
-|---|---|---|---|---|
-| DOC-ZYRA-0268 | `SYSTEM/DOCUMENTS/MASTER_CONTRACTS/ZYRA_EXECUTION_CURRENT_VERSION_V5.md` | RULES | ZYRA — Execution Contract | 9 |
-
 ### ZYRA GOVERNANCE
 
-| ID | File | Type | Purpose | KB |
-|---|---|---|---|---|
-| DOC-ZYRA-0269 | `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_GOVERNANCE_CURRENT_VERSION_V6.md` | RULES | ZYRA — Project Governance | 11 |
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-0277 | `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_RULES_CURRENT_VERSION_V1.md` | RULES | The few ZYRA-only rules - what needs Shakeel's approval, the check before building anything, and which… | AD-AIOS-112, DOC-BUG-0002, DR-ZYRA-151, AD-082 | 3 |
 
 ### ZYRA STANDARDS
 
