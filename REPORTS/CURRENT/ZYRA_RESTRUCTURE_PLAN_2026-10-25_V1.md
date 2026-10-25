@@ -37,8 +37,8 @@ reads a folder before moving it — done below).
 
 | Step | What | Who | Needs |
 |---|---|---|---|
-| 1 | Move #1, #3, #6, #10 and `.DS_Store` (nothing reads them) | Fable | Founder GO |
-| 2 | One Codex brief: change the paths for #2, #4, #5, #7, #8, #9, #11, run every affected test, then Fable moves the folders and re-runs the tests | Codex, then Fable | Founder GO on the brief (an approved fix under the build freeze) |
+| 1 | Move #1, #3, #6, #10 and `.DS_Store` (nothing reads them) | Fable | **DONE 25 Oct** (Founder GO) — BRAND → `BUSINESS/APP LOGO/ASSETS/`, MEMORY → `REPORTS/ARCHIVE/2026-07_AIOS_RUN_MEMORY/`, OVERNIGHT_GN → `REPORTS/ARCHIVE/`, TEMPORARY and `.DS_Store` → `_to_delete/2026-10-25_zyra_resources` |
+| 2 | One Codex brief (Founder said write it, 25 Oct — `ZYRA/REPORTS/CURRENT/CODEX_BRIEF_RESOURCES_PATHS_2026-10-25_V1.md`): change the paths for #2, #4, #5, #7, #8, #9, #11, run every affected test, then Fable moves the folders and re-runs the tests | Codex, then Fable | Founder GO on the brief (an approved fix under the build freeze) |
 | 3 | REVIEWS runs older than 30 days → USB | Fable | USB plugged in |
 | 4 | `SYSTEM/RESOURCES/` removed; `.mapignore` line dropped; the moved documents get headers; MAP regenerated | Fable | — |
 

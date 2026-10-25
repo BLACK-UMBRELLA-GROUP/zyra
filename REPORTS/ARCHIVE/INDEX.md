@@ -12,3 +12,5 @@ Reference only. Layout follows the group rule: `REPORTS/CURRENT` (open or still-
 | PRICING_RECONCILIATION_REPORT_2026-09-18.md | Pricing reconciliation; done. Its `pre/` copies were removed |
 
 ZYRA's other reports in `SYSTEM/RESOURCES/REPORTS` and the 38 ZYRA reports in the group folder join this folder at step 7, with the AIOS schedule-screen fix.
+| 2026-07_AIOS_RUN_MEMORY/ | Run memory (org_state, run_memory) of the old AIOS agent runs, June–July. Nothing reads it. Moved from SYSTEM/RESOURCES/MEMORY 25 Oct (DOC-ZYRA-0274 step 1) |
+| OVERNIGHT_GN_2026-08-23/ | Overnight guardian-network debate, agreed rules and drafts. Moved from SYSTEM/RESOURCES 25 Oct (DOC-ZYRA-0274 step 1) |
