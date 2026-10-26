@@ -11,8 +11,8 @@ owner: Fable
 # ZYRA BLUEPRINT — PART 6 — BUILD AND RELEASE — V1 (CURRENT)
 
 Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from `SOURCE/run.sh`, `SOURCE/tool/`, `SOURCE/tooling/`, `SOURCE/tools/`,
-the iOS project settings, `SOURCE/lib/data/zyra_release_gates.dart` and the App Store runbook. **No AI runs git, uploads
-or migrations.** The commands below are for Shakeel's own Terminal. One exception for builds: under DR-ZYRA-257 (Founder,
+the iOS project settings, `SOURCE/lib/data/zyra_release_gates.dart` and the App Store runbook. **No AI uploads or runs
+migrations; only Codex runs git, within core rule 2 (AD-AIOS-114).** The commands below are for Shakeel's own Terminal. One exception for builds: under DR-ZYRA-257 (Founder,
 4 Oct) Codex may build and install the profile app on the paired Founder iPhone after a Founder-requested change, while
 Shakeel says he is home - see `AGENTS.md`. The build freeze (OA-AIOS-406) pauses that too.
 
@@ -122,3 +122,4 @@ connected to real members (OA-ZYRA-317).
 | 2026-10-26 | V1 | First draft from the build scripts, iOS settings, release switches and runbook (OA-ZYRA-309) |
 | 2026-10-26 | V1 | Runbook rewritten (V3); platform folders decided (DR-ZYRA-279) |
 | 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
+| 2026-10-26 | V1 | Git line aligned with core rules V3 (AD-AIOS-114) |

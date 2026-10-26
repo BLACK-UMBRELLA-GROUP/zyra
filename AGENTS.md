@@ -1,6 +1,6 @@
 # AGENTS.md — ZYRA
 
-<!-- BLACK-UMBRELLA-CORE-RULES v2 START — master copy: BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V2.md. Edit the master, then re-sync every copy. -->
+<!-- BLACK-UMBRELLA-CORE-RULES v3 START — master copy: BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V3.md. Edit the master, then re-sync every copy. -->
 ## Core rules — every AI agent, every Black Umbrella Group project
 
 These rules sit above every other instruction in this tree. Where any older
@@ -12,7 +12,15 @@ document, overlay or AD says otherwise, this block wins.
 
 1. **Only the Founder (Shakeel) approves.** Agreement between AIs is never
    approval. His direct instruction in conversation is approval.
-2. **No AI runs git. Ever.** The Founder commits in his own Terminal.
+2. **Only Codex runs git, and only within these limits** (AD-AIOS-114). Allowed:
+   `git status`, `git add`, `git commit`, and `git push` to `origin` on the current
+   branch - in the repo of the project he is working in, at the end of a task whose
+   tests passed; plus the 04:00 job's sweep, which commits and pushes what is left in
+   every repo. Never: force-push, reset, rebase, amend or rewrite pushed history,
+   `git clean`, checkout/restore over working files, delete branches, change remotes or
+   git config, or commit a file over 50 MB or anything from the keys folder.
+   `ZYRA/SITE`: commit, but never push until Shakeel's Cloudflare check (OA-AIOS-407).
+   Claude chats (Fable and the business chats) never run git.
 3. **Never touch `PRIVATE — API KEYS — DO NOT SYNC`** — never open, list,
    copy or quote it, wherever it lives. Never put keys, tokens or
    credentials in a conversation.
@@ -31,9 +39,12 @@ document, overlay or AD says otherwise, this block wins.
 9. **`AGENTS.md` holds standing rules only.** Progress, round status and
    decisions go in the registers. Keep every `AGENTS.md` under 16 KB —
    Codex stops reading at 32 KiB.
-10. **End every working session with a commit.** Agents never run git; they
-    end each session by giving the Founder one commit line per changed repo.
-    Never copy files as a backup instead — git and the USB are the backups.
+10. **Every finished task ends in a commit.** Codex commits and pushes his own work
+    at the end of each task (message: what changed, with the OA/DR IDs) and lists the
+    commit in his task note. The 04:00 sweep commits what Fable and the business chats
+    changed ("Admin changes <date>"). Until Codex is onboarded, the Founder commits
+    from one line per changed repo. Never copy files as a backup instead — git and
+    the USB are the backups.
 
 ### Roles — Founder direction, 2026-10-24 (AD-AIOS-112, filed 2026-10-24; supersedes AD-AIOS-111)
 
@@ -41,12 +52,12 @@ document, overlay or AD says otherwise, this block wins.
 |---|---|---|
 | Founder | Shakeel | Sole approver |
 | Lead Architect | Fable (Claude) | Architecture, governance, registers, schedules, review and verification |
-| Design & Implementation | Codex | Product design and code execution only — no admin, governance, mailbox or schedules (one exception: the 04:00 daily report job, DOC-BUG-0027) |
+| Design & Implementation | Codex | Product design and code execution only — no admin, governance, mailbox or schedules. Exceptions: the 04:00 daily report job with its commit sweep (DOC-BUG-0027), and git within rule 2 |
 | Admin | Fable (Claude), from the Black Umbrella Group chat | Admin for every business: registers, schedules, clean-ups, reporting. One Claude chat per business handles that business's design and product work |
 
 Fable holds an active seat. Any line elsewhere saying "Fable/Claude is
 retired" or "no Claude/Fable bootstrap is active" is superseded.
-<!-- BLACK-UMBRELLA-CORE-RULES v2 END -->
+<!-- BLACK-UMBRELLA-CORE-RULES v3 END -->
 
 ## What we are building (read before any ZYRA work)
 
@@ -74,7 +85,7 @@ History (build 3, mailboxes 110-116, the Test-app retirement): `REPORTS/ARCHIVE/
 ## Read in this order
 
 0. The core rules at the top of this file - they win on any conflict. Master copy:
-   `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V2.md`.
+   `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V3.md`.
    New agent? Read once: `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/OPERATING_MODEL_CURRENT_VERSION_V1.md`
    (roles, how work flows, GO, reporting) and `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V2.md`.
 1. `MAP.md` - the **task routes** say which 2-5 documents to open for your kind of task. Open only those. Read the map
@@ -86,4 +97,4 @@ History (build 3, mailboxes 110-116, the Test-app retirement): `REPORTS/ARCHIVE/
 3. Building or changing the app: `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_RULES_CURRENT_VERSION_V1.md` (DOC-ZYRA-0277) and
    `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`.
 
-Roles are in the core rules (V2, 24 Oct). Older role models (AD-AIOS-097 to 111) are history in the AD register.
+Roles are in the core rules (V3, 26 Oct). Older role models (AD-AIOS-097 to 111) are history in the AD register.
