@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**274 decisions; 3 marked superseded/retired.**
+**279 decisions; 3 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -290,3 +290,8 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-274 | 2026-10-25 | The latest design built with Codex is the planned ZYRA; the old member app is replaced an… | APPROVED - Founder direct ("whatever i … |
 | DR-ZYRA-275 | 2026-10-26 | Seeker Basic has one Journey place after the one-time joining fee | APPROVED - Founder direct ("A for both"… |
 | DR-ZYRA-276 | 2026-10-26 | Unchosen design options are removed; member backgrounds and developer font/navigation com… | APPROVED - Founder direct ("A for both"… |
+| DR-ZYRA-277 | 2026-10-26 | Journey requests and stages in the planned app - limits, expiry, getting ready, Family Re… | APPROVED - Founder direct ("aabb": Q1 A… |
+| DR-ZYRA-278 | 2026-10-26 | Phone push notifications and privacy-safe crash reporting are part of the planned app | APPROVED - Founder direct ("aa") |
+| DR-ZYRA-279 | 2026-10-26 | ZYRA keeps the Android project for a future release; web and desktop projects are removed | APPROVED - Founder direct ("aa", answer… |
+| DR-ZYRA-280 | 2026-10-26 | Nine planned-app rules confirmed (requests, places, readiness, Journey Bio, archive, Guar… | APPROVED - Founder direct ("a") |
+| DR-ZYRA-281 | 2026-10-26 | Guardian limits - up to 5 Guardians per Seeker, up to 10 Seekers per Guardian; Guardian B… | APPROVED - Founder direct ("ba") |

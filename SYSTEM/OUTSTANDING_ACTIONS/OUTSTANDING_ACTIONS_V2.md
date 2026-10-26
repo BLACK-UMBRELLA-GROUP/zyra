@@ -26025,6 +26025,22 @@ Update:      26 Oct - Parts 1 and 2 (Journey) REWRITTEN as V2 from the planned a
              map.py); Journey rules with every rule marked Built / Different / Missing on the server. V1s
              archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/. Three Founder questions
              raised in part 2 §8 (question stages, request limits, restart timings).
+Update:      26 Oct - Part 4 (outside connections) DRAFTED: DOC-ZYRA-0287. Supabase is the only backend; Google
+             and Apple sign-in live; payments, identity check and push notifications not connected (OA-ZYRA-317
+             7-9). No key values opened. Parts 6 and 7 still to do.
+Update:      26 Oct - Part 6 (build and release) DRAFTED: DOC-ZYRA-0288 - Flutter 3.44.2, bundle
+             app.zyraconnect.zyra, run.sh, checks, TestFlight scripts, migrations, 3 release switches (off),
+             public-launch gates. Findings to OA-ZYRA-316, OA-ZYRA-312, OA-ZYRA-318. Part 7 still to do.
+Update:      26 Oct - Part 7 (trace) DRAFTED: DOC-ZYRA-0289 - each rule linked to its decision and code; 9
+             planned-app rules with no decision of their own (came in with the preview, adopted by DR-ZYRA-274)
+             listed for the Founder to confirm; 3 code-vs-decision contradictions (all already tracked). All
+             seven parts now exist in draft. Still to write: part 2 rule pages for the other features
+             (Guardians, Browse, Membership, Messaging, Profile, Onboarding, Safety).
+Update:      26 Oct - Part 2 Guardians DRAFTED: DOC-ZYRA-0290 (linking by code, Main/Additional, Journey access,
+             chat and paid access, past summaries, Circle, Introductions, Speak to Guardian, Family places).
+             Correction: Introductions are BUILT on the server (wali_suggestions) - fixed in parts 2 and 7 and
+             DR-ZYRA-280 (lesson F14). Two Founder questions in §9. Remaining part 2 pages: Browse,
+             Membership, Messaging, Profile, Onboarding, Safety.
 Acceptance:  For sample screens, the blueprint alone explains everything the screen shows
              and does; MAP.md routes to every feature document.
 
@@ -26083,6 +26099,9 @@ Status:      OPEN - found by Fable in blueprint part 3 (OA-ZYRA-309). 13 functio
              Safe only while no one can create or confirm an account with such an email. Also:
              zyra_onboarding_questions was first created outside the migrations, so its
              security settings are not in the repository. Nothing changed - build freeze.
+Update:      26 Oct - Add to the live check: are the 16 @zyra.test seed accounts (seed_dev_accounts.sql) and
+             fake photos in production? Which migrations are applied live vs the repository (24 Sep
+             paid-only; OA-ZYRA-298 Guardian Circle messaging noted as not live)?
 Next:        With the Founder's GO, read-only checks on the live project: email sign-up and
              confirmation settings; row-level security on zyra_onboarding_questions. Then
              decide: keep with a stronger guard (confirmed email + allow-list), or move the
@@ -26194,6 +26213,13 @@ Update:      26 Oct - Founder decided (A, A): DR-ZYRA-275 Basic = 1 place after 
              DR-ZYRA-276 Tier 4 - keep only chosen designs, plus the 10 member backgrounds and the
              developer font/navigation comparisons (about 140 options in 17 sets, corrected count).
              Clean-up plan complete; Codex starts Tier 1 after the freeze.
+Update:      26 Oct - Add to Tier 1/3: sample photos fetched from picsum.photos in models/seeker_profile.dart,
+             connections_screen.dart and zyra_wali_journey_service.dart (blueprint part 4 §4).
+Update:      26 Oct - From blueprint part 6 (DOC-ZYRA-0288 §9): merge the three tool folders (tool/, tooling/,
+             tools/ + __pycache__); 377 MB fake photos in SOURCE/supabase/dev_test_photos (17 still tracked
+             in git despite .gitignore); empty supabase/functions and supabase/staging; Android/web/desktop
+             folders (36 MB) for an iPhone-only app - Founder decision.
+Update:      26 Oct - DECIDED, DR-ZYRA-279: keep android/; remove web/, windows/, linux/, macos/.
 Owner:       Founder decides · Fable reviews and plans · Codex removes after the freeze
 Acceptance:  One app; every line of code is used by it or by its tests; retired features gone from app
              and server.
@@ -26221,14 +26247,44 @@ Update:      26 Oct - Three Founder questions WAITING (Founder: "ask me again la
              pending, 7-day expiry, 48 hours to get ready?); Q3 Request restart: keep 24 h wait + 30-day
              expiry, or 7-day expiry like other requests. Fable recommends A, A, B. Re-ask after the
              commits are done. Source: blueprint part 2 V2 §8.
+Update:      26 Oct - Questions ANSWERED (DR-ZYRA-277): Q1 A keep real answers + 48-hour Family Review;
+             Q2 A 5 pending requests, 7-day expiry, 48 hours to get ready; Q3 B restart keeps the 24-hour
+             wait then 7-day expiry. Open for the design: what happens when the ready window runs out.
+Update:      26 Oct - Blueprint part 4 (DOC-ZYRA-0287) adds three outside-service gaps: (7) payments - no App
+             Store purchase code at all, plans set by developer functions; (8) identity check - Sumsub chosen,
+             slot switched off; (9) phone push notifications - none (in-app only); also no crash reporting.
+             (9) and crash reporting need Founder decisions before the design.
+Update:      26 Oct - DECIDED, DR-ZYRA-278: (9) phone push notifications added; (10) privacy-safe crash
+             reporting before public launch (Fable proposes providers, Founder picks).
+Update:      26 Oct - DR-ZYRA-280: nine planned-app rules confirmed (requests, place-based visibility,
+             reserved places, end-to-accept, Journey Bio, 3-month archive, agreed paid Guardians, Speak to
+             Guardian, Introductions) - all part of this design.
+Update:      26 Oct - DR-ZYRA-281: (11) Guardian limits - 5 Guardians per Seeker, 10 Seekers per Guardian,
+             enforced on the server in the link request/accept functions. Guardian Basic no-chat confirmed.
 Owner:       Founder decides · Fable designs · Codex builds after the freeze
 Acceptance:  Every planned-app screen works for real members with the server enforcing its rules.
 
 ------------------------------------------------------------
 
+OA-ZYRA-318
+Title:       Rewrite the App Store runbook as a short current runbook; archive the delivery log
+Category:    Documentation
+Priority:    MEDIUM - documentation only, allowed under the freeze
+Date:        2026-10-26
+Status:      CLOSED 26 Oct - Founder GO (A); RUNBOOK V3 written (a few pages), V2 archived unchanged in
+             SYSTEM/DOCUMENTS/ARCHIVE/ZYRA_APP_STORE_RUNBOOK_2026-10-26_V2.md. Was: found in blueprint part 6. SYSTEM/DOCUMENTS/ZYRA_APP_STORE_RUNBOOK_CURRENT_VERSION_V2.md
+             is 192 KB: 30+ dated delivery rounds on top, the actual steps (sections 1-7) from line 1,253.
+             Same stacking problem as the colour document (lesson L28).
+Next:        Founder GO -> Fable writes RUNBOOK V3 (a few pages, from DOC-ZYRA-0288 and sections 1-7),
+             moves V2 unchanged into the archive with a SUPERSEDED banner.
+Owner:       Fable writes · Founder approves
+Acceptance:  The runbook fits on a few pages and every step in it is current.
+
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-318 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-319 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

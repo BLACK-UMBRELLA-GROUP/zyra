@@ -51,8 +51,8 @@ means a brand-new request the other person must accept.
 | Received / Sent | Two tabs in Journey requests; a gold dot for unseen received requests | **Missing** |
 | Accept | Needs a free place on both sides | **Missing** |
 | Decline / cancel | The request disappears; nothing is reserved | **Missing** |
-| Introductions | People your Guardians put forward appear here | **Missing** |
-| Limits (how many, how long) | Not chosen yet in the preview | **Open** — needs a Founder decision before building |
+| Introductions | People your Guardians put forward appear here | **Built** — `wali_suggestions` (corrected 26 Oct) |
+| Limits (how many, how long) | Up to **5** pending requests per person; a request expires after **7 days** (DR-ZYRA-277) | **Missing** |
 
 ## 4. Getting ready and beginning
 
@@ -60,7 +60,7 @@ means a brand-new request the other person must accept.
 |---|---|---|
 | After accepting | "Preparing": both places reserved | **Missing** |
 | Guardian access | Before beginning, each person sees which **paid Additional Guardians** will view the Journey and agrees ("Begin only if you agree") | **Different** — per-Guardian view/chat switches exist, no agreement step |
-| Ready | Each person taps "I'm ready to begin"; one person alone never starts it | **Missing** |
+| Ready | Each person taps "I'm ready to begin" within **48 hours** of accepting (DR-ZYRA-277); one person alone never starts it | **Missing** |
 | Begin | Only when both are ready; starts at Salam | **Different** — one person's tap starts it |
 
 ## 5. Stages
@@ -71,8 +71,8 @@ means a brand-new request the other person must accept.
 | 2 | Compatibility | Both choose to reveal; your score shows once both have | **Built** |
 | 2b | **Journey Bio** | Both reveal their Bio, then both continue | **Missing** |
 | 3 | Guardian Gate | Both Seekers have a Main Guardian | **Built** |
-| 4–6 | Faith & Values · Building a Life · Navigating Life | Both choose "I'm ready for the next step" | **Different** — server has questions, answers and a 48-hour Family Review after each |
-| 7 | Family Compatibility | Both continue | **Different** — same as above |
+| 4–6 | Faith & Values · Building a Life · Navigating Life | Both answer the questions; then a **48-hour Family Review** (DR-ZYRA-277 — the preview's "both continue" is a demo stand-in) | **Built** |
+| 7 | Family Compatibility | Seeker ↔ Guardian questions, then a 48-hour Family Review | **Built** |
 | 8 | Open Conversation | — | **Built** |
 
 | Rule across all stages | Planned app | Server today |
@@ -99,16 +99,18 @@ means a brand-new request the other person must accept.
 | End | Either person, any time; confirmation with Keep above a red End | **Built** |
 | After ending | Places released; the Journey becomes read-only | **Built** |
 | Archive | Bio, Compatibility and Guardians stay readable for **three months** | **Missing** — no 3-month rule |
-| Request restart | A **new** Journey with the same person; they must accept; the old one is never reopened. Shown as "not available yet" | **Different** — built (`request_new_journey`, 24-hour wait, 30-day expiry) but switched off |
+| Request restart | A **new** Journey with the same person; they must accept; the old one is never reopened. **24-hour wait, then expires after 7 days** like any request (DR-ZYRA-277). Shown as "not available yet" | **Different** — built (`request_new_journey`, 24-hour wait, **30-day** expiry) but switched off |
 | Pause | Not in the app | **Different** — full Pause flow (remove) |
 
-## 8. Questions this raises (for the Founder, before OA-ZYRA-317 is designed)
+## 8. Decided 26 Oct (DR-ZYRA-277)
 
-| # | Question |
-|---|---|
-| Q1 | Do the question stages keep real answers and the 48-hour Family Review, or become the simpler "both continue" steps the preview shows? |
-| Q2 | Request limits: how many pending requests per person, and how long before a request expires? |
-| Q3 | Request restart: keep the 24-hour wait and 30-day expiry already built? |
+| # | Question | Decision |
+|---|---|---|
+| Q1 | Question stages: real answers + 48-hour Family Review, or "both continue"? | **Keep real answers and the 48-hour Family Review** |
+| Q2 | Request limits | **5 pending per person; 7-day expiry; 48 hours to get ready** |
+| Q3 | Request restart timings | **24-hour wait, then 7-day expiry like every request** |
+
+Still open for the server design: what happens when the 48-hour ready window runs out.
 
 ## Change log
 
@@ -116,3 +118,4 @@ means a brand-new request the other person must accept.
 |---|---|---|
 | 2026-10-25 | V1 | Old member app (archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/) |
 | 2026-10-26 | V2 | Rewritten from the planned app (DR-ZYRA-274), each rule marked against the server |
+| 2026-10-26 | V2 | §8 decided (DR-ZYRA-277): Family Review kept, request limits, restart expiry |

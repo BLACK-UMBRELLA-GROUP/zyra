@@ -1,12 +1,14 @@
 ---
 id: DOC-ZYRA-0254
 type: GUIDE
-status: CURRENT
+status: SUPERSEDED
 feature: RELEASE
 purpose: ZYRA — One-App Internal Delivery Runbook
 links: []
 owner: ZYRA chat
 ---
+> **SUPERSEDED — NOT CURRENT.** Replaced on 2026-10-26 by `SYSTEM/DOCUMENTS/ZYRA_APP_STORE_RUNBOOK_CURRENT_VERSION_V3.md` (same ID, OA-ZYRA-318). Evidence files written before 26 Oct cite this file by its old name `ZYRA_APP_STORE_RUNBOOK_CURRENT_VERSION_V2.md`; this is that file. **Text below unchanged.**
+
 
 # ZYRA — One-App Internal Delivery Runbook
 

@@ -17211,9 +17211,103 @@ Related:     DR-ZYRA-274, OA-ZYRA-316 Tier 4, lesson L34.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-276,
+DR-ZYRA-277
+Title:       Journey requests and stages in the planned app - limits, expiry, getting ready, Family
+             Review kept, one expiry rule for restart requests
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("aabb": Q1 A, Q2 A, Q3 B; Q4 B = key rotation later)
+Authority:   Founder, 26 Oct 2026, answering blueprint part 2 V2 §8 (DOC-ZYRA-0283).
+Decision:    1. The three question stages (Faith & Values, Building a Life, Navigating Life) and Family
+                Compatibility keep real questions and answers, and the 48-hour Family Review after each,
+                as already built on the server. The preview's "both continue" is only a demo stand-in.
+             2. Request limits: up to 5 pending requests per person; a request expires after 7 days;
+                once accepted, both people have 48 hours to tap "I'm ready to begin".
+             3. Request restart after an ending: keep the 24-hour wait, then it expires after 7 days
+                like every other request (replaces the built 30-day expiry).
+Consequence: Part of the server design for OA-ZYRA-317; the planned app's stage screens gain the
+             real questions and the Family Review when connected. Built after the freeze.
+             Open detail for the design: what happens when the 48-hour ready window runs out (the
+             Founder will be asked when the design is written).
+Related:     DR-ZYRA-274, DR-ZYRA-275, OA-ZYRA-317, DOC-ZYRA-0283.
+
+------------------------------------------------------------
+
+DR-ZYRA-278
+Title:       Phone push notifications and privacy-safe crash reporting are part of the planned app
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("aa")
+Authority:   Founder, 26 Oct 2026, answering blueprint part 4 (DOC-ZYRA-0287).
+Decision:    1. Add phone push notifications, so requests (7-day expiry), the 48-hour ready window,
+                Journey and Guardian updates reach a locked phone. In-app notifications stay.
+             2. Add a crash reporting service that collects no personal details, before the public
+                launch. Fable proposes providers in the server design; the Founder picks one.
+Consequence: Both go into the OA-ZYRA-317 design (items 9 and 10); built after the freeze. Any new
+             outside service is checked for cost and data handling before the Founder chooses.
+Related:     DR-ZYRA-277, OA-ZYRA-317, DOC-ZYRA-0287.
+
+------------------------------------------------------------
+
+DR-ZYRA-279
+Title:       ZYRA keeps the Android project for a future release; web and desktop projects are removed
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("aa", answer 1)
+Authority:   Founder, 26 Oct 2026, from blueprint part 6 (DOC-ZYRA-0288 §9 finding 6).
+Decision:    Keep SOURCE/android (a future Android release). Remove SOURCE/web, SOURCE/windows,
+             SOURCE/linux and SOURCE/macos in the clean-up (moved to _to_delete, with any tests that
+             only exist for them).
+Consequence: Added to OA-ZYRA-316; Codex does it after the freeze and confirms the iPhone build and
+             tests still pass.
+Related:     DR-ZYRA-274, OA-ZYRA-316, DOC-ZYRA-0288.
+
+------------------------------------------------------------
+
+DR-ZYRA-280
+Title:       Nine planned-app rules confirmed (requests, places, readiness, Journey Bio, archive,
+             Guardian access, Speak to Guardian, Introductions)
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("a")
+Authority:   Founder, 26 Oct 2026, from blueprint part 7 §2 (DOC-ZYRA-0289).
+Decision:    Confirmed as ZYRA rules, as the planned app (DR-ZYRA-274) shows them:
+             1. Journeys start from a request the other person accepts, not from a mutual like.
+             2. You see people, and are seen, only while you have a free place; ZYRA One members may
+                browse when all places are full.
+             3. Accepting a request reserves a place for both people while they get ready.
+             4. A ZYRA One member with every place full may end one Journey to accept a new request.
+             5. A Journey Bio step follows Compatibility; each Bio shows only when both choose.
+             6. Ended Journeys stay readable for three months.
+             7. Paid Additional Guardians agreed at the start of a Journey stay on for it; the Seeker
+                cannot switch them off for that Journey.
+             8. A Guardian may "Speak to Guardian" - send a request to another Seeker's Main Guardian,
+                who chooses whether to respond.
+             9. Introductions are people the Seeker's Guardians put forward.
+Consequence: Part of the OA-ZYRA-317 server design (eight are missing on the server; Introductions
+             already exist as wali_suggestions - corrected 26 Oct). Every rule in the blueprint now has a
+             decision behind it.
+Related:     DR-ZYRA-274, DR-ZYRA-277, OA-ZYRA-317, DOC-ZYRA-0283, DOC-ZYRA-0289.
+
+------------------------------------------------------------
+
+DR-ZYRA-281
+Title:       Guardian limits - up to 5 Guardians per Seeker, up to 10 Seekers per Guardian; Guardian
+             Basic chat rule confirmed
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("ba")
+Authority:   Founder, 26 Oct 2026, answering Guardian rules §9 (DOC-ZYRA-0290).
+Decision:    1. A Seeker may have at most 5 active Guardians (Main + Additional). A Guardian may
+                support at most 10 Seekers (matching the largest Family plan). A safety limit:
+                a link request beyond either limit is refused with a plain message.
+             2. DR-ZYRA-268 stands: Guardian Basic has no Journey chat, including the Main Guardian;
+                Guardian One or a funded Family Guardian place makes chat possible.
+Consequence: Limits are a server rule in the OA-ZYRA-317 design (enforced in the link request and
+             accept functions, not only in the app). Existing links above a limit are not removed;
+             they block new links until under the limit (to be confirmed in the design).
+Related:     DR-ZYRA-231, DR-ZYRA-232, DR-ZYRA-268, OA-ZYRA-317, DOC-ZYRA-0290.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-281,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-277 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-282 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

@@ -11,12 +11,15 @@ task-routes block by hand, then re-run the tool.
 |---|---|---|
 | Any task | `AGENTS.md`, then this map | Registers are never read whole |
 | Database, tables, security rules | DOC-ZYRA-0280 blueprint part 3 → DOC-ZYRA-0281 generated inventory | DOC-ZYRA-0074 schema document is out of date (13 of 63 tables) |
+| Outside services, sign-in, payments, keys | DOC-ZYRA-0287 blueprint part 4 (outside connections) → DOC-ZYRA-0280 part 3 (data) | Never open the files that hold keys |
+| Building, running on the iPhone, TestFlight, release switches | DOC-ZYRA-0254 release runbook V3 → DOC-ZYRA-0288 blueprint part 6 (build and release) | Record deliveries in REPORTS/EVIDENCE, not in the runbook |
+| Why a rule exists, which decision set it | DOC-ZYRA-0289 blueprint part 7 (trace) → search the decisions register by DR number | |
 | Rebuilding or changing a screen | DOC-ZYRA-0278 blueprint part 1 V2 (planned app) → DOC-ZYRA-0286 generated planned-app inventory | DOC-ZYRA-0279 lists the OLD app's screens (for the clean-up). Regenerate 0286 after screen changes |
 | What ZYRA is, the whole product | DOC-ZYRA-0248 project overview → DOC-ZYRA-0252 master product spec (87 KB — search it) | |
 | Building a feature | DOC-ZYRA-0277 ZYRA rules (§2 check before building) → the feature's section below → DOC-ZYRA-0072 architecture → DOC-ZYRA-0280 blueprint part 3 (data) | |
 | Open actions, past decisions | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` or `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` → search the register for the ID | |
 | Drafts waiting for the Founder | DOC-ZYRA-0257 open drafts list | |
-| Guardian network (wali, family) | DOC-ZYRA-0178 guardian network source of truth → APP: STANDARDS wali architecture | |
+| Guardians (linking, Main/Additional, chat, Circle, Introductions) | DOC-ZYRA-0290 blueprint part 2 Guardian rules → DOC-ZYRA-0178 guardian network source of truth (older) | |
 | Journey | DOC-ZYRA-0283 blueprint part 2 Journey rules → DOC-ZYRA-0280 blueprint part 3 (data) → section APP: JOURNEY below | DOC-ZYRA-0256 lifecycle is superseded. Pause is retired in the Founder preview but still live in the member app - OA-ZYRA-316 |
 | Pricing, membership, unlocks | DOC-ZYRA-0123 pricing V6 → DOC-ZYRA-0066 subscription continuity → DOC-ZYRA-0052 profile unlocks | |
 | Words and names in the app | DOC-ZYRA-0126 terminology → DOC-ZYRA-0071 UX writing → DOC-ZYRA-0070 error and empty states | |
@@ -32,7 +35,7 @@ task-routes block by hand, then re-run the tool.
 | Evidence, reviews, tool state | `SYSTEM/RESOURCES/` — not mapped; open only the folder a task names | Tests pin some of these files byte for byte |
 <!-- ROUTES END -->
 
-## Documents (284 live)
+## Documents (288 live)
 
 ### APP: AUTHENTICATION
 
@@ -426,7 +429,7 @@ task-routes block by hand, then re-run the tool.
 
 | ID | File | Type | Purpose | KB |
 |---|---|---|---|---|
-| INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it | 35 |
+| INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it | 36 |
 | INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it | 26 |
 
 ### GUARDIAN NETWORK
@@ -549,14 +552,18 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0282 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 5 - ZYRA's look and feel from the code: every colour (hex), background, font and weight, text… | OA-ZYRA-309, DOC-ZYRA-0102, DOC-ZYRA-0278, OA-ZYRA-313, OA-ZYRA-314 | 15 |
 | DOC-ZYRA-0283 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_JOURNEY_RULES_CURRENT_VERSION_V2.md` | SPEC · DRAFT | Blueprint part 2 V2 (Journey) - the planned app's Journey rules - browsing and visibility, requests, places,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-315, DR-ZYRA-274, DR-ZYRA-275, DOC-ZYRA-0278, DOC-ZYRA-0285 | 7 |
 | DOC-ZYRA-0286 | `PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md` | REPORT | Generated screen inventory of the planned app (Founder preview) - every tab and page, its title, what opens… | DOC-ZYRA-0278, DR-ZYRA-274 | 11 |
+| DOC-ZYRA-0287 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_4_OUTSIDE_CONNECTIONS_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 4 - every outside service ZYRA depends on - what it is for, which part of the code uses it,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0280, DR-ZYRA-274, DR-ZYRA-275 | 6 |
+| DOC-ZYRA-0288 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_6_BUILD_AND_RELEASE_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 6 - how ZYRA gets from code to a phone - what you need, the app's identity, the daily… | OA-ZYRA-309, OA-ZYRA-312, OA-ZYRA-317, DOC-ZYRA-0287 | 7 |
+| DOC-ZYRA-0289 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_7_TRACE_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 7 - trace - for each rule of the planned app, the decision that set it (DR) and the code that… | OA-ZYRA-309, DOC-ZYRA-0278, DOC-ZYRA-0283, DOC-ZYRA-0287, DOC-ZYRA-0288, DR-ZYRA-274 | 8 |
+| DOC-ZYRA-0290 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_GUARDIAN_RULES_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 2 (Guardians) - every Guardian rule of the planned app - linking by ZYRA Code, Main and… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0283, DOC-ZYRA-0289, DR-ZYRA-280 | 8 |
 
 ### RELEASE
 
-| ID | File | Type | Purpose | KB |
-|---|---|---|---|---|
-| DOC-ZYRA-0254 | `SYSTEM/DOCUMENTS/ZYRA_APP_STORE_RUNBOOK_CURRENT_VERSION_V2.md` | GUIDE | ZYRA — One-App Internal Delivery Runbook | 192 |
-| DOC-ZYRA-0255 | `SYSTEM/DOCUMENTS/ZYRA_DEVELOPER_CONTROL_SYSTEM_HANDOVER_CURRENT_VERSION_V2.md` | HANDOVER | ZYRA — Developer Control System: One-App Implementation Handover | 228 |
-| DOC-ZYRA-0276 | `REPORTS/CURRENT/ZYRA_RELEASE_REQUIREMENTS_DELTA_2026-10-14_APPLE_V1.md` | REPORT | ZYRA release requirements delta — Apple and build evidence | 7 |
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-0254 | `SYSTEM/DOCUMENTS/ZYRA_APP_STORE_RUNBOOK_CURRENT_VERSION_V3.md` | GUIDE | ZYRA release runbook - who gets which build, putting ZYRA on the Founder's iPhone, making and uploading a… | DOC-ZYRA-0288, OA-ZYRA-318, OA-ZYRA-312, OA-ZYRA-317 | 5 |
+| DOC-ZYRA-0255 | `SYSTEM/DOCUMENTS/ZYRA_DEVELOPER_CONTROL_SYSTEM_HANDOVER_CURRENT_VERSION_V2.md` | HANDOVER | ZYRA — Developer Control System: One-App Implementation Handover |  | 228 |
+| DOC-ZYRA-0276 | `REPORTS/CURRENT/ZYRA_RELEASE_REQUIREMENTS_DELTA_2026-10-14_APPLE_V1.md` | REPORT | ZYRA release requirements delta — Apple and build evidence |  | 7 |
 
 ### REPORTS
 
@@ -633,4 +640,4 @@ task-routes block by hand, then re-run the tool.
 
 ## Needs attention
 
-- Over the 30 KB limit (47) — split or trim when next edited: DOC-ZYRA-0005, DOC-ZYRA-0011, DOC-ZYRA-0012, DOC-ZYRA-0018, DOC-ZYRA-0034, DOC-ZYRA-0040, DOC-ZYRA-0044, DOC-ZYRA-0052, DOC-ZYRA-0104, DOC-ZYRA-0109, DOC-ZYRA-0281, DOC-ZYRA-0279, DOC-ZYRA-9002, DOC-ZYRA-9007, DOC-ZYRA-9011, DOC-ZYRA-9012, DOC-ZYRA-9017, DOC-ZYRA-9018, DOC-ZYRA-9026, DOC-ZYRA-9029, INDEX-DECISIONS_V1, DOC-ZYRA-0263, DOC-ZYRA-0254, DOC-ZYRA-0229, DOC-ZYRA-0174, DOC-ZYRA-0133, DOC-ZYRA-0255, DOC-ZYRA-0076, DOC-ZYRA-0226, DOC-ZYRA-0142, DOC-ZYRA-0143, DOC-ZYRA-0144, DOC-ZYRA-0176, DOC-ZYRA-0178, DOC-ZYRA-0189, DOC-ZYRA-0215, DOC-ZYRA-0230, DOC-ZYRA-0245, DOC-ZYRA-0084, DOC-ZYRA-0154, DOC-ZYRA-0196, DOC-ZYRA-0252, DOC-ZYRA-0209, DOC-ZYRA-0161, DOC-ZYRA-0137, DOC-ZYRA-0210, DOC-ZYRA-0267
+- Over the 30 KB limit (46) — split or trim when next edited: DOC-ZYRA-0005, DOC-ZYRA-0011, DOC-ZYRA-0012, DOC-ZYRA-0018, DOC-ZYRA-0034, DOC-ZYRA-0040, DOC-ZYRA-0044, DOC-ZYRA-0052, DOC-ZYRA-0104, DOC-ZYRA-0109, DOC-ZYRA-0281, DOC-ZYRA-0279, DOC-ZYRA-9002, DOC-ZYRA-9007, DOC-ZYRA-9011, DOC-ZYRA-9012, DOC-ZYRA-9017, DOC-ZYRA-9018, DOC-ZYRA-9026, DOC-ZYRA-9029, INDEX-DECISIONS_V1, DOC-ZYRA-0263, DOC-ZYRA-0229, DOC-ZYRA-0174, DOC-ZYRA-0133, DOC-ZYRA-0255, DOC-ZYRA-0076, DOC-ZYRA-0226, DOC-ZYRA-0142, DOC-ZYRA-0143, DOC-ZYRA-0144, DOC-ZYRA-0176, DOC-ZYRA-0178, DOC-ZYRA-0189, DOC-ZYRA-0215, DOC-ZYRA-0230, DOC-ZYRA-0245, DOC-ZYRA-0084, DOC-ZYRA-0154, DOC-ZYRA-0196, DOC-ZYRA-0252, DOC-ZYRA-0209, DOC-ZYRA-0161, DOC-ZYRA-0137, DOC-ZYRA-0210, DOC-ZYRA-0267
