@@ -11,8 +11,10 @@ owner: Fable
 # ZYRA BLUEPRINT — PART 6 — BUILD AND RELEASE — V1 (DRAFT)
 
 Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from `SOURCE/run.sh`, `SOURCE/tool/`, `SOURCE/tooling/`, `SOURCE/tools/`,
-the iOS project settings, `SOURCE/lib/data/zyra_release_gates.dart` and the App Store runbook. **AIs never run these commands**
-(no AI runs git, builds, uploads or migrations); they are for Shakeel's own Terminal.
+the iOS project settings, `SOURCE/lib/data/zyra_release_gates.dart` and the App Store runbook. **No AI runs git, uploads
+or migrations.** The commands below are for Shakeel's own Terminal. One exception for builds: under DR-ZYRA-257 (Founder,
+4 Oct) Codex may build and install the profile app on the paired Founder iPhone after a Founder-requested change, while
+Shakeel says he is home - see `AGENTS.md`. The build freeze (OA-AIOS-406) pauses that too.
 
 ## In one paragraph
 

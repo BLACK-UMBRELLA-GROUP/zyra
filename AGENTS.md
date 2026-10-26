@@ -119,14 +119,14 @@ Rules live in the documents below, not here. Read them in this order:
 0. Core rules at the top of this file — roles and non-negotiables; they win on
    any conflict. Master copy:
    `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V2.md`.
-   Then `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/OPERATING_MODEL_CURRENT_VERSION_V1.md`
+   New agent? Read once: `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/OPERATING_MODEL_CURRENT_VERSION_V1.md`
    — roles, how work flows, exact-action GO, reporting.
-   Then read `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V1.md`
+   And once: `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V1.md`
    — lessons from Aug–Oct 2026 and Codex's standing first task.
 1. This `AGENTS.md` is the active ZYRA bootstrap. Archived Claude/Fable files
    remain historical evidence only.
 2. `MAP.md` — every live ZYRA document by ID with one line each, and the **task routes**:
-   which 2–5 documents to open for your kind of task. Open only those. Re-run
+   which 2–5 documents to open for your kind of task. Open only those. Read it only down to "Route paths" (the file paths); search the rest by ID. Re-run
    `python3 "../BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_map.py" .` after adding, renaming
    or retiring a document.
 3. `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md` (827 KB) and

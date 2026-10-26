@@ -14,6 +14,9 @@ Founder GO 26 Oct ("a"). **Read only:** Supabase connector `list_migrations`, `g
 and definitions — no personal data was read and nothing was changed. Project `sxoaxonzjqkgajmlagyk` (eu-west-1, Postgres 17,
 healthy). Repository = `ZYRA/SOURCE/supabase/migrations/` (228 files).
 
+**A snapshot of 26 Oct 2026.** Re-run the same read-only check before any production change, and before relying on it
+after 9 Nov 2026.
+
 ## In five lines
 
 1. **The safety problem is not live.** Production still has the safe 9 Aug message rule (blocks, active conversation, active

@@ -10,7 +10,7 @@ owner: Fable
 
 # ZYRA BLUEPRINT — PART 2 — MEMBERSHIP AND PAYMENTS — V1 (DRAFT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from `SOURCE/lib/data/zyra_membership_catalog.dart`,
+Status: **DRAFT for Shakeel** - the page as a whole waits for his review; a section marked DECIDED already has his decision. Written 26 Oct 2026 from `SOURCE/lib/data/zyra_membership_catalog.dart`,
 `zyra_seeker_plan_limits.dart`, `zyra_entitlements.dart`, `zyra_release_gates.dart`, the planned app's membership pages and the
 server (`subscriptions`, `family_*`, `unlock_*` tables and functions). Last column: **Built** · **Different** · **Missing**.
 
@@ -34,7 +34,7 @@ purchase code, so plans are set by developer functions. What each plan *includes
 
 | Plan | Price | Decision | Server |
 |---|---|---|---|
-| Seeker Basic | £4.99 once; no monthly fee; no trial | DR-ZYRA-252, DR-ZYRA-235 | **Different** — Basic counts as unpaid (0 Journey places) until reconciled (DR-ZYRA-275) |
+| Seeker Basic | £4.99 once; no monthly fee; no trial | DR-ZYRA-252, DR-ZYRA-235 | **Different** — the server today counts Basic as unpaid (0 Journey places); DR-ZYRA-275 says 1 place, so the server must change |
 | Guardian Basic | £4.99 once; view permitted linked Journeys and Timeline, Main Guardian reviews, safety; **no chat, no Network** | DR-ZYRA-252, DR-ZYRA-268 | **Different** — same as above |
 | Seeker One | £29.99 / month | DR-ZYRA-252, DR-ZYRA-243 | **Built** — `subscriptions.plan_type = 'seeker_premium'` |
 | Guardian One | £19.99 / month | DR-ZYRA-252, DR-ZYRA-243 | **Built** — `'wali_premium'` |

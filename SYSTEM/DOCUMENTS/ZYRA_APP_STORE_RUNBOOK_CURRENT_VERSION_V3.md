@@ -31,9 +31,12 @@ The cancelled second-app programme stays cancelled.
 | Step | Command (Shakeel's Terminal) |
 |---|---|
 | 1. Check the code | `cd "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE" && flutter analyze` |
-| 2. Install (works unplugged) | `cd "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE" && ./run.sh` |
+| 2. Install (plug in to install; afterwards it keeps working unplugged) | `cd "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE" && ./run.sh` |
 
-The iPhone must be plugged in, unlocked and trusted. If it says no matching device, the phone changed — run
+`./run.sh` builds in **profile** mode on purpose: a plain `flutter run` installs a debug build, which iOS kills once the
+cable is unplugged (it happened twice in Jul–Aug). So never plain `flutter run`.
+
+For the install the iPhone must be plugged in, unlocked and trusted. If it says no matching device, the phone changed — run
 `cd "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE" && flutter devices` and update `DEVICE` in `run.sh`.
 Codex uses its own checked build route (`SOURCE/tooling/`, no git) and records each delivery in `ZYRA/REPORTS/EVIDENCE/`.
 
@@ -90,3 +93,4 @@ members (OA-ZYRA-317).
 | 2026-09-12 | V1 | Archived (ARCHIVE/ZYRA_APP_STORE_RUNBOOK_2026-09-12_V1.md) |
 | 2026-09-12 → 10-26 | V2 | One-app runbook that grew into a delivery log (archived) |
 | 2026-10-26 | V3 | Rewritten short by Fable (OA-ZYRA-318) |
+| 2026-10-26 | V3 | §2 says why only `./run.sh` (profile build), from the cold-start tests |
