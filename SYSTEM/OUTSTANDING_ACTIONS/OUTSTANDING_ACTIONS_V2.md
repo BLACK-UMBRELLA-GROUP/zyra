@@ -26054,6 +26054,13 @@ Update:      26 Oct - Part 2 Messaging DRAFTED: DOC-ZYRA-0293. Serious findings 
 Update:      26 Oct - Part 2 Profile and account DRAFTED: DOC-ZYRA-0295, checked against production. Earlier part 2
              pages got a note: "Built" = repository; production lacks several (DOC-ZYRA-0294). Two Founder
              questions (account deletion effects; two roles on one login). Remaining: Onboarding, Safety.
+Update:      26 Oct - Part 2 Onboarding DRAFTED: DOC-ZYRA-0296 (13 steps, checked against production). Onboarding
+             infrastructure is live (question bank 105, completeness, consent, publish); missing: purchases,
+             identity provider (switch off), Bio reveal, two roles per login. One Founder question
+             (progressive onboarding as a recorded rule). Remaining: Safety.
+Update:      26 Oct - Part 2 Safety DRAFTED: DOC-ZYRA-0297. ALL BLUEPRINT PARTS NOW EXIST IN DRAFT (1, 2 x9 pages,
+             3, 4, 5, 6, 7). Found: nobody reviews reports (no process, tool or owner); photo moderation missing.
+             Next: the Founder reviews the drafts; then CURRENT.
 Acceptance:  For sample screens, the blueprint alone explains everything the screen shows
              and does; MAP.md routes to every feature document.
 

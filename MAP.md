@@ -23,13 +23,14 @@ task-routes block by hand, then re-run the tool.
 | Browse, filters, who appears, hide/block | DOC-ZYRA-0292 blueprint part 2 Browse rules | |
 | Journey messages, receipts, blocks and the archive | DOC-ZYRA-0293 blueprint part 2 Messaging rules | Read OA-ZYRA-319 before changing any message rule |
 | Profile, photos, account settings, reset, delete | DOC-ZYRA-0295 blueprint part 2 Profile and account rules | |
+| Sign-up and onboarding | DOC-ZYRA-0296 blueprint part 2 Onboarding rules | The old onboarding spec (APP/Onboarding) is partly out of date |
 | Journey | DOC-ZYRA-0283 blueprint part 2 Journey rules → DOC-ZYRA-0280 blueprint part 3 (data) → section APP: JOURNEY below | DOC-ZYRA-0256 lifecycle is superseded. Pause is retired in the Founder preview but still live in the member app - OA-ZYRA-316 |
 | Pricing, membership, unlocks, payments | DOC-ZYRA-0291 blueprint part 2 Membership rules → DOC-ZYRA-0123 pricing V6 (older detail) | Nothing can be bought yet (OA-ZYRA-317 item 7) |
 | Words and names in the app | DOC-ZYRA-0126 terminology → DOC-ZYRA-0071 UX writing → DOC-ZYRA-0070 error and empty states | |
 | Cleaning the code, what the planned app is | AGENTS.md "What we are building" → DOC-ZYRA-0285 planned-app deep review → DOC-ZYRA-0284 code-size tracker | Run SYSTEM/tools/blueprint/code_size.py after each clean-up step |
 | Look and feel (colours, fonts, components, haptics, motion) | DOC-ZYRA-0102 colour theme V2 (values) → DOC-ZYRA-0282 blueprint part 5 (full detail) → DOC-ZYRA-0266 UI consistency gate | DOC-ZYRA-0172 widget library dates from 26 Jul - use 0282 §5 |
 | Settings, sign-in, identity checks | DOC-ZYRA-0210 settings and identity → DOC-ZYRA-0205 identity DPIA | |
-| Safety | DOC-ZYRA-0057 safety and respect system | |
+| Safety (reports, blocks, moderation) | DOC-ZYRA-0297 blueprint part 2 Safety rules → DOC-ZYRA-0057 safety and respect system | Nobody reviews reports yet |
 | Email | DOC-ZYRA-0225 email architecture | |
 | Website | DOC-ZYRA-0110 website pages → DOC-ZYRA-0197 website handover | The site is its own repo: `SITE/` |
 | Releasing a build (TestFlight) | DOC-ZYRA-0254 delivery runbook (192 KB — search it) → DOC-ZYRA-0255 developer control system | |
@@ -38,7 +39,7 @@ task-routes block by hand, then re-run the tool.
 | Evidence, reviews, tool state | `SYSTEM/RESOURCES/` — not mapped; open only the folder a task names | Tests pin some of these files byte for byte |
 <!-- ROUTES END -->
 
-## Documents (293 live)
+## Documents (295 live)
 
 ### APP: AUTHENTICATION
 
@@ -438,7 +439,7 @@ task-routes block by hand, then re-run the tool.
 
 | ID | File | Type | Purpose | KB |
 |---|---|---|---|---|
-| INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it | 36 |
+| INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it | 37 |
 | INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it | 26 |
 
 ### GUARDIAN NETWORK
@@ -569,6 +570,8 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0292 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_BROWSE_RULES_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 2 (Browse) - how Seekers find each other in the planned app - who appears and in what order,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-312, DOC-ZYRA-0283, DOC-ZYRA-0291, DR-ZYRA-280, DR-ZYRA-282 | 6 |
 | DOC-ZYRA-0293 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_MESSAGING_RULES_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 2 (Messaging) - when Seekers can message in a Journey, what Guardians can read and write,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-319, DOC-ZYRA-0283, DOC-ZYRA-0290 | 6 |
 | DOC-ZYRA-0295 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_PROFILE_RULES_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 2 (Profile and account) - what a profile holds and who sees what, photos, identity freeze,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0294, DOC-ZYRA-0278, DOC-ZYRA-0292 | 6 |
+| DOC-ZYRA-0296 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_ONBOARDING_RULES_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 2 (Onboarding) - how a new member gets in - welcome, choosing Seeker or Guardian first,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0294, DOC-ZYRA-0295, DOC-ZYRA-0291 | 5 |
+| DOC-ZYRA-0297 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_SAFETY_RULES_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 2 (Safety) - reporting profiles, photos and messages, blocking, what a safety-concern ending… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-312, DOC-ZYRA-0294, DOC-ZYRA-0057 | 5 |
 
 ### RELEASE
 

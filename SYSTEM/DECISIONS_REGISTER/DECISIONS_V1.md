@@ -17394,9 +17394,44 @@ Related:     DR-ZYRA-134, DR-ZYRA-231, DR-ZYRA-268, DR-ZYRA-280, OA-ZYRA-317, DO
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-285,
+DR-ZYRA-286
+Title:       Progressive onboarding recorded - short setup and identity check, then the app opens; the
+             profile is finished inside and published deliberately
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("a"); records his 26 Aug 2026 direction, which existed only in
+             code comments (screens/onboarding/onboarding_flow.dart)
+Authority:   Founder, 26 Oct 2026, answering Onboarding rules §4 (DOC-ZYRA-0296).
+Decision:    Sign-up = choose which side first (Seeker or Guardian) -> Google or Apple sign-in -> names,
+             gender, date of birth (Guardians: relationship) -> first photo (Seekers) -> membership choice
+             -> mandatory identity check -> the app opens. Chapter 2, special-category consent, the
+             compatibility questions and the optional Journey Bio are completed inside the app. Nobody can
+             see, match or request a member until the server judges the profile complete and the member
+             publishes it.
+Consequence: No code change. DOC-ZYRA-0296 is the rule page.
+Related:     DR-ZYRA-221, DR-ZYRA-252, DR-ZYRA-264, DR-ZYRA-285, DOC-ZYRA-0296.
+
+------------------------------------------------------------
+
+DR-ZYRA-287
+Title:       The Founder reviews safety reports at launch, through a simple review page in AIOS
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("a")
+Authority:   Founder, 26 Oct 2026, answering Safety rules §7 (DOC-ZYRA-0297).
+Decision:    At launch the Founder reviews every report himself, using a simple review page in AIOS
+             (list pending reports, see the reason, details and the reported profile, set reviewing /
+             actioned / dismissed, and take an action). No AI sorting and no outside service for now;
+             revisit when report volume grows.
+Consequence: AIOS review page tracked as OA-AIOS-413 (after the freeze). It reads and updates reports with
+             server rights only, never exposes private answers, and records who decided what and when.
+             The actions available (warn, hide profile, remove member) need a removal process in the
+             server design (OA-ZYRA-317).
+Related:     DR-ZYRA-095, DR-ZYRA-131, OA-ZYRA-317, OA-AIOS-413, DOC-ZYRA-0297.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-287,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-286 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-288 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA
