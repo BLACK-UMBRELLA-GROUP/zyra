@@ -25,3 +25,4 @@ ZYRA's other reports in `SYSTEM/RESOURCES/REPORTS` and the 38 ZYRA reports in th
 | AGENTS_HISTORY/ | History blocks taken out of `AGENTS.md` 26 Oct (build 3, mailboxes 110-116, Test-app retirement, old reading order). Founder choice 1a, cold-start tests DOC-BUG-0028. The standing rules stayed in `AGENTS.md` |
 | DRAFTS_DECIDED_2026-10-26/ | The 14 old drafts and their list (DOC-ZYRA-0257), withdrawn by the Founder 26 Oct (OA-AIOS-404); reasons in its INDEX.md |
 | PRODUCT_BLUEPRINT_VERSIONS/ | Older versions of approved blueprint pages, replaced when a new rule was added (saving standard rule 6) |
+| OA-ZYRA-289_2026-09-17_FINAL_REPLAY/ | September migration-replay test logs; finished evidence, moved from REPORTS/CURRENT 26 Oct (folder check) |
