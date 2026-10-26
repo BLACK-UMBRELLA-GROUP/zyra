@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0282
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 5 - ZYRA's look and feel from the code: every colour (hex), background, font and weight, text size, spacing, corner shape, shared component, haptic and motion, with differences from the colour theme document
 links: [OA-ZYRA-309, DOC-ZYRA-0102, DOC-ZYRA-0278, OA-ZYRA-313, OA-ZYRA-314]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 5 — LOOK AND FEEL — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 5 — LOOK AND FEEL — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel's review.** Written 25 Oct 2026 from the code in `SOURCE/lib/theme/` (colours, text, card sizes,
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 25 Oct 2026 from the code in `SOURCE/lib/theme/` (colours, text, card sizes,
 interaction style), the app theme in `SOURCE/lib/main.dart`, the 69 shared widgets in `SOURCE/lib/widgets/` and the font
 files in `SOURCE/pubspec.yaml`. **The code wins** where a document disagrees; every difference is listed in §9.
 
@@ -238,3 +238,4 @@ Accessibility notes (contrast, normal text needs 4.5):
 5. Buttons: 48 tall, round ends, glass + gold edge; danger in #E08080.
 6. People rows: the card sizes in §4, everywhere.
 7. Motion: easeOutCubic, 180–420 ms; respect reduced motion. Haptics: selection click by default, member-adjustable.
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0283
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 V2 (Journey) - the planned app's Journey rules - browsing and visibility, requests, places, getting ready, the stages, Guardians' access, ending, the archive and Request restart - each marked built, different or missing on the server
 links: [OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-315, DR-ZYRA-274, DR-ZYRA-275, DOC-ZYRA-0278, DOC-ZYRA-0285]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — JOURNEY RULES — V2 (DRAFT)
+# ZYRA BLUEPRINT — PART 2 — JOURNEY RULES — V2 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app (DR-ZYRA-274): the rules in
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the planned app (DR-ZYRA-274): the rules in
 `SOURCE/lib/dev/zyra_view_request_draft_model.dart` and the pages in `zyra_one_journey_concept_shell.dart`. V1 described the old
 member app and is archived in `REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/`. The last column says what the **server** does today (from DOC-ZYRA-0280):
 **Built** = already enforced · **Different** = enforced another way · **Missing** = nothing yet. The gaps are OA-ZYRA-317.
@@ -126,3 +126,4 @@ Still open for the server design: what happens when the 48-hour ready window run
 | 2026-10-25 | V1 | Old member app (archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/) |
 | 2026-10-26 | V2 | Rewritten from the planned app (DR-ZYRA-274), each rule marked against the server |
 | 2026-10-26 | V2 | §8 decided (DR-ZYRA-277): Family Review kept, request limits, restart expiry |
+| 2026-10-26 | V2 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

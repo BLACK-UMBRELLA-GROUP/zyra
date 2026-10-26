@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0295
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 (Profile and account) - what a profile holds and who sees what, photos, identity freeze, edit and preview, Pause My Profile, hidden people, reset, delete, two roles on one login, sign-in and recovery, personalisation, notifications, App Lock, feedback - each marked against PRODUCTION (live check 26 Oct) and its decision
 links: [OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0294, DOC-ZYRA-0278, DOC-ZYRA-0292]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — PROFILE AND ACCOUNT RULES — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 2 — PROFILE AND ACCOUNT RULES — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app's Profile tab and settings
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the planned app's Profile tab and settings
 (`zyra_one_journey_account_presentation.dart`, `zyra_one_journey_settings_details.dart`), the profile and photo screens it reuses,
 and the server. **The last column is checked against production** (live check DOC-ZYRA-0294): **Live** · **Not live** (in a
 repository file only) · **Missing** (nowhere).
@@ -22,7 +22,7 @@ Unlock, and **private answers** that are never shown (faith and background answe
 record). Once published, **gender and date of birth are frozen**. From the Profile tab you preview your profile as others see it,
 edit it and your photos, manage membership, change the background, gold accents and haptics, set notifications and App Lock, and
 reach help and feedback. You can **reset** your profile (answers and discovery history, keeping the account) or **delete** your
-account. Two things in the planned app do not exist on the server: **Pause My Profile** and the **hidden people list**. One login
+account. Two things in the planned app do not exist on the server yet: **Pause My Profile** (kept - hides your profile and stops new requests; current Journeys carry on, DR-ZYRA-290) and the **hidden people list**. One login
 holding both a Seeker and a Guardian account is shown in the app but the server still allows one role per account.
 
 ## 1. What a profile holds, and who sees it
@@ -66,7 +66,7 @@ holding both a Seeker and a Guardian account is shown in the app but the server 
 
 | Control | What it does | Decision | Server |
 |---|---|---|---|
-| **Pause My Profile** | Hide your profile across ZYRA and pause activity involving you; account, Guardians, Journeys, history and paid plan stay | — (planned app) | **Missing** — the app's functions exist nowhere |
+| **Pause My Profile** | Take a break: your profile disappears from Browse and nobody can send you a new request. Journeys you are already in carry on as normal (there is no Journey pause); your account, Guardians, history and paid plan stay, and billing continues. Unpause any time | DR-ZYRA-290 | **Missing** — the app's functions exist nowhere |
 | **Hidden people** | See and undo the people you hid; hiding also stops them requesting you | DR-ZYRA-095, DR-ZYRA-284 | **Missing** — functions exist nowhere |
 | Guardian privacy | What your Guardians can see (per Journey, past summaries) | DR-ZYRA-232, 233 | **Live** (old model) / **Not live** (5 Oct read rules) |
 
@@ -97,3 +97,5 @@ holding both a Seeker and a Guardian account is shown in the app but the server 
 |---|---|---|
 | 2026-10-26 | V1 | First draft, checked against production (OA-ZYRA-309) |
 | 2026-10-26 | V1 | §7 decided (DR-ZYRA-285) |
+| 2026-10-26 | V1 | Founder: keep Pause My Profile, defined (DR-ZYRA-290) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

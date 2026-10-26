@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0278
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 1 V2 - the planned ZYRA app's screens - how members get in, the Seeker and Guardian tabs, every page by area, what each is for, how you reach it and what it opens; what is real and what is sample
 links: [DOC-ZYRA-0286, DOC-ZYRA-0283, DOC-ZYRA-0285, DR-ZYRA-274, OA-ZYRA-309, OA-ZYRA-317]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 1 — SCREEN MAP — V2 (DRAFT)
+# ZYRA BLUEPRINT — PART 1 — SCREEN MAP — V2 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app (DR-ZYRA-274): the Founder preview in
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the planned app (DR-ZYRA-274): the Founder preview in
 `SOURCE/lib/dev/zyra_one_journey_concept_shell.dart` and its 65 helper files. Every page is listed with its buttons and
 messages in the generated inventory **DOC-ZYRA-0286** (`ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md`, re-run
 `SYSTEM/tools/blueprint/generate_planned_screen_map.py`). V1 described the old member app and is archived in `REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/`.
@@ -120,3 +120,4 @@ The browse options menu (⋯) on Profiles holds Compatibility, Find by ZYRA Code
 |---|---|---|
 | 2026-10-25 | V1 | Old member app (archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/) |
 | 2026-10-26 | V2 | Rewritten from the planned app (DR-ZYRA-274); generated inventory DOC-ZYRA-0286 |
+| 2026-10-26 | V2 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

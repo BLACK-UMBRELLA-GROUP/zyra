@@ -17429,9 +17429,90 @@ Related:     DR-ZYRA-095, DR-ZYRA-131, OA-ZYRA-317, OA-AIOS-413, DOC-ZYRA-0297.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-287,
+DR-ZYRA-288
+Title:       Seeker One includes 3 Compatibility Unlocks every month
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("3 per month")
+Authority:   Founder, 26 Oct 2026, reviewing the blueprint pack (DOC-ZYRA-0299, Membership rules DOC-ZYRA-0291 §4).
+Decision:    While Seeker One is active, the member receives 3 Compatibility Unlocks each month (was read
+             as 3 once). Unlock prices are unchanged: £2.99 one, £6.99 three, £9.99 five (DR-ZYRA-250).
+Consequence: The server's grant_zyra_one_credits gives 3 once per member, ever (unique grant) - a monthly
+             grant goes into the server design (OA-ZYRA-317). Unused monthly Unlocks do not carry over - each
+             month starts again at 3 (Founder "2 - a", 26 Oct).
+Related:     DR-ZYRA-250, DR-ZYRA-252, DR-ZYRA-282, OA-ZYRA-317, DOC-ZYRA-0291.
+
+------------------------------------------------------------
+
+DR-ZYRA-289
+Title:       Paid Guardian chat is by the Seeker's permission - said before payment and in the member terms
+Date:        2026-10-26
+Status:      APPROVED - Founder direct
+Authority:   Founder, 26 Oct 2026, reviewing Messaging rules (DOC-ZYRA-0293 §2).
+Decision:    Paying for Guardian One (or a Family Guardian place) makes Journey chat possible, never
+             guaranteed. Writing in a Journey is the Seeker's permission: the Seeker chooses the Main Guardian
+             and switches each Additional Guardian's Chat on or off; the stage, blocks and endings also
+             apply. The purchase screen must say this plainly before payment, and the member terms must
+             state it, so no Guardian pays for a feature they were led to expect.
+Consequence: Purchase-screen wording and a member-terms clause - OA-ZYRA-320, before purchases open.
+             Fable is not a lawyer: the clause needs a solicitor's review with the rest of the terms
+             (consumer-rights, cooling-off and auto-renewal points in DOC-ZYRA-0148).
+Related:     DR-ZYRA-232, DR-ZYRA-243, DR-ZYRA-268, OA-ZYRA-320, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0148.
+
+------------------------------------------------------------
+
+DR-ZYRA-290
+Title:       Pause My Profile is kept - it hides the profile and stops new requests; current Journeys carry on
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("3a" - keep)
+Authority:   Founder, 26 Oct 2026, answering the blueprint review pack (DOC-ZYRA-0299).
+Decision:    Pause My Profile stays in the planned app. While paused: the profile is not shown in Browse
+             and nobody can send a new request. Journeys already running carry on as normal - Journey Pause
+             stays retired (DR-ZYRA-274). Account, Guardians, history and paid plan stay; billing continues
+             (store billing is separate). Unpause any time; unpausing changes nothing else (it never
+             unblocks anyone).
+Consequence: The functions the app calls (zyra_my_profile_pause_state, zyra_set_my_profile_pause) exist
+             nowhere - server design OA-ZYRA-317. "Current Journeys carry on" is Fable's reading of
+             DR-ZYRA-274, reported to the Founder; he can change it.
+Related:     DR-ZYRA-274, DR-ZYRA-284, OA-ZYRA-317, DOC-ZYRA-0292, DOC-ZYRA-0295.
+
+------------------------------------------------------------
+
+DR-ZYRA-291
+Title:       A family plan holds up to 10 places in total, any mix of Seeker One and Guardian One
+Date:        2026-10-26
+Status:      APPROVED - Founder delegated ("you help me work out what's best ... so it's not confusing");
+             Fable's recommendation, reported to the Founder the same turn
+Authority:   Founder, 26 Oct 2026.
+Decision:    One number for families: up to 10 places in total, any mix. Price unchanged: 1-2 places full
+             price, then 5% more off for each extra place, up to 40% off at 10 - counted across all places.
+Why:         The discount already stops at 10 places in total, so 10 + 10 = 20 places added nothing but
+             confusion; 10 covers any real family; fewer unused paid Guardian places (DR-ZYRA-289).
+Consequence: Server seat cap allows 10 of each today - change in OA-ZYRA-317. The formula already counts
+             all places together. Replaces the "0-10 each" part of DR-ZYRA-252.
+Related:     DR-ZYRA-252, DR-ZYRA-289, OA-ZYRA-317, DOC-ZYRA-0290, DOC-ZYRA-0291.
+
+------------------------------------------------------------
+
+DR-ZYRA-292
+Title:       A Seeker's Main Guardian sees who the Seeker's Journey requests are with
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("pro c ... I want the app to be an open app for Seekers and Guardians")
+Authority:   Founder, 26 Oct 2026, answering what Guardians see before a Journey begins.
+Decision:    The Main Guardian sees the Seeker's pending Journey requests, sent and received, and who each
+             is with (that person's public profile card - never private answers or Unlock-only details).
+             Additional Guardians see Journeys only, as the Seeker allows (DR-ZYRA-232). Replaces the
+             28 Aug Browse-activity proposal (archived).
+Consequence: Openness must be declared, never discovered: the Seeker is told when linking a Main
+             Guardian; the other person is told when sending or receiving a request ("their Main Guardian
+             can see this request"); the privacy notice and the DPIA cover it (OA-ZYRA-321). Server:
+             request visibility for the Main Guardian is server design work (OA-ZYRA-317).
+Related:     DR-ZYRA-232, DR-ZYRA-233, DR-ZYRA-277, OA-ZYRA-317, OA-ZYRA-321, DOC-ZYRA-0290.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-292,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-288 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-293 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

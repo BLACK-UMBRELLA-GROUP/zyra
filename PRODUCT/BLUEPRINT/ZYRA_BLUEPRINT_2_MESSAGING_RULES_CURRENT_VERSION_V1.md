@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0293
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 (Messaging) - when Seekers can message in a Journey, what Guardians can read and write, read receipts, notifications, what blocks, pauses and endings do to a conversation, the archive, and the Guardian Circle - each marked built, different or missing, with its decision
 links: [OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-319, DOC-ZYRA-0283, DOC-ZYRA-0290]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — MESSAGING RULES — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 2 — MESSAGING RULES — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app (`conversationOpen`, the Journey page's Messages) and the
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the planned app (`conversationOpen`, the Journey page's Messages) and the
 server (`conversations`, `messages`, their security rules, triggers and the Guardian Circle functions). Last column: **Built** ·
 **Different** · **Missing**. Server rules were checked by reading the migrations, not by running them.
 
@@ -44,7 +44,7 @@ the other (§6).
 | Rule | Decision | Server |
 |---|---|---|
 | Main and included Additional Guardians can read an active Journey's conversation | DR-ZYRA-232 | **Built** — `messages_select` |
-| They can write only with Chat allowed and a paid Guardian role | DR-ZYRA-232, DR-ZYRA-268 | **Different** — the send rule checks the Chat switch but not the Guardian's paid role |
+| They can write only with Chat allowed and a paid Guardian role. Paying alone never gives chat - the Seeker allows it; the purchase screen and terms say so | DR-ZYRA-232, DR-ZYRA-268, DR-ZYRA-289 | **Different** — the send rule checks the Chat switch but not the Guardian's paid role |
 | Guardians never see ended or not-yet-begun Journeys' messages | DR-ZYRA-233 | **Built** (5 Oct read rules) |
 
 ## 3. Receipts and notifications
@@ -87,3 +87,5 @@ will confirm finding 2.
 | Date | Version | Change |
 |---|---|---|
 | 2026-10-26 | V1 | First draft (OA-ZYRA-309) |
+| 2026-10-26 | V1 | Paid Guardian chat is by the Seeker's permission (DR-ZYRA-289) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

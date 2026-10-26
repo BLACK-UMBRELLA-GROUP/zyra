@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0288
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 6 - how ZYRA gets from code to a phone - what you need, the app's identity, the daily commands, the checks before a release, TestFlight builds, database changes, release switches and the public-launch gates; plus what is out of date or machine-specific
 links: [OA-ZYRA-309, OA-ZYRA-312, OA-ZYRA-317, DOC-ZYRA-0287]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 6 — BUILD AND RELEASE — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 6 — BUILD AND RELEASE — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from `SOURCE/run.sh`, `SOURCE/tool/`, `SOURCE/tooling/`, `SOURCE/tools/`,
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from `SOURCE/run.sh`, `SOURCE/tool/`, `SOURCE/tooling/`, `SOURCE/tools/`,
 the iOS project settings, `SOURCE/lib/data/zyra_release_gates.dart` and the App Store runbook. **No AI runs git, uploads
 or migrations.** The commands below are for Shakeel's own Terminal. One exception for builds: under DR-ZYRA-257 (Founder,
 4 Oct) Codex may build and install the profile app on the paired Founder iPhone after a Founder-requested change, while
@@ -121,3 +121,4 @@ connected to real members (OA-ZYRA-317).
 |---|---|---|
 | 2026-10-26 | V1 | First draft from the build scripts, iOS settings, release switches and runbook (OA-ZYRA-309) |
 | 2026-10-26 | V1 | Runbook rewritten (V3); platform folders decided (DR-ZYRA-279) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

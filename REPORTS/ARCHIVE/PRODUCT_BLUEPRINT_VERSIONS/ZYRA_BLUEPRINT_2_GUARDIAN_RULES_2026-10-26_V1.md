@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0290
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 (Guardians) - every Guardian rule of the planned app - linking by ZYRA Code, Main and Additional Guardians, what a Guardian sees and does, chat and paid access, Family Reviews, past Journey summaries, the Guardian Circle, Introductions, Speak to Guardian, Family places - each marked built, different or missing on the server, with its decision
 links: [OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0283, DOC-ZYRA-0289, DR-ZYRA-280]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — GUARDIAN RULES — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 2 — GUARDIAN RULES — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app (`SOURCE/lib/dev/` — model
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the planned app (`SOURCE/lib/dev/` — model
 `zyra_view_request_draft_model.dart`, shell `zyra_one_journey_concept_shell.dart`, `zyra_one_journey_guardian_presentation.dart`),
 the server functions (DOC-ZYRA-0281) and the decisions register. Last column: **Built** · **Different** · **Missing** on the server.
 Journey-stage rules that involve Guardians (Guardian Gate, Family Review) are also in the Journey rules, DOC-ZYRA-0283.
@@ -72,6 +72,7 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 |---|---|---|
 | **Guardian Basic** (£4.99 once): can view, **cannot chat** — Main included | DR-ZYRA-268, DR-ZYRA-252 | **Different** — server requires each Circle member's own paid role (DR-ZYRA-248); Journey chat gate to be aligned |
 | **Guardian One** (£19.99 / month) or a funded Family Guardian place makes chat **possible**, not automatic — View, link, stage, permission and blocks still apply | DR-ZYRA-268, DR-ZYRA-243 | **Built** — `zyra_has_paid_role` |
+| **Paying never guarantees chat.** Writing in a Journey is the Seeker's permission (they choose their Main Guardian and switch each Additional Guardian's Chat on or off) and depends on the stage, blocks and endings. This must be said plainly on the purchase screen before payment and in the member terms | DR-ZYRA-289 | app wording and terms - **Missing** (OA-ZYRA-320) |
 | Dropping to Basic switches chat off; it does not come back by itself | DR-ZYRA-268 | **Missing** in the planned form |
 | A Seeker's subscription never proves their Guardian paid | DR-ZYRA-268 | **Built** |
 
@@ -104,7 +105,7 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 
 | Rule | Decision | Server |
 |---|---|---|
-| ZYRA Family: 0–10 Seeker One and 0–10 Guardian One places, priced per place, billed monthly | DR-ZYRA-252 (Family formula kept) | **Built** — `family_subscriptions`, `family_seat_assignments`, seat guards |
+| ZYRA Family: up to 10 places in total, any mix of Seeker One and Guardian One, billed monthly | DR-ZYRA-291 | **Different** — server allows 10 of each; cap to change (OA-ZYRA-317) |
 | Giving someone a place does not link them or grant View or Chat; they must accept | — | **Built** |
 | A Seeker's free trial ends when they take a Family place | — | **Built** — trigger `zyra_forfeit_seeker_trial_on_family_seat` |
 
@@ -121,3 +122,6 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 |---|---|---|
 | 2026-10-26 | V1 | First draft from the planned app, server and decisions (OA-ZYRA-309) |
 | 2026-10-26 | V1 | §9 decided (DR-ZYRA-281) |
+| 2026-10-26 | V1 | Founder: paid Guardian chat is by the Seeker's permission - purchase screen and terms must say so (DR-ZYRA-289) |
+| 2026-10-26 | V1 | Family places: 10 in total, any mix (DR-ZYRA-291) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

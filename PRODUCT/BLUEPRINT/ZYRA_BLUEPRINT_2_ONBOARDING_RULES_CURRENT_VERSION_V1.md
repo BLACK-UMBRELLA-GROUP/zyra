@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0296
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 (Onboarding) - how a new member gets in - welcome, choosing Seeker or Guardian first, sign-in, account essentials, first photo, membership choice, the identity check, the profile chapters, consent, the Bio, completeness and publishing - checked against production and decisions
 links: [OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0294, DOC-ZYRA-0295, DOC-ZYRA-0291]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — ONBOARDING RULES — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 2 — ONBOARDING RULES — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the sign-up screens (`screens/auth/`, `screens/onboarding/`,
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the sign-up screens (`screens/auth/`, `screens/onboarding/`,
 `screens/wali/wali_onboarding_flow.dart`) — the planned app reuses them; its own sign-up pages are previews — and the server.
 Last column checked against **production** (DOC-ZYRA-0294): **Live** · **Not live** · **Missing**.
 
@@ -70,3 +70,4 @@ Progressive onboarding is recorded as **DR-ZYRA-286**.
 |---|---|---|
 | 2026-10-26 | V1 | First draft, checked against production (OA-ZYRA-309) |
 | 2026-10-26 | V1 | Progressive onboarding recorded (DR-ZYRA-286) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

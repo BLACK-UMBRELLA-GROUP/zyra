@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0287
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 4 - every outside service ZYRA depends on - what it is for, which part of the code uses it, whether it is live, test-only or not connected, where its settings live (never the values), and what the planned app needs from it
 links: [OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0280, DR-ZYRA-274, DR-ZYRA-275]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 4 — OUTSIDE CONNECTIONS — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 4 — OUTSIDE CONNECTIONS — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from `SOURCE/pubspec.yaml`, `SOURCE/lib` (services and `config/`),
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from `SOURCE/pubspec.yaml`, `SOURCE/lib` (services and `config/`),
 `SOURCE/ios/Runner` (permissions and entitlements) and the website repo `SITE`. **No key, password or token was opened**:
 files that hold them are named only. Whether each service is live in production is from the code and the records; the live
 check (OA-ZYRA-312) confirms it.
@@ -77,3 +77,4 @@ Key rotation is OA-AIOS-395 (Founder creates each new key himself).
 |---|---|---|
 | 2026-10-26 | V1 | First draft from the code, settings and website repo (OA-ZYRA-309) |
 | 2026-10-26 | V1 | Push notifications and crash reporting decided (DR-ZYRA-278) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

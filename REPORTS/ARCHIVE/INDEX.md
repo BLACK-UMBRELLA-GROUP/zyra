@@ -23,3 +23,5 @@ ZYRA's other reports in `SYSTEM/RESOURCES/REPORTS` and the 38 ZYRA reports in th
 | ESCALATIONS_2026-06-26_*, ZYRA_TERMINOLOGY_PRICING_AUDIT_2026-07-12_V1.md | June/July reports. Were SYSTEM/RESOURCES/REPORTS; moved 25 Oct (OA-AIOS-408) |
 | `PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/` | Blueprint parts 1 and 2 V1 — written from the old member app; replaced by V2 from the planned app (DR-ZYRA-274), 26 Oct 2026 |
 | AGENTS_HISTORY/ | History blocks taken out of `AGENTS.md` 26 Oct (build 3, mailboxes 110-116, Test-app retirement, old reading order). Founder choice 1a, cold-start tests DOC-BUG-0028. The standing rules stayed in `AGENTS.md` |
+| DRAFTS_DECIDED_2026-10-26/ | The 14 old drafts and their list (DOC-ZYRA-0257), withdrawn by the Founder 26 Oct (OA-AIOS-404); reasons in its INDEX.md |
+| PRODUCT_BLUEPRINT_VERSIONS/ | Older versions of approved blueprint pages, replaced when a new rule was added (saving standard rule 6) |

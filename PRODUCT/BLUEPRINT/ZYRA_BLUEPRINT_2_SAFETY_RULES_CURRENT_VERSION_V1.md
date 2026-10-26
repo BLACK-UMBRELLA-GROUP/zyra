@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0297
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 (Safety) - reporting profiles, photos and messages, blocking, what a safety-concern ending hides, who reviews reports, moderation, retention, the member's safety case list, help, and the built-in safeguards - checked against production; what must exist before launch
 links: [OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-312, DOC-ZYRA-0294, DOC-ZYRA-0057]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — SAFETY RULES — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 2 — SAFETY RULES — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the report and block screens, the planned app's Report page and
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the report and block screens, the planned app's Report page and
 settings, and the server. Last column checked against **production** (DOC-ZYRA-0294): **Live** · **Not live** · **Missing**.
 The wider safety design is DOC-ZYRA-0057 (Safety and respect system).
 
@@ -93,3 +93,4 @@ The Founder reviews reports at launch through a review page in AIOS — **DR-ZYR
 |---|---|---|
 | 2026-10-26 | V1 | First draft, checked against production (OA-ZYRA-309) |
 | 2026-10-26 | V1 | Report review decided (DR-ZYRA-287) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

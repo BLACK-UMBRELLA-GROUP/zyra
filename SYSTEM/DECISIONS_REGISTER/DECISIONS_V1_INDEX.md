@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**285 decisions; 3 marked superseded/retired.**
+**290 decisions; 3 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -301,3 +301,8 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-285 | 2026-10-26 | Account deletion keeps the other person's ended Journey; one login may hold a Seeker and … | APPROVED - Founder direct ("aa") |
 | DR-ZYRA-286 | 2026-10-26 | Progressive onboarding recorded - short setup and identity check, then the app opens; the… | APPROVED - Founder direct ("a"); record… |
 | DR-ZYRA-287 | 2026-10-26 | The Founder reviews safety reports at launch, through a simple review page in AIOS | APPROVED - Founder direct ("a") |
+| DR-ZYRA-288 | 2026-10-26 | Seeker One includes 3 Compatibility Unlocks every month | APPROVED - Founder direct ("3 per month… |
+| DR-ZYRA-289 | 2026-10-26 | Paid Guardian chat is by the Seeker's permission - said before payment and in the member … | APPROVED - Founder direct |
+| DR-ZYRA-290 | 2026-10-26 | Pause My Profile is kept - it hides the profile and stops new requests; current Journeys … | APPROVED - Founder direct ("3a" - keep) |
+| DR-ZYRA-291 | 2026-10-26 | A family plan holds up to 10 places in total, any mix of Seeker One and Guardian One | APPROVED - Founder delegated ("you help… |
+| DR-ZYRA-292 | 2026-10-26 | A Seeker's Main Guardian sees who the Seeker's Journey requests are with | APPROVED - Founder direct ("pro c ... I… |

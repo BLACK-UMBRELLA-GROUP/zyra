@@ -25984,8 +25984,9 @@ Title:       ZYRA blueprint — record every screen, action, rule, table and beh
              the app could be rebuilt from the documents alone
 Category:    Product documentation / Continuity
 Priority:    HIGH (Founder request, 25 Oct 2026)
-Status:      OPEN - starts after group phase 3 (OA-AIOS-406). Documentation only, allowed
-             under the build freeze.
+Status:      CLOSED 26 Oct - all 14 blueprint pages approved by the Founder ("a") and CURRENT (review pack
+             DOC-ZYRA-0299; decisions DR-ZYRA-274 to 291). Keeping them true as the code changes is part of
+             every change from now on (DOC-ZYRA-0277 §2). Was: documentation only, allowed under the freeze.
 Owner:       Fable writes from the code and existing specs · Founder confirms intent
              where the code and documents disagree
 Authority:   Founder direction 25 Oct 2026; AD-AIOS-112 decision (n)
@@ -26355,9 +26356,47 @@ Acceptance:  All migrations replay cleanly in order; sending refuses blocked, cl
 
 ------------------------------------------------------------
 
+OA-ZYRA-320
+Title:       Member terms and purchase-screen wording - written and legally reviewed before purchases open
+Category:    Legal / Payments
+Priority:    HIGH before purchases open (launch gate)
+Date:        2026-10-26
+Status:      OPEN - raised from DR-ZYRA-289. The website terms page today only says member terms are awaiting
+             approval (SITE/src/pages/terms.astro); no member terms exist yet.
+Scope:       (1) Paid Guardian chat is by the Seeker's permission, never guaranteed by payment (DR-ZYRA-289) -
+             on the purchase screen before payment and in the terms. (2) Everything priced in DOC-ZYRA-0291:
+             Basic one-off, One monthly with auto-renewal, the 14-day trial once per verified person, Family
+             places, Unlocks (3 a month with Seeker One, DR-ZYRA-288). (3) The clause matrix in the legal
+             research DOC-ZYRA-0148 (cooling-off, auto-renewal, Guardian notice, special-category data).
+Owner:       Fable drafts · a solicitor reviews · Founder approves
+Next:        After the freeze and before OA-ZYRA-317 item 7 (purchases). Needs the company formed (OA-AIOS-386)
+             for the company details.
+Acceptance:  Approved terms published; every purchase screen states what payment does and does not give.
+
+------------------------------------------------------------
+
+
+OA-ZYRA-321
+Title:       Launch legal and safety pack - DPIA, safety response and Online Safety Act check, from the blueprint
+Category:    Legal / Safety / Privacy
+Priority:    HIGH before launch (launch gate)
+Date:        2026-10-26
+Status:      OPEN - opened when the Founder withdrew the 14 old drafts (OA-AIOS-404, "a"). The four legal/safety
+             drafts of 6-12 Oct are research input only: REPORTS/ARCHIVE/DRAFTS_DECIDED_2026-10-26/.
+Scope:       (1) DPIA for the whole member service, written from the approved blueprint (special-category
+             answers, identity check, Guardians as data subjects, Main Guardian request visibility
+             DR-ZYRA-292, retention). (2) Safety response: the Founder reviews reports (DR-ZYRA-287), abuse
+             images, escalation, emergencies. (3) Online Safety Act / Ofcom applicability. (4) Privacy notice
+             sections. Joins OA-ZYRA-320 (member terms) for one solicitor review.
+Owner:       Fable drafts · a solicitor reviews · Founder approves
+Next:        After the freeze; needs the company formed (OA-AIOS-386) and the ICO registration (OA-AIOS-381).
+Acceptance:  Signed DPIA, approved safety procedure, recorded OSA assessment, privacy notice published.
+
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-320 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-322 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

@@ -1,20 +1,20 @@
 ---
 id: DOC-ZYRA-0289
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 7 - trace - for each rule of the planned app, the decision that set it (DR) and the code that does it (planned-app file, server function); rules with no decision of their own, and code that contradicts a decision
 links: [OA-ZYRA-309, DOC-ZYRA-0278, DOC-ZYRA-0283, DOC-ZYRA-0287, DOC-ZYRA-0288, DR-ZYRA-274]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 7 — TRACE — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 7 — TRACE — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 by matching the rules in parts 2, 4 and 6 against the decisions register
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 by matching the rules in parts 2, 4 and 6 against the decisions register
 (`SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md`, searched through its index) and the code. "Planned app" means the preview files in
 `SOURCE/lib/dev/` (model: `zyra_view_request_draft_model.dart` = **M**, shell: `zyra_one_journey_concept_shell.dart` = **S**).
-"Server" means database functions in `SOURCE/supabase/migrations/` (full list: DOC-ZYRA-0281). With this, all seven parts exist in draft; part 2 so far covers the Journey only (the other
-features' rule pages are still to write).
+"Server" means database functions in `SOURCE/supabase/migrations/` (full list: DOC-ZYRA-0281). All seven parts exist in draft. This page traces Journey, seeing people, Guardians, membership
+and outside services; the later part 2 pages (Browse, Messages, Profile, Onboarding, Safety) carry their own decision column.
 
 ## In one paragraph
 
@@ -29,7 +29,7 @@ preview, because no decision was recorded between 10 and 25 Oct (lesson S13) —
 |---|---|---|---|
 | The planned app is the Founder preview; Pause and Save retired | DR-ZYRA-274 | whole preview | old Pause flow still present (OA-ZYRA-316) |
 | Basic 1 place (after £4.99), ZYRA One 3 | DR-ZYRA-275, DR-ZYRA-252 | M `capacity`, `hasCapacity` | `zyra_active_journey_cap` (Basic 0 today) |
-| Up to 5 pending requests; 7-day expiry; 48 h to get ready | DR-ZYRA-277 (also DR-ZYRA-241 §5 for 7 days) | not in the preview yet | missing |
+| Pending requests: Basic 3, Seeker One 25; 7-day expiry; 48 h to get ready | DR-ZYRA-283, DR-ZYRA-277 (also DR-ZYRA-241 §5 for 7 days) | not in the preview yet | missing |
 | Both must tap ready before beginning | DR-ZYRA-277 | M `markReady`, `beginPreparedJourney` | missing |
 | Accepting reserves both people's places | DR-ZYRA-280 | M `_accept`, `occupiedCount` | missing |
 | Full ZYRA One member may end one Journey to accept a request | DR-ZYRA-280 | M `replaceJourneyForRequest`; S "End & accept request" | missing |
@@ -50,7 +50,7 @@ preview, because no decision was recorded between 10 and 25 Oct (lesson S13) —
 | Rule | Decision | Planned app | Server |
 |---|---|---|---|
 | Journeys start from a **request**, not a mutual like | DR-ZYRA-280 | M `request`, `acceptReceived` | `create_match_on_mutual_like` (old model) |
-| You see people only while you (and they) have a free place; ZYRA One can browse when full | DR-ZYRA-280 | M `discoverableProfiles`, `canBrowse` | missing |
+| You see people only while you (and they) have a free place; Basic 25 profiles every 4 hours; ZYRA One unlimited, also when full | DR-ZYRA-280, DR-ZYRA-282 | M `discoverableProfiles`, `canBrowse` | missing |
 | Hide, block, report from the browse menu | DR-ZYRA-095, DR-ZYRA-131 | M `hide`, `block`; S options menu | blocks built; hide missing |
 | Introductions = people your Guardians put forward | DR-ZYRA-157, DR-ZYRA-160 (card system); DR-ZYRA-280 for the planned meaning | S `introductions` | `wali_suggestions`, `zyra_mark_suggestions_seen` (built) |
 
@@ -58,6 +58,8 @@ preview, because no decision was recorded between 10 and 25 Oct (lesson S13) —
 
 | Rule | Decision | Planned app | Server |
 |---|---|---|---|
+| Main Guardian sees who the Seeker's pending requests are with; declared to both sides | DR-ZYRA-292 | not in the preview | missing |
+| Guardians per Seeker: Basic 1, Seeker One up to 10 (including Main) | DR-ZYRA-282 |
 | Main Guardian always included and can chat (if paid) | DR-ZYRA-232 §1, DR-ZYRA-268 | M `sampleGuardianAccessFor` | `zyra_guardian_journey_permissions` |
 | Seeker switches Additional Guardians' View / Chat per Journey | DR-ZYRA-232 §2 | M `setSampleGuardianJourneyAccess` | `zyra_set_guardian_journey_permission` |
 | Guardian Basic has no Journey chat; chat needs a paid Guardian | DR-ZYRA-268, DR-ZYRA-243 | M `canUseSampleGuardianChat` | Circle participants need their own paid role (DR-ZYRA-248) |
@@ -70,6 +72,10 @@ preview, because no decision was recorded between 10 and 25 Oct (lesson S13) —
 | Rule | Decision | Code |
 |---|---|---|
 | Seeker Basic and Guardian Basic £4.99 once; Seeker One £29.99 / month; Guardian One £19.99 / month | DR-ZYRA-252, DR-ZYRA-235 | `lib/data/zyra_membership_catalog.dart`; no purchase code (OA-ZYRA-317 7) |
+| Seeker One includes 3 Unlocks every month; unused ones do not carry over | DR-ZYRA-288 | trigger `grant_zyra_one_credits` gives 3 once (to change) |
+| Family plan: up to 10 places in total, any mix of Seeker One and Guardian One | DR-ZYRA-291 | seat cap allows 10 of each (to change) |
+| Pause My Profile: hidden from Browse, no new requests; current Journeys carry on | DR-ZYRA-290 | functions missing |
+| Paid Guardian chat is the Seeker's permission; said before payment and in the terms | DR-ZYRA-289 | app wording and terms not written (OA-ZYRA-320) |
 | Compatibility Unlocks £2.99 / £6.99 / £9.99 | DR-ZYRA-250 | `zyra_membership_catalog.dart`; `profile_unlocks`, `unlock_credits` tables |
 | ZYRA One bundles Seeker and Guardian access | DR-ZYRA-243 | `zyra_has_paid_role` |
 | Identity check by Sumsub, mandatory | DR-ZYRA-220, DR-ZYRA-221 | `zyra_identity_verification_service.dart` (provider slot empty, switch off) |
@@ -101,6 +107,7 @@ These came in with the preview. The Founder confirmed all nine on 26 Oct 2026.
 | 1 | DR-ZYRA-241 §5 and DR-ZYRA-277: requests expire after **7 days** | `request_new_journey` sets **30 days** | OA-ZYRA-317 |
 | 2 | DR-ZYRA-221: identity verification mandatory, the app does not open until verified | The production switch is **off** (no provider yet) and the server never checks it before a Journey | OA-ZYRA-315 (a), OA-ZYRA-317 (8) |
 | 3 | DR-ZYRA-275: Basic has 1 place | Server gives Basic **0** (24 Sep repository rule) | OA-ZYRA-317 (3) |
+| 4 | DR-ZYRA-288: Seeker One gets 3 Unlocks every month | Server grants 3 once per member, ever | OA-ZYRA-317 |
 
 ## Change log
 
@@ -108,3 +115,9 @@ These came in with the preview. The Founder confirmed all nine on 26 Oct 2026.
 |---|---|---|
 | 2026-10-26 | V1 | First draft (OA-ZYRA-309) |
 | 2026-10-26 | V1 | The nine rules confirmed (DR-ZYRA-280) |
+| 2026-10-26 | V1 | Intro corrected: every part 2 page now exists; the later ones carry their own decision column |
+| 2026-10-26 | V1 | Brought in line with DR-ZYRA-282/283 (request, browsing and Guardian limits) - found while writing the review pack |
+| 2026-10-26 | V1 | Added DR-ZYRA-288 and 289 |
+| 2026-10-26 | V1 | Added DR-ZYRA-290 and 291 |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
+| 2026-10-26 | V1 | Added DR-ZYRA-292 |

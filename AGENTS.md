@@ -54,6 +54,9 @@ retired" or "no Claude/Fable bootstrap is active" is superseded.
 (`SOURCE/lib/dev/zyra_founder_launch_screen.dart` → `ViewRequestDraftScreen` / `ZyraOneJourneyConceptShell`). It runs on sample
 people today. The ordinary member app (`HomeShell`, `journey_flow_screen.dart`) is the **old app being replaced**. Features the
 preview retired — Pause and Save — are retired for ZYRA ("Request restart" after an ending is planned, not retired). Decision DR-ZYRA-274 (25 Oct 2026); work tracked in OA-ZYRA-316; deep review DOC-ZYRA-0285.
+**The rules are the blueprint** (CURRENT, Founder-approved 26 Oct): part 1 screen map DOC-ZYRA-0278, the part 2 rule pages
+(Journey, Guardians, Membership, Browse, Messages, Profile, Onboarding, Safety), parts 3-7 - routes in `MAP.md`. Building
+anything that breaks a blueprint page needs a new Founder decision first; update the page in the same change.
 Update this paragraph the same day the direction changes (lesson S13).
 
 ## Standing ZYRA rules

@@ -1,16 +1,16 @@
 ---
 id: DOC-ZYRA-0292
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 (Browse) - how Seekers find each other in the planned app - who appears and in what order, filters, the profile card and photos, requesting, hide, block and report, Find by ZYRA Code, browsing limits and revisits - each marked built, different or missing, with its decision
 links: [OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-312, DOC-ZYRA-0283, DOC-ZYRA-0291, DR-ZYRA-280, DR-ZYRA-282]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — BROWSE RULES — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 2 — BROWSE RULES — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app (`_discover`, `_filters`, the Portrait card design, the
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the planned app (`_discover`, `_filters`, the Portrait card design, the
 browse options menu), the old app's Browse services and the server (`zyra_browse_ranked_ids`, `score_candidates`, blocks).
 Last column: **Built** · **Different** · **Missing**.
 
@@ -38,7 +38,7 @@ or Consider any more.
 | Not someone who shares a Guardian with you, nor your own Guardian | DR-ZYRA-123 | **Built** — `zyra_can_match` (checked when a request would start a Journey) |
 | Only people with a free Journey place; only while you have one (One: also when full) | DR-ZYRA-280 §2, DR-ZYRA-282 | **Missing** |
 | Not people you hid | DR-ZYRA-095 | **Missing** — the app calls `zyra_my_hidden_profile_ids` / `zyra_set_profile_hidden`, which no migration creates ("prepared, not deployed") |
-| Not people who paused their profile ("Pause My Profile" in Settings) | — | **Missing** — the app calls `zyra_my_profile_pause_state` / `zyra_set_my_profile_pause`, which no migration creates |
+| Not people who paused their profile ("Pause My Profile" in Settings) | DR-ZYRA-290 | **Missing** — the app calls `zyra_my_profile_pause_state` / `zyra_set_my_profile_pause`, which no migration creates |
 | Not people you are already in a request or Journey with | DR-ZYRA-280 | **Missing** in the request form |
 | A person you ended a Journey with can appear again, without reopening the old Journey | DR-ZYRA-268 | **Missing** in the request form |
 
@@ -105,3 +105,5 @@ or Consider any more.
 | Date | Version | Change |
 |---|---|---|
 | 2026-10-26 | V1 | First draft (OA-ZYRA-309) |
+| 2026-10-26 | V1 | Paused profiles: DR-ZYRA-290 |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |

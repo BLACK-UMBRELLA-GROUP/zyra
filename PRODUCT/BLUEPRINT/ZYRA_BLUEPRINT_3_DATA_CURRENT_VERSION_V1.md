@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0280
 type: SPEC
-status: DRAFT
+status: CURRENT
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 3 - ZYRA's data in plain words: every table and what it holds, how members' data is protected, the database functions, storage and server functions. Replaces the out-of-date schema document once approved
 replaces: [ZYRA_DATABASE_SCHEMA V1 (after approval)]
@@ -12,9 +12,9 @@ owner: Fable
 > **Note 26 Oct 2026:** this part describes the **repository** files. Production is about two months behind — 17 files
 > (25 Aug – 5 Oct) were never applied. See the live check, DOC-ZYRA-0294.
 
-# ZYRA BLUEPRINT — PART 3 — DATA — V1 (DRAFT)
+# ZYRA BLUEPRINT — PART 3 — DATA — V1 (CURRENT)
 
-Status: **DRAFT for Shakeel's review.** Written 25 Oct 2026 by replaying all 229 migrations in `SOURCE/supabase/migrations`
+Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 25 Oct 2026 by replaying all 229 migrations in `SOURCE/supabase/migrations`
 (18 Jul → 5 Oct 2026). No database was touched. The full detail — every column, link, security rule and function — is in the
 generated inventory DOC-ZYRA-0281 (`PRODUCT/BLUEPRINT/ZYRA_DATA_INVENTORY_GENERATED.md`); re-generate it with
 `SYSTEM/tools/blueprint/generate_data_inventory.py` after any migration.
@@ -186,3 +186,4 @@ The full list is in DOC-ZYRA-0281.
 |---|---|---|
 | 2026-10-25 | V1 | First draft from the migrations (OA-ZYRA-309) |
 | 2026-10-25 | V1 | Trigger count corrected 18 → 74 and a trigger section added (generator fix, lesson F11) |
+| 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
