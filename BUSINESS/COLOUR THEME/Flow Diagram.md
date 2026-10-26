@@ -3,42 +3,39 @@ id: DOC-ZYRA-0100
 type: BRAND
 status: CURRENT
 feature: BUSINESS: COLOUR THEME
-purpose: Colour Theme — Flow Diagram
-links: []
-owner: ZYRA chat
+purpose: Colour Theme — how the app decides which background and surface colours to show
+links: [DOC-ZYRA-0102]
+owner: Founder (decisions) · Fable (document)
 ---
 
-FEATURE NAME
-COLOUR THEME
+# ZYRA — COLOUR THEME — FLOW — V2 (CURRENT)
 
-============================================================
-FLOW DIAGRAM
-============================================================
+Rewritten 25 Oct 2026 from the code (OA-ZYRA-313). V1 (male blue / female pink logic, retired 20 Aug 2026) is in
+`ARCHIVE/COLOUR_THEME_FLOW_DIAGRAM_2026-10-25_V1.md`. Values: `Summary.md`.
 
-------------------------------------------------------------
-COLOUR APPLICATION LOGIC
-------------------------------------------------------------
+```
+App starts
+  │
+  ├─ Launch screen (before the app loads) ─────────► flat #160E20
+  │
+  ├─ Has this installation had the 27 Sep reset?
+  │     no ─► set background to Midnight Plum once, mark it done
+  │
+  ├─ Did this member choose a background in Personalisation?
+  │     yes ─► that background (one of the 10 dark options)
+  │     no  ─► Midnight Plum #30203F → #160E20
+  │
+  └─ Every page, both roles, sign-up and onboarding use that ONE background
+        (gender is ignored)
+              │
+              ├─ Gold accents On? ─► add gold dust + diagonal edge behind it
+              │                      (still if the phone asks for reduced motion)
+              │
+              ├─ Cards, pills, panels ─► white 7% glass, white 14% edge
+              ├─ Selected / important ─► same glass, gold #E8C98A 70% edge
+              ├─ Sheets, dialogs, toasts ─► opaque #241A2F
+              └─ Text ─► white at 100 / 90 / 70 / 54 %
+```
 
-User opens ZYRA
-        │
-        ▼
-What context is being displayed?
-        │
-        ├── App / Brand / Default → Purple (#8A6A9E → #3D2A4A)
-        ├── Male account context  → Blue   (#3D5A80 → #3D2A4A)
-        └── Female account context→ Pink   (#D4868F → #3D2A4A)
-
-All themes share:
-• Luxury Dark Purple (#3D2A4A) as the base
-
-------------------------------------------------------------
-COLOUR USAGE MAP
-------------------------------------------------------------
-
-Splash Screen       → Global Brand (Purple)
-Main Navigation     → Global Brand (Purple)
-Core Branding       → Global Brand (Purple)
-Male Seeker UI      → Male Theme (Blue)
-Male Guardian UI        → Male Theme (Blue)
-Female Seeker UI    → Female Theme (Pink)
-Female Guardian UI      → Female Theme (Pink)
+Developer Tools can preview other backgrounds, light themes and surface styles for the running session only; members never see
+them and they reset on relaunch.

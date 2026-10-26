@@ -6615,7 +6615,7 @@ Category:    Engineering / Architecture
 Priority:    HIGH — core Journey integrity and release blocker whenever
              Request New Journey can create attempt 2. It is no longer the
              empty-table migration described in the 2026-08-06 estimate.
-Status:      REOPENED / UNBLOCKED 2026-09-10 / TEMPORARY HOLD LIVE AND
+Status:      OPEN — work remains. REOPENED / UNBLOCKED 2026-09-10 / TEMPORARY HOLD LIVE AND
              POST-VERIFIED 2026-09-11 — the recorded blocker,
              OA-ZYRA-155, closed on 2026-08-06. Stages 1 through 4e were
              only partially completed: conversations and timelines became
@@ -10743,7 +10743,7 @@ Priority:    HIGH as a decision. Nothing is broken, but every
              number the product shows rests on a method nobody
              ratified, and two parts of the app disagree about
              what it is
-Status:      PARTIALLY RESOLVED (a)(a2)(b)(c) 2026-08-11 —
+Status:      OPEN — waiting for a Founder decision. PARTIALLY RESOLVED (a)(a2)(b)(c) 2026-08-11 —
              Founder decided from his phone. (d) and (e) remain
              Open. The whole of (d)'s hard TestFlight TRUTH gate
              was SATISFIED 2026-09-10: Exact Trio is honest-empty
@@ -15075,7 +15075,7 @@ OA-ZYRA-255
 Title:       Build the app-local respectful promotion and permission
              engine, Guardian Network locked states and notification
              Settings parity
-Status:      Handover Complete / Founder Device Review Pending — NOT CLOSED.
+Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). Handover Complete / Founder Device Review Pending — NOT CLOSED.
              App-local implementation, documentation reconciliation and
              automated/device-deployment gates passed 2026-08-23; the
              Founder's human walkthrough across both roles and all four
@@ -15120,7 +15120,7 @@ Dependencies: DR-ZYRA-213; OA-ZYRA-254 remains separate/deferred real push;
 OA-ZYRA-256
 Title:       Decide and govern production promotion analytics and
              cross-device cadence persistence before any collection
-Status:      PHASE 2 LOCAL/STAGED CONTROLS + AIOS FOUNDER SURFACE COMPLETE /
+Status:      OPEN — waiting for the Founder's GO to change production (built locally; server change staged). PHASE 2 LOCAL/STAGED CONTROLS + AIOS FOUNDER SURFACE COMPLETE /
              COLLECTION OFF — production privacy, independent security
              review, isolated replay, exact apply, aggregate-feed and
              compile-enable gates remain open
@@ -16633,7 +16633,7 @@ Update 2026-09-27: Founder reported the Network Choose Seeker sheet still
              devicectl install PASS, sequence 4552, new application container;
              separate launch PASS. Founder visual acceptance PENDING. Evidence
              in UI Consistency Gate handover 2026-09-27 follow-up.
-Status:      Open — Phase P0 COMPLETE same day: governed spec
+Status:      OPEN — permanent UI consistency checker; its approved pictures are out of date (OA-ZYRA-310). Open — Phase P0 COMPLETE same day: governed spec
              ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md;
              deterministic layer LIVE (SOURCE/tools/
              zyra_ui_gate.py — token/colour/radius/height
@@ -16964,7 +16964,7 @@ Title:       MASTER OA — Subscription Architecture Review: Readout,
 Category:    Product / Commercial / Architecture — MASTER OA for one
              report (REPORT -> OA governance, OA-AIOS-370)
 Priority:    High — sets the pricing and entitlement architecture.
-Status:      🟠 REVIEW COMPLETE, VERIFIED WITH CONDITIONS —
+Status:      OPEN — waiting for a Founder decision. 🟠 REVIEW COMPLETE, VERIFIED WITH CONDITIONS —
              PENDING FOUNDER. **THIS OA IS DECISION PREPARATION, NOT
              IMPLEMENTATION AUTHORITY.** Nothing below may be built.
              Founder instruction 2026-08-26: "Do not change prices,
@@ -17586,7 +17586,7 @@ Priority:    CRITICAL. Two separable things sit in this OA: a defect
              that is live on production onboarding today, and a
              biometric procurement/legal programme that will take
              months. Do not let the second delay the first.
-Status:      🔴 REVIEW COMPLETE — CODE FINDINGS INDEPENDENTLY VERIFIED
+Status:      OPEN — waiting for a Founder decision. 🔴 REVIEW COMPLETE — CODE FINDINGS INDEPENDENTLY VERIFIED
              BY FABLE AGAINST SOURCE; PROVIDER, PRICING AND LEGAL
              CLAIMS SOURCED BUT NOT INDEPENDENTLY VERIFIED —
              PENDING FOUNDER. **THIS OA IS DECISION PREPARATION, NOT
@@ -20708,7 +20708,7 @@ Category:    Security / Authorization
 Priority:    HIGH — blocker before any untrusted real-user or
              external-tester release; Founder-only internal
              TestFlight may proceed only as a controlled test
-Status:      EXECUTED / POST-VERIFIED / FOUNDER ACCEPTANCE PENDING — under
+Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). EXECUTED / POST-VERIFIED / FOUNDER ACCEPTANCE PENDING — under
              the Founder's exact single-use 2026-09-11 GO, migrations
              `20260910184252` and `20260910195642` were applied atomically,
              byte-identically and in that order to production project
@@ -22813,7 +22813,7 @@ Title:       All-Guardian Data-Minimised Journey Summary — client correction
              and staged server-authority change
 Category:    Feature / Privacy / Security
 Priority:    High
-Status:      LIVE AND POST-APPLY VERIFIED — exact migration applied;
+Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE AND POST-APPLY VERIFIED — exact migration applied;
              corrected profile build installed and launched on Founder iPhone;
              Founder visual acceptance pending
 Owner:       Codex (implementation, evidence and reconciliation);
@@ -22873,7 +22873,7 @@ OA-ZYRA-289
 Title:       Permanent ZYRA Codes and Two-Sided Guardian Requests
 Category:    Feature / Security / Guardian Relationships
 Priority:    High
-Status:      LIVE AND POST-APPLY VERIFIED — exact migration applied; corrected
+Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE AND POST-APPLY VERIFIED — exact migration applied; corrected
              profile build installed and launched on Founder iPhone; Founder
              visual acceptance pending
 Owner:       Codex (implementation and evidence); Founder (apply GO and
@@ -23241,7 +23241,7 @@ OA-ZYRA-290
 Title:       Per-Journey Additional Guardian Access with Main Leadership
 Category:    Feature / Security / Guardian Relationships
 Priority:    High
-Status:      LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
+Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
              visual acceptance of the revised Guardian detail page
 Update 2026-10-10 (DR268 Basic Chat boundary):
              Restored Guardian Basic must have disabled Journey Chat, including
@@ -23299,7 +23299,7 @@ OA-ZYRA-291
 Title:       Per-Guardian Past Journey Summary Permission
 Category:    Feature / Security / Guardian Relationships
 Priority:    High
-Status:      LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
+Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
              visual acceptance of the live per-Guardian controls
 Owner:       Codex (implementation/evidence); Founder (device acceptance)
 Dependencies: DR-ZYRA-233 · DR-ZYRA-225 · DR-ZYRA-230 · DR-ZYRA-232
@@ -23354,7 +23354,7 @@ OA-ZYRA-293
 Title:       Seeker Basic Authoritative Quotas and Live Advertising
 Category:    Membership / Security / Advertising / Privacy
 Priority:    High before commercial activation
-Status:      REOPENED 2026-10-03 — DR-ZYRA-252 restores Basic client policy;
+Status:      OPEN — waiting for the Founder's GO to change production (built locally; server change staged). REOPENED 2026-10-03 — DR-ZYRA-252 restores Basic client policy;
              authoritative quotas/receipts and live advertising remain held
 Current scope:
              Verify the restored Basic limits and preserve safe over-cap data.
@@ -23392,7 +23392,7 @@ OA-ZYRA-294
 Title:       Optional Main Guardian with Active-Journey Hold
 Category:    Feature / Security / Guardian Relationships / Journey Authority
 Priority:    High
-Status:      CLIENT BUILT / DEVICE INSTALLED / MIGRATION STAGED — production
+Status:      OPEN — waiting for the Founder's GO to change production (built locally; server change staged). CLIENT BUILT / DEVICE INSTALLED / MIGRATION STAGED — production
              enforcement awaits isolated replay, review and exact apply GO
 Owner:       Codex (implementation/evidence); Founder (production apply and
              visual acceptance)
@@ -23438,7 +23438,7 @@ OA-ZYRA-295
 Title:       Known-Person Matching by Permanent ZYRA Code
 Category:    Feature / Matching / Privacy / Security
 Priority:    High
-Status:      CLIENT BUILT / MIGRATION STAGED — production remains unchanged
+Status:      OPEN — waiting for the Founder's GO to change production (built locally; server change staged). CLIENT BUILT / MIGRATION STAGED — production remains unchanged
 Owner:       Codex (implementation/evidence); Founder (production apply and
              visual acceptance)
 Dependencies: DR-ZYRA-237 · DR-ZYRA-231 · DR-ZYRA-221 · DR-ZYRA-123 ·
@@ -23470,7 +23470,7 @@ OA-ZYRA-296
 Title:       Separate Additional-Guardian View and Chat Authority
 Category:    Feature / Security / Guardian Relationships / Membership
 Priority:    High before Guardian One commercial activation
-Status:      CLIENT + FORWARD SERVER CONTRACT BUILT / LOCALLY VERIFIED —
+Status:      OPEN — waiting for the Founder's GO to change production (built locally; server change staged). CLIENT + FORWARD SERVER CONTRACT BUILT / LOCALLY VERIFIED —
              production migration and enforcement not authorised
 Owner:       Codex (future implementation/evidence); Founder (production
              migration approval and visual acceptance)
@@ -23579,7 +23579,7 @@ OA-ZYRA-298
 Title:       Complete and Activate Shared Guardian Circle Messaging
 Category:    Feature / Messaging / Privacy / Guardian Relationships
 Priority:    High before paid family messaging is advertised
-Status:      CLIENT PREVIEW BUILT / RETENTION + PAID-PARTICIPANT CONTRACT
+Status:      OPEN — waiting for the Founder's GO to change production (built locally; server change staged). CLIENT PREVIEW BUILT / RETENTION + PAID-PARTICIPANT CONTRACT
              STAGED — production unchanged
 Update 2026-10-13 (clear discussion and bounded Past action):
              Family Messaging section11 / Navigation Haptics section82 add
@@ -23637,7 +23637,7 @@ OA-ZYRA-299
 Title:       Complete Journey Return Authority and Ended-Attempt Safety
 Category:    Feature / Journey / Membership / Security
 Priority:    High
-Status:      PRODUCT RULES RESOLVED / CLIENT + FORWARD SERVER CONTRACT STAGED
+Status:      OPEN — waiting for the Founder's GO to change production (built locally; server change staged). PRODUCT RULES RESOLVED / CLIENT + FORWARD SERVER CONTRACT STAGED
              — Ended execution and production migration remain held
 Owner:       Codex (implementation/evidence); Founder (production apply and
              visual acceptance)
@@ -26000,6 +26000,31 @@ Method:      Generated inventories from code first (screens, navigation, schema,
              then one plain-words document per feature with a Knowledge Routing header,
              filed in ZYRA's new PRODUCT/ folder; the code wins where documents disagree
              and every difference is flagged to the Founder.
+Update:      25 Oct - Part 1 (screen map) DRAFTED for the Founder: PRODUCT/BLUEPRINT/
+             ZYRA_BLUEPRINT_1_SCREEN_MAP_CURRENT_VERSION_V1.md (DOC-ZYRA-0278) - start flow, both
+             homes and their tabs, all 88 screens with purpose, audience, links and states;
+             generated inventory with every button DOC-ZYRA-0279 (tool SYSTEM/tools/blueprint/
+             generate_screen_map.py). Finding raised: OA-ZYRA-311 (6 unreached screens).
+Update:      25 Oct - Part 3 (data) DRAFTED: PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_3_DATA_CURRENT_VERSION_V1.md
+             (DOC-ZYRA-0280; 63 tables, 205 functions, 18 triggers, 1 private bucket, no edge
+             functions) + generated inventory DOC-ZYRA-0281 (tool generate_data_inventory.py).
+             Findings: schema document DOC-ZYRA-0074 names 13 of 63 tables (map rerouted);
+             OA-ZYRA-312 raised.
+Update:      25 Oct - Part 5 (look and feel) DRAFTED: PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_
+             CURRENT_VERSION_V1.md (DOC-ZYRA-0282) - every colour with hex, 12 backgrounds, fonts and
+             sizes, spacing and corners, shared building blocks, haptics, motion. Findings: colour theme
+             document out of date in 11 places (OA-ZYRA-313); Journey haptics ignore the member's
+             setting, privacy words fail contrast, stray tracked file (OA-ZYRA-314); 4 unused shared
+             widgets added to OA-ZYRA-311. Parts 2, 4, 6, 7 still to do.
+Update:      25 Oct - Part 2 started: Journey rules DRAFTED, PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_JOURNEY_
+             RULES_CURRENT_VERSION_V1.md (DOC-ZYRA-0283) - start, 8 stages, Family Reviews, Main Guardian
+             hold, pausing, ending, returns, Guardians, milestones. Findings OA-ZYRA-315. Part 3 corrected:
+             74 triggers, not 18 (generator fixed, lesson F11). Other features of part 2 still to do.
+Update:      26 Oct - Parts 1 and 2 (Journey) REWRITTEN as V2 from the planned app (DR-ZYRA-274): screen map
+             (9 tabs, 49 pages) + generated planned-app inventory DOC-ZYRA-0286 (tool generate_planned_screen_
+             map.py); Journey rules with every rule marked Built / Different / Missing on the server. V1s
+             archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/. Three Founder questions
+             raised in part 2 §8 (question stages, request limits, restart timings).
 Acceptance:  For sample screens, the blueprint alone explains everything the screen shows
              and does; MAP.md routes to every feature document.
 
@@ -26027,9 +26052,183 @@ Acceptance:  zyra_visual_regression_test.dart passes with Founder-approved basel
 
 ------------------------------------------------------------
 
+OA-ZYRA-311
+Title:       Six screens nothing in the app opens - keep or retire
+Category:    Code health / Product blueprint
+Priority:    LOW - no member impact; dead screens confuse agents and the blueprint
+Date:        2026-10-25
+Status:      OPEN - found by Fable while building blueprint part 1 (OA-ZYRA-309). No app code
+             creates these screens; only tests (or nothing) do: JourneyMapScreen,
+             NotificationsScreen (a shell test asserts it is NOT used in the shell),
+             ZyraGuardianCirclesInboxScreen, GuardianDetailScreen,
+             WaliNotificationSettingsScreen, ModerationReviewQueueScreen (developer).
+             Nothing changed - build freeze.
+Update:      25 Oct - blueprint part 5 found 4 shared widgets the app never uses (tests only or
+             nothing): fab_continue_button, glass_icon_button, zyra_family_pricing_card,
+             zyra_paused_limit_refusal. Same decision as the screens: use on purpose or retire.
+Owner:       Founder decides per screen after the freeze · Codex retires with its tests
+Acceptance:  Each screen is either reachable on purpose or retired with its tests, and the
+             screen inventory shows no unreached screens.
+
+------------------------------------------------------------
+
+OA-ZYRA-312
+Title:       Developer test functions in the production database - check they cannot be reached
+Category:    Security / Database
+Priority:    MEDIUM - guarded today; the guard depends on a sign-up setting
+Date:        2026-10-25
+Status:      OPEN - found by Fable in blueprint part 3 (OA-ZYRA-309). 13 functions
+             (zyra_dev_* and zyra_debug_grant_credits) run with owner rights and are granted to
+             every signed-in member; each refuses unless the caller's email ends in @zyra.test.
+             Safe only while no one can create or confirm an account with such an email. Also:
+             zyra_onboarding_questions was first created outside the migrations, so its
+             security settings are not in the repository. Nothing changed - build freeze.
+Next:        With the Founder's GO, read-only checks on the live project: email sign-up and
+             confirmation settings; row-level security on zyra_onboarding_questions. Then
+             decide: keep with a stronger guard (confirmed email + allow-list), or move the
+             helpers out of production.
+Acceptance:  No member can run a developer function; every table's security is in the migrations.
+
+------------------------------------------------------------
+
+OA-ZYRA-313
+Title:       Colour theme document out of date - bring it in line with the app
+Category:    Brand documentation
+Priority:    MEDIUM - documents only; agents reading the tables get wrong colours
+Date:        2026-10-25
+Status:      OPEN (corner scale only; document rewritten 25 Oct) - found by Fable in blueprint part 5 (OA-ZYRA-309). BUSINESS/COLOUR THEME/
+             Summary.md (DOC-ZYRA-0102) has correct dated banners on top but out-of-date tables
+             underneath: old purple values, male/female gradients, sheet #2A1F33, lavender button
+             fill, glass dialogs; only 4 colours listed; no font record. Full list: DOC-ZYRA-0282 §9.
+             Also: no single corner scale in code (14/18/12/20/16/24 all common).
+Next:        Founder GO -> Fable rewrites Summary.md as one current version from the code, banners
+             folded in, history moved to an archive copy (documentation, allowed in the freeze).
+             The corner scale is a design decision for after the freeze.
+Update:      25 Oct - Founder GO ("a for both"). Fable rewrote Summary.md, Flow Diagram.md and
+             References.md as V2 from the code; V1 copies archived unchanged in BUSINESS/COLOUR THEME/
+             ARCHIVE/ with a SUPERSEDED banner; onboarding rules COLOUR SYSTEM marked history.
+             Document part DONE. Still OPEN only for the corner-scale decision (after the freeze).
+Owner:       Fable writes · Founder approves
+Acceptance:  Every value in the colour theme document matches zyra_colors.dart / zyra_text.dart.
+
+------------------------------------------------------------
+
+OA-ZYRA-314
+Title:       Look-and-feel code fixes - Journey haptics, privacy-word contrast, stray file
+Category:    UI / Accessibility / Repository hygiene
+Priority:    MEDIUM
+Date:        2026-10-25
+Status:      OPEN - found by Fable in blueprint part 5 (OA-ZYRA-309). Nothing changed - build freeze.
+             (a) screens/journey/journey_flow_screen.dart calls HapticFeedback.selectionClick() directly
+             4 times, so it vibrates even when the member chose Off; everything else goes through
+             ZyraInteractionStyle.emitSelectionHaptic(). (b) Privacy words (Public #C8DC8C@50%,
+             Unlock #DCB964@45%, Private #B496D2@45%) are 3.6 / 2.7 / 2.3 contrast on the default
+             background - under the 4.5 needed for normal text. (c) SOURCE/lib/screens/browse/
+             .fuse_hidden0000001200000001 (93 KB, 4 Aug) is a left-over file from a mounted-drive
+             delete and is tracked in git.
+Next:        (c) can move to ~/_to_delete now with the Founder's GO (then Founder commits).
+             (a) and (b) are code changes for after the freeze: route the 4 calls through the shared
+             helper; raise the privacy-word opacity until it passes 4.5 (Founder looks on device).
+Update:      25 Oct - (c) DONE with the Founder's GO: the file moved to ~/_to_delete/ZYRA_2026-10-25/.
+             The Founder's next commit records its removal from git. (a) and (b) wait for the freeze to lift.
+Owner:       Fable (c) · Codex (a)(b) after the freeze · Founder approves
+Acceptance:  Haptic Off means no vibration anywhere; privacy words pass 4.5; no stray files in git.
+
+------------------------------------------------------------
+
+OA-ZYRA-315
+Title:       Journey rules - server gaps and loose ends found in blueprint part 2
+Category:    Security / Journey
+Priority:    HIGH for (a)(b) - rules only the app enforces; MEDIUM for the rest
+Date:        2026-10-25
+Status:      OPEN - found by Fable in blueprint part 2 (OA-ZYRA-309). Nothing changed - build freeze.
+             (a) Identity check (verified + duplicate clear) is enforced only in the app; the server
+             function zyra_my_identity_verification_allows_active_journey is never called.
+             (b) open_family_review checks the stage but not that both Seekers answered every question;
+             only the app holds the button back. (c) Paused cap is 10 but only the 5 most recently paused
+             can be asked to resume (zyra_guard_paused_return_initiation). (d) Journey lifecycle document
+             DOC-ZYRA-0256 (V3, Aug) still describes Basic/ZYRA One, pause caps 5/10, one Active Journey.
+             (e) Refusal stubs suspend_journey, resume_journey, nudge_paused_journey, restart_journey.
+             (f) The 24 Sep paid-only migration is marked repository/staging only - production may differ.
+Next:        (f) joins the OA-ZYRA-312 read-only live check (Founder GO). (c) Founder states the intent.
+             (d) Fable can mark DOC-ZYRA-0256 superseded by DOC-ZYRA-0283 now (documentation).
+             (a)(b)(e) are server changes for after the freeze (Codex), each with an impersonation test.
+Update:      25 Oct - (d) DONE (Founder "do a"): DOC-ZYRA-0256 marked SUPERSEDED by DOC-ZYRA-0283.
+             Founder: "we dont have paused no more" - see OA-ZYRA-316; (c) depends on it.
+Owner:       Founder decides (c)(f) · Fable (d) · Codex (a)(b)(e) after the freeze
+Acceptance:  Every Journey rule the app shows is also refused by the server; caps and resume window agree.
+
+------------------------------------------------------------
+
+OA-ZYRA-316
+Title:       Two apps in one codebase - decide which is ZYRA, then a deep clean-code review
+Category:    Product / Code health
+Priority:    HIGH (Founder, 25 Oct: "I kinda need to ensure the code building these apps dont have
+             unnecessary things ... i want clean code")
+Date:        2026-10-25
+Status:      OPEN (decided 25 Oct, DR-ZYRA-274; review next) - found by Fable checking the Founder's statement that Pause is gone.
+             When the Founder signs in, the app opens ZyraFounderLaunchScreen -> a LOCAL PREVIEW
+             (ViewRequestDraftScreen / ZyraOneJourneyConceptShell, SOURCE/lib/dev, sample data, no real
+             members). In that preview Pause is unreachable (canPause: false; only End is accepted),
+             retired 9 Oct. Every other member gets the ORDINARY app (HomeShell, journey_flow_screen):
+             it still offers the full shared Pause flow, backed by the server (transition_journey_pause,
+             caps, 13 pause-lock triggers). So the Founder has been reviewing a different app from the
+             one members would get. Scale: lib 171,658 lines / 342 files; lib/dev 45,620 lines / 84 files;
+             the preview ~24,700 lines; Pause in 40 non-dev files; leftover Pause code inside the preview too.
+Next:        1 Founder decides which app is ZYRA (question asked 25 Oct). 2 Fable runs a read-only deep
+             review: every feature in both apps side by side, dead code, dev-only code shipped to members,
+             duplicates, retired features still wired (Pause, Save, restart), unused files. 3 One clean-up
+             plan the Founder approves item by item; Codex builds it after the freeze.
+Update:      25 Oct - DECIDED, DR-ZYRA-274: the latest Codex design (the Founder preview) is the planned
+             ZYRA; the old member app is replaced; code cleaned anyway. Founder asked that Fable/Codex work
+             out what the preview is without him explaining. Who does what: Fable reviews and writes the
+             exact clean-up list; Codex removes and tests after the freeze; Fable checks the result.
+             Lessons L30, L31, F12, S13 logged. Next: step 2 (deep read of the planned app).
+Update:      26 Oct - Step 2 DONE: deep review DOC-ZYRA-0285 (REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_
+             2026-10-26_V1.md). Clean-up in 5 tiers: 1 unused files (22 / 5,767 lines); 2 retired features
+             (Pause, Save, old stubs); 3 old app (26 files / 19,280 lines + journey_flow_screen); 4 design
+             alternatives (~150 in 18 sets, Founder decides each); 5 tests (207,814 lines, 3,984 images).
+             Server gaps raised as OA-ZYRA-317. Lessons L33, L34, F13. DR-ZYRA-274 corrected (Request
+             restart is planned, not retired). Next: Founder decisions on Tier 4 and Basic places.
+Update:      26 Oct - Founder decided (A, A): DR-ZYRA-275 Basic = 1 place after the £4.99 joining fee;
+             DR-ZYRA-276 Tier 4 - keep only chosen designs, plus the 10 member backgrounds and the
+             developer font/navigation comparisons (about 140 options in 17 sets, corrected count).
+             Clean-up plan complete; Codex starts Tier 1 after the freeze.
+Owner:       Founder decides · Fable reviews and plans · Codex removes after the freeze
+Acceptance:  One app; every line of code is used by it or by its tests; retired features gone from app
+             and server.
+
+------------------------------------------------------------
+
+OA-ZYRA-317
+Title:       Connect the planned app to real data - server support it does not have yet
+Category:    Product / Database
+Priority:    HIGH - the planned ZYRA cannot serve real members without it
+Date:        2026-10-26
+Status:      OPEN - found in the planned-app deep review (DOC-ZYRA-0285 §4). The database lacks:
+             (1) Introductions - a request to BEGIN a Journey (today: mutual like + one tap);
+             (2) Preparing - both ready, places reserved for both; (3) Basic = 1 place after the £4.99
+             joining fee (today: Basic gets 0, 24 Sep paid-only migration); (4) Journey Bio step;
+             (5) Pause and Save removed (today: full Pause flow, saves table); (6) Request restart is
+             built but switched off. Plus OA-ZYRA-315 (a)(b): identity check and both-answered rule
+             enforced only in the app.
+Next:        Founder confirms the membership rule (3). Fable writes one server design for 1-6 (after
+             the live read-only check in OA-ZYRA-312). Codex builds after the freeze, one area at a
+             time, then connects the preview screens to real data area by area.
+Update:      26 Oct - (3) DECIDED, DR-ZYRA-275: Basic = 1 place after the £4.99 joining fee.
+Update:      26 Oct - Three Founder questions WAITING (Founder: "ask me again later"): Q1 question stages keep
+             real answers + 48-hour Family Review (A) or become "both continue" (B); Q2 request limits (5
+             pending, 7-day expiry, 48 hours to get ready?); Q3 Request restart: keep 24 h wait + 30-day
+             expiry, or 7-day expiry like other requests. Fable recommends A, A, B. Re-ask after the
+             commits are done. Source: blueprint part 2 V2 §8.
+Owner:       Founder decides · Fable designs · Codex builds after the freeze
+Acceptance:  Every planned-app screen works for real members with the server enforcing its rules.
+
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-311 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-318 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

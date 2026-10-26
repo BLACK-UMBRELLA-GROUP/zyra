@@ -398,6 +398,11 @@ The onboarding flow itself does not change.
 COLOUR SYSTEM
 ------------------------------------------------------------
 
+CURRENT (25 Oct 2026, Fable, OA-ZYRA-313): everything in this section is history.
+Onboarding uses the one app background (default Midnight Plum #30203F -> #160E20)
+and the shared glass surfaces. The current values are in
+BUSINESS/COLOUR THEME/Summary.md V2 (DOC-ZYRA-0102).
+
 SUPERSEDED 2026-07-19 — DR-ZYRA-090, itself superseded
 2026-07-25 by DR-ZYRA-094 (see update below). Founder
 instruction overrode the three-variant gender-derived

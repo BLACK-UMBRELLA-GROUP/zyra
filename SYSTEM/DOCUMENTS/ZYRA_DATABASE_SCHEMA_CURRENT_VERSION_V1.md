@@ -8,6 +8,8 @@ links: []
 owner: ZYRA chat
 ---
 
+> **OUT OF DATE (found 25 Oct 2026):** names 13 of the 63 tables. Use blueprint part 3 — `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_3_DATA_CURRENT_VERSION_V1.md` (DOC-ZYRA-0280). This document will be marked superseded when that part is approved.
+
 # ZYRA Database Schema
 **Document:** ZYRA_DATABASE_SCHEMA_CURRENT_VERSION_V1
 **Version:** V1

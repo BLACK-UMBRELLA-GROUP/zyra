@@ -10,15 +10,18 @@ task-routes block by hand, then re-run the tool.
 | Task | Read (in order) | Notes |
 |---|---|---|
 | Any task | `AGENTS.md`, then this map | Registers are never read whole |
+| Database, tables, security rules | DOC-ZYRA-0280 blueprint part 3 → DOC-ZYRA-0281 generated inventory | DOC-ZYRA-0074 schema document is out of date (13 of 63 tables) |
+| Rebuilding or changing a screen | DOC-ZYRA-0278 blueprint part 1 V2 (planned app) → DOC-ZYRA-0286 generated planned-app inventory | DOC-ZYRA-0279 lists the OLD app's screens (for the clean-up). Regenerate 0286 after screen changes |
 | What ZYRA is, the whole product | DOC-ZYRA-0248 project overview → DOC-ZYRA-0252 master product spec (87 KB — search it) | |
-| Building a feature | DOC-ZYRA-0277 ZYRA rules (§2 check before building) → the feature's section below → DOC-ZYRA-0072 architecture → DOC-ZYRA-0074 database schema | |
+| Building a feature | DOC-ZYRA-0277 ZYRA rules (§2 check before building) → the feature's section below → DOC-ZYRA-0072 architecture → DOC-ZYRA-0280 blueprint part 3 (data) | |
 | Open actions, past decisions | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` or `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` → search the register for the ID | |
 | Drafts waiting for the Founder | DOC-ZYRA-0257 open drafts list | |
 | Guardian network (wali, family) | DOC-ZYRA-0178 guardian network source of truth → APP: STANDARDS wali architecture | |
-| Journey | DOC-ZYRA-0256 journey lifecycle → section JOURNEY and APP: JOURNEY below | |
+| Journey | DOC-ZYRA-0283 blueprint part 2 Journey rules → DOC-ZYRA-0280 blueprint part 3 (data) → section APP: JOURNEY below | DOC-ZYRA-0256 lifecycle is superseded. Pause is retired in the Founder preview but still live in the member app - OA-ZYRA-316 |
 | Pricing, membership, unlocks | DOC-ZYRA-0123 pricing V6 → DOC-ZYRA-0066 subscription continuity → DOC-ZYRA-0052 profile unlocks | |
 | Words and names in the app | DOC-ZYRA-0126 terminology → DOC-ZYRA-0071 UX writing → DOC-ZYRA-0070 error and empty states | |
-| Look and feel | DOC-ZYRA-0102 colour theme → DOC-ZYRA-0172 widget library → DOC-ZYRA-0266 UI consistency gate | |
+| Cleaning the code, what the planned app is | AGENTS.md "What we are building" → DOC-ZYRA-0285 planned-app deep review → DOC-ZYRA-0284 code-size tracker | Run SYSTEM/tools/blueprint/code_size.py after each clean-up step |
+| Look and feel (colours, fonts, components, haptics, motion) | DOC-ZYRA-0102 colour theme V2 (values) → DOC-ZYRA-0282 blueprint part 5 (full detail) → DOC-ZYRA-0266 UI consistency gate | DOC-ZYRA-0172 widget library dates from 26 Jul - use 0282 §5 |
 | Settings, sign-in, identity checks | DOC-ZYRA-0210 settings and identity → DOC-ZYRA-0205 identity DPIA | |
 | Safety | DOC-ZYRA-0057 safety and respect system | |
 | Email | DOC-ZYRA-0225 email architecture | |
@@ -29,7 +32,7 @@ task-routes block by hand, then re-run the tool.
 | Evidence, reviews, tool state | `SYSTEM/RESOURCES/` — not mapped; open only the folder a task names | Tests pin some of these files byte for byte |
 <!-- ROUTES END -->
 
-## Documents (276 live)
+## Documents (284 live)
 
 ### APP: AUTHENTICATION
 
@@ -127,7 +130,7 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0036 | `APP/Onboarding/PROFILE COMPLETION/Summary.md` | SPEC | Onboarding / Profile Completion — Summary: The Profile Completion Stage begins immediately after onboarding. | 6 |
 | DOC-ZYRA-0037 | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Chapter 3 Classification — Ch4 Mapping.md` | SPEC | Onboarding / Seeker Onboarding Questions — Chapter 3 Classification — Ch4 Mapping | 10 |
 | DOC-ZYRA-0038 | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Flow Diagram.md` | SPEC | Onboarding / Seeker Onboarding Questions — Flow Diagram | 8 |
-| DOC-ZYRA-0039 | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Onboarding Rules & UX.md` | SPEC | Onboarding / Seeker Onboarding Questions — Onboarding Rules & UX | 18 |
+| DOC-ZYRA-0039 | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Onboarding Rules & UX.md` | SPEC | Onboarding / Seeker Onboarding Questions — Onboarding Rules & UX | 19 |
 | DOC-ZYRA-0040 | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Questions Chapter 3 Your Values.md` | SPEC | Onboarding / Seeker Onboarding Questions — Questions Chapter 3 Your Values | 30 |
 | DOC-ZYRA-0041 | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Questions Section 2 Profile Information.md` | SPEC | Onboarding / Seeker Onboarding Questions — Questions Section 2 Profile Information | 6 |
 | DOC-ZYRA-0042 | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Questions Section 3 Core Compatibility.md` | SPEC | Onboarding / Seeker Onboarding Questions — Questions Section 3 Core Compatibility | 9 |
@@ -276,11 +279,11 @@ task-routes block by hand, then re-run the tool.
 
 ### BUSINESS: COLOUR THEME
 
-| ID | File | Type | Purpose | KB |
-|---|---|---|---|---|
-| DOC-ZYRA-0100 | `BUSINESS/COLOUR THEME/Flow Diagram.md` | BRAND | Colour Theme — Flow Diagram | 1 |
-| DOC-ZYRA-0101 | `BUSINESS/COLOUR THEME/References.md` | BRAND | Colour Theme — References | 3 |
-| DOC-ZYRA-0102 | `BUSINESS/COLOUR THEME/Summary.md` | BRAND | Colour Theme — Summary | 15 |
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-0100 | `BUSINESS/COLOUR THEME/Flow Diagram.md` | BRAND | Colour Theme — how the app decides which background and surface colours to show | DOC-ZYRA-0102 | 1 |
+| DOC-ZYRA-0101 | `BUSINESS/COLOUR THEME/References.md` | BRAND | Colour Theme — what this theme depends on and what depends on it | DOC-ZYRA-0102, DOC-ZYRA-0282 | 1 |
+| DOC-ZYRA-0102 | `BUSINESS/COLOUR THEME/Summary.md` | BRAND | Colour Theme — the one current record of ZYRA's colours, backgrounds, surfaces and fonts, taken from the app… | DOC-ZYRA-0282, DOC-ZYRA-0100, DOC-ZYRA-0101, OA-ZYRA-313, OA-ZYRA-314 | 7 |
 
 ### BUSINESS: COMPETITOR RESEARCH
 
@@ -354,6 +357,13 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0128 | `SOURCE/tools/compatibility_stage2/README.md` | GUIDE | Compatibility Stage 2 — isolated synthetic server candidate | 6 |
 | DOC-ZYRA-0129 | `SYSTEM/tools/zyra_marketing_web/README.md` | GUIDE | ZYRA Marketing Command Centre | 1 |
 
+### CODE HEALTH
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 1 |
+| DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | REPORT | Deep review of the planned ZYRA app (the Founder preview) against the old member app and the database - what… | OA-ZYRA-316, OA-ZYRA-317, DR-ZYRA-274, DOC-ZYRA-0284 | 9 |
+
 ### COMPATIBILITY
 
 | ID | File | Type | Purpose | KB |
@@ -417,7 +427,7 @@ task-routes block by hand, then re-run the tool.
 | ID | File | Type | Purpose | KB |
 |---|---|---|---|---|
 | INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it | 35 |
-| INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it | 25 |
+| INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it | 26 |
 
 ### GUARDIAN NETWORK
 
@@ -528,6 +538,18 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0251 | `SYSTEM/DOCUMENTS/ZYRA_DECISIONS_CURRENT_VERSION_V2.md` | DECISION | ZYRA — Decisions of 2026-08-01 to 2026-08-04 | 20 |
 | DOC-ZYRA-0252 | `SYSTEM/DOCUMENTS/ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5.md` | SPEC | ZYRA MASTER PRODUCT SPECIFICATION | 87 |
 
+### PRODUCT BLUEPRINT
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-0278 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_1_SCREEN_MAP_CURRENT_VERSION_V2.md` | SPEC · DRAFT | Blueprint part 1 V2 - the planned ZYRA app's screens - how members get in, the Seeker and Guardian tabs,… | DOC-ZYRA-0286, DOC-ZYRA-0283, DOC-ZYRA-0285, DR-ZYRA-274, OA-ZYRA-309, OA-ZYRA-317 | 7 |
+| DOC-ZYRA-0279 | `PRODUCT/BLUEPRINT/ZYRA_SCREEN_INVENTORY_GENERATED.md` | REPORT | Generated inventory of the OLD member app screens (SOURCE/lib/screens) - who it is for, what opens it, what… | OA-ZYRA-309, DOC-ZYRA-0278 | 54 |
+| DOC-ZYRA-0280 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_3_DATA_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 3 - ZYRA's data in plain words: every table and what it holds, how members' data is… | OA-ZYRA-309, DOC-ZYRA-0281, OA-ZYRA-312 | 13 |
+| DOC-ZYRA-0281 | `PRODUCT/BLUEPRINT/ZYRA_DATA_INVENTORY_GENERATED.md` | REPORT | Generated inventory of ZYRA data from the migrations - every table, column, link, security rule, database… | OA-ZYRA-309, DOC-ZYRA-0280 | 81 |
+| DOC-ZYRA-0282 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md` | SPEC · DRAFT | Blueprint part 5 - ZYRA's look and feel from the code: every colour (hex), background, font and weight, text… | OA-ZYRA-309, DOC-ZYRA-0102, DOC-ZYRA-0278, OA-ZYRA-313, OA-ZYRA-314 | 15 |
+| DOC-ZYRA-0283 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_JOURNEY_RULES_CURRENT_VERSION_V2.md` | SPEC · DRAFT | Blueprint part 2 V2 (Journey) - the planned app's Journey rules - browsing and visibility, requests, places,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-315, DR-ZYRA-274, DR-ZYRA-275, DOC-ZYRA-0278, DOC-ZYRA-0285 | 7 |
+| DOC-ZYRA-0286 | `PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md` | REPORT | Generated screen inventory of the planned app (Founder preview) - every tab and page, its title, what opens… | DOC-ZYRA-0278, DR-ZYRA-274 | 11 |
+
 ### RELEASE
 
 | ID | File | Type | Purpose | KB |
@@ -540,7 +562,6 @@ task-routes block by hand, then re-run the tool.
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| DOC-ZYRA-0256 | `REPORTS/CURRENT/ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md` | REPORT | ZYRA — Journey Lifecycle Architecture |  | 24 |
 | DOC-ZYRA-0257 | `REPORTS/CURRENT/ZYRA_OPEN_DRAFTS_FOR_DECISION_2026-10-24.md` | REPORT · DRAFT | ZYRA — open drafts waiting for a Founder decision (2026-10-24) |  | 2 |
 | DOC-ZYRA-0274 | `REPORTS/CURRENT/ZYRA_RESTRUCTURE_PLAN_2026-10-25_V1.md` | PLAN | Where each folder in SYSTEM/RESOURCES should live under the app foundation layout, what reads it, and which… | OA-AIOS-406, OA-AIOS-397 | 4 |
 | DOC-ZYRA-9002 | `REPORTS/CURRENT/CODEX_ZYRA_IDENTITY_FACE_PHOTO_VERIFICATION_PHASES_1_3_2026-08-26_V1.md` | REPORT | ZYRA Identity, Face and Profile-Photo Verification — Phases 1–3 Technical Review |  | 40 |
@@ -597,7 +618,7 @@ task-routes block by hand, then re-run the tool.
 | DOC-ZYRA-0272 | `SYSTEM/DOCUMENTS/MASTER_STANDARDS/ZYRA_ENGINEERING_INVARIANTS_CURRENT_VERSION_V3.md` | STANDARD | ZYRA — Engineering Invariants | 12 |
 | DOC-ZYRA-0273 | `SYSTEM/DOCUMENTS/MASTER_STANDARDS/ZYRA_STANDARDS_LIBRARY_V1.md` | STANDARD | ZYRA — Standards Library | 1 |
 
-## Old versions (9) — superseded or retired; open only to check history
+## Old versions (10) — superseded or retired; open only to check history
 
 - DOC-ZYRA-0001 `APP/Authentication/Script/Script_V1.md`
 - DOC-ZYRA-0002 `APP/Authentication/Script/Script_V2.md`
@@ -607,8 +628,9 @@ task-routes block by hand, then re-run the tool.
 - DOC-ZYRA-0032 `APP/Navigation/SEEKER NAVIGATION/Script/Script_V1.md`
 - DOC-ZYRA-0138 `SYSTEM/DOCUMENTS/TREEVIEW.md`
 - DOC-ZYRA-0253 `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_2026-06-20_V1.md`
+- DOC-ZYRA-0256 `REPORTS/CURRENT/ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md`
 - DOC-ZYRA-0275 `REPORTS/CURRENT/CODEX_BRIEF_RESOURCES_PATHS_2026-10-25_V1.md`
 
 ## Needs attention
 
-- Over the 30 KB limit (45) — split or trim when next edited: DOC-ZYRA-0005, DOC-ZYRA-0011, DOC-ZYRA-0012, DOC-ZYRA-0018, DOC-ZYRA-0034, DOC-ZYRA-0040, DOC-ZYRA-0044, DOC-ZYRA-0052, DOC-ZYRA-0104, DOC-ZYRA-0109, DOC-ZYRA-9002, DOC-ZYRA-9007, DOC-ZYRA-9011, DOC-ZYRA-9012, DOC-ZYRA-9017, DOC-ZYRA-9018, DOC-ZYRA-9026, DOC-ZYRA-9029, INDEX-DECISIONS_V1, DOC-ZYRA-0263, DOC-ZYRA-0254, DOC-ZYRA-0229, DOC-ZYRA-0174, DOC-ZYRA-0133, DOC-ZYRA-0255, DOC-ZYRA-0076, DOC-ZYRA-0226, DOC-ZYRA-0142, DOC-ZYRA-0143, DOC-ZYRA-0144, DOC-ZYRA-0176, DOC-ZYRA-0178, DOC-ZYRA-0189, DOC-ZYRA-0215, DOC-ZYRA-0230, DOC-ZYRA-0245, DOC-ZYRA-0084, DOC-ZYRA-0154, DOC-ZYRA-0196, DOC-ZYRA-0252, DOC-ZYRA-0209, DOC-ZYRA-0161, DOC-ZYRA-0137, DOC-ZYRA-0210, DOC-ZYRA-0267
+- Over the 30 KB limit (47) — split or trim when next edited: DOC-ZYRA-0005, DOC-ZYRA-0011, DOC-ZYRA-0012, DOC-ZYRA-0018, DOC-ZYRA-0034, DOC-ZYRA-0040, DOC-ZYRA-0044, DOC-ZYRA-0052, DOC-ZYRA-0104, DOC-ZYRA-0109, DOC-ZYRA-0281, DOC-ZYRA-0279, DOC-ZYRA-9002, DOC-ZYRA-9007, DOC-ZYRA-9011, DOC-ZYRA-9012, DOC-ZYRA-9017, DOC-ZYRA-9018, DOC-ZYRA-9026, DOC-ZYRA-9029, INDEX-DECISIONS_V1, DOC-ZYRA-0263, DOC-ZYRA-0254, DOC-ZYRA-0229, DOC-ZYRA-0174, DOC-ZYRA-0133, DOC-ZYRA-0255, DOC-ZYRA-0076, DOC-ZYRA-0226, DOC-ZYRA-0142, DOC-ZYRA-0143, DOC-ZYRA-0144, DOC-ZYRA-0176, DOC-ZYRA-0178, DOC-ZYRA-0189, DOC-ZYRA-0215, DOC-ZYRA-0230, DOC-ZYRA-0245, DOC-ZYRA-0084, DOC-ZYRA-0154, DOC-ZYRA-0196, DOC-ZYRA-0252, DOC-ZYRA-0209, DOC-ZYRA-0161, DOC-ZYRA-0137, DOC-ZYRA-0210, DOC-ZYRA-0267

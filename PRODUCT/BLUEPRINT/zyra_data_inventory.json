@@ -1,0 +1,5384 @@
+{
+ "tables": {
+  "profiles": {
+   "columns": {
+    "id": "UUID",
+    "role": "TEXT",
+    "first_name": "TEXT",
+    "date_of_birth": "DATE",
+    "gender": "TEXT",
+    "location_text": "TEXT",
+    "bio": "TEXT",
+    "is_active": "BOOLEAN",
+    "profile_complete": "BOOLEAN",
+    "created_at": "TIMESTAMPTZ",
+    "updated_at": "TIMESTAMPTZ",
+    "surname_line": "text",
+    "first_published_at": "timestamptz",
+    "onboarding_complete": "boolean"
+   },
+   "fks": [
+    "users"
+   ],
+   "rls": true,
+   "policies": {
+    "profiles_update": {
+     "cmd": "update",
+     "roles": "public",
+     "rule": "id = (select auth.uid())"
+    },
+    "profiles_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "public.zyra_can_view_profile(id)"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260811153547_oa193c_materialise_onboarding_complete.sql",
+   "schema": "public"
+  },
+  "subscriptions": {
+   "columns": {
+    "id": "UUID",
+    "user_id": "UUID",
+    "plan_type": "TEXT",
+    "status": "TEXT",
+    "billing_period": "TEXT",
+    "started_at": "TIMESTAMPTZ",
+    "expires_at": "TIMESTAMPTZ",
+    "created_at": "TIMESTAMPTZ",
+    "billing_grace_started_at": "timestamptz",
+    "billing_grace_until": "timestamptz",
+    "coverage_ends_at": "timestamptz"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "subscriptions_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "profile_photos": {
+   "columns": {
+    "id": "UUID",
+    "user_id": "UUID",
+    "storage_path": "TEXT",
+    "is_primary": "BOOLEAN",
+    "display_order": "INTEGER",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "profile_photos_delete": {
+     "cmd": "delete",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    },
+    "profile_photos_insert": {
+     "cmd": "insert",
+     "roles": "authenticated",
+     "rule": "user_id = (select auth.uid()) and private.zyra_photo_reference_owned(user_id, storage_path)"
+    },
+    "profile_photos_update": {
+     "cmd": "update",
+     "roles": "authenticated",
+     "rule": "user_id = (select auth.uid())) with check (user_id = (select auth.uid()) and private.zyra_photo_reference_owned(user_id, storage_path)"
+    },
+    "profile_photos_select": {
+     "cmd": "select",
+     "roles": "authenticated",
+     "rule": " private.zyra_photo_reference_owned(user_id, storage_path) and (user_id = (select auth.uid()) or exists ( select 1 from public.profiles p wh"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20261005113453_f03_photo_row_object_owner_binding.sql",
+   "schema": "public"
+  },
+  "wali_links": {
+   "columns": {
+    "id": "UUID",
+    "seeker_id": "UUID",
+    "wali_id": "UUID",
+    "status": "TEXT",
+    "created_at": "TIMESTAMPTZ",
+    "is_main": "BOOLEAN",
+    "relationship": "text",
+    "main_guardian_authority_id": "uuid",
+    "active_since": "timestamptz",
+    "guardian_link_authority_id": "uuid"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "wali_links_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "seeker_id = (select auth.uid())"
+    },
+    "wali_links_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "seeker_id = (select auth.uid()) OR wali_id = (select auth.uid())"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260918094504_oa291_per_guardian_past_journey_summaries.sql",
+   "schema": "public"
+  },
+  "saves": {
+   "columns": {
+    "id": "UUID",
+    "saver_id": "UUID",
+    "saved_id": "UUID",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "saves_delete": {
+     "cmd": "delete",
+     "roles": "public",
+     "rule": "saver_id = (select auth.uid())"
+    },
+    "saves_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "saver_id = (select auth.uid())"
+    },
+    "saves_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": " saver_id = (select auth.uid()) and public.zyra_can_match(saver_id, saved_id) "
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260718190011_initial_schema.sql",
+   "schema": "public"
+  },
+  "likes": {
+   "columns": {
+    "id": "UUID",
+    "liker_id": "UUID",
+    "liked_id": "UUID",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "likes_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "liker_id = (select auth.uid()) OR liked_id = (select auth.uid())"
+    },
+    "likes_delete": {
+     "cmd": "delete",
+     "roles": "public",
+     "rule": "liker_id = (select auth.uid())"
+    },
+    "likes_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": " liker_id = (select auth.uid()) and public.zyra_can_match(liker_id, liked_id) "
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260718190011_initial_schema.sql",
+   "schema": "public"
+  },
+  "profile_unlocks": {
+   "columns": {
+    "id": "UUID",
+    "unlocker_id": "UUID",
+    "unlocked_id": "UUID",
+    "unlock_type": "TEXT",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "profile_unlocks_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "unlocker_id = (select auth.uid())"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260806192159_fix_profile_unlocks_allow_both_tiers.sql",
+   "schema": "public"
+  },
+  "matches": {
+   "columns": {
+    "id": "UUID",
+    "seeker_a_id": "UUID",
+    "seeker_b_id": "UUID",
+    "status": "TEXT",
+    "ended_at": "TIMESTAMPTZ",
+    "created_at": "TIMESTAMPTZ",
+    "journey_stage": "TEXT",
+    "suspended_by": "UUID",
+    "suspended_at": "TIMESTAMPTZ",
+    "ended_by": "uuid",
+    "end_reason": "text",
+    "end_note": "text",
+    "pause_nudged_at": "timestamptz",
+    "also_paused_by": "uuid",
+    "also_paused_at": "timestamptz",
+    "pause_state": "text",
+    "pause_initiated_by": "uuid",
+    "pause_requested_by": "uuid",
+    "pause_requested_at": "timestamptz",
+    "pause_deadline_at": "timestamptz",
+    "pause_version": "bigint",
+    "pause_attempt_id": "uuid"
+   },
+   "fks": [
+    "journey_attempts",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "f02_expected_matches": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " seeker_a_id = (select auth.uid()) or seeker_b_id = (select auth.uid()) or exists ( select 1 from public.journey_attempts a join public.wali"
+    },
+    "matches_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " seeker_a_id = (select auth.uid()) or seeker_b_id = (select auth.uid()) or exists ( select 1 from public.zyra_my_attempt_participation r whe"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260825120000_shared_pause_decision_state_machine.sql",
+   "schema": "public"
+  },
+  "conversations": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "status": "TEXT",
+    "closed_at": "TIMESTAMPTZ",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches"
+   ],
+   "rls": true,
+   "policies": {
+    "f02_expected_conversations": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists ( select 1 from public.zyra_my_attempt_participation r where r.attempt_id = conversations.attempt_id and (r.role = 'seeker' or (r.rol"
+    },
+    "conversations_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " exists (select 1 from public.zyra_my_attempt_participation r where r.attempt_id = conversations.attempt_id and (r.role = 'seeker' or (r.rol"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260810143519_oa159_stage4a_conversations_and_timelines_belong_to_an_attempt.sql",
+   "schema": "public"
+  },
+  "messages": {
+   "columns": {
+    "id": "UUID",
+    "conversation_id": "UUID",
+    "sender_id": "UUID",
+    "content": "TEXT",
+    "read_at": "TIMESTAMPTZ",
+    "created_at": "TIMESTAMPTZ",
+    "deleted_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "conversations",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "messages_insert": {
+     "cmd": "insert",
+     "roles": "authenticated",
+     "rule": " sender_id = (select auth.uid()) and exists ( select 1 from public.conversations conversation join public.zyra_attempt_participant_rows part"
+    },
+    "f02_expected_messages": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists ( select 1 from public.conversations c join public.zyra_my_attempt_participation r on r.attempt_id = c.attempt_id where c.id = messag"
+    },
+    "messages_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " exists (select 1 from public.conversations c join public.zyra_my_attempt_participation r on r.attempt_id = c.attempt_id where c.id = messag"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260718190011_initial_schema.sql",
+   "schema": "public"
+  },
+  "timelines": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches"
+   ],
+   "rls": true,
+   "policies": {
+    "timelines_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " exists ( select 1 from public.zyra_my_attempt_participation r where r.attempt_id = timelines.attempt_id and ( r.role = 'seeker' or (r.role "
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260810143519_oa159_stage4a_conversations_and_timelines_belong_to_an_attempt.sql",
+   "schema": "public"
+  },
+  "timeline_milestones": {
+   "columns": {
+    "id": "UUID",
+    "timeline_id": "UUID",
+    "milestone_type": "TEXT",
+    "occurred_at": "TIMESTAMPTZ",
+    "metadata": "JSONB"
+   },
+   "fks": [
+    "timelines"
+   ],
+   "rls": true,
+   "policies": {
+    "timeline_milestones_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " exists ( select 1 from public.timelines t join public.zyra_my_attempt_participation r on r.attempt_id = t.attempt_id where t.id = timeline_"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260812164117_pause_nudge_and_timeline_pair.sql",
+   "schema": "public"
+  },
+  "wali_suggestions": {
+   "columns": {
+    "id": "UUID",
+    "wali_id": "UUID",
+    "seeker_id": "UUID",
+    "suggested_id": "UUID",
+    "status": "TEXT",
+    "created_at": "TIMESTAMPTZ",
+    "responded_at": "TIMESTAMPTZ",
+    "seen_at": "timestamptz"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "wali_suggestions_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": " wali_id = (select auth.uid()) AND EXISTS (SELECT 1 FROM wali_links wl WHERE wl.wali_id = (select auth.uid()) AND wl.seeker_id = wali_sugges"
+    },
+    "wali_suggestions_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "wali_id = (select auth.uid()) OR seeker_id = (select auth.uid())"
+    },
+    "wali_suggestions_update": {
+     "cmd": "update",
+     "roles": "public",
+     "rule": "seeker_id = (select auth.uid())"
+    }
+   },
+   "created": "20260718190011_initial_schema.sql",
+   "touched": "20260806192353_wali_suggestions_seen_at.sql",
+   "schema": "public"
+  },
+  "onboarding_answers": {
+   "columns": {
+    "user_id": "UUID",
+    "ch3_answers": "JSONB",
+    "ch4_preferences": "JSONB",
+    "ch4_hard_requirements": "JSONB",
+    "updated_at": "TIMESTAMPTZ",
+    "is_synthetic": "boolean"
+   },
+   "fks": [
+    "jsonb",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "onboarding_answers_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    },
+    "onboarding_answers_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    },
+    "onboarding_answers_update": {
+     "cmd": "update",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())) WITH CHECK (user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260718192024_onboarding_answers_table.sql",
+   "touched": "20260810170000_onboarding_answers_mark_synthetic_rows.sql",
+   "schema": "public"
+  },
+  "wali_invites": {
+   "columns": {
+    "id": "UUID",
+    "token": "TEXT",
+    "inviter_id": "UUID",
+    "inviter_role": "TEXT",
+    "status": "TEXT",
+    "created_at": "TIMESTAMPTZ",
+    "accepted_at": "TIMESTAMPTZ",
+    "accepted_by": "UUID",
+    "expires_at": "TIMESTAMPTZ",
+    "label": "text",
+    "relationship": "text",
+    "expiring_notified_at": "timestamptz",
+    "seen_by": "uuid",
+    "seen_at": "timestamptz",
+    "declined_by": "uuid",
+    "declined_at": "timestamptz",
+    "source": "text",
+    "personal_code_id": "uuid",
+    "recipient_id": "uuid",
+    "request_expires_at": "timestamptz",
+    "cancelled_at": "timestamptz"
+   },
+   "fks": [
+    "profiles",
+    "zyra_personal_codes"
+   ],
+   "rls": true,
+   "policies": {
+    "wali_invites_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "inviter_id = (select auth.uid())"
+    },
+    "wali_invites_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "inviter_id = (select auth.uid())"
+    }
+   },
+   "created": "20260718193640_wali_invites_and_linking.sql",
+   "touched": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "schema": "public"
+  },
+  "journey_salams": {
+   "columns": {
+    "match_id": "UUID",
+    "seeker_id": "UUID",
+    "sent_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_salams_read": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists (select 1 from public.zyra_my_attempt_participation r where r.attempt_id = journey_salams.attempt_id and r.role = 'seeker')"
+    },
+    "journey_salams_write": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "seeker_id = (select auth.uid()) and exists (select 1 from public.zyra_my_attempt_participation r where r.match_id = journey_salams.match_id "
+    }
+   },
+   "created": "20260725183724_pre_journey_ritual_tables.sql",
+   "touched": "20260725183724_pre_journey_ritual_tables.sql",
+   "schema": "public"
+  },
+  "journey_compatibility": {
+   "columns": {
+    "match_id": "UUID",
+    "seeker_a_revealed": "BOOLEAN",
+    "seeker_b_revealed": "BOOLEAN",
+    "revealed_at": "TIMESTAMPTZ",
+    "seeker_a_score": "numeric",
+    "seeker_b_score": "numeric",
+    "seeker_a_categories": "jsonb",
+    "seeker_b_categories": "jsonb"
+   },
+   "fks": [
+    "matches"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260725183724_pre_journey_ritual_tables.sql",
+   "touched": "20260910184252_oa283_journey_compatibility_rpc_boundary.sql",
+   "schema": "public"
+  },
+  "journey_phase_answers": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "phase": "INTEGER",
+    "seeker_id": "UUID",
+    "question_id": "TEXT",
+    "answer_text": "TEXT",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_phase_answers_read": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists (select 1 from public.zyra_my_attempt_participation r where r.attempt_id = journey_phase_answers.attempt_id and r.role = 'seeker')"
+    },
+    "journey_phase_answers_write": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "seeker_id = (select auth.uid()) and exists (select 1 from public.zyra_my_attempt_participation r where r.match_id = journey_phase_answers.ma"
+    }
+   },
+   "created": "20260725183724_pre_journey_ritual_tables.sql",
+   "touched": "20260725183724_pre_journey_ritual_tables.sql",
+   "schema": "public"
+  },
+  "journey_phase_ratings": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "phase": "INTEGER",
+    "rater_id": "UUID",
+    "question_id": "TEXT",
+    "rating": "TEXT",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_phase_ratings_own": {
+     "cmd": "all",
+     "roles": "public",
+     "rule": "rater_id = (select auth.uid())) with check (rater_id = (select auth.uid())"
+    }
+   },
+   "created": "20260725183724_pre_journey_ritual_tables.sql",
+   "touched": "20260725183724_pre_journey_ritual_tables.sql",
+   "schema": "public"
+  },
+  "journey_phase_checkpoints": {
+   "columns": {
+    "match_id": "UUID",
+    "phase": "INTEGER",
+    "seeker_id": "UUID",
+    "decision": "TEXT",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_phase_checkpoints_read": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists (select 1 from public.zyra_my_attempt_participation r where r.attempt_id = journey_phase_checkpoints.attempt_id and r.role = 'seeker'"
+    },
+    "journey_phase_checkpoints_write": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "seeker_id = (select auth.uid()) and exists (select 1 from public.zyra_my_attempt_participation r where r.match_id = journey_phase_checkpoint"
+    }
+   },
+   "created": "20260725183724_pre_journey_ritual_tables.sql",
+   "touched": "20260725183724_pre_journey_ritual_tables.sql",
+   "schema": "public"
+  },
+  "journey_family_answers": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "direction": "TEXT",
+    "question_id": "TEXT",
+    "answerer_id": "UUID",
+    "answer_text": "TEXT",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_family_answers_write": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "answerer_id = (select auth.uid())"
+    },
+    "journey_family_answers_read": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " exists ( select 1 from public.zyra_my_attempt_participation r where r.attempt_id = journey_family_answers.attempt_id and r.role in ('seeker"
+    }
+   },
+   "created": "20260725183724_pre_journey_ritual_tables.sql",
+   "touched": "20260725183724_pre_journey_ritual_tables.sql",
+   "schema": "public"
+  },
+  "notifications": {
+   "columns": {
+    "id": "UUID",
+    "user_id": "UUID",
+    "type": "TEXT",
+    "title": "TEXT",
+    "body": "TEXT",
+    "related_match_id": "UUID",
+    "created_at": "TIMESTAMPTZ",
+    "read_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "notifications_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    },
+    "notifications_update": {
+     "cmd": "update",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())) with check (user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260726140000_notifications.sql",
+   "touched": "20260825120000_shared_pause_decision_state_machine.sql",
+   "schema": "public"
+  },
+  "journey_family_reviews": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "from_stage": "TEXT",
+    "to_stage": "TEXT",
+    "opened_at": "TIMESTAMPTZ",
+    "deadline_at": "TIMESTAMPTZ",
+    "status": "TEXT",
+    "resolved_at": "TIMESTAMPTZ",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "matches"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_family_reviews_read": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists (select 1 from public.zyra_my_attempt_participation r where r.attempt_id = journey_family_reviews.attempt_id and (r.role = 'seeker' o"
+    }
+   },
+   "created": "20260726190000_family_review_period.sql",
+   "touched": "20260726190000_family_review_period.sql",
+   "schema": "public"
+  },
+  "journey_family_review_responses": {
+   "columns": {
+    "review_id": "UUID",
+    "wali_id": "UUID",
+    "decision": "TEXT",
+    "responded_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "journey_family_reviews",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_family_review_responses_read": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists (select 1 from public.journey_family_reviews rev join public.zyra_my_attempt_participation r on r.attempt_id = rev.attempt_id where r"
+    }
+   },
+   "created": "20260726190000_family_review_period.sql",
+   "touched": "20260726190000_family_review_period.sql",
+   "schema": "public"
+  },
+  "profile_blocks": {
+   "columns": {
+    "id": "UUID",
+    "blocker_id": "UUID",
+    "blocked_id": "UUID",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "profile_blocks_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "blocker_id = (select auth.uid())"
+    },
+    "profile_blocks_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "blocker_id = (select auth.uid())"
+    },
+    "profile_blocks_delete": {
+     "cmd": "delete",
+     "roles": "public",
+     "rule": "blocker_id = (select auth.uid())"
+    }
+   },
+   "created": "20260801144754_profile_reports_and_blocks.sql",
+   "touched": "20260801144754_profile_reports_and_blocks.sql",
+   "schema": "public"
+  },
+  "profile_reports": {
+   "columns": {
+    "id": "UUID",
+    "reporter_id": "UUID",
+    "reported_id": "UUID",
+    "reason": "TEXT",
+    "detail": "TEXT",
+    "source": "TEXT",
+    "status": "TEXT",
+    "created_at": "TIMESTAMPTZ",
+    "reviewed_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "profile_reports_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "reporter_id = (select auth.uid())"
+    },
+    "profile_reports_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "reporter_id = (select auth.uid())"
+    }
+   },
+   "created": "20260801144754_profile_reports_and_blocks.sql",
+   "touched": "20260806200024_profile_reports_guardian_source.sql",
+   "schema": "public"
+  },
+  "passes": {
+   "columns": {
+    "id": "UUID",
+    "passer_id": "UUID",
+    "passed_id": "UUID",
+    "created_at": "TIMESTAMPTZ"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "passes_select": {
+     "cmd": "select",
+     "roles": "authenticated",
+     "rule": "passer_id = (SELECT auth.uid())"
+    },
+    "passes_delete": {
+     "cmd": "delete",
+     "roles": "authenticated",
+     "rule": "passer_id = (SELECT auth.uid())"
+    },
+    "passes_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": " passer_id = (select auth.uid()) and public.zyra_can_match(passer_id, passed_id) "
+    }
+   },
+   "created": "20260801192352_passes_table_and_reset_search.sql",
+   "touched": "20260801192352_passes_table_and_reset_search.sql",
+   "schema": "public"
+  },
+  "consents": {
+   "columns": {
+    "id": "uuid",
+    "user_id": "uuid",
+    "consent_type": "text",
+    "granted": "boolean",
+    "policy_version": "text",
+    "recorded_at": "timestamptz"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "consents_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    },
+    "consents_insert": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260804095831_article9_consents_log.sql",
+   "touched": "20260804095831_article9_consents_log.sql",
+   "schema": "public"
+  },
+  "seeker_details": {
+   "columns": {
+    "user_id": "uuid",
+    "sect": "text",
+    "sect_other": "text",
+    "revert_status": "boolean",
+    "country_of_birth": "text",
+    "nationality": "text",
+    "ethnicity": "text",
+    "languages": "text[]",
+    "preferences": "jsonb",
+    "updated_at": "timestamptz",
+    "is_synthetic": "boolean"
+   },
+   "fks": [
+    "jsonb",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "seeker_details_select_own": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    },
+    "seeker_details_select_guardian": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": " exists ( select 1 from public.wali_links w where w.seeker_id = seeker_details.user_id and w.wali_id = (select auth.uid()) and w.status = 'a"
+    },
+    "seeker_details_insert_own": {
+     "cmd": "insert",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    },
+    "seeker_details_update_own": {
+     "cmd": "update",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())) with check (user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260804095959_seeker_details_typed_attributes_jsonb_preferences.sql",
+   "touched": "20260821120000_oa229_canonical_sect_codes.sql",
+   "schema": "public"
+  },
+  "unlock_credits": {
+   "columns": {
+    "id": "uuid",
+    "user_id": "uuid",
+    "tier": "text",
+    "delta": "int",
+    "reason": "text",
+    "related_unlock_id": "uuid",
+    "note": "text",
+    "created_at": "timestamptz"
+   },
+   "fks": [
+    "profile_unlocks",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "unlock_credits_select_own": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260804104818_c1_unlock_credits_ledger.sql",
+   "touched": "20260804104818_c1_unlock_credits_ledger.sql",
+   "schema": "public"
+  },
+  "journey_attempts": {
+   "columns": {
+    "id": "uuid",
+    "match_id": "uuid",
+    "attempt_number": "int",
+    "status": "text",
+    "journey_stage": "text",
+    "started_at": "timestamptz",
+    "ended_at": "timestamptz",
+    "ended_by": "uuid",
+    "end_reason": "text",
+    "end_note": "text",
+    "paused_by": "uuid",
+    "paused_at": "timestamptz",
+    "created_at": "timestamptz",
+    "also_paused_by": "uuid",
+    "also_paused_at": "timestamptz",
+    "pause_state": "text",
+    "pause_initiated_by": "uuid",
+    "pause_requested_by": "uuid",
+    "pause_requested_at": "timestamptz",
+    "pause_deadline_at": "timestamptz",
+    "pause_version": "bigint"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260806111643_oa156_stage1_journey_attempts_and_participants.sql",
+   "touched": "20260825120000_shared_pause_decision_state_machine.sql",
+   "schema": "public"
+  },
+  "notification_preferences": {
+   "columns": {
+    "id": "uuid",
+    "user_id": "uuid",
+    "category": "text",
+    "enabled": "boolean",
+    "changed_at": "timestamptz",
+    "seq": "bigserial"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "notification_preferences_select": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260806210813_notification_preferences.sql",
+   "touched": "20260806211002_notification_preferences_deterministic_order.sql",
+   "schema": "public"
+  },
+  "app_feedback": {
+   "columns": {
+    "id": "uuid",
+    "user_id": "uuid",
+    "category": "text",
+    "message": "text",
+    "app_version": "text",
+    "platform": "text",
+    "screen": "text",
+    "created_at": "timestamptz"
+   },
+   "fks": [
+    "users"
+   ],
+   "rls": true,
+   "policies": {
+    "app_feedback_select_own": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "user_id = (select auth.uid())"
+    }
+   },
+   "created": "20260807204003_app_feedback.sql",
+   "touched": "20260807204003_app_feedback.sql",
+   "schema": "public"
+  },
+  "journey_stage_checkpoints": {
+   "columns": {
+    "match_id": "uuid",
+    "attempt_id": "uuid",
+    "stage": "text",
+    "seeker_id": "uuid",
+    "created_at": "timestamptz"
+   },
+   "fks": [
+    "journey_attempts",
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_stage_checkpoints_read": {
+     "cmd": "select",
+     "roles": "public",
+     "rule": "exists ( select 1 from public.zyra_my_attempt_participation r where r.attempt_id = journey_stage_checkpoints.attempt_id and r.role = 'seeker"
+    }
+   },
+   "created": "20260808101646_journey_stage_checkpoints.sql",
+   "touched": "20260808101646_journey_stage_checkpoints.sql",
+   "schema": "public"
+  },
+  "protection_holds": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "restricted_id": "UUID",
+    "protected_id": "UUID",
+    "hold_type": "TEXT",
+    "appealable": "BOOLEAN",
+    "created_at": "TIMESTAMPTZ",
+    "expires_at": "TIMESTAMPTZ",
+    "released_at": "TIMESTAMPTZ",
+    "released_by": "UUID",
+    "release_reason": "TEXT"
+   },
+   "fks": [
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260810091517_oa157_stage2_protection_holds.sql",
+   "touched": "20260810091643_oa157_stage2b_fix_partial_release_constraint.sql",
+   "schema": "public"
+  },
+  "journey_requests": {
+   "columns": {
+    "id": "UUID",
+    "match_id": "UUID",
+    "requested_by": "UUID",
+    "requested_to": "UUID",
+    "status": "TEXT",
+    "created_at": "TIMESTAMPTZ",
+    "expires_at": "TIMESTAMPTZ",
+    "responded_at": "TIMESTAMPTZ",
+    "attempt_id": "UUID",
+    "withdrawn_at": "timestamptz",
+    "closed_reason": "text"
+   },
+   "fks": [
+    "journey_attempts",
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "journey_requests_select": {
+     "cmd": "select",
+     "roles": "authenticated",
+     "rule": "requested_by = (SELECT auth.uid()) OR requested_to = (SELECT auth.uid())"
+    }
+   },
+   "created": "20260810092650_oa159_stage3_journey_requests.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "zyra_onboarding_questions": {
+   "columns": {
+    "show_if_qid": "text",
+    "show_if_not_any_of": "jsonb",
+    "ch4_scored": "boolean",
+    "category": "text"
+   },
+   "fks": [],
+   "rls": false,
+   "policies": {},
+   "created": "",
+   "touched": "20260811173212_oa193c_bank_holds_all_104_chapter3_questions.sql",
+   "schema": "public"
+  },
+  "journey_milestone_attestations": {
+   "columns": {
+    "id": "uuid",
+    "match_id": "uuid",
+    "attempt_id": "uuid",
+    "milestone_type": "text",
+    "occurred_on": "date",
+    "proposed_by": "uuid",
+    "status": "text",
+    "confirmed_by": "uuid",
+    "confirmed_at": "timestamptz",
+    "created_at": "timestamptz"
+   },
+   "fks": [
+    "journey_attempts",
+    "matches",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260812001343_meeting_nikah_attestation_both_confirm.sql",
+   "touched": "20260812001343_meeting_nikah_attestation_both_confirm.sql",
+   "schema": "public"
+  },
+  "identity_verification_attempts": {
+   "columns": {
+    "id": "uuid",
+    "user_id": "uuid",
+    "provider_code": "text",
+    "provider_session_ref": "text",
+    "result": "text",
+    "duplicate_review_required": "boolean",
+    "provider_event_ref_hash": "text",
+    "consent_granted": "boolean",
+    "consent_version": "text",
+    "consent_recorded_at": "timestamptz",
+    "created_at": "timestamptz",
+    "updated_at": "timestamptz",
+    "decided_at": "timestamptz",
+    "member_deleted_at": "timestamptz"
+   },
+   "fks": [
+    "users"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260829183507_identity_verification_phase_a_storage.sql",
+   "touched": "20260829183507_identity_verification_phase_a_storage.sql",
+   "schema": "private"
+  },
+  "identity_verification_event_receipts": {
+   "columns": {
+    "provider_event_ref_hash": "text",
+    "attempt_id": "uuid",
+    "mapped_result": "text",
+    "received_at": "timestamptz"
+   },
+   "fks": [
+    "identity_verification_attempts"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260829183507_identity_verification_phase_a_storage.sql",
+   "touched": "20260829183507_identity_verification_phase_a_storage.sql",
+   "schema": "private"
+  },
+  "guardian_journey_history_consents": {
+   "columns": {
+    "wali_link_id": "uuid",
+    "main_guardian_authority_id": "uuid",
+    "granted_at": "timestamptz",
+    "guardian_link_authority_id": "uuid"
+   },
+   "fks": [
+    "wali_links"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260830200416_oa282_dr225_guardian_history_consent.sql",
+   "touched": "20260918094504_oa291_per_guardian_past_journey_summaries.sql",
+   "schema": "public"
+  },
+  "zyra_personal_codes": {
+   "columns": {
+    "id": "uuid",
+    "owner_id": "uuid",
+    "role_context": "text",
+    "code": "text",
+    "created_at": "timestamptz",
+    "rotated_at": "timestamptz"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "touched": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "schema": "private"
+  },
+  "zyra_retired_personal_code_hashes": {
+   "columns": {
+    "code_sha256": "bytea",
+    "retired_at": "timestamptz"
+   },
+   "fks": [],
+   "rls": true,
+   "policies": {},
+   "created": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "touched": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "schema": "private"
+  },
+  "zyra_personal_code_attempts": {
+   "columns": {
+    "id": "bigint",
+    "caller_id": "uuid",
+    "attempted_at": "timestamptz",
+    "succeeded": "boolean"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "touched": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "schema": "private"
+  },
+  "journey_guardian_assignments": {
+   "columns": {
+    "id": "uuid",
+    "attempt_id": "uuid",
+    "wali_link_id": "uuid",
+    "seeker_id": "uuid",
+    "granted_by": "uuid",
+    "granted_at": "timestamptz",
+    "revoked_by": "uuid",
+    "revoked_at": "timestamptz"
+   },
+   "fks": [
+    "journey_attempts",
+    "profiles",
+    "wali_links"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260918075737_oa290_additional_guardian_journey_access.sql",
+   "touched": "20260918075737_oa290_additional_guardian_journey_access.sql",
+   "schema": "public"
+  },
+  "zyra_product_events": {
+   "columns": {
+    "id": "bigint",
+    "occurred_at": "timestamptz",
+    "feature_key": "text",
+    "event_name": "text",
+    "action_key": "text",
+    "surface_key": "text",
+    "platform_key": "text",
+    "app_version": "text",
+    "build_number": "text"
+   },
+   "fks": [],
+   "rls": false,
+   "policies": {},
+   "created": "20260918171910_oa256_product_telemetry_foundation.sql",
+   "touched": "20260918171910_oa256_product_telemetry_foundation.sql",
+   "schema": "private"
+  },
+  "family_message_threads": {
+   "columns": {
+    "id": "uuid",
+    "seeker_id": "uuid",
+    "created_at": "timestamptz",
+    "last_message_at": "timestamptz"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "family_message_threads_active_member_read": {
+     "cmd": "select",
+     "roles": "authenticated",
+     "rule": "public.zyra_family_message_can_read(id)"
+    }
+   },
+   "created": "20260919185927_oa298_family_messaging_foundation.sql",
+   "touched": "20260919185927_oa298_family_messaging_foundation.sql",
+   "schema": "public"
+  },
+  "family_message_memberships": {
+   "columns": {
+    "id": "uuid",
+    "thread_id": "uuid",
+    "user_id": "uuid",
+    "member_role": "text",
+    "joined_at": "timestamptz",
+    "readable_from": "timestamptz",
+    "left_at": "timestamptz"
+   },
+   "fks": [
+    "family_message_threads",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260919185927_oa298_family_messaging_foundation.sql",
+   "touched": "20260919185927_oa298_family_messaging_foundation.sql",
+   "schema": "public"
+  },
+  "family_messages": {
+   "columns": {
+    "id": "uuid",
+    "thread_id": "uuid",
+    "sender_id": "uuid",
+    "kind": "text",
+    "body": "text",
+    "created_at": "timestamptz",
+    "sender_deleted_at": "timestamptz"
+   },
+   "fks": [
+    "family_message_threads",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "family_messages_active_epoch_read": {
+     "cmd": "select",
+     "roles": "authenticated",
+     "rule": "public.zyra_family_message_can_read(thread_id, created_at)"
+    }
+   },
+   "created": "20260919185927_oa298_family_messaging_foundation.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "family_message_participant_state": {
+   "columns": {
+    "thread_id": "uuid",
+    "user_id": "uuid",
+    "last_read_at": "timestamptz",
+    "muted_at": "timestamptz",
+    "archived_at": "timestamptz"
+   },
+   "fks": [
+    "family_message_threads",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {
+    "family_message_participant_state_self_read": {
+     "cmd": "select",
+     "roles": "authenticated",
+     "rule": " user_id = (select auth.uid()) and public.zyra_family_message_can_read(thread_id) "
+    }
+   },
+   "created": "20260919185927_oa298_family_messaging_foundation.sql",
+   "touched": "20260919185927_oa298_family_messaging_foundation.sql",
+   "schema": "public"
+  },
+  "family_message_reports": {
+   "columns": {
+    "id": "uuid",
+    "thread_id": "uuid",
+    "message_id": "uuid",
+    "reporter_id": "uuid",
+    "reported_id": "uuid",
+    "reason": "text",
+    "created_at": "timestamptz",
+    "status": "text",
+    "reviewed_at": "timestamptz"
+   },
+   "fks": [
+    "family_message_threads",
+    "family_messages",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260919185927_oa298_family_messaging_foundation.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "verified_people": {
+   "columns": {
+    "id": "uuid",
+    "provider_code": "text",
+    "provider_person_ref_hash": "text",
+    "created_at": "timestamptz"
+   },
+   "fks": [],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "private"
+  },
+  "verified_person_accounts": {
+   "columns": {
+    "verified_person_id": "uuid",
+    "user_id": "uuid",
+    "role": "text",
+    "verified_at": "timestamptz"
+   },
+   "fks": [
+    "users",
+    "verified_people"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "private"
+  },
+  "seeker_trial_ledger": {
+   "columns": {
+    "verified_person_id": "uuid",
+    "claimed_by": "uuid",
+    "status": "text",
+    "payment_authorisation_ref_hash": "text",
+    "started_at": "timestamptz",
+    "ends_at": "timestamptz",
+    "updated_at": "timestamptz"
+   },
+   "fks": [
+    "users",
+    "verified_people"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "private"
+  },
+  "family_subscriptions": {
+   "columns": {
+    "id": "uuid",
+    "owner_id": "uuid",
+    "owner_role": "text",
+    "status": "text",
+    "seeker_places": "integer",
+    "guardian_places": "integer",
+    "billing_period": "text",
+    "coverage_ends_at": "timestamptz",
+    "billing_grace_started_at": "timestamptz",
+    "billing_grace_until": "timestamptz",
+    "created_at": "timestamptz",
+    "updated_at": "timestamptz"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "family_seat_assignments": {
+   "columns": {
+    "id": "uuid",
+    "family_subscription_id": "uuid",
+    "member_id": "uuid",
+    "role": "text",
+    "assigned_at": "timestamptz",
+    "removed_at": "timestamptz",
+    "funded_until": "timestamptz"
+   },
+   "fks": [
+    "family_subscriptions",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "family_membership_invitations": {
+   "columns": {
+    "id": "uuid",
+    "family_subscription_id": "uuid",
+    "invited_by": "uuid",
+    "invited_user_id": "uuid",
+    "role": "text",
+    "status": "text",
+    "created_at": "timestamptz",
+    "expires_at": "timestamptz",
+    "responded_at": "timestamptz"
+   },
+   "fks": [
+    "family_subscriptions",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "family_ownership_transfers": {
+   "columns": {
+    "id": "uuid",
+    "family_subscription_id": "uuid",
+    "current_owner_id": "uuid",
+    "replacement_owner_id": "uuid",
+    "replacement_role": "text",
+    "status": "text",
+    "requested_at": "timestamptz",
+    "accepted_at": "timestamptz",
+    "replacement_purchase_confirmed_at": "timestamptz",
+    "effective_at": "timestamptz",
+    "completed_at": "timestamptz"
+   },
+   "fks": [
+    "family_subscriptions",
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "guardian_journey_permissions": {
+   "columns": {
+    "wali_link_id": "uuid",
+    "match_id": "uuid",
+    "can_view": "boolean",
+    "can_chat": "boolean",
+    "updated_by": "uuid",
+    "updated_at": "timestamptz"
+   },
+   "fks": [
+    "matches",
+    "profiles",
+    "wali_links"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "family_message_report_evidence": {
+   "columns": {
+    "id": "uuid",
+    "report_id": "uuid",
+    "thread_id": "uuid",
+    "message_id": "uuid",
+    "reported_sender_id": "uuid",
+    "reason": "text",
+    "reported_body": "text",
+    "immediate_context": "jsonb",
+    "reported_at": "timestamptz",
+    "closed_at": "timestamptz",
+    "retain_until": "timestamptz",
+    "legal_hold": "boolean",
+    "created_at": "timestamptz"
+   },
+   "fks": [],
+   "rls": true,
+   "policies": {},
+   "created": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "touched": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "schema": "public"
+  },
+  "zyra_unlock_release_gate": {
+   "columns": {
+    "singleton": "boolean",
+    "plus_spend_enabled": "boolean"
+   },
+   "fks": [],
+   "rls": true,
+   "policies": {},
+   "created": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "touched": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "schema": "private"
+  },
+  "zyra_unlock_account_guards": {
+   "columns": {
+    "user_id": "uuid",
+    "revision": "bigint"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "touched": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "schema": "private"
+  },
+  "zyra_unlock_operations": {
+   "columns": {
+    "id": "uuid",
+    "unlocker_id": "uuid",
+    "unlocked_id": "uuid",
+    "tier": "text",
+    "unlock_id": "uuid",
+    "debit_id": "uuid",
+    "created_at": "timestamptz"
+   },
+   "fks": [
+    "profiles"
+   ],
+   "rls": true,
+   "policies": {},
+   "created": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "touched": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "schema": "private"
+  }
+ },
+ "functions": {
+  "update_updated_at": {
+   "args": "",
+   "returns": "TRIGGER",
+   "definer": false,
+   "schema": "public",
+   "file": "20260718190033_harden_update_updated_at_search_path.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "create_match_on_mutual_like": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812001249_liked_milestone_written_at_match.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "a_name",
+    "b_name",
+    "conversations",
+    "first_like",
+    "journey_attempts",
+    "likes",
+    "matches",
+    "new_attempt_id",
+    "new_match_id",
+    "new_timeline_id",
+    "profiles",
+    "reciprocal_exists",
+    "timeline_milestones",
+    "timelines"
+   ]
+  },
+  "preview_wali_invite": {
+   "args": "p_token text",
+   "returns": "table( inviter_first_name text, inviter_role text, invite_st",
+   "definer": true,
+   "schema": "public",
+   "file": "20260822101000_oa232_wali_invite_lifecycle_notifications.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "profiles",
+    "v_invite",
+    "v_inviter_name",
+    "wali_invites",
+    "wali_links"
+   ]
+  },
+  "accept_wali_invite": {
+   "args": "p_token text, p_relationship text DEFAULT NULL::text",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260809171103_oa_audit_2_6_comment_correction_expiry_marking_is_rolled_back.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "does",
+    "likes",
+    "passes",
+    "profiles",
+    "saves",
+    "the",
+    "v_accepter_name",
+    "v_accepter_role",
+    "v_invite",
+    "v_inviter_role",
+    "v_link_id",
+    "wali_invites",
+    "wali_links"
+   ]
+  },
+  "create_conversation_started_milestone": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808135907_step3_trigger_functions_on_attempts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "conversations",
+    "timeline_milestones",
+    "timelines",
+    "v_already_exists",
+    "v_timeline_id"
+   ]
+  },
+  "promote_journey_to_active": {
+   "args": "p_match_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260816082700_salam_first_stage_order.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "m",
+    "matches",
+    "takes",
+    "v_attempt"
+   ]
+  },
+  "auto_designate_main_wali": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918094504_oa291_per_guardian_past_journey_summaries.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "true",
+    "wali_links"
+   ]
+  },
+  "suspend_journey": {
+   "args": "p_match_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": []
+  },
+  "resume_journey": {
+   "args": "p_match_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": []
+  },
+  "end_journey": {
+   "args": "p_match_id uuid, p_reason text",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808140651_step5_promote_and_end_on_attempts.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "everyone",
+    "m",
+    "matches"
+   ]
+  },
+  "ages_for": {
+   "args": "p_ids uuid[]",
+   "returns": "table(id uuid, age integer)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808115640_ages_for_single_id_and_batch_cap.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profiles"
+   ]
+  },
+  "expire_wali_invite_if_due": {
+   "args": "p_invite public.wali_invites",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260822101000_oa232_wali_invite_lifecycle_notifications.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "v_label",
+    "v_status",
+    "wali_invites"
+   ]
+  },
+  "score_candidates": {
+   "args": "p_candidate_ids uuid[]",
+   "returns": "table(candidate_id uuid, score numeric)",
+   "definer": true,
+   "schema": "public",
+   "file": "20261005120711_oa305_f04_private_legacy_score_and_browse_ids.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "zyra_f04_private"
+   ]
+  },
+  "create_notification": {
+   "args": "p_user_id uuid, p_type text, p_title text, p_body text, p_related_match_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260822100000_oa231_notification_preference_enforcement.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "notification_preferences",
+    "notifications",
+    "v_enabled"
+   ]
+  },
+  "notify_new_message": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808135907_step3_trigger_functions_on_attempts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "conversations",
+    "journey_attempts",
+    "matches",
+    "profiles",
+    "v_match_id",
+    "v_sender_name"
+   ]
+  },
+  "restart_journey": {
+   "args": "p_match_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812144437_pause_frees_active_slot.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "conversations",
+    "m",
+    "matches"
+   ]
+  },
+  "wali_has_extended_wali": {
+   "args": "",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260726160000_wali_extended_wali_real_gating.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "subscriptions",
+    "wali_links"
+   ]
+  },
+  "mock_purchase_wali_premium": {
+   "args": "",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260801144341_restrict_mock_purchase_rpcs_to_test_accounts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "caller_role",
+    "profiles",
+    "subscriptions"
+   ]
+  },
+  "mock_set_wali_plan": {
+   "args": "p_plan text",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260801144341_restrict_mock_purchase_rpcs_to_test_accounts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "caller_role",
+    "profiles",
+    "subscriptions"
+   ]
+  },
+  "delete_own_account": {
+   "args": "",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260726170000_delete_own_account.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "storage"
+   ]
+  },
+  "open_family_review": {
+   "args": "p_match_id uuid, p_from_stage text, p_to_stage text",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260809162503_oa_audit_2_2_family_review_validates_the_transition.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "existing_id",
+    "journey_attempts",
+    "journey_family_reviews",
+    "m",
+    "matches",
+    "new_id",
+    "p_from_stage",
+    "v_attempt",
+    "v_expected_to"
+   ]
+  },
+  "wali_review_decision": {
+   "args": "p_review_id uuid, p_decision text",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808135019_step2_family_review_rpcs_on_attempts.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "SET",
+    "continued_count",
+    "conversations",
+    "expected_count",
+    "is_authorised_wali",
+    "journey_attempts",
+    "journey_family_review_responses",
+    "journey_family_reviews",
+    "m",
+    "matches",
+    "r",
+    "wali_links"
+   ]
+  },
+  "resolve_family_review_if_due": {
+   "args": "p_match_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260809162503_oa_audit_2_2_family_review_validates_the_transition.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "conversations",
+    "journey_attempts",
+    "journey_family_reviews",
+    "m",
+    "matches",
+    "r",
+    "v_attempt",
+    "wali_links"
+   ]
+  },
+  "reopen_family_review": {
+   "args": "p_review_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808135019_step2_family_review_rpcs_on_attempts.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "is_authorised_wali",
+    "journey_attempts",
+    "journey_family_review_responses",
+    "journey_family_reviews",
+    "m",
+    "matches",
+    "r",
+    "wali_links"
+   ]
+  },
+  "zyra_block_exists": {
+   "args": "p_other UUID",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260801144913_fix_block_mutual_hide_rls_recursion.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profile_blocks"
+   ]
+  },
+  "zyra_reset_search": {
+   "args": "",
+   "returns": "INTEGER",
+   "definer": true,
+   "schema": "public",
+   "file": "20260801192352_passes_table_and_reset_search.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "passes"
+   ]
+  },
+  "zyra_pass_clears_others": {
+   "args": "",
+   "returns": "TRIGGER",
+   "definer": true,
+   "schema": "public",
+   "file": "20260803112115_one_state_per_profile_saves_likes_passes_exclusive.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "likes",
+    "saves"
+   ]
+  },
+  "zyra_like_clears_others": {
+   "args": "",
+   "returns": "TRIGGER",
+   "definer": true,
+   "schema": "public",
+   "file": "20260803112115_one_state_per_profile_saves_likes_passes_exclusive.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "passes",
+    "saves"
+   ]
+  },
+  "zyra_save_clears_others": {
+   "args": "",
+   "returns": "TRIGGER",
+   "definer": true,
+   "schema": "public",
+   "file": "20260803112115_one_state_per_profile_saves_likes_passes_exclusive.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "likes",
+    "passes"
+   ]
+  },
+  "has_article9_consent": {
+   "args": "",
+   "returns": "boolean",
+   "definer": false,
+   "schema": "public",
+   "file": "20260804095831_article9_consents_log.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "consents"
+   ]
+  },
+  "zyra_all_iso639_1": {
+   "args": "p text[]",
+   "returns": "boolean",
+   "definer": false,
+   "schema": "public",
+   "file": "20260804100851_harden_seeker_details_functions.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "unnest"
+   ]
+  },
+  "touch_seeker_details": {
+   "args": "",
+   "returns": "trigger",
+   "definer": false,
+   "schema": "public",
+   "file": "20260804100851_harden_seeker_details_functions.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "seeker_details_for_unlocked": {
+   "args": "p_target uuid",
+   "returns": "table ( user_id uuid, sect text, sect_other text, revert_sta",
+   "definer": true,
+   "schema": "public",
+   "file": "20260804095959_seeker_details_typed_attributes_jsonb_preferences.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profile_unlocks",
+    "seeker_details"
+   ]
+  },
+  "zyra_can_view_profile": {
+   "args": "p_target uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811153643_oa193c_enforce_the_gate.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "it",
+    "lateral",
+    "matches",
+    "profile_blocks",
+    "profiles",
+    "wali_links",
+    "zyra_attempt_participant_rows"
+   ]
+  },
+  "unlock_balance": {
+   "args": "p_tier text default null",
+   "returns": "table(tier text, balance int)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260804104818_c1_unlock_credits_ledger.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "unlock_credits"
+   ]
+  },
+  "zyra_unlock_profile": {
+   "args": "p_target uuid, p_tier text",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "profile_unlocks",
+    "profiles",
+    "unlock_credits",
+    "v_balance",
+    "v_debit",
+    "v_operation",
+    "v_unlock"
+   ]
+  },
+  "zyra_debug_grant_credits": {
+   "args": "p_tier text, p_count int default 5",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260804104818_c1_unlock_credits_ledger.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "unlock_credits"
+   ]
+  },
+  "grant_zyra_one_credits": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260804105356_c1_fix_zyra_one_grant_plan_name.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "unlock_credits"
+   ]
+  },
+  "zyra_create_profile": {
+   "args": "p_role text, p_first_name text, p_gender text, p_dob date",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260807183341_freeze_identity_on_first_publication.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profiles",
+    "v_existing"
+   ]
+  },
+  "zyra_set_profile_complete": {
+   "args": "p_complete boolean default true",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260807183341_freeze_identity_on_first_publication.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profile_photos",
+    "profiles",
+    "v_p",
+    "v_photos"
+   ]
+  },
+  "zyra_dev_reset_account": {
+   "args": "",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260804232608_dev_reset_account_state_rpc.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "likes",
+    "passes",
+    "profile_unlocks",
+    "saves",
+    "unlock_credits"
+   ]
+  },
+  "guardians_for_unlocked": {
+   "args": "p_target uuid",
+   "returns": "table( first_name text, gender text, location_text text, is_",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806152935_guardian_relationship_guardians_for_unlocked.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "profile_unlocks",
+    "profiles",
+    "wali_links"
+   ]
+  },
+  "zyra_dev_set_guardians_on_decided": {
+   "args": "p_count integer",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806153011_guardian_relationship_dev_seeder.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "likes",
+    "passes",
+    "profiles",
+    "saves",
+    "set",
+    "v_pool",
+    "v_targets",
+    "wali_links"
+   ]
+  },
+  "zyra_dev_set_guardian_suggestions": {
+   "args": "p_count int",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260805223651_guardian_suggestions_max_ten.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "profile_photos",
+    "profiles",
+    "v_ids",
+    "v_my_gender",
+    "v_wali",
+    "wali_links",
+    "wali_suggestions"
+   ]
+  },
+  "zyra_can_read_photo_object": {
+   "args": "p_object_name text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20261005113453_f03_photo_row_object_owner_binding.sql",
+   "grants": [
+    "authenticated",
+    "service_role",
+    "supabase_storage_admin"
+   ],
+   "dropped": false,
+   "tables": [
+    "profile_photos"
+   ]
+  },
+  "zyra_attempt_participants": {
+   "args": "p_attempt uuid",
+   "returns": "table (user_id uuid, role text, is_main boolean, attempt_sta",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806112625_oa156_stage3b_enriched_participants_and_policies.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "zyra_attempt_participant_rows"
+   ]
+  },
+  "zyra_create_first_attempt": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806111844_oa156_stage2_backfill_and_attempt_invariant.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "journey_attempts"
+   ]
+  },
+  "zyra_can_view_attempt": {
+   "args": "p_attempt uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806112016_oa156_stage3a_unified_authorisation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "zyra_attempt_participant_rows"
+   ]
+  },
+  "zyra_attempt_summary_for_guardian": {
+   "args": "p_seeker uuid",
+   "returns": "table ( attempt_id uuid, started_at timestamptz, ended_at ti",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918094504_oa291_per_guardian_past_journey_summaries.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "caller",
+    "current_guardian_link",
+    "guardian_journey_history_consents",
+    "journey_attempts",
+    "matches",
+    "wali_links"
+   ]
+  },
+  "zyra_set_attempt_from_match": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "new"
+   ]
+  },
+  "zyra_enforce_one_active_attempt": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812152607_plan_aware_active_journey_limit.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "matches",
+    "v_a"
+   ]
+  },
+  "zyra_mark_suggestions_seen": {
+   "args": "",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806192623_zyra_mark_suggestions_seen.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "wali_suggestions"
+   ]
+  },
+  "zyra_guardian_activity": {
+   "args": "",
+   "returns": "table( wali_id uuid, activity_type text, occurred_at timesta",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806193747_zyra_guardian_activity.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_family_review_responses",
+    "journey_family_reviews",
+    "matches",
+    "my_guardians",
+    "profiles",
+    "wali_links",
+    "wali_suggestions"
+   ]
+  },
+  "zyra_revoke_wali_invite": {
+   "args": "p_token text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260822101000_oa232_wali_invite_lifecycle_notifications.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "profiles",
+    "v_invite",
+    "v_inviter_name",
+    "wali_invites"
+   ]
+  },
+  "zyra_set_main_guardian": {
+   "args": "p_wali_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806200131_fix_zyra_set_main_guardian_ordering.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "the",
+    "wali_links"
+   ]
+  },
+  "zyra_remove_guardian": {
+   "args": "p_wali_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "wali_links"
+   ]
+  },
+  "zyra_notification_preferences": {
+   "args": "",
+   "returns": "table(category text, enabled boolean, changed_at timestamptz",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806211002_notification_preferences_deterministic_order.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "defaults",
+    "latest",
+    "notification_preferences"
+   ]
+  },
+  "zyra_set_notification_preference": {
+   "args": "p_category text, p_enabled boolean",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260806210833_notification_preference_rpcs.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "notification_preferences"
+   ]
+  },
+  "zyra_clear_main_guardian": {
+   "args": "p_wali_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "wali_links"
+   ]
+  },
+  "zyra_normalise_profile_identity": {
+   "args": "",
+   "returns": "trigger",
+   "definer": false,
+   "schema": "public",
+   "file": "20260807184618_profiles_first_name_shape.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_reset_profile": {
+   "args": "",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260807202404_zyra_reset_profile_own_storage_paths_only.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "likes",
+    "matches",
+    "onboarding_answers",
+    "passes",
+    "profile_photos",
+    "profiles",
+    "saves",
+    "seeker_details",
+    "v_active",
+    "v_paths",
+    "v_role"
+   ]
+  },
+  "zyra_submit_feedback": {
+   "args": "p_category text, p_message text, p_app_version text default null, p_platform text default null, p_screen text default null",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260807204003_app_feedback.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "app_feedback",
+    "v_id",
+    "v_recent"
+   ]
+  },
+  "zyra_can_match": {
+   "args": "p_a uuid, p_b uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811153643_oa193c_enforce_the_gate.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profile_blocks",
+    "profiles",
+    "wali_links"
+   ]
+  },
+  "zyra_can_guardian_link": {
+   "args": "p_a uuid, p_b uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260807223439_zyra_can_guardian_link_predicate.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "a",
+    "matches"
+   ]
+  },
+  "zyra_enforce_guardian_link_allowed": {
+   "args": "",
+   "returns": "trigger",
+   "definer": false,
+   "schema": "public",
+   "file": "20260807223439_zyra_can_guardian_link_predicate.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_match_ending": {
+   "args": "p_match_id uuid",
+   "returns": "table(ended_by uuid, end_reason text, end_note text, ended_a",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808091559_protect_safety_concern_end_reason.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "matches",
+    "wali_links"
+   ]
+  },
+  "zyra_end_match_internal": {
+   "args": "p_match_id uuid, p_ended_by uuid, p_reason text",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811233755_fix_duplicate_journey_ended_milestone.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "above",
+    "conversations",
+    "journey_attempts",
+    "m",
+    "matches",
+    "profiles",
+    "timeline_milestones",
+    "timelines",
+    "v_attempt",
+    "v_ender_name",
+    "v_timeline_id"
+   ]
+  },
+  "zyra_block_user": {
+   "args": "p_other uuid",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808093327_block_ends_journey.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "matches",
+    "profile_blocks",
+    "profiles"
+   ]
+  },
+  "zyra_unblock_user": {
+   "args": "p_other uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808093327_block_ends_journey.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profile_blocks"
+   ]
+  },
+  "zyra_advance_stage": {
+   "args": "p_match_id uuid, p_from_stage text",
+   "returns": "table(advanced boolean, stage text, reason text)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260816082700_salam_first_stage_order.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "a_ok",
+    "b_ok",
+    "journey_attempts",
+    "journey_compatibility",
+    "journey_salams",
+    "journey_stage_checkpoints",
+    "m",
+    "matches",
+    "next_stage",
+    "p_from_stage",
+    "wali_links"
+   ]
+  },
+  "ages_for_one": {
+   "args": "p_id uuid",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808115640_ages_for_single_id_and_batch_cap.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "profiles"
+   ]
+  },
+  "zyra_counterpart_card": {
+   "args": "p_match_id uuid",
+   "returns": "table ( counterpart_first_name text, counterpart_age integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20261005114141_f02_guardian_current_attempt_read_boundary.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "journey_guardian_assignments",
+    "m",
+    "matches",
+    "other",
+    "profile_blocks",
+    "profiles",
+    "wali_links"
+   ]
+  },
+  "zyra_enforce_one_active_match": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812152607_plan_aware_active_journey_limit.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_can_continue_journey": {
+   "args": "p_a uuid, p_b uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260808190911_grandfather_tier1_out_of_resume_journey.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "profile_blocks",
+    "wali_links"
+   ]
+  },
+  "zyra_hold_blocks": {
+   "args": "p_restricted UUID, p_protected UUID",
+   "returns": "BOOLEAN",
+   "definer": true,
+   "schema": "public",
+   "file": "20260810091517_oa157_stage2_protection_holds.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "protection_holds"
+   ]
+  },
+  "zyra_dev_set_journey_stage": {
+   "args": "p_match_id uuid, p_stage text",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260820200633_oa_zyra_200_dev_set_functions_guard_both_parties.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "SET",
+    "auth",
+    "conversations",
+    "journey_attempts",
+    "m",
+    "matches",
+    "timelines",
+    "v_attempt",
+    "v_email"
+   ]
+  },
+  "zyra_dev_set_counterpart_reveal": {
+   "args": "p_match_id uuid, p_revealed boolean",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260820200633_oa_zyra_200_dev_set_functions_guard_both_parties.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "journey_compatibility",
+    "m",
+    "matches",
+    "v_email"
+   ]
+  },
+  "request_new_journey": {
+   "args": "p_match_id uuid",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "journey_requests",
+    "matches",
+    "profiles",
+    "v_match",
+    "v_name",
+    "v_request"
+   ]
+  },
+  "respond_to_journey_request": {
+   "args": "p_request_id uuid, p_decision text",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "conversations",
+    "journey_attempts",
+    "journey_requests",
+    "matches",
+    "profiles",
+    "projects",
+    "protection_holds",
+    "timelines",
+    "v_attempt",
+    "v_attempt_number",
+    "v_match",
+    "v_name",
+    "v_request"
+   ]
+  },
+  "zyra_may_request_new_journey": {
+   "args": "p_match_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "journey_requests",
+    "matches",
+    "v_match"
+   ]
+  },
+  "zyra_expire_due_journey_requests": {
+   "args": "p_match_id uuid default null",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_requests",
+    "protection_holds",
+    "skip"
+   ]
+  },
+  "zyra_may_request_new_journey_ids": {
+   "args": "",
+   "returns": "setof uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "matches"
+   ]
+  },
+  "zyra_compatibility_for_plus": {
+   "args": "p_match_id uuid",
+   "returns": "numeric",
+   "definer": true,
+   "schema": "public",
+   "file": "20260910184252_oa283_journey_compatibility_rpc_boundary.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "journey_compatibility",
+    "matches",
+    "profile_unlocks",
+    "score_candidates",
+    "v_attempt",
+    "v_compat",
+    "v_match",
+    "v_score"
+   ]
+  },
+  "zyra_dev_set_plus_unlock": {
+   "args": "p_other_id uuid, p_has boolean",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "profile_unlocks",
+    "v_email"
+   ]
+  },
+  "zyra_ch4_hard_shape_ok": {
+   "args": "p jsonb",
+   "returns": "boolean",
+   "definer": false,
+   "schema": "public",
+   "file": "20260810154645_onboarding_b_stage1_hard_requirements_become_per_option.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "jsonb_array_elements",
+    "jsonb_each"
+   ]
+  },
+  "zyra_ch2_sect_hard_shape_ok": {
+   "args": "p jsonb",
+   "returns": "boolean",
+   "definer": false,
+   "schema": "public",
+   "file": "20260810183000_oa185_chapter2_sect_exclusion_becomes_per_option.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "jsonb_array_elements"
+   ]
+  },
+  "zyra_dev_set_compatibility": {
+   "args": "p_match_id uuid, p_score numeric",
+   "returns": "numeric",
+   "definer": true,
+   "schema": "public",
+   "file": "20260820200633_oa_zyra_200_dev_set_functions_guard_both_parties.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "journey_compatibility",
+    "m",
+    "matches",
+    "v_email"
+   ]
+  },
+  "zyra_dev_counterpart_complete": {
+   "args": "p_match_id uuid, p_question_ids text[] DEFAULT '{}'::text[]",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811095510_dev_counterpart_complete_conversation_status_fix.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "7",
+    "SET",
+    "auth",
+    "conversations",
+    "each",
+    "journey_attempts",
+    "journey_compatibility",
+    "journey_family_answers",
+    "journey_family_reviews",
+    "journey_phase_answers",
+    "journey_phase_checkpoints",
+    "journey_salams",
+    "journey_stage_checkpoints",
+    "m",
+    "matches",
+    "the",
+    "timelines",
+    "v_answerer",
+    "v_attempt",
+    "v_email",
+    "v_guardian",
+    "wali_links"
+   ]
+  },
+  "zyra_dev_rewind_journey": {
+   "args": "p_match_id uuid default null::uuid",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260816082800_salam_first_milestones_and_dev.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "conversations",
+    "its",
+    "journey_attempts",
+    "journey_compatibility",
+    "journey_family_answers",
+    "journey_family_review_responses",
+    "journey_family_reviews",
+    "journey_phase_answers",
+    "journey_phase_checkpoints",
+    "journey_phase_ratings",
+    "journey_requests",
+    "journey_salams",
+    "journey_stage_checkpoints",
+    "matches",
+    "messages",
+    "notifications",
+    "timeline_milestones",
+    "timelines",
+    "v_conv",
+    "v_email",
+    "v_ids"
+   ]
+  },
+  "zyra_record_journey_milestone": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260816082800_salam_first_milestones_and_dev.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "OLD",
+    "journey_attempts",
+    "timeline_milestones",
+    "timelines",
+    "v_attempt",
+    "v_timeline"
+   ]
+  },
+  "zyra_light_weight": {
+   "args": "p_light text",
+   "returns": "numeric",
+   "definer": false,
+   "schema": "public",
+   "file": "20260811152220_oa193_scoring_method_ratified_plain_count_two_scores.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_question_is_due": {
+   "args": "p_qid text, p_gender text, p_answers jsonb",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811172021_fix_question_is_due_multi_variant_qid.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "jsonb_array_elements_text",
+    "zyra_onboarding_questions"
+   ]
+  },
+  "zyra_onboarding_missing": {
+   "args": "p_user uuid",
+   "returns": "TABLE(qid text, needs_answer boolean, needs_preference boole",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811173212_oa193c_bank_holds_all_104_chapter3_questions.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "onboarding_answers",
+    "profiles",
+    "v_ans",
+    "v_gender",
+    "zyra_onboarding_questions"
+   ]
+  },
+  "zyra_onboarding_complete": {
+   "args": "p_user uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811153547_oa193c_materialise_onboarding_complete.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "profiles"
+   ]
+  },
+  "zyra_my_onboarding_progress": {
+   "args": "",
+   "returns": "TABLE(complete boolean, questions_due int, questions_missing",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811172021_fix_question_is_due_multi_variant_qid.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "onboarding_answers",
+    "profiles",
+    "seeker_details",
+    "v_ans",
+    "v_gender",
+    "zyra_onboarding_missing",
+    "zyra_onboarding_questions"
+   ]
+  },
+  "zyra_onboarding_data_complete": {
+   "args": "p_user uuid, p_gender text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811173212_oa193c_bank_holds_all_104_chapter3_questions.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "onboarding_answers",
+    "seeker_details",
+    "zyra_onboarding_questions"
+   ]
+  },
+  "zyra_refresh_onboarding_complete": {
+   "args": "p_user uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811153547_oa193c_materialise_onboarding_complete.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "AFTER",
+    "profiles",
+    "would"
+   ]
+  },
+  "zyra_profiles_set_onboarding_complete": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811153547_oa193c_materialise_onboarding_complete.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "NEW"
+   ]
+  },
+  "zyra_answers_refresh_onboarding_complete": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260811153547_oa193c_materialise_onboarding_complete.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_propose_milestone": {
+   "args": "p_match_id uuid, p_type text, p_occurred_on date",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812001343_meeting_nikah_attestation_both_confirm.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "journey_milestone_attestations",
+    "m",
+    "matches",
+    "profiles",
+    "timeline_milestones",
+    "timelines",
+    "v_attempt",
+    "v_id",
+    "v_name",
+    "v_pending",
+    "v_timeline"
+   ]
+  },
+  "zyra_confirm_milestone": {
+   "args": "p_attestation_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812001343_meeting_nikah_attestation_both_confirm.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "att",
+    "journey_milestone_attestations",
+    "m",
+    "matches",
+    "profiles",
+    "timeline_milestones",
+    "timelines",
+    "v_name",
+    "v_timeline"
+   ]
+  },
+  "zyra_milestone_attestation_state": {
+   "args": "p_match_id uuid",
+   "returns": "TABLE(id uuid, milestone_type text, occurred_on date, propos",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812001343_meeting_nikah_attestation_both_confirm.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "journey_milestone_attestations",
+    "m",
+    "matches",
+    "v_attempt"
+   ]
+  },
+  "zyra_dev_set_seeker_plan": {
+   "args": "p_plan text",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812100956_dev_seeker_plan_and_decided_count.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "it",
+    "profiles",
+    "subscriptions"
+   ]
+  },
+  "zyra_dev_guardians_on_decided": {
+   "args": "",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812100956_dev_seeker_plan_and_decided_count.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "likes",
+    "passes",
+    "profiles",
+    "saves",
+    "v_count",
+    "v_pool",
+    "wali_links"
+   ]
+  },
+  "zyra_active_journey_cap": {
+   "args": "p_user uuid",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_active_journey_count": {
+   "args": "p_user uuid, p_exclude uuid default null",
+   "returns": "int",
+   "definer": true,
+   "schema": "public",
+   "file": "20260812152607_plan_aware_active_journey_limit.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "matches"
+   ]
+  },
+  "nudge_paused_journey": {
+   "args": "p_match_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_dev_seed_journey": {
+   "args": "",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260816082800_salam_first_milestones_and_dev.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "auth",
+    "conversations",
+    "journey_attempts",
+    "matches",
+    "profiles",
+    "timelines",
+    "v_attempt",
+    "v_current",
+    "v_email",
+    "v_gender",
+    "v_match",
+    "v_partner"
+   ]
+  },
+  "zyra_sect_code": {
+   "args": "p_label text",
+   "returns": "text",
+   "definer": false,
+   "schema": "public",
+   "file": "20260821120000_oa229_canonical_sect_codes.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_journey_busy_flags": {
+   "args": "p_match_ids uuid[]",
+   "returns": "TABLE(match_id uuid, in_another_journey boolean)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260821121000_oa204_journey_busy_flags.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "matches"
+   ]
+  },
+  "zyra_notification_category": {
+   "args": "p_type text",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_expire_due_wali_invites": {
+   "args": "",
+   "returns": "table(expiring_count integer, expired_count integer)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "v_label",
+    "wali_invites"
+   ]
+  },
+  "zyra_decline_wali_invite": {
+   "args": "p_token text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260822101000_oa232_wali_invite_lifecycle_notifications.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "v_invite",
+    "wali_invites"
+   ]
+  },
+  "zyra_pause_decision_window": {
+   "args": "",
+   "returns": "interval",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_paused_journey_cap": {
+   "args": "p_user uuid",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_paused_journey_count": {
+   "args": "p_user uuid, p_exclude uuid default null",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "matches"
+   ]
+  },
+  "zyra_pause_capacity_status": {
+   "args": "p_match_id uuid",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "m",
+    "matches"
+   ]
+  },
+  "zyra_my_pause_states": {
+   "args": "p_match_ids uuid[]",
+   "returns": "table ( match_id uuid, pause_state text, pause_initiated_by ",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "matches"
+   ]
+  },
+  "transition_journey_pause": {
+   "args": "p_match_id uuid, p_action text, p_expected_version bigint",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "a",
+    "both",
+    "conversations",
+    "journey_attempts",
+    "m",
+    "matches",
+    "profiles"
+   ]
+  },
+  "zyra_reject_locked_match_progress": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "old"
+   ]
+  },
+  "zyra_reject_locked_attempt_progress": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "matches",
+    "old"
+   ]
+  },
+  "zyra_reject_locked_journey_write": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "conversations",
+    "journey_family_reviews",
+    "matches",
+    "v_match"
+   ]
+  },
+  "zyra_clear_pause_on_terminal": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_touch_identity_verification_attempt": {
+   "args": "",
+   "returns": "trigger",
+   "definer": false,
+   "schema": "private",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_my_identity_verification_state": {
+   "args": "",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "v_attempt"
+   ]
+  },
+  "zyra_record_identity_verification_consent": {
+   "args": "p_consent_version text, p_granted boolean",
+   "returns": "jsonb",
+   "definer": true,
+   "schema": "public",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "v_attempt"
+   ]
+  },
+  "zyra_delete_my_unstarted_identity_verification_attempt": {
+   "args": "",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "v_id"
+   ]
+  },
+  "zyra_attach_identity_verification_provider_session": {
+   "args": "p_user_id uuid, p_provider_code text, p_provider_session_ref text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "v_id"
+   ]
+  },
+  "zyra_record_identity_verification_provider_result": {
+   "args": "p_provider_code text, p_provider_session_ref text, p_result text, p_duplicate_review_required boolean, p_provider_event_ref_hash text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "v_attempt"
+   ]
+  },
+  "zyra_my_identity_verification_allows_app": {
+   "args": "",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_my_identity_verification_allows_active_journey": {
+   "args": "",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_dashboard_updates": {
+   "args": "p_limit integer default 3, p_cursor_occurred_at timestamptz default null, p_cursor_class_key text default null, p_cursor_source_id uuid default null",
+   "returns": "table ( occurred_at timestamptz, class_key text, source_id u",
+   "definer": true,
+   "schema": "public",
+   "file": "20260830145711_oa281_dashboard_updates_projection.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "caller_participation",
+    "journey_family_review_responses",
+    "journey_family_reviews",
+    "milestone_rows",
+    "milestone_templates",
+    "notification_rows",
+    "notification_templates",
+    "notifications",
+    "review_answered_rows",
+    "review_opened_rows",
+    "suggestion_rows",
+    "the",
+    "timeline_milestones",
+    "timelines",
+    "updates",
+    "wali_suggestions",
+    "zyra_my_attempt_participation"
+   ]
+  },
+  "zyra_main_guardian_history_consent": {
+   "args": "p_enabled boolean default null",
+   "returns": "table ( enabled boolean, active_main_link_id uuid, main_guar",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918094504_oa291_per_guardian_past_journey_summaries.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "v_guardian",
+    "wali_links",
+    "zyra_guardian_history_consent"
+   ]
+  },
+  "zyra_journey_compatibility_state": {
+   "args": "p_match_id uuid",
+   "returns": "table( mine_revealed boolean, counterpart_revealed boolean, ",
+   "definer": true,
+   "schema": "public",
+   "file": "20260910184252_oa283_journey_compatibility_rpc_boundary.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "journey_compatibility",
+    "matches",
+    "v_attempt",
+    "v_compat",
+    "v_match"
+   ]
+  },
+  "zyra_reveal_journey_compatibility": {
+   "args": "p_match_id uuid",
+   "returns": "table( mine_revealed boolean, counterpart_revealed boolean, ",
+   "definer": true,
+   "schema": "public",
+   "file": "20260910184252_oa283_journey_compatibility_rpc_boundary.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "journey_compatibility",
+    "matches",
+    "or",
+    "score_candidates",
+    "v_attempt",
+    "v_compat",
+    "v_computed_score",
+    "v_match"
+   ]
+  },
+  "zyra_normalize_personal_code": {
+   "args": "p_code text",
+   "returns": "text",
+   "definer": true,
+   "schema": "private",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_retire_personal_code": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "private",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "old",
+    "private"
+   ]
+  },
+  "zyra_enforce_personal_request_owner_acceptance": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "private",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "new"
+   ]
+  },
+  "zyra_generate_personal_code": {
+   "args": "",
+   "returns": "text",
+   "definer": true,
+   "schema": "private",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_identity_verification_allows_user": {
+   "args": "p_user_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "private",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_my_personal_code": {
+   "args": "p_role_context text default null",
+   "returns": "table(code text, role_context text)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "profiles",
+    "v_code",
+    "v_role"
+   ]
+  },
+  "zyra_rotate_my_personal_code": {
+   "args": "p_role_context text default null",
+   "returns": "table(code text, role_context text)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "profiles",
+    "v_code",
+    "v_role"
+   ]
+  },
+  "zyra_preview_personal_code": {
+   "args": "p_code text",
+   "returns": "table(owner_first_name text, owner_role text)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "profiles",
+    "v_my_role",
+    "v_owner",
+    "wali_links"
+   ]
+  },
+  "zyra_request_guardian_link": {
+   "args": "p_code text, p_relationship text default null",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "profiles",
+    "v_code_id",
+    "v_my_role",
+    "v_preview_role",
+    "v_request_id",
+    "wali_invites",
+    "wali_links",
+    "zyra_preview_personal_code"
+   ]
+  },
+  "zyra_my_guardian_requests": {
+   "args": "",
+   "returns": "table( request_id uuid, direction text, other_first_name tex",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "profiles",
+    "wali_invites"
+   ]
+  },
+  "zyra_accept_guardian_request": {
+   "args": "p_request_id uuid, p_relationship text default null",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "likes",
+    "passes",
+    "profiles",
+    "saves",
+    "set",
+    "v_link_id",
+    "v_owner_role",
+    "v_request",
+    "v_requester_role",
+    "wali_invites",
+    "wali_links"
+   ]
+  },
+  "zyra_decline_guardian_request": {
+   "args": "p_request_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "profiles",
+    "v_name",
+    "v_requester",
+    "wali_invites"
+   ]
+  },
+  "zyra_cancel_guardian_request": {
+   "args": "p_request_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "wali_invites"
+   ]
+  },
+  "zyra_guardian_journey_access": {
+   "args": "p_guardian uuid, p_attempt uuid default null, p_enabled boolean default null",
+   "returns": "table ( attempt_id uuid, match_id uuid, counterpart_first_na",
+   "definer": true,
+   "schema": "public",
+   "file": "20261005114141_f02_guardian_current_attempt_read_boundary.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_attempts",
+    "journey_guardian_assignments",
+    "matches",
+    "profiles",
+    "v_link_id",
+    "wali_links"
+   ]
+  },
+  "zyra_guardian_history_consent": {
+   "args": "p_guardian uuid, p_enabled boolean default null",
+   "returns": "table ( enabled boolean, active_guardian_link_id uuid, guard",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918094504_oa291_per_guardian_past_journey_summaries.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "guardian_journey_history_consents",
+    "set",
+    "v_link_id",
+    "wali_links"
+   ]
+  },
+  "zyra_journey_main_guardian_gate": {
+   "args": "p_match_id uuid",
+   "returns": "table ( self_has_main boolean, other_has_main boolean )",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "matches",
+    "v_a",
+    "wali_links"
+   ]
+  },
+  "zyra_enforce_main_guardian_journey_hold": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "a",
+    "conversations",
+    "journey_attempts",
+    "matches",
+    "v_a",
+    "v_attempt_id",
+    "v_match_id",
+    "wali_links"
+   ]
+  },
+  "zyra_preview_match_code": {
+   "args": "p_code text",
+   "returns": "table( owner_first_name text, owner_age integer, owner_locat",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918145126_oa295_known_person_code_matching.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "profiles",
+    "v_my_role",
+    "v_owner"
+   ]
+  },
+  "zyra_consider_match_code": {
+   "args": "p_code text",
+   "returns": "text",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918145126_oa295_known_person_code_matching.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "likes",
+    "matches",
+    "private",
+    "profiles",
+    "v_match_exists",
+    "v_owner",
+    "v_preview_name",
+    "zyra_preview_match_code"
+   ]
+  },
+  "zyra_record_product_event": {
+   "args": "p_feature_key text, p_event_name text, p_action_key text, p_surface_key text, p_platform_key text, p_app_version text, p_build_number text",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918171910_oa256_product_telemetry_foundation.sql",
+   "grants": [
+    "authenticated",
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "one",
+    "private"
+   ]
+  },
+  "zyra_product_event_summary": {
+   "args": "p_from timestamptz, p_to timestamptz",
+   "returns": "table ( feature_key text, event_name text, action_key text, ",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918171910_oa256_product_telemetry_foundation.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_prune_product_events": {
+   "args": "",
+   "returns": "bigint",
+   "definer": true,
+   "schema": "public",
+   "file": "20260918171910_oa256_product_telemetry_foundation.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_family_message_can_read": {
+   "args": "p_thread uuid, p_created_at timestamptz default null",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships"
+   ]
+  },
+  "zyra_family_message_circle_can_send": {
+   "args": "p_seeker uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "profile_blocks",
+    "wali_links"
+   ]
+  },
+  "zyra_sync_family_message_circle_members": {
+   "args": "p_seeker uuid",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_participant_state",
+    "family_message_threads",
+    "profile_blocks",
+    "v_thread",
+    "wali_links"
+   ]
+  },
+  "zyra_open_family_message_circle": {
+   "args": "p_seeker uuid",
+   "returns": "table ( thread_id uuid, seeker_id uuid, seeker_first_name te",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_participant_state",
+    "family_message_threads",
+    "profile_blocks",
+    "profiles",
+    "set",
+    "v_has_guardian",
+    "v_thread",
+    "wali_links"
+   ]
+  },
+  "zyra_family_message_circles": {
+   "args": "",
+   "returns": "table ( thread_id uuid, seeker_id uuid, seeker_first_name te",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_participant_state",
+    "family_message_threads",
+    "family_messages",
+    "lateral",
+    "profiles"
+   ]
+  },
+  "zyra_family_messages": {
+   "args": "p_thread uuid, p_before timestamptz default null, p_limit integer default 50",
+   "returns": "table ( message_id uuid, sender_id uuid, sender_first_name t",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_messages",
+    "profiles"
+   ]
+  },
+  "zyra_send_family_message": {
+   "args": "p_thread uuid, p_body text",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_participant_state",
+    "family_message_threads",
+    "family_messages",
+    "set",
+    "v_id",
+    "v_seeker"
+   ]
+  },
+  "zyra_mark_family_messages_read": {
+   "args": "p_thread uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_participant_state",
+    "set"
+   ]
+  },
+  "zyra_set_family_message_muted": {
+   "args": "p_thread uuid, p_muted boolean",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_participant_state",
+    "set"
+   ]
+  },
+  "zyra_report_family_message": {
+   "args": "p_thread uuid, p_message uuid, p_reason text",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_reports",
+    "family_messages",
+    "v_id",
+    "v_me",
+    "v_reported"
+   ]
+  },
+  "zyra_sync_family_message_link_lifecycle": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_sync_family_message_block_lifecycle": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "v_seeker",
+    "wali_links"
+   ]
+  },
+  "zyra_guard_paused_return_initiation": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "matches"
+   ]
+  },
+  "zyra_start_verified_seeker_trial": {
+   "args": "p_user uuid, p_verified_person uuid, p_payment_authorisation_ref_hash text",
+   "returns": "timestamptz",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "private",
+    "v_end"
+   ]
+  },
+  "zyra_family_formula_monthly_pence": {
+   "args": "p_seekers integer, p_guardians integer",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_enforce_family_seat_capacity": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_seat_assignments",
+    "family_subscriptions",
+    "v_seekers"
+   ]
+  },
+  "zyra_require_verified_family_seat": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_guard_family_place_reduction": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_seat_assignments",
+    "v_funded_seekers"
+   ]
+  },
+  "zyra_assert_family_owner_seat": {
+   "args": "p_family uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_seat_assignments",
+    "family_subscriptions",
+    "private",
+    "v_family"
+   ]
+  },
+  "zyra_family_owner_row_guard": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_family_owner_seat_guard": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_forfeit_seeker_trial_on_family_seat": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "private",
+    "set",
+    "v_person"
+   ]
+  },
+  "zyra_accept_family_invitation": {
+   "args": "p_invitation uuid",
+   "returns": "uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_membership_invitations",
+    "family_seat_assignments",
+    "family_subscriptions",
+    "private",
+    "v_invitation",
+    "v_seat"
+   ]
+  },
+  "zyra_validate_family_ownership_transfer": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_seat_assignments",
+    "family_subscriptions",
+    "private",
+    "v_family"
+   ]
+  },
+  "zyra_has_paid_role": {
+   "args": "p_user uuid, p_role text, p_at timestamptz default now()",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_seat_assignments",
+    "family_subscriptions",
+    "subscriptions"
+   ]
+  },
+  "zyra_my_paid_access": {
+   "args": "p_role text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_journey_return_available": {
+   "args": "p_match_id uuid",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "matches",
+    "v_match"
+   ]
+  },
+  "zyra_available_journey_return_ids": {
+   "args": "",
+   "returns": "setof uuid",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "ended_recent",
+    "matches",
+    "paused_recent"
+   ]
+  },
+  "withdraw_journey_request": {
+   "args": "p_request_id uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "journey_requests"
+   ]
+  },
+  "zyra_close_unavailable_journey_requests": {
+   "args": "",
+   "returns": "integer",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "journey_requests",
+    "notified",
+    "unavailable",
+    "v_count"
+   ]
+  },
+  "zyra_set_guardian_journey_permission": {
+   "args": "p_wali_link_id uuid, p_match_id uuid, p_can_view boolean, p_can_chat boolean",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "guardian_journey_permissions",
+    "matches",
+    "set",
+    "v_link",
+    "wali_links"
+   ]
+  },
+  "zyra_guardian_journey_permissions": {
+   "args": "p_wali_link_id uuid",
+   "returns": "table(match_id uuid, can_view boolean, can_chat boolean)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "guardian_journey_permissions",
+    "matches",
+    "wali_links"
+   ]
+  },
+  "zyra_capture_family_message_report_evidence": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_message_report_evidence",
+    "family_messages"
+   ]
+  },
+  "zyra_mark_family_message_sender_deleted": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "family_messages"
+   ]
+  },
+  "zyra_close_family_message_report": {
+   "args": "p_report_id uuid, p_legal_hold boolean default false",
+   "returns": "void",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_report_evidence",
+    "family_message_reports"
+   ]
+  },
+  "zyra_purge_expired_family_message_data": {
+   "args": "",
+   "returns": "table(deleted_messages bigint, deleted_evidence bigint)",
+   "definer": true,
+   "schema": "public",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+   "grants": [
+    "service_role"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_report_evidence",
+    "family_messages"
+   ]
+  },
+  "zyra_my_safety_cases": {
+   "args": "",
+   "returns": "table ( case_id uuid, case_type text, status text, created_a",
+   "definer": true,
+   "schema": "public",
+   "file": "20260925202027_restore_safety_case_status_rpc.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_reports",
+    "profile_reports"
+   ]
+  },
+  "zyra_family_message_participants": {
+   "args": "p_thread uuid",
+   "returns": "table ( user_id uuid, first_name text, member_role text, is_",
+   "definer": true,
+   "schema": "public",
+   "file": "20260925215350_family_circle_participant_list.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_threads",
+    "profiles",
+    "wali_links"
+   ]
+  },
+  "zyra_family_messages_v2": {
+   "args": "p_thread uuid, p_before timestamptz default null, p_limit integer default 50",
+   "returns": "table ( message_id uuid, sender_id uuid, sender_first_name t",
+   "definer": true,
+   "schema": "public",
+   "file": "20260926144532_family_message_sender_identity.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_threads",
+    "family_messages",
+    "lateral",
+    "profiles",
+    "wali_links"
+   ]
+  },
+  "zyra_mark_journey_messages_read": {
+   "args": "p_conversation uuid",
+   "returns": "timestamptz",
+   "definer": true,
+   "schema": "public",
+   "file": "20260926233533_message_read_receipts.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "conversations",
+    "matches",
+    "messages"
+   ]
+  },
+  "zyra_family_messages_v3": {
+   "args": "p_thread uuid, p_before timestamptz default null, p_limit integer default 50",
+   "returns": "table ( message_id uuid, sender_id uuid, sender_first_name t",
+   "definer": true,
+   "schema": "public",
+   "file": "20260926233533_message_read_receipts.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "family_message_memberships",
+    "family_message_participant_state",
+    "family_message_threads",
+    "family_messages",
+    "lateral",
+    "profiles",
+    "wali_links"
+   ]
+  },
+  "zyra_photo_reference_owned": {
+   "args": "p_user_id uuid, p_path text",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "private",
+   "file": "20261005113453_f03_photo_row_object_owner_binding.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "storage"
+   ]
+  },
+  "zyra_enforce_photo_row_owner": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "private",
+   "file": "20261005113453_f03_photo_row_object_owner_binding.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": []
+  },
+  "zyra_plus_spend_available": {
+   "args": "",
+   "returns": "boolean",
+   "definer": true,
+   "schema": "private",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "private"
+   ]
+  },
+  "zyra_lock_unlock_account": {
+   "args": "p_user uuid",
+   "returns": "void",
+   "definer": true,
+   "schema": "private",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "private",
+    "profiles",
+    "set"
+   ]
+  },
+  "zyra_guard_unlock_row": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "private",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "old"
+   ]
+  },
+  "zyra_guard_unlock_credit": {
+   "args": "",
+   "returns": "trigger",
+   "definer": true,
+   "schema": "private",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql",
+   "grants": [],
+   "dropped": false,
+   "tables": [
+    "old",
+    "profile_unlocks",
+    "unlock_credits",
+    "v_balance"
+   ]
+  },
+  "zyra_browse_ranked_ids": {
+   "args": "p_candidate_ids uuid[]",
+   "returns": "table(candidate_id uuid)",
+   "definer": true,
+   "schema": "public",
+   "file": "20261005120711_oa305_f04_private_legacy_score_and_browse_ids.sql",
+   "grants": [
+    "authenticated"
+   ],
+   "dropped": false,
+   "tables": [
+    "eligible",
+    "input",
+    "pg_catalog",
+    "profiles",
+    "scores",
+    "viewer",
+    "zyra_f04_private"
+   ]
+  }
+ },
+ "triggers": {
+  "profiles_updated_at ON profiles": {
+   "table": "profiles",
+   "function": "update_updated_at",
+   "file": "20260718190011_initial_schema.sql"
+  },
+  "onboarding_answers_updated_at ON onboarding_answers": {
+   "table": "onboarding_answers",
+   "function": "update_updated_at",
+   "file": "20260718192024_onboarding_answers_table.sql"
+  },
+  "likes_create_match ON likes": {
+   "table": "likes",
+   "function": "create_match_on_mutual_like",
+   "file": "20260718192853_match_creation_on_mutual_like.sql"
+  },
+  "messages_create_conversation_started_milestone ON messages": {
+   "table": "messages",
+   "function": "create_conversation_started_milestone",
+   "file": "20260718194936_conversation_started_milestone.sql"
+  },
+  "wali_links_auto_main ON wali_links": {
+   "table": "wali_links",
+   "function": "auto_designate_main_wali",
+   "file": "20260725183724_pre_journey_ritual_tables.sql"
+  },
+  "messages_notify_recipient ON messages": {
+   "table": "messages",
+   "function": "notify_new_message",
+   "file": "20260726140000_notifications.sql"
+  },
+  "passes_clear_others ON passes": {
+   "table": "passes",
+   "function": "zyra_pass_clears_others",
+   "file": "20260803112115_one_state_per_profile_saves_likes_passes_exclusive.sql"
+  },
+  "likes_clear_others ON likes": {
+   "table": "likes",
+   "function": "zyra_like_clears_others",
+   "file": "20260803112115_one_state_per_profile_saves_likes_passes_exclusive.sql"
+  },
+  "saves_clear_others ON saves": {
+   "table": "saves",
+   "function": "zyra_save_clears_others",
+   "file": "20260803112115_one_state_per_profile_saves_likes_passes_exclusive.sql"
+  },
+  "seeker_details_touch ON seeker_details": {
+   "table": "seeker_details",
+   "function": "touch_seeker_details",
+   "file": "20260804095959_seeker_details_typed_attributes_jsonb_preferences.sql"
+  },
+  "subscriptions_grant_zyra_one_credits ON subscriptions": {
+   "table": "subscriptions",
+   "function": "grant_zyra_one_credits",
+   "file": "20260804105309_c1_zyra_one_included_credits_grant.sql"
+  },
+  "matches_create_first_attempt ON matches": {
+   "table": "matches",
+   "function": "zyra_create_first_attempt",
+   "file": "20260806111844_oa156_stage2_backfill_and_attempt_invariant.sql"
+  },
+  "conversations_set_attempt ON conversations": {
+   "table": "conversations",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "journey_compatibility_set_attempt ON journey_compatibility": {
+   "table": "journey_compatibility",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "journey_family_answers_set_attempt ON journey_family_answers": {
+   "table": "journey_family_answers",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "journey_family_reviews_set_attempt ON journey_family_reviews": {
+   "table": "journey_family_reviews",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "journey_phase_answers_set_attempt ON journey_phase_answers": {
+   "table": "journey_phase_answers",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "journey_phase_checkpoints_set_attempt ON journey_phase_checkpoints": {
+   "table": "journey_phase_checkpoints",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "journey_phase_ratings_set_attempt ON journey_phase_ratings": {
+   "table": "journey_phase_ratings",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "journey_salams_set_attempt ON journey_salams": {
+   "table": "journey_salams",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "timelines_set_attempt ON timelines": {
+   "table": "timelines",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260806113031_oa156_stage4a_attempt_id_columns.sql"
+  },
+  "profiles_normalise_identity ON profiles": {
+   "table": "profiles",
+   "function": "zyra_normalise_profile_identity",
+   "file": "20260807184618_profiles_first_name_shape.sql"
+  },
+  "zyra_wali_links_guardian_link_allowed ON wali_links": {
+   "table": "wali_links",
+   "function": "zyra_enforce_guardian_link_allowed",
+   "file": "20260807223439_zyra_can_guardian_link_predicate.sql"
+  },
+  "journey_stage_checkpoints_set_attempt ON journey_stage_checkpoints": {
+   "table": "journey_stage_checkpoints",
+   "function": "zyra_set_attempt_from_match",
+   "file": "20260808101646_journey_stage_checkpoints.sql"
+  },
+  "matches_record_journey_milestone ON matches": {
+   "table": "matches",
+   "function": "zyra_record_journey_milestone",
+   "file": "20260811110300_journey_timeline_milestones.sql"
+  },
+  "profiles_set_onboarding_complete ON profiles": {
+   "table": "profiles",
+   "function": "zyra_profiles_set_onboarding_complete",
+   "file": "20260811153547_oa193c_materialise_onboarding_complete.sql"
+  },
+  "onboarding_answers_refresh_complete ON onboarding_answers": {
+   "table": "onboarding_answers",
+   "function": "zyra_answers_refresh_onboarding_complete",
+   "file": "20260811153547_oa193c_materialise_onboarding_complete.sql"
+  },
+  "seeker_details_refresh_complete ON seeker_details": {
+   "table": "seeker_details",
+   "function": "zyra_answers_refresh_onboarding_complete",
+   "file": "20260811153547_oa193c_materialise_onboarding_complete.sql"
+  },
+  "matches_one_active_per_person ON matches": {
+   "table": "matches",
+   "function": "zyra_enforce_one_active_match",
+   "file": "20260812144437_pause_frees_active_slot.sql"
+  },
+  "journey_attempts_one_active_per_person ON journey_attempts": {
+   "table": "journey_attempts",
+   "function": "zyra_enforce_one_active_attempt",
+   "file": "20260812144851_pause_frees_active_slot_attempts.sql"
+  },
+  "matches_reject_locked_progress ON matches": {
+   "table": "matches",
+   "function": "zyra_reject_locked_match_progress",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "attempts_reject_locked_progress ON journey_attempts": {
+   "table": "journey_attempts",
+   "function": "zyra_reject_locked_attempt_progress",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_salams_pause_lock ON journey_salams": {
+   "table": "journey_salams",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_compatibility_pause_lock ON journey_compatibility": {
+   "table": "journey_compatibility",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_phase_answers_pause_lock ON journey_phase_answers": {
+   "table": "journey_phase_answers",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_phase_ratings_pause_lock ON journey_phase_ratings": {
+   "table": "journey_phase_ratings",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_phase_checkpoints_pause_lock ON journey_phase_checkpoints": {
+   "table": "journey_phase_checkpoints",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_stage_checkpoints_pause_lock ON journey_stage_checkpoints": {
+   "table": "journey_stage_checkpoints",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_family_answers_pause_lock ON journey_family_answers": {
+   "table": "journey_family_answers",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_family_reviews_pause_lock ON journey_family_reviews": {
+   "table": "journey_family_reviews",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_family_review_responses_pause_lock ON journey_family_review_responses": {
+   "table": "journey_family_review_responses",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "journey_milestone_attestations_pause_lock ON journey_milestone_attestations": {
+   "table": "journey_milestone_attestations",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "messages_pause_lock ON messages": {
+   "table": "messages",
+   "function": "zyra_reject_locked_journey_write",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "matches_clear_pause_on_terminal ON matches": {
+   "table": "matches",
+   "function": "zyra_clear_pause_on_terminal",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "attempts_clear_pause_on_terminal ON journey_attempts": {
+   "table": "journey_attempts",
+   "function": "zyra_clear_pause_on_terminal",
+   "file": "20260825120000_shared_pause_decision_state_machine.sql"
+  },
+  "identity_verification_attempts_updated_at ON identity_verification_attempts": {
+   "table": "identity_verification_attempts",
+   "function": "zyra_touch_identity_verification_attempt",
+   "file": "20260829183507_identity_verification_phase_a_storage.sql"
+  },
+  "zyra_retire_personal_code_before_change ON zyra_personal_codes": {
+   "table": "zyra_personal_codes",
+   "function": "zyra_retire_personal_code",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql"
+  },
+  "wali_invites_personal_request_owner_acceptance ON wali_invites": {
+   "table": "wali_invites",
+   "function": "zyra_enforce_personal_request_owner_acceptance",
+   "file": "20260917144606_oa289_permanent_personal_codes_guardian_requests.sql"
+  },
+  "journey_compatibility_main_guardian_hold ON journey_compatibility": {
+   "table": "journey_compatibility",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "matches_main_guardian_hold ON matches": {
+   "table": "matches",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_attempts_main_guardian_hold ON journey_attempts": {
+   "table": "journey_attempts",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_salams_main_guardian_hold ON journey_salams": {
+   "table": "journey_salams",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_stage_checkpoints_main_guardian_hold ON journey_stage_checkpoints": {
+   "table": "journey_stage_checkpoints",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_phase_answers_main_guardian_hold ON journey_phase_answers": {
+   "table": "journey_phase_answers",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_phase_ratings_main_guardian_hold ON journey_phase_ratings": {
+   "table": "journey_phase_ratings",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_phase_checkpoints_main_guardian_hold ON journey_phase_checkpoints": {
+   "table": "journey_phase_checkpoints",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_family_answers_main_guardian_hold ON journey_family_answers": {
+   "table": "journey_family_answers",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "journey_family_reviews_main_guardian_hold ON journey_family_reviews": {
+   "table": "journey_family_reviews",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "messages_main_guardian_hold ON messages": {
+   "table": "messages",
+   "function": "zyra_enforce_main_guardian_journey_hold",
+   "file": "20260918140508_oa294_main_guardian_optional_journey_hold.sql"
+  },
+  "wali_links_family_message_lifecycle ON wali_links": {
+   "table": "wali_links",
+   "function": "zyra_sync_family_message_link_lifecycle",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql"
+  },
+  "profile_blocks_family_message_lifecycle ON profile_blocks": {
+   "table": "profile_blocks",
+   "function": "zyra_sync_family_message_block_lifecycle",
+   "file": "20260919185927_oa298_family_messaging_foundation.sql"
+  },
+  "matches_guard_paused_return_initiation ON matches": {
+   "table": "matches",
+   "function": "zyra_guard_paused_return_initiation",
+   "file": "20260919191016_oa299_journey_return_initiation_gate.sql"
+  },
+  "family_seat_capacity_guard ON family_seat_assignments": {
+   "table": "family_seat_assignments",
+   "function": "zyra_enforce_family_seat_capacity",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "family_seat_verified_role_guard ON family_seat_assignments": {
+   "table": "family_seat_assignments",
+   "function": "zyra_require_verified_family_seat",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "family_place_reduction_guard ON family_subscriptions": {
+   "table": "family_subscriptions",
+   "function": "zyra_guard_family_place_reduction",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "family_owner_row_guard ON family_subscriptions": {
+   "table": "family_subscriptions",
+   "function": "zyra_family_owner_row_guard",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "family_owner_seat_guard ON family_seat_assignments": {
+   "table": "family_seat_assignments",
+   "function": "zyra_family_owner_seat_guard",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "family_seat_forfeits_seeker_trial ON family_seat_assignments": {
+   "table": "family_seat_assignments",
+   "function": "zyra_forfeit_seeker_trial_on_family_seat",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "family_ownership_transfer_guard ON family_ownership_transfers": {
+   "table": "family_ownership_transfers",
+   "function": "zyra_validate_family_ownership_transfer",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "family_message_report_capture_evidence ON family_message_reports": {
+   "table": "family_message_reports",
+   "function": "zyra_capture_family_message_report_evidence",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "profiles_mark_family_message_sender_deleted ON profiles": {
+   "table": "profiles",
+   "function": "zyra_mark_family_message_sender_deleted",
+   "file": "20260924100231_founder_paid_only_returns_guardian_circle_contract.sql"
+  },
+  "zyra_photo_row_owner ON profile_photos": {
+   "table": "profile_photos",
+   "function": "zyra_enforce_photo_row_owner",
+   "file": "20261005113453_f03_photo_row_object_owner_binding.sql"
+  },
+  "zyra_unlock_row_guard ON profile_unlocks": {
+   "table": "profile_unlocks",
+   "function": "zyra_guard_unlock_row",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql"
+  },
+  "zyra_unlock_credit_guard ON unlock_credits": {
+   "table": "unlock_credits",
+   "function": "zyra_guard_unlock_credit",
+   "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql"
+  }
+ },
+ "buckets": {
+  "profile-photos": {
+   "public": "false (changed in 20260719080749_private_profile_photos_bucket.sql)",
+   "file": "20260718190912_profile_photos_storage_bucket.sql"
+  }
+ },
+ "edge": [],
+ "comments": {
+  "table:consents": "Append-only consent log. Withdrawal is a new row with granted=false. Never update or delete a row here.",
+  "table:seeker_details": "OWNERSHIP: row-scoped(user_id). Article 9 special-category data \u2014 always disclosable to its subject, never to anyone else except through a paid unlock (seeker_details_for_unlocked).",
+  "function:zyra_can_view_profile": "May the CALLER see this profile? self \u00b7 Guardian link \u00b7 shares an attempt (via zyra_attempt_participant_rows) \u00b7 opposite-gender browsing. Participation logic is NOT duplicated here \u2014 it is read from the one view.",
+  "table:unlock_credits": "OWNERSHIP: row-scoped(user_id) \u2014 the holder's own ledger.",
+  "function:zyra_can_read_photo_object": "F03: private object owner_id, canonical owner prefix and profile row owner must agree; existing profile visibility remains authoritative. No seed exemption.",
+  "function:restart_journey": "OA-ZYRA-154: refuses. A Journey cannot be reopened by one party. Replaced by Request New Journey (OA-ZYRA-159). Previously deleted six tables of history and cleared ended_at.",
+  "function:resume_journey": "Clears the pause on both rows. Still reads Active-Journey state from ",
+  "table:journey_family_review_responses": "OWNERSHIP: third-party(guardian). NEVER exported to either Seeker. A Guardian is a data subject in their own right; my own Guardian's decision is not my personal data. A Guardian pausing a Journey, and that being exportable to the Seeker they paused, is a family-safety problem as well as a privacy one.",
+  "table:profile_photos": "OWNERSHIP: row-scoped(user_id). Attachment data follows the same Mine/Theirs/Joint model as Journey data \u2014 Founder requirement 2026-08-06. Any future attachment table (documents, evidence, voice notes, media) MUST carry an OWNERSHIP comment on its author column before it is used, and the binary in Storage inherits its row's class.",
+  "table:profile_blocks": "A block is a TERMINAL safety boundary. Nothing may automatically ",
+  "table:profile_reports": "OWNERSHIP: row-scoped(reporter_id). NON-EXPORTABLE to the reported person, including any attached evidence \u2014 \u00a715.3. Handing someone the report filed against them defeats the protection entirely.",
+  "table:wali_links": "Guardian relationships. WRITE PATH IS accept_wali_invite() AND THE ",
+  "table:wali_suggestions": "OWNERSHIP: joint(wali_id, seeker_id) \u2014 a Guardian's suggestion to their Seeker. NON-EXPORTABLE to the suggested person, who is not party to it and must never learn they were suggested or declined.",
+  "table:journey_attempts": "Journey attempts. NO client grants and NO RLS policies, deliberately: ",
+  "function:zyra_attempt_participants": "NOT CLIENT-CALLABLE as of 2026-08-08. Has no caller check. Do not ",
+  "function:zyra_create_first_attempt": "Maintains V3 \u00a72's invariant: a match always has attempt 1. Without this, stage 3 would re-point nine tables at attempts that do not exist.",
+  "function:zyra_can_view_attempt": "May the CALLER see this attempt? Boolean, full access only. The successor-Guardian summary case is deliberately NOT here \u2014 see zyra_attempt_summary_for_guardian().",
+  "function:zyra_attempt_summary_for_guardian": "DR-ZYRA-230/233. CALLER-BOUND ACTIVE GUARDIANS. Every active Guardian sees ",
+  "function:zyra_enforce_one_active_attempt": "LIVE as of 2026-08-08 step 5 \u2014 promote now sets an attempt to active, so ",
+  "table:notification_preferences": "OWNERSHIP: row-scoped(user_id). Append-only consent and preference log. ",
+  "function:zyra_normalise_profile_identity": "Trims first_name on every write path. Deliberately NOT extended to ",
+  "function:zyra_reset_profile": "Clears a Seeker's answers, details, photos and ALL discovery history in ",
+  "table:app_feedback": "User-submitted ideas and problem reports. Append-only: no UPDATE or ",
+  "function:zyra_submit_feedback": "The only write path into app_feedback. Trims, validates, stamps user_id ",
+  "function:zyra_can_match": "Romantic eligibility. Tier-0: neither guards the other. Tier-1 (added ",
+  "function:zyra_can_guardian_link": "THE canonical Guardian-eligibility predicate: may these two people form ",
+  "function:zyra_match_ending": "THE only route to how a Journey ended. Substitutes prefer_not_to_say for ",
+  "function:zyra_end_match_internal": "THE only way a Journey ends. Ordinary endings and block-endings both go ",
+  "table:journey_stage_checkpoints": "OWNERSHIP: row-scoped(seeker_id), readable by both Seekers of the ",
+  "function:zyra_advance_stage": "Advances the three ungated Pre-Journey Ritual transitions and REFUSES ",
+  "function:ages_for_one": "Single-id age lookup. Prefer over ages_for(uuid[]) wherever the caller ",
+  "function:ages_for": "Batch age lookup, HARD CAPPED AT 50 ids (I10, 2026-08-08) \u2014 it is a ",
+  "function:zyra_counterpart_card": "Restricted counterpart identity card for an authorised Guardian Journey ",
+  "function:zyra_enforce_one_active_match": "One Active Journey per PERSON \u2014 the platform invariant. The two ",
+  "function:suspend_journey": "Pause recorded on BOTH matches.suspended_by and journey_attempts.paused_by. ",
+  "function:preview_wali_invite": "Invite preview shown before acceptance. Returns inviter_ward_count as ",
+  "function:zyra_can_continue_journey": "OA-ZYRA-174. May an EXISTING Journey continue? Blocks and Tier-0 only. ",
+  "table:protection_holds": "OA-ZYRA-157 / DR-ZYRA-121 item 5. Directional bars between two people on a pair. ",
+  "function:zyra_hold_blocks": "OA-ZYRA-157. True if an active hold restricts p_restricted toward p_protected. ",
+  "table:journey_requests": "OA-ZYRA-159 / DR-ZYRA-121 item 8. One pending request per pair. Readable by ",
+  "function:zyra_dev_set_journey_stage": "DEV ONLY. Jumps an Active Journey to any stage, skipping the Pre-Journey ",
+  "function:zyra_dev_set_counterpart_reveal": "DEV ONLY. Sets the counterpart's Compatibility Reveal flag so one tester ",
+  "function:zyra_clear_main_guardian": "DR-ZYRA-236. Caller-bound Seeker action. Demotes the caller's current ",
+  "function:zyra_remove_guardian": "DR-ZYRA-236. Caller-bound Seeker unlink action. A Main Guardian may be ",
+  "function:zyra_expire_due_journey_requests": "OA-ZYRA-159 stage 5. Expires pending Journey requests past their 14-day ",
+  "function:zyra_may_request_new_journey_ids": "OA-ZYRA-159 stage 5b. The ended match_ids on which the caller may request a ",
+  "function:zyra_dev_set_plus_unlock": "DEV ONLY. Simulates a Compatibility Unlock+ purchase. Guarded server-side ",
+  "function:zyra_ch4_hard_shape_ok": "Shape guard for onboarding_answers.ch4_hard_requirements. Accepts ",
+  "function:zyra_ch2_sect_hard_shape_ok": "Shape guard for seeker_details.preferences->sect->hard_requirement. ",
+  "function:zyra_dev_counterpart_complete": "DEV ONLY (@zyra.test). Completes the other party's half of the current Journey stage so the flow can be walked alone. Drop before public launch \u2014 OA-ZYRA-184.",
+  "function:zyra_dev_rewind_journey": "DEV ONLY (@zyra.test). Destructive: wipes a Journey back to stage one, keeping the match, the Guardian link and how you met. NULL match id rewinds every Journey on the account. Not a product feature \u2014 see restart_journey(). Drop before public launch \u2014 OA-ZYRA-184.",
+  "function:zyra_record_journey_milestone": "Writes a Timeline milestone whenever a match starts, advances a Journey stage forward, or ends. Forward-only, so a dev rewind leaves no trace. One place, because journey_stage is moved from five.",
+  "function:zyra_light_weight": "The ratified light weighting (OA-ZYRA-193a): green 1, yellow 0.5, red 0. Replaces zyra_light_points, which encoded the retired centred scale.",
+  "function:score_candidates": "Caller-scoped compatibility scorer. Multi-select questions average selected-option lights and contribute one denominator unit (OA-ZYRA-228 option a).",
+  "table:zyra_onboarding_questions": "The Chapter 3/4 question bank, server-side. Mirrors data/chapter3_categories.dart \u2014 a question added there and not here is a question the completeness gate stops requiring. Renamed from zyra_seed_ch4_questions 2026-08-11: it was created for seeding and became canonical.",
+  "function:zyra_onboarding_complete": "OA-ZYRA-193(c). True when this Seeker has finished onboarding: basic profile, Chapter 2, and every Chapter 3/4 question they were actually shown. Applicability accounts for gender AND conditional showIf rules \u2014 a question skipped because it did not apply is not missing.",
+  "table:journey_milestone_attestations": "Meeting/Nikah proposals awaiting the other Seeker's confirmation (Founder 2026-08-12). Confirmation writes the timeline_milestones row; user-attested, both-party record.",
+  "function:zyra_propose_milestone": "Proposes a meeting/nikah milestone (Founder 2026-08-12). Party-only, active un-paused Journeys, never future-dated, one pending per type; the counterpart is notified and must confirm before anything reaches the Timeline.",
+  "function:zyra_confirm_milestone": "Counterpart-only confirmation; writes the timeline_milestones row at noon UTC of the attested date. NOT EXISTS-guarded like every other milestone writer.",
+  "function:zyra_milestone_attestation_state": "Pending attestations for the caller's match \u2014 the Timeline screen's read path; table itself has no grants.",
+  "function:zyra_journey_busy_flags": "For requested Journey rows owned by auth.uid(), returns whether the other party has a different unsuspended active match. OA-ZYRA-204.",
+  "function:zyra_pause_decision_window": "Single configurable Pause response window. NULL until Founder ratifies duration and expiry behaviour.",
+  "function:transition_journey_pause": "Atomic shared Pause decision state machine; locks match/attempt, enforces CAS, eligibility, slot and paused capacity rules.",
+  "table:identity_verification_attempts": "PRIVATE SERVER-OWNED IDV state. No biometric/document/selfie/PII/raw ",
+  "table:identity_verification_event_receipts": "Hash-only webhook idempotency ledger. No provider event id, body, header, ",
+  "function:zyra_dashboard_updates": "OA-ZYRA-281: caller-scoped, allowlisted, read-only meaningful-movement projection \u2014 unread-backed notifications + authoritative domain events; NOT an inbox or history; the Notifications manager is the history surface. is_unread is three-state: TRUE means an unread notification; FALSE is reserved for a future explicit read-notification projection; NULL means a domain event and must never be rendered as read.",
+  "function:auto_designate_main_wali": "DR-ZYRA-225/233. Preserves first-active-link Main designation; maintains ",
+  "table:guardian_journey_history_consents": "DR-ZYRA-225/233 current-state permission for past Journey summaries. A row ",
+  "function:zyra_main_guardian_history_consent": "Compatibility wrapper for DR-ZYRA-225 clients. Reads or changes the ",
+  "function:zyra_journey_compatibility_state": "OA-ZYRA-283. Current active Journey compatibility state, caller-relative. ",
+  "function:zyra_reveal_journey_compatibility": "OA-ZYRA-283. Reveals and scores only the authenticated Seeker side for the ",
+  "function:zyra_compatibility_for_plus": "DR-ZYRA-135 / OA-ZYRA-283. Entitled early sight of only the caller-owned ",
+  "table:journey_compatibility": "RPC-only Compatibility Reveal state. Client roles have no direct table ",
+  "table:zyra_personal_codes": "Server-owned reusable ZYRA discovery handles. One active code per account ",
+  "table:zyra_retired_personal_code_hashes": "Pseudonymous non-reuse ledger. Only SHA-256 digests survive rotation or ",
+  "function:zyra_preview_personal_code": "Authenticated, rate-limited and neutral-on-failure preview. Returns first ",
+  "function:zyra_request_guardian_link": "Creates a 30-day two-sided request against a permanent ZYRA Code. Never ",
+  "table:journey_guardian_assignments": "Audited per-attempt access grants for Additional Guardians. Live rows have ",
+  "function:zyra_guardian_journey_access": "Reads or changes one Seeker-owned Guardian link across the caller's active ",
+  "function:zyra_guardian_history_consent": "DR-ZYRA-233 Seeker-owned, caller-derived permission for one current active ",
+  "function:zyra_journey_main_guardian_gate": "DR-ZYRA-236. Caller-bound Journey gate. Returns only whether the caller ",
+  "function:zyra_enforce_main_guardian_journey_hold": "DR-ZYRA-236 trigger boundary. Blocks ordinary shared-Journey writes and ",
+  "function:zyra_preview_match_code": "Bearer-code lookup for a known romantic candidate. Returns only Browse-level ",
+  "function:zyra_consider_match_code": "Creates the caller's ordinary Consider for an eligible Seeker resolved by ",
+  "table:zyra_product_events": "OA-ZYRA-256 first-party aggregate product evidence. Fixed feature, action, ",
+  "function:zyra_record_product_event": "Records one allowlisted, identifier-free ZYRA product event for an ",
+  "function:zyra_product_event_summary": "Service-role-only aggregate product evidence. Returns fixed taxonomy and ",
+  "function:zyra_prune_product_events": "Service-role-only fixed retention control. Deletes raw product events ",
+  "table:family_message_threads": "One canonical shared Guardian Circle per Seeker. Never a Journey chat.",
+  "table:family_message_memberships": "Epoch-scoped Guardian Circle membership; no pre-join history is exposed.",
+  "function:zyra_family_message_circle_can_send": "Authoritative circle-scoped family-message entitlement resolver.",
+  "function:zyra_guard_paused_return_initiation": "Paid initiation gate for the five most recent Paused Journeys. Does not gate recipient answers or history visibility.",
+  "function:zyra_has_paid_role": "Single server authority for paid Seeker/Guardian role access. Covers a ",
+  "table:family_message_report_evidence": "Protected moderation evidence: reported message plus bounded immediate ",
+  "function:zyra_my_safety_cases": "Caller-scoped safety case status only. Never returns the reported person identity and remains available regardless of membership state.",
+  "function:zyra_family_message_participants": "Names and roles of current members, visible only to another current member of the same Guardian Circle.",
+  "function:zyra_family_messages_v2": "Current Circle members can read message sender name, Guardian relationship ",
+  "function:zyra_mark_journey_messages_read": "Marks only the other Seeker's messages read after proving the caller is ",
+  "function:zyra_family_messages_v3": "Versioned Guardian Circle history with sender identity, caller-unread "
+ }
+}

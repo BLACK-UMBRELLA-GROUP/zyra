@@ -17151,9 +17151,69 @@ Related:     OA-ZYRA-151; Navigation Haptics handover §39; DR271/272.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-273,
+DR-ZYRA-274
+Title:       The latest design built with Codex is the planned ZYRA; the old member app is
+             replaced and the code is cleaned
+Date:        2026-10-25
+Status:      APPROVED - Founder direct ("whatever i been designing on zyra with codex the latest
+             one is whats planned")
+Authority:   Founder, 25 Oct 2026, after Fable found two apps in one codebase (OA-ZYRA-316).
+Decision:    The design the Founder sees when he signs in - the Founder preview opened by
+             ZyraFounderLaunchScreen (ViewRequestDraftScreen / ZyraOneJourneyConceptShell in
+             SOURCE/lib/dev, latest changes to 22 Oct) - is the intended ZYRA. Features it has
+             retired (Pause, Save, the old comparisons) are retired for ZYRA, not only for the
+             preview. CORRECTED 26 Oct (lesson F13): "Request restart" after an ending is NOT
+             retired - the preview shows it as planned but not yet available; only the old
+             restart_journey stub is retired. The ordinary member app (HomeShell, journey_flow_screen and the parts the
+             preview replaces) is to be retired, and the preview connected to real members and the
+             real database. Code that neither the planned app nor its tests use is removed.
+             Fable works out what the preview is from the code (the Founder does not have to
+             explain it), reviews, and writes the clean-up plan; the Founder approves it item by
+             item; Codex builds it after the build freeze lifts.
+Consequence: Blueprint parts 1 and 2 (Journey) describe the member app being replaced and will be
+             redone from the planned app. Part 3 (database) stays: it is the only real data store.
+             Part 5 (look and feel) stays: the theme is shared.
+Related:     OA-ZYRA-316, OA-ZYRA-315, OA-ZYRA-309; OA-AIOS-406 (build freeze).
+
+------------------------------------------------------------
+
+DR-ZYRA-275
+Title:       Seeker Basic has one Journey place after the one-time joining fee
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("A for both", answering Fable's question 1)
+Authority:   Founder, 26 Oct 2026, from the planned-app deep review DOC-ZYRA-0285.
+Decision:    A Seeker Basic member has 1 Journey place once the £4.99 one-time joining fee is paid
+             (no fee if they have paid for a membership before), as the planned app shows. ZYRA One
+             keeps 3 places. This replaces the 24 Sep repository rule that gives Basic 0 places.
+Consequence: Server change under OA-ZYRA-317 (3), after the freeze; the live check (OA-ZYRA-312)
+             first confirms what production runs today.
+Related:     DR-ZYRA-274, DR-ZYRA-248, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-276
+Title:       Unchosen design options are removed; member backgrounds and developer font/navigation
+             comparisons stay
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("A for both", answering Fable's question 2)
+Authority:   Founder, 26 Oct 2026, from DOC-ZYRA-0285 Tier 4.
+Decision:    In every design comparison set only the chosen design stays. Kept on purpose: the 10 dark
+             backgrounds members choose from (the 2 light studies go); the 18 reading fonts and 7
+             navigation-bar styles in developer tools only. Removed down to the chosen one: splash
+             directions (12), onboarding gold designs (11), onboarding directions (11), Journey icons
+             (11, Couple chosen), Browse swipe feedback (11), menu designs (9), role-choice designs (6),
+             Connections card and heading styles (6 and 5, old app), Circle bubble designs (6), welcome
+             pulse designs (5), Guardian network card designs (5), Journey card interiors (3, Portrait
+             split chosen), surface styles (3, Classic Glass locked). Their tests and screenshots go too.
+Consequence: Codex, after the freeze, confirms each set's chosen design from the code and lists it in
+             his daily report before removing the rest; if a choice is unclear he asks the Founder.
+Related:     DR-ZYRA-274, OA-ZYRA-316 Tier 4, lesson L34.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-276,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-274 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-277 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

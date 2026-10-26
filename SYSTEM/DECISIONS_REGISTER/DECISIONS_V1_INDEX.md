@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**271 decisions; 3 marked superseded/retired.**
+**274 decisions; 3 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -287,3 +287,6 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-271 | 2026-10-10 | Browse Button Sizes and Centred Request Text | APPROVED scoped visual refinement and o… |
 | DR-ZYRA-272 | 2026-10-10 | Ten Multi-Person Browse Gallery Previews | APPROVED bounded developer comparison i… |
 | DR-ZYRA-273 | 2026-10-10 | Current Browse Full Photo Downward Dismissal | APPROVED scoped viewing gesture |
+| DR-ZYRA-274 | 2026-10-25 | The latest design built with Codex is the planned ZYRA; the old member app is replaced an… | APPROVED - Founder direct ("whatever i … |
+| DR-ZYRA-275 | 2026-10-26 | Seeker Basic has one Journey place after the one-time joining fee | APPROVED - Founder direct ("A for both"… |
+| DR-ZYRA-276 | 2026-10-26 | Unchosen design options are removed; member backgrounds and developer font/navigation com… | APPROVED - Founder direct ("A for both"… |

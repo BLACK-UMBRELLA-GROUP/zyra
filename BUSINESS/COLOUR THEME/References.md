@@ -3,92 +3,37 @@ id: DOC-ZYRA-0101
 type: BRAND
 status: CURRENT
 feature: BUSINESS: COLOUR THEME
-purpose: Colour Theme — References
-links: []
-owner: ZYRA chat
+purpose: Colour Theme — what this theme depends on and what depends on it
+links: [DOC-ZYRA-0102, DOC-ZYRA-0282]
+owner: Founder (decisions) · Fable (document)
 ---
 
-FEATURE NAME
-COLOUR THEME
+# ZYRA — COLOUR THEME — REFERENCES — V2 (CURRENT)
 
-============================================================
-REFERENCES
-============================================================
+Rewritten 25 Oct 2026 (OA-ZYRA-313). V1 is in `ARCHIVE/COLOUR_THEME_REFERENCES_2026-10-25_V1.md`.
 
-------------------------------------------------------------
-References (depends on)
-------------------------------------------------------------
+## Depends on
 
-Branding (BUSINESS/BRAND MESSAGING)
-• Colour theme supports brand positioning (premium, trustworthy).
-• Purple aligns with ZYRA brand identity.
-• Status: Referenced — definition lives in BUSINESS/BRAND MESSAGING.
+| What | Where | Why |
+|---|---|---|
+| Brand positioning | `BUSINESS/BRAND MESSAGING` | Premium, trustworthy feel |
 
-------------------------------------------------------------
-Referenced By
-------------------------------------------------------------
+## Used by
 
-APP LOGO (BUSINESS/APP LOGO)
-• Purple is the primary logo background colour.
-• Blue and pink are supporting colours.
-• This document is the source of truth for those values.
+| What | Where | Uses |
+|---|---|---|
+| App code (the authority) | `SOURCE/lib/theme/zyra_colors.dart`, `zyra_text.dart`, `main.dart` theme | Every value in `Summary.md` |
+| Look and feel blueprint | DOC-ZYRA-0282 | Full detail: spacing, components, haptics, motion |
+| App logo and icon | `BUSINESS/APP LOGO` | Midnight Plum background, wordmark gold #E5CE8E, Syne |
+| Splash | `SOURCE/lib/screens/splash_screen.dart`, `assets/splash/splash_logo.png` | Midnight Plum, Syne wordmark |
+| Personalisation | `SOURCE/lib/screens/settings/personalisation_screen.dart` | The 10 dark backgrounds, gold accents |
+| Onboarding rules | `APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Onboarding Rules & UX.md` § COLOUR SYSTEM | Historical only — onboarding uses the one app background |
+| UI consistency checks | DOC-ZYRA-0266 | Screenshot checks against these colours |
 
-BRAND MESSAGING (BUSINESS/BRAND MESSAGING)
-• Brand Messaging references the purple brand colour.
-• Hex values defined here.
+## Open
 
-All User-Facing Pages
-• Colour themes applied throughout the app.
-
-Optional Midnight blue (Founder direct, 2026-10-22; OA-ZYRA-305)
-• Summary.md owns the additional Personalisation Background tokens and scope.
-  This adds a dark choice without changing Midnight Plum, palette revision,
-  shared component/sheet recipes or gold. UI Consistency Gate handover owns
-  exact Source, preference/preview isolation, checks and local-delivery truth.
-• The four-page conversation study remains illustrative; its radial canvas and
-  independently recoloured cards are not a new app-wide component contract.
-
-Member App Gold Option (DR-ZYRA-258, 2026-10-04)
-• `SOURCE/lib/dev/zyra_app_gold_preview.dart` adds the independently switched
-  onboarding dust behind normal app gradient canvases. Shared Personalisation
-  owns the default-Off member control; `theme/zyra_app_gold_style.dart` and
-  owner-bound local preferences save its choice on this device. Shared Developer
-  Home retains only a temporary authorized override. Opening/login dust controls
-  remain unchanged; no default-On public theme adoption is implied.
-• Existing `dev_onboarding_gold_design.dart` owns the reused Diagonal edge /
-  Live drift composition. Colour Theme still owns its palette, not the helper.
-• UI Consistency Gate handover and OA-ZYRA-257 own internal evidence and
-  the 2026-10-04 local phone delivery and pending Founder visual acceptance.
-
-Design System
-• Colour tokens sourced from this document.
-
-Component Library
-• UI components use colours defined here.
-
-Splash Screen
-• Global brand gradient (#8A6A9E → #3D2A4A) applied here.
-
-Icons
-• Icon colours follow the colour logic defined here.
-
-------------------------------------------------------------
-Overlap Flags
-------------------------------------------------------------
-
-⚠️ BUSINESS/APP LOGO
-- App Logo previously flagged App Colour Theme as an
-  unresolved dependency. This document resolves that.
-- App Logo References.md updated to point here.
-
-------------------------------------------------------------
-Open Dependencies
-------------------------------------------------------------
-
-• Exact colour tokens for UI components not yet defined.
-• Typography and spacing not yet documented.
-• Design system document not yet created.
-• Component library not yet created.
-• RESOLVED 2026-07-25 (DR-ZYRA-094): Option 1 vs Option 2 —
-  Option 1 ratified as final palette, Option 2 rejected. See
-  Summary.md (Status: 🟢 Finalised) and DR-ZYRA-094.
+| Item | Ref |
+|---|---|
+| Privacy words too faint | OA-ZYRA-314 |
+| Corner scale | OA-ZYRA-313 |
+| Widget library DOC-ZYRA-0172 dates from 26 Jul | Use DOC-ZYRA-0282 §5 instead |

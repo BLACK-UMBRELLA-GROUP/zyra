@@ -41,12 +41,21 @@ document, overlay or AD says otherwise, this block wins.
 |---|---|---|
 | Founder | Shakeel | Sole approver |
 | Lead Architect | Fable (Claude) | Architecture, governance, registers, schedules, review and verification |
-| Design & Implementation | Codex | Product design and code execution only — no admin, governance, mailbox or schedules |
+| Design & Implementation | Codex | Product design and code execution only — no admin, governance, mailbox or schedules (one exception: the 04:00 daily report job, DOC-BUG-0027) |
 | Admin | Fable (Claude), from the Black Umbrella Group chat | Admin for every business: registers, schedules, clean-ups, reporting. One Claude chat per business handles that business's design and product work |
 
 Fable holds an active seat. Any line elsewhere saying "Fable/Claude is
 retired" or "no Claude/Fable bootstrap is active" is superseded.
 <!-- BLACK-UMBRELLA-CORE-RULES v2 END -->
+
+## What we are building (read before any ZYRA work)
+
+**The planned ZYRA is the Founder preview** — the latest design built with Codex, which opens when the Founder signs in
+(`SOURCE/lib/dev/zyra_founder_launch_screen.dart` → `ViewRequestDraftScreen` / `ZyraOneJourneyConceptShell`). It runs on sample
+people today. The ordinary member app (`HomeShell`, `journey_flow_screen.dart`) is the **old app being replaced**. Features the
+preview retired — Pause and Save — are retired for ZYRA ("Request restart" after an ending is planned, not retired). Decision DR-ZYRA-274 (25 Oct 2026); work tracked in OA-ZYRA-316; deep review DOC-ZYRA-0285.
+Update this paragraph the same day the direction changes (lesson S13).
+
 
 Bootstrap pointer for AI agent sessions working in `ZYRA/`.
 

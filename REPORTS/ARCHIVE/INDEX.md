@@ -21,3 +21,4 @@ ZYRA's other reports in `SYSTEM/RESOURCES/REPORTS` and the 38 ZYRA reports in th
 | MESSAGES_2026-08_TO_10/ | The Fable/Codex/Founder relay mailbox under the old model. Was SYSTEM/RESOURCES/MESSAGES; moved 25 Oct (OA-AIOS-408) |
 | SUBSCRIPTION_REVIEW_2026-08-26/ | Fable/Codex subscription debate output. Moved 25 Oct (OA-AIOS-408) |
 | ESCALATIONS_2026-06-26_*, ZYRA_TERMINOLOGY_PRICING_AUDIT_2026-07-12_V1.md | June/July reports. Were SYSTEM/RESOURCES/REPORTS; moved 25 Oct (OA-AIOS-408) |
+| `PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/` | Blueprint parts 1 and 2 V1 — written from the old member app; replaced by V2 from the planned app (DR-ZYRA-274), 26 Oct 2026 |

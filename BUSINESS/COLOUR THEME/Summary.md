@@ -3,315 +3,135 @@ id: DOC-ZYRA-0102
 type: BRAND
 status: CURRENT
 feature: BUSINESS: COLOUR THEME
-purpose: Colour Theme — Summary
-links: []
-owner: ZYRA chat
+purpose: Colour Theme — the one current record of ZYRA's colours, backgrounds, surfaces and fonts, taken from the app code
+links: [DOC-ZYRA-0282, DOC-ZYRA-0100, DOC-ZYRA-0101, OA-ZYRA-313, OA-ZYRA-314]
+owner: Founder (decisions) · Fable (document)
 ---
 
-============================================================
-ZYRA — COLOUR THEME (GOVERNED SUMMARY)
-============================================================
-Version:      V1
-Status:       CURRENT_VERSION — governed (in-place promotion)
-Owner:        Founder (content) · Fable (documentation filing)
-Promoted:     2026-08-20 under OA-ZYRA-209 — Founder standing
-              instruction; recommendation executed: governed
-              headers first, filename renames deferred until the
-              OA-ZYRA-201 reference-stability decision.
-Supersession: This file is the single current version of this
-              system summary. Any prior unversioned copies are
-              superseded in place.
-============================================================
+# ZYRA — COLOUR THEME — V2 (CURRENT)
 
-FEATURE NAME
-COLOUR THEME
-Group: 7 — UI/UX Design
-Status: 🟢 Finalised
+Rewritten 25 Oct 2026 by Fable from `SOURCE/lib/theme/zyra_colors.dart`, `zyra_text.dart` and the theme in `SOURCE/lib/main.dart`
+(OA-ZYRA-313). The code is the authority; if this page and the code ever disagree, the code wins and this page is fixed.
+V1, with all its dated banners, is kept unchanged in `ARCHIVE/COLOUR_THEME_SUMMARY_2026-10-25_V1.md`.
+Full detail (spacing, components, haptics, motion): blueprint part 5, DOC-ZYRA-0282.
 
-STATUS FIELD NOTE (2026-07-25) — DR-ZYRA-094: palette finalised.
-Option 1 below is the ratified final specification; Option 2 was
-considered and rejected. This closes the 🔴 flag set 2026-07-19
-(DR-ZYRA-093), which was accurately recording that the decision
-was still open at that time — it is not open anymore.
+## The feel
 
-This decision also supersedes DR-ZYRA-090's flat/no-fade
-override (Luxury Dark Purple removed from active gradients,
-live-testing-phase, not yet ratified). The ratified final
-specification restores the gradient behaviour below — every
-theme fades into Luxury Dark Purple (#3D2A4A) as originally
-specified.
+Royal, luxury, warm, modern, soft, trustworthy. A **dark, glass-on-purple** app: one deep purple background, translucent white
+"glass" on top, a thin **gold edge** on whatever is selected or important, thin white Poppins text, and the ZYRA mark in pale gold.
 
-UPDATE (2026-07-25, same day, build authorised): the gap noted
-above is closed. `SOURCE/lib/theme/zyra_colors.dart` now
-implements this ratified specification (`brandGradient`,
-`brandGradientMale`, `brandGradientFemale`, all fading to
-#3D2A4A), and a `ZyraColors.genderGradient()` helper applies
-Male/Female gradients across profile-context screens app-wide
-(Profile, Matches, Match Notification, Journey Timeline, Chat,
-Upgrade, Guardian screens — see DR-ZYRA-101). Onboarding correctly
-stays flat/neutral throughout, per OA-ZYRA-123, unaffected by
-this.
+## 1. Background
 
-CURRENT QUIET DARK HALO SURFACES (Founder direct, 2026-10-22; OA151/304/305):
-The selected/emphasis/frost/accent/glass presentation uses the normal shared
-surfaceFill with a quiet 70%-opacity gold edge instead of the pale overlay.
-This narrowly supersedes older pale selected-card/frost recipes below, not
-the chosen Background, palette revision, semantic/destructive ink or fonts.
-Expanded request cards keep a gold edge and transparent inner primary action;
-active-Moment actions, circles, Journey frost pills, Timeline position chips,
-Guardian monograms and Circle decorative chips/outgoing bubbles use quiet fill.
-Focus, progress and glow/status meaning remain. Small gold new/unread dots
-lose notification paint only; counts/semantics/acknowledgement, gold navigation
-artwork, selection/pagination and semantic icons remain.
+| | |
+|---|---|
+| **Default for everyone** | **Midnight Plum: #30203F → #160E20**, top-left to bottom-right |
+| Applies to | Every page, both roles (Seeker and Guardian), sign-up, onboarding and splash |
+| Gender | **Does not change colour.** One background for all since 20 Aug 2026 |
+| Member choice | Profile → Personalisation → Background: the 10 dark options below. The choice is kept per account on the device |
+| One-off reset | On 27 Sep 2026 every installation was moved to Midnight Plum once (revision `dark-hulu-app-2026-09-27-v1`). Later choices are kept |
 
-UI Consistency/Navigation/Family Messaging handovers and packet
-OA151_CIRCLE_DOTS_HALO_FINAL_2026_10_22.O8XRQc own implementation, the read-only
-Unlocks capsule and full-viewport Circle layout. S0eeD4's stale Browse-label
-test failure stays failed; only its lookup is repaired and runtime is unchanged.
-Fresh 45 suites pass 1,019 actual unique app cases, zero failures/skips; 46
-recipe cases separate. Analysis/24-path zero-change format/No-Git and 4,869
-inputs/14 helpers pass. Manifest binds 136 PNGs/10 root-viewed; targeted 19
-passes overlap primary. Full/control captures stay failed, separate one-await
-diagnostic supports settling sensitivity only, not a runtime fix/full pass.
-Initial negative LOCK remains preserved. After the Founder unlock reply, fresh
-LOCK_2 and one INSTALL/LAUNCH/POST pass with unchanged Source/helpers. YmJRX6
-is DELIVERED/native POST-verified at 22:57:45.000 UTC, container
-49530B83-FA3B-4128-9DCF-CC5AB9F0D1FF/PID 37844; PErAL4 is prior history.
-Runbook/facts own exact qualification/build/delivery pins and retained-host limits.
-No all-theme AA, physical UI/VoiceOver/Founder acceptance or public release is
-claimed. Other open component/typography/design-system dependencies remain;
-this is the Founder's bounded change, not general Summary finalization.
-Existing OAs and paused UNSENT filing remain; no new identifier or closure.
-
-OPTIONAL MIDNIGHT BLUE BACKGROUND (Founder direct, 2026-10-22; OA-ZYRA-305):
-After the four-page blue conversation study, the Founder instructs: "just add
-it to personilsation section". Add Midnight blue to the shared Profile >
-Personalisation > Background choices for both roles. Its app-native linear
-gradient runs top-right #183F83 to bottom-left #07132B, preserving the existing
-background API rather than adding the study's radial canvas layering. This is
-an optional background, not a new default or a whole-app branding replacement.
-Midnight Plum, the current palette revision, existing explicit preferences,
-gold/semantic accents, fonts and the shared component/sheet recipes stay
-unchanged. The member's deliberate selection uses the existing account-owned
-local name preference; the protected comparison keeps its isolated session
-intention and cannot write ordinary member preferences. Native launcher/splash
-artwork and live account/backend settings do not change. UI Consistency Gate
-handover owns implementation, measurements and distinct local delivery status.
-
-CURRENT MEMBER APP GOLD OPTION (Founder direct, 2026-10-04; DR-ZYRA-258;
-OA-ZYRA-257/286): Gold accents is an On/Off option in the shared Personalisation
-page for Seekers and Guardians. It starts Off and remembers the bound member's
-choice on this device. Same-owner cold starts restore it; logout/account
-switches clear it under the existing presentation-cache policy. On adds the
-existing Diagonal edge / Live drift dust behind normal app gradient canvases;
-Off restores the original canvas. The developer control remains an authorized,
-temporary explicit On/Off override, never a member preference writer. Member
-selection clears that override; authorization revocation discards only the
-override, preserving the ordinary member choice.
-
-Opening/login gold choices, cards, photos, text, controls, palette, semantic
-gold and fonts remain unchanged. Reduced motion keeps this app dust still;
-inactive/background tickers pause. This does not adopt a default-On public
-theme or change profile data, entitlements or backend settings. DR-ZYRA-255's
-earlier developer-only scope and sequence 6108/PID 67328 delivery remain dated
-history, superseded only for member availability and local persistence. The
-UI Consistency Gate handover owns current implementation/delivery evidence;
-Founder physical visual acceptance remains separate.
-
-CURRENT CENTRED MODAL ALIGNMENT (Founder full-app review, 2026-10-03;
-OA-ZYRA-304/257): shared centred notices/confirmations now use the same opaque
-#241A2F surface as app-owned sheets/toasts, with one quiet semantic-gold edge.
-This supersedes the historical transparent/blurred centred-dialog recipe only;
-approved Glass Signals cards, Floating Glass navigation and deliberate developer
-comparisons remain. Poppins, Syne wordmark, splash #E5CE8E, semantic gold
-#E8C98A, destructive coral and current Midnight Plum are unchanged. The shared
-modal remains scrollable/safe-area/keyboard aware at large text. Internal
-behavior/layout checks and Founder physical visual acceptance are separate;
-see ZYRA_APP_FLOW_UI_REVIEW_HANDOVER_CURRENT_VERSION_V1.md.
-
-CURRENT ICON LETTERING ALIGNMENT (Founder direct, 2026-09-30; OA-ZYRA-257):
-the ZYRA lettering on the Current app icon and ten active comparisons now
-uses the main Quiet Horizon splash wordmark gold #E5CE8E. Their existing
-Midnight Plum #30203F → #160E20 background and decorative treatments are
-unchanged. The 2026-09-27 sentence below saying the current iPhone icon
-was unchanged describes that day's initial palette migration, not today's
-lettering correction. App Logo owns icon composition and the UI Consistency
-Gate handover owns generated-asset verification; this Colour Theme retains
-ownership of the palette. Founder physical visual acceptance is pending.
-
-CURRENT APP-WIDE OVERRIDE (Founder direct, 2026-09-27; OA-ZYRA-257): the
-Founder selected the darker Hulu-inspired splash purple for the whole app,
-including every splash preview and launcher icon. The current Midnight Plum
-option now uses **#30203F → #160E20**, top-left to bottom-right. This supersedes
-the 2026-08-24 default below for both roles, signup, production splash,
-navigation, and all twelve Current/Hulu-family previews. Matching opaque
-popup/sheet/toast surface: **#241A2F**; anchored menus use that colour at 92%.
-Primary action ink now uses #160E20. Glass recipes, gold, fonts, destructive
-coral and status meanings are preserved. All app-owned bottom sheets still
-resolve to one opaque token; this replaces the earlier #2A1F33 override below.
-Native pre-Flutter launch and Android adaptive-icon backing use #160E20,
-without adding a static launch logo. The current iPhone icon is unchanged;
-the Founder subsequently requested Current + ten new icon studies in the
-shared Home toggle. These eleven active options retain the same purple base,
-locked Syne wordmark/glyph and gold accents (App Logo owns compositions).
-Historical alternate assets remain preserved but are not active options.
-Android/macOS/web/Windows launcher assets retain the current source design.
-Founder clarification (same day): previous saved palettes must not silently
-override this whole-app update. Startup now adopts Midnight Plum once per
-account-owned palette revision (`dark-hulu-app-2026-09-27-v1`), replacing any
-previous saved palette on that installation without resetting login, profile,
-messages, font, haptic or lock preferences. Later deliberate Personalisation
-choices remain available and persisted with this revision; developer choices
-remain temporary. This supersedes the earlier preserve-old-palette behavior.
-Historical decisions/retired assets remain
-evidence, not current defaults. Implementation checks and installation are
-separate from Founder visual acceptance, which remains pending.
-
-HISTORICAL DEFAULT OVERRIDE (Founder direct, 2026-08-24): while the full palette
-remains available in Developer Style, the app now launches on **Midnight Plum**
-(`#684D78` → `#241A2C`) across Seeker, Guardian and signup surfaces. This is
-the Founder's "for now" comparison default, not a deletion of the ratified
-ZYRA Purple option. Relaunch and `Restore default style` both return to
-Midnight Plum until the Founder chooses otherwise.
-
-============================================================
-SUMMARY
-============================================================
-
-Purpose:
-Defines the official colour palette, gradients, and visual
-identity used throughout ZYRA.
-
-Owns:
-- Global brand colours
-- Colour themes
-- Colour gradients
-- Colour usage rules
-
-The colour theme should create a feeling of:
-• Royal
-• Luxury
-• Warm
-• Modern
-• Soft
-• Trustworthy
-
-The interface should use a Google-inspired Bubble UI with
-rounded cards, rounded buttons and generous spacing.
-
-------------------------------------------------------------
-FINAL PALETTE — RATIFIED 2026-07-25 (DR-ZYRA-094)
-------------------------------------------------------------
-
-GLOBAL BRAND
-Gradient: #8A6A9E → #3D2A4A
-Represents:
-• ZYRA Brand
-• Default application theme
-• Splash Screen
-• Main Navigation
-• Core branding
-
-MALE THEME
-Gradient: #3D5A80 → #3D2A4A
-Used for:
-• Male Seeker
-• Male Guardian
-
-FEMALE THEME
-Gradient: #D4868F → #3D2A4A
-Used for:
-• Female Seeker
-• Female Guardian
-
-------------------------------------------------------------
-COLOUR PALETTE
-------------------------------------------------------------
-
-| Name                | Hex       |
-|---------------------|-----------|
-| Royal Purple        | #8A6A9E   |
-| Luxury Dark Purple  | #3D2A4A   |
-| Royal Blue          | #3D5A80   |
-| Rose Pink           | #D4868F   |
-
-------------------------------------------------------------
-COLOUR LOGIC
-------------------------------------------------------------
-
-Purple
-• Represents the ZYRA brand and default application identity.
-
-Blue
-• Represents all male accounts.
-
-Pink
-• Represents all female accounts.
-
-Luxury Dark Purple
-• Shared luxury foundation across all themes.
-
-------------------------------------------------------------
-RATIONALE
-------------------------------------------------------------
-
-✓ Strong ZYRA identity
-✓ Clear default application colour
-✓ Obvious splash screen colour
-✓ Premium appearance
-✓ Royal feel
-✓ Male and female themes remain connected
-✓ Shared luxury base colour creates consistency
-
-Using a dedicated purple brand theme gives ZYRA a recognisable
-identity while blue and pink represent male and female users.
-The shared Luxury Dark Purple (#3D2A4A) ties every theme
-together, creating a cohesive, premium experience.
-
-------------------------------------------------------------
-REJECTED ALTERNATIVE
-------------------------------------------------------------
-
-An earlier "Option 2" (no dedicated brand colour; Male
-#3D5A80 → #D4868F, Female #D4868F → #3D5A80, two-colour system
-only) was considered and rejected — weaker brand identity, no
-clear default/splash colour. Full comparison retained in
-DR-ZYRA-094, SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md.
-
-============================================================
-APPROVED TO-DO LIST
-============================================================
-(None listed in source — add as decisions are made.)
-
----
-
-## Component colour rules — ADDED 2026-08-12 (Frost UI pass, Founder-approved 2026-08-11)
-
-**Current bottom-sheet override — Founder direct, 2026-09-27:** all app-owned
-bottom sheets use the opaque dark plum surface `#2A1F33` shown in the
-Founder's approved Past Journey summaries screenshot. This supersedes the
-Royal-to-Luxury gradient bottom-sheet row below. The one implementation owner
-is `ZyraColors.modalSheetSurface`; older `waliSheetBg`, `sheetSurface` and
-`sheetGradient` accessors resolve to that same surface. The developer-only
-light palette uses `#F7F2F8`. Rounded geometry may vary with the flow; the
-sheet surface colour must remain consistent. Device install confirmation is
-separate from successful app launch. Trace: OA-ZYRA-257.
-
-The 2026-08-11 screenshot review ("some buttons are one colour and some are
-another and some dont feel like the app culture… I want a clean UI") ratified an
-app-wide component system, implemented the same night. Recorded here so the
-palette file and the app stop disagreeing; formal re-issue of this document can
-fold these into the tables above.
-
-| Purpose | Value | Rule |
+| Background option | Gradient | Direction |
 |---|---|---|
-| Primary action fill | Pastel Grey Lavender `#CEA2D1` | Every primary button, BOTH gender themes. NEW palette entry — pending formal ratification into the table above; it was Founder-approved via the Frost UI brief and is live app-wide. |
-| Text on primary | Luxury Dark Purple `#3D2A4A` | Always. Never white on the lavender fill (~2:1 — fails accessibility; plum is 5.8:1). |
-| Anchored menus (Journey ⋮ etc.) | Luxury Dark Purple @ 92% + blur σ30 | Dark plum glass — anchored menus have no dimming barrier and float over the gradient's palest region, where white glass fails. |
-| Bottom sheets | Royal Purple `#8A6A9E` @ 90% → Luxury Dark Purple @ 96%, vertical, + blur σ30 | Founder 2026-08-11: "pic 2 should be purple." Flat 88% plum over a photo compounded to grey. |
-| Centred dialogs | white 14% fill · white 22% border · blur σ30 · radius 24 | Unchanged ratified glass (zyra_glass_dialog.dart). |
-| Frost pills | white 10% fill · white 18% border; selected 28%/12% | Sampled from the Connections segmented control. |
-| Destructive accents | `#E08080` coral (`ZyraColors.destructive`) | Menus, sheets and dialogs. |
-| Retired | `#1A1220` near-black | Fully swept from the client 2026-08-11; never ratified. |
+| **Midnight Plum (default)** | #30203F → #160E20 | top-left → bottom-right |
+| ZYRA Purple (the original brand gradient) | #8A6A9E → #3D2A4A | top → bottom |
+| Royal Blue | #607BA7 → #26364F | top → bottom |
+| Rose Pink | #A6788F → #503343 | top → bottom |
+| Deep Emerald | #47756B → #18352F | top → bottom |
+| Sapphire Night | #48698B → #192A3E | top → bottom |
+| Desert Rose | #A26F70 → #513436 | top → bottom |
+| Warm Cocoa | #7B665F → #352A28 | top → bottom |
+| Charcoal Gold | #55505D → #211E27 | top → bottom |
+| Midnight blue (added 22 Oct) | #183F83 → #07132B | top-right → bottom-left |
 
-Tokens live in `SOURCE/lib/theme/zyra_colors.dart` (frost/action block, 2026-08-11).
+Two light backgrounds (Paper White, Crystal UI) and seven light accent colours exist only for developer comparison and old test
+pictures; members cannot choose them.
+
+**Gold accents** (member option, starts Off): adds a slow gold dust and a diagonal gold edge behind the background. Kept per
+account on the device, cleared on sign-out, still when the phone asks for reduced motion.
+
+## 2. Named colours
+
+| Name in code | Value | Used for |
+|---|---|---|
+| `royalPurple` | **#30203F** | Top of the default background; seed colour of the app theme |
+| `luxuryDarkPurple` | **#160E20** | Bottom of the default background; text on light/lavender fills; launch screen before the app starts |
+| `darkPlumSurface` | **#241A2F** | Every bottom sheet, centred dialog and snackbar (opaque). Anchored menus use it at 92% |
+| `splashWordmark` | **#E5CE8E** | The ZYRA wordmark and the app icon lettering |
+| `journeyGold` | **#E8C98A** | Gold accents: selected edges (at 70%), Journey, premium |
+| `primaryAction` | **#CEA2D1** Pastel Grey Lavender | The theme's "primary" colour; text on it is #160E20 |
+| `destructive` | **#E08080** coral (edge at 40%) | End Journey, delete, report |
+| `positiveGreen` / `negativeRed` | **#84D0A8** / **#E18A91** | Up / down signals |
+| `journeyDotGreen` | **#78C69D** | Journey progress dots |
+| `successTick` | **#50B478** (progress done: 60%) | Completed steps |
+| Privacy dots | Public **#3D9A6A**, Unlock **#C49A44**, Private **#8A6A9E** | Privacy label dots |
+| Privacy words | Public #C8DC8C 50%, Unlock #DCB964 45%, Private #B496D2 45% | Privacy label words — **too faint**, see §6 |
+
+The old names "Royal Purple #8A6A9E" and "Luxury Dark Purple #3D2A4A" now survive only as the ZYRA Purple background option.
+
+## 3. Text colours
+
+| Role | Value |
+|---|---|
+| Main (headings, icons, buttons) | **#FFFFFF** |
+| Body | white **90%** |
+| Secondary | white **70%** |
+| Muted | white **54%** |
+
+## 4. Surfaces (what members see)
+
+**Classic Glass** is the locked surface style (29 Aug 2026). Since 22 Oct the selected/important look is the **quiet gold halo**:
+the normal glass fill with a 70% gold edge, not a paler fill.
+
+| Surface | Fill | Edge |
+|---|---|---|
+| Card, pill, panel | white 7% | white 14% |
+| Selected / important card, main button | white 7% | **#E8C98A 70%** |
+| Floating navigation bar | white 10% (20% touched), blur σ22 | white 18% (30% touched) |
+| Progress bar | white 28% | — |
+| Divider | white 14% | — |
+| Bottom sheet, centred dialog, snackbar | **#241A2F opaque** | dialogs: gold 28% |
+
+**Main buttons** are glass with the gold edge (not a lavender fill): at least 48 tall, fully round, white Poppins 400 15.
+Danger buttons are coral #E08080 with #160E20 text.
+
+## 5. Fonts
+
+| Use | Font | Weight | Size |
+|---|---|---|---|
+| ZYRA wordmark (welcome, splash, icon) | **Syne** | 600 | 34 default, letter spacing 4 |
+| Page titles | **Poppins** | 200 | 26 |
+| Headings | Poppins | 200 | 20 |
+| Buttons | Poppins | 400 | 15, letter spacing 0.5 |
+| Options | Poppins | 300 | 14 |
+| Body | Poppins | 300 | 13 |
+| Subtext | Poppins | 300 | 12.5 |
+| Privacy note | Poppins | 300 | 11 |
+| Chapter label | Poppins | 300 | 10, letter spacing 0.8 |
+| Tagline "Connecting Through Trust" | Poppins | 300 | grows with the screen, 12.5–17 |
+
+Both fonts ship inside the app. Poppins has been the reading font since 24 Aug 2026 (Jost before); Syne has been the wordmark since
+7 Aug 2026 (Playfair Display before). The wordmark is also baked into `assets/splash/splash_logo.png` and the app icon — change
+those too if the wordmark font ever changes.
+
+## 6. Open items
+
+| Item | Where |
+|---|---|
+| Privacy words fail contrast (3.6 / 2.7 / 2.3 against the 4.5 needed) | OA-ZYRA-314 |
+| No single corner scale (14, 18, 12, 20, 16, 24 all common) — design decision after the freeze | OA-ZYRA-313 |
+| Founder on-device look at the 27 Sep, 30 Sep, 3 Oct, 4 Oct and 22 Oct changes was still pending when they were recorded | V1 banners |
+
+## 7. Decision history (short)
+
+| Date | Decision | Ref |
+|---|---|---|
+| 25 Jul 2026 | Palette ratified: brand purple #8A6A9E → #3D2A4A, male blue, female pink | DR-ZYRA-094 |
+| 11 Aug 2026 | One component system: lavender primary, plum text, glass dialogs, coral danger | Frost UI pass |
+| 20 Aug 2026 | Background no longer changes by gender | Founder direction |
+| 24 Aug 2026 | Midnight Plum becomes the default; Poppins the reading font | Founder direction |
+| 29 Aug 2026 | Classic Glass surfaces locked | Founder direction |
+| 27 Sep 2026 | Midnight Plum darkened to #30203F → #160E20 app-wide; sheets one opaque colour | OA-ZYRA-257 |
+| 30 Sep 2026 | Icon lettering uses wordmark gold #E5CE8E | OA-ZYRA-257 |
+| 3 Oct 2026 | Centred dialogs opaque #241A2F with a gold edge | OA-ZYRA-304/257 |
+| 4 Oct 2026 | Gold accents becomes a member option, default Off | DR-ZYRA-258 |
+| 22 Oct 2026 | Quiet gold halo for selected surfaces; Midnight blue background option | OA151, OA-ZYRA-304/305 |
