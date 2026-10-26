@@ -15,6 +15,12 @@ Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app (`SOURCE
 the server functions (DOC-ZYRA-0281) and the decisions register. Last column: **Built** · **Different** · **Missing** on the server.
 Journey-stage rules that involve Guardians (Guardian Gate, Family Review) are also in the Journey rules, DOC-ZYRA-0283.
 
+
+> **How to read the server column (added 26 Oct, after the live check DOC-ZYRA-0294):** "Built" here means **in the repository
+> files**. Production is about two months behind. Not live today: per-Guardian View/Chat switches and agreed access
+> (`zyra_set_guardian_journey_permission`), Family places, the Main-Guardian Journey hold, the Guardian Circle, read receipts,
+> the verified trial, Browse ranking (`zyra_browse_ranked_ids`) and the 5 Oct security fixes. Everything else marked Built is live.
+
 ## In one paragraph
 
 A Guardian is a family member — father, brother, grandfather, uncle, legal guardian, family representative or other — who links
@@ -47,7 +53,7 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 | The Seeker can make another Guardian Main | DR-ZYRA-232 | **Built** — `zyra_set_main_guardian` |
 | A Seeker may deliberately have **no** Main; then no Journey can move (only End works) | DR-ZYRA-236 (replaces DR-ZYRA-136) | **Built** — `zyra_clear_main_guardian`, Journey hold trigger |
 | The Seeker can remove any Guardian; removal ends all that Guardian's access | DR-ZYRA-232 | **Built** — `zyra_remove_guardian` |
-| A Seeker has at most **5** Guardians; a Guardian supports at most **10** Seekers (safety limit) | DR-ZYRA-281 | **Missing** — no limit today |
+| Guardians per Seeker by plan: Seeker Basic **1**, Seeker One up to **10** (including Main); a Guardian supports at most **10** Seekers (safety limit) | DR-ZYRA-282, DR-ZYRA-281 | **Different** — the app checks the plan limit on screen only; no server limit |
 
 ## 3. Guardians in a Journey
 
@@ -106,7 +112,7 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 
 | # | Question | Decision |
 |---|---|---|
-| Q1 | Limits on Guardians? | **Up to 5 Guardians per Seeker; up to 10 Seekers per Guardian** |
+| Q1 | Limits on Guardians? | **By plan: Basic 1, One up to 10 per Seeker (DR-ZYRA-282); up to 10 Seekers per Guardian** |
 | Q2 | Guardian Basic cannot chat, even Main? | **Kept** (DR-ZYRA-268 stands) |
 
 ## Change log

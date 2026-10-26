@@ -9,6 +9,9 @@ links: [OA-ZYRA-309, DOC-ZYRA-0281, OA-ZYRA-312]
 owner: Fable
 ---
 
+> **Note 26 Oct 2026:** this part describes the **repository** files. Production is about two months behind — 17 files
+> (25 Aug – 5 Oct) were never applied. See the live check, DOC-ZYRA-0294.
+
 # ZYRA BLUEPRINT — PART 3 — DATA — V1 (DRAFT)
 
 Status: **DRAFT for Shakeel's review.** Written 25 Oct 2026 by replaying all 229 migrations in `SOURCE/supabase/migrations`

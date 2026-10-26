@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**303 actions: 131 open or unclear, 172 closed.**
+**304 actions: 132 open or unclear, 172 closed.**
 
 ## Open
 
@@ -149,6 +149,7 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-314 | Look-and-feel code fixes - Journey haptics, privacy-word contrast, stray file | OPEN - found by Fable in blueprint part 5 (OA-ZYRA-309). Nothing chan… | MEDIUM |
 | OA-ZYRA-315 | Journey rules - server gaps and loose ends found in blueprint part 2 | OPEN - found by Fable in blueprint part 2 (OA-ZYRA-309). Nothing chan… | HIGH for (a)(b) - r… |
 | OA-ZYRA-317 | Connect the planned app to real data - server support it does not have yet | OPEN - found in the planned-app deep review (DOC-ZYRA-0285 §4). The d… | HIGH - the planned … |
+| OA-ZYRA-319 | Database files - message send rule lost its block/ended checks; 24 Sep and 5 Oct migratio… | OPEN (repository only - not live, DOC-ZYRA-0294) - found by Fable rea… | HIGH - possible saf… |
 
 ⚠️ = status wording not recognised as open or closed (0). Fix the wording in the register.
 

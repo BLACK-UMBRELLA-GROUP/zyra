@@ -17293,7 +17293,8 @@ Title:       Guardian limits - up to 5 Guardians per Seeker, up to 10 Seekers pe
 Date:        2026-10-26
 Status:      APPROVED - Founder direct ("ba")
 Authority:   Founder, 26 Oct 2026, answering Guardian rules §9 (DOC-ZYRA-0290).
-Decision:    1. A Seeker may have at most 5 active Guardians (Main + Additional). A Guardian may
+Decision:    1. [AMENDED 26 Oct by DR-ZYRA-282: Guardians per Seeker are by plan - Basic 1, One 10.]
+                A Seeker may have at most 5 active Guardians (Main + Additional). A Guardian may
                 support at most 10 Seekers (matching the largest Family plan). A safety limit:
                 a link request beyond either limit is refused with a plain message.
              2. DR-ZYRA-268 stands: Guardian Basic has no Journey chat, including the Main Guardian;
@@ -17305,9 +17306,97 @@ Related:     DR-ZYRA-231, DR-ZYRA-232, DR-ZYRA-268, OA-ZYRA-317, DOC-ZYRA-0290.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-281,
+DR-ZYRA-282
+Title:       What each Seeker plan includes in the planned app; Guardians per Seeker by plan (amends
+             DR-ZYRA-281 §1)
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("a a")
+Authority:   Founder, 26 Oct 2026, answering Membership rules §8 (DOC-ZYRA-0291). Re-asked after
+             Fable's lesson F15 (DR-ZYRA-281 was set without showing the existing app limits).
+Decision:    1. Guardians per Seeker follow the plan, as the app already says: Seeker Basic 1,
+                Seeker One up to 10 (including Main). The safety cap stays: a Guardian supports at
+                most 10 Seekers. This replaces DR-ZYRA-281 §1's "5 per Seeker"; §2 stands.
+             2. Seeker plans in the planned app:
+                                     Seeker Basic            Seeker One
+                Journey places       1                       3
+                Browsing             25 profiles / 4 hours   unlimited; also when all places full
+                Pending requests     3 [DR-ZYRA-283]         25 [DR-ZYRA-283]
+                End a Journey to
+                accept a request     no                      yes
+                Request restart      no                      5 most recent ended Journeys
+                Revisit declined     no                      up to 10
+                Guardians            1                       up to 10
+                Unlocks included     0                       3
+                Trial                none                    14 days, once per verified person
+             Potential Journeys, Paused Journeys, Saved profiles and Considers are retired and leave
+             every plan description.
+Consequence: Plan text and limit files (zyra_seeker_plan_limits.dart, zyra_entitlements.dart, membership
+             wording) are rewritten after the freeze; server limits in the OA-ZYRA-317 design.
+Related:     DR-ZYRA-252, DR-ZYRA-275, DR-ZYRA-277, DR-ZYRA-280, DR-ZYRA-281, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-283
+Title:       Pending Journey requests by plan - Seeker Basic 3, Seeker One 25
+Date:        2026-10-26
+Status:      APPROVED - Founder direct (chat, 26 Oct: "25 and then they gotta manually cancel or wait
+             for other user to reject request"; Muzz allows paid users about 25 likes per 8 hours)
+Authority:   Founder, 26 Oct 2026, replacing DR-ZYRA-277 §2's "up to 5 per person".
+Decision:    A Seeker may have at most 3 pending (unanswered) Journey requests on Basic, 25 on
+             Seeker One. At the limit, no new request can be sent until one is cancelled by the sender,
+             declined by the recipient or expires (7 days, DR-ZYRA-277). The 48-hour ready window and
+             the 7-day expiry stand.
+Consequence: DR-ZYRA-282's plan table row "Pending requests" becomes Basic 3 / One 25. Server limit in
+             the OA-ZYRA-317 design. How past requests are shown and what the sender sees on a decline
+             are asked separately (26 Oct).
+Related:     DR-ZYRA-277, DR-ZYRA-282, DR-ZYRA-241, OA-ZYRA-317, DOC-ZYRA-0292.
+
+------------------------------------------------------------
+
+DR-ZYRA-284
+Title:       Past requests, the decline wording, and asking again - one rule for every Journey request
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("aa"; Q3: "sender waits 30 days yeh but the dont send me request
+             again is same as hide profile button ... it hides profile then")
+Authority:   Founder, 26 Oct 2026; extends DR-ZYRA-241 §5 from returns to all requests.
+Decision:    1. Journey requests gain a third tab, Past: requests you sent that were declined, expired or
+                cancelled, and requests you declined. Each stays listed for 30 days.
+             2. When a request is declined, the sender sees "Not taken up" - the same wording as an
+                expired request - never "Declined".
+             3. After a decline the sender waits 30 days before requesting that person again.
+             4. There is no separate "don't send me requests again" option: the person declining may
+                also Hide the sender, which removes the sender from their Browse and stops the sender
+                from requesting them (Hide does both).
+Consequence: Hide (DOC-ZYRA-0292) now also blocks requests from the hidden person; the server design
+             (OA-ZYRA-317) covers the Past tab, the 30-day wait and Hide.
+Related:     DR-ZYRA-241, DR-ZYRA-277, DR-ZYRA-283, DR-ZYRA-095, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-285
+Title:       Account deletion keeps the other person's ended Journey; one login may hold a Seeker and a
+             Guardian account
+Date:        2026-10-26
+Status:      APPROVED - Founder direct ("aa")
+Authority:   Founder, 26 Oct 2026, answering Profile and account rules §7 (DOC-ZYRA-0295).
+Decision:    1. Deleting an account no longer deletes shared records for the other people. Any Journey
+                ends and shows "This member has left ZYRA"; the other Seeker keeps their Timeline and the
+                messages for three months like any ended Journey (DR-ZYRA-280 §6); Guardian links end; the
+                Guardian Circle shows "Former member"; safety reports are kept for their set retention.
+                The deleted person's profile, photos, answers and account are removed.
+             2. One login may hold both a Seeker account and a Guardian account and switch between them
+                (Profile -> Switch account). Identity and sign-in are shared; each role keeps its own plan,
+                links, Journeys and history.
+Consequence: Both need server work in the OA-ZYRA-317 design: deletion that detaches rather than
+             cascades shared rows, and a profile model with two role contexts per login (the ZYRA Code
+             system already supports separate Seeker and Guardian codes, DR-ZYRA-231).
+Related:     DR-ZYRA-134, DR-ZYRA-231, DR-ZYRA-268, DR-ZYRA-280, OA-ZYRA-317, DOC-ZYRA-0295.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-285,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-282 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-286 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

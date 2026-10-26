@@ -981,6 +981,14 @@ Who may run a function is read from plain `grant`/`revoke` lines only. Grants ma
 | `zyra_unlock_row_guard` | profile_unlocks | `zyra_guard_unlock_row` |
 | `zyra_wali_links_guardian_link_allowed` | wali_links | `zyra_enforce_guardian_link_allowed` |
 
+## Views
+
+| View | Created in |
+|---|---|
+| `zyra_attempt_participant_rows` | `20261005114141_f02_guardian_current_attempt_read_boundary.sql` |
+| `zyra_data_ownership` | `20260806111219_ownership_platform_wide_and_self_maintaining_view.sql` |
+| `zyra_my_attempt_participation` | `20260918075737_oa290_additional_guardian_journey_access.sql` |
+
 ## Storage buckets
 
 | Bucket | Public | Created in |

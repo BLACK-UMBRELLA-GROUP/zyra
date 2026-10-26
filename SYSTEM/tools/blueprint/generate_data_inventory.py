@@ -53,7 +53,7 @@ def body_after(sql, start):
             if depth == 0: return sql[i + 1:j]
     return sql[i + 1:]
 
-tables = collections.OrderedDict(); functions = {}; triggers = {}; buckets = {}; comments = {}
+tables = collections.OrderedDict(); functions = {}; triggers = {}; buckets = {}; comments = {}; views = {}
 def table(n):
     return tables.setdefault(n, {'columns': collections.OrderedDict(), 'fks': set(), 'rls': False,
                                  'policies': {}, 'created': '', 'touched': '', 'schema': 'public'})
@@ -143,6 +143,9 @@ for f in files:
     for _, kind, name, tb, fn in sorted(ev, key=lambda x: x[0]):
         if kind == 'd': triggers.pop((name, tb), None)
         else: triggers[(name, tb)] = {'table': tb, 'function': fn, 'file': f}
+    # views (added 26 Oct: the first version listed tables only)
+    for m in re.finditer(r'create\s+(?:or\s+replace\s+)?view\s+([\w."]+)', sql, re.I): views[bare(m.group(1))] = {'file': f}
+    for m in re.finditer(r'drop\s+view\s+(?:if\s+exists\s+)?([\w."]+)', sql, re.I): views.pop(bare(m.group(1)), None)
     for m in re.finditer(r"insert\s+into\s+storage\.buckets\s*\(([^)]*)\)\s*values\s*\(([^)]*)\)", sql, re.I):
         cols = [c.strip() for c in m.group(1).split(',')]; vals = [v.strip().strip("'") for v in split_top(m.group(2))]
         d = dict(zip(cols, vals)); buckets[d.get('id', d.get('name', '?'))] = {'public': d.get('public', '?'), 'file': f}
@@ -185,6 +188,7 @@ for n in sorted(live_fn):
     out.append(f'| `{n}` | {v["args"].replace("|", "/") or "—"} | {v["returns"]} | {"yes" if v["definer"] else "no"} | {", ".join(sorted(v["grants"])) or "not in a plain line"} | {", ".join(x for x in v["tables"] if x in tables)[:120] or "—"} | {comments.get(("function", n), "")[:160].replace("|", "/")} |')
 out += ['', '## Triggers', '', '| Trigger | Table | Runs |', '|---|---|---|']
 out += [f'| `{k[0]}` | {v["table"]} | `{v["function"]}` |' for k, v in sorted(triggers.items())]
+out += ['', '## Views', '', '| View | Created in |', '|---|---|'] + [f'| `{k}` | `{v["file"]}` |' for k, v in sorted(views.items())]
 out += ['', '## Storage buckets', '', '| Bucket | Public | Created in |', '|---|---|---|']
 out += [f'| `{k}` | {v["public"]} | `{v["file"]}` |' for k, v in sorted(buckets.items())]
 out += ['', '## Server (edge) functions', '', '| Function | What its header says |', '|---|---|']
@@ -193,6 +197,6 @@ os.makedirs(os.path.dirname(OUT), exist_ok=True)
 open(OUT, 'w', encoding='utf-8').write('\n'.join(out) + '\n')
 json.dump({'tables': {k: {**v, 'fks': sorted(v['fks']), 'columns': dict(v['columns'])} for k, v in tables.items()},
            'functions': {k: {**v, 'grants': sorted(v['grants'])} for k, v in live_fn.items()},
-           'triggers': {f'{k[0]} ON {k[1]}': v for k, v in triggers.items()}, 'buckets': buckets, 'edge': edge, 'comments': {f'{a}:{b}': c for (a, b), c in comments.items()}},
+           'triggers': {f'{k[0]} ON {k[1]}': v for k, v in triggers.items()}, 'views': views, 'buckets': buckets, 'edge': edge, 'comments': {f'{a}:{b}': c for (a, b), c in comments.items()}},
           open(JSON_OUT, 'w'), indent=1, default=list)
 print(f'{len(tables)} tables, {len(live_fn)} functions, {len(triggers)} triggers, {len(buckets)} buckets, {len(edge)} edge; {os.path.getsize(OUT)//1024} KB')

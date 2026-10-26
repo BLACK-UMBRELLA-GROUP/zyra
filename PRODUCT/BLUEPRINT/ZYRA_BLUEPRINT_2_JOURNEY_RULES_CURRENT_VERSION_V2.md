@@ -15,6 +15,12 @@ Status: **DRAFT for Shakeel.** Written 26 Oct 2026 from the planned app (DR-ZYRA
 member app and is archived in `REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_OLD_APP_2026-10-26/`. The last column says what the **server** does today (from DOC-ZYRA-0280):
 **Built** = already enforced · **Different** = enforced another way · **Missing** = nothing yet. The gaps are OA-ZYRA-317.
 
+
+> **How to read the server column (added 26 Oct, after the live check DOC-ZYRA-0294):** "Built" here means **in the repository
+> files**. Production is about two months behind. Not live today: per-Guardian View/Chat switches and agreed access
+> (`zyra_set_guardian_journey_permission`), Family places, the Main-Guardian Journey hold, the Guardian Circle, read receipts,
+> the verified trial, Browse ranking (`zyra_browse_ranked_ids`) and the 5 Oct security fixes. Everything else marked Built is live.
+
 ## In one paragraph
 
 You see profiles only while you have a free Journey place (ZYRA One members can keep browsing when full). You **request** a
@@ -50,9 +56,10 @@ means a brand-new request the other person must accept.
 | Send | "Request a Journey" on a visible profile you have no history with; tap again to cancel | **Missing** — Journeys start from a mutual like + one tap |
 | Received / Sent | Two tabs in Journey requests; a gold dot for unseen received requests | **Missing** |
 | Accept | Needs a free place on both sides | **Missing** |
-| Decline / cancel | The request disappears; nothing is reserved | **Missing** |
+| Decline / cancel | Nothing is reserved; the sender sees **"Not taken up"** (same as expired) and waits **30 days** before asking that person again; the decliner may also **Hide** the sender, which stops further requests (DR-ZYRA-284) | **Missing** |
+| Past requests | A third tab, **Past**: your declined, expired and cancelled sent requests, and requests you declined, for 30 days (DR-ZYRA-284) | **Missing** |
 | Introductions | People your Guardians put forward appear here | **Built** — `wali_suggestions` (corrected 26 Oct) |
-| Limits (how many, how long) | Up to **5** pending requests per person; a request expires after **7 days** (DR-ZYRA-277) | **Missing** |
+| Limits (how many, how long) | Pending requests: **Basic 3, Seeker One 25** (DR-ZYRA-283); a request expires after **7 days** (DR-ZYRA-277) | **Missing** |
 
 ## 4. Getting ready and beginning
 
@@ -107,7 +114,7 @@ means a brand-new request the other person must accept.
 | # | Question | Decision |
 |---|---|---|
 | Q1 | Question stages: real answers + 48-hour Family Review, or "both continue"? | **Keep real answers and the 48-hour Family Review** |
-| Q2 | Request limits | **5 pending per person; 7-day expiry; 48 hours to get ready** |
+| Q2 | Request limits | **7-day expiry; 48 hours to get ready**; pending limit later set to Basic 3 / One 25 (DR-ZYRA-283) |
 | Q3 | Request restart timings | **24-hour wait, then 7-day expiry like every request** |
 
 Still open for the server design: what happens when the 48-hour ready window runs out.

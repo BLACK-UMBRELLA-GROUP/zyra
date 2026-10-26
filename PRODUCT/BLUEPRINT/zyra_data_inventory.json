@@ -5273,6 +5273,17 @@
    "file": "20261005120420_f06_f07_unlock_hold_serialization_receipts.sql"
   }
  },
+ "views": {
+  "zyra_data_ownership": {
+   "file": "20260806111219_ownership_platform_wide_and_self_maintaining_view.sql"
+  },
+  "zyra_attempt_participant_rows": {
+   "file": "20261005114141_f02_guardian_current_attempt_read_boundary.sql"
+  },
+  "zyra_my_attempt_participation": {
+   "file": "20260918075737_oa290_additional_guardian_journey_access.sql"
+  }
+ },
  "buckets": {
   "profile-photos": {
    "public": "false (changed in 20260719080749_private_profile_photos_bucket.sql)",

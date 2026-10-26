@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**279 decisions; 3 marked superseded/retired.**
+**283 decisions; 3 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -295,3 +295,7 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-279 | 2026-10-26 | ZYRA keeps the Android project for a future release; web and desktop projects are removed | APPROVED - Founder direct ("aa", answer… |
 | DR-ZYRA-280 | 2026-10-26 | Nine planned-app rules confirmed (requests, places, readiness, Journey Bio, archive, Guar… | APPROVED - Founder direct ("a") |
 | DR-ZYRA-281 | 2026-10-26 | Guardian limits - up to 5 Guardians per Seeker, up to 10 Seekers per Guardian; Guardian B… | APPROVED - Founder direct ("ba") |
+| DR-ZYRA-282 | 2026-10-26 | What each Seeker plan includes in the planned app; Guardians per Seeker by plan (amends D… | APPROVED - Founder direct ("a a") |
+| DR-ZYRA-283 | 2026-10-26 | Pending Journey requests by plan - Seeker Basic 3, Seeker One 25 | APPROVED - Founder direct (chat, 26 Oct… |
+| DR-ZYRA-284 | 2026-10-26 | Past requests, the decline wording, and asking again - one rule for every Journey request | APPROVED - Founder direct ("aa"; Q3: "s… |
+| DR-ZYRA-285 | 2026-10-26 | Account deletion keeps the other person's ended Journey; one login may hold a Seeker and … | APPROVED - Founder direct ("aa") |

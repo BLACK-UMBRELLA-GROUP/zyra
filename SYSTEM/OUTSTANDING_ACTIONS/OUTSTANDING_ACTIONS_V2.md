@@ -26041,6 +26041,19 @@ Update:      26 Oct - Part 2 Guardians DRAFTED: DOC-ZYRA-0290 (linking by code, 
              Correction: Introductions are BUILT on the server (wali_suggestions) - fixed in parts 2 and 7 and
              DR-ZYRA-280 (lesson F14). Two Founder questions in §9. Remaining part 2 pages: Browse,
              Membership, Messaging, Profile, Onboarding, Safety.
+Update:      26 Oct - Part 2 Membership DRAFTED: DOC-ZYRA-0291 (plans, prices, joining fee, trial, Family places,
+             Unlocks, paid status, grace, what each plan includes, payments needed). Found: plan descriptions
+             still use old-app terms; app already has Guardian limits Basic 1 / One 10, conflicting with
+             DR-ZYRA-281 (lesson F15) - re-asked. Remaining part 2 pages: Browse, Messaging, Profile,
+             Onboarding, Safety.
+Update:      26 Oct - Part 2 Browse DRAFTED: DOC-ZYRA-0292. Server already ranks by compatibility and handles
+             blocks; missing: place-based visibility, hide, profile pause, filters, Basic browse limit,
+             revisits, requests. Remaining part 2 pages: Messaging, Profile, Onboarding, Safety.
+Update:      26 Oct - Part 2 Messaging DRAFTED: DOC-ZYRA-0293. Serious findings raised as OA-ZYRA-319. Remaining
+             part 2 pages: Profile, Onboarding, Safety.
+Update:      26 Oct - Part 2 Profile and account DRAFTED: DOC-ZYRA-0295, checked against production. Earlier part 2
+             pages got a note: "Built" = repository; production lacks several (DOC-ZYRA-0294). Two Founder
+             questions (account deletion effects; two roles on one login). Remaining: Onboarding, Safety.
 Acceptance:  For sample screens, the blueprint alone explains everything the screen shows
              and does; MAP.md routes to every feature document.
 
@@ -26102,6 +26115,14 @@ Status:      OPEN - found by Fable in blueprint part 3 (OA-ZYRA-309). 13 functio
 Update:      26 Oct - Add to the live check: are the 16 @zyra.test seed accounts (seed_dev_accounts.sql) and
              fake photos in production? Which migrations are applied live vs the repository (24 Sep
              paid-only; OA-ZYRA-298 Guardian Circle messaging noted as not live)?
+Update:      26 Oct - Also check live: do zyra_my_hidden_profile_ids, zyra_set_profile_hidden,
+             zyra_my_profile_pause_state, zyra_set_my_profile_pause or wali_has_wali_one exist in production
+             (they are not in any migration)?
+Update:      26 Oct - LIVE CHECK DONE (Founder GO, read only): DOC-ZYRA-0294. 13 developer functions live, callable
+             by any signed-in account, guarded by @zyra.test; production has 149 test accounts and 4 others, no
+             real members. zyra_onboarding_questions: RLS on, functions only - safe (that part closed). Remaining
+             before launch: remove developer/mock functions; confirm sign-up settings; leaked-password
+             protection on.
 Next:        With the Founder's GO, read-only checks on the live project: email sign-up and
              confirmation settings; row-level security on zyra_onboarding_questions. Then
              decide: keep with a stronger guard (confirmed email + allow-list), or move the
@@ -26220,6 +26241,8 @@ Update:      26 Oct - From blueprint part 6 (DOC-ZYRA-0288 §9): merge the three
              in git despite .gitignore); empty supabase/functions and supabase/staging; Android/web/desktop
              folders (36 MB) for an iPhone-only app - Founder decision.
 Update:      26 Oct - DECIDED, DR-ZYRA-279: keep android/; remove web/, windows/, linux/, macos/.
+Update:      26 Oct - Add: old-app call to the dropped function wali_has_wali_one (zyra_entitlement_service.dart);
+             old Browse tables saves/passes/likes once the request model replaces them.
 Owner:       Founder decides · Fable reviews and plans · Codex removes after the freeze
 Acceptance:  One app; every line of code is used by it or by its tests; retired features gone from app
              and server.
@@ -26261,6 +26284,23 @@ Update:      26 Oct - DR-ZYRA-280: nine planned-app rules confirmed (requests, p
              Guardian, Introductions) - all part of this design.
 Update:      26 Oct - DR-ZYRA-281: (11) Guardian limits - 5 Guardians per Seeker, 10 Seekers per Guardian,
              enforced on the server in the link request/accept functions. Guardian Basic no-chat confirmed.
+Update:      26 Oct - DR-ZYRA-282: plan contents decided (Basic/One table); Guardians per Seeker by plan
+             (Basic 1, One 10) replaces DR-ZYRA-281's 5; 10 Seekers per Guardian stays. Server limits for
+             browsing (25 per 4 hours on Basic), requests, revisits and Guardians belong in this design.
+Update:      26 Oct - From Browse rules (DOC-ZYRA-0292): (12) the app calls 4 functions no migration creates -
+             hide (zyra_my_hidden_profile_ids, zyra_set_profile_hidden) and Pause My Profile
+             (zyra_my_profile_pause_state, zyra_set_my_profile_pause) - "prepared, not deployed"; (13) server
+             filters for age, distance, country, nationality, ethnicity; (14) Browse ranks with the legacy
+             scorer, not the six approved policies (DR-ZYRA-250).
+Update:      26 Oct - DR-ZYRA-283: pending requests Basic 3 / One 25 (replaces 5). Open: a past-requests
+             view, what the sender sees on a decline, and re-request rules (asked 26 Oct).
+Update:      26 Oct - DR-ZYRA-284: Past tab (30 days), "Not taken up" wording, 30-day wait after a decline,
+             Hide also stops requests. Request questions closed.
+Update:      26 Oct - Live check: production is ~2 months behind the repository - 17 files (25 Aug - 5 Oct) never
+             applied, incl. shared pause, Main-Guardian hold, Circle messaging, read receipts, Browse ranking,
+             trial, 5 Oct security fixes. The design starts by deciding keep / rewrite / drop for each.
+Update:      26 Oct - DR-ZYRA-285: (15) account deletion detaches instead of cascading shared Journeys; (16) one
+             login with Seeker and Guardian role contexts.
 Owner:       Founder decides · Fable designs · Codex builds after the freeze
 Acceptance:  Every planned-app screen works for real members with the server enforcing its rules.
 
@@ -26282,9 +26322,35 @@ Acceptance:  The runbook fits on a few pages and every step in it is current.
 
 ------------------------------------------------------------
 
+OA-ZYRA-319
+Title:       Database files - message send rule lost its block/ended checks; 24 Sep and 5 Oct migrations
+             cannot be replayed in order
+Category:    Security / Database
+Priority:    HIGH - possible safety regression; the app cannot be rebuilt from its migration files
+Date:        2026-10-26
+Status:      OPEN (repository only - not live, DOC-ZYRA-0294) - found by Fable reading the migrations for blueprint part 2 Messaging (DOC-ZYRA-0293 §6).
+             Not run or tested yet. (1) 20260924100231 (marked "repository/staging only") replaces the
+             9 Aug messages_insert rule (20260809161716, which refused blocked people, closed conversations
+             and ended Journeys) with one that checks only participation and attempt_status <> 'potential'.
+             (2) The same file defines zyra_attempt_participant_rows with a can_chat column; 20261005114141
+             (f02) re-creates the view without it - CREATE OR REPLACE VIEW cannot drop a column, so a replay
+             of all migrations in order would fail at 5 Oct. (3) The Guardian send path checks can_chat but
+             not the Guardian's own paid role (DR-ZYRA-268).
+Update:      26 Oct - Live check (DOC-ZYRA-0294): the live messages_insert is the SAFE 9 Aug rule; the weak 24 Sep
+             file was never applied. Not a live safety issue. Still HIGH as a repository problem: replay fails
+             at 5 Oct and the weak rule waits in an unapplied file.
+Next:        With the Founder's GO: (a) the read-only live check (OA-ZYRA-312) shows which version is live;
+             (b) a replay of all migrations on a throw-away local database proves (2). Then Fable writes the
+             fix design; Codex builds it after the freeze (the safety part may justify a one-off GO earlier).
+Owner:       Founder decides · Fable checks and designs · Codex builds
+Acceptance:  All migrations replay cleanly in order; sending refuses blocked, closed and ended Journeys
+             and unpaid Guardians, proven by tests.
+
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-319 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-320 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
