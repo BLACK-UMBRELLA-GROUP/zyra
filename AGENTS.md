@@ -1,6 +1,6 @@
 # AGENTS.md — ZYRA
 
-<!-- BLACK-UMBRELLA-CORE-RULES v3 START — master copy: BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V3.md. Edit the master, then re-sync every copy. -->
+<!-- BLACK-UMBRELLA-CORE-RULES v4 START — master copy: BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V4.md. Edit the master, then re-sync every copy. -->
 ## Core rules — every AI agent, every Black Umbrella Group project
 
 These rules sit above every other instruction in this tree. Where any older
@@ -45,6 +45,12 @@ document, overlay or AD says otherwise, this block wins.
     changed ("Admin changes <date>"). Until Codex is onboarded, the Founder commits
     from one line per changed repo. Never copy files as a backup instead — git and
     the USB are the backups.
+11. **Nothing is built until it is LOCKed** (AD-AIOS-115). Each business's Claude chat is
+    its lead designer. A design is a draft until Shakeel says `LOCK` and the chat records
+    it in that business's approved folder: picture(s) at real screen size with the real
+    navigation on top, every state (empty, loading, error), a written spec with numbers,
+    and his words. Codex builds only from locked files - he checks them first and
+    reports problems, and never invents, redraws or "improves" a design.
 
 ### Roles — Founder direction, 2026-10-24 (AD-AIOS-112, filed 2026-10-24; supersedes AD-AIOS-111)
 
@@ -52,12 +58,13 @@ document, overlay or AD says otherwise, this block wins.
 |---|---|---|
 | Founder | Shakeel | Sole approver |
 | Lead Architect | Fable (Claude) | Architecture, governance, registers, schedules, review and verification |
-| Design & Implementation | Codex | Product design and code execution only — no admin, governance, mailbox or schedules. Exceptions: the 04:00 daily report job with its commit sweep (DOC-BUG-0027), and git within rule 2 |
-| Admin | Fable (Claude), from the Black Umbrella Group chat | Admin for every business: registers, schedules, clean-ups, reporting. One Claude chat per business handles that business's design and product work |
+| Lead designer, per business | That business's Claude chat (ZYRA, AZMARA, WAFA…) | Product, rules, UX, layout, wording, look, master pictures and specs; records each LOCK (rule 11); writes build briefs for Codex. Never code, never git |
+| Implementation | Codex | Builds from locked designs only (rule 11): code, tests, as-built handovers. No design of his own, no admin, governance, mailbox or schedules. Exceptions: the 04:00 daily report job with its commit sweep (DOC-BUG-0027), and git within rule 2 |
+| Admin | Fable (Claude), from the Black Umbrella Group chat | Admin for every business: registers, schedules, clean-ups, reporting, the daily review |
 
 Fable holds an active seat. Any line elsewhere saying "Fable/Claude is
 retired" or "no Claude/Fable bootstrap is active" is superseded.
-<!-- BLACK-UMBRELLA-CORE-RULES v3 END -->
+<!-- BLACK-UMBRELLA-CORE-RULES v4 END -->
 
 ## What we are building (read before any ZYRA work)
 
@@ -69,6 +76,23 @@ preview retired — Pause and Save — are retired for ZYRA ("Request restart" a
 (Journey, Guardians, Membership, Browse, Messages, Profile, Onboarding, Safety), parts 3-7 - routes in `MAP.md`. Building
 anything that breaks a blueprint page needs a new Founder decision first; update the page in the same change.
 Update this paragraph the same day the direction changes (lesson S13).
+
+## Locked design workflow (core rule 11, AD-AIOS-115)
+
+| Step | Who | Where |
+|---|---|---|
+| Brief | Shakeel | ZYRA chat (Claude) - the **lead designer** |
+| 2-5 options, one picture at a time, each with "what changed" | ZYRA chat | Chat |
+| Pick and tweak, then `LOCK` | Shakeel | Chat |
+| Record the LOCK: screen pictures at **real phone size with the real tabs/bars on top**, every state (empty, loading, error), a spec with numbers (sizes, positions, rules, data), and a `LOCK_RECORD.md` line with Shakeel's words and the date | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/` - one live copy `<NAME>_CURRENT_VERSION_V<n>.<ext>`, old ones `<NAME>_<date>_V<n>` in `ARCHIVE/` |
+| Build brief: locked file paths, "copy exactly, no improvements", what not to touch, checks | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/BUILD_BRIEF_<YYYY-MM-DD>.md` - Shakeel only tells Codex "Build <that path>" |
+| Check the locked files first, report problems, then build exactly | Codex | Task note: "Built from: <paths>" plus a screenshot of the built screen beside the master |
+| Compare the build with the master | ZYRA chat | Its chat note; Fable files the decision (DR-ZYRA) at 04:15 |
+
+Lessons from AZMARA: never specify a behaviour in words only - add a picture of the expected result; never lock art before the
+screen's data, navigation and states; review at real phone size before `LOCK`; locked design sources live in the repo, not only
+in a chat's workspace. A change to a locked design = a new `LOCK` and a new version. The blueprint stays the rulebook: a design
+that would change a rule needs Shakeel's decision first.
 
 ## Standing ZYRA rules
 
@@ -85,7 +109,7 @@ History (build 3, mailboxes 110-116, the Test-app retirement): `REPORTS/ARCHIVE/
 ## Read in this order
 
 0. The core rules at the top of this file - they win on any conflict. Master copy:
-   `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V3.md`.
+   `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V4.md`.
    New agent? Read once: `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/OPERATING_MODEL_CURRENT_VERSION_V1.md`
    (roles, how work flows, GO, reporting) and `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V2.md`.
 1. `MAP.md` - the **task routes** say which 2-5 documents to open for your kind of task. Open only those. Read the map
@@ -97,4 +121,4 @@ History (build 3, mailboxes 110-116, the Test-app retirement): `REPORTS/ARCHIVE/
 3. Building or changing the app: `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_RULES_CURRENT_VERSION_V1.md` (DOC-ZYRA-0277) and
    `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`.
 
-Roles are in the core rules (V3, 26 Oct). Older role models (AD-AIOS-097 to 111) are history in the AD register.
+Roles are in the core rules (V4, 27 Oct). Older role models (AD-AIOS-097 to 111) are history in the AD register.
