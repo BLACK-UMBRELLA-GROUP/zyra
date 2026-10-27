@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import {createReviewWorkspace, assertReviewWorkspace} from './review_workspace.mjs';
 const digest=b=>crypto.createHash('sha256').update(b).digest('hex');
 const quote=s=>JSON.stringify(s);
 const manifestName=name=>/^Package(?:@swift-\d+(?:\.\d+)*)?\.swift$/.test(name);
@@ -70,7 +71,7 @@ export function prepareLocalIosOverlay(source,packet,label) {
   const review=path.resolve(source,'../REPORTS/EVIDENCE');
   if(path.dirname(packet)!==review||!path.basename(packet).startsWith('OA305_NO_GIT_OPTION2_DELIVERY_'))throw Error('Use the exact scoped delivery packet');
   if(!/^LOCAL_IOS_PROJECTION(?:_\d+)?$/.test(label)||fs.existsSync(path.join(packet,label+'.json')))throw Error('Use a new immutable projection label');
-  const root=fs.mkdtempSync(path.join(packet,'LOCAL_IOS.'));
+  const root=createReviewWorkspace(source,packet,label);
   const resolvedFile=path.join(source,'ios/Runner.xcworkspace/xcshareddata/swiftpm/Package.resolved');
   const resolved=fs.readFileSync(resolvedFile),pins=JSON.parse(resolved).pins;
   if(pins.length!==8||pins.some(p=>p.kind!=='remoteSourceControl'||!p.state.revision))throw Error('Pinned dependency graph changed');
@@ -166,16 +167,27 @@ export function prepareLocalIosOverlay(source,packet,label) {
   const projectedPbx=originalPbx.replace(needle,'relativePath = '+quote(generatedCopy)+';');
   fs.writeFileSync(pbx,projectedPbx);
   const receipt={schema:3,at:new Date().toISOString(),source,root,ios,sourceFilter:'exact credential directory only',resolvedSha256:digest(resolved),packages:records,externalPackages,plugin:{before:pluginBefore,after:pluginAfter,manifestOriginal:originalPlugin,manifestProjection:projectedPlugin.projected},generated:{original:rootOriginal,projection:rootProjected},nativeProject:{originalSha256:digest(Buffer.from(originalPbx)),projectedSha256:digest(Buffer.from(projectedPbx)),onlyChange:'absolute local generated-package address'},localOverlayFiles:tree(root)};
-  fs.writeFileSync(path.join(packet,label+'.json'),JSON.stringify(receipt,null,2)+'\n',{flag:'wx'});
+  // The full receipt embeds source manifests, so it belongs with the build
+  // workspace. Evidence receives only a text pointer and a content hash.
+  const receiptFile=path.join(root,'PROJECTION.json'),receiptText=JSON.stringify(receipt,null,2)+'\n';
+  fs.writeFileSync(receiptFile,receiptText,{flag:'wx'});
+  fs.writeFileSync(path.join(packet,label+'.json'),JSON.stringify({schema:4,at:receipt.at,source,root,
+    receipt:receiptFile,receiptSha256:digest(Buffer.from(receiptText))},null,2)+'\n',{flag:'wx'});
   return {ios,root,receipt};
 }
 
 export function verifyLocalIosOverlay(source,projectionFile) {
   const packet=path.dirname(projectionFile);
   if(!/^LOCAL_IOS_PROJECTION(?:_\d+)?\.json$/.test(path.basename(projectionFile)))throw Error('Unknown offline projection receipt');
-  const receipt=JSON.parse(fs.readFileSync(projectionFile,'utf8'));
+  const record=JSON.parse(fs.readFileSync(projectionFile,'utf8'));
   const review=path.resolve(source,'../REPORTS/EVIDENCE');
-  if(path.dirname(packet)!==review||!path.basename(packet).startsWith('OA305_NO_GIT_OPTION2_DELIVERY_')||receipt.schema!==3||receipt.sourceFilter!=='exact credential directory only'||receipt.source!==source||path.dirname(receipt.root)!==packet||!path.basename(receipt.root).startsWith('LOCAL_IOS.'))throw Error('Wrong offline projection owner');
+  if(path.dirname(packet)!==review||!path.basename(packet).startsWith('OA305_NO_GIT_OPTION2_DELIVERY_')||record.schema!==4||record.source!==source)throw Error('Wrong offline projection owner');
+  assertReviewWorkspace(source,packet,path.basename(projectionFile,'.json'),record.root);
+  if(record.receipt!==path.join(record.root,'PROJECTION.json')||!fs.lstatSync(record.receipt).isFile())throw Error('Wrong offline projection receipt');
+  const bytes=fs.readFileSync(record.receipt);
+  if(digest(bytes)!==record.receiptSha256)throw Error('Offline projection receipt content drift');
+  const receipt=JSON.parse(bytes);
+  if(receipt.schema!==3||receipt.sourceFilter!=='exact credential directory only'||receipt.source!==source||receipt.root!==record.root)throw Error('Wrong offline projection owner');
   for(const domain of ['ios','tooling','packages']) {
     const current=tree(path.join(receipt.root,domain));
     const expected=Object.fromEntries(Object.entries(receipt.localOverlayFiles).filter(([name])=>name.startsWith(domain+'/')).map(([name,value])=>[name.slice(domain.length+1),value]));

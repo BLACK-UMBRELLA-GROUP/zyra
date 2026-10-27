@@ -6,6 +6,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {createReviewWorkspace, readCommitSha, writeBuildEvidence} from './review_workspace.mjs';
 
 const tooling = path.dirname(fileURLToPath(import.meta.url));
 const source = path.dirname(tooling);
@@ -441,7 +442,9 @@ async function main() {
     return;
   }
   if (space < minFreeBytes) throw Error('Native payload build held: less than 2 GiB free; no cache deletion performed');
-  const root = fs.mkdtempSync(path.join(context.packet, 'HOST_PROFILE.'));
+  const commitSha = readCommitSha(path.dirname(source));
+  const flutterVersion = readJson(path.join(sdk, 'bin/cache/flutter.version.json')).frameworkVersion;
+  const root = createReviewWorkspace(source, context.packet, 'HOST_PROFILE');
   const products = path.join(root, 'products'), candidate = path.join(root, 'Runner.app');
   fs.mkdirSync(products);
   const fd = fs.openSync(path.join(root, 'BUILD.log'), 'wx');
@@ -502,6 +505,8 @@ async function main() {
     fs.closeSync(fd);
     receipt.finished = new Date().toISOString();
     fs.writeFileSync(path.join(root, 'BUILD.json'), JSON.stringify(receipt, null, 2) + '\n', {flag: 'wx'});
+    writeBuildEvidence(context.packet, receipt, {commitSha, flutterVersion, buildMode: 'profile',
+      target: 'ios-arm64 / lib/main.dart / production'});
   }
   console.log(JSON.stringify({success: receipt.success, root, candidate: receipt.success ? candidate : null,
     failure: receipt.failure, fullXcodeBuild: false, installExecuted: false}, null, 2));
