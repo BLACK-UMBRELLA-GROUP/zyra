@@ -1,0 +1,47 @@
+{
+  "commit_sha": "d08b2d17884dd44b4c22676a61175ef8c0619871",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test render (brief route c)",
+  "device_model": "iPhone 15 Pro Max geometry; headless Flutter iOS test target",
+  "logical_resolution": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "resolution": [
+    1290,
+    2796
+  ],
+  "timestamp": "2026-10-29T16:23:33.252434+00:00",
+  "preview_clock": "2026-10-29T12:00:00Z (fictional local preview)",
+  "picture_count": 301,
+  "ios_status_bar": false,
+  "native_build": "HELD after SwiftPM nested manifest sandbox refusal; not replayed",
+  "theme": "actual ZyraApp MaterialApp.theme + documented glyph fallback",
+  "scroll_behavior": "actual ZyraApp MaterialApp.scrollBehavior",
+  "fonts": {
+    "reading": "bundled Poppins",
+    "wordmark": "bundled Syne",
+    "missing_glyph_fallback": {
+      "family": "ZYRABaselineSystemSymbols",
+      "source": "/System/Library/Fonts/SFNS.ttf",
+      "bytes": 7872432,
+      "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+      "purpose": "San Francisco platform fallback for U+2713; primary fonts unchanged; font not copied"
+    }
+  },
+  "source_changes": false,
+  "transport": "offline fictional sample model; HTTP denied",
+  "coverage": {
+    "inventory_page_ids": 49,
+    "page_role_pairs_accounted": 98,
+    "captured_page_role_pairs": 60,
+    "captured_root_tabs": 9,
+    "not_in_preview": "Notifications has no current opener; Saved/Paused retired; other-role pages not applicable"
+  },
+  "capture_tests": [
+    "test/visual/oa316_seeker_baseline_capture_test.dart",
+    "test/visual/zyra_baseline_guardian_account_visual_test.dart",
+    "test/visual/oa316_timeline_baseline_capture_test.dart"
+  ]
+}

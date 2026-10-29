@@ -21,7 +21,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | All app code | 165,631 lines in 321 files |
 | Developer and preview code inside it | 44,178 lines in 82 files |
 | The Founder preview (planned app) | 24,433 lines in 31 files |
-| Test code | 205,291 lines in 458 files |
+| Test code | 207,177 lines in 462 files |
 | Test screenshots (goldens) | 3,337 images, 399 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -34,6 +34,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | OA-ZYRA-316 Tier 1: 16 unused files removed; 6 retained by scope/dependencies | 167,819 / 326 | 46,118 / 86 | 24,701 / 31 | 206,100 / 459 | 3,349 / 401 MB | 39 | 2 |
 | 2026-10-29 | OA-ZYRA-316 Tier 1 remainder: 5 named files removed; onboarding bank retained | 165,953 / 321 | 44,446 / 82 | 24,701 / 31 | 205,716 / 458 | 3,337 / 399 MB | 39 | 2 |
 | 2026-10-29 | OA-ZYRA-316 Tier 2: app-side Journey Pause/Save and obsolete restart stub removed | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 205,291 / 458 | 3,337 / 399 MB | 39 | 1 |
+| 2026-10-29 | Queued baseline capture: four test files; app source unchanged | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 207,177 / 462 | 3,337 / 399 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -93,3 +94,11 @@ and are carried to the separate matching-tests cleanup under OA-ZYRA-316; curren
 Preview Timeline examples also exclude the retired Pause/continue events; canonical old-app history vocabulary stays.
 Analyser clean (3.7s); 1,055 relevant cases across 42 suites, 21 Timeline cases and two retained photo/delegate cases pass.
 No screenshot regenerated. Exact paths/checks are in local Tier2 JSON evidence and the daily task note.
+
+## Queued baseline capture — 29 Oct 2026
+
+Capture-only queue line 2 adds four visual harness/test files (1,886 lines); app source is unchanged. The 301 full-phone
+PNG review inputs live in PRODUCT/APPROVED/BASELINE/SCREENSHOTS (260,375,095 bytes), outside this tool's SOURCE/test
+golden count. Actual production theme, iOS target, local portraits and platform glyph fallback were verified. The
+generated index accounts for all 49 page IDs in both roles and all nine root tabs; legacy Notifications has no opener,
+and Saved/Paused are retired. No LOCK or product design is created by this capture.
