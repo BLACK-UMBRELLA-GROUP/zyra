@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/screens/journey/journey_flow_screen.dart';
-import 'package:zyra/screens/notifications/notifications_screen.dart';
-import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/services/zyra_notification_service.dart';
 import 'package:zyra/services/zyra_truthful_write.dart';
 import 'package:zyra/widgets/zyra_write_feedback.dart';
 
@@ -226,108 +223,5 @@ void main() {
       ),
       findsOneWidget,
     );
-  });
-
-  testWidgets('notification failure is distinct from a successful empty feed', (
-    tester,
-  ) async {
-    var calls = 0;
-    Future<List<Never>?> load() async {
-      calls += 1;
-      return calls == 1 ? null : <Never>[];
-    }
-
-    await tester.pumpWidget(
-      MaterialApp(
-        home: NotificationsScreen(isTab: true, loadNotifications: load),
-      ),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 50));
-
-    expect(find.text("Couldn't load notifications"), findsOneWidget);
-    expect(find.text('All caught up'), findsNothing);
-
-    await tester.tap(find.text('Try again'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 50));
-
-    expect(calls, 2);
-    expect(find.text('All caught up'), findsOneWidget);
-    expect(find.text("Couldn't load notifications"), findsNothing);
-  });
-
-  testWidgets('replacement notification source revokes the old mounted feed', (
-    tester,
-  ) async {
-    final older = Completer<List<ZyraNotification>?>();
-    final newer = Completer<List<ZyraNotification>?>();
-    const feedKey = ValueKey('notifications-race-test');
-    await tester.pumpWidget(
-      MaterialApp(
-        home: NotificationsScreen(
-          key: feedKey,
-          isTab: true,
-          loadNotifications: () => older.future,
-        ),
-      ),
-    );
-    await tester.pump();
-    await tester.pumpWidget(
-      MaterialApp(
-        home: NotificationsScreen(
-          key: feedKey,
-          isTab: true,
-          loadNotifications: () => newer.future,
-        ),
-      ),
-    );
-
-    newer.complete([
-      ZyraNotification(
-        id: 'newer',
-        type: 'new_message',
-        title: 'Fresh notification',
-        body: null,
-        relatedMatchId: null,
-        createdAt: DateTime.utc(2026, 10, 3),
-        readAt: DateTime.utc(2026, 10, 3),
-      ),
-    ]);
-    await tester.pump();
-    older.complete(null);
-    await tester.pump();
-
-    expect(find.text('Fresh notification'), findsNothing);
-    expect(find.text("Couldn't load notifications"), findsOneWidget);
-    expect(find.text('All caught up'), findsNothing);
-  });
-
-  testWidgets('same account generation revocation drops a pending feed', (
-    tester,
-  ) async {
-    final pending = Completer<List<ZyraNotification>?>();
-    await tester.pumpWidget(
-      MaterialApp(
-        home: NotificationsScreen(
-          isTab: true,
-          loadNotifications: () => pending.future,
-        ),
-      ),
-    );
-    ZyraAccountState.resetForTesting();
-    pending.complete([
-      ZyraNotification(
-        id: 'stale',
-        type: 'new_message',
-        title: 'Old account notification',
-        body: null,
-        relatedMatchId: null,
-        createdAt: DateTime.utc(2026, 10, 3),
-        readAt: null,
-      ),
-    ]);
-    await tester.pump();
-    expect(find.text('Old account notification'), findsNothing);
   });
 }

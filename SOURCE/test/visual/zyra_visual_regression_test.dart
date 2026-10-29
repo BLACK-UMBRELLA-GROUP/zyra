@@ -13,10 +13,8 @@ import 'package:zyra/models/zyra_error_state.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/data/zyra_journey_pause_state.dart';
 import 'package:zyra/screens/home/seeker_dashboard_screen.dart';
-import 'package:zyra/screens/notifications/notifications_screen.dart';
 import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 import 'package:zyra/screens/subscription/upgrade_screen.dart';
-import 'package:zyra/screens/wali/guardian_detail_screen.dart';
 import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/screens/wali/wali_gn_shared.dart';
 import 'package:zyra/screens/wali/wali_dashboard_screen.dart';
@@ -77,6 +75,16 @@ const _phase1SupersededFixtures = <String, String>{
   'guardian-detail-main': 'guardian-detail-main-consent-off',
   'guardian-detail-history-unavailable':
       'guardian-detail-main-history-unavailable-consent-off',
+};
+
+// OA-ZYRA-316 Tier 1 removes these unused screens. Historical approval
+// manifests stay sealed; the active manifests retain their retirement metadata.
+const _tier1RetiredFixtures = <String>{
+  'guardian-detail-main-consent-off',
+  'guardian-detail-additional',
+  'guardian-detail-main-history-unavailable-consent-off',
+  'notifications-empty',
+  'notifications-error',
 };
 
 const _visualRoot = ValueKey('zyra-visual-audit-root');
@@ -551,14 +559,6 @@ final _managerPeople = <WaliLinkedPerson>[
   ),
 ];
 
-GuardianHistoryConsentState _visualConsent(bool enabled) =>
-    GuardianHistoryConsentState(
-      enabled: enabled,
-      activeGuardianLinkId: 'visual-main-link',
-      guardianId: 'visual-main-guardian',
-      guardianIsMain: true,
-    );
-
 Widget _managerFixture({
   required List<WaliLinkedPerson> people,
   bool linksAvailable = true,
@@ -573,46 +573,6 @@ Widget _managerFixture({
     pendingInvitesLoader: () async => ZyraSourceResult.available(pending),
     comparisonNow: _visualComparisonNow,
   ),
-);
-
-final _visualGuardianActivity = <GuardianActivity>[
-  GuardianActivity(
-    waliId: 'visual-main-guardian',
-    type: 'review_waiting',
-    occurredAt: DateTime.utc(2026, 8, 29, 12),
-  ),
-  GuardianActivity(
-    waliId: 'visual-main-guardian',
-    type: 'review_answered',
-    occurredAt: DateTime.utc(2026, 8, 20, 12),
-  ),
-  GuardianActivity(
-    waliId: 'visual-main-guardian',
-    type: 'suggested',
-    occurredAt: DateTime.utc(2026, 7, 16, 12),
-  ),
-  GuardianActivity(
-    waliId: 'visual-main-guardian',
-    type: 'linked',
-    occurredAt: DateTime.utc(2026, 4, 12),
-  ),
-];
-
-Widget _guardianDetailFixture({
-  required WaliLinkedPerson person,
-  bool activityAvailable = true,
-}) => GuardianDetailScreen(
-  person: person,
-  activity: person.isMain ? _visualGuardianActivity : const [],
-  activityAvailable: activityAvailable,
-  comparisonNow: _visualComparisonNow,
-  otherGuardianCount: _managerPeople.length - 1,
-  activityLoader: () async => ZyraSourceResult.available(
-    person.isMain ? _visualGuardianActivity : const [],
-  ),
-  historyConsentLoader: ({enabled}) async =>
-      ZyraSourceResult.available(_visualConsent(enabled ?? false)),
-  onChanged: () {},
 );
 
 const _guardianRosterResolver = ZyraGuardianSeekerRosterResolver();
@@ -1058,33 +1018,6 @@ List<_Fixture> _fixtures() => [
     build: () => _managerFixture(people: const [], linksAvailable: false),
   ),
   _Fixture(
-    id: 'guardian-detail-main-consent-off',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'main-history-and-obligation',
-    largeText: true,
-    build: () => _guardianDetailFixture(person: _managerPeople.first),
-  ),
-  _Fixture(
-    id: 'guardian-detail-additional',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'additional-honest-empty-history',
-    largeText: true,
-    build: () => _guardianDetailFixture(person: _managerPeople[1]),
-  ),
-  _Fixture(
-    id: 'guardian-detail-main-history-unavailable-consent-off',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'history-unavailable',
-    largeText: true,
-    build: () => _guardianDetailFixture(
-      person: _managerPeople.first,
-      activityAvailable: false,
-    ),
-  ),
-  _Fixture(
     id: 'guardian-seeker-roster-empty',
     role: 'guardian',
     plan: 'basic',
@@ -1275,25 +1208,6 @@ List<_Fixture> _fixtures() => [
     ),
   ),
   _Fixture(
-    id: 'notifications-empty',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'empty',
-    largeText: true,
-    build: () => NotificationsScreen(
-      isTab: true,
-      loadNotifications: () async => const [],
-    ),
-  ),
-  _Fixture(
-    id: 'notifications-error',
-    role: 'guardian',
-    plan: 'zyra-one',
-    state: 'error',
-    build: () =>
-        NotificationsScreen(isTab: true, loadNotifications: () async => null),
-  ),
-  _Fixture(
     id: 'subscription-upgrade',
     role: 'male-seeker',
     plan: 'basic',
@@ -1399,6 +1313,39 @@ Map<String, Map<String, dynamic>> _approvedBaselines() {
 Map<String, dynamic> _readManifest(String path) =>
     jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>;
 
+Map<String, Map<String, dynamic>> _retiredBaselines() {
+  final manifest = _readManifest('test/visual/approved/manifest.json');
+  return {
+    for (final row
+        in (manifest['retired_baselines'] as List).cast<Map<String, dynamic>>())
+      row['id'] as String: row,
+  };
+}
+
+// Removed screenshots no longer participate in rendering or portable byte
+// audits. Preserve their original metadata against the sealed approval record;
+// the task's move audit verifies the bytes at the recorded _to_delete paths.
+void _expectTier1Retirement(Map screenshot) {
+  final id = screenshot['id'] as String;
+  final retired = _retiredBaselines()[id];
+  expect(retired, isNotNull, reason: '$id needs an explicit retirement record');
+  final sourcePath =
+      (screenshot['path'] ?? screenshot['source_path']) as String;
+  final approvedPath = screenshot['approved_path'] as String;
+  expect(retired?['source_path'], sourcePath);
+  expect('test/visual/${retired?['path']}', approvedPath);
+  for (final field in ['sha256', 'bytes', 'version']) {
+    expect(retired?[field], screenshot[field], reason: '$id $field drift');
+  }
+  expect(retired?['retirement_reference'], contains('OA-ZYRA-316 Tier 1'));
+  expect(retired?['retired_date'], '2026-10-29');
+  expect(retired?['retired_by'], 'Founder (Shakeel)');
+  expect(retired?['retired_to'], endsWith('/SOURCE/$approvedPath'));
+  expect(retired?['retired_source_to'], endsWith('/SOURCE/$sourcePath'));
+  expect(File(sourcePath).existsSync(), isFalse);
+  expect(File(approvedPath).existsSync(), isFalse);
+}
+
 void _applyRoleAndPlan(_Fixture fixture) {
   final state = AppState.instance;
   state.gender = switch (fixture.role) {
@@ -1442,6 +1389,7 @@ Widget _testApp(Widget child, {required double textScale}) => MaterialApp(
 
 void main() {
   final approved = _approvedBaselines();
+  final retired = _retiredBaselines();
 
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
@@ -1482,12 +1430,11 @@ void main() {
     );
     expect(runtime['automatic_updates_allowed'], isFalse);
     expect(governed['automatic_updates_allowed'], isFalse);
-    expect(runtime['active_baseline_count'], 124);
+    expect(runtime['active_baseline_count'], 112);
     expect(runtime['archived_baseline_count'], 36);
     expect(runtime['active_version'], 'OA-ZYRA-282-phase1-v2');
     expect(runtime['active_versions'], [
       'OA-ZYRA-281-v1',
-      'OA-ZYRA-282-phase1-v1',
       'OA-ZYRA-282-phase2-v1',
       'OA-ZYRA-282-phase3-v1',
       'OA-ZYRA-282-phase1-v2',
@@ -1497,10 +1444,19 @@ void main() {
       jsonEncode(runtime['archived_baselines']),
       jsonEncode(governed['archived_baselines']),
     );
-    expect(approved, hasLength(124));
+    expect(runtime['retired_baseline_count'], 12);
+    expect(
+      jsonEncode(runtime['retired_baselines']),
+      jsonEncode(governed['retired_baselines']),
+    );
+    expect(
+      jsonEncode(runtime['retired_unapproved_captures']),
+      jsonEncode(governed['retired_unapproved_captures']),
+    );
+    expect(approved, hasLength(112));
     expect(
       approved.values.map((entry) => entry['path']).toSet(),
-      hasLength(124),
+      hasLength(112),
     );
     final versions = <String, int>{};
     for (final entry in approved.values) {
@@ -1537,11 +1493,41 @@ void main() {
     }
     expect(versions, {
       'OA-ZYRA-281-v1': 28,
-      'OA-ZYRA-282-phase1-v1': 4,
       'OA-ZYRA-282-phase2-v1': 36,
       'OA-ZYRA-282-phase3-v1': 32,
-      'OA-ZYRA-282-phase1-v2': 24,
+      'OA-ZYRA-282-phase1-v2': 16,
     });
+  });
+
+  test('Tier 1 retired screens have no active fixtures or baselines', () {
+    final fixtureIds = _fixtures().map((fixture) => fixture.id).toSet();
+    expect(fixtureIds.intersection(_tier1RetiredFixtures), isEmpty);
+    expect(retired, hasLength(12));
+    expect(retired.keys.toSet().intersection(approved.keys.toSet()), isEmpty);
+    for (final entry in retired.values) {
+      final fixture = (entry['id'] as String).split('__').first;
+      expect(_tier1RetiredFixtures, contains(fixture));
+      expect(
+        entry['retirement_reason'],
+        contains('Unused GuardianDetailScreen'),
+      );
+      expect(entry['retired_to'], contains('/_to_delete/OA-ZYRA-316_TIER1_'));
+      expect(File('test/visual/${entry['path']}').existsSync(), isFalse);
+      expect(File(entry['source_path'] as String).existsSync(), isFalse);
+    }
+    final runtime = _readManifest('test/visual/approved/manifest.json');
+    final captures = (runtime['retired_unapproved_captures'] as List)
+        .cast<Map<String, dynamic>>();
+    expect(captures, hasLength(7));
+    for (final capture in captures) {
+      final path = capture['path'] as String;
+      expect(path, startsWith('SOURCE/test/visual/candidates/notifications-'));
+      expect(File('../$path').existsSync(), isFalse);
+      expect(capture['retirement_reference'], 'OA-ZYRA-316 Tier 1');
+      expect(capture['retired_to'], endsWith('/$path'));
+      expect(capture['sha256'], matches(RegExp(r'^[a-f0-9]{64}$')));
+      expect(capture['bytes'], greaterThan(0));
+    }
   });
 
   test('superseded pixels are archived without byte deletion', () {
@@ -1655,12 +1641,17 @@ void main() {
         expect(
           registeredFixtures,
           containsAll(
-            declaredFixtures.difference(_phase1SupersededFixtures.keys.toSet()),
+            declaredFixtures
+                .difference(_phase1SupersededFixtures.keys.toSet())
+                .difference(_tier1RetiredFixtures),
           ),
         );
         for (final replacement in _phase1SupersededFixtures.entries) {
           expect(registeredFixtures, isNot(contains(replacement.key)));
-          expect(registeredFixtures, contains(replacement.value));
+          expect(
+            registeredFixtures.contains(replacement.value),
+            !_tier1RetiredFixtures.contains(replacement.value),
+          );
         }
       } else {
         expect(registeredFixtures, containsAll(declaredFixtures));
@@ -1675,6 +1666,11 @@ void main() {
         expect(screenshot['approved_date'], '2026-08-31');
         expect(screenshot['approved_by'], 'Founder (Shakeel)');
         expect(screenshot['version'], phase.version);
+        if (retired.containsKey(id)) {
+          _expectTier1Retirement(screenshot);
+          expect(approved[id], isNull);
+          continue;
+        }
         final sourcePath =
             (screenshot['path'] ?? screenshot['source_path']) as String;
         final approvedPath = screenshot['approved_path'] as String;
@@ -1754,7 +1750,10 @@ void main() {
       expect(row['candidate_fixture'], replacement.value);
       expect(row['variant_count'], 4);
       expect(registeredFixtures, isNot(contains(replacement.key)));
-      expect(registeredFixtures, contains(replacement.value));
+      expect(
+        registeredFixtures.contains(replacement.value),
+        !_tier1RetiredFixtures.contains(replacement.value),
+      );
     }
 
     final screenshots = (manifest['screenshots'] as List)
@@ -1767,6 +1766,11 @@ void main() {
       expect(screenshot['approved_by'], 'Founder (Shakeel)');
       expect(screenshot['version'], 'OA-ZYRA-282-phase1-v2');
       expect(screenshot['governing_reference'], contains('072_FABLE-CODEX'));
+      if (retired.containsKey(screenshot['id'])) {
+        _expectTier1Retirement(screenshot);
+        expect(approved[screenshot['id']], isNull);
+        continue;
+      }
       final path = screenshot['path'] as String;
       final file = File(path);
       expect(file.existsSync(), isTrue, reason: 'missing candidate $path');
@@ -1795,7 +1799,7 @@ void main() {
     final runtime = _readManifest('test/visual/approved/manifest.json');
     final archived = (runtime['archived_baselines'] as List)
         .cast<Map<String, dynamic>>();
-    expect(runtime['active_baseline_count'], 124);
+    expect(runtime['active_baseline_count'], 112);
     expect(runtime['archived_baseline_count'], 36);
     final staged = (manifest['staged_supersession_rows'] as List)
         .cast<Map<String, dynamic>>();
@@ -1809,7 +1813,10 @@ void main() {
       expect(row['archive_reference'], contains('072_FABLE-CODEX'));
       expect(row['archive_reason'], contains('Founder-accepted'));
       expect(row['byte_preserved_at'], row['path']);
-      expect(approved[row['superseded_by']], isNotNull);
+      expect(
+        approved[row['superseded_by']] ?? retired[row['superseded_by']],
+        isNotNull,
+      );
       final ledgerRow = archived.singleWhere((entry) => entry['id'] == id);
       expect(jsonEncode(ledgerRow), jsonEncode(row));
       final oldFile = File('test/visual/${row['path']}');
@@ -1827,10 +1834,10 @@ void main() {
         .where((row) => row['version'] == 'OA-ZYRA-282-phase1-v1')
         .map((row) => row['id'] as String)
         .toList();
-    expect(continuing, hasLength(4));
+    expect(continuing, isEmpty);
     expect(
-      continuing.every((id) => id.startsWith('guardian-detail-additional__')),
-      isTrue,
+      retired.values.where((row) => row['version'] == 'OA-ZYRA-282-phase1-v1'),
+      hasLength(4),
     );
   });
 
@@ -1899,10 +1906,6 @@ void main() {
             find.byKey(const PageStorageKey('guardianship-manager')),
             const Offset(0, -520),
           );
-          await tester.pumpAndSettle();
-        }
-        if (fixture.id.startsWith('guardian-detail-')) {
-          await tester.drag(find.byType(ListView), const Offset(0, -360));
           await tester.pumpAndSettle();
         }
         if (fixture.id == 'guardian-seeker-roster-main-lower-groups') {

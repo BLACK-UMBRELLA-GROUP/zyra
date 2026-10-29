@@ -10,7 +10,6 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/main.dart' show supabase;
-import 'package:zyra/screens/notifications/notifications_screen.dart';
 import 'package:zyra/screens/wali/wali_home_shell.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
@@ -106,23 +105,6 @@ Response _confirmed(Iterable<String> ids) => Response(
   200,
   headers: {'content-type': 'application/json'},
 );
-
-ZyraNotification _notification(String id, {bool read = false}) =>
-    ZyraNotification(
-      id: id,
-      type: 'new_message',
-      title: id == _first ? 'Previously displayed event' : 'New arrival',
-      body: null,
-      relatedMatchId: null,
-      createdAt: DateTime.utc(2026, 10, 19),
-      readAt: read ? DateTime.parse(_readAt) : null,
-    );
-
-VoidCallback _strip(WidgetTester tester, String label) => tester
-    .widget<InkWell>(
-      find.ancestor(of: find.text(label), matching: find.byType(InkWell)).first,
-    )
-    .onTap!;
 
 Future<void> _flush(WidgetTester tester) async {
   for (var frame = 0; frame < 8; frame++) {
@@ -554,85 +536,4 @@ void main() {
       expect(resolve('update:notification.new_message:guessed', true), isNull);
     },
   );
-
-  testWidgets(
-    'a retained standalone read action cannot revive after preview ABA',
-    (tester) async {
-      respond = (_) async => _confirmed([_first]);
-      Future<List<ZyraNotification>> loader() async => [_notification(_first)];
-      await tester.pumpWidget(
-        MaterialApp(
-          home: NotificationsScreen(isTab: true, loadNotifications: loader),
-        ),
-      );
-      await _flush(tester);
-      final retained = _strip(tester, 'Mark all read');
-      ZyraInternalPreviewClient.beginPreview();
-      ZyraInternalPreviewClient.finishSignOut();
-      retained();
-      await _flush(tester);
-      expect(requests, isEmpty);
-      expect(find.text('Previously displayed event'), findsNothing);
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox.shrink());
-    },
-  );
-
-  testWidgets('confirmed displayed bulk leaves a later arrival unread', (
-    tester,
-  ) async {
-    var loads = 0;
-    respond = (_) async => _confirmed([_first]);
-    Future<List<ZyraNotification>> loader() async => ++loads == 1
-        ? [_notification(_first)]
-        : [_notification(_first, read: true), _notification(_later)];
-    await tester.pumpWidget(
-      MaterialApp(
-        home: NotificationsScreen(isTab: true, loadNotifications: loader),
-      ),
-    );
-    await _flush(tester);
-    _strip(tester, 'Mark all read')();
-    await _flush(tester);
-    expect(find.text('New arrival'), findsOneWidget);
-    expect(requests, hasLength(1));
-    expect(requests.single.url.queryParameters['id'], 'in.("$_first")');
-    expect(loads, 2);
-    expect(_strip(tester, 'Mark all read'), isNotNull);
-    expect(tester.takeException(), isNull);
-    await tester.pumpWidget(const SizedBox.shrink());
-  });
-
-  testWidgets('failed selected ACK retains selected unread row for retry', (
-    tester,
-  ) async {
-    respond = (_) async => Response(
-      '{"message":"synthetic unavailable"}',
-      403,
-      headers: {'content-type': 'application/json'},
-    );
-    Future<List<ZyraNotification>> loader() async => [_notification(_first)];
-    await tester.pumpWidget(
-      MaterialApp(
-        home: NotificationsScreen(isTab: true, loadNotifications: loader),
-      ),
-    );
-    await _flush(tester);
-    _strip(tester, 'Select')();
-    await tester.pump();
-    _strip(tester, 'Select all')();
-    await tester.pump();
-    _strip(tester, 'Mark read')();
-    await _flush(tester);
-    expect(find.text('1 selected'), findsOneWidget);
-    expect(find.text('Cancel'), findsOneWidget);
-    expect(
-      find.text("Couldn't mark these notifications as read. Try again."),
-      findsOneWidget,
-    );
-    expect(find.text('Previously displayed event'), findsOneWidget);
-    expect(requests, hasLength(1));
-    expect(tester.takeException(), isNull);
-    await tester.pumpWidget(const SizedBox.shrink());
-  });
 }

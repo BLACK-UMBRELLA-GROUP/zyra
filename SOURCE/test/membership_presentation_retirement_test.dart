@@ -8,7 +8,6 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_intelligence_card.dart';
 import 'package:zyra/widgets/zyra_locked_feature_upgrade.dart';
-import 'package:zyra/widgets/zyra_paused_limit_refusal.dart';
 
 class _RouteObserver extends NavigatorObserver {
   final List<Route<dynamic>> pushed = [];
@@ -81,39 +80,6 @@ void main() {
     expect(observer.pushed, hasLength(1));
     expect(AppState.instance.plan, ZyraPlan.basic);
   });
-
-  for (final (plan, limit) in [(ZyraPlan.basic, 1), (ZyraPlan.one, 10)]) {
-    testWidgets(
-      'paused refusal retains the $limit limit without selling access',
-      (tester) async {
-        AppState.instance.plan = plan;
-        await tester.pumpWidget(
-          subject(
-            (context) =>
-                () => showZyraPausedLimitRefusal(context),
-          ),
-        );
-        await tester.tap(find.text('Open feature'));
-        await tester.pumpAndSettle();
-
-        expect(find.text('Paused Journeys are full'), findsOneWidget);
-        expect(
-          find.textContaining('Your current limit is $limit paused Journeys'),
-          findsOneWidget,
-        );
-        expect(find.textContaining('Resume or end one'), findsOneWidget);
-        expect(find.textContaining('Upgrade'), findsNothing);
-        expect(find.textContaining('ZYRA Basic'), findsNothing);
-        expect(find.textContaining('ZYRA One'), findsNothing);
-        expect(find.textContaining('Seeker One'), findsNothing);
-        expect(find.textContaining('Guardian One'), findsNothing);
-        expect(AppState.instance.plan, plan);
-        await tester.tap(find.text('OK'));
-        await tester.pumpAndSettle();
-        expect(find.text('Open feature'), findsOneWidget);
-      },
-    );
-  }
 
   testWidgets('intelligence invitation stays visible and opens on tap', (
     tester,

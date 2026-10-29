@@ -52,7 +52,6 @@ void main() {
     for (final path in const [
       'lib/dev/dev_splash_lab.dart',
       'lib/dev/zyra_page_preview_screen.dart',
-      'lib/screens/dev/moderation_review_queue_screen.dart',
     ]) {
       expect(
         File(path).readAsStringSync(),

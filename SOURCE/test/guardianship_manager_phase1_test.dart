@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
-import 'package:zyra/screens/wali/guardian_detail_screen.dart';
 import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/screens/wali/wali_seekers_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -301,118 +300,6 @@ void main() {
       findsNothing,
     );
     expect(find.byType(PageView), findsNothing);
-  });
-
-  testWidgets('detail separates current obligation from relationship history', (
-    tester,
-  ) async {
-    final semantics = tester.ensureSemantics();
-    tester.view.physicalSize = const Size(390, 1800);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    final activity = [
-      GuardianActivity(
-        waliId: 'main',
-        type: 'review_waiting',
-        occurredAt: DateTime.utc(2026, 8, 29),
-      ),
-      GuardianActivity(
-        waliId: 'main',
-        type: 'review_answered',
-        occurredAt: DateTime.utc(2026, 8, 20),
-      ),
-      GuardianActivity(
-        waliId: 'main',
-        type: 'linked',
-        occurredAt: DateTime.utc(2026, 4, 12),
-      ),
-    ];
-    await tester.pumpWidget(
-      MaterialApp(
-        home: GuardianDetailScreen(
-          person: mainGuardian,
-          activity: activity,
-          comparisonNow: DateTime.utc(2026, 8, 30),
-          otherGuardianCount: 1,
-          historyConsentLoader: ({enabled}) async => ZyraSourceResult.available(
-            GuardianHistoryConsentState(
-              enabled: enabled ?? false,
-              activeGuardianLinkId: 'link-main',
-              guardianId: mainGuardian.id,
-              guardianIsMain: true,
-            ),
-          ),
-          onChanged: () {},
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('Family Review is open'), findsOneWidget);
-    expect(find.text('Family Review completed'), findsOneWidget);
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent')),
-      findsOneWidget,
-    );
-    expect(find.text('Share past Journey summaries'), findsOneWidget);
-    expect(
-      find.bySemanticsLabel('About sharing past Journey summaries'),
-      findsOneWidget,
-    );
-    expect(
-      find.bySemanticsLabel('Share past Journey summaries'),
-      findsOneWidget,
-    );
-    expect(
-      tester
-          .getSize(
-            find.byKey(
-              const ValueKey('guardian-history-consent-details-toggle'),
-            ),
-          )
-          .height,
-      greaterThanOrEqualTo(48),
-    );
-    expect(
-      find.text('Let my Main Guardian see my full Journey history'),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-      findsNothing,
-    );
-    await tester.tap(
-      find.byKey(const ValueKey('guardian-history-consent-details-toggle')),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-      findsOneWidget,
-    );
-    expect(
-      tester
-          .widget<Switch>(
-            find.byKey(const ValueKey('guardian-history-consent-toggle')),
-          )
-          .value,
-      isFalse,
-      reason: 'Opening help must not change server-confirmed consent',
-    );
-    await tester.tap(
-      find.byKey(const ValueKey('guardian-history-consent-details-toggle')),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-      findsNothing,
-    );
-    expect(
-      tester.getTopLeft(find.text('CURRENT OBLIGATION')).dy,
-      lessThan(tester.getTopLeft(find.text('RELATIONSHIP HISTORY')).dy),
-    );
-    expect(find.text('What can my Guardians see and do?'), findsNothing);
-    semantics.dispose();
   });
 
   test('new comparison family is present and corrected hint is pinned', () {

@@ -58,21 +58,14 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  test('identity and Guardian actions use the closed telemetry API', () {
+  test('identity actions use the closed telemetry API', () {
     final identity = File(
       'lib/screens/onboarding/identity_verification_screen.dart',
-    ).readAsStringSync();
-    final guardian = File(
-      'lib/screens/wali/guardian_detail_screen.dart',
     ).readAsStringSync();
 
     expect(identity, contains('ZyraTelemetryFeature.identityCheck'));
     expect(identity, contains('ZyraTelemetryAction.identityProvider'));
     expect(identity, contains('ZyraTelemetrySurface.entry'));
     expect(identity, isNot(contains('p_feature_key')));
-    expect(guardian, contains('ZyraTelemetryFeature.guardian'));
-    expect(guardian, contains('ZyraTelemetryAction.guardianRemove'));
-    expect(guardian, contains('ZyraTelemetrySurface.seeker'));
-    expect(guardian, isNot(contains('p_feature_key')));
   });
 }

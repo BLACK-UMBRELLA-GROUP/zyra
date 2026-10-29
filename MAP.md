@@ -70,7 +70,7 @@ re-run the tool.
 | DOC-ZYRA-0071 | `APP/UX Writing/Summary.md` | 9 |
 | DOC-ZYRA-0070 | `APP/UX Writing/ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md` | 6 |
 | DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | 9 |
-| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 1 |
+| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 3 |
 | DOC-ZYRA-0102 | `BUSINESS/COLOUR THEME/Summary.md` | 7 |
 | DOC-ZYRA-0282 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md` | 15 |
 | DOC-ZYRA-0266 | `SYSTEM/DOCUMENTS/ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md` | 10 |
@@ -414,7 +414,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 1 |
+| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 3 |
 | DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | REPORT | Deep review of the planned ZYRA app (the Founder preview) against the old member app and the database - what… | OA-ZYRA-316, OA-ZYRA-317, DR-ZYRA-274, DOC-ZYRA-0284 | 9 |
 
 ### COMPATIBILITY

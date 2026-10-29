@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/onboarding_bank_contract.dart';
 import 'package:zyra/data/chapter3_categories.dart';
-import 'package:zyra/data/compatibility_categories.dart';
 import 'package:zyra/data/onboarding_category_guidance.dart';
 import 'package:zyra/models/journey_bio.dart';
 import 'package:zyra/models/onboarding_question.dart';
@@ -58,28 +57,6 @@ void main() {
           ),
         ),
         everyElement('ch3_q26'),
-      );
-    });
-
-    test('maps every scored Values topic into one reveal category', () {
-      final scoredQuestionIds = <String>{
-        for (final category in chapter3Categories)
-          for (final question in category.questions)
-            if (question.ch4Status != Ch4Status.none) question.id,
-      };
-      final mappedIds = [
-        for (final category in compatibilityCategories) ...category.questionIds,
-      ];
-
-      expect(compatibilityCategories, hasLength(12));
-      expect(mappedIds.toSet(), scoredQuestionIds);
-      expect(mappedIds, hasLength(scoredQuestionIds.length));
-      expect(scoredQuestionIds, hasLength(71));
-      expect(
-        compatibilityCategories
-            .singleWhere((category) => category.id == 'culture_location')
-            .comesFromProfile,
-        isTrue,
       );
     });
 

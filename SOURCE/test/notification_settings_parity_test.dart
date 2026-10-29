@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/screens/settings/notification_settings_screen.dart';
-import 'package:zyra/screens/wali/wali_notification_settings_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_notification_prefs_service.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
@@ -41,7 +40,7 @@ void main() {
     },
   );
 
-  testWidgets('Seeker and Guardian render the same persisted category order', (
+  testWidgets('Seeker renders and saves the persisted category order', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -71,20 +70,6 @@ void main() {
     await tester.pump();
     expect(saved.single, (ZyraNotifyCategory.matchesJourneys, false));
 
-    saved.clear();
-    await tester.pumpWidget(
-      MaterialApp(
-        home: WaliNotificationSettingsScreen(
-          loadPreferences: () async => values(),
-          savePreference: save,
-        ),
-      ),
-    );
-    await tester.pump();
-    expect(find.textContaining('Seeker links'), findsOneWidget);
-    await tester.tap(find.byType(Switch).first);
-    await tester.pump();
-    expect(saved.single, (ZyraNotifyCategory.matchesJourneys, false));
     expect(tester.takeException(), isNull);
   });
 

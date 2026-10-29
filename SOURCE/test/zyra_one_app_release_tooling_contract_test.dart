@@ -10,7 +10,6 @@ void main() {
       'lib/screens/wali/wali_seekers_screen.dart',
       'lib/screens/wali/wali_journey_detail_screen.dart',
       'lib/screens/connections/connections_screen.dart',
-      'lib/screens/dev/moderation_review_queue_screen.dart',
       'lib/screens/settings/settings_screen.dart',
     ];
     for (final path in capabilityGatedScreens) {
