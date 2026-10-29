@@ -1,0 +1,111 @@
+{
+  "commit_sha": "7fec19c0be4daca711cd82444c083fcd7d8ab89d",
+  "source_sha256": {
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "1c909ef6f881df673956b0fb928c2e283b87fb5a8e0704516f0a4b47d8b3f5a0",
+    "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart": "de2cd0fb1f1ecbe10d16fe896366ea27415eeef126849dea529b57b3e7952b42",
+    "SOURCE/lib/dev/zyra_view_request_draft_model.dart": "c01404cfdb746268c65206e2bc4b740c23b20795ff470b7c3ba5ff7dd6381318"
+  },
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test render, baseline route(c)",
+  "timestamp": "2026-10-29T19:17:27.331455+00:00",
+  "logical_resolution": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "resolution": [
+    1290,
+    2796
+  ],
+  "theme": "Actual ZyraApp production theme/scroll/fonts/safe area",
+  "transport": "Offline fictional sample; HTTP denied",
+  "picture_count": 2,
+  "captures": [
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "tab_bar",
+      "state": "my_zyra_new_activity_gold",
+      "reached": "Actual initial Profiles tab with an unseen received request; My ZYRA attention gold",
+      "file": "tab_bar__my_zyra_new_activity_gold.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "bytes": 798546,
+      "sha256": "36fa399a527b6ce97823ae7704dcb3460afc140a1d58d4545385f20bb94d92ba"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "tab_bar",
+      "state": "my_zyra_seen_plain",
+      "reached": "Actual My ZYRA icon tap then actual Profiles icon tap; no request opened or acknowledged; My ZYRA attention plain",
+      "file": "tab_bar__my_zyra_seen_plain.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "bytes": 798630,
+      "sha256": "02c19a2b4c05f420bede30d89aec29baa1c456b10e88d6e38882af77ed121d0b"
+    }
+  ],
+  "invariants": {
+    "logical_size": [
+      430,
+      932
+    ],
+    "device_pixel_ratio": 3,
+    "png_size": [
+      1290,
+      2796
+    ],
+    "attention_icon_rect_logical": {
+      "left": 204.0,
+      "top": 862.0600000000001,
+      "right": 226.0,
+      "bottom": 884.0600000000001,
+      "width": 22.0,
+      "height": 22.0
+    },
+    "avatar_outer_rect_logical": {
+      "left": 187.0,
+      "top": 278.5,
+      "right": 243.0,
+      "bottom": 334.5,
+      "width": 56.0,
+      "height": 56.0
+    },
+    "photo_clip_rect_logical": {
+      "left": 190.0,
+      "top": 281.5,
+      "right": 240.0,
+      "bottom": 331.5,
+      "width": 50.0,
+      "height": 50.0
+    },
+    "underlying_states_unchanged": true,
+    "acknowledged_received_request_ids": [],
+    "request_seen_state_unchanged": true,
+    "inside_new_activity_heading_preserved": true,
+    "navigation": "Actual touch detector via visible icon centers"
+  },
+  "pixel_comparison": {
+    "before_equals_LOCK4default": true,
+    "before_after_changed_bbox_pixels": [
+      619,
+      2593,
+      671,
+      2644
+    ],
+    "attention_icon_excluded_rect_pixels": [
+      610,
+      2584,
+      680,
+      2655
+    ],
+    "changed_pixels_outside_attention_icon": 0,
+    "all_prior_picture_artifacts_unchanged": true
+  },
+  "native": "HELD; no native build, install or bypass"
+}
