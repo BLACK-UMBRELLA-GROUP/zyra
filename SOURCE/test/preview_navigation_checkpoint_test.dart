@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
-import 'package:zyra/widgets/zyra_browse_designs.dart';
 
 Future<BuildContext> _positionContext(
   WidgetTester tester,
@@ -132,7 +131,6 @@ void main() {
       browseCursor: 1,
       photoIndices: photos,
       galleryIndices: galleries,
-      galleryMode: ZyraBrowseGalleryMode.originalPhotos,
       positions: positions,
       removedGuardians: removed,
       guardianHistory: guardianHistory,
@@ -151,7 +149,6 @@ void main() {
     expect(checkpoint.browseHistory, ['draft-sara', 'draft-aisha']);
     expect(checkpoint.photoIndices, {'draft-sara': 1});
     expect(checkpoint.galleryIndices, {'draft-sara': 2, 'draft-aisha': 0});
-    expect(checkpoint.galleryMode, ZyraBrowseGalleryMode.originalPhotos);
     expect(checkpoint.positions, {'String:timeline': 123.0});
     expect(checkpoint.removedGuardians, {'draft-guardian-yusuf'});
     expect(checkpoint.guardianHistory, {'draft-guardian-hassan': true});
@@ -214,7 +211,6 @@ void main() {
     );
     expect(checkpoint.photoIndices, {'draft-sara': 1});
     expect(checkpoint.galleryIndices, isEmpty);
-    expect(checkpoint.galleryMode, ZyraBrowseGalleryMode.detailsFirst);
   });
 
   test('informational checkpoint subjects are detached identifiers only', () {

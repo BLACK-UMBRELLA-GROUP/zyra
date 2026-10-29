@@ -50,7 +50,6 @@ ZyraPreviewNavigationCheckpoint _seed({
   String? browseId,
   Map<String, int> photos = const {},
   Map<String, int> galleries = const {},
-  ZyraBrowseGalleryMode galleryMode = ZyraBrowseGalleryMode.detailsFirst,
   String? accountDestination,
   String? settingsDetail,
 }) => ZyraPreviewNavigationCheckpoint(
@@ -65,7 +64,6 @@ ZyraPreviewNavigationCheckpoint _seed({
   browseId: browseId,
   photoIndices: photos,
   galleryIndices: galleries,
-  galleryMode: galleryMode,
   positions: const {'id:old-scroll': 123},
   accountDestination: accountDestination,
   settingsDetail: settingsDetail,
@@ -1031,49 +1029,46 @@ void main() {
   );
 
   testWidgets(
-    'original-photo mode and gallery resume together without shifting photo ordinals',
+    'Details-first gallery resumes without shifting actual photo ordinals',
     (tester) async {
       final owner = _Owner();
       await owner.mount(
         tester,
         checkpoint: _seed(
           browseId: 'draft-aisha',
-          galleryMode: ZyraBrowseGalleryMode.originalPhotos,
-          galleries: const {'draft-aisha': 1},
+          galleries: const {'draft-aisha': 2},
           photos: const {'draft-aisha': 1},
         ),
         settle: false,
       );
       final captured = owner.latest;
-      expect(captured.galleryMode, ZyraBrowseGalleryMode.originalPhotos);
+      expect(captured.galleryIndices, {'draft-aisha': 2});
       expect(captured.photoIndices, {'draft-aisha': 1});
       await owner.mount(tester, checkpoint: captured, settle: false);
       final browse = tester.widget<ZyraOneJourneyBrowseDesigns>(
         find.byType(ZyraOneJourneyBrowseDesigns),
       );
-      expect(browse.galleryMode, ZyraBrowseGalleryMode.originalPhotos);
       expect(browse.initialPhotoIndices, isEmpty);
-      expect(browse.initialGalleryIndices, {'draft-aisha': 1});
+      expect(browse.initialGalleryIndices, {'draft-aisha': 2});
       final pager = tester.widget<PageView>(
         find.byKey(const ValueKey('concept_browse_photo_swipe_draft-aisha')),
       );
-      expect(pager.controller!.initialPage, 1);
-      expect(pager.controller!.page, closeTo(1, .001));
+      expect(pager.controller!.initialPage, 2);
+      expect(pager.controller!.page, closeTo(2, .001));
       expect(
         find.byKey(const ValueKey('concept_browse_details_draft-aisha')),
         findsNothing,
       );
       expect(
         find.byKey(const ValueKey('concept_browse_identity_draft-aisha')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(owner.latest.photoIndices, {'draft-aisha': 1});
-      expect(owner.latest.galleryIndices, {'draft-aisha': 1});
+      expect(owner.latest.galleryIndices, {'draft-aisha': 2});
 
       await owner.mount(tester, checkpoint: captured, restoreLocation: false);
       _expectTab(tester, 2);
       expect(owner.latest.pages, isEmpty);
-      expect(owner.latest.galleryMode, ZyraBrowseGalleryMode.detailsFirst);
       expect(owner.latest.galleryIndices, isEmpty);
       expect(owner.latest.photoIndices, isEmpty);
       expect(find.byType(ZyraOneJourneyBrowseDesigns), findsNothing);
@@ -1090,9 +1085,7 @@ void main() {
       final reset = tester.widget<ZyraOneJourneyBrowseDesigns>(
         find.byType(ZyraOneJourneyBrowseDesigns),
       );
-      expect(reset.galleryMode, ZyraBrowseGalleryMode.detailsFirst);
       expect(reset.initialGalleryIndices, isEmpty);
-      expect(owner.latest.galleryMode, ZyraBrowseGalleryMode.detailsFirst);
     },
   );
 

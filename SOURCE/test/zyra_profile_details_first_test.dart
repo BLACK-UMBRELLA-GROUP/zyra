@@ -85,7 +85,6 @@ Widget _presenter({
   void Function(String, int)? onGallery,
   VoidCallback? action,
   bool? sent,
-  ZyraBrowseGalleryMode galleryMode = ZyraBrowseGalleryMode.detailsFirst,
   bool showFeedChrome = true,
   bool readOnlyPreview = false,
   String Function(SeekerProfile)? requestLabel,
@@ -96,7 +95,6 @@ Widget _presenter({
   profiles: profiles,
   selectedIndex: selected,
   design: ZyraOneJourneyBrowseDesign.portraitCard,
-  galleryMode: galleryMode,
   showFeedChrome: showFeedChrome,
   readOnlyPreview: readOnlyPreview,
   hapticLevel: ZyraHapticLevel.off,
@@ -417,167 +415,99 @@ void main() {
     _expectCleanPhoto(tester, photo: 1);
   });
 
-  testWidgets('original photos omits details and keeps public photo identity', (
-    tester,
-  ) async {
-    await _mount(
-      tester,
-      _presenter(galleryMode: ZyraBrowseGalleryMode.originalPhotos),
-    );
-    expect(find.byType(ZyraProfileDetailsPage), findsNothing);
-    expect(_controller(tester, _person.id).page, closeTo(0, .001));
-    expect(
-      tester
-          .widget<PageView>(_pager(_person.id))
-          .childrenDelegate
-          .estimatedChildCount,
-      _person.photos.length,
-    );
-    final identity = _key('concept_browse_identity_${_person.id}');
-    expect(identity, findsOneWidget);
-    for (final value in [
-      _person.firstName,
-      _person.surnameLine!,
-      '${_person.age} · ${_person.city}',
-      'Nationality: ${_person.publicNationality}',
-      'Ethnicity: ${_person.publicEthnicity}',
-    ]) {
-      expect(
-        find.descendant(of: identity, matching: find.text(value)),
-        findsOneWidget,
+  testWidgets(
+    'inspection Details-first keeps public gallery without evaluating feed delegates',
+    (tester) async {
+      final photos = <(String, int)>[];
+      final galleries = <(String, int)>[];
+      await _mount(
+        tester,
+        _presenter(
+          showFeedChrome: false,
+          requestLabel: (_) => _rejectFeedDelegate(),
+          canRequest: (_) => _rejectFeedDelegate(),
+          invitationState: (_) => _rejectFeedDelegate(),
+          action: _rejectFeedDelegate,
+          onPhoto: (id, index) => photos.add((id, index)),
+          onGallery: (id, index) => galleries.add((id, index)),
+        ),
       );
-    }
-    for (var index = 0; index < _person.photos.length; index++) {
+
+      _expectNoFeedChrome(tester);
+      expect(_key('concept_browse_photo_pagination'), findsOneWidget);
+      expect(_key('concept_browse_portrait_card'), findsOneWidget);
+      expect(_controller(tester, _person.id).page, closeTo(0, .001));
       expect(
-        _key('concept_browse_photo_dot_${_person.id}_$index'),
-        findsOneWidget,
+        tester
+            .widget<PageView>(_pager(_person.id))
+            .childrenDelegate
+            .estimatedChildCount,
+        _person.photos.length + 1,
       );
-    }
-    expect(
-      _key('concept_browse_photo_dot_${_person.id}_${_person.photos.length}'),
-      findsNothing,
-    );
-    await _capture(tester, '03-original-photos-identity');
-  });
+      _expectDetailsText(_person.id, [
+        _person.firstName,
+        _person.surnameLine!,
+        '${_person.age}',
+        _person.city,
+        _person.publicNationality!,
+        _person.publicEthnicity!,
+      ]);
 
-  for (final mode in ZyraBrowseGalleryMode.values) {
-    testWidgets(
-      'inspection ${mode.name} keeps public gallery without evaluating feed delegates',
-      (tester) async {
-        final photos = <(String, int)>[];
-        final galleries = <(String, int)>[];
-        await _mount(
-          tester,
-          _presenter(
-            galleryMode: mode,
-            showFeedChrome: false,
-            requestLabel: (_) => _rejectFeedDelegate(),
-            canRequest: (_) => _rejectFeedDelegate(),
-            invitationState: (_) => _rejectFeedDelegate(),
-            action: _rejectFeedDelegate,
-            onPhoto: (id, index) => photos.add((id, index)),
-            onGallery: (id, index) => galleries.add((id, index)),
-          ),
-        );
+      await _swipe(tester, _person.id, -260);
+      expect(_controller(tester, _person.id).page, closeTo(1, .001));
+      _expectCleanPhoto(tester, photo: 0);
+      await _tapFraction(tester, .75);
+      expect(_controller(tester, _person.id).page, closeTo(2, .001));
+      expect(galleries, [(_person.id, 1), (_person.id, 2)]);
+      expect(photos, [(_person.id, 0), (_person.id, 1)]);
+      _expectNoFeedChrome(tester);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
-        _expectNoFeedChrome(tester);
-        expect(_key('concept_browse_photo_pagination'), findsOneWidget);
-        expect(_key('concept_browse_portrait_card'), findsOneWidget);
-        expect(_controller(tester, _person.id).page, closeTo(0, .001));
-        final detailsFirst = mode == ZyraBrowseGalleryMode.detailsFirst;
-        expect(
-          tester
-              .widget<PageView>(_pager(_person.id))
-              .childrenDelegate
-              .estimatedChildCount,
-          _person.photos.length + (detailsFirst ? 1 : 0),
-        );
-        if (detailsFirst) {
-          _expectDetailsText(_person.id, [
-            _person.firstName,
-            _person.surnameLine!,
-            '${_person.age}',
-            _person.city,
-            _person.publicNationality!,
-            _person.publicEthnicity!,
-          ]);
-        } else {
-          expect(find.byType(ZyraProfileDetailsPage), findsNothing);
-          final identity = _key('concept_browse_identity_${_person.id}');
-          for (final value in [
-            _person.firstName,
-            _person.surnameLine!,
-            '${_person.age} · ${_person.city}',
-            'Nationality: ${_person.publicNationality}',
-            'Ethnicity: ${_person.publicEthnicity}',
-          ]) {
-            expect(
-              find.descendant(of: identity, matching: find.text(value)),
-              findsOneWidget,
-            );
-          }
-        }
-
-        await _swipe(tester, _person.id, -260);
-        expect(_controller(tester, _person.id).page, closeTo(1, .001));
-        if (detailsFirst) _expectCleanPhoto(tester, photo: 0);
-        await _tapFraction(tester, .75);
-        expect(_controller(tester, _person.id).page, closeTo(2, .001));
-        expect(galleries, [(_person.id, 1), (_person.id, 2)]);
-        expect(photos, [
-          (_person.id, detailsFirst ? 0 : 1),
-          (_person.id, detailsFirst ? 1 : 2),
-        ]);
-        _expectNoFeedChrome(tester);
-        expect(tester.takeException(), isNull);
-      },
-    );
-
-    testWidgets(
-      'protected inspection ${mode.name} forwards chrome suppression without widening photo sources',
-      (tester) async {
-        final painted = <String>[];
-        await _mount(
-          tester,
-          protected.ZyraOneJourneyBrowseDesigns(
-            profiles: const [_person],
-            selectedIndex: 0,
-            design: ZyraOneJourneyBrowseDesign.portraitCard,
-            galleryMode: mode,
-            showFeedChrome: false,
-            hapticLevel: ZyraHapticLevel.off,
-            requestLabel: (_) => _rejectFeedDelegate(),
-            canRequest: (_) => _rejectFeedDelegate(),
-            invitationSent: (_) => _rejectFeedDelegate(),
-            onPrevious: _rejectFeedDelegate,
-            onNext: _rejectFeedDelegate,
-            onFilters: _rejectFeedDelegate,
-            onBrowseMenu: (_) => _rejectFeedDelegate(),
-            onProfile: (_) => _rejectFeedDelegate(),
-            onRequest: (_) => _rejectFeedDelegate(),
-            photoBuilder:
-                (
-                  context,
-                  source, {
-                  required width,
-                  required height,
-                  required alignment,
-                }) {
-                  painted.add(source);
-                  return const ColoredBox(color: Colors.teal);
-                },
-          ),
-        );
-        _expectNoFeedChrome(tester);
-        await _tapFraction(tester, .75);
-        expect(_controller(tester, _person.id).page, closeTo(1, .001));
-        expect(painted, isNotEmpty);
-        expect(painted, everyElement(isEmpty));
-        _expectNoFeedChrome(tester);
-        expect(tester.takeException(), isNull);
-      },
-    );
-  }
+  testWidgets(
+    'protected inspection Details-first forwards chrome suppression without widening photo sources',
+    (tester) async {
+      final painted = <String>[];
+      await _mount(
+        tester,
+        protected.ZyraOneJourneyBrowseDesigns(
+          profiles: const [_person],
+          selectedIndex: 0,
+          design: ZyraOneJourneyBrowseDesign.portraitCard,
+          showFeedChrome: false,
+          hapticLevel: ZyraHapticLevel.off,
+          requestLabel: (_) => _rejectFeedDelegate(),
+          canRequest: (_) => _rejectFeedDelegate(),
+          invitationSent: (_) => _rejectFeedDelegate(),
+          onPrevious: _rejectFeedDelegate,
+          onNext: _rejectFeedDelegate,
+          onFilters: _rejectFeedDelegate,
+          onBrowseMenu: (_) => _rejectFeedDelegate(),
+          onProfile: (_) => _rejectFeedDelegate(),
+          onRequest: (_) => _rejectFeedDelegate(),
+          photoBuilder:
+              (
+                context,
+                source, {
+                required width,
+                required height,
+                required alignment,
+              }) {
+                painted.add(source);
+                return const ColoredBox(color: Colors.teal);
+              },
+        ),
+      );
+      _expectNoFeedChrome(tester);
+      await _tapFraction(tester, .75);
+      expect(_controller(tester, _person.id).page, closeTo(1, .001));
+      expect(painted, isNotEmpty);
+      expect(painted, everyElement(isEmpty));
+      _expectNoFeedChrome(tester);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets(
     'default feed chrome and inert own-preview footer stay unchanged',
@@ -669,206 +599,6 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
-
-  for (final seed in const [
-    (photo: 0, gallery: null, expected: 0),
-    (photo: 1, gallery: null, expected: 1),
-    (photo: 99, gallery: null, expected: 2),
-    (photo: -99, gallery: null, expected: 0),
-    (photo: 2, gallery: 0, expected: 0),
-    (photo: 0, gallery: 99, expected: 2),
-  ]) {
-    testWidgets(
-      'original photo seed ${seed.photo}/gallery ${seed.gallery} maps to ${seed.expected}',
-      (tester) async {
-        final photos = <(String, int)>[];
-        final galleries = <(String, int)>[];
-        await _mount(
-          tester,
-          _presenter(
-            galleryMode: ZyraBrowseGalleryMode.originalPhotos,
-            photoSeeds: {_person.id: seed.photo},
-            gallerySeeds: {if (seed.gallery != null) _person.id: seed.gallery!},
-            onPhoto: (id, index) => photos.add((id, index)),
-            onGallery: (id, index) => galleries.add((id, index)),
-          ),
-        );
-        expect(_controller(tester, _person.id).initialPage, seed.expected);
-        expect(
-          _controller(tester, _person.id).page,
-          closeTo(seed.expected, .001),
-        );
-        expect(
-          _key('details_paint_${_person.photos[seed.expected]}'),
-          findsOneWidget,
-        );
-        expect(photos, isEmpty);
-        expect(galleries, isEmpty);
-      },
-    );
-  }
-
-  for (final direction in [TextDirection.ltr, TextDirection.rtl]) {
-    testWidgets(
-      'original photo halves wrap with zero-based ordinals in $direction',
-      (tester) async {
-        final photos = <(String, int)>[];
-        final galleries = <(String, int)>[];
-        var actions = 0;
-        final semantics = tester.ensureSemantics();
-        try {
-          await _mount(
-            tester,
-            _presenter(
-              galleryMode: ZyraBrowseGalleryMode.originalPhotos,
-              onPhoto: (id, index) => photos.add((id, index)),
-              onGallery: (id, index) => galleries.add((id, index)),
-              action: () => actions++,
-            ),
-            direction: direction,
-          );
-          expect(find.bySemanticsLabel('Photo 1 of 3'), findsOneWidget);
-          expect(find.bySemanticsLabel('Profile details'), findsNothing);
-          await _tapFraction(tester, .25);
-          expect(_controller(tester, _person.id).page, closeTo(2, .001));
-          expect(find.bySemanticsLabel('Photo 3 of 3'), findsOneWidget);
-          await _tapFraction(tester, .75);
-          expect(_controller(tester, _person.id).page, closeTo(0, .001));
-          await _tapFraction(tester, .5);
-          expect(_controller(tester, _person.id).page, closeTo(1, .001));
-          expect(photos, [(_person.id, 2), (_person.id, 0), (_person.id, 1)]);
-          expect(galleries, photos);
-          expect(actions, 0);
-        } finally {
-          semantics.dispose();
-        }
-      },
-    );
-  }
-
-  for (final photoCount in [0, 1]) {
-    testWidgets(
-      'original $photoCount-photo profile has one safe page without invented callbacks',
-      (tester) async {
-        final person = SeekerProfile(
-          id: _empty.id,
-          firstName: _empty.firstName,
-          surnameLine: _empty.surnameLine,
-          age: _empty.age,
-          city: _empty.city,
-          gender: _empty.gender,
-          photos: [if (photoCount == 1) 'paint-one-0'],
-        );
-        final photos = <(String, int)>[];
-        final galleries = <(String, int)>[];
-        await _mount(
-          tester,
-          _presenter(
-            profiles: [person],
-            galleryMode: ZyraBrowseGalleryMode.originalPhotos,
-            onPhoto: (id, index) => photos.add((id, index)),
-            onGallery: (id, index) => galleries.add((id, index)),
-          ),
-        );
-        expect(find.byType(ZyraProfileDetailsPage), findsNothing);
-        expect(
-          tester
-              .widget<PageView>(_pager(person.id))
-              .childrenDelegate
-              .estimatedChildCount,
-          1,
-        );
-        expect(_key('concept_browse_photo_pagination'), findsNothing);
-        await _swipe(tester, person.id, -260);
-        await tester.tap(_key('concept_browse_photo_tap_${person.id}'));
-        await tester.pumpAndSettle();
-        expect(_controller(tester, person.id).page, closeTo(0, .001));
-        expect(photos, isEmpty);
-        expect(galleries, isEmpty);
-      },
-    );
-  }
-
-  for (final sourceMode in ZyraBrowseGalleryMode.values) {
-    for (final phase in ['adjacent', 'wrap', 'drag']) {
-      testWidgets(
-        '${sourceMode.name} switch during $phase cancels old photo callbacks and motion',
-        (tester) async {
-          final photos = <(String, int)>[];
-          final galleries = <(String, int)>[];
-          var actions = 0;
-          Widget presenter(ZyraBrowseGalleryMode mode) => _presenter(
-            galleryMode: mode,
-            gallerySeeds: {
-              _person.id: phase == 'wrap'
-                  ? (sourceMode == ZyraBrowseGalleryMode.detailsFirst ? 3 : 2)
-                  : 1,
-            },
-            onPhoto: (id, index) => photos.add((id, index)),
-            onGallery: (id, index) => galleries.add((id, index)),
-            action: () => actions++,
-          );
-          await _mount(tester, presenter(sourceMode), quiet: false);
-          final oldPager = tester.widget<PageView>(_pager(_person.id));
-          final tap = _key('concept_browse_photo_tap_${_person.id}');
-          final oldTap = tester.widget<GestureDetector>(tap).onTapUp!;
-          final oldSize = tester.getSize(tap);
-          final local = Offset(oldSize.width * .75, oldSize.height / 2);
-          final up = TapUpDetails(
-            kind: ui.PointerDeviceKind.touch,
-            localPosition: local,
-            globalPosition: tester.getTopLeft(tap) + local,
-          );
-          TestGesture? drag;
-          if (phase == 'drag') {
-            drag = await tester.startGesture(tester.getCenter(tap));
-            await drag.moveBy(const Offset(-90, 0));
-            await tester.pump();
-          } else {
-            await _tapFraction(tester, .75, settle: false);
-            await tester.pump(const Duration(milliseconds: 80));
-          }
-          final targetMode = sourceMode == ZyraBrowseGalleryMode.detailsFirst
-              ? ZyraBrowseGalleryMode.originalPhotos
-              : ZyraBrowseGalleryMode.detailsFirst;
-          await tester.pumpWidget(_app(presenter(targetMode), quiet: false));
-          await tester.pumpAndSettle();
-          final currentPager = tester.widget<PageView>(_pager(_person.id));
-          expect(
-            identical(currentPager.controller, oldPager.controller),
-            isFalse,
-          );
-          expect(currentPager.controller!.page, closeTo(0, .001));
-          final beforePhotos = List.of(photos);
-          final beforeGalleries = List.of(galleries);
-          oldTap(up);
-          oldPager.onPageChanged!(2);
-          await drag?.up();
-          await tester.pumpAndSettle();
-          expect(currentPager.controller!.page, closeTo(0, .001));
-          expect(photos, beforePhotos);
-          expect(galleries, beforeGalleries);
-          expect(_key('concept_browse_photo_wrap_${_person.id}'), findsNothing);
-          expect(actions, 0);
-          if (targetMode == ZyraBrowseGalleryMode.detailsFirst) {
-            _expectDetailsText(_person.id, [
-              'Sara',
-              'Ahmed',
-              '27',
-              'Birmingham',
-            ]);
-          } else {
-            expect(find.byType(ZyraProfileDetailsPage), findsNothing);
-            expect(
-              _key('concept_browse_identity_${_person.id}'),
-              findsOneWidget,
-            );
-          }
-          expect(tester.takeException(), isNull);
-        },
-      );
-    }
-  }
 
   for (final heritage in [null, '   ']) {
     testWidgets(

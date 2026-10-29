@@ -8,7 +8,7 @@ import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart' as shared;
 import 'package:zyra/widgets/zyra_profile_image.dart';
-import 'package:zyra/widgets/zyra_profile_name_block.dart';
+import 'package:zyra/widgets/zyra_profile_details_page.dart';
 
 // Synthetic references, not production URLs or proof of authorisation. These
 // tests prove the explicit rendering seam only, without fetching any photo.
@@ -146,7 +146,6 @@ void main() {
             profiles: const [_member],
             selectedIndex: 0,
             design: design,
-            galleryMode: shared.ZyraBrowseGalleryMode.originalPhotos,
             photoBuilder: renderer.build,
             onPrevious: () => previous++,
             onNext: () => next++,
@@ -154,16 +153,16 @@ void main() {
             onRequest: (profile) => requested.add(profile.id),
           ),
         );
-        final identity = tester.widget<ZyraProfileNameBlock>(
-          find.descendant(
-            of: _key('concept_browse_identity_${_member.id}'),
-            matching: find.byType(ZyraProfileNameBlock),
-          ),
+        final details = tester.widget<ZyraProfileDetailsPage>(
+          find.byType(ZyraProfileDetailsPage),
         );
-        expect(identity.profile, same(_member));
-        expect(identity.profile.firstName, 'Nadia');
-        expect(identity.profile.surnameLine, 'Yusuf');
-        expect(identity.onPhoto, isTrue);
+        expect(details.profile, same(_member));
+        expect(details.profile.firstName, 'Nadia');
+        expect(details.profile.surnameLine, 'Yusuf');
+        expect(renderer.calls, isEmpty);
+        await _press(tester, 'concept_browse_photo_tap_${_member.id}');
+        _expectSelectedDot(tester, 1);
+        expect(_key('concept_browse_identity_${_member.id}'), findsNothing);
         expect(renderer.calls, isNotEmpty);
         expect(
           renderer.calls.any((call) => call.photo == _member.photos.first),
@@ -201,9 +200,9 @@ void main() {
             profiles: const [_member],
             selectedIndex: 0,
             design: design,
-            galleryMode: sample.ZyraBrowseGalleryMode.originalPhotos,
           ),
         );
+        await _press(tester, 'concept_browse_photo_tap_${_member.id}');
         final images = tester
             .widgetList<ZyraProfileImage>(find.byType(ZyraProfileImage))
             .toList();
@@ -228,17 +227,18 @@ void main() {
           profiles: const [_member],
           selectedIndex: 0,
           design: shared.ZyraOneJourneyBrowseDesign.portraitCard,
-          galleryMode: shared.ZyraBrowseGalleryMode.originalPhotos,
           photoBuilder: renderer.build,
         ),
       );
+      await _press(tester, 'concept_browse_photo_tap_${_member.id}');
+      _expectSelectedDot(tester, 1);
       renderer.calls.clear();
       await tester.drag(
         _key('concept_browse_photo_swipe_${_member.id}'),
         const Offset(-750, 0),
       );
       await tester.pumpAndSettle();
-      _expectSelectedDot(tester, 1);
+      _expectSelectedDot(tester, 2);
       expect(
         renderer.calls.any((call) => call.photo == _member.photos[1]),
         isTrue,
@@ -249,7 +249,7 @@ void main() {
         const Offset(750, 0),
       );
       await tester.pumpAndSettle();
-      _expectSelectedDot(tester, 0);
+      _expectSelectedDot(tester, 1);
       expect(
         renderer.calls.any((call) => call.photo == _member.photos.first),
         isTrue,
@@ -257,7 +257,7 @@ void main() {
     },
   );
 
-  testWidgets('missing photo stays empty for the caller-owned placeholder', (
+  testWidgets('missing photo keeps Details first without invoking a renderer', (
     tester,
   ) async {
     const noPhoto = SeekerProfile(
@@ -276,14 +276,16 @@ void main() {
         profiles: const [noPhoto],
         selectedIndex: 0,
         design: shared.ZyraOneJourneyBrowseDesign.portraitCard,
-        galleryMode: shared.ZyraBrowseGalleryMode.originalPhotos,
         photoBuilder: renderer.build,
       ),
     );
-    expect(renderer.calls, isNotEmpty);
-    expect(renderer.calls.every((call) => call.photo.isEmpty), isTrue);
+    expect(_key('concept_browse_details_${noPhoto.id}'), findsOneWidget);
+    expect(renderer.calls, isEmpty);
     expect(find.byType(ZyraProfileImage), findsNothing);
+    expect(_key('concept_browse_photo_pagination'), findsNothing);
     expect(_key('concept_browse_photo_next_${noPhoto.id}'), findsNothing);
+    await _press(tester, 'concept_browse_photo_tap_${noPhoto.id}');
+    expect(renderer.calls, isEmpty);
   });
 
   testWidgets('request availability remains caller-owned', (tester) async {

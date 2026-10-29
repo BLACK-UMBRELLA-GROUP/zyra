@@ -83,7 +83,6 @@ class _Owner extends ChangeNotifier {
   bool shown = true;
   bool allowed = true;
   bool throwsGuard = false;
-  ZyraBrowseGalleryMode galleryMode = ZyraBrowseGalleryMode.detailsFirst;
   int returns = 0;
   // Preserve exact callback identity across owner rebuilds, as the real host does.
   // ignore: prefer_function_declarations_over_variables
@@ -109,7 +108,6 @@ Widget _owned(_Owner owner) => ZyraBackNavigationPreview(
         ? MyProfilePreviewScreen.preview(
             key: const ValueKey('local-own-preview-owner'),
             profile: owner.profile,
-            galleryMode: owner.galleryMode,
             canAct: owner.guard,
             onBack: owner.back,
             hapticLevel: ZyraHapticLevel.off,
@@ -686,44 +684,21 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  for (final mode in ZyraBrowseGalleryMode.values) {
-    testWidgets('Own preview ${mode.name} keeps mode local and actions inert', (
-      tester,
-    ) async {
-      final owner = _Owner(_profile())..galleryMode = mode;
+  testWidgets(
+    'Own preview keeps Details first and rejects callbacks after owner revocation',
+    (tester) async {
+      final owner = _Owner(_profile());
       addTearDown(owner.dispose);
       await _mount(tester, _owned(owner));
-      final own = _card(tester);
-      expect(own.galleryMode, mode);
       final id = owner.profile.id;
-      final details = _key('concept_browse_details_$id');
-      final identity = _key('concept_browse_identity_$id');
-      if (mode == ZyraBrowseGalleryMode.detailsFirst) {
-        expect(details, findsOneWidget);
-        await _centerSwipe(tester, id);
-        expect(identity, findsNothing);
-      } else {
-        expect(details, findsNothing);
-        expect(identity, findsOneWidget);
-        await _centerSwipe(tester, id);
-      }
+      expect(_key('concept_browse_details_$id'), findsOneWidget);
+      await _centerSwipe(tester, id);
+      expect(_key('concept_browse_identity_$id'), findsNothing);
       _inertBrowseControls(tester, id);
       expect(owner.returns, 0);
       final oldPager = tester.widget<PageView>(
         _key('concept_browse_photo_swipe_$id'),
       );
-      owner.galleryMode = mode == ZyraBrowseGalleryMode.detailsFirst
-          ? ZyraBrowseGalleryMode.originalPhotos
-          : ZyraBrowseGalleryMode.detailsFirst;
-      owner.rebuild();
-      await tester.pumpAndSettle();
-      final switched = _card(tester);
-      expect(switched.galleryMode, owner.galleryMode);
-      final pager = tester.widget<PageView>(
-        _key('concept_browse_photo_swipe_$id'),
-      );
-      expect(identical(pager.controller, oldPager.controller), isFalse);
-      expect(pager.controller!.page, closeTo(0, .001));
       owner.allowed = false;
       owner.rebuild();
       await tester.pumpAndSettle();
@@ -732,8 +707,8 @@ void main() {
       expect(find.byType(ZyraBrowseDesigns), findsNothing);
       expect(owner.returns, 0);
       expect(tester.takeException(), isNull);
-    });
-  }
+    },
+  );
 
   for (final returnMethod in ['accessibility', 'edge']) {
     testWidgets(

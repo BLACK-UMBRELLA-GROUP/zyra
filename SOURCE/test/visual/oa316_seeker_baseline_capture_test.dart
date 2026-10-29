@@ -1,9 +1,12 @@
 // Founder-authorized captures of unchanged public local-preview routes.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
 import 'package:zyra/dev/zyra_my_zyra_activity_preview.dart';
+import 'package:zyra/services/zyra_internal_preview_client.dart';
+import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
 import 'package:zyra/widgets/zyra_browse_options_button.dart';
@@ -540,34 +543,159 @@ void main() {
     timeout: const Timeout(Duration(minutes: 30)),
   );
   testWidgets(
-    'baseline seeker actual Browse control variants',
+    'baseline seeker Details-first photo pages',
     (tester) async {
-      final h = BaselineHarness(tester, group: 'seeker');
-      for (final mode in ZyraBrowseGalleryMode.values) {
-        await h.mount();
-        await h.controls();
-        final picker = find.byWidgetPredicate(
-          (w) => w is DropdownButtonFormField<ZyraBrowseGalleryMode>,
+      final h = BaselineHarness(tester, group: 'profiles_photos');
+      await h.mount();
+      final browse = tester.widget<ZyraBrowseDesigns>(
+        find.byType(ZyraBrowseDesigns),
+      );
+      final id = browse.profiles[browse.selectedIndex].id;
+      final gallery = h.key('concept_browse_photo_tap_$id');
+      expect(gallery, findsOneWidget);
+      for (var page = 1; page <= 2; page++) {
+        final rect = tester.getRect(gallery);
+        await tester.tapAt(
+          Offset(rect.left + rect.width * .75, rect.center.dy),
         );
-        await _selectPopup(
-          h,
-          picker,
-          'concept_browse_gallery_mode_${mode.name}',
+        await h.flush();
+        expect(h.latest.galleryIndices[id], page);
+        expect(h.latest.photoIndices[id], page - 1);
+        final photo = h.key('concept_browse_photo_${id}_${page - 1}');
+        expect(photo, findsOneWidget);
+        expect(
+          find.descendant(of: photo, matching: find.byType(Text)),
+          findsNothing,
         );
-        await h.capture(
-          'browse_and_requests',
-          'controls',
-          'browse_${mode.name}',
-          'Actual controls Profile cards choice',
-        );
-        await h.closeControls();
         await h.capture(
           'browse_and_requests',
           'profiles_tab',
-          'gallery_${mode.name}',
-          'Actual controls Profile cards choice then X',
+          'photo_$page',
+          'Details-first Profiles: name card → actual right-side photo tap $page; gallery index $page and photo ordinal ${page - 1} verified',
         );
       }
+    },
+    skip: !_enabled,
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+    timeout: const Timeout(Duration(minutes: 10)),
+  );
+  testWidgets(
+    'baseline seeker missing Profiles options and utility states',
+    (tester) async {
+      final h = BaselineHarness(tester, group: 'profiles_photos');
+      ZyraInternalPreviewClient.beginPreview();
+      try {
+        Finder iconOnlyOptions() {
+          final navigation = h.key('concept_browse_options_navigation');
+          expect(navigation, findsOneWidget);
+          final bar = tester.widget<FloatingNavBar>(
+            find.descendant(
+              of: navigation,
+              matching: find.byType(FloatingNavBar),
+            ),
+          );
+          expect(bar.items.map((item) => item.icon), [
+            for (final action in ZyraBrowseAction.values) action.icon,
+          ]);
+          expect(bar.showLabels, isFalse);
+          expect(
+            find.descendant(of: navigation, matching: find.byType(Text)),
+            findsNothing,
+          );
+          return navigation;
+        }
+
+        await h.mount();
+        await h.tap('concept_browse_menu');
+        iconOnlyOptions();
+        expect(h.latest.pages, isEmpty);
+        expect(h.latest.tab, 0);
+        await h.capture(
+          'browse_and_requests',
+          'profiles_tab',
+          'options_open',
+          'Actual Profiles ••• tap; five existing action icons verified with no text labels',
+        );
+
+        await h.mount();
+        await h.controls();
+        await h.tap('draft_compatibility_unlock_1');
+        await h.closeControls();
+        await _browseOption(h, ZyraBrowseAction.compatibility);
+        h.assertPage('compatibility');
+        final locked = tester.widget<ZyraDraftCompatibilityPresentation>(
+          find.byType(ZyraDraftCompatibilityPresentation),
+        );
+        expect(locked.balance, 1);
+        expect(locked.revealed, isFalse);
+        await h.tap('draft_compatibility_reveal');
+        final revealed = tester.widget<ZyraDraftCompatibilityPresentation>(
+          find.byType(ZyraDraftCompatibilityPresentation),
+        );
+        expect(revealed.balance, 0);
+        expect(revealed.revealed, isTrue);
+        expect(h.key('draft_compatibility_overall_score'), findsOneWidget);
+        await h.capture(
+          'browse_and_requests',
+          'compatibility',
+          'revealed',
+          'Existing local controls set 1 unlock → Profiles ••• → Compatibility score → actual Unlock compatibility; revealed state and 1→0 debit verified',
+        );
+
+        await h.mount(tab: 0, pages: ['profile'], personId: _sara);
+        h.assertPage('profile');
+        await h.tap('concept_browse_menu');
+        final navigation = iconOnlyOptions();
+        h.assertPage('profile');
+        await h.capture(
+          'browse_and_requests',
+          'profile',
+          'options_open',
+          'Existing full-profile checkpoint → actual profile •••; current icon-only options bar verified',
+        );
+        final reportAction = find.descendant(
+          of: navigation,
+          matching: find.byIcon(ZyraBrowseAction.report.icon),
+        );
+        expect(reportAction, findsOneWidget);
+        // The icons ignore individual hit tests; the enclosing bar owns taps.
+        await tester.tapAt(tester.getCenter(reportAction));
+        await h.flush();
+        h.assertPage('safety');
+        final reason = h.key('draft_report_reason_fakeProfile');
+        await h.tapFinder(reason);
+        final selected = tester.widgetList<Semantics>(
+          find.ancestor(of: reason, matching: find.byType(Semantics)),
+        );
+        expect(
+          selected.any((item) => item.properties.selected == true),
+          isTrue,
+        );
+        expect(
+          tester.widget<OutlinedButton>(h.key('draft_report_submit')).onPressed,
+          isNull,
+        );
+        expect(find.text('Report sent'), findsNothing);
+        await h.capture(
+          'browse_and_requests',
+          'report',
+          'reason_selected',
+          'Full profile → actual ••• Report action → Impersonation or fake profile; selected reason verified and submission remains disabled (actual route safety)',
+        );
+      } finally {
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pump();
+        ZyraInternalPreviewClient.finishSignOut();
+      }
+    },
+    skip: !_enabled,
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+    timeout: const Timeout(Duration(minutes: 10)),
+  );
+  testWidgets(
+    'baseline seeker actual Browse control variants',
+    (tester) async {
+      final h = BaselineHarness(tester, group: 'seeker');
       for (final motion in ZyraBrowseNextMotion.values) {
         await h.mount();
         await h.controls();

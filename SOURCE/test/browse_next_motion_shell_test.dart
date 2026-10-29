@@ -478,38 +478,6 @@ Future<void> _openControls(WidgetTester tester) async {
   expect(_key('draft_rules'), findsNothing);
 }
 
-DropdownButtonFormField<ZyraBrowseGalleryMode> _galleryDropdown(
-  WidgetTester tester,
-) => tester.widget<DropdownButtonFormField<ZyraBrowseGalleryMode>>(
-  _key('concept_browse_gallery_mode'),
-);
-
-Future<void> _selectGalleryMode(
-  WidgetTester tester,
-  ZyraBrowseGalleryMode mode,
-) async {
-  await _openControls(tester);
-  final dropdown = _key('concept_browse_gallery_mode');
-  await tester.ensureVisible(dropdown);
-  await tester.pumpAndSettle();
-  await tester.tap(dropdown);
-  await tester.pumpAndSettle();
-  final popup = find.byWidgetPredicate(
-    (widget) =>
-        widget is Semantics && widget.properties.role == ui.SemanticsRole.menu,
-  );
-  final option = find.descendant(
-    of: popup,
-    matching: _key('concept_browse_gallery_mode_${mode.name}'),
-  );
-  expect(option, findsOneWidget);
-  await tester.tap(option);
-  await tester.pumpAndSettle();
-  expect(_galleryDropdown(tester).initialValue, mode);
-  await _tap(tester, 'draft_back');
-  expect(_browse(tester).galleryMode, mode);
-}
-
 Future<void> _select(WidgetTester tester, ZyraBrowseNextMotion style) async {
   final previousEpoch = _motion(tester).epoch;
   final previousId = _selectedId(tester);
@@ -692,139 +660,45 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
-  testWidgets(
-    'Profiles exposes exactly two card modes and selection resets the gallery only',
-    (tester) async {
-      await _mount(tester, quiet: true);
-      expect(_browse(tester).galleryMode, ZyraBrowseGalleryMode.detailsFirst);
-      final original = _browse(tester);
-      final id = _selectedId(tester);
-      final beforePeople = original.profiles
-          .map((profile) => profile.id)
-          .toList();
-      final beforeSent = original.invitationSent!(
-        original.profiles[original.selectedIndex],
-      );
-      final photoTap = _key('concept_browse_photo_tap_$id');
-      await tester.tap(photoTap);
-      await tester.pumpAndSettle();
-      expect(
-        tester
-            .widget<PageView>(_key('concept_browse_photo_swipe_$id'))
-            .controller!
-            .page,
-        1,
-      );
-      await _openControls(tester);
-      final picker = tester.widget<DropdownButton<ZyraBrowseGalleryMode>>(
-        find.descendant(
-          of: _key('concept_browse_gallery_mode'),
-          matching: find.byType(DropdownButton<ZyraBrowseGalleryMode>),
-        ),
-      );
-      expect(picker.items, hasLength(2));
-      expect(
-        picker.items!.map((item) => item.value),
-        ZyraBrowseGalleryMode.values,
-      );
-      expect(picker.items!.map((item) => (item.child as Text).data), [
-        'Details first',
-        'Original photos',
-      ]);
-      await _tap(tester, 'draft_back');
-      await _selectGalleryMode(tester, ZyraBrowseGalleryMode.originalPhotos);
-      final updated = _browse(tester);
-      expect(updated.profiles.map((profile) => profile.id), beforePeople);
-      expect(_selectedId(tester), id);
-      expect(
-        updated.invitationSent!(updated.profiles[updated.selectedIndex]),
-        beforeSent,
-      );
-      expect(_key('concept_browse_details_$id'), findsNothing);
-      expect(_key('concept_browse_identity_$id'), findsOneWidget);
-      expect(
-        tester
-            .widget<PageView>(_key('concept_browse_photo_swipe_$id'))
-            .controller!
-            .page,
-        0,
-      );
-      await _selectGalleryMode(tester, ZyraBrowseGalleryMode.detailsFirst);
-      expect(_key('concept_browse_details_$id'), findsOneWidget);
-      expect(
-        tester
-            .widget<PageView>(_key('concept_browse_photo_swipe_$id'))
-            .controller!
-            .page,
-        0,
-      );
-      expect(_motion(tester).epoch, 0);
-    },
-  );
-
-  for (final invalidation in [
-    'close',
-    'reopen',
-    'revision',
-    'tab',
-    'role',
-    'owner',
-  ]) {
-    testWidgets('retained gallery choice refuses $invalidation context', (
-      tester,
-    ) async {
-      var allowed = true;
-      await _mount(tester, quiet: true, canAct: () => allowed);
-      await _openControls(tester);
-      final stale = _galleryDropdown(tester).onChanged!;
-      if (invalidation == 'revision') {
-        stale(ZyraBrowseGalleryMode.originalPhotos);
-        await tester.pumpAndSettle();
-      } else if (invalidation == 'role') {
-        await _tap(tester, 'draft_role_guardian');
-        await _openControls(tester);
-        expect(_key('concept_browse_gallery_mode'), findsNothing);
-      } else if (invalidation == 'owner') {
-        allowed = false;
-      } else {
-        await _tap(tester, 'draft_back');
-        if (invalidation == 'reopen') await _openControls(tester);
-        if (invalidation == 'tab') {
-          await _tapBar(tester, 'My ZYRA');
-          await _openControls(tester);
-          expect(_key('concept_browse_gallery_mode'), findsNothing);
-        }
-      }
-      stale(
-        invalidation == 'revision'
-            ? ZyraBrowseGalleryMode.detailsFirst
-            : ZyraBrowseGalleryMode.originalPhotos,
-      );
-      await tester.pumpAndSettle();
-      if (invalidation == 'owner') {
-        expect(find.byType(ZyraOneJourneyBrowseDesigns), findsNothing);
-      } else {
-        if (_key('concept_page_options_context').evaluate().isNotEmpty) {
-          await _tap(tester, 'draft_back');
-        }
-        if (invalidation == 'role') {
-          await _openControls(tester);
-          await _tap(tester, 'draft_role_seeker');
-        } else if (invalidation == 'tab') {
-          await _tapBar(tester, 'Profiles');
-        }
-        expect(
-          _browse(tester).galleryMode,
-          invalidation == 'revision'
-              ? ZyraBrowseGalleryMode.originalPhotos
-              : ZyraBrowseGalleryMode.detailsFirst,
-        );
-        expect(_selectedId(tester), _sara);
-        expect(_motion(tester).epoch, 0);
-      }
-      expect(tester.takeException(), isNull);
-    });
-  }
+  testWidgets('Profiles keeps Details first without a card-mode picker', (
+    tester,
+  ) async {
+    await _mount(tester, quiet: true);
+    final original = _browse(tester);
+    final id = _selectedId(tester);
+    final beforePeople = original.profiles
+        .map((profile) => profile.id)
+        .toList();
+    final beforeSent = original.invitationSent!(
+      original.profiles[original.selectedIndex],
+    );
+    expect(_key('concept_browse_details_$id'), findsOneWidget);
+    await tester.tap(_key('concept_browse_photo_tap_$id'));
+    await tester.pumpAndSettle();
+    final before = tester.widget<PageView>(
+      _key('concept_browse_photo_swipe_$id'),
+    );
+    expect(before.controller!.page, closeTo(1, .001));
+    await _openControls(tester);
+    expect(_key('concept_browse_gallery_mode'), findsNothing);
+    expect(find.text('Profile cards'), findsNothing);
+    expect(find.text('Original photos'), findsNothing);
+    await _tap(tester, 'draft_back');
+    final updated = _browse(tester);
+    expect(updated.profiles.map((profile) => profile.id), beforePeople);
+    expect(_selectedId(tester), id);
+    expect(
+      updated.invitationSent!(updated.profiles[updated.selectedIndex]),
+      beforeSent,
+    );
+    final after = tester.widget<PageView>(
+      _key('concept_browse_photo_swipe_$id'),
+    );
+    expect(after.controller!.page, closeTo(1, .001));
+    expect(_key('concept_browse_identity_$id'), findsNothing);
+    expect(_motion(tester).epoch, 0);
+    expect(tester.takeException(), isNull);
+  });
 
   for (final style in ZyraBrowseNextMotion.values) {
     testWidgets('actual Next applies ${style.name} without moving app chrome', (

@@ -200,7 +200,7 @@ Future<void> _mount(
     }
     expect(_person(tester).photos, isNotEmpty);
     await tester.pumpAndSettle();
-    expect(_browse(tester).galleryMode, ZyraBrowseGalleryMode.detailsFirst);
+
     final personId = _person(tester).id;
     final gallery = _key('concept_browse_photo_tap_$personId');
     expect(gallery, findsOneWidget);

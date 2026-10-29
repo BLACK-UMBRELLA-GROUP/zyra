@@ -14,7 +14,7 @@
   ],
   "timestamp": "2026-10-29T16:23:33.252434+00:00",
   "preview_clock": "2026-10-29T12:00:00Z (fictional local preview)",
-  "picture_count": 281,
+  "picture_count": 284,
   "ios_status_bar": false,
   "native_build": "HELD after SwiftPM nested manifest sandbox refusal; not replayed",
   "theme": "actual ZyraApp MaterialApp.theme + documented glyph fallback",
@@ -81,6 +81,104 @@
       "additional_blanks_found": 0,
       "app_source_changes": false,
       "existing_capture_test_changes": false
+    }
+  ],
+  "followup_tasks": [
+    {
+      "task": "Queue5 / OA-ZYRA-316 Profiles photos cleanup and missing capture states",
+      "timestamp_utc": "2026-10-29T18:44:32.807716+00:00",
+      "source_base_commit": "10f531361404c3c54988f7da36ef9426ec7493e5",
+      "source_changes": "Original photos mode and picker removed; Details-first geometry retained",
+      "retired": [
+        "seeker/browse_and_requests/profiles_tab__gallery_originalPhotos.png",
+        "seeker/browse_and_requests/controls__browse_originalPhotos.png",
+        "seeker/browse_and_requests/controls__browse_detailsFirst.png"
+      ],
+      "added": [
+        {
+          "role": "Seeker",
+          "area": "browse_and_requests",
+          "page": "profiles_tab",
+          "state": "photo_1",
+          "reached": "Details-first Profiles: name card \u2192 actual right-side photo tap 1; gallery index 1 and photo ordinal 0 verified",
+          "file": "seeker/browse_and_requests/profiles_tab__photo_1.png",
+          "width": 1290,
+          "height": 2796,
+          "route": [],
+          "tab": 0
+        },
+        {
+          "role": "Seeker",
+          "area": "browse_and_requests",
+          "page": "profiles_tab",
+          "state": "photo_2",
+          "reached": "Details-first Profiles: name card \u2192 actual right-side photo tap 2; gallery index 2 and photo ordinal 1 verified",
+          "file": "seeker/browse_and_requests/profiles_tab__photo_2.png",
+          "width": 1290,
+          "height": 2796,
+          "route": [],
+          "tab": 0
+        },
+        {
+          "role": "Seeker",
+          "area": "browse_and_requests",
+          "page": "profiles_tab",
+          "state": "options_open",
+          "reached": "Actual Profiles \u2022\u2022\u2022 tap; five existing action icons verified with no text labels",
+          "file": "seeker/browse_and_requests/profiles_tab__options_open.png",
+          "width": 1290,
+          "height": 2796,
+          "route": [],
+          "tab": 0
+        },
+        {
+          "role": "Seeker",
+          "area": "browse_and_requests",
+          "page": "compatibility",
+          "state": "revealed",
+          "reached": "Existing local controls set 1 unlock \u2192 Profiles \u2022\u2022\u2022 \u2192 Compatibility score \u2192 actual Unlock compatibility; revealed state and 1\u21920 debit verified",
+          "file": "seeker/browse_and_requests/compatibility__revealed.png",
+          "width": 1290,
+          "height": 2796,
+          "route": [
+            "compatibility"
+          ],
+          "tab": 0
+        },
+        {
+          "role": "Seeker",
+          "area": "browse_and_requests",
+          "page": "profile",
+          "state": "options_open",
+          "reached": "Existing full-profile checkpoint \u2192 actual profile \u2022\u2022\u2022; current icon-only options bar verified",
+          "file": "seeker/browse_and_requests/profile__options_open.png",
+          "width": 1290,
+          "height": 2796,
+          "route": [
+            "profile"
+          ],
+          "tab": 0
+        },
+        {
+          "role": "Seeker",
+          "area": "browse_and_requests",
+          "page": "report",
+          "state": "reason_selected",
+          "reached": "Full profile \u2192 actual \u2022\u2022\u2022 Report action \u2192 Impersonation or fake profile; selected reason verified and submission remains disabled (actual route safety)",
+          "file": "seeker/browse_and_requests/report__reason_selected.png",
+          "width": 1290,
+          "height": 2796,
+          "route": [
+            "profile",
+            "safety"
+          ],
+          "tab": 0
+        }
+      ],
+      "all_other_pngs_unchanged": 278,
+      "packet_picture_count": 284,
+      "route": "c; same production-theme offline Flutter iOS test render, 430x932 @3x",
+      "native_build": "HELD; no replay/install/bypass"
     }
   ]
 }

@@ -360,7 +360,6 @@ void main() {
                 find.byType(ZyraOneJourneyBrowseDesigns),
               );
               expect(browse.profiles[browse.selectedIndex], same(profile));
-              expect(browse.galleryMode, ZyraBrowseGalleryMode.detailsFirst);
             }
             expect(requests, isEmpty);
             expect(opened, isEmpty);

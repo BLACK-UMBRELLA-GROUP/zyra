@@ -22,7 +22,6 @@ import 'zyra_browse_next_photo_motion.dart';
 import 'zyra_invitation_label.dart';
 import 'zyra_invitation_outline.dart';
 import 'zyra_press_feedback.dart';
-import 'zyra_profile_name_block.dart';
 import 'zyra_profile_details_page.dart';
 
 /// Explicit rendering seam. The caller supplies already-authorised photo
@@ -49,16 +48,6 @@ enum ZyraOneJourneyBrowseDesign {
   final String description;
 }
 
-/// Presentation-only gallery ordering, never a disclosure or member setting.
-enum ZyraBrowseGalleryMode {
-  detailsFirst('Details first'),
-  originalPhotos('Original photos');
-
-  const ZyraBrowseGalleryMode(this.label);
-
-  final String label;
-}
-
 /// Bounded Portrait Browse with caller-owned selection and actions.
 /// Previous/Next are neutral navigation, never Pass or Dislike.
 class ZyraBrowseDesigns extends StatefulWidget {
@@ -68,7 +57,6 @@ class ZyraBrowseDesigns extends StatefulWidget {
     required this.selectedIndex,
     required this.design,
     required this.photoBuilder,
-    this.galleryMode = ZyraBrowseGalleryMode.detailsFirst,
     this.readOnlyPreview = false,
     this.showFeedChrome = true,
     this.onPrevious,
@@ -104,7 +92,6 @@ class ZyraBrowseDesigns extends StatefulWidget {
   final bool showFeedChrome;
   final int selectedIndex;
   final ZyraOneJourneyBrowseDesign design;
-  final ZyraBrowseGalleryMode galleryMode;
   final VoidCallback? onPrevious;
   final VoidCallback? onNext;
   final VoidCallback? onFilters;
@@ -129,9 +116,8 @@ class ZyraBrowseDesigns extends StatefulWidget {
   final Map<String, int> initialPhotoIndices;
   final void Function(String, int)? onPhotoIndexChanged;
 
-  /// Gallery positions are separate from real photo ordinals. Details first
-  /// adds details at zero; Original photos uses photo pages from zero.
-  /// Explicit gallery seeds take priority, interpreted in [galleryMode];
+  /// Gallery positions are separate from real photo ordinals: details at zero.
+  /// Explicit gallery seeds take priority;
   /// legacy photo seeds always retain their actual-photo meaning.
   final Map<String, int> initialGalleryIndices;
   final void Function(String, int)? onGalleryIndexChanged;
@@ -163,7 +149,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
           gallery[profile.id] ??
           (photo == null || profile.photos.isEmpty
               ? null
-              : photo.clamp(0, profile.photos.length - 1) + _photoPageOffset);
+              : photo.clamp(0, profile.photos.length - 1) + 1);
       if (index == null) continue;
       _galleryIndices[profile.id] = index.clamp(
         0,
@@ -178,11 +164,8 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
             .profiles[widget.selectedIndex.clamp(0, widget.profiles.length - 1)]
             .id;
 
-  int get _photoPageOffset =>
-      widget.galleryMode == ZyraBrowseGalleryMode.detailsFirst ? 1 : 0;
-
   int _galleryPageCount(SeekerProfile profile) =>
-      math.max(1, profile.photos.length + _photoPageOffset);
+      math.max(1, profile.photos.length + 1);
 
   int _galleryIndex(SeekerProfile profile) => (_galleryIndices[profile.id] ?? 0)
       .clamp(0, _galleryPageCount(profile) - 1);
@@ -193,11 +176,6 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     final currentIds = widget.profiles.map((profile) => profile.id).toSet();
     _galleryIndices.removeWhere((id, _) => !currentIds.contains(id));
     _cardAnchors.removeWhere((id, _) => !currentIds.contains(id));
-    if (oldWidget.galleryMode != widget.galleryMode) {
-      // An ordinal from the other layout must never be reinterpreted as the
-      // same page. The mode-keyed child also discards driven/wrap motion.
-      _galleryIndices.clear();
-    }
     final oldSelectedId = oldWidget.profiles.isEmpty
         ? null
         : oldWidget
@@ -235,12 +213,12 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     // A caller may withdraw this presenter from its first callback. Never
     // borrow a replacement photo delegate or publish after that withdrawal.
     if (profile.photos.isNotEmpty &&
-        index >= _photoPageOffset &&
+        index >= 1 &&
         mounted &&
         revision == _layoutRevision &&
         _isCurrent(profile) &&
         _galleryIndex(profile) == index) {
-      onPhoto?.call(profile.id, index - _photoPageOffset);
+      onPhoto?.call(profile.id, index - 1);
     }
   }
 
@@ -253,42 +231,6 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
               )]
               .id ==
           profile.id;
-
-  Widget _identity(
-    SeekerProfile profile, {
-    double nameSize = 28,
-    bool onPhoto = false,
-  }) => KeyedSubtree(
-    key: ValueKey('concept_browse_identity_${profile.id}'),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ZyraProfileNameBlock(
-          profile: profile,
-          nameSize: nameSize,
-          onPhoto: onPhoto,
-        ),
-        for (final detail in [
-          if (profile.publicNationality?.trim().isNotEmpty ?? false)
-            'Nationality: ${profile.publicNationality!.trim()}',
-          if (profile.publicEthnicity?.trim().isNotEmpty ?? false)
-            'Ethnicity: ${profile.publicEthnicity!.trim()}',
-        ]) ...[
-          const SizedBox(height: 4),
-          Text(
-            detail,
-            style: ZyraText.body(
-              size: 12,
-              color: onPhoto
-                  ? Colors.white.withValues(alpha: .85)
-                  : ZyraColors.ink(.85),
-            ).copyWith(shadows: onPhoto ? kZyraOnPhotoTextShadows : null),
-          ),
-        ],
-      ],
-    ),
-  );
 
   Widget _surface({
     required SeekerProfile profile,
@@ -371,60 +313,24 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
   Widget _swipeGallery(
     SeekerProfile profile,
     double height, {
-    bool identityOnPhoto = false,
     bool tapToAdvance = false,
   }) {
     final revision = _layoutRevision;
-    final detailsFirst = _photoPageOffset == 1;
     return _BrowsePhotoPager(
-      key: ValueKey(
-        'concept_browse_pager_${profile.id}_${widget.galleryMode.name}',
-      ),
+      key: ValueKey('concept_browse_pager_${profile.id}_detailsFirst'),
       profileId: profile.id,
       photoSources: List<String>.unmodifiable(profile.photos),
       photoCount: _galleryPageCount(profile),
-      detailsFirst: detailsFirst,
       selectedIndex: _galleryIndex(profile),
       height: height,
-      // Only the outer Current viewport is rounded. Rounding each sliding
-      // photo creates dark triangular notches at their moving seam.
-      photo: (index) => detailsFirst && index == 0
+      // Only the outer Current viewport is rounded. Sliding photos retain
+      // their existing full bounds and seam geometry.
+      photo: (index) => index == 0
           ? ZyraProfileDetailsPage(profile: profile)
           : Stack(
               fit: StackFit.expand,
               children: [
-                _studyPhoto(
-                  profile,
-                  index - _photoPageOffset,
-                  height,
-                  rounded: !tapToAdvance,
-                ),
-                if (identityOnPhoto) ...[
-                  const IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [.25, .60, 1],
-                          colors: [
-                            Colors.transparent,
-                            Color(0x35000000),
-                            Color(0xE6000000),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 16,
-                    right: 16,
-                    bottom: 18,
-                    child: IgnorePointer(
-                      child: _identity(profile, onPhoto: true),
-                    ),
-                  ),
-                ],
+                _studyPhoto(profile, index - 1, height, rounded: !tapToAdvance),
               ],
             ),
       onPageChanged: (index) => _selectGalleryPage(profile, index, revision),
@@ -438,8 +344,6 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     child: _swipeGallery(
       profile,
       photoHeight + 2 * ZyraCardMetrics.padding + 2,
-      identityOnPhoto:
-          widget.galleryMode == ZyraBrowseGalleryMode.originalPhotos,
       tapToAdvance: true,
     ),
   );
@@ -880,7 +784,6 @@ class _BrowsePhotoPager extends StatefulWidget {
     required this.profileId,
     required this.photoSources,
     required this.photoCount,
-    required this.detailsFirst,
     required this.selectedIndex,
     required this.height,
     required this.photo,
@@ -891,7 +794,6 @@ class _BrowsePhotoPager extends StatefulWidget {
   final String profileId;
   final List<String> photoSources;
   final int photoCount;
-  final bool detailsFirst;
   final int selectedIndex;
   final double height;
   final Widget Function(int) photo;
@@ -985,7 +887,6 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
     final sourceChanged =
         oldWidget.profileId != widget.profileId ||
         oldWidget.tapToAdvance != widget.tapToAdvance ||
-        oldWidget.detailsFirst != widget.detailsFirst ||
         !listEquals(oldWidget.photoSources, widget.photoSources);
     final externalSelection =
         oldWidget.selectedIndex != widget.selectedIndex &&
@@ -1129,7 +1030,7 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
                 if (!width.isFinite || width <= 0 || !x.isFinite) return;
                 // Physical halves, not reading direction. Details keeps its
                 // tap-to-photos entry; a photo's left half goes back one page.
-                final isDetailsPage = widget.detailsFirst && selected == 0;
+                final isDetailsPage = selected == 0;
                 final direction = !isDetailsPage && x < width / 2 ? -1 : 1;
                 _showPhoto(
                   (selected + direction) % count,
@@ -1141,21 +1042,17 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
       );
     }
     return Semantics(
-      label: widget.detailsFirst && widget.selectedIndex == 0
+      label: widget.selectedIndex == 0
           ? 'Profile details'
           : widget.photoSources.isEmpty
           ? 'No photos available'
-          : 'Photo ${widget.selectedIndex + (widget.detailsFirst ? 0 : 1)} of ${widget.photoSources.length}',
+          : 'Photo ${widget.selectedIndex} of ${widget.photoSources.length}',
       button: advance != null,
       onTap: advance,
       hint: widget.photoCount > 1
           ? widget.tapToAdvance
-                ? widget.detailsFirst
-                      ? 'Tap or swipe to view details and photos'
-                      : 'Tap or swipe to view photos'
-                : widget.detailsFirst
-                ? 'Swipe to view details and photos'
-                : 'Swipe to view photos'
+                ? 'Tap or swipe to view details and photos'
+                : 'Swipe to view details and photos'
           : null,
       customSemanticsActions: widget.photoCount < 2
           ? null

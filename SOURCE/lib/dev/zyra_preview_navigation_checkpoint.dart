@@ -2,7 +2,6 @@
 // member-data adapter; every resumed UI still needs fresh owner admission.
 import 'package:flutter/material.dart';
 
-import '../widgets/zyra_browse_designs.dart' show ZyraBrowseGalleryMode;
 import 'zyra_browse_filter.dart';
 import 'zyra_view_request_draft_model.dart';
 
@@ -61,7 +60,6 @@ class ZyraPreviewNavigationCheckpoint {
     this.browseCursor = -1,
     Map<String, int> photoIndices = const {},
     Map<String, int> galleryIndices = const {},
-    this.galleryMode = ZyraBrowseGalleryMode.detailsFirst,
     Map<String, double> positions = const {},
     this.scrollOffset = 0,
     this.mainGuardianId = 'draft-guardian-hassan',
@@ -100,9 +98,8 @@ class ZyraPreviewNavigationCheckpoint {
   final int browseCursor;
   // Actual photo ordinals for the standalone full-profile viewer.
   final Map<String, int> photoIndices;
-  // Bounded card pages interpreted only with this detached layout choice.
+  // Bounded card pages: details at zero, then actual photo ordinals plus one.
   final Map<String, int> galleryIndices;
-  final ZyraBrowseGalleryMode galleryMode;
   final Map<String, double> positions;
   final double scrollOffset;
   final String mainGuardianId, seekerMembership, guardianMembership;

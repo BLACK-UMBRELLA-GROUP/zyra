@@ -26,8 +26,7 @@ class MyProfilePreviewScreen extends StatefulWidget {
       _profile = null,
       _canAct = null,
       _onBack = null,
-      _hapticLevel = null,
-      _galleryMode = ZyraBrowseGalleryMode.detailsFirst;
+      _hapticLevel = null;
 
   /// Public argument names intentionally initialize private preview fields.
   const MyProfilePreviewScreen.preview({
@@ -36,7 +35,6 @@ class MyProfilePreviewScreen extends StatefulWidget {
     required bool Function() canAct,
     required VoidCallback onBack,
     ZyraHapticLevel? hapticLevel,
-    ZyraBrowseGalleryMode galleryMode = ZyraBrowseGalleryMode.detailsFirst,
   }) : _preview = true,
        // ignore: prefer_initializing_formals
        _profile = profile,
@@ -45,16 +43,13 @@ class MyProfilePreviewScreen extends StatefulWidget {
        // ignore: prefer_initializing_formals
        _onBack = onBack,
        // ignore: prefer_initializing_formals
-       _hapticLevel = hapticLevel,
-       // ignore: prefer_initializing_formals
-       _galleryMode = galleryMode;
+       _hapticLevel = hapticLevel;
 
   final bool _preview;
   final SeekerProfile? _profile;
   final bool Function()? _canAct;
   final VoidCallback? _onBack;
   final ZyraHapticLevel? _hapticLevel;
-  final ZyraBrowseGalleryMode _galleryMode;
 
   @override
   State<MyProfilePreviewScreen> createState() => _MyProfilePreviewScreenState();
@@ -314,7 +309,6 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
             profiles: [profile],
             selectedIndex: 0,
             design: ZyraOneJourneyBrowseDesign.portraitCard,
-            galleryMode: widget._galleryMode,
             photoBuilder: _photo,
             readOnlyPreview: true,
             hapticLevel: widget._hapticLevel,

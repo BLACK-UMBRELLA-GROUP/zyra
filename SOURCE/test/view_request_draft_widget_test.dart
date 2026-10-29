@@ -3174,7 +3174,7 @@ void main() {
       expect(selectedProfile.firstName, initialProfile.firstName);
       expect(selectedProfile.surnameLine, initialProfile.surnameLine);
       expect(selectedProfile.photos, initialProfile.photos);
-      expect(browse.galleryMode, ZyraBrowseGalleryMode.detailsFirst);
+
       expect(
         initialProfile.photos.every(
           (photo) => photo.startsWith('data:image/jpeg;base64,'),

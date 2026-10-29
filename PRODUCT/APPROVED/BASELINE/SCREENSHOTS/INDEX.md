@@ -119,8 +119,6 @@ checkpoint/taps/control path are retained. Source areas follow DOC-ZYRA-0278 §3
 | Guardian | profile_membership_settings | switch_account_signup | needs_signup | Actual Profile controls > Needs sign-up with existing coverage > Switch. | [PNG](guardian/profile_membership_settings/switch_account_signup__needs_signup.png) |
 | Guardian | profile_membership_settings | tab_profile | normal | Guardian root tab 3 with one supported local Active Journey. | [PNG](guardian/profile_membership_settings/tab_profile__normal.png) |
 | Seeker | browse_and_requests | compatibility | locked_zero_unlocks | Public sample-model checkpoint; role/page eligibility checked by unchanged shell | [PNG](seeker/browse_and_requests/compatibility__locked_zero_unlocks.png) |
-| Seeker | browse_and_requests | controls | browse_detailsFirst | Actual controls Profile cards choice | [PNG](seeker/browse_and_requests/controls__browse_detailsFirst.png) |
-| Seeker | browse_and_requests | controls | browse_originalPhotos | Actual controls Profile cards choice | [PNG](seeker/browse_and_requests/controls__browse_originalPhotos.png) |
 | Seeker | browse_and_requests | controls | next_arcEntrance | Actual existing Next animation choice | [PNG](seeker/browse_and_requests/controls__next_arcEntrance.png) |
 | Seeker | browse_and_requests | controls | next_cardDeal | Actual existing Next animation choice | [PNG](seeker/browse_and_requests/controls__next_cardDeal.png) |
 | Seeker | browse_and_requests | controls | next_cardGlide | Actual existing Next animation choice | [PNG](seeker/browse_and_requests/controls__next_cardGlide.png) |
@@ -137,7 +135,6 @@ checkpoint/taps/control path are retained. Source areas follow DOC-ZYRA-0278 §3
 | Seeker | browse_and_requests | introductions | empty | Public sample-model checkpoint; role/page eligibility checked by unchanged shell | [PNG](seeker/browse_and_requests/introductions__empty.png) |
 | Seeker | browse_and_requests | profile | normal | Public sample-model checkpoint; role/page eligibility checked by unchanged shell | [PNG](seeker/browse_and_requests/profile__normal.png) |
 | Seeker | browse_and_requests | profiles_tab | gallery_detailsFirst | Actual controls Profile cards choice then X | [PNG](seeker/browse_and_requests/profiles_tab__gallery_detailsFirst.png) |
-| Seeker | browse_and_requests | profiles_tab | gallery_originalPhotos | Actual controls Profile cards choice then X | [PNG](seeker/browse_and_requests/profiles_tab__gallery_originalPhotos.png) |
 | Seeker | browse_and_requests | profiles_tab | next_arcEntrance | Actual Next animation selection; resting page unchanged | [PNG](seeker/browse_and_requests/profiles_tab__next_arcEntrance.png) |
 | Seeker | browse_and_requests | profiles_tab | next_cardDeal | Actual Next animation selection; resting page unchanged | [PNG](seeker/browse_and_requests/profiles_tab__next_cardDeal.png) |
 | Seeker | browse_and_requests | profiles_tab | next_cardGlide | Actual Next animation selection; resting page unchanged | [PNG](seeker/browse_and_requests/profiles_tab__next_cardGlide.png) |
@@ -328,6 +325,12 @@ checkpoint/taps/control path are retained. Source areas follow DOC-ZYRA-0278 §3
 | Seeker | profile_membership_settings | switch_account_signup | coverage_none | Actual Profile controls > other role none > Switch. | [PNG](seeker/profile_membership_settings/switch_account_signup__coverage_none.png) |
 | Seeker | profile_membership_settings | switch_account_signup | coverage_unavailable | Actual Profile controls > other role unavailable > Switch. | [PNG](seeker/profile_membership_settings/switch_account_signup__coverage_unavailable.png) |
 | Seeker | profile_membership_settings | switch_account_signup | needs_signup | Actual Profile controls > Needs sign-up with existing coverage > Switch. | [PNG](seeker/profile_membership_settings/switch_account_signup__needs_signup.png) |
+| Seeker | browse_and_requests | profiles_tab | photo_1 | Details-first Profiles: name card → actual right-side photo tap 1; gallery index 1 and photo ordinal 0 verified | [PNG](seeker/browse_and_requests/profiles_tab__photo_1.png) |
+| Seeker | browse_and_requests | profiles_tab | photo_2 | Details-first Profiles: name card → actual right-side photo tap 2; gallery index 2 and photo ordinal 1 verified | [PNG](seeker/browse_and_requests/profiles_tab__photo_2.png) |
+| Seeker | browse_and_requests | profiles_tab | options_open | Actual Profiles ••• tap; five existing action icons verified with no text labels | [PNG](seeker/browse_and_requests/profiles_tab__options_open.png) |
+| Seeker | browse_and_requests | compatibility | revealed | Existing local controls set 1 unlock → Profiles ••• → Compatibility score → actual Unlock compatibility; revealed state and 1→0 debit verified | [PNG](seeker/browse_and_requests/compatibility__revealed.png) |
+| Seeker | browse_and_requests | profile | options_open | Existing full-profile checkpoint → actual profile •••; current icon-only options bar verified | [PNG](seeker/browse_and_requests/profile__options_open.png) |
+| Seeker | browse_and_requests | report | reason_selected | Full profile → actual ••• Report action → Impersonation or fake profile; selected reason verified and submission remains disabled (actual route safety) | [PNG](seeker/browse_and_requests/report__reason_selected.png) |
 
 ## Inventory and role coverage
 
@@ -484,3 +487,13 @@ checked for files under 100 KB and a single-colour frame. No other blank was fou
 capture fixture moved to ~/_to_delete/OA-ZYRA-316_RECAPTURE_2026-10-29/. App code and existing capture tests are unchanged.
 The old 261-picture comparison is historical and included that denied frame; the invite now has the recapture hash
 in BUILD.json. Page/role coverage and all other picture rows are unchanged.
+
+## Profiles photo cleanup and missing states — 29 Oct 2026
+
+Queue5 / PROFILES_PHOTOS_BRIEF_2026-10-29.md removes Original photos and its mode picker. Three retired PNGs moved to
+`~/_to_delete/OA-ZYRA-316_PROFILES_PHOTOS_2026-10-29/`. Six states were captured through the same route(c), production
+theme/fonts and offline UI: two clean Details-first photo pages, icon-only Profiles/full-profile options, one-unlock
+Compatibility reveal, and a selected report reason. Actual pager indices/dots and disabled report submission checked.
+The packet now contains **284 PNGs**; all 278 surviving prior PNGs retain their original bytes. Original capture history
+is preserved. Names over full photos remain on Seeker full profile, Guardian network profile and Guardian linked profile;
+these are flagged under OA316 and unchanged. Journey cards inspected show portrait beside identity.

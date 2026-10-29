@@ -9,8 +9,7 @@ import '../widgets/zyra_browse_designs.dart';
 import '../widgets/zyra_browse_next_photo_motion.dart';
 import '../widgets/zyra_profile_image.dart';
 
-export '../widgets/zyra_browse_designs.dart'
-    show ZyraOneJourneyBrowseDesign, ZyraBrowseGalleryMode;
+export '../widgets/zyra_browse_designs.dart' show ZyraOneJourneyBrowseDesign;
 
 Widget _samplePhoto(
   BuildContext context,
@@ -33,7 +32,6 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     required this.profiles,
     required this.selectedIndex,
     required this.design,
-    this.galleryMode = ZyraBrowseGalleryMode.detailsFirst,
     this.showFeedChrome = true,
     this.onPrevious,
     this.onNext,
@@ -59,7 +57,6 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final List<SeekerProfile> profiles;
   final int selectedIndex;
   final ZyraOneJourneyBrowseDesign design;
-  final ZyraBrowseGalleryMode galleryMode;
   // Presentation only; the shared gallery and offline source guard are unchanged.
   final bool showFeedChrome;
   final VoidCallback? onPrevious;
@@ -113,7 +110,6 @@ class _ZyraOneJourneyBrowseDesignsState
     profiles: widget.profiles,
     selectedIndex: widget.selectedIndex,
     design: widget.design,
-    galleryMode: widget.galleryMode,
     showFeedChrome: widget.showFeedChrome,
     photoBuilder: _photo,
     onPrevious: widget.onPrevious,

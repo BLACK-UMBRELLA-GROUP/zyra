@@ -18,11 +18,11 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 161,734 lines in 320 files |
-| Developer and preview code inside it | 43,364 lines in 81 files |
-| The Founder preview (planned app) | 24,336 lines in 31 files |
-| Test code | 205,402 lines in 461 files |
-| Test screenshots (goldens) | 2,638 images, 313 MB |
+| All app code | 161,543 lines in 320 files |
+| Developer and preview code inside it | 43,282 lines in 81 files |
+| The Founder preview (planned app) | 24,257 lines in 31 files |
+| Test code | 205,099 lines in 461 files |
+| Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
 
@@ -37,6 +37,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | Queued baseline capture: four test files; app source unchanged | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 207,177 / 462 | 3,337 / 399 MB | 39 | 1 |
 | 2026-10-29 | OA-ZYRA-316 Tier 4: 92 unchosen options removed; selected design retained | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,723 / 461 | 3,337 / 399 MB | 39 | 1 |
 | 2026-10-29 | OA-ZYRA-316 matching tests/screenshots: 28 obsolete cases and 699 old captures retired | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,402 / 461 | 2,638 / 313 MB | 39 | 1 |
+| 2026-10-29 | OA-ZYRA-316 queue5: Original photos mode/picker and 26 matching captures removed; six baseline states added | 161,543 / 320 | 43,282 / 81 | 24,257 / 31 | 205,099 / 461 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -141,3 +142,17 @@ Historical candidate-only manifest SYSTEM/tools/ui_gate/CANDIDATES/manifest.json
 original-path-to-destination mapping and hashes are in
 REPORTS/EVIDENCE/OA-ZYRA-316_TIER4_TESTS_2026-10-29/png_move_receipt.json; the candidate-reference audit records these
 87 references. This preserves promotion history without presenting retired pictures as active baselines.
+
+## Profiles photo mode cleanup — 29 Oct 2026
+
+Queue5 removes the unused Original photos enum/overlay, developer Profile cards picker and checkpoint mode field.
+Details first is the sole behavior; its photo page wrapper, geometry, timing, dots and separate gallery/photo ordinals
+remain. Five lib paths lose191lines; tests retire26 obsolete variants while retaining rendering/ownership guards.
+Twenty-six visually confirmed unapproved old Profiles overlays and three explicitly retired baseline PNGs moved to
+~/_to_delete/OA-ZYRA-316_PROFILES_PHOTOS_2026-10-29/ (29PNG,10,339,295B). Eight manifests and148 approved PNGs have no overlap/drift.
+Six new430×932@3x baseline states capture clean photo1/2, icon-only options on Profiles/full-profile, one-unlock reveal,
+and selected report reason. Packet284PNG includes278 unchanged survivors. Twenty-eight existing chosen captures
+match exactly after cleanup. Full analyser and nine affected suites pass after restoring the existing photo wrapper;
+initial capture fixture mistakes (selected person and icon hit target) were corrected. No native build, backend,
+Blueprint or Tier3 change. Outside-Profiles overlays flagged unchanged: Seeker full profile, Guardian network profile,
+Guardian linked profile. Local evidence: OA-ZYRA-316_PROFILES_PHOTOS_2026-10-29.

@@ -163,7 +163,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   final _browseHistory = ZyraBrowseHistory();
   // The approved portrait card is the single active Browse direction.
   static const _browseDesign = ZyraOneJourneyBrowseDesign.portraitCard;
-  ZyraBrowseGalleryMode _browseGalleryMode = ZyraBrowseGalleryMode.detailsFirst;
   ZyraBrowseNextMotion _browseNextMotion = ZyraBrowseNextMotion.current;
   int _browseNextMotionEpoch = 0;
   int _uiRevision = 0;
@@ -707,7 +706,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
     _conceptNetworkSent.addAll(saved.networkSent.where(_profileIds.contains));
     if (!widget.restoreLocation) return;
-    _browseGalleryMode = saved.galleryMode;
     _tab = saved.tab.clamp(0, _guardianRole ? 3 : 4);
     _requestsTab = saved.requestsTab == 2 ? 0 : saved.requestsTab.clamp(0, 1);
     _guardianPage = saved.guardianPage.clamp(0, 1);
@@ -741,13 +739,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
     _browseGalleryIndices.addEntries(
       saved.galleryIndices.entries.where(
-        (e) =>
-            _profileIds.contains(e.key) &&
-            e.value >= 0 &&
-            e.value <
-                (_browseGalleryMode == ZyraBrowseGalleryMode.detailsFirst
-                    ? 7
-                    : 6),
+        (e) => _profileIds.contains(e.key) && e.value >= 0 && e.value < 7,
       ),
     );
     // Restore the Photos parent after a brief app switch, using a fresh
@@ -921,7 +913,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         browseCursor: _browseHistory.cursor,
         photoIndices: _browsePhotoIndices,
         galleryIndices: _browseGalleryIndices,
-        galleryMode: _browseGalleryMode,
         positions: _positions.snapshot,
         scrollOffset: offset.isFinite ? offset.clamp(0, 1000000) : 0,
         mainGuardianId: _conceptMainGuardianId,
@@ -955,13 +946,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   void _rememberGallery(String id, int index) {
-    if (!_allowed ||
-        !_profileIds.contains(id) ||
-        index < 0 ||
-        index >=
-            (_browseGalleryMode == ZyraBrowseGalleryMode.detailsFirst
-                ? 7
-                : 6)) {
+    if (!_allowed || !_profileIds.contains(id) || index < 0 || index >= 7) {
       return;
     }
     _browseGalleryIndices[id] = index;
@@ -2069,7 +2054,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       profiles: people.map(_displayProfile).toList(growable: false),
       selectedIndex: index,
       design: _browseDesign,
-      galleryMode: _browseGalleryMode,
       photoBuilder: _browsePhotoRenderer.build,
       initialGalleryIndices: _browseGalleryIndices,
       onPhotoIndexChanged: _rememberPhoto,
@@ -2245,7 +2229,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               profiles: [_displayProfile(person)],
               selectedIndex: 0,
               design: _browseDesign,
-              galleryMode: _browseGalleryMode,
               showFeedChrome: false,
               photoBuilder: _browsePhotoRenderer.build,
               initialGalleryIndices: _browseGalleryIndices,
@@ -5648,7 +5631,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     return _ownProfilePreviewView = MyProfilePreviewScreen.preview(
       key: ValueKey(('retained-own-profile', _uiRevision, _guardianRole)),
       profile: _accountSession.ownProfile(_guardianRole),
-      galleryMode: _browseGalleryMode,
       hapticLevel: _accountSession.hapticLevel,
       canAct: fresh,
       onBack: () {
@@ -7046,11 +7028,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         if (browse) ...[
           const SizedBox(height: 12),
           _controlSection([
-            _title('Profile cards', size: 13),
-            _browseGalleryModePicker(),
-          ]),
-          const SizedBox(height: 12),
-          _controlSection([
             _title('Next animation', size: 13),
             _nextMotionPicker(),
           ]),
@@ -7533,58 +7510,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           () => selected.value = style,
           preserveCircle: sourcePage == 'guardian_circle',
         );
-      },
-    );
-  }
-
-  Widget _browseGalleryModePicker() {
-    final fresh = _controlsFreshGuard();
-    return DropdownButtonFormField<ZyraBrowseGalleryMode>(
-      key: const ValueKey('concept_browse_gallery_mode'),
-      initialValue: _browseGalleryMode,
-      isExpanded: true,
-      dropdownColor: ZyraColors.modalSheetSurface,
-      icon: Icon(Icons.expand_more, color: ZyraColors.unlockText, size: 20),
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 10,
-        ),
-        filled: true,
-        fillColor: ZyraColors.surfaceFill,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: ZyraColors.surfaceBorder, width: .6),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: ZyraColors.unlockText, width: .8),
-        ),
-      ),
-      items: [
-        for (final mode in ZyraBrowseGalleryMode.values)
-          DropdownMenuItem(
-            key: ValueKey('concept_browse_gallery_mode_${mode.name}'),
-            value: mode,
-            child: Text(mode.label, style: ZyraText.body(size: 13)),
-          ),
-      ],
-      onChanged: (mode) {
-        if (mode == null ||
-            mode == _browseGalleryMode ||
-            !fresh() ||
-            _guardianRole ||
-            _page != null ||
-            _tab != 0) {
-          return;
-        }
-        unawaited(_selectionHaptic());
-        _act(() {
-          _browseGalleryMode = mode;
-          // Standalone full-profile photo ordinals stay untouched. The
-          // selected gallery starts fresh in its new ordering.
-          _browseGalleryIndices.clear();
-        });
       },
     );
   }
