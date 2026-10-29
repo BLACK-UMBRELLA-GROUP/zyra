@@ -256,6 +256,8 @@ Future<void> _makeMain(WidgetTester tester, String id) async {
     matching: find.text('Confirm'),
   );
   await _press(tester, confirm);
+  expect(_key('concept_main_guardian_notice'), findsOneWidget);
+  await _press(tester, _key('concept_main_guardian_continue'));
 }
 
 Future<void> _capture(WidgetTester tester, String name) async {

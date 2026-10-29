@@ -109,7 +109,7 @@ const _fixture = 'draft-sara';
 const _guardianView = 'guardian-journey-access-toggle-draft-attempt-$_fixture';
 const _guardianChat = 'guardian-journey-chat-toggle-draft-attempt-$_fixture';
 const _guardianHistory = 'guardian-history-consent-toggle';
-const _requestLabels = ['Received', 'Sent'];
+const _requestLabels = ['Received', 'Sent', 'Past'];
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 
@@ -144,10 +144,35 @@ SeekerProfile _currentBrowseDetailsProfile(WidgetTester tester) {
       findsNWidgets(expectedValues.where((item) => item == value).length),
     );
   }
-  expect(
-    find.descendant(of: details, matching: find.byType(Image)),
-    findsNothing,
+  // LOCK 4 retains the compact details card and shows this person's first
+  // photo inside its existing ring; it must never become a full-photo page.
+  final avatar = _key('concept_browse_details_avatar_${profile.id}');
+  expect(avatar, findsOneWidget);
+  expect(tester.getSize(avatar), const Size(56, 56));
+  final detailsImages = find.descendant(
+    of: details,
+    matching: find.byType(Image),
   );
+  if (profile.photos.isEmpty) {
+    expect(detailsImages, findsNothing);
+    expect(
+      find.descendant(of: avatar, matching: find.byIcon(Icons.person_outline)),
+      findsOneWidget,
+    );
+  } else {
+    final photo = _key('concept_browse_details_avatar_photo_${profile.id}');
+    expect(detailsImages, findsOneWidget);
+    expect(photo, findsOneWidget);
+    expect(tester.getSize(photo), const Size(50, 50));
+    final image = tester.widget<Image>(detailsImages);
+    expect(image.image, isA<MemoryImage>());
+    expect(
+      (image.image as MemoryImage).bytes,
+      base64Decode(profile.photos.first.split(',').last),
+    );
+    expect(image.fit, BoxFit.cover);
+    expect(image.alignment, Alignment.center);
+  }
   expect(
     tester
         .widget<PageView>(_key('concept_browse_photo_swipe_${profile.id}'))
@@ -733,6 +758,10 @@ Future<void> _confirmGuardianMain(
   await tester.tap(confirm);
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
+  if (!remove) {
+    expect(_key('concept_main_guardian_notice'), findsOneWidget);
+    await _press(tester, 'concept_main_guardian_continue');
+  }
   final people = tester
       .widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage))
       .people;
@@ -1452,6 +1481,13 @@ void main() {
       'blocked ${sent ? 'sent' : 'received'} request keeps its record but hides identity',
       (tester) async {
         await _mount(tester);
+        expect(
+          tester
+              .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+              .items[2]
+              .dot,
+          isTrue,
+        );
         if (sent) await _sendRequest(tester);
         await _nav(tester, 2);
         final before = tester.widget<ZyraQuietDashboard>(
@@ -1468,7 +1504,14 @@ void main() {
               .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
               .items[2]
               .dot,
-          // Opening Received or Sent is not an acknowledgment of Amira's item.
+          // LOCK 5 clears tab attention on this My ZYRA visit, while Amira's
+          // unopened request retains its own New activity treatment.
+          isFalse,
+        );
+        expect(
+          before.fixtureCards
+              .singleWhere((card) => card.id == 'concept-my-requests')
+              .hasNewActivity,
           isTrue,
         );
         await _nav(tester, 0);
@@ -1495,6 +1538,12 @@ void main() {
               .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
               .items[2]
               .dot,
+          isFalse,
+        );
+        expect(
+          after.fixtureCards
+              .singleWhere((card) => card.id == 'concept-my-requests')
+              .hasNewActivity,
           sent,
         );
         // A current dispatcher cannot address the hidden blocked invitation,
@@ -1538,7 +1587,7 @@ void main() {
   }
 
   testWidgets(
-    'Hide preserves pending request cards, counts, badge and update attention',
+    'Hide preserves request counts and item attention while My ZYRA clears its tab badge',
     (tester) async {
       await _mount(tester);
       final body = tester.widget<ZyraOneJourneyBrowseDesigns>(
@@ -1556,6 +1605,13 @@ void main() {
             .map((person) => person.id),
         isNot(contains('draft-amira')),
       );
+      expect(
+        tester
+            .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+            .items[2]
+            .dot,
+        isTrue,
+      );
       await _nav(tester, 2);
       final dashboard = tester.widget<ZyraQuietDashboard>(
         find.byType(ZyraQuietDashboard),
@@ -1571,6 +1627,12 @@ void main() {
             .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
             .items[2]
             .dot,
+        isFalse,
+      );
+      expect(
+        dashboard.fixtureCards
+            .singleWhere((card) => card.id == 'concept-my-requests')
+            .hasNewActivity,
         isTrue,
       );
       dashboard.onNavigate!(
@@ -1725,7 +1787,7 @@ void main() {
             expect(body().design, design);
             expect(body().selectedIndex, before.selectedIndex);
             final person = body().profiles.firstWhere((p) => p.id == _fixture);
-            expect(body().requestLabel!(person), 'Journey invitation sent');
+            expect(body().requestLabel!(person), 'Request sent');
             expect(body().canRequest!(person), isTrue);
             await _press(tester, requestKey);
             expect(body().design, design);
@@ -1866,7 +1928,7 @@ void main() {
               final page = tester.widget<PageView>(pager);
               final source = requests();
               expect(source.labels, _requestLabels);
-              expect(source.pages, hasLength(2));
+              expect(source.pages, hasLength(3));
               expect(source.selectedIndex, index);
               expect(page.scrollDirection, Axis.horizontal);
               expect(page.controller!.page, closeTo(index, .01));
@@ -1876,8 +1938,9 @@ void main() {
               expect(selector.segmentKeys, const [
                 ValueKey('draft_requests_0'),
                 ValueKey('draft_requests_1'),
+                ValueKey('draft_requests_2'),
               ]);
-              expect(_key('draft_requests_2'), findsNothing);
+              expect(_key('draft_requests_2'), findsOneWidget);
               expect(_key('concept_activity_introductions'), findsNothing);
               expect(_key('concept_activity_back'), findsNothing);
               expect(_key('concept_pull_down_back_scope'), findsOneWidget);
@@ -1956,14 +2019,14 @@ void main() {
               await tester.pumpAndSettle();
               expectRequestPage(index);
             }
-            // No third Introduction page is reachable beyond Sent.
+            // Past follows Sent; Introductions remains its own separate destination.
             await _press(tester, 'draft_requests_1');
             await tester.drag(
               pager,
               Offset(-tester.getSize(pager).width * .8, 0),
             );
             await tester.pumpAndSettle();
-            expectRequestPage(1);
+            expectRequestPage(2);
             await _press(tester, 'draft_requests_0');
             await tester.dragFrom(
               tester.getCenter(_key('concept_connections_title')),
@@ -3318,7 +3381,7 @@ void main() {
       expect(browse().selectedIndex, before.selectedIndex);
       expect(browse().profiles.map((p) => p.id), ids);
       final person = browse().profiles.firstWhere((p) => p.id == _fixture);
-      expect(browse().requestLabel!(person), 'Journey invitation sent');
+      expect(browse().requestLabel!(person), 'Request sent');
       final pager = _key('concept_browse_photo_swipe_$_fixture');
       await _press(tester, 'concept_browse_photo_tap_$_fixture');
       expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
@@ -3330,7 +3393,7 @@ void main() {
       expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
       expect(browse().selectedIndex, before.selectedIndex);
       expect(browse().profiles.map((p) => p.id), ids);
-      expect(browse().requestLabel!(person), 'Journey invitation sent');
+      expect(browse().requestLabel!(person), 'Request sent');
       // Photo taps/swipes inspect only; the same invitation action cancels.
       await _press(tester, 'draft_profile_$_fixture');
       expect(browse().selectedIndex, before.selectedIndex);
@@ -3366,7 +3429,7 @@ void main() {
       expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
       expect(find.byType(ZyraOneJourneyBrowseDesigns), findsOneWidget);
       expect(tester.widget<PageView>(pager).controller!.page, closeTo(0, .01));
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       await _press(tester, 'concept_browse_photo_tap_$_fixture');
       expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
       await _nav(tester, 2);
@@ -3395,7 +3458,7 @@ void main() {
       send();
       await tester.pumpAndSettle();
       expect(browse().profiles[browse().selectedIndex].id, _fixture);
-      expect(browse().requestLabel!(person), 'Journey invitation sent');
+      expect(browse().requestLabel!(person), 'Request sent');
       expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
       expect(find.byType(ZyraShellNavigation), findsOneWidget);
       expect(_key('draft_confirm_request'), findsNothing);
@@ -3464,7 +3527,7 @@ void main() {
       expect(currentId(), _fixture);
       expect(browse().profiles.map((profile) => profile.id), eligible);
       expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       final visited = <String>[];
       for (final id in const [
         'draft-aisha',
@@ -3484,14 +3547,14 @@ void main() {
       expect(visited.toSet().length, visited.length);
       await _press(tester, 'concept_next_profile');
       expect(currentId(), _fixture);
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       final returnedIndex = browse().selectedIndex;
       await _press(tester, 'draft_profile_$_fixture');
       expect(currentId(), _fixture);
       expect(browse().selectedIndex, returnedIndex);
       expect(browse().profiles.map((profile) => profile.id), eligible);
       expect(find.text('Request a Journey'), findsOneWidget);
-      expect(find.text('Journey invitation sent'), findsNothing);
+      expect(find.text('Request sent'), findsNothing);
       await _openRequests(tester, sent: true);
       expect(_key('concept_request_${_fixture}_header'), findsNothing);
     },
@@ -3534,7 +3597,7 @@ void main() {
     await _press(tester, 'concept_next_profile');
     expect(currentId(), 'draft-aisha');
     expect(find.text('Request a Journey'), findsOneWidget);
-    expect(find.text('Journey invitation sent'), findsNothing);
+    expect(find.text('Request sent'), findsNothing);
     await _openRequests(tester, sent: true);
     expect(_key('concept_request_${_fixture}_header'), findsNothing);
     expect(_key('concept_request_draft-amira_header'), findsNothing);
@@ -3579,7 +3642,7 @@ void main() {
     }
     await _press(tester, 'concept_next_profile');
     expect(currentId(), isNot(retained.last));
-    expect(find.text('Journey invitation sent'), findsNothing);
+    expect(find.text('Request sent'), findsNothing);
     await _openRequests(tester, sent: true);
     for (final person in visits.toSet()) {
       expect(_key('concept_request_${person}_header'), findsNothing);
@@ -3707,8 +3770,9 @@ void main() {
       expect(received.segmentKeys, [
         const ValueKey('draft_requests_0'),
         const ValueKey('draft_requests_1'),
+        const ValueKey('draft_requests_2'),
       ]);
-      expect(_key('draft_requests_2'), findsNothing);
+      expect(_key('draft_requests_2'), findsOneWidget);
       expect(_key('draft_accept_draft-amira'), findsNothing);
       await _press(tester, 'concept_request_draft-amira_header');
       expect(_key('draft_accept_draft-amira'), findsOneWidget);
@@ -3799,7 +3863,7 @@ void main() {
       await _press(tester, 'draft_profile_$_fixture');
       expect(_key('draft_confirm_request'), findsNothing);
       expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       expect(_action(tester, 'draft_profile_$_fixture'), isNotNull);
       await _press(tester, 'draft_profile_$_fixture');
       expect(find.text('Request a Journey'), findsOneWidget);
@@ -4069,7 +4133,7 @@ void main() {
         expect(_key('draft_save'), findsNothing);
         await _press(tester, 'draft_profile_$_fixture');
         expect(_key('draft_confirm_request'), findsNothing);
-        expect(find.text('Journey invitation sent'), findsOneWidget);
+        expect(find.text('Request sent'), findsOneWidget);
         for (final index in [1, 2, 3, 4]) {
           await _nav(tester, index);
           expect(find.byType(FloatingNavBar), findsOneWidget);
@@ -4348,10 +4412,28 @@ void main() {
               findsOneWidget,
             );
           }
-          expect(
-            find.descendant(of: details, matching: find.byType(Image)),
-            findsNothing,
+          // LOCK 4 also uses the first admitted photo on the own-profile
+          // details card, inside the existing compact gold ring.
+          final avatar = _key('concept_browse_details_avatar_${own.id}');
+          final photo = _key('concept_browse_details_avatar_photo_${own.id}');
+          expect(own.photos, isNotEmpty);
+          expect(avatar, findsOneWidget);
+          expect(photo, findsOneWidget);
+          expect(tester.getSize(avatar), const Size(56, 56));
+          expect(tester.getSize(photo), const Size(50, 50));
+          final detailsImages = find.descendant(
+            of: details,
+            matching: find.byType(Image),
           );
+          expect(detailsImages, findsOneWidget);
+          final image = tester.widget<Image>(detailsImages);
+          expect(image.image, isA<MemoryImage>());
+          expect(
+            (image.image as MemoryImage).bytes,
+            base64Decode(own.photos.first.split(',').last),
+          );
+          expect(image.fit, BoxFit.cover);
+          expect(image.alignment, Alignment.center);
           expect(
             tester
                 .widget<PageView>(_key('concept_browse_photo_swipe_${own.id}'))
@@ -4823,7 +4905,7 @@ void main() {
           await capture('browse_photo_2');
           await _press(tester, 'draft_profile_$_fixture');
           expect(_key('draft_confirm_request'), findsNothing);
-          expect(find.text('Journey invitation sent'), findsOneWidget);
+          expect(find.text('Request sent'), findsOneWidget);
           await _nav(tester, 1);
           await capture('connections');
           await _openRequests(tester, sent: true);

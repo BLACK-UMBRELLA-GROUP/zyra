@@ -66,6 +66,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.onProfile,
     this.onRequest,
     this.requestLabel,
+    this.requestSemanticLabel,
     this.invitationSent,
     this.canRequest,
     this.bottomPadding = 100,
@@ -99,6 +100,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
   final ValueChanged<SeekerProfile>? onProfile;
   final ValueChanged<SeekerProfile>? onRequest;
   final String Function(SeekerProfile)? requestLabel;
+  final String Function(SeekerProfile)? requestSemanticLabel;
   final bool Function(SeekerProfile)? invitationSent;
   final bool Function(SeekerProfile)? canRequest;
   final double bottomPadding;
@@ -398,6 +400,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     required Key key,
     required String label,
     required VoidCallback? onTap,
+    String? semanticLabel,
     IconData? icon,
     double iconSize = 20,
     bool primary = false,
@@ -407,7 +410,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
   }) => Semantics(
     button: true,
     enabled: onTap != null,
-    label: invitationSent == true ? '$label. Tap to cancel invitation' : label,
+    label:
+        semanticLabel ??
+        (invitationSent == true ? '$label. Tap to cancel invitation' : label),
     onTap: onTap,
     excludeSemantics: true,
     child: ZyraPressFeedback(
@@ -528,6 +533,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                       : profile == null
                       ? 'Request Journey'
                       : widget.requestLabel?.call(profile) ?? 'Request Journey',
+                  semanticLabel: widget.readOnlyPreview || profile == null
+                      ? null
+                      : widget.requestSemanticLabel?.call(profile),
                   primary: true,
                   previewEnabledAppearance: widget.readOnlyPreview,
                   invitationSent: widget.readOnlyPreview

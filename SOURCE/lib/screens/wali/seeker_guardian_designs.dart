@@ -420,6 +420,12 @@ class _ManagerGuardianCard extends StatelessWidget {
   );
 }
 
+/// The existing Guardian-tab monogram, shared with its informational notice.
+Widget zyraGuardianManagerMonogram({
+  required String name,
+  required bool main,
+}) => _ManagerMonogram(name: name, main: main);
+
 class _ManagerMonogram extends StatelessWidget {
   final String name;
   final bool main;

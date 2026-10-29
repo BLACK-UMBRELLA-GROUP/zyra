@@ -281,13 +281,13 @@ void main() {
     expect(titleRect.top, closeTo(viewport.top, .01));
     expect(
       find.text(
-        'Choose a Journey to end before beginning with Zara, or cancel this request.',
+        'Choose a Journey to end before beginning with Zara, or keep your Journeys and leave the request for now.',
       ),
       findsOneWidget,
     );
     final body = tester.getRect(
       find.text(
-        'Choose a Journey to end before beginning with Zara, or cancel this request.',
+        'Choose a Journey to end before beginning with Zara, or keep your Journeys and leave the request for now.',
       ),
     );
     final rows = [for (final item in _items) tester.getRect(_row(item.id))];
@@ -312,8 +312,8 @@ void main() {
     expect(action.height, greaterThanOrEqualTo(48));
     expect(cancel.height, greaterThanOrEqualTo(44));
     expect(cancel.bottom, closeTo(viewport.bottom, .01));
-    expect(find.text('End Journey & continue'), findsOneWidget);
-    expect(find.text('Cancel request'), findsOneWidget);
+    expect(find.text('End & accept request'), findsOneWidget);
+    expect(find.text('Keep my Journeys'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

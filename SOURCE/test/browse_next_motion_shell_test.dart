@@ -749,7 +749,7 @@ void main() {
       expect(tester.getRect(find.byType(FloatingNavBar)), navigation);
       expect(tester.getRect(_key('concept_browse_portrait_card')), card);
       expect(_browse(tester).profiles.map((p) => p.id), people);
-      expect(find.text('Journey invitation sent'), findsNothing);
+      expect(find.text('Request sent'), findsNothing);
       final haptics = platformCalls
           .where((call) => call.method == 'HapticFeedback.vibrate')
           .toList();
@@ -958,7 +958,7 @@ void main() {
         expect(_key('concept_browse_photo_swipe_$_sara'), findsNothing);
         expect(_key('concept_browse_identity_$_sara'), findsNothing);
         expect(_key('concept_browse_details_$_sara'), findsNothing);
-        expect(find.text('Journey invitation sent'), findsNothing);
+        expect(find.text('Request sent'), findsNothing);
         await tester.pump(const Duration(milliseconds: 750));
         await tester.pumpAndSettle();
         final pager = tester.widget<PageView>(
@@ -995,7 +995,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 80));
     _expectRest(tester);
     await _tap(tester, 'draft_profile_$_sara', settle: false);
-    expect(find.text('Journey invitation sent'), findsOneWidget);
+    expect(find.text('Request sent'), findsOneWidget);
     expect(_motion(tester).epoch, epoch);
     _expectRest(tester);
     await _tap(tester, 'draft_profile_$_sara', settle: false);
@@ -1047,7 +1047,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(_selectedId(tester), _aisha);
     expect(_motion(tester).epoch, epoch);
-    expect(find.text('Journey invitation sent'), findsNothing);
+    expect(find.text('Request sent'), findsNothing);
     final currentNext = _browse(tester).onNext!;
     allowed = false;
     tester.element(find.byType(ZyraOneJourneyConceptShell)).markNeedsBuild();

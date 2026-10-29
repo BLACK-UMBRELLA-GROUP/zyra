@@ -40,6 +40,7 @@ class ZyraOneJourneyBrowsePresentation extends StatefulWidget {
     this.onNextProfile,
     this.onRequest,
     this.requestLabel = 'Request Journey',
+    this.requestSemanticLabel,
     this.invitationSent,
     this.imageBuilder = _profileImage,
     this.previousKey,
@@ -65,6 +66,7 @@ class ZyraOneJourneyBrowsePresentation extends StatefulWidget {
   final VoidCallback? onNextProfile;
   final VoidCallback? onRequest;
   final String requestLabel;
+  final String? requestSemanticLabel;
   final bool? invitationSent;
   final ZyraOneJourneyPhotoBuilder imageBuilder;
   final Key? previousKey;
@@ -253,6 +255,7 @@ class _ZyraOneJourneyBrowsePresentationState
                           flex: 2,
                           child: ZyraOneJourneyConnectionsActionButton(
                             invitationSent: widget.invitationSent,
+                            semanticLabel: widget.requestSemanticLabel,
                             action: ZyraOneJourneyConnectionsAction(
                               key: widget.requestKey,
                               label: widget.requestLabel,
@@ -692,11 +695,13 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
     required this.action,
     this.primary = false,
     this.invitationSent,
+    this.semanticLabel,
   });
 
   final ZyraOneJourneyConnectionsAction action;
   final bool primary;
   final bool? invitationSent;
+  final String? semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -776,13 +781,15 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
         ),
       ),
     );
-    if (invitationSent == null) return button;
+    if (invitationSent == null && semanticLabel == null) return button;
     return Semantics(
       button: true,
       enabled: action.onTap != null,
-      label: invitationSent == true
-          ? '${action.label}. Tap to cancel invitation'
-          : action.label,
+      label:
+          semanticLabel ??
+          (invitationSent == true
+              ? '${action.label}. Tap to cancel invitation'
+              : action.label),
       onTap: action.onTap,
       excludeSemantics: true,
       child: ZyraPressFeedback(enabled: action.onTap != null, child: button),

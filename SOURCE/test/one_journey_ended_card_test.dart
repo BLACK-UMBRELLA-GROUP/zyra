@@ -481,7 +481,7 @@ void main() {
       final send = _key('draft_restart_send_$_sara');
       expect(send, findsOneWidget);
       expect(tester.widget<OutlinedButton>(send).onPressed, isNull);
-      expect(find.text('Journey invitation sent'), findsNothing);
+      expect(find.text('Request sent'), findsNothing);
       expect(find.textContaining('No request has been sent.'), findsOneWidget);
       _expectSameModel(current, before);
       await _capture(tester, 'ended_restart_393');

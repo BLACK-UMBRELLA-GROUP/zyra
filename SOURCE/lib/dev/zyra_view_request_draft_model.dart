@@ -8,6 +8,27 @@ import '../data/zyra_reference_data.dart' show zyraRelationshipLabel;
 /// This model has no account, storage, entitlement or backend dependency.
 enum DraftJourneyState { received, sent, preparing, active, ended }
 
+/// Passive request history only; it never becomes an ended Journey attempt.
+enum DraftPastRequestOutcome { notTakenUp, cancelled, youDeclined }
+
+final class DraftPastRequest {
+  const DraftPastRequest._({
+    required this.id,
+    required this.profileId,
+    required this.outcome,
+    required this.requestedAt,
+    required this.movedAt,
+    required this.sequence,
+  });
+
+  final String id, profileId;
+  final DraftPastRequestOutcome outcome;
+  final DateTime requestedAt, movedAt;
+  final int sequence;
+
+  bool get incoming => outcome == DraftPastRequestOutcome.youDeclined;
+}
+
 /// Invented preview plans only; these never prove a real entitlement.
 enum DraftGuardianMembership { basic, one }
 
@@ -309,6 +330,9 @@ final class ViewRequestDraftSnapshot {
       receivedRequestRevisions = Map.unmodifiable(
         model._receivedRequestRevisions,
       ),
+      pendingRequestedAt = Map.unmodifiable(model._pendingRequestedAt),
+      pastRequests = List.unmodifiable(model._pastRequests),
+      pastRequestSequence = model._pastRequestSequence,
       journeyStartedAt = Map.unmodifiable(model._journeyStartedAt),
       endedAttempts = List.unmodifiable(model._endedAttempts),
       currentEndedAttemptIds = Map.unmodifiable(model._currentEndedAttemptIds),
@@ -335,6 +359,9 @@ final class ViewRequestDraftSnapshot {
   final Set<String> acknowledgedReceivedRequestIds;
   final int receivedActivityRevision;
   final Map<String, int> receivedRequestRevisions;
+  final Map<String, DateTime> pendingRequestedAt;
+  final List<DraftPastRequest> pastRequests;
+  final int pastRequestSequence;
   final Map<String, DateTime> journeyStartedAt;
   final List<DraftEndedJourneyAttempt> endedAttempts;
   final Map<String, String> currentEndedAttemptIds;
@@ -376,6 +403,34 @@ final class ViewRequestDraftSnapshot {
           (entry) =>
               entry.value != DraftJourneyState.received ||
               receivedRequestRevisions.containsKey(entry.key),
+        ) &&
+        pendingRequestedAt.entries.every(
+          (entry) =>
+              peers.contains(entry.key) &&
+              (states[entry.key] == DraftJourneyState.received ||
+                  states[entry.key] == DraftJourneyState.sent) &&
+              entry.value.isUtc,
+        ) &&
+        states.entries.every(
+          (entry) =>
+              (entry.value != DraftJourneyState.received &&
+                  entry.value != DraftJourneyState.sent) ||
+              pendingRequestedAt.containsKey(entry.key),
+        ) &&
+        pastRequestSequence >= 0 &&
+        pastRequests.map((entry) => entry.id).toSet().length ==
+            pastRequests.length &&
+        pastRequests.map((entry) => entry.sequence).toSet().length ==
+            pastRequests.length &&
+        pastRequests.every(
+          (entry) =>
+              peers.contains(entry.profileId) &&
+              entry.id.isNotEmpty &&
+              entry.sequence > 0 &&
+              entry.sequence <= pastRequestSequence &&
+              entry.requestedAt.isUtc &&
+              entry.movedAt.isUtc &&
+              !entry.requestedAt.isAfter(entry.movedAt),
         ) &&
         journeyStartedAt.keys.every(peers.contains) &&
         endedAttempts.map((attempt) => attempt.id).toSet().length ==
@@ -523,6 +578,9 @@ class ViewRequestDraftModel {
     );
     _receivedActivityRevision = snapshot.receivedActivityRevision;
     _receivedRequestRevisions.addAll(snapshot.receivedRequestRevisions);
+    _pendingRequestedAt.addAll(snapshot.pendingRequestedAt);
+    _pastRequests.addAll(snapshot.pastRequests);
+    _pastRequestSequence = snapshot.pastRequestSequence;
     _journeyStartedAt.addAll(snapshot.journeyStartedAt);
     _endedAttempts.addAll(snapshot.endedAttempts);
     _currentEndedAttemptIds.addAll(snapshot.currentEndedAttemptIds);
@@ -579,6 +637,9 @@ class ViewRequestDraftModel {
   final Set<String> _acknowledgedReceivedRequestIds = {};
   int _receivedActivityRevision = 0;
   final Map<String, int> _receivedRequestRevisions = {};
+  final Map<String, DateTime> _pendingRequestedAt = {};
+  final List<DraftPastRequest> _pastRequests = [];
+  int _pastRequestSequence = 0;
   final Map<String, _DraftJourneyProgress> _progress = {};
   final Map<String, DateTime> _journeyStartedAt = {};
   final List<DraftEndedJourneyAttempt> _endedAttempts = [];
@@ -609,14 +670,96 @@ class ViewRequestDraftModel {
 
   /// Explicit fictional arrival only. Never overwrites a request or Journey,
   /// and never creates a member record or proves server notification state.
-  bool seedReceived(String id) {
+  bool seedReceived(String id, {DateTime? requestedAt}) {
     if (!_fixtureIds.contains(id) || _states.containsKey(id)) return false;
     _states[id] = DraftJourneyState.received;
+    _pendingRequestedAt[id] = (requestedAt ?? _clock()).toUtc();
     _receivedRequestRevisions[id] = ++_receivedActivityRevision;
     // A later request from the same fixture is a new item, not the formerly
     // acknowledged request. Existing current requests keep their own state.
     _acknowledgedReceivedRequestIds.remove(id);
     return true;
+  }
+
+  /// Items stay indefinitely. A detached projection also keeps equal-date
+  /// transitions deterministic, without sorting or exposing the stored list.
+  List<DraftPastRequest> get pastRequests {
+    final entries = _pastRequests.toList();
+    entries.sort((a, b) {
+      final dates = b.movedAt.compareTo(a.movedAt);
+      return dates != 0 ? dates : b.sequence.compareTo(a.sequence);
+    });
+    return List.unmodifiable(entries);
+  }
+
+  /// Bounded, explicit fictional history; never changes a current request,
+  /// Journey, notification acknowledgement or received-arrival sequence.
+  bool seedPastRequest({
+    required String profileId,
+    required DraftPastRequestOutcome outcome,
+    required DateTime requestedAt,
+    required DateTime movedAt,
+  }) {
+    final requested = requestedAt.toUtc();
+    final moved = movedAt.toUtc();
+    if (!_fixtureIds.contains(profileId) ||
+        _states.containsKey(profileId) ||
+        requested.isAfter(moved) ||
+        _pastRequests.any(
+          (entry) =>
+              entry.profileId == profileId &&
+              entry.outcome == outcome &&
+              entry.requestedAt == requested &&
+              entry.movedAt == moved,
+        )) {
+      return false;
+    }
+    _recordPastRequest(profileId, outcome, requested, moved);
+    return true;
+  }
+
+  void _recordPastRequest(
+    String id,
+    DraftPastRequestOutcome outcome,
+    DateTime requestedAt,
+    DateTime movedAt,
+  ) {
+    final sequence = ++_pastRequestSequence;
+    _pastRequests.add(
+      DraftPastRequest._(
+        id: '$id:past-request:$sequence',
+        profileId: id,
+        outcome: outcome,
+        requestedAt: requestedAt,
+        movedAt: movedAt,
+        sequence: sequence,
+      ),
+    );
+  }
+
+  bool _moveRequestToPast(
+    String id,
+    DraftJourneyState expected,
+    DraftPastRequestOutcome outcome,
+  ) {
+    if (_states[id] != expected) return false;
+    final requestedAt = _pendingRequestedAt[id];
+    final movedAt = _clock().toUtc();
+    if (requestedAt == null || requestedAt.isAfter(movedAt)) return false;
+    _recordPastRequest(id, outcome, requestedAt, movedAt);
+    _states.remove(id);
+    _pendingRequestedAt.remove(id);
+    return true;
+  }
+
+  bool _requestCooldownFinished(String id) {
+    final now = _clock().toUtc();
+    return !_pastRequests.any(
+      (entry) =>
+          entry.profileId == id &&
+          entry.outcome == DraftPastRequestOutcome.notTakenUp &&
+          now.isBefore(entry.movedAt.add(const Duration(days: 30))),
+    );
   }
 
   DraftEndedJourneyAttempt? currentEndedAttemptFor(String id) => _endedAttempts
@@ -876,6 +1019,7 @@ class ViewRequestDraftModel {
       !isBlocked(id) &&
       !isHidden(id) &&
       !_states.containsKey(id) &&
+      _requestCooldownFinished(id) &&
       canBrowse &&
       !peerOccupied(id);
   bool canAccept(String id) =>
@@ -928,6 +1072,7 @@ class ViewRequestDraftModel {
     _states[endingId] = DraftJourneyState.ended;
     _clearRequiredPaidGuardianAccess(endingId);
     _states[requestId] = DraftJourneyState.preparing;
+    _pendingRequestedAt.remove(requestId);
     _progress[requestId] = _DraftJourneyProgress();
     _initializePreparationGuardianAccess(requestId);
     return true;
@@ -943,20 +1088,21 @@ class ViewRequestDraftModel {
   bool request(String id) {
     if (!canRequest(id)) return false;
     _states[id] = DraftJourneyState.sent;
+    _pendingRequestedAt[id] = _clock().toUtc();
     return true;
   }
 
-  bool cancel(String id) {
-    if (_states[id] != DraftJourneyState.sent) return false;
-    _states.remove(id);
-    return true;
-  }
+  bool cancel(String id) => _moveRequestToPast(
+    id,
+    DraftJourneyState.sent,
+    DraftPastRequestOutcome.cancelled,
+  );
 
-  bool declineReceived(String id) {
-    if (_states[id] != DraftJourneyState.received) return false;
-    _states.remove(id);
-    return true;
-  }
+  bool declineReceived(String id) => _moveRequestToPast(
+    id,
+    DraftJourneyState.received,
+    DraftPastRequestOutcome.youDeclined,
+  );
 
   bool acceptReceived(String id) => _accept(id, DraftJourneyState.received);
   bool simulateRecipientAccept(String id) =>
@@ -965,6 +1111,7 @@ class ViewRequestDraftModel {
   bool _accept(String id, DraftJourneyState expected) {
     if (_states[id] != expected || !canAccept(id)) return false;
     _states[id] = DraftJourneyState.preparing;
+    _pendingRequestedAt.remove(id);
     _progress[id] = _DraftJourneyProgress();
     _initializePreparationGuardianAccess(id);
     return true;
@@ -1366,6 +1513,9 @@ class ViewRequestDraftModel {
   void _seed() {
     _states.clear();
     _receivedRequestRevisions.clear();
+    _pendingRequestedAt.clear();
+    _pastRequests.clear();
+    _pastRequestSequence = 0;
     _hiddenPeers.clear();
     _blockedPeers.clear();
     _acknowledgedReceivedRequestIds.clear();

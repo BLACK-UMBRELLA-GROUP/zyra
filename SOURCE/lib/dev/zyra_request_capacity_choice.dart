@@ -77,7 +77,7 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     'Choose a Journey to end before beginning with $firstName, '
-                    'or cancel this request.',
+                    'or keep your Journeys and leave the request for now.',
                     style: ZyraText.subtext(size: 14).copyWith(height: 1.4),
                   ),
                 ],
@@ -125,7 +125,7 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                       shape: const StadiumBorder(),
                     ),
                     child: Text(
-                      'End Journey & continue',
+                      'End & accept request',
                       textAlign: TextAlign.center,
                       style: ZyraText.button(
                         size: 13,
@@ -149,7 +149,7 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                         foregroundColor: ZyraColors.foregroundSecondary,
                       ),
                       child: Text(
-                        'Cancel request',
+                        'Keep my Journeys',
                         style: ZyraText.button(
                           size: 13,
                           color: ZyraColors.foregroundSecondary,

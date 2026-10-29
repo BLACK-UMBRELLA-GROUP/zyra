@@ -40,6 +40,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.onProfile,
     this.onRequest,
     this.requestLabel,
+    this.requestSemanticLabel,
     this.invitationSent,
     this.canRequest,
     this.bottomPadding = 100,
@@ -66,6 +67,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final ValueChanged<SeekerProfile>? onProfile;
   final ValueChanged<SeekerProfile>? onRequest;
   final String Function(SeekerProfile)? requestLabel;
+  final String Function(SeekerProfile)? requestSemanticLabel;
   final bool Function(SeekerProfile)? invitationSent;
   final bool Function(SeekerProfile)? canRequest;
   final double bottomPadding;
@@ -119,6 +121,7 @@ class _ZyraOneJourneyBrowseDesignsState
     onProfile: widget.onProfile,
     onRequest: widget.onRequest,
     requestLabel: widget.requestLabel,
+    requestSemanticLabel: widget.requestSemanticLabel,
     invitationSent: widget.invitationSent,
     canRequest: widget.canRequest,
     bottomPadding: widget.bottomPadding,

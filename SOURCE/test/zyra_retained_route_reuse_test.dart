@@ -165,7 +165,7 @@ void main() {
       await _tap(tester, 'draft_known_person_view');
       expect(find.text('Sara'), findsOneWidget);
       expect(find.text('Request a Journey'), findsOneWidget);
-      expect(find.text('Journey invitation sent'), findsNothing);
+      expect(find.text('Request sent'), findsNothing);
       await _back(tester);
       expect(find.byType(ZyraDraftCodeEntry), findsOneWidget);
       await _back(tester);

@@ -57,6 +57,31 @@ bool _wholeWordsFit(
   return true;
 }
 
+Widget _requestActivityPortrait(SeekerProfile profile) {
+  final photo = profile.photoUrl;
+  // A retained URL cannot become a member/network lookup in this renderer.
+  final image = photo.startsWith('data:image/')
+      ? ZyraProfileImage(photo, width: 64, height: 64)
+      : ColoredBox(
+          color: ZyraColors.accentOnCanvas.withValues(alpha: .10),
+          child: Center(
+            child: Text(
+              profile.firstName.isEmpty
+                  ? '?'
+                  : profile.firstName.characters.first,
+              style: ZyraText.heading(size: 28, color: _accentInk),
+            ),
+          ),
+        );
+  return ClipOval(
+    child: SizedBox(
+      width: 64,
+      height: 64,
+      child: ExcludeSemantics(child: image),
+    ),
+  );
+}
+
 /// Owns only presentation/paging. A single-page leaf has no tab selector.
 /// The shell owns the selection, current route and every member action.
 class ZyraRequestActivityPresentation extends StatefulWidget {
@@ -353,30 +378,7 @@ class ZyraRequestActivityCard extends StatelessWidget {
   String get _name =>
       '${profile.firstName} ${profile.surnameLine ?? ''}'.trim();
 
-  Widget _portrait() {
-    final photo = profile.photoUrl;
-    // A retained URL cannot become a member/network lookup in this renderer.
-    final image = photo.startsWith('data:image/')
-        ? ZyraProfileImage(photo, width: 64, height: 64)
-        : ColoredBox(
-            color: ZyraColors.accentOnCanvas.withValues(alpha: .10),
-            child: Center(
-              child: Text(
-                profile.firstName.isEmpty
-                    ? '?'
-                    : profile.firstName.characters.first,
-                style: ZyraText.heading(size: 28, color: _accentInk),
-              ),
-            ),
-          );
-    return ClipOval(
-      child: SizedBox(
-        width: 64,
-        height: 64,
-        child: ExcludeSemantics(child: image),
-      ),
-    );
-  }
+  Widget _portrait() => _requestActivityPortrait(profile);
 
   Widget _identity() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -619,6 +621,88 @@ class ZyraRequestActivityCard extends StatelessWidget {
         ),
       );
     },
+  );
+}
+
+/// A retained request outcome is display-only: it cannot expand or act.
+class ZyraPastRequestActivityCard extends StatelessWidget {
+  const ZyraPastRequestActivityCard({
+    super.key,
+    required this.profile,
+    required this.subtitle,
+    required this.status,
+    required this.cardId,
+  });
+
+  final SeekerProfile profile;
+  final String subtitle;
+  final String status;
+  final String cardId;
+
+  String get _name =>
+      '${profile.firstName} ${profile.surnameLine ?? ''}'.trim();
+
+  Widget _identity() => Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        _name,
+        key: ValueKey('past_request_activity_name_$cardId'),
+        style: ZyraText.heading(size: 21),
+      ),
+      const SizedBox(height: 5),
+      Text(subtitle, style: ZyraText.subtext(size: 12, color: _helperInk)),
+      const SizedBox(height: 10),
+      Text(
+        status,
+        key: ValueKey('past_request_activity_status_$cardId'),
+        style: ZyraText.subtext(size: 12, color: _helperInk),
+      ),
+    ],
+  );
+
+  @override
+  Widget build(BuildContext context) => Container(
+    key: ValueKey('past_request_activity_card_$cardId'),
+    margin: const EdgeInsets.only(bottom: 16),
+    padding: const EdgeInsets.all(18),
+    decoration: BoxDecoration(
+      color: ZyraColors.surfaceFill,
+      borderRadius: BorderRadius.circular(26),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+    ),
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        final stackIdentity =
+            MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
+            !_wholeWordsFit(
+              context,
+              _name,
+              ZyraText.heading(size: 21),
+              constraints.maxWidth - 64 - 16,
+            );
+        if (stackIdentity) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _requestActivityPortrait(profile),
+              const SizedBox(height: 16),
+              _identity(),
+            ],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _requestActivityPortrait(profile),
+            const SizedBox(width: 16),
+            Expanded(child: _identity()),
+          ],
+        );
+      },
+    ),
   );
 }
 

@@ -64,6 +64,7 @@ class ZyraPreviewNavigationCheckpoint {
     Map<String, double> positions = const {},
     this.scrollOffset = 0,
     this.mainGuardianId = 'draft-guardian-hassan',
+    this.pendingMainGuardianNoticeId,
     Iterable<String> removedGuardians = const [],
     Map<String, bool> guardianHistory = const {},
     Iterable<String> networkSent = const [],
@@ -106,6 +107,7 @@ class ZyraPreviewNavigationCheckpoint {
   final Map<String, double> positions;
   final double scrollOffset;
   final String mainGuardianId, seekerMembership, guardianMembership;
+  final String? pendingMainGuardianNoticeId;
   final Set<String> removedGuardians, networkSent;
   final Map<String, bool> guardianHistory;
   final int? compatibilityBalance;

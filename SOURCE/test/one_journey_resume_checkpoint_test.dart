@@ -229,7 +229,7 @@ void main() {
     });
   }
 
-  for (var requestTab = 0; requestTab < 2; requestTab++) {
+  for (var requestTab = 0; requestTab < 3; requestTab++) {
     testWidgets('request section $requestTab survives a fresh shell', (
       tester,
     ) async {
@@ -251,7 +251,7 @@ void main() {
         find.byKey(const ValueKey('concept_activity_requests')),
       );
       expect(requests.selectedIndex, requestTab);
-      expect(requests.labels, ['Received', 'Sent']);
+      expect(requests.labels, ['Received', 'Sent', 'Past']);
       expect(owner.latest.requestsTab, requestTab);
       expect(owner.latest.pages, ['requests']);
       expect(owner.latest.model.states, captured.model.states);
@@ -281,31 +281,36 @@ void main() {
   });
 
   testWidgets(
-    'legacy Introduction request tab restores to its standalone route',
+    'Past request checkpoint stays on Requests without remapping to Introductions',
     (tester) async {
       final model = ViewRequestDraftModel(capacity: 3);
+      expect(model.request('draft-sara'), isTrue);
+      expect(model.cancel('draft-sara'), isTrue);
       final owner = _Owner();
-      final legacy = _seed(
+      final past = _seed(
         model: model,
         tab: 2,
         pages: const ['requests'],
         requestsTab: 2,
       );
-      await owner.mount(tester, checkpoint: legacy);
-      expect(
+      await owner.mount(tester, checkpoint: past);
+      final requests = tester.widget<ZyraRequestActivityPresentation>(
         find.byKey(const ValueKey('concept_activity_requests')),
-        findsNothing,
       );
+      expect(requests.labels, ['Received', 'Sent', 'Past']);
+      expect(requests.selectedIndex, 2);
       expect(
         find.byKey(const ValueKey('concept_activity_introductions')),
-        findsOneWidget,
+        findsNothing,
       );
-      expect(owner.latest.pages, ['introductions']);
-      expect(owner.latest.requestsTab, 0);
-      expect(owner.latest.model.states, legacy.model.states);
+      expect(find.text('Cancelled'), findsOneWidget);
+      expect(owner.latest.pages, ['requests']);
+      expect(owner.latest.requestsTab, 2);
+      expect(owner.latest.model.states, past.model.states);
+      expect(owner.latest.model.pastRequests, past.model.pastRequests);
       expect(
         owner.latest.model.acknowledgedReceivedRequestIds,
-        legacy.model.acknowledgedReceivedRequestIds,
+        past.model.acknowledgedReceivedRequestIds,
       );
     },
   );

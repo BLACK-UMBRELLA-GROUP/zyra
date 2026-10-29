@@ -265,7 +265,7 @@ Future<void> _sendAtCapacity(WidgetTester tester) async {
     await _press(tester, 'concept_next_profile');
   }
   await _press(tester, 'draft_profile_$_outgoing');
-  expect(find.text('Journey invitation sent'), findsOneWidget);
+  expect(find.text('Request sent'), findsOneWidget);
 }
 
 Future<void> _openChoice(WidgetTester tester, {bool incoming = true}) async {
@@ -470,24 +470,25 @@ void main() {
   for (final incoming in [true, false]) {
     final direction = incoming ? 'received' : 'sent';
     final target = incoming ? _incoming : _outgoing;
-    testWidgets('$direction full acceptance can cancel only its request', (
-      tester,
-    ) async {
-      await _mount(tester);
-      await _seed(tester);
-      if (!incoming) await _sendAtCapacity(tester);
-      await _openChoice(tester, incoming: incoming);
-      expect(_action(tester, 'request_capacity_continue'), isNull);
-      await _press(tester, 'request_capacity_cancel');
-      expect(_key('request_capacity_choice'), findsNothing);
-      expect(_key('concept_activity_requests'), findsOneWidget);
-      expect(_key('concept_request_${target}_header'), findsNothing);
-      await _nav(tester, 1);
-      _expectOccupied(tester, _occupied);
-      await _nav(tester, 2);
-      await _press(tester, 'my-zyra-route-concept-my-ended');
-      expect(find.text('No ended Journeys.'), findsOneWidget);
-    });
+    testWidgets(
+      '$direction full acceptance can keep its Journeys and request',
+      (tester) async {
+        await _mount(tester);
+        await _seed(tester);
+        if (!incoming) await _sendAtCapacity(tester);
+        await _openChoice(tester, incoming: incoming);
+        expect(_action(tester, 'request_capacity_continue'), isNull);
+        await _press(tester, 'request_capacity_cancel');
+        expect(_key('request_capacity_choice'), findsNothing);
+        expect(_key('concept_activity_requests'), findsOneWidget);
+        expect(_key('concept_request_${target}_header'), findsOneWidget);
+        await _nav(tester, 1);
+        _expectOccupied(tester, _occupied);
+        await _nav(tester, 2);
+        await _press(tester, 'my-zyra-route-concept-my-ended');
+        expect(find.text('No ended Journeys.'), findsOneWidget);
+      },
+    );
 
     testWidgets(
       '$direction replacement archives one and reserves only three places',

@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 161,735 lines in 320 files |
-| Developer and preview code inside it | 43,372 lines in 81 files |
-| The Founder preview (planned app) | 24,344 lines in 31 files |
-| Test code | 208,744 lines in 472 files |
+| All app code | 162,146 lines in 320 files |
+| Developer and preview code inside it | 43,769 lines in 81 files |
+| The Founder preview (planned app) | 24,739 lines in 31 files |
+| Test code | 210,362 lines in 475 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -41,6 +41,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | LOCK4 profile-details first-photo avatar (queue8) | 161,645 / 320 | 43,282 / 81 | 24,257 / 31 | 205,672 / 463 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | LOCK5 tab-open attention marker (queue9) | 161,735 / 320 | 43,372 / 81 | 24,344 / 31 | 206,561 / 466 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue10 signup/onboarding capture (app unchanged) | 161,735 / 320 | 43,372 / 81 | 24,344 / 31 | 208,744 / 472 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-29 | LOCK2 Requests/Past/capacity/Main message (queue11) | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -179,3 +180,18 @@ including a fresh attempt from the same sample person after reset, are newer tha
 add90lines; four test paths cover model isolation, real navigation, restore and stale callback guards. All affected
 suites and analyser pass. Two actual-shell captures preserve LOCK4 geometry; no pixels change outside the My ZYRA icon,
 and all289 prior baseline/LOCK4 picture artifacts are unchanged. No server, old-member, Blueprint or native change.
+
+## Corrected LOCK2 Requests and Guardians — 29 Oct 2026
+
+Queue11 adds passive indefinite Past requests with original-request and move dates, cancel/decline outcomes, newest-first
+ordering and exact30-day Not taken up resend boundary. Requests now has three sections; sent button wording/semantics
+match the LOCK. Keep my Journeys leaves the received request intact. The existing local Make Main action opens its
+one-time subject-bound notice; first accepted real link remains deferred to OA-ZYRA-317. Nine lib paths add411lines,
+including optional shared semantic seams whose defaults preserve other callers. All311 other app files are unchanged.
+
+Four capture cases produce14same-name1290×2796built pictures, visually compared beside masters; unchanged default
+Profiles is byte-identical to LOCK4. The prototype's sample identity/layout differs from the actual baseline as recorded
+in BUILD; existing fonts, photos, back gestures, report/demo controls and LOCK4/5 behavior stay. Tests cover exact dates,
+indefinite retention, cooldown, callbacks, restoration, capacity invariants and compact200% reading. Older regression
+fixtures were updated for LOCK4 avatars/LOCK5 attention/current LOCK2 words without dropping cases. No backend, ordinary
+member route, Blueprint or native change. Checks and commit are in the daily Task19 note and local LOCK2 evidence.

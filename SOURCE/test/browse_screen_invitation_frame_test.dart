@@ -350,7 +350,7 @@ void main() {
       expect(tester.getRect(photo), photoBounds);
       expect(tester.getRect(_key('draft_profile_$_sara')), requestBounds);
       expect(tester.getRect(find.byType(FloatingNavBar)), navBounds);
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       await _capturePage(tester, 'browse_photo_frame_sent_393');
       // The decoration must not consume actual photo or invitation taps.
       await _tap(tester, 'concept_browse_photo_tap_$_sara');
@@ -460,7 +460,7 @@ void main() {
       await tester.pumpAndSettle();
       _expectPhotoOutline(tester, _sara, sent: true);
       expect(_selectedId(tester), _sara);
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       allowed = true;
       tester.element(find.byType(ZyraOneJourneyConceptShell)).markNeedsBuild();
       await tester.pumpAndSettle();
@@ -500,7 +500,7 @@ void main() {
       _expectPhotoOutline(tester, person.id, sent: false);
       await _tap(tester, 'draft_profile_${person.id}');
       _expectPhotoOutline(tester, person.id, sent: true);
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
     },
   );
 

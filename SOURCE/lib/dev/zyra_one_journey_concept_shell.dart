@@ -336,7 +336,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           ? 'Journey Bio'
           : 'Journey',
     'requests' =>
-      'Journey requests · ${const ['Received', 'Sent'][_requestsTab]}',
+      'Journey requests · ${const ['Received', 'Sent', 'Past'][_requestsTab]}',
     'introductions' => 'Introductions',
     'ended' || 'past_journeys' => 'Ended Journeys',
     _ =>
@@ -725,7 +725,15 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     _conceptNetworkSent.addAll(saved.networkSent.where(_profileIds.contains));
     if (!widget.restoreLocation) return;
     _tab = saved.tab.clamp(0, _guardianRole ? 3 : 4);
-    _requestsTab = saved.requestsTab == 2 ? 0 : saved.requestsTab.clamp(0, 1);
+    _requestsTab = saved.requestsTab.clamp(0, 2);
+    final pendingMain = saved.pendingMainGuardianNoticeId;
+    if (!_guardianRole &&
+        _model.ownMainGuardianPresent &&
+        pendingMain == _conceptMainGuardianId &&
+        _guardianIds.contains(pendingMain) &&
+        !_conceptRemovedGuardians.contains(pendingMain)) {
+      _pendingMainGuardianNoticeId = pendingMain;
+    }
     _guardianPage = saved.guardianPage.clamp(0, 1);
     _networkTab = saved.networkTab.clamp(0, 1);
     _personId = _profileIds.contains(saved.personId) ? saved.personId : null;
@@ -796,12 +804,18 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         .where((detail) => detail.name == saved.settingsDetail)
         .firstOrNull;
     for (final savedPage in saved.pages) {
-      // Migrate the former third request tab inside this memory-only
-      // checkpoint. It is a destination, never another request category.
-      final page = savedPage == 'requests' && saved.requestsTab == 2
-          ? 'introductions'
-          : savedPage;
+      final page = savedPage;
       if (page == 'controls') break;
+      if (page == 'guardian_main_notice') {
+        if (_guardianRole ||
+            _tab != 3 ||
+            _pages.isNotEmpty ||
+            _pendingMainGuardianNoticeId == null) {
+          break;
+        }
+        _pages.add(page);
+        continue;
+      }
       if (page == 'account_action') {
         if (_pages.lastOrNull != 'settings' ||
             !_canRestoreSettingsOverview(accountDestination)) {
@@ -935,6 +949,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         positions: _positions.snapshot,
         scrollOffset: offset.isFinite ? offset.clamp(0, 1000000) : 0,
         mainGuardianId: _conceptMainGuardianId,
+        pendingMainGuardianNoticeId: _pendingMainGuardianNoticeId,
         removedGuardians: _conceptRemovedGuardians,
         guardianHistory: _conceptGuardianHistory,
         networkSent: _conceptNetworkSent,
@@ -1148,6 +1163,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   void _back() {
+    if (_page == 'guardian_main_notice' && !_devControlsVisible) {
+      _closeMainGuardianNotice();
+      return;
+    }
     if (_devControlsVisible) {
       _closeDevControls();
       return;
@@ -1412,6 +1431,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'guardian_access_agreement',
           'guardian_circle',
           'guardian_invite',
+          'guardian_main_notice',
           'account_action',
           'settings_detail',
           'guardian_linked_profile',
@@ -1534,7 +1554,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                               if ((_pages.isNotEmpty ||
                                       _expandedJourneyOptionsId != null) &&
                                   !_isRetainedAccountPage &&
-                                  _page != 'own_profile_preview')
+                                  _page != 'own_profile_preview' &&
+                                  _page != 'guardian_main_notice')
                                 ZyraPullDownBackScope(
                                   key: const ValueKey(
                                     'concept_pull_down_back_scope',
@@ -1737,6 +1758,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'guardian_access_agreement' => _guardianAccessAgreement(),
     'guardian_circle' => _guardianCircle(),
     'guardian_invite' => _guardianInvite(),
+    'guardian_main_notice' => _mainGuardianNotice(),
     'network_request' => _networkRequestConfirmation(),
     'held_action' => _heldPreviewAction(),
     'own_profile_preview' => _ownProfilePreview(),
@@ -1863,7 +1885,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   String _invitationLabel(String id) => switch (_model.stateFor(id)) {
     null => 'Request a Journey',
-    DraftJourneyState.sent => 'Journey invitation sent',
+    DraftJourneyState.sent => 'Request sent',
     DraftJourneyState.ended => 'Journey archived',
     final state => _stateLabel(state),
   };
@@ -1898,6 +1920,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         nextKey: const ValueKey('draft_browse_next'),
         requestKey: const ValueKey('draft_request'),
         requestLabel: _invitationLabel(p.id),
+        requestSemanticLabel: _model.stateFor(p.id) == DraftJourneyState.sent
+            ? 'Request sent. Tap to cancel request'
+            : null,
         invitationSent: _model.stateFor(p.id) == DraftJourneyState.sent,
         onRequest: _canToggleInvitation(p.id)
             ? _bound(() => _toggleInvitation(p.id))
@@ -2143,6 +2168,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       onNext: _bound(() => _act(_nextBrowseProfile)),
       canRequest: (profile) => _canToggleInvitation(profile.id),
       requestLabel: (profile) => _invitationLabel(profile.id),
+      requestSemanticLabel: (profile) =>
+          _model.stateFor(profile.id) == DraftJourneyState.sent
+          ? 'Request sent. Tap to cancel request'
+          : _invitationLabel(profile.id),
       invitationSent: (profile) =>
           _model.stateFor(profile.id) == DraftJourneyState.sent,
       // Photo browsing stays inside the approved bounded card.
@@ -2423,7 +2452,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _guardianRole ||
         !const {'requests', 'introductions', 'ended'}.contains(page) ||
         requestsTab < 0 ||
-        requestsTab > 1) {
+        requestsTab > 2) {
       return;
     }
     final viewedId = viewedReceivedRequestId;
@@ -2474,12 +2503,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           !_guardianRole &&
           _tab == 2 &&
           _page == 'requests',
-      labels: const ['Received', 'Sent'],
+      labels: const ['Received', 'Sent', 'Past'],
       segmentKeys: const [
         ValueKey('draft_requests_0'),
         ValueKey('draft_requests_1'),
+        ValueKey('draft_requests_2'),
       ],
-      pages: [_requests(0), _requests(1)],
+      pages: [_requests(0), _requests(1), _pastRequests()],
       selectedIndex: _requestsTab,
       onChanged: (i) {
         if (!_allowed ||
@@ -2489,7 +2519,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             _tab != 2 ||
             _page != 'requests' ||
             i < 0 ||
-            i > 1 ||
+            i > 2 ||
             i == _requestsTab) {
           return;
         }
@@ -2555,6 +2585,53 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       ),
     ),
   );
+
+  List<Widget> _pastRequests() {
+    final history = _model.pastRequests
+        .where((entry) => !_model.isBlocked(entry.profileId))
+        .toList(growable: false);
+    if (history.isEmpty) {
+      return const [
+        ZyraRequestActivityEmpty(
+          icon: Icons.history_rounded,
+          title: 'No past requests.',
+          message:
+              'Requests that were declined, expired or cancelled stay here.',
+        ),
+      ];
+    }
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    return [
+      for (final entry in history)
+        ZyraPastRequestActivityCard(
+          profile: _displayProfile(
+            draftProfiles.firstWhere((person) => person.id == entry.profileId),
+          ),
+          subtitle:
+              '${entry.incoming ? 'Received' : 'Sent'} '
+              '${entry.requestedAt.day} ${months[entry.requestedAt.month - 1]}',
+          status: switch (entry.outcome) {
+            DraftPastRequestOutcome.notTakenUp => 'Not taken up',
+            DraftPastRequestOutcome.cancelled => 'Cancelled',
+            DraftPastRequestOutcome.youDeclined => 'You declined',
+          },
+          cardId: 'past_request_${entry.id}',
+        ),
+    ];
+  }
 
   List<Widget> _requests(int tab) {
     final revision = _uiRevision;
@@ -2771,14 +2848,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         if (!current() || _capacityConfirmOpen) return;
         unawaited(_selectionHaptic());
         _act(() {
-          final cancelled = request.incoming
-              ? _model.declineReceived(request.id)
-              : _model.cancel(request.id);
-          if (cancelled) {
-            _pages.removeLast();
-            _capacityRequest = null;
-            _capacityEndingId = null;
-          }
+          _pages.removeLast();
+          _capacityRequest = null;
+          _capacityEndingId = null;
         });
       },
     );
@@ -4562,6 +4634,82 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   // Relationship and permission changes below are disposable local fixtures.
   // They never establish an account role, link, consent or Journey authority.
   String _conceptMainGuardianId = 'draft-guardian-hassan';
+  String? _pendingMainGuardianNoticeId;
+
+  void _closeMainGuardianNotice() {
+    if (!_allowed ||
+        _guardianRole ||
+        _devControlsVisible ||
+        _tab != 3 ||
+        _page != 'guardian_main_notice' ||
+        _pendingMainGuardianNoticeId == null) {
+      return;
+    }
+    _move(() {
+      _pendingMainGuardianNoticeId = null;
+      _pages.removeLast();
+    });
+  }
+
+  Widget _mainGuardianNotice() {
+    final id = _pendingMainGuardianNoticeId;
+    final guardian = draftGuardians
+        .where((person) => person.id == id)
+        .firstOrNull;
+    if (_guardianRole ||
+        guardian == null ||
+        !_model.ownMainGuardianPresent ||
+        id != _conceptMainGuardianId ||
+        _conceptRemovedGuardians.contains(id)) {
+      return _unavailable();
+    }
+    final fresh = _accountFreshGuard();
+    final name = guardian.firstName;
+    return SafeArea(
+      key: const ValueKey('concept_main_guardian_notice'),
+      child: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: (constraints.maxHeight - 40).clamp(0, double.infinity),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: zyraGuardianManagerMonogram(name: name, main: true),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  '$name will be your Main Guardian',
+                  textAlign: TextAlign.center,
+                  style: ZyraText.heading(size: 26),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  '$name is part of every Journey you begin. $name will also see '
+                  'your Journey requests — the ones you send and the ones you '
+                  'receive — and who each is with. $name sees that person\'s '
+                  'profile as anyone browsing would. Nothing more.',
+                  textAlign: TextAlign.center,
+                  style: ZyraText.body(size: 14).copyWith(height: 1.4),
+                ),
+                const SizedBox(height: 24),
+                _button('concept_main_guardian_continue', 'Continue', () {
+                  if (fresh() && _pendingMainGuardianNoticeId == id) {
+                    _closeMainGuardianNotice();
+                  }
+                }, primary: true),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   final _conceptRemovedGuardians = <String>{};
   final _conceptGuardianHistory = <String, bool>{};
   final _conceptNetworkSent = <String>{};
@@ -5090,13 +5238,16 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           makeMainGuardian: (guardianId) async {
             if (!current() ||
                 guardianId != viewedGuardianId ||
-                personFor(guardianId) == null) {
+                personFor(guardianId) == null ||
+                personFor(guardianId)!.isMain) {
               return false;
             }
             _act(() {
               _conceptMainGuardianId = guardianId;
               _model.setOwnMainGuardianPresent(true);
               _guardianPage = 0;
+              _pendingMainGuardianNoticeId = guardianId;
+              _pages.add('guardian_main_notice');
             });
             return true;
           },
@@ -7287,7 +7438,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           const SizedBox(height: 12),
           _controlSection([
             _choices(
-              const ['Received', 'Sent'],
+              const ['Received', 'Sent', 'Past'],
               _requestsTab,
               (index) => _requestsTab = index,
               'concept_requests_controls',
