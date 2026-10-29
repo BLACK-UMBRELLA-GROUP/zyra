@@ -42,6 +42,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | LOCK5 tab-open attention marker (queue9) | 161,735 / 320 | 43,372 / 81 | 24,344 / 31 | 206,561 / 466 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue10 signup/onboarding capture (app unchanged) | 161,735 / 320 | 43,372 / 81 | 24,344 / 31 | 208,744 / 472 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | LOCK2 Requests/Past/capacity/Main message (queue11) | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-29 | Queue13 LOCK3 preflight failed; app/tests unchanged | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
