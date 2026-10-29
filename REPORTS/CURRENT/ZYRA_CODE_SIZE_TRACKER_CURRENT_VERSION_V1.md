@@ -45,6 +45,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | Queue13 LOCK3 preflight failed; app/tests unchanged | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | LOCK6 scoped compact tab bar and matching test fixtures (queue14) | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 211,414 / 477 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue15 Basic/Guardian capture; app unchanged | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-29 | Queue16 LOCK7 preflight failed; unfinished source withdrawn | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
