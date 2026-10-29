@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 161,543 lines in 320 files |
+| All app code | 161,645 lines in 320 files |
 | Developer and preview code inside it | 43,282 lines in 81 files |
 | The Founder preview (planned app) | 24,257 lines in 31 files |
-| Test code | 205,099 lines in 461 files |
+| Test code | 205,672 lines in 463 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -38,6 +38,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | OA-ZYRA-316 Tier 4: 92 unchosen options removed; selected design retained | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,723 / 461 | 3,337 / 399 MB | 39 | 1 |
 | 2026-10-29 | OA-ZYRA-316 matching tests/screenshots: 28 obsolete cases and 699 old captures retired | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,402 / 461 | 2,638 / 313 MB | 39 | 1 |
 | 2026-10-29 | OA-ZYRA-316 queue5: Original photos mode/picker and 26 matching captures removed; six baseline states added | 161,543 / 320 | 43,282 / 81 | 24,257 / 31 | 205,099 / 461 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-29 | LOCK4 profile-details first-photo avatar (queue8) | 161,645 / 320 | 43,282 / 81 | 24,257 / 31 | 205,672 / 463 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -156,3 +157,14 @@ match exactly after cleanup. Full analyser and nine affected suites pass after r
 initial capture fixture mistakes (selected person and icon hit target) were corrected. No native build, backend,
 Blueprint or Tier3 change. Outside-Profiles overlays flagged unchanged: Seeker full profile, Guardian network profile,
 Guardian linked profile. Local evidence: OA-ZYRA-316_PROFILES_PHOTOS_2026-10-29.
+
+## LOCK4 profile details photo — 29 Oct 2026
+
+Queue8 fills the existing56×56gold-ring details emblem with the caller's first admitted photo, centred cover, with2pt
+clear gap inside the border. No-photo/loading/error retains the existing gold person icon; ordinary gallery defaults
+remain. Three shared widget paths add102lines; developer/Founder preview counts are unchanged. Six original/new
+focused suites plus shared fallback/privacy/gallery checks were run; fixture expectations adapt to the newly admitted
+avatar without dropping original cases. Two built1290×2796states and master/built pairs are recorded; outside the56pt
+emblem, default Profiles pixels match the preserved baseline exactly. All286baseline artifacts stay byte-identical.
+Missing-photo capture is an explicit bounded shared-presenter fixture because the actual editor retains the last photo.
+No backend, old-member route, Blueprint, native build or source copies.

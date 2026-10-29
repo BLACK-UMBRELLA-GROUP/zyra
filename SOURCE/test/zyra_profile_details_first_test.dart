@@ -363,45 +363,46 @@ void main() {
     ZyraText.testReadingFontFamily = oldReadingFont;
   });
 
-  testWidgets('first page shows all six public fields without a photo render', (
-    tester,
-  ) async {
-    final painted = <String>[];
-    await _mount(tester, _presenter(painted: painted));
+  testWidgets(
+    'first page keeps all public fields with the first-photo avatar',
+    (tester) async {
+      final painted = <String>[];
+      await _mount(tester, _presenter(painted: painted));
 
-    expect(find.byType(ZyraProfileDetailsPage), findsOneWidget);
-    final detailsScroll = tester.state<ScrollableState>(
-      find.descendant(
-        of: _details(_person.id),
-        matching: find.byType(Scrollable),
-      ),
-    );
-    expect(detailsScroll.position.maxScrollExtent, 0);
-    _expectDetailsText(_person.id, [
-      _person.firstName,
-      _person.surnameLine!,
-      'Age',
-      '${_person.age}',
-      'Location',
-      _person.city,
-      'Nationality',
-      _person.publicNationality!,
-      'Ethnicity',
-      _person.publicEthnicity!,
-    ]);
-    expect(_controller(tester, _person.id).page, closeTo(0, .001));
-    expect(painted, isEmpty);
-    expect(find.byType(Image), findsNothing);
-    expect(find.byType(RawImage), findsNothing);
-    expect(
-      tester
-          .widget<PageView>(_pager(_person.id))
-          .childrenDelegate
-          .estimatedChildCount,
-      _person.photos.length + 1,
-    );
-    await _capture(tester, '01-details-first-public-details');
-  });
+      expect(find.byType(ZyraProfileDetailsPage), findsOneWidget);
+      final detailsScroll = tester.state<ScrollableState>(
+        find.descendant(
+          of: _details(_person.id),
+          matching: find.byType(Scrollable),
+        ),
+      );
+      expect(detailsScroll.position.maxScrollExtent, 0);
+      _expectDetailsText(_person.id, [
+        _person.firstName,
+        _person.surnameLine!,
+        'Age',
+        '${_person.age}',
+        'Location',
+        _person.city,
+        'Nationality',
+        _person.publicNationality!,
+        'Ethnicity',
+        _person.publicEthnicity!,
+      ]);
+      expect(_controller(tester, _person.id).page, closeTo(0, .001));
+      expect(painted, [_person.photos.first]);
+      expect(find.byType(Image), findsNothing);
+      expect(find.byType(RawImage), findsNothing);
+      expect(
+        tester
+            .widget<PageView>(_pager(_person.id))
+            .childrenDelegate
+            .estimatedChildCount,
+        _person.photos.length + 1,
+      );
+      await _capture(tester, '01-details-first-public-details');
+    },
+  );
 
   testWidgets('details-first photo is clean with no identity copy or scrim', (
     tester,
@@ -735,7 +736,7 @@ void main() {
         );
         if (seed.expected == 0) {
           expect(_details(_person.id), findsOneWidget);
-          expect(painted, isEmpty);
+          expect(painted, [_person.photos.first]);
         } else {
           expect(
             _key('details_paint_${_person.photos[seed.expected - 1]}'),
@@ -1038,12 +1039,7 @@ void main() {
         final halo =
             tester
                     .widget<Container>(
-                      find
-                          .ancestor(
-                            of: find.byIcon(Icons.person_outline),
-                            matching: find.byType(Container),
-                          )
-                          .first,
+                      _key('concept_browse_details_avatar_${_person.id}'),
                     )
                     .decoration
                 as BoxDecoration;
@@ -1153,7 +1149,7 @@ void main() {
       );
 
       expect(_details(_longPerson.id), findsOneWidget);
-      expect(painted, isEmpty);
+      expect(painted, [_longPerson.photos.first]);
       final request = _key('draft_profile_${_longPerson.id}');
       await tester.ensureVisible(request);
       await tester.pumpAndSettle();

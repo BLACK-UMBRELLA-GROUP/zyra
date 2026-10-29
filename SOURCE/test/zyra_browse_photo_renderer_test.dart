@@ -159,7 +159,12 @@ void main() {
         expect(details.profile, same(_member));
         expect(details.profile.firstName, 'Nadia');
         expect(details.profile.surnameLine, 'Yusuf');
-        expect(renderer.calls, isEmpty);
+        expect(renderer.calls, isNotEmpty);
+        for (final call in renderer.calls) {
+          expect(call.photo, _member.photos.first);
+          expect((call.width, call.height), (50, 50));
+          expect(call.alignment, Alignment.center);
+        }
         await _press(tester, 'concept_browse_photo_tap_${_member.id}');
         _expectSelectedDot(tester, 1);
         expect(_key('concept_browse_identity_${_member.id}'), findsNothing);
@@ -173,7 +178,12 @@ void main() {
           // Current's photo now occupies the former 26px card inset too;
           // its bounded outer card and footer budget have not grown.
           expect(call.height, inInclusiveRange(48, 646));
-          expect(call.alignment, Alignment.topCenter);
+          if (call.width == 50 && call.height == 50) {
+            expect(call.photo, _member.photos.first);
+            expect(call.alignment, Alignment.center);
+          } else {
+            expect(call.alignment, Alignment.topCenter);
+          }
         }
         // The shared presenter creates no image provider behind the callback.
         expect(find.byType(ZyraProfileImage), findsNothing);

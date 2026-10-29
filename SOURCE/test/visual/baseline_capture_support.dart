@@ -183,12 +183,20 @@ class _ProductionPreviewFrame extends StatelessWidget {
 }
 
 class BaselineHarness {
-  BaselineHarness(this.tester, {required this.group});
+  BaselineHarness(
+    this.tester, {
+    required this.group,
+    this.outputRoot = baselineRoot,
+    this.evidenceRoot = baselineEvidence,
+    this.flatOutput = false,
+  });
   final WidgetTester tester;
   final String group;
+  final String outputRoot, evidenceRoot;
+  final bool flatOutput;
   bool guardian = false;
   List<Map<String, Object?>> get rows => _rowsByGroup.putIfAbsent(group, () {
-    final file = File('$baselineEvidence/rows_$group.json');
+    final file = File('$evidenceRoot/rows_$group.json');
     if (file.existsSync()) {
       return (jsonDecode(file.readAsStringSync()) as List)
           .map((row) => Map<String, Object?>.from(row as Map))
@@ -205,6 +213,22 @@ class BaselineHarness {
     await tester.pump(const Duration(milliseconds: 400));
     final error = tester.takeException();
     expect(error, isNull);
+  }
+
+  /// A bounded data-state fixture in the same production frame. The caller
+  /// supplies real presenters; this never adds a route or data seam to the app.
+  Future<void> mountPresentation({
+    required Widget child,
+    required ZyraPreviewNavigationCheckpoint checkpoint,
+  }) async {
+    guardian = checkpoint.guardian;
+    checkpoints
+      ..clear()
+      ..add(checkpoint);
+    tester.view.physicalSize = const Size(1290, 2796);
+    tester.view.devicePixelRatio = 3;
+    await tester.pumpWidget(_ProductionPreviewFrame(child: child));
+    await flush();
   }
 
   Future<void> mount({
@@ -392,8 +416,9 @@ class BaselineHarness {
         );
       }
     }
-    final relative =
-        '${guardian ? 'guardian' : 'seeker'}/$area/${page}__$state.png';
+    final relative = flatOutput
+        ? '${page}__$state.png'
+        : '${guardian ? 'guardian' : 'seeker'}/$area/${page}__$state.png';
     final boundary = tester.renderObject<RenderRepaintBoundary>(
       find.byKey(_boundary),
     );
@@ -403,7 +428,7 @@ class BaselineHarness {
         expect(image.width, 1290);
         expect(image.height, 2796);
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-        final file = File('$baselineRoot/$relative');
+        final file = File('$outputRoot/$relative');
         if (_compareOnly) {
           if (page == 'controls') {
             _skippedControlPaths.add(relative);
@@ -450,7 +475,7 @@ class BaselineHarness {
           'route': latest.pages,
           'tab': latest.tab,
         });
-        final output = File('$baselineEvidence/rows_$group.json');
+        final output = File('$evidenceRoot/rows_$group.json');
         await output.parent.create(recursive: true);
         await output.writeAsString(
           const JsonEncoder.withIndent('  ').convert(rows),

@@ -45,6 +45,26 @@ import '../services/zyra_image_cache.dart';
 import '../theme/zyra_colors.dart';
 import 'zyra_loading.dart';
 
+/// A caller-owned placeholder for a small, already-admitted photo surface.
+/// Ordinary profile/gallery rendering keeps its existing default treatment.
+class ZyraProfileImageFallback extends InheritedWidget {
+  const ZyraProfileImageFallback({
+    super.key,
+    required this.fallback,
+    required super.child,
+  });
+
+  final Widget fallback;
+
+  static Widget? maybeOf(BuildContext context) => context
+      .dependOnInheritedWidgetOfExactType<ZyraProfileImageFallback>()
+      ?.fallback;
+
+  @override
+  bool updateShouldNotify(ZyraProfileImageFallback oldWidget) =>
+      fallback != oldWidget.fallback;
+}
+
 class ZyraProfileImage extends StatelessWidget {
   final String photo;
   final double? width;
@@ -67,6 +87,7 @@ class ZyraProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fallback = ZyraProfileImageFallback.maybeOf(context);
     // The colour-block branch was removed 2026-08-04 with the 200-profile
     // dev deck. Every photo is now a real signed Storage URL.
     //
@@ -80,7 +101,7 @@ class ZyraProfileImage extends StatelessWidget {
       return SizedBox(
         width: width,
         height: height,
-        child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
+        child: fallback ?? const ColoredBox(color: ZyraColors.luxuryDarkPurple),
       );
     }
 
@@ -98,18 +119,25 @@ class ZyraProfileImage extends StatelessWidget {
           height: height,
           fit: fit,
           alignment: alignment,
-          gaplessPlayback: true,
+          gaplessPlayback: fallback == null,
+          frameBuilder: fallback == null
+              ? null
+              : (_, child, frame, synchronous) =>
+                    frame != null || synchronous ? child : fallback,
           errorBuilder: (_, _, _) => SizedBox(
             width: width,
             height: height,
-            child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
+            child:
+                fallback ??
+                const ColoredBox(color: ZyraColors.luxuryDarkPurple),
           ),
         );
       } on FormatException {
         return SizedBox(
           width: width,
           height: height,
-          child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
+          child:
+              fallback ?? const ColoredBox(color: ZyraColors.luxuryDarkPurple),
         );
       }
     }
@@ -150,7 +178,11 @@ class ZyraProfileImage extends StatelessWidget {
       height: height,
       fit: fit,
       alignment: alignment,
-      loadingBuilder: !showLoader
+      frameBuilder: fallback == null
+          ? null
+          : (_, child, frame, synchronous) =>
+                frame != null || synchronous ? child : fallback,
+      loadingBuilder: fallback != null || !showLoader
           ? null
           // ── SEAMLESS, 2026-08-08 (second pass). Founder, on the screen
           // recording: "the loading is a bit buggy, can you fix that also
@@ -226,7 +258,7 @@ class ZyraProfileImage extends StatelessWidget {
       errorBuilder: (_, _, _) => SizedBox(
         width: width,
         height: height,
-        child: const ColoredBox(color: ZyraColors.luxuryDarkPurple),
+        child: fallback ?? const ColoredBox(color: ZyraColors.luxuryDarkPurple),
       ),
     );
   }

@@ -510,7 +510,7 @@ void main() {
         }
         expect(
           find.descendant(of: details, matching: find.byType(Image)),
-          findsNothing,
+          findsOneWidget,
         );
         final geometry = _browseGeometry(tester);
         expect(geometry['concept_browse_portrait_card']!.left, 20);

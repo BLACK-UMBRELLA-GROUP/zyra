@@ -326,7 +326,18 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       // Only the outer Current viewport is rounded. Sliding photos retain
       // their existing full bounds and seam geometry.
       photo: (index) => index == 0
-          ? ZyraProfileDetailsPage(profile: profile)
+          ? ZyraProfileDetailsPage(
+              profile: profile,
+              firstPhoto: profile.photos.isEmpty || profile.photos.first.isEmpty
+                  ? null
+                  : widget.photoBuilder(
+                      context,
+                      profile.photos.first,
+                      width: 50,
+                      height: 50,
+                      alignment: Alignment.center,
+                    ),
+            )
           : Stack(
               fit: StackFit.expand,
               children: [

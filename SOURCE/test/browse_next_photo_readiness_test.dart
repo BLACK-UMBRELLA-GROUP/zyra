@@ -177,8 +177,9 @@ void _expectIdentity(WidgetTester tester, String id) {
     expect(details, findsOneWidget);
     expect(
       find.descendant(of: details, matching: find.byType(Image)),
-      findsNothing,
+      findsOneWidget,
     );
+    _expectDetailsAvatar(tester, details);
     return;
   }
   expect(find.byType(ZyraProfileNameBlock), findsNothing);
@@ -193,6 +194,18 @@ void _expectIdentity(WidgetTester tester, String id) {
     ),
     findsWidgets,
   );
+}
+
+void _expectDetailsAvatar(WidgetTester tester, Finder details) {
+  final photo = find.descendant(of: details, matching: find.byType(Image));
+  expect(photo, findsOneWidget);
+  final image = tester.widget<Image>(photo);
+  expect((image.width, image.height), (50, 50));
+  expect(image.fit, BoxFit.cover);
+  expect(image.alignment, Alignment.center);
+  final frame = find.descendant(of: photo, matching: find.byType(RawImage));
+  expect(frame, findsOneWidget);
+  expect(tester.widget<RawImage>(frame).image, isNotNull);
 }
 
 Future<List<int>> _detailsFrame(
@@ -220,8 +233,9 @@ Future<List<int>> _detailsFrame(
   );
   expect(
     find.descendant(of: details, matching: find.byType(Image)),
-    findsNothing,
+    findsOneWidget,
   );
+  _expectDetailsAvatar(tester, details);
   final viewport = tester.getRect(_key('concept_browse_photo_swipe_$id'));
   final detailsRect = tester.getRect(details);
   expect(detailsRect.left, closeTo(viewport.left, .01));
@@ -535,8 +549,8 @@ void main() {
       );
       expect(
         received,
-        isEmpty,
-        reason: 'The details page never invokes a photo renderer.',
+        [''],
+        reason: 'The avatar invokes only the wrapper-sanitised first source.',
       );
       await tester.tap(_key('concept_browse_photo_tap_nonlocal'));
       await tester.pumpAndSettle();

@@ -269,7 +269,12 @@ void main() {
               find.descendant(of: details, matching: find.text('Ahmed')),
               findsOneWidget,
             );
-            expect(find.byType(ZyraProfileImage), findsNothing);
+            final avatar = tester.widget<ZyraProfileImage>(
+              find.byType(ZyraProfileImage),
+            );
+            expect(avatar.photo, profile.photos.first);
+            expect(avatar.photo, startsWith('data:image/'));
+            expect((avatar.width, avatar.height), (50, 50));
             expect(find.byType(ZyraProfileNameBlock), findsNothing);
             expect(find.text('Pass'), findsNothing);
             expect(find.text('Dislike'), findsNothing);

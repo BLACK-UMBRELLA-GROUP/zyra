@@ -1,16 +1,58 @@
-// Public identity presentation only: no services, private answers or photos.
+// Public identity and caller-rendered photo presentation only: no services,
+// private answers, photo lookup or URL construction.
 import 'package:flutter/material.dart';
 
 import '../models/seeker_profile.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import 'zyra_profile_image.dart';
 
 /// The first page of the current Profiles gallery. Missing public labels stay
 /// missing; this widget never infers heritage from compatibility or identity.
 class ZyraProfileDetailsPage extends StatelessWidget {
-  const ZyraProfileDetailsPage({super.key, required this.profile});
+  const ZyraProfileDetailsPage({
+    super.key,
+    required this.profile,
+    this.firstPhoto,
+  });
 
   final SeekerProfile profile;
+
+  /// The caller's existing first-photo renderer. A source reference alone
+  /// never admits an image or initiates a lookup in this presenter.
+  final Widget? firstPhoto;
+
+  static const _personIcon = Icon(
+    Icons.person_outline,
+    size: 29,
+    color: ZyraColors.journeyGold,
+  );
+
+  Widget _photo(Widget rendered) {
+    if (rendered is Image) {
+      // Preserve the caller's admitted provider, but keep old frames and its
+      // gallery placeholder out of this person's small identity circle.
+      return Image(
+        key: rendered.key,
+        image: rendered.image,
+        width: 50,
+        height: 50,
+        fit: BoxFit.cover,
+        alignment: Alignment.center,
+        color: rendered.color,
+        opacity: rendered.opacity,
+        colorBlendMode: rendered.colorBlendMode,
+        filterQuality: rendered.filterQuality,
+        isAntiAlias: rendered.isAntiAlias,
+        excludeFromSemantics: true,
+        gaplessPlayback: false,
+        frameBuilder: (_, child, frame, synchronous) =>
+            frame != null || synchronous ? child : _personIcon,
+        errorBuilder: (_, _, _) => _personIcon,
+      );
+    }
+    return ZyraProfileImageFallback(fallback: _personIcon, child: rendered);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +90,9 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                   children: [
                     ExcludeSemantics(
                       child: Container(
+                        key: ValueKey(
+                          'concept_browse_details_avatar_${profile.id}',
+                        ),
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
@@ -66,11 +111,25 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: const Icon(
-                          Icons.person_outline,
-                          size: 29,
-                          color: ZyraColors.journeyGold,
-                        ),
+                        child: firstPhoto == null
+                            ? _personIcon
+                            : Padding(
+                                // Container includes its one-point ring
+                                // before this two-point clear inner gap.
+                                padding: const EdgeInsets.all(2),
+                                child: ClipOval(
+                                  key: ValueKey(
+                                    'concept_browse_details_avatar_photo_${profile.id}',
+                                  ),
+                                  child: KeyedSubtree(
+                                    key: ValueKey((
+                                      profile.id,
+                                      profile.photos.firstOrNull,
+                                    )),
+                                    child: _photo(firstPhoto!),
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 18),
