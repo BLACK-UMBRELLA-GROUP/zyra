@@ -305,6 +305,10 @@ final class ViewRequestDraftSnapshot {
       acknowledgedReceivedRequestIds = Set.unmodifiable(
         model._acknowledgedReceivedRequestIds,
       ),
+      receivedActivityRevision = model._receivedActivityRevision,
+      receivedRequestRevisions = Map.unmodifiable(
+        model._receivedRequestRevisions,
+      ),
       journeyStartedAt = Map.unmodifiable(model._journeyStartedAt),
       endedAttempts = List.unmodifiable(model._endedAttempts),
       currentEndedAttemptIds = Map.unmodifiable(model._currentEndedAttemptIds),
@@ -329,6 +333,8 @@ final class ViewRequestDraftSnapshot {
   final Set<String> hiddenPeers;
   final Set<String> blockedPeers;
   final Set<String> acknowledgedReceivedRequestIds;
+  final int receivedActivityRevision;
+  final Map<String, int> receivedRequestRevisions;
   final Map<String, DateTime> journeyStartedAt;
   final List<DraftEndedJourneyAttempt> endedAttempts;
   final Map<String, String> currentEndedAttemptIds;
@@ -359,6 +365,18 @@ final class ViewRequestDraftSnapshot {
         hiddenPeers.every(peers.contains) &&
         blockedPeers.every(peers.contains) &&
         acknowledgedReceivedRequestIds.every(peers.contains) &&
+        receivedActivityRevision >= 0 &&
+        receivedRequestRevisions.keys.every(peers.contains) &&
+        receivedRequestRevisions.values.every(
+          (revision) => revision > 0 && revision <= receivedActivityRevision,
+        ) &&
+        receivedRequestRevisions.values.toSet().length ==
+            receivedRequestRevisions.length &&
+        states.entries.every(
+          (entry) =>
+              entry.value != DraftJourneyState.received ||
+              receivedRequestRevisions.containsKey(entry.key),
+        ) &&
         journeyStartedAt.keys.every(peers.contains) &&
         endedAttempts.map((attempt) => attempt.id).toSet().length ==
             endedAttempts.length &&
@@ -503,6 +521,8 @@ class ViewRequestDraftModel {
     _acknowledgedReceivedRequestIds.addAll(
       snapshot.acknowledgedReceivedRequestIds,
     );
+    _receivedActivityRevision = snapshot.receivedActivityRevision;
+    _receivedRequestRevisions.addAll(snapshot.receivedRequestRevisions);
     _journeyStartedAt.addAll(snapshot.journeyStartedAt);
     _endedAttempts.addAll(snapshot.endedAttempts);
     _currentEndedAttemptIds.addAll(snapshot.currentEndedAttemptIds);
@@ -557,6 +577,8 @@ class ViewRequestDraftModel {
   final Set<String> _hiddenPeers = {};
   final Set<String> _blockedPeers = {};
   final Set<String> _acknowledgedReceivedRequestIds = {};
+  int _receivedActivityRevision = 0;
+  final Map<String, int> _receivedRequestRevisions = {};
   final Map<String, _DraftJourneyProgress> _progress = {};
   final Map<String, DateTime> _journeyStartedAt = {};
   final List<DraftEndedJourneyAttempt> _endedAttempts = [];
@@ -574,6 +596,28 @@ class ViewRequestDraftModel {
   Set<String> get blockedPeers => UnmodifiableSetView(_blockedPeers);
   bool isHidden(String id) => _hiddenPeers.contains(id);
   bool isBlocked(String id) => _blockedPeers.contains(id);
+
+  /// Memory-only arrival order, independent of per-request acknowledgement.
+  /// Scenario resets keep this monotonic so an older tab-open marker cannot
+  /// hide a newly seeded request. A snapshot carries the same owner sequence.
+  int get receivedActivityRevision => _receivedActivityRevision;
+
+  int? receivedRequestRevision(String id) =>
+      _states[id] == DraftJourneyState.received
+      ? _receivedRequestRevisions[id]
+      : null;
+
+  /// Explicit fictional arrival only. Never overwrites a request or Journey,
+  /// and never creates a member record or proves server notification state.
+  bool seedReceived(String id) {
+    if (!_fixtureIds.contains(id) || _states.containsKey(id)) return false;
+    _states[id] = DraftJourneyState.received;
+    _receivedRequestRevisions[id] = ++_receivedActivityRevision;
+    // A later request from the same fixture is a new item, not the formerly
+    // acknowledged request. Existing current requests keep their own state.
+    _acknowledgedReceivedRequestIds.remove(id);
+    return true;
+  }
 
   DraftEndedJourneyAttempt? currentEndedAttemptFor(String id) => _endedAttempts
       .where(
@@ -1320,12 +1364,12 @@ class ViewRequestDraftModel {
   }
 
   void _seed() {
-    _states
-      ..clear()
-      ..[draftProfiles.first.id] = DraftJourneyState.received;
+    _states.clear();
+    _receivedRequestRevisions.clear();
     _hiddenPeers.clear();
     _blockedPeers.clear();
     _acknowledgedReceivedRequestIds.clear();
+    seedReceived(draftProfiles.first.id);
     _progress.clear();
     _journeyStartedAt.clear();
     _endedAttempts.clear();

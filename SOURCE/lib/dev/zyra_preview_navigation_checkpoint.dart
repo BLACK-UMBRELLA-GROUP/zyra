@@ -51,6 +51,7 @@ class ZyraPreviewNavigationCheckpoint {
     required Iterable<String> pages,
     this.personId,
     this.requestsTab = 0,
+    this.myZyraLastOpenedRevision = 0,
     this.guardianPage = 0,
     this.networkTab = 0,
     this.guardianJourneyId,
@@ -92,6 +93,8 @@ class ZyraPreviewNavigationCheckpoint {
   final bool guardian;
   final ViewRequestDraftSnapshot model;
   final int tab, requestsTab, guardianPage, networkTab;
+  // Tab attention is independent of individual received-request reads.
+  final int myZyraLastOpenedRevision;
   final List<String> pages, browseHistory;
   final String? personId, guardianJourneyId, browseId;
   final ZyraBrowseFilter browseFilter;

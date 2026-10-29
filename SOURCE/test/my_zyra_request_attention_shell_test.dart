@@ -180,7 +180,9 @@ SupportiveCard _card(WidgetTester tester, String id) =>
 
 void _expectNew(WidgetTester tester, {bool groupMounted = true}) {
   expect(_dashboard(tester).permanentNavigation, isTrue);
-  expect(_myZyraUnread(tester), isTrue);
+  // The actual My ZYRA visit consumes tab attention independently of these
+  // unopened request cards and their internal New activity treatment.
+  expect(_myZyraUnread(tester), isFalse);
   expect(_card(tester, _leadId).hasNewActivity, isTrue);
   expect(_card(tester, _groupId).hasNewActivity, isTrue);
   expect(_card(tester, 'concept-my-introductions').hasNewActivity, isFalse);
@@ -637,7 +639,7 @@ void main() {
   );
 
   testWidgets(
-    'restored Received retains unread attention until the item is opened',
+    'restored Received keeps item attention while My ZYRA consumes tab attention',
     (tester) async {
       ZyraPreviewNavigationCheckpoint? checkpoint;
       await _mount(tester, onCheckpoint: (value) => checkpoint = value);
@@ -660,7 +662,7 @@ void main() {
         onCheckpoint: (value) => checkpoint = value,
       );
       expect(_navigation(tester).currentIndex, 2);
-      expect(_myZyraUnread(tester), isTrue);
+      expect(_myZyraUnread(tester), isFalse);
       expect(checkpoint!.model.acknowledgedReceivedRequestIds, isEmpty);
 
       await _nav(tester, 'My ZYRA');
@@ -751,6 +753,7 @@ void main() {
       if (_key('dev_controls_page').evaluate().isNotEmpty) {
         await closeZyraDevControls(tester);
       }
+      expect(_myZyraUnread(tester), isTrue);
       await _nav(tester, 'My ZYRA');
       _expectNew(tester);
       await _nav(tester, 'Profiles');

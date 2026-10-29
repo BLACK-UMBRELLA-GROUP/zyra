@@ -157,6 +157,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   bool _photoLoadFailed = false;
   int _tab = 0;
   int _requestsTab = 0;
+  int _myZyraLastOpenedRevision = 0;
   int _browseIndex = 1;
   // Session-only viewing order, never a visibility or request permission.
   final _seenBrowseProfileIds = <String>{};
@@ -537,6 +538,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     DraftJourneyState.received,
   ).any((person) => _model.hasUnseenReceivedRequest(person.id));
 
+  bool get _hasNewMyZyraTabActivity =>
+      _visibleRequests(DraftJourneyState.received).any(
+        (person) =>
+            _model.hasUnseenReceivedRequest(person.id) &&
+            (_model.receivedRequestRevision(person.id) ?? 0) >
+                _myZyraLastOpenedRevision,
+      );
+
   // A request/preparation is not a current Journey disclosure to Guardians.
   List<DraftProfile> get _guardianJourneys => draftProfiles.where((p) {
     final s = _model.stateFor(p.id);
@@ -579,6 +588,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           )
         : ViewRequestDraftModel(capacity: 3, clock: widget.previewClock);
     if (sameRole) _restoreCheckpoint(checkpoint!);
+    if (_allowed && !_guardianRole && _tab == 2 && _page == null) {
+      // A warm timeout can visibly open My ZYRA without a navigation tap.
+      _myZyraLastOpenedRevision = _model.receivedActivityRevision;
+    }
     final offset = sameRole && widget.restoreLocation
         ? checkpoint!.scrollOffset
         : 0.0;
@@ -679,6 +692,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     _seekerMembership = saved.seekerMembership == 'Seeker Basic'
         ? 'Seeker Basic'
         : 'Seeker One';
+    final openedRevision = saved.myZyraLastOpenedRevision;
+    _myZyraLastOpenedRevision =
+        openedRevision >= 0 && openedRevision <= _model.receivedActivityRevision
+        ? openedRevision
+        : 0;
     _guardianMembership = saved.guardianMembership == 'Guardian Basic'
         ? 'Guardian Basic'
         : 'Guardian One';
@@ -904,6 +922,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         pages: _pages,
         personId: _personId,
         requestsTab: _requestsTab,
+        myZyraLastOpenedRevision: _myZyraLastOpenedRevision,
         guardianPage: _guardianPage,
         networkTab: _networkTab,
         guardianJourneyId: _guardianJourneyId,
@@ -1042,12 +1061,19 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     if (_allowed && _scroll.hasClients) _scroll.jumpTo(0);
   }
 
-  void _tabTo(int index) => _move(() {
-    _tab = index;
-    _expansion.collapseAll();
-    if (!_guardianRole && index == 3) _guardianPage = 0;
-    _pages.clear();
-  });
+  void _tabTo(int index) {
+    if (!_allowed || index < 0 || index > (_guardianRole ? 3 : 4)) return;
+    _move(() {
+      _tab = index;
+      if (!_guardianRole && index == 2) {
+        _myZyraLastOpenedRevision = _model.receivedActivityRevision;
+      }
+      _expansion.collapseAll();
+      if (!_guardianRole && index == 3) _guardianPage = 0;
+      _pages.clear();
+    });
+  }
+
   void _open(String page, {String? person}) {
     var target = page;
     if ({
@@ -1338,6 +1364,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   Widget build(BuildContext context) {
     _syncEndedReadDeadline();
     final devRoutes = _devRouteStamp;
+    final navigationRevision = _uiRevision;
+    final navigationGuardian = _guardianRole;
+    final navigationControlsEpoch = _devControlsEpoch;
     final names = _guardianRole
         ? ['Dashboard', 'Network', 'Seekers', 'Profile']
         : ['Profiles', 'Journey', 'My ZYRA', 'Guardian', 'Profile'];
@@ -1581,11 +1610,25 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                         dot:
                                             !_guardianRole &&
                                             i == 2 &&
-                                            _hasNewReceivedRequests,
+                                            _hasNewMyZyraTabActivity,
                                       ),
                                   ],
                                   currentIndex: _tab,
-                                  onTap: _tabTo,
+                                  onTap: (index) {
+                                    if (_allowed &&
+                                        navigationRevision == _uiRevision &&
+                                        navigationGuardian == _guardianRole &&
+                                        navigationControlsEpoch ==
+                                            _devControlsEpoch &&
+                                        devRoutes == _devRouteStamp &&
+                                        (ModalRoute.of(context)?.isCurrent ??
+                                            false) &&
+                                        !_devControlsVisible &&
+                                        !_browseOptionsOpen &&
+                                        _page == null) {
+                                      _tabTo(index);
+                                    }
+                                  },
                                 ),
                             ],
                           ),

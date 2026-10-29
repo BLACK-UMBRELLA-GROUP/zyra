@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 161,645 lines in 320 files |
-| Developer and preview code inside it | 43,282 lines in 81 files |
-| The Founder preview (planned app) | 24,257 lines in 31 files |
-| Test code | 205,672 lines in 463 files |
+| All app code | 161,735 lines in 320 files |
+| Developer and preview code inside it | 43,372 lines in 81 files |
+| The Founder preview (planned app) | 24,344 lines in 31 files |
+| Test code | 206,561 lines in 466 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -39,6 +39,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | OA-ZYRA-316 matching tests/screenshots: 28 obsolete cases and 699 old captures retired | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,402 / 461 | 2,638 / 313 MB | 39 | 1 |
 | 2026-10-29 | OA-ZYRA-316 queue5: Original photos mode/picker and 26 matching captures removed; six baseline states added | 161,543 / 320 | 43,282 / 81 | 24,257 / 31 | 205,099 / 461 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | LOCK4 profile-details first-photo avatar (queue8) | 161,645 / 320 | 43,282 / 81 | 24,257 / 31 | 205,672 / 463 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-29 | LOCK5 tab-open attention marker (queue9) | 161,735 / 320 | 43,372 / 81 | 24,344 / 31 | 206,561 / 466 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -168,3 +169,12 @@ avatar without dropping original cases. Two built1290×2796states and master/bui
 emblem, default Profiles pixels match the preserved baseline exactly. All286baseline artifacts stay byte-identical.
 Missing-photo capture is an explicit bounded shared-presenter fixture because the actual editor retains the last photo.
 No backend, old-member route, Blueprint, native build or source copies.
+
+## LOCK5 tab attention — 29 Oct 2026
+
+Queue9 adds a detached monotonic received-arrival sequence and tab-open checkpoint marker. Visiting My ZYRA clears
+its navigation gold without acknowledging any request or changing the internal New activity rules. Later arrivals,
+including a fresh attempt from the same sample person after reset, are newer than the old marker. Three preview paths
+add90lines; four test paths cover model isolation, real navigation, restore and stale callback guards. All affected
+suites and analyser pass. Two actual-shell captures preserve LOCK4 geometry; no pixels change outside the My ZYRA icon,
+and all289 prior baseline/LOCK4 picture artifacts are unchanged. No server, old-member, Blueprint or native change.
