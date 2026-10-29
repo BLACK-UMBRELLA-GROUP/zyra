@@ -18,11 +18,11 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 167,819 lines in 326 files |
-| Developer and preview code inside it | 46,118 lines in 86 files |
+| All app code | 165,953 lines in 321 files |
+| Developer and preview code inside it | 44,446 lines in 82 files |
 | The Founder preview (planned app) | 24,701 lines in 31 files |
-| Test code | 206,100 lines in 459 files |
-| Test screenshots (goldens) | 3,349 images, 401 MB |
+| Test code | 205,716 lines in 458 files |
+| Test screenshots (goldens) | 3,337 images, 399 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 2 |
 
@@ -31,8 +31,8 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | Date | Step | All app code | Developer + preview | Founder preview | Test code | Goldens | Pause files | Restart files |
 |---|---|---|---|---|---|---|---|---|
 | 2026-10-25 | Baseline, before any clean-up (OA-ZYRA-316) | 171,658 / 342 | 46,429 / 87 | 24,701 / 31 | 207,814 / 464 (counted 26 Oct) | 3,984 / 467 MB (counted 26 Oct) | 40 | 2 |
-
 | 2026-10-29 | OA-ZYRA-316 Tier 1: 16 unused files removed; 6 retained by scope/dependencies | 167,819 / 326 | 46,118 / 86 | 24,701 / 31 | 206,100 / 459 | 3,349 / 401 MB | 39 | 2 |
+| 2026-10-29 | OA-ZYRA-316 Tier 1 remainder: 5 named files removed; onboarding bank retained | 165,953 / 321 | 44,446 / 82 | 24,701 / 31 | 205,716 / 458 | 3,337 / 399 MB | 39 | 2 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -65,3 +65,18 @@ feature audit, and legitimate profile Pause may be included. Planned Request res
 Checks and commit are recorded in the 29 Oct daily task note. The exact source move inventory and hashes are in
 `REPORTS/EVIDENCE/OA-ZYRA-316_TIER1_2026-10-29/removed_sources.json` (local evidence, not a source/build copy).
 Remaining Tier 1 entries stay under OA-ZYRA-316 for Fable's review; no decision or action register was changed.
+
+## Note 29 Oct 2026 (Fable, from the ZYRA chat note (h))
+
+The historical golden baseline in this tracker (3,984 files / 467 MB) differs from the figure Codex measured before Tier 1 of OA-ZYRA-316 (3,380 files / 403 MB). The difference is the evidence copies moved to `_to_delete` on 27 Oct (OA-AIOS-405) and git-ignored build output; neither is app code. From Tier 1 onwards the tracker uses Codex's measured figures, with the code-size table in each task note (standard §3).
+
+
+## Tier 1 remainder — 29 Oct 2026
+
+Founder clarified that the protection covers the Founder preview, and explicitly named five further removals: the four
+previously retained developer labs/gallery files plus `services/zyra_dev_app_icon.dart`. They and their matching
+test/gallery captures moved to `~/_to_delete/OA-ZYRA-316_TIER1_REMAINDER_2026-10-29/`. Removed 1,866 source lines,
+one visual suite and 12 candidate PNGs (2,358,031 bytes), plus obsolete cases in six mixed suites. All seven native
+icon/asset checks, HomeTools and live splash-motion coverage remain. Native assets/configuration and the icon artwork
+generator are unchanged. Only `onboarding_bank_contract.dart` remains from the original 22-file list because active
+tooling uses it. Founder preview and old member routes are byte-identical. Analyser clean; 71 focused tests pass.

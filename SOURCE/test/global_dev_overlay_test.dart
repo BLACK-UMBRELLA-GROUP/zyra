@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_app_variant.dart';
-import 'package:zyra/dev/dev_splash_lab.dart';
 import 'package:zyra/dev/dev_scenario_panel_v2.dart';
 import 'package:zyra/dev/wali_dev_scenario_panel.dart';
 import 'package:zyra/dev/zyra_global_dev_overlay.dart';
@@ -18,7 +17,6 @@ import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_splash_motion.dart';
 
 final _categoryDropdowns = find.byWidgetPredicate(
   (widget) =>
@@ -701,36 +699,6 @@ void main() {
       expect(find.text('Auth stream failure gate'), findsOneWidget);
       expect(find.byType(ZyraEntryDevPanel), findsNothing);
       expect(tester.takeException(), isNull);
-    },
-  );
-
-  _isolatedTestWidgets(
-    'Splash Lab destinations deny direct unauthorized routes',
-    (tester) async {
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-
-      await tester.pumpWidget(const MaterialApp(home: DevSplashLabMenu()));
-      await tester.pump();
-      expect(
-        find.byKey(const ValueKey('dev_splash_lab_denied')),
-        findsOneWidget,
-      );
-      expect(find.text('Splash lab'), findsNothing);
-
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: DevSplashLabScreen(
-            motion: ZyraSplashMotion.bloomDraw,
-            label: 'Direct attempt',
-          ),
-        ),
-      );
-      await tester.pump();
-      expect(
-        find.byKey(const ValueKey('dev_splash_lab_denied')),
-        findsOneWidget,
-      );
-      expect(find.textContaining('Replay'), findsNothing);
     },
   );
 

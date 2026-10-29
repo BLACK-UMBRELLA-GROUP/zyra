@@ -3,155 +3,28 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as image_pkg;
-import 'package:zyra/services/zyra_dev_app_icon.dart';
 import 'package:zyra/theme/zyra_colors.dart';
+
+// The native app-icon assets remain installed after the Dart selector retires.
+// Keep this expected native contract independent of the removed selector API.
+const _nativeIcons = <({String name, String? alternateName})>[
+  (name: 'goldHorizonCurrent', alternateName: null),
+  (name: 'goldHalo', alternateName: 'ZyraGoldHalo'),
+  (name: 'orbitLight', alternateName: 'ZyraOrbitLight'),
+  (name: 'twinGlow', alternateName: 'ZyraTwinGlow'),
+  (name: 'openFrame', alternateName: 'ZyraOpenFrame'),
+  (name: 'editorialGold', alternateName: 'ZyraEditorialGold'),
+  (name: 'risingDawn', alternateName: 'ZyraRisingDawn'),
+  (name: 'quietMonogram', alternateName: 'ZyraQuietMonogram'),
+  (name: 'silkRibbon', alternateName: 'ZyraSilkRibbon'),
+  (name: 'constellation', alternateName: 'ZyraConstellation'),
+  (name: 'royalSeal', alternateName: 'ZyraRoyalSeal'),
+];
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  const channel = MethodChannel('zyra.test/app_icon');
-  final messenger =
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
-
-  tearDown(() async {
-    messenger.setMockMethodCallHandler(channel, null);
-  });
-
-  test('reads the icon iOS says is currently on the Home Screen', () async {
-    messenger.setMockMethodCallHandler(channel, (call) async {
-      expect(call.method, 'getAppIconState');
-      return <String, dynamic>{'supported': true, 'iconName': 'ZyraRisingDawn'};
-    });
-    final controller = ZyraDevAppIconController(
-      channel: channel,
-      isIOSOverride: true,
-    );
-
-    await controller.load();
-
-    expect(controller.supported, isTrue);
-    expect(controller.selected, ZyraDevAppIcon.risingDawn);
-  });
-
-  test('sends the alternate name and can restore the primary icon', () async {
-    String? requestedName = 'not-called';
-    messenger.setMockMethodCallHandler(channel, (call) async {
-      if (call.method == 'getAppIconState') {
-        return <String, dynamic>{'supported': true, 'iconName': null};
-      }
-      expect(call.method, 'setAppIcon');
-      requestedName = (call.arguments as Map)['iconName'] as String?;
-      return <String, dynamic>{'supported': true, 'iconName': requestedName};
-    });
-    final controller = ZyraDevAppIconController(
-      channel: channel,
-      isIOSOverride: true,
-    );
-
-    await controller.load();
-    await controller.select(ZyraDevAppIcon.openFrame);
-    expect(requestedName, 'ZyraOpenFrame');
-    expect(controller.selected, ZyraDevAppIcon.openFrame);
-
-    await controller.select(ZyraDevAppIcon.goldHorizonCurrent);
-    expect(requestedName, isNull);
-    expect(controller.selected, ZyraDevAppIcon.goldHorizonCurrent);
-  });
-
-  test(
-    'retired iOS icon can be reset even when its fallback is Current',
-    () async {
-      var resetCalls = 0;
-      messenger.setMockMethodCallHandler(channel, (call) async {
-        if (call.method == 'getAppIconState') {
-          return <String, dynamic>{
-            'supported': true,
-            'iconName': 'ZyraRisingHorizonLarge',
-          };
-        }
-        expect(call.method, 'setAppIcon');
-        expect((call.arguments as Map)['iconName'], isNull);
-        resetCalls++;
-        return <String, dynamic>{'supported': true, 'iconName': null};
-      });
-      final controller = ZyraDevAppIconController(
-        channel: channel,
-        isIOSOverride: true,
-      );
-
-      await controller.load();
-      expect(controller.selected, ZyraDevAppIcon.goldHorizonCurrent);
-      expect(controller.hasRetiredIcon, isTrue);
-      await controller.select(ZyraDevAppIcon.goldHorizonCurrent);
-      expect(resetCalls, 1);
-      expect(controller.selected, ZyraDevAppIcon.goldHorizonCurrent);
-      expect(controller.hasRetiredIcon, isFalse);
-      await controller.select(ZyraDevAppIcon.goldHorizonCurrent);
-      expect(resetCalls, 1, reason: 'Already-current selection is a no-op.');
-    },
-  );
-
-  test('failed native icon switch does not change the selected icon', () async {
-    messenger.setMockMethodCallHandler(channel, (call) async {
-      if (call.method == 'getAppIconState') {
-        return <String, dynamic>{'supported': true, 'iconName': 'ZyraGoldHalo'};
-      }
-      throw PlatformException(code: 'change_failed');
-    });
-    final controller = ZyraDevAppIconController(
-      channel: channel,
-      isIOSOverride: true,
-    );
-    await controller.load();
-    await controller.select(ZyraDevAppIcon.orbitLight);
-
-    expect(controller.selected, ZyraDevAppIcon.goldHalo);
-    expect(controller.hasRetiredIcon, isFalse);
-    expect(controller.messageIsError, isTrue);
-    expect(controller.busy, isFalse);
-  });
-
-  test('non-iOS preview cannot make a native Home Screen change', () async {
-    var nativeCalls = 0;
-    messenger.setMockMethodCallHandler(channel, (call) async {
-      nativeCalls++;
-      return <String, dynamic>{'supported': true, 'iconName': null};
-    });
-    final controller = ZyraDevAppIconController(
-      channel: channel,
-      isIOSOverride: false,
-    );
-    await controller.load();
-    await controller.select(ZyraDevAppIcon.goldHalo);
-
-    expect(controller.loaded, isTrue);
-    expect(controller.supported, isFalse);
-    expect(controller.selected, ZyraDevAppIcon.goldHorizonCurrent);
-    expect(nativeCalls, 0);
-  });
-
-  test('eleven options expose one primary and ten distinct alternates', () {
-    final names = ZyraDevAppIcon.values
-        .map((option) => option.alternateName)
-        .whereType<String>()
-        .toSet();
-
-    expect(ZyraDevAppIcon.values, hasLength(11));
-    expect(names, hasLength(10));
-    expect(
-      ZyraDevAppIcon.values.map((option) => option.label).toSet(),
-      hasLength(11),
-    );
-    expect(
-      ZyraDevAppIcon.values.map((option) => option.previewAsset).toSet(),
-      hasLength(11),
-    );
-    expect(ZyraDevAppIcon.values.first, ZyraDevAppIcon.goldHorizonCurrent);
-    expect(ZyraDevAppIcon.goldHorizonCurrent.alternateName, isNull);
-  });
 
   test('Xcode includes exactly the ten active alternate icon names', () {
     final project = File(
@@ -181,7 +54,7 @@ void main() {
       expect(
         registered,
         unorderedEquals(
-          ZyraDevAppIcon.values
+          _nativeIcons
               .map((option) => option.alternateName)
               .whereType<String>(),
         ),
@@ -216,9 +89,7 @@ void main() {
     expect(
       names,
       unorderedEquals(
-        ZyraDevAppIcon.values
-            .map((option) => option.alternateName)
-            .whereType<String>(),
+        _nativeIcons.map((option) => option.alternateName).whereType<String>(),
       ),
     );
   });
@@ -235,8 +106,10 @@ void main() {
       contains('assets/icon/previews/'),
     );
 
-    for (final icon in ZyraDevAppIcon.values) {
-      final preview = File(icon.previewAsset).readAsBytesSync();
+    for (final icon in _nativeIcons) {
+      final preview = File(
+        'assets/icon/previews/${icon.name}.png',
+      ).readAsBytesSync();
       final nativeName = icon.alternateName ?? 'AppIcon';
       final native = File(
         'ios/Runner/Assets.xcassets/$nativeName.appiconset/'
@@ -253,8 +126,8 @@ void main() {
     );
     expect(
       File('assets/icon/icon.png').readAsBytesSync(),
-      File(ZyraDevAppIcon.goldHorizonCurrent.previewAsset).readAsBytesSync(),
-      reason: 'The Home Screen primary must match the Current toggle preview.',
+      File('assets/icon/previews/goldHorizonCurrent.png').readAsBytesSync(),
+      reason: 'The Home Screen primary must match its preview asset.',
     );
   });
 
@@ -264,9 +137,9 @@ void main() {
     final green = (colour >> 8) & 0xFF;
     final blue = colour & 0xFF;
 
-    for (final icon in ZyraDevAppIcon.values) {
+    for (final icon in _nativeIcons) {
       final preview = image_pkg.decodePng(
-        File(icon.previewAsset).readAsBytesSync(),
+        File('assets/icon/previews/${icon.name}.png').readAsBytesSync(),
       );
       expect(preview, isNotNull, reason: icon.name);
       var wordmarkPixels = 0;
@@ -283,7 +156,7 @@ void main() {
   });
 
   test('every active native icon declares complete iPhone and iPad assets', () {
-    for (final icon in ZyraDevAppIcon.values) {
+    for (final icon in _nativeIcons) {
       final nativeName = icon.alternateName ?? 'AppIcon';
       final iconDirectory = 'ios/Runner/Assets.xcassets/$nativeName.appiconset';
       final contents =
@@ -340,7 +213,7 @@ void main() {
   test('all eleven native icons use opaque Midnight Plum endpoints', () async {
     for (final path in [
       'assets/icon/icon.png',
-      for (final icon in ZyraDevAppIcon.values)
+      for (final icon in _nativeIcons)
         'ios/Runner/Assets.xcassets/${icon.alternateName ?? 'AppIcon'}.appiconset/'
             'Icon-App-1024x1024@1x.png',
     ]) {

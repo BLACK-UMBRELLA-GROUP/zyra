@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_splash_lab.dart';
 import 'package:zyra/screens/splash_screen.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_splash_artwork.dart';
@@ -64,25 +63,6 @@ void main() {
     expect(settled.bloomOpacity, 0);
     expect(settled.lineProgress, 1);
     expect(settled.lineOpacity, 1);
-  });
-
-  test('Splash lab preserves five approved directions and no Split Breath', () {
-    expect(
-      zyraSplashLabOptions.map((option) => option.motion),
-      orderedEquals(const [
-        ZyraSplashMotion.softBloom,
-        ZyraSplashMotion.centreDraw,
-        ZyraSplashMotion.bloomDraw,
-        ZyraSplashMotion.horizonGlow,
-        ZyraSplashMotion.lightLift,
-      ]),
-    );
-    expect(
-      zyraSplashLabOptions.any(
-        (option) => option.label.toLowerCase().contains('split'),
-      ),
-      isFalse,
-    );
   });
 
   testWidgets('default production splash is Quiet Horizon with gold ZYRA', (

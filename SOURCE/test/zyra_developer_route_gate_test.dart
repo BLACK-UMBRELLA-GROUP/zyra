@@ -49,10 +49,7 @@ void main() {
   });
 
   test('every direct developer leaf uses the fresh route gate', () {
-    for (final path in const [
-      'lib/dev/dev_splash_lab.dart',
-      'lib/dev/zyra_page_preview_screen.dart',
-    ]) {
+    for (final path in const ['lib/dev/zyra_page_preview_screen.dart']) {
       expect(
         File(path).readAsStringSync(),
         contains('ZyraDeveloperRouteGate'),

@@ -67,14 +67,11 @@ void main() {
     );
   });
 
-  test('native and Dart app-icon channel names stay paired', () {
+  test('native app-icon channel uses the canonical bundle identifier', () {
     final swift = File('ios/Runner/AppDelegate.swift').readAsStringSync();
-    final dart = File('lib/services/zyra_dev_app_icon.dart').readAsStringSync();
 
     expect(swift, contains('name: "$canonicalIconChannel"'));
-    expect(dart, contains("'$canonicalIconChannel'"));
     expect(swift, isNot(contains('com.shakeelahmed.zyraapp/app_icon')));
-    expect(dart, isNot(contains('com.shakeelahmed.zyraapp/app_icon')));
   });
 
   test('Google iOS client ID and reversed callback scheme stay paired', () {
