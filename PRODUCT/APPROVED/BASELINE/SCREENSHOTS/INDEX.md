@@ -35,7 +35,7 @@ below. Notifications remains in the generated inventory but has no current opene
 The original capture commit ff65027 contained 301 PNGs. After the selected designs were kept in OA-ZYRA-316 Tier 4
 (source commit 9e903fb), 20 explicitly unchosen Circle bubble/control captures moved to
 `~/_to_delete/OA-ZYRA-316_TIER4_TESTS_2026-10-29/`, with their original paths and hashes in the local move receipt.
-This packet now has **281 PNGs**; every retained PNG is byte-identical to its original capture. Coverage below is unchanged.
+This packet now has **281 PNGs**; every retained PNG was byte-identical at retirement. The later one-file recapture below replaces the blank invite. Coverage below is unchanged.
 The 20 retained developer-panel captures document the pre-cleanup option lists; Tier 4 intentionally shortened those lists.
 They are historical capture inputs. The 261 chosen page/state PNG comparisons match the post-cleanup render exactly.
 Original capture evidence rows remain unchanged. No new capture, LOCK or image approval is implied.
@@ -171,7 +171,7 @@ checkpoint/taps/control path are retained. Source areas follow DOC-ZYRA-0278 §3
 | Seeker | guardians | controls | circle_current | Actual hold-to-open controls, selected existing Circle interior | [PNG](seeker/guardians/controls__circle_current.png) |
 | Seeker | guardians | guardian_circle | bubble_current | Actual controls choice Current, then X | [PNG](seeker/guardians/guardian_circle__bubble_current.png) |
 | Seeker | guardians | guardian_circle | normal | Actual allowed Guardian Circle checkpoint with local sample transcript | [PNG](seeker/guardians/guardian_circle__normal.png) |
-| Seeker | guardians | guardian_invite | normal | Guardian tab → actual Add Guardian | [PNG](seeker/guardians/guardian_invite__normal.png) |
+| Seeker | guardians | guardian_invite | normal | Recaptured 29 Oct: existing local preview session started before fresh mount → Guardian tab → actual Add Guardian; visible title and fictional code verified | [PNG](seeker/guardians/guardian_invite__normal.png) |
 | Seeker | guardians | guardian_tab | normal | Fresh local Founder-preview Seeker tab 3 | [PNG](seeker/guardians/guardian_tab__normal.png) |
 | Seeker | journey | bio | shared | Public sample-model checkpoint; role/page eligibility checked by unchanged shell | [PNG](seeker/journey/bio__shared.png) |
 | Seeker | journey | bio_locked | locked | Actual current Journey options → bio | [PNG](seeker/journey/bio_locked__locked.png) |
@@ -470,3 +470,17 @@ Moved without pixel changes; these are no longer active picture rows.
 | `seeker/guardians/guardian_circle__bubble_portraitTiles.png` | `839b2db31c4fe709cba32161b5cd6dde7ed54a33ff8405fe60bc0296e7e35cca` |
 | `seeker/guardians/guardian_circle__bubble_quietList.png` | `7bf497af03b7c520aa750ef2475c4d469dd78752eed77028fe84e5c925cf6767` |
 | `seeker/guardians/guardian_circle__bubble_segmentedCards.png` | `47300bb7b70027af9d1ca01009d5a56b7399bb1538c6e161ea01952768d97233` |
+
+## Blank-frame recapture — 29 Oct 2026
+
+Queue line 3, RECAPTURE_BRIEF_2026-10-29.md: only seeker/guardians/guardian_invite__normal.png needed replacement.
+The old frame was 18,808 bytes, uniformly #241A2F. Its capture fixture omitted the existing local preview session,
+so the unchanged code-screen ownership guard correctly rendered the denied view. The same route and settings
+(430 × 932 @3x, actual theme/fonts, offline fictional data) now start the session before a fresh mount and actual
+Add Guardian tap. The denial key is absent; the visible title and fictional code are asserted before capture.
+
+The replacement is 904,969 bytes, 1290 × 2796. All other 280 pictures retain their previous hashes; all 281 were
+checked for files under 100 KB and a single-colour frame. No other blank was found. Original blank and temporary
+capture fixture moved to ~/_to_delete/OA-ZYRA-316_RECAPTURE_2026-10-29/. App code and existing capture tests are unchanged.
+The old 261-picture comparison is historical and included that denied frame; the invite now has the recapture hash
+in BUILD.json. Page/role coverage and all other picture rows are unchanged.

@@ -53,5 +53,34 @@
     "retained_png_bytes": "unchanged",
     "original_capture_evidence": "preserved",
     "developer_panel_images": "historical pre-cleanup controls; selected page/state images match Tier4 render exactly"
-  }
+  },
+  "recaptures": [
+    {
+      "task": "Queue line3 / RECAPTURE_BRIEF_2026-10-29.md / OA-ZYRA-316",
+      "timestamp_utc": "2026-10-29T17:44:59.574132+00:00",
+      "file": "seeker/guardians/guardian_invite__normal.png",
+      "source_commit": "3f64e39d2bbd695924a4baac206796d602b60e70",
+      "route": "c; same production-theme offline Flutter iOS test render",
+      "logical_resolution": [
+        430,
+        932
+      ],
+      "device_pixel_ratio": 3,
+      "resolution": [
+        1290,
+        2796
+      ],
+      "old_bytes": 18808,
+      "old_sha256": "c954ce19a1fdb7381be70e354b23000e62114be0fdc49aa4cf7166fbe23c6660",
+      "new_bytes": 904969,
+      "new_sha256": "aeef666e5ef7afca81a87b9c0bb5bf2ce1649c64cbd68c3b7c7c014caf3d2148",
+      "reason_was_blank": "Capture fixture omitted the existing local preview session; unchanged code-screen ownership guard correctly denied it.",
+      "fix": "Capture setup starts the existing local preview session before a fresh mount and actual Add Guardian tap; guard unchanged.",
+      "all_other_pngs_unchanged": 280,
+      "packet_audited": 281,
+      "additional_blanks_found": 0,
+      "app_source_changes": false,
+      "existing_capture_test_changes": false
+    }
+  ]
 }
