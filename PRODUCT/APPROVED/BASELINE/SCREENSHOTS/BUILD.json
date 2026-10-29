@@ -14,7 +14,7 @@
   ],
   "timestamp": "2026-10-29T16:23:33.252434+00:00",
   "preview_clock": "2026-10-29T12:00:00Z (fictional local preview)",
-  "picture_count": 301,
+  "picture_count": 281,
   "ios_status_bar": false,
   "native_build": "HELD after SwiftPM nested manifest sandbox refusal; not replayed",
   "theme": "actual ZyraApp MaterialApp.theme + documented glyph fallback",
@@ -43,5 +43,15 @@
     "test/visual/oa316_seeker_baseline_capture_test.dart",
     "test/visual/zyra_baseline_guardian_account_visual_test.dart",
     "test/visual/oa316_timeline_baseline_capture_test.dart"
-  ]
+  ],
+  "original_picture_count": 301,
+  "subsequent_cleanup": {
+    "task": "OA-ZYRA-316 matching test/screenshot retirement",
+    "timestamp_utc": "2026-10-29T17:01:52.180365+00:00",
+    "selected_source_commit": "9e903fb0933123fb3ca9eb5d5d9230f31b754f24",
+    "retired_circle_alternatives": 20,
+    "retained_png_bytes": "unchanged",
+    "original_capture_evidence": "preserved",
+    "developer_panel_images": "historical pre-cleanup controls; selected page/state images match Tier4 render exactly"
+  }
 }

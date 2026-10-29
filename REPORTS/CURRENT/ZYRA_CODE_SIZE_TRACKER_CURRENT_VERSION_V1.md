@@ -21,8 +21,8 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | All app code | 161,734 lines in 320 files |
 | Developer and preview code inside it | 43,364 lines in 81 files |
 | The Founder preview (planned app) | 24,336 lines in 31 files |
-| Test code | 205,723 lines in 461 files |
-| Test screenshots (goldens) | 3,337 images, 399 MB |
+| Test code | 205,402 lines in 461 files |
+| Test screenshots (goldens) | 2,638 images, 313 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
 
@@ -36,6 +36,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | OA-ZYRA-316 Tier 2: app-side Journey Pause/Save and obsolete restart stub removed | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 205,291 / 458 | 3,337 / 399 MB | 39 | 1 |
 | 2026-10-29 | Queued baseline capture: four test files; app source unchanged | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 207,177 / 462 | 3,337 / 399 MB | 39 | 1 |
 | 2026-10-29 | OA-ZYRA-316 Tier 4: 92 unchosen options removed; selected design retained | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,723 / 461 | 3,337 / 399 MB | 39 | 1 |
+| 2026-10-29 | OA-ZYRA-316 matching tests/screenshots: 28 obsolete cases and 699 old captures retired | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,402 / 461 | 2,638 / 313 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -119,3 +120,24 @@ retry; hidden harness events are excluded. Another 26 manifest/navigation cases 
 match the pre-cleanup baseline exactly; 20 changed developer panels are intentionally excluded. All 303 baseline
 artifacts remain byte-identical. Source hashes and counts are in local Tier4 evidence. No screenshot regeneration,
 backend, Blueprint or Tier3 change. Tier3 still waits for OA-ZYRA-317.
+
+## Matching test and screenshot retirement — 29 Oct 2026
+
+Removed 28 obsolete direct-vertical-drag/Transform photo-dismiss cases and their unused helpers (321 test lines),
+retaining both valid photo/delegate cases and current owned-edge/back-route coverage. Moved 699 positively mapped
+unchosen captures (90,249,038 bytes): 343 non-Luma onboarding, 21 retired splash, 166 Classic Glass, 78 menu/role/network,
+and 91 old light-only outputs. Ambiguous screenshots stay. All 2,638 surviving test PNGs retain their original hashes;
+112 active and 36 archived approved baselines and both approval manifests are untouched.
+
+Also moved 20 explicitly unchosen Circle captures from the queued review packet: 301 original, 281 retained. INDEX and
+BUILD record retirement while preserving the capture commit and original evidence rows; all retained PNG bytes stay.
+The 20 developer-panel pictures are marked historical before the option lists shortened. Total 719 moved PNGs,
+102,090,028 bytes, under ~/_to_delete/OA-ZYRA-316_TIER4_TESTS_2026-10-29/. No image regenerated, design approved or
+app source changed. Full analyser clean (4.1s); 186 cases across five photo/back-route suites and five approval-manifest
+cases pass. Exact inventories, move hashes and audits are in local Tier4_TESTS evidence. Tier3 waits for OA-ZYRA-317.
+
+Historical candidate-only manifest SYSTEM/tools/ui_gate/CANDIDATES/manifest.json still records 87 moved outputs
+(66 Classic Glass and 21 light navigation). It is not an active approval record and remains unchanged. The exact
+original-path-to-destination mapping and hashes are in
+REPORTS/EVIDENCE/OA-ZYRA-316_TIER4_TESTS_2026-10-29/png_move_receipt.json; the candidate-reference audit records these
+87 references. This preserves promotion history without presenting retired pictures as active baselines.

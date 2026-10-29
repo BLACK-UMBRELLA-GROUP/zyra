@@ -24,10 +24,21 @@ wrappers. It uses the iOS test target, real bundled Poppins/Syne and decoded off
 Francisco font is loaded in memory only for missing glyph fallback (the verified check symbol); no font asset was copied.
 The environment receipt records its hash. No member data, backend transport or app source was changed.
 
-All picture states below are current local preview states. A normal, empty, loading, error or held state with no separate
-reachable local control is **not in preview** for that page; none was invented. Native camera, photo picker and keyboard
+Picture states below were reachable at the original capture commit. The retirement note identifies historical
+developer panels. A normal, empty, loading, error or held state with no separate reachable local control is
+**not in preview** for that page; none was invented. Native camera, photo picker and keyboard
 surfaces are outside this headless preview. Retired Saved/Paused destinations and unavailable role/page pairs are recorded
 below. Notifications remains in the generated inventory but has no current opener; see the coverage notes.
+
+## Tier 4 retirement — 29 Oct 2026
+
+The original capture commit ff65027 contained 301 PNGs. After the selected designs were kept in OA-ZYRA-316 Tier 4
+(source commit 9e903fb), 20 explicitly unchosen Circle bubble/control captures moved to
+`~/_to_delete/OA-ZYRA-316_TIER4_TESTS_2026-10-29/`, with their original paths and hashes in the local move receipt.
+This packet now has **281 PNGs**; every retained PNG is byte-identical to its original capture. Coverage below is unchanged.
+The 20 retained developer-panel captures document the pre-cleanup option lists; Tier 4 intentionally shortened those lists.
+They are historical capture inputs. The 261 chosen page/state PNG comparisons match the post-cleanup render exactly.
+Original capture evidence rows remain unchanged. No new capture, LOCK or image approval is implied.
 
 ## Pictures
 
@@ -36,22 +47,12 @@ checkpoint/taps/control path are retained. Source areas follow DOC-ZYRA-0278 §3
 
 | Role | Area | Page ID | State | Reached through | PNG path |
 |---|---|---|---|---|---|
-| Guardian | guardians | controls | circle_contextCards | Actual hold-to-open controls, selected existing Circle interior | [PNG](guardian/guardians/controls__circle_contextCards.png) |
 | Guardian | guardians | controls | circle_current | Actual hold-to-open controls, selected existing Circle interior | [PNG](guardian/guardians/controls__circle_current.png) |
-| Guardian | guardians | controls | circle_journeyRail | Actual hold-to-open controls, selected existing Circle interior | [PNG](guardian/guardians/controls__circle_journeyRail.png) |
-| Guardian | guardians | controls | circle_portraitTiles | Actual hold-to-open controls, selected existing Circle interior | [PNG](guardian/guardians/controls__circle_portraitTiles.png) |
-| Guardian | guardians | controls | circle_quietList | Actual hold-to-open controls, selected existing Circle interior | [PNG](guardian/guardians/controls__circle_quietList.png) |
-| Guardian | guardians | controls | circle_segmentedCards | Actual hold-to-open controls, selected existing Circle interior | [PNG](guardian/guardians/controls__circle_segmentedCards.png) |
 | Guardian | guardians | controls | root_0 | Actual Guardian root 0 admitted hold; contextual controls visible. | [PNG](guardian/guardians/controls__root_0.png) |
 | Guardian | guardians | controls | root_1 | Actual Guardian root 1 admitted hold; contextual controls visible. | [PNG](guardian/guardians/controls__root_1.png) |
 | Guardian | guardians | controls | root_2 | Actual Guardian root 2 admitted hold; contextual controls visible. | [PNG](guardian/guardians/controls__root_2.png) |
 | Guardian | guardians | guardian | active_journey | Actual embedded Seeker workspace > Open current Journey. | [PNG](guardian/guardians/guardian__active_journey.png) |
-| Guardian | guardians | guardian_circle | bubble_contextCards | Actual controls choice 5 · Context cards, then X | [PNG](guardian/guardians/guardian_circle__bubble_contextCards.png) |
 | Guardian | guardians | guardian_circle | bubble_current | Actual controls choice Current, then X | [PNG](guardian/guardians/guardian_circle__bubble_current.png) |
-| Guardian | guardians | guardian_circle | bubble_journeyRail | Actual controls choice 3 · Journey rail, then X | [PNG](guardian/guardians/guardian_circle__bubble_journeyRail.png) |
-| Guardian | guardians | guardian_circle | bubble_portraitTiles | Actual controls choice 2 · Initial tiles, then X | [PNG](guardian/guardians/guardian_circle__bubble_portraitTiles.png) |
-| Guardian | guardians | guardian_circle | bubble_quietList | Actual controls choice 1 · Quiet list, then X | [PNG](guardian/guardians/guardian_circle__bubble_quietList.png) |
-| Guardian | guardians | guardian_circle | bubble_segmentedCards | Actual controls choice 4 · Segmented cards, then X | [PNG](guardian/guardians/guardian_circle__bubble_segmentedCards.png) |
 | Guardian | guardians | guardian_circle | normal | Actual allowed Guardian Circle checkpoint with local sample transcript | [PNG](guardian/guardians/guardian_circle__normal.png) |
 | Guardian | guardians | guardian_linked_profile | normal | Actual Guardian My ZYRA family card > View profile. | [PNG](guardian/guardians/guardian_linked_profile__normal.png) |
 | Guardian | guardians | guardian_network_profile | normal | Actual Guardian Network > View profile. | [PNG](guardian/guardians/guardian_network_profile__normal.png) |
@@ -167,18 +168,8 @@ checkpoint/taps/control path are retained. Source areas follow DOC-ZYRA-0278 §3
 | Seeker | ended_journeys | ended_restart | not_available | Ended card → actual Request restart | [PNG](seeker/ended_journeys/ended_restart__not_available.png) |
 | Seeker | ended_journeys | past_journeys | empty | Public sample-model checkpoint; role/page eligibility checked by unchanged shell | [PNG](seeker/ended_journeys/past_journeys__empty.png) |
 | Seeker | ended_journeys | past_journeys | normal | Public sample-model checkpoint; role/page eligibility checked by unchanged shell | [PNG](seeker/ended_journeys/past_journeys__normal.png) |
-| Seeker | guardians | controls | circle_contextCards | Actual hold-to-open controls, selected existing Circle interior | [PNG](seeker/guardians/controls__circle_contextCards.png) |
 | Seeker | guardians | controls | circle_current | Actual hold-to-open controls, selected existing Circle interior | [PNG](seeker/guardians/controls__circle_current.png) |
-| Seeker | guardians | controls | circle_journeyRail | Actual hold-to-open controls, selected existing Circle interior | [PNG](seeker/guardians/controls__circle_journeyRail.png) |
-| Seeker | guardians | controls | circle_portraitTiles | Actual hold-to-open controls, selected existing Circle interior | [PNG](seeker/guardians/controls__circle_portraitTiles.png) |
-| Seeker | guardians | controls | circle_quietList | Actual hold-to-open controls, selected existing Circle interior | [PNG](seeker/guardians/controls__circle_quietList.png) |
-| Seeker | guardians | controls | circle_segmentedCards | Actual hold-to-open controls, selected existing Circle interior | [PNG](seeker/guardians/controls__circle_segmentedCards.png) |
-| Seeker | guardians | guardian_circle | bubble_contextCards | Actual controls choice 5 · Context cards, then X | [PNG](seeker/guardians/guardian_circle__bubble_contextCards.png) |
 | Seeker | guardians | guardian_circle | bubble_current | Actual controls choice Current, then X | [PNG](seeker/guardians/guardian_circle__bubble_current.png) |
-| Seeker | guardians | guardian_circle | bubble_journeyRail | Actual controls choice 3 · Journey rail, then X | [PNG](seeker/guardians/guardian_circle__bubble_journeyRail.png) |
-| Seeker | guardians | guardian_circle | bubble_portraitTiles | Actual controls choice 2 · Initial tiles, then X | [PNG](seeker/guardians/guardian_circle__bubble_portraitTiles.png) |
-| Seeker | guardians | guardian_circle | bubble_quietList | Actual controls choice 1 · Quiet list, then X | [PNG](seeker/guardians/guardian_circle__bubble_quietList.png) |
-| Seeker | guardians | guardian_circle | bubble_segmentedCards | Actual controls choice 4 · Segmented cards, then X | [PNG](seeker/guardians/guardian_circle__bubble_segmentedCards.png) |
 | Seeker | guardians | guardian_circle | normal | Actual allowed Guardian Circle checkpoint with local sample transcript | [PNG](seeker/guardians/guardian_circle__normal.png) |
 | Seeker | guardians | guardian_invite | normal | Guardian tab → actual Add Guardian | [PNG](seeker/guardians/guardian_invite__normal.png) |
 | Seeker | guardians | guardian_tab | normal | Fresh local Founder-preview Seeker tab 3 | [PNG](seeker/guardians/guardian_tab__normal.png) |
@@ -357,8 +348,8 @@ means that destination belongs to the other role. “Retired” and “unreachab
 | Seeker | compatibility | captured | 1 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
 | Guardian | compatibility_store | captured | 1 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
 | Seeker | compatibility_store | captured | 1 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
-| Guardian | controls | captured | 10 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
-| Seeker | controls | captured | 20 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
+| Guardian | controls | captured | 5 historical developer-panel capture(s); native-device status bar absent in authorized Flutter-test fallback. |
+| Seeker | controls | captured | 15 historical developer-panel capture(s); native-device status bar absent in authorized Flutter-test fallback. |
 | Guardian | edit_profile | not_applicable | Guardian Profile does not expose the Seeker profile/editor/photo action; no current Guardian opener. |
 | Seeker | edit_profile | captured | 1 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
 | Guardian | ended | not_applicable | This Browse/request/Journey/archive/activity destination belongs to the Seeker flow; no current Guardian opener. |
@@ -377,8 +368,8 @@ means that destination belongs to the other role. “Retired” and “unreachab
 | Seeker | guardian | not_applicable | Current navigation exposes this family-support destination only in the Guardian role; no Seeker opener. |
 | Guardian | guardian_access_agreement | not_applicable | This Browse/request/Journey/archive/activity destination belongs to the Seeker flow; no current Guardian opener. |
 | Seeker | guardian_access_agreement | captured | 1 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
-| Guardian | guardian_circle | captured | 7 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
-| Seeker | guardian_circle | captured | 7 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
+| Guardian | guardian_circle | captured | 2 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
+| Seeker | guardian_circle | captured | 2 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
 | Guardian | guardian_invite | not_applicable | This Browse/request/Journey/archive/activity destination belongs to the Seeker flow; no current Guardian opener. |
 | Seeker | guardian_invite | captured | 1 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
 | Guardian | guardian_linked_profile | captured | 1 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
@@ -452,3 +443,30 @@ means that destination belongs to the other role. “Retired” and “unreachab
 | Guardian | tab_seekers | captured | Actual unchanged root navigation and full viewport, including its own tab bar. |
 | Guardian | timeline | not_applicable | This Browse/request/Journey/archive/activity destination belongs to the Seeker flow; no current Guardian opener. |
 | Seeker | timeline | captured | 40 current full-shell local preview capture(s); native-device status bar absent in authorized Flutter-test fallback. |
+
+## Retired Circle captures
+
+Moved without pixel changes; these are no longer active picture rows.
+
+| Original relative path | SHA-256 |
+|---|---|
+| `guardian/guardians/controls__circle_contextCards.png` | `361096ed55129055ede565d07d83225fd91a855fbc0cb890adf5eaac6cabe2c3` |
+| `guardian/guardians/controls__circle_journeyRail.png` | `efea9c3cc667e4db3f581f813335ba873bbf654d70c33e6490ce430c1fba56ef` |
+| `guardian/guardians/controls__circle_portraitTiles.png` | `cef9e15efa0ce3a122881f9369e176f8c06f51b507caf768ed60fc06a09d73da` |
+| `guardian/guardians/controls__circle_quietList.png` | `03c7ce1676301d764f6b1bec28088dc8057445dc31e51d3e8d25befcbc56c64e` |
+| `guardian/guardians/controls__circle_segmentedCards.png` | `14afead0c3a7132ea58c69d75af7a4cbfcbb390d094dbed40be9f1351b179cce` |
+| `guardian/guardians/guardian_circle__bubble_contextCards.png` | `127ec00f74c82cfe1e829bc797f72ef050cbe9c72833d37cb9b7e01b0848b045` |
+| `guardian/guardians/guardian_circle__bubble_journeyRail.png` | `457a4dddf4e2dc9ad61ee9f9749d793bd1476d9d36303b960d45b5c74d2df515` |
+| `guardian/guardians/guardian_circle__bubble_portraitTiles.png` | `0d8d9f6c8a540082a7b8232564a32c46d8c26fa77683009ac153de7b44fbae1f` |
+| `guardian/guardians/guardian_circle__bubble_quietList.png` | `6f809352f6b6730cbd7e4134a473d10e91930e130283a54944753210259896ee` |
+| `guardian/guardians/guardian_circle__bubble_segmentedCards.png` | `565730a1c8f98c066394f5d2898f68bf04aee399b85fc9d3423f348b33b052b7` |
+| `seeker/guardians/controls__circle_contextCards.png` | `25006c80f1aa0e4b6a9032509d7b8f7dccac84c14d1e6732ff5571432631d27c` |
+| `seeker/guardians/controls__circle_journeyRail.png` | `51349e160f6c77502ddc21e2b32d50c94903f8f0a1ba442adba2a29d45912bfe` |
+| `seeker/guardians/controls__circle_portraitTiles.png` | `55bf9ca562b31c269c9a42491faefb6d388efda11ed4e51a9a40c29ca02701fd` |
+| `seeker/guardians/controls__circle_quietList.png` | `04be58312acd40c62c7cfdc06a3cecbaea9d97cf8bc9a613cd6af233550f717f` |
+| `seeker/guardians/controls__circle_segmentedCards.png` | `004b45fdbb41f425c1a96344e99ee7cd8740618f7654f836e951c3e0734fb7a1` |
+| `seeker/guardians/guardian_circle__bubble_contextCards.png` | `87f70dde45370fc2b11ba2d6fce4c8bb682869ad64ecf69bb325df647a146873` |
+| `seeker/guardians/guardian_circle__bubble_journeyRail.png` | `d15e0ce9a29951fe762330278ebb38e96d41ee51c882db17e66eae2751e0a116` |
+| `seeker/guardians/guardian_circle__bubble_portraitTiles.png` | `839b2db31c4fe709cba32161b5cd6dde7ed54a33ff8405fe60bc0296e7e35cca` |
+| `seeker/guardians/guardian_circle__bubble_quietList.png` | `7bf497af03b7c520aa750ef2475c4d469dd78752eed77028fe84e5c925cf6767` |
+| `seeker/guardians/guardian_circle__bubble_segmentedCards.png` | `47300bb7b70027af9d1ca01009d5a56b7399bb1538c6e161ea01952768d97233` |
