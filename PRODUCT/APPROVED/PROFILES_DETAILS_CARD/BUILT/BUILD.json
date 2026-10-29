@@ -1,0 +1,84 @@
+{
+  "commit_sha": "e6778433ecc8d031122a26840265a862c7fc3810",
+  "source_changes": "LOCK4 source at commit_sha; source hashes verified after commit",
+  "source_sha256": {
+    "SOURCE/lib/widgets/zyra_browse_designs.dart": "5f55ae641eb2d957c2fa78b8f4f5cc517d3f5c380b9e15c24d3d86d090571c6d",
+    "SOURCE/lib/widgets/zyra_profile_image.dart": "1d4deca42b6b6259993a09e6f6343a33f4558f4e05705bc52ad0523d8b27ea64",
+    "SOURCE/lib/widgets/zyra_profile_details_page.dart": "0805648a170420401f576c1ac8145d6819209af09a910e23a84a140840aca613"
+  },
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test render, baseline route(c)",
+  "timestamp": "2026-10-29T19:04:42.545471+00:00",
+  "logical_resolution": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "resolution": [
+    1290,
+    2796
+  ],
+  "theme": "actual ZyraApp theme/scroll behavior, bundledPoppins/Syne+verifiedplatformglyphfallback",
+  "transport": "offline sample; HTTPdenied",
+  "picture_count": 2,
+  "captures": [
+    {
+      "file": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/PROFILES_DETAILS_CARD/BUILT/profiles_tab__details_card_photo.png",
+      "reached": "Actual default Founder preview shell, unchanged state",
+      "logical_size": [
+        430,
+        932
+      ],
+      "device_pixel_ratio": 3,
+      "png_size": [
+        1290,
+        2796
+      ],
+      "avatar_outer_rect_logical": {
+        "left": 187.0,
+        "top": 278.5,
+        "right": 243.0,
+        "bottom": 334.5,
+        "width": 56.0,
+        "height": 56.0
+      },
+      "photo_clip_rect_logical": {
+        "left": 190.0,
+        "top": 281.5,
+        "right": 240.0,
+        "bottom": 331.5,
+        "width": 50.0,
+        "height": 50.0
+      },
+      "bytes": 798546,
+      "sha256": "36fa399a527b6ce97823ae7704dcb3460afc140a1d58d4545385f20bb94d92ba"
+    },
+    {
+      "file": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/PROFILES_DETAILS_CARD/BUILT/profiles_tab__details_card_no_photo.png",
+      "reached": "Bounded unavailable-photo data fixture, not a missing-photo shell UI route",
+      "logical_size": [
+        430,
+        932
+      ],
+      "device_pixel_ratio": 3,
+      "png_size": [
+        1290,
+        2796
+      ],
+      "avatar_outer_rect_logical": {
+        "left": 187.0,
+        "top": 278.5,
+        "right": 243.0,
+        "bottom": 334.5,
+        "width": 56.0,
+        "height": 56.0
+      },
+      "photo_clip_rect_logical": null,
+      "bytes": 764503,
+      "sha256": "e1f0e2376a2beecd3a4ebb2571e6da110a447b9b304719359b87e9beba0752d9"
+    }
+  ],
+  "pixel_comparison": "0changedpixelsoutside56ptavatar againstprechangebaseline",
+  "master_interpretation": "Real samplephoto substitutes prototypeinitial asLOCK4spec explicitlyrequires; surroundingcurrentappcomponentspreserved",
+  "native": "HELD; no build/install/bypass"
+}
