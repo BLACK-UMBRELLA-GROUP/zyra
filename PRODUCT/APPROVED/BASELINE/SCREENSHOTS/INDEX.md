@@ -1345,3 +1345,95 @@ Known existing limitations: the filled Bio switch emits the exact ListTile backg
 | Seeker | 188 | review_stage | normal | Complete setup branch; actual prior chapter continuation opens the existing review stage; local preview, no persistence | [PNG](signup/seeker/188_review_stage__normal.png) |
 | Seeker | 189 | profile_ready | preview | Complete setup branch; actual local ProfileReadyScreen; preview status only, no identity check or publication was performed | [PNG](signup/seeker/189_profile_ready__preview.png) |
 | Seeker | 190 | complete_setup_first_tab | preview | Complete setup branch; actual Profile review My ZYRA action to HomeShell initialTab2 with protected deferred onboarding preview; no live account, no Founder-preview destination | [PNG](signup/seeker/190_complete_setup_first_tab__preview.png) |
+
+
+## Basic plans and Guardian Journey — 29 Oct 2026
+
+Queue15 capture-only follow-up:52new430×932@3x PNGs (21Seeker Basic,18Guardian Basic,13Guardian Journey).
+All320app files and1,113prior baseline PNGs are unchanged. These are actual current offline Founder-preview states.
+Three pending records are a fixture, not quota enforcement. The zero-credit store uses the existing explicit sample
+control; the Basic default still starts at1. Basic Ended still offers the held Request restart page with sending disabled.
+No product rule or UI was repaired under this capture-only brief. Circle's detached named past examples do not prove
+a consent-bound Journey-summary state; queue13's DR233 preflight conflict remains.
+
+| Role | Plan | Page | State | Picture | How reached |
+|---|---|---|---|---|---|
+|Guardian|Guardian Basic|dashboard|no_current_journey|[PNG](guardian_basic/dashboard__no_current_journey.png)|Existing Guardian Basic with linked Adam and no active Journey.|
+|Guardian|Guardian Basic|dashboard|no_current_journey_scroll_01|[PNG](guardian_basic/dashboard__no_current_journey_scroll_01.png)|Existing Guardian Basic with linked Adam and no active Journey.; actual current-route vertical ScrollPosition 14.0 of 14.0 logical points|
+|Guardian|Guardian Basic|dashboard|normal|[PNG](guardian_basic/dashboard__normal.png)|Existing Guardian Basic checkpoint, Hassan Main and one active linked Journey. Guardian My ZYRA is currently named Dashboard; the actual root has four tabs.|
+|Guardian|Guardian Basic|dashboard|normal_scroll_01|[PNG](guardian_basic/dashboard__normal_scroll_01.png)|Existing Guardian Basic checkpoint, Hassan Main and one active linked Journey. Guardian My ZYRA is currently named Dashboard; the actual root has four tabs.; actual current-route vertical ScrollPosition 14.0 of 14.0 logical points|
+|Guardian|Guardian Basic|guardian|view_only|[PNG](guardian_basic/guardian__view_only.png)|Actual Basic Seekers workspace > Open current Journey; genuine Main Guardian view grant and chat=false. Current summary has no chat composer.|
+|Guardian|Guardian Basic|membership|basic_plan|[PNG](guardian_basic/membership__basic_plan.png)|Actual guardian Membership pager > Basic catalogue card; no purchase.|
+|Guardian|Guardian Basic|membership|current_basic|[PNG](guardian_basic/membership__current_basic.png)|Actual Basic Profile > Membership; local confirmed Basic wallet only.|
+|Guardian|Guardian Basic|membership|upgrade_one|[PNG](guardian_basic/membership__upgrade_one.png)|Actual Membership guardian section shows its existing One catalogue card; no selection, payment, or entitlement action.|
+|Guardian|Guardian Basic|network|normal|[PNG](guardian_basic/network__normal.png)|Existing Guardian Basic checkpoint, Hassan Main and one active linked Journey. Guardian My ZYRA is currently named Dashboard; the actual root has four tabs.|
+|Guardian|Guardian Basic|network|normal_scroll_01|[PNG](guardian_basic/network__normal_scroll_01.png)|Existing Guardian Basic checkpoint, Hassan Main and one active linked Journey. Guardian My ZYRA is currently named Dashboard; the actual root has four tabs.; actual current-route vertical ScrollPosition 24.0 of 24.0 logical points|
+|Guardian|Guardian Basic|network|received_empty|[PNG](guardian_basic/network__received_empty.png)|Actual Network Received pill; no received fixture.|
+|Guardian|Guardian Basic|network|sent_empty|[PNG](guardian_basic/network__sent_empty.png)|Actual Network Sent pill; no sent records.|
+|Guardian|Guardian Basic|network|sent_populated|[PNG](guardian_basic/network__sent_populated.png)|Actual local Speak confirmation > Send request > Sent. Existing fictional record only; no server or chat access.|
+|Guardian|Guardian Basic|network|sent_populated_scroll_01|[PNG](guardian_basic/network__sent_populated_scroll_01.png)|Actual local Speak confirmation > Send request > Sent. Existing fictional record only; no server or chat access.; actual current-route vertical ScrollPosition 24.0 of 24.0 logical points|
+|Guardian|Guardian Basic|network_request|confirmation|[PNG](guardian_basic/network_request__confirmation.png)|Actual Main Guardian Basic Network > Speak to Guardian; bounded local confirmation, no real invitation or conversation.|
+|Guardian|Guardian Basic|profile_tab|normal|[PNG](guardian_basic/profile_tab__normal.png)|Existing Guardian Basic checkpoint, Hassan Main and one active linked Journey. Guardian My ZYRA is currently named Dashboard; the actual root has four tabs.|
+|Guardian|Guardian Basic|seekers|no_current_journey|[PNG](guardian_basic/seekers__no_current_journey.png)|Existing Guardian Basic with linked Adam and no active Journey.|
+|Guardian|Guardian Basic|seekers|normal|[PNG](guardian_basic/seekers__normal.png)|Existing Guardian Basic checkpoint, Hassan Main and one active linked Journey. Guardian My ZYRA is currently named Dashboard; the actual root has four tabs.|
+|Guardian|Guardian One|journey|additional_view_on_chat_off|[PNG](guardian_journey/journey__additional_view_on_chat_off.png)|Guardian One Hassan is Additional (Main=Yusuf); explicit existing local View=true/Chat=false grant; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|additional_view_on_chat_on|[PNG](guardian_journey/journey__additional_view_on_chat_on.png)|Guardian One Hassan is Additional (Main=Yusuf); explicit existing local View=true/Chat=true grant; actual Seekers > Open current Journey|
+|Guardian|Guardian Basic|journey|main_basic_view_only|[PNG](guardian_journey/journey__main_basic_view_only.png)|Existing local Hassan Guardian Basic membership, Main role; actual Seekers > Open current Journey; View=true/Chat=false|
+|Guardian|Guardian One|journey|main_one_compatibility_reveal|[PNG](guardian_journey/journey__main_one_compatibility_reveal.png)|Guardian One Main Hassan; detached sample model at Compatibility Reveal; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|main_one_conversation|[PNG](guardian_journey/journey__main_one_conversation.png)|Guardian One Main Hassan; detached sample model at Open Conversation; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|main_one_family_stage|[PNG](guardian_journey/journey__main_one_family_stage.png)|Guardian One Main Hassan; detached sample model at Family Compatibility; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|main_one_phase_1|[PNG](guardian_journey/journey__main_one_phase_1.png)|Guardian One Main Hassan; detached sample model at Faith & Values; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|main_one_phase_2|[PNG](guardian_journey/journey__main_one_phase_2.png)|Guardian One Main Hassan; detached sample model at Building a Life; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|main_one_phase_3|[PNG](guardian_journey/journey__main_one_phase_3.png)|Guardian One Main Hassan; detached sample model at Navigating Life; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|main_one_salam_exchange|[PNG](guardian_journey/journey__main_one_salam_exchange.png)|Guardian One Main Hassan; detached sample model at Salam Exchange; actual Seekers > Open current Journey|
+|Guardian|Guardian One|journey|main_one_wali_gate|[PNG](guardian_journey/journey__main_one_wali_gate.png)|Guardian One Main Hassan; detached sample model at Guardian Gate; actual Seekers > Open current Journey|
+|Guardian|Guardian One|seekers|additional_view_off_chat_off|[PNG](guardian_journey/seekers__additional_view_off_chat_off.png)|Guardian One Additional Hassan; existing local View=false/Chat=false grant; actual Seekers workspace excludes the current Journey and its entry|
+|Guardian|Guardian One|seekers|main_one_after_journey_ended|[PNG](guardian_journey/seekers__main_one_after_journey_ended.png)|Existing sample end(Sara) after Open Conversation; actual Main Guardian Seekers workspace has no current Journey and no supplied past-summary rows|
+|Seeker|Seeker Basic|compatibility_store|zero_unlocks|[PNG](seeker_basic/compatibility_store__zero_unlocks.png)|Actual existing Browse controls set local Unlock balance0 > Profile > Compatibility Unlocks. Basic includes no credits; no wallet grant or purchase.|
+|Seeker|Seeker Basic|ended|empty|[PNG](seeker_basic/ended__empty.png)|Existing Basic Ended route with no history.|
+|Seeker|Seeker Basic|ended|populated|[PNG](seeker_basic/ended__populated.png)|Existing local model end(Sara); the completed attempt stays archived.|
+|Seeker|Seeker Basic|ended_restart|unavailable|[PNG](seeker_basic/ended_restart__unavailable.png)|Actual existing Request restart information; its send action is disabled for every preview plan. No restart or old attempt mutation.|
+|Seeker|Seeker Basic|guardian_invite|one_linked|[PNG](seeker_basic/guardian_invite__one_linked.png)|Actual Add a Guardian while Hassan alone is linked. The local preview opens its existing invite UI; it does not enforce a Basic link-limit paywall or send a real invitation.|
+|Seeker|Seeker Basic|guardian_tab|normal|[PNG](seeker_basic/guardian_tab__normal.png)|Existing same-role Founder checkpoint with capacity1 and Seeker Basic, matching the preview Basic plan control; tab3.|
+|Seeker|Seeker Basic|guardian_tab|one_linked|[PNG](seeker_basic/guardian_tab__one_linked.png)|Existing local unlink checkpoint leaves Hassan as the sole linked Main Guardian, with Seeker Basic.|
+|Seeker|Seeker Basic|journey_tab|active_1|[PNG](seeker_basic/journey_tab__active_1.png)|Existing seedJourneys(1), capacity1 and Seeker Basic.|
+|Seeker|Seeker Basic|journey_tab|normal|[PNG](seeker_basic/journey_tab__normal.png)|Existing same-role Founder checkpoint with capacity1 and Seeker Basic, matching the preview Basic plan control; tab1.|
+|Seeker|Seeker Basic|membership|basic_plan|[PNG](seeker_basic/membership__basic_plan.png)|Actual seeker Membership pager > Basic catalogue card; no purchase.|
+|Seeker|Seeker Basic|membership|current_basic|[PNG](seeker_basic/membership__current_basic.png)|Actual Basic Profile > Membership; local confirmed Basic wallet only.|
+|Seeker|Seeker Basic|membership|upgrade_one|[PNG](seeker_basic/membership__upgrade_one.png)|Actual Membership seeker section shows its existing One catalogue card; no selection, payment, or entitlement action.|
+|Seeker|Seeker Basic|my_zyra_tab|normal|[PNG](seeker_basic/my_zyra_tab__normal.png)|Existing same-role Founder checkpoint with capacity1 and Seeker Basic, matching the preview Basic plan control; tab2.|
+|Seeker|Seeker Basic|profile_tab|normal|[PNG](seeker_basic/profile_tab__normal.png)|Existing same-role Founder checkpoint with capacity1 and Seeker Basic, matching the preview Basic plan control; tab4.|
+|Seeker|Seeker Basic|profile_tab|normal_scroll_01|[PNG](seeker_basic/profile_tab__normal_scroll_01.png)|Existing same-role Founder checkpoint with capacity1 and Seeker Basic, matching the preview Basic plan control; tab4.; actual current-route vertical ScrollPosition 303.0 of 303.0 logical points|
+|Seeker|Seeker Basic|profiles_tab|normal|[PNG](seeker_basic/profiles_tab__normal.png)|Existing same-role Founder checkpoint with capacity1 and Seeker Basic, matching the preview Basic plan control; tab0.|
+|Seeker|Seeker Basic|profiles_tab|place_full|[PNG](seeker_basic/profiles_tab__place_full.png)|Actual Profiles tab after the only Basic place is occupied; the preview hides Browse while this place is active.|
+|Seeker|Seeker Basic|requests|pending_3_received|[PNG](seeker_basic/requests__pending_3_received.png)|Existing local model has one received + two sent requests, total3. This depicts three pending records, not enforced quota UI.|
+|Seeker|Seeker Basic|requests|pending_3_sent|[PNG](seeker_basic/requests__pending_3_sent.png)|Actual Sent pill in the same three-pending fixture; no records created.|
+|Seeker|Seeker Basic|requests|received_place_full|[PNG](seeker_basic/requests__received_place_full.png)|Existing one-place active Basic Journey plus received Amira request. The preview preserves the received item while its place is full.|
+|Seeker|Seeker Basic|requests|received_place_full_expanded|[PNG](seeker_basic/requests__received_place_full_expanded.png)|Actual received request expanded; Basic full-place Accept is disabled. The capacity replacement chooser is only implemented for3 places.|
+
+### Not in preview
+
+Requested states without a reachable implementation are listed here; no picture was invented. Existing rule mismatches
+are reported for the designer/Fable. Written refusal: capture scope does not authorize implementing or repairing them.
+
+| Requested state | Status | Reason |
+|---|---|---|
+|pending_limit_enforced|not in preview|The sample model has no production pending-request quota. The captured total3 fixture is a display state, not an enforced limit. ViewRequestDraftModel explicitly bounds requests only by finite fixtures.|
+|25_per_4_hours_reached|not in preview|No Basic browse counter, four-hour window, or quota-reached presenter exists in the Founder preview. Do not substitute the separate full-place Browse boundary for this state.|
+|one_linked_limit_enforced|not in preview|The existing Add Guardian route opens its local invite UI even with one linked Guardian. No Basic link-limit paywall or local link-accepted event exists. The one-linked invite is captured.|
+|one_place_full_replacement|not in preview|The sample model permits the replacement chooser only for capacity3. Basic capacity1 keeps its received item with disabled Accept; that actual expanded state is captured.|
+|main_guardian|not in preview|The Founder shell only supplies a current Journey summary and stage label. No Family Review decision/timer fixture or Guardian Family Review route is connected to this preview.|
+|Guardian Journey Chat|not in preview|The actual Guardian Journey route contains a linked-Seeker profile card, counterpart first name and stage label only. No Chat action or reader is exposed. Seeker readers are role-restricted and are not a Guardian substitute.|
+|Guardian Journey Timeline|not in preview|The actual Guardian Journey route contains a linked-Seeker profile card, counterpart first name and stage label only. No Timeline action or reader is exposed. Seeker readers are role-restricted and are not a Guardian substitute.|
+|Guardian Journey Bio|not in preview|The actual Guardian Journey route contains a linked-Seeker profile card, counterpart first name and stage label only. No Bio action or reader is exposed. Seeker readers are role-restricted and are not a Guardian substitute.|
+|Guardian Journey Compatibility|not in preview|The actual Guardian Journey route contains a linked-Seeker profile card, counterpart first name and stage label only. No Compatibility action or reader is exposed. Seeker readers are role-restricted and are not a Guardian substitute.|
+|Guardian Journey Guardians|not in preview|The actual Guardian Journey route contains a linked-Seeker profile card, counterpart first name and stage label only. No Guardians action or reader is exposed. Seeker readers are role-restricted and are not a Guardian substitute.|
+|48-hour Family Review: to decide|not in preview|The local model advances sample stages without a timed Family Review state machine. The Guardian dashboard passes openReviewIds={} and the current Guardian Journey summary exposes no review controls or timer. No review is invented.|
+|48-hour Family Review: paused|not in preview|The local model advances sample stages without a timed Family Review state machine. The Guardian dashboard passes openReviewIds={} and the current Guardian Journey summary exposes no review controls or timer. No review is invented.|
+|48-hour Family Review: timed out|not in preview|The local model advances sample stages without a timed Family Review state machine. The Guardian dashboard passes openReviewIds={} and the current Guardian Journey summary exposes no review controls or timer. No review is invented.|
+|Journey ended detail|not in preview|Ending the local Sara attempt removes it from the active-only Guardian projection. The genuine remaining Seekers/No current Journey boundary is captured; there is no Guardian ended-detail entry.|
+|Past Journey summary shared|not in preview|The Founder Seekers presenter supplies no attempt-summary rows or summary loader, so the workspace displays No Journey summaries are available. The Guardian Circle has separate named fictional past topics, but they are not bound to this Journey or per-subject past-summary consent; queue 13 failed the DR-ZYRA-233 identity/consent preflight. Those fixtures cannot demonstrate a shared/not-shared Journey-summary boundary.|
+|Past Journey summary not shared|not in preview|The Founder Seekers presenter supplies no attempt-summary rows or summary loader, so the workspace displays No Journey summaries are available. The Guardian Circle has separate named fictional past topics, but they are not bound to this Journey or per-subject past-summary consent; queue 13 failed the DR-ZYRA-233 identity/consent preflight. Those fixtures cannot demonstrate a shared/not-shared Journey-summary boundary.|
+|Additional Guardian Chat on versus off: message composer|not in preview|The admitted local model carries independent View/Chat grants and both actual visible summaries are captured. The Guardian Journey route has no Journey-chat composer in either grant state, so screenshots cannot prove messaging capability.|
+|Ended Journey without Request restart affordance|not in preview|Actual Basic ended cards still expose the held Request restart page; sending is disabled for all plans. Captured actual ended/restart states; no Basic-specific affordance suppression exists.|
+|Automatic zero included Unlock balance|not in preview|Basic membership restoration keeps the sample default balance1. The captured zero store uses the existing explicit draft_compatibility_unlock_0 control, not an automatic entitlement policy.|

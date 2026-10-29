@@ -21,7 +21,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | All app code | 162,681 lines in 320 files |
 | Developer and preview code inside it | 43,813 lines in 81 files |
 | The Founder preview (planned app) | 24,783 lines in 31 files |
-| Test code | 211,414 lines in 477 files |
+| Test code | 212,463 lines in 479 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -44,6 +44,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | LOCK2 Requests/Past/capacity/Main message (queue11) | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue13 LOCK3 preflight failed; app/tests unchanged | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | LOCK6 scoped compact tab bar and matching test fixtures (queue14) | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 211,414 / 477 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-29 | Queue15 Basic/Guardian capture; app unchanged | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -211,3 +212,12 @@ fixtures now expand before selecting and use unchanged page reservations indepen
 were dropped. Two actual-shell capture cases create four1290×2796pictures; Seeker pixels above navigation remain
 identical to LOCK2. Existing Guardian four-tab destinations/body stay per the LOCK6 spec. Final recapture after the
 animation fix is byte-identical. No backend, Blueprint, old-member route, native build or retired file change.
+
+## Basic plans and Guardian Journey capture — 29 Oct 2026
+
+Queue15 adds two visual suites and52actual1290×2796pictures:21Seeker Basic,18Guardian Basic and13Guardian Journey.
+Eight cases pass after correcting one fixture button type and supplying the existing local preview session for Add
+Guardian. Visible title/demo-code assertions prevent that frame being accepted blank. All52frames were visually checked;
+all320app files and1,113prior PNGs are unchanged. No new golden approvals or app implementation. INDEX/BUILD record
+19unreachable requested states and existing policy gaps, including quota/link caps, Basic restart and default credit,
+Guardian readers/Family Review and consent-bound past summaries. Capture-only scope explicitly refuses product fixes.
