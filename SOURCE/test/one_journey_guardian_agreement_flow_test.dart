@@ -457,6 +457,7 @@ void main() {
     final stale = _agree(tester);
     await returnZyraPreviewPage(tester);
     await returnZyraPreviewPage(tester);
+    await expandZyraPreviewTabBarIfIdle(tester);
     await tester.tapAt(tester.getCenter(_key('floating-nav-item-3')));
     await tester.pumpAndSettle();
     await openZyraDevControls(tester);

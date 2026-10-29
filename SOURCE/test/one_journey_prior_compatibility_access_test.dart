@@ -156,6 +156,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     await returnZyraPreviewPage(tester);
   }
   expect(find.byType(ZyraShellNavigation), findsOneWidget);
+  await expandZyraPreviewTabBarIfIdle(tester);
   final cell = _key('floating-nav-item-$index');
   expect(cell, findsOneWidget);
   // The whole bar owns touches; the icon cell intentionally ignores them.

@@ -142,6 +142,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     await returnZyraPreviewPage(tester);
   }
   Future<void> destination(int targetIndex) async {
+    await expandZyraPreviewTabBarIfIdle(tester);
     // The decorative cells ignore pointers; the shared bar owns dispatch.
     final cell = _key('floating-nav-item-$targetIndex');
     final bar = find.byType(FloatingNavBar);

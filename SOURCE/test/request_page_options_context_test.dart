@@ -37,7 +37,7 @@ const _captureDirectory = String.fromEnvironment(
 );
 const _font = 'PoppinsPageOptionsContext';
 const _boundary = ValueKey('page-options-context-capture');
-const _requestsLabels = ['Received', 'Sent'];
+const _requestsLabels = ['Received', 'Sent', 'Past'];
 const _seekerTitles = ['Profiles', 'Journey', 'My ZYRA', 'Guardian', 'Profile'];
 const _guardianTitles = ['My ZYRA', 'Network', 'Seekers', 'Profile'];
 
@@ -138,6 +138,7 @@ Future<void> _press(WidgetTester tester, Finder target) async {
 Future<void> _tap(WidgetTester tester, String key) => _press(tester, _key(key));
 
 Future<void> _nav(WidgetTester tester, int index) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final nav = find.byType(FloatingNavBar);
   expect(nav, findsOneWidget);
   final cell = _key('floating-nav-item-$index');
@@ -227,13 +228,13 @@ void _inventory(
       );
     }
   }
-  for (final tab in [0, 1]) {
+  for (final tab in [0, 1, 2]) {
     expect(
       _key('concept_requests_controls_$tab'),
       requests ? findsOneWidget : findsNothing,
     );
   }
-  expect(_key('concept_requests_controls_2'), findsNothing);
+  expect(_key('concept_requests_controls_3'), findsNothing);
 }
 
 ZyraOneJourneyBrowseDesigns _browse(WidgetTester tester) =>
@@ -604,7 +605,7 @@ void main() {
   );
 
   testWidgets(
-    'Requests options select only Received and Sent without creating records',
+    'Requests options select Received, Sent and Past without creating records',
     (tester) async {
       await _mount(tester);
       await _openRequests(tester);
@@ -616,7 +617,7 @@ void main() {
           .whereType<ZyraRequestActivityCard>()
           .map((card) => card.profile.id)
           .toList();
-      for (final index in [1, 0]) {
+      for (final index in [1, 2, 0]) {
         final selectedIndex = _requests(tester).selectedIndex;
         await _toggleOptions(tester);
         _context(
@@ -650,8 +651,22 @@ void main() {
               .toList(),
           sentIds,
         );
-        expect(_requests(tester).pages, hasLength(2));
-        expect(_key('draft_requests_2'), findsNothing);
+        expect(_requests(tester).pages, hasLength(3));
+        expect(_key('draft_requests_2'), findsOneWidget);
+        expect(_key('draft_requests_3'), findsNothing);
+        expect(
+          _requests(tester).pages[2].whereType<ZyraPastRequestActivityCard>(),
+          isEmpty,
+          reason: 'Choosing Past never creates request-history records.',
+        );
+        final past = _requests(
+          tester,
+        ).pages[2].whereType<ZyraRequestActivityEmpty>().single;
+        expect(past.title, 'No past requests.');
+        expect(
+          past.message,
+          'Requests that were declined, expired or cancelled stay here.',
+        );
       }
     },
   );
@@ -699,12 +714,15 @@ void main() {
     (tester) async {
       await _mount(tester);
       await _openRequests(tester);
-      await _tap(tester, 'draft_requests_1');
+      await _tap(tester, 'draft_requests_2');
+      expect(_requests(tester).selectedIndex, 2);
+      expect(find.text('No past requests.'), findsOneWidget);
       final stale = _requests(tester).onChanged;
       await _returnPage(tester);
       await _tap(tester, 'my-zyra-route-concept-my-introductions');
       stale(0);
       stale(1);
+      stale(2);
       await tester.pumpAndSettle();
       expect(_key('concept_activity_requests'), findsNothing);
       expect(_key('concept_activity_introductions'), findsOneWidget);
@@ -718,6 +736,17 @@ void main() {
       await _openRequests(tester, introductions: true);
       expect(_key('concept_activity_introductions'), findsOneWidget);
       expect(find.text('No introductions yet'), findsOneWidget);
+      expect(_key('draft_requests_2'), findsNothing);
+      await _returnPage(tester);
+      await _tap(tester, 'my-zyra-route-concept-my-requests');
+      await _tap(tester, 'draft_requests_2');
+      expect(_requests(tester).selectedIndex, 2);
+      expect(_requests(tester).labels, _requestsLabels);
+      expect(find.text('No past requests.'), findsOneWidget);
+      expect(
+        _requests(tester).pages[2].whereType<ZyraPastRequestActivityCard>(),
+        isEmpty,
+      );
     },
   );
 

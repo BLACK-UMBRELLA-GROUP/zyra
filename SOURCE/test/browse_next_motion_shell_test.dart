@@ -440,6 +440,7 @@ Future<void> _tap(WidgetTester tester, String id, {bool settle = true}) async {
 }
 
 Future<void> _tapBar(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final nav = tester.widget<ZyraShellNavigation>(
     find.byType(ZyraShellNavigation),
   );

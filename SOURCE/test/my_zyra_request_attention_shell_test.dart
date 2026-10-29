@@ -127,6 +127,7 @@ ZyraShellNavigation _navigation(WidgetTester tester) =>
 bool _myZyraUnread(WidgetTester tester) => _navigation(tester).items[2].dot;
 
 Future<void> _nav(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final root = find.byType(ZyraShellNavigation);
   expect(root, findsOneWidget);
   final navigation = _navigation(tester);

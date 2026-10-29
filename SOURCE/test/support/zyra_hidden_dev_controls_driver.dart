@@ -4,9 +4,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_dev_hold_to_open.dart';
+import 'package:zyra/widgets/floating_nav_bar.dart';
+import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 const _page = ValueKey('dev_controls_page');
 const _close = ValueKey('dev_controls_close');
+
+/// Physical root-tab navigation is two deliberate taps when LOCK 6 is idle.
+/// Expand through the real bar before callers measure their destination; the
+/// moving small icons are not destination-sized touch targets. Legacy/action
+/// bars have no compact surface and are deliberately left alone.
+Future<void> expandZyraPreviewTabBarIfIdle(WidgetTester tester) async {
+  final surface = find.byKey(const ValueKey('compact-nav-surface'));
+  if (surface.evaluate().isEmpty) return;
+  expect(surface, findsOneWidget);
+  final root = find.byType(ZyraShellNavigation);
+  expect(root, findsOneWidget);
+  final navigation = tester.widget<ZyraShellNavigation>(root);
+  final context = tester.element(surface);
+  if (!navigation.interactionEnabled ||
+      ModalRoute.of(context)?.isCurrent == false ||
+      surface.hitTestable().evaluate().isEmpty) {
+    return;
+  }
+  final viewport = MediaQuery.sizeOf(context).width;
+  final fullWidth =
+      viewport -
+      2 * (navigation.contentEdgeInset ?? ZyraNavBarMetrics.sideInset);
+  if (tester.getSize(surface).width > fullWidth * .4 + .01 &&
+      tester.getSize(surface).width < fullWidth - .01) {
+    await tester.pump(const Duration(milliseconds: 300));
+  }
+  if (tester.getSize(surface).width >= fullWidth - .01) return;
+  final selected = navigation.currentIndex;
+  await tester.tapAt(tester.getCenter(surface));
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 300));
+  expect(tester.takeException(), isNull);
+  expect(tester.getSize(surface).width, closeTo(fullWidth, .01));
+  expect(tester.widget<ZyraShellNavigation>(root).currentIndex, selected);
+}
 
 Future<void> openZyraDevControls(WidgetTester tester) async {
   expect(find.byKey(_page), findsNothing);

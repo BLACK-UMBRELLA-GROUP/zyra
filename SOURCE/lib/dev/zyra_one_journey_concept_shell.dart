@@ -158,6 +158,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   int _tab = 0;
   int _requestsTab = 0;
   int _myZyraLastOpenedRevision = 0;
+  final _tabBarCollapseRevision = ValueNotifier<int>(0);
   int _browseIndex = 1;
   // Session-only viewing order, never a visibility or request permission.
   final _seenBrowseProfileIds = <String>{};
@@ -1089,6 +1090,26 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     });
   }
 
+  bool _rootPageScrolled(ScrollNotification notification) {
+    if (!_allowed ||
+        _devControlsVisible ||
+        _browseOptionsOpen ||
+        _page != null) {
+      return false;
+    }
+    final moved =
+        notification is ScrollUpdateNotification &&
+            (notification.scrollDelta ?? 0) != 0 ||
+        notification is OverscrollNotification &&
+            notification.overscroll != 0 ||
+        notification is ScrollStartNotification &&
+            notification.dragDetails != null;
+    if (moved) _tabBarCollapseRevision.value++;
+    // Observe nested root lists and photo/page views without consuming any
+    // of their own scrolling, paging or back-navigation notifications.
+    return false;
+  }
+
   void _open(String page, {String? person}) {
     var target = page;
     if ({
@@ -1376,6 +1397,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     if (widget.compatibilityAccess == null) _compatibilityAccess.close();
     _circleBubbleDesign.dispose();
     _circleVisibility.dispose();
+    _tabBarCollapseRevision.dispose();
     super.dispose();
   }
 
@@ -1476,6 +1498,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               child: _content(),
             ),
           );
+    final rootContent = NotificationListener<ScrollNotification>(
+      onNotification: _rootPageScrolled,
+      child: content,
+    );
     return ZyraBackNavigationPreview(
       revision: _uiRevision,
       child: ZyraDevHoldToOpen(
@@ -1596,12 +1622,15 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                     pending: founderPending,
                                     child: PageStorage(
                                       bucket: _positions,
-                                      child: content,
+                                      child: rootContent,
                                     ),
                                   ),
                                 )
                               else
-                                PageStorage(bucket: _positions, child: content),
+                                PageStorage(
+                                  bucket: _positions,
+                                  child: rootContent,
+                                ),
                               if (_browseOptionsOpen)
                                 Positioned.fill(
                                   child: GestureDetector(
@@ -1616,40 +1645,55 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                               if (_browseOptionsOpen)
                                 _browseOptionsNavigation()
                               else if (_page == null)
-                                ZyraShellNavigation(
-                                  hapticLevel: _accountSession.hapticLevel,
-                                  contentEdgeInset: !_guardianRole && _tab == 0
-                                      ? 20
-                                      : null,
-                                  items: [
-                                    for (var i = 0; i < names.length; i++)
-                                      FloatingNavItem(
-                                        icon: icons[i],
-                                        label: names[i],
-                                        useJourneyGlyph:
-                                            !_guardianRole && i == 1,
-                                        dot:
-                                            !_guardianRole &&
-                                            i == 2 &&
-                                            _hasNewMyZyraTabActivity,
+                                ValueListenableBuilder<int>(
+                                  valueListenable: _tabBarCollapseRevision,
+                                  builder: (context, collapseRevision, _) =>
+                                      ZyraShellNavigation(
+                                        key: ValueKey((
+                                          'concept_root_navigation',
+                                          _guardianRole,
+                                        )),
+                                        hapticLevel:
+                                            _accountSession.hapticLevel,
+                                        contentEdgeInset: 20,
+                                        compactWhenIdle: true,
+                                        collapseRevision: collapseRevision,
+                                        interactionEnabled:
+                                            _allowed && !_devControlsVisible,
+                                        items: [
+                                          for (var i = 0; i < names.length; i++)
+                                            FloatingNavItem(
+                                              icon: icons[i],
+                                              label: names[i],
+                                              useJourneyGlyph:
+                                                  !_guardianRole && i == 1,
+                                              dot:
+                                                  !_guardianRole &&
+                                                  i == 2 &&
+                                                  _hasNewMyZyraTabActivity,
+                                            ),
+                                        ],
+                                        currentIndex: _tab,
+                                        onTap: (index) {
+                                          if (_allowed &&
+                                              navigationRevision ==
+                                                  _uiRevision &&
+                                              navigationGuardian ==
+                                                  _guardianRole &&
+                                              navigationControlsEpoch ==
+                                                  _devControlsEpoch &&
+                                              devRoutes == _devRouteStamp &&
+                                              (ModalRoute.of(
+                                                    context,
+                                                  )?.isCurrent ??
+                                                  false) &&
+                                              !_devControlsVisible &&
+                                              !_browseOptionsOpen &&
+                                              _page == null) {
+                                            _tabTo(index);
+                                          }
+                                        },
                                       ),
-                                  ],
-                                  currentIndex: _tab,
-                                  onTap: (index) {
-                                    if (_allowed &&
-                                        navigationRevision == _uiRevision &&
-                                        navigationGuardian == _guardianRole &&
-                                        navigationControlsEpoch ==
-                                            _devControlsEpoch &&
-                                        devRoutes == _devRouteStamp &&
-                                        (ModalRoute.of(context)?.isCurrent ??
-                                            false) &&
-                                        !_devControlsVisible &&
-                                        !_browseOptionsOpen &&
-                                        _page == null) {
-                                      _tabTo(index);
-                                    }
-                                  },
                                 ),
                             ],
                           ),

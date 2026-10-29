@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 162,146 lines in 320 files |
-| Developer and preview code inside it | 43,769 lines in 81 files |
-| The Founder preview (planned app) | 24,739 lines in 31 files |
-| Test code | 210,362 lines in 475 files |
+| All app code | 162,681 lines in 320 files |
+| Developer and preview code inside it | 43,813 lines in 81 files |
+| The Founder preview (planned app) | 24,783 lines in 31 files |
+| Test code | 211,414 lines in 477 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -43,6 +43,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | Queue10 signup/onboarding capture (app unchanged) | 161,735 / 320 | 43,372 / 81 | 24,344 / 31 | 208,744 / 472 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | LOCK2 Requests/Past/capacity/Main message (queue11) | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue13 LOCK3 preflight failed; app/tests unchanged | 162,146 / 320 | 43,769 / 81 | 24,739 / 31 | 210,362 / 475 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-29 | LOCK6 scoped compact tab bar and matching test fixtures (queue14) | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 211,414 / 477 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -196,3 +197,17 @@ in BUILD; existing fonts, photos, back gestures, report/demo controls and LOCK4/
 indefinite retention, cooldown, callbacks, restoration, capacity invariants and compact200% reading. Older regression
 fixtures were updated for LOCK4 avatars/LOCK5 attention/current LOCK2 words without dropping cases. No backend, ordinary
 member route, Blueprint or native change. Checks and commit are in the daily Task19 note and local LOCK2 evidence.
+
+## LOCK6 tab bar — 29 Oct 2026
+
+The Founder preview roots use the locked gold underline,40% idle bar and expand-only first gesture. Full size lasts
+three seconds after release; scrolling collapses it. VoiceOver/Switch Control/Larger Text keep full targets. An owned
+250ms ease animation snaps immediately for native or MediaQuery Reduce Motion, including mid-transition toggles while
+a pointer remains held. Existing activity gold and callback/route guards remain. Only three lib paths change; the
+shared opt-in defaults off, preserving ordinary member bars, developer styles and the Profiles action bar.
+
+Five widget suites pass103cases;31affected Founder suites pass after selective fixture retries (710cases). The
+fixtures now expand before selecting and use unchanged page reservations independently of the new idle bar. No cases
+were dropped. Two actual-shell capture cases create four1290×2796pictures; Seeker pixels above navigation remain
+identical to LOCK2. Existing Guardian four-tab destinations/body stay per the LOCK6 spec. Final recapture after the
+animation fix is byte-identical. No backend, Blueprint, old-member route, native build or retired file change.

@@ -271,6 +271,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
   ) {
     await returnZyraPreviewPage(tester);
   }
+  await expandZyraPreviewTabBarIfIdle(tester);
   final cell = _key('floating-nav-item-$index');
   expect(cell, findsOneWidget);
   // The shared bar owns dispatch; its individual icon cells ignore pointers.

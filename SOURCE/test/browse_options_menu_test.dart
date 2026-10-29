@@ -182,6 +182,7 @@ Future<void> _press(WidgetTester tester, String key) async {
 // The existing bar owns touch at the whole-pill detector, not at each icon.
 // Select the real icon cell through that touch owner, never a direct onTap.
 Future<void> _tapBar(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = _navigation(tester);
   final index = navigation.items.indexWhere((item) => item.label == label);
   expect(
@@ -360,7 +361,7 @@ void main() {
     (size: Size(320, 568), scale: 2.0),
   ]) {
     testWidgets(
-      'Browse morphs the existing bar to exactly five compact actions ${viewport.scale}',
+      'Browse keeps its five-action bar unchanged beside the LOCK 6 root bar ${viewport.scale}',
       (tester) async {
         await _mount(tester, size: viewport.size, scale: viewport.scale);
         final header = tester.widget<IconButton>(_key('concept_browse_menu'));
@@ -369,22 +370,54 @@ void main() {
         expect((header.icon as Icon).size, 24);
         expect(header.color, ZyraColors.journeyGold);
         final menuRect = tester.getRect(_key('concept_browse_menu'));
+        final menuScrollBefore =
+            Scrollable.maybeOf(
+              tester.element(_key('concept_browse_menu')),
+            )?.position.pixels ??
+            0;
         expect(menuRect.width, greaterThanOrEqualTo(48));
         expect(menuRect.height, greaterThanOrEqualTo(48));
         expect(header.tooltip, contains('Sara'));
-        final before = tester.getRect(find.byType(FloatingNavBar));
+        final before = _barGlassRect(tester);
+        final fullWidth = viewport.size.width - 40;
+        expect(_key('compact-nav-surface'), findsOneWidget);
+        expect(
+          before.width,
+          closeTo(viewport.scale > 1 ? fullWidth : fullWidth * .4, .001),
+        );
+        expect(before.height, closeTo(viewport.scale > 1 ? 58 : 46, .001));
+        final bodyBefore = tester.getRect(
+          find.byType(ZyraOneJourneyBrowseDesigns),
+        );
         expect(_key('concept_browse_options_cue'), findsNothing);
         await _openMenu(tester);
-        final after = tester.getRect(find.byType(FloatingNavBar));
+        final after = _barGlassRect(tester);
+        expect(_key('compact-nav-surface'), findsNothing);
+        expect(after.left, closeTo(20, .01));
+        expect(after.right, closeTo(viewport.size.width - 20, .01));
+        expect(after.width, closeTo(fullWidth, .01));
+        expect(after.height, closeTo(ZyraNavBarMetrics.restingHeight, .01));
+        expect(after.bottom, closeTo(before.bottom, .01));
         expect(
-          after,
-          before,
-          reason: 'The existing bar morphs; it is not a larger replacement.',
+          tester.getRect(find.byType(ZyraOneJourneyBrowseDesigns)),
+          bodyBefore,
+          reason: 'The separate footer sizes do not move the profile body.',
+        );
+        final menuScrollAfter =
+            Scrollable.maybeOf(
+              tester.element(_key('concept_browse_menu')),
+            )?.position.pixels ??
+            0;
+        expect(
+          tester.getRect(_key('concept_browse_menu')),
+          menuRect.shift(Offset(0, menuScrollBefore - menuScrollAfter)),
+          reason:
+              'The existing ensureVisible scroll moves the menu with its page.',
         );
         expect(
           tester.getRect(_key('concept_browse_options_cue')),
           _barGlassRect(tester),
-          reason: 'The cue follows the unchanged visible idle pill bounds.',
+          reason: 'The cue follows the unchanged full-width action pill.',
         );
         expect(
           _navigation(tester).items.any((item) => item.label.contains('Help')),
@@ -392,6 +425,12 @@ void main() {
         );
         expect(find.text('Help & support'), findsNothing);
         await _dismissMenu(tester);
+        expect(_key('compact-nav-surface'), findsOneWidget);
+        expect(_barGlassRect(tester), before);
+        expect(
+          tester.getRect(find.byType(ZyraOneJourneyBrowseDesigns)),
+          bodyBefore,
+        );
         expect(
           _browse(tester).profiles[_browse(tester).selectedIndex].id,
           _sara,
@@ -405,10 +444,17 @@ void main() {
   ) async {
     await _mount(tester, reduce: false);
     final ids = _browse(tester).profiles.map((profile) => profile.id).toList();
-    final before = _barGlassRect(tester);
+    final rootBar = _barGlassRect(tester);
+    expect(rootBar.width, closeTo(141.2, .01));
+    expect(rootBar.height, closeTo(46, .01));
     await _openPulse(tester);
+    final actionBar = _barGlassRect(tester);
+    expect(actionBar.left, closeTo(20, .01));
+    expect(actionBar.width, closeTo(353, .01));
+    expect(actionBar.height, closeTo(ZyraNavBarMetrics.restingHeight, .01));
+    expect(actionBar.bottom, closeTo(rootBar.bottom, .01));
     final cue = _key('concept_browse_options_cue');
-    expect(tester.getRect(cue), before);
+    expect(tester.getRect(cue), actionBar);
     final decoration = _cueDecoration(tester);
     expect(decoration.borderRadius, BorderRadius.circular(28));
     expect((decoration.border! as Border).top.width, 1.5);
@@ -432,11 +478,12 @@ void main() {
     expect(_cueAlpha(tester), 0);
     expect(_cueDecoration(tester).color!.a, 0);
     expect(tester.binding.transientCallbackCount, 0);
-    expect(_barGlassRect(tester), before);
+    expect(_barGlassRect(tester), actionBar);
     expect(_browse(tester).profiles.map((profile) => profile.id), ids);
     expect(_navigation(tester).items.map((item) => item.label), _labels);
     await _snapshot(tester, 'browse_options_gold_cue_settled');
     await _dismissMenu(tester);
+    expect(_barGlassRect(tester), rootBar);
     expect(_key('concept_browse_options_cue'), findsNothing);
   });
 
@@ -607,7 +654,7 @@ void main() {
       final sara = _browse(
         tester,
       ).profiles.firstWhere((profile) => profile.id == _sara);
-      expect(_browse(tester).requestLabel!(sara), 'Journey invitation sent');
+      expect(_browse(tester).requestLabel!(sara), 'Request sent');
       await _press(tester, 'browse-hide-confirm');
       expect(
         _browse(tester).profiles.map((profile) => profile.id),
@@ -673,7 +720,7 @@ void main() {
         body.profiles.map((profile) => profile.id),
         isNot(contains(_aisha)),
       );
-      expect(body.requestLabel!(person), 'Journey invitation sent');
+      expect(body.requestLabel!(person), 'Request sent');
       expect(body.invitationSent!(person), isTrue);
     },
   );
@@ -1259,7 +1306,7 @@ void main() {
     final requested = _browse(tester);
     expect(requested.profiles[requested.selectedIndex].id, _sara);
     expect(requested.invitationSent!(person), isTrue);
-    expect(requested.requestLabel!(person), 'Journey invitation sent');
+    expect(requested.requestLabel!(person), 'Request sent');
     await _snapshot(tester, 'current_sent_card_thick_outline');
     final requestRect = tester.getRect(_key('draft_profile_$_sara'));
     final pager = _key('concept_browse_photo_swipe_$_sara');
@@ -1275,7 +1322,7 @@ void main() {
     );
     expect(_browse(tester).profiles.map((profile) => profile.id), ids);
     expect(_browse(tester).profiles[_browse(tester).selectedIndex].id, _sara);
-    expect(_browse(tester).requestLabel!(person), 'Journey invitation sent');
+    expect(_browse(tester).requestLabel!(person), 'Request sent');
     expect(tester.getRect(_key('draft_profile_$_sara')), requestRect);
     expect(haptics(), hapticsBefore);
     expect(_key('concept_browse_options_cue'), findsNothing);
@@ -1293,7 +1340,7 @@ void main() {
     expect(_browse(tester).profiles.map((profile) => profile.id), ids);
     expect(_browse(tester).profiles[_browse(tester).selectedIndex].id, _sara);
     expect(_browse(tester).invitationSent!(person), isTrue);
-    expect(_browse(tester).requestLabel!(person), 'Journey invitation sent');
+    expect(_browse(tester).requestLabel!(person), 'Request sent');
     expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
     expect(tester.takeException(), isNull);
   });

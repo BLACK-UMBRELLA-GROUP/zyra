@@ -255,6 +255,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     await returnZyraPreviewPage(tester);
   }
   expect(find.byType(ZyraShellNavigation), findsOneWidget);
+  await expandZyraPreviewTabBarIfIdle(tester);
   final cell = _key('floating-nav-item-$index');
   expect(cell, findsOneWidget);
   final nav = find.byType(FloatingNavBar);
@@ -487,6 +488,17 @@ void _expectJourneys(WidgetTester tester, int count) {
   expect(_key('concept_activity_ended'), findsNothing);
 }
 
+double _journeyBodyBottom(WidgetTester tester, Finder list) {
+  // LOCK6 changes only the painted bar: card layout keeps the existing
+  // expanded-bar reservation, independent of the current idle/full state.
+  return tester.getRect(list).bottom -
+      MediaQuery.paddingOf(
+        tester.element(list),
+      ).bottom.clamp(ZyraNavBarMetrics.bottomInset, double.infinity) -
+      ZyraNavBarMetrics.height -
+      12;
+}
+
 void _expectInitialJourneyFit(WidgetTester tester, int count) {
   final list = find.byKey(const PageStorageKey('concept_connections_page_0'));
   final scrollable = find.descendant(
@@ -507,8 +519,8 @@ void _expectInitialJourneyFit(WidgetTester tester, int count) {
   );
   final navigation = find.byType(FloatingNavBar);
   expect(navigation, findsOneWidget);
-  // Use the actual rendered navigation rather than a copied height formula.
-  // Its outer SafeArea begins at the same top as the painted idle bar.
+  // Compare overlap with the actual surface, while retaining the unchanged
+  // expanded-bar body reservation for the strict slot geometry below.
   final navigationTop = tester.getRect(navigation).top;
   final viewport = tester.getRect(list);
   final slotBounds = <Rect>[];
@@ -594,12 +606,7 @@ void _expectInitialJourneyFit(WidgetTester tester, int count) {
   }
   expect(
     slotBounds.last.bottom,
-    closeTo(
-      navigationTop -
-          (ZyraNavBarMetrics.height - ZyraNavBarMetrics.restingHeight) -
-          12,
-      1,
-    ),
+    closeTo(_journeyBodyBottom(tester, list), 1),
     reason: 'All three slots fill the canvas above the expanded navigation',
   );
 }
@@ -1471,15 +1478,12 @@ void main() {
         for (final card in _currentCards(tester))
           tester.getRect(find.byWidget(card)),
       ];
-      final viewport = tester.getRect(
-        find.byKey(const PageStorageKey('concept_connections_page_0')),
+      final list = find.byKey(
+        const PageStorageKey('concept_connections_page_0'),
       );
-      final nav = tester.getRect(find.byType(FloatingNavBar));
+      final viewport = tester.getRect(list);
       final top = viewport.top + 12;
-      final bottom =
-          nav.top -
-          (ZyraNavBarMetrics.height - ZyraNavBarMetrics.restingHeight) -
-          12;
+      final bottom = _journeyBodyBottom(tester, list);
       final slotHeight = (bottom - top - 12 * 2) / 3;
       for (var index = 0; index < original.length; index++) {
         final bounds = original[index];

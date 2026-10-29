@@ -182,6 +182,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
   }
   expect(find.byType(ZyraShellNavigation), findsOneWidget);
   final navigation = find.byType(FloatingNavBar);
+  await expandZyraPreviewTabBarIfIdle(tester);
   final cell = _key('floating-nav-item-$index');
   expect(navigation, findsOneWidget);
   expect(cell, findsOneWidget);

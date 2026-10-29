@@ -149,6 +149,7 @@ Future<void> _press(WidgetTester tester, Finder target) async {
 Future<void> _tap(WidgetTester tester, String key) => _press(tester, _key(key));
 
 Future<void> _nav(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = find.byType(ZyraShellNavigation);
   expect(navigation, findsOneWidget);
   final widget = tester.widget<ZyraShellNavigation>(navigation);

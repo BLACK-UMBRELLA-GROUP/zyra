@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import 'baseline_capture_support.dart';
+import '../support/zyra_hidden_dev_controls_driver.dart';
 
 const _enabled = bool.fromEnvironment('ZYRA_LOCK5_CAPTURE');
 const _output =
@@ -28,6 +29,7 @@ Finder _icon(WidgetTester tester, String label) {
 }
 
 Future<void> _openTab(BaselineHarness h, String label) async {
+  await expandZyraPreviewTabBarIfIdle(h.tester);
   final target = _icon(h.tester, label);
   expect(target, findsOneWidget);
   // The real floating bar's detector owns touch; its icons IgnorePointer.

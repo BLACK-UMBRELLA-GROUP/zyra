@@ -94,6 +94,7 @@ Future<void> _tap(WidgetTester tester, String key) async {
 }
 
 Future<void> _nav(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = find.byType(ZyraShellNavigation);
   final bar = tester.widget<ZyraShellNavigation>(navigation);
   final item = bar.items.singleWhere((item) => item.label == label);

@@ -123,6 +123,7 @@ bool _hasTabAttention(WidgetTester tester) {
 }
 
 Future<void> _nav(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final root = find.byType(ZyraShellNavigation);
   expect(root, findsOneWidget);
   final navigation = _navigation(tester);

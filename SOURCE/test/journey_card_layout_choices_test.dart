@@ -149,6 +149,7 @@ Future<void> _tap(WidgetTester tester, String key) async {
 }
 
 Future<void> _nav(WidgetTester tester, int index) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   expect(find.byType(ZyraShellNavigation), findsOneWidget);
   await tester.tapAt(tester.getCenter(_key('floating-nav-item-$index')));
   await tester.pumpAndSettle();
@@ -458,9 +459,17 @@ Future<void> _expectDataAndActions(
 
 void _expectNormalGeometry(WidgetTester tester, int count) {
   final nav = tester.getRect(find.byType(FloatingNavBar));
-  final viewport = tester.getRect(
-    find.byKey(const PageStorageKey('concept_connections_page_0')),
-  );
+  final list = find.byKey(const PageStorageKey('concept_connections_page_0'));
+  final viewport = tester.getRect(list);
+  // The cards reserve the expanded bar even while LOCK6 paints its smaller
+  // idle surface. That existing body clearance must not follow the bar's top.
+  final bodyBottom =
+      viewport.bottom -
+      MediaQuery.paddingOf(
+        tester.element(list),
+      ).bottom.clamp(ZyraNavBarMetrics.bottomInset, double.infinity) -
+      ZyraNavBarMetrics.height -
+      12;
   final bounds = [
     for (final card in _cards.evaluate())
       tester.getRect(find.byWidget(card.widget)),
@@ -486,12 +495,7 @@ void _expectNormalGeometry(WidgetTester tester, int count) {
   expect(bounds.first.top, closeTo(viewport.top + 12, .05));
   expect(
     bounds.last.bottom,
-    closeTo(
-      nav.top -
-          (ZyraNavBarMetrics.height - ZyraNavBarMetrics.restingHeight) -
-          12,
-      .75,
-    ),
+    closeTo(bodyBottom, .75),
     reason:
         'All three occupied or available places fill the canvas with the same navigation clearance',
   );

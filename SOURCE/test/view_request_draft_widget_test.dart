@@ -592,6 +592,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _tapRootNav(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = tester.widget<ZyraShellNavigation>(
     find.byType(ZyraShellNavigation),
   );

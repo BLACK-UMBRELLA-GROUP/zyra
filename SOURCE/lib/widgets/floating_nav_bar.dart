@@ -40,6 +40,7 @@
 // deleted) in case a future context wants labels back; both current
 // call sites (HomeShell, WaliHomeShell) rely on the new default.
 
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -277,6 +278,12 @@ class FloatingNavBar extends StatefulWidget {
   /// reversible by scrubbing onward; an action is not.
   final bool commitOnRelease;
 
+  /// LOCK 6 is an explicit Founder-root opt-in. Shared member navigation and
+  /// Browse action bars retain the original treatment by default.
+  final bool compactWhenIdle;
+  final int collapseRevision;
+  final bool interactionEnabled;
+
   const FloatingNavBar({
     super.key,
     required this.items,
@@ -286,6 +293,9 @@ class FloatingNavBar extends StatefulWidget {
     this.commitOnRelease = false,
     this.contentEdgeInset,
     this.hapticLevel,
+    this.compactWhenIdle = false,
+    this.collapseRevision = 0,
+    this.interactionEnabled = true,
   }) : assert(
          contentEdgeInset == null ||
              (contentEdgeInset >= 0 && contentEdgeInset < double.infinity),
@@ -634,6 +644,19 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.compactWhenIdle &&
+        !widget.commitOnRelease &&
+        ZyraInteractionStyle.navStyle == ZyraNavStyle.floatingGlass) {
+      return _CompactFloatingTabBar(
+        items: widget.items,
+        currentIndex: widget.currentIndex,
+        onTap: widget.onTap,
+        contentEdgeInset: widget.contentEdgeInset,
+        hapticLevel: widget.hapticLevel,
+        collapseRevision: widget.collapseRevision,
+        interactionEnabled: widget.interactionEnabled,
+      );
+    }
     // 2026-07-26 (Founder: "when not touched it becomes more
     // transparent, when touched less transparent") — the bar's own
     // glass fill now reacts to touch state, not just the highlight
@@ -989,6 +1012,462 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
                 ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// LOCK 6 deliberately owns its timer and pointer lifetime separately from
+// the shared legacy bar. Changing a developer comparison style disposes it.
+class _CompactFloatingTabBar extends StatefulWidget {
+  const _CompactFloatingTabBar({
+    required this.items,
+    required this.currentIndex,
+    required this.onTap,
+    required this.contentEdgeInset,
+    required this.hapticLevel,
+    required this.collapseRevision,
+    required this.interactionEnabled,
+  });
+
+  final List<FloatingNavItem> items;
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+  final double? contentEdgeInset;
+  final ZyraHapticLevel? hapticLevel;
+  final int collapseRevision;
+  final bool interactionEnabled;
+
+  @override
+  State<_CompactFloatingTabBar> createState() => _CompactFloatingTabBarState();
+}
+
+class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  static const _motion = Duration(milliseconds: 250);
+  static const _idleDelay = Duration(seconds: 3);
+  Timer? _idleTimer;
+  int _timerEpoch = 0;
+  int _semanticsEpoch = 0;
+  int? _pointer;
+  int? _lastIndex;
+  bool _expanded = false;
+  bool _accessibilityFull = false;
+  bool _quietMotion = false;
+  bool _expansionGesture = false;
+  bool _gestureCancelled = true;
+  bool _touching = false;
+  late final AnimationController _sizeMotion;
+
+  @override
+  void initState() {
+    super.initState();
+    _sizeMotion = AnimationController(vsync: this, duration: _motion);
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void _setExpanded(bool expanded) {
+    _expanded = expanded;
+    final target = expanded || _accessibilityFull ? 1.0 : 0.0;
+    if (_quietMotion) {
+      _sizeMotion.stop();
+      _sizeMotion.value = target;
+    } else {
+      _sizeMotion.animateTo(target, duration: _motion, curve: Curves.ease);
+    }
+  }
+
+  void _cancelTimer() {
+    _idleTimer?.cancel();
+    _idleTimer = null;
+    _timerEpoch++;
+  }
+
+  void _invalidateGesture() {
+    _gestureCancelled = true;
+    _pointer = null;
+    _lastIndex = null;
+    _touching = false;
+    _semanticsEpoch++;
+  }
+
+  void _readAccessibility() {
+    final media = MediaQuery.of(context);
+    final native = View.of(context).platformDispatcher.accessibilityFeatures;
+    final full =
+        media.accessibleNavigation ||
+        native.accessibleNavigation ||
+        media.textScaler.scale(14) > 14;
+    // iOS Reduce Motion is a distinct engine bit; MediaQuery currently
+    // forwards disableAnimations but does not forward this reduceMotion bit.
+    final quiet =
+        media.disableAnimations ||
+        media.accessibleNavigation ||
+        native.reduceMotion ||
+        native.disableAnimations;
+    final fullChanged = full != _accessibilityFull;
+    _accessibilityFull = full;
+    _quietMotion = quiet;
+    if (fullChanged) {
+      _cancelTimer();
+      _invalidateGesture();
+      _expanded = full;
+      // Assistive interaction always has full-size targets immediately.
+      _sizeMotion.stop();
+      _sizeMotion.value = full ? 1 : 0;
+    } else if (quiet) {
+      // Updating an implicit animation's duration alone leaves an existing
+      // simulation running. Stop the owned transition and settle its current
+      // target, keeping the real pointer recognizer mounted throughout.
+      _sizeMotion.stop();
+      _sizeMotion.value = _expanded ? 1 : 0;
+    }
+    // Reduce Motion changes how the current transition paints, not whether
+    // the member's three-second expanded interval has already elapsed.
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _readAccessibility();
+  }
+
+  @override
+  void didChangeAccessibilityFeatures() {
+    if (!mounted) return;
+    setState(_readAccessibility);
+  }
+
+  @override
+  void didUpdateWidget(covariant _CompactFloatingTabBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _semanticsEpoch++;
+    if (oldWidget.collapseRevision != widget.collapseRevision ||
+        oldWidget.interactionEnabled != widget.interactionEnabled ||
+        oldWidget.items.length != widget.items.length ||
+        oldWidget.contentEdgeInset != widget.contentEdgeInset) {
+      _cancelTimer();
+      _invalidateGesture();
+      _setExpanded(_accessibilityFull);
+    }
+  }
+
+  @override
+  void dispose() {
+    _cancelTimer();
+    _invalidateGesture();
+    WidgetsBinding.instance.removeObserver(this);
+    _sizeMotion.dispose();
+    super.dispose();
+  }
+
+  void _scheduleCollapse() {
+    _cancelTimer();
+    if (!_expanded ||
+        _touching ||
+        _accessibilityFull ||
+        !widget.interactionEnabled) {
+      return;
+    }
+    final epoch = _timerEpoch;
+    _idleTimer = Timer(_idleDelay, () {
+      if (!mounted ||
+          epoch != _timerEpoch ||
+          _touching ||
+          _accessibilityFull ||
+          !widget.interactionEnabled) {
+        return;
+      }
+      setState(() {
+        _setExpanded(false);
+        _invalidateGesture();
+        _idleTimer = null;
+      });
+    });
+  }
+
+  void _pointerDown(PointerDownEvent event) {
+    if (!widget.interactionEnabled || _pointer != null) return;
+    _cancelTimer();
+    setState(() {
+      _pointer = event.pointer;
+      _touching = true;
+      // The entire physical gesture keeps this decision, even after the
+      // resize completes, a scrub wins the arena, or its pointer lifts.
+      _expansionGesture = !_expanded && !_accessibilityFull;
+      _gestureCancelled = false;
+      _lastIndex = widget.currentIndex;
+      _setExpanded(true);
+      _semanticsEpoch++;
+    });
+  }
+
+  void _pointerUp(PointerUpEvent event) {
+    if (_pointer != event.pointer) return;
+    setState(() {
+      _pointer = null;
+      _touching = false;
+    });
+    // Raw up and the gesture recognizer's up may arrive in either order.
+    // Keep the expansion/cancellation latch until the next pointer begins.
+    _scheduleCollapse();
+  }
+
+  void _pointerCancel(PointerCancelEvent event) {
+    if (_pointer != event.pointer) return;
+    setState(_invalidateGesture);
+    _scheduleCollapse();
+  }
+
+  bool get _canSelect =>
+      widget.interactionEnabled &&
+      !_gestureCancelled &&
+      !_expansionGesture &&
+      _expanded;
+
+  void _selectAt(double x, double width) {
+    if (!_canSelect || widget.items.isEmpty) return;
+    final index = (x / (width / widget.items.length)).floor().clamp(
+      0,
+      widget.items.length - 1,
+    );
+    final previous = _lastIndex ?? widget.currentIndex;
+    _lastIndex = index;
+    if (index == previous) return;
+    dismissZyraKeyboardAfterNavigation();
+    ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
+    widget.onTap(index);
+  }
+
+  void _finishGesture() {
+    _lastIndex = null;
+    _scheduleCollapse();
+  }
+
+  void _activateSemanticItem(int index, int epoch) {
+    if (!mounted ||
+        !widget.interactionEnabled ||
+        epoch != _semanticsEpoch ||
+        index < 0 ||
+        index >= widget.items.length) {
+      return;
+    }
+    final wasFull = _expanded || _accessibilityFull;
+    setState(() {
+      _invalidateGesture();
+      _setExpanded(true);
+    });
+    _scheduleCollapse();
+    if (!wasFull || index == widget.currentIndex) return;
+    dismissZyraKeyboardAfterNavigation();
+    ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
+    widget.onTap(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final epoch = _semanticsEpoch;
+    return AnimatedBuilder(
+      animation: _sizeMotion,
+      builder: (context, _) => Positioned(
+        left: widget.contentEdgeInset ?? ZyraNavBarMetrics.sideInset,
+        right: widget.contentEdgeInset ?? ZyraNavBarMetrics.sideInset,
+        bottom: 0,
+        child: SafeArea(
+          top: false,
+          minimum: const EdgeInsets.only(bottom: ZyraNavBarMetrics.bottomInset),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final fullWidth = constraints.maxWidth;
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(ZyraNavBarMetrics.radius),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: ZyraNavBarMetrics.blurSigma,
+                      sigmaY: ZyraNavBarMetrics.blurSigma,
+                    ),
+                    child: Container(
+                      key: const ValueKey('compact-nav-surface'),
+                      width: fullWidth * (.4 + .6 * _sizeMotion.value),
+                      height: 46 + 12 * _sizeMotion.value,
+                      decoration: BoxDecoration(
+                        color: _touching
+                            ? ZyraColors.surfaceEmphasisFill
+                            : ZyraColors.surfaceFill,
+                        borderRadius: BorderRadius.circular(
+                          ZyraNavBarMetrics.radius,
+                        ),
+                        border: Border.all(
+                          color: _touching
+                              ? ZyraColors.surfaceEmphasisBorder
+                              : ZyraColors.surfaceBorder,
+                        ),
+                      ),
+                      child: LayoutBuilder(
+                        builder: (context, inner) {
+                          final progress = fullWidth <= 0
+                              ? 0.0
+                              : (((inner.maxWidth + 2) - fullWidth * .4) /
+                                        (fullWidth * .6))
+                                    .clamp(0.0, 1.0);
+                          final iconSize = 16.0 + 5 * progress;
+                          final idleCellWidth = math.min(
+                            26.0,
+                            inner.maxWidth / widget.items.length,
+                          );
+                          final cellWidth =
+                              idleCellWidth +
+                              (inner.maxWidth / widget.items.length -
+                                      idleCellWidth) *
+                                  progress;
+                          final underlineWidth = 16.0 + 8 * progress;
+                          final rowWidth = cellWidth * widget.items.length;
+                          final rowLeft = (inner.maxWidth - rowWidth) / 2;
+                          return Listener(
+                            onPointerDown: _pointerDown,
+                            onPointerUp: _pointerUp,
+                            onPointerCancel: _pointerCancel,
+                            child: GestureDetector(
+                              key: const ValueKey('compact-nav-gesture'),
+                              behavior: HitTestBehavior.opaque,
+                              excludeFromSemantics: true,
+                              // Pointer-down owns expansion and its gesture
+                              // latch; the arena still owns taps/scrubs.
+                              onTapDown: (_) {},
+                              onTapUp: (details) {
+                                _selectAt(
+                                  details.localPosition.dx,
+                                  inner.maxWidth,
+                                );
+                                _finishGesture();
+                              },
+                              onTapCancel: () {
+                                // A horizontal scrub can win after tap cancel;
+                                // never clear this physical gesture's latch.
+                                _lastIndex = widget.currentIndex;
+                              },
+                              onHorizontalDragStart: (details) => _selectAt(
+                                details.localPosition.dx,
+                                inner.maxWidth,
+                              ),
+                              onHorizontalDragUpdate: (details) => _selectAt(
+                                details.localPosition.dx,
+                                inner.maxWidth,
+                              ),
+                              onHorizontalDragEnd: (_) => _finishGesture(),
+                              onHorizontalDragCancel: _finishGesture,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Positioned(
+                                    left:
+                                        rowLeft +
+                                        cellWidth * widget.currentIndex +
+                                        (cellWidth - underlineWidth) / 2,
+                                    top: inner.maxHeight / 2 + iconSize / 2 + 3,
+                                    child: SizedBox(
+                                      key: const ValueKey(
+                                        'compact-nav-underline',
+                                      ),
+                                      width: underlineWidth,
+                                      height: 2.5,
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: ZyraColors.journeyGold,
+                                          borderRadius: BorderRadius.circular(
+                                            3,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: SizedBox(
+                                      width: rowWidth,
+                                      height: inner.maxHeight,
+                                      child: Row(
+                                        children: [
+                                          for (
+                                            var i = 0;
+                                            i < widget.items.length;
+                                            i++
+                                          )
+                                            Expanded(
+                                              child: Semantics(
+                                                key: ValueKey(
+                                                  'floating-nav-item-$i',
+                                                ),
+                                                container: true,
+                                                button: true,
+                                                selected:
+                                                    i == widget.currentIndex,
+                                                label: widget.items[i].label,
+                                                value: widget.items[i].badge > 0
+                                                    ? '${widget.items[i].badge} unread'
+                                                    : widget.items[i].dot
+                                                    ? 'New activity'
+                                                    : null,
+                                                excludeSemantics: true,
+                                                onTap: () =>
+                                                    _activateSemanticItem(
+                                                      i,
+                                                      epoch,
+                                                    ),
+                                                child: SizedBox(
+                                                  height: inner.maxHeight,
+                                                  child: Center(
+                                                    child: IgnorePointer(
+                                                      child: widget.items[i].buildIcon(
+                                                        color:
+                                                            widget
+                                                                .items[i]
+                                                                .hasUnread
+                                                            ? ZyraColors
+                                                                  .journeyGold
+                                                            : widget
+                                                                  .items[i]
+                                                                  .dimmed
+                                                            ? ZyraColors.ink(
+                                                                i ==
+                                                                        widget
+                                                                            .currentIndex
+                                                                    ? .58
+                                                                    : .28,
+                                                              )
+                                                            : i ==
+                                                                  widget
+                                                                      .currentIndex
+                                                            ? ZyraColors
+                                                                  .foreground
+                                                            : ZyraColors.ink(
+                                                                .45,
+                                                              ),
+                                                        size: iconSize,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

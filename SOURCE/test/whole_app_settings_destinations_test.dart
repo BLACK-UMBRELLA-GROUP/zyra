@@ -235,6 +235,7 @@ Future<void> _back(WidgetTester tester) async {
 }
 
 Future<void> _nav(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = find.byType(ZyraShellNavigation);
   expect(navigation, findsOneWidget);
   final item = tester

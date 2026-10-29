@@ -20,6 +20,8 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
+import 'support/zyra_hidden_dev_controls_driver.dart';
+
 const _font = 'PoppinsJourneyCapacitySlots';
 const _captureDirectory = String.fromEnvironment(
   'ZYRA_CAPACITY_SLOTS_CAPTURE_DIR',
@@ -455,6 +457,7 @@ void main() {
       final retained = tester
           .widget<OutlinedButton>(_key('concept_journey_upgrade_slot_1'))
           .onPressed!;
+      await expandZyraPreviewTabBarIfIdle(tester);
       await tester.tapAt(tester.getCenter(_key('floating-nav-item-2')));
       await tester.pumpAndSettle();
       final before = owner.latest;

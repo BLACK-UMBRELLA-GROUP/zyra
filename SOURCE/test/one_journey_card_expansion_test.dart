@@ -190,6 +190,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     }
     await returnZyraPreviewPage(tester);
   }
+  await expandZyraPreviewTabBarIfIdle(tester);
   final cell = _key('floating-nav-item-$index');
   expect(cell, findsOneWidget);
   // Cells deliberately ignore pointers: the shared bar owns tap/scrub

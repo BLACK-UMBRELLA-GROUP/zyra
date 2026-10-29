@@ -162,6 +162,7 @@ Future<void> _press(WidgetTester tester, String id) async {
 }
 
 Future<void> _nav(WidgetTester tester, int index) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   await tester.tapAt(tester.getCenter(_key('floating-nav-item-$index')));
   await tester.pumpAndSettle();
   expect(

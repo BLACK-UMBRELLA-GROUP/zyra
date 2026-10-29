@@ -133,6 +133,7 @@ Future<void> _tap(WidgetTester tester, Finder target) async {
 }
 
 Future<void> _nav(WidgetTester tester, int index) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final cell = _key('floating-nav-item-$index');
   expect(cell, findsOneWidget);
   final detector = find
