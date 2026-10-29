@@ -1,0 +1,406 @@
+{
+  "commit_sha": "ddadaf38fbc230eac9ffa2235a46d43c6968214a",
+  "timestamp": "2026-10-29T20:16:42.763932+00:00",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test render, baseline route(c)",
+  "logical_resolution": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "resolution": [
+    1290,
+    2796
+  ],
+  "transport": "Offline fictional sample; HTTP denied",
+  "source_sha256": {
+    "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart": "ed28c664914e64a87c2c34cb747364746affcf02c9ddb7d61b118a6550703a12",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "3cdab4e7fe941978cbc163e9fbe5d5fad22cd9d7b42b5737119e23e845689c8e",
+    "SOURCE/lib/dev/zyra_one_journey_discovery_presentation.dart": "06667b94156eab5465fd729d936a6f6480417510d0a9301d7e9e8c57348e3229",
+    "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart": "cefd6fa2b26d0afbba69263c3f3a912d6026ca95d9d36fa47c3329f69f110903",
+    "SOURCE/lib/dev/zyra_request_activity_presentation.dart": "976d2790d2378ab0fd5a593eebd43a03afa799952a1c5f4c7a06b8495dde0f83",
+    "SOURCE/lib/dev/zyra_request_capacity_choice.dart": "d8faa41daec9a54f030e5a7e30bc116d43c0f0582b75729b2810354137184515",
+    "SOURCE/lib/dev/zyra_view_request_draft_model.dart": "e73cddc7b60952588ff85a25f3366aa330dd4d5c072def63d84da27f282c97ff",
+    "SOURCE/lib/screens/wali/seeker_guardian_designs.dart": "8cea441a844c3ce6d067073172cf1dde5c0e1b2558456cca797fbb6a56609ffd",
+    "SOURCE/lib/widgets/zyra_browse_designs.dart": "071d9f38d0f14c73514818788997ea92faa39efdc36b2f20c9b19f9ab8e3bc0c"
+  },
+  "locked_inputs": [
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BRIEFS/BUILD_BRIEF_2026-10-29.md",
+      "bytes": 2258,
+      "sha256": "1ddc990c745b517f899811c3502ce6085c7349eb0321503384ec8949405a44dc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/guardian_main__first_main_message.png",
+      "bytes": 837147,
+      "sha256": "35e42c8cee86c507db8807043e74dbdaf7b7f6eb0a2bb44ba2b5abe4e9251ac3",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/my_zyra_tab__new_request.png",
+      "bytes": 866433,
+      "sha256": "de2e6d54b2b1552ed58ca90f1ce39244a4b2e1f984d1024e48a767ff555eb71e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/profiles_tab__request_not_sent.png",
+      "bytes": 557754,
+      "sha256": "c527940f163f59db143b36efa76addf866f681b854f2afc886ccdc3830675d37",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/profiles_tab__request_sent.png",
+      "bytes": 557311,
+      "sha256": "caa1b2c9ef2514aceb4b099946015bfb095b6e2731fd78bcff9f467d6fdb0057",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/request_capacity__full_journey_chosen.png",
+      "bytes": 918743,
+      "sha256": "5d07734f7236b698a5eeea2edd081c7f2a12541db0fe8e9c3b988b5e4128e321",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/request_capacity__full_nothing_chosen.png",
+      "bytes": 912929,
+      "sha256": "ae358206ce9fc17d11a73731295f00e90141c94334e0ffefe1a298bb4c356ac7",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__past.png",
+      "bytes": 829096,
+      "sha256": "8b39aca0f6892a99831e3374bdedcc4def5f88b107458fe90af022d56d9a86ce",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__past_empty.png",
+      "bytes": 775675,
+      "sha256": "737c79f4331831788ce42854755349bd7b0c88fd62254e7118da72fbaec7090e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__received.png",
+      "bytes": 776389,
+      "sha256": "810267c141da541d74f9a751c1e0e03d8127b17f67e443b6bd2986146b33f9d5",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__received_empty.png",
+      "bytes": 766939,
+      "sha256": "af1b7ea1fb950bcaefb57d12e667a70886c799a3978f2e70ef1a51e6d8f8263a",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__received_expanded.png",
+      "bytes": 831456,
+      "sha256": "424db49aaf1446c640a95102aa330bcd01ce10c9de38343cc8b610e2c5c6b93a",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__sent.png",
+      "bytes": 777388,
+      "sha256": "59be7f94cbce0b523f617bf9cd3ca1854f4b68b35596a5624a6b6a9dae0d7e07",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__sent_empty.png",
+      "bytes": 763971,
+      "sha256": "4231e85687c098f73b948a909d305e3fa0c5a8d5af3623b379d017bc248cc9b7",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__sent_expanded.png",
+      "bytes": 812732,
+      "sha256": "676cb51d5035545863b84d11f38d4130875c069100c62fcc44ac1dd0a1fc4077",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/LOCK_RECORD.md",
+      "bytes": 1819,
+      "sha256": "ac6b67928c9dfa7cd56b55fb420bba97feba56ed58c5c45f12f905ca0e008f15"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/REQUESTS_AND_GUARDIANS_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 6662,
+      "sha256": "af53fe8afdd1e31540de77e8ca9aef7908852f56182911fc8f5a0b8d19b4eacc"
+    }
+  ],
+  "picture_count": 14,
+  "captures": [
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "request_capacity",
+      "state": "full_nothing_chosen",
+      "reached": "Actual Amira Received Accept request with three seeded sample Journeys; no ending chosen and primary disabled",
+      "file": "request_capacity__full_nothing_chosen.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests",
+        "request_capacity"
+      ],
+      "tab": 2,
+      "bytes": 966817,
+      "sha256": "026aa7b0aea204469d5c5f2f77b0662b171489ebfc39aa812d888ae0218d5c15"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "request_capacity",
+      "state": "full_journey_chosen",
+      "reached": "Actual Aisha Journey row selection; End & accept request enabled without ending or accepting anything",
+      "file": "request_capacity__full_journey_chosen.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests",
+        "request_capacity"
+      ],
+      "tab": 2,
+      "bytes": 967718,
+      "sha256": "bddc9701921d8a41b800f118589f9e1dca61bea886c5c851a656ffc75f756ea6"
+    },
+    {
+      "role": "Seeker",
+      "area": "guardians",
+      "page": "guardian_main",
+      "state": "first_main_message",
+      "reached": "Actual existing Yusuf Make Main and Confirm controls from the Guardian tab; no invented link event; actual centered shared gold-ring initial",
+      "file": "guardian_main__first_main_message.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "guardian_main_notice"
+      ],
+      "tab": 3,
+      "bytes": 853116,
+      "sha256": "bf5669ec35105f19246dc68923b00cd447ae1c090b44e1fecb01589ed0cad58e"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "profiles_tab",
+      "state": "request_not_sent",
+      "reached": "Actual default Sara Profiles details card; unchanged current LOCK 4 photo avatar and LOCK 5 nav attention; no request sent",
+      "file": "profiles_tab__request_not_sent.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "bytes": 798546,
+      "sha256": "36fa399a527b6ce97823ae7704dcb3460afc140a1d58d4545385f20bb94d92ba"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "profiles_tab",
+      "state": "request_sent",
+      "reached": "Actual existing Sara Request a Journey action; same profile and sent gold-outline button",
+      "file": "profiles_tab__request_sent.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "bytes": 862273,
+      "sha256": "23f8fa962fd257105fb9ee2978798045cc7907e973f445d5799438fe6a177cc7"
+    },
+    {
+      "role": "Seeker",
+      "area": "profile_membership_settings",
+      "page": "my_zyra_tab",
+      "state": "new_request",
+      "reached": "Actual My ZYRA root with one untouched Amira arrival and one local Sara Sent request; existing New activity remains",
+      "file": "my_zyra_tab__new_request.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 2,
+      "bytes": 816114,
+      "sha256": "58617680bfadf980a5dc15f443371c356a6fee3c080ba276b18f227a068d022c"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "received",
+      "reached": "Actual Received page, default local Amira request, collapsed card and three equal tabs",
+      "file": "requests__received.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 812336,
+      "sha256": "9ad357e8e139db1be423086535ff1f9039b4f131f0896f062c5f91cdd55fbef8"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "received_expanded",
+      "reached": "Actual Amira Received card header tap opens unchanged request actions",
+      "file": "requests__received_expanded.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 869342,
+      "sha256": "45ec739882ca46b709b9718b4a9444269e9abdb1014d0bb465c098abdef55bcf"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "received_empty",
+      "reached": "Actual Decline action removes the only Received item into Past; Received empty presenter",
+      "file": "requests__received_empty.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 763796,
+      "sha256": "c3f7a53b6b465c16c1a0a18b123ac97f3063ed12ec7bcbdc12fae83bb66bc7e0"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "sent",
+      "reached": "Local Sara request fixture; actual Sent page with its unchanged collapsed card",
+      "file": "requests__sent.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 812834,
+      "sha256": "8c0763acfb617c64545c37678a2501efa2af94ed3b8a8736c62ba39d133cb47b"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "sent_expanded",
+      "reached": "Actual Sara Sent card header tap; existing Founder demo action remains as in the baseline",
+      "file": "requests__sent_expanded.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 877116,
+      "sha256": "5c20dc5269c68c6a8c07e639bbb7827f69bbef556f19d7057a088f77370ffb62"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "sent_empty",
+      "reached": "Actual Cancel request action moves Sara into Past; Sent empty presenter",
+      "file": "requests__sent_empty.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 760396,
+      "sha256": "23d300f8a11e82f06d38bd8e1fdfd077c88c5bb51b6a17bc3eb6a68fb542188c"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "past",
+      "reached": "Explicit allowed local history fixtures: Maryam Received 20 Oct/You declined newest, Aisha Sent 12 Oct/Not taken up older; actual passive cards",
+      "file": "requests__past.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 887019,
+      "sha256": "f208b0ca3ab49d346a7e951675139fad74d3fc3514a13bdf9fd9453749fddab6"
+    },
+    {
+      "role": "Seeker",
+      "area": "browse_and_requests",
+      "page": "requests",
+      "state": "past_empty",
+      "reached": "Fresh default Founder model has no history; actual Past clock and exact locked empty wording",
+      "file": "requests__past_empty.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [
+        "requests"
+      ],
+      "tab": 2,
+      "bytes": 771462,
+      "sha256": "ae39befd4f4f7b406370c0db8c9081f1f8cccdd8790bee8da90ce7fce888ae8c"
+    }
+  ],
+  "comparison": {
+    "timestamp_utc": "2026-10-29T20:15:57.962757+00:00",
+    "master_state_names_match": true,
+    "default_profiles_equals_LOCK4": true,
+    "master_built_visual_review": "All14side-by-side inspected; exactchangedwords/order/states. Existing productionfonts,spacing,photos,backgesture,report/demoactions and newerLOCK4/5 preserved as spec requires. DefaultProfiles is Sara inactualapp, Amira inprototypeunsentmaster; no sampledefaultchange.",
+    "comparison_sheets": [
+      "queue11_comparison_1.png",
+      "queue11_comparison_2.png"
+    ]
+  },
+  "tests": "13 affected suites:350 passed;sole stale own-avatar case corrected and rerun1 passed.8 model/shared suites189 passed.4 capture cases passed. Analyser clean4.0s.14new shellcases include compact200% Past/notice.",
+  "scope": "Founder-only sample preview. Ordinary member routes/backend/Blueprint unchanged. First accepted Guardian link deferred OA-ZYRA-317.",
+  "native": "HELD; no native build/install/retry"
+}
