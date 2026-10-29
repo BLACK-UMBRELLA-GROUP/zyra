@@ -1,0 +1,198 @@
+{
+  "commit_sha": "a7df0e7dacc989cda261a245e122cd09d015b868",
+  "timestamp": "2026-10-29T20:32:45.918976+00:00",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test render, baseline route(c)",
+  "logical_resolution": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "resolution": [
+    1290,
+    2796
+  ],
+  "transport": "Offline fictional sample, HTTP denied",
+  "source_sha256": {
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "b1c5cfa0327a5faff8b26a94107afd5a3bf9554d9feb54360ed7df229af49a93",
+    "SOURCE/lib/widgets/floating_nav_bar.dart": "bd869665724de9ebe7893f1dd4e721be6123fe80b3fac97ad254f629f3b6c179",
+    "SOURCE/lib/widgets/zyra_shell_navigation.dart": "99fe53d11e4e064b134f2cb62f0ea905114668846f436b03fe5444ee28fb7072"
+  },
+  "locked_inputs": [
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/BRIEFS/BUILD_BRIEF_2026-10-29.md",
+      "bytes": 1204,
+      "sha256": "6e0d2b7a8f2c8eec53c4550bfdb5333401b260d2868f922beb147c3a8d25ada7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/RECORD/LOCK_RECORD.md",
+      "bytes": 1024,
+      "sha256": "bab342f6ac301fabaea9e35f6d99031d31c3c0eab1131ea8117b4a9268abfc19"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/RECORD/TAB_BAR_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 2129,
+      "sha256": "e13e3678f0e32399a523732f45e569f67b4cb6f419f47f63cde765161d0da29a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/guardian_tab_bar__idle_small.png",
+      "bytes": 1027211,
+      "sha256": "5655efa95ffa36cbb0301ba8999373f4d2ae00e467375d6abe2e9b5d98fd61f5",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "visually_reviewed": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/guardian_tab_bar__touched_full.png",
+      "bytes": 1032540,
+      "sha256": "512b1d15debb20305b6d3cee651f866bb9db192fde0e78cc1060df41f35f9956",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "visually_reviewed": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/seeker_tab_bar__idle_small.png",
+      "bytes": 553061,
+      "sha256": "d4452e8e7f60f21398b37b04e3f6f7a2a01a0ae3d15732ef4935313e6a4bf376",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "visually_reviewed": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/seeker_tab_bar__touched_full.png",
+      "bytes": 565781,
+      "sha256": "21acd721123f72497a67373ea7bad97ee2ce6e0785696c4236310085012453f8",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "visually_reviewed": true
+    }
+  ],
+  "picture_count": 4,
+  "captures": [
+    {
+      "role": "Guardian",
+      "area": "navigation",
+      "page": "guardian_tab_bar",
+      "state": "idle_small",
+      "reached": "Actual current Founder guardian root; first idle state; existing destinations and current body retained",
+      "file": "guardian_tab_bar__idle_small.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "sha256": "3da7de33004e9ff997b59ca7dc65851ed4925c3c4037fd1372e4abd2f4ca3ec4",
+      "bytes": 980169
+    },
+    {
+      "role": "Guardian",
+      "area": "navigation",
+      "page": "guardian_tab_bar",
+      "state": "touched_full",
+      "reached": "Actual first touch on small bar expands only; held finger, unchanged destination; current Guardian has four tabs per LOCK6 spec",
+      "file": "guardian_tab_bar__touched_full.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "sha256": "796d7cb79431333487f78cebad4c87770b5df15e8a945e5e1d2543f526fca77a",
+      "bytes": 962555
+    },
+    {
+      "role": "Seeker",
+      "area": "navigation",
+      "page": "seeker_tab_bar",
+      "state": "idle_small",
+      "reached": "Actual current Founder seeker root; first idle state; existing destinations and current body retained",
+      "file": "seeker_tab_bar__idle_small.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "sha256": "e4d3242d65d4dd4efc8ff7a32ff1600edf3acbe2e6036dec5a6840312ec31973",
+      "bytes": 871130
+    },
+    {
+      "role": "Seeker",
+      "area": "navigation",
+      "page": "seeker_tab_bar",
+      "state": "touched_full",
+      "reached": "Actual first touch on small bar expands only; held finger, unchanged destination; current Guardian has four tabs per LOCK6 spec",
+      "file": "seeker_tab_bar__touched_full.png",
+      "width": 1290,
+      "height": 2796,
+      "route": [],
+      "tab": 0,
+      "sha256": "8a20ac5ab96449754d93d6f2c2512f879d3d1d7382eccd8c6f440995763d3df4",
+      "bytes": 855398
+    }
+  ],
+  "comparison": {
+    "timestamp": "2026-10-29T20:23:46.768128+00:00",
+    "captures": [
+      {
+        "file": "guardian_tab_bar__idle_small.png",
+        "bytes": 980169,
+        "sha256": "3da7de33004e9ff997b59ca7dc65851ed4925c3c4037fd1372e4abd2f4ca3ec4"
+      },
+      {
+        "file": "guardian_tab_bar__touched_full.png",
+        "bytes": 962555,
+        "sha256": "796d7cb79431333487f78cebad4c87770b5df15e8a945e5e1d2543f526fca77a"
+      },
+      {
+        "file": "seeker_tab_bar__idle_small.png",
+        "bytes": 871130,
+        "sha256": "e4d3242d65d4dd4efc8ff7a32ff1600edf3acbe2e6036dec5a6840312ec31973"
+      },
+      {
+        "file": "seeker_tab_bar__touched_full.png",
+        "bytes": 855398,
+        "sha256": "8a20ac5ab96449754d93d6f2c2512f879d3d1d7382eccd8c6f440995763d3df4"
+      }
+    ],
+    "seeker_body_above_nav_changed_bbox": null,
+    "same_locked_input_hashes": true,
+    "final_controller_recapture_unchanged": true
+  },
+  "tests": {
+    "timestamp_utc": "2026-10-29T20:32:18.116959+00:00",
+    "widget_suites": {
+      "count": 5,
+      "passed_cases": 103,
+      "log": "widget_tests.log"
+    },
+    "affected_suites": {
+      "count": 31,
+      "cases": 710,
+      "initial_log": "affected_tests.log",
+      "initial_passed": 687,
+      "initial_failed": 23,
+      "resolved_suites": [
+        "browse_options_menu_test.dart",
+        "journey_card_layout_choices_test.dart",
+        "one_journey_monthly_capacity_widget_test.dart",
+        "request_page_options_context_test.dart"
+      ],
+      "combined_retry": "fixture_retry_tests.log:98pass,2menu fixture failures",
+      "final_menu_retry": "menu_retry_tests.log:30pass",
+      "outcome": "All31suites passing after selective retries; no production change for fixture corrections."
+    },
+    "capture": {
+      "cases": 2,
+      "pictures": 4,
+      "log": "capture_tests.log"
+    },
+    "fixture_changes": "Existing tests now expand the real idle bar before selecting a destination; old bar/unchangedactionbar geometry separate; unchangedbody58point reservation independentofidle46; currentLOCK2threePastsections andsentwords carriedforward."
+  },
+  "analyser": "clean2.3s after one redundant import removed",
+  "scope": "Founder root Floating Glass only. Existing four Guardian destinations and old body retained per spec; Profiles action bar and other callers default unchanged. Body pixels above nav match LOCK2 exactly.",
+  "native": "HELD; no native build/install/retry"
+}
