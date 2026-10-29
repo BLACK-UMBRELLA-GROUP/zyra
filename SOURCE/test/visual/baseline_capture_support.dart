@@ -52,7 +52,7 @@ class _NoNetwork extends HttpOverrides {
   }
 }
 
-Future<void> baselineSetUp() async {
+Future<void> baselineSetUp({String evidenceRoot = baselineEvidence}) async {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
   final reading = FontLoader(_font);
@@ -80,7 +80,7 @@ Future<void> baselineSetUp() async {
     symbols.load(),
   ]);
   if (!_compareOnly) {
-    final environment = File('$baselineEvidence/capture_environment.json');
+    final environment = File('$evidenceRoot/capture_environment.json');
     await environment.parent.create(recursive: true);
     await environment.writeAsString(
       const JsonEncoder.withIndent('  ').convert({
