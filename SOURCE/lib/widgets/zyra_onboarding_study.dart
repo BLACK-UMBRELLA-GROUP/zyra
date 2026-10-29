@@ -9,17 +9,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
 enum ZyraOnboardingDirection {
-  current('Current Seeker onboarding'),
-  structured('1 · Structured'),
-  luma('2 · Luma'),
-  revolut('3 · Revolut'),
-  headspace('4 · Headspace'),
-  mozi('5 · Mozi'),
-  wise('6 · Wise'),
-  uber('7 · Uber'),
-  ahead('8 · Ahead'),
-  howWeFeel('9 · How We Feel'),
-  atoms('10 · Atoms');
+  luma('2 · Luma');
 
   const ZyraOnboardingDirection(this.label);
   final String label;
@@ -63,7 +53,7 @@ const _imamAhmadAttribution =
     'Reported from Imam Ahmad (may Allah have mercy on him) by al-Mardawi in al-Insaf, 8:19.';
 const _imamAhmadExplanation = 'A principle that helped shape ZYRA.';
 
-/// Ten different compositions using the existing ZYRA palette and type APIs.
+/// The selected Luma composition uses the existing ZYRA palette and type APIs.
 /// No photographed members, borrowed logos, inputs, timers, storage or APIs.
 class ZyraOnboardingStudy extends StatelessWidget {
   const ZyraOnboardingStudy({
@@ -134,18 +124,9 @@ class ZyraOnboardingStudy extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
       final compact = constraints.maxHeight < 510;
-      final centered = switch (direction) {
-        ZyraOnboardingDirection.structured ||
-        ZyraOnboardingDirection.revolut ||
-        ZyraOnboardingDirection.wise ||
-        ZyraOnboardingDirection.uber ||
-        ZyraOnboardingDirection.howWeFeel => false,
-        _ => true,
-      };
       if (page == 0) {
         return _QuotePage(
           direction: direction,
-          centered: centered,
           compact: compact,
           minHeight: constraints.maxHeight,
           scrollController: scrollController,
@@ -159,37 +140,21 @@ class ZyraOnboardingStudy extends StatelessWidget {
       // cards retain their existing artwork and copy associations afterward.
       final contentPage = page - 1;
       final roomy = constraints.maxWidth >= 430;
-      final heroFirst =
-          alignArtwork ||
-          switch (direction) {
-            ZyraOnboardingDirection.luma ||
-            ZyraOnboardingDirection.headspace ||
-            ZyraOnboardingDirection.mozi ||
-            ZyraOnboardingDirection.ahead ||
-            ZyraOnboardingDirection.atoms => true,
-            _ => false,
-          };
       final headingSize = sectionLead && contentPage == 0
           ? (compact ? 22.0 : 25.0)
-          : switch (direction) {
-              ZyraOnboardingDirection.revolut ||
-              ZyraOnboardingDirection.wise ||
-              ZyraOnboardingDirection.howWeFeel => compact ? 28.0 : 34.0,
-              _ => compact ? 25.0 : 29.0,
-            };
+          : (compact ? 25.0 : 29.0);
       // The continuous story uses one artwork slot even when copy lengths
       // differ. Standalone design comparisons retain their own compositions.
       final artworkHeight = alignArtwork
           ? (compact ? 120.0 : 140.0)
-          : (constraints.maxHeight * (heroFirst ? .43 : .38) -
-                    (contentPage == 1 ? 32 : 0))
-                .clamp(140.0, 290.0);
+          : (constraints.maxHeight * .43 - (contentPage == 1 ? 32 : 0)).clamp(
+              140.0,
+              290.0,
+            );
       final explanationStep = 2;
       final explanation = Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: centered
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _storyText(
             explanationStep,
@@ -200,13 +165,11 @@ class ZyraOnboardingStudy extends StatelessWidget {
                   : (compact ? 12.5 : 14),
               color: ZyraColors.foregroundSecondary,
             ).copyWith(height: sectionLead ? 1.38 : 1.6),
-            textAlign: centered ? TextAlign.center : TextAlign.left,
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: sectionLead ? 7 : (compact ? 12 : 18)),
           Row(
-            mainAxisAlignment: centered
-                ? MainAxisAlignment.center
-                : MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 contentPage == 1
@@ -231,9 +194,7 @@ class ZyraOnboardingStudy extends StatelessWidget {
       );
       final text = Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: centered
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _reveal(
             0,
@@ -255,7 +216,7 @@ class ZyraOnboardingStudy extends StatelessWidget {
               textKey: ValueKey(
                 'onboarding-study-heading-${direction.name}-$page',
               ),
-              textAlign: centered ? TextAlign.center : TextAlign.left,
+              textAlign: TextAlign.center,
             ),
           ),
           SizedBox(height: sectionLead ? 7 : 13),
@@ -312,9 +273,7 @@ class ZyraOnboardingStudy extends StatelessWidget {
                                 ),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: centered
-                                      ? CrossAxisAlignment.center
-                                      : CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     _storyText(
                                       2,
@@ -326,9 +285,7 @@ class ZyraOnboardingStudy extends StatelessWidget {
                                       textKey: ValueKey(
                                         'onboarding-study-quote-attribution-${direction.name}-$page',
                                       ),
-                                      textAlign: centered
-                                          ? TextAlign.center
-                                          : TextAlign.left,
+                                      textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(height: 5),
                                     _storyText(
@@ -344,9 +301,7 @@ class ZyraOnboardingStudy extends StatelessWidget {
                                       textKey: ValueKey(
                                         'onboarding-study-quote-${direction.name}-$page',
                                       ),
-                                      textAlign: centered
-                                          ? TextAlign.center
-                                          : TextAlign.left,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
@@ -407,38 +362,9 @@ class ZyraOnboardingStudy extends StatelessWidget {
                   : MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (direction == ZyraOnboardingDirection.structured) ...[
-                  _QuietProgress(page: page),
-                  const SizedBox(height: 18),
-                ],
-                if (heroFirst) ...[
-                  artwork,
-                  SizedBox(height: alignArtwork ? 8 : (compact ? 10 : 14)),
-                ],
-                if (direction == ZyraOnboardingDirection.mozi)
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: ZyraColors.surfaceFill,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: text,
-                  )
-                else
-                  text,
-                if (!heroFirst) ...[
-                  SizedBox(height: compact ? 12 : 18),
-                  artwork,
-                ],
-                if (direction == ZyraOnboardingDirection.wise) ...[
-                  SizedBox(height: compact ? 14 : 22),
-                  _RoleTiles(page: page),
-                  SizedBox(height: compact ? 12 : 18),
-                ] else if (direction == ZyraOnboardingDirection.howWeFeel) ...[
-                  SizedBox(height: compact ? 14 : 22),
-                  _MeaningTiles(page: contentPage),
-                  SizedBox(height: compact ? 12 : 18),
-                ],
+                artwork,
+                SizedBox(height: alignArtwork ? 8 : (compact ? 10 : 14)),
+                text,
               ],
             ),
           ),
@@ -487,7 +413,6 @@ class ZyraOnboardingStoryArtwork extends StatelessWidget {
 class _QuotePage extends StatelessWidget {
   const _QuotePage({
     required this.direction,
-    required this.centered,
     required this.compact,
     required this.minHeight,
     required this.scrollController,
@@ -498,7 +423,6 @@ class _QuotePage extends StatelessWidget {
   });
 
   final ZyraOnboardingDirection direction;
-  final bool centered;
   final bool compact;
   final double minHeight;
   final ScrollController? scrollController;
@@ -516,7 +440,7 @@ class _QuotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const page = 0;
-    final alignment = centered ? TextAlign.center : TextAlign.left;
+    final alignment = TextAlign.center;
     return SingleChildScrollView(
       key: ValueKey('onboarding-study-scroll-${direction.name}-$page'),
       controller: scrollController,
@@ -531,10 +455,6 @@ class _QuotePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (direction == ZyraOnboardingDirection.structured) ...[
-                const _QuietProgress(page: page),
-                SizedBox(height: compact ? 10 : 16),
-              ],
               _reveal(
                 0,
                 Align(
@@ -587,9 +507,7 @@ class _QuotePage extends StatelessWidget {
               _reveal(
                 2,
                 Column(
-                  crossAxisAlignment: centered
-                      ? CrossAxisAlignment.center
-                      : CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Semantics(
                       container: true,
@@ -610,9 +528,7 @@ class _QuotePage extends StatelessWidget {
                             ),
                           ),
                           child: Column(
-                            crossAxisAlignment: centered
-                                ? CrossAxisAlignment.center
-                                : CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
                                 '“$_imamAhmadExcerpt”',
@@ -744,92 +660,6 @@ class _StoryReveal extends StatelessWidget {
   }
 }
 
-class _QuietProgress extends StatelessWidget {
-  const _QuietProgress({required this.page});
-  final int page;
-
-  @override
-  Widget build(BuildContext context) => Row(
-    children: [
-      for (var i = 0; i < ZyraOnboardingDirection.storyPageCount; i++) ...[
-        if (i != 0) const SizedBox(width: 6),
-        Expanded(
-          child: Container(
-            height: 4,
-            decoration: BoxDecoration(
-              color: i <= page
-                  ? ZyraColors.journeyGold
-                  : ZyraColors.surfaceFill,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-        ),
-      ],
-    ],
-  );
-}
-
-class _RoleTiles extends StatelessWidget {
-  const _RoleTiles({required this.page});
-  final int page;
-
-  @override
-  Widget build(BuildContext context) => Wrap(
-    spacing: 8,
-    runSpacing: 8,
-    children: [
-      for (final item in [
-        (Icons.person_outline_rounded, 'Seeker'),
-        (Icons.shield_outlined, 'Guardian'),
-      ])
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          decoration: BoxDecoration(
-            color: ZyraColors.surfaceFill,
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(item.$1, color: ZyraColors.journeyGold, size: 19),
-              const SizedBox(width: 8),
-              Text(item.$2, style: ZyraText.body(size: 12)),
-            ],
-          ),
-        ),
-    ],
-  );
-}
-
-class _MeaningTiles extends StatelessWidget {
-  const _MeaningTiles({required this.page});
-  final int page;
-
-  @override
-  Widget build(BuildContext context) => Wrap(
-    spacing: 7,
-    runSpacing: 7,
-    children: [
-      for (final label in switch (page) {
-        0 => ['Intention', 'Understanding', 'Support'],
-        1 => ['Values', 'Preferences', 'Privacy'],
-        _ => ['Consent', 'Guidance', 'Your pace'],
-      })
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-          decoration: BoxDecoration(
-            color: ZyraColors.journeyGold.withValues(alpha: .12),
-            borderRadius: BorderRadius.circular(11),
-          ),
-          child: Text(
-            label,
-            style: ZyraText.body(size: 11, color: ZyraColors.journeyGold),
-          ),
-        ),
-    ],
-  );
-}
-
 /// Original code-native illustrations. References influence composition only;
 /// no source-brand assets, logos, photos, or slogans are reproduced.
 class _OnboardingStudyPainter extends CustomPainter {
@@ -859,34 +689,7 @@ class _OnboardingStudyPainter extends CustomPainter {
       (size.height - 280 * scale) / 2,
     );
     canvas.scale(scale);
-    if (introSymbol != null) {
-      _glow(canvas);
-    } else {
-      switch (direction) {
-        case ZyraOnboardingDirection.structured:
-          _timeline(canvas);
-        case ZyraOnboardingDirection.luma:
-          _glow(canvas);
-        case ZyraOnboardingDirection.revolut:
-          _cards(canvas);
-        case ZyraOnboardingDirection.headspace:
-          _landscape(canvas);
-        case ZyraOnboardingDirection.mozi:
-          _people(canvas);
-        case ZyraOnboardingDirection.wise:
-          _path(canvas);
-        case ZyraOnboardingDirection.uber:
-          _shield(canvas);
-        case ZyraOnboardingDirection.ahead:
-          _orbit(canvas);
-        case ZyraOnboardingDirection.howWeFeel:
-          _mosaic(canvas);
-        case ZyraOnboardingDirection.atoms:
-          _ring(canvas);
-        case ZyraOnboardingDirection.current:
-          _glow(canvas);
-      }
-    }
+    _glow(canvas);
     canvas.restore();
   }
 
@@ -919,42 +722,6 @@ class _OnboardingStudyPainter extends CustomPainter {
     p.paint(c, center - Offset(p.width / 2, p.height / 2));
   }
 
-  void _label(
-    Canvas c,
-    String value,
-    Offset at, {
-    double size = 13,
-    Color? color,
-  }) {
-    final p = TextPainter(
-      text: TextSpan(
-        text: value,
-        style: value == 'ZYRA'
-            ? ZyraText.wordmark(size: size).copyWith(color: color ?? ink)
-            : ZyraText.body(size: size, color: color ?? ink),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: 250);
-    p.paint(c, at);
-  }
-
-  void _line(
-    Canvas c,
-    Offset a,
-    Offset b, {
-    double alpha = .4,
-    double width = 1.5,
-  }) {
-    c.drawLine(
-      a,
-      b,
-      Paint()
-        ..color = gold.withValues(alpha: alpha)
-        ..strokeWidth = width
-        ..strokeCap = StrokeCap.round,
-    );
-  }
-
   void _halo(Canvas c, Offset at, double radius) {
     c.drawCircle(
       at,
@@ -964,81 +731,6 @@ class _OnboardingStudyPainter extends CustomPainter {
           colors: [gold.withValues(alpha: .28), gold.withValues(alpha: 0)],
         ).createShader(Rect.fromCircle(center: at, radius: radius)),
     );
-  }
-
-  void _avatar(Canvas c, Offset at, double radius, {bool accented = false}) {
-    c.drawCircle(
-      at,
-      radius,
-      Paint()
-        ..color = accented
-            ? gold.withValues(alpha: .18)
-            : ink.withValues(alpha: .08),
-    );
-    c.drawCircle(
-      at,
-      radius,
-      Paint()
-        ..color = gold.withValues(alpha: accented ? .8 : .25)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1,
-    );
-    _icon(
-      c,
-      Icons.person_outline_rounded,
-      at,
-      radius * 1.15,
-      color: accented ? gold : ink.withValues(alpha: .7),
-    );
-  }
-
-  void _timeline(Canvas c) {
-    _line(c, const Offset(31, 47), const Offset(31, 231), alpha: .28, width: 2);
-    for (var i = 0; i < 3; i++) {
-      final y = 24.0 + i * 78;
-      c.drawCircle(
-        Offset(31, y + 29),
-        11,
-        Paint()..color = gold.withValues(alpha: i == page ? 1 : .16),
-      );
-      if (i <= page) {
-        _icon(
-          c,
-          Icons.check_rounded,
-          Offset(31, y + 29),
-          14,
-          color: ZyraColors.luxuryDarkPurple,
-        );
-      }
-      _card(
-        c,
-        Rect.fromLTWH(57, y, 240, 62),
-        alpha: i == page ? .13 : .05,
-        radius: 18,
-      );
-      _icon(
-        c,
-        [
-          Icons.person_outline_rounded,
-          Icons.auto_awesome_outlined,
-          Icons.people_outline_rounded,
-        ][i],
-        Offset(85, y + 30),
-        23,
-      );
-      _label(
-        c,
-        ['Your profile', 'Private values', 'Trusted support'][i],
-        Offset(108, y + 18),
-      );
-      _line(
-        c,
-        Offset(108, y + 43),
-        Offset(245 - i * 18, y + 43),
-        alpha: .19,
-        width: 3,
-      );
-    }
   }
 
   void _glow(Canvas c) {
@@ -1076,312 +768,6 @@ class _OnboardingStudyPainter extends CustomPainter {
       );
     }
     _card(c, const Rect.fromLTWH(100, 238, 120, 24), radius: 12, alpha: .06);
-  }
-
-  void _cards(Canvas c) {
-    for (var i = 0; i < 3; i++) {
-      c.save();
-      c.translate(160.0, 138.0);
-      c.rotate((i - 1) * .15);
-      c.translate(-160.0 + (i - 1) * 18, -138.0 - i * 12);
-      final r = Rect.fromLTWH(55, 65 + i * 28, 210, 142);
-      c.drawRRect(
-        RRect.fromRectAndRadius(r, const Radius.circular(24)),
-        Paint()
-          ..shader = LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [ZyraColors.royalPurple, ZyraColors.luxuryDarkPurple],
-          ).createShader(r),
-      );
-      c.drawRRect(
-        RRect.fromRectAndRadius(r, const Radius.circular(24)),
-        Paint()
-          ..color = gold.withValues(alpha: .20 + i * .09)
-          ..style = PaintingStyle.stroke,
-      );
-      _label(c, 'ZYRA', Offset(76, r.top + 19), size: 17, color: gold);
-      _icon(
-        c,
-        [
-          Icons.person_outline_rounded,
-          Icons.lock_outline_rounded,
-          Icons.shield_outlined,
-        ][i],
-        Offset(234, r.top + 34),
-        24,
-      );
-      _line(
-        c,
-        Offset(77, r.bottom - 39),
-        Offset(188, r.bottom - 39),
-        alpha: .35,
-        width: 4,
-      );
-      _line(
-        c,
-        Offset(77, r.bottom - 23),
-        Offset(143, r.bottom - 23),
-        alpha: .2,
-        width: 3,
-      );
-      c.restore();
-    }
-  }
-
-  void _landscape(Canvas c) {
-    _halo(c, const Offset(160, 128), 123);
-    c.drawCircle(
-      const Offset(160, 101),
-      61,
-      Paint()..color = gold.withValues(alpha: .83),
-    );
-    final hills = Path()
-      ..moveTo(0, 250)
-      ..cubicTo(50, 123, 165, 126, 245, 210)
-      ..cubicTo(270, 239, 308, 221, 320, 215)
-      ..lineTo(320, 280)
-      ..lineTo(0, 280)
-      ..close();
-    c.drawPath(hills, Paint()..color = ZyraColors.royalPurple);
-    final front = Path()
-      ..moveTo(0, 263)
-      ..cubicTo(113, 285, 167, 161, 320, 206)
-      ..lineTo(320, 280)
-      ..lineTo(0, 280)
-      ..close();
-    c.drawPath(front, Paint()..color = gold.withValues(alpha: .11));
-    _icon(
-      c,
-      [
-        Icons.spa_outlined,
-        Icons.self_improvement_rounded,
-        Icons.people_outline_rounded,
-      ][page],
-      const Offset(160, 102),
-      38,
-      color: ZyraColors.luxuryDarkPurple,
-    );
-  }
-
-  void _people(Canvas c) {
-    for (var i = 0; i < 3; i++) {
-      final x = 5.0 + i * 101;
-      final y = i == 1 ? 24.0 : 56.0;
-      _card(
-        c,
-        Rect.fromLTWH(x, y, 108, 171),
-        radius: 28,
-        alpha: i == 1 ? .12 : .055,
-      );
-      _avatar(c, Offset(x + 54, y + 55), 32, accented: i == page);
-      _label(
-        c,
-        ['You', 'Your values', 'Your circle'][i],
-        Offset(x + 15, y + 105),
-        size: 11.5,
-      );
-      _card(c, Rect.fromLTWH(x + 16, y + 132, 76, 20), radius: 10, alpha: .09);
-    }
-    _line(c, const Offset(61, 244), const Offset(257, 244), alpha: .17);
-    _icon(c, Icons.handshake_outlined, const Offset(160, 244), 22);
-  }
-
-  void _path(Canvas c) {
-    final path = Path()
-      ..moveTo(25, 217)
-      ..cubicTo(67, 215, 66, 75, 144, 75)
-      ..cubicTo(224, 75, 193, 216, 285, 128);
-    c.drawPath(
-      path,
-      Paint()
-        ..color = gold.withValues(alpha: .75)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 5
-        ..strokeCap = StrokeCap.round,
-    );
-    for (final entry in [
-      (const Offset(25, 217), Icons.person_outline_rounded),
-      (const Offset(145, 75), Icons.auto_awesome_outlined),
-      (const Offset(285, 128), Icons.shield_outlined),
-    ]) {
-      c.drawCircle(entry.$1, 24, Paint()..color = ZyraColors.royalPurple);
-      c.drawCircle(
-        entry.$1,
-        24,
-        Paint()
-          ..color = gold.withValues(alpha: .8)
-          ..style = PaintingStyle.stroke,
-      );
-      _icon(c, entry.$2, entry.$1, 24);
-    }
-    _label(c, 'A clear path. Your own pace.', const Offset(65, 252), size: 12);
-  }
-
-  void _shield(Canvas c) {
-    final shield = Path()
-      ..moveTo(160, 15)
-      ..lineTo(259, 53)
-      ..lineTo(250, 154)
-      ..quadraticBezierTo(234, 216, 160, 257)
-      ..quadraticBezierTo(86, 216, 70, 154)
-      ..lineTo(61, 53)
-      ..close();
-    c.drawPath(
-      shield,
-      Paint()
-        ..shader = LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [gold.withValues(alpha: .24), gold.withValues(alpha: .045)],
-        ).createShader(const Rect.fromLTWH(61, 15, 198, 242)),
-    );
-    c.drawPath(
-      shield,
-      Paint()
-        ..color = gold.withValues(alpha: .48)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-    _avatar(c, const Offset(129, 133), 38, accented: true);
-    _avatar(c, const Offset(194, 141), 32);
-    _line(
-      c,
-      const Offset(131, 207),
-      const Offset(183, 207),
-      alpha: .66,
-      width: 3,
-    );
-    _icon(c, Icons.arrow_forward_rounded, const Offset(204, 207), 24);
-  }
-
-  void _orbit(Canvas c) {
-    _halo(c, const Offset(160, 137), 114);
-    c.drawOval(
-      const Rect.fromLTWH(31, 80, 259, 105),
-      Paint()
-        ..color = gold.withValues(alpha: .3)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-    c.save();
-    c.translate(160.0, 132.0);
-    c.rotate(-.58);
-    c.translate(-160.0, -132.0);
-    c.drawOval(
-      const Rect.fromLTWH(31, 80, 259, 105),
-      Paint()
-        ..color = gold.withValues(alpha: .24)
-        ..style = PaintingStyle.stroke,
-    );
-    c.restore();
-    c.drawCircle(
-      const Offset(160, 132),
-      54,
-      Paint()..color = gold.withValues(alpha: .17),
-    );
-    _icon(
-      c,
-      [
-        Icons.auto_awesome_rounded,
-        Icons.tune_rounded,
-        Icons.shield_outlined,
-      ][page],
-      const Offset(160, 132),
-      44,
-    );
-    for (final at in [
-      const Offset(43, 135),
-      const Offset(245, 76),
-      const Offset(250, 164),
-    ]) {
-      _icon(c, Icons.auto_awesome_rounded, at, 20);
-    }
-    _card(c, const Rect.fromLTWH(63, 226, 194, 34), radius: 17, alpha: .08);
-    _label(
-      c,
-      ['Start thoughtfully', 'Know what matters', 'Keep support close'][page],
-      const Offset(88, 235),
-      size: 11,
-    );
-  }
-
-  void _mosaic(Canvas c) {
-    final icons = [
-      Icons.person_outline_rounded,
-      Icons.auto_awesome_outlined,
-      Icons.shield_outlined,
-      Icons.people_outline_rounded,
-    ];
-    for (var i = 0; i < 4; i++) {
-      final x = 45.0 + (i % 2) * 119;
-      final y = 19.0 + (i ~/ 2) * 119;
-      c.drawRRect(
-        RRect.fromRectAndRadius(
-          Rect.fromLTWH(x, y, 105, 105),
-          Radius.circular(i.isEven ? 48 : 22),
-        ),
-        Paint()
-          ..shader = LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              gold.withValues(alpha: .24 + i * .08),
-              gold.withValues(alpha: .10),
-            ],
-          ).createShader(Rect.fromLTWH(x, y, 105, 105)),
-      );
-      _icon(
-        c,
-        icons[(i + page) % 4],
-        Offset(x + 52.5, y + 52.5),
-        39,
-        color: gold.withValues(alpha: .8 + i * .05),
-      );
-    }
-  }
-
-  void _ring(Canvas c) {
-    for (var x = 38; x < 300; x += 18) {
-      for (var y = 17; y < 265; y += 18) {
-        c.drawCircle(
-          Offset(x.toDouble(), y.toDouble()),
-          1.2,
-          Paint()..color = gold.withValues(alpha: .09),
-        );
-      }
-    }
-    final r = const Rect.fromLTWH(65, 39, 190, 190);
-    c.drawCircle(
-      const Offset(160, 134),
-      95,
-      Paint()
-        ..color = gold.withValues(alpha: .12)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 22,
-    );
-    c.drawArc(
-      r,
-      -math.pi / 2,
-      math.pi * 2 * ((storyPage + 1) / ZyraOnboardingDirection.storyPageCount),
-      false,
-      Paint()
-        ..color = gold
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 22
-        ..strokeCap = StrokeCap.round,
-    );
-    _icon(
-      c,
-      [
-        Icons.auto_awesome_outlined,
-        Icons.lock_outline_rounded,
-        Icons.people_outline_rounded,
-      ][page],
-      const Offset(160, 134),
-      44,
-    );
-    c.drawCircle(const Offset(160, 256), 4, Paint()..color = gold);
   }
 
   @override

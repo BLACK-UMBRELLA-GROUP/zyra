@@ -175,7 +175,6 @@ void main() {
         isFalse,
       );
       expect(session.setPhotos(false, []), isFalse);
-      expect(session.setPalette(ZyraDevPalette.paperWhite), isFalse);
       expect(session.setAvatar(false, const Offset(2, -3)), isTrue);
       expect(session.avatar(false), const Offset(1, -1));
       allowed = false;

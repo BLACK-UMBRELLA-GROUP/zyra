@@ -2,10 +2,8 @@
 // Quiet Horizon is now the main splash; previews never replace the route stack.
 import 'package:flutter/material.dart';
 
-import '../screens/splash_screen.dart';
 import '../services/zyra_developer_access.dart';
 import '../theme/zyra_text.dart';
-import '../widgets/zyra_splash_motion.dart';
 import '../widgets/zyra_splash_artwork.dart';
 
 export '../widgets/zyra_splash_artwork.dart'
@@ -63,7 +61,7 @@ class DevSplashDirectionPicker extends StatelessWidget {
 class DevSplashDirectionsScreen extends StatefulWidget {
   const DevSplashDirectionsScreen({
     super.key,
-    this.initialDirection = ZyraSplashDirection.current,
+    this.initialDirection = zyraPrimarySplashDirection,
   });
   final ZyraSplashDirection initialDirection;
 
@@ -107,16 +105,10 @@ class _DevSplashDirectionsScreenState extends State<DevSplashDirectionsScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          if (_direction == ZyraSplashDirection.current)
-            SplashScreen(
-              key: ValueKey('current_$_run'),
-              motion: ZyraSplashMotion.bloomDraw,
-            )
-          else
-            ZyraSplashStudy(
-              key: ValueKey('${_direction.name}_$_run'),
-              direction: _direction,
-            ),
+          ZyraSplashStudy(
+            key: ValueKey('${_direction.name}_$_run'),
+            direction: _direction,
+          ),
           SafeArea(
             child: Align(
               alignment: Alignment.topLeft,

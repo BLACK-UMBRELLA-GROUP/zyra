@@ -229,20 +229,18 @@ Future<void> _reachFirstQuestion(
   await _mount(tester, direction: direction, mode: mode);
   await _advance(tester, 'welcome_google');
   await _enterOpeningStory(tester);
-  if (direction != ZyraOnboardingDirection.current) {
-    for (var page = 0; page < _openingThemeCount; page++) {
-      expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
-      expect(
-        find.byKey(ValueKey('dev_opening_page_${page + 1}')),
-        findsOneWidget,
-      );
-      await _completeStoryPage(
-        tester,
-        direction: direction,
-        mode: mode,
-        page: page,
-      );
-    }
+  for (var page = 0; page < _openingThemeCount; page++) {
+    expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
+    expect(
+      find.byKey(ValueKey('dev_opening_page_${page + 1}')),
+      findsOneWidget,
+    );
+    await _completeStoryPage(
+      tester,
+      direction: direction,
+      mode: mode,
+      page: page,
+    );
   }
   expect(find.byType(RoleSelectionScreen), findsOneWidget);
   expect(find.byKey(const ValueKey('role-choice-continue')), findsNothing);
@@ -449,7 +447,7 @@ void main() {
     (tester) async {
       await _mount(
         tester,
-        direction: ZyraOnboardingDirection.structured,
+        direction: ZyraOnboardingDirection.luma,
         mode: ZyraOnboardingAdvanceMode.animatedDownArrow,
       );
       await _advance(tester, 'welcome_google');
@@ -466,7 +464,7 @@ void main() {
       expect(find.text('2 / 4'), findsOneWidget);
       await _completeStoryPage(
         tester,
-        direction: ZyraOnboardingDirection.structured,
+        direction: ZyraOnboardingDirection.luma,
         mode: ZyraOnboardingAdvanceMode.animatedDownArrow,
         page: 0,
       );
@@ -474,7 +472,7 @@ void main() {
       for (var page = 1; page < _openingThemeCount; page++) {
         await _completeStoryPage(
           tester,
-          direction: ZyraOnboardingDirection.structured,
+          direction: ZyraOnboardingDirection.luma,
           mode: ZyraOnboardingAdvanceMode.animatedDownArrow,
           page: page,
         );
@@ -491,7 +489,7 @@ void main() {
   ) async {
     await _mount(
       tester,
-      direction: ZyraOnboardingDirection.atoms,
+      direction: ZyraOnboardingDirection.luma,
       mode: ZyraOnboardingAdvanceMode.continueButton,
     );
     await _advance(tester, 'welcome_google');
@@ -503,7 +501,7 @@ void main() {
       );
       await _completeStoryPage(
         tester,
-        direction: ZyraOnboardingDirection.atoms,
+        direction: ZyraOnboardingDirection.luma,
         mode: ZyraOnboardingAdvanceMode.continueButton,
         page: page,
       );
@@ -519,7 +517,7 @@ void main() {
   ) async {
     await _mount(
       tester,
-      direction: ZyraOnboardingDirection.structured,
+      direction: ZyraOnboardingDirection.luma,
       mode: ZyraOnboardingAdvanceMode.animatedDownArrow,
       viewport: const Size(320, 568),
       textScale: 1.4,
@@ -529,7 +527,7 @@ void main() {
     for (var page = 0; page < _openingThemeCount; page++) {
       await _completeStoryPage(
         tester,
-        direction: ZyraOnboardingDirection.structured,
+        direction: ZyraOnboardingDirection.luma,
         mode: ZyraOnboardingAdvanceMode.animatedDownArrow,
         page: page,
       );
@@ -539,7 +537,7 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  for (final direction in ZyraOnboardingDirection.values.skip(1)) {
+  for (final direction in ZyraOnboardingDirection.values) {
     testWidgets(
       '${direction.name} shows complete stories before one tap and final arrow',
       (tester) async {
@@ -579,7 +577,7 @@ void main() {
     (tester) async {
       await _reachFirstQuestion(
         tester,
-        direction: ZyraOnboardingDirection.structured,
+        direction: ZyraOnboardingDirection.luma,
         mode: ZyraOnboardingAdvanceMode.continueButton,
         guardian: false,
       );

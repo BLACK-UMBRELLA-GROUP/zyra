@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
 import 'package:zyra/widgets/zyra_onboarding_direction_style.dart';
@@ -27,7 +26,7 @@ Future<void> _pumpWelcome(
         child: child!,
       ),
       home: OnboardingPreviewStyle(
-        directionName: 'atoms',
+        directionName: 'luma',
         child: ZyraOnboardingArrowScope(
           enabled: true,
           child: OnboardingStageIntroScreen(
@@ -79,12 +78,8 @@ void main() {
     expect(_roadmapOpacity(tester, 4), 0);
     expect(
       find.byKey(const ValueKey('onboarding_welcome_progress_cue')),
-      findsOneWidget,
+      findsNothing,
     );
-    final cue = tester.widget<Container>(
-      find.byKey(const ValueKey('onboarding_welcome_progress_cue')),
-    );
-    expect((cue.decoration! as BoxDecoration).color, ZyraColors.journeyGold);
 
     await tester.pump(const Duration(milliseconds: 1650));
     expect(_opacityAt(tester, 2), 1);

@@ -379,7 +379,6 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
         family: family,
         mode: _NetworkCardMode.browser,
         isMainWali: ctx.isMainWali,
-        design: ctx.networkCardDesign,
         actionLayout: ctx.networkActionLayout,
         onViewProfile: () {
           ctx.track('card_viewed', family.id);
@@ -463,7 +462,6 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
         mode: mode,
         isMainWali: true,
         connectionCapped: capped,
-        design: ctx.networkCardDesign,
         onViewProfile: () {
           ctx.track('card_viewed', family.id);
           showGNProfileSheet(context, family, rung2: false);
@@ -1046,7 +1044,6 @@ class _NetworkFamilyCard extends StatelessWidget {
     required this.family,
     required this.mode,
     required this.isMainWali,
-    required this.design,
     required this.onViewProfile,
     this.actionLayout = GNNetworkActionLayout.current,
     this.connectionCapped = false,
@@ -1060,7 +1057,6 @@ class _NetworkFamilyCard extends StatelessWidget {
   final GNFamily family;
   final _NetworkCardMode mode;
   final bool isMainWali;
-  final GNNetworkCardDesign design;
   final GNNetworkActionLayout actionLayout;
   final bool connectionCapped;
   final VoidCallback onViewProfile;
@@ -1078,121 +1074,7 @@ class _NetworkFamilyCard extends StatelessWidget {
       _NetworkCardMode.sent => 'gn-sent-${family.id}',
       _NetworkCardMode.received => 'gn-incoming-${family.id}',
     }),
-    child: switch (design) {
-      GNNetworkCardDesign.openCanvas => _openCanvas(),
-      GNNetworkCardDesign.cinematic => _cinematic(),
-      GNNetworkCardDesign.editorial => _editorial(),
-      GNNetworkCardDesign.portraitFocus => _portraitFocus(),
-      GNNetworkCardDesign.actionRail => _actionRail(),
-    },
-  );
-
-  Widget _openCanvas() => Column(
-    key: const Key('gn-card-design-openCanvas'),
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Expanded(
-        child: Semantics(
-          button: true,
-          label: 'View ${family.display} profile',
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onViewProfile,
-            child: _NetworkFamilyPortrait(family: family),
-          ),
-        ),
-      ),
-      const SizedBox(height: 13),
-      _guardianLine(),
-      if (mode != _NetworkCardMode.browser) ...[
-        const SizedBox(height: 8),
-        _requestContext(),
-      ],
-      const SizedBox(height: 13),
-      _actionArea(gap: 8),
-    ],
-  );
-
-  Widget _cinematic() => ClipRRect(
-    key: const Key('gn-card-design-cinematic'),
-    borderRadius: BorderRadius.circular(28),
-    child: Stack(
-      fit: StackFit.expand,
-      children: [
-        Semantics(
-          button: true,
-          label: 'View ${family.display} profile',
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onViewProfile,
-            child: _NetworkFamilyPortrait(family: family, detailsBottom: 178),
-          ),
-        ),
-        Positioned(
-          left: 12,
-          right: 12,
-          bottom: 12,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(13, 12, 13, 10),
-            decoration: BoxDecoration(
-              color: ZyraColors.luxuryDarkPurple.withValues(alpha: 181 / 255),
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _guardianLine(),
-                if (mode != _NetworkCardMode.browser) ...[
-                  const SizedBox(height: 7),
-                  _requestContext(compact: true),
-                ],
-                const SizedBox(height: 10),
-                _actionArea(gap: 5, compact: true),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-
-  Widget _editorial() => Column(
-    key: const Key('gn-card-design-editorial'),
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(family.display, style: ZyraText.heading(size: 25)),
-                const SizedBox(height: 2),
-                Text(family.region, style: ZyraText.subtext(size: 11.75)),
-              ],
-            ),
-          ),
-          const GNVerifiedBadge(),
-        ],
-      ),
-      const SizedBox(height: 11),
-      Expanded(
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: onViewProfile,
-          child: _NetworkFamilyPortrait(family: family, showIdentity: false),
-        ),
-      ),
-      const SizedBox(height: 11),
-      _guardianLine(showVerified: false),
-      if (mode != _NetworkCardMode.browser) ...[
-        const SizedBox(height: 8),
-        _requestContext(),
-      ],
-      const SizedBox(height: 12),
-      _actionArea(),
-    ],
+    child: _portraitFocus(),
   );
 
   Widget _portraitFocus() => Column(
@@ -1207,10 +1089,7 @@ class _NetworkFamilyCard extends StatelessWidget {
             onTap: onViewProfile,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(42),
-              child: _NetworkFamilyPortrait(
-                family: family,
-                showIdentity: false,
-              ),
+              child: _NetworkFamilyPortrait(family: family),
             ),
           ),
         ),
@@ -1228,28 +1107,6 @@ class _NetworkFamilyCard extends StatelessWidget {
         style: ZyraText.subtext(size: 11.75),
       ),
       const SizedBox(height: 11),
-      _guardianLine(centered: true),
-      if (mode != _NetworkCardMode.browser) ...[
-        const SizedBox(height: 8),
-        _requestContext(centered: true),
-      ],
-      const SizedBox(height: 12),
-      _actionArea(),
-    ],
-  );
-
-  Widget _actionRail() => Column(
-    key: const Key('gn-card-design-actionRail'),
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Expanded(
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: onViewProfile,
-          child: _NetworkFamilyPortrait(family: family),
-        ),
-      ),
-      const SizedBox(height: 12),
       _guardianLine(),
       if (mode != _NetworkCardMode.browser) ...[
         const SizedBox(height: 8),
@@ -1260,7 +1117,7 @@ class _NetworkFamilyCard extends StatelessWidget {
     ],
   );
 
-  Widget _guardianLine({bool showVerified = true, bool centered = false}) {
+  Widget _guardianLine() {
     final content = <Widget>[
       Icon(
         Icons.shield_outlined,
@@ -1276,26 +1133,20 @@ class _NetworkFamilyCard extends StatelessWidget {
           style: ZyraText.body(size: 13.25),
         ),
       ),
-      if (showVerified) ...[const SizedBox(width: 8), const GNVerifiedBadge()],
+      const SizedBox(width: 8),
+      const GNVerifiedBadge(),
     ];
-    return Row(
-      mainAxisAlignment: centered
-          ? MainAxisAlignment.center
-          : MainAxisAlignment.start,
-      children: content,
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: content);
   }
 
-  Widget _requestContext({bool compact = false, bool centered = false}) {
+  Widget _requestContext() {
     final sent = mode == _NetworkCardMode.sent;
     return Row(
-      mainAxisAlignment: centered
-          ? MainAxisAlignment.center
-          : MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           sent ? Icons.schedule_outlined : Icons.mark_email_unread_outlined,
-          size: compact ? 14 : 16,
+          size: 16,
           color: gnGold.withValues(alpha: 0.82),
         ),
         const SizedBox(width: 7),
@@ -1306,7 +1157,7 @@ class _NetworkFamilyCard extends StatelessWidget {
                 : 'Request received · Their Main Guardian is waiting',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: ZyraText.subtext(size: compact ? 9.5 : 10.5),
+            style: ZyraText.subtext(size: 10.5),
           ),
         ),
       ],
@@ -1315,7 +1166,7 @@ class _NetworkFamilyCard extends StatelessWidget {
 
   // Layout comparisons apply only to Browser. Sent and Received keep their
   // request actions and their existing order; Next still sets a family aside.
-  Widget _actionArea({double gap = 7, bool compact = false}) {
+  Widget _actionArea() {
     if (mode != _NetworkCardMode.browser ||
         actionLayout == GNNetworkActionLayout.current) {
       return Column(
@@ -1324,11 +1175,7 @@ class _NetworkFamilyCard extends StatelessWidget {
             : null,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _actionPair(),
-          SizedBox(height: gap),
-          _footerAction(compact: compact),
-        ],
+        children: [_actionPair(), const SizedBox(height: 7), _footerAction()],
       );
     }
 
@@ -1339,12 +1186,12 @@ class _NetworkFamilyCard extends StatelessWidget {
       children: switch (actionLayout) {
         GNNetworkActionLayout.quietNext => [
           _actionPair(),
-          SizedBox(height: gap),
+          const SizedBox(height: 7),
           Align(alignment: Alignment.centerRight, child: _quietNextAction()),
         ],
         GNNetworkActionLayout.speakFirst => [
           SizedBox(height: 44, child: _speakAction()),
-          SizedBox(height: gap),
+          const SizedBox(height: 7),
           Row(
             children: [
               Expanded(child: SizedBox(height: 44, child: _profileAction())),
@@ -1355,7 +1202,7 @@ class _NetworkFamilyCard extends StatelessWidget {
         ],
         GNNetworkActionLayout.profileFirst => [
           SizedBox(height: 44, child: _profileAction()),
-          SizedBox(height: gap),
+          const SizedBox(height: 7),
           Row(
             children: [
               Expanded(child: SizedBox(height: 44, child: _speakAction())),
@@ -1437,8 +1284,7 @@ class _NetworkFamilyCard extends StatelessWidget {
     );
   }
 
-  Widget _footerAction({bool compact = false}) {
-    final height = compact ? 38.0 : 44.0;
+  Widget _footerAction() {
     return switch (mode) {
       _NetworkCardMode.browser => SizedBox(
         height: 44,
@@ -1450,16 +1296,16 @@ class _NetworkFamilyCard extends StatelessWidget {
         ),
       ),
       _NetworkCardMode.sent => SizedBox(
-        height: height,
+        height: 44,
         child: Center(
           child: Text(
             'Waiting for their family to respond',
-            style: ZyraText.subtext(size: compact ? 10 : 11),
+            style: ZyraText.subtext(size: 11),
           ),
         ),
       ),
       _NetworkCardMode.received => SizedBox(
-        height: height,
+        height: 44,
         child: Row(
           children: [
             Expanded(
@@ -1489,15 +1335,9 @@ class _NetworkFamilyCard extends StatelessWidget {
 }
 
 class _NetworkFamilyPortrait extends StatelessWidget {
-  const _NetworkFamilyPortrait({
-    required this.family,
-    this.showIdentity = true,
-    this.detailsBottom = 16,
-  });
+  const _NetworkFamilyPortrait({required this.family});
 
   final GNFamily family;
-  final bool showIdentity;
-  final double detailsBottom;
 
   @override
   Widget build(BuildContext context) {
@@ -1543,29 +1383,6 @@ class _NetworkFamilyPortrait extends StatelessWidget {
               ),
             ),
           ),
-          if (showIdentity)
-            Positioned(
-              left: 18,
-              right: 18,
-              bottom: detailsBottom,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    family.display,
-                    style: ZyraText.heading(size: 27, color: Colors.white),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    family.region,
-                    style: ZyraText.subtext(
-                      size: 12.5,
-                      color: Colors.white.withValues(alpha: 0.78),
-                    ),
-                  ),
-                ],
-              ),
-            ),
         ],
       ),
     );

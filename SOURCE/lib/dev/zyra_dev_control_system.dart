@@ -470,9 +470,7 @@ class _DevAppSurfaceOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final icon = switch (style) {
-      ZyraAppSurfaceStyle.classicGlass => Icons.blur_on_rounded,
       ZyraAppSurfaceStyle.glassSignals => Icons.linear_scale_rounded,
-      ZyraAppSurfaceStyle.statusAccents => Icons.palette_outlined,
     };
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
@@ -539,7 +537,6 @@ class ZyraDevStylePanel extends StatelessWidget {
     return ListenableBuilder(
       listenable: Listenable.merge([
         ZyraColors.devPaletteSelection,
-        ZyraColors.devLightAccentSelection,
         ZyraText.appFontSelection,
         ZyraInteractionStyle.navStyleSelection,
         ZyraInteractionStyle.hapticLevelSelection,
@@ -555,45 +552,11 @@ class ZyraDevStylePanel extends StatelessWidget {
               style: ZyraText.chapterLabel(color: Colors.white38),
             ),
             const SizedBox(height: 8),
-            for (final palette in ZyraDevPalette.values.where(
-              (palette) => !palette.isLight,
-            ))
+            for (final palette in ZyraDevPalette.values)
               _PaletteOption(
                 palette: palette,
                 selected: ZyraColors.devPalette == palette,
               ),
-            const SizedBox(height: 16),
-            Text(
-              'LIGHT BACKGROUNDS',
-              style: ZyraText.chapterLabel(color: Colors.white38),
-            ),
-            const SizedBox(height: 8),
-            for (final palette in ZyraDevPalette.values.where(
-              (palette) => palette.isLight,
-            ))
-              _PaletteOption(
-                palette: palette,
-                selected: ZyraColors.devPalette == palette,
-              ),
-            if (ZyraColors.isLightPalette) ...[
-              const SizedBox(height: 14),
-              Text(
-                'ACCENT ON WHITE',
-                style: ZyraText.chapterLabel(color: Colors.white38),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 7,
-                runSpacing: 7,
-                children: [
-                  for (final accent in ZyraDevLightAccent.values)
-                    _LightAccentChoice(
-                      accent: accent,
-                      selected: ZyraColors.devLightAccent == accent,
-                    ),
-                ],
-              ),
-            ],
             const SizedBox(height: 16),
             Text(
               'NAVIGATION',
@@ -659,7 +622,6 @@ class ZyraDevStylePanel extends StatelessWidget {
               title: 'Restore default style',
               onTap: () {
                 ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
-                ZyraColors.selectDevLightAccent(ZyraDevLightAccent.purple);
                 ZyraColors.selectAppSurfaceStyle(
                   ZyraColors.currentDefaultSurfaceStyle,
                 );
@@ -760,57 +722,6 @@ class _NavStyleGlyph extends StatelessWidget {
             ),
           );
         }),
-      ),
-    );
-  }
-}
-
-class _LightAccentChoice extends StatelessWidget {
-  final ZyraDevLightAccent accent;
-  final bool selected;
-
-  const _LightAccentChoice({required this.accent, required this.selected});
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      selected: selected,
-      button: true,
-      label: '${accent.label} accent',
-      child: InkWell(
-        key: ValueKey('dev_light_accent_${accent.name}'),
-        borderRadius: BorderRadius.circular(18),
-        onTap: () => ZyraColors.selectDevLightAccent(accent),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 160),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-          decoration: BoxDecoration(
-            color: selected
-                ? accent.color.withValues(alpha: 0.30)
-                : Colors.white.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: selected
-                  ? accent.color
-                  : Colors.white.withValues(alpha: 0.14),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 11,
-                height: 11,
-                decoration: BoxDecoration(
-                  color: accent.color,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 6),
-              Text(accent.label, style: ZyraText.subtext(size: 10.5)),
-            ],
-          ),
-        ),
       ),
     );
   }

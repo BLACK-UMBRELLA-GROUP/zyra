@@ -17,7 +17,7 @@ void main() {
     ZyraDevScenario.instance
       ..resetDashboardLab()
       ..setUseLiveGuardianData(false);
-    ZyraColors.selectAppSurfaceStyle(ZyraAppSurfaceStyle.classicGlass);
+    ZyraColors.selectAppSurfaceStyle(ZyraAppSurfaceStyle.glassSignals);
   });
 
   tearDown(() {

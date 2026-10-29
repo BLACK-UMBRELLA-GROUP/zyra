@@ -917,7 +917,7 @@ void main() {
   );
 
   testWidgets(
-    'interior changes and covered controls retain the same marker, local history and draft',
+    'covered controls retain the same marker, local history and draft',
     (tester) async {
       final fixture = _Fixture();
       await _mount(tester, fixture);
@@ -930,11 +930,7 @@ void main() {
       );
       final state = tester.state(find.byType(ZyraGuardianCircleScreen));
       final controller = tester.widget<TextField>(_composer).controller!;
-      for (final mode in [
-        ZyraCircleBubbleDesign.quietList,
-        ZyraCircleBubbleDesign.portraitTiles,
-        ZyraCircleBubbleDesign.current,
-      ]) {
+      for (final mode in [ZyraCircleBubbleDesign.current]) {
         fixture.visibility.value = false;
         fixture.bubbleDesign.value = mode;
         await tester.pumpAndSettle();
@@ -2071,7 +2067,7 @@ void main() {
     });
   }
 
-  for (final change in ['owner', 'developer', 'visibility', 'design']) {
+  for (final change in ['owner', 'developer', 'visibility']) {
     testWidgets(
       'an open message picker cannot apply after $change withdrawal and restoration',
       (tester) async {
@@ -2092,9 +2088,6 @@ void main() {
           case 'visibility':
             fixture.visibility.value = false;
             fixture.visibility.value = true;
-          case 'design':
-            fixture.bubbleDesign.value = ZyraCircleBubbleDesign.quietList;
-            fixture.bubbleDesign.value = ZyraCircleBubbleDesign.current;
         }
         picker.onSelected(picker.currentTopics.single);
         await tester.pumpAndSettle();
@@ -2111,7 +2104,7 @@ void main() {
     );
   }
 
-  for (final change in ['visibility', 'design']) {
+  for (final change in ['visibility']) {
     testWidgets(
       'a retained message-menu action is stale after $change changes',
       (tester) async {
@@ -2121,13 +2114,8 @@ void main() {
         final choose = tester
             .widget<ListTile>(_key('circle_message_link_draft-circle-second'))
             .onTap!;
-        if (change == 'visibility') {
-          fixture.visibility.value = false;
-          fixture.visibility.value = true;
-        } else {
-          fixture.bubbleDesign.value = ZyraCircleBubbleDesign.quietList;
-          fixture.bubbleDesign.value = ZyraCircleBubbleDesign.current;
-        }
+        fixture.visibility.value = false;
+        fixture.visibility.value = true;
         await tester.pumpAndSettle();
         choose();
         await tester.pumpAndSettle();

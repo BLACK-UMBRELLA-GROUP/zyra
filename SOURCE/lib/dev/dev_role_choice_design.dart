@@ -1,4 +1,4 @@
-// Local visual comparison for the protected first-use role-choice page only.
+// Chosen presentation for the protected first-use role-choice page.
 // This never changes account role, signup drafts, or ordinary onboarding.
 import 'package:flutter/foundation.dart';
 
@@ -6,12 +6,7 @@ import '../services/zyra_account_state.dart';
 import '../services/zyra_developer_access.dart';
 
 enum ZyraRoleChoiceDesign {
-  current('Current'),
-  editorial('1 · Editorial'),
-  guidedPaths('2 · Guided paths'),
-  quietRails('3 · Quiet rails'),
-  spotlight('4 · Spotlight'),
-  framedChoice('5 · Framed choice');
+  guidedPaths('2 · Guided paths');
 
   const ZyraRoleChoiceDesign(this.label);
 

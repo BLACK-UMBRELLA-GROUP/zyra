@@ -179,50 +179,56 @@ Future<_Raster> _materialRaster(
   return _rasterImage(tester, image!, ratio: 4);
 }
 
-Widget _barApp({required int selected, ValueChanged<int>? onTap}) =>
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        fontFamily: _capture ? _font : null,
-      ),
-      home: RepaintBoundary(
-        key: _boundary,
-        child: DecoratedBox(
-          decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-          child: Material(
-            color: Colors.transparent,
-            child: MediaQuery(
-              data: const MediaQueryData(
-                size: Size(393, 120),
-                padding: EdgeInsets.only(bottom: 14),
-                viewPadding: EdgeInsets.only(bottom: 14),
-                disableAnimations: true,
+Widget _barApp({
+  required int selected,
+  ValueChanged<int>? onTap,
+  List<FloatingNavItem> items = _items,
+}) => MaterialApp(
+  debugShowCheckedModeBanner: false,
+  theme: ThemeData(
+    brightness: Brightness.dark,
+    fontFamily: _capture ? _font : null,
+  ),
+  home: RepaintBoundary(
+    key: _boundary,
+    child: DecoratedBox(
+      decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+      child: Material(
+        color: Colors.transparent,
+        child: MediaQuery(
+          data: const MediaQueryData(
+            size: Size(393, 120),
+            padding: EdgeInsets.only(bottom: 14),
+            viewPadding: EdgeInsets.only(bottom: 14),
+            disableAnimations: true,
+          ),
+          child: Stack(
+            children: [
+              FloatingNavBar(
+                items: items,
+                currentIndex: selected,
+                onTap: onTap ?? (_) {},
+                contentEdgeInset: 20,
               ),
-              child: Stack(
-                children: [
-                  FloatingNavBar(
-                    items: _items,
-                    currentIndex: selected,
-                    onTap: onTap ?? (_) {},
-                    contentEdgeInset: 20,
-                  ),
-                ],
-              ),
-            ),
+            ],
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
 
 Future<void> _mountBar(
   WidgetTester tester, {
   required int selected,
   ValueChanged<int>? onTap,
+  List<FloatingNavItem> items = _items,
 }) async {
   tester.view.physicalSize = const Size(393, 120);
   tester.view.devicePixelRatio = 1;
-  await tester.pumpWidget(_barApp(selected: selected, onTap: onTap));
+  await tester.pumpWidget(
+    _barApp(selected: selected, onTap: onTap, items: items),
+  );
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
 }
@@ -327,12 +333,10 @@ void main() {
   });
 
   for (final example in [
-    ('historical 22 px paint references', 22.0),
-    ('historical large paint references', 48.0),
+    ('selected Couple at 22 px', 22.0),
+    ('selected Couple at 48 px', 48.0),
   ]) {
-    testWidgets('${example.$1} has equal painted optical size for every choice', (
-      tester,
-    ) async {
+    testWidgets('${example.$1} has the expected optical size', (tester) async {
       final size = example.$2;
       final materialSearch = await _materialRaster(
         tester,
@@ -342,11 +346,6 @@ void main() {
       final materialProfile = await _materialRaster(
         tester,
         Icons.person_outline,
-        size: size,
-      );
-      final current = await _journeyRaster(
-        tester,
-        ZyraJourneyIconDesign.current,
         size: size,
       );
       expect(ZyraJourneyIconPainter.artworkExtent, 21);
@@ -360,11 +359,6 @@ void main() {
           raster.longestAxis,
           closeTo(expectedFootprint, tolerance),
           reason: reason,
-        );
-        expect(
-          raster.longestAxis,
-          closeTo(current.longestAxis, tolerance),
-          reason: 'Comparison options must match Current: $reason',
         );
         // The bundled person outline is deliberately narrower than search.
         // Compare against the larger peer's actual footprint, rather than
@@ -397,16 +391,30 @@ void main() {
           addTearDown(tester.view.resetPhysicalSize);
           addTearDown(tester.view.resetDevicePixelRatio);
           final calls = <int>[];
+          await _mountBar(
+            tester,
+            selected: selected,
+            items: [
+              _items.first,
+              const FloatingNavItem(
+                icon: Icons.route_outlined,
+                label: 'Journey',
+                useJourneyGlyph: true,
+              ),
+              ..._items.skip(2),
+            ],
+          );
+          expect(
+            tester.widget<ZyraJourneyIcon>(find.byType(ZyraJourneyIcon)).color,
+            selected == 1 ? ZyraColors.foreground : ZyraColors.ink(.45),
+          );
           await _mountBar(tester, selected: selected, onTap: calls.add);
           final finder = find.byType(ZyraJourneyIcon);
           expect(finder, findsOneWidget);
           final glyph = tester.widget<ZyraJourneyIcon>(finder);
           expect(glyph.size, ZyraNavBarMetrics.iconSize);
           expect(tester.getSize(finder), const Size.square(22));
-          expect(
-            glyph.color,
-            selected == 1 ? ZyraColors.foreground : ZyraColors.ink(.45),
-          );
+          expect(glyph.color, ZyraColors.journeyGold);
           final painter = tester
               .widgetList<CustomPaint>(
                 find.descendant(of: finder, matching: find.byType(CustomPaint)),
@@ -437,13 +445,18 @@ void main() {
           }
 
           final cell = find.byKey(const ValueKey('floating-nav-item-1'));
-          final badge = tester.widget<Positioned>(
+          final activity = tester.widget<Semantics>(cell).properties;
+          expect(activity.label, 'Journey');
+          expect(activity.value, '3 unread');
+          // Existing unread metadata changes the glyph tint and spoken cue;
+          // it does not draw a separate badge over the common-size artwork.
+          expect(
             find.descendant(of: cell, matching: find.byType(Positioned)),
+            findsNothing,
           );
-          expect((badge.top, badge.right), (-5, -7));
           expect(
             find.descendant(of: cell, matching: find.text('3')),
-            findsOneWidget,
+            findsNothing,
           );
           final highlight = tester.widget<ZyraNavHighlight>(
             find.byType(ZyraNavHighlight),

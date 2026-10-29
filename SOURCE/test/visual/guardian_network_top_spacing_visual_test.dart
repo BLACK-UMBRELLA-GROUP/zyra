@@ -79,72 +79,69 @@ void main() {
     (width: 390.0, height: 844.0),
     (width: 320.0, height: 700.0),
   ]) {
-    testWidgets(
-      'all five Network designs and three tabs clear the mode pill at '
-      '${viewport.width}×${viewport.height}',
-      (tester) async {
-        tester.view.physicalSize = Size(viewport.width, viewport.height);
-        tester.view.devicePixelRatio = 1;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+    testWidgets('Portrait Focus and three Network tabs clear the mode pill at '
+        '${viewport.width}×${viewport.height}', (tester) async {
+      tester.view.physicalSize = Size(viewport.width, viewport.height);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-        await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: RepaintBoundary(
-                key: _captureRoot,
-                child: WaliNetworkScreen(),
-              ),
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: RepaintBoundary(
+              key: _captureRoot,
+              child: WaliNetworkScreen(),
             ),
           ),
-        );
+        ),
+      );
+      await tester.pump();
+
+      for (final design in GNNetworkCardDesign.values) {
+        GNContext.instance.setNetworkCardDesign(design);
         await tester.pump();
 
-        for (final design in GNNetworkCardDesign.values) {
-          GNContext.instance.setNetworkCardDesign(design);
-          await tester.pump();
+        for (final mode in _modes) {
+          await tester.tap(find.byKey(Key(mode.segment)));
+          await tester.pumpAndSettle();
 
-          for (final mode in _modes) {
-            await tester.tap(find.byKey(Key(mode.segment)));
-            await tester.pumpAndSettle();
+          final cardFinder = find.byKey(Key(mode.card));
+          expect(cardFinder, findsOneWidget);
+          expect(
+            find.byKey(Key('gn-card-design-${design.name}')),
+            findsOneWidget,
+          );
+          final pillBottom = tester
+              .getRect(find.byType(ZyraSegmentedToggle))
+              .bottom;
+          final cardTop = tester.getRect(cardFinder).top;
+          expect(
+            cardTop - pillBottom,
+            greaterThanOrEqualTo(18),
+            reason:
+                '${design.label}, ${mode.segment}, '
+                '${viewport.width}×${viewport.height}: card touches tab pill',
+          );
+          expect(
+            tester.takeException(),
+            isNull,
+            reason: '${design.label}, ${mode.segment}',
+          );
 
-            final cardFinder = find.byKey(Key(mode.card));
-            expect(cardFinder, findsOneWidget);
-            expect(
-              find.byKey(Key('gn-card-design-${design.name}')),
-              findsOneWidget,
+          // Retain the chosen Portrait Focus spacing captures as review
+          // evidence, without replacing approved visual baselines.
+          if (_capture && viewport.width == 390) {
+            await expectLater(
+              find.byKey(_captureRoot),
+              matchesGoldenFile(
+                '$_candidateDirectory/${design.name}__${mode.segment}.png',
+              ),
             );
-            final pillBottom = tester
-                .getRect(find.byType(ZyraSegmentedToggle))
-                .bottom;
-            final cardTop = tester.getRect(cardFinder).top;
-            expect(
-              cardTop - pillBottom,
-              greaterThanOrEqualTo(18),
-              reason:
-                  '${design.label}, ${mode.segment}, '
-                  '${viewport.width}×${viewport.height}: card touches tab pill',
-            );
-            expect(
-              tester.takeException(),
-              isNull,
-              reason: '${design.label}, ${mode.segment}',
-            );
-
-            // The five designs remain undecided. These are review candidates,
-            // never a selection or an approved visual baseline update.
-            if (_capture && viewport.width == 390) {
-              await expectLater(
-                find.byKey(_captureRoot),
-                matchesGoldenFile(
-                  '$_candidateDirectory/${design.name}__${mode.segment}.png',
-                ),
-              );
-            }
           }
         }
-      },
-    );
+      }
+    });
   }
 
   testWidgets('the mode-to-content gutter remains fixed while cards scroll', (
@@ -185,7 +182,7 @@ void main() {
   });
 
   testWidgets(
-    'all five designs keep their primary actions reachable at 320×568 and 1.4× text',
+    'Portrait Focus keeps primary actions reachable at 320×568 and 1.4× text',
     (tester) async {
       tester.view.physicalSize = const Size(320, 568);
       tester.view.devicePixelRatio = 1;

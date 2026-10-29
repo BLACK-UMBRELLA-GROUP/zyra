@@ -34,7 +34,11 @@ const _font = 'ZYRABaselinePoppins';
 const _wordmark = 'ZYRABaselineSyne';
 const _symbolFont = 'ZYRABaselineSystemSymbols';
 const _symbolPath = '/System/Library/Fonts/SFNS.ttf';
+const _compareOnly = bool.fromEnvironment('ZYRA_BASELINE_COMPARE_ONLY');
 final _rowsByGroup = <String, List<Map<String, Object?>>>{};
+final _matchedBaselinePaths = <String>{};
+final _skippedControlPaths = <String>{};
+final _mismatchedBaselinePaths = <String>{};
 const _boundary = ValueKey('zyra-founder-baseline-boundary');
 HttpOverrides? _previousNetwork;
 late _NoNetwork _network;
@@ -75,30 +79,32 @@ Future<void> baselineSetUp() async {
     wordmark.load(),
     symbols.load(),
   ]);
-  final environment = File('$baselineEvidence/capture_environment.json');
-  await environment.parent.create(recursive: true);
-  await environment.writeAsString(
-    const JsonEncoder.withIndent('  ').convert({
-      'logical_size': [430, 932],
-      'device_pixel_ratio': 3,
-      'png_size': [1290, 2796],
-      'ios_status_bar': false,
-      'target_platform': 'iOS',
-      'theme': 'actual ZyraApp MaterialApp.theme + documented glyph fallback',
-      'scroll_behavior': 'actual ZyraApp MaterialApp.scrollBehavior',
-      'primary_reading_font': 'bundled Poppins',
-      'wordmark': 'bundled Syne',
-      'missing_glyph_fallback': {
-        'family': _symbolFont,
-        'source': _symbolPath,
-        'bytes': symbolBytes.length,
-        'sha256': sha256.convert(symbolBytes).toString(),
-        'purpose':
-            'San Francisco platform fallback for U+2713; primary fonts unchanged; font not copied',
-      },
-    }),
-    flush: true,
-  );
+  if (!_compareOnly) {
+    final environment = File('$baselineEvidence/capture_environment.json');
+    await environment.parent.create(recursive: true);
+    await environment.writeAsString(
+      const JsonEncoder.withIndent('  ').convert({
+        'logical_size': [430, 932],
+        'device_pixel_ratio': 3,
+        'png_size': [1290, 2796],
+        'ios_status_bar': false,
+        'target_platform': 'iOS',
+        'theme': 'actual ZyraApp MaterialApp.theme + documented glyph fallback',
+        'scroll_behavior': 'actual ZyraApp MaterialApp.scrollBehavior',
+        'primary_reading_font': 'bundled Poppins',
+        'wordmark': 'bundled Syne',
+        'missing_glyph_fallback': {
+          'family': _symbolFont,
+          'source': _symbolPath,
+          'bytes': symbolBytes.length,
+          'sha256': sha256.convert(symbolBytes).toString(),
+          'purpose':
+              'San Francisco platform fallback for U+2713; primary fonts unchanged; font not copied',
+        },
+      }),
+      flush: true,
+    );
+  }
   ZyraText.useTestFontStubs = true;
   ZyraText.testReadingFontFamily = _font;
   ZyraText.testWordmarkFontFamily = _wordmark;
@@ -120,6 +126,11 @@ Future<void> baselineSetUp() async {
 
 Future<void> baselineTearDown() async {
   expect(_network.attempts, 0);
+  if (_compareOnly) {
+    debugPrint(
+      'ZYRA_BASELINE_COMPARE_ONLY ${jsonEncode({'matched_pngs': _matchedBaselinePaths.length, 'skipped_controls': _skippedControlPaths.length, 'mismatched_pngs': _mismatchedBaselinePaths.length})}',
+    );
+  }
   HttpOverrides.global = _previousNetwork;
   ZyraText.useTestFontStubs = false;
   ZyraText.testReadingFontFamily = null;
@@ -393,6 +404,37 @@ class BaselineHarness {
         expect(image.height, 2796);
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
         final file = File('$baselineRoot/$relative');
+        if (_compareOnly) {
+          if (page == 'controls') {
+            _skippedControlPaths.add(relative);
+            return;
+          }
+          expect(
+            file.existsSync(),
+            isTrue,
+            reason: 'Baseline must exist: $relative',
+          );
+          final actual = sha256.convert(bytes!.buffer.asUint8List()).toString();
+          final expected = sha256.convert(await file.readAsBytes()).toString();
+          if (actual != expected) {
+            _mismatchedBaselinePaths.add(relative);
+            final mismatch = File(
+              '${baselineEvidence.replaceFirst('BASELINE_2026-10-29', 'TIER4_TESTS_2026-10-29')}/PIXEL_PARITY_MISMATCHES/$relative',
+            );
+            await mismatch.parent.create(recursive: true);
+            await mismatch.writeAsBytes(
+              bytes.buffer.asUint8List(),
+              flush: true,
+            );
+          }
+          expect(
+            actual,
+            expected,
+            reason: 'Current pixels differ from preserved baseline: $relative',
+          );
+          _matchedBaselinePaths.add(relative);
+          return;
+        }
         await file.parent.create(recursive: true);
         await file.writeAsBytes(bytes!.buffer.asUint8List(), flush: true);
         rows.removeWhere((row) => row['file'] == relative);

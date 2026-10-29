@@ -134,7 +134,7 @@ Map<String, Object?> _preferenceSnapshot() => {
 Future<GlobalKey<NavigatorState>> _mountHost(
   WidgetTester tester, {
   bool overlay = true,
-  ZyraOnboardingDirection direction = ZyraOnboardingDirection.current,
+  ZyraOnboardingDirection direction = ZyraOnboardingDirection.luma,
   bool implicitDirection = false,
   NavigatorObserver? routeAudit,
   Size viewport = const Size(430, 932),
@@ -378,24 +378,24 @@ Future<void> _chooseRole(
       tester
           .widget<DevSignUpProcessScreen>(find.byType(DevSignUpProcessScreen))
           .initialDirection;
-  if (direction != ZyraOnboardingDirection.current) {
-    for (var page = 0; page < _openingThemeCount; page++) {
-      expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
-      _expectDirectionStyle(
-        tester,
-        find.byType(DevOnboardingIntroduction),
-        direction,
-      );
-      expect(
-        find.byKey(ValueKey('dev_opening_page_${page + 1}')).hitTestable(),
-        findsOneWidget,
-      );
-      expect(find.byType(RoleSelectionScreen), findsNothing);
-      expect(find.text('Finish preview'), findsNothing);
-      expect(find.byKey(const ValueKey('dev_onboarding_close')), findsNothing);
-      await _completeIntroductionPage(tester, direction, page);
-    }
+
+  for (var page = 0; page < _openingThemeCount; page++) {
+    expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
+    _expectDirectionStyle(
+      tester,
+      find.byType(DevOnboardingIntroduction),
+      direction,
+    );
+    expect(
+      find.byKey(ValueKey('dev_opening_page_${page + 1}')).hitTestable(),
+      findsOneWidget,
+    );
+    expect(find.byType(RoleSelectionScreen), findsNothing);
+    expect(find.text('Finish preview'), findsNothing);
+    expect(find.byKey(const ValueKey('dev_onboarding_close')), findsNothing);
+    await _completeIntroductionPage(tester, direction, page);
   }
+
   final role = tester.widget<RoleSelectionScreen>(
     find.byType(RoleSelectionScreen),
   );
@@ -403,7 +403,7 @@ Future<void> _chooseRole(
     tester,
     find.byType(RoleSelectionScreen),
     direction,
-    roleHeader: direction != ZyraOnboardingDirection.current,
+    roleHeader: true,
   );
   expect(role.devPreview, isTrue);
   expect(role.signupUserId, isNull);
@@ -424,7 +424,7 @@ Future<void> _chooseRole(
       tester,
       find.byType(GuardianOnboardingOverviewScreen),
       direction,
-      accent: direction != ZyraOnboardingDirection.current,
+      accent: true,
     );
     final overview = tester.widget<GuardianOnboardingOverviewScreen>(
       find.byType(GuardianOnboardingOverviewScreen),
@@ -441,7 +441,7 @@ Future<void> _chooseRole(
       tester,
       find.byType(WaliOnboardingFlow),
       direction,
-      accent: direction != ZyraOnboardingDirection.current,
+      accent: true,
     );
     expect(flow.devPreview, isTrue);
     expect(flow.signupUserId, isNull);
@@ -468,7 +468,7 @@ Future<void> _chooseRole(
     tester,
     find.byType(guardian ? WaliOnboardingFlow : OnboardingFlow),
     direction,
-    accent: direction != ZyraOnboardingDirection.current,
+    accent: true,
   );
   expect(find.byKey(const ValueKey('onboarding_account_exit')), findsNothing);
 }
@@ -643,19 +643,6 @@ void _expectDirectionStyle(
   bool roleHeader = false,
 }) {
   final style = OnboardingPreviewStyle.maybeOf(tester.element(screen));
-  final styledMarkers = find.descendant(
-    of: screen,
-    matching: find.byWidgetPredicate((widget) {
-      final key = widget.key;
-      return key is ValueKey<String> &&
-          key.value.startsWith('onboarding-preview-');
-    }),
-  );
-  if (direction == ZyraOnboardingDirection.current) {
-    expect(style, isNull, reason: 'Current keeps its original visual language');
-    expect(styledMarkers, findsNothing);
-    return;
-  }
   expect(style?.directionName, direction.name);
   if (accent) {
     final motif = find.descendant(
@@ -687,21 +674,21 @@ Future<void> _openRoleSelectionForDirection(
   await _launch(tester);
   await tester.tap(find.byKey(const ValueKey('welcome_google')));
   await tester.pumpAndSettle();
-  if (direction != ZyraOnboardingDirection.current) {
-    await _finishWelcomePrelude(tester);
-    for (var page = 0; page < _openingThemeCount; page++) {
-      expect(
-        find.byKey(ValueKey('dev_opening_page_${page + 1}')),
-        findsOneWidget,
-      );
-      await _completeIntroductionPage(tester, direction, page);
-    }
+
+  await _finishWelcomePrelude(tester);
+  for (var page = 0; page < _openingThemeCount; page++) {
+    expect(
+      find.byKey(ValueKey('dev_opening_page_${page + 1}')),
+      findsOneWidget,
+    );
+    await _completeIntroductionPage(tester, direction, page);
   }
+
   _expectDirectionStyle(
     tester,
     find.byType(RoleSelectionScreen),
     direction,
-    roleHeader: direction != ZyraOnboardingDirection.current,
+    roleHeader: true,
   );
 }
 
@@ -837,7 +824,7 @@ void main() {
       ZyraDevOnboardingInteraction.current,
       ZyraOnboardingAdvanceMode.animatedDownArrow,
     );
-    await _mountHost(tester, direction: ZyraOnboardingDirection.structured);
+    await _mountHost(tester, direction: ZyraOnboardingDirection.luma);
     await _launch(tester);
     expect(
       tester
@@ -864,7 +851,7 @@ void main() {
     testWidgets(
       '${navigation.name} Guardian checkpoint arrow lifts only intro foreground and brings role content up over fixed purple',
       (tester) async {
-        const direction = ZyraOnboardingDirection.structured;
+        const direction = ZyraOnboardingDirection.luma;
         ZyraDevOnboardingStoryNavigation.select(navigation);
         ZyraDevOnboardingInteraction.select(
           ZyraOnboardingAdvanceMode.animatedDownArrow,
@@ -941,7 +928,7 @@ void main() {
     testWidgets(
       '${navigation.name} Guardian checkpoint upward edge swipe uses the same down handoff',
       (tester) async {
-        const direction = ZyraOnboardingDirection.structured;
+        const direction = ZyraOnboardingDirection.luma;
         ZyraDevOnboardingStoryNavigation.select(navigation);
         ZyraDevOnboardingInteraction.select(
           ZyraOnboardingAdvanceMode.animatedDownArrow,
@@ -1018,7 +1005,7 @@ void main() {
   testWidgets('rapid final arrow callbacks create only one role route', (
     tester,
   ) async {
-    const direction = ZyraOnboardingDirection.structured;
+    const direction = ZyraOnboardingDirection.luma;
     ZyraDevOnboardingStoryNavigation.select(
       ZyraOnboardingStoryNavigation.tapThrough,
     );
@@ -1053,7 +1040,7 @@ void main() {
   testWidgets(
     'restart during the Guardian checkpoint exit cannot open a stale role route',
     (tester) async {
-      const direction = ZyraOnboardingDirection.structured;
+      const direction = ZyraOnboardingDirection.luma;
       ZyraDevOnboardingStoryNavigation.select(
         ZyraOnboardingStoryNavigation.scrollDown,
       );
@@ -1087,7 +1074,7 @@ void main() {
       // replaces the nested Navigator while the old checkpoint exit is live.
       expect(
         ZyraDevSurfaceCoordinator.instance.restartOnboarding(
-          ZyraOnboardingDirection.atoms,
+          ZyraOnboardingDirection.luma,
         ),
         isTrue,
       );
@@ -1097,7 +1084,7 @@ void main() {
       _expectDirectionStyle(
         tester,
         find.byType(WelcomeScreen),
-        ZyraOnboardingDirection.atoms,
+        ZyraOnboardingDirection.luma,
       );
       expect(
         find.byType(RoleSelectionScreen, skipOffstage: false),
@@ -1116,7 +1103,7 @@ void main() {
   testWidgets('outgoing intro remains faintly present until route handoff', (
     tester,
   ) async {
-    const direction = ZyraOnboardingDirection.structured;
+    const direction = ZyraOnboardingDirection.luma;
     ZyraDevOnboardingStoryNavigation.select(
       ZyraOnboardingStoryNavigation.scrollDown,
     );
@@ -1159,7 +1146,7 @@ void main() {
   testWidgets(
     'reduced motion skips travel and Tap-through keeps the downward checkpoint handoff',
     (tester) async {
-      const direction = ZyraOnboardingDirection.structured;
+      const direction = ZyraOnboardingDirection.luma;
       ZyraDevOnboardingStoryNavigation.select(
         ZyraOnboardingStoryNavigation.scrollDown,
       );
@@ -1461,7 +1448,7 @@ void main() {
   testWidgets('DEV skips traverse the Seeker entry to unfinished My ZYRA', (
     tester,
   ) async {
-    await _mountHost(tester, direction: ZyraOnboardingDirection.structured);
+    await _mountHost(tester, direction: ZyraOnboardingDirection.luma);
     await _launch(tester);
     await tester.tap(find.byKey(const ValueKey('welcome_dev_skip')));
     await tester.pumpAndSettle();
@@ -1531,25 +1518,20 @@ void main() {
         await tester.tap(find.byKey(const ValueKey('welcome_google')));
         await tester.pumpAndSettle();
         await _finishWelcomePrelude(tester);
-        final next = direction == ZyraOnboardingDirection.current
-            ? find.byType(RoleSelectionScreen)
-            : find.byType(DevOnboardingIntroduction);
+        final next = find.byType(DevOnboardingIntroduction);
         expect(next, findsOneWidget);
         expect(tester.getRect(next), Offset.zero & viewport);
         expect(
           MediaQuery.of(tester.element(next)).padding,
           const EdgeInsets.only(top: 24, bottom: 24),
         );
-        if (direction != ZyraOnboardingDirection.current) {
-          expect(
-            tester.getRect(find.text('ZYRA')).top,
-            greaterThanOrEqualTo(24),
-          );
-          final controlsRect = tester.getRect(
-            find.byKey(const ValueKey('dev_onboarding_story_dot_0')),
-          );
-          expect(controlsRect.bottom, lessThanOrEqualTo(viewport.height - 24));
-        }
+
+        expect(tester.getRect(find.text('ZYRA')).top, greaterThanOrEqualTo(24));
+        final controlsRect = tester.getRect(
+          find.byKey(const ValueKey('dev_onboarding_story_dot_0')),
+        );
+        expect(controlsRect.bottom, lessThanOrEqualTo(viewport.height - 24));
+
         await _expectNoSideEffects(tester);
         await _returnHome(tester);
         await _expectDeveloperAccess(tester);
@@ -1674,6 +1656,13 @@ void main() {
         await tester.tap(find.byKey(const ValueKey('welcome_google')));
         await tester.pumpAndSettle();
         await _finishWelcomePrelude(tester);
+        for (var page = 0; page < _openingThemeCount; page++) {
+          await _completeIntroductionPage(
+            tester,
+            ZyraOnboardingDirection.luma,
+            page,
+          );
+        }
         _expectNoHeader(tester);
         _expectNestedRoute(tester, find.byType(RoleSelectionScreen));
         if (capture) {
@@ -1870,7 +1859,7 @@ void main() {
             devIntroductionBuilder: (_) {
               introductionBuilds++;
               return DevOnboardingIntroduction(
-                direction: ZyraOnboardingDirection.structured,
+                direction: ZyraOnboardingDirection.luma,
                 onContinue: () {},
               );
             },
@@ -1976,7 +1965,7 @@ void main() {
                 tester,
                 find.byType(guardian ? WaliOnboardingFlow : OnboardingFlow),
                 direction,
-                accent: direction != ZyraOnboardingDirection.current,
+                accent: true,
               );
             }
             await _expectNoSideEffects(tester);
@@ -1987,7 +1976,7 @@ void main() {
             tester,
             find.byType(InitialIdentityCheckScreen),
             direction,
-            accent: direction != ZyraOnboardingDirection.current,
+            accent: true,
           );
           await tester.tap(
             find.byKey(const ValueKey('identity-consent-agree')),
@@ -2013,7 +2002,7 @@ void main() {
               tester,
               find.byType(TransitionScreen),
               direction,
-              accent: direction != ZyraOnboardingDirection.current,
+              accent: true,
             );
             final transitionContinue = find.descendant(
               of: find.byType(TransitionScreen),
@@ -2028,7 +2017,7 @@ void main() {
               tester,
               find.byType(ZyraCodeScreen),
               direction,
-              accent: direction != ZyraOnboardingDirection.current,
+              accent: true,
             );
             expect(
               tester
@@ -2111,12 +2100,7 @@ void main() {
               find.text('Together, we’ll build four things.'),
               findsNothing,
             );
-            _expectDirectionStyle(
-              tester,
-              flow,
-              direction,
-              accent: direction != ZyraOnboardingDirection.current,
-            );
+            _expectDirectionStyle(tester, flow, direction, accent: true);
             await _styledCandidate(
               tester,
               '${direction.name}__seeker_stage__${viewport.label}',
@@ -2130,12 +2114,7 @@ void main() {
             await tester.tap(stageContinue);
             await tester.pumpAndSettle();
             expect(find.text("What's your name?"), findsOneWidget);
-            _expectDirectionStyle(
-              tester,
-              flow,
-              direction,
-              accent: direction != ZyraOnboardingDirection.current,
-            );
+            _expectDirectionStyle(tester, flow, direction, accent: true);
             await _styledCandidate(
               tester,
               '${direction.name}__seeker_question__${viewport.label}',
@@ -2148,19 +2127,19 @@ void main() {
             await tester.ensureVisible(lastNameField);
             await tester.pumpAndSettle();
             expect(lastNameField.hitTestable(), findsOneWidget);
-            if (direction != ZyraOnboardingDirection.current) {
-              final privacy = find.text('Shown on your profile.');
-              final continueButton = find.byKey(
-                const ValueKey('onboarding_continue'),
-              );
-              expect(privacy, findsOneWidget);
-              expect(continueButton, findsOneWidget);
-              expect(
-                tester.getRect(privacy).bottom,
-                lessThan(tester.getRect(continueButton).top),
-                reason: 'The question privacy note must clear the preview CTA',
-              );
-            }
+
+            final privacy = find.text('Shown on your profile.');
+            final continueButton = find.byKey(
+              const ValueKey('onboarding_continue'),
+            );
+            expect(privacy, findsOneWidget);
+            expect(continueButton, findsOneWidget);
+            expect(
+              tester.getRect(privacy).bottom,
+              lessThan(tester.getRect(continueButton).top),
+              reason: 'The question privacy note must clear the preview CTA',
+            );
+
             await _expectNoSideEffects(tester);
             await _returnHome(tester);
             expect(tester.takeException(), isNull);
@@ -2188,12 +2167,7 @@ void main() {
             );
             await tester.pumpAndSettle();
             final overview = find.byType(GuardianOnboardingOverviewScreen);
-            _expectDirectionStyle(
-              tester,
-              overview,
-              direction,
-              accent: direction != ZyraOnboardingDirection.current,
-            );
+            _expectDirectionStyle(tester, overview, direction, accent: true);
             await _styledCandidate(
               tester,
               '${direction.name}__guardian_overview__${viewport.label}',
@@ -2219,7 +2193,7 @@ void main() {
               tester,
               find.byType(WaliOnboardingFlow),
               direction,
-              accent: direction != ZyraOnboardingDirection.current,
+              accent: true,
             );
             await _styledCandidate(
               tester,
@@ -2233,76 +2207,7 @@ void main() {
             await tester.ensureVisible(lastNameField);
             await tester.pumpAndSettle();
             expect(lastNameField.hitTestable(), findsOneWidget);
-            if (viewport.label == 'standard' &&
-                (direction == ZyraOnboardingDirection.current ||
-                    direction == ZyraOnboardingDirection.headspace ||
-                    direction == ZyraOnboardingDirection.revolut)) {
-              for (var question = 0; question < 5; question++) {
-                await tester.tap(
-                  find.byKey(const ValueKey('onboarding_dev_skip')),
-                );
-                await tester.pumpAndSettle();
-              }
-              await _chooseSignupMembership(tester);
-              expect(find.byType(InitialIdentityCheckScreen), findsOneWidget);
-              _expectDirectionStyle(
-                tester,
-                find.byType(InitialIdentityCheckScreen),
-                direction,
-                accent: direction != ZyraOnboardingDirection.current,
-              );
-              await _styledCandidate(
-                tester,
-                '${direction.name}__guardian_identity__${viewport.label}',
-              );
-              await tester.tap(
-                find.byKey(const ValueKey('identity-consent-agree')),
-              );
-              await tester.pumpAndSettle();
-              final verified = find.byKey(
-                const ValueKey('identity-dev-verified'),
-              );
-              await tester.ensureVisible(verified);
-              await tester.pumpAndSettle();
-              await tester.tap(verified);
-              await tester.pumpAndSettle();
-              final identityContinue = find.byKey(
-                const ValueKey('identity-continue'),
-              );
-              await tester.ensureVisible(identityContinue);
-              await tester.pumpAndSettle();
-              await tester.tap(identityContinue);
-              await tester.pump();
-              await tester.pump(const Duration(milliseconds: 500));
-              _expectDirectionStyle(
-                tester,
-                find.byType(TransitionScreen),
-                direction,
-                accent: direction != ZyraOnboardingDirection.current,
-              );
-              await _styledCandidate(
-                tester,
-                '${direction.name}__guardian_transition__${viewport.label}',
-              );
-              final transitionContinue = find.descendant(
-                of: find.byType(TransitionScreen),
-                matching: find.text('Continue'),
-              );
-              await tester.ensureVisible(transitionContinue);
-              await tester.pump(const Duration(milliseconds: 300));
-              await tester.tap(transitionContinue);
-              await tester.pumpAndSettle();
-              _expectDirectionStyle(
-                tester,
-                find.byType(ZyraCodeScreen),
-                direction,
-                accent: direction != ZyraOnboardingDirection.current,
-              );
-              await _styledCandidate(
-                tester,
-                '${direction.name}__guardian_code__${viewport.label}',
-              );
-            }
+
             await _expectNoSideEffects(tester);
             await _returnHome(tester);
             expect(tester.takeException(), isNull);
@@ -2313,7 +2218,7 @@ void main() {
   }
 
   testWidgets(
-    'changing direction halfway restarts at Welcome inside the same outer route',
+    'restarting Luma halfway returns to Welcome inside the same outer route',
     (tester) async {
       final audit = _OnboardingRouteAudit();
       await _mountHost(tester, overlay: true, routeAudit: audit);
@@ -2322,7 +2227,7 @@ void main() {
       _expectDirectionStyle(
         tester,
         find.byType(OnboardingFlow),
-        ZyraOnboardingDirection.current,
+        ZyraOnboardingDirection.luma,
       );
       await tester.enterText(
         find.byKey(_firstNameField),
@@ -2339,7 +2244,7 @@ void main() {
       await _showControls(tester);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
-      final choice = find.byKey(const ValueKey('dev_onboarding_wise'));
+      final choice = find.byKey(const ValueKey('dev_onboarding_luma'));
       await tester.ensureVisible(choice);
       await tester.pumpAndSettle();
       await tester.tap(choice);
@@ -2348,7 +2253,7 @@ void main() {
       _expectDirectionStyle(
         tester,
         find.byType(WelcomeScreen),
-        ZyraOnboardingDirection.wise,
+        ZyraOnboardingDirection.luma,
       );
       expect(find.byType(DevOnboardingIntroduction), findsNothing);
       expect(find.byType(OnboardingFlow, skipOffstage: false), findsNothing);
@@ -2366,13 +2271,13 @@ void main() {
       await _chooseRole(
         tester,
         guardian: false,
-        introductionDirection: ZyraOnboardingDirection.wise,
+        introductionDirection: ZyraOnboardingDirection.luma,
       );
       expect(find.text("What's your name?"), findsOneWidget);
       _expectDirectionStyle(
         tester,
         find.byType(OnboardingFlow),
-        ZyraOnboardingDirection.wise,
+        ZyraOnboardingDirection.luma,
         accent: true,
       );
       expect(
@@ -2400,7 +2305,7 @@ void main() {
         tester,
         overlay: true,
         routeAudit: audit,
-        direction: ZyraOnboardingDirection.structured,
+        direction: ZyraOnboardingDirection.luma,
       );
       await _launch(tester);
       await tester.tap(find.byKey(const ValueKey('welcome_google')));
@@ -2409,7 +2314,7 @@ void main() {
       for (var page = 0; page < _openingThemeCount - 1; page++) {
         await _completeIntroductionPage(
           tester,
-          ZyraOnboardingDirection.structured,
+          ZyraOnboardingDirection.luma,
           page,
         );
       }
@@ -2422,9 +2327,7 @@ void main() {
       await _showControls(tester);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
-      final currentChoice = find.byKey(
-        const ValueKey('dev_onboarding_current'),
-      );
+      final currentChoice = find.byKey(const ValueKey('dev_onboarding_luma'));
       await tester.ensureVisible(currentChoice);
       await tester.pump();
       await tester.tap(currentChoice);
@@ -2483,7 +2386,7 @@ void main() {
   testWidgets('completed introduction callback cannot reopen role selection', (
     tester,
   ) async {
-    await _mountHost(tester, direction: ZyraOnboardingDirection.structured);
+    await _mountHost(tester, direction: ZyraOnboardingDirection.luma);
     await _launch(tester);
     await tester.tap(find.byKey(const ValueKey('welcome_google')));
     await tester.pumpAndSettle();
@@ -2495,7 +2398,7 @@ void main() {
     for (var page = 0; page < _openingThemeCount; page++) {
       await _completeIntroductionPage(
         tester,
-        ZyraOnboardingDirection.structured,
+        ZyraOnboardingDirection.luma,
         page,
       );
     }
@@ -2521,7 +2424,7 @@ void main() {
   testWidgets('denial and regrant cannot revive an old introduction callback', (
     tester,
   ) async {
-    await _mountHost(tester, direction: ZyraOnboardingDirection.structured);
+    await _mountHost(tester, direction: ZyraOnboardingDirection.luma);
     await _launch(tester);
     await tester.tap(find.byKey(const ValueKey('welcome_google')));
     await tester.pumpAndSettle();
@@ -2534,7 +2437,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('dev_signup_denied')), findsOneWidget);
     expect(
-      find.byKey(const ValueKey('onboarding-preview-accent-structured')),
+      find.byKey(const ValueKey('onboarding-preview-accent-luma')),
       findsNothing,
     );
     stale();
@@ -2591,7 +2494,7 @@ void main() {
       expect(tester.takeException(), isNull);
       await _showControls(tester);
       await tester.pumpAndSettle();
-      final choice = find.byKey(const ValueKey('dev_onboarding_headspace'));
+      final choice = find.byKey(const ValueKey('dev_onboarding_luma'));
       await tester.ensureVisible(choice);
       await tester.pumpAndSettle();
       await tester.tap(choice);
@@ -3366,10 +3269,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Onboarding directions'), findsOneWidget);
-    expect(
-      find.byKey(const ValueKey('dev_onboarding_structured')),
-      findsOneWidget,
-    );
+    expect(find.byKey(const ValueKey('dev_onboarding_luma')), findsOneWidget);
     await _expectNoSideEffects(tester);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());

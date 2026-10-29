@@ -279,7 +279,6 @@ class ZyraApp extends StatelessWidget {
       listenable: Listenable.merge([
         ZyraText.appFontSelection,
         ZyraColors.devPaletteSelection,
-        ZyraColors.devLightAccentSelection,
         ZyraColors.appSurfaceStyleSelection,
         ZyraInteractionStyle.navStyleSelection,
       ]),

@@ -94,135 +94,69 @@ void main() {
     ZyraText.useTestFontStubs = false;
   });
 
-  test(
-    'five pulse and eleven dust styles are distinct, guarded and session-local',
-    () {
-      expect(ZyraWelcomePulseDesign.values, hasLength(5));
-      expect(ZyraOnboardingGoldDesign.values, hasLength(11));
-      expect(
-        ZyraOnboardingGoldDesign.values.map((value) => value.label),
-        orderedEquals(const [
-          'Gold dust',
-          'Fine dust',
-          'Sparse dust',
-          'Bright dust',
-          'High drift',
-          'Low drift',
-          'Edge dust',
-          'Diagonal edge',
-          'Twin clouds',
-          'Dust halo',
-          'Gentle sweep',
-        ]),
-      );
-      expect(
-        ZyraWelcomePulseDesign.values.map((value) => value.label).toSet(),
-        hasLength(5),
-      );
-      expect(
-        ZyraOnboardingGoldDesign.values.map((value) => value.label).toSet(),
-        hasLength(11),
-      );
-      expect(ZyraDevWelcomePulseIntensity.level, 3);
-      expect(
-        ZyraDevWelcomePulseDesign.current,
-        ZyraWelcomePulseDesign.softBloom,
-      );
-      expect(
-        ZyraDevOnboardingGoldDesign.current,
-        ZyraOnboardingGoldDesign.diagonalDust,
-      );
-      expect(ZyraOnboardingGoldMotion.values, hasLength(2));
-      expect(
-        ZyraDevOnboardingGoldMotion.current,
-        ZyraOnboardingGoldMotion.liveDrift,
-      );
+  test('selected pulse and dust styles stay guarded and session-local', () {
+    expect(ZyraWelcomePulseDesign.values, hasLength(1));
+    expect(ZyraOnboardingGoldDesign.values, hasLength(1));
+    expect(
+      ZyraOnboardingGoldDesign.values.map((value) => value.label),
+      orderedEquals(const ['Diagonal edge']),
+    );
+    expect(
+      ZyraWelcomePulseDesign.values.map((value) => value.label).toSet(),
+      hasLength(1),
+    );
+    expect(
+      ZyraOnboardingGoldDesign.values.map((value) => value.label).toSet(),
+      hasLength(1),
+    );
+    expect(ZyraDevWelcomePulseIntensity.level, 3);
+    expect(ZyraDevWelcomePulseDesign.current, ZyraWelcomePulseDesign.softBloom);
+    expect(
+      ZyraDevOnboardingGoldDesign.current,
+      ZyraOnboardingGoldDesign.diagonalDust,
+    );
+    expect(ZyraOnboardingGoldMotion.values, hasLength(2));
+    expect(
+      ZyraDevOnboardingGoldMotion.current,
+      ZyraOnboardingGoldMotion.liveDrift,
+    );
 
-      expect(
-        ZyraDevWelcomePulseDesign.select(ZyraWelcomePulseDesign.orbitRing),
-        isTrue,
-      );
-      expect(
-        ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.highDrift),
-        isTrue,
-      );
-      expect(
-        ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.liveDrift),
-        isTrue,
-      );
-      ZyraAccountState.resetForTesting();
-      expect(
-        ZyraDevWelcomePulseDesign.current,
-        ZyraWelcomePulseDesign.softBloom,
-      );
-      expect(
-        ZyraDevOnboardingGoldDesign.current,
-        ZyraOnboardingGoldDesign.diagonalDust,
-      );
-      expect(
-        ZyraDevOnboardingGoldMotion.current,
-        ZyraOnboardingGoldMotion.liveDrift,
-      );
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      expect(
-        ZyraDevWelcomePulseDesign.select(ZyraWelcomePulseDesign.twinHalo),
-        isFalse,
-      );
-      expect(
-        ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.dustHalo),
-        isFalse,
-      );
-      expect(
-        ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.liveDrift),
-        isFalse,
-      );
-    },
-  );
-
-  test(
-    'each pulse and backdrop painter has a different rendered signature',
-    () async {
-      final pulseSignatures = <int>{};
-      for (final design in ZyraWelcomePulseDesign.values) {
-        pulseSignatures.add(
-          await _signature(
-            ZyraWelcomePulsePainter(design, .55),
-            const Size(56, 56),
-          ),
-        );
-      }
-      expect(pulseSignatures, hasLength(5));
-
-      final backdropSignatures = <int>{};
-      for (final design in ZyraOnboardingGoldDesign.values) {
-        backdropSignatures.add(
-          await _signature(
-            ZyraOnboardingGoldPainter(design),
-            const Size(160, 240),
-          ),
-        );
-      }
-      expect(backdropSignatures, hasLength(11));
-
-      final previewSignatures = <int>{};
-      for (final design in ZyraOnboardingGoldDesign.values) {
-        previewSignatures.add(
-          await _signature(
-            ZyraOnboardingGoldPainter(design, preview: true),
-            const Size(56, 36),
-          ),
-        );
-      }
-      expect(previewSignatures, hasLength(11));
-      expect(
-        await _visibleGoldPixels(
-          const ZyraOnboardingGoldPainter(ZyraOnboardingGoldDesign.goldDust),
-          const Size(390, 844),
-        ),
-        greaterThan(100),
-      );
-    },
-  );
+    expect(
+      ZyraDevWelcomePulseDesign.select(ZyraWelcomePulseDesign.softBloom),
+      isTrue,
+    );
+    expect(
+      ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.diagonalDust),
+      isTrue,
+    );
+    expect(
+      ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.liveDrift),
+      isTrue,
+    );
+    ZyraAccountState.resetForTesting();
+    expect(ZyraDevWelcomePulseDesign.current, ZyraWelcomePulseDesign.softBloom);
+    expect(
+      ZyraDevOnboardingGoldDesign.current,
+      ZyraOnboardingGoldDesign.diagonalDust,
+    );
+    expect(
+      ZyraDevOnboardingGoldMotion.current,
+      ZyraOnboardingGoldMotion.liveDrift,
+    );
+    ZyraDeveloperAccess.setAuthorizedForTesting(false);
+    expect(
+      ZyraDevWelcomePulseDesign.select(ZyraWelcomePulseDesign.softBloom),
+      isFalse,
+    );
+    expect(
+      ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.diagonalDust),
+      isFalse,
+    );
+    expect(
+      ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.liveDrift),
+      isFalse,
+    );
+  });
 
   test(
     'Diagonal edge retains its full diagonal spread at phone and tablet sizes',
@@ -309,37 +243,38 @@ void main() {
     expect(liveStart, isNot(liveLater));
   });
 
-  testWidgets('gold choice also updates the protected login preview live', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const MaterialApp(home: WelcomeScreen(devPreview: true)),
-    );
-    ZyraOnboardingGoldPainter painter() =>
-        tester
-                .widget<CustomPaint>(
-                  find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
-                )
-                .painter!
-            as ZyraOnboardingGoldPainter;
+  testWidgets(
+    'selected gold stays on the protected login preview during live motion',
+    (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(home: WelcomeScreen(devPreview: true)),
+      );
+      ZyraOnboardingGoldPainter painter() =>
+          tester
+                  .widget<CustomPaint>(
+                    find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
+                  )
+                  .painter!
+              as ZyraOnboardingGoldPainter;
 
-    expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
-    expect(painter().motion, ZyraOnboardingGoldMotion.liveDrift);
-    final initialMotion = painter().motionValue;
-    await tester.pump(const Duration(milliseconds: 700));
-    expect(painter().motionValue, isNot(initialMotion));
-    ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.twinClouds);
-    await tester.pump();
-    expect(painter().design, ZyraOnboardingGoldDesign.twinClouds);
-    expect(find.text('Continue with Google'), findsOneWidget);
+      expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
+      expect(painter().motion, ZyraOnboardingGoldMotion.liveDrift);
+      final initialMotion = painter().motionValue;
+      await tester.pump(const Duration(milliseconds: 700));
+      expect(painter().motionValue, isNot(initialMotion));
+      ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.diagonalDust);
+      await tester.pump();
+      expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
+      expect(find.text('Continue with Google'), findsOneWidget);
 
-    await tester.pumpWidget(const MaterialApp(home: WelcomeScreen()));
-    expect(
-      find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
-      findsNothing,
-    );
-    expect(tester.takeException(), isNull);
-  });
+      await tester.pumpWidget(const MaterialApp(home: WelcomeScreen()));
+      expect(
+        find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
+        findsNothing,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('page entrance replays and live drift continues on login', (
     tester,
@@ -461,7 +396,7 @@ void main() {
   });
 
   testWidgets(
-    'the protected toggle offers eleven dust previews without an obsolete pulse control',
+    'the protected toggle retains selected dust and both motions without a pulse control',
     (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
@@ -490,14 +425,14 @@ void main() {
       }
 
       final backdrop = find.byKey(
-        const ValueKey('dev_onboarding_gold_design_highDrift'),
+        const ValueKey('dev_onboarding_gold_design_diagonalDust'),
       );
       await tester.ensureVisible(backdrop);
       await tester.tap(backdrop);
       await tester.pump();
       expect(
         ZyraDevOnboardingGoldDesign.current,
-        ZyraOnboardingGoldDesign.highDrift,
+        ZyraOnboardingGoldDesign.diagonalDust,
       );
 
       final live = find.byKey(
@@ -520,7 +455,7 @@ void main() {
   );
 
   testWidgets(
-    'the complete opening reuses splash gold and live backdrop choice',
+    'the complete opening retains splash gold and the selected backdrop',
     (tester) async {
       ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
       await tester.pumpWidget(
@@ -548,21 +483,21 @@ void main() {
               as ZyraOnboardingGoldPainter;
       expectGoldWordmark();
       expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
-      ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.dustHalo);
+      ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.diagonalDust);
       await tester.pump();
-      expect(painter().design, ZyraOnboardingGoldDesign.dustHalo);
+      expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
       await tester.tap(
         find.byKey(const ValueKey('dev_onboarding_welcome_continue')),
       );
       await tester.pump();
       expectGoldWordmark();
-      expect(painter().design, ZyraOnboardingGoldDesign.dustHalo);
+      expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
       await tester.tap(
         find.byKey(const ValueKey('dev_onboarding_verification_continue')),
       );
       await tester.pump();
       expectGoldWordmark();
-      expect(painter().design, ZyraOnboardingGoldDesign.dustHalo);
+      expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
       expect(find.text('2 / 4'), findsOneWidget);
       Container dot(int page) => tester.widget<Container>(
         find.descendant(
@@ -595,7 +530,7 @@ void main() {
       await tester.pump();
       expect(find.text('4 / 4'), findsOneWidget);
       expect(find.byType(ZyraWelcomePulseMark), findsNothing);
-      ZyraDevWelcomePulseDesign.select(ZyraWelcomePulseDesign.twinHalo);
+      ZyraDevWelcomePulseDesign.select(ZyraWelcomePulseDesign.softBloom);
       await tester.pump();
       expect(find.byType(ZyraWelcomePulseMark), findsNothing);
       expect(

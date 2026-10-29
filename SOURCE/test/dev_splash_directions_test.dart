@@ -9,7 +9,6 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/widgets/zyra_splash_artwork.dart';
-import 'package:zyra/widgets/zyra_splash_motion.dart';
 
 void main() {
   setUp(() {
@@ -24,11 +23,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: direction == ZyraSplashDirection.current
-              ? const SplashScreen(motion: ZyraSplashMotion.bloomDraw)
-              : ZyraSplashStudy(direction: direction),
-        ),
+        MaterialApp(home: ZyraSplashStudy(direction: direction)),
       );
       final decorations = tester.widgetList<DecoratedBox>(
         find.byType(DecoratedBox),
@@ -77,7 +72,7 @@ void main() {
     expect(tester.hasRunningAnimations, isFalse);
   });
 
-  testWidgets('shared Home has exactly twelve directions and opens a preview', (
+  testWidgets('shared Home keeps Quiet Horizon and opens its preview', (
     tester,
   ) async {
     var panelClosed = false;
@@ -105,30 +100,19 @@ void main() {
         findsOneWidget,
       );
     }
-    expect(ZyraSplashDirection.values.length, 12);
-    expect(ZyraSplashDirection.current.label, 'Original');
+    expect(ZyraSplashDirection.values, [ZyraSplashDirection.dawnHorizon]);
     expect(ZyraSplashDirection.dawnHorizon.label, '6 · Quiet Horizon · Main');
     expect(find.text('6 · Quiet Horizon · Main'), findsOneWidget);
     for (final removed in ['disney', 'moonly', 'luma', 'headspace', 'tinder']) {
       expect(find.byKey(ValueKey('dev_splash_$removed')), findsNothing);
     }
-    await tester.tap(find.byKey(const ValueKey('dev_splash_hulu')));
+    await tester.tap(find.byKey(const ValueKey('dev_splash_dawnHorizon')));
     expect(panelClosed, isTrue);
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('splash_study_hulu')), findsOneWidget);
-    await tester.tap(find.byTooltip('Next direction'));
-    await tester.pumpAndSettle();
     expect(
-      find.byKey(const ValueKey('splash_study_goldBloom')),
+      find.byKey(const ValueKey('splash_study_dawnHorizon')),
       findsOneWidget,
     );
-    await tester.tap(find.byTooltip('Previous direction'));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('splash_study_hulu')), findsOneWidget);
-    await tester.tap(find.byTooltip('Previous direction'));
-    await tester.pumpAndSettle();
-    expect(find.byType(SplashScreen), findsOneWidget);
-    expect(find.text('Connecting Through Trust'), findsOneWidget);
   });
 
   testWidgets('direct unauthorized preview and Home picker are denied', (
@@ -149,7 +133,7 @@ void main() {
     expect(find.byType(ActionChip), findsNothing);
   });
 
-  testWidgets('all twelve visual previews preserve the underlying route', (
+  testWidgets('the selected visual preview preserves the underlying route', (
     tester,
   ) async {
     var restartCalls = 0;
@@ -187,7 +171,7 @@ void main() {
         ),
       ),
     );
-    await tester.tap(find.byKey(const ValueKey('dev_splash_current')));
+    await tester.tap(find.byKey(const ValueKey('dev_splash_dawnHorizon')));
     await tester.pumpAndSettle();
     for (final direction in ZyraSplashDirection.values) {
       expect(find.text(direction.label), findsOneWidget);
@@ -232,52 +216,13 @@ void main() {
     },
   );
 
-  test('Original and Hulu remain alongside all ten studies including main', () {
-    expect(ZyraSplashDirection.values.take(2), [
-      ZyraSplashDirection.current,
-      ZyraSplashDirection.hulu,
-    ]);
-    expect(ZyraSplashDirection.values.skip(2).length, 10);
-    expect(ZyraSplashDirection.values.map((e) => e.label).toSet().length, 12);
-  });
-
-  for (final hybrid in [
-    ZyraSplashDirection.centreDraw,
-    ZyraSplashDirection.bloomDraw,
-  ]) {
-    testWidgets(
-      '${hybrid.name} preserves original-style letter arrival and finished line',
-      (tester) async {
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(body: ZyraSplashStudy(direction: hybrid)),
-          ),
-        );
-        expect(
-          find.byKey(const ValueKey('hulu_letter_arrival')),
-          findsOneWidget,
-        );
-        await tester.pump(const Duration(milliseconds: 3051));
-        expect(
-          find.byKey(const ValueKey('splash_centre_draw')),
-          findsOneWidget,
-        );
-        expect(
-          find.byKey(const ValueKey('splash_motion_bloomDraw')),
-          findsOneWidget,
-        );
-        expect(tester.takeException(), isNull);
-      },
-    );
-  }
-
   for (final size in const [
     Size(320, 568),
     Size(390, 844),
     Size(430, 932),
     Size(844, 390),
   ]) {
-    for (final direction in ZyraSplashDirection.values.skip(1)) {
+    for (final direction in ZyraSplashDirection.values) {
       testWidgets('${direction.name} fits $size with enlarged text', (
         tester,
       ) async {
@@ -297,14 +242,7 @@ void main() {
           ),
         );
         await tester.pump(const Duration(milliseconds: 3051));
-        if (direction == ZyraSplashDirection.centreDraw ||
-            direction == ZyraSplashDirection.bloomDraw) {
-          for (final letter in ['Z', 'Y', 'R', 'A']) {
-            expect(find.text(letter), findsOneWidget);
-          }
-        } else {
-          expect(find.text('ZYRA'), findsOneWidget);
-        }
+        expect(find.text('ZYRA'), findsOneWidget);
         expect(find.text('Connecting with trust'), findsOneWidget);
         expect(tester.takeException(), isNull);
       });
@@ -318,7 +256,7 @@ void main() {
       const MaterialApp(
         home: MediaQuery(
           data: MediaQueryData(disableAnimations: true),
-          child: ZyraSplashStudy(direction: ZyraSplashDirection.goldBloom),
+          child: ZyraSplashStudy(direction: ZyraSplashDirection.dawnHorizon),
         ),
       ),
     );

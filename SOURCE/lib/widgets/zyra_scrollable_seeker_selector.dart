@@ -218,16 +218,10 @@ class _ZyraScrollableSeekerSelectorState
                                   'seeker-selector-highlight',
                                 ),
                                 decoration: BoxDecoration(
-                                  color: ZyraColors.isLightPalette
-                                      ? ZyraColors.devLightAccent.color
-                                            .withValues(alpha: .14)
-                                      : ZyraColors.frostSelectedFill,
+                                  color: ZyraColors.frostSelectedFill,
                                   borderRadius: BorderRadius.circular(17),
                                   border: Border.all(
-                                    color: ZyraColors.isLightPalette
-                                        ? ZyraColors.devLightAccent.color
-                                              .withValues(alpha: .38)
-                                        : ZyraColors.frostSelectedBorder,
+                                    color: ZyraColors.frostSelectedBorder,
                                   ),
                                 ),
                               ),

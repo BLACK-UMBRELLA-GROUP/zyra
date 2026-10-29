@@ -144,7 +144,7 @@ void main() {
     (size: Size(320, 568), textScale: 1.4, label: 'compact_140'),
     (size: Size(430, 932), textScale: 1.3, label: 'large_130'),
   ]) {
-    for (final direction in ZyraOnboardingDirection.values.skip(1)) {
+    for (final direction in ZyraOnboardingDirection.values) {
       testWidgets(
         '${direction.name} four-slide real-font review ${viewport.label}',
         (tester) async {
@@ -231,51 +231,6 @@ void main() {
         },
       );
     }
-
-    testWidgets(
-      'current welcome and stage real-font review ${viewport.label}',
-      (tester) async {
-        tester.view.physicalSize = viewport.size;
-        tester.view.devicePixelRatio = 1;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        await _pumpLab(
-          tester,
-          ZyraOnboardingDirection.current,
-          viewport.textScale,
-        );
-        for (final key in const [
-          'dev_onboarding_close',
-          'dev_onboarding_previous_direction',
-          'dev_onboarding_next_direction',
-        ]) {
-          _expectReachable(tester, key, viewport.size, reason: viewport.label);
-        }
-        final welcome = find.byKey(
-          const ValueKey('onboarding_welcome_continue'),
-        );
-        await _candidate(tester, 'current__welcome__${viewport.label}');
-        for (var item = 0; item < 4; item++) {
-          await tester.tap(
-            find.byKey(const ValueKey('onboarding_welcome_reveal_tap_area')),
-          );
-          await tester.pumpAndSettle();
-        }
-        await tester.ensureVisible(welcome);
-        await tester.pumpAndSettle();
-        expect(welcome.hitTestable(), findsOneWidget);
-        expect(tester.takeException(), isNull);
-        await tester.tap(welcome);
-        await tester.pumpAndSettle();
-        final stage = find.byKey(const ValueKey('onboarding_stage_continue'));
-        await tester.ensureVisible(stage);
-        await tester.pumpAndSettle();
-        expect(stage.hitTestable(), findsOneWidget);
-        expect(tester.takeException(), isNull);
-        await _candidate(tester, 'current__stage__${viewport.label}');
-        await tester.pumpWidget(const SizedBox.shrink());
-      },
-    );
   }
 
   testWidgets('first-page quote remains readable at compact 2.0× text', (
@@ -286,10 +241,10 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    await _pumpLab(tester, ZyraOnboardingDirection.atoms, 2.0);
+    await _pumpLab(tester, ZyraOnboardingDirection.luma, 2.0);
     await _revealStory(tester);
     expect(find.text('1 / 4'), findsOneWidget);
-    final story = find.byKey(const ValueKey('onboarding-study-scroll-atoms-0'));
+    final story = find.byKey(const ValueKey('onboarding-study-scroll-luma-0'));
     final position = tester
         .state<ScrollableState>(
           find.descendant(of: story, matching: find.byType(Scrollable)).first,
@@ -297,7 +252,7 @@ void main() {
         .position;
     expect(position.maxScrollExtent, greaterThan(0));
     final attribution = find.byKey(
-      const ValueKey('onboarding-study-attribution-atoms-0'),
+      const ValueKey('onboarding-study-attribution-luma-0'),
     );
     await tester.ensureVisible(attribution);
     await tester.pumpAndSettle();
@@ -322,7 +277,7 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    await _pumpLab(tester, ZyraOnboardingDirection.atoms, 1.0);
+    await _pumpLab(tester, ZyraOnboardingDirection.luma, 1.0);
     await _revealStory(tester);
     await tester.tap(find.byKey(const ValueKey('dev_onboarding_continue')));
     await tester.pumpAndSettle();

@@ -319,7 +319,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: OnboardingPreviewStyle(
-          directionName: 'headspace',
+          directionName: 'luma',
           child: SeekerPostIdentityChoiceScreen(devPreview: true),
         ),
       ),

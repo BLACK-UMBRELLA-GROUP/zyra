@@ -295,13 +295,13 @@ void main() {
     (size: Size(390, 844), scale: 1.0, name: 'standard'),
     (size: Size(320, 568), scale: 1.4, name: 'compact_140'),
   ]) {
-    testWidgets('continuous Structured flow real-font ${viewport.name}', (
+    testWidgets('continuous Luma flow real-font ${viewport.name}', (
       tester,
     ) async {
       await _mount(
         tester,
         const DevSignUpProcessScreen(
-          initialDirection: ZyraOnboardingDirection.structured,
+          initialDirection: ZyraOnboardingDirection.luma,
         ),
         size: viewport.size,
         scale: viewport.scale,
@@ -348,67 +348,40 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(welcomeContinue);
       await tester.pumpAndSettle();
-      for (
-        var page = 0;
-        page < ZyraOnboardingDirection.storyPageCount;
-        page++
-      ) {
+      for (var page = 0; page < 4; page++) {
         expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
-        expect(
-          (page == ZyraOnboardingDirection.storyPageCount - 1
-                  ? find.byKey(const ValueKey('dev_onboarding_begin_card'))
-                  : find.byKey(
-                      ValueKey(
-                        'onboarding-study-scroll-structured-${page + 1}',
-                      ),
-                    ))
-              .hitTestable(),
-          findsOneWidget,
+        final content = find.byKey(
+          ValueKey(
+            page == 0
+                ? 'dev_onboarding_verification_intro'
+                : 'dev_opening_page_$page',
+          ),
         );
+        expect(content.hitTestable(), findsOneWidget);
+        expect(find.text('${page + 1} / 4'), findsOneWidget);
         expect(find.byType(RoleSelectionScreen), findsNothing);
         expect(find.text('Finish preview'), findsNothing);
         _checkEdgeToEdge(tester, viewport.size, DevOnboardingIntroduction);
-        final story = page == ZyraOnboardingDirection.storyPageCount - 1
-            ? find.byKey(const ValueKey('dev_onboarding_begin_card'))
-            : find.byKey(
-                ValueKey('onboarding-study-scroll-structured-${page + 1}'),
-              );
-        for (
-          var stage = 0;
-          stage < (page == ZyraOnboardingDirection.storyPageCount - 1 ? 0 : 1);
-          stage++
-        ) {
-          await tester.tap(story);
-          await tester.pumpAndSettle();
-        }
         if (page == 0) {
           await _candidate(
             tester,
-            'structured_intro__${viewport.name}',
+            'luma_intro__${viewport.name}',
             directory: _stagedIntroDirectory,
           );
         }
-        if (page >= 2) {
-          if (page == 2) {
-            await tester.tap(story);
-            await tester.pumpAndSettle();
-          }
-          await tester.tap(
-            find.byKey(const ValueKey('dev_onboarding_continue')),
-          );
-          await tester.pump();
-          await tester.pump(const Duration(milliseconds: 750));
-          await tester.pump();
-          await tester.pump(const Duration(milliseconds: 750));
-          await tester.pump();
-        } else {
-          expect(
-            find.byKey(const ValueKey('dev_onboarding_continue')),
-            findsNothing,
-          );
-          await tester.tap(story);
-          await tester.pumpAndSettle();
-        }
+        final action = find.byKey(
+          ValueKey(
+            page == 0
+                ? 'dev_onboarding_verification_continue'
+                : page == 3
+                ? 'dev_onboarding_story_continue'
+                : 'dev_opening_next',
+          ),
+        );
+        await tester.ensureVisible(action);
+        expect(action.hitTestable(), findsOneWidget);
+        await tester.tap(action);
+        await tester.pumpAndSettle();
       }
       expect(find.byType(RoleSelectionScreen), findsOneWidget);
       expect(find.byType(DevOnboardingIntroduction), findsNothing);
@@ -431,11 +404,11 @@ void main() {
     });
   }
 
-  testWidgets('Atoms role-choice cards candidate-only review', (tester) async {
+  testWidgets('Luma role-choice cards candidate-only review', (tester) async {
     await _mount(
       tester,
       const OnboardingPreviewStyle(
-        directionName: 'atoms',
+        directionName: 'luma',
         child: RoleSelectionScreen(devPreview: true),
       ),
       size: const Size(390, 844),
@@ -445,19 +418,19 @@ void main() {
     expect(find.byKey(const ValueKey('role-select-guardian')), findsOneWidget);
     await _candidate(
       tester,
-      'role_choice_atoms__standard',
+      'role_choice_luma__standard',
       directory: _roleChoiceDirectory,
     );
   });
 
-  testWidgets('Atoms welcome cue and Guided Paths selected motion stills', (
+  testWidgets('Luma welcome and Guided Paths selected motion stills', (
     tester,
   ) async {
     const size = Size(390, 844);
     await _mount(
       tester,
       const OnboardingPreviewStyle(
-        directionName: 'atoms',
+        directionName: 'luma',
         child: ZyraOnboardingArrowScope(
           enabled: true,
           child: OnboardingStageIntroScreen(
@@ -473,11 +446,11 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey('onboarding_welcome_progress_cue')),
-      findsOneWidget,
+      findsNothing,
     );
     await _candidate(
       tester,
-      'atoms_welcome_final__standard',
+      'luma_welcome_final__standard',
       directory: _motionDirectory,
     );
     await tester.pumpWidget(const SizedBox.shrink());
@@ -485,7 +458,7 @@ void main() {
     await _mount(
       tester,
       const OnboardingPreviewStyle(
-        directionName: 'atoms',
+        directionName: 'luma',
         child: RoleSelectionScreen(devPreview: true),
       ),
       size: size,
@@ -524,7 +497,7 @@ void main() {
         await _mount(
           tester,
           const OnboardingPreviewStyle(
-            directionName: 'atoms',
+            directionName: 'luma',
             child: RoleSelectionScreen(devPreview: true),
           ),
           size: viewport.size,

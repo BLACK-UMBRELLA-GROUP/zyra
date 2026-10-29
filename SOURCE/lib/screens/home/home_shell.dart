@@ -536,17 +536,14 @@ class _HomeShellState extends State<HomeShell> {
           // eagerly starts Browse and the other account readers behind it,
           // even though the network-deny latch rejects their requests.
           // Ordinary member navigation keeps the persistent five-tab stack.
-          ZyraMenuCanvas(
-            enabled: !_actionMode && !_chromeHidden,
-            child: IndexedStack(
-              index: _tab,
-              children: widget.deferredOnboardingDevPreview
-                  ? [
-                      for (var index = 0; index < pages.length; index++)
-                        index == _tab ? pages[index] : const SizedBox.shrink(),
-                    ]
-                  : pages,
-            ),
+          IndexedStack(
+            index: _tab,
+            children: widget.deferredOnboardingDevPreview
+                ? [
+                    for (var index = 0; index < pages.length; index++)
+                      index == _tab ? pages[index] : const SizedBox.shrink(),
+                  ]
+                : pages,
           ),
           // 2026-07-26 (Founder review of the Browse page): the Dev
           // Access wrench that used to sit here is gone — it was
@@ -618,7 +615,6 @@ class _HomeShellState extends State<HomeShell> {
               )
             else
               ZyraShellNavigation(
-                forceCurrent: _actionMode,
                 currentIndex: _actionMode ? _actionIndex : _tab,
                 onTap: _actionMode ? _runAction : _goToTab,
                 // ACTIONS WAIT FOR THE FINGER TO LIFT — DR-ZYRA-161. Tabs

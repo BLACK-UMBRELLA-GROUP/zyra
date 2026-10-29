@@ -125,7 +125,7 @@ void main() {
       );
     });
 
-    test('Full aura and ten 3D treatments share the corrected policy', () {
+    test('Full aura uses the corrected shared swipe policy', () {
       final source = File(
         'lib/screens/browse/browse_screen.dart',
       ).readAsStringSync();
@@ -133,25 +133,7 @@ void main() {
       final feedbackEnd = source.indexOf('class _BorderFlash', feedbackStart);
       final feedback = source.substring(feedbackStart, feedbackEnd);
 
-      for (final style in [
-        'fullAura',
-        'layeredParallax',
-        'edgePeek',
-        'floatingDeck',
-        'carousel3d',
-        'doorHinge',
-        'pageCurl',
-        'depthTunnel',
-        'subjectSplit',
-        'magneticTilt',
-        'horizonLift',
-      ]) {
-        expect(
-          feedback,
-          contains('ZyraBrowseSwipeFeedbackStyle.$style'),
-          reason: '$style must remain wired into the shared feedback layer',
-        );
-      }
+      expect(feedback, contains('ZyraBrowseSwipeFeedbackStyle.fullAura'));
       expect(feedback, contains('ZyraBrowseSwipePolicy.cueEdge'));
       expect(source, contains('ZyraBrowseSwipePolicy.previewDecision'));
       expect(source, contains('ZyraBrowseSwipePolicy.committedDecision'));

@@ -220,7 +220,7 @@ void main() {
   });
 
   testWidgets(
-    'all eleven entry styles restart the existing onboarding without a root route',
+    'the selected entry style restarts the existing onboarding without a root route',
     (tester) async {
       final coordinator = ZyraDevSurfaceCoordinator.instance;
       coordinator.beginEntryFlow('Onboarding');
@@ -294,7 +294,7 @@ void main() {
   ) async {
     await tester.pumpWidget(_entry('Onboarding'));
     await _openActions(tester);
-    final choice = _choice(ZyraOnboardingDirection.structured);
+    final choice = _choice(ZyraOnboardingDirection.luma);
     await tester.ensureVisible(choice);
     await tester.pumpAndSettle();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);

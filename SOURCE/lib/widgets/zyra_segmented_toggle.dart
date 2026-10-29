@@ -126,18 +126,10 @@ class ZyraSegmentedToggle extends StatelessWidget {
                         width: seg,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: ZyraColors.isLightPalette
-                                ? ZyraColors.devLightAccent.color.withValues(
-                                    alpha: 0.14,
-                                  )
-                                : ZyraColors.frostSelectedFill,
+                            color: ZyraColors.frostSelectedFill,
                             borderRadius: BorderRadius.circular(17),
                             border: Border.all(
-                              color: ZyraColors.isLightPalette
-                                  ? ZyraColors.devLightAccent.color.withValues(
-                                      alpha: 0.38,
-                                    )
-                                  : ZyraColors.frostSelectedBorder,
+                              color: ZyraColors.frostSelectedBorder,
                               width: 1,
                             ),
                           ),

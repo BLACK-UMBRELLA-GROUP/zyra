@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/dev_splash_directions.dart';
 import 'package:zyra/screens/splash_screen.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_splash_motion.dart';
 import 'package:zyra/widgets/zyra_splash_artwork.dart'
     show ZyraSplashArtworkFrame, zyraPrimarySplashDirection;
 
@@ -48,9 +47,7 @@ void main() {
           home: Scaffold(
             body: RepaintBoundary(
               key: root,
-              child: direction == ZyraSplashDirection.current
-                  ? const SplashScreen(motion: ZyraSplashMotion.bloomDraw)
-                  : ZyraSplashStudy(direction: direction),
+              child: ZyraSplashStudy(direction: direction),
             ),
           ),
         ),

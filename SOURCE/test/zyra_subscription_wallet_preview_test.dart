@@ -704,7 +704,6 @@ void main() {
   for (final palette in const [
     ZyraDevPalette.midnightPlum,
     ZyraDevPalette.midnightBlue,
-    ZyraDevPalette.paperWhite,
   ]) {
     testWidgets(
       'wallet cards keep shared quiet fill and coverage outlines for ${palette.name}',

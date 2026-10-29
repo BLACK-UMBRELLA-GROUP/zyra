@@ -1301,40 +1301,6 @@ void main() {
     },
   );
 
-  testWidgets('light palette keeps readable ink and consistent dark gold', (
-    tester,
-  ) async {
-    ZyraColors.selectDevPalette(ZyraDevPalette.paperWhite);
-    await _mount(tester, balance: 1, onTerms: () {});
-    await _captureFrame(tester, 'store-light-top');
-    await _openInfo(tester);
-    final text = tester.widget<Text>(_key('lifetime'));
-    for (final background in ZyraColors.brandGradient.colors) {
-      expect(
-        _contrast(text.style!.color!, background),
-        greaterThanOrEqualTo(4.5),
-      );
-      expect(
-        _contrast(const Color(0xFF76531F), background),
-        greaterThanOrEqualTo(4.5),
-      );
-    }
-    await _captureFrame(tester, 'store-light-info');
-    await _closeInfo(tester);
-    await _nextPreview(tester);
-    _expectPreviewPosition(tester, 1);
-    final example = tester.widget<Text>(_key('example_score_1'));
-    expect(example.style!.color, const Color(0xFF76531F));
-    for (final background in ZyraColors.brandGradient.colors) {
-      expect(
-        _contrast(example.style!.color!, background),
-        greaterThanOrEqualTo(4.5),
-      );
-    }
-    await _captureFrame(tester, 'store-light-example-overall');
-    expect(tester.takeException(), isNull);
-  });
-
   testWidgets('Android names Google Play without changing the iPhone wording', (
     tester,
   ) async {

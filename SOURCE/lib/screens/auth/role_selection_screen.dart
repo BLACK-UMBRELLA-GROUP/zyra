@@ -239,18 +239,9 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
   );
 
   Widget _buildSelection(BuildContext context) {
-    // Visual comparisons are protected and session-only. The live journey
-    // uses Guided paths; the protected toggle can still preview every design.
     final previewStyle = OnboardingPreviewStyle.effectiveStyleOf(context);
-    final design = widget.devPreview
-        ? ZyraDevRoleChoiceDesign.current
-        : ZyraRoleChoiceDesign.guidedPaths;
     final screenHeight = MediaQuery.sizeOf(context).height;
-    final cardHeight = design == ZyraRoleChoiceDesign.spotlight
-        ? (screenHeight * .16).clamp(150.0, 165.0).toDouble()
-        : design == ZyraRoleChoiceDesign.current
-        ? 104.0
-        : (screenHeight * .14).clamp(124.0, 176.0).toDouble();
+    final cardHeight = (screenHeight * .14).clamp(124.0, 176.0).toDouble();
     final focusedCardHeight = (screenHeight * .34)
         .clamp(cardHeight + 74, 310.0)
         .toDouble();
@@ -284,7 +275,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                     child: _selectionContents(
                       context,
                       previewStyle: previewStyle,
-                      design: design,
+
                       cardHeight: cardHeight,
                       focusedCardHeight: focusedCardHeight,
                       selectionDuration: selectionDuration,
@@ -372,7 +363,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
   Widget _selectionContents(
     BuildContext context, {
     required OnboardingPreviewStyle? previewStyle,
-    required ZyraRoleChoiceDesign design,
+
     required double cardHeight,
     required double focusedCardHeight,
     required Duration selectionDuration,
@@ -480,7 +471,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
             visible:
                 _selectedRole == null || _selectedRole == ZyraSignupRole.seeker,
             previewStyle: previewStyle,
-            design: design,
+
             minHeight: _selectedRole == ZyraSignupRole.seeker
                 ? focusedCardHeight
                 : cardHeight,
@@ -500,7 +491,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                 _selectedRole == null ||
                 _selectedRole == ZyraSignupRole.guardian,
             previewStyle: previewStyle,
-            design: design,
+
             minHeight: _selectedRole == ZyraSignupRole.guardian
                 ? focusedCardHeight
                 : cardHeight,
@@ -523,7 +514,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
     ZyraSignupRole role, {
     required bool visible,
     required OnboardingPreviewStyle? previewStyle,
-    required ZyraRoleChoiceDesign design,
+
     required double minHeight,
     required bool focused,
     required Duration duration,
@@ -533,7 +524,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
             role,
             key: ValueKey('role-choice-card-${role.name}'),
             previewStyle: previewStyle,
-            design: design,
+
             minHeight: minHeight,
             focused: focused,
             motionDuration: duration,
@@ -569,7 +560,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
     ZyraSignupRole role, {
     Key? key,
     required OnboardingPreviewStyle? previewStyle,
-    required ZyraRoleChoiceDesign design,
+
     required double minHeight,
     bool focused = false,
     required Duration motionDuration,
@@ -588,7 +579,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
         ? 'Build my profile and begin my own marriage journey.'
         : 'Guide someone I care for through their journey.',
     previewStyle: previewStyle,
-    design: design,
+
     selected: _selectedRole == role,
     focused: focused,
     minHeight: minHeight,
@@ -650,7 +641,6 @@ class _RoleCard extends StatelessWidget {
   final String title;
   final String description;
   final OnboardingPreviewStyle? previewStyle;
-  final ZyraRoleChoiceDesign design;
   final bool selected;
   final bool focused;
   final double minHeight;
@@ -664,7 +654,6 @@ class _RoleCard extends StatelessWidget {
     required this.title,
     required this.description,
     this.previewStyle,
-    required this.design,
     required this.selected,
     required this.focused,
     required this.minHeight,
@@ -729,97 +718,17 @@ class _RoleCard extends StatelessWidget {
     child: Text(description),
   );
 
-  BoxDecoration _decoration(BorderRadius radius) {
-    if (design == ZyraRoleChoiceDesign.current) {
-      return previewStyle?.cardDecoration(selected: selected) ??
-          BoxDecoration(
-            color: selected
-                ? ZyraColors.journeyGold.withValues(alpha: .14)
-                : ZyraColors.iconButtonBg,
-            border: Border.all(
-              color: selected
-                  ? ZyraColors.journeyGold.withValues(alpha: .75)
-                  : ZyraColors.iconButtonBorder,
-              width: selected ? 1 : .5,
-            ),
-            borderRadius: radius,
-          );
-    }
-    return BoxDecoration(
-      color: switch (design) {
-        ZyraRoleChoiceDesign.quietRails =>
-          selected
-              ? ZyraColors.journeyGold.withValues(alpha: .09)
-              : Colors.transparent,
-        ZyraRoleChoiceDesign.spotlight =>
-          selected
-              ? ZyraColors.journeyGold.withValues(alpha: .13)
-              : ZyraColors.luxuryDarkPurple.withValues(alpha: .27),
-        _ =>
-          selected
-              ? ZyraColors.journeyGold.withValues(alpha: .13)
-              : ZyraColors.frostFill,
-      },
-      border: Border.all(
-        color: selected
-            ? ZyraColors.journeyGold.withValues(alpha: .85)
-            : ZyraColors.frostBorder,
-        width: selected ? 1.2 : .8,
-      ),
-      borderRadius: radius,
-    );
-  }
-
-  Widget _current() => Row(
-    children: [
-      Container(
-        width: 2,
-        height: 48,
-        decoration: BoxDecoration(
-          color: ZyraColors.journeyGold.withValues(alpha: .84),
-          borderRadius: BorderRadius.circular(2),
-        ),
-      ),
-      const SizedBox(width: 15),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [_title, const SizedBox(height: 5), _description],
-        ),
-      ),
-      const SizedBox(width: 12),
-      _selectionMark(size: 38),
-    ],
-  );
-
-  Widget _editorial() => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        _number,
-        style: ZyraText.heading(size: 32, color: ZyraColors.journeyGold),
-      ),
-      const SizedBox(width: 18),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 1,
-              color: ZyraColors.journeyGold.withValues(alpha: .55),
-            ),
-            const SizedBox(height: 17),
-            _title,
-            const SizedBox(height: 9),
-            _description,
-          ],
-        ),
-      ),
-      const SizedBox(width: 12),
-      _selectionMark(),
-    ],
+  BoxDecoration _decoration(BorderRadius radius) => BoxDecoration(
+    color: selected
+        ? ZyraColors.journeyGold.withValues(alpha: .13)
+        : ZyraColors.frostFill,
+    border: Border.all(
+      color: selected
+          ? ZyraColors.journeyGold.withValues(alpha: .85)
+          : ZyraColors.frostBorder,
+      width: selected ? 1.2 : .8,
+    ),
+    borderRadius: radius,
   );
 
   Widget _guidedPaths() => Row(
@@ -865,92 +774,9 @@ class _RoleCard extends StatelessWidget {
     ],
   );
 
-  Widget _quietRails() => Row(
-    children: [
-      Icon(_roleIcon, size: 27, color: ZyraColors.journeyGold),
-      const SizedBox(width: 20),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [_title, const SizedBox(height: 8), _description],
-        ),
-      ),
-      const SizedBox(width: 13),
-      _selectionMark(),
-    ],
-  );
-
-  Widget _spotlight() => Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Container(
-        width: 38,
-        height: 38,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: ZyraColors.journeyGold.withValues(alpha: .58),
-          ),
-        ),
-        child: Icon(_roleIcon, color: ZyraColors.journeyGold, size: 20),
-      ),
-      const SizedBox(height: 7),
-      _title,
-      const SizedBox(height: 5),
-      Text(
-        description,
-        textAlign: TextAlign.center,
-        style: ZyraText.subtext(size: 12.5),
-      ),
-      const SizedBox(height: 7),
-      _selectionMark(size: 20),
-    ],
-  );
-
-  Widget _framedChoice() => Container(
-    decoration: BoxDecoration(
-      border: Border.all(
-        color: ZyraColors.journeyGold.withValues(alpha: selected ? .65 : .3),
-        width: .7,
-      ),
-      borderRadius: BorderRadius.circular(9),
-    ),
-    padding: const EdgeInsets.fromLTRB(15, 12, 15, 12),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          children: [
-            Text(
-              '$_number / 02',
-              style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
-            ),
-            const Spacer(),
-            _selectionMark(size: 24),
-          ],
-        ),
-        const SizedBox(height: 7),
-        _title,
-        const SizedBox(height: 4),
-        _description,
-      ],
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
-    final radius = switch (design) {
-      ZyraRoleChoiceDesign.current =>
-        previewStyle?.cardRadius ?? BorderRadius.circular(16),
-      ZyraRoleChoiceDesign.editorial => BorderRadius.circular(5),
-      ZyraRoleChoiceDesign.guidedPaths => BorderRadius.circular(20),
-      ZyraRoleChoiceDesign.quietRails => BorderRadius.circular(8),
-      ZyraRoleChoiceDesign.spotlight => BorderRadius.circular(32),
-      ZyraRoleChoiceDesign.framedChoice => BorderRadius.circular(19),
-    };
+    final radius = BorderRadius.circular(20);
     return Semantics(
       button: true,
       selected: selected,
@@ -982,24 +808,11 @@ class _RoleCard extends StatelessWidget {
             borderRadius: radius,
             onTap: onTap,
             child: Padding(
-              padding: design == ZyraRoleChoiceDesign.spotlight
-                  ? const EdgeInsets.symmetric(horizontal: 22, vertical: 8)
-                  : design == ZyraRoleChoiceDesign.framedChoice
-                  ? const EdgeInsets.symmetric(horizontal: 8, vertical: 8)
-                  : EdgeInsets.symmetric(
-                      horizontal: design == ZyraRoleChoiceDesign.current
-                          ? 18
-                          : 20,
-                      vertical: previewStyle?.cardVerticalPadding ?? 18,
-                    ),
-              child: switch (design) {
-                ZyraRoleChoiceDesign.current => _current(),
-                ZyraRoleChoiceDesign.editorial => _editorial(),
-                ZyraRoleChoiceDesign.guidedPaths => _guidedPaths(),
-                ZyraRoleChoiceDesign.quietRails => _quietRails(),
-                ZyraRoleChoiceDesign.spotlight => _spotlight(),
-                ZyraRoleChoiceDesign.framedChoice => _framedChoice(),
-              },
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: previewStyle?.cardVerticalPadding ?? 18,
+              ),
+              child: _guidedPaths(),
             ),
           ),
         ),

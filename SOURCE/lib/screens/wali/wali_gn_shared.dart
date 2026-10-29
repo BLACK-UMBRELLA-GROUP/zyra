@@ -163,11 +163,7 @@ const List<GNFamily> _gnFamiliesB = [
 // singleton, exactly like AppState.
 
 enum GNNetworkCardDesign {
-  openCanvas('1 · Open canvas'),
-  cinematic('2 · Cinematic overlay'),
-  editorial('3 · Editorial profile'),
-  portraitFocus('4 · Portrait focus'),
-  actionRail('5 · Minimal action rail');
+  portraitFocus('4 · Portrait focus');
 
   final String label;
   const GNNetworkCardDesign(this.label);

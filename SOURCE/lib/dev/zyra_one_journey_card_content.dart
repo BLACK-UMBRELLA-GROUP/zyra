@@ -7,11 +7,6 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
 enum ZyraOneJourneyCardDesign {
-  classic('Classic', 'The current photo, identity and full-width action.'),
-  quietMinimal(
-    'Quiet minimal',
-    'A smaller portrait and a calmer, left-aligned hierarchy.',
-  ),
   portraitSplit('Portrait split', 'Portrait left, identity and actions right.');
 
   const ZyraOneJourneyCardDesign(this.label, this.description);
@@ -184,11 +179,6 @@ class ZyraOneJourneyCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => switch (design) {
-    // Classic is rendered by the original presenter, not reconstructed here.
-    ZyraOneJourneyCardDesign.classic => throw StateError(
-      'Classic retains its original interior',
-    ),
-    ZyraOneJourneyCardDesign.quietMinimal => _quietMinimal(),
     ZyraOneJourneyCardDesign.portraitSplit when inlineOptions != null =>
       _expandedOptions(),
     ZyraOneJourneyCardDesign.portraitSplit

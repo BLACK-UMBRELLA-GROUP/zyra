@@ -28,8 +28,8 @@ const _phone = Size(390, 844);
 
 void _noOpContinue() {}
 
-Widget _atoms(Widget child) => OnboardingPreviewStyle(
-  directionName: 'atoms',
+Widget _luma(Widget child) => OnboardingPreviewStyle(
+  directionName: 'luma',
   child: ZyraOnboardingArrowScope(enabled: true, child: child),
 );
 
@@ -140,21 +140,21 @@ void main() {
   testWidgets('Atoms role choice is a branch without invented progress', (
     tester,
   ) async {
-    await _mount(tester, _atoms(const RoleSelectionScreen(devPreview: true)));
+    await _mount(tester, _luma(const RoleSelectionScreen(devPreview: true)));
     expect(find.text('How will you use ZYRA first?'), findsOneWidget);
     expect(find.textContaining('ACCOUNT SETUP'), findsNothing);
     expect(find.text('1 OF 2'), findsNothing);
     expect(find.byKey(const ValueKey('role-select-seeker')), findsOneWidget);
     expect(find.byKey(const ValueKey('role-select-guardian')), findsOneWidget);
-    await _candidate(tester, '01_atoms_role_choice__phone');
+    await _candidate(tester, '01_luma_role_choice__phone');
   });
 
-  testWidgets('Seeker overview has a gold cue but no two-dot pager', (
+  testWidgets('Seeker overview retains the Luma roadmap and numbered handoff', (
     tester,
   ) async {
     await _mount(
       tester,
-      _atoms(
+      _luma(
         OnboardingStageIntroScreen(
           stage: SeekerOnboardingStage.buildProfile,
           welcomeName: 'Shakeel',
@@ -167,11 +167,11 @@ void main() {
     expect(find.text('Together, we’ll build four things.'), findsOneWidget);
     expect(
       find.byKey(const ValueKey('onboarding_welcome_progress_cue')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(find.text('1 / 2'), findsNothing);
     expect(find.text('2 / 2'), findsNothing);
-    await _candidate(tester, '02_atoms_seeker_overview__phone');
+    await _candidate(tester, '02_luma_seeker_overview__phone');
 
     for (var item = 0; item < 4; item++) {
       await tester.tap(
@@ -179,6 +179,10 @@ void main() {
       );
       await tester.pumpAndSettle();
     }
+    expect(
+      find.byKey(const ValueKey('onboarding_welcome_continue')).hitTestable(),
+      findsOneWidget,
+    );
     await tester.tap(find.byKey(const ValueKey('onboarding_welcome_continue')));
     await tester.pumpAndSettle();
     expect(
@@ -187,7 +191,7 @@ void main() {
     );
     expect(find.text('Let’s begin with your profile.'), findsOneWidget);
     expect(find.textContaining('STAGE 1 OF'), findsNothing);
-    await _candidate(tester, '03_atoms_profile_handoff__phone');
+    await _candidate(tester, '03_luma_profile_handoff__phone');
   });
 
   testWidgets(
@@ -195,7 +199,7 @@ void main() {
     (tester) async {
       await _mount(
         tester,
-        _atoms(
+        _luma(
           OnboardingStageIntroScreen(
             stage: SeekerOnboardingStage.journeyBio,
             devPreview: true,
@@ -210,17 +214,17 @@ void main() {
         find.byKey(const ValueKey('onboarding_stage_journey_bio')),
         findsOneWidget,
       );
-      await _candidate(tester, '04_atoms_journey_bio_handoff__phone');
+      await _candidate(tester, '04_luma_journey_bio_handoff__phone');
     },
   );
 
   testWidgets('Guardian question shows five-question local progress', (
     tester,
   ) async {
-    await _mount(tester, _atoms(const WaliOnboardingFlow(devPreview: true)));
+    await _mount(tester, _luma(const WaliOnboardingFlow(devPreview: true)));
     expect(find.text('ACCOUNT ESSENTIALS'), findsOneWidget);
     expect(find.text('QUESTION 1 OF 5'), findsOneWidget);
     expect(find.textContaining('ACCOUNT SETUP'), findsNothing);
-    await _candidate(tester, '05_atoms_guardian_question__phone');
+    await _candidate(tester, '05_luma_guardian_question__phone');
   });
 }

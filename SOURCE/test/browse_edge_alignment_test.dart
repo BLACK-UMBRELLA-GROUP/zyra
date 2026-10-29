@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_menu_directions.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/models/seeker_profile.dart';
@@ -26,7 +25,13 @@ const _captureDirectory = String.fromEnvironment(
 );
 const _sara = 'draft-sara';
 const _aisha = 'draft-aisha';
-const _actions = ['Compatibility', 'Scan', 'Hide profile', 'Filters', 'Report'];
+const _actions = [
+  'Compatibility score',
+  'Scan',
+  'Hide profile',
+  'Filters',
+  'Report',
+];
 
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
@@ -195,15 +200,25 @@ Future<void> _mount(
     }
     expect(_person(tester).photos, isNotEmpty);
     await tester.pumpAndSettle();
+    expect(_browse(tester).galleryMode, ZyraBrowseGalleryMode.detailsFirst);
+    final personId = _person(tester).id;
+    final gallery = _key('concept_browse_photo_tap_$personId');
+    expect(gallery, findsOneWidget);
+    await tester.tap(gallery);
+    await tester.pumpAndSettle();
+    expect(_browse(tester).initialGalleryIndices[personId], 1);
     final images = tester.widgetList<Image>(find.byType(Image));
     expect(images, isNotEmpty);
     expect(images.every((image) => image.image is MemoryImage), isTrue);
-    expect(
-      tester
-          .widgetList<RawImage>(find.byType(RawImage))
-          .every((image) => image.image != null),
-      isTrue,
+    final frames = tester.widgetList<RawImage>(find.byType(RawImage));
+    expect(frames, isNotEmpty);
+    expect(frames.every((image) => image.image != null), isTrue);
+    final photoRect = tester.getRect(gallery);
+    await tester.tapAt(
+      Offset(photoRect.left + photoRect.width * .25, photoRect.center.dy),
     );
+    await tester.pumpAndSettle();
+    expect(_browse(tester).initialGalleryIndices[personId], 0);
   }
   expect(tester.takeException(), isNull);
   addTearDown(() async {
@@ -321,11 +336,9 @@ void main() {
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraDevMenuDesign.instance.resetForTesting();
   });
   tearDown(() {
     expect(network.attempts, 0);
-    ZyraDevMenuDesign.instance.resetForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     HttpOverrides.global = previousNetwork;
@@ -352,7 +365,7 @@ void main() {
             '${size.width.toInt()}_${quiet ? 'quiet' : 'motion'}_browse',
           );
 
-          final held = await _holdBar(tester, _barIcon(tester, 'Browse'));
+          final held = await _holdBar(tester, _barIcon(tester, 'Profiles'));
           _edges(tester.getRect(_glass()), size.width, 20);
           expect(tester.getRect(_glass()).height, greaterThan(initial.height));
           expect(_person(tester).id, _sara);

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/config/zyra_app_variant.dart';
 import 'package:zyra/dev/dev_onboarding_interaction.dart';
 import 'package:zyra/dev/dev_onboarding_gold_design.dart';
 import 'package:zyra/dev/dev_onboarding_lab.dart';
@@ -97,32 +96,23 @@ void main() {
     ZyraDevOnboardingInteraction.resetForTesting();
   });
 
-  test('eleven ordered onboarding studies do not replace the main splash', () {
-    expect(ZyraOnboardingDirection.storyPageCount, 4);
-    expect(zyraDefaultDevOnboardingDirection, ZyraOnboardingDirection.luma);
-    expect(ZyraOnboardingDirection.values.map((e) => e.name), [
-      'current',
-      'structured',
-      'luma',
-      'revolut',
-      'headspace',
-      'mozi',
-      'wise',
-      'uber',
-      'ahead',
-      'howWeFeel',
-      'atoms',
-    ]);
-    expect(
-      ZyraOnboardingDirection.values.map((e) => e.label).toSet(),
-      hasLength(11),
-    );
-    expect(zyraPrimarySplashDirection, ZyraSplashDirection.dawnHorizon);
-    expect(ZyraColors.brandGradient.colors, const [
-      Color(0xFF30203F),
-      Color(0xFF160E20),
-    ]);
-  });
+  test(
+    'the selected Luma onboarding study does not replace the main splash',
+    () {
+      expect(ZyraOnboardingDirection.storyPageCount, 4);
+      expect(zyraDefaultDevOnboardingDirection, ZyraOnboardingDirection.luma);
+      expect(ZyraOnboardingDirection.values.map((e) => e.name), ['luma']);
+      expect(
+        ZyraOnboardingDirection.values.map((e) => e.label).toSet(),
+        hasLength(1),
+      );
+      expect(zyraPrimarySplashDirection, ZyraSplashDirection.dawnHorizon);
+      expect(ZyraColors.brandGradient.colors, const [
+        Color(0xFF30203F),
+        Color(0xFF160E20),
+      ]);
+    },
+  );
 
   testWidgets('standalone directions preview starts with Luma', (tester) async {
     ZyraDevOnboardingInteraction.resetForTesting();
@@ -147,7 +137,7 @@ void main() {
     );
   });
 
-  for (final direction in ZyraOnboardingDirection.values.skip(1)) {
+  for (final direction in ZyraOnboardingDirection.values) {
     testWidgets('${direction.name} continues through four visual-only slides', (
       tester,
     ) async {
@@ -195,21 +185,21 @@ void main() {
     });
   }
 
-  testWidgets('Atoms shows the approved four-page story and attributed quote', (
+  testWidgets('Luma shows the approved four-page story and attributed quote', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
-    await _open(tester, ZyraOnboardingDirection.atoms);
+    await _open(tester, ZyraOnboardingDirection.luma);
 
     // Separate design comparisons no longer show the continuous-story dots.
     expect(find.byKey(const ValueKey('dev_onboarding_dot_0')), findsNothing);
 
     expect(find.text('1 / 4'), findsOneWidget);
-    await _revealCard(tester, ZyraOnboardingDirection.atoms, 0);
+    await _revealCard(tester, ZyraOnboardingDirection.luma, 0);
     expect(find.text('A PRINCIPLE BEHIND ZYRA'), findsOneWidget);
     expect(find.text('It is reported from\nImam Ahmad:'), findsOneWidget);
     expect(
-      find.byKey(const ValueKey('onboarding-study-quote-atoms-0')),
+      find.byKey(const ValueKey('onboarding-study-quote-luma-0')),
       findsOneWidget,
     );
     expect(
@@ -217,7 +207,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const ValueKey('onboarding-study-attribution-atoms-0')),
+      find.byKey(const ValueKey('onboarding-study-attribution-luma-0')),
       findsOneWidget,
     );
     expect(
@@ -235,7 +225,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('2 / 4'), findsOneWidget);
-    await _revealCard(tester, ZyraOnboardingDirection.atoms, 1);
+    await _revealCard(tester, ZyraOnboardingDirection.luma, 1);
     expect(find.text('MARRIAGE-FIRST'), findsOneWidget);
     expect(find.text('Match on attraction.\nConnect on deen.'), findsOneWidget);
     expect(
@@ -252,7 +242,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('3 / 4'), findsOneWidget);
-    await _revealCard(tester, ZyraOnboardingDirection.atoms, 2);
+    await _revealCard(tester, ZyraOnboardingDirection.luma, 2);
     expect(find.text('COMPATIBILITY'), findsOneWidget);
     expect(
       find.text('See where you align\nbefore moving forward.'),
@@ -274,7 +264,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('4 / 4'), findsOneWidget);
-    await _revealCard(tester, ZyraOnboardingDirection.atoms, 3);
+    await _revealCard(tester, ZyraOnboardingDirection.luma, 3);
     expect(find.text('GUARDIAN SUPPORT'), findsOneWidget);
     expect(
       find.text('A Journey you share\nwith your Guardians.'),
@@ -294,10 +284,7 @@ void main() {
     semantics.dispose();
   });
 
-  for (final direction in [
-    ZyraOnboardingDirection.wise,
-    ZyraOnboardingDirection.howWeFeel,
-  ]) {
+  for (final direction in [ZyraOnboardingDirection.luma]) {
     testWidgets('${direction.name} retains every approved closing line', (
       tester,
     ) async {
@@ -327,109 +314,20 @@ void main() {
     });
   }
 
-  testWidgets('current onboarding closes without advancing live signup', (
-    tester,
-  ) async {
-    final navigator = await _open(tester, ZyraOnboardingDirection.current);
-    expect(find.byType(OnboardingStageIntroScreen), findsOneWidget);
-    expect(
-      tester
-          .widget<OnboardingStageIntroScreen>(
-            find.byType(OnboardingStageIntroScreen),
-          )
-          .allowPreviewScrolling,
-      isTrue,
-    );
-    expect(find.text('Your next steps, Shakeel.'), findsOneWidget);
-    expect(find.byType(SplashScreen), findsNothing);
-    for (var item = 0; item < 4; item++) {
-      await tester.tap(
-        find.byKey(const ValueKey('onboarding_welcome_reveal_tap_area')),
-      );
-      await tester.pumpAndSettle();
-    }
-    await tester.tap(find.byKey(const ValueKey('onboarding_welcome_continue')));
-    await tester.pumpAndSettle();
-    final action = find.byKey(const ValueKey('onboarding_stage_continue'));
-    await tester.ensureVisible(action);
-    await tester.pumpAndSettle();
-    await tester.tap(action);
-    await tester.pumpAndSettle();
-    expect(navigator.currentState!.canPop(), isFalse);
-    expect(find.byKey(_host), findsOneWidget);
-    expect(find.text("What's your first name?"), findsNothing);
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('current arrow preview can swipe through both intro pages', (
-    tester,
-  ) async {
-    expect(
-      ZyraDevOnboardingInteraction.select(
-        ZyraOnboardingAdvanceMode.animatedDownArrow,
-      ),
-      isTrue,
-    );
-    addTearDown(ZyraDevOnboardingInteraction.resetForTesting);
-    final navigator = await _open(tester, ZyraOnboardingDirection.current);
-    final intro = tester.widget<OnboardingStageIntroScreen>(
-      find.byType(OnboardingStageIntroScreen),
-    );
-    expect(intro.devPreview, isTrue);
-
-    for (var item = 0; item < 4; item++) {
-      await tester.tap(
-        find.byKey(const ValueKey('onboarding_welcome_reveal_tap_area')),
-      );
-      await tester.pumpAndSettle();
-    }
-
-    final welcome = find.byKey(
-      const ValueKey('onboarding_preview_welcome_scrollable'),
-    );
-    final welcomePosition = tester
-        .state<ScrollableState>(
-          find.descendant(of: welcome, matching: find.byType(Scrollable)),
-        )
-        .position;
-    welcomePosition.jumpTo(welcomePosition.maxScrollExtent);
-    await tester.pump();
-    await tester.drag(welcome, const Offset(0, -180));
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('onboarding_stage_continue')).hitTestable(),
-      findsOneWidget,
-    );
-
-    final stage = find.byKey(const ValueKey('onboarding_stage_scrollable'));
-    final stagePosition = tester
-        .state<ScrollableState>(
-          find.descendant(of: stage, matching: find.byType(Scrollable)),
-        )
-        .position;
-    stagePosition.jumpTo(stagePosition.maxScrollExtent);
-    await tester.pump();
-    await tester.drag(stage, const Offset(0, -180));
-    await tester.pumpAndSettle();
-    expect(navigator.currentState!.canPop(), isFalse);
-    expect(find.byKey(_host), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
-
   testWidgets(
     'comparison pages advance sequentially and Back stays reversible',
     (tester) async {
-      final navigator = await _open(tester, ZyraOnboardingDirection.howWeFeel);
+      final navigator = await _open(tester, ZyraOnboardingDirection.luma);
       expect(find.byKey(const ValueKey('dev_onboarding_dot_3')), findsNothing);
       expect(
-        _study(ZyraOnboardingDirection.howWeFeel, 0).hitTestable(),
+        _study(ZyraOnboardingDirection.luma, 0).hitTestable(),
         findsOneWidget,
       );
-      await _advanceButton(tester, ZyraOnboardingDirection.howWeFeel, 0);
-      await _advanceButton(tester, ZyraOnboardingDirection.howWeFeel, 1);
-      await _advanceButton(tester, ZyraOnboardingDirection.howWeFeel, 2);
+      await _advanceButton(tester, ZyraOnboardingDirection.luma, 0);
+      await _advanceButton(tester, ZyraOnboardingDirection.luma, 1);
+      await _advanceButton(tester, ZyraOnboardingDirection.luma, 2);
       expect(
-        _study(ZyraOnboardingDirection.howWeFeel, 3).hitTestable(),
+        _study(ZyraOnboardingDirection.luma, 3).hitTestable(),
         findsOneWidget,
       );
       expect(find.text('Finish preview'), findsOneWidget);
@@ -437,7 +335,7 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('dev_onboarding_back')));
       await tester.pumpAndSettle();
       expect(
-        _study(ZyraOnboardingDirection.howWeFeel, 2).hitTestable(),
+        _study(ZyraOnboardingDirection.luma, 2).hitTestable(),
         findsOneWidget,
       );
       await tester.tap(find.byKey(const ValueKey('dev_onboarding_back')));
@@ -445,7 +343,7 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('dev_onboarding_back')));
       await tester.pumpAndSettle();
       expect(
-        _study(ZyraOnboardingDirection.howWeFeel, 0).hitTestable(),
+        _study(ZyraOnboardingDirection.luma, 0).hitTestable(),
         findsOneWidget,
       );
       expect(find.byKey(const ValueKey('dev_onboarding_back')), findsNothing);
@@ -456,58 +354,6 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
-
-  testWidgets('design navigation resets pages and cycles all eleven choices', (
-    tester,
-  ) async {
-    var refreshes = 0;
-    ZyraDeveloperAccess.configureAuthorizationForTesting(
-      variant: ZyraAppVariant.production,
-      currentUser: () => null,
-      refreshSession: () async {
-        refreshes++;
-        return null;
-      },
-      founderIdentityMatches: (_) => false,
-    );
-    final navigator = await _open(tester, ZyraOnboardingDirection.structured);
-    await _advanceButton(tester, ZyraOnboardingDirection.structured, 0);
-    expect(
-      _study(ZyraOnboardingDirection.structured, 1).hitTestable(),
-      findsOneWidget,
-    );
-    await tester.tap(
-      find.byKey(const ValueKey('dev_onboarding_previous_direction')),
-    );
-    await tester.pumpAndSettle();
-    expect(find.byType(OnboardingStageIntroScreen), findsOneWidget);
-    await tester.tap(
-      find.byKey(const ValueKey('dev_onboarding_previous_direction')),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      _study(ZyraOnboardingDirection.atoms, 0).hitTestable(),
-      findsOneWidget,
-    );
-    for (final direction in ZyraOnboardingDirection.values) {
-      await tester.tap(
-        find.byKey(const ValueKey('dev_onboarding_next_direction')),
-      );
-      await tester.pumpAndSettle();
-      if (direction == ZyraOnboardingDirection.current) {
-        expect(find.byType(OnboardingStageIntroScreen), findsOneWidget);
-      } else {
-        expect(_study(direction, 0).hitTestable(), findsOneWidget);
-      }
-      expect(find.text('Preview · ${direction.label}'), findsOneWidget);
-      expect(navigator.currentState!.canPop(), isTrue);
-      expect(tester.takeException(), isNull);
-    }
-    await tester.tap(find.byKey(_close));
-    await tester.pumpAndSettle();
-    expect(find.byKey(_host), findsOneWidget);
-    expect(refreshes, 0);
-  });
 
   testWidgets('unauthorized direct route exposes only a close action', (
     tester,
@@ -532,10 +378,10 @@ void main() {
   testWidgets('revocation hides artwork but leaves the host stack intact', (
     tester,
   ) async {
-    final navigator = await _open(tester, ZyraOnboardingDirection.wise);
-    await _advanceButton(tester, ZyraOnboardingDirection.wise, 0);
+    final navigator = await _open(tester, ZyraOnboardingDirection.luma);
+    await _advanceButton(tester, ZyraOnboardingDirection.luma, 0);
     expect(
-      _study(ZyraOnboardingDirection.wise, 1).hitTestable(),
+      _study(ZyraOnboardingDirection.luma, 1).hitTestable(),
       findsOneWidget,
     );
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
@@ -557,20 +403,20 @@ void main() {
   testWidgets('reduced motion continues immediately without animation delays', (
     tester,
   ) async {
-    await _open(tester, ZyraOnboardingDirection.ahead, reducedMotion: true);
-    await _revealCard(tester, ZyraOnboardingDirection.ahead, 0);
+    await _open(tester, ZyraOnboardingDirection.luma, reducedMotion: true);
+    await _revealCard(tester, ZyraOnboardingDirection.luma, 0);
     await tester.tap(find.byKey(_continue));
     await tester.pump();
     expect(
-      _study(ZyraOnboardingDirection.ahead, 1).hitTestable(),
+      _study(ZyraOnboardingDirection.luma, 1).hitTestable(),
       findsOneWidget,
     );
     await tester.pumpAndSettle();
-    await _revealCard(tester, ZyraOnboardingDirection.ahead, 1);
+    await _revealCard(tester, ZyraOnboardingDirection.luma, 1);
     await tester.tap(find.byKey(_continue));
     await tester.pump();
     expect(
-      _study(ZyraOnboardingDirection.ahead, 2).hitTestable(),
+      _study(ZyraOnboardingDirection.luma, 2).hitTestable(),
       findsOneWidget,
     );
     expect(tester.takeException(), isNull);
@@ -620,9 +466,8 @@ void main() {
         onContinue: () {},
       );
       expect(liveIntro.allowPreviewScrolling, isFalse);
-      // Scrolling is presentation, not developer authorization. Its two
-      // approved owners are the protected rehearsal and post-IDV overview;
-      // the latter still enforces owner/preview guards before routing.
+      // Scrolling is presentation, not developer authorization. The retained
+      // post-IDV overview still enforces owner/preview guards before routing.
       final previewOptIn = RegExp(
         r'allowPreviewScrolling\s*:\s*(true|_devPreview)\b',
       );
@@ -636,7 +481,6 @@ void main() {
               .toList()
             ..sort();
       expect(optedInFiles, [
-        'lib/dev/dev_onboarding_lab.dart',
         'lib/screens/onboarding/account_path_overview_screen.dart',
       ]);
       final overview = File(

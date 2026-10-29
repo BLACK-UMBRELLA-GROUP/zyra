@@ -357,7 +357,6 @@ void main() {
   ];
   List<Object?> globalState() => [
     ZyraColors.devPalette,
-    ZyraColors.devLightAccent,
     ZyraColors.appSurfaceStyle,
     ZyraColors.foreground,
     ZyraInteractionStyle.hapticLevel,

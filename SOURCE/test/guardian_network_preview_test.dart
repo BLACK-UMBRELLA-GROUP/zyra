@@ -233,7 +233,7 @@ void main() {
     expect(speak.borderless, isFalse);
   });
 
-  testWidgets('all five borderless Network designs are selectable', (
+  testWidgets('chosen Portrait Focus Network card is selectable', (
     tester,
   ) async {
     ZyraDevScenario.instance.setWaliLinkedSeekers(1);
@@ -480,59 +480,60 @@ void main() {
     },
   );
 
-  testWidgets('all card and action layouts stay reachable with larger text', (
-    tester,
-  ) async {
-    // The artificial Ahem fallback expands the existing title/control Row
-    // beyond 320px. Use the shipped reading font for a real layout assertion,
-    // while retaining the same overflow, target-size and hit-test checks.
-    await tester.runAsync(_loadNetworkActionReadingFonts);
-    final previousReadingFont = ZyraText.testReadingFontFamily;
-    ZyraText.testReadingFontFamily = 'PoppinsNetworkActionTest';
-    addTearDown(() => ZyraText.testReadingFontFamily = previousReadingFont);
-    ZyraDevScenario.instance.setWaliLinkedSeekers(1);
-    await pumpNetwork(tester, viewport: const Size(320, 568), textScale: 1.4);
+  testWidgets(
+    'chosen Network card and all four action layouts stay reachable with larger text',
+    (tester) async {
+      // The artificial Ahem fallback expands the existing title/control Row
+      // beyond 320px. Use the shipped reading font for a real layout assertion,
+      // while retaining the same overflow, target-size and hit-test checks.
+      await tester.runAsync(_loadNetworkActionReadingFonts);
+      final previousReadingFont = ZyraText.testReadingFontFamily;
+      ZyraText.testReadingFontFamily = 'PoppinsNetworkActionTest';
+      addTearDown(() => ZyraText.testReadingFontFamily = previousReadingFont);
+      ZyraDevScenario.instance.setWaliLinkedSeekers(1);
+      await pumpNetwork(tester, viewport: const Size(320, 568), textScale: 1.4);
 
-    for (final design in GNNetworkCardDesign.values) {
-      GNContext.instance.setNetworkCardDesign(design);
-      for (final layout in GNNetworkActionLayout.values) {
-        GNContext.instance.setNetworkActionLayout(layout);
-        await tester.pumpAndSettle();
-        for (final key in const [
-          'gn-view-profile-action',
-          'gn-speak-action',
-          'gn-next-action',
-        ]) {
-          final action = find.byKey(Key(key));
-          expect(
-            action,
-            findsOneWidget,
-            reason: '${design.label}, ${layout.label}: $key',
-          );
-          await tester.ensureVisible(action);
+      for (final design in GNNetworkCardDesign.values) {
+        GNContext.instance.setNetworkCardDesign(design);
+        for (final layout in GNNetworkActionLayout.values) {
+          GNContext.instance.setNetworkActionLayout(layout);
           await tester.pumpAndSettle();
+          for (final key in const [
+            'gn-view-profile-action',
+            'gn-speak-action',
+            'gn-next-action',
+          ]) {
+            final action = find.byKey(Key(key));
+            expect(
+              action,
+              findsOneWidget,
+              reason: '${design.label}, ${layout.label}: $key',
+            );
+            await tester.ensureVisible(action);
+            await tester.pumpAndSettle();
+            expect(
+              action.hitTestable(),
+              findsOneWidget,
+              reason: '${design.label}, ${layout.label}: $key',
+            );
+            final rect = tester.getRect(action);
+            expect(rect.left, greaterThanOrEqualTo(0));
+            expect(rect.right, lessThanOrEqualTo(320));
+            expect(
+              rect.height,
+              greaterThanOrEqualTo(44),
+              reason: '${design.label}, ${layout.label}: $key tap target',
+            );
+          }
           expect(
-            action.hitTestable(),
-            findsOneWidget,
-            reason: '${design.label}, ${layout.label}: $key',
-          );
-          final rect = tester.getRect(action);
-          expect(rect.left, greaterThanOrEqualTo(0));
-          expect(rect.right, lessThanOrEqualTo(320));
-          expect(
-            rect.height,
-            greaterThanOrEqualTo(44),
-            reason: '${design.label}, ${layout.label}: $key tap target',
+            tester.takeException(),
+            isNull,
+            reason: '${design.label}, ${layout.label}',
           );
         }
-        expect(
-          tester.takeException(),
-          isNull,
-          reason: '${design.label}, ${layout.label}',
-        );
       }
-    }
-  });
+    },
+  );
 
   testWidgets(
     'Browser, Sent and Received independently preview one, two or three profiles',
@@ -578,43 +579,44 @@ void main() {
     },
   );
 
-  testWidgets('every Network card design is shared by all three tabs', (
-    tester,
-  ) async {
-    ZyraDevScenario.instance.setWaliLinkedSeekers(1);
-    for (final area in GNNetworkPreviewArea.values) {
-      GNContext.instance.setPreviewCount(area, 3);
-    }
-    await pumpNetwork(tester);
-
-    for (final design in GNNetworkCardDesign.values) {
-      GNContext.instance.setNetworkCardDesign(design);
-      await tester.pump();
-
-      for (final target in const [
-        ('gn-mode-browser', 'gn-served-fam-h'),
-        ('gn-mode-sent', 'gn-sent-fam-h'),
-        ('gn-mode-received', 'gn-incoming-fam-h'),
-      ]) {
-        await tester.tap(find.byKey(Key(target.$1)));
-        await tester.pumpAndSettle();
-        final card = find.byKey(Key(target.$2));
-        expect(card, findsOneWidget);
-        expect(
-          find.descendant(
-            of: card,
-            matching: find.byKey(Key('gn-card-design-${design.name}')),
-          ),
-          findsOneWidget,
-        );
-        expect(
-          tester.takeException(),
-          isNull,
-          reason: '${design.label} ${target.$1}',
-        );
+  testWidgets(
+    'chosen Portrait Focus card is shared by all three Network tabs',
+    (tester) async {
+      ZyraDevScenario.instance.setWaliLinkedSeekers(1);
+      for (final area in GNNetworkPreviewArea.values) {
+        GNContext.instance.setPreviewCount(area, 3);
       }
-    }
-  });
+      await pumpNetwork(tester);
+
+      for (final design in GNNetworkCardDesign.values) {
+        GNContext.instance.setNetworkCardDesign(design);
+        await tester.pump();
+
+        for (final target in const [
+          ('gn-mode-browser', 'gn-served-fam-h'),
+          ('gn-mode-sent', 'gn-sent-fam-h'),
+          ('gn-mode-received', 'gn-incoming-fam-h'),
+        ]) {
+          await tester.tap(find.byKey(Key(target.$1)));
+          await tester.pumpAndSettle();
+          final card = find.byKey(Key(target.$2));
+          expect(card, findsOneWidget);
+          expect(
+            find.descendant(
+              of: card,
+              matching: find.byKey(Key('gn-card-design-${design.name}')),
+            ),
+            findsOneWidget,
+          );
+          expect(
+            tester.takeException(),
+            isNull,
+            reason: '${design.label} ${target.$1}',
+          );
+        }
+      }
+    },
+  );
 
   testWidgets('blank Guardian invitation is centred in the usable page', (
     tester,
@@ -1046,7 +1048,6 @@ void main() {
     GNContext.instance.selectSeeker(wards.last.id);
     GNContext.instance.setScene(GNScene.error);
     GNContext.instance.setStage(ward, family, GNStage.sent);
-    GNContext.instance.setNetworkCardDesign(GNNetworkCardDesign.cinematic);
     GNContext.instance.setNetworkActionLayout(GNNetworkActionLayout.speakFirst);
     GNContext.instance.setPreviewCount(GNNetworkPreviewArea.browser, 3);
     GNContext.instance.track('request_sent', family.id);

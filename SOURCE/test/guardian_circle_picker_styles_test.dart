@@ -333,16 +333,9 @@ void main() {
   });
 
   test(
-    'the fixed floating picker keeps Current and five interior comparisons',
+    'the fixed floating picker keeps only the selected Current interior',
     () {
-      expect(ZyraCircleBubbleDesign.values, [
-        ZyraCircleBubbleDesign.current,
-        ZyraCircleBubbleDesign.quietList,
-        ZyraCircleBubbleDesign.portraitTiles,
-        ZyraCircleBubbleDesign.journeyRail,
-        ZyraCircleBubbleDesign.segmentedCards,
-        ZyraCircleBubbleDesign.contextCards,
-      ]);
+      expect(ZyraCircleBubbleDesign.values, [ZyraCircleBubbleDesign.current]);
     },
   );
 
@@ -512,33 +505,6 @@ void main() {
         expect(_presentation, findsNothing);
         expect(_circle, findsOneWidget);
         expect(fixture.contextOpens, 0);
-      },
-    );
-
-    testWidgets(
-      '${style.name} changed style invalidates an open selector without retargeting it',
-      (tester) async {
-        final fixture = _Fixture(style: style);
-        await _mount(tester, fixture);
-        await _open(tester, style);
-        final picker = tester.widget<ZyraCircleTopicPicker>(_picker);
-        final next = ZyraCircleBubbleDesign
-            .values[(style.index + 1) % ZyraCircleBubbleDesign.values.length];
-        fixture.bubbleDesign.value = next;
-        await tester.pumpAndSettle();
-        expect(picker.canSelect(), isFalse);
-        picker.onSelected(picker.currentTopics.single);
-        await tester.pumpAndSettle();
-        expect(_presentation, findsOneWidget);
-        expect(_key('circle_discussion_bubble_$_currentId'), findsNothing);
-        await _press(tester, _key('circle_topic_picker_close'));
-        await _open(tester, next);
-        await _select(tester, _currentId);
-        expect(
-          _key('circle_pending_discussion_topic_$_currentId'),
-          findsOneWidget,
-        );
-        expect(find.byType(ZyraCircleDiscussionBubble), findsNothing);
       },
     );
 
@@ -855,7 +821,7 @@ void main() {
   testWidgets(
     'new picker styling does not restyle the separate own-message Link a Journey flow',
     (tester) async {
-      final fixture = _Fixture(style: ZyraCircleBubbleDesign.segmentedCards);
+      final fixture = _Fixture(style: ZyraCircleBubbleDesign.current);
       await _mount(tester, fixture);
       await tester.enterText(_composer, 'My own local message for a reference');
       await _press(tester, _send);
@@ -965,7 +931,7 @@ void main() {
   );
 
   testWidgets(
-    'all six interiors retain identical floating container geometry without a Back header',
+    'the selected interior retains its floating container geometry without a Back header',
     (tester) async {
       final fixture = _Fixture(style: ZyraCircleBubbleDesign.current);
       await _mount(tester, fixture);
@@ -993,31 +959,6 @@ void main() {
         await _press(tester, _key('circle_topic_picker_close'));
         expect(_circle, findsOneWidget);
       }
-    },
-  );
-
-  testWidgets(
-    'bubble control change revokes a retained picker lease without sending',
-    (tester) async {
-      final fixture = _Fixture(style: ZyraCircleBubbleDesign.current);
-      await _mount(tester, fixture);
-      await tester.enterText(_composer, 'Still only a draft');
-      await _open(tester, ZyraCircleBubbleDesign.current);
-      final retained = tester.widget<ZyraCircleTopicPicker>(_picker);
-      fixture.bubbleDesign.value = ZyraCircleBubbleDesign.segmentedCards;
-      await tester.pumpAndSettle();
-      expect(retained.canSelect(), isFalse);
-      retained.onSelected(retained.currentTopics.single);
-      await tester.pumpAndSettle();
-      expect(_presentation, findsOneWidget);
-      expect(_key('circle_discussion_bubble_$_currentId'), findsNothing);
-      await _press(tester, _key('circle_topic_picker_close'));
-      expect(
-        tester.widget<TextField>(_composer).controller!.text,
-        'Still only a draft',
-      );
-      expect(fixture.data.messages.length, 2);
-      expect(fixture.contextOpens, 0);
     },
   );
 }

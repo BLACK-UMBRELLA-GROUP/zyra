@@ -388,9 +388,7 @@ class _WaliHomeShellState extends State<WaliHomeShell> {
           // left; the Network tab re-ran its entitlement fetch every single
           // visit. IndexedStack keeps every visible destination mounted and
           // just toggles which one paints.
-          ZyraMenuCanvas(
-            child: IndexedStack(index: currentIndex, children: pages),
-          ),
+          IndexedStack(index: currentIndex, children: pages),
           // NO TOP-RIGHT CHROME. Notifications live in Dashboard and the dev
           // wrench retired to the side toggle, so this corner
           // belongs to each page again, exactly as it does on the Seeker

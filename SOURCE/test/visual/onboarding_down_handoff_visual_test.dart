@@ -37,24 +37,26 @@ Future<void> _candidate(WidgetTester tester, String name) async {
 }
 
 Future<void> _readStoryPage(WidgetTester tester, int page) async {
-  final story = page == ZyraOnboardingDirection.storyPageCount - 1
-      ? find.byKey(const ValueKey('dev_onboarding_begin_card'))
-      : find.byKey(ValueKey('onboarding-study-scroll-atoms-${page + 1}'));
-  expect(story.hitTestable(), findsOneWidget);
-  final steps = page == 0
-      ? 2
-      : page == ZyraOnboardingDirection.storyPageCount - 1
-      ? 0
-      : 2;
-  for (var stage = 0; stage < steps; stage++) {
-    await tester.tap(find.byKey(const ValueKey('dev_onboarding_continue')));
-    if (page == ZyraOnboardingDirection.storyPageCount - 2 && stage == 1) {
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 1600));
-    } else {
-      await tester.pumpAndSettle();
-    }
-  }
+  final content = find.byKey(
+    ValueKey(
+      page == 0
+          ? 'dev_onboarding_verification_intro'
+          : 'dev_opening_page_$page',
+    ),
+  );
+  expect(content.hitTestable(), findsOneWidget);
+  expect(find.text('${page + 1} / 4'), findsOneWidget);
+  if (page == 3) return;
+  final action = find.byKey(
+    ValueKey(
+      page == 0
+          ? 'dev_onboarding_verification_continue'
+          : 'dev_onboarding_story_continue',
+    ),
+  );
+  expect(action.hitTestable(), findsOneWidget);
+  await tester.tap(action);
+  await tester.pumpAndSettle();
 }
 
 void main() {
@@ -147,7 +149,7 @@ void main() {
           child: RepaintBoundary(key: _captureRoot, child: child!),
         ),
         home: const DevSignUpProcessScreen(
-          initialDirection: ZyraOnboardingDirection.atoms,
+          initialDirection: ZyraOnboardingDirection.luma,
         ),
       ),
     );
@@ -175,28 +177,30 @@ void main() {
     }
     expect(
       find.byKey(const ValueKey('dev_onboarding_page_count')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(find.byType(RoleSelectionScreen), findsNothing);
     expect(
-      find.byKey(const ValueKey('dev_onboarding_continue')),
+      find.byKey(const ValueKey('dev_onboarding_story_continue')),
       findsOneWidget,
     );
     await _candidate(tester, '01_fourth_card_settled');
 
-    await tester.tap(find.byKey(const ValueKey('dev_onboarding_continue')));
+    await tester.tap(
+      find.byKey(const ValueKey('dev_onboarding_story_continue')),
+    );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 120));
     expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
     expect(find.byType(RoleSelectionScreen), findsNothing);
     final outgoing = tester.widget<Opacity>(
-      find.byKey(const ValueKey('dev_onboarding_downward_exit')),
+      find.byKey(const ValueKey('dev_opening_foreground_opacity')),
     );
     expect(outgoing.opacity, greaterThan(0));
     expect(outgoing.opacity, lessThan(1));
     await _candidate(tester, '02_outgoing_midpoint');
 
-    await tester.pump(const Duration(milliseconds: 360));
+    await tester.pump(const Duration(milliseconds: 380));
     await tester.pump(const Duration(milliseconds: 1));
     await tester.pump();
     expect(find.byType(RoleSelectionScreen), findsOneWidget);

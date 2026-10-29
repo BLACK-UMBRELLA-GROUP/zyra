@@ -70,7 +70,7 @@ void main() {
     (width: 320.0, height: 568.0, textScale: 1.4, label: 'compact_140'),
   ]) {
     testWidgets(
-      'all 20 card/action combinations remain reachable with real fonts: '
+      'Portrait Focus and four action layouts remain reachable with real fonts: '
       '${viewport.label}',
       (tester) async {
         tester.view.physicalSize = Size(viewport.width, viewport.height);

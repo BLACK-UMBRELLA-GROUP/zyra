@@ -30,9 +30,8 @@
 // same DR-ZYRA-099 direction mapping continuously while dragging, and
 // the card shows an abstract treatment in the matching traffic-light
 // colour, growing in intensity as the drag approaches the commit
-// threshold. The current developer lab keeps Full Aura as the default and
-// offers ten Founder-selected 3D profile-motion comparisons. None uses visible
-// action buttons, ticks or thumbs. Full Aura reuses the hue family
+// threshold. Full Aura is the chosen feedback, without visible action
+// buttons, ticks or thumbs. It reuses the hue family
 // established by the post-commit tint colours (🔴🟡🟢) for
 // visual consistency, just at full opacity with the pill/border
 // applying their own transparency. Approved via an interactive
@@ -879,9 +878,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
   SeekerProfile? get _current =>
       _index < _profiles.length ? _profiles[_index] : null;
 
-  SeekerProfile? get _nextProfile =>
-      _index + 1 < _profiles.length ? _profiles[_index + 1] : null;
-
   bool get _limitReached =>
       AppState.instance.plan == ZyraPlan.basic &&
       (!_basicUsageReady ||
@@ -1591,216 +1587,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
     });
   }
 
-  Matrix4 _photoSwipeTransform(ZyraBrowseSwipeFeedbackStyle style) {
-    final dx = _dragOffset.dx;
-    final dy = _dragOffset.dy;
-    final progress = _dragStrength;
-    switch (style) {
-      case ZyraBrowseSwipeFeedbackStyle.fullAura:
-        return Matrix4.identity();
-      case ZyraBrowseSwipeFeedbackStyle.layeredParallax:
-        return Matrix4.identity()
-          ..setEntry(3, 2, 0.0011)
-          ..setTranslationRaw(dx * 0.70, dy * 0.70, progress * 72)
-          ..rotateY(-dx / 1050)
-          ..rotateX(dy / 1300)
-          ..rotateZ(dx / 3600);
-      case ZyraBrowseSwipeFeedbackStyle.edgePeek:
-        return Matrix4.translationValues(dx * 0.90, dy * 0.90, 0)
-          ..rotateZ(dx / 4200);
-      case ZyraBrowseSwipeFeedbackStyle.floatingDeck:
-        final scale = 1 - progress * 0.025;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0012)
-          ..setTranslationRaw(dx * 0.64, dy * 0.64, progress * 105)
-          ..rotateY(-dx / 1450)
-          ..rotateX(dy / 1700)
-          ..rotateZ(dx / 3800);
-      case ZyraBrowseSwipeFeedbackStyle.carousel3d:
-        return Matrix4.identity()
-          ..setEntry(3, 2, 0.0015)
-          ..setTranslationRaw(dx * 0.52, dy * 0.52, progress * 55)
-          ..rotateY(-dx / 430)
-          ..rotateX(dy / 520);
-      case ZyraBrowseSwipeFeedbackStyle.doorHinge:
-        return Matrix4.identity()
-          ..setEntry(3, 2, 0.0017)
-          ..setTranslationRaw(dx * 0.38, dy * 0.42, progress * 46)
-          ..rotateY(-dx / 290)
-          ..rotateX(dy / 360);
-      case ZyraBrowseSwipeFeedbackStyle.pageCurl:
-        final scale = 1 - progress * 0.035;
-        return Matrix4.diagonal3Values(scale, 1, 1)
-          ..setEntry(3, 2, 0.0015)
-          ..setTranslationRaw(dx * 0.56, dy * 0.56, progress * 70)
-          ..rotateY(-dx / 520)
-          ..rotateX(dy / 620)
-          ..rotateZ(dx / 5200);
-      case ZyraBrowseSwipeFeedbackStyle.depthTunnel:
-        final scale = 1 - progress * 0.18;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0013)
-          ..setTranslationRaw(dx * 0.30, dy * 0.30, -progress * 170)
-          ..rotateY(-dx / 1700)
-          ..rotateX(dy / 1900);
-      case ZyraBrowseSwipeFeedbackStyle.subjectSplit:
-        return Matrix4.identity()
-          ..setEntry(3, 2, 0.0012)
-          ..setTranslationRaw(dx * 0.58, dy * 0.58, progress * 66)
-          ..rotateY(-dx / 1200)
-          ..rotateX(dy / 1450);
-      case ZyraBrowseSwipeFeedbackStyle.magneticTilt:
-        return Matrix4.identity()
-          ..setEntry(3, 2, 0.0018)
-          ..setTranslationRaw(dx * 0.67, dy * 0.67, progress * 98)
-          ..rotateY(-dx / 390)
-          ..rotateX(dy / 470)
-          ..rotateZ(dx / 3100);
-      case ZyraBrowseSwipeFeedbackStyle.horizonLift:
-        final scale = 1 - progress * 0.018;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0014)
-          ..setTranslationRaw(
-            dx * 0.56,
-            dy * 0.56 - progress * 22,
-            progress * 128,
-          )
-          ..rotateY(-dx / 1350)
-          ..rotateX(dy / 760)
-          ..rotateZ(dx / 4200);
-    }
-  }
-
-  Matrix4 _nextProfileSwipeTransform(ZyraBrowseSwipeFeedbackStyle style) {
-    final progress = _dragStrength;
-    final dx = _dragOffset.dx;
-    final dy = _dragOffset.dy;
-    final horizontal = dx.abs() > dy.abs();
-    final direction = horizontal && dx != 0 ? dx.sign : 0.0;
-    final incomingX = -direction * 46 * (1 - progress);
-    final incomingY = horizontal ? 12 * (1 - progress) : -46 * (1 - progress);
-
-    switch (style) {
-      case ZyraBrowseSwipeFeedbackStyle.fullAura:
-        return Matrix4.identity();
-      case ZyraBrowseSwipeFeedbackStyle.layeredParallax:
-        final scale = 0.92 + progress * 0.08;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setTranslationRaw(-dx * 0.12, incomingY, -70 + progress * 70);
-      case ZyraBrowseSwipeFeedbackStyle.edgePeek:
-        final scale = 0.97 + progress * 0.03;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setTranslationRaw(incomingX * 0.34, incomingY * 0.34, 0);
-      case ZyraBrowseSwipeFeedbackStyle.floatingDeck:
-        final scale = 0.90 + progress * 0.10;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0011)
-          ..setTranslationRaw(-dx * 0.10, incomingY, -78 + progress * 78);
-      case ZyraBrowseSwipeFeedbackStyle.carousel3d:
-        final scale = 0.95 + progress * 0.05;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0015)
-          ..setTranslationRaw(incomingX, incomingY * 0.52, -48 + progress * 48)
-          ..rotateY(direction * (1 - progress) * 0.76)
-          ..rotateX(horizontal ? 0 : -(1 - progress) * 0.58);
-      case ZyraBrowseSwipeFeedbackStyle.doorHinge:
-        final scale = 0.93 + progress * 0.07;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0014)
-          ..setTranslationRaw(
-            incomingX * 0.32,
-            incomingY * 0.32,
-            -64 + progress * 64,
-          );
-      case ZyraBrowseSwipeFeedbackStyle.pageCurl:
-        final scale = 0.93 + progress * 0.07;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0014)
-          ..setTranslationRaw(
-            incomingX * 0.25,
-            incomingY * 0.25,
-            -60 + progress * 60,
-          )
-          ..rotateY(direction * (1 - progress) * 0.34);
-      case ZyraBrowseSwipeFeedbackStyle.depthTunnel:
-        final scale = 0.78 + progress * 0.22;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0015)
-          ..setTranslationRaw(
-            incomingX * 0.12,
-            incomingY * 0.12,
-            -175 + progress * 175,
-          );
-      case ZyraBrowseSwipeFeedbackStyle.subjectSplit:
-        final scale = 0.92 + progress * 0.08;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setTranslationRaw(-dx * 0.18, -dy * 0.10, -66 + progress * 66);
-      case ZyraBrowseSwipeFeedbackStyle.magneticTilt:
-        final scale = 0.93 + progress * 0.07;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0015)
-          ..setTranslationRaw(-dx * 0.19, -dy * 0.12, -68 + progress * 68)
-          ..rotateY(direction * (1 - progress) * 0.30);
-      case ZyraBrowseSwipeFeedbackStyle.horizonLift:
-        final scale = 0.88 + progress * 0.12;
-        return Matrix4.diagonal3Values(scale, scale, 1)
-          ..setEntry(3, 2, 0.0013)
-          ..setTranslationRaw(
-            -dx * 0.08,
-            -34 * (1 - progress),
-            -84 + progress * 84,
-          );
-    }
-  }
-
-  Alignment _photoSwipeAlignment(ZyraBrowseSwipeFeedbackStyle style) {
-    if (style != ZyraBrowseSwipeFeedbackStyle.doorHinge &&
-        style != ZyraBrowseSwipeFeedbackStyle.pageCurl) {
-      return Alignment.center;
-    }
-    if (_dragOffset.dy > _dragOffset.dx.abs()) return Alignment.topCenter;
-    if (_dragOffset.dx < 0) return Alignment.centerRight;
-    if (_dragOffset.dx > 0) return Alignment.centerLeft;
-    return Alignment.center;
-  }
-
-  Matrix4 _profileCopySwipeTransform(ZyraBrowseSwipeFeedbackStyle style) {
-    if (style != ZyraBrowseSwipeFeedbackStyle.subjectSplit) {
-      return Matrix4.identity();
-    }
-    return Matrix4.translationValues(
-      _dragOffset.dx * 0.18,
-      _dragOffset.dy * 0.14,
-      _dragStrength * 34,
-    );
-  }
-
-  Widget _buildNextProfilePreview(SeekerProfile profile) => Stack(
-    fit: StackFit.expand,
-    children: [
-      ZyraProfileImage(
-        profile.photos.isEmpty ? '' : profile.photos.first,
-        showLoader: false,
-      ),
-      const DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.transparent, Color(0xB3000000)],
-            stops: [0.50, 1.0],
-          ),
-        ),
-      ),
-      Positioned(
-        left: 20,
-        right: 20,
-        bottom: 130,
-        child: ZyraProfileNameBlock(profile: profile),
-      ),
-    ],
-  );
-
   @override
   Widget build(BuildContext context) {
     if (!_accountCurrent) {
@@ -1838,7 +1624,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
       );
     }
     final profile = _current;
-    final nextProfile = _nextProfile;
     final swipeFeedbackStyle =
         ZyraDevScenario.instance.browseSwipeFeedbackStyle;
     // 2026-07-25, DR-ZYRA-101 audit item 1 (Founder decision: "switch
@@ -1965,45 +1750,15 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 onPanCancel: () {
                   if (gestureCurrent()) _onPanCancel();
                 },
-                // Full aura preserves the current fixed-photo response. The
-                // other ten options animate the live card and reveal the next
-                // real profile beneath it. Both layers follow the same drag
-                // state, so a rejected gesture settles together and a commit
-                // hands off without a blank frame.
+                // Full Aura keeps the current profile fixed during the gesture.
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    if (swipeFeedbackStyle.previewsNextProfile &&
-                        nextProfile != null)
-                      IgnorePointer(
-                        child: AnimatedOpacity(
-                          duration: _dragInProgress
-                              ? Duration.zero
-                              : const Duration(milliseconds: 220),
-                          curve: Curves.easeOutCubic,
-                          opacity: 0.34 + (_dragStrength * 0.66),
-                          child: AnimatedContainer(
-                            duration: _dragInProgress
-                                ? Duration.zero
-                                : const Duration(milliseconds: 220),
-                            curve: Curves.easeOutCubic,
-                            transform: _nextProfileSwipeTransform(
-                              swipeFeedbackStyle,
-                            ),
-                            transformAlignment: Alignment.center,
-                            child: _buildNextProfilePreview(nextProfile),
-                          ),
-                        ),
-                      ),
                     AnimatedContainer(
                       duration: _dragInProgress
                           ? Duration.zero
                           : const Duration(milliseconds: 220),
                       curve: Curves.easeOutCubic,
-                      transform: _photoSwipeTransform(swipeFeedbackStyle),
-                      transformAlignment: _photoSwipeAlignment(
-                        swipeFeedbackStyle,
-                      ),
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -2229,10 +1984,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                   ? Duration.zero
                                   : const Duration(milliseconds: 220),
                               curve: Curves.easeOutCubic,
-                              transform: _profileCopySwipeTransform(
-                                swipeFeedbackStyle,
-                              ),
-                              transformAlignment: Alignment.center,
                               child: AnimatedOpacity(
                                 opacity: _interacting ? 0.35 : 1,
                                 duration: const Duration(milliseconds: 200),
@@ -2508,9 +2259,7 @@ class ZyraBrowseMoreActionsButton extends StatelessWidget {
 
 /// Visual-only response painted while the Browse gesture is in progress.
 ///
-/// One painter keeps the ten fixed-photo options cheap: there are no
-/// controllers, timers or rebuilding subtrees. The other five options move the
-/// parent card and intentionally paint nothing over the profile.
+/// Full Aura paints the chosen traffic-light cue over the fixed profile.
 class _SwipeFeedbackLayer extends StatelessWidget {
   final ZyraBrowseSwipeFeedbackStyle style;
   final _Decision decision;
@@ -2568,17 +2317,6 @@ class _SwipeFeedbackPainter extends CustomPainter {
     switch (style) {
       case ZyraBrowseSwipeFeedbackStyle.fullAura:
         _paintFullAura(canvas, size, progress);
-      case ZyraBrowseSwipeFeedbackStyle.layeredParallax ||
-          ZyraBrowseSwipeFeedbackStyle.edgePeek ||
-          ZyraBrowseSwipeFeedbackStyle.floatingDeck ||
-          ZyraBrowseSwipeFeedbackStyle.carousel3d ||
-          ZyraBrowseSwipeFeedbackStyle.doorHinge ||
-          ZyraBrowseSwipeFeedbackStyle.pageCurl ||
-          ZyraBrowseSwipeFeedbackStyle.depthTunnel ||
-          ZyraBrowseSwipeFeedbackStyle.subjectSplit ||
-          ZyraBrowseSwipeFeedbackStyle.magneticTilt ||
-          ZyraBrowseSwipeFeedbackStyle.horizonLift:
-        break;
     }
   }
 
@@ -2655,7 +2393,7 @@ class _SwipeFeedbackPainter extends CustomPainter {
 /// of the dots and the animation happens on the outer rim when thumb is
 /// removed for execution"). Replaces the old _SwipeDots (live drag
 /// preview) + _SwipeBurst (commit-time ring at one of 3 fixed dot
-/// positions) pair entirely. The live-drag treatment is now selectable;
+/// positions) pair entirely. Full Aura is the live-drag treatment;
 /// this remains the one commit-time animation. The horizontal cue deliberately
 /// counterbalances the card: red rises on the left during Pass, green on the
 /// right during Consider, and yellow remains at the top for Save.

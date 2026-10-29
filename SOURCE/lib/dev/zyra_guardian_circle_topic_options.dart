@@ -8,15 +8,10 @@ import '../widgets/zyra_segmented_toggle.dart';
 
 enum ZyraCircleTopicKind { general, current, past }
 
-/// Interior-only local comparisons. The same floating popup and authority
-/// boundary surround every design; none is a membership or history grant.
+/// The selected current interior shares the existing floating-popup authority
+/// boundary; it is not a membership or history grant.
 enum ZyraCircleBubbleDesign {
-  current('Current'),
-  quietList('1 · Quiet list'),
-  portraitTiles('2 · Initial tiles'),
-  journeyRail('3 · Journey rail'),
-  segmentedCards('4 · Segmented cards'),
-  contextCards('5 · Context cards');
+  current('Current');
 
   const ZyraCircleBubbleDesign(this.label);
   final String label;
@@ -386,10 +381,6 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
         )
         .toList(growable: false);
     final enabled = _allowed();
-    final keyboardReading =
-        widget.bubbleDesign != null &&
-        MediaQuery.viewInsetsOf(context).bottom > 0 &&
-        MediaQuery.textScalerOf(context).scale(13) >= 20;
     final keyboard = widget.embedded
         ? 0.0
         : MediaQuery.viewInsetsOf(context).bottom;
@@ -536,35 +527,6 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
                             ),
                           ),
                         )
-                      else if (widget.bubbleDesign ==
-                              ZyraCircleBubbleDesign.portraitTiles &&
-                          !keyboardReading)
-                        SliverLayoutBuilder(
-                          builder: (context, constraints) {
-                            final width = constraints.crossAxisExtent;
-                            final columns =
-                                width >= 300 &&
-                                    MediaQuery.textScalerOf(context).scale(13) <
-                                        20
-                                ? 2
-                                : 1;
-                            return SliverToBoxAdapter(
-                              child: Wrap(
-                                spacing: 10,
-                                runSpacing: 10,
-                                children: [
-                                  for (final topic in topics)
-                                    SizedBox(
-                                      width:
-                                          (width - (columns - 1) * 10) /
-                                          columns,
-                                      child: _row(topic, enabled),
-                                    ),
-                                ],
-                              ),
-                            );
-                          },
-                        )
                       else
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
@@ -623,14 +585,6 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
     final selected = _sameTopic(_selected, topic);
     final design = widget.bubbleDesign;
     final legacy = design == null;
-    final quiet = design == ZyraCircleBubbleDesign.quietList;
-    final tile =
-        design == ZyraCircleBubbleDesign.portraitTiles && !topic.isGeneral;
-    final rail =
-        design == ZyraCircleBubbleDesign.journeyRail && !topic.isGeneral;
-    final segmented = design == ZyraCircleBubbleDesign.segmentedCards;
-    final contextCard =
-        design == ZyraCircleBubbleDesign.contextCards && !topic.isGeneral;
     final keyboardReading =
         design != null &&
         MediaQuery.viewInsetsOf(context).bottom > 0 &&
@@ -639,23 +593,8 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (contextCard && !keyboardReading) ...[
-          Text(
-            topic.isPast ? 'PAST JOURNEY' : 'CURRENT JOURNEY',
-            style: ZyraText.subtext(size: 10, color: ZyraColors.journeyGold),
-          ),
-          const SizedBox(height: 6),
-        ],
-        Text(
-          topic.firstName,
-          style: ZyraText.body(
-            size: !keyboardReading && (tile || contextCard) ? 16 : 13,
-          ),
-        ),
-        if (!legacy &&
-            !topic.isGeneral &&
-            !contextCard &&
-            !keyboardReading) ...[
+        Text(topic.firstName, style: ZyraText.body(size: 13)),
+        if (!legacy && !topic.isGeneral && !keyboardReading) ...[
           const SizedBox(height: 4),
           Text(
             topic.isPast ? 'Past Journey' : 'Current Journey',
@@ -685,7 +624,7 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: ZyraColors.journeyGold.withValues(alpha: .10),
-        borderRadius: BorderRadius.circular(tile || contextCard ? 12 : 30),
+        borderRadius: BorderRadius.circular(30),
         border: Border.all(
           color: ZyraColors.journeyGold.withValues(alpha: .28),
           width: .7,
@@ -695,60 +634,20 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
         topic.firstName.trim().isEmpty
             ? '?'
             : topic.firstName.characters.first.toUpperCase(),
-        style: ZyraText.heading(
-          size: tile ? 23 : 18,
-          color: ZyraColors.journeyGold,
-        ),
+        style: ZyraText.heading(size: 18, color: ZyraColors.journeyGold),
       ),
     );
-    final content = tile && !keyboardReading
-        ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(children: [identity(), const Spacer(), indicator]),
-              const SizedBox(height: 14),
-              detail,
-            ],
-          )
-        : Row(
-            children: [
-              if (rail) ...[
-                Container(
-                  width: 4,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: ZyraColors.journeyGold.withValues(
-                      alpha: selected ? .8 : .3,
-                    ),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                const SizedBox(width: 13),
-              ] else if (!legacy &&
-                  !quiet &&
-                  !segmented &&
-                  !topic.isGeneral &&
-                  !keyboardReading) ...[
-                identity(),
-                const SizedBox(width: 12),
-              ] else if (segmented) ...[
-                Icon(
-                  topic.isGeneral
-                      ? Icons.forum_outlined
-                      : topic.isPast
-                      ? Icons.history_rounded
-                      : Icons.route_outlined,
-                  size: 21,
-                  color: ZyraColors.journeyGold,
-                ),
-                const SizedBox(width: 12),
-              ],
-              Expanded(child: detail),
-              const SizedBox(width: 10),
-              indicator,
-            ],
-          );
+    final content = Row(
+      children: [
+        if (!legacy && !topic.isGeneral && !keyboardReading) ...[
+          identity(),
+          const SizedBox(width: 12),
+        ],
+        Expanded(child: detail),
+        const SizedBox(width: 10),
+        indicator,
+      ],
+    );
     return Semantics(
       button: true,
       selected: selected,
@@ -757,41 +656,27 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
         key: ValueKey(
           topic.isGeneral ? 'circle_topic_general' : 'circle_topic_${topic.id}',
         ),
-        color: quiet
-            ? Colors.transparent
-            : selected
+        color: selected
             ? ZyraColors.journeyGold.withValues(alpha: .075)
             : ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(contextCard ? 18 : 13),
+        borderRadius: BorderRadius.circular(13),
         child: InkWell(
           onTap: enabled ? () => _choose(topic) : null,
-          borderRadius: BorderRadius.circular(contextCard ? 18 : 13),
+          borderRadius: BorderRadius.circular(13),
           child: Container(
             key: ValueKey(
               'circle_topic_interior_${design?.name ?? 'legacy'}_${topic.id}',
             ),
             constraints: const BoxConstraints(minHeight: 44),
-            padding: EdgeInsets.symmetric(
-              horizontal: quiet ? 4 : 12,
-              vertical: !keyboardReading && (tile || contextCard) ? 16 : 10,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
-              borderRadius: quiet
-                  ? null
-                  : BorderRadius.circular(contextCard ? 18 : 13),
-              border: quiet
-                  ? Border(
-                      bottom: BorderSide(
-                        color: ZyraColors.surfaceBorder,
-                        width: .7,
-                      ),
-                    )
-                  : Border.all(
-                      color: selected
-                          ? ZyraColors.journeyGold.withValues(alpha: .44)
-                          : ZyraColors.surfaceBorder,
-                      width: segmented ? 1.2 : .7,
-                    ),
+              borderRadius: BorderRadius.circular(13),
+              border: Border.all(
+                color: selected
+                    ? ZyraColors.journeyGold.withValues(alpha: .44)
+                    : ZyraColors.surfaceBorder,
+                width: .7,
+              ),
             ),
             child: content,
           ),

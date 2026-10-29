@@ -1246,7 +1246,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     }
     final navigation = ZyraShellNavigation(
       key: const ValueKey('concept_browse_options_navigation'),
-      forceCurrent: true,
       commitOnRelease: true,
       contentEdgeInset: 20,
       hapticLevel: _accountSession.hapticLevel,
@@ -1583,7 +1582,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                 _browseOptionsNavigation()
                               else if (_page == null)
                                 ZyraShellNavigation(
-                                  forceCurrent: true,
                                   hapticLevel: _accountSession.hapticLevel,
                                   contentEdgeInset: !_guardianRole && _tab == 0
                                       ? 20

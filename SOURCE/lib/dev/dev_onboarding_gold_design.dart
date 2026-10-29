@@ -9,17 +9,7 @@ import '../services/zyra_developer_access.dart';
 import '../theme/zyra_colors.dart';
 
 enum ZyraOnboardingGoldDesign {
-  goldDust('Gold dust'),
-  fineDust('Fine dust'),
-  sparseDust('Sparse dust'),
-  brightDust('Bright dust'),
-  highDrift('High drift'),
-  lowDrift('Low drift'),
-  edgeDust('Edge dust'),
-  diagonalDust('Diagonal edge'),
-  twinClouds('Twin clouds'),
-  dustHalo('Dust halo'),
-  gentleSweep('Gentle sweep');
+  diagonalDust('Diagonal edge');
 
   const ZyraOnboardingGoldDesign(this.label);
   final String label;
@@ -217,8 +207,7 @@ class ZyraOnboardingGoldSwatch extends StatelessWidget {
   );
 }
 
-// Normalised, deterministic coordinates keep Gold dust as the reference
-// pattern while the comparisons vary its density, placement and brightness.
+// Normalised, deterministic coordinates for the selected diagonal dust.
 const _goldDustPoints = <(double, double, double)>[
   (.08, .12, .38),
   (.23, .15, .58),
@@ -257,114 +246,12 @@ class ZyraOnboardingGoldPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (size.isEmpty) return;
-    Iterable<(double, double, double)> points = _goldDustPoints;
-    var opacity = .28;
-    var radiusScale = 1.0;
-
-    switch (design) {
-      case ZyraOnboardingGoldDesign.goldDust:
-        break;
-      case ZyraOnboardingGoldDesign.fineDust:
-        points = [
-          ..._goldDustPoints,
-          (.05, .35, .38),
-          (.3, .25, .46),
-          (.72, .08, .31),
-          (.93, .68, .42),
-          (.36, .79, .35),
-          (.78, .93, .4),
-        ];
-        radiusScale = .68;
-      case ZyraOnboardingGoldDesign.sparseDust:
-        points = [
-          for (var index = 0; index < _goldDustPoints.length; index += 2)
-            _goldDustPoints[index],
-        ];
-        radiusScale = 1.12;
-      case ZyraOnboardingGoldDesign.brightDust:
-        opacity = .4;
-        radiusScale = 1.12;
-      case ZyraOnboardingGoldDesign.highDrift:
-        points = _goldDustPoints.map(
-          (point) => (point.$1, .06 + point.$2 * .52, point.$3),
-        );
-      case ZyraOnboardingGoldDesign.lowDrift:
-        points = _goldDustPoints.map(
-          (point) => (point.$1, .42 + point.$2 * .52, point.$3),
-        );
-      case ZyraOnboardingGoldDesign.edgeDust:
-        points = _goldDustPoints.map(
-          (point) => (
-            point.$1 < .5 ? point.$1 * .62 : .38 + point.$1 * .62,
-            point.$2,
-            point.$3,
-          ),
-        );
-      case ZyraOnboardingGoldDesign.diagonalDust:
-        points = _goldDustPoints.map(
-          (point) => (
-            point.$1,
-            .76 - .55 * point.$1 + .23 * (point.$2 - .5),
-            point.$3,
-          ),
-        );
-      case ZyraOnboardingGoldDesign.twinClouds:
-        points = const <(double, double, double)>[
-          (.09, .17, .55),
-          (.2, .24, .45),
-          (.13, .32, .7),
-          (.29, .38, .3),
-          (.07, .48, .5),
-          (.24, .6, .62),
-          (.12, .74, .38),
-          (.28, .86, .52),
-          (.8, .12, .5),
-          (.91, .22, .68),
-          (.75, .33, .36),
-          (.88, .43, .55),
-          (.72, .56, .42),
-          (.94, .65, .72),
-          (.79, .78, .5),
-          (.9, .88, .36),
-        ];
-      case ZyraOnboardingGoldDesign.dustHalo:
-        points = const <(double, double, double)>[
-          (.37, .1, .48),
-          (.5, .07, .4),
-          (.65, .1, .58),
-          (.78, .18, .45),
-          (.85, .3, .62),
-          (.88, .44, .36),
-          (.85, .62, .52),
-          (.76, .76, .4),
-          (.63, .88, .58),
-          (.48, .92, .42),
-          (.33, .87, .52),
-          (.2, .77, .35),
-          (.12, .61, .6),
-          (.11, .45, .38),
-          (.16, .29, .5),
-          (.24, .17, .43),
-        ];
-      case ZyraOnboardingGoldDesign.gentleSweep:
-        points = const <(double, double, double)>[
-          (.08, .78, .4),
-          (.13, .68, .52),
-          (.19, .58, .32),
-          (.26, .5, .6),
-          (.34, .44, .42),
-          (.43, .39, .36),
-          (.53, .38, .62),
-          (.61, .4, .32),
-          (.7, .44, .55),
-          (.78, .5, .4),
-          (.85, .59, .64),
-          (.9, .69, .38),
-          (.94, .81, .52),
-          (.17, .86, .28),
-          (.81, .74, .3),
-        ];
-    }
+    final points = _goldDustPoints.map(
+      (point) =>
+          (point.$1, .76 - .55 * point.$1 + .23 * (point.$2 - .5), point.$3),
+    );
+    const opacity = .28;
+    const radiusScale = 1.0;
 
     final gold = ZyraColors.splashWordmark;
     // The old full-page flecks were sub-pixel on a phone and almost invisible

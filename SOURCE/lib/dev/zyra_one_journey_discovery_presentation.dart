@@ -1072,7 +1072,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
     this.stateLabel,
     this.compact = false,
     this.fillHeight = false,
-    this.cardDesign = ZyraOneJourneyCardDesign.classic,
+    this.cardDesign = ZyraOneJourneyCardDesign.portraitSplit,
     this.primaryAction,
     this.stageLabel,
     this.inlineOptions,
@@ -1124,8 +1124,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
     // The locked layout retains its original reference envelope even after
     // moving Report into options. Removing that visible glyph must not shrink
     // the natural single-card rectangle through wider reference text wrapping.
-    final referenceReportWidth =
-        cardDesign == ZyraOneJourneyCardDesign.quietMinimal || onReport != null
+    final referenceReportWidth = onReport != null
         ? _ReportFlag.tapTargetExtent
         : 0;
     final identityWidth = width - 96 - 16 - referenceReportWidth;
@@ -1233,91 +1232,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
         color: Colors.transparent,
         child: Padding(
           padding: EdgeInsets.all(compact ? 12 : 16),
-          child: cardDesign != ZyraOneJourneyCardDesign.classic
-              ? Builder(builder: _alternateContent)
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(14),
-                          child: SizedBox(
-                            width: compact ? (fillHeight ? 80 : 68) : 96,
-                            height: compact ? (fillHeight ? 80 : 68) : 96,
-                            child: imageBuilder(context, profile.photoUrl),
-                          ),
-                        ),
-                        SizedBox(width: compact ? 12 : 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (compact)
-                                Text.rich(
-                                  TextSpan(
-                                    text: profile.firstName,
-                                    children: [
-                                      if ((profile.surnameLine ?? '')
-                                          .trim()
-                                          .isNotEmpty)
-                                        TextSpan(
-                                          text:
-                                              ' ${profile.surnameLine!.trim()}',
-                                          style: ZyraText.heading(
-                                            size: 15,
-                                            color: ZyraColors.ink(.86),
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                  style: ZyraText.heading(size: 19),
-                                )
-                              else
-                                Text(
-                                  profile.firstName,
-                                  style: ZyraText.heading(size: 19),
-                                ),
-                              if (!compact &&
-                                  (profile.surnameLine ?? '').trim().isNotEmpty)
-                                Text(
-                                  profile.surnameLine!.trim(),
-                                  style: ZyraText.heading(
-                                    size: 15,
-                                    color: ZyraColors.ink(.86),
-                                  ),
-                                ),
-                              SizedBox(height: compact ? 4 : 6),
-                              Text(
-                                '${profile.age} · ${profile.city}',
-                                style: ZyraText.subtext(
-                                  size: 12.5,
-                                  color: ZyraColors.ink(.78),
-                                ),
-                              ),
-                              if (stateLabel != null) ...[
-                                SizedBox(height: compact ? 4 : 8),
-                                Text(
-                                  stateLabel!,
-                                  style: ZyraText.subtext(size: 11),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                        if (onReport != null)
-                          _ReportFlag(
-                            firstName: profile.firstName,
-                            onTap: onReport!,
-                          ),
-                      ],
-                    ),
-                    SizedBox(height: compact ? 8 : 16),
-                    if (fillHeight) const Spacer(),
-                    actions,
-                  ],
-                ),
+          child: Builder(builder: _alternateContent),
         ),
       ),
     ),

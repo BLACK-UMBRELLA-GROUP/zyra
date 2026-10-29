@@ -503,7 +503,7 @@ void main() {
         await _selectPopup(
           tester,
           _bubbleDropdown,
-          'concept_circle_bubble_design_contextCards',
+          'concept_circle_bubble_design_current',
         );
         await _press(tester, _key('draft_reset'));
         // Reset preview intentionally returns to the existing Seeker role.
@@ -523,7 +523,7 @@ void main() {
     );
 
     testWidgets(
-      '$role interior changes retain the exact conversation, then button and edge return once',
+      '$role the selected interior retains the exact conversation, then button and edge return once',
       (tester) async {
         await _mountShell(tester, guardian: guardian);
         await _openCircle(tester, guardian: guardian);
@@ -585,7 +585,7 @@ void main() {
         _expectCircleParent(guardian: guardian);
         await _openCircle(tester, guardian: guardian);
         await _openOptions(tester);
-        stale(ZyraCircleBubbleDesign.quietList);
+        stale(ZyraCircleBubbleDesign.current);
         await tester.pumpAndSettle();
         expect(
           tester
@@ -593,7 +593,7 @@ void main() {
                 _bubbleDropdown,
               )
               .initialValue,
-          ZyraCircleBubbleDesign.contextCards,
+          ZyraCircleBubbleDesign.current,
         );
         _expectNoLegacyControl();
         await toggleZyraDevControls(tester);
@@ -625,7 +625,7 @@ void main() {
         ZyraDeveloperAccess.setAuthorizedForTesting(false);
         ZyraDeveloperAccess.setAuthorizedForTesting(true);
         await tester.pumpAndSettle();
-        stale(ZyraCircleBubbleDesign.quietList);
+        stale(ZyraCircleBubbleDesign.current);
         await tester.pumpAndSettle();
         expect(_bubbleDropdown, findsNothing);
         _expectNoLegacyControl();

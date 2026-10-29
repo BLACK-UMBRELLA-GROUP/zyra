@@ -98,68 +98,64 @@ class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
     final direction = _direction;
     return WelcomeScreen(
       devPreview: true,
-      devIntroductionRouteBuilder: direction == ZyraOnboardingDirection.current
-          ? null
-          : (builder) {
-              final transition = ZyraDevOnboardingTransition.current;
-              return PageRouteBuilder<void>(
-                allowSnapshotting: false,
-                transitionDuration: transition.duration,
-                reverseTransitionDuration: transition.duration,
-                pageBuilder: (context, _, _) => builder(context),
-                transitionsBuilder: (context, animation, _, child) =>
-                    ZyraOnboardingEntryTransition(
-                      transition: transition,
-                      animation: animation,
-                      child: child,
-                    ),
-              );
-            },
-      devIntroductionBuilder: direction == ZyraOnboardingDirection.current
-          ? null
-          : (introContext) => DevOnboardingIntroduction(
-              direction: direction,
-              welcomeName: 'Shakeel',
-              onBackToProvider: () {
-                if (!_isCurrent() ||
-                    generation != _generation ||
-                    !introContext.mounted ||
-                    ModalRoute.of(introContext)?.isCurrent != true ||
-                    !ZyraDeveloperAccess.canUseDeveloperTools) {
-                  return;
-                }
-                _flowNavigator.currentState?.pushReplacement(
-                  MaterialPageRoute<void>(
-                    allowSnapshotting: false,
-                    builder: (_) => _welcome(),
-                  ),
-                );
-              },
-              onContinue: () {
-                if (!_isCurrent() ||
-                    generation != _generation ||
-                    !introContext.mounted ||
-                    ModalRoute.of(introContext)?.isCurrent != true ||
-                    !ZyraDeveloperAccess.canUseDeveloperTools) {
-                  return;
-                }
-                // Guardian support is the continuous reader's final down
-                // checkpoint in both Tap-through and Scroll-all modes. Its
-                // foreground has already exited; do not add a lateral route
-                // transition before the matching role-content entrance.
-                _flowNavigator.currentState?.pushReplacement(
-                  PageRouteBuilder<void>(
-                    allowSnapshotting: false,
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                    pageBuilder: (_, _, _) => const RoleSelectionScreen(
-                      devPreview: true,
-                      animateDevEntrance: true,
-                    ),
-                  ),
-                );
-              },
+      devIntroductionRouteBuilder: (builder) {
+        final transition = ZyraDevOnboardingTransition.current;
+        return PageRouteBuilder<void>(
+          allowSnapshotting: false,
+          transitionDuration: transition.duration,
+          reverseTransitionDuration: transition.duration,
+          pageBuilder: (context, _, _) => builder(context),
+          transitionsBuilder: (context, animation, _, child) =>
+              ZyraOnboardingEntryTransition(
+                transition: transition,
+                animation: animation,
+                child: child,
+              ),
+        );
+      },
+      devIntroductionBuilder: (introContext) => DevOnboardingIntroduction(
+        direction: direction,
+        welcomeName: 'Shakeel',
+        onBackToProvider: () {
+          if (!_isCurrent() ||
+              generation != _generation ||
+              !introContext.mounted ||
+              ModalRoute.of(introContext)?.isCurrent != true ||
+              !ZyraDeveloperAccess.canUseDeveloperTools) {
+            return;
+          }
+          _flowNavigator.currentState?.pushReplacement(
+            MaterialPageRoute<void>(
+              allowSnapshotting: false,
+              builder: (_) => _welcome(),
             ),
+          );
+        },
+        onContinue: () {
+          if (!_isCurrent() ||
+              generation != _generation ||
+              !introContext.mounted ||
+              ModalRoute.of(introContext)?.isCurrent != true ||
+              !ZyraDeveloperAccess.canUseDeveloperTools) {
+            return;
+          }
+          // Guardian support is the continuous reader's final down
+          // checkpoint in both Tap-through and Scroll-all modes. Its
+          // foreground has already exited; do not add a lateral route
+          // transition before the matching role-content entrance.
+          _flowNavigator.currentState?.pushReplacement(
+            PageRouteBuilder<void>(
+              allowSnapshotting: false,
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+              pageBuilder: (_, _, _) => const RoleSelectionScreen(
+                devPreview: true,
+                animateDevEntrance: true,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 

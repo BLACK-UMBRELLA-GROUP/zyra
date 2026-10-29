@@ -74,22 +74,10 @@ void main() {
   });
 
   testWidgets(
-    'Home keeps eleven onboarding choices without motion or icon comparisons',
+    'Home keeps the selected onboarding choice without motion or icon comparisons',
     (tester) async {
       await tester.pumpWidget(_home());
-      expect(ZyraOnboardingDirection.values.map((e) => e.name), [
-        'current',
-        'structured',
-        'luma',
-        'revolut',
-        'headspace',
-        'mozi',
-        'wise',
-        'uber',
-        'ahead',
-        'howWeFeel',
-        'atoms',
-      ]);
+      expect(ZyraOnboardingDirection.values.map((e) => e.name), ['luma']);
       expect(find.text('Onboarding directions'), findsOneWidget);
       for (final direction in ZyraOnboardingDirection.values) {
         expect(ZyraDevSurfaceCoordinator.instance.canCloseOnboarding, isFalse);
@@ -206,11 +194,11 @@ void main() {
         expect(ZyraDevSurfaceCoordinator.instance.canCloseOnboarding, isFalse);
         expect(tester.takeException(), isNull);
       }
-      expect(closes, 11);
+      expect(closes, 1);
       expect([restarts, resets, switches, signups], [0, 0, 0, 0]);
       expect(
         refreshes,
-        11,
+        1,
         reason: 'Each outside launch refreshes guarded proof',
       );
     },
@@ -260,7 +248,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.text('Onboarding directions'), findsOneWidget);
-      final choice = _choice(ZyraOnboardingDirection.structured);
+      final choice = _choice(ZyraOnboardingDirection.luma);
       await tester.ensureVisible(choice);
       await tester.pumpAndSettle();
       await tester.tap(choice);
@@ -280,7 +268,7 @@ void main() {
     });
   }
 
-  testWidgets('busy Home disables all eleven onboarding preview choices', (
+  testWidgets('busy Home disables the selected onboarding preview choice', (
     tester,
   ) async {
     var closes = 0;
@@ -315,7 +303,7 @@ void main() {
       ),
     );
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.tap(_choice(ZyraOnboardingDirection.structured));
+    await tester.tap(_choice(ZyraOnboardingDirection.luma));
     await tester.pumpAndSettle();
     expect(closes, 0);
     expect(find.byType(DevSignUpProcessScreen), findsNothing);

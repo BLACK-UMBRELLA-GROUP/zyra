@@ -23,7 +23,7 @@ Widget _subject({
   required double scale,
   VoidCallback? onReport,
 }) {
-  final locked = design == ZyraOneJourneyCardDesign.quietMinimal;
+  final locked = scale > 1.3;
   final card = ZyraOneJourneyConnectionsActiveCard(
     profile: _profile,
     imageBuilder: (_, _) =>
@@ -49,9 +49,7 @@ Widget _subject({
       body: Center(
         child: SizedBox(
           width: 358,
-          // Only the current locked layout has a fixed card envelope. The
-          // retained classic presenter keeps its natural-height contract,
-          // including real wrapping at enlarged text sizes.
+          // Portrait split uses the retained quiet layout at enlarged text.
           height: locked ? 320 : null,
           child: locked ? card : IntrinsicHeight(child: card),
         ),
@@ -63,23 +61,17 @@ Widget _subject({
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('selected Portrait split and still-used legacy presenters remain', () {
+  test('selected Portrait split remains', () {
     expect(ZyraOneJourneyCardDesign.values, [
-      ZyraOneJourneyCardDesign.classic,
-      ZyraOneJourneyCardDesign.quietMinimal,
       ZyraOneJourneyCardDesign.portraitSplit,
     ]);
   });
 
-  // These retained consumers still own the historical report-flag geometry.
-  // The selected shell layout exposes Report through its ellipsis
-  // menu, covered by journey_card_layout_choices_test.dart instead.
-  for (final design in [
-    ZyraOneJourneyCardDesign.classic,
-    ZyraOneJourneyCardDesign.quietMinimal,
-  ]) {
+  // Enlarged Portrait split retains the accessible quiet report geometry.
+  // Normal-size ellipsis Report is covered by journey_card_layout_choices_test.
+  for (final design in [ZyraOneJourneyCardDesign.portraitSplit]) {
     for (final compact in [false, true]) {
-      for (final scale in [1.0, 2.0]) {
+      for (final scale in [2.0]) {
         testWidgets(
           '${design.name}, compact=$compact, scale=$scale keeps an accessible report target',
           (tester) async {
@@ -108,7 +100,7 @@ void main() {
               expect(glyph.right, target.right);
               final photo = tester.getRect(find.byKey(_photoKey));
               expect(glyph.top, photo.top);
-              if (design == ZyraOneJourneyCardDesign.quietMinimal) {
+              if (scale > 1.3) {
                 expect(photo.size, const Size(104, 104));
                 expect(find.text('Active Journey'), findsNothing);
                 expect(find.text('Salam Exchange'), findsNothing);
@@ -146,9 +138,9 @@ void main() {
     (tester) async {
       await tester.pumpWidget(
         _subject(
-          design: ZyraOneJourneyCardDesign.quietMinimal,
+          design: ZyraOneJourneyCardDesign.portraitSplit,
           compact: true,
-          scale: 1,
+          scale: 2,
         ),
       );
       expect(find.byIcon(Icons.flag_outlined), findsNothing);

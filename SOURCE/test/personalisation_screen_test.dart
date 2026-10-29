@@ -50,12 +50,12 @@ void main() {
       isTrue,
     );
     expect(
-      PersonalisationScreen.availablePalettes,
-      isNot(contains(ZyraDevPalette.paperWhite)),
+      PersonalisationScreen.availablePalettes.map((palette) => palette.name),
+      isNot(contains('paperWhite')),
     );
     expect(
-      PersonalisationScreen.availablePalettes,
-      isNot(contains(ZyraDevPalette.crystalMist)),
+      PersonalisationScreen.availablePalettes.map((palette) => palette.name),
+      isNot(contains('crystalMist')),
     );
   });
 

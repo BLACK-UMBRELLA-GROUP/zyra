@@ -11,7 +11,6 @@ void main() {
   setUp(() {
     ZyraText.useTestFontStubs = true;
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
-    ZyraColors.selectDevLightAccent(ZyraDevLightAccent.purple);
     ZyraColors.selectAppSurfaceStyle(ZyraColors.currentDefaultSurfaceStyle);
     ZyraText.selectAppFont(ZyraText.currentDefaultFont);
     ZyraInteractionStyle.restoreDefaults();
@@ -19,7 +18,6 @@ void main() {
 
   tearDown(() {
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
-    ZyraColors.selectDevLightAccent(ZyraDevLightAccent.purple);
     ZyraColors.selectAppSurfaceStyle(ZyraColors.currentDefaultSurfaceStyle);
     ZyraText.selectAppFont(ZyraText.currentDefaultFont);
     ZyraInteractionStyle.restoreDefaults();

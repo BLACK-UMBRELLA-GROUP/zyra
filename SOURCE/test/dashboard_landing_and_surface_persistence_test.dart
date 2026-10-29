@@ -59,9 +59,7 @@ void main() {
   });
 
   test('Glass Signals ignores and clears a retired stored surface', () async {
-    await ZyraLocalPrefs.setCachedAppSurfaceStyleName(
-      ZyraAppSurfaceStyle.classicGlass.name,
-    );
+    await ZyraLocalPrefs.setCachedAppSurfaceStyleName('classicGlass');
     expect(ZyraLocalPrefs.cachedAppSurfaceStyleName, 'classicGlass');
 
     ZyraColors.restoreAppSurfaceStyle(ZyraLocalPrefs.cachedAppSurfaceStyleName);

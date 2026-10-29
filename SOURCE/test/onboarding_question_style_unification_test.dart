@@ -84,30 +84,13 @@ void main() {
     },
   );
 
-  testWidgets('explicit Current and Continue comparisons keep their layouts', (
+  testWidgets('the selected Luma style retains the Continue interaction', (
     tester,
   ) async {
     await tester.pumpWidget(
       MaterialApp(
         home: OnboardingPreviewStyle(
-          directionName: 'current',
-          child: ZyraOnboardingArrowScope(
-            enabled: false,
-            child: _question(onContinue: () {}),
-          ),
-        ),
-      ),
-    );
-    expect(find.byType(OnboardingPreviewAccent), findsNothing);
-    expect(find.byType(ZyraOnboardingArrowAction), findsNothing);
-    expect(find.text('ZYRA'), findsNothing);
-    expect(find.text('Previous page'), findsOneWidget);
-    expect(find.text('Continue'), findsOneWidget);
-
-    await tester.pumpWidget(
-      MaterialApp(
-        home: OnboardingPreviewStyle(
-          directionName: 'structured',
+          directionName: 'luma',
           child: ZyraOnboardingArrowScope(
             enabled: false,
             child: _question(onContinue: () {}),
@@ -116,7 +99,7 @@ void main() {
       ),
     );
     expect(
-      find.byKey(const ValueKey('onboarding-preview-accent-structured')),
+      find.byKey(const ValueKey('onboarding-preview-accent-luma')),
       findsOneWidget,
     );
     expect(find.byType(ZyraOnboardingArrowAction), findsNothing);

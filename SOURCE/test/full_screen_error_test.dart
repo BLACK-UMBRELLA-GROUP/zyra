@@ -177,10 +177,7 @@ void main() {
     ('short', const Size(320, 480), 1.0),
     ('compact200', const Size(320, 568), 2.0),
   ]) {
-    for (final palette in [
-      ZyraDevPalette.midnightPlum,
-      ZyraDevPalette.paperWhite,
-    ]) {
+    for (final palette in [ZyraDevPalette.midnightPlum]) {
       testWidgets(
         'compact access recovery ${scenario.$1} ${palette.name} remains truthful and reachable',
         (tester) async {

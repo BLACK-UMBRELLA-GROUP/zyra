@@ -2,7 +2,6 @@
 // refresh Auth, store a selection, or request device permissions.
 import 'package:flutter/material.dart';
 
-import '../screens/onboarding/onboarding_stage_intro_screen.dart';
 import '../services/zyra_developer_access.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -64,8 +63,7 @@ class _DevOnboardingDirectionsScreenState
             child: Stack(
               fit: StackFit.expand,
               children: [
-                if (authorized && _direction != ZyraOnboardingDirection.current)
-                  const ZyraOnboardingGoldBackdrop(),
+                if (authorized) const ZyraOnboardingGoldBackdrop(),
                 SafeArea(
                   child: Column(
                     children: [
@@ -117,17 +115,9 @@ class _DevOnboardingDirectionsScreenState
                             key: ValueKey(
                               'onboarding-direction-${_direction.name}',
                             ),
-                            child: _direction == ZyraOnboardingDirection.current
-                                ? OnboardingStageIntroScreen(
-                                    stage: SeekerOnboardingStage.buildProfile,
-                                    welcomeName: 'Shakeel',
-                                    devPreview: true,
-                                    allowPreviewScrolling: true,
-                                    onContinue: () async {
-                                      await Navigator.of(context).maybePop();
-                                    },
-                                  )
-                                : _OnboardingWalkthrough(direction: _direction),
+                            child: _OnboardingWalkthrough(
+                              direction: _direction,
+                            ),
                           ),
                         )
                       else
@@ -544,7 +534,7 @@ class DevOnboardingIntroduction extends StatefulWidget {
     required this.onContinue,
     this.onBackToProvider,
     this.welcomeName = 'Shakeel',
-  }) : assert(direction != ZyraOnboardingDirection.current);
+  });
 
   final ZyraOnboardingDirection direction;
   final VoidCallback onContinue;

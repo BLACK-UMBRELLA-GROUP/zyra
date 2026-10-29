@@ -781,9 +781,8 @@ Widget _guardianWorkspaceFixture({
   onOpenNetwork: () {},
 );
 
-Widget _styleShowcase(ZyraNavStyle nav, ZyraDevLightAccent accent) {
-  ZyraColors.selectDevPalette(ZyraDevPalette.crystalMist);
-  ZyraColors.selectDevLightAccent(accent);
+Widget _styleShowcase(ZyraNavStyle nav) {
+  ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
   ZyraInteractionStyle.selectNavStyle(nav);
   return Scaffold(
     body: Stack(
@@ -825,7 +824,7 @@ Widget _styleShowcase(ZyraNavStyle nav, ZyraDevLightAccent accent) {
                           Text('Your ZYRA', style: ZyraText.heading(size: 20)),
                           const SizedBox(height: 8),
                           Text(
-                            'Crystal UI · ${accent.label} accent',
+                            'Midnight Plum · ${nav.label}',
                             style: ZyraText.subtext(size: 13),
                           ),
                         ],
@@ -1282,21 +1281,13 @@ List<_Fixture> _fixtures() => [
     largeText: true,
     build: _guardianSlider,
   ),
-  for (final option in const [
-    (ZyraNavStyle.floatingGlass, ZyraDevLightAccent.purple),
-    (ZyraNavStyle.labelledDock, ZyraDevLightAccent.black),
-    (ZyraNavStyle.accentRing, ZyraDevLightAccent.emerald),
-    (ZyraNavStyle.softTiles, ZyraDevLightAccent.royalBlue),
-    (ZyraNavStyle.goldUnderline, ZyraDevLightAccent.gold),
-    (ZyraNavStyle.raisedCapsule, ZyraDevLightAccent.rose),
-    (ZyraNavStyle.quietDot, ZyraDevLightAccent.sapphire),
-  ])
+  for (final nav in ZyraNavStyle.values)
     _Fixture(
-      id: 'style-${option.$1.name}',
+      id: 'style-${nav.name}',
       role: 'female-seeker',
       plan: 'basic',
       state: 'selected',
-      build: () => _styleShowcase(option.$1, option.$2),
+      build: () => _styleShowcase(nav),
     ),
 ];
 
@@ -1862,7 +1853,6 @@ void main() {
         addTearDown(tester.view.resetPhysicalSize);
         addTearDown(tester.view.resetDevicePixelRatio);
         ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
-        ZyraColors.selectDevLightAccent(ZyraDevLightAccent.purple);
         ZyraInteractionStyle.restoreDefaults();
         _applyRoleAndPlan(fixture);
 

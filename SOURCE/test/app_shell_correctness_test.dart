@@ -351,7 +351,7 @@ void main() {
     },
   );
 
-  test('Browse swipe feedback keeps Full aura plus ten 3D treatments', () {
+  test('Browse swipe feedback keeps Full aura and shared decisions', () {
     final source = File(
       'lib/screens/browse/browse_screen.dart',
     ).readAsStringSync();
@@ -361,30 +361,13 @@ void main() {
     expect(end, greaterThan(start));
 
     final feedback = source.substring(start, end);
-    for (final style in [
-      'fullAura',
-      'layeredParallax',
-      'edgePeek',
-      'floatingDeck',
-      'carousel3d',
-      'doorHinge',
-      'pageCurl',
-      'depthTunnel',
-      'subjectSplit',
-      'magneticTilt',
-      'horizonLift',
-    ]) {
-      expect(feedback, contains('ZyraBrowseSwipeFeedbackStyle.$style'));
-    }
+    expect(feedback, contains('ZyraBrowseSwipeFeedbackStyle.fullAura'));
     expect(feedback, isNot(contains('Text(')));
     expect(feedback, isNot(contains('Icons.thumb')));
     expect(source, contains('ZyraBrowseSwipePolicy.previewDecision'));
     expect(source, contains('ZyraBrowseSwipePolicy.committedDecision'));
     expect(source, contains('ZyraBrowseSwipePolicy.flingTarget'));
     expect(source, contains('ZyraBrowseSwipePolicy.cueEdge'));
-    expect(source, contains('Matrix4 _photoSwipeTransform'));
-    expect(source, contains('Matrix4 _nextProfileSwipeTransform'));
-    expect(source, contains('Widget _buildNextProfilePreview'));
   });
 
   test('developer page options use the approved shared grouped dropdown', () {

@@ -19,7 +19,7 @@ void _noOp() {}
 
 Finder _story(int page) => find.byKey(
   ValueKey(
-    'onboarding-study-scroll-${ZyraOnboardingDirection.atoms.name}-$page',
+    'onboarding-study-scroll-${ZyraOnboardingDirection.luma.name}-$page',
   ),
 );
 
@@ -56,7 +56,7 @@ Future<GlobalKey<NavigatorState>> _openStory(
   navigator.currentState!.push(
     MaterialPageRoute(
       builder: (_) => const DevOnboardingDirectionsScreen(
-        initialDirection: ZyraOnboardingDirection.atoms,
+        initialDirection: ZyraOnboardingDirection.luma,
       ),
     ),
   );
@@ -576,7 +576,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: DevOnboardingIntroduction(
-          direction: ZyraOnboardingDirection.atoms,
+          direction: ZyraOnboardingDirection.luma,
           onContinue: _noOp,
         ),
       ),

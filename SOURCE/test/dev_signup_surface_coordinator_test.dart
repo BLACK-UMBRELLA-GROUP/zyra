@@ -26,13 +26,13 @@ void main() {
     coordinator.attachOnboarding(nested, (d) => events.add('nested:${d.name}'));
     expect(coordinator.restartOnboarding(ZyraOnboardingDirection.luma), isTrue);
     coordinator.detachOnboarding(nested);
-    expect(coordinator.restartOnboarding(ZyraOnboardingDirection.wise), isTrue);
+    expect(coordinator.restartOnboarding(ZyraOnboardingDirection.luma), isTrue);
     coordinator.detachOnboarding(original);
     expect(
-      coordinator.restartOnboarding(ZyraOnboardingDirection.atoms),
+      coordinator.restartOnboarding(ZyraOnboardingDirection.luma),
       isFalse,
     );
-    expect(events, ['nested:luma', 'original:wise']);
+    expect(events, ['nested:luma', 'original:luma']);
   });
 
   test('revoked onboarding restart and removed owners cannot be reused', () {
@@ -43,13 +43,13 @@ void main() {
     coordinator.attachOnboarding(owner, (_) => calls++);
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     expect(
-      coordinator.restartOnboarding(ZyraOnboardingDirection.structured),
+      coordinator.restartOnboarding(ZyraOnboardingDirection.luma),
       isFalse,
     );
     coordinator.detachOnboarding(owner);
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     expect(
-      coordinator.restartOnboarding(ZyraOnboardingDirection.structured),
+      coordinator.restartOnboarding(ZyraOnboardingDirection.luma),
       isFalse,
     );
     expect(calls, 0);

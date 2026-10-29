@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 import '../services/zyra_local_prefs.dart';
 
 /// Background directions available to members from Profile → Personalisation.
-/// Light studies remain in the enum only for historical visual fixtures and
-/// are rejected by the member-facing selection boundary.
+/// The ten approved dark backgrounds remain available.
 enum ZyraDevPalette {
   zyraPurple(
     'ZYRA Purple',
@@ -93,28 +92,6 @@ enum ZyraDevPalette {
       colors: [Color(0xFF55505D), Color(0xFF211E27)],
     ),
   ),
-  paperWhite(
-    'Paper White',
-    'White canvas with dark plum contrast',
-    LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [Color(0xFFFFFFFF), Color(0xFFF4EFF6)],
-    ),
-    isLight: true,
-  ),
-  crystalMist(
-    'Crystal UI',
-    'Translucent mist with bright white glass surfaces',
-    LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [Color(0xFFE7E2EC), Color(0xFFDCE5F4), Color(0xFFF8FAFD)],
-      stops: [0.0, 0.54, 1.0],
-    ),
-    isLight: true,
-    usesWhiteGlass: true,
-  ),
   midnightBlue(
     'Midnight blue',
     'Deep blue with a soft cobalt glow',
@@ -128,52 +105,15 @@ enum ZyraDevPalette {
   final String label;
   final String detail;
   final LinearGradient gradient;
-  final bool isLight;
-  final bool usesWhiteGlass;
-  const ZyraDevPalette(
-    this.label,
-    this.detail,
-    this.gradient, {
-    this.isLight = false,
-    this.usesWhiteGlass = false,
-  });
+  bool get isLight => false;
+  bool get usesWhiteGlass => false;
+  const ZyraDevPalette(this.label, this.detail, this.gradient);
 }
 
-/// Accent directions for the separate Paper White comparison family.
-/// The colour directions reuse the ZYRA comparisons above; Black is the
-/// Founder's explicit additional 2026-08-24 light-theme comparison. All are
-/// developer-only and reset on relaunch.
-enum ZyraDevLightAccent {
-  purple('Purple', Color(0xFF6B4B7D)),
-  royalBlue('Royal Blue', Color(0xFF395B88)),
-  rose('Rose', Color(0xFF8A4E69)),
-  emerald('Emerald', Color(0xFF2F665A)),
-  sapphire('Sapphire', Color(0xFF355A7D)),
-  gold('Gold', Color(0xFF9B7835)),
-  black('Black', Color(0xFF171219));
-
-  final String label;
-  final Color color;
-  const ZyraDevLightAccent(this.label, this.color);
-}
-
-/// App-wide surface language selected from the developer Home controls.
-///
-/// This is deliberately separate from the background palette and from
-/// semantic colour. Red still means destructive, the traffic-light system
-/// keeps its approved meanings, and Journey gold remains Journey gold.
 enum ZyraAppSurfaceStyle {
-  classicGlass(
-    'Classic Glass',
-    'Neutral ZYRA glass throughout the app. This is the current default.',
-  ),
   glassSignals(
     'Glass Signals',
     'Classic glass with colour limited to meaningful icons and progress.',
-  ),
-  statusAccents(
-    'Status Accents',
-    'Stronger semantic colour on status surfaces and active highlights.',
   );
 
   final String label;
@@ -203,12 +143,8 @@ class ZyraColors {
   // Founder 2026-10-22: selection is a quiet surface with a gold edge, not
   // another pale lavender wash. Legacy aliases share that same boundary so
   // older cards/chips cannot restore the retired selected-state treatment.
-  static Color get accentBg => isLightPalette
-      ? devLightAccent.color.withValues(alpha: 0.14)
-      : surfaceFill;
-  static Color get accentBorder => isLightPalette
-      ? devLightAccent.color.withValues(alpha: 0.40)
-      : surfaceEmphasisBorder;
+  static Color get accentBg => surfaceFill;
+  static Color get accentBorder => surfaceEmphasisBorder;
 
   // ── UI GATE P1 (OA-ZYRA-257 / DR-ZYRA-214, 2026-08-23): repeated screen
   //    literals promoted to named tokens VALUE-UNCHANGED — zero pixels
@@ -227,145 +163,47 @@ class ZyraColors {
   ///
   /// Keep this opaque: sheets can appear over photos, gradients and cards,
   /// and must retain the same colour in every part of the app.
-  static Color get modalSheetSurface =>
-      isLightPalette ? const Color(0xFFF7F2F8) : darkPlumSurface;
+  static Color get modalSheetSurface => darkPlumSurface;
 
   /// Backwards-compatible name used by the Guardian and membership flows.
   static Color get waliSheetBg => modalSheetSurface;
 
   // Contrast-aware foreground and translucent chrome. Dark palettes retain
-  // their exact approved values; Paper White swaps only the neutral ink.
-  static bool get isLightPalette => devPalette.isLight;
-  static Color get foreground =>
-      isLightPalette ? luxuryDarkPurple : Colors.white;
-  static Color get foregroundBody =>
-      isLightPalette ? const Color(0xE63D2A4A) : const Color(0xE6FFFFFF);
-  static Color get foregroundSecondary =>
-      isLightPalette ? const Color(0xB33D2A4A) : const Color(0xB3FFFFFF);
-  static Color get foregroundMuted =>
-      isLightPalette ? const Color(0x8A3D2A4A) : const Color(0x8AFFFFFF);
+  // their exact approved values.
+  static bool get isLightPalette => false;
+  static Color get foreground => Colors.white;
+  static Color get foregroundBody => const Color(0xE6FFFFFF);
+  static Color get foregroundSecondary => const Color(0xB3FFFFFF);
+  static Color get foregroundMuted => const Color(0x8AFFFFFF);
 
   /// Neutral app-card fill. This is the shared visual-language boundary for
   /// the three App Surface choices; page code should use this rather than
   /// inventing a private white-alpha recipe.
-  static Color get surfaceFill {
-    if (!isLightPalette) return const Color(0x12FFFFFF);
-    final neutral = devPalette.usesWhiteGlass
-        ? const Color(0xB8FFFFFF)
-        : isLightPalette
-        ? const Color(0x123D2A4A)
-        : const Color(0x12FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass ||
-      ZyraAppSurfaceStyle.glassSignals => neutral,
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.10),
-        neutral,
-      ),
-    };
-  }
+  static Color get surfaceFill => const Color(0x12FFFFFF);
 
-  static Color get surfaceBorder {
-    final neutral = devPalette.usesWhiteGlass
-        ? const Color(0xE8FFFFFF)
-        : isLightPalette
-        ? const Color(0x303D2A4A)
-        : const Color(0x24FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass ||
-      ZyraAppSurfaceStyle.glassSignals => neutral,
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.32),
-        neutral,
-      ),
-    };
-  }
+  static Color get surfaceBorder => const Color(0x24FFFFFF);
 
   /// Selected/expanded cards stay dark; the edge carries their emphasis.
   /// Never layer the former white/gold wash over another app card.
-  static Color get surfaceEmphasisFill {
-    if (!isLightPalette) return surfaceFill;
-    final neutral = devPalette.usesWhiteGlass
-        ? const Color(0xE6FFFFFF)
-        : isLightPalette
-        ? const Color(0x293D2A4A)
-        : const Color(0x2BFFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass => neutral,
-      ZyraAppSurfaceStyle.glassSignals => Color.alphaBlend(
-        journeyGold.withValues(alpha: 0.10),
-        neutral,
-      ),
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.18),
-        neutral,
-      ),
-    };
-  }
+  static Color get surfaceEmphasisFill => surfaceFill;
 
-  static Color get surfaceEmphasisBorder {
-    if (!isLightPalette) return journeyGold.withValues(alpha: 0.70);
-    final neutral = devPalette.usesWhiteGlass
-        ? Colors.white
-        : isLightPalette
-        ? const Color(0x383D2A4A)
-        : const Color(0x38FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass => neutral,
-      ZyraAppSurfaceStyle.glassSignals => Color.alphaBlend(
-        journeyGold.withValues(alpha: 0.46),
-        neutral,
-      ),
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.46),
-        neutral,
-      ),
-    };
-  }
+  static Color get surfaceEmphasisBorder => journeyGold.withValues(alpha: 0.70);
 
   /// App-surface signal colour. Semantic colours remain authoritative where
   /// the domain has one (destructive, traffic light, Journey gold).
-  static Color get surfaceSignal => switch (appSurfaceStyle) {
-    ZyraAppSurfaceStyle.classicGlass => foreground,
-    ZyraAppSurfaceStyle.glassSignals => journeyGold,
-    ZyraAppSurfaceStyle.statusAccents => actionFill,
-  };
+  static Color get surfaceSignal => journeyGold;
 
   // Progress bar. Glass Signals limits colour to meaningful progress and
-  // selection; Status Accents also tints containing surfaces.
-  static Color get progressFill {
-    final neutral = isLightPalette
-        ? const Color(0x473D2A4A)
-        : const Color(0x47FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass => neutral,
-      ZyraAppSurfaceStyle.glassSignals => Color.alphaBlend(
-        journeyGold.withValues(alpha: 0.58),
-        neutral,
-      ),
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.48),
-        neutral,
-      ),
-    };
-  }
+  // selection.
+  static Color get progressFill => Color.alphaBlend(
+    journeyGold.withValues(alpha: 0.58),
+    const Color(0x47FFFFFF),
+  );
 
-  static Color get progressTrack {
-    final neutral = isLightPalette
-        ? const Color(0x143D2A4A)
-        : const Color(0x12FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass => neutral,
-      ZyraAppSurfaceStyle.glassSignals => Color.alphaBlend(
-        journeyGold.withValues(alpha: 0.10),
-        neutral,
-      ),
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.12),
-        neutral,
-      ),
-    };
-  }
+  static Color get progressTrack => Color.alphaBlend(
+    journeyGold.withValues(alpha: 0.10),
+    const Color(0x12FFFFFF),
+  );
 
   static const Color progressCompleteFill = Color(
     0x9950B478,
@@ -431,90 +269,16 @@ class ZyraColors {
   static const Color destructiveBorder = Color(0x66E08080); // coral 0.4
 
   // Frost pills — sampled from the Connections segmented control.
-  static Color get frostFill => devPalette.usesWhiteGlass
-      ? const Color(0x8FFFFFFF)
-      : isLightPalette
-      ? const Color(0x123D2A4A)
-      : const Color(0x1AFFFFFF);
-  static Color get frostBorder => devPalette.usesWhiteGlass
-      ? const Color(0xD9FFFFFF)
-      : isLightPalette
-      ? const Color(0x293D2A4A)
-      : const Color(0x2EFFFFFF);
-  static Color get frostSelectedFill {
-    if (!isLightPalette) return surfaceFill;
-    final neutral = devPalette.usesWhiteGlass
-        ? const Color(0xE6FFFFFF)
-        : isLightPalette
-        ? const Color(0x293D2A4A)
-        : const Color(0x47FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass => neutral,
-      ZyraAppSurfaceStyle.glassSignals => Color.alphaBlend(
-        journeyGold.withValues(alpha: 0.13),
-        neutral,
-      ),
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.16),
-        neutral,
-      ),
-    };
-  }
+  static Color get frostFill => const Color(0x1AFFFFFF);
+  static Color get frostBorder => const Color(0x2EFFFFFF);
+  static Color get frostSelectedFill => surfaceFill;
 
-  static Color get frostSelectedBorder {
-    if (!isLightPalette) return surfaceEmphasisBorder;
-    final neutral = devPalette.usesWhiteGlass
-        ? const Color(0xFFFFFFFF)
-        : isLightPalette
-        ? const Color(0x383D2A4A)
-        : const Color(0x1FFFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass => neutral,
-      ZyraAppSurfaceStyle.glassSignals => Color.alphaBlend(
-        journeyGold.withValues(alpha: 0.46),
-        neutral,
-      ),
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.40),
-        neutral,
-      ),
-    };
-  }
+  static Color get frostSelectedBorder => surfaceEmphasisBorder;
 
   // Glass cards — the ratified zyra_glass_dialog recipe (blur σ30).
-  static Color get glassFill {
-    if (!isLightPalette) return surfaceFill;
-    final neutral = devPalette.usesWhiteGlass
-        ? const Color(0xC2FFFFFF)
-        : isLightPalette
-        ? const Color(0x143D2A4A)
-        : const Color(0x24FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass ||
-      ZyraAppSurfaceStyle.glassSignals => neutral,
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.10),
-        neutral,
-      ),
-    };
-  }
+  static Color get glassFill => surfaceFill;
 
-  static Color get glassBorder {
-    if (!isLightPalette) return surfaceEmphasisBorder;
-    final neutral = devPalette.usesWhiteGlass
-        ? const Color(0xF2FFFFFF)
-        : isLightPalette
-        ? const Color(0x303D2A4A)
-        : const Color(0x38FFFFFF);
-    return switch (appSurfaceStyle) {
-      ZyraAppSurfaceStyle.classicGlass ||
-      ZyraAppSurfaceStyle.glassSignals => neutral,
-      ZyraAppSurfaceStyle.statusAccents => Color.alphaBlend(
-        actionFill.withValues(alpha: 0.34),
-        neutral,
-      ),
-    };
-  }
+  static Color get glassBorder => surfaceEmphasisBorder;
 
   // ---------------------------------------------------------------------
   // CORRECTED 2026-08-11, same-day (Founder, on-device: "the top right
@@ -533,9 +297,7 @@ class ZyraColors {
   // ---------------------------------------------------------------------
 
   /// Anchored floating menus (Journey ⋮, etc.) — dark plum glass.
-  static Color get menuSurface => isLightPalette
-      ? const Color(0xF7FCFAFD)
-      : darkPlumSurface.withValues(alpha: .92);
+  static Color get menuSurface => darkPlumSurface.withValues(alpha: .92);
 
   // Bottom-sheet colour is centralised in modalSheetSurface. This retained
   // getter prevents an older shell from reintroducing a second colour.
@@ -557,22 +319,15 @@ class ZyraColors {
 
   /// Toasts/SnackBars — same family, fully opaque since they sit over
   /// arbitrary content (often a photo) and must stay legible.
-  static Color get toastSurface =>
-      isLightPalette ? const Color(0xFFFCFAFD) : darkPlumSurface;
+  static Color get toastSurface => darkPlumSurface;
 
   // FAB states
-  static Color get fabDimmedBg =>
-      isLightPalette ? const Color(0x0A3D2A4A) : const Color(0x0AFFFFFF);
-  static Color get fabDimmedBorder =>
-      isLightPalette ? const Color(0x173D2A4A) : const Color(0x17FFFFFF);
-  static Color get fabDimmedArrow =>
-      isLightPalette ? const Color(0x663D2A4A) : const Color(0x33FFFFFF);
-  static Color get fabActiveBg =>
-      isLightPalette ? const Color(0x143D2A4A) : const Color(0x1AFFFFFF);
-  static Color get fabActiveBorder =>
-      isLightPalette ? const Color(0x473D2A4A) : const Color(0x38FFFFFF);
-  static Color get fabActiveArrow =>
-      isLightPalette ? luxuryDarkPurple : const Color(0xD9FFFFFF);
+  static Color get fabDimmedBg => const Color(0x0AFFFFFF);
+  static Color get fabDimmedBorder => const Color(0x17FFFFFF);
+  static Color get fabDimmedArrow => const Color(0x33FFFFFF);
+  static Color get fabActiveBg => const Color(0x1AFFFFFF);
+  static Color get fabActiveBorder => const Color(0x38FFFFFF);
+  static Color get fabActiveArrow => const Color(0xD9FFFFFF);
 
   // Privacy indicator states
   static const Color publicDot = Color(0xD93D9A6A); // rgba(61,154,106,0.85)
@@ -609,14 +364,10 @@ class ZyraColors {
   static final ValueNotifier<ZyraDevPalette> devPaletteSelection =
       ValueNotifier<ZyraDevPalette>(currentDefaultPalette);
 
-  static final ValueNotifier<ZyraDevLightAccent> devLightAccentSelection =
-      ValueNotifier<ZyraDevLightAccent>(ZyraDevLightAccent.purple);
-
   static final ValueNotifier<ZyraAppSurfaceStyle> appSurfaceStyleSelection =
       ValueNotifier<ZyraAppSurfaceStyle>(currentDefaultSurfaceStyle);
 
   static ZyraDevPalette get devPalette => devPaletteSelection.value;
-  static ZyraDevLightAccent get devLightAccent => devLightAccentSelection.value;
   static ZyraAppSurfaceStyle get appSurfaceStyle =>
       appSurfaceStyleSelection.value;
 
@@ -627,11 +378,8 @@ class ZyraColors {
   }
 
   /// Selects the member's persisted background from Profile →
-  /// Personalisation. Light experiments are deliberately refused here, not
-  /// merely hidden by the screen, so an old/deep link cannot reactivate a
-  /// retired light appearance.
+  /// Personalisation. Only the ten retained dark backgrounds are selectable.
   static void selectAppPalette(ZyraDevPalette palette) {
-    if (palette.isLight) return;
     selectDevPalette(palette);
     ZyraLocalPrefs.setCachedAppPaletteName(palette.name);
     ZyraLocalPrefs.setCachedAppPaletteRevision(currentPaletteRevision);
@@ -655,17 +403,11 @@ class ZyraColors {
   /// Unknown, retired and light values fall back to Midnight Plum.
   static void restoreAppPalette(String? storedName) {
     final restored = ZyraDevPalette.values.where(
-      (palette) => !palette.isLight && palette.name == storedName,
+      (palette) => palette.name == storedName,
     );
     devPaletteSelection.value = restored.isEmpty
         ? currentDefaultPalette
         : restored.first;
-  }
-
-  static void selectDevLightAccent(ZyraDevLightAccent accent) {
-    if (devLightAccentSelection.value != accent) {
-      devLightAccentSelection.value = accent;
-    }
   }
 
   static void selectAppSurfaceStyle(ZyraAppSurfaceStyle style) {
@@ -682,15 +424,13 @@ class ZyraColors {
   }
 
   /// Active interactive accent. Dark backgrounds retain the approved
-  /// lavender; Paper White uses the Founder-selected existing ZYRA colour.
-  static Color get actionFill =>
-      isLightPalette ? devLightAccent.color : primaryAction;
-  static Color get onAction => isLightPalette ? Colors.white : onPrimaryAction;
+  /// lavender.
+  static Color get actionFill => primaryAction;
+  static Color get onAction => onPrimaryAction;
 
   /// Neutral contrast helpers for glass and page-level UI.
   static Color ink(double opacity) => foreground.withValues(alpha: opacity);
-  static Color get accentOnCanvas =>
-      isLightPalette ? devLightAccent.color : unlockText;
+  static Color get accentOnCanvas => unlockText;
 
   /// The live app background. Midnight Plum now uses the Hulu dark purple;
   /// explicit member personalisation and temporary developer choices survive.

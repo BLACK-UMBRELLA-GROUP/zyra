@@ -15,22 +15,8 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
   });
 
-  testWidgets('stage handoff stays concise in every visual direction', (
-    tester,
-  ) async {
-    for (final direction in const [
-      'current',
-      'structured',
-      'luma',
-      'revolut',
-      'headspace',
-      'mozi',
-      'wise',
-      'uber',
-      'ahead',
-      'howWeFeel',
-      'atoms',
-    ]) {
+  testWidgets('Luma stage handoff stays concise', (tester) async {
+    for (final direction in const ['luma']) {
       await tester.pumpWidget(
         MaterialApp(
           home: OnboardingPreviewStyle(
@@ -81,7 +67,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: OnboardingPreviewStyle(
-            directionName: 'atoms',
+            directionName: 'luma',
             child: OnboardingStageIntroScreen(
               stage: SeekerOnboardingStage.buildProfile,
               devPreview: true,
@@ -114,11 +100,11 @@ void main() {
     },
   );
 
-  testWidgets('Atoms fractional progress is a continuous local rail', (
+  testWidgets('Luma fractional progress is a continuous local rail', (
     tester,
   ) async {
     const style = OnboardingPreviewStyle(
-      directionName: 'atoms',
+      directionName: 'luma',
       child: SizedBox.shrink(),
     );
     await tester.pumpWidget(

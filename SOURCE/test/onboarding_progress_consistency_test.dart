@@ -52,10 +52,10 @@ void main() {
   });
 
   testWidgets(
-    'Atoms fractional progress uses a rail, exact stages use four segments',
+    'Luma fractional progress uses a rail, exact stages use four segments',
     (tester) async {
       const style = OnboardingPreviewStyle(
-        directionName: 'atoms',
+        directionName: 'luma',
         child: SizedBox.shrink(),
       );
       await tester.pumpWidget(
@@ -101,7 +101,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: OnboardingPreviewStyle(
-            directionName: 'atoms',
+            directionName: 'luma',
             child: RoleSelectionScreen(devPreview: true),
           ),
         ),
@@ -113,7 +113,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: OnboardingPreviewStyle(
-            directionName: 'atoms',
+            directionName: 'luma',
             child: OnboardingStageIntroScreen(
               stage: SeekerOnboardingStage.buildProfile,
               devPreview: true,
@@ -140,7 +140,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: OnboardingPreviewStyle(
-            directionName: 'atoms',
+            directionName: 'luma',
             child: OnboardingStageIntroScreen(
               stage: SeekerOnboardingStage.journeyBio,
               devPreview: true,

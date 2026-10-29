@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_menu_directions.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_colors.dart';
@@ -82,12 +81,6 @@ Future<void> _mount(WidgetTester tester, Widget child) async {
   expect(tester.takeException(), isNull);
 }
 
-bool _chooseMenu(ZyraMenuDesign design) => ZyraDevMenuDesign.instance.select(
-  design,
-  expectedGeneration: ZyraAccountState.generation,
-  expectedRevision: ZyraDevMenuDesign.instance.revision,
-);
-
 Finder _barGesture() => find.descendant(
   of: find.byType(FloatingNavBar),
   matching: find.byType(GestureDetector),
@@ -147,7 +140,6 @@ void main() {
     ZyraAccountState.resetForTesting();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraDevMenuDesign.instance.resetForTesting();
     ZyraInteractionStyle.restoreDefaults();
     haptics.clear();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -158,7 +150,6 @@ void main() {
   });
 
   tearDown(() {
-    ZyraDevMenuDesign.instance.resetForTesting();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraInteractionStyle.restoreDefaults();
     ZyraText.useTestFontStubs = false;
@@ -348,64 +339,54 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Journey glyph retains dimming and the existing badge shoulder', (
-    tester,
-  ) async {
-    await _mount(
-      tester,
-      _app(
-        selected: 1,
-        items: [
-          _items.first,
-          const FloatingNavItem(
-            icon: Icons.route_outlined,
-            label: 'Journey',
-            useJourneyGlyph: true,
-            dimmed: true,
-            dot: true,
-            badge: 3,
-          ),
-          ..._items.skip(2),
-        ],
-      ),
-    );
-    final glyph = tester.widget<ZyraJourneyIcon>(find.byType(ZyraJourneyIcon));
-    expect(glyph.color, ZyraColors.foreground.withValues(alpha: .58));
-    expect(find.text('3'), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
-
-  for (final design in ZyraMenuDesign.values.skip(1)) {
-    testWidgets('${design.name} uses the same Journey glyph and destination', (
-      tester,
-    ) async {
-      expect(_chooseMenu(design), isTrue);
-      final calls = <int>[];
-      await _mount(tester, _app(onTap: calls.add));
-      if (design.opensMenu) {
-        await tester.tap(find.byKey(const ValueKey('menu-open')));
-        await tester.pumpAndSettle();
-      }
-      final finder = find.byType(ZyraJourneyIcon);
-      expect(finder, findsOneWidget);
-      final glyph = tester.widget<ZyraJourneyIcon>(finder);
-      expect(
-        (glyph.size, glyph.color),
-        (
-          24,
-          design == ZyraMenuDesign.fab
-              ? ZyraColors.onAction
-              : ZyraColors.foreground,
-        ),
+  for (final selected in [0, 1]) {
+    for (final unread in [false, true]) {
+      testWidgets(
+        'Journey glyph keeps dimming/unread precedence selected=$selected unread=$unread',
+        (tester) async {
+          await _mount(
+            tester,
+            _app(
+              selected: selected,
+              items: [
+                _items.first,
+                FloatingNavItem(
+                  icon: Icons.route_outlined,
+                  label: 'Journey',
+                  useJourneyGlyph: true,
+                  dimmed: true,
+                  dot: unread,
+                  badge: unread ? 3 : 0,
+                ),
+                ..._items.skip(2),
+              ],
+            ),
+          );
+          final glyph = tester.widget<ZyraJourneyIcon>(
+            find.byType(ZyraJourneyIcon),
+          );
+          expect(
+            glyph.color,
+            unread
+                ? ZyraColors.journeyGold
+                : ZyraColors.foreground.withValues(
+                    alpha: selected == 1 ? .58 : .28,
+                  ),
+          );
+          final cell = find.byKey(const ValueKey('floating-nav-item-1'));
+          expect(
+            tester.widget<Semantics>(cell).properties.value,
+            unread ? '3 unread' : null,
+          );
+          expect(
+            find.descendant(of: cell, matching: find.byType(Positioned)),
+            findsNothing,
+          );
+          expect(find.text('3'), findsNothing);
+          expect(tester.takeException(), isNull);
+        },
       );
-      final destination = find.byKey(const ValueKey('menu-destination-1'));
-      await tester.ensureVisible(destination);
-      await tester.tap(destination);
-      await tester.pumpAndSettle();
-      expect(calls, [1]);
-      expect(selectionTicks(), 1);
-      expect(tester.takeException(), isNull);
-    });
+    }
   }
 
   if (_capture) {

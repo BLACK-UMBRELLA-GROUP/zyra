@@ -644,8 +644,6 @@ void main() {
       );
       for (final mode in [
         ZyraCircleBubbleDesign.current,
-        ZyraCircleBubbleDesign.portraitTiles,
-        ZyraCircleBubbleDesign.current,
         ..._controlStyles,
         ZyraCircleBubbleDesign.current,
         ..._controlStyles.reversed,
@@ -710,23 +708,6 @@ void main() {
             findsOneWidget,
           );
           expect(_messageTags, findsNothing);
-          final retained = tester
-              .widget<ZyraCircleDiscussLauncher>(launcher)
-              .onChoose!;
-          fixture.design.value = style == _controlStyles.last
-              ? _controlStyles.first
-              : _controlStyles.last;
-          await tester.pumpAndSettle();
-          retained();
-          await tester.pumpAndSettle();
-          expect(find.byType(ZyraCircleTopicPicker), findsNothing);
-          expect(tester.state(circle), same(state));
-          expect(controller.text, 'My unsent Circle message');
-          expect(find.byType(ZyraCircleDiscussionBubble), findsNothing);
-          expect(
-            _key('circle_pending_discussion_topic_draft-sara'),
-            findsOneWidget,
-          );
           await _select(tester, 'draft-circle-past-0', past: true);
           expect(find.byType(ZyraCircleDiscussionBubble), findsNothing);
           expect(_messageTags, findsNothing);
@@ -1343,7 +1324,7 @@ void main() {
     },
   );
 
-  for (final change in ['visibility', 'presentation']) {
+  for (final change in ['visibility']) {
     testWidgets(
       'a pending send does not publish after a brief $change cover and return',
       (tester) async {
@@ -1355,13 +1336,8 @@ void main() {
         await tester.enterText(_composer, body);
         await tester.tap(_circleButton('Send message'));
         await tester.pump(const Duration(milliseconds: 20));
-        if (change == 'visibility') {
-          fixture.setForeground(false);
-          fixture.setForeground(true);
-        } else {
-          fixture.design.value = ZyraCircleBubbleDesign.contextCards;
-          fixture.design.value = ZyraCircleBubbleDesign.current;
-        }
+        fixture.setForeground(false);
+        fixture.setForeground(true);
         await tester.pump(const Duration(milliseconds: 200));
         await tester.pumpAndSettle();
         expect(controller.text, body);
@@ -1472,7 +1448,7 @@ void main() {
   );
 
   testWidgets(
-    'changing interior preserves draft, local history and selected topic in the same Circle',
+    'reselecting the current interior preserves draft, local history and selected topic in the same Circle',
     (tester) async {
       final fixture = _Fixture();
       await _mount(tester, fixture);
@@ -1482,11 +1458,7 @@ void main() {
       await _select(tester, 'draft-circle-past-0', past: true);
       await tester.enterText(_composer, 'An unfinished shared draft');
       final controller = tester.widget<TextField>(_composer).controller!;
-      for (final mode in [
-        ZyraCircleBubbleDesign.portraitTiles,
-        ZyraCircleBubbleDesign.contextCards,
-        ZyraCircleBubbleDesign.current,
-      ]) {
+      for (final mode in [ZyraCircleBubbleDesign.current]) {
         fixture.design.value = mode;
         await tester.pumpAndSettle();
         expect(
@@ -1619,7 +1591,7 @@ void main() {
       );
       expect(controller.text, 'A draft retained while controls cover chat');
       expect(find.text('A message before covering the Circle'), findsOneWidget);
-      fixture.design.value = ZyraCircleBubbleDesign.contextCards;
+      fixture.design.value = ZyraCircleBubbleDesign.current;
       await tester.pumpAndSettle();
       expect(controller.text, 'A draft retained while controls cover chat');
       fixture.setForeground(true);
@@ -1702,7 +1674,7 @@ void main() {
         choose();
         send();
         await tester.pumpAndSettle();
-        fixture.design.value = ZyraCircleBubbleDesign.contextCards;
+        fixture.design.value = ZyraCircleBubbleDesign.current;
         await tester.pumpAndSettle();
         expect(find.byType(ZyraCircleTopicPicker), findsNothing);
         expect(_composer, findsNothing);
@@ -1764,9 +1736,7 @@ void main() {
         final send = tester
             .widget<ZyraCircleSendButton>(_circleButton('Send message'))
             .onSend!;
-        final replacementDesign = ValueNotifier(
-          ZyraCircleBubbleDesign.contextCards,
-        );
+        final replacementDesign = ValueNotifier(ZyraCircleBubbleDesign.current);
         addTearDown(replacementDesign.dispose);
         final replacementVisibility = ValueNotifier(true);
         addTearDown(replacementVisibility.dispose);
@@ -1813,41 +1783,40 @@ void main() {
     );
   }
 
-  testWidgets(
-    'disposed owner callbacks and design changes cannot resurrect the removed Circle',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      await tester.enterText(_composer, 'A disposed draft');
-      final choose = tester
-          .widget<ZyraCircleDiscussLauncher>(
-            find.byType(ZyraCircleDiscussLauncher),
-          )
-          .onChoose!;
-      final send = tester
-          .widget<ZyraCircleSendButton>(_circleButton('Send message'))
-          .onSend!;
-      await tester.pumpWidget(
-        _app(const Scaffold(body: Text('Replacement owner'))),
-      );
-      await tester.pumpAndSettle();
-      fixture.design.value = ZyraCircleBubbleDesign.contextCards;
-      choose();
-      send();
-      await tester.pumpAndSettle();
-      expect(find.text('Replacement owner'), findsOneWidget);
-      expect(find.byType(ZyraCircleTopicPicker), findsNothing);
-      expect(find.text('A disposed draft'), findsNothing);
-      expect(fixture.contextOpens, 0);
-      expect(tester.takeException(), isNull);
-    },
-  );
+  testWidgets('disposed owner callbacks cannot resurrect the removed Circle', (
+    tester,
+  ) async {
+    final fixture = _Fixture();
+    await _mount(tester, fixture);
+    await tester.enterText(_composer, 'A disposed draft');
+    final choose = tester
+        .widget<ZyraCircleDiscussLauncher>(
+          find.byType(ZyraCircleDiscussLauncher),
+        )
+        .onChoose!;
+    final send = tester
+        .widget<ZyraCircleSendButton>(_circleButton('Send message'))
+        .onSend!;
+    await tester.pumpWidget(
+      _app(const Scaffold(body: Text('Replacement owner'))),
+    );
+    await tester.pumpAndSettle();
+    fixture.design.value = ZyraCircleBubbleDesign.current;
+    choose();
+    send();
+    await tester.pumpAndSettle();
+    expect(find.text('Replacement owner'), findsOneWidget);
+    expect(find.byType(ZyraCircleTopicPicker), findsNothing);
+    expect(find.text('A disposed draft'), findsNothing);
+    expect(fixture.contextOpens, 0);
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets(
     'raw preview props cannot create developer admission or a topic-enabled composer',
     (tester) async {
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      final fixture = _Fixture(mode: ZyraCircleBubbleDesign.contextCards);
+      final fixture = _Fixture(mode: ZyraCircleBubbleDesign.current);
       await _mount(tester, fixture);
       expect(find.byType(ZyraCircleTopicPicker), findsNothing);
       expect(find.byType(ZyraCircleDiscussLauncher), findsNothing);
@@ -1866,7 +1835,7 @@ void main() {
       'topic options without supplied data preserve the ${admitted ? 'admitted legacy' : 'unadmitted'} Circle boundary',
       (tester) async {
         ZyraDeveloperAccess.setAuthorizedForTesting(admitted);
-        final fixture = _Fixture(mode: ZyraCircleBubbleDesign.contextCards);
+        final fixture = _Fixture(mode: ZyraCircleBubbleDesign.current);
         await _mount(
           tester,
           fixture,
@@ -1902,7 +1871,7 @@ void main() {
   testWidgets(
     'a live-mode flag with supplied synthetic data and topics denies rather than starting member messaging',
     (tester) async {
-      final fixture = _Fixture(mode: ZyraCircleBubbleDesign.contextCards);
+      final fixture = _Fixture(mode: ZyraCircleBubbleDesign.current);
       await _mount(tester, fixture, screen: fixture.screen(preview: false));
       expect(find.byType(ZyraCircleTopicPicker), findsNothing);
       expect(find.byType(ZyraCircleDiscussLauncher), findsNothing);
@@ -1995,76 +1964,48 @@ void main() {
     },
   );
 
-  testWidgets(
-    'a fixed popup covers chat callbacks and an interior change invalidates its retained selector',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      await tester.enterText(_composer, 'Retained while choosing a discussion');
-      final send = tester
-          .widget<ZyraCircleSendButton>(_circleButton('Send message'))
-          .onSend!;
-      final choose = tester
+  testWidgets('a fixed popup covers chat callbacks until dismissed', (
+    tester,
+  ) async {
+    final fixture = _Fixture();
+    await _mount(tester, fixture);
+    await tester.enterText(_composer, 'Retained while choosing a discussion');
+    final send = tester
+        .widget<ZyraCircleSendButton>(_circleButton('Send message'))
+        .onSend!;
+    final choose = tester
+        .widget<ZyraCircleDiscussLauncher>(
+          find.byType(ZyraCircleDiscussLauncher),
+        )
+        .onChoose!;
+    await _openPicker(tester);
+    choose();
+    send();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.byType(ZyraCircleTopicPicker), findsOneWidget);
+    expect(
+      tester.widget<TextField>(_composer).controller!.text,
+      'Retained while choosing a discussion',
+    );
+    await _press(tester, _key('circle_topic_picker_close'));
+    expect(
+      tester
           .widget<ZyraCircleDiscussLauncher>(
             find.byType(ZyraCircleDiscussLauncher),
           )
-          .onChoose!;
-      await _openPicker(tester);
-      final pick = _rowCallback(tester, 'circle_topic_draft-sara');
-      choose();
-      send();
-      await tester.pump(const Duration(milliseconds: 200));
-      expect(find.byType(ZyraCircleTopicPicker), findsOneWidget);
-      expect(
-        tester.widget<TextField>(_composer).controller!.text,
-        'Retained while choosing a discussion',
-      );
-      fixture.design.value = ZyraCircleBubbleDesign.portraitTiles;
-      await tester.pumpAndSettle();
-      pick();
-      await tester.pumpAndSettle();
-      expect(find.byType(ZyraCircleTopicPicker), findsOneWidget);
-      await _press(tester, _key('circle_topic_picker_close'));
-      expect(
-        tester
-            .widget<ZyraCircleDiscussLauncher>(
-              find.byType(ZyraCircleDiscussLauncher),
-            )
-            .topic
-            .isGeneral,
-        isTrue,
-      );
-      expect(
-        tester.widget<TextField>(_composer).controller!.text,
-        'Retained while choosing a discussion',
-      );
-      await _press(tester, _circleButton('Send message'));
-      expect(find.text('Retained while choosing a discussion'), findsOneWidget);
-      expect(_messageTags, findsNothing);
-      expect(fixture.contextOpens, 0);
-    },
-  );
-
-  testWidgets(
-    'changing an interior while the fixed popup is open denies its retained selection',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      await _openPicker(tester);
-      final pick = _rowCallback(tester, 'circle_topic_draft-sara');
-      fixture.design.value = ZyraCircleBubbleDesign.portraitTiles;
-      await tester.pumpAndSettle();
-      pick();
-      await tester.pumpAndSettle();
-      expect(find.byType(ZyraCircleTopicPicker), findsOneWidget);
-      await _press(tester, _key('circle_topic_picker_close'));
-      expect(_key('circle_topic_entry'), findsNothing);
-      await _dismissAndRemovePending(tester);
-      await _send(tester, 'General after dismissing the old selector');
-      expect(_messageTags, findsNothing);
-      expect(fixture.contextOpens, 0);
-    },
-  );
+          .topic
+          .isGeneral,
+      isTrue,
+    );
+    expect(
+      tester.widget<TextField>(_composer).controller!.text,
+      'Retained while choosing a discussion',
+    );
+    await _press(tester, _circleButton('Send message'));
+    expect(find.text('Retained while choosing a discussion'), findsOneWidget);
+    expect(_messageTags, findsNothing);
+    expect(fixture.contextOpens, 0);
+  });
 
   for (final mode in _newDesigns) {
     testWidgets(
@@ -2088,7 +2029,7 @@ void main() {
   }
 
   testWidgets(
-    'actual protected shell offers Current plus five Circle interiors and preserves the mounted shared chat',
+    'actual protected shell offers the Current Circle interior and preserves the mounted shared chat',
     (tester) async {
       await _mountShell(tester);
       await _nav(tester, 1);
@@ -2176,7 +2117,7 @@ void main() {
         isTrue,
       );
       expect(owner.previewData!.senderId, 'draft-guardian-hassan');
-      await _chooseShellDesign(tester, ZyraCircleBubbleDesign.contextCards);
+      await _chooseShellDesign(tester, ZyraCircleBubbleDesign.current);
       expect(tester.state(find.byType(ZyraGuardianCircleScreen)), same(state));
       await _select(tester, 'draft-circle-past-0', past: true);
       await _send(tester, 'Guardian shell local topic conversation');
@@ -2241,7 +2182,7 @@ void main() {
             expect(circle.previewBubbleDesign, same(sharedStyle));
           }
           expect(_key('circle_topic_entry'), findsNothing);
-          if (style == ZyraCircleBubbleDesign.contextCards) {
+          if (style == ZyraCircleBubbleDesign.current) {
             await _capture(
               tester,
               '${role.toLowerCase()}-parent-discussion-entry',
@@ -2298,7 +2239,7 @@ void main() {
           await _nav(tester, parentTab);
           await _chooseShellDesign(
             tester,
-            ZyraCircleBubbleDesign.quietList,
+            ZyraCircleBubbleDesign.current,
             pageTitle: parentTitle,
             returnsToCircle: false,
           );
@@ -2328,7 +2269,7 @@ void main() {
             ZyraDeveloperAccess.setAuthorizedForTesting(true);
             await tester.pumpAndSettle();
           }
-          stale(ZyraCircleBubbleDesign.contextCards);
+          stale(ZyraCircleBubbleDesign.current);
           await tester.pumpAndSettle();
           expect(tester.takeException(), isNull);
           if (withdrawal == 'authorization ABA') {
@@ -2342,7 +2283,7 @@ void main() {
                     dropdown,
                   )
                   .initialValue,
-              ZyraCircleBubbleDesign.quietList,
+              ZyraCircleBubbleDesign.current,
             );
             await toggleZyraDevControls(tester);
             await _press(tester, _key(circleEntry));
@@ -2352,7 +2293,7 @@ void main() {
             expect(circle.viewerIsSeeker, !guardian);
             expect(
               circle.previewBubbleDesign!.value,
-              ZyraCircleBubbleDesign.quietList,
+              ZyraCircleBubbleDesign.current,
             );
             expect(_key('circle_topic_entry'), findsNothing);
             expect(_key('circle_discuss_floatingButton'), findsOneWidget);

@@ -300,10 +300,11 @@ void main() {
           GNNetworkCardDesign.portraitFocus,
         );
       }
-      await _select(tester, 'guardian-network-card-cinematic');
       expect(
-        GNContext.instance.networkCardDesign,
-        GNNetworkCardDesign.cinematic,
+        _catalog(tester).options
+            .where((option) => option.id.startsWith('guardian-network-card-'))
+            .map((option) => option.id),
+        ['guardian-network-card-portraitFocus'],
       );
       for (final area in GNNetworkPreviewArea.values) {
         for (var count = 1; count <= 3; count++) {

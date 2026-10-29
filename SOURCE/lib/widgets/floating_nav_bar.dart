@@ -169,20 +169,12 @@ class ZyraNavHighlight extends StatelessWidget {
   }
 
   BoxDecoration get _decoration {
-    final accent = ZyraColors.isLightPalette
-        ? ZyraColors.devLightAccent.color
-        : ZyraColors.primaryAction;
+    const accent = ZyraColors.primaryAction;
     return switch (style) {
       ZyraNavStyle.floatingGlass => BoxDecoration(
         shape: BoxShape.circle,
-        color: ZyraColors.isLightPalette
-            ? accent.withValues(alpha: 0.16)
-            : ZyraColors.frostSelectedFill,
-        border: Border.all(
-          color: ZyraColors.isLightPalette
-              ? accent.withValues(alpha: 0.42)
-              : ZyraColors.frostSelectedBorder,
-        ),
+        color: ZyraColors.frostSelectedFill,
+        border: Border.all(color: ZyraColors.frostSelectedBorder),
       ),
       ZyraNavStyle.labelledDock => BoxDecoration(
         color: ZyraColors.surfaceEmphasisFill,
@@ -195,9 +187,7 @@ class ZyraNavHighlight extends StatelessWidget {
         border: Border.all(color: accent, width: 2),
       ),
       ZyraNavStyle.softTiles => BoxDecoration(
-        color: accent.withValues(
-          alpha: ZyraColors.isLightPalette ? 0.13 : 0.22,
-        ),
+        color: accent.withValues(alpha: 0.22),
         borderRadius: BorderRadius.circular(13),
         border: Border.all(color: accent.withValues(alpha: 0.42)),
       ),

@@ -12,13 +12,13 @@ const _hint = ValueKey('dev_onboarding_reading_hint');
 
 Finder _story(int page) => find.byKey(
   ValueKey(
-    'onboarding-study-scroll-${ZyraOnboardingDirection.atoms.name}-$page',
+    'onboarding-study-scroll-${ZyraOnboardingDirection.luma.name}-$page',
   ),
 );
 
 Future<void> _open(
   WidgetTester tester, {
-  ZyraOnboardingDirection direction = ZyraOnboardingDirection.atoms,
+  ZyraOnboardingDirection direction = ZyraOnboardingDirection.luma,
   bool reducedMotion = false,
   bool accessibleNavigation = false,
 }) async {
@@ -69,9 +69,7 @@ void main() {
   testWidgets('every story direction opens each card with art and heading', (
     tester,
   ) async {
-    for (final direction in ZyraOnboardingDirection.values.where(
-      (value) => value != ZyraOnboardingDirection.current,
-    )) {
+    for (final direction in ZyraOnboardingDirection.values) {
       await _open(tester, direction: direction);
       for (
         var page = 0;
@@ -207,7 +205,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await _open(tester);
 
-    final artwork = find.byKey(const ValueKey('onboarding-study-art-atoms-0'));
+    final artwork = find.byKey(const ValueKey('onboarding-study-art-luma-0'));
     expect(artwork.hitTestable(), findsOneWidget);
     expect(find.byKey(_hint), findsNothing);
     expect(find.text('Tap the page to continue reading'), findsNothing);
@@ -254,9 +252,7 @@ void main() {
 
       for (var page = 0; page < 3; page++) {
         final story = _story(page);
-        final artwork = find.byKey(
-          ValueKey('onboarding-study-art-atoms-$page'),
-        );
+        final artwork = find.byKey(ValueKey('onboarding-study-art-luma-$page'));
         expect(story.hitTestable(), findsOneWidget);
         expect(artwork.hitTestable(), findsOneWidget);
         expect(find.text('${page + 1} / 4'), findsOneWidget);
@@ -295,7 +291,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await _open(tester);
 
-    final artwork = find.byKey(const ValueKey('onboarding-study-art-atoms-0'));
+    final artwork = find.byKey(const ValueKey('onboarding-study-art-luma-0'));
     expect(artwork.hitTestable(), findsOneWidget);
     await tester.flingFrom(
       tester.getCenter(artwork),

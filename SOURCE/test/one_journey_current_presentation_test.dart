@@ -1060,10 +1060,7 @@ void main() {
         (tester) async {
           final originalPalette = ZyraColors.devPalette;
           addTearDown(() => ZyraColors.selectDevPalette(originalPalette));
-          for (final palette in [
-            ZyraDevPalette.midnightPlum,
-            ZyraDevPalette.paperWhite,
-          ]) {
+          for (final palette in [ZyraDevPalette.midnightPlum]) {
             ZyraColors.selectDevPalette(palette);
             await _mount(
               tester,

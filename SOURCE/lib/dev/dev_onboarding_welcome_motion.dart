@@ -1,6 +1,5 @@
 // Protected, session-local motion choices for the continuous opening story.
 // This does not change ordinary member onboarding.
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
@@ -204,11 +203,7 @@ abstract final class ZyraDevWelcomePulseIntensity {
 }
 
 enum ZyraWelcomePulseDesign {
-  goldRing('Gold ring'),
-  rippleRing('Ripple ring'),
-  twinHalo('Twin halo'),
-  softBloom('Soft bloom'),
-  orbitRing('Orbit ring');
+  softBloom('Soft bloom');
 
   const ZyraWelcomePulseDesign(this.label);
   final String label;
@@ -306,42 +301,20 @@ class ZyraWelcomePulsePainter extends CustomPainter {
       );
     }
 
-    switch (design) {
-      case ZyraWelcomePulseDesign.goldRing:
-        ring(18 + 2 * p, .68);
-      case ZyraWelcomePulseDesign.rippleRing:
-        ring(16, .5);
-        ring(16 + 9 * p, .62 - .43 * p);
-      case ZyraWelcomePulseDesign.twinHalo:
-        ring(16 + 2 * p, .7);
-        ring(24 - 2 * p, .36);
-      case ZyraWelcomePulseDesign.softBloom:
-        canvas.drawCircle(
-          center,
-          27 * factor,
-          Paint()
-            ..shader =
-                RadialGradient(
-                  colors: [
-                    gold.withValues(alpha: .21 + .07 * p),
-                    gold.withValues(alpha: .08),
-                    gold.withValues(alpha: 0),
-                  ],
-                  stops: const [0, .56, 1],
-                ).createShader(
-                  Rect.fromCircle(center: center, radius: 27 * factor),
-                ),
-        );
-        ring(18, .46);
-      case ZyraWelcomePulseDesign.orbitRing:
-        ring(20, .52);
-        final angle = -math.pi / 2 + math.pi * 1.25 * p;
-        canvas.drawCircle(
-          center + Offset(math.cos(angle), math.sin(angle)) * 20 * factor,
-          2.4 * factor,
-          Paint()..color = gold.withValues(alpha: .85),
-        );
-    }
+    canvas.drawCircle(
+      center,
+      27 * factor,
+      Paint()
+        ..shader = RadialGradient(
+          colors: [
+            gold.withValues(alpha: .21 + .07 * p),
+            gold.withValues(alpha: .08),
+            gold.withValues(alpha: 0),
+          ],
+          stops: const [0, .56, 1],
+        ).createShader(Rect.fromCircle(center: center, radius: 27 * factor)),
+    );
+    ring(18, .46);
   }
 
   @override

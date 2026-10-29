@@ -2622,88 +2622,30 @@ class _ConnectionsSectionHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const style = ZyraConnectionsHeadingStyle.accentMarker;
-    final quiet = emphasised ? ZyraColors.foreground : ZyraColors.ink(0.54);
     final accent = ZyraColors.accentOnCanvas;
 
-    switch (style) {
-      case ZyraConnectionsHeadingStyle.chapterLeft:
-        return Text(
-          title.toUpperCase(),
-          style: ZyraText.chapterLabel(color: quiet),
-        );
-      case ZyraConnectionsHeadingStyle.titleLeft:
-        return Text(
-          title,
-          style: ZyraText.heading(
-            size: emphasised ? 18 : 16,
-            color: emphasised ? ZyraColors.foreground : ZyraColors.ink(0.82),
+    return Row(
+      children: [
+        Container(
+          width: 3,
+          height: 28,
+          decoration: BoxDecoration(
+            color: accent.withValues(alpha: 0.85),
+            borderRadius: BorderRadius.circular(999),
           ),
-        );
-      case ZyraConnectionsHeadingStyle.centredRule:
-        return Row(
-          children: [
-            Expanded(
-              child: Container(height: 0.6, color: ZyraColors.ink(0.16)),
+        ),
+        const SizedBox(width: 9),
+        Expanded(
+          child: Text(
+            title,
+            style: ZyraText.body(
+              size: emphasised ? 16 : 14.5,
+              color: emphasised ? ZyraColors.foreground : ZyraColors.ink(0.82),
             ),
-            const SizedBox(width: 10),
-            Text(
-              title.toUpperCase(),
-              style: ZyraText.chapterLabel(color: quiet),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Container(height: 0.6, color: ZyraColors.ink(0.16)),
-            ),
-          ],
-        );
-      case ZyraConnectionsHeadingStyle.accentMarker:
-        return Row(
-          children: [
-            Container(
-              width: 3,
-              height: 28,
-              decoration: BoxDecoration(
-                color: accent.withValues(alpha: 0.85),
-                borderRadius: BorderRadius.circular(999),
-              ),
-            ),
-            const SizedBox(width: 9),
-            Expanded(
-              child: Text(
-                title,
-                style: ZyraText.body(
-                  size: emphasised ? 16 : 14.5,
-                  color: emphasised
-                      ? ZyraColors.foreground
-                      : ZyraColors.ink(0.82),
-                ),
-              ),
-            ),
-          ],
-        );
-      case ZyraConnectionsHeadingStyle.countSplit:
-        return Row(
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                style: ZyraText.heading(
-                  size: emphasised ? 17 : 15.5,
-                  color: emphasised
-                      ? ZyraColors.foreground
-                      : ZyraColors.ink(0.82),
-                ),
-              ),
-            ),
-            Container(
-              width: 34,
-              height: 1,
-              color: accent.withValues(alpha: 0.48),
-            ),
-          ],
-        );
-    }
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -3932,9 +3874,8 @@ class _ConnectionsReportFlag extends StatelessWidget {
 }
 
 /// One action hierarchy shared by Active, Potential, Paused and Ended
-/// Journeys plus Considered, Saved, Passed and Introductions. The selected
-/// developer style changes only presentation; labels, callbacks and data stay
-/// attached to the same action objects.
+/// Journeys plus Considered, Saved, Passed and Introductions share the chosen
+/// Compact Chips presentation and the same action objects.
 class _ConnectionsActionDeck extends StatelessWidget {
   final _ConnectionsActionItem primary;
   final List<_ConnectionsActionItem> actions;
@@ -3948,14 +3889,12 @@ class _ConnectionsActionDeck extends StatelessWidget {
     this.fullWidthLastAction = false,
   });
 
-  ZyraConnectionsCardStyle get _style => ZyraConnectionsCardStyle.compactChips;
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _ConnectionsActionButton(item: primary, primary: true, style: _style),
+        _ConnectionsActionButton(item: primary, primary: true),
         if (journeyReference != null) ...[
           const SizedBox(height: 10),
           journeyReference!,
@@ -3966,7 +3905,7 @@ class _ConnectionsActionDeck extends StatelessWidget {
             key: const ValueKey('connections-card-action-strip'),
             child: _ConnectionsSecondaryActions(
               actions: actions,
-              style: _style,
+
               fullWidthLastAction: fullWidthLastAction,
             ),
           ),
@@ -3992,8 +3931,6 @@ class _ConnectionsJourneyReference extends StatelessWidget {
     required this.onCompatibility,
   });
 
-  ZyraConnectionsCardStyle get _style => ZyraConnectionsCardStyle.compactChips;
-
   @override
   Widget build(BuildContext context) => Container(
     key: ValueKey<String>('connections-journey-reference-$matchId'),
@@ -4008,7 +3945,6 @@ class _ConnectionsJourneyReference extends StatelessWidget {
         KeyedSubtree(
           key: const ValueKey('connections-journey-reference-actions'),
           child: _ConnectionsSecondaryActions(
-            style: _style,
             actions: [
               _ConnectionsActionItem(
                 icon: Icons.timeline_outlined,
@@ -4030,93 +3966,36 @@ class _ConnectionsJourneyReference extends StatelessWidget {
 
 class _ConnectionsSecondaryActions extends StatelessWidget {
   final List<_ConnectionsActionItem> actions;
-  final ZyraConnectionsCardStyle style;
   final bool fullWidthLastAction;
 
   const _ConnectionsSecondaryActions({
     required this.actions,
-    required this.style,
     this.fullWidthLastAction = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    switch (style) {
-      case ZyraConnectionsCardStyle.unifiedRail:
-        return LayoutBuilder(
-          builder: (context, constraints) => Wrap(
-            spacing: 0,
-            runSpacing: 7,
-            children: [
-              for (final action in actions)
-                SizedBox(
-                  width: constraints.maxWidth / actions.length.clamp(1, 3),
-                  child: _ConnectionsActionButton(item: action, style: style),
-                ),
-            ],
-          ),
-        );
-      case ZyraConnectionsCardStyle.splitPills:
-        return _ConnectionsActionWrap(
-          actions: actions,
-          columns: 2,
-          style: style,
-          gap: 8,
-        );
-      case ZyraConnectionsCardStyle.iconDock:
-        return _ConnectionsActionWrap(
-          actions: actions,
-          columns: 3,
-          style: style,
-          gap: 5,
-        );
-      case ZyraConnectionsCardStyle.stackedRows:
-        return Column(
-          children: [
-            for (var i = 0; i < actions.length; i++) ...[
-              if (i > 0) const SizedBox(height: 6),
-              _ConnectionsActionButton(item: actions[i], style: style),
-            ],
-          ],
-        );
-      case ZyraConnectionsCardStyle.compactChips:
-        if (fullWidthLastAction && actions.length == 3) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _ConnectionsActionWrap(
-                actions: actions.take(2).toList(growable: false),
-                columns: 2,
-                style: style,
-                gap: 7,
-              ),
-              const SizedBox(height: 7),
-              _ConnectionsActionButton(item: actions.last, style: style),
-            ],
-          );
-        }
-        return _ConnectionsActionWrap(
-          actions: actions,
-          columns: actions.length.clamp(1, 3),
-          style: style,
-          gap: 7,
-        );
-      case ZyraConnectionsCardStyle.framedGrid:
-        return Container(
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: ZyraColors.surfaceFill,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: ZyraColors.surfaceBorder, width: 0.6),
-          ),
-          child: _ConnectionsActionWrap(
-            actions: actions,
+    if (fullWidthLastAction && actions.length == 3) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _ConnectionsActionWrap(
+            actions: actions.take(2).toList(growable: false),
             columns: 2,
-            style: style,
-            gap: 5,
+
+            gap: 7,
           ),
-        );
+          const SizedBox(height: 7),
+          _ConnectionsActionButton(item: actions.last),
+        ],
+      );
     }
+    return _ConnectionsActionWrap(
+      actions: actions,
+      columns: actions.length.clamp(1, 3),
+
+      gap: 7,
+    );
   }
 }
 
@@ -4136,7 +4015,6 @@ Widget buildZyraConnectionsDesignTestSurface() {
         ),
         const SizedBox(height: 12),
         _ConnectionsSecondaryActions(
-          style: ZyraConnectionsCardStyle.compactChips,
           actions: [
             _ConnectionsActionItem(
               icon: Icons.person_outline,
@@ -4379,13 +4257,11 @@ Widget buildZyraIntroductionPreviewTestSurface({required int previewCount}) {
 class _ConnectionsActionWrap extends StatelessWidget {
   final List<_ConnectionsActionItem> actions;
   final int columns;
-  final ZyraConnectionsCardStyle style;
   final double gap;
 
   const _ConnectionsActionWrap({
     required this.actions,
     required this.columns,
-    required this.style,
     required this.gap,
   });
 
@@ -4400,7 +4276,7 @@ class _ConnectionsActionWrap extends StatelessWidget {
           for (final action in actions)
             SizedBox(
               width: width,
-              child: _ConnectionsActionButton(item: action, style: style),
+              child: _ConnectionsActionButton(item: action),
             ),
         ],
       );
@@ -4411,13 +4287,8 @@ class _ConnectionsActionWrap extends StatelessWidget {
 class _ConnectionsActionButton extends StatelessWidget {
   final _ConnectionsActionItem item;
   final bool primary;
-  final ZyraConnectionsCardStyle style;
 
-  const _ConnectionsActionButton({
-    required this.item,
-    required this.style,
-    this.primary = false,
-  });
+  const _ConnectionsActionButton({required this.item, this.primary = false});
 
   Color get _tint {
     if (item.onTap == null) return ZyraColors.ink(0.34);
@@ -4427,112 +4298,32 @@ class _ConnectionsActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tint = _tint;
-    final content = switch (style) {
-      ZyraConnectionsCardStyle.iconDock => SizedBox(
-        // Leave enough vertical room for the app's supported large-text
-        // scaling. The former 58pt secondary dock clipped its one-line label
-        // by 3px at 145% text on a compact phone width.
-        height: primary ? 48 : 64,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(item.icon, size: primary ? 17 : 16, color: tint),
-            const SizedBox(height: 4),
-            Text(
+    final content = Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: primary ? 14 : 10,
+        vertical: primary ? 11 : 8,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(item.icon, size: 14, color: tint),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
               item.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: ZyraText.button(size: primary ? 12.5 : 9.5, color: tint),
+              style: ZyraText.button(size: primary ? 12.5 : 10.5, color: tint),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      ZyraConnectionsCardStyle.stackedRows => SizedBox(
-        height: primary ? 44 : 40,
-        child: Row(
-          children: [
-            const SizedBox(width: 12),
-            Icon(item.icon, size: 16, color: tint),
-            const SizedBox(width: 9),
-            Expanded(
-              child: Text(
-                item.label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: ZyraText.body(size: primary ? 12.5 : 11.5, color: tint),
-              ),
-            ),
-            Icon(
-              Icons.chevron_right,
-              size: 17,
-              color: tint.withValues(alpha: 0.55),
-            ),
-            const SizedBox(width: 8),
-          ],
-        ),
-      ),
-      ZyraConnectionsCardStyle.compactChips => Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: primary ? 14 : 10,
-          vertical: primary ? 11 : 8,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(item.icon, size: 14, color: tint),
-            const SizedBox(width: 6),
-            Flexible(
-              child: Text(
-                item.label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: ZyraText.button(
-                  size: primary ? 12.5 : 10.5,
-                  color: tint,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      _ => SizedBox(
-        height: primary ? 44 : 40,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (style != ZyraConnectionsCardStyle.unifiedRail || primary) ...[
-              Icon(item.icon, size: 15, color: tint),
-              const SizedBox(width: 7),
-            ],
-            Flexible(
-              child: Text(
-                item.label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: ZyraText.button(
-                  size: primary ? 12.5 : 10.5,
-                  color: tint,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    };
+    );
 
-    final radius = switch (style) {
-      ZyraConnectionsCardStyle.unifiedRail => primary ? 999.0 : 0.0,
-      ZyraConnectionsCardStyle.splitPills => 999.0,
-      ZyraConnectionsCardStyle.iconDock => 12.0,
-      ZyraConnectionsCardStyle.stackedRows => 10.0,
-      ZyraConnectionsCardStyle.compactChips => 999.0,
-      ZyraConnectionsCardStyle.framedGrid => 8.0,
-    };
+    const radius = 999.0;
     final border = ZyraColors.surfaceBorder;
-    final fill = style == ZyraConnectionsCardStyle.unifiedRail && !primary
-        ? Colors.transparent
-        : ZyraColors.surfaceFill;
+    final fill = ZyraColors.surfaceFill;
 
     return Material(
       key: ValueKey<String>('connections-action-${item.label}'),

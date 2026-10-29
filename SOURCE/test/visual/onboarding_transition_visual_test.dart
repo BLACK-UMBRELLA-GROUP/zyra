@@ -24,10 +24,7 @@ const _directory = 'candidates/onboarding_card_tilt_content_only_2026_10_01';
 const _storyDirectory = 'candidates/onboarding_staged_intro_2026_10_01';
 
 Future<void> _revealStory(WidgetTester tester, int page) async {
-  if (page == ZyraOnboardingDirection.storyPageCount - 1) return;
-  final story = find.byKey(
-    ValueKey('onboarding-study-scroll-atoms-${page + 1}'),
-  );
+  final story = find.byKey(ValueKey('onboarding-study-scroll-luma-$page'));
   for (var stage = 0; stage < 1; stage++) {
     await tester.tap(story);
     await tester.pumpAndSettle();
@@ -102,7 +99,7 @@ void main() {
     ZyraText.testWordmarkFontFamily = null;
   });
 
-  testWidgets('Atoms arrow-default four-page static candidate at 390×844', (
+  testWidgets('Luma arrow-default four-page standalone candidate at 390×844', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -124,26 +121,20 @@ void main() {
           key: _root,
           child: ZyraOnboardingArrowScope(
             enabled: true,
-            child: DevOnboardingIntroduction(
-              direction: ZyraOnboardingDirection.atoms,
-              onContinue: () {},
+            child: const DevOnboardingDirectionsScreen(
+              initialDirection: ZyraOnboardingDirection.luma,
             ),
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('dev_onboarding_skip')));
-    await tester.pumpAndSettle();
 
     for (var page = 0; page < ZyraOnboardingDirection.storyPageCount; page++) {
       expect(find.text('${page + 1} / 4'), findsOneWidget);
       expect(
-        (page == ZyraOnboardingDirection.storyPageCount - 1
-                ? find.byKey(const ValueKey('dev_onboarding_begin_card'))
-                : find.byKey(
-                    ValueKey('onboarding-study-scroll-atoms-${page + 1}'),
-                  ))
+        find
+            .byKey(ValueKey('onboarding-study-scroll-luma-$page'))
             .hitTestable(),
         findsOneWidget,
       );
@@ -152,34 +143,15 @@ void main() {
         await expectLater(
           find.byKey(_root),
           matchesGoldenFile(
-            '$_storyDirectory/atoms__page_${page + 1}__standard.png',
+            '$_storyDirectory/luma__page_${page + 1}__standard.png',
           ),
         );
       }
       if (page < ZyraOnboardingDirection.storyPageCount - 1) {
-        if (page == ZyraOnboardingDirection.storyPageCount - 2) {
-          expect(
-            find.byKey(const ValueKey('dev_onboarding_continue')),
-            findsOneWidget,
-          );
-          await tester.tap(
-            find.byKey(const ValueKey('dev_onboarding_continue')),
-          );
-          await tester.pump();
-          await tester.pump(const Duration(milliseconds: 750));
-          await tester.pump();
-          await tester.pump(const Duration(milliseconds: 750));
-          await tester.pump();
-        } else {
-          expect(
-            find.byKey(const ValueKey('dev_onboarding_continue')),
-            findsNothing,
-          );
-          await tester.tap(
-            find.byKey(ValueKey('onboarding-study-scroll-atoms-${page + 1}')),
-          );
-          await tester.pumpAndSettle();
-        }
+        await tester.tap(
+          find.byKey(ValueKey('onboarding-study-scroll-luma-$page')),
+        );
+        await tester.pumpAndSettle();
       } else {
         expect(
           find.byKey(const ValueKey('dev_onboarding_continue')),
@@ -214,16 +186,13 @@ void main() {
             key: _root,
             child: ZyraOnboardingArrowScope(
               enabled: true,
-              child: DevOnboardingIntroduction(
-                direction: ZyraOnboardingDirection.atoms,
-                onContinue: () {},
+              child: const DevOnboardingDirectionsScreen(
+                initialDirection: ZyraOnboardingDirection.luma,
               ),
             ),
           ),
         ),
       );
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const ValueKey('dev_onboarding_skip')));
       await tester.pumpAndSettle();
       expect(find.text('1 / 4'), findsOneWidget);
       await _revealStory(tester, 0);
@@ -251,7 +220,7 @@ void main() {
       expect(find.text('2 / 4'), findsOneWidget);
       await _revealStory(tester, 1);
       if (transition == ZyraOnboardingPageTransition.cardTilt) {
-        await tester.tap(find.byKey(const ValueKey('dev_onboarding_dot_0')));
+        await tester.tap(find.byKey(const ValueKey('dev_onboarding_back')));
         await tester.pump();
         await tester.pump(
           Duration(milliseconds: transition.duration.inMilliseconds ~/ 4),
@@ -288,7 +257,9 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('3 / 4'), findsOneWidget);
       await _revealStory(tester, 2);
-      await tester.tap(find.byKey(const ValueKey('dev_onboarding_continue')));
+      await tester.tap(
+        find.byKey(const ValueKey('onboarding-study-scroll-luma-2')),
+      );
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 250));
       expect(tester.takeException(), isNull);
@@ -302,7 +273,7 @@ void main() {
       expect(find.text('4 / 4'), findsOneWidget);
       await _revealStory(tester, 3);
       await _captureFrame(tester, '${transition.name}__fourth');
-      await tester.tap(find.byKey(const ValueKey('dev_onboarding_dot_2')));
+      await tester.tap(find.byKey(const ValueKey('dev_onboarding_back')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 350));
       expect(tester.takeException(), isNull);

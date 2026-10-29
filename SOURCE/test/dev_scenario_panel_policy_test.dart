@@ -67,7 +67,6 @@ void main() {
     scenario.reset();
     scenario.setCurrentPage(DevPage.browse);
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
-    ZyraColors.selectDevLightAccent(ZyraDevLightAccent.purple);
     ZyraText.useTestFontStubs = true;
     ZyraText.selectAppFont(ZyraText.currentDefaultFont);
     ZyraInteractionStyle.restoreDefaults();
@@ -75,7 +74,6 @@ void main() {
   tearDown(() {
     scenario.reset();
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
-    ZyraColors.selectDevLightAccent(ZyraDevLightAccent.purple);
     ZyraText.selectAppFont(ZyraText.currentDefaultFont);
     ZyraInteractionStyle.restoreDefaults();
     ZyraText.useTestFontStubs = false;
@@ -179,9 +177,13 @@ void main() {
     expect(oneRows.where((row) => row.status == 'active'), hasLength(3));
   });
 
-  test('retired Connections comparisons remain archived as enum studies', () {
-    expect(ZyraConnectionsCardStyle.values, hasLength(6));
-    expect(ZyraConnectionsHeadingStyle.values, hasLength(5));
+  test('Connections keeps the chosen card and heading styles', () {
+    expect(ZyraConnectionsCardStyle.values, [
+      ZyraConnectionsCardStyle.compactChips,
+    ]);
+    expect(ZyraConnectionsHeadingStyle.values, [
+      ZyraConnectionsHeadingStyle.accentMarker,
+    ]);
   });
 
   test('Introduction lab clamps 0–5 and reset clears local previews', () {
@@ -262,43 +264,14 @@ void main() {
     expect(kZyraLoadingStyle, ZyraLoadingStyle.cometLoop);
   });
 
-  test('Browse swipe lab keeps Full aura plus ten 3D options and resets', () {
-    expect(ZyraBrowseSwipeFeedbackStyle.values, hasLength(11));
-    expect(
-      ZyraBrowseSwipeFeedbackStyle.values.where(
-        (style) => style.groupLabel == 'Current default',
-      ),
-      hasLength(1),
-    );
-    expect(
-      ZyraBrowseSwipeFeedbackStyle.values.where(
-        (style) => style.groupLabel == '3D photo movement',
-      ),
-      hasLength(10),
-    );
-    expect(
-      ZyraBrowseSwipeFeedbackStyle.values.where((style) => style.movesPhoto),
-      hasLength(10),
-    );
-    expect(
-      ZyraBrowseSwipeFeedbackStyle.values.where(
-        (style) => style.previewsNextProfile,
-      ),
-      hasLength(10),
-    );
+  test('Browse swipe lab retains Full Aura as its reset default', () {
+    expect(ZyraBrowseSwipeFeedbackStyle.values, [
+      ZyraBrowseSwipeFeedbackStyle.fullAura,
+    ]);
     expect(
       scenario.browseSwipeFeedbackStyle,
       ZyraBrowseSwipeFeedbackStyle.fullAura,
     );
-
-    scenario.setBrowseSwipeFeedbackStyle(
-      ZyraBrowseSwipeFeedbackStyle.horizonLift,
-    );
-    expect(
-      scenario.browseSwipeFeedbackStyle,
-      ZyraBrowseSwipeFeedbackStyle.horizonLift,
-    );
-
     scenario.reset();
     expect(
       scenario.browseSwipeFeedbackStyle,
@@ -406,22 +379,6 @@ void main() {
     }
   });
 
-  test('Crystal UI keeps background, accent, font and nav independent', () {
-    ZyraColors.selectDevPalette(ZyraDevPalette.crystalMist);
-    final purpleGlass = ZyraColors.glassFill;
-    ZyraColors.selectDevLightAccent(ZyraDevLightAccent.emerald);
-    ZyraText.selectAppFont(ZyraAppFont.manrope);
-    ZyraInteractionStyle.selectNavStyle(ZyraNavStyle.quietDot);
-
-    expect(ZyraColors.devPalette, ZyraDevPalette.crystalMist);
-    expect(ZyraColors.devLightAccent, ZyraDevLightAccent.emerald);
-    expect(ZyraText.appFont, ZyraAppFont.manrope);
-    expect(ZyraInteractionStyle.navStyle, ZyraNavStyle.quietDot);
-    expect(ZyraColors.glassFill, purpleGlass);
-    expect(ZyraColors.glassFill.a, greaterThan(0.70));
-    expect(ZyraColors.actionFill, ZyraDevLightAccent.emerald.color);
-  });
-
   testWidgets('the Poppins default is bundled for offline first launch', (
     _,
   ) async {
@@ -453,26 +410,6 @@ void main() {
     ZyraColors.selectDevPalette(ZyraDevPalette.deepEmerald);
     expect(ZyraColors.devPalette, ZyraDevPalette.deepEmerald);
     expect(ZyraColors.brandGradient.colors, isNot(defaultColors));
-
-    ZyraColors.selectDevPalette(ZyraDevPalette.paperWhite);
-    expect(ZyraColors.isLightPalette, isTrue);
-    expect(ZyraColors.brandGradient.colors.first, const Color(0xFFFFFFFF));
-    expect(ZyraText.heading().color, ZyraColors.luxuryDarkPurple);
-    expect(ZyraColors.iconButtonBorder, const Color(0x303D2A4A));
-    expect(ZyraDevLightAccent.values, hasLength(7));
-    ZyraColors.selectDevLightAccent(ZyraDevLightAccent.emerald);
-    expect(ZyraColors.actionFill, ZyraDevLightAccent.emerald.color);
-    expect(ZyraColors.onAction, Colors.white);
-    expect(
-      ZyraColors.accentBg,
-      ZyraDevLightAccent.emerald.color.withValues(alpha: 0.14),
-    );
-    expect(
-      ZyraColors.accentBorder,
-      ZyraDevLightAccent.emerald.color.withValues(alpha: 0.40),
-    );
-    expect(ZyraColors.glassFill, const Color(0x143D2A4A));
-    expect(ZyraColors.frostBorder, const Color(0x293D2A4A));
 
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
     expect(ZyraColors.isLightPalette, isFalse);
@@ -520,7 +457,7 @@ void main() {
       find.byKey(const ValueKey('dev_controls_tab_preview')).hitTestable(),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Browse preview'), findsOneWidget);
+    expect(find.text('${DevPage.browse.label} preview'), findsOneWidget);
     expect(find.byKey(const ValueKey('dev_open_page_preview')), findsOneWidget);
     expect(find.text('Page error'), findsOneWidget);
     expect(find.text('Session expired'), findsOneWidget);
@@ -569,12 +506,9 @@ void main() {
     final options = _pageOptions(tester);
     expect(
       options.where((option) => option.id.startsWith('browse-motion-')),
-      hasLength(11),
+      hasLength(1),
     );
-    expect(
-      options.map((option) => option.label),
-      containsAll(['Full aura', '10 · Horizon lift']),
-    );
+    expect(options.map((option) => option.label), contains('Full aura'));
     expect(
       options.map((option) => option.group),
       containsAll(['Swipe feedback', 'Limit previews']),

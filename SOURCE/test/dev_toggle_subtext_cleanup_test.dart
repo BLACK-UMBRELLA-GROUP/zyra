@@ -518,10 +518,10 @@ void main() {
       ZyraDevWelcomeTextMotion.current,
       ZyraWelcomeTextMotion.lighterDescent,
     );
-    await _press(tester, _key('dev_onboarding_gold_design_fineDust'));
+    await _press(tester, _key('dev_onboarding_gold_design_diagonalDust'));
     expect(
       ZyraDevOnboardingGoldDesign.current,
-      ZyraOnboardingGoldDesign.fineDust,
+      ZyraOnboardingGoldDesign.diagonalDust,
     );
     await _press(tester, _key('dev_onboarding_gold_motion_pageEntrance'));
     expect(

@@ -73,149 +73,35 @@ enum DevPage {
   activeJourney,
 }
 
-/// Founder-facing Connections card presentation lab.
-///
-/// [compactChips] is the current testing default. The other five values are
-/// live comparisons of the same actions and information; they never alter
-/// Journey or profile state. Release builds continue to use [unifiedRail]
-/// until the Founder selects a production direction.
-enum ZyraConnectionsCardStyle {
-  unifiedRail,
-  splitPills,
-  iconDock,
-  stackedRows,
-  compactChips,
-  framedGrid,
-}
+/// Chosen Connections card presentation.
+enum ZyraConnectionsCardStyle { compactChips }
 
 extension ZyraConnectionsCardStyleX on ZyraConnectionsCardStyle {
-  String get label => switch (this) {
-    ZyraConnectionsCardStyle.unifiedRail => 'Unified rail',
-    ZyraConnectionsCardStyle.splitPills => 'Split pills',
-    ZyraConnectionsCardStyle.iconDock => 'Icon dock',
-    ZyraConnectionsCardStyle.stackedRows => 'Stacked rows',
-    ZyraConnectionsCardStyle.compactChips => 'Compact chips',
-    ZyraConnectionsCardStyle.framedGrid => 'Framed grid',
-  };
+  String get label => 'Compact chips';
 
-  String get description => switch (this) {
-    ZyraConnectionsCardStyle.unifiedRail =>
-      'Active Journey style: one primary action and a quiet action rail.',
-    ZyraConnectionsCardStyle.splitPills =>
-      'Rounded two-column actions with a stronger button rhythm.',
-    ZyraConnectionsCardStyle.iconDock =>
-      'Compact icon-and-label dock beneath the main action.',
-    ZyraConnectionsCardStyle.stackedRows =>
-      'Calm full-width rows with clear direction cues.',
-    ZyraConnectionsCardStyle.compactChips =>
-      'Three equal controls spanning the full card width.',
-    ZyraConnectionsCardStyle.framedGrid =>
-      'Structured two-column cells inside one subtle frame.',
-  };
+  String get description =>
+      'Three equal controls spanning the full card width.';
 }
 
-/// Independent section-title comparisons for Active, Potential, Paused,
-/// Ended, Considered, Saved and Passed. Introductions deliberately has no
-/// repeated in-page title because the segment itself already names the page.
-enum ZyraConnectionsHeadingStyle {
-  chapterLeft,
-  titleLeft,
-  centredRule,
-  accentMarker,
-  countSplit,
-}
+/// Chosen section heading for Connections lists.
+enum ZyraConnectionsHeadingStyle { accentMarker }
 
 extension ZyraConnectionsHeadingStyleX on ZyraConnectionsHeadingStyle {
-  String get label => switch (this) {
-    ZyraConnectionsHeadingStyle.chapterLeft => 'Chapter left',
-    ZyraConnectionsHeadingStyle.titleLeft => 'Title left',
-    ZyraConnectionsHeadingStyle.centredRule => 'Centred rule',
-    ZyraConnectionsHeadingStyle.accentMarker => 'Accent marker',
-    ZyraConnectionsHeadingStyle.countSplit => 'Right rule',
-  };
+  String get label => 'Accent marker';
 
-  String get description => switch (this) {
-    ZyraConnectionsHeadingStyle.chapterLeft =>
-      'Current compact uppercase chapter label.',
-    ZyraConnectionsHeadingStyle.titleLeft =>
-      'Larger title-case heading aligned with the cards.',
-    ZyraConnectionsHeadingStyle.centredRule =>
-      'Centred heading held between two quiet divider lines.',
-    ZyraConnectionsHeadingStyle.accentMarker =>
-      'Left marker with a medium title and no numeric badge.',
-    ZyraConnectionsHeadingStyle.countSplit =>
-      'Title on the left and a short quiet rule on the right.',
-  };
+  String get description =>
+      'Left marker with a medium title and no numeric badge.';
 }
 
-/// Session-only visual comparisons for Browse's live swipe response.
-///
-/// [fullAura] is the current shipped/default response. The other ten are the
-/// Founder-approved 3D photo-motion comparisons. They change presentation
-/// only: the shared Browse policy still owns left=Consider, down=Save and
-/// right=Pass, and no option adds action buttons or changes a decision write.
-enum ZyraBrowseSwipeFeedbackStyle {
-  fullAura,
-  layeredParallax,
-  edgePeek,
-  floatingDeck,
-  carousel3d,
-  doorHinge,
-  pageCurl,
-  depthTunnel,
-  subjectSplit,
-  magneticTilt,
-  horizonLift,
-}
+/// Chosen visual response for Browse's live swipe feedback.
+/// The shared Browse policy continues to own every gesture decision.
+enum ZyraBrowseSwipeFeedbackStyle { fullAura }
 
 extension ZyraBrowseSwipeFeedbackStyleX on ZyraBrowseSwipeFeedbackStyle {
-  String get label => switch (this) {
-    ZyraBrowseSwipeFeedbackStyle.fullAura => 'Full aura',
-    ZyraBrowseSwipeFeedbackStyle.layeredParallax => '1 · Layered parallax',
-    ZyraBrowseSwipeFeedbackStyle.edgePeek => '2 · Edge peek',
-    ZyraBrowseSwipeFeedbackStyle.floatingDeck => '3 · Floating deck',
-    ZyraBrowseSwipeFeedbackStyle.carousel3d => '4 · 3D carousel',
-    ZyraBrowseSwipeFeedbackStyle.doorHinge => '5 · Door hinge',
-    ZyraBrowseSwipeFeedbackStyle.pageCurl => '6 · Page curl',
-    ZyraBrowseSwipeFeedbackStyle.depthTunnel => '7 · Depth tunnel',
-    ZyraBrowseSwipeFeedbackStyle.subjectSplit => '8 · Subject split',
-    ZyraBrowseSwipeFeedbackStyle.magneticTilt => '9 · Magnetic tilt',
-    ZyraBrowseSwipeFeedbackStyle.horizonLift => '10 · Horizon lift',
-  };
+  String get label => 'Full aura';
 
-  String get description => switch (this) {
-    ZyraBrowseSwipeFeedbackStyle.fullAura =>
-      'Current default: traffic-light colour surrounds the full screen.',
-    ZyraBrowseSwipeFeedbackStyle.layeredParallax =>
-      'Photo, identity and the next profile move at different depths.',
-    ZyraBrowseSwipeFeedbackStyle.edgePeek =>
-      'The current profile clears quickly to expose the next profile edge.',
-    ZyraBrowseSwipeFeedbackStyle.floatingDeck =>
-      'The active profile lifts above a stacked next-profile layer.',
-    ZyraBrowseSwipeFeedbackStyle.carousel3d =>
-      'Profiles rotate through depth like a restrained 3D carousel.',
-    ZyraBrowseSwipeFeedbackStyle.doorHinge =>
-      'The profile pivots from the opposite edge as the next one appears.',
-    ZyraBrowseSwipeFeedbackStyle.pageCurl =>
-      'A softer perspective fold suggests turning to the next profile.',
-    ZyraBrowseSwipeFeedbackStyle.depthTunnel =>
-      'The current profile recedes while the next profile comes forward.',
-    ZyraBrowseSwipeFeedbackStyle.subjectSplit =>
-      'The profile and its identity details separate into layered motion.',
-    ZyraBrowseSwipeFeedbackStyle.magneticTilt =>
-      'The profile is pulled towards the gesture with stronger 3D tilt.',
-    ZyraBrowseSwipeFeedbackStyle.horizonLift =>
-      'The profile lifts forward while the next profile rises beneath it.',
-  };
-
-  String get groupLabel => switch (this) {
-    ZyraBrowseSwipeFeedbackStyle.fullAura => 'Current default',
-    _ => '3D photo movement',
-  };
-
-  bool get movesPhoto => this != ZyraBrowseSwipeFeedbackStyle.fullAura;
-
-  bool get previewsNextProfile => movesPhoto;
+  String get description =>
+      'Current default: traffic-light colour surrounds the full screen.';
 }
 
 /// The popups the panel can ask Browse to show. Each maps to a modal that

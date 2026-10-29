@@ -301,7 +301,7 @@ void main() {
             home: MediaQuery(
               data: MediaQueryData(disableAnimations: true),
               child: DevOnboardingIntroduction(
-                direction: ZyraOnboardingDirection.atoms,
+                direction: ZyraOnboardingDirection.luma,
                 onContinue: _noOp,
               ),
             ),
@@ -343,7 +343,7 @@ void main() {
           home: MediaQuery(
             data: MediaQueryData(disableAnimations: true),
             child: DevOnboardingIntroduction(
-              direction: ZyraOnboardingDirection.atoms,
+              direction: ZyraOnboardingDirection.luma,
               onContinue: _noOp,
             ),
           ),

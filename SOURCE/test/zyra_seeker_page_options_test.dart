@@ -145,7 +145,7 @@ void main() {
     });
   }
 
-  testWidgets('Browse keeps every motion and plan-appropriate limit preview', (
+  testWidgets('Browse keeps Full Aura and plan-appropriate limit previews', (
     tester,
   ) async {
     scenario.setCurrentPage(DevPage.browse);
@@ -170,13 +170,13 @@ void main() {
       _options(tester)
           .singleWhere(
             (option) =>
-                option.label == ZyraBrowseSwipeFeedbackStyle.values[1].label,
+                option.label == ZyraBrowseSwipeFeedbackStyle.fullAura.label,
           )
           .id,
     );
     expect(
       scenario.browseSwipeFeedbackStyle,
-      ZyraBrowseSwipeFeedbackStyle.values[1],
+      ZyraBrowseSwipeFeedbackStyle.fullAura,
     );
 
     AppState.instance.setPlan(ZyraPlan.one);

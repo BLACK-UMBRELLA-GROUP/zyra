@@ -806,69 +806,56 @@ void main() {
     }
   });
 
-  for (final light in [false, true]) {
-    testWidgets(
-      'component: wallet halo natural 200 percent fallback light=$light',
-      (tester) async {
-        if (light) ZyraColors.selectDevPalette(ZyraDevPalette.paperWhite);
-        var draft = ZyraSubscriptionWalletDraft.sample();
-        await _mount(
-          tester,
-          StatefulBuilder(
-            builder: (context, setState) => ZyraSubscriptionWalletPreview(
-              draft: draft,
-              showBackButton: false,
-              onChanged: (next) => setState(() => draft = next),
-              onSwitch: (_) => fail('Assignment cannot switch a role.'),
-              onSetup: (_) => fail('Assignment cannot start setup.'),
-              onMembership: (_) => fail('Assignment cannot buy membership.'),
-            ),
+  testWidgets(
+    'component: wallet halo natural 200 percent fallback on the member background',
+    (tester) async {
+      var draft = ZyraSubscriptionWalletDraft.sample();
+      await _mount(
+        tester,
+        StatefulBuilder(
+          builder: (context, setState) => ZyraSubscriptionWalletPreview(
+            draft: draft,
+            showBackButton: false,
+            onChanged: (next) => setState(() => draft = next),
+            onSwitch: (_) => fail('Assignment cannot switch a role.'),
+            onSetup: (_) => fail('Assignment cannot start setup.'),
+            onMembership: (_) => fail('Assignment cannot buy membership.'),
           ),
-          compact: true,
-        );
-        expect(_walletPosition(tester).maxScrollExtent, greaterThan(0));
-        expect(find.byType(FittedBox), findsNothing);
-        expect(_key('wallet_identity_seeker_stacked'), findsOneWidget);
-        _expectWholeIdentityWord(tester, 'Seeker profile', 'Seeker');
-        await _capture(
-          tester,
-          light
-              ? '28-subscription-wallet-light-320-200'
-              : '24-subscription-wallet-320-200',
-        );
-        await _walletFamilyPage(tester, 2);
-        expect(_key('wallet_identity_guardian_stacked'), findsOneWidget);
-        _expectWholeIdentityWord(tester, 'Guardian One', 'Guardian');
-        await _tap(tester, 'wallet_assign_sample-spare-guardian');
-        expect(
-          find.descendant(
-            of: _key('wallet_place_sample-spare-guardian'),
-            matching: _key('wallet_confirmation'),
-          ),
-          findsOneWidget,
-        );
-        await Scrollable.ensureVisible(
-          tester.element(_key('wallet_confirmation')),
-          alignment: 0,
-        );
-        await tester.pumpAndSettle();
-        await _capture(
-          tester,
-          light
-              ? '29-subscription-family-light-confirmation'
-              : '25-subscription-family-320-200-confirmation',
-        );
-        await _tap(tester, 'wallet_confirm');
-        expect(draft.places[2].state, ZyraWalletPlaceState.invitationPending);
-        expect(draft.guardian.coverage, ZyraWalletCoverage.individualOne);
-        expect(
-          find.text('Not active · awaiting recipient agreement'),
-          findsOneWidget,
-        );
-        expect(tester.takeException(), isNull);
-      },
-    );
-  }
+        ),
+        compact: true,
+      );
+      expect(_walletPosition(tester).maxScrollExtent, greaterThan(0));
+      expect(find.byType(FittedBox), findsNothing);
+      expect(_key('wallet_identity_seeker_stacked'), findsOneWidget);
+      _expectWholeIdentityWord(tester, 'Seeker profile', 'Seeker');
+      await _capture(tester, '24-subscription-wallet-320-200');
+      await _walletFamilyPage(tester, 2);
+      expect(_key('wallet_identity_guardian_stacked'), findsOneWidget);
+      _expectWholeIdentityWord(tester, 'Guardian One', 'Guardian');
+      await _tap(tester, 'wallet_assign_sample-spare-guardian');
+      expect(
+        find.descendant(
+          of: _key('wallet_place_sample-spare-guardian'),
+          matching: _key('wallet_confirmation'),
+        ),
+        findsOneWidget,
+      );
+      await Scrollable.ensureVisible(
+        tester.element(_key('wallet_confirmation')),
+        alignment: 0,
+      );
+      await tester.pumpAndSettle();
+      await _capture(tester, '25-subscription-family-320-200-confirmation');
+      await _tap(tester, 'wallet_confirm');
+      expect(draft.places[2].state, ZyraWalletPlaceState.invitationPending);
+      expect(draft.guardian.coverage, ZyraWalletCoverage.individualOne);
+      expect(
+        find.text('Not active · awaiting recipient agreement'),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets(
     'component: covered Switch reader fits 320px at 200% without repurchase',

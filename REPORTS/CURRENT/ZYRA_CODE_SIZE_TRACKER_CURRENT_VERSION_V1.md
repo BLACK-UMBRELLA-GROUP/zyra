@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 165,631 lines in 321 files |
-| Developer and preview code inside it | 44,178 lines in 82 files |
-| The Founder preview (planned app) | 24,433 lines in 31 files |
-| Test code | 207,177 lines in 462 files |
+| All app code | 161,734 lines in 320 files |
+| Developer and preview code inside it | 43,364 lines in 81 files |
+| The Founder preview (planned app) | 24,336 lines in 31 files |
+| Test code | 205,723 lines in 461 files |
 | Test screenshots (goldens) | 3,337 images, 399 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -35,6 +35,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | OA-ZYRA-316 Tier 1 remainder: 5 named files removed; onboarding bank retained | 165,953 / 321 | 44,446 / 82 | 24,701 / 31 | 205,716 / 458 | 3,337 / 399 MB | 39 | 2 |
 | 2026-10-29 | OA-ZYRA-316 Tier 2: app-side Journey Pause/Save and obsolete restart stub removed | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 205,291 / 458 | 3,337 / 399 MB | 39 | 1 |
 | 2026-10-29 | Queued baseline capture: four test files; app source unchanged | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 207,177 / 462 | 3,337 / 399 MB | 39 | 1 |
+| 2026-10-29 | OA-ZYRA-316 Tier 4: 92 unchosen options removed; selected design retained | 161,734 / 320 | 43,364 / 81 | 24,336 / 31 | 205,723 / 461 | 3,337 / 399 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -92,7 +93,9 @@ sign-in routes remain. No old-app-only file or backend changed. Nine source file
 adaptations retain active coverage. Historical photo-dismiss fixtures expecting a direct vertical drag predate this task
 and are carried to the separate matching-tests cleanup under OA-ZYRA-316; current edge/back behavior is unchanged.
 Preview Timeline examples also exclude the retired Pause/continue events; canonical old-app history vocabulary stays.
-Analyser clean (3.7s); 1,055 relevant cases across 42 suites, 21 Timeline cases and two retained photo/delegate cases pass.
+Analyser clean (3.7s); 42 focused suites, 21 Timeline cases and two retained photo/delegate cases were checked.
+Count correction: the historical 1,055 total included 94 hidden harness events (961 visible cases). The final combined
+Tier 4 run below supplies saved passing evidence for the affected Tier 2 suites as well.
 No screenshot regenerated. Exact paths/checks are in local Tier2 JSON evidence and the daily task note.
 
 ## Queued baseline capture — 29 Oct 2026
@@ -102,3 +105,17 @@ PNG review inputs live in PRODUCT/APPROVED/BASELINE/SCREENSHOTS (260,375,095 byt
 golden count. Actual production theme, iOS target, local portraits and platform glyph fallback were verified. The
 generated index accounts for all 49 page IDs in both roles and all nine root tabs; legacy Notifications has no opener,
 and Saved/Paused are retired. No LOCK or product design is created by this capture.
+## Tier 4 — 29 Oct 2026
+
+Kept the selected design in each of 17 sets: 49 of 141 choices, removing 92 unchosen choices. Founder explicitly chose
+current Glass Signals over the stale Classic Glass line in DR-ZYRA-276. All ten dark backgrounds, eighteen fonts and
+seven navigation styles remain in developer tools. All 31 Founder preview files remain, including the current Portrait
+split large-text fallback. Ordinary member routing, account Pause, services and backend are unchanged.
+
+Thirty-one source paths lose 3,897 lines (one retired menu module moved to ~/_to_delete). Required fixture adaptations
+and its dedicated visual suite move close removed APIs; PNG retirement follows as a separate task. Full analyser clean
+(4.2s). Across 96 affected suites, 1,798 visible cases pass after replacing the stale Browse-label suite with its passing
+retry; hidden harness events are excluded. Another 26 manifest/navigation cases pass. All 261 compared chosen PNGs
+match the pre-cleanup baseline exactly; 20 changed developer panels are intentionally excluded. All 303 baseline
+artifacts remain byte-identical. Source hashes and counts are in local Tier4 evidence. No screenshot regeneration,
+backend, Blueprint or Tier3 change. Tier3 still waits for OA-ZYRA-317.

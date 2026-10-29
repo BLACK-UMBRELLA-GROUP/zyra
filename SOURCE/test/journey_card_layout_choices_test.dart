@@ -464,7 +464,11 @@ void _expectNormalGeometry(WidgetTester tester, int count) {
   final bounds = [
     for (final card in _cards.evaluate())
       tester.getRect(find.byWidget(card.widget)),
-  ];
+    for (var index = count; index < 3; index++)
+      tester.getRect(_key('concept_journey_capacity_slot_$index')),
+  ]..sort((left, right) => left.top.compareTo(right.top));
+  expect(bounds, hasLength(3));
+  expect(find.text('Awaiting a Journey'), findsNWidgets(3 - count));
   for (var index = 0; index < bounds.length; index++) {
     final rect = bounds[index];
     expect(rect.left, closeTo(20, .01));
@@ -489,7 +493,7 @@ void _expectNormalGeometry(WidgetTester tester, int count) {
       .75,
     ),
     reason:
-        'All $count cards fill the available canvas with the same clean navigation clearance',
+        'All three occupied or available places fill the canvas with the same navigation clearance',
   );
   expect(
     _pageScroll(tester).position.maxScrollExtent,
@@ -698,17 +702,15 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
-  test('only selected and still-used legacy presenters remain', () {
+  test('only selected Portrait split remains', () {
     expect(ZyraOneJourneyCardDesign.values, [
-      ZyraOneJourneyCardDesign.classic,
-      ZyraOneJourneyCardDesign.quietMinimal,
       ZyraOneJourneyCardDesign.portraitSplit,
     ]);
   });
 
   for (final count in [1, 2, 3]) {
     testWidgets(
-      'Portrait split defaults to $count full-canvas cards and balances the selected expanded action',
+      'Portrait split keeps three stable places with $count Journeys and balances the selected expanded action',
       (tester) async {
         final owner = _Owner();
         await owner.mount(tester, checkpoint: _seed());

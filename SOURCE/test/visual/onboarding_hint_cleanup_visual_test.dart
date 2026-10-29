@@ -21,22 +21,6 @@ const _capture = bool.fromEnvironment(
 const _directory = 'candidates/onboarding_hint_cleanup_2026_10_01';
 const _boundary = ValueKey('onboarding-hint-cleanup-candidate');
 
-Finder _story(int page) =>
-    find.byKey(ValueKey('onboarding-study-scroll-atoms-${page + 1}'));
-
-Future<void> _reveal(WidgetTester tester, int page) async {
-  for (var step = 0; step < 1; step++) {
-    await tester.tap(_story(page));
-    await tester.pumpAndSettle();
-  }
-}
-
-Future<void> _advance(WidgetTester tester, int page) async {
-  await _reveal(tester, page);
-  await tester.tap(_story(page));
-  await tester.pumpAndSettle();
-}
-
 Future<void> _candidate(WidgetTester tester, String name) async {
   if (!_capture) return;
   await expectLater(
@@ -101,7 +85,7 @@ void main() {
     ZyraText.testWordmarkFontFamily = null;
   });
 
-  testWidgets('card three has a clean footer before and after reveal', (
+  testWidgets('current card three keeps a clean footer after Back and return', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(390, 844);
@@ -125,7 +109,7 @@ void main() {
           child: ZyraOnboardingArrowScope(
             enabled: true,
             child: DevOnboardingIntroduction(
-              direction: ZyraOnboardingDirection.atoms,
+              direction: ZyraOnboardingDirection.luma,
               onContinue: () {},
             ),
           ),
@@ -146,21 +130,42 @@ void main() {
       find.byKey(const ValueKey('dev_onboarding_welcome_continue')),
     );
     await tester.pumpAndSettle();
-    await _advance(tester, 0);
-    await _advance(tester, 1);
+    final trust = find.byKey(
+      const ValueKey('dev_onboarding_verification_intro'),
+    );
+    expect(trust.hitTestable(), findsOneWidget);
+    await tester.tap(
+      find.byKey(const ValueKey('dev_onboarding_verification_continue')),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('dev_opening_page_1')).hitTestable(),
+      findsOneWidget,
+    );
+    await tester.tap(find.byKey(const ValueKey('dev_opening_next')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('dev_opening_page_2')).hitTestable(),
+      findsOneWidget,
+    );
     expect(find.text('3 / 4'), findsOneWidget);
     expect(find.byKey(const ValueKey('dev_onboarding_skip')), findsOneWidget);
     expect(find.text('Tap the page to continue reading'), findsNothing);
     expect(find.text('Swipe right for the next page'), findsNothing);
     expect(tester.takeException(), isNull);
-    await _candidate(tester, 'atoms_card_3_partial__phone');
-
-    await _reveal(tester, 2);
+    await _candidate(tester, 'luma_card_3_full__phone');
+    await tester.tap(find.byKey(const ValueKey('dev_onboarding_story_back')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('dev_opening_page_1')).hitTestable(),
+      findsOneWidget,
+    );
+    await tester.tap(find.byKey(const ValueKey('dev_opening_next')));
+    await tester.pumpAndSettle();
     expect(find.text('3 / 4'), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_onboarding_skip')), findsOneWidget);
     expect(find.text('Tap the page to continue reading'), findsNothing);
     expect(find.text('Swipe right for the next page'), findsNothing);
     expect(tester.takeException(), isNull);
-    await _candidate(tester, 'atoms_card_3_full__phone');
+    await _candidate(tester, 'luma_card_3_return__phone');
   });
 }
