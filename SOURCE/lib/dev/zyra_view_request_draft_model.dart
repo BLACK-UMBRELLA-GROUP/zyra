@@ -6,16 +6,7 @@ import '../data/zyra_reference_data.dart' show zyraRelationshipLabel;
 
 /// Disposable request/transition UI, not a new canonical server lifecycle.
 /// This model has no account, storage, entitlement or backend dependency.
-enum DraftJourneyState {
-  received,
-  sent,
-  preparing,
-  active,
-  pauseRequested,
-  paused,
-  resumeRequested,
-  ended,
-}
+enum DraftJourneyState { received, sent, preparing, active, ended }
 
 /// Invented preview plans only; these never prove a real entitlement.
 enum DraftGuardianMembership { basic, one }
@@ -308,7 +299,6 @@ final class ViewRequestDraftSnapshot {
   ViewRequestDraftSnapshot._(ViewRequestDraftModel model)
     : capacity = model._capacity,
       states = Map.unmodifiable(model._states),
-      saved = Set.unmodifiable(model._saved),
       busyPeers = Set.unmodifiable(model._busyPeers),
       hiddenPeers = Set.unmodifiable(model._hiddenPeers),
       blockedPeers = Set.unmodifiable(model._blockedPeers),
@@ -335,7 +325,6 @@ final class ViewRequestDraftSnapshot {
 
   final int capacity;
   final Map<String, DraftJourneyState> states;
-  final Set<String> saved;
   final Set<String> busyPeers;
   final Set<String> hiddenPeers;
   final Set<String> blockedPeers;
@@ -358,8 +347,7 @@ final class ViewRequestDraftSnapshot {
         .where(
           (state) =>
               state == DraftJourneyState.preparing ||
-              state == DraftJourneyState.active ||
-              state == DraftJourneyState.pauseRequested,
+              state == DraftJourneyState.active,
         )
         .length;
     final valid =
@@ -367,7 +355,6 @@ final class ViewRequestDraftSnapshot {
         capacity <= 3 &&
         occupied <= capacity &&
         states.keys.every(peers.contains) &&
-        saved.every(peers.contains) &&
         busyPeers.every(peers.contains) &&
         hiddenPeers.every(peers.contains) &&
         blockedPeers.every(peers.contains) &&
@@ -488,10 +475,6 @@ final class ViewRequestDraftSnapshot {
 /// requests do not reserve capacity. Accepted preparation reserves BOTH places;
 /// either one-sided readiness never starts the Journey or opens chat.
 ///
-/// Pending Pause remains Active-counted. A settled mutual Pause releases the
-/// place and restores discovery in this draft ONLY; that visibility policy
-/// has not been adopted for production. Resume rechecks both participants.
-///
 /// Pending requests are bounded only by the finite fictional fixture set.
 /// No production request quota, timer, expiry or subscription rule is chosen.
 /// Stage labels come from the existing pure canonical source; walkthrough
@@ -514,7 +497,6 @@ class ViewRequestDraftModel {
        _clock = clock ?? DateTime.now {
     snapshot._validate();
     _states.addAll(snapshot.states);
-    _saved.addAll(snapshot.saved);
     _busyPeers.addAll(snapshot.busyPeers);
     _hiddenPeers.addAll(snapshot.hiddenPeers);
     _blockedPeers.addAll(snapshot.blockedPeers);
@@ -571,7 +553,6 @@ class ViewRequestDraftModel {
   int _capacity;
   final DateTime Function() _clock;
   final Map<String, DraftJourneyState> _states = {};
-  final Set<String> _saved = {};
   final Set<String> _busyPeers = {};
   final Set<String> _hiddenPeers = {};
   final Set<String> _blockedPeers = {};
@@ -589,7 +570,6 @@ class ViewRequestDraftModel {
 
   int get capacity => _capacity;
   Map<String, DraftJourneyState> get states => UnmodifiableMapView(_states);
-  Set<String> get saved => UnmodifiableSetView(_saved);
   Set<String> get hiddenPeers => UnmodifiableSetView(_hiddenPeers);
   Set<String> get blockedPeers => UnmodifiableSetView(_blockedPeers);
   bool isHidden(String id) => _hiddenPeers.contains(id);
@@ -674,13 +654,8 @@ class ViewRequestDraftModel {
     return true;
   }
 
-  int get activeCount => _states.values
-      .where(
-        (state) =>
-            state == DraftJourneyState.active ||
-            state == DraftJourneyState.pauseRequested,
-      )
-      .length;
+  int get activeCount =>
+      _states.values.where((state) => state == DraftJourneyState.active).length;
   int get preparingCount => _states.values
       .where((state) => state == DraftJourneyState.preparing)
       .length;
@@ -699,12 +674,9 @@ class ViewRequestDraftModel {
   /// history is modelled; terminal records are never overwritten.
   List<DraftProfile> get discoverableProfiles => List.unmodifiable(
     draftProfiles.where((profile) {
-      final state = _states[profile.id];
       return !isHidden(profile.id) &&
           !isBlocked(profile.id) &&
-          !peerOccupied(profile.id) &&
-          state != DraftJourneyState.paused &&
-          state != DraftJourneyState.resumeRequested;
+          !peerOccupied(profile.id);
     }),
   );
   List<DraftProfile> get availableProfiles => discoverableProfiles;
@@ -744,8 +716,7 @@ class ViewRequestDraftModel {
       _fixtureIds.contains(peerId) &&
       !isBlocked(peerId) &&
       canUseSampleGuardianChat(guardianId) &&
-      (_states[peerId] == DraftJourneyState.active ||
-          _states[peerId] == DraftJourneyState.pauseRequested) &&
+      _states[peerId] == DraftJourneyState.active &&
       _requiredPaidGuardianAccess.contains('$guardianId|$peerId');
 
   /// Called by the owning fictional link UI on unlink. Clear stored grants as
@@ -796,8 +767,7 @@ class ViewRequestDraftModel {
     if (!_knownGuardian(guardianId) ||
         isBlocked(peerId) ||
         hasRequiredPaidGuardianAccess(guardianId, peerId) ||
-        (state != DraftJourneyState.active &&
-            state != DraftJourneyState.pauseRequested) ||
+        state != DraftJourneyState.active ||
         (chatEnabled == true && !canUseSampleGuardianChat(guardianId))) {
       return false;
     }
@@ -919,15 +889,8 @@ class ViewRequestDraftModel {
     return true;
   }
 
-  bool canResume(String id) =>
-      _states[id] == DraftJourneyState.paused &&
-      !isBlocked(id) &&
-      _mainLeadershipPresent(id) &&
-      hasCapacity &&
-      !peerOccupied(id);
-
   /// DR-ZYRA-236: missing Main leadership holds ordinary Active participation,
-  /// not just the Guardian Gate. Pause and End remain independently available.
+  /// not just the Guardian Gate. End remains independently available.
   bool canParticipateInJourney(String id) =>
       _states[id] == DraftJourneyState.active &&
       !isBlocked(id) &&
@@ -1298,36 +1261,6 @@ class ViewRequestDraftModel {
     };
   }
 
-  bool requestPause(String id) =>
-      _move(id, DraftJourneyState.active, DraftJourneyState.pauseRequested);
-  bool agreePause(String id) =>
-      _move(id, DraftJourneyState.pauseRequested, DraftJourneyState.paused);
-  bool continueJourney(String id) =>
-      _move(id, DraftJourneyState.pauseRequested, DraftJourneyState.active);
-
-  bool requestResume(String id) {
-    if (!canResume(id)) return false;
-    return _move(
-      id,
-      DraftJourneyState.paused,
-      DraftJourneyState.resumeRequested,
-    );
-  }
-
-  bool agreeResume(String id) {
-    if (!_mainLeadershipPresent(id) || !hasCapacity || peerOccupied(id)) {
-      return false;
-    }
-    return _move(
-      id,
-      DraftJourneyState.resumeRequested,
-      DraftJourneyState.active,
-    );
-  }
-
-  bool keepPaused(String id) =>
-      _move(id, DraftJourneyState.resumeRequested, DraftJourneyState.paused);
-
   bool end(String id) {
     final state = _states[id];
     if (state == null ||
@@ -1342,15 +1275,8 @@ class ViewRequestDraftModel {
     return true;
   }
 
-  /// Private bookmark: no request, disclosure, notification or capacity cost.
-  bool save(String id) {
-    if (!_fixtureIds.contains(id)) return false;
-    if (!_saved.add(id)) _saved.remove(id);
-    return true;
-  }
-
   /// Changes only the disposable scenario's capacity. A reduction must not
-  /// silently truncate a preparation, Active Journey or pending Pause.
+  /// silently truncate a preparation or Active Journey.
   bool setCapacity(int value) {
     if (value < 1 || value > 3 || value < occupiedCount) return false;
     _capacity = value;
@@ -1383,27 +1309,20 @@ class ViewRequestDraftModel {
 
   /// Optional history walkthrough, absent from a fresh draft. Repeated calls
   /// never overwrite requests, an existing Journey or checkpoint progress.
-  void seedHistory({bool includePaused = true}) {
-    for (final entry in [
-      if (includePaused) (draftProfiles[4].id, DraftJourneyState.paused),
-      (draftProfiles[5].id, DraftJourneyState.ended),
-    ]) {
-      if (_states.containsKey(entry.$1)) continue;
-      _states[entry.$1] = entry.$2;
-      _progress[entry.$1] = _DraftJourneyProgress()
-        ..ready = true
-        ..peerReady = true;
-      if (entry.$2 == DraftJourneyState.ended) {
-        _recordEndedAttempt(entry.$1, endedAt: null);
-      }
-    }
+  void seedHistory() {
+    final id = draftProfiles[5].id;
+    if (_states.containsKey(id)) return;
+    _states[id] = DraftJourneyState.ended;
+    _progress[id] = _DraftJourneyProgress()
+      ..ready = true
+      ..peerReady = true;
+    _recordEndedAttempt(id, endedAt: null);
   }
 
   void _seed() {
     _states
       ..clear()
       ..[draftProfiles.first.id] = DraftJourneyState.received;
-    _saved.clear();
     _hiddenPeers.clear();
     _blockedPeers.clear();
     _acknowledgedReceivedRequestIds.clear();
@@ -1426,13 +1345,5 @@ class ViewRequestDraftModel {
   }
 
   bool _usesActivePlace(DraftJourneyState? state) =>
-      state == DraftJourneyState.preparing ||
-      state == DraftJourneyState.active ||
-      state == DraftJourneyState.pauseRequested;
-
-  bool _move(String id, DraftJourneyState expected, DraftJourneyState next) {
-    if (_states[id] != expected) return false;
-    _states[id] = next;
-    return true;
-  }
+      state == DraftJourneyState.preparing || state == DraftJourneyState.active;
 }

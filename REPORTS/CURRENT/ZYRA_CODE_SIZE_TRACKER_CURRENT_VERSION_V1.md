@@ -18,13 +18,13 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 165,953 lines in 321 files |
-| Developer and preview code inside it | 44,446 lines in 82 files |
-| The Founder preview (planned app) | 24,701 lines in 31 files |
-| Test code | 205,716 lines in 458 files |
+| All app code | 165,631 lines in 321 files |
+| Developer and preview code inside it | 44,178 lines in 82 files |
+| The Founder preview (planned app) | 24,433 lines in 31 files |
+| Test code | 205,291 lines in 458 files |
 | Test screenshots (goldens) | 3,337 images, 399 MB |
 | Old-app files that still mention Pause | 39 |
-| Old-app files that still mention Restart | 2 |
+| Old-app files that still mention Restart | 1 |
 
 ## History
 
@@ -33,6 +33,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-25 | Baseline, before any clean-up (OA-ZYRA-316) | 171,658 / 342 | 46,429 / 87 | 24,701 / 31 | 207,814 / 464 (counted 26 Oct) | 3,984 / 467 MB (counted 26 Oct) | 40 | 2 |
 | 2026-10-29 | OA-ZYRA-316 Tier 1: 16 unused files removed; 6 retained by scope/dependencies | 167,819 / 326 | 46,118 / 86 | 24,701 / 31 | 206,100 / 459 | 3,349 / 401 MB | 39 | 2 |
 | 2026-10-29 | OA-ZYRA-316 Tier 1 remainder: 5 named files removed; onboarding bank retained | 165,953 / 321 | 44,446 / 82 | 24,701 / 31 | 205,716 / 458 | 3,337 / 399 MB | 39 | 2 |
+| 2026-10-29 | OA-ZYRA-316 Tier 2: app-side Journey Pause/Save and obsolete restart stub removed | 165,631 / 321 | 44,178 / 82 | 24,433 / 31 | 205,291 / 458 | 3,337 / 399 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -80,3 +81,15 @@ one visual suite and 12 candidate PNGs (2,358,031 bytes), plus obsolete cases in
 icon/asset checks, HomeTools and live splash-motion coverage remain. Native assets/configuration and the icon artwork
 generator are unchanged. Only `onboarding_bank_contract.dart` remains from the original 22-file list because active
 tooling uses it. Founder preview and old member routes are byte-identical. Analyser clean; 71 focused tests pass.
+
+## Tier 2 — 29 Oct 2026
+
+Removed dormant Journey Pause/Resume state, Save model/storage and hidden UI paths from the Founder preview and shared
+presentation files; removed the unreferenced always-throwing restartJourney stub and its unused exception. Live callers
+already hid Save. Planned Request restart, End/history, ownership guards, account/profile Pause and ordinary member
+sign-in routes remain. No old-app-only file or backend changed. Nine source files lose 322 lines; minimal API fixture
+adaptations retain active coverage. Historical photo-dismiss fixtures expecting a direct vertical drag predate this task
+and are carried to the separate matching-tests cleanup under OA-ZYRA-316; current edge/back behavior is unchanged.
+Preview Timeline examples also exclude the retired Pause/continue events; canonical old-app history vocabulary stays.
+Analyser clean (3.7s); 1,055 relevant cases across 42 suites, 21 Timeline cases and two retained photo/delegate cases pass.
+No screenshot regenerated. Exact paths/checks are in local Tier2 JSON evidence and the daily task note.

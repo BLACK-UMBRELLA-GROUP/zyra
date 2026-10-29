@@ -165,7 +165,6 @@ class _Owner {
 Object _modelFacts(ZyraPreviewNavigationCheckpoint value) => [
   value.model.capacity,
   value.model.states,
-  value.model.saved,
   value.model.busyPeers,
   value.model.hiddenPeers,
   value.model.blockedPeers,

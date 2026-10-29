@@ -45,7 +45,6 @@ class _BrowseHostState extends State<_BrowseHost> {
     selectedIndex: selected,
     design: ZyraOneJourneyBrowseDesign.portraitCard,
     photoBuilder: widget.renderer.build,
-    showSave: false,
     onNext: () =>
         setState(() => selected = (selected + 1) % widget.profiles.length),
     onPrevious: () =>

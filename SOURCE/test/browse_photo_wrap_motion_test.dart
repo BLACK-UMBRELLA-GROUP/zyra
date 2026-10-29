@@ -63,7 +63,6 @@ class _PhotoHostState extends State<_PhotoHost> {
     selectedIndex: 0,
     design: ZyraOneJourneyBrowseDesign.portraitCard,
     photoBuilder: widget.renderer.build,
-    showSave: false,
     onNext: () => decisions++,
     onPrevious: () => decisions++,
     onRequest: (_) => decisions++,

@@ -492,7 +492,7 @@ void main() {
     },
   );
 
-  for (final restriction in ['blocked', 'paused', 'ended', 'missing Main']) {
+  for (final restriction in ['blocked', 'ended', 'missing Main']) {
     testWidgets(
       '$restriction prevents completed-reader checkpoint restoration',
       (tester) async {
@@ -501,9 +501,6 @@ void main() {
         switch (restriction) {
           case 'blocked':
             expect(model.block(_sara), isTrue);
-          case 'paused':
-            expect(model.requestPause(_sara), isTrue);
-            expect(model.agreePause(_sara), isTrue);
           case 'ended':
             expect(model.end(_sara), isTrue);
           case 'missing Main':

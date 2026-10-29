@@ -197,7 +197,6 @@ void main() {
         profiles: [_profile],
         selectedIndex: 0,
         design: ZyraOneJourneyBrowseDesign.portraitCard,
-        showSave: false,
       ),
     ),
     (

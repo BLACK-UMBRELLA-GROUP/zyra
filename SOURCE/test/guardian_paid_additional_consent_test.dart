@@ -370,21 +370,11 @@ void main() {
         restored.hasRequiredPaidGuardianAccess(_additional, 'unknown'),
         isFalse,
       );
-      expect(restored.requestPause(_sara), isTrue);
-      expect(
-        restored.hasRequiredPaidGuardianAccess(_additional, _sara),
-        isTrue,
-      );
-      expect(restored.agreePause(_sara), isTrue);
+      expect(restored.end(_sara), isTrue);
       expect(
         restored.hasRequiredPaidGuardianAccess(_additional, _sara),
         isFalse,
       );
-      final paused = ViewRequestDraftModel.fromSnapshot(restored.snapshot());
-      expect(paused.requestResume(_sara), isTrue);
-      expect(paused.agreeResume(_sara), isTrue);
-      expect(paused.hasRequiredPaidGuardianAccess(_additional, _sara), isTrue);
-      expect(restored.end(_sara), isTrue);
       expect(model.hasRequiredPaidGuardianAccess(_additional, _sara), isTrue);
       expect(snapshot.requiredPaidGuardianAccess, {'$_additional|$_sara'});
     },

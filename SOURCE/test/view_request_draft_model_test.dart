@@ -161,13 +161,13 @@ void main() {
   test('legacy seeded Ended history never invents a fresh end timestamp', () {
     final now = DateTime.utc(2026, 10, 22);
     model = ViewRequestDraftModel(clock: () => now);
-    model.seedHistory(includePaused: false);
+    model.seedHistory();
     final id = draftProfiles[5].id;
     final attempt = model.currentEndedAttemptFor(id)!;
     expect(attempt.endedAt, isNull);
     expect(attempt.startedAt, isNull);
     expect(attempt.hasReadWindow(now), isFalse);
-    model.seedHistory(includePaused: false);
+    model.seedHistory();
     expect(model.endedAttemptsFor(id), [attempt]);
     expect(model.currentEndedAttemptFor(id), same(attempt));
   });
@@ -246,21 +246,19 @@ void main() {
     expect(model.occupiedCount, 0);
   });
   test(
-    'ended-only fixture does not create a paused attempt or rewrite existing state',
+    'ended-only fixture does not create another attempt or rewrite existing state',
     () {
       model = ViewRequestDraftModel(capacity: 3);
       start(first);
-      expect(model.save(second), isTrue);
       final currentStage = model.stageFor(first);
-      model.seedHistory(includePaused: false);
+      model.seedHistory();
       expect(model.stateFor(draftProfiles[4].id), isNull);
       expect(model.stateFor(draftProfiles[5].id), DraftJourneyState.ended);
       expect(model.stateFor(first), DraftJourneyState.active);
       expect(model.stageFor(first), currentStage);
-      expect(model.saved, {second});
       expect(model.occupiedCount, 1);
       final before = Map<String, DraftJourneyState>.of(model.states);
-      model.seedHistory(includePaused: false);
+      model.seedHistory();
       expect(model.states, before);
     },
   );
@@ -268,7 +266,6 @@ void main() {
   Map<String, Object?> snapshot() => {
     'capacity': model.capacity,
     'states': Map<String, DraftJourneyState>.of(model.states),
-    'saved': Set<String>.of(model.saved),
     'ownMain': model.ownMainGuardianPresent,
     'peerMain': model.peerMainGuardianPresent,
     'peerMainPerId': {
@@ -308,13 +305,11 @@ void main() {
 
   test('local capacity can grow to three without resetting fixture state', () {
     expect(model.request(first), isTrue);
-    expect(model.save(second), isTrue);
     model.setOwnMainGuardianPresent(false);
     final before = Map<String, DraftJourneyState>.of(model.states);
     expect(model.setCapacity(3), isTrue);
     expect(model.capacity, 3);
     expect(model.states, before);
-    expect(model.saved, {second});
     expect(model.ownMainGuardianPresent, isFalse);
   });
 
@@ -334,7 +329,6 @@ void main() {
     model = ViewRequestDraftModel(capacity: 3);
     start(first);
     expect(model.setPeerMainGuardianPresent(false, id: first), isTrue);
-    expect(model.save(second), isTrue);
     final before = snapshot();
     for (final id in ['', 'missing', 'real-member-id']) {
       expect(model.peerMainGuardianPresentFor(id), isFalse);
@@ -364,38 +358,12 @@ void main() {
     model.setOwnMainGuardianPresent(false);
     expect(model.canParticipateInJourney(first), isFalse);
     expect(model.canParticipateInJourney(second), isFalse);
-    expect(model.requestPause(first), isTrue);
     expect(model.end(second), isTrue);
     model.setOwnMainGuardianPresent(true);
     expect(model.setPeerMainGuardianPresent(true), isTrue);
     for (final profile in draftProfiles) {
       expect(model.peerMainGuardianPresentFor(profile.id), isTrue);
     }
-  });
-
-  test('mutual Resume rechecks only its counterpart Main at both steps', () {
-    model = ViewRequestDraftModel(capacity: 3);
-    for (final id in [first, second]) {
-      start(id);
-      expect(model.requestPause(id), isTrue);
-      expect(model.agreePause(id), isTrue);
-    }
-    expect(model.setPeerMainGuardianPresent(false, id: first), isTrue);
-    expect(model.canResume(first), isFalse);
-    expect(model.requestResume(first), isFalse);
-    expect(model.canResume(second), isTrue);
-    expect(model.requestResume(second), isTrue);
-    expect(model.setPeerMainGuardianPresent(false, id: second), isTrue);
-    expect(model.agreeResume(second), isFalse);
-    expect(model.stateFor(second), DraftJourneyState.resumeRequested);
-    expect(model.setPeerMainGuardianPresent(true, id: first), isTrue);
-    expect(model.requestResume(first), isTrue);
-    expect(model.agreeResume(first), isTrue);
-    expect(model.canParticipateInJourney(first), isTrue);
-    expect(model.canParticipateInJourney(second), isFalse);
-    expect(model.setPeerMainGuardianPresent(true, id: second), isTrue);
-    expect(model.agreeResume(second), isTrue);
-    expect(model.occupiedCount, 2);
   });
 
   test('Guardian Gate choices recheck per-counterpart Main independently', () {
@@ -518,14 +486,13 @@ void main() {
     },
   );
 
-  test('three places count preparation Active and pending Pause together', () {
+  test('three places count preparation and Active together', () {
     model = ViewRequestDraftModel(capacity: 3);
     expect(model.request(third), isTrue);
     expect(model.acceptReceived(received), isTrue);
     start(first);
     expect(model.request(second), isTrue);
     expect(model.simulateRecipientAccept(second), isTrue);
-    expect(model.requestPause(first), isTrue);
     expect(model.preparingCount, 2);
     expect(model.activeCount, 1);
     expect(model.occupiedCount, 3);
@@ -548,12 +515,11 @@ void main() {
     expect(model.activeCount, 2);
     expect(model.preparingCount, 1);
     expect(model.occupiedCount, 3);
-    expect(model.agreePause(first), isTrue);
+    expect(model.end(first), isTrue);
     expect(model.occupiedCount, 2);
     expect(model.hasCapacity, isTrue);
     expect(model.simulateRecipientAccept(third), isTrue);
     expect(model.occupiedCount, 3);
-    expect(model.requestResume(first), isFalse);
   });
 
   test('three simultaneous Journeys have independent mutual progress', () {
@@ -575,18 +541,15 @@ void main() {
     expect(model.chooseStageContinue(second), isTrue);
     expect(model.hasChosenStageContinue(first), isFalse);
     expect(model.hasChosenStageContinue(third), isFalse);
-    expect(model.requestPause(first), isTrue);
-    expect(model.simulatePeerCompatibilityReveal(first), isFalse);
     expect(model.sendSalam(third), isTrue);
     expect(model.end(second), isTrue);
-    expect(model.stateFor(first), DraftJourneyState.pauseRequested);
+    expect(model.stateFor(first), DraftJourneyState.active);
     expect(model.stateFor(third), DraftJourneyState.active);
     expect(model.hasChosenCompatibilityReveal(first), isTrue);
     expect(model.stageFor(third), same(ZyraJourneyStages.all.first));
     model.setOwnMainGuardianPresent(false);
     expect(model.simulatePeerSalam(third), isFalse);
     expect(model.canParticipateInJourney(first), isFalse);
-    expect(model.agreePause(first), isTrue);
     expect(model.end(third), isTrue);
   });
 
@@ -595,8 +558,6 @@ void main() {
     expect(model.acceptReceived(received), isTrue);
     start(first);
     start(second);
-    expect(model.requestPause(second), isTrue);
-    expect(model.save(third), isTrue);
     model.setPeerMainGuardianPresent(false);
     final before = snapshot();
     for (final capacity in [-1, 0, 1, 2, 4, 10]) {
@@ -612,28 +573,27 @@ void main() {
     expect(model.stateFor(received), DraftJourneyState.ended);
     expect(model.stageFor(first), same(ZyraJourneyStages.all.first));
     expect(model.peerMainGuardianPresent, isFalse);
-    expect(model.saved, {third});
   });
 
-  test('pending history and mutual Pause do not obstruct a safe reduction', () {
-    model = ViewRequestDraftModel(capacity: 3);
-    start(first);
-    start(second);
-    expect(model.request(third), isTrue);
-    expect(model.requestPause(second), isTrue);
-    expect(model.agreePause(second), isTrue);
-    expect(model.requestResume(second), isTrue);
-    model.seedHistory();
-    final states = Map<String, DraftJourneyState>.of(model.states);
-    expect(model.occupiedCount, 1);
-    expect(model.setCapacity(1), isTrue);
-    expect(model.states, states);
-    expect(model.agreeResume(second), isFalse);
-    expect(model.simulateRecipientAccept(third), isFalse);
-    expect(model.end(first), isTrue);
-    expect(model.agreeResume(second), isTrue);
-    expect(model.occupiedCount, 1);
-  });
+  test(
+    'pending requests and ended history do not obstruct a safe reduction',
+    () {
+      model = ViewRequestDraftModel(capacity: 3);
+      start(first);
+      start(second);
+      expect(model.request(third), isTrue);
+      expect(model.end(second), isTrue);
+      model.seedHistory();
+      final states = Map<String, DraftJourneyState>.of(model.states);
+      expect(model.occupiedCount, 1);
+      expect(model.setCapacity(1), isTrue);
+      expect(model.states, states);
+      expect(model.simulateRecipientAccept(third), isFalse);
+      expect(model.end(first), isTrue);
+      expect(model.simulateRecipientAccept(third), isTrue);
+      expect(model.occupiedCount, 1);
+    },
+  );
 
   for (final count in [1, 2, 3]) {
     test('explicit $count-Journey seed resets only the fictional scenario', () {
@@ -642,7 +602,6 @@ void main() {
       nextStage(first);
       expect(model.chooseCompatibilityReveal(first), isTrue);
       expect(model.request(second), isTrue);
-      expect(model.save(third), isTrue);
       model.seedHistory();
       model.setOwnMainGuardianPresent(false);
       model.setPeerMainGuardianPresent(false);
@@ -654,7 +613,6 @@ void main() {
       expect(model.occupiedCount, count);
       expect(model.states.length, count + 1);
       expect(model.stateFor(received), DraftJourneyState.received);
-      expect(model.saved, isEmpty);
       expect(model.ownMainGuardianPresent, isTrue);
       expect(model.peerMainGuardianPresent, isTrue);
       expect(model.peerOccupied(draftProfiles.last.id), isTrue);
@@ -684,7 +642,6 @@ void main() {
       nextStage(first);
       expect(model.chooseCompatibilityReveal(first), isTrue);
       expect(model.request(second), isTrue);
-      expect(model.save(third), isTrue);
       model.seedHistory();
       expect(model.setPeerOccupied(third, true), isTrue);
       model.setOwnMainGuardianPresent(false);
@@ -699,7 +656,6 @@ void main() {
 
   test('one-place Basic fixture cannot seed two or three Journeys', () {
     expect(model.capacity, 1);
-    expect(model.save(first), isTrue);
     final before = snapshot();
     for (final count in [2, 3]) {
       expect(model.seedJourneys(count), isFalse);
@@ -713,13 +669,11 @@ void main() {
   for (final capacity in [1, 2, 3]) {
     test('fillCapacity fills all $capacity configured local places', () {
       model = ViewRequestDraftModel(capacity: capacity);
-      expect(model.save(draftProfiles[4].id), isTrue);
       model.fillCapacity();
       expect(model.capacity, capacity);
       expect(model.activeCount, capacity);
       expect(model.occupiedCount, capacity);
       expect(model.preparingCount, 0);
-      expect(model.saved, isEmpty);
       expect(model.hasCapacity, isFalse);
       expect(model.discoverable, isFalse);
       expect(model.acceptReceived(received), isFalse);
@@ -733,12 +687,10 @@ void main() {
   test('reset retains chosen capacity and clears every fictional Journey', () {
     expect(model.setCapacity(3), isTrue);
     model.fillCapacity();
-    expect(model.save(first), isTrue);
     model.reset();
     expect(model.capacity, 3);
     expect(model.occupiedCount, 0);
     expect(model.states, {received: DraftJourneyState.received});
-    expect(model.saved, isEmpty);
     expect(model.stageFor(first), isNull);
     expect(model.hasCapacity, isTrue);
   });
@@ -775,9 +727,9 @@ void main() {
     expect(model.acceptReceived(received), isTrue);
   });
 
-  test('both are hidden during preparation, Active and pending Pause', () {
+  test('both are hidden during preparation and Active', () {
     expect(model.acceptReceived(received), isTrue);
-    for (var step = 0; step < 3; step++) {
+    for (var step = 0; step < 2; step++) {
       expect(model.discoverable, isFalse);
       expect(model.peerOccupied(received), isTrue);
       expect(
@@ -796,16 +748,10 @@ void main() {
           isTrue,
         );
       }
-      if (step == 1) expect(model.requestPause(received), isTrue);
     }
-    expect(model.agreePause(received), isTrue);
+    expect(model.end(received), isTrue);
     expect(model.discoverable, isTrue);
     expect(model.peerOccupied(received), isFalse);
-    // This settled-Pause visibility choice is explicitly local-only.
-    expect(model.requestResume(received), isTrue);
-    expect(model.agreeResume(received), isTrue);
-    expect(model.discoverable, isFalse);
-    expect(model.peerOccupied(received), isTrue);
   });
 
   test(
@@ -954,51 +900,10 @@ void main() {
       expect(model.simulatePeerStageContinue(first), isFalse);
       expect(model.advanceStage(first), isFalse);
       expect(model.stageFor(first), same(ZyraJourneyStages.all.last));
-      expect(model.requestPause(first), isTrue);
-      expect(model.conversationOpen(first), isFalse);
-      expect(model.continueJourney(first), isTrue);
-      expect(model.conversationOpen(first), isTrue);
       expect(model.end(first), isTrue);
       expect(model.conversationOpen(first), isFalse);
     },
   );
-
-  test(
-    'Pause locks consent and progress, Resume preserves the same checkpoint',
-    () {
-      start(first);
-      nextStage(first);
-      expect(model.chooseCompatibilityReveal(first), isTrue);
-      expect(model.requestPause(first), isTrue);
-      expect(model.simulatePeerCompatibilityReveal(first), isFalse);
-      expect(model.chooseStageContinue(first), isFalse);
-      expect(model.advanceStage(first), isFalse);
-      expect(model.agreePause(first), isTrue);
-      expect(model.simulatePeerCompatibilityReveal(first), isFalse);
-      expect(model.requestResume(first), isTrue);
-      expect(model.agreeResume(first), isTrue);
-      expect(model.stageFor(first), same(ZyraJourneyStages.all[1]));
-      expect(model.hasChosenCompatibilityReveal(first), isTrue);
-      expect(model.peerHasChosenCompatibilityReveal(first), isFalse);
-      expect(model.simulatePeerCompatibilityReveal(first), isTrue);
-    },
-  );
-
-  test('resume request and acceptance both recheck counterpart occupancy', () {
-    start(first);
-    expect(model.requestPause(first), isTrue);
-    expect(model.agreePause(first), isTrue);
-    expect(model.setPeerOccupied(first, true), isTrue);
-    expect(model.canResume(first), isFalse);
-    expect(model.requestResume(first), isFalse);
-    expect(model.setPeerOccupied(first, false), isTrue);
-    expect(model.requestResume(first), isTrue);
-    expect(model.setPeerOccupied(first, true), isTrue);
-    expect(model.agreeResume(first), isFalse);
-    expect(model.stateFor(first), DraftJourneyState.resumeRequested);
-    expect(model.setPeerOccupied(first, false), isTrue);
-    expect(model.agreeResume(first), isTrue);
-  });
 
   test(
     'ended attempts retain sample stage but reject every new disclosure action',
@@ -1025,33 +930,21 @@ void main() {
   );
 
   test(
-    'history scenario is explicit, idempotent and cannot overwrite a request',
+    'ended history scenario is explicit, idempotent and cannot overwrite a request',
     () {
-      final paused = draftProfiles[4].id;
       final ended = draftProfiles[5].id;
-      expect(model.stateFor(paused), isNull);
       expect(model.stateFor(ended), isNull);
       model.seedHistory();
-      expect(model.stateFor(paused), DraftJourneyState.paused);
       expect(model.stateFor(ended), DraftJourneyState.ended);
       expect(model.discoverable, isTrue);
-      expect(
-        model.discoverableProfiles.map((p) => p.id),
-        isNot(contains(paused)),
-      );
       expect(model.discoverableProfiles.map((p) => p.id), contains(ended));
       expect(model.canRequest(ended), isFalse);
       model.seedHistory();
-      expect(model.states.length, 3);
-      expect(model.requestResume(paused), isTrue);
-      model.seedHistory();
-      expect(model.stateFor(paused), DraftJourneyState.resumeRequested);
-      expect(model.agreeResume(ended), isFalse);
+      expect(model.states.length, 2);
       model.reset();
-      expect(model.request(paused), isTrue);
+      expect(model.request(ended), isTrue);
       model.seedHistory();
-      expect(model.stateFor(paused), DraftJourneyState.sent);
-      expect(model.stateFor(ended), DraftJourneyState.ended);
+      expect(model.stateFor(ended), DraftJourneyState.sent);
     },
   );
 
@@ -1111,7 +1004,6 @@ void main() {
         expect(model.setPeerOccupied(id, false), isFalse);
         expect(model.canRequest(id), isFalse);
         expect(model.canAccept(id), isFalse);
-        expect(model.canResume(id), isFalse);
         expect(model.stageFor(id), isNull);
         expect(model.markReady(id), isFalse);
         expect(model.simulatePeerReady(id), isFalse);
@@ -1167,9 +1059,6 @@ void main() {
       expect(model.canPeerChooseStageContinue(first), isFalse);
       model.setPeerMainGuardianPresent(true);
       expect(model.canChooseStageContinue(first), isTrue);
-      expect(model.requestPause(first), isTrue);
-      expect(model.canChooseStageContinue(first), isFalse);
-      expect(model.canPeerChooseStageContinue(first), isFalse);
       expect(model.end(first), isTrue);
       expect(model.canChooseStageContinue(first), isFalse);
       expect(model.canPeerChooseStageContinue(first), isFalse);
@@ -1234,15 +1123,6 @@ void main() {
         expect(model.conversationOpen(first), isTrue);
         changeMain(false);
         expect(model.conversationOpen(first), isFalse);
-        expect(model.requestPause(first), isTrue); // Safety/agency retained.
-        expect(model.agreePause(first), isTrue);
-        expect(model.canResume(first), isFalse);
-        expect(model.requestResume(first), isFalse);
-        changeMain(true);
-        expect(model.requestResume(first), isTrue);
-        changeMain(false);
-        expect(model.agreeResume(first), isFalse);
-        expect(model.stateFor(first), DraftJourneyState.resumeRequested);
         expect(model.end(first), isTrue); // End never requires Main permission.
         expect(model.stateFor(first), DraftJourneyState.ended);
       },
@@ -1279,7 +1159,6 @@ void main() {
       expect(model.preparingCount, 0);
       expect(model.hasCapacity, isTrue);
       expect(model.discoverable, isTrue);
-      expect(model.saved, isEmpty);
     },
   );
 
@@ -1426,96 +1305,9 @@ void main() {
     expect(model.preparingCount, 0);
   });
 
-  test('pause request does not free a slot; mutual agreement does', () {
-    start(first);
-    expect(model.requestPause(first), isTrue);
-    expect(model.stateFor(first), DraftJourneyState.pauseRequested);
-    expect(model.activeCount, 1);
-    expect(model.hasCapacity, isFalse);
-    expect(model.discoverable, isFalse);
-    expect(model.request(second), isFalse);
-    expect(model.requestPause(first), isFalse);
-    expect(model.requestResume(first), isFalse);
-    expect(model.agreePause(first), isTrue);
-    expect(model.stateFor(first), DraftJourneyState.paused);
-    expect(model.activeCount, 0);
-    expect(model.hasCapacity, isTrue);
-    expect(model.discoverable, isTrue);
-    expect(model.agreePause(first), isFalse);
-  });
-
-  test('resume is mutual and request does not itself consume a slot', () {
-    start(first);
-    expect(model.requestPause(first), isTrue);
-    expect(model.agreePause(first), isTrue);
-    expect(model.requestResume(first), isTrue);
-    expect(model.stateFor(first), DraftJourneyState.resumeRequested);
-    expect(model.activeCount, 0);
-    expect(model.hasCapacity, isTrue);
-    expect(model.requestResume(first), isFalse);
-    expect(model.agreeResume(first), isTrue);
-    expect(model.stateFor(first), DraftJourneyState.active);
-    expect(model.activeCount, 1);
-    expect(model.hasCapacity, isFalse);
-    expect(model.agreeResume(first), isFalse);
-  });
-
-  test(
-    'simulated settled continuation keeps the already occupied Active slot',
-    () {
-      expect(model.continueJourney(received), isFalse);
-      start(first);
-      expect(model.continueJourney(first), isFalse);
-      expect(model.requestPause(first), isTrue);
-      expect(model.continueJourney(first), isTrue);
-      expect(model.stateFor(first), DraftJourneyState.active);
-      expect(model.activeCount, 1);
-      expect(model.hasCapacity, isFalse);
-      expect(model.continueJourney(first), isFalse);
-    },
-  );
-
-  test(
-    'resume acceptance rechecks room after another preparation reserves it',
-    () {
-      start(first);
-      expect(model.requestPause(first), isTrue);
-      expect(model.agreePause(first), isTrue);
-      expect(model.requestResume(first), isTrue);
-      expect(model.request(second), isTrue);
-      expect(model.simulateRecipientAccept(second), isTrue);
-      expect(model.agreeResume(first), isFalse);
-      expect(model.stateFor(first), DraftJourneyState.resumeRequested);
-      expect(model.activeCount, 0);
-      expect(model.preparingCount, 1);
-      expect(model.keepPaused(first), isTrue);
-      expect(model.stateFor(first), DraftJourneyState.paused);
-      expect(model.requestResume(first), isFalse);
-      expect(model.end(second), isTrue);
-      expect(model.requestResume(first), isTrue);
-      expect(model.agreeResume(first), isTrue);
-    },
-  );
-
-  test('keeping paused rejects unrelated states and leaves history intact', () {
-    expect(model.keepPaused(received), isFalse);
-    start(first);
-    expect(model.keepPaused(first), isFalse);
-    expect(model.requestPause(first), isTrue);
-    expect(model.agreePause(first), isTrue);
-    expect(model.keepPaused(first), isFalse);
-    expect(model.requestResume(first), isTrue);
-    expect(model.keepPaused(first), isTrue);
-    expect(model.stateFor(first), DraftJourneyState.paused);
-    expect(model.keepPaused(first), isFalse);
-  });
-
   for (final endingState in [
     DraftJourneyState.preparing,
     DraftJourneyState.active,
-    DraftJourneyState.pauseRequested,
-    DraftJourneyState.paused,
-    DraftJourneyState.resumeRequested,
   ]) {
     test(
       'ending $endingState retains terminal history with no resurrection',
@@ -1530,22 +1322,6 @@ void main() {
             ),
             isTrue,
           );
-        }
-        if ([
-          DraftJourneyState.pauseRequested,
-          DraftJourneyState.paused,
-          DraftJourneyState.resumeRequested,
-        ].contains(endingState)) {
-          expect(model.requestPause(first), isTrue);
-        }
-        if ([
-          DraftJourneyState.paused,
-          DraftJourneyState.resumeRequested,
-        ].contains(endingState)) {
-          expect(model.agreePause(first), isTrue);
-        }
-        if (endingState == DraftJourneyState.resumeRequested) {
-          expect(model.requestResume(first), isTrue);
         }
         expect(model.stateFor(first), endingState);
         expect(model.end(first), isTrue);
@@ -1566,12 +1342,6 @@ void main() {
           ),
           isFalse,
         );
-        expect(model.requestPause(first), isFalse);
-        expect(model.agreePause(first), isFalse);
-        expect(model.continueJourney(first), isFalse);
-        expect(model.requestResume(first), isFalse);
-        expect(model.agreeResume(first), isFalse);
-        expect(model.keepPaused(first), isFalse);
       },
     );
   }
@@ -1599,41 +1369,17 @@ void main() {
         ),
         isFalse,
       );
-      expect(model.requestPause(id), isFalse);
-      expect(model.agreePause(id), isFalse);
-      expect(model.continueJourney(id), isFalse);
-      expect(model.requestResume(id), isFalse);
-      expect(model.agreeResume(id), isFalse);
-      expect(model.keepPaused(id), isFalse);
       expect(model.end(id), isFalse);
-      expect(model.save(id), isFalse);
     }
     expect(model.states, before);
-    expect(model.saved, isEmpty);
   });
 
-  test('saving is private, independent and reversible even at capacity', () {
-    expect(model.save(first), isTrue);
-    expect(model.saved, {first});
-    expect(model.stateFor(first), isNull);
-    expect(model.states.length, 1);
-    expect(model.save(first), isTrue);
-    expect(model.saved, isEmpty);
-    model.fillCapacity();
-    expect(model.hasCapacity, isFalse);
-    expect(model.save(second), isTrue);
-    expect(model.saved, {second});
-    expect(model.stateFor(second), isNull);
-  });
-
-  test('public map and saved views cannot bypass state or capacity checks', () {
+  test('public state map cannot bypass state or capacity checks', () {
     expect(
       () => model.states[first] = DraftJourneyState.active,
       throwsUnsupportedError,
     );
     expect(() => model.states.clear(), throwsUnsupportedError);
-    expect(() => model.saved.add(first), throwsUnsupportedError);
-    expect(() => model.saved.clear(), throwsUnsupportedError);
     expect(model.activeCount, 0);
   });
 
@@ -1668,13 +1414,11 @@ void main() {
   );
 
   test('default full-capacity preset stays local and resets changes', () {
-    expect(model.save(third), isTrue);
     expect(model.request(third), isTrue);
     model.fillCapacity();
     expect(model.capacity, 1);
     expect(model.activeCount, 1);
     expect(model.preparingCount, 0);
-    expect(model.saved, isEmpty);
     expect(model.stateFor(third), isNull);
     expect(model.stateFor(received), DraftJourneyState.received);
     expect(model.acceptReceived(received), isFalse);
@@ -1693,12 +1437,10 @@ void main() {
     () {
       expect(model.capacity, 1);
       model.fillCapacity();
-      expect(model.save(first), isTrue);
       expect(model.end(first), isTrue);
       model.reset();
       expect(model.capacity, 1);
       expect(model.states, {received: DraftJourneyState.received});
-      expect(model.saved, isEmpty);
       expect(model.activeCount, 0);
       expect(model.preparingCount, 0);
       expect(model.discoverable, isTrue);

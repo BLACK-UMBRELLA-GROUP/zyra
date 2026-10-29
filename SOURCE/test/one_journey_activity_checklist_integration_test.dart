@@ -200,7 +200,6 @@ Future<void> _select(
 Map<String, Object?> _modelData(ViewRequestDraftSnapshot value) => {
   'capacity': value.capacity,
   'states': value.states,
-  'saved': value.saved,
   'busy': value.busyPeers,
   'hidden': value.hiddenPeers,
   'blocked': value.blockedPeers,

@@ -77,9 +77,6 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.onBrowseMenu,
     this.onProfile,
     this.onRequest,
-    this.onSave,
-    this.showSave = true,
-    this.savedIds = const <String>{},
     this.requestLabel,
     this.invitationSent,
     this.canRequest,
@@ -114,9 +111,6 @@ class ZyraBrowseDesigns extends StatefulWidget {
   final ValueChanged<SeekerProfile?>? onBrowseMenu;
   final ValueChanged<SeekerProfile>? onProfile;
   final ValueChanged<SeekerProfile>? onRequest;
-  final ValueChanged<SeekerProfile>? onSave;
-  final bool showSave;
-  final Set<String> savedIds;
   final String Function(SeekerProfile)? requestLabel;
   final bool Function(SeekerProfile)? invitationSent;
   final bool Function(SeekerProfile)? canRequest;
@@ -590,7 +584,6 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     final onPrevious = widget.readOnlyPreview ? null : widget.onPrevious;
     final onNext = widget.readOnlyPreview ? null : widget.onNext;
     final onRequest = widget.readOnlyPreview ? null : widget.onRequest;
-    final onSave = widget.readOnlyPreview ? null : widget.onSave;
     final requestAllowed =
         profile != null &&
         onRequest != null &&
@@ -649,16 +642,6 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
               ),
             ],
           ),
-          if (!widget.readOnlyPreview &&
-              widget.showSave &&
-              profile != null) ...[
-            const SizedBox(height: 8),
-            _compactPill(
-              key: ValueKey('concept_save_${profile.id}'),
-              label: widget.savedIds.contains(profile.id) ? 'Saved' : 'Save',
-              onTap: onSave == null ? null : () => onSave(profile),
-            ),
-          ],
         ],
       ),
     );
@@ -806,11 +789,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         // Do not measure hidden feed labels: their delegates are outside an
         // inspection owner's authority, even when the result would not paint.
         final footerHeight = widget.showFeedChrome
-            ? _requestPillHeight(profile, contentWidth) +
-                  _pillBorderExtent +
-                  (!widget.readOnlyPreview && widget.showSave && profile != null
-                      ? 58
-                      : 0)
+            ? _requestPillHeight(profile, contentWidth) + _pillBorderExtent
             : 0.0;
         final headerHeight = widget.readOnlyPreview || !widget.showFeedChrome
             ? 0.0

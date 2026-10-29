@@ -431,7 +431,6 @@ void main() {
       expect(checkpoint!.model.states, before.states);
       expect(checkpoint!.model.capacity, before.capacity);
       expect(checkpoint!.model.progress, before.progress);
-      expect(checkpoint!.model.saved, before.saved);
       expect(checkpoint!.model.hiddenPeers, before.hiddenPeers);
       expect(checkpoint!.model.blockedPeers, before.blockedPeers);
       final opened = checkpoint!;

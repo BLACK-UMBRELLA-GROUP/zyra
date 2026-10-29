@@ -75,7 +75,6 @@ Widget _presenter({
   selectedIndex: selected,
   design: ZyraOneJourneyBrowseDesign.portraitCard,
   bottomPadding: 100,
-  showSave: false,
   onPrevious: previous ?? () {},
   onNext: next ?? () {},
   onFilters: filters ?? () {},
@@ -255,7 +254,6 @@ void _expectStandardGeometry(WidgetTester tester, Size size) {
   final nav = tester.getRect(find.byType(FloatingNavBar));
   expect(nav.top - footer.bottom, inInclusiveRange(12.0, 24.0));
   expect(_scrollState(tester).position.maxScrollExtent, closeTo(0, .01));
-  expect(_key('concept_save_portrait-sara'), findsNothing);
   expect(find.text('Back'), findsNothing);
   expect(find.text('Pass'), findsNothing);
   expect(find.text('Dislike'), findsNothing);
@@ -450,7 +448,6 @@ void main() {
       await _press(tester, 'concept_previous_profile');
       expect((next, previous, filters), (1, 1, 1));
       await _snapshot(tester, 'compact_200_controls');
-      expect(_key('concept_save_portrait-sara'), findsNothing);
     },
   );
 

@@ -304,7 +304,6 @@ void _expectSameModel(_Owner owner, ViewRequestDraftSnapshot before) {
   expect(after.capacity, before.capacity);
   expect(after.states, before.states);
   expect(after.progress, before.progress);
-  expect(after.saved, before.saved);
   expect(after.hiddenPeers, before.hiddenPeers);
   expect(after.blockedPeers, before.blockedPeers);
   expect(
@@ -517,7 +516,6 @@ void main() {
       );
       expect(menu.inline, isTrue);
       expect(menu.canEnd, isFalse);
-      expect(menu.canPause, isFalse);
       if (choice == _options.first) {
         await _capture(tester, 'ended_options_393');
       }
@@ -552,7 +550,6 @@ void main() {
           expect(find.text('Yusuf'), findsNothing);
         case ZyraConceptJourneyOption.report:
           expect(find.byType(ZyraDraftReportPresentation), findsOneWidget);
-        case ZyraConceptJourneyOption.pause:
         case ZyraConceptJourneyOption.end:
           fail('Ended never exposes a Journey mutation option.');
       }

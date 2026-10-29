@@ -159,11 +159,7 @@ void _inertBrowseControls(WidgetTester tester, String id) {
   ]) {
     expect(_key(key), findsOneWidget);
   }
-  for (final key in [
-    'concept_browse_menu',
-    'concept_filters',
-    'concept_save_$id',
-  ]) {
+  for (final key in ['concept_browse_menu', 'concept_filters']) {
     expect(_key(key), findsNothing);
   }
   for (final key in [
@@ -175,7 +171,6 @@ void _inertBrowseControls(WidgetTester tester, String id) {
   }
   expect(find.text('Request a Journey'), findsOneWidget);
   expect(find.text('Request Journey'), findsNothing);
-  expect(find.text('Save'), findsNothing);
   for (final title in ['My profile', 'Browse', 'Profiles']) {
     expect(find.text(title), findsNothing);
   }
@@ -241,7 +236,6 @@ Widget _liveReference(SeekerProfile profile, FloatingNavBar navigation) =>
               requestLabel: (_) => 'Request a Journey',
               invitationSent: (_) => false,
               canRequest: (_) => true,
-              showSave: false,
               hapticLevel: ZyraHapticLevel.off,
             ),
             FloatingNavBar(
@@ -443,9 +437,6 @@ void main() {
             onBrowseMenu: (_) => action('menu'),
             onProfile: (_) => action('profile'),
             onRequest: (_) => action('request'),
-            onSave: (_) => action('save'),
-            showSave: true,
-            savedIds: {person.id},
             requestLabel: (_) {
               action('requestLabel');
               return 'Forbidden self invitation';

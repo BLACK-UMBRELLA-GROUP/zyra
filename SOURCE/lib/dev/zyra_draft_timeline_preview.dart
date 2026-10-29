@@ -112,6 +112,14 @@ class ZyraDraftTimelineView {
 }
 
 class ZyraDraftTimelinePreview {
+  // Old member history retains its canonical events until Tier 3. These two
+  // retired Journey actions are not available in the planned-app examples.
+  static final List<String> supportedEvents = List.unmodifiable(
+    ZyraTimelineMilestones.supportedTypes.where(
+      (type) => type != 'journey_paused' && type != 'journey_continued',
+    ),
+  );
+
   ZyraDraftTimelinePreview(
     this.subjectId, {
     required this.firstName,
@@ -145,7 +153,7 @@ class ZyraDraftTimelinePreview {
   }
 
   bool selectEvent(String type) {
-    if (!ZyraTimelineMilestones.isSupported(type)) return false;
+    if (!supportedEvents.contains(type)) return false;
     _selectedEvent = type;
     _scenario = ZyraDraftTimelineScenario.event;
     _pendingDismissed = false;
@@ -259,9 +267,6 @@ class ZyraDraftTimelinePreview {
     if (_stageValue == 'conversation') {
       entries.add(ZyraDraftTimelineEntry(type: 'conversation_started'));
     }
-    if (state == DraftJourneyState.paused) {
-      entries.add(ZyraDraftTimelineEntry(type: 'journey_paused'));
-    }
     if (state == DraftJourneyState.ended) {
       entries.add(ZyraDraftTimelineEntry(type: 'journey_ended'));
     }
@@ -307,9 +312,7 @@ class ZyraDraftTimelinePreview {
   ZyraDraftTimelineView get view {
     final scenario = _scenario;
     if (scenario == ZyraDraftTimelineScenario.current) {
-      final frozen =
-          journeyState == DraftJourneyState.ended ||
-          journeyState == DraftJourneyState.paused;
+      final frozen = journeyState == DraftJourneyState.ended;
       final entries = endedAttempts.isEmpty ? _facts() : _historyFacts();
       return ZyraDraftTimelineView(
         entries: entries,
@@ -334,9 +337,9 @@ class ZyraDraftTimelinePreview {
     if (scenario == ZyraDraftTimelineScenario.allEvents) {
       return ZyraDraftTimelineView(
         entries: [
-          for (var i = 0; i < ZyraTimelineMilestones.supportedTypes.length; i++)
+          for (var i = 0; i < supportedEvents.length; i++)
             _reviewEntry(
-              ZyraTimelineMilestones.supportedTypes[i],
+              supportedEvents[i],
               i,
               revealed: true,
               forceOpen: true,

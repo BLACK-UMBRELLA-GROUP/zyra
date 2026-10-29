@@ -96,7 +96,6 @@ Widget _presenter({
   selectedIndex: selected,
   design: design,
   photoBuilder: _photo,
-  showSave: false,
   onPrevious: previous ?? () {},
   onNext: next ?? () {},
   onFilters: filters ?? () {},
@@ -429,7 +428,6 @@ void main() {
           expect(requested, isEmpty);
           await _press(tester, 'draft_profile_${_person.id}');
           expect(requested, [_person.id]);
-          expect(_key('concept_save_${_person.id}'), findsNothing);
           expect(find.textContaining('photos'), findsNothing);
         },
       );

@@ -48,14 +48,12 @@ class _NoNetwork extends HttpOverrides {
 class _Actions {
   final opened = <String>[];
   final requested = <String>[];
-  final saved = <String>[];
   int previous = 0;
   int next = 0;
 
   void expectNoDecisions() {
     expect(opened, isEmpty);
     expect(requested, isEmpty);
-    expect(saved, isEmpty);
     expect(previous, 0);
     expect(next, 0);
   }
@@ -100,7 +98,6 @@ Widget _presenter(
   profiles: people,
   selectedIndex: selected,
   design: ZyraOneJourneyBrowseDesign.portraitCard,
-  showSave: false,
   photoBuilder:
       (context, photo, {required width, required height, required alignment}) {
         final paint = ColoredBox(
@@ -125,7 +122,6 @@ Widget _presenter(
       },
   onProfile: (profile) => actions.opened.add(profile.id),
   onRequest: (profile) => actions.requested.add(profile.id),
-  onSave: (profile) => actions.saved.add(profile.id),
   onPrevious: () => actions.previous++,
   onNext: () => actions.next++,
   onFilters: () {},
@@ -797,7 +793,9 @@ void main() {
   }
 
   for (final change in ['person', 'photos', 'photo count', 'disposed']) {
-    testWidgets('a saved tap cannot act after $change changes', (tester) async {
+    testWidgets('a captured tap cannot act after $change changes', (
+      tester,
+    ) async {
       final actions = _Actions();
       await _mount(tester, _presenter(actions));
       final staleTap = tester.widget<GestureDetector>(_tapTarget()).onTapUp!;

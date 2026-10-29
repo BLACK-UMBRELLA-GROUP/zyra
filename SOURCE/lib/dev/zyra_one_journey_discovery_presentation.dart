@@ -39,15 +39,12 @@ class ZyraOneJourneyBrowsePresentation extends StatefulWidget {
     this.onPreviousProfile,
     this.onNextProfile,
     this.onRequest,
-    this.onSave,
     this.requestLabel = 'Request Journey',
     this.invitationSent,
-    this.saved = false,
     this.imageBuilder = _profileImage,
     this.previousKey,
     this.nextKey,
     this.requestKey,
-    this.saveKey,
     this.menuKey,
     this.menuButton,
     this.menuLabel = 'Profile options',
@@ -57,7 +54,6 @@ class ZyraOneJourneyBrowsePresentation extends StatefulWidget {
     this.identityBottom,
     this.actionsBottom,
     this.showActions = true,
-    this.showSave = true,
     this.onDismiss,
     this.initialPhotoIndex = 0,
     this.onPhotoIndexChanged,
@@ -68,15 +64,12 @@ class ZyraOneJourneyBrowsePresentation extends StatefulWidget {
   final VoidCallback? onPreviousProfile;
   final VoidCallback? onNextProfile;
   final VoidCallback? onRequest;
-  final VoidCallback? onSave;
   final String requestLabel;
   final bool? invitationSent;
-  final bool saved;
   final ZyraOneJourneyPhotoBuilder imageBuilder;
   final Key? previousKey;
   final Key? nextKey;
   final Key? requestKey;
-  final Key? saveKey;
   final Key? menuKey;
   final Widget? menuButton;
   final String menuLabel;
@@ -86,7 +79,6 @@ class ZyraOneJourneyBrowsePresentation extends StatefulWidget {
   final double? identityBottom;
   final double? actionsBottom;
   final bool showActions;
-  final bool showSave;
 
   /// Opt-in dismissal for a temporary full-photo inspection. The caller owns
   /// the return destination and supplies an already-guarded callback. Other
@@ -270,22 +262,6 @@ class _ZyraOneJourneyBrowsePresentationState
                             primary: true,
                           ),
                         ),
-                        if (widget.showSave) ...[
-                          const SizedBox(width: 7),
-                          Expanded(
-                            child: ZyraOneJourneyConnectionsActionButton(
-                              action: ZyraOneJourneyConnectionsAction(
-                                key: widget.saveKey,
-                                label: widget.saved ? 'Saved' : 'Save',
-                                icon: widget.saved
-                                    ? Icons.bookmark
-                                    : Icons.bookmark_border,
-                                onTap: widget.onSave,
-                              ),
-                              primary: true,
-                            ),
-                          ),
-                        ],
                       ],
                     ),
                   ),

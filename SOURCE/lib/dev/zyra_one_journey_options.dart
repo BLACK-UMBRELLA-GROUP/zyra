@@ -12,7 +12,6 @@ enum ZyraConceptJourneyOption {
   compatibility,
   guardians,
   report,
-  pause,
   end,
 }
 
@@ -28,7 +27,6 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
     super.key,
     required this.id,
     required this.firstName,
-    required this.canPause,
     required this.canEnd,
     required this.onSelected,
     required this.onCancel,
@@ -42,7 +40,6 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
   });
   final String id;
   final String firstName;
-  final bool canPause;
   final bool canEnd;
   final ValueChanged<ZyraConceptJourneyOption> onSelected;
   final VoidCallback onCancel;
@@ -203,13 +200,6 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
         Icons.flag_outlined,
         'Report',
         'Report a concern about this profile.',
-      ),
-    if (!archived && canPause)
-      (
-        ZyraConceptJourneyOption.pause,
-        Icons.pause_circle_outline,
-        'Request Pause',
-        '$firstName chooses whether to pause or continue.',
       ),
     if (!archived && canEnd)
       (

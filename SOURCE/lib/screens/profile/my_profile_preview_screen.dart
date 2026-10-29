@@ -317,7 +317,6 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
             galleryMode: widget._galleryMode,
             photoBuilder: _photo,
             readOnlyPreview: true,
-            showSave: false,
             hapticLevel: widget._hapticLevel,
           ),
           Positioned.fill(

@@ -202,14 +202,7 @@ void main() {
     },
   );
 
-  for (final restriction in [
-    'blocked',
-    'pause requested',
-    'paused',
-    'ended',
-    'own Main',
-    'peer Main',
-  ]) {
+  for (final restriction in ['blocked', 'ended', 'own Main', 'peer Main']) {
     for (final completed in [false, true]) {
       test(
         '$restriction prevents ${completed ? 'completed' : 'open'} Bio disclosure and writes',
@@ -221,11 +214,6 @@ void main() {
           switch (restriction) {
             case 'blocked':
               expect(model.block(_sara), isTrue);
-            case 'pause requested':
-              expect(model.requestPause(_sara), isTrue);
-            case 'paused':
-              expect(model.requestPause(_sara), isTrue);
-              expect(model.agreePause(_sara), isTrue);
             case 'ended':
               expect(model.end(_sara), isTrue);
             case 'own Main':

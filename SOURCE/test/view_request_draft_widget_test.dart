@@ -1682,11 +1682,8 @@ void main() {
             final before = body();
             expect(before.design, design);
             expect(before.profiles[before.selectedIndex].id, _fixture);
-            expect(before.savedIds, isEmpty);
             final requestKey = 'draft_profile_$_fixture';
             final staleRequest = _callback(tester, requestKey);
-            expect(before.showSave, isFalse);
-            expect(before.onSave, isNull);
             expect(_key('concept_save_$_fixture'), findsNothing);
             expect(find.text('Save'), findsNothing);
             final staleProfile = _action(
@@ -1711,7 +1708,6 @@ void main() {
               body().profiles.map((profile) => profile.id),
               contains(_fixture),
             );
-            expect(body().savedIds, isEmpty);
             await _openRequests(tester, sent: true);
             expect(_key('concept_request_${_fixture}_header'), findsNothing);
             await _nav(tester, 2);
@@ -1719,8 +1715,6 @@ void main() {
             expect(_key('concept_saved_${_fixture}_header'), findsNothing);
             await _nav(tester, 0);
             expect(body().design, design);
-            expect(body().showSave, isFalse);
-            expect(body().onSave, isNull);
             expect(_key('concept_save_$_fixture'), findsNothing);
             await _openRequests(tester, sent: true);
             expect(_key('concept_request_${_fixture}_header'), findsNothing);
@@ -2529,7 +2523,6 @@ void main() {
               _key('draft_options_compatibility_locked_${person.id}'),
               findsOneWidget,
             );
-            expect(options.canPause, isFalse);
             expect(_key('draft_options_pause_${person.id}'), findsNothing);
             expect(find.text('Request Pause'), findsNothing);
             await _captureCandidate(
@@ -3986,21 +3979,12 @@ void main() {
       expect(_key('draft_agree_pause_$_fixture'), findsNothing);
       expect(_key('draft_resume_$_fixture'), findsNothing);
       await _press(tester, 'concept_journey_menu');
-      final menu = tester.widget<ZyraConceptJourneyOptions>(
-        find.byType(ZyraConceptJourneyOptions),
-      );
-      expect(menu.canPause, isFalse);
       expect(_key('draft_options_pause_$_fixture'), findsNothing);
       expect(find.text('Request Pause'), findsNothing);
       await _captureCandidate(
         tester,
         'simplified_journey_options_no_pause_standard',
       );
-      // The unchanged model suite still measures mutual Pause/Resume rules.
-      // The new UI must reject a retained enum intent rather than expose it.
-      menu.onSelected(ZyraConceptJourneyOption.pause);
-      await tester.pumpAndSettle();
-      expect(_key('draft_journey_action_$_fixture'), findsNothing);
       if (find.byType(ZyraConceptJourneyOptions).evaluate().isNotEmpty) {
         await _cancelJourneyOptions(tester);
       }

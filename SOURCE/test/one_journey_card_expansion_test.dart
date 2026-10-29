@@ -275,7 +275,6 @@ void _expectExpanded(WidgetTester tester, String id) {
   );
   expect(owner.id, id);
   expect(owner.inline, isTrue);
-  expect(owner.canPause, isFalse);
   expect(owner.canReport, isTrue);
   expect(_dots(id), findsOneWidget);
   for (final other in _people.where((person) => person.id != id)) {

@@ -242,7 +242,6 @@ void main() {
               photos: photos.sets[1],
             );
             final requests = <String>[];
-            final saves = <String>[];
             final opened = <String>[];
             var previous = 0, next = 0, filters = 0;
             await _mount(
@@ -252,7 +251,6 @@ void main() {
                 selectedIndex: 0,
                 design: design,
                 onRequest: (p) => requests.add(p.id),
-                onSave: (p) => saves.add(p.id),
                 onProfile: (p) => opened.add(p.id),
                 onPrevious: () => previous++,
                 onNext: () => next++,
@@ -282,7 +280,6 @@ void main() {
             expect(previous, 1);
             expect(filters, 1);
             expect(requests, isEmpty);
-            expect(saves, isEmpty);
             expect(opened, isEmpty);
             final photoPager = _key('concept_browse_photo_swipe_${profile.id}');
             expect(photoPager, findsOneWidget);
@@ -348,12 +345,14 @@ void main() {
               }
               for (final element in find.byType(ZyraProfileImage).evaluate()) {
                 final size = tester.getSize(find.byWidget(element.widget));
-                expect(size.height, lessThan(viewport.size.height * .65));
+                expect(size.height, lessThanOrEqualTo(photoRect.height));
+                expect(size.width, lessThanOrEqualTo(photoRect.width));
                 expect(size.height, lessThan(viewport.size.height));
                 expect(size.width, lessThan(viewport.size.width));
               }
+              expect(photoRect.bottom, lessThanOrEqualTo(footerRect.top));
               // A gesture changes only the current person's photo. Navigation
-              // and request/save delegates still require deliberate presses.
+              // and request delegates still require deliberate presses.
               expect(previous, 1);
               expect(next, 1);
               expect(filters, 1);
@@ -364,12 +363,9 @@ void main() {
               expect(browse.galleryMode, ZyraBrowseGalleryMode.detailsFirst);
             }
             expect(requests, isEmpty);
-            expect(saves, isEmpty);
             expect(opened, isEmpty);
             await _purePress(tester, 'draft_profile_${profile.id}');
-            await _purePress(tester, 'concept_save_${profile.id}');
             expect(requests, [profile.id]);
-            expect(saves, [profile.id]);
             expect(tester.takeException(), isNull);
           }, network);
           expect(network.attempts, 0);
@@ -597,11 +593,10 @@ void main() {
     expect(network.attempts, 0);
   });
 
-  testWidgets('current Browse gallery is not a Journey or Save decision', (
+  testWidgets('current Browse gallery does not invoke Journey actions', (
     tester,
   ) async {
     var request = 0;
-    var save = 0;
     var previous = 0;
     var next = 0;
     var menu = 0;
@@ -609,13 +604,11 @@ void main() {
       profile: profile,
       onMenu: () => menu++,
       onRequest: () => request++,
-      onSave: () => save++,
       onPreviousProfile: () => previous++,
       onNextProfile: () => next++,
       previousKey: const ValueKey('previous-person'),
       nextKey: const ValueKey('next-person'),
       requestKey: const ValueKey('request-person'),
-      saveKey: const ValueKey('save-person'),
       menuKey: const ValueKey('menu-person'),
       imageBuilder: (_, photo) =>
           ColoredBox(key: ValueKey(photo), color: Colors.black),
@@ -635,7 +628,7 @@ void main() {
     await tester.tapAt(const Offset(350, 350));
     await tester.pumpAndSettle();
     expect(_key('sample-two'), findsOneWidget);
-    expect((request, save, previous, next, menu), (0, 0, 0, 0, 0));
+    expect((request, previous, next, menu), (0, 0, 0, 0));
     await tester.tapAt(const Offset(35, 350));
     await tester.pumpAndSettle();
     expect(_key('sample-one'), findsOneWidget);
@@ -666,12 +659,11 @@ void main() {
       'next-person',
       'menu-person',
       'request-person',
-      'save-person',
     ]) {
       await tester.tap(_key(key));
       await tester.pumpAndSettle();
     }
-    expect((request, save, previous, next, menu), (1, 1, 1, 1, 1));
+    expect((request, previous, next, menu), (1, 1, 1, 1));
     expect(tester.takeException(), isNull);
   });
 

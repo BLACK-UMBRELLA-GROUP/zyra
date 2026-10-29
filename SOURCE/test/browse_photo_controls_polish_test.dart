@@ -48,7 +48,6 @@ Widget _presenter({
   profiles: [person],
   selectedIndex: 0,
   design: ZyraOneJourneyBrowseDesign.portraitCard,
-  showSave: false,
   photoBuilder:
       (context, photo, {required width, required height, required alignment}) =>
           ColoredBox(
@@ -451,7 +450,6 @@ void main() {
       expect(requests, isEmpty);
       await _press(tester, 'draft_profile_${_person.id}');
       expect(requests, [_person.id]);
-      expect(_key('concept_save_${_person.id}'), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

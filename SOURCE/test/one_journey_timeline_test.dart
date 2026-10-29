@@ -407,7 +407,10 @@ void main() {
     final original = preview.view.entries.map((entry) => entry.type).toList();
     preview.selectScenario(ZyraDraftTimelineScenario.allEvents);
     final view = preview.view;
-    expect(view.entries.map((entry) => entry.type), _types);
+    expect(
+      view.entries.map((entry) => entry.type),
+      _types.where((type) => !ZyraTimelineMilestones.isQuiet(type)),
+    );
     for (var i = 1; i < view.entries.length; i++) {
       expect(
         view.entries[i].occurredOn!.isAfter(view.entries[i - 1].occurredOn!),
@@ -423,6 +426,8 @@ void main() {
       isTrue,
     );
     expect(preview.selectEvent('safety_concern'), isFalse);
+    expect(preview.selectEvent('journey_paused'), isFalse);
+    expect(preview.selectEvent('journey_continued'), isFalse);
     expect(preview.selectStage('life_snapshot_preview'), isFalse);
   });
 
@@ -726,19 +731,20 @@ void main() {
   );
 
   testWidgets(
-    'all17 rows are available and small double text can scroll safely',
+    'all planned rows are available and small double text can scroll safely',
     (tester) async {
       final preview = _preview()
         ..selectScenario(ZyraDraftTimelineScenario.allEvents);
       await _mount(tester, preview.view, size: const Size(320, 568), scale: 2);
-      for (var i = 0; i < _types.length; i++) {
+      final types = ZyraDraftTimelinePreview.supportedEvents;
+      for (var i = 0; i < types.length; i++) {
         expect(
-          find.byKey(ValueKey('draft_timeline_event_${_types[i]}_$i')),
+          find.byKey(ValueKey('draft_timeline_event_${types[i]}_$i')),
           findsOneWidget,
         );
       }
       await tester.ensureVisible(
-        find.byKey(const ValueKey('draft_timeline_event_nikah_16')),
+        find.byKey(ValueKey('draft_timeline_event_nikah_${types.length - 1}')),
       );
       await tester.pumpAndSettle();
       expect(find.text('Nikah').hitTestable(), findsOneWidget);

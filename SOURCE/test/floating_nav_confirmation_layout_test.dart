@@ -59,7 +59,6 @@ void main() {
                         profiles: const [_person],
                         selectedIndex: 0,
                         design: ZyraOneJourneyBrowseDesign.portraitCard,
-                        showSave: false,
                         hapticLevel: ZyraHapticLevel.off,
                         bottomPadding: (height + 34 + 12)
                             .clamp(100, double.infinity)
@@ -116,11 +115,33 @@ void main() {
           expect(text.top, greaterThanOrEqualTo(bounds.top));
           expect(text.bottom, lessThanOrEqualTo(bounds.bottom));
         }
-        await tester.drag(
-          find.byKey(const ValueKey('concept_browse_design_scroll')),
-          const Offset(0, -1500),
+        final browseScroll = find.byKey(
+          const ValueKey('concept_browse_design_scroll'),
         );
+        final outerScrollView = tester.widget<SingleChildScrollView>(
+          browseScroll,
+        );
+        final scrollable = find.descendant(
+          of: browseScroll,
+          matching: find.byElementPredicate(
+            (element) =>
+                element.widget is Scrollable &&
+                (element.widget as Scrollable).axisDirection ==
+                    AxisDirection.down &&
+                identical(
+                  element
+                      .findAncestorWidgetOfExactType<SingleChildScrollView>(),
+                  outerScrollView,
+                ),
+          ),
+        );
+        expect(scrollable, findsOneWidget);
+        final position = tester.state<ScrollableState>(scrollable).position;
+        // An overlaid confirmation button can intercept a center drag. This
+        // geometry check measures the footer after its actual final offset.
+        position.jumpTo(position.maxScrollExtent);
         await tester.pumpAndSettle();
+        expect(position.pixels, closeTo(position.maxScrollExtent, 0.001));
         expect(
           tester
               .getRect(find.byKey(const ValueKey('concept_browse_footer')))

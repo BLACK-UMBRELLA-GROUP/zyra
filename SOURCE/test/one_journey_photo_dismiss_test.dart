@@ -33,7 +33,6 @@ Widget _app({
   bool reducedMotion = false,
   bool accessibleNavigation = false,
   VoidCallback? onRequest,
-  VoidCallback? onSave,
   VoidCallback? onMenu,
 }) => MaterialApp(
   theme: ThemeData.dark(),
@@ -50,9 +49,7 @@ Widget _app({
       onMenu: onMenu ?? () {},
       onDismiss: onDismiss,
       onRequest: onRequest,
-      onSave: onSave,
       requestKey: const ValueKey('dismiss-request'),
-      saveKey: const ValueKey('dismiss-save'),
       menuKey: const ValueKey('dismiss-menu'),
       imageBuilder: (_, photo) =>
           ColoredBox(key: ValueKey(photo), color: Colors.black),
@@ -293,13 +290,12 @@ void main() {
   testWidgets('photo taps and explicit actions keep their original delegates', (
     tester,
   ) async {
-    var dismissed = 0, requested = 0, saved = 0, menu = 0;
+    var dismissed = 0, requested = 0, menu = 0;
     await _mount(
       tester,
       _app(
         onDismiss: () => dismissed++,
         onRequest: () => requested++,
-        onSave: () => saved++,
         onMenu: () => menu++,
       ),
     );
@@ -309,12 +305,11 @@ void main() {
     await tester.tapAt(const Offset(40, 300));
     await tester.pumpAndSettle();
     expect(_key('photo-a'), findsOneWidget);
-    expect((dismissed, requested, saved, menu), (0, 0, 0, 0));
+    expect((dismissed, requested, menu), (0, 0, 0));
     await tester.tap(_key('dismiss-request'));
-    await tester.tap(_key('dismiss-save'));
     await tester.tap(_key('dismiss-menu'));
     await tester.pumpAndSettle();
-    expect((dismissed, requested, saved, menu), (0, 1, 1, 1));
+    expect((dismissed, requested, menu), (0, 1, 1));
     expect(tester.takeException(), isNull);
   });
 

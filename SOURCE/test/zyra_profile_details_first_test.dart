@@ -121,7 +121,6 @@ Widget _presenter({
   onBrowseMenu: (_) => action?.call(),
   onProfile: (_) => action?.call(),
   onRequest: (_) => action?.call(),
-  onSave: (_) => action?.call(),
 );
 
 Never _rejectFeedDelegate() => throw StateError(
@@ -135,7 +134,6 @@ void _expectNoFeedChrome(WidgetTester tester) {
     'concept_previous_profile',
     'concept_next_profile',
     'draft_profile_${_person.id}',
-    'concept_save_${_person.id}',
   ]) {
     expect(_key(key), findsNothing);
   }
@@ -144,8 +142,6 @@ void _expectNoFeedChrome(WidgetTester tester) {
   expect(find.text('Request Journey'), findsNothing);
   expect(find.text('Request a Journey'), findsNothing);
   expect(find.text('Journey invitation sent'), findsNothing);
-  expect(find.text('Save'), findsNothing);
-  expect(find.text('Saved'), findsNothing);
   final scroll = tester.widget<SingleChildScrollView>(
     _key('concept_browse_design_scroll'),
   );
@@ -559,7 +555,6 @@ void main() {
             onBrowseMenu: (_) => _rejectFeedDelegate(),
             onProfile: (_) => _rejectFeedDelegate(),
             onRequest: (_) => _rejectFeedDelegate(),
-            onSave: (_) => _rejectFeedDelegate(),
             photoBuilder:
                 (
                   context,
@@ -590,7 +585,6 @@ void main() {
       await _mount(tester, _presenter(sent: true));
       expect(_key('concept_browse_header'), findsOneWidget);
       expect(_key('concept_browse_footer'), findsOneWidget);
-      expect(_key('concept_save_${_person.id}'), findsOneWidget);
       _expectSharedOutline(tester, sent: true);
 
       await tester.pumpWidget(
@@ -608,7 +602,6 @@ void main() {
       expect(_key('concept_browse_header'), findsNothing);
       expect(_key('concept_browse_footer'), findsOneWidget);
       expect(find.text('Request a Journey'), findsOneWidget);
-      expect(_key('concept_save_${_person.id}'), findsNothing);
       _expectSharedOutline(tester, sent: false);
       await tester.ensureVisible(_key('draft_profile_${_person.id}'));
       await tester.pumpAndSettle();

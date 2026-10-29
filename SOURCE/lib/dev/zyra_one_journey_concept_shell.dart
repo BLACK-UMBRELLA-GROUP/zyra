@@ -393,9 +393,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       : draftProfiles.where((p) => p.id == _personId).firstOrNull;
   List<DraftProfile> get _currentJourneys => draftProfiles.where((p) {
     final s = _model.stateFor(p.id);
-    return s == DraftJourneyState.preparing ||
-        s == DraftJourneyState.active ||
-        s == DraftJourneyState.pauseRequested;
+    return s == DraftJourneyState.preparing || s == DraftJourneyState.active;
   }).toList();
   DraftProfile? get _focus => _currentJourneys.firstOrNull;
 
@@ -543,9 +541,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   // A request/preparation is not a current Journey disclosure to Guardians.
   List<DraftProfile> get _guardianJourneys => draftProfiles.where((p) {
     final s = _model.stateFor(p.id);
-    return !_model.isBlocked(p.id) &&
-        (s == DraftJourneyState.active ||
-            s == DraftJourneyState.pauseRequested);
+    return !_model.isBlocked(p.id) && s == DraftJourneyState.active;
   }).toList();
   List<DraftProfile> get _permittedGuardianJourneys => !_conceptHassanLinked
       ? const []
@@ -1720,11 +1716,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'own_profile_preview' => _ownProfilePreview(),
     'switch_account_signup' => _switchSignupView(setupOverview: false),
     'switch_account_setup' => _switchSignupView(setupOverview: true),
-    'past_journeys' => _activityPage('Ended Journeys', _history(true)),
+    'past_journeys' => _activityPage('Ended Journeys', _history()),
     'requests' => _requestActivity(),
     'introductions' => _introductionsActivity(),
     'saved' || 'paused' => _unavailable(),
-    'ended' => _historyActivity(true),
+    'ended' => _historyActivity(),
     'guardian' => _guardianDetail(),
     'guardian_linked_profile' => _guardianLinkedProfile(),
     'guardian_network_profile' => _guardianNetworkProfile(),
@@ -1880,7 +1876,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         onRequest: _canToggleInvitation(p.id)
             ? _bound(() => _toggleInvitation(p.id))
             : null,
-        showSave: false,
       ),
       if (_photoLoadFailed)
         Positioned(
@@ -2100,7 +2095,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 .clamp(100, double.infinity)
                 .toDouble()
           : 100,
-      showSave: false,
       onFilters: _bound(() {
         unawaited(_selectionHaptic());
         _open('filters');
@@ -2255,7 +2249,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               design: _browseDesign,
               galleryMode: _browseGalleryMode,
               showFeedChrome: false,
-              showSave: false,
               photoBuilder: _browsePhotoRenderer.build,
               initialGalleryIndices: _browseGalleryIndices,
               onPhotoIndexChanged: (id, index) {
@@ -2501,10 +2494,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     onChanged: (_) {},
   );
 
-  Widget _historyActivity(bool ended) => _activityPage(
-    ended ? 'Ended Journeys' : 'Paused Journeys',
-    _history(ended),
-  );
+  Widget _historyActivity() => _activityPage('Ended Journeys', _history());
 
   ZyraOneJourneyConnectionsAction _connectionAction(
     String key,
@@ -2924,7 +2914,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       ),
     );
     if (state == DraftJourneyState.active ||
-        state == DraftJourneyState.pauseRequested ||
         state == DraftJourneyState.preparing ||
         ended) {
       return ZyraOneJourneyConnectionsActiveCard(
@@ -2994,7 +2983,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       firstName: person.firstName,
       inline: true,
       archived: state == DraftJourneyState.ended,
-      canPause: false,
       canViewBio: state == DraftJourneyState.ended
           ? _canViewEndedBio(person.id)
           : _canViewJourneyBio(person.id),
@@ -3042,9 +3030,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         );
       case ZyraConceptJourneyOption.report:
         _open('safety', person: person.id);
-      case ZyraConceptJourneyOption.pause:
-        // Retired: neither an inline nor retained modal callback restores it.
-        return;
       case ZyraConceptJourneyOption.end:
         if (!ended) _showJourneyAction(person, 'end');
     }
@@ -3074,7 +3059,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           child: ZyraConceptJourneyOptions(
             id: person.id,
             firstName: person.firstName,
-            canPause: false,
             canViewBio: canViewBio,
             canViewCompatibility: canViewCompatibility,
             canEnd: state != DraftJourneyState.ended,
@@ -3273,112 +3257,57 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   Widget _journeyActionConfirmation() {
     final person = _person;
-    final pause = _confirmation == 'pause';
-    if (person == null || (!pause && _confirmation != 'end')) {
+    if (person == null || _confirmation != 'end') {
       return _unavailable();
     }
     final id = person.id;
     final state = _model.stateFor(id);
-    final allowed = pause
-        ? state == DraftJourneyState.active
-        : state != null && state != DraftJourneyState.ended;
-    if (!pause) {
-      final blocked = _model.isBlocked(id);
-      final profile = blocked ? null : _displayProfile(person);
-      return KeyedSubtree(
-        key: ValueKey('draft_journey_action_$id'),
-        child: ZyraDraftJourneyEndPresentation(
-          subjectId: id,
-          title: blocked
-              ? 'End this Journey?'
-              : 'End with ${person.firstName}?',
-          name: blocked ? null : '${person.firstName} ${person.surname}',
-          portrait: profile == null || profile.photos.isEmpty
-              ? null
-              : _browsePhotoRenderer.build(
-                  context,
-                  profile.photos.first,
-                  width: 104,
-                  height: 128,
-                  alignment: Alignment.topCenter,
-                ),
-          onConfirm: !allowed
-              ? null
-              : _bound(
-                  () => _act(() {
-                    final ok = _model.end(id);
-                    _result(ok);
-                    if (ok) {
-                      _confirmation = null;
-                      _message.clear();
-                      _pages.removeLast();
-                    }
-                  }),
-                ),
-          onKeep: _bound(_back),
-        ),
-      );
-    }
-    return Column(
+    final allowed = state != null && state != DraftJourneyState.ended;
+    final blocked = _model.isBlocked(id);
+    final profile = blocked ? null : _displayProfile(person);
+    return KeyedSubtree(
       key: ValueKey('draft_journey_action_$id'),
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _heading(
-          _model.isBlocked(id)
-              ? 'End this Journey?'
-              : pause
-              ? 'Request a pause with ${person.firstName}?'
-              : 'End with ${person.firstName}?',
-          '',
-        ),
-        _card([
-          _body(
-            pause
-                ? 'Your place stays occupied while ${person.firstName} chooses whether to pause or continue.'
-                : 'Permanent. Your Timeline together is kept. This ended attempt cannot be reopened.',
-          ),
-          _button(
-            pause ? 'draft_confirm_pause_$id' : 'draft_confirm_end_$id',
-            pause ? 'Request Pause' : 'End Journey',
-            !allowed
-                ? null
-                : () => _act(() {
-                    final ok = pause ? _model.requestPause(id) : _model.end(id);
-                    _result(ok);
-                    if (ok) {
-                      _confirmation = null;
-                      _message.clear();
-                      _pages.removeLast();
-                    }
-                  }),
-            primary: true,
-          ),
-          KeyedSubtree(
-            key: ValueKey('draft_cancel_journey_action_$id'),
-            child: _button(
-              pause ? 'draft_cancel_pause_$id' : 'draft_cancel_end_$id',
-              pause ? 'Not now' : 'Keep this Journey',
-              _back,
-            ),
-          ),
-        ]),
-      ],
+      child: ZyraDraftJourneyEndPresentation(
+        subjectId: id,
+        title: blocked ? 'End this Journey?' : 'End with ${person.firstName}?',
+        name: blocked ? null : '${person.firstName} ${person.surname}',
+        portrait: profile == null || profile.photos.isEmpty
+            ? null
+            : _browsePhotoRenderer.build(
+                context,
+                profile.photos.first,
+                width: 104,
+                height: 128,
+                alignment: Alignment.topCenter,
+              ),
+        onConfirm: !allowed
+            ? null
+            : _bound(
+                () => _act(() {
+                  final ok = _model.end(id);
+                  _result(ok);
+                  if (ok) {
+                    _confirmation = null;
+                    _message.clear();
+                    _pages.removeLast();
+                  }
+                }),
+              ),
+        onKeep: _bound(_back),
+      ),
     );
   }
 
-  List<Widget> _history(bool ended) {
+  List<Widget> _history() {
     final people = draftProfiles.where((p) {
       final s = _model.stateFor(p.id);
-      return ended
-          ? s == DraftJourneyState.ended
-          : s == DraftJourneyState.paused ||
-                s == DraftJourneyState.resumeRequested;
+      return s == DraftJourneyState.ended;
     }).toList();
     return people.isEmpty
         ? [
             ZyraRequestActivityEmpty(
               icon: Icons.route_outlined,
-              title: ended ? 'No ended Journeys.' : 'No paused Journeys.',
+              title: 'No ended Journeys.',
               message: '',
             ),
           ]
@@ -3401,7 +3330,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                     () => _journey(p.id),
                   ),
                 ])
-              else if (ended)
+              else
                 KeyedSubtree(
                   key: ValueKey('draft_journey_${p.id}_header'),
                   child: _connectionCard(
@@ -3409,9 +3338,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                     expandedOptions: _expandedJourneyOptionsId == p.id,
                     inlineOptionsFillHeight: false,
                   ),
-                )
-              else
-                _connectionCard(p),
+                ),
               const SizedBox(height: 10),
             ],
           ];
@@ -3506,9 +3433,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 80),
       child: _journeyLocalActions(),
     );
-    if (stage == null ||
-        (state != DraftJourneyState.active &&
-            state != DraftJourneyState.pauseRequested)) {
+    if (stage == null || state != DraftJourneyState.active) {
       return SafeArea(
         child: Column(
           children: [
@@ -3683,62 +3608,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               'No messages or new request can reopen this attempt.',
             ),
           ])
-        else if (state == DraftJourneyState.paused ||
-            state == DraftJourneyState.resumeRequested)
-          _card([
-            _title('Space to reflect.', size: 26),
-            _body(
-              'Your history stays here. Both people must agree and have a free '
-              'place before resuming. Chat and stage progression are paused.',
-            ),
-            if (state == DraftJourneyState.paused)
-              _button(
-                'draft_resume_$id',
-                'Request Resume',
-                _model.canResume(id)
-                    ? () => _act(() => _result(_model.requestResume(id)))
-                    : null,
-              )
-            else ...[
-              _button(
-                'draft_agree_resume_$id',
-                'Demo: other person agrees to resume',
-                _model.hasCapacity &&
-                        !_model.peerOccupied(id) &&
-                        _model.ownMainGuardianPresent &&
-                        _model.peerMainGuardianPresentFor(id)
-                    ? () => _act(() => _result(_model.agreeResume(id)))
-                    : null,
-                primary: true,
-              ),
-              _button(
-                'draft_keep_paused_$id',
-                'Keep Paused',
-                () => _act(() => _result(_model.keepPaused(id))),
-              ),
-            ],
-          ])
         else if (stage != null) ...[
           _stageContent(p, stage),
         ],
         const SizedBox(height: 24),
-        if (state == DraftJourneyState.pauseRequested)
-          _card([
-            _title('Pause requested.', size: 23),
-            _body(
-              'Your place remains occupied until the shared decision settles.',
-            ),
-            _button(
-              'draft_agree_pause_$id',
-              'Demo: both agree to Pause',
-              () => _act(() => _result(_model.agreePause(id))),
-            ),
-            _button(
-              'draft_continue_$id',
-              'Demo: both agree to continue',
-              () => _act(() => _result(_model.continueJourney(id))),
-            ),
-          ]),
         if (state != DraftJourneyState.ended &&
             state != DraftJourneyState.sent &&
             state != DraftJourneyState.received) ...[
@@ -4107,9 +3980,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       const {
         DraftJourneyState.preparing,
         DraftJourneyState.active,
-        DraftJourneyState.pauseRequested,
-        DraftJourneyState.paused,
-        DraftJourneyState.resumeRequested,
         DraftJourneyState.ended,
       }.contains(_model.stateFor(id));
 
@@ -4729,13 +4599,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       counterpartGuardianSurname: null,
       status: 'active',
       journeyStage: _model.stageFor(focus.id)?.value,
-      pause: _model.stateFor(focus.id) == DraftJourneyState.pauseRequested
-          ? ZyraJourneyPauseState(
-              phase: ZyraPausePhase.pauseDecisionPending,
-              initiatedBy: 'draft-self',
-              requestedBy: 'draft-self',
-            )
-          : ZyraJourneyPauseState.active,
+      pause: ZyraJourneyPauseState.active,
       isMock: true,
     );
   }
@@ -7444,7 +7308,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               'draft_history',
               'Add Ended history',
               () => _act(() {
-                _model.seedHistory(includePaused: false);
+                _model.seedHistory();
               }),
               icon: Icons.history,
             ),
@@ -7562,7 +7426,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         'event',
         preview.selectedEvent,
         [
-          for (final type in ZyraTimelineMilestones.supportedTypes)
+          for (final type in ZyraDraftTimelinePreview.supportedEvents)
             (type, ZyraTimelineMilestones.labelFor(type)),
         ],
         (value) => select(() {
@@ -8055,9 +7919,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     DraftJourneyState.sent => 'Request sent',
     DraftJourneyState.preparing => 'Preparing together · place reserved',
     DraftJourneyState.active => 'Active Journey',
-    DraftJourneyState.pauseRequested => 'Pause requested · place occupied',
-    DraftJourneyState.paused => 'Paused Journey',
-    DraftJourneyState.resumeRequested => 'Resume requested · still Paused',
     DraftJourneyState.ended => 'Ended Journey · history retained',
   };
 }

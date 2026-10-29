@@ -33,7 +33,6 @@ void main() {
     'canRequest': model.canRequest(id),
     'canAccept': model.canAccept(id),
     'canAttemptAccept': model.canAttemptAccept(id),
-    'canResume': model.canResume(id),
     'canParticipate': model.canParticipateInJourney(id),
     'conversation': model.conversationOpen(id),
     'compatibilityRevealed': model.compatibilityRevealed(id),
@@ -49,7 +48,6 @@ void main() {
   Map<String, Object?> snapshot() => {
     'capacity': model.capacity,
     'states': Map<String, DraftJourneyState>.of(model.states),
-    'saved': Set<String>.of(model.saved),
     'hidden': Set<String>.of(model.hiddenPeers),
     'blocked': Set<String>.of(model.blockedPeers),
     'active': model.activeCount,
@@ -105,9 +103,6 @@ void main() {
       expect(model.simulatePeerStageContinue(first), isTrue);
       expect(model.advanceStage(first), isTrue);
       expect(model.chooseCompatibilityReveal(first), isTrue);
-      if (endingState == DraftJourneyState.pauseRequested) {
-        expect(model.requestPause(first), isTrue);
-      }
     }
     start(second);
     start(third);
@@ -210,14 +205,12 @@ void main() {
     for (final endingState in [
       DraftJourneyState.preparing,
       DraftJourneyState.active,
-      DraftJourneyState.pauseRequested,
     ]) {
       test(
         'atomic ${incoming ? 'received' : 'sent'} replacement of ${endingState.name} preserves history',
         () {
           full(endingState: endingState);
           final target = pending(incoming);
-          expect(model.save(spare), isTrue);
           final oldProgress = progress(first);
           final otherPeople = {
             for (final person in draftProfiles)
@@ -257,7 +250,6 @@ void main() {
           expect(model.activeCount + model.preparingCount, 3);
           expect(model.hasCapacity, isFalse);
           expect(model.discoverable, isFalse);
-          expect(model.saved, {spare});
           for (final person in otherPeople.entries) {
             expect(personSnapshot(person.key), person.value);
           }
@@ -309,7 +301,6 @@ void main() {
       'unrequested target',
       'active target',
       'pending ending',
-      'paused ending',
       'ended ending',
       'not full',
     ]) {
@@ -345,10 +336,6 @@ void main() {
             case 'pending ending':
               expect(model.request(spare), isTrue);
               ending = spare;
-            case 'paused ending':
-              expect(model.requestPause(first), isTrue);
-              expect(model.agreePause(first), isTrue);
-              start(spare);
             case 'ended ending':
               expect(model.end(first), isTrue);
               start(spare);
@@ -422,28 +409,16 @@ void main() {
     for (final targetState in [
       DraftJourneyState.preparing,
       DraftJourneyState.active,
-      DraftJourneyState.pauseRequested,
-      DraftJourneyState.paused,
-      DraftJourneyState.resumeRequested,
       DraftJourneyState.ended,
     ]) {
       test(
         '${incoming ? 'received' : 'sent'} replacement cannot reinterpret ${targetState.name} as a request',
         () {
-          if (targetState == DraftJourneyState.preparing ||
-              targetState == DraftJourneyState.pauseRequested) {
+          if (targetState == DraftJourneyState.preparing) {
             full(endingState: targetState);
           } else {
             full();
-            if (targetState == DraftJourneyState.paused ||
-                targetState == DraftJourneyState.resumeRequested) {
-              expect(model.requestPause(first), isTrue);
-              expect(model.agreePause(first), isTrue);
-              if (targetState == DraftJourneyState.resumeRequested) {
-                expect(model.requestResume(first), isTrue);
-              }
-              start(spare);
-            } else if (targetState == DraftJourneyState.ended) {
+            if (targetState == DraftJourneyState.ended) {
               expect(model.end(first), isTrue);
               start(spare);
             }
@@ -477,7 +452,7 @@ void main() {
         expect(model.request(id), isFalse);
         expect(snapshot(), before);
       }
-      model.seedHistory(includePaused: false);
+      model.seedHistory();
       expect(model.stateFor(spare), DraftJourneyState.ended);
       expect(model.canRequest(spare), isFalse);
       expect(model.canAttemptAccept(spare), isFalse);
@@ -534,32 +509,6 @@ void main() {
         expect(model.stateFor(id), DraftJourneyState.ended);
         expect(model.stageFor(id), isNotNull);
       }
-    },
-  );
-
-  test(
-    'monthly Browse permission cannot bypass a full Resume reservation guard',
-    () {
-      start(first);
-      expect(model.requestPause(first), isTrue);
-      expect(model.agreePause(first), isTrue);
-      expect(model.requestResume(first), isTrue);
-      start(second);
-      start(third);
-      start(outgoing);
-      expect(model.occupiedCount, 3);
-      expect(model.canBrowse, isTrue);
-      expect(model.discoverable, isFalse);
-      final before = snapshot();
-      expect(model.agreeResume(first), isFalse);
-      expect(
-        model.beginPreparedJourney(
-          first,
-          agreedPaidAdditionalGuardianIds: const {'draft-guardian-yusuf'},
-        ),
-        isFalse,
-      );
-      expect(snapshot(), before);
     },
   );
 }

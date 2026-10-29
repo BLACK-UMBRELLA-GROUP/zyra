@@ -394,7 +394,6 @@ void _expectNonHideStateUnchanged(
   ViewRequestDraftSnapshot after,
 ) {
   expect(after.states, before.states);
-  expect(after.saved, before.saved);
   expect(after.busyPeers, before.busyPeers);
   expect(after.blockedPeers, before.blockedPeers);
   expect(after.capacity, before.capacity);
@@ -462,7 +461,6 @@ void main() {
   test('unhide removes only a known hidden fixture flag', () {
     final model = ViewRequestDraftModel(capacity: 3)..seedHistory();
     expect(model.request(_sara), isTrue);
-    expect(model.save(_sara), isTrue);
     expect(model.hide(_sara), isTrue);
     expect(model.hide(_aisha), isTrue);
     final before = model.snapshot();
@@ -800,7 +798,6 @@ void main() {
   ) async {
     final model = ViewRequestDraftModel(capacity: 3);
     expect(model.request(_sara), isTrue);
-    expect(model.save(_sara), isTrue);
     expect(model.hide(_sara), isTrue);
     final owner = _Owner();
     expect(owner.access.unlock(_sara), isTrue);
@@ -820,7 +817,6 @@ void main() {
     final profile = presentation.profiles.single;
     expect(profile.id, _sara);
     expect(presentation.showFeedChrome, isFalse);
-    expect(presentation.showSave, isFalse);
     expect(presentation.onRequest, isNull);
     expect(presentation.onBrowseMenu, isNull);
     expect(presentation.onPrevious, isNull);
@@ -886,7 +882,6 @@ void main() {
   ) async {
     final model = ViewRequestDraftModel(capacity: 3)
       ..request(_sara)
-      ..save(_sara)
       ..hide(_sara);
     final owner = _Owner();
     expect(owner.access.unlock(_sara), isTrue);
@@ -952,7 +947,6 @@ void main() {
   ) async {
     final model = ViewRequestDraftModel(capacity: 3)
       ..request(_sara)
-      ..save(_sara)
       ..hide(_sara);
     final owner = _Owner();
     expect(owner.access.unlock(_sara), isTrue);
@@ -973,7 +967,6 @@ void main() {
     expect(owner.latest.model.hiddenPeers, {_sara});
     expect(owner.latest.model.blockedPeers, {_sara});
     expect(owner.latest.model.states, before.states);
-    expect(owner.latest.model.saved, before.saved);
     expect(owner.latest.model.capacity, before.capacity);
     expect(owner.latest.model.progress, before.progress);
     expect(owner.latest.model.guardianAccess, before.guardianAccess);

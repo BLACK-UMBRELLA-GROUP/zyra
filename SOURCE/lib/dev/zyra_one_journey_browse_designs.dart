@@ -41,9 +41,6 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.onBrowseMenu,
     this.onProfile,
     this.onRequest,
-    this.onSave,
-    this.showSave = true,
-    this.savedIds = const <String>{},
     this.requestLabel,
     this.invitationSent,
     this.canRequest,
@@ -71,9 +68,6 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final ValueChanged<SeekerProfile?>? onBrowseMenu;
   final ValueChanged<SeekerProfile>? onProfile;
   final ValueChanged<SeekerProfile>? onRequest;
-  final ValueChanged<SeekerProfile>? onSave;
-  final bool showSave;
-  final Set<String> savedIds;
   final String Function(SeekerProfile)? requestLabel;
   final bool Function(SeekerProfile)? invitationSent;
   final bool Function(SeekerProfile)? canRequest;
@@ -128,9 +122,6 @@ class _ZyraOneJourneyBrowseDesignsState
     onBrowseMenu: widget.onBrowseMenu,
     onProfile: widget.onProfile,
     onRequest: widget.onRequest,
-    onSave: widget.onSave,
-    showSave: widget.showSave,
-    savedIds: widget.savedIds,
     requestLabel: widget.requestLabel,
     invitationSent: widget.invitationSent,
     canRequest: widget.canRequest,

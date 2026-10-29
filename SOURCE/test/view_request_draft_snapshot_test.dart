@@ -37,7 +37,6 @@ void _advance(ViewRequestDraftModel model, String id) {
 void _sameValues(ViewRequestDraftSnapshot a, ViewRequestDraftSnapshot b) {
   expect(a.capacity, b.capacity);
   expect(a.states, b.states);
-  expect(a.saved, b.saved);
   expect(a.busyPeers, b.busyPeers);
   expect(a.hiddenPeers, b.hiddenPeers);
   expect(a.blockedPeers, b.blockedPeers);
@@ -68,14 +67,12 @@ void main() {
 
   test('every collection is copied and unmodifiable', () {
     final original = ViewRequestDraftModel(capacity: 3)..fillCapacity();
-    original.save('draft-noor');
     original.hide(_aisha);
     original.block(_maryam);
     original.setPeerMainGuardianPresent(false, id: _sara);
     original.setSampleGuardianMembership(_yusuf, DraftGuardianMembership.basic);
     final snapshot = original.snapshot();
     expect(() => snapshot.states.clear(), throwsUnsupportedError);
-    expect(() => snapshot.saved.clear(), throwsUnsupportedError);
     expect(() => snapshot.busyPeers.clear(), throwsUnsupportedError);
     expect(() => snapshot.hiddenPeers.clear(), throwsUnsupportedError);
     expect(() => snapshot.blockedPeers.clear(), throwsUnsupportedError);
@@ -98,7 +95,6 @@ void main() {
     );
     original.reset();
     expect(snapshot.states[_sara], DraftJourneyState.active);
-    expect(snapshot.saved, {'draft-noor'});
     expect(snapshot.hiddenPeers, {_aisha});
     expect(snapshot.blockedPeers, {_maryam});
     expect(snapshot.peerMainGuardianOverrides, {_sara: false});
@@ -412,7 +408,7 @@ void main() {
   );
 
   test('undated legacy attempt remains unknown after snapshot restoration', () {
-    final model = ViewRequestDraftModel()..seedHistory(includePaused: false);
+    final model = ViewRequestDraftModel()..seedHistory();
     final id = draftProfiles[5].id;
     final attempt = model.currentEndedAttemptFor(id)!;
     final restored = ViewRequestDraftModel.fromSnapshot(

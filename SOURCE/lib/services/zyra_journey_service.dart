@@ -179,14 +179,6 @@ class PauseTransitionNotAllowedException implements Exception {}
 
 class PauseCapacityConflictException implements Exception {}
 
-/// Unreferenced since 2026-08-06 (OA-ZYRA-154) — the 24-hour restart
-/// cooling period it reported no longer exists.
-///
-/// Kept, not deleted: V3 §9 gives Request New Journey a **6-month** cooldown
-/// after a decline (OA-ZYRA-159), so a cooldown exception returns shortly.
-/// Deleting and re-adding it would lose the trail between the two rules.
-class CoolingPeriodActiveException implements Exception {}
-
 /// Outcome of [ZyraJourneyService.advanceStage].
 ///
 /// [reason] is the server's own vocabulary, returned by
@@ -1216,7 +1208,7 @@ class ZyraJourneyService {
   // "One person requests; the other decides. Never unilateral, never a
   //  resurrection — a new attempt starts fresh with its own timeline."
   //
-  // Replaces restartJourney(), which has thrown since OA-ZYRA-154.
+  // A new accepted request preserves the prior ended attempt (OA-ZYRA-154).
 
   /// The ended matches on which the signed-in user may request a new Journey.
   ///
@@ -1604,30 +1596,6 @@ class ZyraJourneyService {
     }
   }
 
-  /// RETIRED 2026-08-06 — OA-ZYRA-154, DR-ZYRA-121. Always throws.
-  ///
-  /// `restart_journey()` reopened an ended Journey on ONE party's request.
-  /// It deleted six tables of history and cleared `ended_at` before doing
-  /// so, meaning someone who ended a Journey because they felt unsafe could
-  /// be returned to it without consent and with no record that it had ever
-  /// ended. The server now refuses, and the UI no longer offers it.
-  ///
-  /// Kept rather than deleted so a caller reappearing during the Journey
-  /// migration fails loudly here, with the reason, instead of getting a
-  /// bare Postgres error from the RPC.
-  ///
-  /// Replaced by Request New Journey — V3 §9, OA-ZYRA-159.
-  @Deprecated(
-    'Use Request New Journey (OA-ZYRA-159). Restart is not permitted: '
-    'a Journey cannot be reopened without the other person agreeing.',
-  )
-  static Future<void> restartJourney(String matchId) async {
-    throw StateError(
-      'restart_journey is retired (OA-ZYRA-154). Starting again requires the '
-      'other party to accept — see Request New Journey, OA-ZYRA-159.',
-    );
-  }
-
   /// DEV ONLY — jump an Active Journey straight to any stage.
   ///
   /// Founder request 2026-08-10, so a section can be reached for testing
@@ -1883,7 +1851,7 @@ class ZyraJourneyService {
   /// because they are expensive to rebuild. This is the third thing, named
   /// for what it does.
   ///
-  /// ⚠️ NOT [restartJourney]. Starting again for real needs both people to
+  /// Starting again for real needs both people to
   /// agree and keeps all history (OA-ZYRA-154 / OA-ZYRA-159). This deletes
   /// it, and must never be reachable from a member-facing screen.
   ///

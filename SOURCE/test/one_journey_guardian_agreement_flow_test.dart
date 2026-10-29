@@ -165,7 +165,6 @@ VoidCallback _begin(WidgetTester tester) =>
 Map<String, Object?> _data(ViewRequestDraftSnapshot value) => {
   'capacity': value.capacity,
   'states': value.states,
-  'saved': value.saved,
   'busy': value.busyPeers,
   'hidden': value.hiddenPeers,
   'blocked': value.blockedPeers,

@@ -75,7 +75,6 @@ Widget _presenter({
   selectedIndex: 0,
   design: ZyraOneJourneyBrowseDesign.portraitCard,
   readOnlyPreview: readOnly,
-  showSave: false,
   initialGalleryIndices: {_id: initial},
   onGalleryIndexChanged: changed,
   photoBuilder:
@@ -88,7 +87,6 @@ Widget _presenter({
   onNext: decision,
   onRequest: (_) => decision?.call(),
   onProfile: (_) => decision?.call(),
-  onSave: (_) => decision?.call(),
 );
 
 Widget _app(

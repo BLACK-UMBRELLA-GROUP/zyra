@@ -73,7 +73,6 @@ ZyraBrowseDesigns _ownCard(WidgetTester tester) {
   expect(rendered.onBrowseMenu, isNull);
   expect(rendered.onProfile, isNull);
   expect(rendered.onRequest, isNull);
-  expect(rendered.onSave, isNull);
   return rendered;
 }
 

@@ -29,7 +29,6 @@ void main() {
     expect(after.acknowledgedReceivedRequestIds, {_received});
     expect(after.capacity, before.capacity);
     expect(after.states, before.states);
-    expect(after.saved, before.saved);
     expect(after.busyPeers, before.busyPeers);
     expect(after.hiddenPeers, before.hiddenPeers);
     expect(after.blockedPeers, before.blockedPeers);

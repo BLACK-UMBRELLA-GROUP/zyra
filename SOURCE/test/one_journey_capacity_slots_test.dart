@@ -126,7 +126,6 @@ void _expectModelUnchanged(
 ) {
   expect(after.states, before.states);
   expect(after.capacity, before.capacity);
-  expect(after.saved, before.saved);
   expect(after.hiddenPeers, before.hiddenPeers);
   expect(after.blockedPeers, before.blockedPeers);
   expect(after.progress, before.progress);
@@ -360,7 +359,7 @@ void main() {
 
   for (final preparing in [true, false]) {
     testWidgets(
-      '${preparing ? 'preparing' : 'pause-requested'} places remain occupied cards',
+      '${preparing ? 'preparing' : 'active'} places remain occupied cards',
       (tester) async {
         final model = ViewRequestDraftModel(capacity: 3);
         final id = preparing ? draftProfiles.first.id : _sara;
@@ -368,7 +367,6 @@ void main() {
           expect(model.acceptReceived(id), isTrue);
         } else {
           expect(model.seedJourneys(1), isTrue);
-          expect(model.requestPause(id), isTrue);
         }
         final owner = _Owner();
         await owner.mount(tester, model: model);

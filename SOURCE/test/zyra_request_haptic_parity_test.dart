@@ -288,7 +288,6 @@ void main() {
             profiles: [person],
             selectedIndex: 0,
             design: ZyraOneJourneyBrowseDesign.portraitCard,
-            showSave: false,
             photoBuilder:
                 (
                   _,

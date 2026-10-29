@@ -88,7 +88,6 @@ Future<void> _mount(
               id: _id,
               firstName: 'Sara',
               inline: inline,
-              canPause: false,
               canReport: report,
               canEnd: end,
               onSelected: selected ?? (_) {},
@@ -110,7 +109,6 @@ void _expectInventory(List<ZyraConceptJourneyOption> visible) {
       visible.contains(option) ? findsOneWidget : findsNothing,
     );
   }
-  expect(_row(ZyraConceptJourneyOption.pause), findsNothing);
 }
 
 List<Rect> _expectRows(

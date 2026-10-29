@@ -48,7 +48,6 @@ Finder _row(ZyraConceptJourneyOption option) =>
 
 Widget _options({
   bool inline = true,
-  bool canPause = false,
   bool canEnd = true,
   bool canReport = true,
   bool canViewBio = false,
@@ -63,7 +62,6 @@ Widget _options({
   id: _id,
   firstName: 'Sara',
   inline: inline,
-  canPause: canPause,
   canEnd: canEnd,
   canReport: canReport,
   canViewBio: canViewBio,
@@ -207,7 +205,6 @@ void main() {
           _options(
             inline: inline,
             archived: true,
-            canPause: true,
             canEnd: true,
             onSelected: selected.add,
             onCancel: () => cancelled++,
@@ -228,7 +225,6 @@ void main() {
           ),
           findsNWidgets(6),
         );
-        expect(_row(ZyraConceptJourneyOption.pause), findsNothing);
         expect(_row(ZyraConceptJourneyOption.end), findsNothing);
         expect(find.text('Request Pause'), findsNothing);
         expect(find.text('End Journey'), findsNothing);
@@ -255,10 +251,9 @@ void main() {
   testWidgets('archived Report remains caller-owned', (tester) async {
     await _mount(
       tester,
-      _options(archived: true, canReport: false, canPause: true, canEnd: true),
+      _options(archived: true, canReport: false, canEnd: true),
     );
     expect(_row(ZyraConceptJourneyOption.report), findsNothing);
-    expect(_row(ZyraConceptJourneyOption.pause), findsNothing);
     expect(_row(ZyraConceptJourneyOption.end), findsNothing);
     expect(
       find.descendant(of: find.byKey(_subject), matching: find.byType(InkWell)),
@@ -329,18 +324,13 @@ void main() {
   testWidgets('explicit nonarchived options retain active rows and lock copy', (
     tester,
   ) async {
-    await _mount(
-      tester,
-      _options(archived: false, canPause: true),
-      height: 480,
-    );
+    await _mount(tester, _options(archived: false), height: 480);
     expect(find.text('View archive'), findsNothing);
     for (final entry in _rows.entries) {
       expect(_row(entry.key), findsOneWidget);
       expect(find.text(entry.value), findsOneWidget);
     }
-    expect(_row(ZyraConceptJourneyOption.pause), findsOneWidget);
-    expect(find.text('Request Pause'), findsOneWidget);
+    expect(find.text('Request Pause'), findsNothing);
     expect(
       find.byTooltip('Complete Journey Bio together to view it here.'),
       findsOneWidget,
@@ -353,7 +343,7 @@ void main() {
     );
     expect(
       find.descendant(of: find.byKey(_subject), matching: find.byType(InkWell)),
-      findsNWidgets(8),
+      findsNWidgets(7),
     );
   });
 
@@ -528,25 +518,17 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('caller flags retain optional Report, Pause and End rows', (
-    tester,
-  ) async {
+  testWidgets('caller flags hide optional Report and End rows', (tester) async {
     final selected = <ZyraConceptJourneyOption>[];
     await _mount(
       tester,
-      _options(
-        canPause: true,
-        canEnd: false,
-        canReport: false,
-        onSelected: selected.add,
-      ),
+      _options(canEnd: false, canReport: false, onSelected: selected.add),
     );
     expect(_row(ZyraConceptJourneyOption.report), findsNothing);
     expect(_row(ZyraConceptJourneyOption.end), findsNothing);
-    expect(_row(ZyraConceptJourneyOption.pause), findsOneWidget);
-    await tester.tap(_row(ZyraConceptJourneyOption.pause));
+    await tester.tap(_row(ZyraConceptJourneyOption.profile));
     await tester.pump();
-    expect(selected, [ZyraConceptJourneyOption.pause]);
+    expect(selected, [ZyraConceptJourneyOption.profile]);
   });
 
   testWidgets('default modal preserves chrome, descriptions and cancel', (
@@ -560,7 +542,6 @@ void main() {
         key: _subject,
         id: _id,
         firstName: 'Sara',
-        canPause: true,
         canEnd: true,
         onSelected: selected.add,
         onCancel: () => cancelled++,
@@ -589,7 +570,7 @@ void main() {
     expect(find.text('Journey options'), findsOneWidget);
     expect(find.text('Manage your Journey with Sara.'), findsOneWidget);
     expect(find.text('Report a concern about this profile.'), findsOneWidget);
-    expect(find.text('Request Pause'), findsOneWidget);
+    expect(find.text('Request Pause'), findsNothing);
     expect(find.text('Cancel'), findsOneWidget);
     await tester.ensureVisible(_row(ZyraConceptJourneyOption.report));
     await tester.pumpAndSettle();

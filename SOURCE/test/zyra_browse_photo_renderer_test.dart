@@ -139,7 +139,6 @@ void main() {
       await HttpOverrides.runWithHttpOverrides(() async {
         final renderer = _InjectedRenderer();
         final requested = <String>[];
-        final saved = <String>[];
         var previous = 0, next = 0, filters = 0;
         await _mount(
           tester,
@@ -153,7 +152,6 @@ void main() {
             onNext: () => next++,
             onFilters: () => filters++,
             onRequest: (profile) => requested.add(profile.id),
-            onSave: (profile) => saved.add(profile.id),
           ),
         );
         final identity = tester.widget<ZyraProfileNameBlock>(
@@ -186,11 +184,8 @@ void main() {
         await _press(tester, 'concept_filters');
         expect([next, previous, filters], [1, 1, 1]);
         expect(requested, isEmpty);
-        expect(saved, isEmpty);
         await _press(tester, 'draft_profile_${_member.id}');
-        await _press(tester, 'concept_save_${_member.id}');
         expect(requested, [_member.id]);
-        expect(saved, [_member.id]);
       }, network);
       expect(network.attempts, 0);
     });
@@ -291,9 +286,7 @@ void main() {
     expect(_key('concept_browse_photo_next_${noPhoto.id}'), findsNothing);
   });
 
-  testWidgets('request availability remains caller-owned with Save hidden', (
-    tester,
-  ) async {
+  testWidgets('request availability remains caller-owned', (tester) async {
     final renderer = _InjectedRenderer();
     var requests = 0;
     await _mount(
@@ -303,14 +296,12 @@ void main() {
         selectedIndex: 0,
         design: shared.ZyraOneJourneyBrowseDesign.portraitCard,
         photoBuilder: renderer.build,
-        showSave: false,
         requestLabel: (_) => 'Unavailable',
         canRequest: (_) => false,
         onRequest: (_) => requests++,
       ),
     );
     expect(find.text('Unavailable'), findsOneWidget);
-    expect(_key('concept_save_${_member.id}'), findsNothing);
     expect(
       tester.widget<InkWell>(_key('draft_profile_${_member.id}')).onTap,
       isNull,
