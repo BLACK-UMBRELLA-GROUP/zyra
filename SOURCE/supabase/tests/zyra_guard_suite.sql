@@ -20,6 +20,8 @@
 -- thing that stops that happening twice.
 -- ═══════════════════════════════════════════════════════════════════════
 
+\set ON_ERROR_STOP on
+
 drop table if exists zyra_guard_results;
 create table zyra_guard_results (
   n int, area text, check_name text, got text, expected text
@@ -67,6 +69,7 @@ declare
   -- inline while the role is switched.
   n17 int; n18 int; n19 int; n20 int; n21 int;
   n22 int; n23 int; n24 int; n25 int; n26 int; n27 int; n28 int;
+  batch_outcome text;
   -- Baseline for the teardown assertions. A suite must assert that IT left
   -- nothing behind, not that the whole database is empty.
   base_checkpoints int;
@@ -210,12 +213,12 @@ begin
   insert into zyra_guard_results values (38,'stage','blocked until both continue', r.reason, 'waiting_for_continue');
   perform set_config('request.jwt.claims', json_build_object('sub', B)::text, true);
   select * into r from zyra_advance_stage(v_m,'compatibility_reveal');
-  insert into zyra_guard_results values (39,'stage','both continued -> advances', r.advanced||'/'||r.stage, 'true/salam_exchange');
+  insert into zyra_guard_results values (39,'stage','both continued -> advances (Salam-first order, DR183)', r.advanced||'/'||r.stage, 'true/wali_gate');
   insert into zyra_guard_results values (40,'stage','attempt row kept in step',
-    (select ja.journey_stage from journey_attempts ja where ja.match_id=v_m), 'salam_exchange');
+    (select ja.journey_stage from journey_attempts ja where ja.match_id=v_m), 'wali_gate');
   -- The stage must ACTUALLY be phase_1 for this assertion to reach the
   -- gated-transition branch. First draft of this suite asserted it right
-  -- after check 39 had already advanced to salam_exchange, so it hit the
+  -- after check 39 had already advanced, so it hit the
   -- stale-stage guard instead and reported a false failure — the suite
   -- catching its own bug on first run, which is the argument for running
   -- one before trusting it.
@@ -240,12 +243,23 @@ begin
   end;
 
   -- ══ AREA 7 · enumeration surfaces and grants.
+  -- Construct exactly 51 distinct request IDs independently of seed size.
+  -- Invalid/invisible targets cannot bypass the batch cap. Measure the client
+  -- role, then restore the owner before writing into the protected results.
+  perform set_config('role', 'authenticated', true);
   begin
-    perform ages_for(array(select id from profiles limit 51));
-    insert into zyra_guard_results values (46,'grants','51-id batch refused','NOT REFUSED','ages_for_batch_too_large');
+    perform ages_for(array(
+      select ('00000000-0000-0000-0000-' || lpad(probe.n::text,12,'0'))::uuid
+      from generate_series(1,51) probe(n)
+    ));
+    batch_outcome := 'NOT REFUSED';
   exception when others then
-    insert into zyra_guard_results values (47,'grants','51-id batch refused', sqlerrm, 'ages_for_batch_too_large');
+    batch_outcome := sqlerrm;
   end;
+  perform set_config('role', 'postgres', true);
+  insert into zyra_guard_results values (
+    case when batch_outcome = 'NOT REFUSED' then 46 else 47 end,
+    'grants','51-id batch refused',batch_outcome,'ages_for_batch_too_large');
   insert into zyra_guard_results values (48,'grants','zyra_attempt_participants NOT client-callable (no caller check inside)',
     has_function_privilege('authenticated','public.zyra_attempt_participants(uuid)','EXECUTE')::text, 'false');
   insert into zyra_guard_results values (49,'grants','counterpart card denied to anon',
@@ -297,5 +311,17 @@ select n, area, check_name, got, expected
 from zyra_guard_results
 where got is distinct from expected
 order by n;
+
+do $assert_results$
+declare
+  mismatch_count integer;
+begin
+  select count(*) into mismatch_count from zyra_guard_results
+  where got is distinct from expected;
+  if mismatch_count <> 0 then
+    raise exception 'ZYRA guard suite: % assertion mismatches', mismatch_count;
+  end if;
+end;
+$assert_results$;
 
 -- drop table zyra_guard_results;   -- uncomment to clean up

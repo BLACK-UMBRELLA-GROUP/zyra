@@ -6,6 +6,9 @@
 -- scenario changes behind a savepoint, proves the compatibility table returns
 -- value-for-value to its pre-test contents, and finally rolls back the outer
 -- transaction as well. No test mutation can survive a completed run.
+-- After F06: create the synthetic actors and both directed Plus entitlement
+-- rows before applying F06. Its held new-grant rule remains enabled. This
+-- suite preserves those existing rows and tests a new grant's denial.
 
 begin;
 
@@ -317,6 +320,8 @@ declare
     '058050b9-f8d4-4449-920e-8abf7a4a0325';
   v_additional_guardian constant uuid :=
     '6493a6e6-6fc7-4d7a-b1b5-58b637c08647';
+  v_fixture_main_guardian constant uuid :=
+    '565a0208-f968-4680-8d68-f1d1165c2679';
   v_nonparty_seeker constant uuid :=
     '6c84767c-64df-4d24-b17d-c3239848d68e';
   v_missing_match constant uuid :=
@@ -344,6 +349,11 @@ declare
   v_joint_revealed_at timestamptz;
   v_plus_score numeric;
   v_shared_pause_columns boolean;
+  v_plus_held boolean;
+  v_original_plus_rows jsonb;
+  v_restored_plus_rows jsonb;
+  v_new_plus_id uuid;
+  v_unlock_response jsonb;
 begin
   if (
     select count(*)
@@ -399,19 +409,25 @@ begin
       'OA283 premise: current seeded compatibility row/attempt binding changed';
   end if;
 
-  -- Make the two Guardian denial actors authoritative examples rather than
-  -- merely profiles whose role column happens to say wali. The current fixture
-  -- has no active Guardian for Seeker A; drift stops the harness before it can
-  -- temporarily replace relationship state.
-  if exists (
-    select 1
-      from public.wali_links as link
-     where link.seeker_id = v_seeker_a
-       and link.status = 'active'
-  ) then
+  -- Make the denial actors authoritative Guardians. SERVER0's guarded local
+  -- fixture gives each Seeker a Main before activation/reveal, as required by
+  -- the current hold. Require the exact A-side fixture link before replacing
+  -- it with the Main/Additional test pair; reject all unexpected link state.
+  if (select count(*) from public.wali_links as link
+      where link.seeker_id = v_seeker_a and link.status = 'active') <> 1
+     or not exists (
+       select 1 from public.wali_links as link
+       where link.seeker_id = v_seeker_a
+         and link.wali_id = v_fixture_main_guardian
+         and link.status = 'active' and link.is_main is true
+     ) then
     raise exception
-      'OA283 premise: seeded Seeker A unexpectedly has an active Guardian';
+      'OA283 premise: expected exact SERVER0 Seeker A fixture Main';
   end if;
+
+  delete from public.wali_links as link
+   where link.seeker_id = v_seeker_a
+     and link.wali_id = v_fixture_main_guardian;
 
   delete from public.wali_links as link
    where link.seeker_id = v_seeker_a
@@ -901,19 +917,37 @@ begin
     raise exception 'OA283 idempotence: B retry changed the mutual row';
   end if;
 
-  -- Give Seeker A a transaction-local entitlement before the attempt and
-  -- lifecycle matrix. This ensures Plus denials below prove the same
-  -- actor/state/attempt boundary rather than stopping earlier at
-  -- plus_required. The later no-entitlement case removes it explicitly.
-  insert into public.profile_unlocks (
-    unlocker_id,
-    unlocked_id,
-    unlock_type
-  ) values (
-    v_seeker_a,
-    v_seeker_b,
-    'paid_plus_single'
-  ) on conflict do nothing;
+  -- Plus lifecycle denials must reach the actor/state/attempt boundary.
+  -- F06 preserves existing grants and suppresses all new Plus INSERTs. On
+  -- that schema, require the two directed fixture grants created before F06;
+  -- never arm or bypass its gate. Before F06, create equivalent rollback-only
+  -- synthetic rows here for the same behavior matrix.
+  v_plus_held := pg_catalog.to_regclass('private.zyra_unlock_release_gate') is not null;
+  if v_plus_held then
+    if not exists (select 1 from private.zyra_unlock_release_gate
+                   where singleton and plus_spend_enabled is false) then
+      raise exception 'OA283 F06 fixture requires the unchanged held Plus gate';
+    end if;
+    if not exists (select 1 from public.profile_unlocks
+                   where unlocker_id = v_seeker_a and unlocked_id = v_seeker_b
+                     and unlock_type in ('paid_plus_single','paid_plus_bundle'))
+       or not exists (select 1 from public.profile_unlocks
+                      where unlocker_id = v_seeker_b and unlocked_id = v_seeker_a
+                        and unlock_type in ('paid_plus_single','paid_plus_bundle')) then
+      raise exception 'OA283 F06 premise: seed both directed Plus rows before applying F06';
+    end if;
+  else
+    insert into public.profile_unlocks (unlocker_id, unlocked_id, unlock_type)
+    values (v_seeker_a, v_seeker_b, 'paid_plus_single'),
+           (v_seeker_b, v_seeker_a, 'paid_plus_single')
+    on conflict do nothing;
+  end if;
+  select pg_catalog.jsonb_agg(to_jsonb(unlocks) order by unlocks.id)
+    into v_original_plus_rows
+    from public.profile_unlocks unlocks
+   where ((unlocks.unlocker_id = v_seeker_a and unlocks.unlocked_id = v_seeker_b)
+       or (unlocks.unlocker_id = v_seeker_b and unlocks.unlocked_id = v_seeker_a))
+     and unlocks.unlock_type in ('paid_plus_single','paid_plus_bundle');
 
   -- A stale row from another attempt, and a legacy NULL attempt, both fail
   -- closed in every path. Neither rejected call mutates the row.
@@ -1254,58 +1288,88 @@ begin
          attempt_id = v_attempt_id
    where compatibility.match_id = v_match_id;
 
-  -- Remove either Plus entitlement class inside the rollback-only scenario,
-  -- prove the denied path is side-effect free, then add one temporary
-  -- entitlement for the positive case.
-  delete from public.profile_unlocks as unlocks
-   where unlocks.unlocker_id = v_seeker_a
-     and unlocks.unlocked_id = v_seeker_b
-     and unlocks.unlock_type in ('paid_plus_single', 'paid_plus_bundle');
-
-  select to_jsonb(compatibility)
-    into strict v_row_before
-    from public.journey_compatibility as compatibility
-   where compatibility.match_id = v_match_id;
-
-  perform set_config('role', 'authenticated', true);
-  perform set_config(
-    'request.jwt.claims',
-    pg_catalog.json_build_object('sub', v_seeker_a)::text,
-    true
-  );
-  v_rejected := false;
+  -- Temporarily remove A's existing grant in a subtransaction. The private
+  -- SQLSTATE below rolls this entire probe back, restoring the original row
+  -- identity/timestamp even when F06 forbids inserting its replacement.
   begin
-    perform public.zyra_compatibility_for_plus(v_match_id);
-  exception
-    when sqlstate '42501' then
-      if sqlerrm is distinct from 'plus_required' then
-        raise exception
-          'OA283 Plus denial returned unexpected message %', sqlerrm;
+    delete from public.profile_unlocks as unlocks
+     where unlocks.unlocker_id = v_seeker_a
+       and unlocks.unlocked_id = v_seeker_b
+       and unlocks.unlock_type in ('paid_plus_single', 'paid_plus_bundle');
+
+    select to_jsonb(compatibility)
+      into strict v_row_before
+      from public.journey_compatibility as compatibility
+     where compatibility.match_id = v_match_id;
+
+    perform set_config('role', 'authenticated', true);
+    perform set_config(
+      'request.jwt.claims',
+      pg_catalog.json_build_object('sub', v_seeker_a)::text,
+      true
+    );
+    v_rejected := false;
+    begin
+      perform public.zyra_compatibility_for_plus(v_match_id);
+    exception
+      when sqlstate '42501' then
+        if sqlerrm is distinct from 'plus_required' then
+          raise exception
+            'OA283 Plus denial returned unexpected message %', sqlerrm;
+        end if;
+        v_rejected := true;
+    end;
+    if v_plus_held then
+      select public.zyra_unlock_profile(v_seeker_b, 'paid_plus_single')
+        into v_unlock_response;
+      if v_unlock_response ->> 'status' is distinct from 'plus_unavailable'
+         or v_unlock_response -> 'charged' is distinct from 'false'::jsonb then
+        raise exception 'OA283 F06 new Plus RPC must report the hold without charge: %',
+          v_unlock_response;
       end if;
-      v_rejected := true;
+    end if;
+    perform set_config('role', 'postgres', true);
+    if not v_rejected then
+      raise exception 'OA283 Plus without entitlement was not denied';
+    end if;
+
+    select to_jsonb(compatibility)
+      into strict v_row_after
+      from public.journey_compatibility as compatibility
+     where compatibility.match_id = v_match_id;
+    if v_row_after is distinct from v_row_before then
+      raise exception 'OA283 denied Plus call mutated compatibility state';
+    end if;
+
+    if v_plus_held then
+      v_new_plus_id := null;
+      insert into public.profile_unlocks (unlocker_id, unlocked_id, unlock_type)
+      values (v_seeker_a, v_seeker_b, 'paid_plus_single')
+      returning id into v_new_plus_id;
+      if v_new_plus_id is not null
+         or exists (select 1 from public.profile_unlocks
+                    where unlocker_id = v_seeker_a and unlocked_id = v_seeker_b
+                      and unlock_type in ('paid_plus_single','paid_plus_bundle')) then
+        raise exception 'OA283 F06 unexpectedly created a new held Plus row';
+      end if;
+    end if;
+    raise exception using errcode = 'Z3283', message = 'oa283_restore_existing_plus';
+  exception
+    when sqlstate 'Z3283' then
+      if sqlerrm is distinct from 'oa283_restore_existing_plus' then
+        raise;
+      end if;
   end;
-  perform set_config('role', 'postgres', true);
-  if not v_rejected then
-    raise exception 'OA283 Plus without entitlement was not denied';
-  end if;
 
-  select to_jsonb(compatibility)
-    into strict v_row_after
-    from public.journey_compatibility as compatibility
-   where compatibility.match_id = v_match_id;
-  if v_row_after is distinct from v_row_before then
-    raise exception 'OA283 denied Plus call mutated compatibility state';
+  select pg_catalog.jsonb_agg(to_jsonb(unlocks) order by unlocks.id)
+    into v_restored_plus_rows
+    from public.profile_unlocks unlocks
+   where ((unlocks.unlocker_id = v_seeker_a and unlocks.unlocked_id = v_seeker_b)
+       or (unlocks.unlocker_id = v_seeker_b and unlocks.unlocked_id = v_seeker_a))
+     and unlocks.unlock_type in ('paid_plus_single','paid_plus_bundle');
+  if v_restored_plus_rows is distinct from v_original_plus_rows then
+    raise exception 'OA283 subtransaction failed to restore exact pre-existing Plus rows';
   end if;
-
-  insert into public.profile_unlocks (
-    unlocker_id,
-    unlocked_id,
-    unlock_type
-  ) values (
-    v_seeker_a,
-    v_seeker_b,
-    'paid_plus_single'
-  ) on conflict do nothing;
 
   perform set_config('role', 'authenticated', true);
   perform set_config(
@@ -1372,21 +1436,8 @@ begin
   -- Exercise the B-side branch independently. A's score remains caller-owned;
   -- B receives its own asymmetric score and still changes no consent or joint
   -- timestamp.
-  delete from public.profile_unlocks as unlocks
-   where unlocks.unlocker_id = v_seeker_b
-     and unlocks.unlocked_id = v_seeker_a
-     and unlocks.unlock_type in ('paid_plus_single', 'paid_plus_bundle');
-
-  insert into public.profile_unlocks (
-    unlocker_id,
-    unlocked_id,
-    unlock_type
-  ) values (
-    v_seeker_b,
-    v_seeker_a,
-    'paid_plus_single'
-  ) on conflict do nothing;
-
+  -- B's entitlement was also present before the hold. Do not delete and
+  -- reinsert it: preserving existing rows is part of the F06 contract.
   perform set_config('role', 'authenticated', true);
   perform set_config(
     'request.jwt.claims',
@@ -1430,6 +1481,17 @@ begin
     raise exception
       'OA283 Plus B: expected caller-owned score-only B mutation';
   end if;
+  select pg_catalog.jsonb_agg(to_jsonb(unlocks) order by unlocks.id)
+    into v_restored_plus_rows
+    from public.profile_unlocks unlocks
+   where ((unlocks.unlocker_id = v_seeker_a and unlocks.unlocked_id = v_seeker_b)
+       or (unlocks.unlocker_id = v_seeker_b and unlocks.unlocked_id = v_seeker_a))
+     and unlocks.unlock_type in ('paid_plus_single','paid_plus_bundle');
+  if v_restored_plus_rows is distinct from v_original_plus_rows then
+    raise exception 'OA283 positive compatibility paths changed existing Plus entitlements';
+  end if;
+  raise notice 'OA283 Plus PASS: no-entitlement denial, exact row restoration, A/B existing-grant scores; F06 held=%', v_plus_held;
+
 end;
 $matrix$;
 

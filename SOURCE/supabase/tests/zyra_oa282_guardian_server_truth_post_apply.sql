@@ -4,10 +4,14 @@
 -- supabase_migrations.schema_migrations. This is the corrected canonical
 -- harness: H1 uses the actual stored empty-path literal; H2 isolates links by
 -- delete-then-insert with Main first; H3 uses paused_by/paused_at. The original
--- twelve 044 meanings remain, followed by the DR-ZYRA-225 and 054 N1
--- active-period/trigger-behaviour cases. The whole seeded scenario runs in one
+-- twelve 044 cases remain, with summary scope and role-switch consent updated
+-- to the later DR-ZYRA-230/233 rules (OA291, preserved by F02). Main assignment
+-- epochs still rotate; a continuous per-person consent survives role changes.
+-- The DR-ZYRA-225 and 054 N1 active-period/trigger cases remain. The scenario runs in one
 -- transaction and always rolls back. No earlier broken harness is claimed as
 -- having passed.
+
+\set ON_ERROR_STOP on
 
 begin;
 
@@ -278,8 +282,10 @@ begin
      or v_summary_definition not like '%a.ended_at >= w.active_since%'
      or v_summary_definition like '%a.ended_at >= w.created_at%'
      or v_summary_definition not like
+       '%c.guardian_link_authority_id =%w.guardian_link_authority_id%'
+     or v_summary_definition like
        '%c.main_guardian_authority_id =%w.main_guardian_authority_id%' then
-    raise exception 'DR225 catalog: summary is not the positive ruled predicate';
+    raise exception 'DR225/233 catalog: summary lacks positive lifecycle/current-link consent predicate';
   end if;
 
   select pg_get_constraintdef(c.oid)
@@ -504,7 +510,8 @@ begin
       v_ended;
   end if;
 
-  -- 5. Active Additional Guardian receives no Journey summary.
+  -- 5. DR230/233: an active Additional Guardian receives the minimal summary.
+  -- Rich Journey detail remains a separate per-attempt View boundary (F02).
   perform set_config('role', 'authenticated', true);
   perform set_config(
     'request.jwt.claims',
@@ -514,8 +521,8 @@ begin
   select count(*) into v_count
   from public.zyra_attempt_summary_for_guardian(seeker_a);
   perform set_config('role', 'postgres', true);
-  if v_count <> 0 then
-    raise exception 'OA282 case 5 Additional Guardian: got %, expected 0', v_count;
+  if v_count <> 1 then
+    raise exception 'OA282 case 5 Additional Guardian summary: got %, expected 1', v_count;
   end if;
 
   -- 7. Removed Guardian: no relationship row remains.
@@ -803,7 +810,7 @@ begin
     and w.wali_id = additional_guardian;
 
   -- Grant A, then make B Main. A remains continuously active as Additional:
-  -- A's consent becomes stale, while both active periods stay unchanged.
+  -- A keeps their own consent; B does not inherit it. Both active periods stay.
   perform set_config('role', 'authenticated', true);
   perform set_config(
     'request.jwt.claims',
@@ -871,14 +878,13 @@ begin
   select count(*) into v_count
   from public.zyra_attempt_summary_for_guardian(seeker_a);
   perform set_config('role', 'postgres', true);
-  if v_count <> 0 then
-    raise exception 'DR225 former Main loses all access: got %, expected 0',
+  if v_count <> 3 then
+    raise exception 'DR233 former Main retains own granted summary scope: got %, expected 3',
       v_count;
   end if;
 
-  -- R3(a): re-promote the SAME still-active A link. Its active period is
-  -- preserved, but the assignment epoch rotates and A's old consent remains
-  -- invalid. A fresh Seeker grant is required.
+  -- R3(a): re-promote the SAME continuously active A link. The Main assignment
+  -- epoch rotates, while the role-neutral link epoch and A's consent survive.
   perform set_config('role', 'authenticated', true);
   perform set_config(
     'request.jwt.claims',
@@ -904,9 +910,9 @@ begin
        where w.seeker_id = seeker_a
          and w.wali_id = additional_guardian
      )
-     or v_consent_enabled is distinct from false then
+     or v_consent_enabled is distinct from true then
     raise exception
-      'DR225 same-active-link repromotion stale consent/period failed';
+      'DR225/233 same-active-link repromotion epoch/period/consent failed';
   end if;
 
   perform set_config('role', 'authenticated', true);
@@ -919,9 +925,9 @@ begin
   from public.zyra_attempt_summary_for_guardian(seeker_a) s
   where s.attempt_id = v_attempt;
   perform set_config('role', 'postgres', true);
-  if v_count <> 0 then
+  if v_count <> 1 then
     raise exception
-      'DR225 same-active-link repromotion reused old consent';
+      'DR233 same-active-link repromotion lost the per-person history grant';
   end if;
 
   perform set_config('role', 'authenticated', true);
@@ -1212,7 +1218,7 @@ begin
   end if;
 
   raise notice
-    'OA-ZYRA-282: original 12 meanings + DR-ZYRA-225 extension passed';
+    'OA-ZYRA-282: 12 cases + DR225 active-period/epoch coverage, updated to DR230/233 summary scope, passed';
 end;
 $matrix$;
 

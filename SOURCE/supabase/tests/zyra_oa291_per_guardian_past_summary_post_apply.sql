@@ -77,6 +77,12 @@ begin
     (v_additional, 'wali', 'OA291 Additional', date '1961-01-01', 'male',
       'Test', 'OA291 transaction actor.', true, false);
 
+  -- The current approved contract grants no places to an unentitled actor.
+  -- Supply real Basic subscriptions for this synthetic Journey's Seekers.
+  insert into public.subscriptions (user_id, plan_type, status) values
+    (v_seeker, 'seeker_basic', 'active'),
+    (v_counterpart, 'seeker_basic', 'active');
+
   insert into public.matches (
     seeker_a_id, seeker_b_id, status, journey_stage, created_at
   ) values (

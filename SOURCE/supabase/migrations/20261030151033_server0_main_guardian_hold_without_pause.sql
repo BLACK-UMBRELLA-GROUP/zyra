@@ -1,20 +1,5 @@
--- OA-ZYRA-294 / DR-ZYRA-236
---
--- STAGED ONLY. This migration has not been applied to production.
---
--- Founder ruling, 2026-09-18:
---   * a Seeker may deliberately demote their Main Guardian without choosing
---     a replacement;
---   * the person remains linked as an Additional Guardian;
---   * removing a Main Guardian no longer requires a replacement first;
---   * My ZYRA must raise the missing-Main action and the client holds ordinary
---     Active Journey participation until a Main Guardian is assigned;
---   * Pause and End remain available so the hold never traps either Seeker.
---
--- This file changes only the relationship-authority writes. The client gate
--- is in JourneyFlowScreen and is driven from the server-confirmed wali_links
--- read. Existing stage, review, pause, end, consent and per-Journey Additional
--- Guardian authority are otherwise unchanged.
+-- SERVER 0 V2 / DOC-ZYRA-0329 / OA-ZYRA-317 / OA-ZYRA-319.
+-- Local proof only; production requires a separate exact-payload Founder GO.
 
 begin;
 
@@ -53,7 +38,7 @@ comment on function public.zyra_clear_main_guardian(uuid) is
   'active Main Guardian without unlinking them. The resulting deliberate '
   'no-Main state raises a My ZYRA action and holds ordinary Active Journey '
   'participation in the client until another Main Guardian is assigned. '
-  'Pause and End remain available.';
+  'Ending remains available.';
 
 revoke execute on function public.zyra_clear_main_guardian(uuid)
   from public, anon;
@@ -100,8 +85,8 @@ comment on function public.zyra_remove_guardian(uuid) is
   'DR-ZYRA-236. Caller-bound Seeker unlink action. A Main Guardian may be '
   'removed without automatic replacement; remaining Guardians stay '
   'Additional until the Seeker deliberately chooses a Main. A no-Main state '
-  'holds ordinary Active Journey participation in the client while Pause and '
-  'End remain available.';
+  'holds ordinary Active Journey participation in the client while '
+  'Ending remains available.';
 
 revoke execute on function public.zyra_remove_guardian(uuid)
   from public, anon;
@@ -233,6 +218,12 @@ begin
     return new;
   end if;
 
+  -- A BEFORE UPDATE reads the old pair row. Use the proposed lifecycle for
+  -- activation and End so the hold cannot be bypassed by that transition.
+  if tg_table_name = 'matches' then
+    v_match_status := new.status;
+  end if;
+
   -- The Founder ruling holds Active Journey participation only. Existing
   -- protections continue to govern potential and ended records.
   if v_match_status is distinct from 'active' then
@@ -252,7 +243,7 @@ begin
     ) then
     raise exception 'main_guardian_required_for_journey'
       using hint = 'Ordinary Journey participation is held until both '
-                   'Seekers have an active Main Guardian. Pause and End '
+                   'Seekers have an active Main Guardian. End '
                    'remain available.';
   end if;
 
@@ -262,8 +253,8 @@ $function$;
 
 comment on function public.zyra_enforce_main_guardian_journey_hold() is
   'DR-ZYRA-236 trigger boundary. Blocks ordinary shared-Journey writes and '
-  'resumption while either Seeker lacks an active Main Guardian. It does not '
-  'block Pause or End.';
+  'activation while either Seeker lacks an active Main Guardian. It does not '
+  'block End.';
 
 revoke execute on function public.zyra_enforce_main_guardian_journey_hold()
   from public, anon, authenticated;
@@ -311,12 +302,9 @@ create trigger matches_main_guardian_hold
 before update on public.matches
 for each row
 when (
-  old.journey_stage is distinct from new.journey_stage
-  or (
-    new.status = 'active'
-    and new.pause_state = 'none'
-    and old.pause_state is distinct from new.pause_state
-  )
+  new.status = 'active'
+  and (old.journey_stage is distinct from new.journey_stage
+       or old.status is distinct from new.status)
 )
 execute function public.zyra_enforce_main_guardian_journey_hold();
 
@@ -326,12 +314,9 @@ create trigger journey_attempts_main_guardian_hold
 before update on public.journey_attempts
 for each row
 when (
-  old.journey_stage is distinct from new.journey_stage
-  or (
-    new.status = 'active'
-    and new.pause_state = 'none'
-    and old.pause_state is distinct from new.pause_state
-  )
+  new.status = 'active'
+  and (old.journey_stage is distinct from new.journey_stage
+       or old.status is distinct from new.status)
 )
 execute function public.zyra_enforce_main_guardian_journey_hold();
 

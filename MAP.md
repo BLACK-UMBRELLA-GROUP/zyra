@@ -94,6 +94,8 @@ _Stop here unless you need to look up another ID._
 |---|---|---|---|---|
 | DOC-ZYRA-0003 | `APP/Authentication/Script/Script_V3.md` | SPEC | Authentication / Script — Script V3 | 11 |
 | DOC-ZYRA-0004 | `APP/Authentication/Summary.md` | SPEC | Authentication — Summary | 7 |
+| TBC (Fable assigns) | `PRODUCT/APPROVED/SERVER/BRIEFS/SERVER_0_BRIEF_2026-10-30_V2.md` | PLAN | SERVER 0 second attempt - corrections R1-R4 from the 30 Oct NOT READY record; throw-away database only | DOC-ZYRA-0329, OA-ZYRA-317, OA-ZYRA-319, OA-ZYRA-198 | 5 |
+| SERVER0-V2-DISPOSITION-2026-10-30 | `PRODUCT/APPROVED/SERVER/RECORD/SERVER_0_READY_2026-10-30_V2.md` | REPORT | Authorised SERVER 0 V2 isolated catch-up proof, exact production candidate manifest and held release… | DOC-ZYRA-0329, OA-ZYRA-317, OA-ZYRA-319, OA-ZYRA-324, OA-ZYRA-198, OA-ZYRA-156 | 22 |
 
 ### APP: BROWSE
 
