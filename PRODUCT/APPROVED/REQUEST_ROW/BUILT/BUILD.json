@@ -1,0 +1,254 @@
+{
+  "queue_row": 19,
+  "decision": "DR-ZYRA-305",
+  "lock": 7,
+  "commit_sha": "0cb188e19e8d1263f563d1974fe01c24f25d7999",
+  "flutter_version": "3.44.2",
+  "build_mode": "flutter-test debug visual render",
+  "target": "TargetPlatform.iOS; actual admitted offline Founder preview; 430 x 932 logical @3x",
+  "build_timestamp_utc": "2026-10-30T08:55:10.344583+00:00",
+  "no_native_build_install_or_upload": true,
+  "built_from": [
+    "PRODUCT/APPROVED/REQUEST_ROW/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+    "PRODUCT/APPROVED/REQUEST_ROW/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/REQUEST_ROW/RECORD/REQUEST_ROW_SPEC_CURRENT_VERSION_V2.md"
+  ],
+  "source_files": [
+    {
+      "path": "SOURCE/lib/widgets/zyra_profiles_components.dart",
+      "bytes": 10415,
+      "sha256": "ed675430bb907217a48e4824f1f25891d5e6ce0633018fabf65594b5028ae075"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "bytes": 36878,
+      "sha256": "2a44265de87d053f9b57c2ca4b9923bb3f87054886579fca39672d7effa0901c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+      "bytes": 4976,
+      "sha256": "9fb4997dc68192ce21112ac0d7d5a734a8f5d41e8cb873b9c9b6e3bd45a2c2d8"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 298816,
+      "sha256": "3396adcd975250dbff368a119281a5364b2243a100cc97123165f67edea837ae"
+    },
+    {
+      "path": "SOURCE/test/request_row_lock7_test.dart",
+      "bytes": 9107,
+      "sha256": "b54c051710093f7742b9d36ef937ef36999a24c0b20363c8dcbeaf0660f7f913"
+    },
+    {
+      "path": "SOURCE/test/visual/lock7_request_row_capture_test.dart",
+      "bytes": 5133,
+      "sha256": "a9a6d757def2375b9cfacf9e9390aea671dddb840f63e4185f340bf76c64b91b"
+    }
+  ],
+  "masters": [
+    {
+      "path": "PRODUCT/APPROVED/REQUEST_ROW/MASTERS/request_row__first_profile.png",
+      "bytes": 551622,
+      "sha256": "8f70c359717aa9cd5e1df2d068838ba5ad9d76ddb3bc0f76d64e6fc373d69cda"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUEST_ROW/MASTERS/request_row__not_requested.png",
+      "bytes": 545389,
+      "sha256": "9ecea0e572200347066877ecda91470ca2b0688260f3cd1029cd32aee4d854c0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUEST_ROW/MASTERS/request_row__sent.png",
+      "bytes": 550407,
+      "sha256": "51abd08196e73fedb9d2c3c9d5bcd1a93af583fc5d448418038bf7e6d2eee8a2"
+    }
+  ],
+  "captures": [
+    {
+      "path": "PRODUCT/APPROVED/REQUEST_ROW/BUILT/master_beside_build.png",
+      "bytes": 953287,
+      "sha256": "1b50d9d08df56e5013872deea36d0404f579ac60bb3a839f2564026e2aeeeb52"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUEST_ROW/BUILT/request_row__first_profile.png",
+      "bytes": 796621,
+      "sha256": "c3f7db0d28925fecaf703e7c687dacc813ca9822948aaf05831ac6193d36d1c4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUEST_ROW/BUILT/request_row__not_requested.png",
+      "bytes": 801397,
+      "sha256": "1cd7106fa2800498f16834ca9990437095905bd0bcda8a389a4983b49cc5f4bf"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUEST_ROW/BUILT/request_row__sent.png",
+      "bytes": 860513,
+      "sha256": "2ecf2bbe738ac0bab75e5179d426d2e52bac86c697604fad11b6d7dbcc505acf"
+    }
+  ],
+  "geometry": [
+    {
+      "state": "first_profile",
+      "profile": "draft-amira",
+      "pill": {
+        "left": 20.0,
+        "top": 772.0,
+        "width": 390.0,
+        "height": 56.0
+      },
+      "previous": {
+        "left": 20.0,
+        "top": 772.0,
+        "width": 68.0,
+        "height": 56.0
+      },
+      "request": {
+        "left": 88.0,
+        "top": 772.0,
+        "width": 254.0,
+        "height": 56.0
+      },
+      "next": {
+        "left": 342.0,
+        "top": 772.0,
+        "width": 68.0,
+        "height": 56.0
+      },
+      "previous_enabled": false,
+      "logical_size": [
+        430,
+        932
+      ],
+      "pixel_ratio": 3
+    },
+    {
+      "state": "not_requested",
+      "profile": "draft-aisha",
+      "pill": {
+        "left": 20.0,
+        "top": 772.0,
+        "width": 390.0,
+        "height": 56.0
+      },
+      "previous": {
+        "left": 20.0,
+        "top": 772.0,
+        "width": 68.0,
+        "height": 56.0
+      },
+      "request": {
+        "left": 88.0,
+        "top": 772.0,
+        "width": 254.0,
+        "height": 56.0
+      },
+      "next": {
+        "left": 342.0,
+        "top": 772.0,
+        "width": 68.0,
+        "height": 56.0
+      },
+      "previous_enabled": true,
+      "logical_size": [
+        430,
+        932
+      ],
+      "pixel_ratio": 3
+    },
+    {
+      "state": "sent",
+      "profile": "draft-sara",
+      "pill": {
+        "left": 20.0,
+        "top": 772.0,
+        "width": 390.0,
+        "height": 56.0
+      },
+      "previous": {
+        "left": 20.0,
+        "top": 772.0,
+        "width": 68.0,
+        "height": 56.0
+      },
+      "request": {
+        "left": 88.0,
+        "top": 772.0,
+        "width": 254.0,
+        "height": 56.0
+      },
+      "next": {
+        "left": 342.0,
+        "top": 772.0,
+        "width": 68.0,
+        "height": 56.0
+      },
+      "previous_enabled": true,
+      "logical_size": [
+        430,
+        932
+      ],
+      "pixel_ratio": 3
+    }
+  ],
+  "checks": {
+    "flutter_analyze": "PASS; no issues found",
+    "dart_format": "PASS; 6 files, 0 changed",
+    "flutter_regressions": {
+      "result": "PASS",
+      "cases": 111,
+      "suites": [
+        "request_row_lock7_test.dart",
+        "requests_guardians_lock2_shell_test.dart",
+        "browse_photo_controls_polish_test.dart",
+        "browse_photo_resume_position_test.dart",
+        "own_profile_browse_preview_test.dart",
+        "compact_tab_bar_lock6_test.dart",
+        "browse_options_menu_test.dart"
+      ]
+    },
+    "captures": "PASS; 3 explicit TargetPlatform.iOS cases; zero network attempts",
+    "large_text": "200 percent; 430/393/320 viewport widths; 2 lines; stable 88 point height for all four labels; 68 point arrows",
+    "ui_gate": {
+      "result": "PASS-WITH-FINDINGS",
+      "critical": 0,
+      "high": 0,
+      "medium": 13,
+      "low": 341,
+      "written_refusal": "Advisory repository-wide findings are outside row 19; no new component-specific finding; no governance ledger changed."
+    },
+    "heuristic_static_checker": {
+      "exit": 1,
+      "findings": 106,
+      "categories": {
+        "MISSING MEMBER": 3,
+        "BAD NAMED ARG": 49,
+        "MISSING IMPORT": 54
+      },
+      "broken_imports": 0,
+      "new_dangling_doc_refs": 0,
+      "written_refusal": "Older checker flags existing named-constructor/export patterns; real Dart analyser and compiled tests pass. Checker repair and unrelated legacy code are outside row 19."
+    }
+  },
+  "comparison": {
+    "row_spec": "Matches: one pill; full card width; height56; arrow sections68; dividers28; gold .60 unsent/1.0 sent; white unsent/gold sent label; disabled previous .28; stable larger text sizing",
+    "whole_screen_pixel_match": false,
+    "preserved_existing_app_differences": [
+      "LOCK4 photo avatars replace prototype initials",
+      "existing smaller identity typography, details spacing and viewport",
+      "existing real gallery pagination count",
+      "existing sent Glass Signals card outline",
+      "unframed actual screen and current LOCK6 navigation"
+    ],
+    "written_refusal": "Do not redraw unrelated surfaces or overwrite masters/old baselines to imitate older prototype. Fable/ZYRA chat independently verify; Founder acceptance remains separate."
+  },
+  "limitations": {
+    "member_route": "Founder sample preview only; OA-ZYRA-317 remains",
+    "migrations": "none",
+    "native_route": "held; not invoked"
+  },
+  "helper": {
+    "name": "request_row_audit",
+    "purpose": "independent spec/scope audit and implementation review",
+    "sdk_or_git": false,
+    "status": "finished",
+    "tokens": "not shown in app; helper estimate ~13000, not a measured usage count"
+  }
+}
