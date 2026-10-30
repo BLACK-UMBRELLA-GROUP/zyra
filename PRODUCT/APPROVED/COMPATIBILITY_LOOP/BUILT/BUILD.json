@@ -1,0 +1,80 @@
+{
+  "queue_row": 23,
+  "code_commit": "a905db993af3b880bcf1c399fa3bfabab4856288",
+  "base_commit": "d1de664bec1b3dd3dd5cf3f5189bdeffa585bea7",
+  "flutter_version": "3.44.2",
+  "build_mode": "headless Flutter widget-test render",
+  "target": "test/visual/compatibility_loop_capture_test.dart; iOS TargetPlatform, local Founder sample shell",
+  "timestamp_utc": "2026-10-30T09:34:24.110131+00:00",
+  "capture_timestamp_utc": "2026-10-30T09:32:01.804084+00:00",
+  "brief": "PRODUCT/APPROVED/COMPATIBILITY_LOOP/BRIEFS/COMPATIBILITY_LOOP_BRIEF_2026-10-30.md",
+  "design_authority": "Founder-named behaviour change; existing design preserved; brief explicitly requires no new picture. Before captures supply the comparison reference.",
+  "logical_size": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "png_size": [
+    1290,
+    2796
+  ],
+  "capture_routes": "Actual local Profiles one-unlock reveal; page 7 after previous-arrow wrap, page 1 after left-swipe wrap. All three app entry points use the shared reader.",
+  "source_sha256": {
+    "SOURCE/lib/dev/zyra_draft_compatibility_score_designs.dart": "a46e594cb434fcf4974e25ba1eb47a96cd9d56a1957936ac02703ec0c79bb8d1",
+    "SOURCE/test/zyra_draft_compatibility_score_designs_test.dart": "d6d8b4ef70715e5b713e7f057b6663f7fc52f80647bba6334c7335aad05a0a9a",
+    "SOURCE/test/zyra_draft_compatibility_presentation_test.dart": "85e46d7c5cd16d46ec0e78a64feabf1af8ad780aaefdc686fba64a896d0610fe",
+    "SOURCE/test/visual/compatibility_loop_capture_test.dart": "7f45a199040e87156ac471ce0d85446e01c7b10a0843dd3b737d3a230dd4a3ea"
+  },
+  "screenshots": {
+    "compatibility__page_1.png": "fb08c94d823f9b328e94ff754f8df63da4de34f7cfd0a7ca97f1e898eb49d900",
+    "compatibility__page_1__before_built.png": "f9a82c401d626793eb2b7dd3b97e758863045e8658f29234902a9996c5ada60f",
+    "compatibility__page_7.png": "6eaa329ccbf555c290abfb3aae9ef48a9d27ece2704d167a9d5901fe1c18425b",
+    "compatibility__page_7__before_built.png": "02cac053b11346c87bfd5cbfcec356d9714500c0eaf50177560ba3f3b127184e"
+  },
+  "verification": {
+    "analyzer": {
+      "command": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tooling/no_git_driver.mjs flutter analyze --no-pub",
+      "exit": 0,
+      "result": "No issues found, 3.9 seconds"
+    },
+    "seven_focused_suites": {
+      "command": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/zyra_draft_compatibility_score_designs_test.dart test/zyra_draft_compatibility_presentation_test.dart test/zyra_draft_compatibility_route_test.dart test/one_journey_prior_compatibility_access_test.dart test/guardian_info_lock3_test.dart test/zyra_tap_feedback_test.dart test/browse_feedback_haptics_test.dart",
+      "exit": 0,
+      "passed": 75
+    },
+    "final_reader_suite": {
+      "command": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/zyra_draft_compatibility_score_designs_test.dart",
+      "exit": 0,
+      "passed": 12,
+      "scope": "Includes one added rapid-tap case and actual semantics assertions; replaces the 11 reader cases in the previous combined run, giving 76 distinct cases."
+    },
+    "capture": {
+      "command": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_COMPATIBILITY_LOOP_CAPTURE=true test/visual/compatibility_loop_capture_test.dart",
+      "exit": 0,
+      "passed": 1
+    },
+    "before_capture": {
+      "command": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_COMPATIBILITY_LOOP_CAPTURE=true --dart-define=ZYRA_COMPATIBILITY_LOOP_BEFORE=true test/visual/compatibility_loop_capture_test.dart",
+      "exit": 0,
+      "passed": 1,
+      "source_commit": "d1de664bec1b3dd3dd5cf3f5189bdeffa585bea7"
+    },
+    "map_check": {
+      "result": "342 documents with headers, 0 without, 63 existing metadata/size problems; MAP stale",
+      "written_refusal": "Do not repair unrelated oversized documents, designer TBC IDs or overwrite the existing admin/designer MAP changes in queue 23. Fable owns metadata assignment and map maintenance."
+    }
+  },
+  "iteration_notes": [
+    "Initial capture fixture corrected its icon import and used the established options-menu tapAt path.",
+    "First combined test run caught a synchronous scroll-end reentrancy error; guard added, then all 75 cases passed.",
+    "Final semantics-only retry corrected test handle disposal; all 12 reader cases passed."
+  ],
+  "invariants": [
+    "Shared member-selected haptic callback retained; one pulse per arrow tap; swipes and Off silent.",
+    "Guardian LOCK3 four cards remain bounded; dedicated regression passed.",
+    "Person/value reset, fresh mount Overall and parent rebuild retained.",
+    "Existing access/reveal/Unlock/Ended guards retained; old member route remains until OA-ZYRA-317."
+  ],
+  "production": "Sample-only Founder preview, no backend, migrations, native build, install or upload.",
+  "independent_verification": "Pending Fable/ZYRA designer review; not Founder acceptance."
+}

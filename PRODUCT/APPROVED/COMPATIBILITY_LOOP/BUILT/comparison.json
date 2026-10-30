@@ -1,0 +1,35 @@
+{
+  "scope": "Same actual app before queue 23 (left) and after wrap (right). No new design master; brief requires existing visuals except enabled endpoint arrows.",
+  "pages": [
+    {
+      "page": 7,
+      "size": [
+        1290,
+        2796
+      ],
+      "changed_pixel_bbox": [
+        1099,
+        2516,
+        1144,
+        2559
+      ],
+      "before": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/REPORTS/EVIDENCE/COMPATIBILITY_LOOP_2026-10-30/before/compatibility__page_7.png",
+      "built": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/COMPATIBILITY_LOOP/BUILT/compatibility__page_7.png"
+    },
+    {
+      "page": 1,
+      "size": [
+        1290,
+        2796
+      ],
+      "changed_pixel_bbox": [
+        146,
+        2516,
+        191,
+        2559
+      ],
+      "before": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/REPORTS/EVIDENCE/COMPATIBILITY_LOOP_2026-10-30/before/compatibility__page_1.png",
+      "built": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/COMPATIBILITY_LOOP/BUILT/compatibility__page_1.png"
+    }
+  ]
+}
