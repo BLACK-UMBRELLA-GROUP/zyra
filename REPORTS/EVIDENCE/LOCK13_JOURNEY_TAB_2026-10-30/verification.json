@@ -1,0 +1,315 @@
+{
+  "status": "PASS_SCOPED_HEADLESS",
+  "queue": 38,
+  "lock": "LOCK13 V2",
+  "preflight": "Fresh WAITING row; exact brief, current spec/LOCK and all eight masters opened before code; no pack conflict.",
+  "tests": {
+    "regression": {
+      "passed": 171,
+      "suites": [
+        "journey_activity_lock13_test.dart",
+        "visual/lock13_journey_tab_test.dart",
+        "view_request_draft_model_test.dart",
+        "view_request_draft_snapshot_test.dart",
+        "request_row_lock7_test.dart",
+        "compact_tab_bar_lock6_test.dart",
+        "zyra_tap_feedback_test.dart",
+        "journey_options_row_geometry_test.dart",
+        "one_journey_inline_options_test.dart"
+      ],
+      "phase": "Before final local bottom-clearance and outline-button adjustments"
+    },
+    "final_actual_shell": {
+      "passed": 14,
+      "command": "protected driver flutter test --no-pub --dart-define=ZYRA_LOCK13_CAPTURE=true test/visual/lock13_journey_tab_test.dart --reporter expanded",
+      "coverage": [
+        "One0/1/2/3 Basic0/1",
+        "swipe/arrow non-loop endpoints",
+        "empty/free Browse and Basic Plans",
+        "seven options destinations and locked explanatory gates",
+        "actual stages/next steps/activity order",
+        "preparing no false progress and readiness gates",
+        "short-return place/options-Back restoration and invalid Basic clamp",
+        "shared/unlocked Bio Compatibility gates",
+        "blocked redaction and End",
+        "retained swipe/page/controls/real-Navigator route ABA and account-generation revocation",
+        "one haptic per enabled tap, disabled/swipe silence, local Off",
+        "VoiceOver card label",
+        "320x568 at 100/200 percent text; wrapped/scrollable content and reachable End; bar clearance"
+      ]
+    },
+    "analyser": "No issues found; whole SOURCE; 4.2 seconds",
+    "whole_suite": "Not run or claimed. Unrelated legacy OA-ZYRA-316 cleanup remains outside row38, including queue35 work."
+  },
+  "clearance_measurements": [
+    "LOCK13_CLEARANCE j02_one__journey_sara bodyBottom=834.0 navTop=848.0 gap=14.0",
+    "LOCK13_CLEARANCE j03_one__journey_aisha bodyBottom=834.0 navTop=848.0 gap=14.0",
+    "LOCK13_CLEARANCE j04_one__free_place bodyBottom=834.0 navTop=848.0 gap=14.0",
+    "LOCK13_CLEARANCE j05_one__three_journeys_maryam bodyBottom=834.0 navTop=848.0 gap=14.0",
+    "LOCK13_CLEARANCE j06_basic__no_journey bodyBottom=672.5 navTop=848.0 gap=175.5",
+    "LOCK13_CLEARANCE j07_basic__journey_sara bodyBottom=834.0 navTop=848.0 gap=14.0",
+    "LOCK13_CLEARANCE j08_one__journey_options bodyBottom=834.0 navTop=848.0 gap=14.0",
+    "LOCK13_SMALL_CLEARANCE scale=1.0 basic=false gap=28.0",
+    "LOCK13_SMALL_CLEARANCE scale=1.0 basic=true gap=28.0",
+    "LOCK13_SMALL_CLEARANCE scale=2.0 basic=false gap=20.0",
+    "LOCK13_SMALL_CLEARANCE scale=2.0 basic=true gap=20.0"
+  ],
+  "comparison": {
+    "verdict": "Locked layout/numbers/routes checked; pixel identity is not claimed",
+    "notes": [
+      "Built cards use actual existing stage/next-step state. No Seeker Family Review-open/deadline source exists; no illustrative 41-hour timer fabricated (OA-ZYRA-317).",
+      "Preparing uses existing Preparing together \u00b7 place reserved wording and no begun stage/progress; existing readiness/chat gates retained.",
+      "Shared current LOCK6 bar sits higher than prototype. Local bottom reserve98 leaves14 logical pixels at430x932 and20/28 at320x568; bar defaults/geometry unchanged.",
+      "Current actual fonts, icons, navigation and unframed viewport differ from prototype; no master was edited.",
+      "LOCK7 shared pill and Profiles dots defaults retained. Journey only opts into dot dimensions.",
+      "Continue Journey body is byte-identical to starting index; message activity hook is outside that body."
+    ]
+  },
+  "files": {
+    "PRODUCT/APPROVED/JOURNEY_TAB/RECORD/LOCK_RECORD.md": {
+      "bytes": 1820,
+      "sha256": "0fbcfb8ccea8c1f2cc0bf60df9e4d7666019aa339bef29b6e779ed80c8ae1fe2"
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V2.md": {
+      "bytes": 5062,
+      "sha256": "9a723df80d6b0291e65e7be1e52f0b2212a8ae89e2bd1cbf1ca0a8fc8058c373"
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-30.md": {
+      "bytes": 1913,
+      "sha256": "d69b20a4a0334f069ede12e4f3ed1090b1f08937586e0dd3f888ba64b2a6b53f"
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j01_one__no_journey.png": {
+      "bytes": 749637,
+      "sha256": "a139d69b64807595645f3a45861e89f4846824d97884ffd0ee3a1d6426c7ca32",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j02_one__journey_sara.png": {
+      "bytes": 1672176,
+      "sha256": "d82450eca9bf115867a940eb50811ddea7c387ecbd4732e173ea1e8eafebae61",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j03_one__journey_aisha.png": {
+      "bytes": 1966779,
+      "sha256": "768c6b9566b0e7c7290b9121a1b630d06e0365edd877d15040f3b87a8dd41f94",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j04_one__free_place.png": {
+      "bytes": 800598,
+      "sha256": "15694fdc0e9f639b476eda5fd9b857334d6684d919f357d6e94f30cf1642423c",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j05_one__three_journeys_maryam.png": {
+      "bytes": 1606296,
+      "sha256": "2adc6ee1f5c422b3b0ee92291f7cebea9d1496dbc4b57f35350b925fdb2690a0",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j06_basic__no_journey.png": {
+      "bytes": 806927,
+      "sha256": "23670e5be619b3fd6ecd62dbf4c2e4345dfafed81f89bba9331e412a36478160",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j07_basic__journey_sara.png": {
+      "bytes": 1480712,
+      "sha256": "4f7eb121ba6487ac8654a0e896ee752fddaef6970478969bceb4e50a1a478aea",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j08_one__journey_options.png": {
+      "bytes": 1075105,
+      "sha256": "752a2b898116bf6a44a1ff5feada9552b2e79d9026c3cb26c5d01b3f9b4d1659",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/all_eight_master_beside_build.png": {
+      "bytes": 844568,
+      "sha256": "74ac646a0d0b294d126c239ec151cb992fe0f2353893e3050bd1ecadd434b29c",
+      "pixels": [
+        1720,
+        1048
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j07_basic__journey_sara.png": {
+      "bytes": 1617192,
+      "sha256": "c525ba66db9fbdaeb0dce4cabd0450918d2d4dae45fe5ecb59debb7876dc386a",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j01_one__no_journey.png": {
+      "bytes": 732090,
+      "sha256": "db874169046b19917c1d44bf92121031f60f6f025f729ce8f3e9bbcf75e721b1",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j04_one__free_place.png": {
+      "bytes": 770535,
+      "sha256": "a6cf42090a9f7c15201ed1651d5473355cc92e9614195d79a704a64bfd84512e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j02_one__journey_sara.png": {
+      "bytes": 1804996,
+      "sha256": "95b65877a0776aa29c830a3210a98908cbc34735e6ee11a71f78c92e16d05411",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j03_one__journey_aisha.png": {
+      "bytes": 2248709,
+      "sha256": "89a6998b051359d14d210bdd0dab99b7d79f61fcd5b621e50f8446a17f3eeaa1",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j05_one__three_journeys_maryam.png": {
+      "bytes": 1794416,
+      "sha256": "007b29e42aac9a79ab25f32042f7c959120197d32426c40ff1bcef585b32181a",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j08_master_beside_build.png": {
+      "bytes": 1546342,
+      "sha256": "5c9b2ed189b685879c041db47468210a5ff85b63305ee2e40fbfa77c0ff02fc2",
+      "pixels": [
+        2580,
+        2852
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j06_basic__no_journey.png": {
+      "bytes": 777971,
+      "sha256": "bb2268f95619f97edc0d9c063052a527d1a593ee42da6d6b87f10c3da146e828",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/j08_one__journey_options.png": {
+      "bytes": 1002737,
+      "sha256": "e14fc300a24208a4097c3410dabed0f623fb6c748df794e6bd4328a72ef14745",
+      "pixels": [
+        1290,
+        2796
+      ]
+    }
+  },
+  "new_generated_files_over_50MB": [
+    {
+      "path": "SOURCE/build/test_cache/build/11f9252fab9bb4424d40abfb06fd5e81.cache.dill.track.dill",
+      "bytes": 101345992,
+      "reason": "Generated ignored Flutter widget-test kernel cache; moved on closure, never committed or copied into evidence."
+    },
+    {
+      "path": "SOURCE/build/test_cache/build/503b3d24218718bf1c8e8595969b2fd2.cache.dill.track.dill",
+      "bytes": 101318432,
+      "reason": "Generated ignored Flutter widget-test kernel cache; moved on closure, never committed or copied into evidence."
+    }
+  ],
+  "scope_refusals": [
+    "No rows39/35/27/34 processed or retried",
+    "No Blueprint edits/generated inventory rewrite; Fable owns reconciliation",
+    "No new dependency, backend, migrations, relationship states, old-member/sign-in retirement",
+    "No native build/install, phone/system proof, upload or publication",
+    "Existing oversized code-size tracker history is not rewritten; Fable owns archive/trim"
+  ],
+  "helpers": [
+    {
+      "name": "journey_route_audit",
+      "status": "completed",
+      "work": "Local activity implementation/test plus read-only gates/callback review",
+      "tokens": "not shown",
+      "sdk_git": "none"
+    },
+    {
+      "name": "journey_card_presenter",
+      "status": "completed",
+      "work": "Pure locked tab presentation; eight fresh masters viewed",
+      "tokens": "not shown",
+      "sdk_git": "none"
+    },
+    {
+      "name": "journey38_boundary_review (parent)",
+      "status": "completed",
+      "work": "Read-only callback/activity/blocked and second next-step/checkpoint review",
+      "startup_bytes": 73033,
+      "additional_bounded_read_bytes": 28208,
+      "tokens": "not shown",
+      "sdk_git": "none"
+    }
+  ],
+  "tested_source_sha": "a360898746d39657e0ce3d1f369546303b503ef6",
+  "code_size": {
+    "all_app": [
+      167295,
+      330
+    ],
+    "developer_and_preview": [
+      47823,
+      89
+    ],
+    "founder_preview": [
+      28698,
+      39
+    ],
+    "tests": [
+      213972,
+      494
+    ],
+    "goldens": [
+      2612,
+      "307 MB"
+    ],
+    "old_pause_files": 39,
+    "old_restart_files": 1
+  },
+  "map_check": {
+    "documents": 358,
+    "missing_headers": 0,
+    "warnings": 74,
+    "scope": "Regenerated worktree; own mapped rows/counts staged selectively. Existing designer/admin changes preserved. Existing oversized DOC0284 history needs Fable archive/trim.",
+    "code_size_tracker_bytes": 34507
+  },
+  "queue_non38_sha256": "669e21f69074b89762a47ac60c9721fda6ada72eef90338a3ac26e3784bfd3a2",
+  "disk": {
+    "built_bytes": 13142889,
+    "cache_moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE38_2026-10-30/test_cache",
+    "cache_bytes": 202664424,
+    "free_bytes": 92719427584,
+    "new_evidence_types": [
+      "PNG",
+      "JSON"
+    ],
+    "no_file_over_50MB_staged": true,
+    "no_usb_write": true
+  }
+}

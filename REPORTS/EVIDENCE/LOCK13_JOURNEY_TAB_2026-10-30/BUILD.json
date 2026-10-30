@@ -1,0 +1,88 @@
+{
+  "status": "BUILT_SCOPED_HEADLESS",
+  "queue": 38,
+  "lock": "LOCK13 V2",
+  "commit_sha": "a360898746d39657e0ce3d1f369546303b503ef6",
+  "flutter_version": "3.44.2",
+  "build_mode": "headless Flutter widget test",
+  "target": "actual admitted local Founder sample shell; iOS presentation, 430x932 @3x",
+  "timestamp_utc": "2026-10-30T19:12:40.161999+00:00",
+  "native_build_install": false,
+  "no_compiled_or_source_copies": true,
+  "files": {
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": {
+      "bytes": 303497,
+      "sha256": "adbeed52806de3e5fb33b86bd7791f57b68453150c379762f119cf7f7316aee9"
+    },
+    "SOURCE/lib/dev/zyra_one_journey_options.dart": {
+      "bytes": 12990,
+      "sha256": "bb81c5d68c5e2d6b3771ab5bacd908749a92ff2ed3df87872c916dde0386ed06"
+    },
+    "SOURCE/lib/dev/zyra_one_journey_options_page.dart": {
+      "bytes": 5080,
+      "sha256": "0e96005bc14438af3de8885befcb02616b6774d5c9d99c737e834167db8255ad"
+    },
+    "SOURCE/lib/dev/zyra_one_journey_tab.dart": {
+      "bytes": 21986,
+      "sha256": "1e33479481627e8c9ba68e3f3dd3a82b7518008be64fb8f02585360dae68f974"
+    },
+    "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart": {
+      "bytes": 7089,
+      "sha256": "048822389196ff78f7820dea58cebe0bac4a6b8fe051011e0bedc9bb6a006004"
+    },
+    "SOURCE/lib/dev/zyra_view_request_draft_model.dart": {
+      "bytes": 55610,
+      "sha256": "5f14d57f9a39f89f937b1f9881954cc0fe3c86d0fdea0c19625ddd694f890f1f"
+    },
+    "SOURCE/test/journey_activity_lock13_test.dart": {
+      "bytes": 8412,
+      "sha256": "7e61b91bc9c26357b4bed32423ff3b7266b45f69625d338a63a23ae09ce42ac0"
+    },
+    "SOURCE/test/visual/lock13_journey_tab_test.dart": {
+      "bytes": 24199,
+      "sha256": "cf05a627f958172da41496657889f3e1db605fb2ac867094212fd6f9914c0b49"
+    }
+  },
+  "screenshots": {
+    "all_eight_master_beside_build.png": {
+      "bytes": 844568,
+      "sha256": "74ac646a0d0b294d126c239ec151cb992fe0f2353893e3050bd1ecadd434b29c"
+    },
+    "j01_one__no_journey.png": {
+      "bytes": 732090,
+      "sha256": "db874169046b19917c1d44bf92121031f60f6f025f729ce8f3e9bbcf75e721b1"
+    },
+    "j02_one__journey_sara.png": {
+      "bytes": 1804996,
+      "sha256": "95b65877a0776aa29c830a3210a98908cbc34735e6ee11a71f78c92e16d05411"
+    },
+    "j03_one__journey_aisha.png": {
+      "bytes": 2248709,
+      "sha256": "89a6998b051359d14d210bdd0dab99b7d79f61fcd5b621e50f8446a17f3eeaa1"
+    },
+    "j04_one__free_place.png": {
+      "bytes": 770535,
+      "sha256": "a6cf42090a9f7c15201ed1651d5473355cc92e9614195d79a704a64bfd84512e"
+    },
+    "j05_one__three_journeys_maryam.png": {
+      "bytes": 1794416,
+      "sha256": "007b29e42aac9a79ab25f32042f7c959120197d32426c40ff1bcef585b32181a"
+    },
+    "j06_basic__no_journey.png": {
+      "bytes": 777971,
+      "sha256": "bb2268f95619f97edc0d9c063052a527d1a593ee42da6d6b87f10c3da146e828"
+    },
+    "j07_basic__journey_sara.png": {
+      "bytes": 1617192,
+      "sha256": "c525ba66db9fbdaeb0dce4cabd0450918d2d4dae45fe5ecb59debb7876dc386a"
+    },
+    "j08_master_beside_build.png": {
+      "bytes": 1546342,
+      "sha256": "5c9b2ed189b685879c041db47468210a5ff85b63305ee2e40fbfa77c0ff02fc2"
+    },
+    "j08_one__journey_options.png": {
+      "bytes": 1002737,
+      "sha256": "e14fc300a24208a4097c3410dabed0f623fb6c748df794e6bd4328a72ef14745"
+    }
+  }
+}
