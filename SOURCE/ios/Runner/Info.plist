@@ -47,6 +47,10 @@
 	<string>ZYRA uses the camera only when you choose to scan another member’s ZYRA Code.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>ZYRA uses Face ID so only you can open the app, even when your phone is unlocked.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your approximate area is used to measure distance in Filters. It is never shown to anyone.</string>
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>ZYRA can save photos back to your library when you download them.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

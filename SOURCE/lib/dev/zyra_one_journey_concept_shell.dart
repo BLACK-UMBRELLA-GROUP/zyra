@@ -36,6 +36,8 @@ import '../screens/settings/personalisation_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../screens/profile/compatibility_editors.dart';
 import 'zyra_one_journey_filters_presentation.dart';
+import 'zyra_one_journey_location.dart';
+import 'zyra_one_journey_location_sheet.dart';
 import '../screens/profile/edit_photos_screen.dart';
 import '../screens/profile/my_profile_preview_screen.dart';
 import '../theme/zyra_card_metrics.dart';
@@ -257,6 +259,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   String get _membership =>
       _guardianRole ? _guardianMembership : _seekerMembership;
 
+  late final ZyraOneJourneyLocation _location;
+  // 0 closed, 1 choose, 2 explain; no Navigator cover of the admitted host.
+  int _locationSheet = 0, _locationFlow = 0;
   ZyraBrowseFilter _browseFilter = const ZyraBrowseFilter();
   ZyraBrowseFilter _editingBrowseFilter = const ZyraBrowseFilter();
   ZyraConceptAccountAction? _accountDestination;
@@ -316,6 +321,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   int get _devRouteStamp => ZyraDevControlsRouteObserver.navigationRevision;
 
   void _devRouteChanged() {
+    _closeLocationFlow();
     _cancelEndedReadDeadline();
     _hiddenProfileRestore = null;
     if (_devRouteRefreshScheduled) return;
@@ -409,6 +415,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _openDevControls() {
     if (!_canOpenDevControls) return;
+    _closeLocationFlow();
     _cancelEndedReadDeadline();
     widget.localPhotoImport?.cancel();
     FocusScope.of(context).unfocus();
@@ -617,6 +624,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   @override
   void initState() {
     super.initState();
+    _location = ZyraOneJourneyLocation(canAct: () => _allowed)
+      ..addListener(_locationChanged);
     ZyraDevControlsRouteObserver.navigationChanges.addListener(
       _devRouteChanged,
     );
@@ -662,6 +671,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       hapticLevel: ZyraInteractionStyle.hapticLevel,
       goldEnabled: _gold,
     )..addListener(_accountChanged);
+    _syncLocationOrigins();
     if (!sameRole && widget.initialSeekerBasic) {
       _model.setCapacity(1);
       _seekerMembership = 'Seeker Basic';
@@ -1022,7 +1032,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         networkTab: _networkTab,
         guardianJourneyId: _guardianJourneyId,
         browseId: _browseHistory.currentId,
-        browseFilter: _browseFilter,
+        browseFilter: _browseFilter.withOrigin(_homeTownPoint),
         browseHistory: _browseHistory.ids,
         browseCursor: _browseHistory.cursor,
         photoIndices: _browsePhotoIndices,
@@ -1100,6 +1110,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _act(VoidCallback change, {bool preserveCircle = false}) {
     if (!_allowed) return;
+    _closeLocationFlow();
     _cancelEndedReadDeadline();
     setState(() {
       _browseOptionsOpen = false;
@@ -1266,6 +1277,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   void _back() {
+    if (_locationSheet != 0) {
+      setState(_closeLocationFlow);
+      return;
+    }
     if (_page == 'guardian_main_notice' && !_devControlsVisible) {
       _closeMainGuardianNotice();
       return;
@@ -1464,6 +1479,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     ZyraDevControlsRouteObserver.navigationChanges.removeListener(
       _devRouteChanged,
     );
+    _location.removeListener(_locationChanged);
+    _location.dispose();
     _noticeTimer?.cancel();
     _cancelEndedReadDeadline();
     _browsePhotoRenderer.dispose();
@@ -1484,6 +1501,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   @override
   Widget build(BuildContext context) {
+    _syncLocationOrigins();
     _syncEndedReadDeadline();
     final devRoutes = _devRouteStamp;
     final navigationRevision = _uiRevision;
@@ -1620,6 +1638,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                   : SystemUiOverlayStyle.light,
               child: PopScope(
                 canPop:
+                    _locationSheet == 0 &&
                     !_devControlsVisible &&
                     _pages.isEmpty &&
                     !_browseOptionsOpen &&
@@ -1808,6 +1827,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                             ),
                           ),
                         ),
+                        if (_locationSheet != 0 && _locationFlowCurrent())
+                          _locationOverlay(),
                         if (_devControlsVisible) _devControlsPage(),
                         if (_notice != null)
                           Positioned(
@@ -7118,8 +7139,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     }
   }
 
-  void _applyBrowseFilter() {
+  Future<void> _applyBrowseFilter() async {
     if (!_allowed || _page != 'filters') return;
+    if (_location.point != null) {
+      final fresh = _accountFreshGuard();
+      await _location.recheck();
+      if (!fresh()) return;
+    }
+    _syncLocationOrigins();
     _move(() {
       _browseFilter = _editingBrowseFilter;
       _browseIndex = 0;
@@ -7136,10 +7163,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         !_devControlsVisible &&
         revision == _uiRevision &&
         guardian == _guardianRole &&
-        _page == 'filters';
+        _page == 'filters' &&
+        _locationSheet == 0;
     return ZyraOneJourneyFiltersPresentation(
       filter: _editingBrowseFilter,
-      canAct: current,
+      homeTown: _homeTown,
+      paintWhileCovered: _locationSheet != 0,
+      currentArea: _location.point != null,
+      canAct: () => current() && _locationSheet == 0,
       onChanged: (filter) {
         if (current()) _act(() => _editingBrowseFilter = filter);
       },
@@ -7149,8 +7180,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       onCountry: () {
         if (current()) _pickBrowseCountry();
       },
-      // LOCK11 origin acquisition belongs to queue26. This narrow callback
-      // is the attachment point for its locked sheets and approximate result.
       onOrigin: () {
         if (current()) _openFilterOrigin();
       },
@@ -7160,77 +7189,91 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
   }
 
+  String get _homeTown => _accountSession.ownProfile(false).city;
+  ZyraBrowsePoint? get _homeTownPoint => zyraSampleTownPoint(_homeTown);
+
+  void _syncLocationOrigins() {
+    final origin = _location.point ?? _homeTownPoint;
+    _browseFilter = _browseFilter.withOrigin(origin);
+    _editingBrowseFilter = _editingBrowseFilter.withOrigin(origin);
+  }
+
+  void _locationChanged() {
+    if (!mounted) return;
+    setState(_syncLocationOrigins);
+    _publishCheckpoint();
+  }
+
+  int _locationRevision = 0, _locationRoute = 0;
+  bool _locationGuardian = false;
+  bool _locationFlowCurrent() =>
+      _allowed &&
+      _location.current &&
+      !_devControlsVisible &&
+      _locationRevision == _uiRevision &&
+      _locationRoute == _devRouteStamp &&
+      _locationGuardian == _guardianRole &&
+      !_guardianRole &&
+      _page == 'filters' &&
+      _editingBrowseFilter.where == ZyraBrowseWhere.nearMe;
+
+  void _closeLocationFlow() {
+    _locationFlow++;
+    _locationSheet = 0;
+    _location.cancelPending();
+  }
+
   void _openFilterOrigin() {
-    // Queue37 owns a sample home-town origin only. No permission prompt or
-    // device fix is fabricated here; queue26 replaces this sheet seam.
-    if (!_allowed || _page != 'filters') return;
-    final revision = _uiRevision;
-    final guardian = _guardianRole;
-    final controls = _devControlsEpoch;
-    bool sheetCurrent(BuildContext sheetContext) =>
-        _allowed &&
-        revision == _uiRevision &&
-        guardian == _guardianRole &&
-        controls == _devControlsEpoch &&
-        !_devControlsVisible &&
-        _page == 'filters' &&
-        sheetContext.mounted &&
-        ModalRoute.of(sheetContext)?.isCurrent == true;
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: ZyraColors.modalSheetSurface,
-      builder: (sheetContext) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(21),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _title('Where should distance start?', size: 22),
-              const SizedBox(height: 12),
-              _body(
-                'Only used to sort and filter by distance. Nobody else ever sees it.',
-              ),
-              const SizedBox(height: 18),
-              ListTile(
-                leading: const Icon(
-                  Icons.home_outlined,
-                  color: ZyraColors.journeyGold,
-                ),
-                title: const Text('Home town'),
-                subtitle: const Text(
-                  'Manchester — from your profile. No permission needed.',
-                ),
-                trailing: const Icon(
-                  Icons.radio_button_checked,
-                  color: ZyraColors.journeyGold,
-                ),
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.my_location,
-                  color: ZyraColors.journeyGold,
-                ),
-                title: const Text('My current area'),
-                subtitle: const Text(
-                  "Uses your phone’s location, roughly — never your exact spot.",
-                ),
-                trailing: const Icon(Icons.radio_button_unchecked),
-              ),
-              TextButton(
-                key: const ValueKey('filter_origin_done'),
-                onPressed: _tap(() {
-                  if (sheetCurrent(sheetContext)) {
-                    Navigator.of(sheetContext).pop();
-                  }
-                }),
-                child: const Text('Done'),
-              ),
-            ],
-          ),
-        ),
-      ),
+    if (!_allowed || _page != 'filters' || _guardianRole) return;
+    _locationRevision = _uiRevision;
+    _locationRoute = _devRouteStamp;
+    _locationGuardian = _guardianRole;
+    _locationFlow++;
+    setState(() => _locationSheet = 1);
+  }
+
+  Widget _locationOverlay() {
+    final flow = _locationFlow;
+    bool current() => flow == _locationFlow && _locationFlowCurrent();
+    return ZyraOneJourneyLocationSheet(
+      explain: _locationSheet == 2,
+      town: _homeTown,
+      currentArea: _location.point != null,
+      canAct: current,
+      onClose: () {
+        if (current()) setState(_closeLocationFlow);
+      },
+      onHome: () {
+        if (!current()) return;
+        _location.clear();
+      },
+      onCurrent: () {
+        if (!current()) return;
+        if (_location.point != null) {
+          setState(_closeLocationFlow);
+        } else if (!_location.explained && !_location.refused) {
+          setState(() => _locationSheet = 2);
+        } else {
+          _requestLocation(flow);
+        }
+      },
+      onContinue: () {
+        if (current()) _requestLocation(flow);
+      },
     );
+  }
+
+  Future<void> _requestLocation(int flow) async {
+    if (!_locationFlowCurrent() || flow != _locationFlow) return;
+    setState(() => _locationSheet = 0);
+    final settings = _location.refused;
+    bool current() => flow == _locationFlow && _locationFlowCurrent();
+    final allowed = await _location.request(current);
+    if (!current()) return;
+    setState(() {
+      _syncLocationOrigins();
+      if (!allowed && !settings) _notice = zyraLocationFallback;
+    });
   }
 
   Widget _safety() {

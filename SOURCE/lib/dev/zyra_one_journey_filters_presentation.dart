@@ -66,6 +66,8 @@ class ZyraOneJourneyFiltersPresentation extends StatefulWidget {
     required this.onOrigin,
     required this.onPreferences,
     this.currentArea = false,
+    this.paintWhileCovered = false,
+    this.homeTown = 'Manchester',
   });
   final ZyraBrowseFilter filter;
   final bool Function() canAct;
@@ -74,6 +76,8 @@ class ZyraOneJourneyFiltersPresentation extends StatefulWidget {
 
   /// Supplied only by the origin owner after an approximate area is available.
   final bool currentArea;
+  final bool paintWhileCovered;
+  final String homeTown;
   @override
   State<ZyraOneJourneyFiltersPresentation> createState() => _FiltersState();
 }
@@ -133,6 +137,8 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     _search.dispose();
     super.dispose();
   }
+
+  bool get _paintEnabled => widget.canAct() || widget.paintWhileCovered;
 
   void _change(ZyraBrowseFilter value) {
     if (mounted && widget.canAct()) widget.onChanged(value);
@@ -380,7 +386,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 (f.maxAge ?? 70).toDouble(),
               ),
               semanticFormatterCallback: (v) => '${v.round()} years',
-              onChanged: widget.canAct()
+              onChanged: _paintEnabled
                   ? (v) {
                       if (guard()) {
                         changed(f.withAge(v.start.round(), v.end.round()));
@@ -416,7 +422,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
             _button(
               'concept_country',
               'Change ›',
-              widget.canAct() ? widget.onCountry : null,
+              _paintEnabled ? widget.onCountry : null,
             ),
             size: 14,
           ),
@@ -430,11 +436,11 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
               widget.currentArea ? Icons.my_location : Icons.home_outlined,
               widget.currentArea
                   ? 'From your current area'
-                  : zyraBrowseSampleOriginLabel,
+                  : 'From ${widget.homeTown} (home town)',
               _button(
                 'concept_filter_origin',
                 'Change',
-                widget.canAct() ? widget.onOrigin : null,
+                _paintEnabled ? widget.onOrigin : null,
                 size: 12,
               ),
             ),
@@ -453,7 +459,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                   .toDouble(),
               semanticFormatterCallback: (v) =>
                   'Within ${zyraBrowseRadiusSteps[v.round()].round()} kilometres',
-              onChanged: widget.canAct()
+              onChanged: _paintEnabled
                   ? (v) {
                       if (guard()) {
                         changed(f.withRadius(zyraBrowseRadiusSteps[v.round()]));
@@ -575,7 +581,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
             key: ValueKey('filter_search_$kind'),
             controller: _search,
             focusNode: _focus,
-            enabled: widget.canAct(),
+            enabled: _paintEnabled,
             textInputAction: TextInputAction.done,
             style: ZyraText.body(size: 14),
             onChanged: (_) {
@@ -650,7 +656,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
   Widget build(BuildContext context) {
     final keyboard =
         _focus.hasFocus || MediaQuery.viewInsetsOf(context).bottom > 0;
-    final can = widget.canAct();
+    final can = _paintEnabled;
     final guard = _guard();
     final index = _index;
     return SafeArea(

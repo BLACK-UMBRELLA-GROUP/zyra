@@ -4,7 +4,7 @@ import '../data/zyra_reference_data.dart';
 import 'zyra_view_request_draft_model.dart';
 
 /// Pure sample filtering, not a production discovery or permission boundary.
-/// Radius uses the rounded real Manchester sample position, never device location.
+/// Radius uses a caller-owned home town or validated coarse session origin.
 const zyraBrowseSampleOrigin = ZyraBrowsePoint(53.48, -2.24);
 const zyraBrowseSampleOriginLabel = 'From Manchester (home town)';
 const zyraBrowseRadiusSteps = <double>[
@@ -177,6 +177,8 @@ class ZyraBrowseFilter {
   );
 
   ZyraBrowseFilter detached() => _copy();
+  ZyraBrowseFilter withOrigin(ZyraBrowsePoint? value) =>
+      _copy(from: value, changeOrigin: true);
 
   ZyraBrowseFilter withAge(int? minimum, int? maximum) =>
       _copy(minimum: minimum, maximum: maximum, age: true);
