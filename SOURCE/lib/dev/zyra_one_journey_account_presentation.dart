@@ -1,6 +1,7 @@
 // Disposable account presentation, copied from the current account owners.
 // The caller supplies every sample fact and every action. This file neither
 // reads a member account nor changes preferences, security or paid access.
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../data/zyra_membership_catalog.dart';
@@ -383,8 +384,10 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                 if (!data.guardian)
                   InkWell(
                     key: const ValueKey('concept_guardian_info'),
-                    onTap: () =>
-                        onAction(ZyraConceptAccountAction.guardianInfo),
+                    onTap: ZyraTapFeedback.onTap(
+                      context,
+                      () => onAction(ZyraConceptAccountAction.guardianInfo),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: Row(
@@ -526,7 +529,9 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
             : Text('Settings', style: ZyraText.heading(size: 17)),
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
         automaticallyImplyLeading: false,
-        leading: showBackButton ? BackButton(onPressed: onBack) : null,
+        leading: showBackButton
+            ? BackButton(onPressed: ZyraTapFeedback.onTap(context, onBack))
+            : null,
       ),
       body: SafeArea(
         child: ListView(
@@ -766,7 +771,7 @@ class _ProfileAction extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
+    onTap: ZyraTapFeedback.onTap(context, onTap),
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
@@ -807,7 +812,7 @@ class _ProfileSettingsRow extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) => InkWell(
-    onTap: onTap,
+    onTap: ZyraTapFeedback.onTap(context, onTap),
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -891,7 +896,7 @@ class _UnlockBalance extends StatelessWidget {
         excludeFromSemantics: true,
         child: InkWell(
           key: const ValueKey('concept_compatibility_buy_more'),
-          onTap: onBuyMore,
+          onTap: ZyraTapFeedback.onTap(context, onBuyMore),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 11),
             child: Row(
@@ -1108,7 +1113,7 @@ class _SettingsRow extends StatelessWidget {
   Widget build(BuildContext context) => Material(
     color: Colors.transparent,
     child: InkWell(
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: smooth ? 18 : 16,
@@ -1207,7 +1212,7 @@ class _MembershipAction extends StatelessWidget {
       borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
       child: InkWell(
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
           decoration: BoxDecoration(

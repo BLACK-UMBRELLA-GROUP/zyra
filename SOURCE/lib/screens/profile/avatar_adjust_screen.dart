@@ -1,4 +1,4 @@
-import 'dart:async';
+import '../../widgets/zyra_tap_feedback.dart';
 
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
@@ -39,6 +39,17 @@ class AvatarAdjustScreen extends StatefulWidget {
 }
 
 class _AvatarAdjustScreenState extends State<AvatarAdjustScreen> {
+  VoidCallback? _tap(BuildContext context, VoidCallback? action) =>
+      ZyraTapFeedback.onTap(
+        context,
+        action,
+        level: _preview
+            ? () =>
+                  widget.hapticLevel ??
+                  ZyraInteractionStyle.currentDefaultHapticLevel
+            : null,
+      );
+
   late final bool _preview = widget.preview;
   late final bool Function()? _ownerGuard = widget.canAct;
   late final String? _gender = widget.gender;
@@ -50,6 +61,7 @@ class _AvatarAdjustScreenState extends State<AvatarAdjustScreen> {
     if (_current) {
       Navigator.of(context).pop();
     } else if (mounted) {
+      ZyraInteractionStyle.cancelSelectionTap();
       setState(() {});
     }
   };
@@ -135,17 +147,11 @@ class _AvatarAdjustScreenState extends State<AvatarAdjustScreen> {
 
   void _save() {
     if (!_current) {
+      ZyraInteractionStyle.cancelSelectionTap();
       if (mounted) setState(() {});
       return;
     }
-    unawaited(
-      ZyraInteractionStyle.emitSelectionHaptic(
-        level: _preview
-            ? widget.hapticLevel ??
-                  ZyraInteractionStyle.currentDefaultHapticLevel
-            : null,
-      ),
-    );
+
     Navigator.of(context).pop(Offset(_alignmentX, _alignmentY));
   }
 
@@ -301,7 +307,7 @@ class _AvatarAdjustScreenState extends State<AvatarAdjustScreen> {
         if (!_preview)
           IconButton(
             tooltip: 'Back',
-            onPressed: _return,
+            onPressed: _tap(context, _return),
             icon: const Icon(Icons.arrow_back_ios_new, size: 20),
           ),
         if (!_preview) const SizedBox(width: 4),
@@ -374,8 +380,9 @@ class _AvatarAdjustScreenState extends State<AvatarAdjustScreen> {
         Expanded(
           child: OutlinedButton(
             key: const ValueKey('avatar-adjust-reset'),
-            onPressed: () {
+            onPressed: _tap(context, () {
               if (!_current) {
+                ZyraInteractionStyle.cancelSelectionTap();
                 if (mounted) setState(() {});
                 return;
               }
@@ -383,7 +390,7 @@ class _AvatarAdjustScreenState extends State<AvatarAdjustScreen> {
                 _alignmentX = 0;
                 _alignmentY = 0;
               });
-            },
+            }),
             child: const Text('Reset'),
           ),
         ),
@@ -391,7 +398,7 @@ class _AvatarAdjustScreenState extends State<AvatarAdjustScreen> {
         Expanded(
           child: FilledButton(
             key: const ValueKey('avatar-adjust-save'),
-            onPressed: _save,
+            onPressed: _tap(context, _save),
             child: const Text('Save'),
           ),
         ),

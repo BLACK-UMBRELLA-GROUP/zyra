@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -295,25 +296,27 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
     required String label,
     required VoidCallback onPressed,
     bool emphasized = false,
-  }) => OutlinedButton(
-    key: ValueKey(id),
-    onPressed: onPressed,
-    style: OutlinedButton.styleFrom(
-      minimumSize: const Size(44, 48),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-      foregroundColor: ZyraColors.foreground,
-      backgroundColor: emphasized ? ZyraColors.surfaceEmphasisFill : null,
-      side: BorderSide(
-        color: emphasized
-            ? ZyraColors.surfaceEmphasisBorder
-            : ZyraColors.surfaceBorder,
+  }) => Builder(
+    builder: (context) => OutlinedButton(
+      key: ValueKey(id),
+      onPressed: ZyraTapFeedback.onTap(context, onPressed),
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(44, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+        foregroundColor: ZyraColors.foreground,
+        backgroundColor: emphasized ? ZyraColors.surfaceEmphasisFill : null,
+        side: BorderSide(
+          color: emphasized
+              ? ZyraColors.surfaceEmphasisBorder
+              : ZyraColors.surfaceBorder,
+        ),
+        shape: const StadiumBorder(),
       ),
-      shape: const StadiumBorder(),
-    ),
-    child: Text(
-      label,
-      textAlign: TextAlign.center,
-      style: ZyraText.button(size: 14),
+      child: Text(
+        label,
+        textAlign: TextAlign.center,
+        style: ZyraText.button(size: 14),
+      ),
     ),
   );
 }

@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../data/zyra_membership_catalog.dart';
@@ -74,13 +75,13 @@ class _ZyraDraftCompatibilityStorePresentationState
                   const SizedBox(width: 8),
                   IconButton(
                     key: const ValueKey('draft_compatibility_store_info_close'),
-                    onPressed: () {
+                    onPressed: ZyraTapFeedback.onTap(context, () {
                       if (!dialogContext.mounted ||
                           !(ModalRoute.of(dialogContext)?.isCurrent ?? false)) {
                         return;
                       }
                       Navigator.of(dialogContext).pop();
-                    },
+                    }),
                     tooltip: 'Close',
                     constraints: const BoxConstraints(
                       minWidth: 44,
@@ -242,7 +243,7 @@ class _ZyraDraftCompatibilityStorePresentationState
       );
       final information = IconButton(
         key: const ValueKey('draft_compatibility_store_info'),
-        onPressed: _showInformation,
+        onPressed: ZyraTapFeedback.onTap(context, _showInformation),
         tooltip: 'What an unlock includes',
         constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
         icon: Icon(Icons.info_outline_rounded, color: _accent, size: 20),
@@ -381,7 +382,7 @@ class _ZyraDraftCompatibilityStorePresentationState
         const SizedBox(height: 4),
         TextButton(
           key: const ValueKey('draft_compatibility_store_terms'),
-          onPressed: widget.onTerms,
+          onPressed: ZyraTapFeedback.onTap(context, widget.onTerms),
           style: TextButton.styleFrom(
             minimumSize: const Size(44, 44),
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
@@ -542,9 +543,12 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
     ),
     color: _accent,
     disabledColor: _ink.withValues(alpha: .35),
-    onPressed: (previous ? _page > 0 : _page < _pageCount - 1)
-        ? () => _goTo(_page + (previous ? -1 : 1))
-        : null,
+    onPressed: ZyraTapFeedback.onTap(
+      context,
+      (previous ? _page > 0 : _page < _pageCount - 1)
+          ? () => _goTo(_page + (previous ? -1 : 1))
+          : null,
+    ),
     icon: Icon(
       previous ? Icons.arrow_back_rounded : Icons.arrow_forward_rounded,
       size: 22,
@@ -647,7 +651,7 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
       const SizedBox(height: 8),
       TextButton(
         key: const ValueKey('draft_compatibility_store_included'),
-        onPressed: widget.onInformation,
+        onPressed: ZyraTapFeedback.onTap(context, widget.onInformation),
         style: TextButton.styleFrom(
           minimumSize: const Size(44, 44),
           foregroundColor: _accent,
@@ -879,7 +883,7 @@ class _SelectableOffer extends StatelessWidget {
     selected: selected,
     inMutuallyExclusiveGroup: true,
     button: true,
-    onTap: onSelect,
+    onTap: ZyraTapFeedback.onTap(context, onSelect),
     label: [
       offer.quantity,
       ZyraMembershipCatalog.pounds(offer.pricePence),
@@ -889,7 +893,7 @@ class _SelectableOffer extends StatelessWidget {
     child: ExcludeSemantics(
       child: OutlinedButton(
         key: ValueKey('draft_compatibility_store_${offer.id}'),
-        onPressed: onSelect,
+        onPressed: ZyraTapFeedback.onTap(context, onSelect),
         style: OutlinedButton.styleFrom(
           minimumSize: const Size(44, 96),
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),

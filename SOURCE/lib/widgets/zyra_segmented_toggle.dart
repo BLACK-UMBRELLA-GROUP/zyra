@@ -22,6 +22,7 @@
 //  · Unseen counts remain available to accessibility without painting
 //    notification dots. Selection fill, lock icons and swipe motion remain.
 
+import 'zyra_tap_feedback.dart';
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
@@ -175,40 +176,42 @@ class ZyraSegmentedToggle extends StatelessWidget {
     Key? key,
     bool locked,
   ) {
-    return Semantics(
-      label: locked ? '$text, locked, upgrade available' : text,
-      value: badge > 0 ? (badge == 1 ? '1 unseen' : '$badge unseen') : null,
-      button: true,
-      child: GestureDetector(
-        key: key,
-        onTap: onTap,
-        behavior: HitTestBehavior.opaque,
-        child: Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: Text(
-                  text,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: ZyraText.button(
-                    size: labelSize,
-                    color: ZyraColors.ink(0.45 + (0.55 * weight)),
+    return Builder(
+      builder: (context) => Semantics(
+        label: locked ? '$text, locked, upgrade available' : text,
+        value: badge > 0 ? (badge == 1 ? '1 unseen' : '$badge unseen') : null,
+        button: true,
+        child: GestureDetector(
+          key: key,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
+          behavior: HitTestBehavior.opaque,
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Text(
+                    text,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: ZyraText.button(
+                      size: labelSize,
+                      color: ZyraColors.ink(0.45 + (0.55 * weight)),
+                    ),
                   ),
                 ),
-              ),
-              if (locked)
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Icon(
-                    Icons.lock_rounded,
-                    key: ValueKey('segmented-$text-lock'),
-                    size: 11,
-                    color: ZyraColors.journeyGold,
+                if (locked)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5),
+                    child: Icon(
+                      Icons.lock_rounded,
+                      key: ValueKey('segmented-$text-lock'),
+                      size: 11,
+                      color: ZyraColors.journeyGold,
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

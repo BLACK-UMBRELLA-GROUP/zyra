@@ -1,6 +1,7 @@
 // Disposable My ZYRA activity examples. This catalog reads no account data and
 // grants no request, Journey, message, entitlement or notification authority.
 // The protected shell owns selection, lifetime checks and addressed navigation.
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../models/zyra_dashboard_resolution.dart';
@@ -268,7 +269,7 @@ class _ActivityChecklistRow extends StatelessWidget {
     selected: selected,
     checked: viewed,
     label: '$title. ${viewed == true ? 'Viewed. ' : ''}$detail',
-    onTap: onTap,
+    onTap: ZyraTapFeedback.onTap(context, onTap),
     excludeSemantics: true,
     child: Material(
       color: selected ? ZyraColors.surfaceEmphasisFill : Colors.transparent,
@@ -282,7 +283,7 @@ class _ActivityChecklistRow extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 44),
           child: Padding(
@@ -353,16 +354,18 @@ class ZyraMyZyraActivityPreviewBar extends StatelessWidget {
     String label,
     IconData icon,
     VoidCallback callback,
-  ) => TextButton.icon(
-    key: ValueKey('activity-preview-$id'),
-    onPressed: callback,
-    icon: Icon(icon, size: 18),
-    label: Text(label, style: ZyraText.button(size: 11.5)),
-    style: TextButton.styleFrom(
-      foregroundColor: ZyraColors.journeyGold,
-      minimumSize: const Size(44, 44),
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+  ) => Builder(
+    builder: (context) => TextButton.icon(
+      key: ValueKey('activity-preview-$id'),
+      onPressed: ZyraTapFeedback.onTap(context, callback),
+      icon: Icon(icon, size: 18),
+      label: Text(label, style: ZyraText.button(size: 11.5)),
+      style: TextButton.styleFrom(
+        foregroundColor: ZyraColors.journeyGold,
+        minimumSize: const Size(44, 44),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      ),
     ),
   );
 

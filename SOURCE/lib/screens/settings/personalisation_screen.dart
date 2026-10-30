@@ -269,12 +269,7 @@ class _PersonalisationScreenState extends State<PersonalisationScreen>
     if (_previewMode) {
       widget.onHapticChanged!(choice);
     } else {
-      final changed = ZyraInteractionStyle.selectPersonalisationHapticLevel(
-        choice,
-      );
-      if (changed && _current) {
-        ZyraInteractionStyle.emitSelectionHaptic(level: choice);
-      }
+      ZyraInteractionStyle.selectPersonalisationHapticLevel(choice);
       if (mounted && _current) setState(() {});
     }
   }

@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'dart:math' as math;
 import 'dart:ui' show ImageFilter;
 
@@ -266,11 +267,17 @@ class _ZyraScrollableSeekerSelectorState
         button: true,
         selected: position.round() == index,
         excludeSemantics: true,
-        onTap: () => _settle(index, commit: true),
+        onTap: ZyraTapFeedback.onTap(
+          context,
+          () => _settle(index, commit: true),
+        ),
         child: GestureDetector(
           key: widget.segmentKeys[personIndex],
           behavior: HitTestBehavior.opaque,
-          onTap: () => _settle(index, commit: true),
+          onTap: ZyraTapFeedback.onTap(
+            context,
+            () => _settle(index, commit: true),
+          ),
           child: Opacity(
             // Moving edge names fade away instead of leaving a hard-cut peek.
             opacity: visible * visible,

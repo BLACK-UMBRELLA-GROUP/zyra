@@ -208,7 +208,7 @@ void main() {
       semanticTap(tester, 1);
       await tester.pump();
       expect(selected, [1]);
-      expect(selectionTicks(), 1);
+      expect(selectionTicks(), 2);
     } finally {
       handle.dispose();
     }
@@ -230,7 +230,7 @@ void main() {
       semanticTap(tester, 1);
       await tester.pump();
       expect(selected, [1, 1]);
-      expect(selectionTicks(), 1);
+      expect(selectionTicks(), 2);
     } finally {
       handle.dispose();
     }
@@ -509,7 +509,7 @@ void main() {
     await tester.tapAt(dashboard);
     await tester.pump();
 
-    expect(selectionTicks(), 1, reason: 'reselecting the active tab is silent');
+    expect(selectionTicks(), 2, reason: 'each enabled tap has one pulse');
   });
 
   testWidgets('holding inside one action cell does not repeat haptics', (
@@ -529,11 +529,11 @@ void main() {
     await gesture.moveBy(const Offset(-2, 0));
     await tester.pump();
 
-    expect(selectionTicks(), 1);
+    expect(selectionTicks(), 0);
 
     await gesture.up();
     await tester.pump();
-    expect(selectionTicks(), 1);
+    expect(selectionTicks(), 0);
   });
 
   test('each haptic level maps to one honest native semantic', () async {

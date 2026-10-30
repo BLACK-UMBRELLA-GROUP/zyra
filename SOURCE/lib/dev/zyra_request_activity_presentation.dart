@@ -1,5 +1,6 @@
 // Founder-selected Soft cards for caller-owned requests and Introductions.
 // No member reads, preference writes, request decisions or acknowledgement.
+import '../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -176,7 +177,7 @@ class _ZyraRequestActivityPresentationState
       inMutuallyExclusiveGroup: true,
       button: true,
       label: widget.labels[index],
-      onTap: action,
+      onTap: ZyraTapFeedback.onTap(context, action),
       excludeSemantics: true,
       child: Material(
         color: selected
@@ -188,7 +189,7 @@ class _ZyraRequestActivityPresentationState
               ? widget.segmentKeys[index]
               : null,
           borderRadius: radius,
-          onTap: action,
+          onTap: ZyraTapFeedback.onTap(context, action),
           child: Container(
             constraints: const BoxConstraints(minHeight: 44),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
@@ -409,30 +410,33 @@ class ZyraRequestActivityCard extends StatelessWidget {
     enabled: onToggle != null,
     child: InkWell(
       key: headerKey,
-      onTap: onToggle == null
-          ? null
-          : () {
-              if (canInteract?.call() == false) return;
-              onToggle!();
-              if (controller.value != cardId) return;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (!context.mounted ||
-                    controller.value != cardId ||
-                    canInteract?.call() == false) {
-                  return;
-                }
-                unawaited(
-                  Scrollable.ensureVisible(
-                    context,
-                    alignment: 0,
-                    duration: _quietMotion(context)
-                        ? Duration.zero
-                        : const Duration(milliseconds: 240),
-                    curve: Curves.easeOutCubic,
-                  ),
-                );
-              });
-            },
+      onTap: ZyraTapFeedback.onTap(
+        context,
+        onToggle == null
+            ? null
+            : () {
+                if (canInteract?.call() == false) return;
+                onToggle!();
+                if (controller.value != cardId) return;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (!context.mounted ||
+                      controller.value != cardId ||
+                      canInteract?.call() == false) {
+                    return;
+                  }
+                  unawaited(
+                    Scrollable.ensureVisible(
+                      context,
+                      alignment: 0,
+                      duration: _quietMotion(context)
+                          ? Duration.zero
+                          : const Duration(milliseconds: 240),
+                      curve: Curves.easeOutCubic,
+                    ),
+                  );
+                });
+              },
+      ),
       borderRadius: BorderRadius.circular(24),
       child: Padding(
         padding: const EdgeInsets.all(18),
@@ -495,54 +499,56 @@ class ZyraRequestActivityCard extends StatelessWidget {
     }
 
     final onTap = enabled ? invoke : null;
-    return Semantics(
-      button: true,
-      enabled: enabled,
-      label: action.label,
-      onTap: onTap,
-      excludeSemantics: true,
-      child: Material(
-        // The expanded parent already owns the card fill. A second pale
-        // layer used to wash the primary action out; its edge is sufficient.
-        color: Colors.transparent,
-        borderRadius: radius,
-        child: InkWell(
-          key: action.key,
-          onTap: onTap,
+    return Builder(
+      builder: (context) => Semantics(
+        button: true,
+        enabled: enabled,
+        label: action.label,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
+        excludeSemantics: true,
+        child: Material(
+          // The expanded parent already owns the card fill. A second pale
+          // layer used to wash the primary action out; its edge is sufficient.
+          color: Colors.transparent,
           borderRadius: radius,
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 48),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            decoration: BoxDecoration(
-              borderRadius: radius,
-              border: Border.all(
-                color: primary && enabled
-                    ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
-                    : ZyraColors.surfaceBorder,
+          child: InkWell(
+            key: action.key,
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            borderRadius: radius,
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 48),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              decoration: BoxDecoration(
+                borderRadius: radius,
+                border: Border.all(
+                  color: primary && enabled
+                      ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
+                      : ZyraColors.surfaceBorder,
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (action.icon != null) ...[
-                  Icon(
-                    action.icon,
-                    size: 18,
-                    color: enabled ? ZyraColors.foreground : _helperInk,
-                  ),
-                  const SizedBox(width: 8),
-                ],
-                Flexible(
-                  child: Text(
-                    action.label,
-                    textAlign: TextAlign.center,
-                    style: ZyraText.button(
-                      size: 13,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (action.icon != null) ...[
+                    Icon(
+                      action.icon,
+                      size: 18,
                       color: enabled ? ZyraColors.foreground : _helperInk,
                     ),
+                    const SizedBox(width: 8),
+                  ],
+                  Flexible(
+                    child: Text(
+                      action.label,
+                      textAlign: TextAlign.center,
+                      style: ZyraText.button(
+                        size: 13,
+                        color: enabled ? ZyraColors.foreground : _helperInk,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -550,32 +556,34 @@ class ZyraRequestActivityCard extends StatelessWidget {
     );
   }
 
-  Widget _expandedActions() => Padding(
-    padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const SizedBox(height: 8),
-        _button(primary, primary: true),
-        for (final action in actions) ...[
-          const SizedBox(height: 10),
-          _button(action),
-        ],
-        if (onReport != null) ...[
+  Widget _expandedActions() => Builder(
+    builder: (context) => Padding(
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              tooltip: 'Report ${profile.firstName}',
-              onPressed: () {
-                if (canInteract?.call() != false) onReport!();
-              },
-              icon: Icon(Icons.flag_outlined, size: 20, color: _helperInk),
-              constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+          _button(primary, primary: true),
+          for (final action in actions) ...[
+            const SizedBox(height: 10),
+            _button(action),
+          ],
+          if (onReport != null) ...[
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                tooltip: 'Report ${profile.firstName}',
+                onPressed: ZyraTapFeedback.onTap(context, () {
+                  if (canInteract?.call() != false) onReport!();
+                }),
+                icon: Icon(Icons.flag_outlined, size: 20, color: _helperInk),
+                constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+              ),
             ),
-          ),
+          ],
         ],
-      ],
+      ),
     ),
   );
 

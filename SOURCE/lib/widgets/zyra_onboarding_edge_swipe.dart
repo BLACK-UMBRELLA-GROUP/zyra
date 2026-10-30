@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -235,7 +236,7 @@ class _ZyraOnboardingHorizontalSwipeState
 
   @override
   Widget build(BuildContext context) => Semantics(
-    onTap: widget.onTap,
+    onTap: ZyraTapFeedback.onTap(context, widget.onTap),
     onTapHint: widget.onTap == null ? null : widget.onTapHint,
     child: Listener(
       onPointerDown: _onDown,
@@ -245,7 +246,7 @@ class _ZyraOnboardingHorizontalSwipeState
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         excludeFromSemantics: true,
-        onTap: widget.onTap,
+        onTap: ZyraTapFeedback.onTap(context, widget.onTap),
         child: widget.child,
       ),
     ),

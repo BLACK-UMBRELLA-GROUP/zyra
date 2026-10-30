@@ -44,6 +44,7 @@ import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import '../../theme/zyra_interaction_style.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import 'package:flutter/services.dart';
 import '../../data/journey_questions.dart';
@@ -650,7 +651,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
 
   void _selectStageContinue() {
     if (_stageDecision == null || _stageDecisionBusy) return;
-    HapticFeedback.selectionClick();
+    ZyraInteractionStyle.emitSelectionHaptic();
     setState(() => _stageContinueSelected = !_stageContinueSelected);
   }
 
@@ -1033,19 +1034,19 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
 
   void _revealLifeSnapshot() {
     if (!mounted || _lifeSnapshotMineRevealed) return;
-    HapticFeedback.selectionClick();
+    ZyraInteractionStyle.emitSelectionHaptic();
     setState(() => _lifeSnapshotMineRevealed = true);
   }
 
   void _revealGuardianProfiles() {
     if (!mounted || _guardianProfilesMineRevealed) return;
-    HapticFeedback.selectionClick();
+    ZyraInteractionStyle.emitSelectionHaptic();
     setState(() => _guardianProfilesMineRevealed = true);
   }
 
   void _recordGuardianSalam(int guardianIndex) {
     if (!mounted || _guardianSalamIndices.contains(guardianIndex)) return;
-    HapticFeedback.selectionClick();
+    ZyraInteractionStyle.emitSelectionHaptic();
     setState(() {
       _guardianSalamIndices = Set<int>.unmodifiable({
         ..._guardianSalamIndices,

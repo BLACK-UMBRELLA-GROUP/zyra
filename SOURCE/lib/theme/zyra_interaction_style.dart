@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -36,8 +38,35 @@ enum ZyraHapticLevel {
   const ZyraHapticLevel(this.label);
 }
 
+class _SelectionTap {
+  bool cancelled = false;
+}
+
 class ZyraInteractionStyle {
   ZyraInteractionStyle._();
+
+  static final _selectionTap = Object();
+
+  /// A physical or semantic activation owns feedback once, even when shared
+  /// components delegate to another feedback-aware callback asynchronously.
+  static void performSelectionTap(
+    VoidCallback action, {
+    ZyraHapticLevel? level,
+  }) {
+    if (Zone.current[_selectionTap] != null) {
+      action();
+      return;
+    }
+    final tap = _SelectionTap();
+    runZoned(action, zoneValues: {_selectionTap: tap});
+    if (!tap.cancelled) unawaited(emitSelectionHaptic(level: level));
+  }
+
+  /// A retained callback rejected by its owner is no longer an enabled tap.
+  static void cancelSelectionTap() {
+    final tap = Zone.current[_selectionTap];
+    if (tap is _SelectionTap) tap.cancelled = true;
+  }
 
   static const ZyraNavStyle currentDefaultNavStyle = ZyraNavStyle.floatingGlass;
   static const ZyraHapticLevel currentDefaultHapticLevel =
@@ -81,6 +110,7 @@ class ZyraInteractionStyle {
   }
 
   static Future<void> emitSelectionHaptic({ZyraHapticLevel? level}) async {
+    if (Zone.current[_selectionTap] != null) return;
     switch (level ?? hapticLevel) {
       case ZyraHapticLevel.off:
         return;

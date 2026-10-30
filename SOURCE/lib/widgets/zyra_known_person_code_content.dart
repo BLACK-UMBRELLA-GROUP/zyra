@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -287,7 +288,7 @@ class ZyraKnownPersonCodePill extends StatelessWidget {
     borderRadius: BorderRadius.circular(999),
     child: InkWell(
       borderRadius: BorderRadius.circular(999),
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Container(
         constraints: const BoxConstraints(minHeight: 48),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),

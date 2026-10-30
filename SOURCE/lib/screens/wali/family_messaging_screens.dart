@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart' show ScrollDirection;
@@ -1515,7 +1516,10 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
               resizeToAvoidBottomInset: true,
               body: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () => FocusScope.of(context).unfocus(),
+                onTap: ZyraTapFeedback.onTap(
+                  context,
+                  () => FocusScope.of(context).unfocus(),
+                ),
                 child: Container(
                   decoration: ZyraAppGoldDecoration(
                     gradient: ZyraColors.genderGradient(
@@ -1725,7 +1729,7 @@ class _GuardianCircleCard extends StatelessWidget {
     borderRadius: BorderRadius.circular(18),
     child: InkWell(
       borderRadius: BorderRadius.circular(18),
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -1826,11 +1830,11 @@ class _CircleHeader extends StatelessWidget {
               button: true,
               label:
                   'Guardian Circle, $participantCount ${participantCount == 1 ? 'member' : 'members'}, view members',
-              onTap: onShowMembers,
+              onTap: ZyraTapFeedback.onTap(context, onShowMembers),
               excludeSemantics: true,
               child: InkWell(
                 key: const ValueKey('circle_header_members'),
-                onTap: onShowMembers,
+                onTap: ZyraTapFeedback.onTap(context, onShowMembers),
                 borderRadius: BorderRadius.circular(8),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -1976,7 +1980,7 @@ class _CircleMembersSheetState extends State<_CircleMembersSheet> {
                     ),
                     const SizedBox(height: 10),
                     OutlinedButton(
-                      onPressed: _load,
+                      onPressed: ZyraTapFeedback.onTap(context, _load),
                       child: const Text('Try again'),
                     ),
                   ],
@@ -2148,25 +2152,25 @@ class _FamilyMessageBubble extends StatelessWidget {
                                   ? 'Link a Journey'
                                   : 'Change Journey reference',
                             ),
-                            onTap: () {
+                            onTap: ZyraTapFeedback.onTap(context, () {
                               if (current()) {
                                 Navigator.of(
                                   sheetContext,
                                 ).pop(_FamilyMessageAction.linkJourney);
                               }
-                            },
+                            }),
                           ),
                         if (onReport != null)
                           ListTile(
                             leading: const Icon(Icons.flag_outlined),
                             title: const Text('Report this message'),
-                            onTap: () {
+                            onTap: ZyraTapFeedback.onTap(context, () {
                               if (current()) {
                                 Navigator.of(
                                   sheetContext,
                                 ).pop(_FamilyMessageAction.report);
                               }
-                            },
+                            }),
                           ),
                       ],
                     ),
@@ -2429,7 +2433,10 @@ class _Composer extends StatelessWidget {
                 IconButton(
                   key: const ValueKey('circle_remove_pending_discussion_topic'),
                   tooltip: 'Remove Journey',
-                  onPressed: busy ? null : onRemoveDiscussionTopic,
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    busy ? null : onRemoveDiscussionTopic,
+                  ),
                   constraints: const BoxConstraints.tightFor(
                     width: 44,
                     height: 44,
@@ -2463,7 +2470,7 @@ class _Composer extends StatelessWidget {
                 ),
                 IconButton(
                   tooltip: 'Remove person',
-                  onPressed: onRemoveContext,
+                  onPressed: ZyraTapFeedback.onTap(context, onRemoveContext),
                   visualDensity: VisualDensity.compact,
                   icon: Icon(
                     Icons.close_rounded,
@@ -2510,7 +2517,10 @@ class _Composer extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 4),
                         child: IconButton(
                           tooltip: 'Discuss someone',
-                          onPressed: busy ? null : onChooseContext,
+                          onPressed: ZyraTapFeedback.onTap(
+                            context,
+                            busy ? null : onChooseContext,
+                          ),
                           visualDensity: VisualDensity.compact,
                           style: IconButton.styleFrom(
                             backgroundColor: selectedContext == null
@@ -2679,7 +2689,10 @@ class _MessageContextChoice extends StatelessWidget {
     borderRadius: BorderRadius.circular(17),
     child: InkWell(
       borderRadius: BorderRadius.circular(17),
-      onTap: () => Navigator.of(context).pop(item),
+      onTap: ZyraTapFeedback.onTap(
+        context,
+        () => Navigator.of(context).pop(item),
+      ),
       child: Container(
         padding: const EdgeInsets.all(11),
         decoration: BoxDecoration(
@@ -2731,7 +2744,7 @@ class _MessageContextCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(13),
       child: InkWell(
         key: ValueKey('open-message-context-${this.context.referenceId}'),
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         borderRadius: BorderRadius.circular(13),
         child: Container(
           padding: EdgeInsets.symmetric(

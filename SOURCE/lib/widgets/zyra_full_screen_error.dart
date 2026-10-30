@@ -5,6 +5,7 @@
 // stays a ZyraEmptyState. Keeping those three meanings visually distinct is
 // the core of DR-ZYRA-080.
 
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -95,7 +96,10 @@ class ZyraFullScreenError extends StatelessWidget {
                                 height: 54,
                                 child: OutlinedButton.icon(
                                   key: const ValueKey('zyra_error_primary'),
-                                  onPressed: onPrimary,
+                                  onPressed: ZyraTapFeedback.onTap(
+                                    context,
+                                    onPrimary,
+                                  ),
                                   icon: Icon(
                                     kind == ZyraErrorKind.sessionExpired
                                         ? Icons.login_rounded
@@ -120,7 +124,10 @@ class ZyraFullScreenError extends StatelessWidget {
                               const SizedBox(height: 5),
                               TextButton(
                                 key: const ValueKey('zyra_error_secondary'),
-                                onPressed: onSecondary,
+                                onPressed: ZyraTapFeedback.onTap(
+                                  context,
+                                  onSecondary,
+                                ),
                                 child: Text(
                                   content.secondaryLabel,
                                   style: ZyraText.subtext(
@@ -231,7 +238,7 @@ class ZyraCompactRecoverySurface extends StatelessWidget {
                         const SizedBox(height: 18),
                         OutlinedButton(
                           key: primaryKey,
-                          onPressed: onPrimary,
+                          onPressed: ZyraTapFeedback.onTap(context, onPrimary),
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(48, 48),
                             padding: const EdgeInsets.symmetric(
@@ -254,7 +261,10 @@ class ZyraCompactRecoverySurface extends StatelessWidget {
                         const SizedBox(height: 4),
                         TextButton(
                           key: secondaryKey,
-                          onPressed: onSecondary,
+                          onPressed: ZyraTapFeedback.onTap(
+                            context,
+                            onSecondary,
+                          ),
                           style: TextButton.styleFrom(
                             minimumSize: const Size(48, 48),
                             padding: const EdgeInsets.symmetric(

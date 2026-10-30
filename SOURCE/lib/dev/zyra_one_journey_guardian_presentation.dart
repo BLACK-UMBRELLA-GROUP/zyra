@@ -3,6 +3,7 @@
 // private Dashboard/Network layouts below retain their current executable
 // wording and geometry; no account/service singleton is invoked here.
 
+import '../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -458,7 +459,10 @@ class _ZyraOneJourneyGuardianNetworkPresentationState
                   child: GestureDetector(
                     key: const ValueKey('concept_network_seeker'),
                     behavior: HitTestBehavior.opaque,
-                    onTap: widget.onSelectSeeker,
+                    onTap: ZyraTapFeedback.onTap(
+                      context,
+                      widget.onSelectSeeker,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 7, 4, 7),
                       child: Row(
@@ -568,7 +572,7 @@ class _NetworkPortraitCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: onProfile,
+            onTap: ZyraTapFeedback.onTap(context, onProfile),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(42),
               child: Stack(
@@ -759,7 +763,7 @@ class _DashboardStatusCard extends StatelessWidget {
               if (actionLabel != null && onTap != null) ...[
                 const SizedBox(height: 8),
                 TextButton(
-                  onPressed: onTap,
+                  onPressed: ZyraTapFeedback.onTap(context, onTap),
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     minimumSize: const Size(0, 32),
@@ -802,7 +806,7 @@ class _DashboardAttentionCard extends StatelessWidget {
     borderRadius: BorderRadius.circular(14),
     child: InkWell(
       borderRadius: BorderRadius.circular(14),
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(

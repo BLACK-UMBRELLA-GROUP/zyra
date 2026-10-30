@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -263,7 +264,7 @@ class _ManagerHeader extends StatelessWidget {
             child: InkWell(
               key: const ValueKey('guardian-add-top'),
               customBorder: const CircleBorder(),
-              onTap: onAdd,
+              onTap: ZyraTapFeedback.onTap(context, onAdd),
               child: SizedBox.square(
                 dimension: 48,
                 child: Center(
@@ -308,7 +309,7 @@ class _HeaderCircleAction extends StatelessWidget {
   Widget build(BuildContext context) => Tooltip(
     message: label,
     child: IconButton(
-      onPressed: onTap,
+      onPressed: ZyraTapFeedback.onTap(context, onTap),
       icon: Icon(icon, color: ZyraColors.foreground),
       style: IconButton.styleFrom(
         backgroundColor: ZyraColors.iconButtonBg,
@@ -363,7 +364,7 @@ class _ManagerGuardianCard extends StatelessWidget {
           : ZyraColors.surfaceFill,
       borderRadius: BorderRadius.circular(24),
       child: InkWell(
-        onTap: onOpen,
+        onTap: ZyraTapFeedback.onTap(context, onOpen),
         borderRadius: BorderRadius.circular(24),
         child: Container(
           padding: const EdgeInsets.all(17),
@@ -1153,7 +1154,7 @@ class _ManageActionButton extends StatelessWidget {
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         borderRadius: BorderRadius.circular(16),
         child: Container(
           constraints: BoxConstraints(minHeight: compact ? 42 : 49),
@@ -1852,7 +1853,7 @@ class _JourneyAccessSummary extends StatelessWidget {
                     Flexible(
                       flex: 2,
                       child: TextButton(
-                        onPressed: onRetry,
+                        onPressed: ZyraTapFeedback.onTap(context, onRetry),
                         child: const Text('Try again'),
                       ),
                     ),
@@ -2206,14 +2207,14 @@ class _JourneyPermissionCircle extends StatelessWidget {
       button: true,
       toggled: value,
       enabled: change != null,
-      onTap: toggle,
+      onTap: ZyraTapFeedback.onTap(context, toggle),
       excludeSemantics: true,
       child: Material(
         color: Colors.transparent,
         shape: const CircleBorder(),
         child: InkWell(
           customBorder: const CircleBorder(),
-          onTap: toggle,
+          onTap: ZyraTapFeedback.onTap(context, toggle),
           child: SizedBox.square(
             dimension: 44,
             child: Center(
@@ -2260,7 +2261,7 @@ class _CompactZyraSwitch extends StatelessWidget {
         child: Switch(
           key: switchKey,
           value: value,
-          onChanged: onChanged,
+          onChanged: ZyraTapFeedback.onChanged(context, onChanged),
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           activeThumbColor: ZyraColors.journeyGold,
           activeTrackColor: ZyraColors.actionFill.withValues(alpha: 0.46),
@@ -2591,7 +2592,10 @@ class _GuardianHistoryConsentControlState
                 visualDensity: VisualDensity.compact,
                 iconSize: 19,
                 color: ZyraColors.ink(0.58),
-                onPressed: boundGuardianCallback(_showExplanation),
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  boundGuardianCallback(_showExplanation),
+                ),
                 icon: const Icon(Icons.info_outline_rounded),
               ),
               const SizedBox(width: 4),

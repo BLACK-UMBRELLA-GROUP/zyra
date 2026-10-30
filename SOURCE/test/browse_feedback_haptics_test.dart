@@ -196,7 +196,7 @@ void main() {
       expectOneTick();
       expect(_currentId(tester), _sara);
       expect(_browse(tester).selectedIndex, index);
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       await tester.pump(const Duration(seconds: 1));
       expectOneTick();
       calls.clear();
@@ -222,7 +222,7 @@ void main() {
     await _tap(tester, 'concept_previous_profile');
     expectOneTick();
     expect(_currentId(tester), _sara);
-    expect(find.text('Journey invitation sent'), findsNothing);
+    expect(find.text('Request sent'), findsNothing);
   });
 
   testWidgets(
@@ -256,31 +256,30 @@ void main() {
     },
   );
 
-  testWidgets(
-    'photo change emits one tick; same index and stale delegates do not',
-    (tester) async {
-      await _mount(tester);
-      final pager = _key('concept_browse_photo_swipe_$_sara');
-      calls.clear();
-      await tester.drag(pager, const Offset(-300, 0));
-      await tester.pumpAndSettle();
-      expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
-      expectOneTick();
-      final repeat = tester.widget<PageView>(pager).onPageChanged!;
-      calls.clear();
-      repeat(1);
-      await tester.pumpAndSettle();
-      expect(haptics(), isEmpty);
-      expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
-      await _tap(tester, 'concept_next_profile');
-      expectOneTick();
-      calls.clear();
-      repeat(0);
-      await tester.pumpAndSettle();
-      expect(haptics(), isEmpty);
-      expect(_currentId(tester), 'draft-aisha');
-    },
-  );
+  testWidgets('photo swipes, same index and stale delegates are silent', (
+    tester,
+  ) async {
+    await _mount(tester);
+    final pager = _key('concept_browse_photo_swipe_$_sara');
+    calls.clear();
+    await tester.drag(pager, const Offset(-300, 0));
+    await tester.pumpAndSettle();
+    expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
+    expect(haptics(), isEmpty);
+    final repeat = tester.widget<PageView>(pager).onPageChanged!;
+    calls.clear();
+    repeat(1);
+    await tester.pumpAndSettle();
+    expect(haptics(), isEmpty);
+    expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
+    await _tap(tester, 'concept_next_profile');
+    expectOneTick();
+    calls.clear();
+    repeat(0);
+    await tester.pumpAndSettle();
+    expect(haptics(), isEmpty);
+    expect(_currentId(tester), 'draft-aisha');
+  });
 
   testWidgets(
     'Off keeps valid Browse actions functional and completely silent',
@@ -288,7 +287,7 @@ void main() {
       ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.off);
       await _mount(tester);
       await _tap(tester, 'draft_profile_$_sara');
-      expect(find.text('Journey invitation sent'), findsOneWidget);
+      expect(find.text('Request sent'), findsOneWidget);
       await _tap(tester, 'draft_profile_$_sara');
       expect(find.text('Request a Journey'), findsOneWidget);
       await _tap(tester, 'concept_next_profile');
@@ -353,7 +352,7 @@ void main() {
       expect(_currentId(tester), 'draft-aisha');
       expect(_key('concept_browse_options_navigation'), findsNothing);
       expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
-      expect(find.text('Journey invitation sent'), findsNothing);
+      expect(find.text('Request sent'), findsNothing);
     },
   );
 
@@ -376,7 +375,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(haptics(), isEmpty);
     expect(_currentId(tester), _sara);
-    expect(find.text('Journey invitation sent'), findsNothing);
+    expect(find.text('Request sent'), findsNothing);
   });
 
   testWidgets('an incoming request has no enabled request or native feedback', (
@@ -393,7 +392,7 @@ void main() {
     await _tap(tester, 'draft_profile_draft-amira');
     expect(haptics(), isEmpty);
     expect(_currentId(tester), 'draft-amira');
-    expect(find.text('Journey invitation sent'), findsNothing);
+    expect(find.text('Request sent'), findsNothing);
     expect(
       tester
           .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))

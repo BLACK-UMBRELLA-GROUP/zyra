@@ -1,3 +1,5 @@
+import '../../widgets/zyra_tap_feedback.dart';
+import '../../theme/zyra_interaction_style.dart';
 import 'dart:typed_data';
 
 import 'package:crop_your_image/crop_your_image.dart';
@@ -58,6 +60,7 @@ class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
     if (_canUse && !_busy) {
       Navigator.of(context).pop();
     } else if (mounted) {
+      ZyraInteractionStyle.cancelSelectionTap();
       setState(() {});
     }
   };
@@ -80,6 +83,7 @@ class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
   bool _checkCurrent() {
     if (_canUse) return true;
     if (mounted) setState(() {});
+    ZyraInteractionStyle.cancelSelectionTap();
     return false;
   }
 
@@ -305,7 +309,10 @@ class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
             Expanded(
               child: OutlinedButton.icon(
                 key: const ValueKey('photo-crop-rotate'),
-                onPressed: _busy ? null : _rotate,
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  _busy ? null : _rotate,
+                ),
                 icon: const Icon(Icons.rotate_90_degrees_cw_outlined),
                 label: const Text('Rotate'),
               ),
@@ -314,7 +321,10 @@ class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
             Expanded(
               child: OutlinedButton.icon(
                 key: const ValueKey('photo-crop-reset'),
-                onPressed: _busy ? null : _resetCrop,
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  _busy ? null : _resetCrop,
+                ),
                 icon: const Icon(Icons.refresh),
                 label: const Text('Reset'),
               ),
@@ -326,7 +336,10 @@ class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
           width: double.infinity,
           child: FilledButton(
             key: const ValueKey('photo-crop-confirm'),
-            onPressed: !_ready || _busy ? null : _confirmCrop,
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              !_ready || _busy ? null : _confirmCrop,
+            ),
             child: _busy
                 ? const SizedBox(
                     width: 18,
@@ -370,7 +383,10 @@ class _Header extends StatelessWidget {
         if (!preview)
           IconButton(
             tooltip: 'Cancel photo editing',
-            onPressed: enabled ? onCancel : null,
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              enabled ? onCancel : null,
+            ),
             icon: const Icon(Icons.close, color: Colors.white),
           ),
         if (!preview) const SizedBox(width: 4),

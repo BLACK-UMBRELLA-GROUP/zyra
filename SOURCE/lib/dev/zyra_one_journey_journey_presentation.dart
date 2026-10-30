@@ -1,5 +1,6 @@
 // Current Journey presentation with caller-owned, disposable local actions.
 // No JourneyFlowScreen, transport, member singleton or preference mutation.
+import '../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -314,7 +315,7 @@ class _LocalRoundAction extends StatelessWidget {
     button: true,
     enabled: onTap != null,
     label: label,
-    onTap: onTap,
+    onTap: ZyraTapFeedback.onTap(context, onTap),
     excludeSemantics: true,
     child: Opacity(
       opacity: onTap == null ? 0.45 : 1,
@@ -322,7 +323,7 @@ class _LocalRoundAction extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(28),
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
             child: Column(
@@ -474,7 +475,10 @@ class _ZyraConceptJourneyPresentationState
                           IconButton(
                             key: const ValueKey('concept_journey_back'),
                             tooltip: 'Back',
-                            onPressed: widget.onBack,
+                            onPressed: ZyraTapFeedback.onTap(
+                              context,
+                              widget.onBack,
+                            ),
                             icon: Icon(
                               Icons.arrow_back_ios_new,
                               color: ZyraColors.ink(0.70),
@@ -591,7 +595,10 @@ class ZyraConceptJourneyRibbon extends StatelessWidget {
                 : 'Stage ${candidate.order}: ${candidate.label}',
             child: InkResponse(
               key: ValueKey('concept_journey_stage_${candidate.value}'),
-              onTap: walked ? () => onCompletedStageTap(candidate.order) : null,
+              onTap: ZyraTapFeedback.onTap(
+                context,
+                walked ? () => onCompletedStageTap(candidate.order) : null,
+              ),
               radius: 15,
               child: SizedBox(
                 width: 20,
@@ -1214,7 +1221,10 @@ class ZyraConceptJourneyDecisionPresentation extends StatelessWidget {
                     label: 'Return to the completed stage',
                     child: InkWell(
                       borderRadius: BorderRadius.circular(16),
-                      onTap: busy ? null : onBack,
+                      onTap: ZyraTapFeedback.onTap(
+                        context,
+                        busy ? null : onBack,
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 14),
                         child: Column(
@@ -1507,7 +1517,7 @@ class _CompletedStage extends StatelessWidget {
                   stage.kind == ZyraStageKind.sustained) ...[
                 const SizedBox(height: 8),
                 TextButton(
-                  onPressed: onTimeline,
+                  onPressed: ZyraTapFeedback.onTap(context, onTimeline),
                   child: Text(
                     'Read this stage in your Timeline',
                     style: ZyraText.subtext(
@@ -1533,12 +1543,12 @@ class _UpCue extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     button: true,
     label: label,
-    onTap: onTap,
+    onTap: ZyraTapFeedback.onTap(context, onTap),
     excludeSemantics: true,
     child: Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         excludeFromSemantics: true,
         borderRadius: BorderRadius.circular(16),
         child: Padding(
@@ -1589,12 +1599,12 @@ class _DownCue extends StatelessWidget {
       button: true,
       enabled: onTap != null,
       label: label,
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       excludeSemantics: true,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           excludeFromSemantics: true,
           borderRadius: BorderRadius.circular(18),
           child: Padding(
@@ -1751,7 +1761,7 @@ class _DecisionAction extends StatelessWidget {
     child: Material(
       type: MaterialType.transparency,
       child: InkWell(
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: Container(
           height: 54,
           decoration: BoxDecoration(

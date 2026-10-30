@@ -25,6 +25,7 @@
 // This safety action still calls the Block service, never personal Hide.
 // Complete cross-surface server denial is tracked separately under OA305.
 
+import 'zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -557,13 +558,16 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
                     child: SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: _submitting
-                            ? null
-                            : _reportStored
-                            ? _retryHideAfterReport
-                            : _selected == null
-                            ? null
-                            : _submitReport,
+                        onPressed: ZyraTapFeedback.onTap(
+                          context,
+                          _submitting
+                              ? null
+                              : _reportStored
+                              ? _retryHideAfterReport
+                              : _selected == null
+                              ? null
+                              : _submitReport,
+                        ),
                         child: _submitting
                             ? SizedBox(
                                 width: 18,
@@ -584,13 +588,16 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
                   ),
                   SizedBox(height: 6),
                   TextButton(
-                    onPressed: _submitting
-                        ? null
-                        : () {
-                            if (_canAct && !_submitting) {
-                              Navigator.of(context).pop(false);
-                            }
-                          },
+                    onPressed: ZyraTapFeedback.onTap(
+                      context,
+                      _submitting
+                          ? null
+                          : () {
+                              if (_canAct && !_submitting) {
+                                Navigator.of(context).pop(false);
+                              }
+                            },
+                    ),
                     child: Text('Cancel', style: ZyraText.subtext(size: 13)),
                   ),
                 ],
@@ -651,7 +658,10 @@ class _ReportSentConfirmation extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: retryingHide ? null : onRetryHide,
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  retryingHide ? null : onRetryHide,
+                ),
                 child: retryingHide
                     ? const SizedBox(
                         width: 18,
@@ -693,7 +703,7 @@ class _ReasonTile extends StatelessWidget {
       child: Column(
         children: [
           GestureDetector(
-            onTap: enabled ? onTap : null,
+            onTap: ZyraTapFeedback.onTap(context, enabled ? onTap : null),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -841,7 +851,7 @@ class _BlockOnlyRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: enabled ? onTap : null,
+      onTap: ZyraTapFeedback.onTap(context, enabled ? onTap : null),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
@@ -923,7 +933,10 @@ class _HideConfirmation extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   key: const ValueKey('report-hide-cancel'),
-                  onPressed: enabled ? onCancel : null,
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    enabled ? onCancel : null,
+                  ),
                   child: const Text('Cancel'),
                 ),
               ),
@@ -931,7 +944,10 @@ class _HideConfirmation extends StatelessWidget {
               Expanded(
                 child: FilledButton(
                   key: const ValueKey('report-hide-confirm'),
-                  onPressed: enabled ? onConfirm : null,
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    enabled ? onConfirm : null,
+                  ),
                   child: const Text('Confirm'),
                 ),
               ),

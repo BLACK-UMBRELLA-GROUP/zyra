@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import '../data/zyra_membership_catalog.dart';
@@ -464,11 +465,11 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
                 alignment: Alignment.centerLeft,
                 child: TextButton(
                   key: const ValueKey('quiet-index-mark-read'),
-                  onPressed: () {
+                  onPressed: ZyraTapFeedback.onTap(context, () {
                     if (current() && !fixtureMode) {
                       widget.onMarkAllNotificationsRead!();
                     }
-                  },
+                  }),
                   child: Text(
                     'Mark all read',
                     style: ZyraText.body(
@@ -740,7 +741,10 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
           expanded: expanded,
           child: TextButton(
             key: ValueKey('quiet-index-disclosure-${card.id}'),
-            onPressed: () => kit.onEvidence(card.id),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              () => kit.onEvidence(card.id),
+            ),
             style: TextButton.styleFrom(
               foregroundColor: MyZyraDesignKit.secondary,
               minimumSize: const Size(48, 48),

@@ -6,6 +6,7 @@
 // in the active Journey. Main-only attention and decision states stay out of
 // the neutral Additional section.
 
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
@@ -823,7 +824,7 @@ class _SeekersHeader extends StatelessWidget {
             child: InkWell(
               key: const ValueKey('guardian-seeker-add-top'),
               customBorder: const CircleBorder(),
-              onTap: onAdd,
+              onTap: ZyraTapFeedback.onTap(context, onAdd),
               child: SizedBox.square(
                 dimension: 48,
                 child: Center(

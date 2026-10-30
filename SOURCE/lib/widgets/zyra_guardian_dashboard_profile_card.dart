@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../models/seeker_profile.dart';
@@ -121,9 +122,10 @@ class GuardianDashboardProfileCard extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton(
               key: ValueKey('guardian-dashboard-view-profile-${person.id}'),
-              onPressed: detailsLoading || details == null
-                  ? null
-                  : onViewProfile,
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                detailsLoading || details == null ? null : onViewProfile,
+              ),
               style: TextButton.styleFrom(
                 foregroundColor: ZyraColors.journeyGold,
                 disabledForegroundColor: ZyraColors.ink(.36),

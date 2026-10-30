@@ -1,4 +1,5 @@
 // Compact current-theme local choices; no preferences or member authority.
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -34,7 +35,7 @@ class ZyraConceptPreviewChoice extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           borderRadius: BorderRadius.circular(14),
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 44),

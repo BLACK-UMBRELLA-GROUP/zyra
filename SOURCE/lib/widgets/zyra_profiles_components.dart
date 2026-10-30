@@ -1,4 +1,5 @@
 // Shared current Profiles presentation. No account, permission or navigation authority.
+import 'zyra_tap_feedback.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -54,85 +55,90 @@ Widget zyraProfilesPill({
   bool previewEnabledAppearance = false,
   bool? invitationSent,
   double minimumHeight = 48,
-}) => Semantics(
-  button: true,
-  enabled: onTap != null,
-  label:
-      semanticLabel ??
-      (invitationSent == true ? '$label. Tap to cancel invitation' : label),
-  onTap: onTap,
-  excludeSemantics: true,
-  child: ZyraPressFeedback(
-    enabled: primary && onTap != null,
-    child: Material(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(999),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(
-            color: primary
-                ? ZyraColors.journeyGold.withValues(
-                    alpha: invitationSent == true ? .85 : .55,
-                  )
-                : ZyraColors.surfaceBorder,
+}) => Builder(
+  builder: (context) => Semantics(
+    button: true,
+    enabled: onTap != null,
+    label:
+        semanticLabel ??
+        (invitationSent == true ? '$label. Tap to cancel invitation' : label),
+    onTap: ZyraTapFeedback.onTap(context, onTap),
+    excludeSemantics: true,
+    child: ZyraPressFeedback(
+      enabled: primary && onTap != null,
+      child: Material(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(999),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: primary
+                  ? ZyraColors.journeyGold.withValues(
+                      alpha: invitationSent == true ? .85 : .55,
+                    )
+                  : ZyraColors.surfaceBorder,
+            ),
           ),
-        ),
-        child: InkWell(
-          key: key,
-          onTap: onTap,
-          excludeFromSemantics: true,
-          borderRadius: BorderRadius.circular(999),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: 48, minHeight: minimumHeight),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: icon == null ? 10 : 8,
-                vertical: 8,
+          child: InkWell(
+            key: key,
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            excludeFromSemantics: true,
+            borderRadius: BorderRadius.circular(999),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: 48,
+                minHeight: minimumHeight,
               ),
-              child: Center(
-                child: icon == null
-                    ? invitationSent != null
-                          ? ZyraInvitationLabel(
-                              label: label,
-                              sent: invitationSent,
-                              style: zyraProfilesActionStyle(
-                                color: ZyraColors.ink(
-                                  onTap == null && !previewEnabledAppearance
-                                      ? .34
-                                      : .90,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: icon == null ? 10 : 8,
+                  vertical: 8,
+                ),
+                child: Center(
+                  child: icon == null
+                      ? invitationSent != null
+                            ? ZyraInvitationLabel(
+                                label: label,
+                                sent: invitationSent,
+                                style: zyraProfilesActionStyle(
+                                  color: ZyraColors.ink(
+                                    onTap == null && !previewEnabledAppearance
+                                        ? .34
+                                        : .90,
+                                  ),
                                 ),
-                              ),
-                            )
-                          : Text(
-                              label,
-                              textAlign: TextAlign.center,
-                              style: primary
-                                  ? zyraProfilesActionStyle(
-                                      color: ZyraColors.ink(
-                                        onTap == null &&
-                                                !previewEnabledAppearance
-                                            ? .34
-                                            : .90,
+                              )
+                            : Text(
+                                label,
+                                textAlign: TextAlign.center,
+                                style: primary
+                                    ? zyraProfilesActionStyle(
+                                        color: ZyraColors.ink(
+                                          onTap == null &&
+                                                  !previewEnabledAppearance
+                                              ? .34
+                                              : .90,
+                                        ),
+                                      )
+                                    : ZyraText.button(
+                                        size: 12.5,
+                                        color: ZyraColors.ink(
+                                          onTap == null &&
+                                                  !previewEnabledAppearance
+                                              ? .34
+                                              : .90,
+                                        ),
                                       ),
-                                    )
-                                  : ZyraText.button(
-                                      size: 12.5,
-                                      color: ZyraColors.ink(
-                                        onTap == null &&
-                                                !previewEnabledAppearance
-                                            ? .34
-                                            : .90,
-                                      ),
-                                    ),
-                            )
-                    : Icon(
-                        icon,
-                        size: iconSize,
-                        color: onTap == null && !previewEnabledAppearance
-                            ? ZyraColors.ink(.34)
-                            : ZyraColors.journeyGold,
-                      ),
+                              )
+                      : Icon(
+                          icon,
+                          size: iconSize,
+                          color: onTap == null && !previewEnabledAppearance
+                              ? ZyraColors.ink(.34)
+                              : ZyraColors.journeyGold,
+                        ),
+                ),
               ),
             ),
           ),
@@ -209,19 +215,21 @@ class ZyraProfilesRequestRow extends StatelessWidget {
     required VoidCallback? onTap,
     required Widget child,
     bool primary = false,
-  }) => Semantics(
-    button: true,
-    enabled: onTap != null,
-    label: label,
-    onTap: onTap,
-    excludeSemantics: true,
-    child: ZyraPressFeedback(
-      enabled: primary && onTap != null,
-      child: InkWell(
-        key: key,
-        onTap: onTap,
-        excludeFromSemantics: true,
-        child: Center(child: child),
+  }) => Builder(
+    builder: (context) => Semantics(
+      button: true,
+      enabled: onTap != null,
+      label: label,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
+      excludeSemantics: true,
+      child: ZyraPressFeedback(
+        enabled: primary && onTap != null,
+        child: InkWell(
+          key: key,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
+          excludeFromSemantics: true,
+          child: Center(child: child),
+        ),
       ),
     ),
   );

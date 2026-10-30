@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -93,6 +94,13 @@ class EditPhotosScreen extends StatefulWidget {
 }
 
 class _EditPhotosScreenState extends State<EditPhotosScreen> {
+  final _feedbackContextKey = GlobalKey();
+  BuildContext get _feedbackContext =>
+      _feedbackContextKey.currentContext ?? context;
+  ZyraHapticLevel get _feedbackLevel => _previewMode
+      ? widget.hapticLevel ?? ZyraInteractionStyle.currentDefaultHapticLevel
+      : ZyraInteractionStyle.hapticLevel;
+
   // Keep the existing six-photo preview validation for retained galleries.
   // New additions in this editor stop at five; no saved photo is discarded.
   static const int _maximumPhotos = 6;
@@ -259,6 +267,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
   }
 
   void _hideRevokedPreview() {
+    ZyraInteractionStyle.cancelSelectionTap();
     if (mounted && _previewMode) setState(() {});
   }
 
@@ -483,14 +492,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       return false;
     }
     setState(() => _working = false);
-    unawaited(
-      ZyraInteractionStyle.emitSelectionHaptic(
-        level: _previewMode
-            ? widget.hapticLevel ??
-                  ZyraInteractionStyle.currentDefaultHapticLevel
-            : null,
-      ),
-    );
+
     return true;
   }
 
@@ -674,7 +676,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       return;
     }
     final confirmed = await showZyraGlassChoice(
-      context: context,
+      context: _feedbackContext,
       icon: Icons.delete_outline,
       title: 'Remove this photo?',
       body: index == 0
@@ -743,12 +745,15 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       });
       final reviewed = await Navigator.of(context).push<List<Uint8List>>(
         MaterialPageRoute(
-          builder: (_) => PhotoCropReviewScreen(
-            photos: [source],
-            preview: _previewMode,
-            gender: _previewGender,
-            canAct: () => _ownerCanAct,
-            canActChanges: _previewMode ? null : _ordinaryOwnerAvailable,
+          builder: (_) => InheritedTheme.captureAll(
+            _feedbackContext,
+            PhotoCropReviewScreen(
+              photos: [source],
+              preview: _previewMode,
+              gender: _previewGender,
+              canAct: () => _ownerCanAct,
+              canActChanges: _previewMode ? null : _ordinaryOwnerAvailable,
+            ),
           ),
         ),
       );
@@ -848,162 +853,177 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     if ((_previewMode && !_ownerCanAct) || widget._preview != _previewMode) {
       return const SizedBox.expand(key: ValueKey('photos-preview-unavailable'));
     }
-    final page = SafeArea(
-      child: Column(
-        children: [
-          Padding(
-            padding: _previewMode
-                ? const EdgeInsets.fromLTRB(20, 16, 20, 8)
-                : const EdgeInsets.fromLTRB(12, 8, 20, 8),
-            child: Row(
-              children: [
-                if (!_previewMode)
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-                    color: ZyraColors.foreground,
-                    tooltip: 'Back',
-                    onPressed: _working
-                        ? null
-                        : () {
-                            if (_canUse) Navigator.of(context).pop();
-                          },
-                  ),
-                if (!_previewMode) const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    'Photos',
-                    key: const ValueKey('photos-title'),
-                    style: ZyraText.heading(size: _previewMode ? 28 : 20),
-                  ),
-                ),
-                IconButton(
-                  key: const ValueKey('photos-compact-toggle'),
-                  tooltip: _compactView ? 'Show large photos' : 'Manage photos',
-                  onPressed: _working || _photos.isEmpty
-                      ? null
-                      : () {
-                          if (!_canUse) {
-                            _hideRevokedPreview();
-                            return;
-                          }
-                          setState(() {
-                            _compactView = !_compactView;
-                            _compactSelected = _currentPage.clamp(
-                              0,
-                              _photos.isEmpty ? 0 : _photos.length - 1,
-                            );
-                          });
-                        },
-                  icon: _NineDotGridIcon(
-                    active: _compactView,
-                    enabled: !_working && _photos.isNotEmpty,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (_error != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
-              child: ZyraErrorBanner(
-                message: _error!,
-                onDismiss: () {
-                  if (_canUse) {
-                    setState(() => _error = null);
-                  } else {
-                    _hideRevokedPreview();
-                  }
-                },
-              ),
-            ),
-          Expanded(
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 280),
-                    switchInCurve: Curves.easeOutCubic,
-                    switchOutCurve: Curves.easeInCubic,
-                    transitionBuilder: (child, animation) => FadeTransition(
-                      opacity: animation,
-                      child: SlideTransition(
-                        position:
-                            Tween<Offset>(
-                              begin: const Offset(0.035, 0),
-                              end: Offset.zero,
-                            ).animate(
-                              CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeOutCubic,
-                              ),
-                            ),
-                        child: child,
+    final page = ZyraTapFeedback(
+      level: () => _feedbackLevel,
+      canAct: () => mounted,
+      child: Builder(
+        key: _feedbackContextKey,
+        builder: (context) => SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: _previewMode
+                    ? const EdgeInsets.fromLTRB(20, 16, 20, 8)
+                    : const EdgeInsets.fromLTRB(12, 8, 20, 8),
+                child: Row(
+                  children: [
+                    if (!_previewMode)
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+                        color: ZyraColors.foreground,
+                        tooltip: 'Back',
+                        onPressed: ZyraTapFeedback.onTap(
+                          context,
+                          _working
+                              ? null
+                              : () {
+                                  if (_canUse) Navigator.of(context).pop();
+                                },
+                        ),
+                      ),
+                    if (!_previewMode) const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        'Photos',
+                        key: const ValueKey('photos-title'),
+                        style: ZyraText.heading(size: _previewMode ? 28 : 20),
                       ),
                     ),
-                    child: _loading
-                        ? const Center(
-                            key: ValueKey('photos-loading'),
-                            child: ZyraLoading(),
-                          )
-                        : _photos.isEmpty
-                        ? _PhotoEmptyState(
-                            key: const ValueKey('photos-empty'),
-                            working: _working,
-                            onAdd: _addPhoto,
-                          )
-                        : _compactView
-                        ? _CompactPhotoView(
-                            key: const ValueKey('photos-compact-view'),
-                            photos: _photos,
-                            selected: _compactSelected,
-                            maximumPhotos: _maximumNewPhotos,
-                            working: _working,
-                            onSelected: (index) {
-                              if (_canUse) {
-                                setState(() => _compactSelected = index);
-                              } else {
-                                _hideRevokedPreview();
-                              }
-                            },
-                            onAdd: _addPhoto,
-                            onMakeMain: () => _makeMain(_compactSelected),
-                          )
-                        : _PhotoGallery(
-                            key: const ValueKey('photos-large-view'),
-                            photos: _photos,
-                            controller: _pageController,
-                            selected: _currentPage,
-                            working: _working,
-                            canAdd: _photos.length < _maximumNewPhotos,
-                            onAdd: _addPhoto,
-                            onChanged: (index) {
-                              if (!_canUse) return;
-                              setState(() {
-                                _currentPage = index;
-                                _compactSelected = index.clamp(
-                                  0,
-                                  _photos.length - 1,
-                                );
-                              });
-                            },
-                            onEdit: _editPhoto,
-                            onRemove: _removePhoto,
-                            onAdjustAvatar: _adjustAvatar,
-                            onMakeMain: _makeMain,
-                          ),
+                    IconButton(
+                      key: const ValueKey('photos-compact-toggle'),
+                      tooltip: _compactView
+                          ? 'Show large photos'
+                          : 'Manage photos',
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        _working || _photos.isEmpty
+                            ? null
+                            : () {
+                                if (!_canUse) {
+                                  _hideRevokedPreview();
+                                  return;
+                                }
+                                setState(() {
+                                  _compactView = !_compactView;
+                                  _compactSelected = _currentPage.clamp(
+                                    0,
+                                    _photos.isEmpty ? 0 : _photos.length - 1,
+                                  );
+                                });
+                              },
+                      ),
+                      icon: _NineDotGridIcon(
+                        active: _compactView,
+                        enabled: !_working && _photos.isNotEmpty,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (_error != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
+                  child: ZyraErrorBanner(
+                    message: _error!,
+                    onDismiss: () {
+                      if (_canUse) {
+                        setState(() => _error = null);
+                      } else {
+                        _hideRevokedPreview();
+                      }
+                    },
                   ),
                 ),
-                if (_working && _progressLabel != null)
-                  Positioned(
-                    left: 20,
-                    right: 20,
-                    bottom: 20,
-                    child: _WorkingPill(label: _progressLabel!),
-                  ),
-              ],
-            ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 280),
+                        switchInCurve: Curves.easeOutCubic,
+                        switchOutCurve: Curves.easeInCubic,
+                        transitionBuilder: (child, animation) => FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position:
+                                Tween<Offset>(
+                                  begin: const Offset(0.035, 0),
+                                  end: Offset.zero,
+                                ).animate(
+                                  CurvedAnimation(
+                                    parent: animation,
+                                    curve: Curves.easeOutCubic,
+                                  ),
+                                ),
+                            child: child,
+                          ),
+                        ),
+                        child: _loading
+                            ? const Center(
+                                key: ValueKey('photos-loading'),
+                                child: ZyraLoading(),
+                              )
+                            : _photos.isEmpty
+                            ? _PhotoEmptyState(
+                                key: const ValueKey('photos-empty'),
+                                working: _working,
+                                onAdd: _addPhoto,
+                              )
+                            : _compactView
+                            ? _CompactPhotoView(
+                                key: const ValueKey('photos-compact-view'),
+                                photos: _photos,
+                                selected: _compactSelected,
+                                maximumPhotos: _maximumNewPhotos,
+                                working: _working,
+                                onSelected: (index) {
+                                  if (_canUse) {
+                                    setState(() => _compactSelected = index);
+                                  } else {
+                                    _hideRevokedPreview();
+                                  }
+                                },
+                                onAdd: _addPhoto,
+                                onMakeMain: () => _makeMain(_compactSelected),
+                              )
+                            : _PhotoGallery(
+                                key: const ValueKey('photos-large-view'),
+                                photos: _photos,
+                                controller: _pageController,
+                                selected: _currentPage,
+                                working: _working,
+                                canAdd: _photos.length < _maximumNewPhotos,
+                                onAdd: _addPhoto,
+                                onChanged: (index) {
+                                  if (!_canUse) return;
+                                  setState(() {
+                                    _currentPage = index;
+                                    _compactSelected = index.clamp(
+                                      0,
+                                      _photos.length - 1,
+                                    );
+                                  });
+                                },
+                                onEdit: _editPhoto,
+                                onRemove: _removePhoto,
+                                onAdjustAvatar: _adjustAvatar,
+                                onMakeMain: _makeMain,
+                              ),
+                      ),
+                    ),
+                    if (_working && _progressLabel != null)
+                      Positioned(
+                        left: 20,
+                        right: 20,
+                        bottom: 20,
+                        child: _WorkingPill(label: _progressLabel!),
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
     if (_previewMode && _embedded) {
@@ -1116,7 +1136,7 @@ class _AddPhotoPage extends StatelessWidget {
       label: 'Add a new photo',
       button: true,
       enabled: onAdd != null,
-      onTap: onAdd,
+      onTap: ZyraTapFeedback.onTap(context, onAdd),
       child: ExcludeSemantics(
         child: Material(
           color: ZyraColors.surfaceFill,
@@ -1124,7 +1144,7 @@ class _AddPhotoPage extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             key: const ValueKey('photos-add-page-action'),
-            onTap: onAdd,
+            onTap: ZyraTapFeedback.onTap(context, onAdd),
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(26),
@@ -1344,7 +1364,7 @@ class _RevealedPhotoActions extends StatelessWidget {
         Expanded(
           child: OutlinedButton.icon(
             key: ValueKey('adjust-photo-$index'),
-            onPressed: onEdit,
+            onPressed: ZyraTapFeedback.onTap(context, onEdit),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               foregroundColor: ZyraColors.foreground,
@@ -1362,7 +1382,10 @@ class _RevealedPhotoActions extends StatelessWidget {
             key: isMainPhoto
                 ? const ValueKey('adjust-main-avatar')
                 : ValueKey('make-main-revealed-$index'),
-            onPressed: isMainPhoto ? onAdjustAvatar : onMakeMain,
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              isMainPhoto ? onAdjustAvatar : onMakeMain,
+            ),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
               foregroundColor: ZyraColors.foreground,
@@ -1387,7 +1410,7 @@ class _RevealedPhotoActions extends StatelessWidget {
             message: 'Delete photo',
             child: OutlinedButton(
               key: ValueKey('remove-photo-$index'),
-              onPressed: onRemove,
+              onPressed: ZyraTapFeedback.onTap(context, onRemove),
               style: OutlinedButton.styleFrom(
                 padding: EdgeInsets.zero,
                 foregroundColor: ZyraColors.destructive,
@@ -1552,7 +1575,10 @@ class _CompactPhotoView extends StatelessWidget {
                     key: ValueKey('make-main-$selected'),
                     width: double.infinity,
                     child: FilledButton(
-                      onPressed: working ? null : onMakeMain,
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        working ? null : onMakeMain,
+                      ),
                       child: const Text('Make main photo'),
                     ),
                   ),
@@ -1585,7 +1611,10 @@ class _CompactPhotoTile extends StatelessWidget {
     label: index == 0 ? 'Main photo' : 'Select photo ${index + 1}',
     child: GestureDetector(
       key: ValueKey('compact-photo-$index'),
-      onTap: working ? null : () => onSelected(index),
+      onTap: ZyraTapFeedback.onTap(
+        context,
+        working ? null : () => onSelected(index),
+      ),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
         clipBehavior: Clip.antiAlias,
@@ -1648,7 +1677,7 @@ class _CompactAddTile extends StatelessWidget {
     child: InkWell(
       key: ValueKey('compact-add-$index'),
       borderRadius: BorderRadius.circular(17),
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Ink(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(17),

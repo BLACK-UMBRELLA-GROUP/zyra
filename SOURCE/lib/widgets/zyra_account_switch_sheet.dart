@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -85,7 +86,10 @@ class ZyraAccountSwitchScreen extends StatelessWidget {
                   IconButton(
                     key: const ValueKey('switch-account-back'),
                     tooltip: 'Back',
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: ZyraTapFeedback.onTap(
+                      context,
+                      () => Navigator.of(context).pop(),
+                    ),
                     icon: Icon(Icons.chevron_left, color: ZyraColors.ink(0.70)),
                   ),
                   Expanded(
@@ -189,7 +193,7 @@ class ZyraAccountSwitchButton extends StatelessWidget {
       label: 'Switch Account',
       child: OutlinedButton.icon(
         key: const ValueKey('switch-account-button'),
-        onPressed: onPressed,
+        onPressed: ZyraTapFeedback.onTap(context, onPressed),
         icon: const Icon(Icons.swap_horiz_rounded, size: 16),
         label: Text('Switch', style: ZyraText.subtext(size: 11.5)),
         style: OutlinedButton.styleFrom(
@@ -225,7 +229,7 @@ class _AccountOption extends StatelessWidget {
         color: ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           borderRadius: BorderRadius.circular(16),
           child: Opacity(
             opacity: contentOpacity,

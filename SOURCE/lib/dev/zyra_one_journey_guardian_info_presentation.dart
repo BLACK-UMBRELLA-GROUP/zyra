@@ -1,4 +1,5 @@
 // LOCK 3: local Founder preview education, using current Profiles components.
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
@@ -139,12 +140,15 @@ class _ZyraGuardianInfoPresentationState
                       child: LayoutBuilder(
                         builder: (context, constraints) => GestureDetector(
                           behavior: HitTestBehavior.opaque,
-                          onTapUp: (details) => _move(
-                            index +
-                                (details.localPosition.dx >=
-                                        constraints.maxWidth / 2
-                                    ? 1
-                                    : -1),
+                          onTapUp: ZyraTapFeedback.onChanged(
+                            context,
+                            (details) => _move(
+                              index +
+                                  (details.localPosition.dx >=
+                                          constraints.maxWidth / 2
+                                      ? 1
+                                      : -1),
+                            ),
                           ),
                           child: ZyraProfilesDetailsContent(
                             scrollKey: ValueKey('guardian_info_scroll_$index'),

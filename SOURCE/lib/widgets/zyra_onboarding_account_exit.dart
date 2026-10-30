@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -220,7 +221,10 @@ class _ZyraOnboardingAccountExitState extends State<ZyraOnboardingAccountExit> {
       children: [
         TextButton(
           key: const ValueKey('onboarding_account_exit'),
-          onPressed: _busy || _superseded ? null : _confirmAndLeave,
+          onPressed: ZyraTapFeedback.onTap(
+            context,
+            _busy || _superseded ? null : _confirmAndLeave,
+          ),
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
           ),

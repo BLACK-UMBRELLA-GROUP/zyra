@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_card_metrics.dart';
@@ -105,7 +106,10 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     key: const ValueKey('request_capacity_continue'),
-                    onPressed: canContinue ? onContinue : null,
+                    onPressed: ZyraTapFeedback.onTap(
+                      context,
+                      canContinue ? onContinue : null,
+                    ),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(48, 52),
                       padding: const EdgeInsets.symmetric(
@@ -139,7 +143,7 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                   Center(
                     child: TextButton(
                       key: const ValueKey('request_capacity_cancel'),
-                      onPressed: onCancel,
+                      onPressed: ZyraTapFeedback.onTap(context, onCancel),
                       style: TextButton.styleFrom(
                         minimumSize: const Size(48, 44),
                         padding: const EdgeInsets.symmetric(
@@ -189,7 +193,7 @@ class _CapacityRow extends StatelessWidget {
       value: subtitle,
       checked: selected,
       inMutuallyExclusiveGroup: true,
-      onTap: select,
+      onTap: ZyraTapFeedback.onTap(context, select),
       excludeSemantics: true,
       child: Material(
         color: ZyraColors.surfaceFill,
@@ -201,7 +205,7 @@ class _CapacityRow extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: select,
+          onTap: ZyraTapFeedback.onTap(context, select),
           borderRadius: radius,
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 48),

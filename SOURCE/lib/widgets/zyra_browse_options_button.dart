@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../models/seeker_profile.dart';
@@ -120,7 +121,7 @@ class _ZyraBrowseOptionsButtonState extends State<ZyraBrowseOptionsButton>
       tooltip: name == null || name.isEmpty
           ? 'Profiles options'
           : 'Profiles options for $name',
-      onPressed: () => open(person),
+      onPressed: ZyraTapFeedback.onTap(context, () => open(person)),
       color: ZyraColors.journeyGold,
       constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
       padding: widget.alignToContentEdge

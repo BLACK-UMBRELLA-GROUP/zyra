@@ -3,6 +3,7 @@
 // and reused for Chapter 2's "About You" half of each topic). Keeps one
 // well-tested renderer instead of one bespoke screen per question.
 
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import '../../models/onboarding_question.dart';
 import '../../theme/zyra_colors.dart';
@@ -128,7 +129,7 @@ class _OptionButton extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(14),
-            onTap: onTap,
+            onTap: ZyraTapFeedback.onTap(context, onTap),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: Row(

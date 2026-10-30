@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -194,34 +195,36 @@ class ZyraDraftJourneyEndPresentation extends StatelessWidget {
     bool destructive = false,
   }) {
     final color = destructive ? ZyraColors.destructive : ZyraColors.foreground;
-    return OutlinedButton(
-      key: ValueKey(id),
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        minimumSize: const Size(48, 52),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-        foregroundColor: color,
-        disabledForegroundColor: ZyraColors.foregroundMuted.withValues(
-          alpha: .5,
+    return Builder(
+      builder: (context) => OutlinedButton(
+        key: ValueKey(id),
+        onPressed: ZyraTapFeedback.onTap(context, onPressed),
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size(48, 52),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+          foregroundColor: color,
+          disabledForegroundColor: ZyraColors.foregroundMuted.withValues(
+            alpha: .5,
+          ),
+          backgroundColor: destructive
+              ? ZyraColors.destructive.withValues(alpha: .08)
+              : ZyraColors.surfaceEmphasisFill,
+          side: BorderSide(
+            color: destructive
+                ? ZyraColors.destructiveBorder
+                : ZyraColors.surfaceEmphasisBorder,
+          ),
+          shape: const StadiumBorder(),
         ),
-        backgroundColor: destructive
-            ? ZyraColors.destructive.withValues(alpha: .08)
-            : ZyraColors.surfaceEmphasisFill,
-        side: BorderSide(
-          color: destructive
-              ? ZyraColors.destructiveBorder
-              : ZyraColors.surfaceEmphasisBorder,
-        ),
-        shape: const StadiumBorder(),
-      ),
-      child: Text(
-        label,
-        textAlign: TextAlign.center,
-        style: ZyraText.button(
-          size: 14,
-          color: onPressed == null
-              ? ZyraColors.foregroundMuted.withValues(alpha: .5)
-              : color,
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: ZyraText.button(
+            size: 14,
+            color: onPressed == null
+                ? ZyraColors.foregroundMuted.withValues(alpha: .5)
+                : color,
+          ),
         ),
       ),
     );

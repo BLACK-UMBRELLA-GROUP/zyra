@@ -43,6 +43,7 @@ Future<void> _mount(WidgetTester tester, Widget body) async {
           size: Size(393, 852),
           padding: EdgeInsets.only(top: 44, bottom: 34),
           disableAnimations: true,
+          accessibleNavigation: true,
         ),
         child: child!,
       ),
@@ -100,13 +101,9 @@ Future<void> _tapNavigation(WidgetTester tester, String label) async {
   final navigation = tester.widget<ZyraShellNavigation>(finder);
   final index = navigation.items.indexWhere((item) => item.label == label);
   expect(index, greaterThanOrEqualTo(0));
-  final icon = find.descendant(
-    of: finder,
-    matching: find.byIcon(navigation.items[index].icon),
-  );
-  expect(icon, findsOneWidget);
-  // The canonical pill recognizer owns input, not the IgnorePointer icon.
-  await tester.tapAt(tester.getCenter(icon));
+  final cell = _key('floating-nav-item-$index');
+  expect(cell, findsOneWidget);
+  await tester.tapAt(tester.getCenter(cell));
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
 }
@@ -114,10 +111,12 @@ Future<void> _tapNavigation(WidgetTester tester, String label) async {
 Future<void> _chooseLocalHaptic(
   WidgetTester tester,
   ZyraHapticLevel level,
+  List<MethodCall> calls,
 ) async {
   await _tapNavigation(tester, 'Profile');
   await _tap(tester, 'concept_personalisation');
   await _tap(tester, 'personalisation_haptic');
+  calls.clear();
   await tester.tap(
     find.descendant(
       of: find.byType(ZyraPersonalisationChoiceSheet<ZyraHapticLevel>),
@@ -125,6 +124,16 @@ Future<void> _chooseLocalHaptic(
     ),
   );
   await tester.pumpAndSettle();
+  expect(
+    _vibrations(calls),
+    switch (level) {
+      ZyraHapticLevel.off => <Object?>[],
+      ZyraHapticLevel.subtle => <Object?>['HapticFeedbackType.selectionClick'],
+      ZyraHapticLevel.strong => <Object?>['HapticFeedbackType.heavyImpact'],
+      _ => throw StateError('Unconfigured fixture'),
+    },
+    reason: 'the haptic chooser emits the newly selected level exactly once',
+  );
   expect(
     find.descendant(
       of: _key('personalisation_haptic'),
@@ -166,7 +175,11 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
-  for (final level in [ZyraHapticLevel.off, ZyraHapticLevel.strong]) {
+  for (final level in [
+    ZyraHapticLevel.off,
+    ZyraHapticLevel.subtle,
+    ZyraHapticLevel.strong,
+  ]) {
     testWidgets(
       '${level.label} locally governs photo, tab and Browse action feedback without preference writes',
       (tester) async {
@@ -183,11 +196,30 @@ void main() {
         addTearDown(() => ZyraLocalPrefs.bindAccount(null));
         final expected = level == ZyraHapticLevel.off
             ? <Object?>[]
-            : <Object?>['HapticFeedbackType.heavyImpact'];
+            : <Object?>[
+                level == ZyraHapticLevel.subtle
+                    ? 'HapticFeedbackType.selectionClick'
+                    : 'HapticFeedbackType.heavyImpact',
+              ];
         final network = _NoNetwork();
         await HttpOverrides.runWithHttpOverrides(() async {
           await _mountShell(tester);
-          await _chooseLocalHaptic(tester, level);
+          await _chooseLocalHaptic(tester, level, calls);
+          for (final tab in [
+            'Journey',
+            'My ZYRA',
+            'Guardian',
+            'Profile',
+            'Profiles',
+          ]) {
+            calls.clear();
+            await _tapNavigation(tester, tab);
+            expect(
+              _vibrations(calls),
+              expected,
+              reason: '$tab root tap at ${level.label}',
+            );
+          }
           final browse = tester.widget<ZyraOneJourneyBrowseDesigns>(
             find.byType(ZyraOneJourneyBrowseDesigns),
           );
@@ -204,12 +236,12 @@ void main() {
           );
           expect(pager.controller!.page, 1);
 
-          // Finger paging uses the same feedback seam as tap advancement.
+          // Photo swipes are silent; feedback belongs to discrete taps.
           calls.clear();
           await tester.drag(photo, const Offset(260, 0));
           await tester.pumpAndSettle();
           expect(pager.controller!.page, 0);
-          expect(_vibrations(calls), expected);
+          expect(_vibrations(calls), isEmpty);
 
           calls.clear();
           await _tapNavigation(tester, 'My ZYRA');
@@ -222,7 +254,7 @@ void main() {
           );
           calls.clear();
           await _tapNavigation(tester, 'My ZYRA');
-          expect(_vibrations(calls), isEmpty);
+          expect(_vibrations(calls), expected);
 
           await _tapNavigation(tester, 'Profiles');
           await _tap(tester, 'concept_browse_menu');
@@ -268,6 +300,33 @@ void main() {
         });
       },
     );
+  }
+
+  for (final level in [ZyraHapticLevel.subtle, ZyraHapticLevel.off]) {
+    testWidgets('Guardian tab roots use ${level.label} once per tap', (
+      tester,
+    ) async {
+      ZyraInteractionStyle.selectHapticLevel(level);
+      await _mount(
+        tester,
+        ZyraOneJourneyConceptShell(
+          canAct: () => true,
+          onExit: () {},
+          initialGuardianRole: true,
+        ),
+      );
+      for (final tab in ['Dashboard', 'Network', 'Seekers', 'Profile']) {
+        calls.clear();
+        await _tapNavigation(tester, tab);
+        expect(
+          _vibrations(calls),
+          level == ZyraHapticLevel.off
+              ? <Object?>[]
+              : <Object?>['HapticFeedbackType.selectionClick'],
+        );
+      }
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
   }
 
   testWidgets(

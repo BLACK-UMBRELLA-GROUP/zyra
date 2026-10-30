@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -30,7 +31,7 @@ class ZyraProfileMembershipRow extends StatelessWidget {
             'Membership, $value, ${isOne ? 'manage membership' : 'view membership options'}',
         child: InkWell(
           key: ValueKey(isOne ? 'membership-manage' : 'membership-upgrade'),
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 11),
             child: Row(

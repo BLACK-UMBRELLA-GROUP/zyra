@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../models/zyra_supportive_dashboard.dart';
@@ -104,7 +105,7 @@ class ZyraMyZyraNavigationCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         key: ValueKey('my-zyra-route-${card.id}'),
-        onTap: onOpen,
+        onTap: ZyraTapFeedback.onTap(context, onOpen),
         child: Semantics(
           key: card.hasNewActivity
               ? ValueKey('my-zyra-activity-${card.id}')

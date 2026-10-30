@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -38,7 +39,7 @@ class ZyraOnboardingChoiceCard extends StatelessWidget {
       checked: multiple ? selected : null,
       inMutuallyExclusiveGroup: !multiple,
       label: label,
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       excludeSemantics: true,
       child: AnimatedContainer(
         duration: duration,
@@ -74,7 +75,7 @@ class ZyraOnboardingChoiceCard extends StatelessWidget {
             borderRadius: radius,
             splashFactory: NoSplash.splashFactory,
             highlightColor: ZyraColors.journeyGold.withValues(alpha: .04),
-            onTap: onTap,
+            onTap: ZyraTapFeedback.onTap(context, onTap),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
               child: Row(

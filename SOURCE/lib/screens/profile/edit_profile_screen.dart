@@ -30,6 +30,7 @@
 // was not asked for, and inventing a text editor inside a structural move
 // is how a move becomes a rewrite. It is the obvious next piece.
 
+import '../../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -513,13 +514,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         automaticallyImplyLeading: false,
         leading: Navigator.of(context).canPop()
             ? BackButton(
-                onPressed: () {
+                onPressed: ZyraTapFeedback.onTap(context, () {
                   if (_canUse &&
                       (ModalRoute.of(context)?.isCurrent ?? false) &&
                       Navigator.of(context).canPop()) {
                     Navigator.of(context).pop();
                   }
-                },
+                }),
               )
             : null,
         title: Text('Profile', style: ZyraText.heading(size: 17)),
@@ -562,11 +563,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         if (_currentOwner)
           TextButton(
             key: const ValueKey('edit_profile_restore_retry'),
-            onPressed: () {
+            onPressed: ZyraTapFeedback.onTap(context, () {
               if (_canUse && (ModalRoute.of(context)?.isCurrent ?? false)) {
                 _load();
               }
-            },
+            }),
             child: Text('Try again', style: ZyraText.button(size: 14)),
           ),
       ] else if (_loading)
@@ -608,7 +609,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           alignment: Alignment.centerLeft,
           child: TextButton.icon(
             key: const ValueKey('edit_profile_open_support'),
-            onPressed: _supportCanAct ? _openSupport : null,
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              _supportCanAct ? _openSupport : null,
+            ),
             style: TextButton.styleFrom(
               minimumSize: const Size(44, 48),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -646,7 +650,7 @@ class _CompatibilityRow extends StatelessWidget {
     child: Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         borderRadius: BorderRadius.circular(15),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 14),

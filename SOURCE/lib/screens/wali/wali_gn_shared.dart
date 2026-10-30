@@ -26,6 +26,7 @@
 // GN library" — recorded as a contract amendment, because one screen's
 // file cannot feed two screens.
 
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../models/seeker_profile.dart';
@@ -493,7 +494,10 @@ class _GNSeekerSliderState extends State<GNSeekerSlider> {
                 return InkWell(
                   key: Key('gn-seeker-option-${ward.id}'),
                   borderRadius: BorderRadius.circular(10),
-                  onTap: () => Navigator.of(sheetContext).pop(i),
+                  onTap: ZyraTapFeedback.onTap(
+                    context,
+                    () => Navigator.of(sheetContext).pop(i),
+                  ),
                   child: Semantics(
                     value: incoming > 0
                         ? incoming == 1
@@ -599,7 +603,10 @@ class _GNSeekerSliderState extends State<GNSeekerSlider> {
                 child: GestureDetector(
                   key: const Key('gn-seeker-more'),
                   behavior: HitTestBehavior.opaque,
-                  onTap: () => _showAllSeekers(context),
+                  onTap: ZyraTapFeedback.onTap(
+                    context,
+                    () => _showAllSeekers(context),
+                  ),
                   child: Container(
                     width: 44,
                     height: 40,
@@ -653,7 +660,7 @@ class GNDevChip extends StatelessWidget {
         child: GestureDetector(
           key: const Key('gn-preview-controls'),
           behavior: HitTestBehavior.opaque,
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           child: Container(
             width: 32,
             height: 32,
@@ -829,7 +836,7 @@ class GNActionPill extends StatelessWidget {
       borderRadius: BorderRadius.circular(999),
       child: InkWell(
         borderRadius: BorderRadius.circular(999),
-        onTap: enabled ? onTap : null,
+        onTap: ZyraTapFeedback.onTap(context, enabled ? onTap : null),
         child: Container(
           height: 38,
           decoration: BoxDecoration(
@@ -1014,7 +1021,7 @@ class _GNIncomingCard extends StatelessWidget {
           ),
           SizedBox(height: 8),
           GestureDetector(
-            onTap: onGuardian,
+            onTap: ZyraTapFeedback.onTap(context, onGuardian),
             child: Text(
               '${family.guardianLabel} · ✓ verified · View Guardian ›',
               style: ZyraText.subtext(size: 10.5, color: gnGold),
@@ -1087,7 +1094,7 @@ class _GNSentCard extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: onWithdraw,
+            onPressed: ZyraTapFeedback.onTap(context, onWithdraw),
             child: Text(
               'Withdraw',
               style: ZyraText.subtext(size: 11, color: ZyraColors.ink(0.54)),
@@ -1322,7 +1329,7 @@ class _GNConnectedCard extends StatelessWidget {
             SizedBox(height: 4),
             Center(
               child: TextButton(
-                onPressed: onWithdraw,
+                onPressed: ZyraTapFeedback.onTap(context, onWithdraw),
                 child: Text(
                   'Withdraw — shown only as "No longer active"',
                   style: ZyraText.subtext(
@@ -1829,10 +1836,10 @@ void showGNDevSheet(BuildContext context) {
       builder: (chipContext, setSheet) {
         Widget chip(String label, bool on, VoidCallback onTap) {
           return GestureDetector(
-            onTap: () {
+            onTap: ZyraTapFeedback.onTap(context, () {
               onTap();
               setSheet(() {});
-            },
+            }),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(

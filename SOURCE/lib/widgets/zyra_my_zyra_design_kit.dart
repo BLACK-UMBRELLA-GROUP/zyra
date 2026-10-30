@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../models/zyra_dashboard_resolution.dart';
@@ -465,38 +466,40 @@ class MyZyraDesignKit {
     String? key,
     bool route = false,
     bool? expanded,
-  }) => Semantics(
-    expanded: expanded,
-    child: TextButton(
-      key: key == null ? null : ValueKey(key),
-      onPressed: callback,
-      style: TextButton.styleFrom(
-        foregroundColor: lavender,
-        minimumSize: const Size(48, 48),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-        alignment: Alignment.centerLeft,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: Text(
-              text,
-              style: ZyraText.body(
-                size: 12.5,
-                color: lavender,
-              ).copyWith(height: 1.4),
+  }) => Builder(
+    builder: (context) => Semantics(
+      expanded: expanded,
+      child: TextButton(
+        key: key == null ? null : ValueKey(key),
+        onPressed: ZyraTapFeedback.onTap(context, callback),
+        style: TextButton.styleFrom(
+          foregroundColor: lavender,
+          minimumSize: const Size(48, 48),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+          alignment: Alignment.centerLeft,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(
+                text,
+                style: ZyraText.body(
+                  size: 12.5,
+                  color: lavender,
+                ).copyWith(height: 1.4),
+              ),
             ),
-          ),
-          if (route) ...[
-            const SizedBox(width: 8),
-            const Icon(Icons.arrow_forward_rounded, size: 16),
+            if (route) ...[
+              const SizedBox(width: 8),
+              const Icon(Icons.arrow_forward_rounded, size: 16),
+            ],
+            if (expanded != null) ...[
+              const SizedBox(width: 8),
+              Icon(expanded ? Icons.expand_less : Icons.expand_more, size: 18),
+            ],
           ],
-          if (expanded != null) ...[
-            const SizedBox(width: 8),
-            Icon(expanded ? Icons.expand_less : Icons.expand_more, size: 18),
-          ],
-        ],
+        ),
       ),
     ),
   );

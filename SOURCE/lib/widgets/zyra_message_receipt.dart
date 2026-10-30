@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -60,7 +61,10 @@ class ZyraMessageReceipt extends StatelessWidget {
       child: InkWell(
         key: const ValueKey('message-read-receipt'),
         borderRadius: BorderRadius.circular(18),
-        onTap: readBy.isEmpty ? null : () => _showReaders(context),
+        onTap: ZyraTapFeedback.onTap(
+          context,
+          readBy.isEmpty ? null : () => _showReaders(context),
+        ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 4, 3, 4),
           child: Row(

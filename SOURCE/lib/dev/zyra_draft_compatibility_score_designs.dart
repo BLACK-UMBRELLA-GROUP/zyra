@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -156,7 +157,10 @@ class _ZyraCompatibilityScoreReaderState
       padding: const EdgeInsets.all(12),
       color: ZyraColors.journeyGold,
       disabledColor: _muted.withValues(alpha: .35),
-      onPressed: enabled ? () => _goTo(_page + (previous ? -1 : 1)) : null,
+      onPressed: ZyraTapFeedback.onTap(
+        context,
+        enabled ? () => _goTo(_page + (previous ? -1 : 1)) : null,
+      ),
       icon: Icon(
         previous ? Icons.arrow_back_rounded : Icons.arrow_forward_rounded,
         size: 22,

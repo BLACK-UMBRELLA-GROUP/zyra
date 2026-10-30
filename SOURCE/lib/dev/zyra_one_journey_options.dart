@@ -1,5 +1,6 @@
 // Caller-owned Journey options, either in the original opaque sheet or
 // expanded inside a card. Choosing an option does not itself change a Journey.
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -148,7 +149,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
                   ..._rows,
                   const SizedBox(height: 10),
                   TextButton(
-                    onPressed: onCancel,
+                    onPressed: ZyraTapFeedback.onTap(context, onCancel),
                     child: Text('Cancel', style: ZyraText.button(size: 12)),
                   ),
                 ],
@@ -237,76 +238,78 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
         'Historical Guardian details are available for three months after a Journey ends.',
       _ => detail,
     };
-    return Tooltip(
-      message: explanation,
-      child: InkWell(
-        key: ValueKey('draft_options_${option.name}_$id'),
-        onTap: () => onSelected(option),
-        child: Container(
-          constraints: BoxConstraints(minHeight: inline ? 56 : 62),
-          padding: EdgeInsets.symmetric(vertical: inline ? 5 : 10),
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(color: ZyraColors.ink(.12), width: .6),
+    return Builder(
+      builder: (context) => Tooltip(
+        message: explanation,
+        child: InkWell(
+          key: ValueKey('draft_options_${option.name}_$id'),
+          onTap: ZyraTapFeedback.onTap(context, () => onSelected(option)),
+          child: Container(
+            constraints: BoxConstraints(minHeight: inline ? 56 : 62),
+            padding: EdgeInsets.symmetric(vertical: inline ? 5 : 10),
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: ZyraColors.ink(.12), width: .6),
+              ),
             ),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: option == ZyraConceptJourneyOption.end
-                      ? ZyraColors.destructive.withValues(alpha: .09)
-                      : ZyraColors.ink(.09),
-                  shape: BoxShape.circle,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: option == ZyraConceptJourneyOption.end
+                        ? ZyraColors.destructive.withValues(alpha: .09)
+                        : ZyraColors.ink(.09),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 18,
+                    color: option == ZyraConceptJourneyOption.end
+                        ? ZyraColors.destructive
+                        : locked
+                        ? ZyraColors.ink(.42)
+                        : ZyraColors.foreground,
+                  ),
                 ),
-                child: Icon(
-                  icon,
-                  size: 18,
-                  color: option == ZyraConceptJourneyOption.end
-                      ? ZyraColors.destructive
-                      : locked
-                      ? ZyraColors.ink(.42)
-                      : ZyraColors.foreground,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: ZyraText.button(
-                        size: 13,
-                        color: option == ZyraConceptJourneyOption.end
-                            ? ZyraColors.destructive
-                            : locked
-                            ? ZyraColors.ink(.5)
-                            : ZyraColors.foreground,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: ZyraText.button(
+                          size: 13,
+                          color: option == ZyraConceptJourneyOption.end
+                              ? ZyraColors.destructive
+                              : locked
+                              ? ZyraColors.ink(.5)
+                              : ZyraColors.foreground,
+                        ),
                       ),
-                    ),
-                    if (!inline) ...[
-                      const SizedBox(height: 3),
-                      Text(explanation, style: ZyraText.subtext(size: 10.5)),
+                      if (!inline) ...[
+                        const SizedBox(height: 3),
+                        Text(explanation, style: ZyraText.subtext(size: 10.5)),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Icon(
-                locked ? Icons.lock_outline : Icons.chevron_right,
-                key: locked
-                    ? ValueKey('draft_options_${option.name}_locked_$id')
-                    : null,
-                semanticLabel: locked ? '$title locked' : null,
-                size: 18,
-                color: ZyraColors.ink(.4),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Icon(
+                  locked ? Icons.lock_outline : Icons.chevron_right,
+                  key: locked
+                      ? ValueKey('draft_options_${option.name}_locked_$id')
+                      : null,
+                  semanticLabel: locked ? '$title locked' : null,
+                  size: 18,
+                  color: ZyraColors.ink(.4),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -345,7 +348,7 @@ class ZyraConceptJourneyOptionsButton extends StatelessWidget {
           ),
           child: InkWell(
             borderRadius: BorderRadius.circular(999),
-            onTap: onTap,
+            onTap: ZyraTapFeedback.onTap(context, onTap),
             child: SizedBox(
               width: 36,
               height: 36,

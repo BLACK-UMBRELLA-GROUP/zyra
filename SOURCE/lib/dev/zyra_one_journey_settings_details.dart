@@ -1,6 +1,7 @@
 // Detached Settings click-through content for the protected comparison.
 // Callers own navigation and admission. Nothing here reads an account, device,
 // service or preference, or carries out a security, consent or account action.
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_text.dart';
@@ -156,7 +157,10 @@ class _HiddenProfileCard extends StatelessWidget {
             expanded: expanded,
             child: InkWell(
               key: ValueKey('concept_hidden_profile_unhide_${person.id}'),
-              onTap: expanded ? onCancel : onOpen,
+              onTap: ZyraTapFeedback.onTap(
+                context,
+                expanded ? onCancel : onOpen,
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -242,7 +246,7 @@ class _HiddenProfileCard extends StatelessWidget {
                       foregroundColor: ink,
                       side: BorderSide.none,
                     ),
-                    onPressed: onView,
+                    onPressed: ZyraTapFeedback.onTap(context, onView),
                     child: Row(
                       children: [
                         ExcludeSemantics(
@@ -287,7 +291,7 @@ class _HiddenProfileCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(28),
                       ),
                     ),
-                    onPressed: onConfirm,
+                    onPressed: ZyraTapFeedback.onTap(context, onConfirm),
                     icon: const ExcludeSemantics(
                       child: Icon(Icons.visibility_outlined, size: 18),
                     ),
@@ -305,7 +309,7 @@ class _HiddenProfileCard extends StatelessWidget {
                       minimumSize: const Size(44, 48),
                       foregroundColor: secondary,
                     ),
-                    onPressed: onCancel,
+                    onPressed: ZyraTapFeedback.onTap(context, onCancel),
                     child: Text(
                       'Cancel',
                       style: ZyraText.button(size: 14, color: secondary),
@@ -974,7 +978,7 @@ class _SettingsDestination extends StatelessWidget {
     borderRadius: BorderRadius.circular(18),
     child: InkWell(
       borderRadius: BorderRadius.circular(18),
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
         child: Padding(
@@ -1038,7 +1042,7 @@ class _HelpAction extends StatelessWidget {
     padding: const EdgeInsets.only(top: 12),
     child: OutlinedButton.icon(
       key: ValueKey('concept_settings_help_$id'),
-      onPressed: onHelp,
+      onPressed: ZyraTapFeedback.onTap(context, onHelp),
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(44, 48),
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),

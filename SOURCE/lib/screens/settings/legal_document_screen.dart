@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/zyra_product_telemetry.dart';
@@ -73,7 +74,7 @@ class LegalDocumentScreen extends StatelessWidget {
                   vertical: 14,
                 ),
               ),
-              onPressed: () {
+              onPressed: ZyraTapFeedback.onTap(context, () {
                 if (!context.mounted ||
                     !(ModalRoute.of(context)?.isCurrent ?? false)) {
                   return;
@@ -87,7 +88,7 @@ class LegalDocumentScreen extends StatelessWidget {
                     ),
                   ),
                 );
-              },
+              }),
               icon: const Icon(Icons.help_outline_rounded),
               label: Text(
                 'Open Help & support',

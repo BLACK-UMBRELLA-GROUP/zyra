@@ -47,6 +47,7 @@ import '../widgets/zyra_browse_options_button.dart';
 import '../widgets/zyra_browse_next_photo_motion.dart';
 import '../widgets/zyra_guardian_dashboard_profile_card.dart';
 import '../widgets/zyra_loading.dart';
+import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_glass_dialog.dart';
 import '../widgets/zyra_segmented_toggle.dart';
 import '../widgets/zyra_shell_navigation.dart';
@@ -327,10 +328,23 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   final _circleVisibility = ValueNotifier(false);
+  final _tapContextKey = GlobalKey();
+  BuildContext get _tapContext => _tapContextKey.currentContext ?? context;
 
-  Future<void> _selectionHaptic() => ZyraInteractionStyle.emitSelectionHaptic(
-    level: _accountSession.hapticLevel,
+  VoidCallback? _tap(VoidCallback? action) => ZyraTapFeedback.onTap(
+    context,
+    action,
+    level: () => _accountSession.hapticLevel,
+    canAct: () => _allowed,
   );
+
+  ValueChanged<T>? _tapChange<T>(ValueChanged<T>? action) =>
+      ZyraTapFeedback.onChanged(
+        context,
+        action,
+        level: () => _accountSession.hapticLevel,
+        canAct: () => _allowed,
+      );
 
   bool get _allowed => mounted && widget.canAct();
   String? get _page => _pages.isEmpty ? null : _pages.last;
@@ -1290,9 +1304,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                   : _browseFilter.apply(_model.discoverableProfiles))
               .any((person) => person.id == id));
 
-  void _openBrowseOptions(String? id, {bool feedback = true}) {
+  void _openBrowseOptions(String? id) {
     if (!_canOpenBrowseOptions(id)) return;
-    if (feedback) unawaited(_selectionHaptic());
     _act(() {
       _browseOptionsOpen = true;
       _browseOptionsPersonId = id;
@@ -1326,7 +1339,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         hapticLevel: _accountSession.hapticLevel,
         onCancel: () {
           // The confirmation pill owns this press's single feedback tick.
-          if (current()) _openBrowseOptions(id, feedback: false);
+          if (current()) _openBrowseOptions(id);
         },
         onConfirm: () {
           if (!current() || id == null) return;
@@ -1546,225 +1559,239 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       onNotification: _rootPageScrolled,
       child: content,
     );
-    return ZyraBackNavigationPreview(
-      revision: _uiRevision,
-      child: ZyraDevHoldToOpen(
-        enabled: _canOpenDevControls,
-        identity: (
-          _uiRevision,
-          _tab,
-          _guardianRole,
-          _page,
-          _personId,
-          _devControlsEpoch,
-          devRoutes,
-        ),
-        canOpen: () => _canOpenDevControls && devRoutes == _devRouteStamp,
-        onOpen: _openDevControls,
-        child: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: founderWhite
-              ? SystemUiOverlayStyle.dark
-              : SystemUiOverlayStyle.light,
-          child: PopScope(
-            canPop:
-                !_devControlsVisible &&
-                _pages.isEmpty &&
-                !_browseOptionsOpen &&
-                _expandedJourneyOptionsId == null,
-            onPopInvokedWithResult: (didPop, result) {
-              if (!didPop && _allowed) _back();
-            },
-            child: Scaffold(
-              backgroundColor: founderWhite
-                  ? Colors.white
-                  : ZyraColors.luxuryDarkPurple,
-              extendBody: true,
-              body: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: founderWhite ? Colors.white : null,
-                  gradient: founderWhite
-                      ? null
-                      : _accountSession.palette.gradient,
-                ),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Offstage(
-                      offstage: _devControlsVisible,
-                      child: ExcludeFocus(
-                        excluding: _devControlsVisible,
-                        child: TickerMode(
-                          enabled: !_devControlsVisible,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              if (_gold && !fullPhoto && !founderWhite)
-                                Positioned.fill(
-                                  child: IgnorePointer(
-                                    child: AnimatedBuilder(
-                                      animation: _goldMotion,
-                                      builder: (context, _) => CustomPaint(
-                                        painter: ZyraOnboardingGoldPainter(
-                                          ZyraOnboardingGoldDesign.diagonalDust,
-                                          motion: ZyraOnboardingGoldMotion
-                                              .liveDrift,
-                                          motionValue: _goldMotion.value,
-                                          reducedMotion:
-                                              MediaQuery.disableAnimationsOf(
-                                                context,
-                                              ) ||
-                                              MediaQuery.accessibleNavigationOf(
-                                                context,
-                                              ),
+    return ZyraTapFeedback(
+      level: () => _accountSession.hapticLevel,
+      canAct: () => _allowed,
+      child: Builder(
+        key: _tapContextKey,
+        builder: (context) => ZyraBackNavigationPreview(
+          revision: _uiRevision,
+          child: ZyraDevHoldToOpen(
+            enabled: _canOpenDevControls,
+            identity: (
+              _uiRevision,
+              _tab,
+              _guardianRole,
+              _page,
+              _personId,
+              _devControlsEpoch,
+              devRoutes,
+            ),
+            canOpen: () => _canOpenDevControls && devRoutes == _devRouteStamp,
+            onOpen: _openDevControls,
+            child: AnnotatedRegion<SystemUiOverlayStyle>(
+              value: founderWhite
+                  ? SystemUiOverlayStyle.dark
+                  : SystemUiOverlayStyle.light,
+              child: PopScope(
+                canPop:
+                    !_devControlsVisible &&
+                    _pages.isEmpty &&
+                    !_browseOptionsOpen &&
+                    _expandedJourneyOptionsId == null,
+                onPopInvokedWithResult: (didPop, result) {
+                  if (!didPop && _allowed) _back();
+                },
+                child: Scaffold(
+                  backgroundColor: founderWhite
+                      ? Colors.white
+                      : ZyraColors.luxuryDarkPurple,
+                  extendBody: true,
+                  body: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: founderWhite ? Colors.white : null,
+                      gradient: founderWhite
+                          ? null
+                          : _accountSession.palette.gradient,
+                    ),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Offstage(
+                          offstage: _devControlsVisible,
+                          child: ExcludeFocus(
+                            excluding: _devControlsVisible,
+                            child: TickerMode(
+                              enabled: !_devControlsVisible,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  if (_gold && !fullPhoto && !founderWhite)
+                                    Positioned.fill(
+                                      child: IgnorePointer(
+                                        child: AnimatedBuilder(
+                                          animation: _goldMotion,
+                                          builder: (context, _) => CustomPaint(
+                                            painter: ZyraOnboardingGoldPainter(
+                                              ZyraOnboardingGoldDesign
+                                                  .diagonalDust,
+                                              motion: ZyraOnboardingGoldMotion
+                                                  .liveDrift,
+                                              motionValue: _goldMotion.value,
+                                              reducedMotion:
+                                                  MediaQuery.disableAnimationsOf(
+                                                    context,
+                                                  ) ||
+                                                  MediaQuery.accessibleNavigationOf(
+                                                    context,
+                                                  ),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              if ((_pages.isNotEmpty ||
-                                      _expandedJourneyOptionsId != null) &&
-                                  !_isRetainedAccountPage &&
-                                  _page != 'own_profile_preview' &&
-                                  _page != 'guardian_main_notice')
-                                ZyraPullDownBackScope(
-                                  key: const ValueKey(
-                                    'concept_pull_down_back_scope',
-                                  ),
-                                  // A root card expansion only collapses inline content.
-                                  // The resting close cue belongs to actual pushed pages.
-                                  inlineBackHeader:
-                                      _page == null ||
-                                      _page == 'guardian_invite' ||
-                                      _page == 'guardian_circle',
-                                  paintBackground: !founderWhite,
-                                  returnForegroundColor: founderWhite
-                                      ? ZyraFounderLaunchPageStyle.darkGoldInk
-                                      : null,
-                                  routeIdentity: (
-                                    List<String>.of(_pages).join('/'),
-                                    _tab,
-                                    _guardianRole,
-                                    _personId,
-                                    _uiRevision,
-                                    _expandedJourneyOptionsId,
-                                  ),
-                                  enabled:
-                                      _allowed &&
-                                      !_browseOptionsOpen &&
-                                      _confirmation == null,
-                                  onBack: _bound(() {
-                                    // A sheet can open before the parent rebuilds. Recheck
-                                    // current decision ownership at dispatch, not just build.
-                                    if (!_browseOptionsOpen &&
-                                        !_journeyOptionsOpen &&
-                                        !_capacityConfirmOpen &&
-                                        _confirmation == null) {
-                                      _back();
-                                    }
-                                  }),
-                                  child: ZyraFounderLaunchPageStyle(
-                                    pending: founderPending,
-                                    child: PageStorage(
+                                  if ((_pages.isNotEmpty ||
+                                          _expandedJourneyOptionsId != null) &&
+                                      !_isRetainedAccountPage &&
+                                      _page != 'own_profile_preview' &&
+                                      _page != 'guardian_main_notice')
+                                    ZyraPullDownBackScope(
+                                      key: const ValueKey(
+                                        'concept_pull_down_back_scope',
+                                      ),
+                                      // A root card expansion only collapses inline content.
+                                      // The resting close cue belongs to actual pushed pages.
+                                      inlineBackHeader:
+                                          _page == null ||
+                                          _page == 'guardian_invite' ||
+                                          _page == 'guardian_circle',
+                                      paintBackground: !founderWhite,
+                                      returnForegroundColor: founderWhite
+                                          ? ZyraFounderLaunchPageStyle
+                                                .darkGoldInk
+                                          : null,
+                                      routeIdentity: (
+                                        List<String>.of(_pages).join('/'),
+                                        _tab,
+                                        _guardianRole,
+                                        _personId,
+                                        _uiRevision,
+                                        _expandedJourneyOptionsId,
+                                      ),
+                                      enabled:
+                                          _allowed &&
+                                          !_browseOptionsOpen &&
+                                          _confirmation == null,
+                                      onBack: _bound(() {
+                                        // A sheet can open before the parent rebuilds. Recheck
+                                        // current decision ownership at dispatch, not just build.
+                                        if (!_browseOptionsOpen &&
+                                            !_journeyOptionsOpen &&
+                                            !_capacityConfirmOpen &&
+                                            _confirmation == null) {
+                                          _back();
+                                        }
+                                      }),
+                                      child: ZyraFounderLaunchPageStyle(
+                                        pending: founderPending,
+                                        child: PageStorage(
+                                          bucket: _positions,
+                                          child: rootContent,
+                                        ),
+                                      ),
+                                    )
+                                  else
+                                    PageStorage(
                                       bucket: _positions,
                                       child: rootContent,
                                     ),
-                                  ),
-                                )
-                              else
-                                PageStorage(
-                                  bucket: _positions,
-                                  child: rootContent,
-                                ),
-                              if (_browseOptionsOpen)
-                                Positioned.fill(
-                                  child: GestureDetector(
-                                    key: const ValueKey(
-                                      'concept_browse_options_dismiss',
-                                    ),
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: _bound(() => _act(() {})),
-                                    child: const SizedBox.expand(),
-                                  ),
-                                ),
-                              if (_browseOptionsOpen)
-                                _browseOptionsNavigation()
-                              else if (_page == null)
-                                ValueListenableBuilder<int>(
-                                  valueListenable: _tabBarCollapseRevision,
-                                  builder: (context, collapseRevision, _) =>
-                                      ZyraShellNavigation(
-                                        key: ValueKey((
-                                          'concept_root_navigation',
-                                          _guardianRole,
-                                        )),
-                                        hapticLevel:
-                                            _accountSession.hapticLevel,
-                                        contentEdgeInset: 20,
-                                        compactWhenIdle: true,
-                                        collapseRevision: collapseRevision,
-                                        interactionEnabled:
-                                            _allowed && !_devControlsVisible,
-                                        items: [
-                                          for (var i = 0; i < names.length; i++)
-                                            FloatingNavItem(
-                                              icon: icons[i],
-                                              label: names[i],
-                                              useJourneyGlyph:
-                                                  !_guardianRole && i == 1,
-                                              dot:
-                                                  !_guardianRole &&
-                                                  i == 2 &&
-                                                  _hasNewMyZyraTabActivity,
-                                            ),
-                                        ],
-                                        currentIndex: _tab,
-                                        onTap: (index) {
-                                          if (_allowed &&
-                                              navigationRevision ==
-                                                  _uiRevision &&
-                                              navigationGuardian ==
-                                                  _guardianRole &&
-                                              navigationControlsEpoch ==
-                                                  _devControlsEpoch &&
-                                              devRoutes == _devRouteStamp &&
-                                              (ModalRoute.of(
-                                                    context,
-                                                  )?.isCurrent ??
-                                                  false) &&
-                                              !_devControlsVisible &&
-                                              !_browseOptionsOpen &&
-                                              _page == null) {
-                                            _tabTo(index);
-                                          }
-                                        },
+                                  if (_browseOptionsOpen)
+                                    Positioned.fill(
+                                      child: GestureDetector(
+                                        key: const ValueKey(
+                                          'concept_browse_options_dismiss',
+                                        ),
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: _tap(_bound(() => _act(() {}))),
+                                        child: const SizedBox.expand(),
                                       ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (_devControlsVisible) _devControlsPage(),
-                    if (_notice != null)
-                      Positioned(
-                        left: 20,
-                        right: 48,
-                        bottom: MediaQuery.paddingOf(context).bottom + 82,
-                        child: Semantics(
-                          liveRegion: true,
-                          child: IgnorePointer(
-                            child: Material(
-                              color: ZyraColors.modalSheetSurface,
-                              borderRadius: BorderRadius.circular(14),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: _body(_notice!, small: true),
+                                    ),
+                                  if (_browseOptionsOpen)
+                                    _browseOptionsNavigation()
+                                  else if (_page == null)
+                                    ValueListenableBuilder<int>(
+                                      valueListenable: _tabBarCollapseRevision,
+                                      builder: (context, collapseRevision, _) =>
+                                          ZyraShellNavigation(
+                                            key: ValueKey((
+                                              'concept_root_navigation',
+                                              _guardianRole,
+                                            )),
+                                            hapticLevel:
+                                                _accountSession.hapticLevel,
+                                            contentEdgeInset: 20,
+                                            compactWhenIdle: true,
+                                            collapseRevision: collapseRevision,
+                                            interactionEnabled:
+                                                _allowed &&
+                                                !_devControlsVisible,
+                                            items: [
+                                              for (
+                                                var i = 0;
+                                                i < names.length;
+                                                i++
+                                              )
+                                                FloatingNavItem(
+                                                  icon: icons[i],
+                                                  label: names[i],
+                                                  useJourneyGlyph:
+                                                      !_guardianRole && i == 1,
+                                                  dot:
+                                                      !_guardianRole &&
+                                                      i == 2 &&
+                                                      _hasNewMyZyraTabActivity,
+                                                ),
+                                            ],
+                                            currentIndex: _tab,
+                                            onTap: (index) {
+                                              if (_allowed &&
+                                                  navigationRevision ==
+                                                      _uiRevision &&
+                                                  navigationGuardian ==
+                                                      _guardianRole &&
+                                                  navigationControlsEpoch ==
+                                                      _devControlsEpoch &&
+                                                  devRoutes == _devRouteStamp &&
+                                                  (ModalRoute.of(
+                                                        context,
+                                                      )?.isCurrent ??
+                                                      false) &&
+                                                  !_devControlsVisible &&
+                                                  !_browseOptionsOpen &&
+                                                  _page == null) {
+                                                _tabTo(index);
+                                              }
+                                            },
+                                          ),
+                                    ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-                      ),
-                  ],
+                        if (_devControlsVisible) _devControlsPage(),
+                        if (_notice != null)
+                          Positioned(
+                            left: 20,
+                            right: 48,
+                            bottom: MediaQuery.paddingOf(context).bottom + 82,
+                            child: Semantics(
+                              liveRegion: true,
+                              child: IgnorePointer(
+                                child: Material(
+                                  color: ZyraColors.modalSheetSurface,
+                                  borderRadius: BorderRadius.circular(14),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: _body(_notice!, small: true),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -1788,7 +1815,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 IconButton(
                   key: const ValueKey('dev_controls_close'),
                   tooltip: 'Close developer controls',
-                  onPressed: close,
+                  onPressed: _tap(close),
                   icon: Icon(Icons.close, color: ZyraColors.unlockText),
                 ),
                 Expanded(
@@ -1796,9 +1823,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                     alignment: Alignment.topRight,
                     child: TextButton.icon(
                       key: const ValueKey('draft_close'),
-                      onPressed: _bound(() {
-                        (widget.onDeveloperHome ?? widget.onExit)();
-                      }, developerControl: true),
+                      onPressed: _tap(
+                        _bound(() {
+                          (widget.onDeveloperHome ?? widget.onExit)();
+                        }, developerControl: true),
+                      ),
                       icon: const Icon(Icons.home_outlined, size: 18),
                       label: const Text('Developer Home'),
                     ),
@@ -1911,6 +1940,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           page != _page ||
           tab != _tab ||
           guardian != _guardianRole) {
+        ZyraInteractionStyle.cancelSelectionTap();
         return;
       }
       action();
@@ -1981,7 +2011,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _toggleInvitation(String id) {
     if (!_allowed || !_canToggleInvitation(id)) return;
-    unawaited(_selectionHaptic());
+
     _act(() {
       _seenBrowseProfileIds.add(id);
       if (_model.stateFor(id) == DraftJourneyState.sent) {
@@ -2053,7 +2083,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     _browseSelectionIndex(people);
     final previous = _browseHistory.back();
     if (previous == null) return;
-    unawaited(_selectionHaptic());
+
     _browseIndex = people.indexWhere((person) => person.id == previous);
     _browsePhotoIndices[previous] = 0;
     _browseGalleryIndices[previous] = 0;
@@ -2062,7 +2092,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   void _nextBrowseProfile() {
     final people = _browseFilter.apply(_model.discoverableProfiles);
     if (!_model.canBrowse || people.isEmpty) return;
-    unawaited(_selectionHaptic());
+
     final current = _browseSelectionIndex(people);
     final replay = _browseHistory.forwardReplay();
     if (replay != null) {
@@ -2241,7 +2271,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 .toDouble()
           : 100,
       onFilters: _bound(() {
-        unawaited(_selectionHaptic());
         _open('filters');
       }),
       onBrowseMenu: (profile) {
@@ -2272,7 +2301,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       // Photo browsing stays inside the approved bounded card.
       onProfile: null,
       onRequest: (profile) {
-        if (current(profile)) _toggleInvitation(profile.id);
+        if (!current(profile)) {
+          ZyraInteractionStyle.cancelSelectionTap();
+          return;
+        }
+        _toggleInvitation(profile.id);
       },
     );
   }
@@ -2924,7 +2957,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             !choices.any((choice) => choice.id == id)) {
           return;
         }
-        unawaited(_selectionHaptic());
+
         _act(() => _capacityEndingId = id);
       },
       onContinue:
@@ -2941,7 +2974,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             },
       onCancel: () {
         if (!current() || _capacityConfirmOpen) return;
-        unawaited(_selectionHaptic());
+
         _act(() {
           _pages.removeLast();
           _capacityRequest = null;
@@ -2975,10 +3008,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         ? 'the unavailable Journey'
         : 'your Journey with ${ending.firstName}';
     _capacityConfirmOpen = true;
-    unawaited(_selectionHaptic());
+
     try {
       final confirmed = await showZyraGlassDialog<bool>(
-        context: context,
+        context: _tapContext,
         builder: (dialogContext) {
           void choose(bool value) {
             if (dialogContext.mounted &&
@@ -3008,7 +3041,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                   minimumSize: const Size(0, 48),
                   side: BorderSide(color: ZyraColors.destructive),
                 ),
-                onPressed: () => choose(true),
+                onPressed: _tap(() => choose(true)),
                 child: Text(
                   'End & accept request',
                   style: ZyraText.button(color: ZyraColors.destructive),
@@ -3016,7 +3049,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               ),
               TextButton(
                 key: const ValueKey('request_capacity_keep'),
-                onPressed: () => choose(false),
+                onPressed: _tap(() => choose(false)),
                 child: Text('Keep my Journeys', style: ZyraText.button()),
               ),
             ],
@@ -3147,7 +3180,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _toggleJourneyCardOptions(DraftProfile person) {
     if (!_canExpandJourneyCard(person.id)) return;
-    unawaited(_selectionHaptic());
+
     _act(() {
       _expandedJourneyOptionsId = _expandedJourneyOptionsId == person.id
           ? null
@@ -3187,7 +3220,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       canEnd: state != null && state != DraftJourneyState.ended,
       onSelected: (choice) {
         if (!current()) return;
-        unawaited(_selectionHaptic());
+
         _selectJourneyOption(person, choice);
       },
       onCancel: () {
@@ -3239,7 +3272,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     _journeyOptionsOpen = true;
     try {
       final choice = await showModalBottomSheet<ZyraConceptJourneyOption>(
-        context: context,
+        context: _tapContext,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         barrierColor: Colors.black38,
@@ -3640,12 +3673,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 IconButton(
                   key: const ValueKey('concept_journey_timeline'),
                   tooltip: 'Timeline',
-                  onPressed: _bound(() => _open('timeline')),
+                  onPressed: _tap(_bound(() => _open('timeline'))),
                   icon: const Icon(Icons.history),
                 ),
                 IconButton(
                   tooltip: 'Journey options',
-                  onPressed: _bound(() => _openJourneyOptions(p)),
+                  onPressed: _tap(_bound(() => _openJourneyOptions(p))),
                   icon: const Icon(Icons.more_horiz),
                 ),
               ],
@@ -3667,7 +3700,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       options: IconButton(
         key: const ValueKey('concept_journey_menu'),
         tooltip: 'Journey options',
-        onPressed: _bound(() => _openJourneyOptions(p)),
+        onPressed: _tap(_bound(() => _openJourneyOptions(p))),
         icon: Icon(Icons.more_horiz, color: ZyraColors.foregroundMuted),
       ),
     );
@@ -4042,7 +4075,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             ),
             const SizedBox(height: 20),
             TextButton(
-              onPressed: _bound(() => _open('timeline')),
+              onPressed: _tap(_bound(() => _open('timeline'))),
               child: Text(
                 'Read your story so far',
                 style: ZyraText.subtext(size: 12),
@@ -4212,7 +4245,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     VoidCallback action(bool Function() change) => _bound(() {
       if (current()) {
         _act(() {
-          if (change()) unawaited(_selectionHaptic());
+          change();
         });
       }
     });
@@ -4230,7 +4263,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           ? (type) {
               if (current()) {
                 _act(() {
-                  if (preview.propose(type)) unawaited(_selectionHaptic());
+                  preview.propose(type);
                 });
               }
             }
@@ -4756,7 +4789,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           ? 'You have no Main Guardian yet'
           : '${main.firstName} · ${main.relationshipLabel}',
       canAct: _accountFreshGuard(),
-      onMove: () => unawaited(_selectionHaptic()),
+      onMove: () {},
       onManage: _bound(() => _tabTo(3)),
     );
   }
@@ -5671,7 +5704,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                   if (actionLabel != null && onAction != null) ...[
                     const SizedBox(height: 8),
                     TextButton(
-                      onPressed: onAction,
+                      onPressed: _tap(onAction),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         minimumSize: const Size(0, 32),
@@ -6441,7 +6474,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           !_accountSession.setHapticLevel(level)) {
         return;
       }
-      unawaited(ZyraInteractionStyle.emitSelectionHaptic(level: level));
     }
 
     void goldChanged(bool enabled) {
@@ -6921,9 +6953,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       return _bound(() {
         if (current()) {
           _act(() {
-            if (_compatibilityAccess.unlock(person.id)) {
-              unawaited(_selectionHaptic());
-            }
+            _compatibilityAccess.unlock(person.id);
           });
         }
       });
@@ -7742,7 +7772,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _canViewTimeline(person.id);
     void select(VoidCallback change) {
       if (!current()) return;
-      unawaited(_selectionHaptic());
+
       _act(change);
     }
 
@@ -7814,9 +7844,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           child: Text(choice.$2, style: ZyraText.body(size: 13)),
         ),
     ],
-    onChanged: (choice) {
+    onChanged: _tapChange((choice) {
       if (choice != null) onChanged(choice);
-    },
+    }),
   );
 
   Widget _circleAppearancePicker<T extends Enum>({
@@ -7860,7 +7890,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             child: Text(label(style), style: ZyraText.body(size: 13)),
           ),
       ],
-      onChanged: (style) {
+      onChanged: _tapChange((style) {
         if (style == null ||
             !fresh() ||
             !_hasCircleDiscussionOptions ||
@@ -7869,12 +7899,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             _tab != sourceTab) {
           return;
         }
-        unawaited(_selectionHaptic());
+
         _act(
           () => selected.value = style,
           preserveCircle: sourcePage == 'guardian_circle',
         );
-      },
+      }),
     );
   }
 
@@ -7911,11 +7941,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             child: Text(motion.label, style: ZyraText.body(size: 13)),
           ),
       ],
-      onChanged: (motion) {
+      onChanged: _tapChange((motion) {
         if (motion != null && fresh()) {
           _act(() => _browseNextMotion = motion);
         }
-      },
+      }),
     );
   }
 
@@ -7994,7 +8024,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       selected: selected,
       child: OutlinedButton(
         key: ValueKey(id),
-        onPressed: enabled ? _bound(action) : null,
+        onPressed: _tap(enabled ? _bound(action) : null),
         style: OutlinedButton.styleFrom(
           minimumSize: const Size(44, 44),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -8079,7 +8109,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     bool fitLabel = false,
   }) => OutlinedButton(
     key: ValueKey(id),
-    onPressed: action == null ? null : _bound(action),
+    onPressed: _tap(action == null ? null : _bound(action)),
     style: OutlinedButton.styleFrom(
       minimumSize: const Size(48, 48),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

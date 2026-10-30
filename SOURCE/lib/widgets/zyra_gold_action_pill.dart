@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -71,7 +72,10 @@ class ZyraGoldActionPill extends StatelessWidget {
             ),
             child: InkWell(
               borderRadius: radius,
-              onTap: _enabled ? onPressed : null,
+              onTap: ZyraTapFeedback.onTap(
+                context,
+                _enabled ? onPressed : null,
+              ),
               child: SizedBox(
                 height: 48,
                 child: Padding(

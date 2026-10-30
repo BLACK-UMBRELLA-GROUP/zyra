@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/zyra_colors.dart';
@@ -52,10 +53,13 @@ class LinkGuardianPanel extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(50),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) =>
-                    ZyraCodeScreen(asGuardian: false, onLinked: onLinked),
+            onTap: ZyraTapFeedback.onTap(
+              context,
+              () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) =>
+                      ZyraCodeScreen(asGuardian: false, onLinked: onLinked),
+                ),
               ),
             ),
             child: Center(

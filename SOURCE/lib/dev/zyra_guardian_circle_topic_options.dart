@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -106,7 +107,7 @@ class ZyraCircleDiscussLauncher extends StatelessWidget {
     ),
     child: IconButton(
       tooltip: 'Discuss a Journey',
-      onPressed: onChoose,
+      onPressed: ZyraTapFeedback.onTap(context, onChoose),
       style: IconButton.styleFrom(
         minimumSize: const Size(48, 48),
         padding: const EdgeInsets.all(12),
@@ -237,7 +238,7 @@ class ZyraCircleDiscussionBubble extends StatelessWidget {
               if (onViewJourney != null)
                 OutlinedButton(
                   key: ValueKey('circle_discussion_journey_${topic.id}'),
-                  onPressed: onViewJourney,
+                  onPressed: ZyraTapFeedback.onTap(context, onViewJourney),
                   style: _actionStyle(),
                   child: Text(
                     'View Journey',
@@ -250,7 +251,7 @@ class ZyraCircleDiscussionBubble extends StatelessWidget {
               if (onViewProfile != null)
                 OutlinedButton(
                   key: ValueKey('circle_discussion_profile_${topic.id}'),
-                  onPressed: onViewProfile,
+                  onPressed: ZyraTapFeedback.onTap(context, onViewProfile),
                   style: _actionStyle(),
                   child: Text(
                     'View profile',
@@ -572,7 +573,7 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
           IconButton(
             key: const ValueKey('circle_topic_picker_close'),
             tooltip: 'Close',
-            onPressed: widget.onClose,
+            onPressed: ZyraTapFeedback.onTap(context, widget.onClose),
             icon: Icon(
               Icons.close_rounded,
               color: ZyraColors.journeyGold,
@@ -681,7 +682,10 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
             : ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(13),
         child: InkWell(
-          onTap: enabled ? () => _choose(topic) : null,
+          onTap: ZyraTapFeedback.onTap(
+            context,
+            enabled ? () => _choose(topic) : null,
+          ),
           borderRadius: BorderRadius.circular(13),
           child: Container(
             key: ValueKey(

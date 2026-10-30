@@ -48,6 +48,7 @@ class _Offline extends HttpOverrides {
 class _Fixture extends ChangeNotifier {
   _Fixture({this.guardian = false, this.compact = true});
 
+  ZyraHapticLevel haptic = ZyraHapticLevel.off;
   bool guardian;
   bool compact;
   bool enabled = true;
@@ -114,7 +115,7 @@ Future<void> _mount(WidgetTester tester, _Fixture fixture) async {
                   currentIndex: fixture.selected,
                   onTap: fixture.select,
                   contentEdgeInset: 20,
-                  hapticLevel: ZyraHapticLevel.off,
+                  hapticLevel: fixture.haptic,
                   commitOnRelease: fixture.commitOnRelease,
                   compactWhenIdle: fixture.compact,
                   collapseRevision: fixture.collapseRevision,
@@ -186,15 +187,22 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late HttpOverrides? previousHttp;
   late _Offline offline;
+  final pulses = <Object?>[];
 
   setUp(() {
+    pulses.clear();
     ZyraText.useTestFontStubs = true;
     ZyraInteractionStyle.restoreDefaults();
     previousHttp = HttpOverrides.current;
     offline = _Offline();
     HttpOverrides.global = offline;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(SystemChannels.platform, (_) async => null);
+        .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+          if (call.method == 'HapticFeedback.vibrate') {
+            pulses.add(call.arguments);
+          }
+          return null;
+        });
   });
 
   tearDown(() {
@@ -205,6 +213,37 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
+
+  for (final level in [ZyraHapticLevel.subtle, ZyraHapticLevel.off]) {
+    testWidgets('compact expansion and each accepted tap use ${level.label}', (
+      tester,
+    ) async {
+      final fixture = _Fixture()..haptic = level;
+      await _mount(tester, fixture);
+      final expected = level == ZyraHapticLevel.off
+          ? <Object?>[]
+          : <Object?>['HapticFeedbackType.selectionClick'];
+      await _expand(tester);
+      expect(pulses, expected);
+      pulses.clear();
+      await tester.tapAt(tester.getCenter(_cell(1)));
+      await tester.pump();
+      expect(pulses, expected);
+      pulses.clear();
+      await tester.tapAt(tester.getCenter(_cell(1)));
+      await tester.pump();
+      expect(pulses, expected);
+      pulses.clear();
+      await tester.drag(_surface, const Offset(90, 0));
+      await tester.pump();
+      expect(pulses, isEmpty);
+      fixture.change(() => fixture.enabled = false);
+      await tester.pump();
+      await tester.tapAt(tester.getCenter(_surface));
+      await tester.pump();
+      expect(pulses, isEmpty);
+    });
+  }
 
   for (final guardian in [false, true]) {
     testWidgets(

@@ -10,6 +10,7 @@
 // with a pill button. Visuals copied 1:1 from seeker_wali_tab.dart's
 // _AddGuardianButton(large: true) + its label line.
 
+import 'zyra_tap_feedback.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
@@ -74,7 +75,7 @@ class ZyraErrorBanner extends StatelessWidget {
                 Flexible(
                   flex: 2,
                   child: TextButton(
-                    onPressed: onRetry,
+                    onPressed: ZyraTapFeedback.onTap(context, onRetry),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                     ),
@@ -88,7 +89,7 @@ class ZyraErrorBanner extends StatelessWidget {
                 ),
               if (onDismiss != null)
                 GestureDetector(
-                  onTap: onDismiss,
+                  onTap: ZyraTapFeedback.onTap(context, onDismiss),
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: Icon(
@@ -165,7 +166,7 @@ class ZyraEmptyState extends StatelessWidget {
               FilledButton(
                 // Shared primary geometry, focus/semantics and disabled
                 // state, rather than a small purple gesture-only bubble.
-                onPressed: onCta,
+                onPressed: ZyraTapFeedback.onTap(context, onCta),
                 style: FilledButton.styleFrom(minimumSize: const Size(0, 48)),
                 child: Text(ctaLabel!, style: ZyraText.button(size: 13)),
               ),
@@ -239,7 +240,7 @@ class ZyraAddCircle extends StatelessWidget {
           shape: const CircleBorder(),
           child: InkWell(
             customBorder: const CircleBorder(),
-            onTap: onTap,
+            onTap: ZyraTapFeedback.onTap(context, onTap),
             child: Container(
               width: 74,
               height: 74,

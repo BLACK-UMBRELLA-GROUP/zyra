@@ -23,6 +23,7 @@
 // No value is inferred or preselected. A choice here is a stated preference,
 // so every saved light must come from a deliberate tap.
 
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import '../../models/onboarding_question.dart';
 import '../../theme/zyra_colors.dart';
@@ -228,7 +229,10 @@ class _TrafficLightQuestionScreenState
                 if (showHard && isRed) ...[
                   SizedBox(height: 6),
                   InkWell(
-                    onTap: () => _toggleHardOption(option),
+                    onTap: ZyraTapFeedback.onTap(
+                      context,
+                      () => _toggleHardOption(option),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.only(
                         left: 2,
@@ -331,7 +335,7 @@ class _LightButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(11),
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             constraints: const BoxConstraints(minHeight: 57),

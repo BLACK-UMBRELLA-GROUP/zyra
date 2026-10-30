@@ -9,6 +9,7 @@
 // already have a visible received or pending state. Developer-only addressed
 // invitations remain clearly preview state.
 
+import 'zyra_tap_feedback.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -607,7 +608,7 @@ class _InvitationAction extends StatelessWidget {
     child: Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         borderRadius: BorderRadius.circular(18),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),

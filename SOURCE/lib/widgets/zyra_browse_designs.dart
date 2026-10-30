@@ -4,6 +4,7 @@
 // Photo rendering is required and explicitly supplied by the caller; this
 // widget has no default image provider or ability to fetch a photo.
 
+import 'zyra_tap_feedback.dart';
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -207,9 +208,6 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         index == _galleryIndex(profile)) {
       return;
     }
-    unawaited(
-      ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel),
-    );
     setState(() {
       _galleryIndices[profile.id] = index;
     });
@@ -259,9 +257,12 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
           InkWell(
             key: ValueKey('concept_browse_open_${profile.id}'),
             borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-            onTap: selectOnTap && onProfile != null
-                ? () => onProfile(profile)
-                : null,
+            onTap: ZyraTapFeedback.onTap(
+              context,
+              selectOnTap && onProfile != null
+                  ? () => onProfile(profile)
+                  : null,
+            ),
             child: Padding(
               // Portrait uses the same outer bounds, with the photo filling
               // its former inset.
@@ -325,6 +326,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     return _BrowsePhotoPager(
       key: ValueKey('concept_browse_pager_${profile.id}_detailsFirst'),
       profileId: profile.id,
+      hapticLevel: widget.hapticLevel,
       photoSources: List<String>.unmodifiable(profile.photos),
       photoCount: _galleryPageCount(profile),
       selectedIndex: _galleryIndex(profile),
@@ -392,7 +394,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         IconButton(
           key: const ValueKey('concept_filters'),
           tooltip: 'Profile filters',
-          onPressed: widget.onFilters,
+          onPressed: ZyraTapFeedback.onTap(context, widget.onFilters),
           color: ZyraColors.journeyGold,
           constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
           icon: const Icon(Icons.tune, size: 20),
@@ -718,6 +720,7 @@ class _BrowsePhotoPager extends StatefulWidget {
   const _BrowsePhotoPager({
     super.key,
     required this.profileId,
+    this.hapticLevel,
     required this.photoSources,
     required this.photoCount,
     required this.selectedIndex,
@@ -728,6 +731,7 @@ class _BrowsePhotoPager extends StatefulWidget {
   });
 
   final String profileId;
+  final ZyraHapticLevel? hapticLevel;
   final List<String> photoSources;
   final int photoCount;
   final int selectedIndex;
@@ -953,27 +957,31 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
         key: ValueKey('concept_browse_photo_tap_${widget.profileId}'),
         behavior: HitTestBehavior.opaque,
         excludeFromSemantics: true,
-        onTapUp: advance == null
-            ? null
-            : (details) {
-                if (!mounted ||
-                    revision != _revision ||
-                    !_controller.hasClients) {
-                  return;
-                }
-                final width = _controller.position.viewportDimension;
-                final x = details.localPosition.dx;
-                if (!width.isFinite || width <= 0 || !x.isFinite) return;
-                // Physical halves, not reading direction. Details keeps its
-                // tap-to-photos entry; a photo's left half goes back one page.
-                final isDetailsPage = selected == 0;
-                final direction = !isDetailsPage && x < width / 2 ? -1 : 1;
-                _showPhoto(
-                  (selected + direction) % count,
-                  revision,
-                  cyclicDirection: direction,
-                );
-              },
+        onTapUp: ZyraTapFeedback.onChanged(
+          context,
+          advance == null
+              ? null
+              : (details) {
+                  if (!mounted ||
+                      revision != _revision ||
+                      !_controller.hasClients) {
+                    return;
+                  }
+                  final width = _controller.position.viewportDimension;
+                  final x = details.localPosition.dx;
+                  if (!width.isFinite || width <= 0 || !x.isFinite) return;
+                  // Physical halves, not reading direction. Details keeps its
+                  // tap-to-photos entry; a photo's left half goes back one page.
+                  final isDetailsPage = selected == 0;
+                  final direction = !isDetailsPage && x < width / 2 ? -1 : 1;
+                  _showPhoto(
+                    (selected + direction) % count,
+                    revision,
+                    cyclicDirection: direction,
+                  );
+                },
+          level: widget.hapticLevel == null ? null : () => widget.hapticLevel!,
+        ),
         child: pager,
       );
     }
@@ -984,7 +992,11 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
           ? 'No photos available'
           : 'Photo ${widget.selectedIndex} of ${widget.photoSources.length}',
       button: advance != null,
-      onTap: advance,
+      onTap: ZyraTapFeedback.onTap(
+        context,
+        advance,
+        level: widget.hapticLevel == null ? null : () => widget.hapticLevel!,
+      ),
       hint: widget.photoCount > 1
           ? widget.tapToAdvance
                 ? 'Tap or swipe to view details and photos'

@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -811,7 +812,10 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(relationship.name, style: ZyraText.body(size: 14)),
-                onTap: () => Navigator.of(sheetContext).pop(relationship.code),
+                onTap: ZyraTapFeedback.onTap(
+                  context,
+                  () => Navigator.of(sheetContext).pop(relationship.code),
+                ),
               ),
           ],
         ),
@@ -994,7 +998,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
             SizedBox(
               height: 38,
               child: TextButton(
-                onPressed: _rotate,
+                onPressed: ZyraTapFeedback.onTap(context, _rotate),
                 child: Text('Change code', style: ZyraText.subtext(size: 12)),
               ),
             ),
@@ -1054,7 +1058,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         ),
         if (!_isFounderDemoPreview)
           TextButton(
-            onPressed: _rotate,
+            onPressed: ZyraTapFeedback.onTap(context, _rotate),
             child: Text('Change code', style: ZyraText.subtext(size: 12)),
           ),
       ],
@@ -1123,7 +1127,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         children: [
           InkWell(
             enableFeedback: !_localRequested,
-            onTap: _localBound(_enterCode),
+            onTap: ZyraTapFeedback.onTap(context, _localBound(_enterCode)),
             child: SizedBox(
               height: 64,
               child: Padding(
@@ -1225,7 +1229,10 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
               alignment: Alignment.centerRight,
               child: TextButton.icon(
                 key: const ValueKey('onboarding_dev_skip'),
-                onPressed: _enterGuardianPreview,
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  _enterGuardianPreview,
+                ),
                 icon: const Icon(Icons.skip_next_rounded, size: 17),
                 label: Text(
                   'Skip to Guardian · DEV',
@@ -2014,7 +2021,10 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
                       color: ZyraColors.accentBg,
                       child: InkWell(
                         enableFeedback: !_localRequested,
-                        onTap: _busy ? null : _localBound(_check),
+                        onTap: ZyraTapFeedback.onTap(
+                          context,
+                          _busy ? null : _localBound(_check),
+                        ),
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(
                             minWidth: 96,
@@ -2101,7 +2111,10 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
                   ChoiceChip(
                     label: Text(relationship.name),
                     selected: _relationship == relationship.code,
-                    onSelected: _relationshipSelection(relationship.code),
+                    onSelected: ZyraTapFeedback.onChanged(
+                      context,
+                      _relationshipSelection(relationship.code),
+                    ),
                   ),
               ],
             ),
@@ -2118,10 +2131,13 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => AcceptWaliInviteScreen(
-                    initialCode: _lastInvalidCode ?? _controller.text,
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => AcceptWaliInviteScreen(
+                      initialCode: _lastInvalidCode ?? _controller.text,
+                    ),
                   ),
                 ),
               ),
@@ -2197,7 +2213,7 @@ class _PillAction extends StatelessWidget {
           child: InkWell(
             borderRadius: radius,
             enableFeedback: enableFeedback,
-            onTap: onTap,
+            onTap: ZyraTapFeedback.onTap(context, onTap),
             child: Container(
               constraints: const BoxConstraints(minHeight: 44),
               padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
@@ -2213,7 +2229,7 @@ class _PillAction extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(999),
         enableFeedback: enableFeedback,
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: Container(
           constraints: const BoxConstraints(minHeight: 44),
           padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
@@ -2447,7 +2463,7 @@ class _SmallAction extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(14),
         enableFeedback: enableFeedback,
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
           curve: Curves.easeOutCubic,
@@ -2526,7 +2542,7 @@ class _LargeAction extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
         enableFeedback: enableFeedback,
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: Container(
           height: 64,
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -2604,13 +2620,13 @@ class _RequestCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextButton(
-                    onPressed: onDecline,
+                    onPressed: ZyraTapFeedback.onTap(context, onDecline),
                     child: const Text('Decline'),
                   ),
                 ),
                 Expanded(
                   child: FilledButton(
-                    onPressed: onAccept,
+                    onPressed: ZyraTapFeedback.onTap(context, onAccept),
                     child: const Text('Accept'),
                   ),
                 ),
@@ -2620,7 +2636,7 @@ class _RequestCard extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: onCancel,
+                onPressed: ZyraTapFeedback.onTap(context, onCancel),
                 child: const Text('Cancel request'),
               ),
             ),

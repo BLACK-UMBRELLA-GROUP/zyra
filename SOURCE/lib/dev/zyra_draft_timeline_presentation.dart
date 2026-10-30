@@ -1,5 +1,6 @@
 // Read-only Timeline presentation. Callers supply admitted values and fresh
 // local actions; this widget owns no lookup, disclosure or relationship state.
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../data/zyra_journey_stages.dart';
@@ -143,85 +144,91 @@ class ZyraDraftTimelinePresentation extends StatelessWidget {
 
   Widget _event(ZyraDraftTimelineEntry entry, int index, {required bool last}) {
     final quiet = ZyraTimelineMilestones.isQuiet(entry.type);
-    return KeyedSubtree(
-      key: ValueKey('draft_timeline_event_${entry.type}_$index'),
-      child: _rail(
-        icon: ZyraTimelineMilestones.iconFor(entry.type),
-        last: last,
-        quiet: quiet,
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              entry.invitationAccepted
-                  ? 'Journey invitation accepted'
-                  : ZyraTimelineMilestones.labelFor(entry.type),
-              style: quiet
-                  ? ZyraText.subtext(size: 13)
-                  : ZyraText.body(size: 15),
-            ),
-            if (entry.occurredOn case final date?) ...[
-              const SizedBox(height: 4),
-              Text(dateLabel(date), style: ZyraText.subtext(size: 12)),
-            ],
-            if (entry.type == 'compatibility_revealed' &&
-                (entry.attemptId == null
-                    ? view.compatibilityRevealed && onViewCompatibility != null
-                    : readableCompatibilityAttemptIds.contains(
-                            entry.attemptId,
-                          ) &&
-                          onViewAttemptCompatibility != null))
-              TextButton(
-                key: ValueKey(
-                  entry.attemptId == null
-                      ? 'draft_timeline_compatibility'
-                      : 'draft_timeline_compatibility_${entry.attemptId}',
-                ),
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  alignment: Alignment.centerLeft,
-                  foregroundColor: ZyraColors.journeyGold,
-                ),
-                onPressed: entry.attemptId == null
-                    ? onViewCompatibility
-                    : () => onViewAttemptCompatibility!(entry.attemptId!),
-                child: Text(
-                  'View compatibility',
-                  style: ZyraText.button(
-                    size: 12.5,
-                    color: ZyraColors.journeyGold,
-                  ),
-                ),
+    return Builder(
+      builder: (context) => KeyedSubtree(
+        key: ValueKey('draft_timeline_event_${entry.type}_$index'),
+        child: _rail(
+          icon: ZyraTimelineMilestones.iconFor(entry.type),
+          last: last,
+          quiet: quiet,
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                entry.invitationAccepted
+                    ? 'Journey invitation accepted'
+                    : ZyraTimelineMilestones.labelFor(entry.type),
+                style: quiet
+                    ? ZyraText.subtext(size: 13)
+                    : ZyraText.body(size: 15),
               ),
-            if (entry.showAnswers && entry.type.startsWith('phase_')) ...[
-              const SizedBox(height: 10),
-              if (!entry.answersRevealed)
-                Container(
-                  key: const ValueKey('draft_timeline_answers_locked'),
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: ZyraColors.surfaceFill,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: ZyraColors.surfaceBorder),
+              if (entry.occurredOn case final date?) ...[
+                const SizedBox(height: 4),
+                Text(dateLabel(date), style: ZyraText.subtext(size: 12)),
+              ],
+              if (entry.type == 'compatibility_revealed' &&
+                  (entry.attemptId == null
+                      ? view.compatibilityRevealed &&
+                            onViewCompatibility != null
+                      : readableCompatibilityAttemptIds.contains(
+                              entry.attemptId,
+                            ) &&
+                            onViewAttemptCompatibility != null))
+                TextButton(
+                  key: ValueKey(
+                    entry.attemptId == null
+                        ? 'draft_timeline_compatibility'
+                        : 'draft_timeline_compatibility_${entry.attemptId}',
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    alignment: Alignment.centerLeft,
+                    foregroundColor: ZyraColors.journeyGold,
+                  ),
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    entry.attemptId == null
+                        ? onViewCompatibility
+                        : () => onViewAttemptCompatibility!(entry.attemptId!),
                   ),
                   child: Text(
-                    'Answers stay private until you both finish.',
-                    style: ZyraText.subtext(size: 12),
-                  ),
-                )
-              else
-                for (final pair in entry.answers)
-                  _TimelineAnswer(
-                    key: ValueKey(
-                      'draft_timeline_answer_${entry.type}_${pair.questionId}',
+                    'View compatibility',
+                    style: ZyraText.button(
+                      size: 12.5,
+                      color: ZyraColors.journeyGold,
                     ),
-                    pair: pair,
-                    theirName: firstName,
-                    forceOpen: entry.forceAnswersOpen,
                   ),
+                ),
+              if (entry.showAnswers && entry.type.startsWith('phase_')) ...[
+                const SizedBox(height: 10),
+                if (!entry.answersRevealed)
+                  Container(
+                    key: const ValueKey('draft_timeline_answers_locked'),
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: ZyraColors.surfaceFill,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: ZyraColors.surfaceBorder),
+                    ),
+                    child: Text(
+                      'Answers stay private until you both finish.',
+                      style: ZyraText.subtext(size: 12),
+                    ),
+                  )
+                else
+                  for (final pair in entry.answers)
+                    _TimelineAnswer(
+                      key: ValueKey(
+                        'draft_timeline_answer_${entry.type}_${pair.questionId}',
+                      ),
+                      pair: pair,
+                      theirName: firstName,
+                      forceOpen: entry.forceAnswersOpen,
+                    ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -316,112 +323,129 @@ class ZyraDraftTimelinePresentation extends StatelessWidget {
     final waiting =
         pending.state == ZyraDraftTimelinePendingState.waitingForPeer;
     final busy = pending.state == ZyraDraftTimelinePendingState.confirming;
-    return Container(
-      key: const ValueKey('draft_timeline_pending'),
-      margin: const EdgeInsets.only(bottom: 18),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: ZyraColors.surfaceBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            waiting
-                ? 'Waiting for $firstName to confirm'
-                : '$firstName would like to record this milestone',
-            style: ZyraText.body(size: 14),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            '$label · ${dateLabel(pending.occurredOn)}',
-            style: ZyraText.subtext(size: 12.5),
-          ),
-          if (!waiting) ...[
-            const SizedBox(height: 10),
-            Wrap(
-              alignment: WrapAlignment.end,
-              spacing: 10,
-              children: [
-                TextButton(
-                  key: const ValueKey('draft_timeline_not_yet'),
-                  onPressed: busy ? null : onNotYet,
-                  child: Text('Not yet', style: ZyraText.button(size: 12.5)),
-                ),
-                OutlinedButton(
-                  key: const ValueKey('draft_timeline_confirm'),
-                  onPressed: busy ? null : onConfirm,
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: ZyraColors.journeyGold),
+    return Builder(
+      builder: (context) => Container(
+        key: const ValueKey('draft_timeline_pending'),
+        margin: const EdgeInsets.only(bottom: 18),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: ZyraColors.surfaceBorder),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              waiting
+                  ? 'Waiting for $firstName to confirm'
+                  : '$firstName would like to record this milestone',
+              style: ZyraText.body(size: 14),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              '$label · ${dateLabel(pending.occurredOn)}',
+              style: ZyraText.subtext(size: 12.5),
+            ),
+            if (!waiting) ...[
+              const SizedBox(height: 10),
+              Wrap(
+                alignment: WrapAlignment.end,
+                spacing: 10,
+                children: [
+                  TextButton(
+                    key: const ValueKey('draft_timeline_not_yet'),
+                    onPressed: ZyraTapFeedback.onTap(
+                      context,
+                      busy ? null : onNotYet,
+                    ),
+                    child: Text('Not yet', style: ZyraText.button(size: 12.5)),
                   ),
-                  child: Text(
-                    busy ? 'Confirming…' : 'Confirm',
-                    style: ZyraText.button(
-                      size: 12.5,
-                      color: ZyraColors.journeyGold,
+                  OutlinedButton(
+                    key: const ValueKey('draft_timeline_confirm'),
+                    onPressed: ZyraTapFeedback.onTap(
+                      context,
+                      busy ? null : onConfirm,
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: ZyraColors.journeyGold),
+                    ),
+                    child: Text(
+                      busy ? 'Confirming…' : 'Confirm',
+                      style: ZyraText.button(
+                        size: 12.5,
+                        color: ZyraColors.journeyGold,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
 
   Widget _status() {
     if (view.status == ZyraDraftTimelineStatus.loading) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 80),
-        child: Center(
-          child: Semantics(
-            label: 'Loading timeline',
-            liveRegion: true,
-            child: const SizedBox(
-              width: 26,
-              height: 26,
-              child: CircularProgressIndicator(strokeWidth: 1.5),
+      return Builder(
+        builder: (context) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 80),
+          child: Center(
+            child: Semantics(
+              label: 'Loading timeline',
+              liveRegion: true,
+              child: const SizedBox(
+                width: 26,
+                height: 26,
+                child: CircularProgressIndicator(strokeWidth: 1.5),
+              ),
             ),
           ),
         ),
       );
     }
     final failed = view.status == ZyraDraftTimelineStatus.unavailable;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 72),
-      child: Column(
-        children: [
-          ExcludeSemantics(
-            child: Icon(
-              Icons.timeline_outlined,
-              size: 34,
-              color: ZyraColors.foregroundMuted,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            failed ? 'Couldn’t load your timeline' : 'Your story starts here.',
-            key: ValueKey(
-              failed ? 'draft_timeline_unavailable' : 'draft_timeline_empty',
-            ),
-            textAlign: TextAlign.center,
-            style: ZyraText.body(size: 16),
-          ),
-          if (failed && onRetry != null) ...[
-            const SizedBox(height: 12),
-            TextButton(
-              key: const ValueKey('draft_timeline_retry'),
-              onPressed: onRetry,
-              child: Text(
-                'Try again',
-                style: ZyraText.button(size: 13, color: ZyraColors.journeyGold),
+    return Builder(
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 72),
+        child: Column(
+          children: [
+            ExcludeSemantics(
+              child: Icon(
+                Icons.timeline_outlined,
+                size: 34,
+                color: ZyraColors.foregroundMuted,
               ),
             ),
+            const SizedBox(height: 16),
+            Text(
+              failed
+                  ? 'Couldn’t load your timeline'
+                  : 'Your story starts here.',
+              key: ValueKey(
+                failed ? 'draft_timeline_unavailable' : 'draft_timeline_empty',
+              ),
+              textAlign: TextAlign.center,
+              style: ZyraText.body(size: 16),
+            ),
+            if (failed && onRetry != null) ...[
+              const SizedBox(height: 12),
+              TextButton(
+                key: const ValueKey('draft_timeline_retry'),
+                onPressed: ZyraTapFeedback.onTap(context, onRetry),
+                child: Text(
+                  'Try again',
+                  style: ZyraText.button(
+                    size: 13,
+                    color: ZyraColors.journeyGold,
+                  ),
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -455,7 +479,8 @@ class ZyraDraftTimelinePresentation extends StatelessWidget {
             PopupMenuButton<String>(
               key: const ValueKey('draft_timeline_propose'),
               tooltip: 'Record a milestone',
-              onSelected: onPropose,
+              onOpened: ZyraTapFeedback.onTap(context, () {}),
+              onSelected: ZyraTapFeedback.onChanged(context, onPropose),
               icon: Icon(Icons.add, color: ZyraColors.journeyGold),
               itemBuilder: (_) => [
                 for (final type in available)
@@ -585,7 +610,10 @@ class _TimelineAnswerState extends State<_TimelineAnswer> {
         color: ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
-          onTap: widget.forceOpen ? null : () => setState(() => _open = !_open),
+          onTap: ZyraTapFeedback.onTap(
+            context,
+            widget.forceOpen ? null : () => setState(() => _open = !_open),
+          ),
           borderRadius: BorderRadius.circular(12),
           child: Container(
             width: double.infinity,

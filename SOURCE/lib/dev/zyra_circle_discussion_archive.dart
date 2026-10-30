@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -112,7 +113,7 @@ class _ZyraCircleDiscussionArchiveViewState
                               'circle_discussion_archive_close',
                             ),
                             tooltip: 'Close Journey',
-                            onPressed: _return,
+                            onPressed: ZyraTapFeedback.onTap(context, _return),
                             icon: Icon(
                               Icons.close_rounded,
                               color: ZyraColors.foregroundMuted,

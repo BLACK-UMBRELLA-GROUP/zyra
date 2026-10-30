@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -144,9 +145,12 @@ class _WalletHaloPagerState extends State<_WalletHaloPager> {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
       color: _walletGold,
-      onPressed: (previous ? _page > 0 : _page < widget.count - 1)
-          ? () => _go(_page + (previous ? -1 : 1), epoch)
-          : null,
+      onPressed: ZyraTapFeedback.onTap(
+        context,
+        (previous ? _page > 0 : _page < widget.count - 1)
+            ? () => _go(_page + (previous ? -1 : 1), epoch)
+            : null,
+      ),
       icon: Icon(
         previous ? Icons.arrow_back_rounded : Icons.arrow_forward_rounded,
         size: 22,
@@ -497,7 +501,10 @@ class _ZyraSubscriptionWalletPreviewState
                     minimumSize: const Size(48, 48),
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                   ),
-                  onPressed: _guard(fresh, widget.onBack!),
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    _guard(fresh, widget.onBack!),
+                  ),
                   icon: const Icon(Icons.arrow_back, size: 22),
                   label: Text(
                     'Back',
@@ -691,7 +698,10 @@ class _ZyraSubscriptionWalletPreviewState
             maximumSize: const Size(44, 44),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          onPressed: _guard(fresh, _showInformation),
+          onPressed: ZyraTapFeedback.onTap(
+            context,
+            _guard(fresh, _showInformation),
+          ),
           icon: Icon(Icons.info_outline_rounded, size: 21, color: _walletGold),
         );
         final title = Semantics(
@@ -717,7 +727,10 @@ class _ZyraSubscriptionWalletPreviewState
                   ),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-                onPressed: _guard(fresh, widget.onBack!),
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  _guard(fresh, widget.onBack!),
+                ),
                 icon: const Icon(Icons.arrow_back, size: 22),
                 label: Text('Back', style: _walletButtonStyle),
               ),
@@ -862,13 +875,16 @@ class _ZyraSubscriptionWalletPreviewState
         key: ValueKey(
           index == 0 ? 'wallet_group_profiles' : 'wallet_group_family',
         ),
-        onPressed: _guard(fresh, () {
-          if (_family == (index == 1)) return;
-          setState(() {
-            _intent = null;
-            _family = index == 1;
-          });
-        }),
+        onPressed: ZyraTapFeedback.onTap(
+          context,
+          _guard(fresh, () {
+            if (_family == (index == 1)) return;
+            setState(() {
+              _intent = null;
+              _family = index == 1;
+            });
+          }),
+        ),
         style: OutlinedButton.styleFrom(
           minimumSize: Size(44, height),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -941,12 +957,12 @@ class _ZyraSubscriptionWalletPreviewState
                       minWidth: 44,
                       minHeight: 44,
                     ),
-                    onPressed: () {
+                    onPressed: ZyraTapFeedback.onTap(context, () {
                       if (dialogContext.mounted &&
                           (ModalRoute.of(dialogContext)?.isCurrent ?? false)) {
                         Navigator.of(dialogContext).pop();
                       }
-                    },
+                    }),
                     icon: Icon(Icons.close_rounded, color: _walletGold),
                   ),
                 ],
@@ -1547,7 +1563,7 @@ class _ZyraSubscriptionWalletPreviewState
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
     ),
-    onPressed: onPressed,
+    onPressed: ZyraTapFeedback.onTap(context, onPressed),
     child: Text(
       label,
       textAlign: TextAlign.center,

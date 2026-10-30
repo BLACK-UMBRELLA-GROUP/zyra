@@ -1,5 +1,6 @@
 // A presentation-only advance option for the isolated onboarding comparison.
 // Validation, navigation and account writes remain with the existing caller.
+import 'zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -137,13 +138,16 @@ class _ZyraOnboardingArrowActionState extends State<ZyraOnboardingArrowAction>
       button: true,
       enabled: enabled,
       label: widget.semanticLabel,
-      onTap: enabled ? widget.onPressed : null,
+      onTap: ZyraTapFeedback.onTap(context, enabled ? widget.onPressed : null),
       child: SizedBox.square(
         dimension: 52,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           excludeFromSemantics: true,
-          onTap: enabled ? widget.onPressed : null,
+          onTap: ZyraTapFeedback.onTap(
+            context,
+            enabled ? widget.onPressed : null,
+          ),
           child: Center(
             child: AnimatedBuilder(
               animation: _travel,

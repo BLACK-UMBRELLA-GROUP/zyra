@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -109,7 +110,7 @@ class ZyraPersonalisationContent extends StatelessWidget {
                   key: const ValueKey('personalisation_gold_toggle'),
                   value: snapshot.goldEnabled,
                   activeTrackColor: ZyraColors.journeyGold,
-                  onChanged: onGoldChanged,
+                  onChanged: ZyraTapFeedback.onChanged(context, onGoldChanged),
                 ),
               ),
             ),
@@ -255,7 +256,7 @@ class _PersonalisationRow extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(14, 15, 13, 15),
           child: Row(
@@ -388,7 +389,13 @@ class ZyraPersonalisationChoiceSheet<T> extends StatelessWidget {
                           'personalisation_choice_${option.toString()}',
                         ),
                         borderRadius: BorderRadius.circular(13),
-                        onTap: () => onSelected(option),
+                        onTap: ZyraTapFeedback.onTap(
+                          context,
+                          () => onSelected(option),
+                          level: option is ZyraHapticLevel
+                              ? () => option as ZyraHapticLevel
+                              : null,
+                        ),
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(minHeight: 44),
                           child: Padding(

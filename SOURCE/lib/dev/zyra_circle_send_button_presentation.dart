@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -19,7 +20,7 @@ class ZyraCircleSendButton extends StatelessWidget {
       button: true,
       enabled: enabled,
       label: busy ? 'Sending message' : 'Send message',
-      onTap: enabled ? onSend : null,
+      onTap: ZyraTapFeedback.onTap(context, enabled ? onSend : null),
       excludeSemantics: true,
       child: Tooltip(
         message: 'Send message',
@@ -40,7 +41,7 @@ class ZyraCircleSendButton extends StatelessWidget {
               child: InkWell(
                 key: const ValueKey('circle_send_action'),
                 borderRadius: radius,
-                onTap: enabled ? onSend : null,
+                onTap: ZyraTapFeedback.onTap(context, enabled ? onSend : null),
                 excludeFromSemantics: true,
                 child: Center(
                   child: busy

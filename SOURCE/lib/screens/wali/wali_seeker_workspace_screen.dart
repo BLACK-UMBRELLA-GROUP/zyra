@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 
@@ -256,7 +257,10 @@ class GuardianSeekerWorkspaceView extends StatelessWidget {
                   children: [
                     IconButton(
                       tooltip: 'Back',
-                      onPressed: () => Navigator.of(context).maybePop(),
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        () => Navigator.of(context).maybePop(),
+                      ),
                       icon: const Icon(Icons.arrow_back),
                     ),
                     const SizedBox(width: 4),
@@ -309,7 +313,10 @@ class GuardianSeekerWorkspaceView extends StatelessWidget {
                           width: double.infinity,
                           child: OutlinedButton.icon(
                             key: ValueKey('seeker-family-chat-${_person.id}'),
-                            onPressed: onOpenFamilyChat,
+                            onPressed: ZyraTapFeedback.onTap(
+                              context,
+                              onOpenFamilyChat,
+                            ),
                             icon: const Icon(Icons.forum_outlined),
                             label: Text(
                               'Enter ${_person.firstName}’s Guardian Circle',
@@ -327,7 +334,10 @@ class GuardianSeekerWorkspaceView extends StatelessWidget {
                         child: SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
-                            onPressed: onOpenNetwork,
+                            onPressed: ZyraTapFeedback.onTap(
+                              context,
+                              onOpenNetwork,
+                            ),
                             icon: const Icon(Icons.diversity_3_outlined),
                             label: Text('Open for ${_person.firstName}'),
                           ),
@@ -450,9 +460,12 @@ class GuardianSeekerWorkspaceView extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: onOpenJourney == null
-                        ? null
-                        : () => onOpenJourney!(journey),
+                    onPressed: ZyraTapFeedback.onTap(
+                      context,
+                      onOpenJourney == null
+                          ? null
+                          : () => onOpenJourney!(journey),
+                    ),
                     icon: const Icon(Icons.route_outlined),
                     label: const Text('Open current Journey'),
                   ),
@@ -641,7 +654,7 @@ class _QuietWorkspaceAction extends StatelessWidget {
     color: Colors.transparent,
     borderRadius: BorderRadius.circular(16),
     child: InkWell(
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       borderRadius: BorderRadius.circular(16),
       child: Container(
         width: double.infinity,
@@ -734,7 +747,10 @@ class _AttemptSummaryCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: _canOpen ? () => onOpenJourney!(currentJourney!) : null,
+        onTap: ZyraTapFeedback.onTap(
+          context,
+          _canOpen ? () => onOpenJourney!(currentJourney!) : null,
+        ),
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(

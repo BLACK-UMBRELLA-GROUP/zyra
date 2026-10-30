@@ -537,10 +537,16 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
     // A retained accessibility callback must not invoke a destination/action
     // from the previous bar after its caller, selection or contents change.
     _semanticsEpoch++;
+    if (oldWidget.interactionEnabled != widget.interactionEnabled) {
+      _touchX = null;
+      _lastIndex = null;
+    }
   }
 
   void _activateSemanticItem(int index, int epoch) {
-    if (!mounted || epoch != _semanticsEpoch) return;
+    if (!mounted || !widget.interactionEnabled || epoch != _semanticsEpoch) {
+      return;
+    }
     if (index < 0 || index >= widget.items.length) return;
     final changed = index != widget.currentIndex;
     // A semantic tap identifies one cell directly, not a coordinate scrub.
@@ -549,11 +555,9 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
       setState(() => _touchX = null);
     }
     _lastIndex = null;
+    ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
     if (!changed && !widget.commitOnRelease) return;
     dismissZyraKeyboardAfterNavigation();
-    if (changed) {
-      ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
-    }
     widget.onTap(index);
   }
 
@@ -564,6 +568,7 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   }
 
   void _beginTouchAt(double x, double barWidth) {
+    if (!widget.interactionEnabled) return;
     // The shell uses IndexedStack so the field in the previous tab remains
     // mounted. Dismiss before changing the visible child or its native iOS
     // keyboard can otherwise remain painted over the destination tab.
@@ -573,23 +578,14 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   }
 
   void _handleTouchAt(double x, double barWidth) {
+    if (!widget.interactionEnabled) return;
     setState(() => _touchX = x.clamp(0, barWidth));
     final index = _indexForX(x, barWidth);
     final previousIndex = _lastIndex ?? widget.currentIndex;
     _lastIndex = index;
     if (index != previousIndex) {
-      // 2026-07-26 (nav bar refinement pass — CHATGPT_REPLY_NAVBAR_
-      // PHOTO_MENU_2026-07-26.md §1): a small, cheap "premium app"
-      // detail that was simply missing — every native tab bar (iOS
-      // Control Center, Instagram, Flutter's own Switch/Radio) gives a
-      // light tap on selection change. Fires on crossing into a new
-      // cell during a drag-scrub too, not just a discrete tap, since
-      // both paths call this same method.
-      ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
-      // The haptic fires once per crossed cell — feeling the cells go by
-      // makes a scrub legible, while comparing against _lastIndex prevents
-      // repeated ticks when several pointer updates remain inside one cell.
-      // Only the ACTION waits (see [commitOnRelease]).
+      // Scrubbing still changes tabs as before. Feedback belongs only to
+      // accepted taps, so crossing cells during a drag stays silent.
       if (!widget.commitOnRelease) widget.onTap(index);
     }
   }
@@ -605,7 +601,12 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
     final index = _lastIndex;
     setState(() => _touchX = null);
     _lastIndex = null;
-    if (!widget.commitOnRelease || !commit || x == null) return;
+    if (!widget.interactionEnabled ||
+        !widget.commitOnRelease ||
+        !commit ||
+        x == null) {
+      return;
+    }
     // barWidth is not in scope here, and does not need to be: the index
     // was resolved on the last move, so recompute from the same clamped
     // x against the width the layout last reported.
@@ -808,6 +809,12 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
                         onTapDown: (d) =>
                             _beginTouchAt(d.localPosition.dx, barWidth),
                         onTapUp: (d) {
+                          if (!widget.interactionEnabled || _touchX == null) {
+                            return;
+                          }
+                          ZyraInteractionStyle.emitSelectionHaptic(
+                            level: widget.hapticLevel,
+                          );
                           _handleTouchAt(d.localPosition.dx, barWidth);
                           _endTouch(commit: true);
                         },
@@ -902,6 +909,7 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
                                     key: ValueKey('floating-nav-item-$i'),
                                     container: true,
                                     button: true,
+                                    enabled: widget.interactionEnabled,
                                     selected: i == widget.currentIndex,
                                     label: item.label,
                                     value: item.badge > 0
@@ -909,10 +917,12 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
                                         : item.dot
                                         ? 'New activity'
                                         : null,
-                                    onTap: () => _activateSemanticItem(
-                                      i,
-                                      semanticsEpoch,
-                                    ),
+                                    onTap: widget.interactionEnabled
+                                        ? () => _activateSemanticItem(
+                                            i,
+                                            semanticsEpoch,
+                                          )
+                                        : null,
                                     excludeSemantics: true,
                                     child: SizedBox(
                                       height: innerHeight,
@@ -1237,7 +1247,6 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
     _lastIndex = index;
     if (index == previous) return;
     dismissZyraKeyboardAfterNavigation();
-    ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
     widget.onTap(index);
   }
 
@@ -1260,9 +1269,9 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
       _setExpanded(true);
     });
     _scheduleCollapse();
+    ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
     if (!wasFull || index == widget.currentIndex) return;
     dismissZyraKeyboardAfterNavigation();
-    ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
     widget.onTap(index);
   }
 
@@ -1339,6 +1348,13 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                               // latch; the arena still owns taps/scrubs.
                               onTapDown: (_) {},
                               onTapUp: (details) {
+                                if (!widget.interactionEnabled ||
+                                    _gestureCancelled) {
+                                  return;
+                                }
+                                ZyraInteractionStyle.emitSelectionHaptic(
+                                  level: widget.hapticLevel,
+                                );
                                 _selectAt(
                                   details.localPosition.dx,
                                   inner.maxWidth,
@@ -1403,6 +1419,8 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                                                 ),
                                                 container: true,
                                                 button: true,
+                                                enabled:
+                                                    widget.interactionEnabled,
                                                 selected:
                                                     i == widget.currentIndex,
                                                 label: widget.items[i].label,
@@ -1412,11 +1430,13 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                                                     ? 'New activity'
                                                     : null,
                                                 excludeSemantics: true,
-                                                onTap: () =>
-                                                    _activateSemanticItem(
-                                                      i,
-                                                      epoch,
-                                                    ),
+                                                onTap: widget.interactionEnabled
+                                                    ? () =>
+                                                          _activateSemanticItem(
+                                                            i,
+                                                            epoch,
+                                                          )
+                                                    : null,
                                                 child: SizedBox(
                                                   height: inner.maxHeight,
                                                   child: Center(

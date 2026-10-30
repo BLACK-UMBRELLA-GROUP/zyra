@@ -3,6 +3,7 @@
 // No account, service, persistence, matching or permission authority lives here.
 // Callers supply only local profiles, images and already-guarded callbacks.
 
+import '../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -175,7 +176,10 @@ class _ZyraOneJourneyBrowsePresentationState
         final surface = GestureDetector(
           key: const ValueKey('concept_browse_photo_gallery'),
           behavior: HitTestBehavior.opaque,
-          onTapUp: (details) => _tapPhoto(details, constraints.maxWidth, epoch),
+          onTapUp: ZyraTapFeedback.onChanged(
+            context,
+            (details) => _tapPhoto(details, constraints.maxWidth, epoch),
+          ),
           child: KeyedSubtree(
             key: widget.onDismiss == null
                 ? null
@@ -357,7 +361,7 @@ class _PhotoIcon extends StatelessWidget {
       message: label,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: SizedBox(
           width: 40,
           height: 40,
@@ -579,7 +583,7 @@ class _ZyraOneJourneyConnectionsPresentationState
                   IconButton(
                     key: const ValueKey('concept_activity_back'),
                     tooltip: 'Back',
-                    onPressed: widget.onBack,
+                    onPressed: ZyraTapFeedback.onTap(context, widget.onBack),
                     icon: Icon(
                       Icons.arrow_back,
                       color: ZyraColors.accentOnCanvas,
@@ -726,7 +730,7 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
         child: InkWell(
           key: action.key,
           borderRadius: BorderRadius.circular(999),
-          onTap: action.onTap,
+          onTap: ZyraTapFeedback.onTap(context, action.onTap),
           child: Padding(
             padding: EdgeInsets.symmetric(
               horizontal: primary ? 14 : 10,
@@ -790,7 +794,7 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
           (invitationSent == true
               ? '${action.label}. Tap to cancel invitation'
               : action.label),
-      onTap: action.onTap,
+      onTap: ZyraTapFeedback.onTap(context, action.onTap),
       excludeSemantics: true,
       child: ZyraPressFeedback(enabled: action.onTap != null, child: button),
     );
@@ -976,7 +980,7 @@ class _ZyraOneJourneyConnectionsPersonCardState
                   InkWell(
                     key: widget.headerKey,
                     borderRadius: BorderRadius.circular(14),
-                    onTap: _toggle,
+                    onTap: ZyraTapFeedback.onTap(context, _toggle),
                     child: Padding(
                       padding: const EdgeInsets.all(ZyraCardMetrics.padding),
                       child: Row(
@@ -1259,12 +1263,12 @@ class _ReportFlag extends StatelessWidget {
     container: true,
     button: true,
     label: 'Report $firstName',
-    onTap: onTap,
+    onTap: ZyraTapFeedback.onTap(context, onTap),
     excludeSemantics: true,
     child: GestureDetector(
       behavior: HitTestBehavior.opaque,
       excludeFromSemantics: true,
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: SizedBox(
         width: tapTargetExtent,
         height: tapTargetExtent,

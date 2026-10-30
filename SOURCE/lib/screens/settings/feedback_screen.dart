@@ -19,6 +19,7 @@
 // captured silently — the three things that make a report actionable and
 // the three things a user should never be asked to type.
 
+import '../../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -202,9 +203,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           ),
           SizedBox(height: 30),
           TextButton(
-            onPressed: () {
+            onPressed: ZyraTapFeedback.onTap(context, () {
               if (_canAct) Navigator.of(context).pop();
-            },
+            }),
             child: Text(
               'Done',
               style: ZyraText.body(size: 15, color: Colors.white),
@@ -239,9 +240,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           return Padding(
             padding: const EdgeInsets.only(right: 9),
             child: GestureDetector(
-              onTap: () {
+              onTap: ZyraTapFeedback.onTap(context, () {
                 if (_canAct) setState(() => _category = c);
-              },
+              }),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 140),
                 padding: const EdgeInsets.symmetric(
@@ -308,7 +309,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       SizedBox(height: 18),
 
       GestureDetector(
-        onTap: _sending ? null : _send,
+        onTap: ZyraTapFeedback.onTap(context, _sending ? null : _send),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 15),
           alignment: Alignment.center,

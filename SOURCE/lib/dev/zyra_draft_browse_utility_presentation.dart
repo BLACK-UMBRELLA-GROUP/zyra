@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'dart:convert';
 import 'dart:math' as math;
 
@@ -279,16 +280,19 @@ class _ZyraDraftReportPresentationState
                       selected: _selected == reason,
                       child: OutlinedButton(
                         key: ValueKey('draft_report_reason_${reason.name}'),
-                        onPressed: !_current(epoch)
-                            ? null
-                            : () {
-                                if (!_current(epoch)) return;
-                                setState(() {
-                                  _selected = _selected == reason
-                                      ? null
-                                      : reason;
-                                });
-                              },
+                        onPressed: ZyraTapFeedback.onTap(
+                          context,
+                          !_current(epoch)
+                              ? null
+                              : () {
+                                  if (!_current(epoch)) return;
+                                  setState(() {
+                                    _selected = _selected == reason
+                                        ? null
+                                        : reason;
+                                  });
+                                },
+                        ),
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size(44, 44),
                           padding: const EdgeInsets.symmetric(
@@ -356,18 +360,24 @@ class _ZyraDraftReportPresentationState
                       if (widget.onHide != null)
                         TextButton(
                           key: const ValueKey('draft_safety_hide'),
-                          onPressed: _current(epoch)
-                              ? _localAction(widget.onHide, epoch)
-                              : null,
+                          onPressed: ZyraTapFeedback.onTap(
+                            context,
+                            _current(epoch)
+                                ? _localAction(widget.onHide, epoch)
+                                : null,
+                          ),
                           style: _quietActionStyle,
                           child: const Text('Hide profile'),
                         ),
                       if (widget.onBlock != null)
                         TextButton(
                           key: const ValueKey('draft_safety_block'),
-                          onPressed: _current(epoch)
-                              ? _localAction(widget.onBlock, epoch)
-                              : null,
+                          onPressed: ZyraTapFeedback.onTap(
+                            context,
+                            _current(epoch)
+                                ? _localAction(widget.onBlock, epoch)
+                                : null,
+                          ),
                           style: _quietActionStyle,
                           child: const Text('Block profile'),
                         ),

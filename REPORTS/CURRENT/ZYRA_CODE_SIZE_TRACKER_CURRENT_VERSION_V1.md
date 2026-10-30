@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 163,373 lines in 322 files |
-| Developer and preview code inside it | 44,301 lines in 82 files |
-| The Founder preview (planned app) | 25,235 lines in 32 files |
-| Test code | 213,304 lines in 483 files |
+| All app code | 163,908 lines in 323 files |
+| Developer and preview code inside it | 44,464 lines in 82 files |
+| The Founder preview (planned app) | 25,373 lines in 32 files |
+| Test code | 213,552 lines in 484 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -51,6 +51,8 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-30 | Queue 18, LOCK3 Guardian information and consent (OA-ZYRA-324 / DR-ZYRA-233) | 163,176 / 322 | 44,292 / 82 | 25,226 / 32 | 212,900 / 481 | 2,612 / 307 MB | 39 | 1 |
 
 | 2026-10-30 | Queue 19, LOCK7 single request pill and Larger Text (DR-ZYRA-305) | 163,373 / 322 | 44,301 / 82 | 25,235 / 32 | 213,304 / 483 | 2,612 / 307 MB | 39 | 1 |
+
+| 2026-10-30 | Queue 22: shared tap haptics across the planned app and OA-ZYRA-314 Journey helper | 163,908 / 323 | 44,464 / 82 | 25,373 / 32 | 213,552 / 484 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -279,3 +281,18 @@ or new dangling document reference is reported. Written refusal: checker repair 
 row 19. Clean Flutter analysis and compiled regression/capture tests are the measured implementation checks. Scratch
 reports are moved to `/Users/shakeelahmad/_to_delete/ZYRA_QUEUE19_2026-10-30/`; only screenshots/JSON/BUILD.json remain as
 evidence. The daily Task 5 note records exact commands, source/evidence commits and disk measurements.
+
+
+## Queue 22 — shared tap haptics — 30 Oct 2026
+
+Built from `PRODUCT/APPROVED/HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md` and blueprint part 5 §6
+(DOC-ZYRA-0282; Founder: "ensure this and all buttons have haptic feedback"). Shared tap callbacks read the
+current preview session or member device level, preserve disabled controls, and own one pulse through delegated
+callbacks. Photo/page swipes, navigation dragging, scrolling and typing stay silent. The four direct phone calls in
+`journey_flow_screen.dart` now use the shared setting helper (OA-ZYRA-314 item a only). The old member app remains.
+No visual, relationship-rule, server, migration, sign-in or Tier 3 change was made. No pictures are required by this brief.
+
+Headless validation: 302 tests across 19 focused suites pass, including every current tab root in both roles, actual
+request pills and sheets, Off, disabled/revoked controls, immediate Personalisation selection, photo editors and compact
+navigation geometry. The task note lists commands and the complete control-family inventory. Fable's independent
+verification remains separate; no native build/install/upload was attempted.

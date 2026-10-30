@@ -38,6 +38,7 @@ Future<void> _mount(WidgetTester tester, {bool guardian = false}) async {
           size: Size(393, 852),
           padding: EdgeInsets.only(top: 44, bottom: 34),
           disableAnimations: true,
+          accessibleNavigation: true,
         ),
         child: child!,
       ),

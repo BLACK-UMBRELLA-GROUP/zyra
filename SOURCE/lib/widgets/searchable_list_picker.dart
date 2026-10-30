@@ -3,6 +3,7 @@
 // lists.dart). Opens as a bottom sheet; good enough for today's testable
 // build, per the same scope note used elsewhere in this app.
 
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -133,7 +134,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                                     size: 18,
                                   )
                                 : null,
-                            onTap: () {
+                            onTap: ZyraTapFeedback.onTap(context, () {
                               if (widget.multi) {
                                 setState(
                                   () => selected
@@ -143,7 +144,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                               } else {
                                 Navigator.of(context).pop(item);
                               }
-                            },
+                            }),
                           );
                         },
                       ),
@@ -154,7 +155,10 @@ class _PickerSheetState extends State<_PickerSheet> {
                   child: SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                      onPressed: () => Navigator.of(context).pop(_selected),
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        () => Navigator.of(context).pop(_selected),
+                      ),
                       child: Text('Done (${_selected.length})'),
                     ),
                   ),

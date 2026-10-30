@@ -23,6 +23,7 @@
 // background through, cutting the gender gradient off with a hard purple
 // strip — exactly what the Founder screenshotted on this screen.
 
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -274,9 +275,12 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             const SizedBox(height: 12),
             OutlinedButton.icon(
               key: const ValueKey('support-safety-case-status'),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const SafetyCaseStatusScreen(),
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const SafetyCaseStatusScreen(),
+                  ),
                 ),
               ),
               icon: const Icon(Icons.verified_user_outlined, size: 18),
@@ -368,7 +372,7 @@ class _HelpTileState extends State<_HelpTile> {
         expanded: _open,
         label: widget.entry.question,
         child: GestureDetector(
-          onTap: () {
+          onTap: ZyraTapFeedback.onTap(context, () {
             if (!mounted) return;
             if (widget.canAct?.call() == false) {
               widget.onUnavailable?.call();
@@ -384,7 +388,7 @@ class _HelpTileState extends State<_HelpTile> {
                 surface: widget.telemetrySurface,
               );
             }
-          },
+          }),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOut,
@@ -547,7 +551,10 @@ class _ContactCard extends StatelessWidget {
             width: double.infinity,
             child: TextButton.icon(
               key: const ValueKey('help-support-email-action'),
-              onPressed: () => _emailSupport(context),
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                () => _emailSupport(context),
+              ),
               style: TextButton.styleFrom(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.zero,

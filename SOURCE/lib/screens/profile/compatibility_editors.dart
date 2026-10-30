@@ -1,3 +1,4 @@
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import '../../dev/zyra_app_gold_preview.dart';
@@ -584,7 +585,7 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
             width: double.infinity,
             child: FilledButton(
               key: const ValueKey('compatibility-save'),
-              onPressed: _saving ? null : _save,
+              onPressed: ZyraTapFeedback.onTap(context, _saving ? null : _save),
               child: _saving
                   ? const SizedBox(
                       width: 18,
@@ -604,7 +605,7 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
           : AppBar(
               automaticallyImplyLeading: _owner == null,
               leading: _owner != null && Navigator.of(context).canPop()
-                  ? BackButton(onPressed: _back)
+                  ? BackButton(onPressed: ZyraTapFeedback.onTap(context, _back))
                   : null,
               title: Text(kind.label, style: ZyraText.heading(size: 17)),
               iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
@@ -1119,7 +1120,7 @@ class _HardQuestionCard extends StatelessWidget {
         for (final option in redOptions)
           InkWell(
             key: ValueKey('hard-option-${question.responseKey}-$option'),
-            onTap: () => onToggle(option),
+            onTap: ZyraTapFeedback.onTap(context, () => onToggle(option)),
             borderRadius: BorderRadius.circular(12),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 9),
@@ -1223,7 +1224,7 @@ class _CategoryDoor extends StatelessWidget {
           border: Border.all(color: ZyraColors.surfaceBorder),
         ),
         child: InkWell(
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 14, 12, 14),
@@ -1277,7 +1278,7 @@ class _QuestionDoor extends StatelessWidget {
           border: Border.all(color: ZyraColors.surfaceBorder),
         ),
         child: InkWell(
-          onTap: onTap,
+          onTap: ZyraTapFeedback.onTap(context, onTap),
           borderRadius: BorderRadius.circular(15),
           child: Padding(
             padding: const EdgeInsets.all(14),
@@ -1365,12 +1366,12 @@ class _EditorScaffold extends StatelessWidget {
               automaticallyImplyLeading: owner == null,
               leading: owner != null && Navigator.of(context).canPop()
                   ? BackButton(
-                      onPressed: () {
+                      onPressed: ZyraTapFeedback.onTap(context, () {
                         if (_editorCurrent(context, owner) &&
                             Navigator.of(context).canPop()) {
                           Navigator.of(context).pop();
                         }
-                      },
+                      }),
                     )
                   : null,
               title: Text(title, style: ZyraText.heading(size: 17)),
@@ -1436,7 +1437,7 @@ class _BottomSave extends StatelessWidget {
       width: double.infinity,
       child: FilledButton(
         key: const ValueKey('question-save'),
-        onPressed: enabled ? onPressed : null,
+        onPressed: ZyraTapFeedback.onTap(context, enabled ? onPressed : null),
         child: const Text('Use this answer'),
       ),
     ),

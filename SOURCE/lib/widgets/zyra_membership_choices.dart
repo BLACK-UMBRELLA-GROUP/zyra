@@ -1,3 +1,4 @@
+import 'zyra_tap_feedback.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -199,11 +200,14 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
               IconButton(
                 key: const ValueKey('membership-terms'),
                 tooltip: 'Membership terms',
-                onPressed: enabled && widget.onTerms != null
-                    ? () {
-                        if (_allows(epoch)) widget.onTerms?.call();
-                      }
-                    : null,
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  enabled && widget.onTerms != null
+                      ? () {
+                          if (_allows(epoch)) widget.onTerms?.call();
+                        }
+                      : null,
+                ),
                 color: ZyraColors.journeyGold,
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                 icon: const Icon(Icons.description_outlined),
@@ -364,9 +368,12 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
             IconButton(
               key: const ValueKey('membership-previous'),
               tooltip: 'Previous membership card',
-              onPressed: enabled && _draft.page > 0
-                  ? () => _move(epoch, _draft.page - 1)
-                  : null,
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                enabled && _draft.page > 0
+                    ? () => _move(epoch, _draft.page - 1)
+                    : null,
+              ),
               color: ZyraColors.journeyGold,
               icon: const Icon(Icons.arrow_back_rounded),
             ),
@@ -381,9 +388,12 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
             IconButton(
               key: const ValueKey('membership-next'),
               tooltip: 'Next membership card',
-              onPressed: enabled && _draft.page < 1
-                  ? () => _move(epoch, _draft.page + 1)
-                  : null,
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                enabled && _draft.page < 1
+                    ? () => _move(epoch, _draft.page + 1)
+                    : null,
+              ),
               color: ZyraColors.journeyGold,
               icon: const Icon(Icons.arrow_forward_rounded),
             ),
@@ -639,7 +649,7 @@ class _SectionPill extends StatelessWidget {
       selected: selected,
       child: OutlinedButton(
         key: ValueKey('membership-section-${section.name}'),
-        onPressed: onPressed,
+        onPressed: ZyraTapFeedback.onTap(context, onPressed),
         style: OutlinedButton.styleFrom(
           foregroundColor: selected
               ? ZyraColors.journeyGold
@@ -907,7 +917,7 @@ class _PersonalCard extends StatelessWidget {
             if (selected)
               TextButton(
                 key: ValueKey('membership-remove-${product.name}'),
-                onPressed: onRemove,
+                onPressed: ZyraTapFeedback.onTap(context, onRemove),
                 child: Text(
                   _seeker ? 'Remove Seeker choice' : 'Remove Guardian choice',
                   textAlign: TextAlign.center,
@@ -1101,7 +1111,7 @@ class _StepButton extends StatelessWidget {
   Widget build(BuildContext context) => IconButton.outlined(
     key: controlKey,
     tooltip: label,
-    onPressed: onPressed,
+    onPressed: ZyraTapFeedback.onTap(context, onPressed),
     color: ZyraColors.journeyGold,
     style: IconButton.styleFrom(
       minimumSize: const Size(48, 48),
@@ -1151,7 +1161,10 @@ class ZyraMembershipTermsSheet extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                () => Navigator.of(context).pop(),
+              ),
               style: TextButton.styleFrom(
                 minimumSize: const Size(48, 48),
                 foregroundColor: ZyraColors.journeyGold,
@@ -1334,7 +1347,7 @@ class _BackAction extends StatelessWidget {
   Widget build(BuildContext context) => Align(
     alignment: Alignment.centerLeft,
     child: TextButton.icon(
-      onPressed: onPressed,
+      onPressed: ZyraTapFeedback.onTap(context, onPressed),
       icon: const Icon(Icons.arrow_back_rounded, color: ZyraColors.journeyGold),
       label: Text(
         'Back',
@@ -1361,7 +1374,7 @@ class _GoldButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => OutlinedButton(
-    onPressed: onPressed,
+    onPressed: ZyraTapFeedback.onTap(context, onPressed),
     style: OutlinedButton.styleFrom(
       foregroundColor: ZyraColors.journeyGold,
       disabledForegroundColor: ZyraColors.ink(.4),

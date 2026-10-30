@@ -1,3 +1,4 @@
+import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -30,62 +31,70 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
 
   Widget _lockedActions() {
     final enabled = balance > 0 && onUnlock != null;
-    return Column(
-      key: const ValueKey('draft_compatibility_actions'),
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        OutlinedButton(
-          key: const ValueKey('draft_compatibility_reveal'),
-          onPressed: enabled ? onUnlock : null,
-          style: OutlinedButton.styleFrom(
-            minimumSize: const Size(44, 52),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            foregroundColor: ZyraColors.journeyGold,
-            disabledForegroundColor: ZyraColors.journeyGold.withValues(
-              alpha: .45,
+    return Builder(
+      builder: (context) => Column(
+        key: const ValueKey('draft_compatibility_actions'),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          OutlinedButton(
+            key: const ValueKey('draft_compatibility_reveal'),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              enabled ? onUnlock : null,
             ),
-            backgroundColor: ZyraColors.journeyGold.withValues(alpha: .08),
-            side: BorderSide(
-              color: ZyraColors.journeyGold.withValues(
-                alpha: enabled ? .6 : .2,
-              ),
-            ),
-            shape: const StadiumBorder(),
-          ),
-          child: Text(
-            'Unlock compatibility',
-            textAlign: TextAlign.center,
-            style: ZyraText.button(size: 14),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          '$balance ${balance == 1 ? 'unlock' : 'unlocks'} left',
-          key: const ValueKey('draft_compatibility_balances'),
-          textAlign: TextAlign.center,
-          style: ZyraText.subtext(size: 11.5, color: const Color(0xFFBDB0C8)),
-        ),
-        const SizedBox(height: 4),
-        Center(
-          child: TextButton(
-            key: const ValueKey('draft_compatibility_buy_more'),
-            onPressed: onBuyMore,
-            style: TextButton.styleFrom(
-              minimumSize: const Size(44, 44),
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size(44, 52),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               foregroundColor: ZyraColors.journeyGold,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              disabledForegroundColor: ZyraColors.journeyGold.withValues(
+                alpha: .45,
+              ),
+              backgroundColor: ZyraColors.journeyGold.withValues(alpha: .08),
+              side: BorderSide(
+                color: ZyraColors.journeyGold.withValues(
+                  alpha: enabled ? .6 : .2,
+                ),
+              ),
+              shape: const StadiumBorder(),
             ),
             child: Text(
-              'Get more unlocks',
+              'Unlock compatibility',
               textAlign: TextAlign.center,
-              style: ZyraText.button(size: 12.5),
+              style: ZyraText.button(size: 14),
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 10),
+          Text(
+            '$balance ${balance == 1 ? 'unlock' : 'unlocks'} left',
+            key: const ValueKey('draft_compatibility_balances'),
+            textAlign: TextAlign.center,
+            style: ZyraText.subtext(size: 11.5, color: const Color(0xFFBDB0C8)),
+          ),
+          const SizedBox(height: 4),
+          Center(
+            child: TextButton(
+              key: const ValueKey('draft_compatibility_buy_more'),
+              onPressed: ZyraTapFeedback.onTap(context, onBuyMore),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(44, 44),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                foregroundColor: ZyraColors.journeyGold,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+              ),
+              child: Text(
+                'Get more unlocks',
+                textAlign: TextAlign.center,
+                style: ZyraText.button(size: 12.5),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

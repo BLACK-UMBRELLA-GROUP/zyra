@@ -35,6 +35,7 @@
 //   fill      white 14%
 //   border    white 22%, 1px
 
+import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -156,7 +157,10 @@ Future<bool?> showZyraGlassChoice({
                     foregroundColor: ZyraColors.onPrimaryAction,
                   )
                 : null,
-            onPressed: () => Navigator.of(ctx).pop(true),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              () => Navigator.of(ctx).pop(true),
+            ),
             child: Text(
               primaryLabel,
               textAlign: TextAlign.center,
@@ -170,7 +174,10 @@ Future<bool?> showZyraGlassChoice({
         ),
         TextButton(
           key: secondaryKey,
-          onPressed: () => Navigator.of(ctx).pop(false),
+          onPressed: ZyraTapFeedback.onTap(
+            context,
+            () => Navigator.of(ctx).pop(false),
+          ),
           child: Text(secondaryLabel, style: ZyraText.subtext()),
         ),
       ],
@@ -207,7 +214,10 @@ Future<void> showZyraGlassNotice({
         SizedBox(
           width: double.infinity,
           child: FilledButton(
-            onPressed: () => Navigator.of(ctx).pop(),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              () => Navigator.of(ctx).pop(),
+            ),
             child: Text(
               buttonLabel,
               textAlign: TextAlign.center,
