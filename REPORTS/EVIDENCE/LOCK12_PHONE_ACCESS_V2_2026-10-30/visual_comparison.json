@@ -1,0 +1,50 @@
+{
+  "result": "Compared; locked content, order, gold and card structure implemented; no pixel-parity claim",
+  "states": [
+    {
+      "state": "settings__phone_access_row",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "built_size": [
+        1290,
+        2796
+      ],
+      "gold_rgb": [
+        232,
+        201,
+        138
+      ],
+      "exact_gold_pixels_master": 3565,
+      "exact_gold_pixels_built": 3652,
+      "comparison": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/settings__phone_access_row__master_beside_build.png"
+    },
+    {
+      "state": "phone_access__normal",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "built_size": [
+        1290,
+        2796
+      ],
+      "gold_rgb": [
+        232,
+        201,
+        138
+      ],
+      "exact_gold_pixels_master": 7592,
+      "exact_gold_pixels_built": 8307,
+      "comparison": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/phone_access__normal__master_beside_build.png"
+    }
+  ],
+  "residual_differences": [
+    "Existing actual Settings header stays left aligned; prototype header is centred. No broader Settings redesign authorised.",
+    "Actual bundled font rasterisation/line breaks, Material icon outlines, existing card metrics and prototype rounded frame differ.",
+    "Real device states vary. Renders use the master metadata fixture and real App lock Off.",
+    "No iOS status-bar pixels, native permission prompt, native Settings or device screenshot fabricated."
+  ],
+  "reviewed": true
+}

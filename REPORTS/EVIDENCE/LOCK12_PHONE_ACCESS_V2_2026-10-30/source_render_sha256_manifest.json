@@ -1,0 +1,95 @@
+{
+  "task": "Queue40 LOCK12 V2",
+  "source": [
+    {
+      "path": "SOURCE/ios/Runner/AppDelegate.swift",
+      "bytes": 20737,
+      "sha256": "5ebeb9d24911e4e8e94174e10950f4c18ef19f5ce75ca9e3b6cec31759b9f496"
+    },
+    {
+      "path": "SOURCE/ios/Runner/Info.plist",
+      "bytes": 3253,
+      "sha256": "637e757b8616e7ba5e125aa85422f637f3f59a7f60db27112203f8e953010075"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "bytes": 44397,
+      "sha256": "1408be87197cd30a9e7bb5d9ad8af714c2fb63025d819d51e7c653fc12e481bd"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 305230,
+      "sha256": "38b8d3ec6a5a874190399f1aab5dd77c16b4815a2b08b9f3bdb4c50a95cef8ec"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_phone_access.dart",
+      "bytes": 11710,
+      "sha256": "631c8137938c7ffc7186110f6bbab0cb695b28b8f3abf31b7157a28e77ef9fb3"
+    },
+    {
+      "path": "SOURCE/lib/services/zyra_app_lock.dart",
+      "bytes": 11312,
+      "sha256": "d4d58d2bffadaa0c831776ca5aeba89141f188f9b931a5b130940e17f5b8bfff"
+    },
+    {
+      "path": "SOURCE/test/zyra_phone_access_lock12_test.dart",
+      "bytes": 19531,
+      "sha256": "9770694ec61c773885f4a611725a6547abb9ef570dd3900aa1b618727932ca8e"
+    },
+    {
+      "path": "SOURCE/test/visual/lock12_phone_access_capture_test.dart",
+      "bytes": 6141,
+      "sha256": "0ecc12612bbfc0668e317ae78dd409c61c62f3f7ccb28cd44539b8efb7151189"
+    }
+  ],
+  "locked_files": [
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md",
+      "bytes": 1670,
+      "sha256": "52d419e506c3317bf65a5dd114e67f046c34438700d5d74e443e9521a4d4ebd6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/RECORD/LOCK_RECORD.md",
+      "bytes": 1100,
+      "sha256": "bef89a2e0bd57372b9c79a41ef0a4ce9b2c7544cc2c1e34a9b5ff80540fb5d82"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 2672,
+      "sha256": "e744bb31ed46737e6a74d152cefb9e9cbc78ca6b49d591c875b6539e9b2f7b4e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/MASTERS/phone_access__normal.png",
+      "bytes": 1027722,
+      "sha256": "145c2b00dde624ebf6b4721230d82b26ef0423c50b62c10db48aef5deb6299c9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/MASTERS/settings__phone_access_row.png",
+      "bytes": 862803,
+      "sha256": "f7fefdc6b25e84548586729d432b28cd0fb485788c6365f09d7e904af0bfe35b"
+    }
+  ],
+  "renders": [
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/phone_access__normal.png",
+      "bytes": 1001940,
+      "sha256": "a50fc7a83ff45554b19bb06c825e0280fe314feeff66c3dbd2554ecacd1d7047"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/phone_access__normal__master_beside_build.png",
+      "bytes": 1833795,
+      "sha256": "93a354317d0870a768d18dc13cc84a8ecb18c8c6917dec53f2399027abaff7a5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/settings__phone_access_row.png",
+      "bytes": 844807,
+      "sha256": "943eda353b7fbfbee6cce7f8ce81ba5fe7fd8e7f544606c0417429ce1d56d36c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BUILT/settings__phone_access_row__master_beside_build.png",
+      "bytes": 1555115,
+      "sha256": "878374d08cb051bcbde4f1dd32bc6bad1991a02fb27e68fe2f4a251cf94da23b"
+    }
+  ],
+  "source_commit": "5549eba1e0ccecf7805805af991d8c47bf3535be"
+}

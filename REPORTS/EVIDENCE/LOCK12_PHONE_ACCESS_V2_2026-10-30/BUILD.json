@@ -1,0 +1,14 @@
+{
+  "task": "Queue40 Phone access LOCK12 V2",
+  "status": "BUILT_MOCKED_AND_RENDERED_NATIVE_PROOF_PENDING",
+  "source_commit": "5549eba1e0ccecf7805805af991d8c47bf3535be",
+  "flutter_version": "3.44.2 (pinned SDK check passed)",
+  "build_mode": "headless Flutter test rendering; debug test kernel",
+  "target": "iOS logical430x932 @3x; no native compile/install",
+  "timestamp_utc": "2026-10-30T21:07:45.605859+00:00",
+  "compiled_output_or_source_copy": false,
+  "permissions": "mocked metadata/native calls; no native prompt capture",
+  "tests_distinct_pass": 95,
+  "manifest": "source_render_sha256_manifest.json",
+  "native_proof_owner": "OA-ZYRA-323"
+}

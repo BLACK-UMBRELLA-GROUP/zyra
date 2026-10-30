@@ -1,0 +1,31 @@
+[
+  {
+    "role": "Seeker",
+    "area": "settings",
+    "page": "settings",
+    "state": "phone_access_row",
+    "reached": "Actual Settings route; NEW not yet opened.",
+    "file": "settings__phone_access_row.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "settings",
+    "page": "phone_access",
+    "state": "normal",
+    "reached": "Actual shell; mocked permissions as master. No native prompt.",
+    "file": "phone_access__normal.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "phone_access"
+    ],
+    "tab": 4
+  }
+]

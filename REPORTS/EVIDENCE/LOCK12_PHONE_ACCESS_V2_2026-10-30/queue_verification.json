@@ -1,0 +1,13 @@
+{
+  "working_other_rows_sha256": "d8a416dd777eb839f1e675b7489e9f13316846fc08c2e90f127a76fb79717947",
+  "working_others_preserved": true,
+  "index_before": {
+    "blob": "aeaf7fd8bec9a8164945e85e74375e79c6de6aac",
+    "bytes": 11337,
+    "other_rows_sha256": "047081d9f0196279a894b13d02f9750e8e359447ffa324eb6d74180ae997b897",
+    "has_row40": false
+  },
+  "index_after_blob": "d58ed4cac6a6284433e8c7b4cbaf62e8d6a9b2ae",
+  "index_after_other_rows_sha256": "047081d9f0196279a894b13d02f9750e8e359447ffa324eb6d74180ae997b897",
+  "index_others_preserved": true
+}
