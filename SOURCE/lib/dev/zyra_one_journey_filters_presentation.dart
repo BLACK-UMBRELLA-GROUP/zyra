@@ -8,6 +8,53 @@ import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'zyra_browse_filter.dart';
 
+// The master track uses the same padded width and 4 pt height throughout.
+// Material's range track otherwise adds a thumb-radius inset at each end.
+class _FiltersRangeTrack extends RoundedRectRangeSliderTrackShape {
+  const _FiltersRangeTrack();
+
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    Offset offset = Offset.zero,
+    required SliderThemeData sliderTheme,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) => Rect.fromLTWH(
+    offset.dx,
+    offset.dy + (parentBox.size.height - sliderTheme.trackHeight!) / 2,
+    parentBox.size.width,
+    sliderTheme.trackHeight!,
+  );
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset offset, {
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required Animation<double> enableAnimation,
+    required Offset startThumbCenter,
+    required Offset endThumbCenter,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+    required TextDirection textDirection,
+    double additionalActiveTrackHeight = 2,
+  }) => super.paint(
+    context,
+    offset,
+    parentBox: parentBox,
+    sliderTheme: sliderTheme,
+    enableAnimation: enableAnimation,
+    startThumbCenter: startThumbCenter,
+    endThumbCenter: endThumbCenter,
+    isEnabled: isEnabled,
+    isDiscrete: isDiscrete,
+    textDirection: textDirection,
+    additionalActiveTrackHeight: 0,
+  );
+}
+
 class ZyraOneJourneyFiltersPresentation extends StatefulWidget {
   const ZyraOneJourneyFiltersPresentation({
     super.key,
@@ -224,10 +271,18 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     child: SliderTheme(
       data: SliderTheme.of(context).copyWith(
         trackHeight: 4,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 11),
+        thumbShape: const RoundSliderThumbShape(
+          enabledThumbRadius: 11,
+          elevation: 0,
+          pressedElevation: 0,
+        ),
         rangeThumbShape: const RoundRangeSliderThumbShape(
           enabledThumbRadius: 11,
+          elevation: 0,
+          pressedElevation: 0,
         ),
+        rangeTrackShape: const _FiltersRangeTrack(),
+        overlappingShapeStrokeColor: ZyraColors.journeyGold,
         activeTrackColor: ZyraColors.journeyGold,
         inactiveTrackColor: ZyraColors.surfaceBorder,
         thumbColor: ZyraColors.journeyGold,

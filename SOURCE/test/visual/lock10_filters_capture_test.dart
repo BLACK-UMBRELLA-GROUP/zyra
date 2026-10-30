@@ -83,6 +83,39 @@ void main() {
         reason: 'Editing is not applied to the checkpoint.',
       );
       await cap('f02_age__range');
+      final rangeBounds = t.getRect(key('concept_age_range'));
+      Future<void> dragHandle(Offset start, Offset end) async {
+        final gesture = await t.startGesture(start);
+        await gesture.moveBy(Offset(end.dx > start.dx ? 24 : -24, 0));
+        await t.pump(const Duration(milliseconds: 16));
+        await gesture.moveTo(end);
+        await t.pump(const Duration(milliseconds: 16));
+        await gesture.up();
+        await h.flush();
+      }
+
+      await dragHandle(
+        Offset(
+          rangeBounds.left + rangeBounds.width * .14,
+          rangeBounds.center.dy,
+        ),
+        Offset(rangeBounds.left - 50, rangeBounds.center.dy),
+      );
+      expect(
+        t.widget<RangeSlider>(key('concept_age_range')).values,
+        const RangeValues(18, 32),
+        reason:
+            'Drag the visible start thumb to the left endpoint: $rangeBounds',
+      );
+      await dragHandle(
+        Offset(
+          rangeBounds.left + rangeBounds.width * .28,
+          rangeBounds.center.dy,
+        ),
+        Offset(rangeBounds.right + 50, rangeBounds.center.dy),
+      );
+      expect(find.text('18 – 70'), findsOneWidget);
+      expect(key('concept_age_range'), findsOneWidget);
       await h.tap('concept_reset_filter_draft');
       await h.tap('filter_next');
       expect(find.bySemanticsLabel('Location, filter 2 of 4'), findsOneWidget);
