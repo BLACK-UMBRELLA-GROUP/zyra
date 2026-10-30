@@ -1,0 +1,185 @@
+{
+  "commit_sha": "febb9df971b24dca5051fbb333bf06a5586cae71",
+  "starting_commit": "96969b576bcc3b1f9087ca84fd237cbc02a168f0",
+  "timestamp_utc": "2026-10-30T15:05:12.444648+00:00",
+  "flutter_version": "3.44.2",
+  "build_mode": "headless Flutter widget-test iOS render",
+  "target": "test/visual/lock6_tab_bar_capture_test.dart",
+  "logical_resolution": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "resolution": [
+    1290,
+    2796
+  ],
+  "transport": "Offline local Founder preview; harness rejects HTTP",
+  "sources": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 299222,
+      "sha256": "07033ca32fe4f7334fe179284fad009f71fd9709baaeb6c4a531195f179df26f"
+    },
+    {
+      "path": "SOURCE/lib/widgets/floating_nav_bar.dart",
+      "bytes": 68612,
+      "sha256": "b431d1127f749a452873d77702163568166ba390b0a8dc98ff2e61358e3c7237"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_shell_navigation.dart",
+      "bytes": 1753,
+      "sha256": "4644900baed5d057492e662d05999b9ca769ada1dd9b973354bc220eb60ac3cc"
+    }
+  ],
+  "locked_inputs": [
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+      "bytes": 1250,
+      "sha256": "557ae92fd46fbcfb18bae23ccd7ec9eccd29f13830c86afea68cef157c3b4448"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/RECORD/LOCK_RECORD.md",
+      "bytes": 1291,
+      "sha256": "f82670952d1e90d17f0c37f14a4cf6926a66c7cc8639e8b76027c73d460b48f4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/RECORD/TAB_BAR_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 2305,
+      "sha256": "31a2fdaeeb735d11956b4a1a1d38e67fb348648df65c3b736af5c12626ed3a0a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/seeker_tab_bar__idle_small.png",
+      "bytes": 568390,
+      "sha256": "16abb8efa8527dfc875ffa6a7c2c18b00403c3328b0509afc87ad1b798fb382d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/seeker_tab_bar__touched_full.png",
+      "bytes": 575576,
+      "sha256": "6d0ca564525d2903fc834519af778326e6c501ec1900a2a44901c80dcaa02fe2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/guardian_tab_bar__touched_full.png",
+      "bytes": 1037268,
+      "sha256": "b6b3d60b209e211648db8acd2b1c03748abff28797ddb0b3a38f50c1480a098a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/MASTERS/guardian_tab_bar__idle_small.png",
+      "bytes": 1030316,
+      "sha256": "4b711106d4a23c51ed89f1f3011ed2771d0cea80081460a139ae7a640eb5cfd8"
+    }
+  ],
+  "captures": [
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/BUILT/seeker_tab_bar__idle_small.png",
+      "bytes": 856540,
+      "sha256": "ea4edc4e677f16f9e7755bd7c6ba44ceafec62f895ea51213fcfc71b47440bf7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/BUILT/master_beside_build.png",
+      "bytes": 980533,
+      "sha256": "333d56477bbd6b656f2d9a05f7b592a6bc6aa7b9131550ac94030c20ed335932"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/BUILT/seeker_tab_bar__touched_full.png",
+      "bytes": 845884,
+      "sha256": "85dec7dc7fd4cbc95ee666cf4caf2d976d2232c4953467e1c4b14951d25ca567"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/BUILT/guardian_tab_bar__touched_full.png",
+      "bytes": 964223,
+      "sha256": "f99b3c8ae11186ecefec1b41c7c89c501c363735b5d623dba8224fc8662c2a74"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TAB_BAR/BUILT/guardian_tab_bar__idle_small.png",
+      "bytes": 976365,
+      "sha256": "5346241f25d9d1ba5f088f62ab927850cd80ca39217ec03c99e1db5ebb63a086"
+    }
+  ],
+  "comparison": {
+    "timestamp_utc": "2026-10-30T15:02:57.217390+00:00",
+    "idle": {
+      "master_rect": [
+        98,
+        859,
+        234,
+        50
+      ],
+      "built_rect": [
+        98,
+        848,
+        234,
+        50
+      ],
+      "icon_centers_both": [
+        127,
+        171,
+        215,
+        259,
+        303
+      ],
+      "slot_width": 38,
+      "gap": 6,
+      "icon_size": 18,
+      "underline_width": 28
+    },
+    "full": {
+      "built_size": [
+        390,
+        58
+      ],
+      "existing_icon_centers": [
+        59.8,
+        137.4,
+        215,
+        292.6,
+        370.2
+      ],
+      "master_icon_centers": [
+        67,
+        141,
+        215,
+        289,
+        363
+      ],
+      "preserved_inherited_full_differences": true
+    },
+    "full_png_unchanged_by_idle_gap_fix": {
+      "seeker_tab_bar__touched_full.png": true,
+      "guardian_tab_bar__touched_full.png": true
+    },
+    "inherited_differences": "Shared safe area; Material glyphs; full slot distribution and underline24 vs prototype34; page body/font/photo/pill metrics; drawn rounded phone edges. No redesign in row32. OA-ZYRA-325."
+  },
+  "checks": {
+    "tests": {
+      "passed": 165,
+      "suites": 11,
+      "command_log": "final_test.log (moved to global _to_delete at closure)",
+      "filter": "^(?!.*(?:first held bar touch removes cue before breathing|Actual Browse has one 20px edge)).*$",
+      "excluded": {
+        "held_cue": 2,
+        "browse_edge_held_Hide": 6
+      },
+      "capture_cases": 2,
+      "actual_root_plan_role_cases": 4,
+      "captures": 4
+    },
+    "analyzer": "No issues found (4.3s)",
+    "ui_gate": {
+      "counts": {
+        "LOW": 336,
+        "MED": 328
+      },
+      "date": "2026-10-30",
+      "duration_s": 0.8,
+      "run_id": "19c3dc19",
+      "tree": "40d6fef5d59e4dbb",
+      "verdict": "PASS-WITH-FINDINGS"
+    },
+    "ui_gate_scope": "Fresh ledger, config folder excluded; findings advisory OA-ZYRA-257",
+    "map_check": "355 documents with headers, 0 without, 73 problems; MAP.md is current",
+    "code_size": "| What | Size |\n|---|---|\n| All app code | 165,050 lines in 325 files |\n| Developer and preview code inside it | 45,619 lines in 84 files |\n| The Founder preview (planned app) | 26,514 lines in 34 files |\n| Test code | 211,880 lines in 488 files |\n| Test screenshots (goldens) | 2,612 images, 307 MB |\n| Old-app files that still mention Pause | 39 |\n| Old-app files that still mention Restart | 1 |\n"
+  },
+  "archive_v1_preserved": true,
+  "native": "No build/install/upload"
+}
