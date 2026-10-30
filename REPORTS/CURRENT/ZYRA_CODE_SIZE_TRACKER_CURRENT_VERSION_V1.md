@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 163,176 lines in 322 files |
-| Developer and preview code inside it | 44,292 lines in 82 files |
-| The Founder preview (planned app) | 25,226 lines in 32 files |
-| Test code | 212,900 lines in 481 files |
+| All app code | 163,373 lines in 322 files |
+| Developer and preview code inside it | 44,301 lines in 82 files |
+| The Founder preview (planned app) | 25,235 lines in 32 files |
+| Test code | 213,304 lines in 483 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -49,6 +49,8 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | Queue17 LOCK8 preflight failed; prerequisite13 incomplete | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
 
 | 2026-10-30 | Queue 18, LOCK3 Guardian information and consent (OA-ZYRA-324 / DR-ZYRA-233) | 163,176 / 322 | 44,292 / 82 | 25,226 / 32 | 212,900 / 481 | 2,612 / 307 MB | 39 | 1 |
+
+| 2026-10-30 | Queue 19, LOCK7 single request pill and Larger Text (DR-ZYRA-305) | 163,373 / 322 | 44,301 / 82 | 25,235 / 32 | 213,304 / 483 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -239,3 +241,41 @@ the master-beside-build sheet live in PRODUCT/APPROVED/GUARDIAN_INFO/BUILT/. Exi
 the navigation area are identical; its old full screenshot differs only where the later LOCK6 changed navigation.
 No old master or baseline was overwritten. Production remains under OA-ZYRA-317; no migration, native build, installation,
 upload or Tier 3 route removal was attempted. The daily task note records the two ZYRA commits and verification commands.
+
+
+## LOCK7 request pill — 30 Oct 2026
+
+Queue 19 builds the revised locked request row (DOC-ZYRA-0322/0323 V2/0324; DR-ZYRA-305, AD-AIOS-115).
+The Seeker Profiles root alone supplies `requestRowLabels` through the sample wrapper. The shared presenter keeps its
+three-pill default for other callers, including own-profile inspection; hidden inspection omits feed chrome. Guardian
+Network, the options bar and navigation are unchanged. The row is one glass surface, 390 × 56 at the 430-point viewport,
+with 68 × 56 arrow targets, two 28-point dividers and the locked gold border/sent treatment. At 200% text the tested
+430/393/320-point widths all wrap the request label to two lines, with an 88-point stable height for all four root labels.
+The layout reserve and rendered row use the same text measurement, so changing labels does not move the card.
+
+Live files: `SOURCE/lib/widgets/zyra_profiles_components.dart` owns presentation and measurement;
+`SOURCE/lib/widgets/zyra_browse_designs.dart` preserves caller eligibility and semantics while selecting the opted-in row;
+`SOURCE/lib/dev/zyra_one_journey_browse_designs.dart` forwards the opt-in;
+`SOURCE/lib/dev/zyra_one_journey_concept_shell.dart` opts in only the existing Seeker root.
+No request state, persistence, transport, role admission or callback authority moved into the row. Existing keys,
+request/cancel callbacks, labels and the member-controlled feedback remain. No migration or retired source is involved.
+The feature remains sample-only in the Founder preview; ordinary members wait for OA-ZYRA-317.
+
+The analyser is clean. Seven focused/regression suites pass 111 cases, including actual-shell send/cancel and stale
+callback checks, shared gallery, own preview, options and LOCK6 navigation. Three explicit iOS capture cases pass and
+produce the three 1290 × 2796 pictures in `PRODUCT/APPROVED/REQUEST_ROW/BUILT/`, beside their masters and the comparison
+sheet. `SOURCE/test/request_row_lock7_test.dart` covers six new geometry/accessibility/guard cases; the capture suite is
+`SOURCE/test/visual/lock7_request_row_capture_test.dart`. No approved baseline was overwritten.
+
+Comparison is scoped: row measurements and states match the V2 specification; the complete prototype masters and actual
+screens are not pixel-identical. The existing actual app has LOCK4 photos, smaller identity typography, different details
+spacing/viewport and pagination, the sent-card Glass Signals outline, an unframed screen and current LOCK6 navigation.
+Written refusal: do not redraw these unrelated surfaces or overwrite masters to imitate the older prototype. Fable and
+the ZYRA design chat own independent comparison/verification; Founder acceptance remains separate.
+
+Supplementary UI gate: PASS-WITH-FINDINGS (354 advisory findings: 0 critical/high, 13 medium, 341 low). The older static
+checker exits 1 on 106 heuristic findings, including existing named-constructor/export false positives; no broken import
+or new dangling document reference is reported. Written refusal: checker repair and unrelated legacy findings are outside
+row 19. Clean Flutter analysis and compiled regression/capture tests are the measured implementation checks. Scratch
+reports are moved to `/Users/shakeelahmad/_to_delete/ZYRA_QUEUE19_2026-10-30/`; only screenshots/JSON/BUILD.json remain as
+evidence. The daily Task 5 note records exact commands, source/evidence commits and disk measurements.

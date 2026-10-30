@@ -1,4 +1,6 @@
 // Shared current Profiles presentation. No account, permission or navigation authority.
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -157,5 +159,159 @@ class ZyraProfilesBottomRow extends StatelessWidget {
       const SizedBox(width: 8),
       SizedBox(width: 72, child: next),
     ],
+  );
+}
+
+/// LOCK 7 presentation only. Owners retain all request and navigation authority.
+class ZyraProfilesRequestRow extends StatelessWidget {
+  const ZyraProfilesRequestRow({
+    super.key,
+    required this.actionKey,
+    required this.label,
+    required this.labels,
+    required this.sent,
+    required this.onPrevious,
+    required this.onRequest,
+    required this.onNext,
+    this.semanticLabel,
+  });
+
+  final Key actionKey;
+  final String label;
+  final List<String> labels;
+  final String? semanticLabel;
+  final bool sent;
+  final VoidCallback? onPrevious, onRequest, onNext;
+
+  static const arrowWidth = 68.0;
+
+  static double heightFor(
+    BuildContext context,
+    double width,
+    List<String> labels,
+  ) {
+    var height = 56.0;
+    for (final label in labels) {
+      final painter = TextPainter(
+        text: TextSpan(text: label, style: zyraProfilesActionStyle()),
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+      )..layout(maxWidth: math.max(1, width - 2 * arrowWidth));
+      height = math.max(height, painter.height + 18);
+      painter.dispose();
+    }
+    return height;
+  }
+
+  Widget _button({
+    required Key key,
+    required String label,
+    required VoidCallback? onTap,
+    required Widget child,
+    bool primary = false,
+  }) => Semantics(
+    button: true,
+    enabled: onTap != null,
+    label: label,
+    onTap: onTap,
+    excludeSemantics: true,
+    child: ZyraPressFeedback(
+      enabled: primary && onTap != null,
+      child: InkWell(
+        key: key,
+        onTap: onTap,
+        excludeFromSemantics: true,
+        child: Center(child: child),
+      ),
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) => SizedBox(
+      height: heightFor(context, constraints.maxWidth, labels),
+      child: Material(
+        key: const ValueKey('concept_request_row_surface'),
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(999),
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          foregroundDecoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: ZyraColors.journeyGold.withValues(alpha: sent ? 1 : .6),
+            ),
+          ),
+          child: Stack(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    width: arrowWidth,
+                    child: _button(
+                      key: const ValueKey('concept_previous_profile'),
+                      label: 'Previous profile · no decision',
+                      onTap: onPrevious,
+                      child: Icon(
+                        Icons.chevron_left,
+                        size: 24,
+                        color: onPrevious == null
+                            ? ZyraColors.ink(.28)
+                            : ZyraColors.journeyGold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: _button(
+                      key: actionKey,
+                      label: semanticLabel ?? label,
+                      onTap: onRequest,
+                      primary: true,
+                      child: ZyraInvitationLabel(
+                        label: label,
+                        sent: sent,
+                        style: zyraProfilesActionStyle(
+                          color: ZyraColors.ink(onRequest == null ? .34 : .90),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: arrowWidth,
+                    child: _button(
+                      key: const ValueKey('concept_next_profile'),
+                      label: 'Next profile · no decision',
+                      onTap: onNext,
+                      child: Icon(
+                        Icons.chevron_right,
+                        size: 24,
+                        color: onNext == null
+                            ? ZyraColors.ink(.28)
+                            : ZyraColors.journeyGold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              for (final left in [true, false])
+                Positioned(
+                  left: left ? arrowWidth : null,
+                  right: left ? null : arrowWidth,
+                  top: 0,
+                  bottom: 0,
+                  child: Center(
+                    child: SizedBox(
+                      width: 1,
+                      height: 28,
+                      child: ColoredBox(color: ZyraColors.surfaceBorder),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    ),
   );
 }

@@ -2208,6 +2208,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     });
     return ZyraOneJourneyBrowseDesigns(
       key: ValueKey(('prepared-browse', _photos != null)),
+      requestRowLabels: const [
+        'Request a Journey',
+        'Request sent',
+        'Received request',
+        'Journey archived',
+      ],
       profiles: people.map(_displayProfile).toList(growable: false),
       selectedIndex: index,
       design: _browseDesign,

@@ -68,6 +68,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.requestSemanticLabel,
     this.invitationSent,
     this.canRequest,
+    this.requestRowLabels,
     this.bottomPadding = 100,
     this.alignHeaderActions = false,
     this.nextProfileMotion = ZyraBrowseNextMotion.current,
@@ -102,6 +103,10 @@ class ZyraBrowseDesigns extends StatefulWidget {
   final String Function(SeekerProfile)? requestSemanticLabel;
   final bool Function(SeekerProfile)? invitationSent;
   final bool Function(SeekerProfile)? canRequest;
+
+  /// LOCK 7 opt-in. The owning root supplies every label for stable row sizing.
+  /// Null retains the shared presenter's existing three-pill layout.
+  final List<String>? requestRowLabels;
   final double bottomPadding;
   final bool alignHeaderActions;
   // Optional presentation-only preview. Callers own selection and actions;
@@ -405,6 +410,26 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         profile != null &&
         onRequest != null &&
         (widget.canRequest?.call(profile) ?? true);
+    if (widget.requestRowLabels != null && !widget.readOnlyPreview) {
+      final label = profile == null
+          ? 'Request Journey'
+          : widget.requestLabel?.call(profile) ?? 'Request Journey';
+      final sent =
+          profile != null && widget.invitationSent?.call(profile) == true;
+      return ZyraProfilesRequestRow(
+        key: const ValueKey('concept_browse_footer'),
+        actionKey: ValueKey('draft_profile_${profile?.id ?? 'empty'}'),
+        label: label,
+        semanticLabel: profile == null
+            ? null
+            : widget.requestSemanticLabel?.call(profile),
+        labels: widget.requestRowLabels!,
+        sent: sent,
+        onPrevious: onPrevious,
+        onNext: onNext,
+        onRequest: requestAllowed ? () => onRequest(profile) : null,
+      );
+    }
     return LayoutBuilder(
       builder: (context, constraints) => Column(
         key: const ValueKey('concept_browse_footer'),
@@ -597,7 +622,14 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         // Do not measure hidden feed labels: their delegates are outside an
         // inspection owner's authority, even when the result would not paint.
         final footerHeight = widget.showFeedChrome
-            ? _requestPillHeight(profile, contentWidth) + _pillBorderExtent
+            ? widget.requestRowLabels != null && !widget.readOnlyPreview
+                  ? ZyraProfilesRequestRow.heightFor(
+                      context,
+                      contentWidth,
+                      widget.requestRowLabels!,
+                    )
+                  : _requestPillHeight(profile, contentWidth) +
+                        _pillBorderExtent
             : 0.0;
         final headerHeight = widget.readOnlyPreview || !widget.showFeedChrome
             ? 0.0
