@@ -126,7 +126,7 @@ from public.score_candidates(array[
 rollback;
 insert into f04_numeric_before values (:'numeric_expected'::jsonb);
 
-\ir ../migrations/20261005120711_oa305_f04_private_legacy_score_and_browse_ids.sql
+\ir ../prepared/20261005120711_oa305_f04_private_legacy_score_and_browse_ids.sql
 
 begin;
 select pg_temp.f04_seed();
