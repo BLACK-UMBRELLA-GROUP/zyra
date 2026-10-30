@@ -1,0 +1,189 @@
+{
+  "lock": "LOCK10 V6",
+  "pixel_equality_claimed": false,
+  "review": "Current V6 titles/gaps and card/pill/chip structure checked. App font/glyph rasterisation and prototype screen corners differ. f07/f10 are native installed V4 aab4973 captures of byte-identical heritage rendering. Actual iOS27 keyboard/predictive row creates a shorter card than the prototype illustration. Native V6 binary is not claimed.",
+  "rows": [
+    {
+      "master": "MASTERS/f01_age__any.png",
+      "built": "BUILT/f01_age__any.png",
+      "master_sha256": "98737225166733704c5e555c45882368d315085ce5d822f7a65c0289016acc0e",
+      "built_sha256": "5d30e562f3632bd7686d6c658a81fa99dc54542217377f792b8e1013cbf098c1",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 3.932,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f02_age__range.png",
+      "built": "BUILT/f02_age__range.png",
+      "master_sha256": "6abdb52c14e962db0d10d903afe12e2b73087c2cf7e7cab74bcb8be1535893cc",
+      "built_sha256": "cf9bd39fa29e9685fd0d2b63cd3b88514a1f64c0de04b3bc79da0219fa280a1c",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 4.333,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f03_where__country.png",
+      "built": "BUILT/f03_where__country.png",
+      "master_sha256": "e75bb39bfe973ccf0a5e5655f463a14149972320c14719e0a266de52ab4e4c48",
+      "built_sha256": "16ddd7f526782ab737d800272fea3179ce42576a4c86e384ffe2d4b8450c3317",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 4.9669,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f04_where__near_me.png",
+      "built": "BUILT/f04_where__near_me.png",
+      "master_sha256": "dc5c1f8bfd6c29b9d42e35b090f89aa8edeee5610396b99781981e55ad75c591",
+      "built_sha256": "e7aa3a438e2955965010042dc641bf719d5dafbcf16a23169202746f1bf029a7",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 5.5541,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f05_where__worldwide.png",
+      "built": "BUILT/f05_where__worldwide.png",
+      "master_sha256": "0c5aa9d6bc20a5c21286de81ff3d32dadbaf557b64e8c77de41ce83d87745369",
+      "built_sha256": "c59d6d91634526b1547837be48a527182b80e36b211d698d9ed2aee09705ad4e",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 4.4426,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f06_nationality__popular.png",
+      "built": "BUILT/f06_nationality__popular.png",
+      "master_sha256": "1157971b2c05c7129616d80999a2d31fa1bffff9e6648caab0b8f7e70b7a0470",
+      "built_sha256": "12517bd355186c46349a3e679ae7939828e9c395e275cb76da0a673faedbe895",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 5.7531,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f07_nationality__typing_keyboard.png",
+      "built": "BUILT/f07_nationality__typing_keyboard.png",
+      "master_sha256": "a87d66c6817f5174b1715110eb8f36757b33d21ba0f4c25b2167e60026c7ee54",
+      "built_sha256": "cbc523af2fc6cc320028495493225f8db847c722b0c17ab9e7d3cbf2fafb0fb3",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 18.866,
+      "native_keyboard": true,
+      "source_provenance": "Installed V4 aab4973; unchanged heritage branch",
+      "note": "Real iOS27 keyboard, actual predictive row/insets preserved"
+    },
+    {
+      "master": "MASTERS/f08_nationality__chosen.png",
+      "built": "BUILT/f08_nationality__chosen.png",
+      "master_sha256": "7b3bd5e0493888bdc0f8c4033462e403d65104fa1d08aa375c8068c55f9a1d59",
+      "built_sha256": "096d0d91161cb4fc8371412ad821a237b6f9227898794b302bce5e50f70ffae7",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 6.1373,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f09_ethnicity__popular.png",
+      "built": "BUILT/f09_ethnicity__popular.png",
+      "master_sha256": "21c6a885c80baaa29f83a9671413b277eed517797b04c97e2538ab3f3b6bce7d",
+      "built_sha256": "2fb444595f8c5bdb612aa2d80d3535752aa8f552baca22ddafa43255fae343f4",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 5.8819,
+      "native_keyboard": false,
+      "source_provenance": "Final tested V6 source; hashes in BUILD.json",
+      "note": "Headless actual local shell"
+    },
+    {
+      "master": "MASTERS/f10_ethnicity__no_match_keyboard.png",
+      "built": "BUILT/f10_ethnicity__no_match_keyboard.png",
+      "master_sha256": "11f505460d6f6164858c5cd32e3b9b74c865bb74661e01c24b3d4444caf24715",
+      "built_sha256": "7096626aa55f22dc0819ee309981bffb61af4a31b5253daef5d9e9a71527870a",
+      "size": [
+        1290,
+        2796
+      ],
+      "raw_mean_absolute_rgb_difference": 18.6844,
+      "native_keyboard": true,
+      "source_provenance": "Installed V4 aab4973; unchanged heritage branch",
+      "note": "Real iOS27 keyboard, actual predictive row/insets preserved"
+    }
+  ],
+  "slider_geometry": {
+    "pixel_coordinates_at_3x": true,
+    "f02": {
+      "master_track_x": [
+        150,
+        1139
+      ],
+      "built_track_x": [
+        150,
+        1139
+      ],
+      "master_center_y": 1181.5,
+      "built_center_y": 1190.5,
+      "vertical_difference_pt": 3
+    },
+    "f04": {
+      "master_track_x": [
+        153,
+        1136
+      ],
+      "built_track_x": [
+        150,
+        1139
+      ],
+      "master_center_y": 1295.5,
+      "built_center_y": 1364.5,
+      "vertical_difference_pt": 23,
+      "built_extra_width_per_end_pt": 1
+    },
+    "black_outline_pixels_final": [
+      0,
+      0,
+      0
+    ],
+    "black_outline_pixels_before": [
+      430,
+      434,
+      429
+    ],
+    "plain_thumb_color": "#E8C98A",
+    "interpretation": "Exact26/22/18pt empty gaps retained. Actual app fonts/control geometry and44pt origin action minimum differ from prototype; no offsets invented or pixel-exact claim."
+  }
+}

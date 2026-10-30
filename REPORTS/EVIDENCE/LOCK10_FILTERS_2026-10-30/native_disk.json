@@ -1,0 +1,10 @@
+{
+  "new_or_updated_generated_files_over_50MB": [
+    {
+      "file": "SOURCE/.dart_tool/flutter_build/c54858a17f4ed3f3dcf1e846c6358466/app.dill",
+      "bytes": 63795016
+    }
+  ],
+  "native_output_copied_to_evidence": false,
+  "free_bytes": 94464921600
+}

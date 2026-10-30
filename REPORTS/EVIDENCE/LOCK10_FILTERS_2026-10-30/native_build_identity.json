@@ -1,0 +1,12 @@
+{
+  "bundle": "app.zyraconnect.zyra",
+  "version": "1.0.0",
+  "build": "5",
+  "team": "9Y7Z8F36SJ",
+  "codesign_deep_strict": "PASS",
+  "xcode": "Xcode 27.1\nBuild version 27A9275",
+  "binary_sha256": "44c0fa0661cb3763579bff7ca46c0a44a78a30696ab7083a714e358723d567d2",
+  "app_bytes": 56801731,
+  "compiled_output_location": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/ios/iphoneos/Runner.app",
+  "source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186"
+}

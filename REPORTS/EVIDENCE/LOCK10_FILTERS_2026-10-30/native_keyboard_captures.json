@@ -1,0 +1,45 @@
+{
+  "source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+  "states": [
+    {
+      "state": "f07",
+      "file": "PRODUCT/APPROVED/FILTERS/BUILT/f07_nationality__typing_keyboard.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "bytes": 1348369,
+      "sha256": "cbc523af2fc6cc320028495493225f8db847c722b0c17ab9e7d3cbf2fafb0fb3",
+      "capture_method": "Xcode27.1 Device Hub native Screenshot on paired iPhone15ProMax, View Screen active, Capture Keyboard OFF; observed Toggle Software Keyboard command used",
+      "content_observed": "Nationality; alg; Add Algerian; real iOS keyboard; Clear; footer hidden",
+      "native_keyboard": true,
+      "geometry_note": "Actual iOS27 predictive row/inset makes card shorter than the prototype keyboard illustration; native geometry preserved",
+      "captured_at_local": "2026-10-30 18:19:56 Europe/London"
+    },
+    {
+      "state": "f10",
+      "file": "PRODUCT/APPROVED/FILTERS/BUILT/f10_ethnicity__no_match_keyboard.png",
+      "size": [
+        1290,
+        2796
+      ],
+      "bytes": 1341737,
+      "sha256": "7096626aa55f22dc0819ee309981bffb61af4a31b5253daef5d9e9a71527870a",
+      "captured_at_local": "2026-10-30 18:25:29 Europe/London",
+      "capture_method": "Xcode27.1 Device Hub native Screenshot on paired iPhone15ProMax, View Screen active, Capture Keyboard OFF; observed Toggle Software Keyboard command used",
+      "content_observed": "Ethnicity; xyzq; No ethnicity called “xyzq”.; Clear (1), retained Algerian/British fixture; real iOS keyboard; footer hidden",
+      "native_keyboard": true,
+      "geometry_note": "Actual iOS27 predictive row/inset makes card shorter than the prototype keyboard illustration; native geometry preserved"
+    }
+  ],
+  "complete": true,
+  "remaining": [],
+  "invalid_probe": {
+    "disposition": "Rejected stale Age screen; moved by parent to _to_delete",
+    "sha256": "4ce0d08f8df380c242db3ea9b49f30eb63ed2b4e6a1556eb0a9b3b5279d18a13"
+  },
+  "timestamp_utc": "2026-10-30T18:34:41.587846+00:00",
+  "verification": "Both viewed independently by primary and parent; byte counts, dimensions and SHA256 match raw Device Hub files",
+  "final_source_limitation": "Installed V4 aab4973, not a V6 native build. V6 changes Age/Location branches only; heritage rendering region hash unchanged.",
+  "device_cleanup": "Parent stopped Screen Sharing; View Screen visible again, Capture Keyboard disabled/off; app usable standalone"
+}

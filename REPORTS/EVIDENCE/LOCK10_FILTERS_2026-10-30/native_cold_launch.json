@@ -1,0 +1,12 @@
+{
+  "source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+  "command_result": "success",
+  "bundle": "app.zyraconnect.zyra",
+  "process_id": 65599,
+  "foreground": true,
+  "start_stopped": false,
+  "terminated_existing": true,
+  "console_attached": false,
+  "debugger_attached": false,
+  "timestamp_utc": "2026-10-30T18:01:53.851274+00:00"
+}

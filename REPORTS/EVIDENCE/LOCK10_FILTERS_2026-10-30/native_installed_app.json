@@ -1,0 +1,47 @@
+{
+  "info" : {
+    "arguments" : [
+      "devicectl",
+      "device",
+      "info",
+      "apps",
+      "--device",
+      "00008130-001A2C1E26F8001C",
+      "--bundle-id",
+      "app.zyraconnect.zyra",
+      "--json-output",
+      "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/REPORTS/EVIDENCE/LOCK10_FILTERS_2026-10-30/native_installed_app.json"
+    ],
+    "commandType" : "devicectl.device.info.apps",
+    "environment" : {
+      "TERM" : "dumb"
+    },
+    "jsonVersion" : 5,
+    "outcome" : "success",
+    "version" : "651.13.5"
+  },
+  "result" : {
+    "apps" : [
+      {
+        "appClip" : false,
+        "builtByDeveloper" : true,
+        "bundleIdentifier" : "app.zyraconnect.zyra",
+        "bundleVersion" : "5",
+        "containerAccessible" : true,
+        "defaultApp" : false,
+        "hidden" : false,
+        "internalApp" : false,
+        "name" : "ZYRA",
+        "removable" : true,
+        "url" : "file:///private/var/containers/Bundle/Application/E2F9EAFC-D69C-423D-B6E3-FC435D9BDC84/Runner.app/",
+        "version" : "1.0.0"
+      }
+    ],
+    "defaultAppsIncluded" : false,
+    "deviceIdentifier" : "6BD654E4-7AA0-5305-97DD-188C3C31F486",
+    "hiddenAppsIncluded" : false,
+    "internalAppsIncluded" : false,
+    "matchingBundleIdentifier" : "app.zyraconnect.zyra",
+    "removableAppsIncluded" : true
+  }
+}

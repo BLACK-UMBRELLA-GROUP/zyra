@@ -1,0 +1,107 @@
+{
+  "driver_check": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "exec_denial": "PASS",
+    "nested_exec_denial": "PASS"
+  },
+  "analysis": {
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "result": "No issues found",
+    "seconds": 4.5,
+    "source_commit": "9a8f3a8894341eb03b351003778e5ea3c650edf1"
+  },
+  "scoped_tests": [
+    {
+      "paths": [
+        "visual/lock10_filters_capture_test.dart",
+        "filters_lock10_accessibility_test.dart",
+        "zyra_browse_filter_test.dart",
+        "preview_navigation_checkpoint_test.dart",
+        "request_row_lock7_test.dart"
+      ],
+      "command_suffix": "flutter test --no-pub --dart-define=ZYRA_LOCK10_CAPTURE=true",
+      "passed": 38
+    },
+    {
+      "paths": [
+        "view_request_draft_widget_test.dart",
+        "browse_next_motion_shell_test.dart",
+        "browse_screen_invitation_frame_test.dart",
+        "one_journey_pull_down_routes_test.dart"
+      ],
+      "name_regex": "public.*heritage|filter|Filter|Browse Back respects",
+      "passed": 9
+    },
+    {
+      "paths": [
+        "retained_profile_editor_reuse_test.dart",
+        "one_journey_resume_checkpoint_test.dart"
+      ],
+      "name_regex": "traffic lights|generation change during save|foreign cover during save|revoked|fresh|stale|ABA",
+      "passed": 39
+    },
+    {
+      "paths": [
+        "visual/lock10_filters_capture_test.dart",
+        "zyra_browse_filter_test.dart"
+      ],
+      "passed": 10,
+      "overlaps_prior_counts": true,
+      "purpose": "Final disposed-field callback and filter-only Dominican label check"
+    }
+  ],
+  "distinct_scoped_test_count": 86,
+  "unfiltered_suite_run": false,
+  "network_attempts_in_capture_and_boundary_tests": 0,
+  "ui_proof": {
+    "normal_card": [
+      21,
+      147,
+      388,
+      648
+    ],
+    "bottom_pill": [
+      21,
+      845,
+      388,
+      56
+    ],
+    "inset_layout_card_bottom": 669,
+    "inset_is_native_keyboard": false,
+    "native_keyboard_evidence_complete": true,
+    "native_source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186"
+  },
+  "code_size": {
+    "app_lines": 165880,
+    "app_files": 326,
+    "developer_preview_lines": 46408,
+    "developer_preview_files": 85,
+    "founder_preview_lines": 27289,
+    "founder_preview_files": 35,
+    "test_lines": 212438,
+    "test_files": 490,
+    "golden_images": 2612,
+    "golden_MB": 307,
+    "old_app_pause_files": 39,
+    "old_app_restart_files": 1
+  },
+  "final_v6_check": {
+    "source_commit": "9a8f3a8894341eb03b351003778e5ea3c650edf1",
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LOCK10_CAPTURE=true test/visual/lock10_filters_capture_test.dart test/filters_lock10_accessibility_test.dart test/zyra_browse_filter_test.dart test/preview_navigation_checkpoint_test.dart test/request_row_lock7_test.dart",
+    "passed": 38,
+    "overlaps_prior_counts": true,
+    "measured_gaps_pt": [
+      26,
+      22,
+      18
+    ],
+    "title_and_semantics": "Location, filter 2 of 4; normal and 200% text at 320 pt",
+    "unchanged_regression_scope": "Nine Browse/history/motion and 39 retained-editor/resume checks passed before narrow V6 presentation change; not rerun or represented as post-V6 passes.",
+    "range_pointer_endpoints": [
+      18,
+      70
+    ],
+    "slider_render_audit": "Range track x matches master; black thumb outline pixels0; residual font/action-row geometry disclosed in master_comparison.json"
+  }
+}

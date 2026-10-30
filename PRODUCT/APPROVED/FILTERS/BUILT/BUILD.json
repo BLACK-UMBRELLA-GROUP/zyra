@@ -1,0 +1,62 @@
+{
+  "commit_sha": "9a8f3a8894341eb03b351003778e5ea3c650edf1",
+  "source_state": "Committed, tested final LOCK10 V6 implementation; native keyboard states separately proven on installed V4 aab4973 with byte-identical heritage rendering.",
+  "flutter_version": "3.44.2",
+  "build_mode": "Final V6: headless flutter test, iOS target variant. Installed native capture: PROFILE V4 aab4973.",
+  "target": "protected local Founder sample shell, 430x932 @3x",
+  "timestamp_utc": "2026-10-30T18:35:22.890758+00:00",
+  "native_build": true,
+  "installed": true,
+  "published": false,
+  "native_keyboard_evidence_complete": true,
+  "required_remaining": [],
+  "task_file_sha256": {
+    "SOURCE/lib/dev/zyra_browse_filter.dart": "fb6fa00bf43556b31e880b41d5ae889f5a1ad3a7b6d2ea7d5b061b6b7d2b4d65",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "d4a9d7ed7bff273cf6b6e582c3d30d9f5a7b0a0cbf6c6828c2c3a4c87e6c2307",
+    "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart": "c9cc57bd846d226d0ee68c6d0a41f1e8e3b2b62a1242687384a9d97346a22310",
+    "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart": "19f07dcc5e84101ebd534ded7caccdb0650a367ec0d8b3a3a04de74a24b7de09",
+    "SOURCE/lib/screens/profile/compatibility_editors.dart": "bbc5058e0f24f23bb0ed35fd7b52a5fbaa7f451511c2daa5a242bef413e066c1",
+    "SOURCE/lib/widgets/zyra_browse_designs.dart": "8e49c20c27ef181a0f4ba37ee85c454ecc9d40e45f336f0b97e254a280c5e9cc",
+    "SOURCE/lib/widgets/zyra_profiles_components.dart": "90fcfc2033abe8b68b595db00eb2d4786d836ae8b10d1c21c190904e3af26d11",
+    "SOURCE/test/browse_next_motion_shell_test.dart": "9747085cf5303d97fa685edbe36b6b40ec50f1b67ee8e963dd3a803c6cdc4f51",
+    "SOURCE/test/browse_screen_invitation_frame_test.dart": "8461a34f27e84984c1ff721f4af8e4ce05c9a777298fd956a6becd55df55ca82",
+    "SOURCE/test/preview_navigation_checkpoint_test.dart": "04ed4fa7f8d466b6579f159de5bc7ad45b042c9a670bf467ebfa1b316f492b2d",
+    "SOURCE/test/view_request_draft_widget_test.dart": "578a5566781004c562671d102d0826b8329e555674b6ec3bfd141507685526b1",
+    "SOURCE/test/zyra_browse_filter_test.dart": "9b24d2de42dc9b54dabbdf55f93ee7a07d0d7cff974abd6082e22b47a9fba6cb",
+    "SOURCE/test/filters_lock10_accessibility_test.dart": "5a5e6f0679287b3a5e7eb4eaeae18b7a34052467f75178e247af719ce61184fb",
+    "SOURCE/test/visual/lock10_filters_capture_test.dart": "6aaa9775f3a1eac53335270292c0459410ff5d72a5d9349ee92788979dec669b"
+  },
+  "png_count": 13,
+  "png_bytes": 11651718,
+  "evidence_kind": "screenshots, JSON and text BUILD.json only; no compiled output or source copies",
+  "profile_install_authority": {
+    "founder_words": "Allow one PROFILE install and capture (Recommended)",
+    "scope": "One queue37 PROFILE update using existing run.sh and parent Device Hub captures; incidental Flutter/Xcode Git only; unchanged Apple sandbox/signing/identity; stop on failure/drift; not a native-route repair"
+  },
+  "native_status": "V4_PROFILE_INSTALLED_COLD_LAUNCHED_BOTH_NATIVE_KEYBOARD_CAPTURES_COMPLETE",
+  "native_build_seconds": 88.2,
+  "installer_exit_code": 0,
+  "launcher_stop": "Detach input followed by Ctrl-C ended the still-attaching launcher; no reinstall/retry; normal cold launch succeeded",
+  "native_cold_launch": {
+    "source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+    "command_result": "success",
+    "bundle": "app.zyraconnect.zyra",
+    "process_id": 65599,
+    "foreground": true,
+    "start_stopped": false,
+    "terminated_existing": true,
+    "console_attached": false,
+    "debugger_attached": false,
+    "timestamp_utc": "2026-10-30T18:01:53.851274+00:00"
+  },
+  "identity_verification": "codesign deep strict PASS; bundle/version/team unchanged; protected SDK check PASS before/after install and after V6; source/identity/tooling hashes unchanged throughout native capture hold",
+  "native_v6_build": false,
+  "final_source_installed": false,
+  "installed_source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+  "native_keyboard_scope": "f07/f10 actual installed V4; not a native V6 binary. See v6_scope_provenance.json.",
+  "measured_v6_gaps_pt": {
+    "age_segments_to_range_slider": 26,
+    "location_segments_to_origin": 22,
+    "origin_to_radius_slider": 18
+  }
+}

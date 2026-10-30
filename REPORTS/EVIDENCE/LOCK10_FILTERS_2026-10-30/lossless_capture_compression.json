@@ -1,0 +1,75 @@
+{
+  "scope": "Final V6 headless captures only; raw native pair never recompressed",
+  "rows": [
+    {
+      "file": "f01_age__any.png",
+      "before_bytes": 1014672,
+      "after_bytes": 844364,
+      "decoded_rgba_sha256": "41631afb9f52c0b875f2a2b4c380fe975d5e5aa93fbcddb0bdd7771635dffc7e",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f02_age__range.png",
+      "before_bytes": 1020969,
+      "after_bytes": 854255,
+      "decoded_rgba_sha256": "29c7b273f562a8e527c8697caa527029b4aa4e2b4ba2eed1f126518632632241",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f03_where__country.png",
+      "before_bytes": 1056800,
+      "after_bytes": 889107,
+      "decoded_rgba_sha256": "1a685b1e9b415ac488514ca9cafea6f2374c2f247563b0fad5af01cbd5507e29",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f04_where__near_me.png",
+      "before_bytes": 1052117,
+      "after_bytes": 887537,
+      "decoded_rgba_sha256": "ff70ab6d470676a3644bf4db82e3085f2ec9ef80699065293b3f5cb300f157ae",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f05_where__worldwide.png",
+      "before_bytes": 1037488,
+      "after_bytes": 866966,
+      "decoded_rgba_sha256": "8208fe3371cdf783239e5d061609ca1ac85b422d2c931ddebab85e0713e45bbe",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f06_nationality__popular.png",
+      "before_bytes": 1082181,
+      "after_bytes": 920521,
+      "decoded_rgba_sha256": "7ff7aaf4843fe0e29e3026cb15d0b40c36bb8a01feb1288400e9ee72c54fcb68",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f07_nationality__typing_keyboard__headless_layout.png",
+      "before_bytes": 879151,
+      "after_bytes": 639566,
+      "decoded_rgba_sha256": "43fe68364977a714757ee33cb97067188b71d217ad6ffbad986a0a813ae74301",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f08_nationality__chosen.png",
+      "before_bytes": 1093259,
+      "after_bytes": 930406,
+      "decoded_rgba_sha256": "2790355ba06533303e79300c8a2a529579ce331210279a2f75da29bb9695e5bc",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f09_ethnicity__popular.png",
+      "before_bytes": 1083678,
+      "after_bytes": 922798,
+      "decoded_rgba_sha256": "f752e33d91659263dc2dd8a70f1e051c2a4d578093e3169e6c9d134c8a4c894b",
+      "pixels_preserved": true
+    },
+    {
+      "file": "f10_ethnicity__no_match_keyboard__headless_layout.png",
+      "before_bytes": 881232,
+      "after_bytes": 642096,
+      "decoded_rgba_sha256": "b7805e0e84fbc2837d797a2552cf68204c76719f8e9deb0e833f1a49c382963e",
+      "pixels_preserved": true
+    }
+  ]
+}

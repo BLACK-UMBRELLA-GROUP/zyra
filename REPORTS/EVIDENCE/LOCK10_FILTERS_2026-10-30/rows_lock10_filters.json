@@ -1,0 +1,142 @@
+[
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f01_age__any",
+    "state": "f01_age__any",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f01_age__any.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f02_age__range",
+    "state": "f02_age__range",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f02_age__range.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f03_where__country",
+    "state": "f03_where__country",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f03_where__country.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f04_where__near_me",
+    "state": "f04_where__near_me",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f04_where__near_me.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f05_where__worldwide",
+    "state": "f05_where__worldwide",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f05_where__worldwide.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f06_nationality__popular",
+    "state": "f06_nationality__popular",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f06_nationality__popular.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f07_nationality__typing_keyboard__headless_layout",
+    "state": "f07_nationality__typing_keyboard__headless_layout",
+    "reached": "HEADLESS INSET LAYOUT ONLY; native keyboard proof is separately captured from installed V4 aab4973.",
+    "file": "f07_nationality__typing_keyboard__headless_layout.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f08_nationality__chosen",
+    "state": "f08_nationality__chosen",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f08_nationality__chosen.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f09_ethnicity__popular",
+    "state": "f09_ethnicity__popular",
+    "reached": "Actual sample shell; network blocked.",
+    "file": "f09_ethnicity__popular.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "filters",
+    "page": "f10_ethnicity__no_match_keyboard__headless_layout",
+    "state": "f10_ethnicity__no_match_keyboard__headless_layout",
+    "reached": "HEADLESS INSET LAYOUT ONLY; native keyboard proof is separately captured from installed V4 aab4973.",
+    "file": "f10_ethnicity__no_match_keyboard__headless_layout.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "installed_source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+  "before_sha256": "5c2a47a155d8d0e463359706eaf79e23a828adb8d8b0ecdfda777531c5ba6e21",
+  "unchanged_region": "Widget _chip through end of presenter (heritage controls, search, shared viewport and lifecycle rendering)",
+  "before_region_sha256": "3b31863a49d43ea184497ea508e1aaf9ee27b10afb1dff114a15d645a59b4069",
+  "after_sha256": "c9cc57bd846d226d0ee68c6d0a41f1e8e3b2b62a1242687384a9d97346a22310",
+  "after_region_sha256": "3b31863a49d43ea184497ea508e1aaf9ee27b10afb1dff114a15d645a59b4069",
+  "region_byte_identical": true,
+  "native_v6_binary_claimed": false,
+  "v6_delta": [
+    "Where title becomes Location",
+    "26 pt after Age segments before range slider",
+    "22 pt after Location segments",
+    "18 pt after Near me origin before slider",
+    "nonvisual geometry keys and measured tests",
+    "Remove default Material thumb elevation/shadow outlines",
+    "Match master range track padded width and uniform4pt height",
+    "Frame-based pointer drags verify both Age handles reach18/70"
+  ],
+  "final_source_commit": "9a8f3a8894341eb03b351003778e5ea3c650edf1"
+}

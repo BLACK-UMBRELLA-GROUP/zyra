@@ -1,0 +1,42 @@
+{
+  "timestamp_utc": "2026-10-30T18:16:22.130076+00:00",
+  "source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+  "read_only": true,
+  "source_hashes_match": 14,
+  "source_level_suppression_found": false,
+  "stable_focus_controller_and_field_ancestry": true,
+  "default_read_only": false,
+  "default_keyboard_type": "text",
+  "input_action": "done",
+  "app_calls_text_input_hide": false,
+  "footer_hidden_on_focus_alone": true,
+  "footer_hidden_does_not_prove_keyboard_visible": true,
+  "framework_show_path": "Pinned Flutter EditableText focus/requestKeyboard attaches and shows the platform input connection",
+  "unfocus_paths": [
+    "card change",
+    "Done",
+    "tap outside/blank card",
+    "disposal",
+    "opening hidden dev controls"
+  ],
+  "native_observation_reported_by_parent": "Caret and Scan Text menu on Nationality, no keyboard/inset. Device Hub hardware keyboard attachment suppression suspected but unproven.",
+  "root_cause": "UNPROVEN_RUNTIME_INPUT_STATE",
+  "native_keyboard_proof_complete": true,
+  "changes_builds_reinstalls_during_audit": 0,
+  "followup_observation": {
+    "reported_by": "Parent, relaying direct Founder confirmation",
+    "observation": "Keyboard opens after Device Hub Screen Sharing stopped, Capture Keyboard off, and physical tap outside/re-tap of the field",
+    "interpretation": "Consistent with Device Hub remote hardware-keyboard attachment suppressing software keyboard; not a proven app defect or independently established root cause",
+    "source_change_or_reinstall": false,
+    "native_screenshots_still_pending": true
+  },
+  "updated_utc": "2026-10-30T18:18:14.979571+00:00",
+  "final_capture_followup": {
+    "both_raw_native_states_complete": true,
+    "source_unchanged_during_capture": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+    "method": "View Screen active, Capture Keyboard off, Toggle Software Keyboard observed",
+    "root_cause_unproven": true,
+    "no_reinstall_or_source_fix": true,
+    "historical_followup_pending_field": "Above followup_observation describes the earlier18:18 state; superseded by native_keyboard_captures.json"
+  }
+}

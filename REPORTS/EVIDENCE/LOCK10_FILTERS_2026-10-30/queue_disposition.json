@@ -1,0 +1,11 @@
+{
+  "row": 37,
+  "status": "BUILT",
+  "built_on": "2026-10-30",
+  "change": "Status and Built on cells only; current V6 note preserved",
+  "other_working_queue_bytes_unchanged": true,
+  "before_sha256": "e6ff82d73c77cb5a2490cfc4a1e4e30bfb40fffc3bdec4a9793a2e73b2f4add9",
+  "after_sha256": "425f544dd7e5b26ff0d6c6adcd0e58230d9d089dac55ae502c3590f411c5822a",
+  "source_commit": "9a8f3a8894341eb03b351003778e5ea3c650edf1",
+  "native_scope": "Unchanged heritage states proven on installed V4 aab4973; final V6 headless source proof and scope hashes recorded"
+}

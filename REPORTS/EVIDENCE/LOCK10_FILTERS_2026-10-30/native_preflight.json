@@ -1,0 +1,19 @@
+{
+  "source_commit": "aab497389c7a85ca8d5ad5934a9fe6a288082186",
+  "before_sha256": {
+    "run.sh": "2c5653069cdf9b57440c79f7bd8ed4ee3d03271e59a3863dabe7cf2ef931f421",
+    "pubspec.yaml": "232d2739fa45a735be11f38b5d1523e0e0341bf3f7e6f2633e8dece8350e4287",
+    "tooling/sdk_pins.json": "6a12ab7d1db5f91d8c69eb425342c2f2ab090ae9fbef10559c873cf2f78fcd1d",
+    "tooling/no_git_driver.mjs": "518527ff1025f3611952c97a059de752de32b11ff68fc1d658fa6406ab76dfc2",
+    "ios/Runner.xcodeproj/project.pbxproj": "243c077bef0743a24c2f41c2e35111848fd914e20912a511f23c170bbb0736a2",
+    "ios/Runner.xcodeproj/xcshareddata/xcschemes/production.xcscheme": "b658f112b41fc1fd38de1cfb071e5bf945ba74f61b5c642b7249860c8f242dbe",
+    "ios/Runner.xcworkspace/xcshareddata/swiftpm/Package.resolved": "b8aadefe2eb094ed5e17718db5eef01df028f014d4723b3127292d231778f081",
+    "ios/Runner/Info.plist": "78eb2d8b5b992d691ad52a2aa61474df090a839bda2cd9ada0faa51e7bfb3bec"
+  },
+  "expected_bundle": "app.zyraconnect.zyra",
+  "expected_version": "1.0.0+5",
+  "expected_team": "9Y7Z8F36SJ",
+  "expected_scheme": "production",
+  "expected_mode": "profile",
+  "status": "AUTHORISATION_AND_HASHES_CHECKED"
+}
