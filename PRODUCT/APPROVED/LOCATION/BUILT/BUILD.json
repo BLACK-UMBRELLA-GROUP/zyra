@@ -1,0 +1,25 @@
+{
+  "source_commit": "d12180232cf77033aaa5970d7d7dbb54952e7ee6",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test render; no native build",
+  "target": "iOS presentation at 430x932 / 3x",
+  "timestamp_utc": "2026-10-30T18:50:21.414291+00:00",
+  "native_permission_proof": "unverified OA-ZYRA-323",
+  "source_sha256": {
+    "SOURCE/ios/Runner/AppDelegate.swift": "20b709eb3dd972c2721ab4907b56c54cc8980b90b61b96d939fae0817bbcf638",
+    "SOURCE/ios/Runner/Info.plist": "a597a9968bee2010f7df69cbf343c7085d4ea3a9dc4a52fdd6f3898ebfb58108",
+    "SOURCE/lib/dev/zyra_browse_filter.dart": "be407df801d0d05e6a46c83094a1fc67b386fec17eedaaaf9b1266809a84426f",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "5b9662f373d57af1dc556d4e8ece1c8d7a5bf86cb090cf976c3394c1fff2c611",
+    "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart": "f23d0e2c24d640fe1b138fdb70f2002eb0795aea5876711e126f0eb92ab5e148",
+    "SOURCE/lib/dev/zyra_one_journey_location.dart": "882c3465f3d3939a87e20eeb05e5e487dd120d3eba4300f779f5f4c2475d5982",
+    "SOURCE/lib/dev/zyra_one_journey_location_sheet.dart": "b2c0d62c112bfc15d500a6ffc0017296e1b78666889e702f010bc2a38356d853",
+    "SOURCE/test/visual/lock11_location_capture_test.dart": "87674ee3366fbe227872424ae0899a8bba2043c422302c5363309d88702f88a5",
+    "SOURCE/test/zyra_location_lock11_test.dart": "191f7847cec5b8fa8b76421214eb8609dca5d04ea0143ea3988f3e93d99c38fb"
+  },
+  "render_sha256": {
+    "location__choose_start.png": "88a759cc254092aba0d8e41dee5e5ac57de18cc0cdf2b6a981e25ca7c98998d1",
+    "master_beside_build.png": "f0cf105a1fb4cdf0e92f7839de613e94f1fd59e516d9b0d2f0fffd8ffc6bf899",
+    "location__explain.png": "7519b327f47272ff4a43ba9d7e84364d21bdc0f8665019f124e82bd69dc1f850",
+    "filters__from_current_area.png": "a35ce932090346439484fb1406a0f2160a791e02335dd6c4f15b2ff93fea813b"
+  }
+}

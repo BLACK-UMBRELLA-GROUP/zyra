@@ -571,6 +571,7 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0332 | `REPORTS/CURRENT/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-30_V1.md` | LEGAL · DRAFT | ZYRA safety response procedure - how members report, how the Founder reviews reports in AIOS, response… | OA-ZYRA-321, OA-AIOS-413, DOC-ZYRA-0297, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0280, DR-ZYRA-287, DR-ZYRA-095, DR-ZYRA-131, DR-ZYRA-248, DR-ZYRA-268, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0333 | 12 |
 | DOC-ZYRA-0333 | `REPORTS/CURRENT/ZYRA_ONLINE_SAFETY_ACT_CHECK_2026-10-30_V1.md` | LEGAL · DRAFT | Online Safety Act 2023 applicability check for ZYRA - whether it is a regulated user-to-user service, which… | OA-ZYRA-321, DOC-ZYRA-0297, DOC-ZYRA-0296, DOC-ZYRA-0293, DOC-ZYRA-0290, DR-ZYRA-221, DR-ZYRA-287, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332 | 11 |
 | DOC-ZYRA-0334 | `REPORTS/CURRENT/ZYRA_LEGAL_DECISIONS_2026-10-30_V1.md` | DECISION_SHEET · DRAFT | The 25 decisions the legal drafts need, each with Fable's recommended answer, for the Founder to confirm or… | OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333 | 6 |
+| ASBUILT-ZYRA-QUEUE26 | `REPORTS/CURRENT/ZYRA_LOCATION_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | Implementation, privacy boundary and evidence for queue 26, LOCK11 Location app part | AD-AIOS-115, OA-ZYRA-321, OA-ZYRA-323, OA-ZYRA-317 | 9 |
 
 ### MESSAGING AND NOTIFICATIONS
 
