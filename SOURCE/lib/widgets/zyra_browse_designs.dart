@@ -19,10 +19,9 @@ import '../theme/zyra_text.dart';
 import 'floating_nav_bar.dart';
 import 'zyra_browse_options_button.dart';
 import 'zyra_browse_next_photo_motion.dart';
-import 'zyra_invitation_label.dart';
 import 'zyra_invitation_outline.dart';
-import 'zyra_press_feedback.dart';
 import 'zyra_profile_details_page.dart';
+import 'zyra_profiles_components.dart';
 
 /// Explicit rendering seam. The caller supplies already-authorised photo
 /// references and the renderer; a reference alone never initiates a fetch here.
@@ -396,108 +395,6 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     ],
   );
 
-  Widget _compactPill({
-    required Key key,
-    required String label,
-    required VoidCallback? onTap,
-    String? semanticLabel,
-    IconData? icon,
-    double iconSize = 20,
-    bool primary = false,
-    bool previewEnabledAppearance = false,
-    bool? invitationSent,
-    double minimumHeight = _pillMinTapHeight,
-  }) => Semantics(
-    button: true,
-    enabled: onTap != null,
-    label:
-        semanticLabel ??
-        (invitationSent == true ? '$label. Tap to cancel invitation' : label),
-    onTap: onTap,
-    excludeSemantics: true,
-    child: ZyraPressFeedback(
-      enabled: primary && onTap != null,
-      child: Material(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(999),
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(
-              color: primary
-                  ? ZyraColors.journeyGold.withValues(
-                      alpha: invitationSent == true ? .85 : .55,
-                    )
-                  : ZyraColors.surfaceBorder,
-            ),
-          ),
-          child: InkWell(
-            key: key,
-            onTap: onTap,
-            excludeFromSemantics: true,
-            borderRadius: BorderRadius.circular(999),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: 48,
-                minHeight: minimumHeight,
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: icon == null ? _pillHorizontalTextPadding : 8,
-                  vertical: _pillVerticalPadding,
-                ),
-                child: Center(
-                  child: icon == null
-                      ? invitationSent != null
-                            ? ZyraInvitationLabel(
-                                label: label,
-                                sent: invitationSent,
-                                style: _requestStyle(
-                                  color: ZyraColors.ink(
-                                    onTap == null && !previewEnabledAppearance
-                                        ? .34
-                                        : .90,
-                                  ),
-                                ),
-                              )
-                            : Text(
-                                label,
-                                textAlign: TextAlign.center,
-                                style: primary
-                                    ? _requestStyle(
-                                        color: ZyraColors.ink(
-                                          onTap == null &&
-                                                  !previewEnabledAppearance
-                                              ? .34
-                                              : .90,
-                                        ),
-                                      )
-                                    : ZyraText.button(
-                                        size: 12.5,
-                                        color: ZyraColors.ink(
-                                          onTap == null &&
-                                                  !previewEnabledAppearance
-                                              ? .34
-                                              : .90,
-                                        ),
-                                      ),
-                              )
-                      : Icon(
-                          icon,
-                          size: iconSize,
-                          color: onTap == null && !previewEnabledAppearance
-                              ? ZyraColors.ink(.34)
-                              : ZyraColors.journeyGold,
-                        ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-
   Widget _compactFooter(SeekerProfile? profile) {
     // Read-only controls retain the public unsent paint but never evaluate
     // caller decision/eligibility/label delegates, including adversarial ones.
@@ -513,57 +410,45 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         key: const ValueKey('concept_browse_footer'),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            children: [
-              SizedBox(
-                width: _backPillWidth,
-                child: _compactPill(
-                  key: const ValueKey('concept_previous_profile'),
-                  label: 'Previous profile · no decision',
-                  icon: Icons.chevron_left,
-                  onTap: onPrevious,
-                ),
-              ),
-              const SizedBox(width: _footerGap),
-              Expanded(
-                child: _compactPill(
-                  key: ValueKey('draft_profile_${profile?.id ?? 'empty'}'),
-                  label: widget.readOnlyPreview
-                      ? 'Request a Journey'
-                      : profile == null
-                      ? 'Request Journey'
-                      : widget.requestLabel?.call(profile) ?? 'Request Journey',
-                  semanticLabel: widget.readOnlyPreview || profile == null
-                      ? null
-                      : widget.requestSemanticLabel?.call(profile),
-                  primary: true,
-                  previewEnabledAppearance: widget.readOnlyPreview,
-                  invitationSent: widget.readOnlyPreview
-                      ? false
-                      : profile == null
-                      ? null
-                      : widget.invitationSent?.call(profile),
-                  minimumHeight:
-                      widget.readOnlyPreview ||
-                          (profile != null && widget.invitationSent != null)
-                      ? _requestPillHeight(profile, constraints.maxWidth)
-                      : _pillMinTapHeight,
-                  onTap: requestAllowed ? () => onRequest(profile) : null,
-                ),
-              ),
-              const SizedBox(width: _footerGap),
-              SizedBox(
-                width: _nextPillWidth,
-                child: _compactPill(
-                  key: const ValueKey('concept_next_profile'),
-                  label: 'Next profile · no decision',
-                  icon: Icons.chevron_right,
-                  iconSize: 24,
-                  onTap: onNext,
-                  previewEnabledAppearance: widget.readOnlyPreview,
-                ),
-              ),
-            ],
+          ZyraProfilesBottomRow(
+            previous: zyraProfilesPill(
+              key: const ValueKey('concept_previous_profile'),
+              label: 'Previous profile · no decision',
+              icon: Icons.chevron_left,
+              onTap: onPrevious,
+            ),
+            action: zyraProfilesPill(
+              key: ValueKey('draft_profile_${profile?.id ?? 'empty'}'),
+              label: widget.readOnlyPreview
+                  ? 'Request a Journey'
+                  : profile == null
+                  ? 'Request Journey'
+                  : widget.requestLabel?.call(profile) ?? 'Request Journey',
+              semanticLabel: widget.readOnlyPreview || profile == null
+                  ? null
+                  : widget.requestSemanticLabel?.call(profile),
+              primary: true,
+              previewEnabledAppearance: widget.readOnlyPreview,
+              invitationSent: widget.readOnlyPreview
+                  ? false
+                  : profile == null
+                  ? null
+                  : widget.invitationSent?.call(profile),
+              minimumHeight:
+                  widget.readOnlyPreview ||
+                      (profile != null && widget.invitationSent != null)
+                  ? _requestPillHeight(profile, constraints.maxWidth)
+                  : _pillMinTapHeight,
+              onTap: requestAllowed ? () => onRequest(profile) : null,
+            ),
+            next: zyraProfilesPill(
+              key: const ValueKey('concept_next_profile'),
+              label: 'Next profile · no decision',
+              icon: Icons.chevron_right,
+              iconSize: 24,
+              onTap: onNext,
+              previewEnabledAppearance: widget.readOnlyPreview,
+            ),
           ),
         ],
       ),

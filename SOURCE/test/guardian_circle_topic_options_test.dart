@@ -2118,12 +2118,16 @@ void main() {
         isTrue,
       );
       expect(owner.previewData!.senderId, 'draft-guardian-hassan');
+      expect(owner.previewPastTopics, isEmpty);
       await _chooseShellDesign(tester, ZyraCircleBubbleDesign.current);
       expect(tester.state(find.byType(ZyraGuardianCircleScreen)), same(state));
-      await _select(tester, 'draft-circle-past-0', past: true);
+      await _select(tester, 'draft-circle-current-sara');
       await _send(tester, 'Guardian shell local topic conversation');
-      expect(_messageTag('draft-circle-past-0'), findsOneWidget);
-      expect(_key('open-message-context-draft-circle-past-0'), findsNothing);
+      expect(_messageTag('draft-circle-current-sara'), findsOneWidget);
+      expect(
+        _key('open-message-context-draft-circle-current-sara'),
+        findsNothing,
+      );
       await _capture(tester, 'protected-guardian-shell-both');
       await _closeShellCircle(tester);
       expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
@@ -2198,8 +2202,14 @@ void main() {
           expect(_key('circle_topic_general'), findsNothing);
           expect(find.text('General conversation'), findsNothing);
           expect(_key('circle_topic_search'), findsOneWidget);
-          expect(_key('circle_topic_draft-circle-past-0'), findsOneWidget);
-          expect(find.text('10 Oct 2026'), findsOneWidget);
+          expect(
+            _key('circle_topic_draft-circle-past-0'),
+            guardian ? findsNothing : findsOneWidget,
+          );
+          expect(
+            find.text('10 Oct 2026'),
+            guardian ? findsNothing : findsOneWidget,
+          );
           expect(find.text('Potential'), findsNothing);
           expect(find.text('Paused'), findsNothing);
           await _dismissAndRemovePending(tester);

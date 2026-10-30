@@ -6,6 +6,7 @@ import '../models/seeker_profile.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_profile_image.dart';
+import 'zyra_profiles_components.dart';
 
 /// The first page of the current Profiles gallery. Missing public labels stay
 /// missing; this widget never infers heritage from compatibility or identity.
@@ -66,129 +67,94 @@ class ZyraProfileDetailsPage extends StatelessWidget {
       if (nationality?.isNotEmpty ?? false) ('Nationality', nationality!),
       if (ethnicity?.isNotEmpty ?? false) ('Ethnicity', ethnicity!),
     ];
-    return DecoratedBox(
-      key: ValueKey('concept_browse_details_${profile.id}'),
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        // The shared viewport owns clipping and the single sent-only outline,
-        // exactly as on photos. No second frame or rounded moving seam here.
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-          key: ValueKey('concept_browse_details_scroll_${profile.id}'),
-          physics: const ClampingScrollPhysics(),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 26,
-                  vertical: 24,
+    return ZyraProfilesDetailsContent(
+      surfaceKey: ValueKey('concept_browse_details_${profile.id}'),
+      scrollKey: ValueKey('concept_browse_details_scroll_${profile.id}'),
+      children: [
+        ExcludeSemantics(
+          child: Container(
+            key: ValueKey('concept_browse_details_avatar_${profile.id}'),
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: ZyraColors.journeyGold.withValues(alpha: .65),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: ZyraColors.journeyGold.withValues(alpha: .07),
+                  blurRadius: 24,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ExcludeSemantics(
-                      child: Container(
-                        key: ValueKey(
-                          'concept_browse_details_avatar_${profile.id}',
-                        ),
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: ZyraColors.journeyGold.withValues(
-                              alpha: .65,
-                            ),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: ZyraColors.journeyGold.withValues(
-                                alpha: .07,
-                              ),
-                              blurRadius: 24,
-                            ),
-                          ],
-                        ),
-                        child: firstPhoto == null
-                            ? _personIcon
-                            : Padding(
-                                // Container includes its one-point ring
-                                // before this two-point clear inner gap.
-                                padding: const EdgeInsets.all(2),
-                                child: ClipOval(
-                                  key: ValueKey(
-                                    'concept_browse_details_avatar_photo_${profile.id}',
-                                  ),
-                                  child: KeyedSubtree(
-                                    key: ValueKey((
-                                      profile.id,
-                                      profile.photos.firstOrNull,
-                                    )),
-                                    child: _photo(firstPhoto!),
-                                  ),
-                                ),
-                              ),
+              ],
+            ),
+            child: firstPhoto == null
+                ? _personIcon
+                : Padding(
+                    // Container includes its one-point ring
+                    // before this two-point clear inner gap.
+                    padding: const EdgeInsets.all(2),
+                    child: ClipOval(
+                      key: ValueKey(
+                        'concept_browse_details_avatar_photo_${profile.id}',
+                      ),
+                      child: KeyedSubtree(
+                        key: ValueKey((profile.id, profile.photos.firstOrNull)),
+                        child: _photo(firstPhoto!),
                       ),
                     ),
-                    const SizedBox(height: 18),
-                    Text(
-                      profile.firstName,
-                      textAlign: TextAlign.center,
-                      style: ZyraText.heading(size: 34),
+                  ),
+          ),
+        ),
+        const SizedBox(height: 18),
+        Text(
+          profile.firstName,
+          textAlign: TextAlign.center,
+          style: ZyraText.heading(size: 34),
+        ),
+        if (surname?.isNotEmpty ?? false) ...[
+          const SizedBox(height: 2),
+          Text(
+            surname!,
+            textAlign: TextAlign.center,
+            style: ZyraText.heading(size: 22),
+          ),
+        ],
+        const SizedBox(height: 24),
+        for (final (label, value) in facts)
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: ZyraColors.ink(.13))),
+            ),
+            child: MergeSemantics(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      label,
+                      style: ZyraText.body(
+                        size: 13,
+                        color: ZyraColors.ink(.75),
+                      ),
                     ),
-                    if (surname?.isNotEmpty ?? false) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        surname!,
-                        textAlign: TextAlign.center,
-                        style: ZyraText.heading(size: 22),
-                      ),
-                    ],
-                    const SizedBox(height: 24),
-                    for (final (label, value) in facts)
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(color: ZyraColors.ink(.13)),
-                          ),
-                        ),
-                        child: MergeSemantics(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  label,
-                                  style: ZyraText.body(
-                                    size: 13,
-                                    color: ZyraColors.ink(.75),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  value,
-                                  textAlign: TextAlign.right,
-                                  style: ZyraText.body(size: 14),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      value,
+                      textAlign: TextAlign.right,
+                      style: ZyraText.body(size: 14),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-      ),
+      ],
     );
   }
 }

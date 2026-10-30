@@ -357,7 +357,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
             known.id == topic.id &&
             known.firstName == topic.firstName &&
             known.kind == topic.kind &&
-            known.endedOn == topic.endedOn,
+            known.endedOn == topic.endedOn &&
+            known.sharedSummaryLabel == topic.sharedSummaryLabel,
       );
   String get _currentSenderId => _authority.canPreview
       ? (_previewData?.senderId ?? 'dev-me')
@@ -712,6 +713,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
       if (archive == null ||
           archive.topicId != topic.id ||
           archive.firstName != topic.firstName ||
+          archive.sharedSummaryLabel != topic.sharedSummaryLabel ||
           archive.endedOn != topic.endedOn ||
           archive.startedOn.isAfter(archive.endedOn)) {
         return null;
@@ -942,7 +944,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
         (previous?.id == chosen.id &&
             previous?.firstName == chosen.firstName &&
             previous?.kind == chosen.kind &&
-            previous?.endedOn == chosen.endedOn)) {
+            previous?.endedOn == chosen.endedOn &&
+            previous?.sharedSummaryLabel == chosen.sharedSummaryLabel)) {
       return;
     }
     setState(() {
@@ -2410,7 +2413,8 @@ class _Composer extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     primary: false,
                     child: Text(
-                      '${topic.isPast ? 'Past Journey' : 'Journey'} · ${topic.firstName}',
+                      topic.sharedSummaryLabel ??
+                          '${topic.isPast ? 'Past Journey' : 'Journey'} · ${topic.firstName}',
                       key: ValueKey(
                         'circle_pending_discussion_topic_${topic.id}',
                       ),

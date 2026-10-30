@@ -26,6 +26,7 @@ class ZyraCircleDiscussionTopic {
     required this.firstName,
     required this.kind,
     this.endedOn,
+    this.sharedSummaryLabel,
   });
 
   static const general = ZyraCircleDiscussionTopic(
@@ -39,13 +40,17 @@ class ZyraCircleDiscussionTopic {
   final ZyraCircleTopicKind kind;
   final DateTime? endedOn;
 
+  /// Caller-supplied first names and dates for a shared past summary only.
+  final String? sharedSummaryLabel;
+
   bool get isGeneral => kind == ZyraCircleTopicKind.general;
   bool get isPast => kind == ZyraCircleTopicKind.past;
 }
 
 String _topicLabel(ZyraCircleDiscussionTopic topic) => topic.isGeneral
     ? 'General conversation'
-    : '${topic.isPast ? 'Past Journey' : 'Journey'} · ${topic.firstName}';
+    : topic.sharedSummaryLabel ??
+          '${topic.isPast ? 'Past Journey' : 'Journey'} · ${topic.firstName}';
 
 String _topicDate(DateTime date) {
   const months = [
@@ -72,7 +77,8 @@ bool _sameTopic(
     left.id == right.id &&
     left.firstName == right.firstName &&
     left.kind == right.kind &&
-    left.endedOn == right.endedOn;
+    left.endedOn == right.endedOn &&
+    left.sharedSummaryLabel == right.sharedSummaryLabel;
 
 /// The canonical floating launcher. Route ownership and every permission
 /// remain with Circle; this presentation only invokes its guarded callback.
@@ -203,16 +209,19 @@ class ZyraCircleDiscussionBubble extends StatelessWidget {
                   if (!topic.isGeneral) ...[
                     const SizedBox(height: 4),
                     Text(
-                      'Journey with ${topic.firstName}',
+                      topic.sharedSummaryLabel ??
+                          'Journey with ${topic.firstName}',
                       style: ZyraText.heading(size: 18),
                     ),
-                    const SizedBox(height: 5),
-                    Text(
-                      topic.isPast && topic.endedOn != null
-                          ? 'Past Journey · Ended ${_topicDate(topic.endedOn!)}'
-                          : 'Current Journey',
-                      style: ZyraText.subtext(size: 11.5),
-                    ),
+                    if (topic.sharedSummaryLabel == null) ...[
+                      const SizedBox(height: 5),
+                      Text(
+                        topic.isPast && topic.endedOn != null
+                            ? 'Past Journey · Ended ${_topicDate(topic.endedOn!)}'
+                            : 'Current Journey',
+                        style: ZyraText.subtext(size: 11.5),
+                      ),
+                    ],
                   ],
                 ],
               ),
@@ -355,7 +364,10 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
   }
 
   bool _matches(ZyraCircleDiscussionTopic topic, String query) {
-    if (query.isEmpty || topic.firstName.toLowerCase().contains(query)) {
+    if (query.isEmpty ||
+        (topic.sharedSummaryLabel ?? topic.firstName).toLowerCase().contains(
+          query,
+        )) {
       return true;
     }
     final date = topic.endedOn;
@@ -593,15 +605,23 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(topic.firstName, style: ZyraText.body(size: 13)),
-        if (!legacy && !topic.isGeneral && !keyboardReading) ...[
+        Text(
+          topic.sharedSummaryLabel ?? topic.firstName,
+          style: ZyraText.body(size: 13),
+        ),
+        if (topic.sharedSummaryLabel == null &&
+            !legacy &&
+            !topic.isGeneral &&
+            !keyboardReading) ...[
           const SizedBox(height: 4),
           Text(
             topic.isPast ? 'Past Journey' : 'Current Journey',
             style: ZyraText.subtext(size: 11),
           ),
         ],
-        if (topic.isPast && topic.endedOn != null) ...[
+        if (topic.sharedSummaryLabel == null &&
+            topic.isPast &&
+            topic.endedOn != null) ...[
           const SizedBox(height: 3),
           Text(_topicDate(topic.endedOn!), style: ZyraText.subtext(size: 11)),
         ],

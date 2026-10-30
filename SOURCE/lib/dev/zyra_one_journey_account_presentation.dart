@@ -19,6 +19,7 @@ enum ZyraConceptAccountAction {
   managePhotos,
   compatibilityStore,
   pastJourneys,
+  guardianInfo,
   safetyAdvice,
   invite,
   personalisation,
@@ -58,6 +59,7 @@ class ZyraConceptAccountData {
     required this.backgroundLabel,
     required this.hapticLabel,
     required this.gold,
+    this.guardianInfoSeen = false,
     this.photoAsset,
     this.standardUnlocks,
     this.plusUnlocks,
@@ -68,6 +70,7 @@ class ZyraConceptAccountData {
   });
 
   final bool guardian;
+  final bool guardianInfoSeen;
   final String name;
   final String age;
   final String gender;
@@ -377,6 +380,74 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                 const SizedBox(height: 24),
                 const _SectionLabel('SAFETY & SHARING'),
                 const SizedBox(height: 6),
+                if (!data.guardian)
+                  InkWell(
+                    key: const ValueKey('concept_guardian_info'),
+                    onTap: () =>
+                        onAction(ZyraConceptAccountAction.guardianInfo),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.verified_user_outlined,
+                            size: 20,
+                            color: ZyraColors.journeyGold,
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'What Guardians can do',
+                                  style: ZyraText.body(
+                                    size: 13.5,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  'Who sees what, and what you control',
+                                  style: ZyraText.body(
+                                    size: 12.5,
+                                    color: ZyraColors.journeyGold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (!data.guardianInfoSeen) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              key: const ValueKey('guardian_info_new'),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: ZyraColors.journeyGold,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                'NEW',
+                                style: ZyraText.body(
+                                  size: 10,
+                                  color: ZyraColors.onPrimaryAction,
+                                ),
+                              ),
+                            ),
+                          ],
+                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.chevron_right,
+                            color: ZyraColors.ink(.24),
+                            size: 16,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 _ProfileSettingsRow(
                   key: const ValueKey('concept_safety_advice'),
                   label: 'Safety & advice',

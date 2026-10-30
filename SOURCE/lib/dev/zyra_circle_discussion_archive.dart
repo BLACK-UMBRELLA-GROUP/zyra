@@ -13,12 +13,16 @@ class ZyraCircleDiscussionArchive {
     required this.firstName,
     required this.startedOn,
     required this.endedOn,
+    this.sharedSummaryLabel,
   });
 
   final String topicId;
   final String firstName;
   final DateTime startedOn;
   final DateTime endedOn;
+
+  /// Caller-supplied first names and dates; adds no history capability.
+  final String? sharedSummaryLabel;
 }
 
 /// Read-only child of the same Circle, with no lookup, composer or restart.
@@ -97,7 +101,9 @@ class _ZyraCircleDiscussionArchiveViewState
                         children: [
                           Expanded(
                             child: Text(
-                              'Journey with ${_archive.firstName}',
+                              _archive.sharedSummaryLabel == null
+                                  ? 'Journey with ${_archive.firstName}'
+                                  : 'Past Journey',
                               style: ZyraText.heading(size: 26),
                             ),
                           ),
@@ -130,32 +136,42 @@ class _ZyraCircleDiscussionArchiveViewState
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Past Journey',
-                                  style: ZyraText.body(
-                                    size: 17,
-                                    color: ZyraColors.journeyGold,
+                                if (_archive.sharedSummaryLabel != null)
+                                  Text(
+                                    _archive.sharedSummaryLabel!,
+                                    style: ZyraText.body(
+                                      size: 17,
+                                      color: ZyraColors.journeyGold,
+                                    ),
+                                  )
+                                else ...[
+                                  Text(
+                                    'Past Journey',
+                                    style: ZyraText.body(
+                                      size: 17,
+                                      color: ZyraColors.journeyGold,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 7),
-                                Text(
-                                  'This Journey is archived.',
-                                  style: ZyraText.subtext(size: 13),
-                                ),
-                                const SizedBox(height: 26),
-                                _milestone(
-                                  context,
-                                  'Journey started',
-                                  _archive.startedOn,
-                                  Icons.route_outlined,
-                                ),
-                                const SizedBox(height: 22),
-                                _milestone(
-                                  context,
-                                  'Journey ended',
-                                  _archive.endedOn,
-                                  Icons.history_rounded,
-                                ),
+                                  const SizedBox(height: 7),
+                                  Text(
+                                    'This Journey is archived.',
+                                    style: ZyraText.subtext(size: 13),
+                                  ),
+                                  const SizedBox(height: 26),
+                                  _milestone(
+                                    context,
+                                    'Journey started',
+                                    _archive.startedOn,
+                                    Icons.route_outlined,
+                                  ),
+                                  const SizedBox(height: 22),
+                                  _milestone(
+                                    context,
+                                    'Journey ended',
+                                    _archive.endedOn,
+                                    Icons.history_rounded,
+                                  ),
+                                ],
                               ],
                             ),
                           ),

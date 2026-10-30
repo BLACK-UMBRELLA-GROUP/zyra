@@ -1,9 +1,11 @@
 // Disposable methodology comparison using the current app's presentation.
 // No production routes/services are called, no member records are loaded,
-// and no production preferences or records are written by this shell.
+// and only a device-local education marker is persisted (LOCK 3).
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show SystemUiOverlayStyle;
+import 'package:flutter/services.dart'
+    show SystemUiOverlayStyle, MissingPluginException, PlatformException;
 
 import '../data/zyra_journey_stages.dart';
 import '../data/zyra_timeline_milestones.dart';
@@ -86,6 +88,7 @@ import 'zyra_one_journey_options.dart';
 import 'zyra_one_journey_guardian_presentation.dart';
 import 'zyra_journey_peer_guardians_presentation.dart';
 import 'zyra_one_journey_account_presentation.dart';
+import 'zyra_one_journey_guardian_info_presentation.dart';
 import 'zyra_one_journey_switch_signup_preview.dart';
 import 'zyra_subscription_wallet_draft.dart';
 import 'zyra_subscription_wallet_preview.dart';
@@ -213,6 +216,36 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   ZyraMembershipPaymentHistory _membershipPaymentHistory =
       ZyraMembershipPaymentHistory.paidBefore;
   bool _shareHistory = false;
+  bool _guardianInfoSeen = false;
+  static const _guardianInfoSeenKey = 'zyra_preview_guardian_info_seen_v1';
+
+  Future<void> _loadGuardianInfoSeen() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (mounted && _allowed && !_guardianInfoSeen) {
+        setState(
+          () =>
+              _guardianInfoSeen = prefs.getBool(_guardianInfoSeenKey) ?? false,
+        );
+      }
+    } on MissingPluginException {
+      // Education remains usable when local preferences are unavailable.
+    } on PlatformException {
+      // A failed marker read leaves NEW visible; it never grants access.
+    }
+  }
+
+  Future<void> _saveGuardianInfoSeen() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_guardianInfoSeenKey, true);
+    } on MissingPluginException {
+      // The in-memory seen state still lasts for this preview lifetime.
+    } on PlatformException {
+      // A failed marker write may show NEW again after restart.
+    }
+  }
+
   bool _gold = ZyraDevAppGold.instance.renderingEnabled;
   late final _goldMotion = AnimationController(
     vsync: this,
@@ -632,6 +665,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       );
     }
     unawaited(_loadBrowsePhotos());
+    unawaited(_loadGuardianInfoSeen());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Restoring a list is not evidence that every request was viewed.
       _publishCheckpoint();
@@ -721,7 +755,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       saved.removedGuardians.where(_guardianIds.contains),
     );
     _conceptGuardianHistory.addEntries(
-      saved.guardianHistory.entries.where((e) => _guardianIds.contains(e.key)),
+      saved.guardianHistory.entries.where(
+        (e) =>
+            _guardianIds.contains(e.key) &&
+            !_conceptRemovedGuardians.contains(e.key),
+      ),
     );
     _conceptNetworkSent.addAll(saved.networkSent.where(_profileIds.contains));
     if (!widget.restoreLocation) return;
@@ -857,6 +895,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         }
         // Recreate empty-search Help with fresh owner callbacks. No old
         // query, expanded FAQ controller or contact operation is retained.
+        _pages.add(page);
+        continue;
+      }
+      if (page == 'guardian_info') {
+        if (_guardianRole || _tab != 4 || _pages.isNotEmpty) break;
         _pages.add(page);
         continue;
       }
@@ -1454,6 +1497,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'guardian_circle',
           'guardian_invite',
           'guardian_main_notice',
+          'guardian_info',
           'account_action',
           'settings_detail',
           'guardian_linked_profile',
@@ -1803,6 +1847,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'guardian_circle' => _guardianCircle(),
     'guardian_invite' => _guardianInvite(),
     'guardian_main_notice' => _mainGuardianNotice(),
+    'guardian_info' => _guardianInfo(),
     'network_request' => _networkRequestConfirmation(),
     'held_action' => _heldPreviewAction(),
     'own_profile_preview' => _ownProfilePreview(),
@@ -4695,6 +4740,21 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     });
   }
 
+  Widget _guardianInfo() {
+    if (_guardianRole || _tab != 4) return _unavailable();
+    final main = _conceptGuardianPeople
+        .where((person) => person.isMain)
+        .firstOrNull;
+    return ZyraGuardianInfoPresentation(
+      mainGuardian: main == null
+          ? 'You have no Main Guardian yet'
+          : '${main.firstName} · ${main.relationshipLabel}',
+      canAct: _accountFreshGuard(),
+      onMove: () => unawaited(_selectionHaptic()),
+      onManage: _bound(() => _tabTo(3)),
+    );
+  }
+
   Widget _mainGuardianNotice() {
     final id = _pendingMainGuardianNoticeId;
     final guardian = draftGuardians
@@ -4830,6 +4890,45 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _model.ownMainGuardianPresent && _conceptMainGuardianId == guardianId,
   );
 
+  String _sharedPastJourneyLabel(int index) {
+    const names = [
+      'Elif',
+      'Noor',
+      'Hafsa',
+      'Zainab',
+      'Huda',
+      'Safiya',
+      'Mariam',
+      'Amina',
+      'Khadija',
+      'Sumayya',
+      'Layla',
+      'Yasmin',
+    ];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    final end = DateTime.utc(2026, 10, 10).subtract(Duration(days: index * 15));
+    final start = end.subtract(const Duration(days: 21));
+    final startLabel = start.month == end.month && start.year == end.year
+        ? '${start.day}'
+        : start.year == end.year
+        ? '${start.day} ${months[start.month - 1]}'
+        : '${start.day} ${months[start.month - 1]} ${start.year}';
+    return 'Adam & ${names[index]} · $startLabel–${end.day} ${months[end.month - 1]} ${end.year}';
+  }
+
   Widget _guardianCircle() {
     if (_guardianRole && !_conceptHassanLinked) return _unavailable();
     if (_circleEntryView != null &&
@@ -4841,6 +4940,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final tab = _tab;
     final people = _conceptGuardianPeople;
     final senderId = guardian ? 'draft-guardian-hassan' : 'draft-self';
+    bool canReadPast() =>
+        !guardian ||
+        (_conceptHassanLinked && _conceptGuardianHistory[senderId] == true);
+    final pastShared = canReadPast();
     String linkStamp() => _conceptGuardianPeople
         .map((person) => '${person.id}:${person.isMain}')
         .join('|');
@@ -4853,6 +4956,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         (_page == 'guardian_circle' ||
             (_page == 'controls' && _pageOptionsSource == 'guardian_circle')) &&
         stamp == linkStamp() &&
+        pastShared == canReadPast() &&
         (!guardian || _conceptHassanLinked);
 
     final contexts = [
@@ -4967,30 +5071,34 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         ),
     ]);
     final pastTopics = List<ZyraCircleDiscussionTopic>.unmodifiable([
-      for (var index = 0; index < 12; index++)
-        ZyraCircleDiscussionTopic(
-          id: 'draft-circle-past-$index',
-          firstName: const [
-            'Elif',
-            'Noor',
-            'Hafsa',
-            'Zainab',
-            'Huda',
-            'Safiya',
-            'Mariam',
-            'Amina',
-            'Khadija',
-            'Sumayya',
-            'Layla',
-            'Yasmin',
-          ][index],
-          kind: ZyraCircleTopicKind.past,
-          endedOn: DateTime.utc(
-            2026,
-            10,
-            10,
-          ).subtract(Duration(days: index * 15)),
-        ),
+      if (pastShared)
+        for (var index = 0; index < 12; index++)
+          ZyraCircleDiscussionTopic(
+            id: 'draft-circle-past-$index',
+            firstName: const [
+              'Elif',
+              'Noor',
+              'Hafsa',
+              'Zainab',
+              'Huda',
+              'Safiya',
+              'Mariam',
+              'Amina',
+              'Khadija',
+              'Sumayya',
+              'Layla',
+              'Yasmin',
+            ][index],
+            kind: ZyraCircleTopicKind.past,
+            sharedSummaryLabel: guardian
+                ? _sharedPastJourneyLabel(index)
+                : null,
+            endedOn: DateTime.utc(
+              2026,
+              10,
+              10,
+            ).subtract(Duration(days: index * 15)),
+          ),
     ]);
     // Explicit dates for detached past examples, not real archive/history
     // access. Never derive a profile or message lookup from a picker label.
@@ -4999,6 +5107,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         topic.id: ZyraCircleDiscussionArchive(
           topicId: topic.id,
           firstName: topic.firstName,
+          sharedSummaryLabel: topic.sharedSummaryLabel,
           startedOn: topic.endedOn!.subtract(const Duration(days: 21)),
           endedOn: topic.endedOn!,
         ),
@@ -5006,7 +5115,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     ZyraCircleDiscussionArchive? discussionArchiveFor(
       ZyraCircleDiscussionTopic topic,
     ) {
-      if (!current() || !pastTopics.any((known) => identical(known, topic))) {
+      if (!current() ||
+          !canReadPast() ||
+          !pastTopics.any((known) => identical(known, topic))) {
         return null;
       }
       return pastArchives[topic.id];
@@ -5195,6 +5306,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                   // A consent write is not a new navigation lifetime: _act
                   // would replace its loader and briefly reset nearby controls.
                   _conceptGuardianHistory[guardianId] = enabled;
+                  _circleScopeRevision++;
                   _publishCheckpoint();
                 }
                 return ZyraSourceResult.available(
@@ -5313,6 +5425,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             _act(() {
               _model.revokeSampleGuardianAccess(guardianId);
               _conceptRemovedGuardians.add(guardianId);
+              _conceptGuardianHistory.remove(guardianId);
               if (guardianId == _conceptMainGuardianId) {
                 _model.setOwnMainGuardianPresent(false);
               }
@@ -5881,6 +5994,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   // member account, establish verification or grant any purchased access.
   ZyraConceptAccountData get _accountData => ZyraConceptAccountData(
     guardian: _guardianRole,
+    guardianInfoSeen: _guardianInfoSeen,
     name: _guardianRole ? 'Hassan Rahman' : 'Adam Khan',
     age: _guardianRole ? '54' : '30',
     gender: 'Male',
@@ -5946,6 +6060,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _open('subscriptions');
       case ZyraConceptAccountAction.compatibilityStore:
         _open('compatibility_store');
+      case ZyraConceptAccountAction.guardianInfo:
+        if (_guardianRole || _tab != 4 || _pages.isNotEmpty) return;
+        _guardianInfoSeen = true;
+        unawaited(_saveGuardianInfoSeen());
+        _open('guardian_info');
       case ZyraConceptAccountAction.safetyAdvice:
         _move(() {
           _personId = null;
@@ -6383,6 +6502,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         ZyraConceptAccountAction.managePhotos => 'Manage photos',
         ZyraConceptAccountAction.compatibilityStore => 'Compatibility Unlocks',
         ZyraConceptAccountAction.pastJourneys => 'Past Journeys',
+        ZyraConceptAccountAction.guardianInfo => 'What Guardians can do',
         ZyraConceptAccountAction.safetyAdvice => 'Safety & advice',
         ZyraConceptAccountAction.invite => 'Invite someone to ZYRA',
         ZyraConceptAccountAction.personalisation => 'Personalisation',
