@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 165,050 lines in 325 files |
-| Developer and preview code inside it | 45,619 lines in 84 files |
-| The Founder preview (planned app) | 26,514 lines in 34 files |
-| Test code | 211,880 lines in 488 files |
+| All app code | 165,819 lines in 326 files |
+| Developer and preview code inside it | 46,347 lines in 85 files |
+| The Founder preview (planned app) | 27,228 lines in 35 files |
+| Test code | 212,384 lines in 490 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -61,6 +61,8 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-30 | Queue 30, LOCK9 V2: shared local Code page and fictional alias adapter (DR-ZYRA-231) | 165,020 / 325 | 45,619 / 84 | 26,514 / 34 | 211,809 / 488 | 2,612 / 307 MB | 39 | 1 |
 
 | 2026-10-30 | Queue 32 LOCK6 V2: planned roots 60%, master idle slot spacing (DR-ZYRA-304) | 165,050 / 325 | 45,619 / 84 | 26,514 / 34 | 211,880 / 488 | 2,612 / 307 MB | 39 | 1 |
+
+| 2026-10-30 | Queue 37 LOCK10 V4: sample Filters swipe cards, multi-code search, exclusive Where and detached preference entry (AD-AIOS-115 / OA-ZYRA-316) | 165,819 / 326 | 46,347 / 85 | 27,228 / 35 | 212,384 / 490 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.

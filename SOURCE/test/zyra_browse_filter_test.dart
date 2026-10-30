@@ -49,23 +49,18 @@ void main() {
         minAge: 24,
         maxAge: 24,
         countryCode: 'FR',
-        nationalityCode: 'GB',
-        ethnicityCode: 'arab',
+        nationalityCodes: {'GB'},
+        ethnicityCodes: {'arab'},
       );
       expect(filter.matches(sample), isTrue);
       expect(filter.withCountry('GB').matches(sample), isFalse);
-      expect(filter.withNationality('FR').matches(sample), isFalse);
-      expect(filter.withEthnicity('mixed').matches(sample), isFalse);
+      expect(filter.withNationalities({'FR'}).matches(sample), isFalse);
+      expect(filter.withEthnicities({'mixed'}).matches(sample), isFalse);
       expect(filter.withAge(25, 30).matches(sample), isFalse);
       expect(filter.withAge(18, 23).matches(sample), isFalse);
-      expect(
-        const ZyraBrowseFilter(city: 'Sample city').matches(sample),
-        isTrue,
-      );
-      expect(const ZyraBrowseFilter(city: 'Paris').matches(sample), isFalse);
-      expect(filter.withCountry(null).countryCode, isNull);
-      expect(filter.withNationality(null).nationalityCode, isNull);
-      expect(filter.withEthnicity(null).ethnicityCode, isNull);
+      expect(filter.withWhere(ZyraBrowseWhere.worldwide).countryCode, 'FR');
+      expect(filter.withNationalities({}).nationalityCodes, isEmpty);
+      expect(filter.withEthnicities({}).ethnicityCodes, isEmpty);
     },
   );
 
@@ -75,9 +70,10 @@ void main() {
       const ZyraBrowseFilter(minAge: 30, maxAge: 29),
       const ZyraBrowseFilter(maxAge: 17),
       const ZyraBrowseFilter(countryCode: 'France'),
-      const ZyraBrowseFilter(nationalityCode: 'British'),
-      const ZyraBrowseFilter(ethnicityCode: 'Arab'),
-      const ZyraBrowseFilter(city: ' '),
+      const ZyraBrowseFilter(nationalityCodes: {'British'}),
+      const ZyraBrowseFilter(ethnicityCodes: {'Arab'}),
+      const ZyraBrowseFilter(maxAge: 71),
+      const ZyraBrowseFilter(ethnicityCodes: {'prefer_not_to_say'}),
     ]) {
       expect(filter.isValid, isFalse);
       expect(filter.matches(sample), isFalse);
@@ -90,11 +86,11 @@ void main() {
     );
     expect(const ZyraBrowseFilter(countryCode: 'FR').matches(missing), isFalse);
     expect(
-      const ZyraBrowseFilter(nationalityCode: 'GB').matches(missing),
+      const ZyraBrowseFilter(nationalityCodes: {'GB'}).matches(missing),
       isFalse,
     );
     expect(
-      const ZyraBrowseFilter(ethnicityCode: 'arab').matches(missing),
+      const ZyraBrowseFilter(ethnicityCodes: {'arab'}).matches(missing),
       isFalse,
     );
   });
@@ -104,31 +100,59 @@ void main() {
     () {
       const origin = ZyraBrowsePoint(48.85, 2.35);
       expect(
-        const ZyraBrowseFilter(radiusKm: 0, origin: origin).matches(sample),
+        const ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
+          radiusKm: 0,
+          origin: origin,
+        ).matches(sample),
         isTrue,
       );
-      expect(const ZyraBrowseFilter(radiusKm: 100).isValid, isFalse);
       expect(
-        const ZyraBrowseFilter(radiusKm: -1, origin: origin).isValid,
-        isFalse,
-      );
-      expect(
-        ZyraBrowseFilter(radiusKm: double.infinity, origin: origin).isValid,
-        isFalse,
-      );
-      expect(
-        ZyraBrowseFilter(radiusKm: double.nan, origin: origin).isValid,
+        const ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
+          radiusKm: 100,
+          origin: null,
+        ).isValid,
         isFalse,
       );
       expect(
         const ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
+          radiusKm: -1,
+          origin: origin,
+        ).isValid,
+        isFalse,
+      );
+      expect(
+        ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
+          radiusKm: double.infinity,
+          origin: origin,
+        ).isValid,
+        isFalse,
+      );
+      expect(
+        ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
+          radiusKm: double.nan,
+          origin: origin,
+        ).isValid,
+        isFalse,
+      );
+      expect(
+        const ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
           radiusKm: 100,
           origin: ZyraBrowsePoint(91, 0),
         ).matches(sample),
         isFalse,
       );
       expect(
-        const ZyraBrowseFilter(radiusKm: 100, origin: origin).matches(
+        const ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
+          radiusKm: 100,
+          origin: origin,
+        ).matches(
           const DraftProfile(
             id: 'missing',
             firstName: 'Sample',
@@ -138,9 +162,64 @@ void main() {
         ),
         isFalse,
       );
-      const near = ZyraBrowseFilter(radiusKm: 100, origin: origin);
-      expect(near.withRadius(null).radiusKm, isNull);
-      expect(near.withRadius(null).origin, isNull);
+      const near = ZyraBrowseFilter(
+        where: ZyraBrowseWhere.nearMe,
+        radiusKm: 100,
+        origin: origin,
+      );
+      expect(near.withWhere(ZyraBrowseWhere.worldwide).matches(sample), isTrue);
+    },
+  );
+
+  test(
+    'exclusive Where, OR within heritage, conjunction and four-kind Clear',
+    () {
+      const base = ZyraBrowseFilter(
+        nationalityCodes: {'FR', 'GB'},
+        ethnicityCodes: {'mixed', 'arab'},
+      );
+      expect(base.withCountry('FR').matches(sample), isTrue);
+      expect(base.matches(sample), isFalse);
+      expect(base.withWhere(ZyraBrowseWhere.worldwide).matches(sample), isTrue);
+      expect(base.withWhere(ZyraBrowseWhere.nearMe).matches(sample), isFalse);
+      expect(base.activeCount, 2);
+      expect(
+        base.withAge(18, 70).withWhere(ZyraBrowseWhere.nearMe).activeCount,
+        4,
+      );
+      expect(const ZyraBrowseFilter().activeCount, 0);
+      expect(base.withWhere(ZyraBrowseWhere.worldwide).activeCount, 2);
+      const elder = DraftProfile(
+        id: 'elder',
+        firstName: 'Sample',
+        age: 81,
+        city: 'Manchester',
+        residenceCountryCode: 'GB',
+      );
+      expect(const ZyraBrowseFilter().matches(elder), isTrue);
+      expect(
+        const ZyraBrowseFilter(minAge: 18, maxAge: 70).matches(elder),
+        isFalse,
+      );
+      expect(zyraBrowseRadiusSteps, [
+        5,
+        10,
+        15,
+        25,
+        50,
+        75,
+        100,
+        150,
+        200,
+        300,
+        500,
+      ]);
+      expect(zyraBrowseNationalityLabel('DM'), 'Dominican');
+      expect(zyraBrowseFilterNationalityLabel('DM'), 'Dominican (Dominica)');
+      expect(
+        zyraBrowseFilterNationalityLabel('DO'),
+        'Dominican (Dominican Republic)',
+      );
     },
   );
 
@@ -191,6 +270,7 @@ void main() {
       );
       expect(
         ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
           radiusKm: distance,
           origin: zyraBrowseSampleOrigin,
         ).matches(sample),
@@ -198,6 +278,7 @@ void main() {
       );
       expect(
         ZyraBrowseFilter(
+          where: ZyraBrowseWhere.nearMe,
           radiusKm: distance - .01,
           origin: zyraBrowseSampleOrigin,
         ).matches(sample),

@@ -180,12 +180,20 @@ class ZyraProfilesRequestRow extends StatelessWidget {
     required this.onRequest,
     required this.onNext,
     this.semanticLabel,
+    this.previousLabel = 'Previous profile · no decision',
+    this.nextLabel = 'Next profile · no decision',
+    this.previousKey = const ValueKey('concept_previous_profile'),
+    this.nextKey = const ValueKey('concept_next_profile'),
+    this.actionColor,
   });
 
   final Key actionKey;
   final String label;
   final List<String> labels;
   final String? semanticLabel;
+  final String previousLabel, nextLabel;
+  final Key previousKey, nextKey;
+  final Color? actionColor;
   final bool sent;
   final VoidCallback? onPrevious, onRequest, onNext;
 
@@ -258,8 +266,8 @@ class ZyraProfilesRequestRow extends StatelessWidget {
                   SizedBox(
                     width: arrowWidth,
                     child: _button(
-                      key: const ValueKey('concept_previous_profile'),
-                      label: 'Previous profile · no decision',
+                      key: previousKey,
+                      label: previousLabel,
                       onTap: onPrevious,
                       child: Icon(
                         Icons.chevron_left,
@@ -280,7 +288,9 @@ class ZyraProfilesRequestRow extends StatelessWidget {
                         label: label,
                         sent: sent,
                         style: zyraProfilesActionStyle(
-                          color: ZyraColors.ink(onRequest == null ? .34 : .90),
+                          color:
+                              actionColor ??
+                              ZyraColors.ink(onRequest == null ? .34 : .90),
                         ),
                       ),
                     ),
@@ -288,8 +298,8 @@ class ZyraProfilesRequestRow extends StatelessWidget {
                   SizedBox(
                     width: arrowWidth,
                     child: _button(
-                      key: const ValueKey('concept_next_profile'),
-                      label: 'Next profile · no decision',
+                      key: nextKey,
+                      label: nextLabel,
                       onTap: onNext,
                       child: Icon(
                         Icons.chevron_right,
@@ -319,6 +329,52 @@ class ZyraProfilesRequestRow extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    ),
+  );
+}
+
+/// The shared Profiles marks. Filters changes dimensions only; Profiles keeps
+/// its original 20x5 active mark, 5x5 dots, six-point gap and lift.
+class ZyraProfilesDots extends StatelessWidget {
+  const ZyraProfilesDots({
+    super.key,
+    required this.count,
+    required this.index,
+    required this.dotKey,
+    this.activeWidth = 20,
+    this.size = 5,
+    this.lift = -4,
+  });
+  final int count, index;
+  final Key Function(int) dotKey;
+  final double activeWidth, size, lift;
+  @override
+  Widget build(BuildContext context) => IgnorePointer(
+    child: ExcludeSemantics(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var i = 0; i < count; i++)
+            Transform.translate(
+              offset: Offset(0, lift),
+              child: AnimatedContainer(
+                key: dotKey(i),
+                duration: MediaQuery.disableAnimationsOf(context)
+                    ? Duration.zero
+                    : const Duration(milliseconds: 180),
+                width: i == index ? activeWidth : size,
+                height: size,
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                decoration: BoxDecoration(
+                  color: i == index
+                      ? ZyraColors.journeyGold
+                      : ZyraColors.ink(.25),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ),
+        ],
       ),
     ),
   );

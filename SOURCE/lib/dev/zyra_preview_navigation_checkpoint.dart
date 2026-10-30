@@ -58,7 +58,7 @@ class ZyraPreviewNavigationCheckpoint {
     this.networkTab = 0,
     this.guardianJourneyId,
     this.browseId,
-    this.browseFilter = const ZyraBrowseFilter(),
+    ZyraBrowseFilter browseFilter = const ZyraBrowseFilter(),
     Iterable<String> browseHistory = const [],
     this.browseCursor = -1,
     Map<String, int> photoIndices = const {},
@@ -76,7 +76,8 @@ class ZyraPreviewNavigationCheckpoint {
     this.compatibilityRevealed = false,
     this.accountDestination,
     this.settingsDetail,
-  }) : pages = List.unmodifiable(pages.take(8)),
+  }) : browseFilter = browseFilter.detached(),
+       pages = List.unmodifiable(pages.take(8)),
        browseHistory = List.unmodifiable(browseHistory.take(11)),
        photoIndices = Map.unmodifiable(
          Map.fromEntries(photoIndices.entries.take(64)),

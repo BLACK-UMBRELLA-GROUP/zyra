@@ -1006,9 +1006,13 @@ void main() {
     await _tap(tester, 'concept_browse_menu');
     await _tapBar(tester, 'Filters');
     expect(_motionFinder, findsNothing);
-    await _tap(tester, 'concept_city_3');
+    await _tap(tester, 'concept_age_1');
+    tester.widget<RangeSlider>(_key('concept_age_range')).onChanged!(
+      const RangeValues(29, 70),
+    );
+    await tester.pumpAndSettle();
     await _tap(tester, 'concept_apply_filter', settle: false);
-    expect(_browse(tester).profiles.every((p) => p.city == 'London'), isTrue);
+    expect(_browse(tester).profiles.every((p) => p.age >= 29), isTrue);
     expect(_motion(tester).epoch, epoch);
     _expectRest(tester);
     await tester.pump(const Duration(milliseconds: 160));

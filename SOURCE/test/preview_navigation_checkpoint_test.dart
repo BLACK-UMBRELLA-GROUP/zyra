@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/dev/zyra_browse_filter.dart';
 
 Future<BuildContext> _positionContext(
   WidgetTester tester,
@@ -112,6 +113,8 @@ void main() {
   });
 
   test('checkpoint snapshots all supplied collections defensively', () {
+    final nationalities = {'GB', 'PK'};
+    final ethnicities = {'arab', 'mixed'};
     final pages = ['journey', 'timeline'];
     final history = ['draft-sara', 'draft-aisha'];
     final photos = {'draft-sara': 1};
@@ -126,6 +129,10 @@ void main() {
       model: model.snapshot(),
       tab: 1,
       pages: pages,
+      browseFilter: ZyraBrowseFilter(
+        nationalityCodes: nationalities,
+        ethnicityCodes: ethnicities,
+      ),
       personId: 'draft-sara',
       browseHistory: history,
       browseCursor: 1,
@@ -135,6 +142,18 @@ void main() {
       removedGuardians: removed,
       guardianHistory: guardianHistory,
       networkSent: sent,
+    );
+    nationalities.clear();
+    ethnicities.clear();
+    expect(checkpoint.browseFilter.nationalityCodes, {'GB', 'PK'});
+    expect(checkpoint.browseFilter.ethnicityCodes, {'arab', 'mixed'});
+    expect(
+      () => checkpoint.browseFilter.nationalityCodes.clear(),
+      throwsUnsupportedError,
+    );
+    expect(
+      () => checkpoint.browseFilter.ethnicityCodes.clear(),
+      throwsUnsupportedError,
     );
     pages.clear();
     history.clear();

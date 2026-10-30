@@ -575,41 +575,12 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     height: 16,
     child: profile == null || _galleryPageCount(profile) < 2
         ? null
-        : IgnorePointer(
-            child: ExcludeSemantics(
-              child: Row(
-                key: const ValueKey('concept_browse_photo_pagination'),
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (
-                    var index = 0;
-                    index < _galleryPageCount(profile);
-                    index++
-                  )
-                    Transform.translate(
-                      // Lift only the marks; keep the card and gap unchanged.
-                      offset: const Offset(0, -4),
-                      child: AnimatedContainer(
-                        key: ValueKey(
-                          'concept_browse_photo_dot_${profile.id}_$index',
-                        ),
-                        duration: MediaQuery.disableAnimationsOf(context)
-                            ? Duration.zero
-                            : const Duration(milliseconds: 180),
-                        width: index == _galleryIndex(profile) ? 20 : 5,
-                        height: 5,
-                        margin: const EdgeInsets.symmetric(horizontal: 3),
-                        decoration: BoxDecoration(
-                          color: index == _galleryIndex(profile)
-                              ? ZyraColors.journeyGold
-                              : ZyraColors.ink(.25),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
+        : ZyraProfilesDots(
+            key: const ValueKey('concept_browse_photo_pagination'),
+            count: _galleryPageCount(profile),
+            index: _galleryIndex(profile),
+            dotKey: (i) =>
+                ValueKey('concept_browse_photo_dot_${profile.id}_$i'),
           ),
   );
 

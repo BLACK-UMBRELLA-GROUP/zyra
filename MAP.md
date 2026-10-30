@@ -443,6 +443,7 @@ _Stop here unless you need to look up another ID._
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
 | DOC-ZYRA-0294 | `REPORTS/CURRENT/ZYRA_LIVE_DATABASE_CHECK_2026-10-26_V1.md` | REPORT | Read-only check of the live ZYRA database on 26 Oct 2026 - which migrations are applied, the live message… | OA-ZYRA-312, OA-ZYRA-319, OA-ZYRA-317, DOC-ZYRA-0280, DOC-ZYRA-0293 | 5 |
+| ASBUILT-ZYRA-QUEUE37 | `REPORTS/CURRENT/ZYRA_FILTERS_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | Current implementation and evidence limits for queue 37, LOCK10 V4 sample Filters | AD-AIOS-115, OA-ZYRA-316, OA-ZYRA-317, OA-ZYRA-321, OA-ZYRA-323 | 9 |
 
 ### GENERAL
 

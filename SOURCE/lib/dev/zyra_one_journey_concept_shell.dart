@@ -34,6 +34,8 @@ import '../screens/wali/zyra_code_screen.dart' show ZyraCodeLocalPreview;
 import '../screens/settings/help_support_screen.dart';
 import '../screens/settings/personalisation_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
+import '../screens/profile/compatibility_editors.dart';
+import 'zyra_one_journey_filters_presentation.dart';
 import '../screens/profile/edit_photos_screen.dart';
 import '../screens/profile/my_profile_preview_screen.dart';
 import '../theme/zyra_card_metrics.dart';
@@ -1510,6 +1512,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _page == null ||
         fullPhoto ||
         [
+          'filters',
+          'filter_preferences',
           'settings',
           'personalisation',
           'edit_profile',
@@ -1934,7 +1938,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'guardian_network_profile' => _guardianNetworkProfile(),
     'settings' => _settings(),
     'personalisation' => _personalisation(),
-    'edit_profile' || 'manage_photos' => _retainedAccountLeaf(),
+    'edit_profile' ||
+    'manage_photos' ||
+    'filter_preferences' => _retainedAccountLeaf(),
     'membership' => _membershipView(),
     'membership_review' => _membershipReviewView(),
     'subscriptions' => _subscriptionsView(),
@@ -6405,6 +6411,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   bool get _isRetainedAccountPage => const [
     'edit_profile',
+    'filter_preferences',
     'manage_photos',
     'personalisation',
   ].contains(_page);
@@ -6429,6 +6436,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final guardian = _guardianRole;
     final page = _page;
     final tab = _tab;
+    final preferences = page == 'filter_preferences'
+        ? _accountSession.compatibility.load('draft-self')
+        : null;
     final navigator = GlobalKey<NavigatorState>();
     _accountNavigator = navigator;
     _accountLeafRevision = revision;
@@ -6494,6 +6504,29 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           child: ListenableBuilder(
             listenable: _accountSession,
             builder: (_, _) => switch (page) {
+              'filter_preferences' => FutureBuilder(
+                future: preferences,
+                builder: (_, snapshot) =>
+                    snapshot.connectionState != ConnectionState.done
+                    ? const ZyraLoading()
+                    : CompatibilityEditorScreen.preview(
+                        kind: CompatibilityEditorKind.trafficLights,
+                        initialDraft: ZyraCompatibilityDraft.fromSnapshot(
+                          gender: 'male',
+                          snapshot: snapshot.data,
+                        ),
+                        onPreviewReturn: (_) => back(),
+                        canAct: current,
+                        canActChanges: _accountSession,
+                        onPersist: (draft) async =>
+                            current() &&
+                            await _accountSession.compatibility.save(
+                              'draft-self',
+                              draft,
+                            ) &&
+                            current(),
+                      ),
+              ),
               'edit_profile' => EditProfileScreen.preview(
                 repository: _accountSession.compatibility,
                 canAct: current,
@@ -7065,32 +7098,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       small: true,
     ),
   ]);
-  Future<void> _pickBrowseFilter(String field) async {
+  Future<void> _pickBrowseCountry() async {
     if (!_allowed || _page != 'filters') return;
     final revision = _uiRevision;
     final guardian = _guardianRole;
-    final choices = switch (field) {
-      'country' => {for (final item in zyraCountries) item.code: item.name},
-      'nationality' => {
-        for (final item in zyraCountries)
-          item.code: '${item.nationality} (${item.code})',
-      },
-      'ethnicity' => {for (final item in zyraEthnicities) item.code: item.name},
-      _ => <String, String>{},
-    };
-    if (choices.isEmpty) return;
-    final selected = switch (field) {
-      'country' => _editingBrowseFilter.countryCode,
-      'nationality' => _editingBrowseFilter.nationalityCode,
-      _ => _editingBrowseFilter.ethnicityCode,
-    };
     final result = await showSingleSearchPicker(context, [
-      'Any',
-      ...choices.values,
-    ], current: selected == null ? 'Any' : choices[selected]);
-    // A picker result belongs only to the still-current editing session.
-    // Account/proof, local navigation and another changed criterion all
-    // revoke the retained completion; no preference/member write is made.
+      for (final c in zyraCountries) c.name,
+    ], current: zyraBrowseCountryLabel(_editingBrowseFilter.countryCode));
     if (!_allowed ||
         revision != _uiRevision ||
         guardian != _guardianRole ||
@@ -7098,29 +7112,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         result == null) {
       return;
     }
-    final code = result == 'Any'
-        ? null
-        : choices.entries
-              .where((entry) => entry.value == result)
-              .firstOrNull
-              ?.key;
-    if (result != 'Any' && code == null) return;
-    _act(() {
-      _editingBrowseFilter = switch (field) {
-        'country' => _editingBrowseFilter.withCountry(code),
-        'nationality' => _editingBrowseFilter.withNationality(code),
-        _ => _editingBrowseFilter.withEthnicity(code),
-      };
-    });
+    final code = zyraCountries.where((c) => c.name == result).firstOrNull?.code;
+    if (code != null) {
+      _act(() => _editingBrowseFilter = _editingBrowseFilter.withCountry(code));
+    }
   }
-
-  Widget _browseFilterPicker(String field, String title, String? selected) =>
-      _previewAction(
-        'concept_$field',
-        '$title · ${selected ?? 'Any'}',
-        () => _pickBrowseFilter(field),
-        icon: Icons.search,
-      );
 
   void _applyBrowseFilter() {
     if (!_allowed || _page != 'filters') return;
@@ -7134,131 +7130,106 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   Widget _filters() {
     final revision = _uiRevision;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _heading('Filters', ''),
-        _title('Age', size: 15),
-        const SizedBox(height: 8),
-        _choices(
-          const ['Any age (18+)', 'Set range'],
-          _editingBrowseFilter.minAge == null &&
-                  _editingBrowseFilter.maxAge == null
-              ? 0
-              : 1,
-          (index) => _editingBrowseFilter = _editingBrowseFilter.withAge(
-            index == 0 ? null : 18,
-            index == 0 ? null : 70,
-          ),
-          'concept_age',
-        ),
-        if (_editingBrowseFilter.minAge != null ||
-            _editingBrowseFilter.maxAge != null) ...[
-          const SizedBox(height: 8),
-          Text(
-            '${_editingBrowseFilter.minAge ?? 18}–${_editingBrowseFilter.maxAge ?? 70}',
-            key: const ValueKey('concept_age_value'),
-            style: ZyraText.body(size: 13, color: ZyraColors.journeyGold),
-          ),
-          RangeSlider(
-            key: const ValueKey('concept_age_range'),
-            min: 18,
-            max: 70,
-            divisions: 52,
-            activeColor: ZyraColors.journeyGold,
-            inactiveColor: ZyraColors.surfaceBorder,
-            values: RangeValues(
-              (_editingBrowseFilter.minAge ?? 18).toDouble(),
-              (_editingBrowseFilter.maxAge ?? 70).toDouble(),
-            ),
-            labels: RangeLabels(
-              '${_editingBrowseFilter.minAge ?? 18}',
-              '${_editingBrowseFilter.maxAge ?? 70}',
-            ),
-            onChanged: (values) {
-              if (!_allowed || _page != 'filters' || revision != _uiRevision) {
-                return;
-              }
-              _act(
-                () => _editingBrowseFilter = _editingBrowseFilter.withAge(
-                  values.start.round(),
-                  values.end.round(),
+    final guardian = _guardianRole;
+    bool current() =>
+        _allowed &&
+        !_devControlsVisible &&
+        revision == _uiRevision &&
+        guardian == _guardianRole &&
+        _page == 'filters';
+    return ZyraOneJourneyFiltersPresentation(
+      filter: _editingBrowseFilter,
+      canAct: current,
+      onChanged: (filter) {
+        if (current()) _act(() => _editingBrowseFilter = filter);
+      },
+      onApply: () {
+        if (current()) _applyBrowseFilter();
+      },
+      onCountry: () {
+        if (current()) _pickBrowseCountry();
+      },
+      // LOCK11 origin acquisition belongs to queue26. This narrow callback
+      // is the attachment point for its locked sheets and approximate result.
+      onOrigin: () {
+        if (current()) _openFilterOrigin();
+      },
+      onPreferences: () {
+        if (current()) _open('filter_preferences');
+      },
+    );
+  }
+
+  void _openFilterOrigin() {
+    // Queue37 owns a sample home-town origin only. No permission prompt or
+    // device fix is fabricated here; queue26 replaces this sheet seam.
+    if (!_allowed || _page != 'filters') return;
+    final revision = _uiRevision;
+    final guardian = _guardianRole;
+    final controls = _devControlsEpoch;
+    bool sheetCurrent(BuildContext sheetContext) =>
+        _allowed &&
+        revision == _uiRevision &&
+        guardian == _guardianRole &&
+        controls == _devControlsEpoch &&
+        !_devControlsVisible &&
+        _page == 'filters' &&
+        sheetContext.mounted &&
+        ModalRoute.of(sheetContext)?.isCurrent == true;
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: ZyraColors.modalSheetSurface,
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(21),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _title('Where should distance start?', size: 22),
+              const SizedBox(height: 12),
+              _body(
+                'Only used to sort and filter by distance. Nobody else ever sees it.',
+              ),
+              const SizedBox(height: 18),
+              ListTile(
+                leading: const Icon(
+                  Icons.home_outlined,
+                  color: ZyraColors.journeyGold,
                 ),
-              );
-            },
+                title: const Text('Home town'),
+                subtitle: const Text(
+                  'Manchester — from your profile. No permission needed.',
+                ),
+                trailing: const Icon(
+                  Icons.radio_button_checked,
+                  color: ZyraColors.journeyGold,
+                ),
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.my_location,
+                  color: ZyraColors.journeyGold,
+                ),
+                title: const Text('My current area'),
+                subtitle: const Text(
+                  "Uses your phone’s location, roughly — never your exact spot.",
+                ),
+                trailing: const Icon(Icons.radio_button_unchecked),
+              ),
+              TextButton(
+                key: const ValueKey('filter_origin_done'),
+                onPressed: _tap(() {
+                  if (sheetCurrent(sheetContext)) {
+                    Navigator.of(sheetContext).pop();
+                  }
+                }),
+                child: const Text('Done'),
+              ),
+            ],
           ),
-        ],
-        const SizedBox(height: 20),
-        _browseFilterPicker(
-          'country',
-          'Country of residence',
-          zyraBrowseCountryLabel(_editingBrowseFilter.countryCode),
         ),
-        const SizedBox(height: 8),
-        _browseFilterPicker(
-          'nationality',
-          'Nationality',
-          zyraBrowseNationalityLabel(_editingBrowseFilter.nationalityCode),
-        ),
-        const SizedBox(height: 8),
-        _browseFilterPicker(
-          'ethnicity',
-          'Ethnicity',
-          zyraBrowseEthnicityLabel(_editingBrowseFilter.ethnicityCode),
-        ),
-        const SizedBox(height: 20),
-        _title('Distance', size: 15),
-        const SizedBox(height: 6),
-        _body(zyraBrowseSampleOriginLabel, small: true),
-        const SizedBox(height: 4),
-        _body('Your current location is not available here.', small: true),
-        const SizedBox(height: 8),
-        _choices(
-          const ['Any distance', '50 km', '150 km', '300 km'],
-          const <double?>[
-            null,
-            50,
-            150,
-            300,
-          ].indexOf(_editingBrowseFilter.radiusKm),
-          (index) => _editingBrowseFilter = _editingBrowseFilter.withRadius(
-            const <double?>[null, 50, 150, 300][index],
-            from: zyraBrowseSampleOrigin,
-          ),
-          'concept_radius',
-        ),
-        const SizedBox(height: 20),
-        _title('City', size: 15),
-        const SizedBox(height: 8),
-        _choices(
-          ['All places', 'Manchester', 'Birmingham', 'London', 'Leeds'],
-          [
-            null,
-            'Manchester',
-            'Birmingham',
-            'London',
-            'Leeds',
-          ].indexOf(_editingBrowseFilter.city),
-          (i) => _editingBrowseFilter = _editingBrowseFilter.withCity(
-            [null, 'Manchester', 'Birmingham', 'London', 'Leeds'][i],
-          ),
-          'concept_city',
-        ),
-        const SizedBox(height: 18),
-        _button(
-          'concept_apply_filter',
-          'Apply filters',
-          _applyBrowseFilter,
-          primary: true,
-        ),
-        const SizedBox(height: 8),
-        _previewAction(
-          'concept_reset_filter_draft',
-          'Clear filters',
-          () => _act(() => _editingBrowseFilter = const ZyraBrowseFilter()),
-          icon: Icons.filter_alt_off_outlined,
-        ),
-      ],
+      ),
     );
   }
 

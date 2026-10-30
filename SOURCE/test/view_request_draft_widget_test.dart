@@ -23,7 +23,6 @@ import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
-import 'package:zyra/dev/zyra_browse_filter.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/models/zyra_dashboard_resolution.dart';
@@ -661,18 +660,61 @@ Future<void> _openAdditionalGuardian(WidgetTester tester) async {
   expect(_key('guardian-page-static-draft-guardian-yusuf'), findsOneWidget);
 }
 
+Future<void> _filterPage(WidgetTester tester, int target) async {
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pumpAndSettle();
+  int active() => _key('concept_age_0').evaluate().isNotEmpty
+      ? 0
+      : _key('concept_where_0').evaluate().isNotEmpty
+      ? 1
+      : _key('filter_search_nationality').evaluate().isNotEmpty
+      ? 2
+      : 3;
+  while (active() != target) {
+    await _press(tester, active() < target ? 'filter_next' : 'filter_previous');
+  }
+}
+
+// Sets the criterion used by existing deck/history regression fixtures.
+// Multi-selection behavior is exercised separately by LOCK10 interaction tests.
 Future<void> _chooseBrowseFilter(
   WidgetTester tester,
   String field,
   String label,
 ) async {
-  await _press(tester, 'concept_$field');
-  final search = find.byType(TextField);
-  expect(search, findsOneWidget);
-  await tester.enterText(search, label);
+  await _filterPage(
+    tester,
+    field == 'country'
+        ? 1
+        : field == 'nationality'
+        ? 2
+        : 3,
+  );
+  if (field == 'country') {
+    await _press(tester, 'concept_where_1');
+    await _press(tester, 'concept_country');
+    await tester.enterText(find.byType(TextField), label);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(label).last);
+  } else {
+    final index = field == 'nationality' ? 2 : 3;
+    Finder removals() => find.byWidgetPredicate(
+      (w) =>
+          w is InkWell && w.key.toString().contains('filter_remove_${index}_'),
+    );
+    while (removals().evaluate().isNotEmpty) {
+      await tester.tap(removals().first);
+      await tester.pumpAndSettle();
+    }
+    if (label != 'Any') {
+      final plain = label.split(' (').first;
+      await tester.enterText(_key('filter_search_$field'), plain);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(plain).last);
+    }
+  }
   await tester.pumpAndSettle();
-  await tester.tap(find.text(label).last);
-  await tester.pumpAndSettle();
+  await _filterPage(tester, 0);
   expect(tester.takeException(), isNull);
 }
 
@@ -1129,22 +1171,15 @@ void main() {
         expect(sara.publicNationality, 'Pakistani');
         expect(sara.publicEthnicity, 'Pakistani');
         await _press(tester, 'concept_filters');
-        expect(find.text(zyraBrowseSampleOriginLabel), findsOneWidget);
         expect(find.text('Sample people only'), findsNothing);
-        expect(find.text('Sample location · Manchester'), findsNothing);
-        expect(
-          find.text('Your current location is not available here.'),
-          findsOneWidget,
-        );
+        expect(find.text('City'), findsNothing);
         await _chooseBrowseFilter(tester, 'nationality', 'Pakistani (PK)');
         await returnZyraPreviewPage(tester);
         expect(browse().profiles.map((p) => p.id), original);
         await _press(tester, 'concept_filters');
-        expect(find.text('Nationality · Any'), findsOneWidget);
         await _chooseBrowseFilter(tester, 'country', 'United Kingdom');
         await _chooseBrowseFilter(tester, 'nationality', 'Pakistani (PK)');
         await _chooseBrowseFilter(tester, 'ethnicity', 'Pakistani');
-        await _press(tester, 'concept_radius_2');
         await _press(tester, 'concept_age_1');
         final slider = tester.widget<RangeSlider>(_key('concept_age_range'));
         slider.onChanged!(const RangeValues(27, 27));
@@ -1152,16 +1187,18 @@ void main() {
         await _press(tester, 'concept_apply_filter');
         expect(browse().profiles.map((p) => p.id), [_fixture]);
         await _press(tester, 'concept_filters');
-        await _press(tester, 'concept_city_3');
+        await _press(tester, 'concept_age_1');
+        tester.widget<RangeSlider>(_key('concept_age_range')).onChanged!(
+          const RangeValues(60, 70),
+        );
+        await tester.pumpAndSettle();
         await _press(tester, 'concept_apply_filter');
         expect(find.byType(ZyraOneJourneyBrowseDesigns), findsNothing);
         expect(find.text('No profiles in this view.'), findsOneWidget);
         await _press(tester, 'concept_clear_filters');
         expect(browse().profiles.map((p) => p.id), original);
         await _press(tester, 'concept_filters');
-        expect(find.text('Country of residence · Any'), findsOneWidget);
-        expect(find.text('Nationality · Any'), findsOneWidget);
-        expect(find.text('Ethnicity · Any'), findsOneWidget);
+        expect(find.text('Clear'), findsOneWidget);
         expect(_key('concept_age_range'), findsNothing);
         await returnZyraPreviewPage(tester);
       }, network);

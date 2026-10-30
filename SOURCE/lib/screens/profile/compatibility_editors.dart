@@ -339,7 +339,8 @@ class CompatibilityEditorScreen extends StatefulWidget {
     required this.onPersist,
     this.canAct,
     this.canActChanges,
-  }) : _preview = false;
+  }) : _preview = false,
+       onPreviewReturn = null;
 
   const CompatibilityEditorScreen.preview({
     super.key,
@@ -348,6 +349,7 @@ class CompatibilityEditorScreen extends StatefulWidget {
     required this.onPersist,
     required bool Function() canAct,
     this.canActChanges,
+    this.onPreviewReturn,
   }) : _preview = true,
        // Keep preview's guard non-nullable while ordinary callers may omit it.
        // ignore: prefer_initializing_formals
@@ -357,6 +359,10 @@ class CompatibilityEditorScreen extends StatefulWidget {
   final ZyraCompatibilityDraft initialDraft;
   final Future<bool> Function(ZyraCompatibilityDraft draft) onPersist;
   final bool _preview;
+
+  /// Local standalone preview owners return through their own page stack.
+  /// Existing hub-pushed editors keep Navigator.pop as their default.
+  final ValueChanged<ZyraCompatibilityDraft?>? onPreviewReturn;
 
   /// Optional deny-only ordinary ownership; no account or save authority is
   /// conferred by the guard. Unbound callers retain their existing behavior.
@@ -386,6 +392,7 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
       widget.kind == _opening.kind &&
       identical(widget.initialDraft, _opening.initialDraft) &&
       widget.onPersist == _opening.onPersist &&
+      widget.onPreviewReturn == _opening.onPreviewReturn &&
       widget.canAct == _opening.canAct &&
       identical(widget.canActChanges, _opening.canActChanges);
 
@@ -461,7 +468,10 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
   }
 
   void _back() {
-    if (_current && !_saving && Navigator.of(context).canPop()) {
+    if (!_current || _saving) return;
+    if (_previewMode && _opening.onPreviewReturn != null) {
+      _opening.onPreviewReturn!(null);
+    } else if (Navigator.of(context).canPop()) {
       Navigator.of(context).pop();
     }
   }
@@ -492,7 +502,11 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
     setState(() => _saving = false);
     if (!_current || !identical(route, ModalRoute.of(context))) return;
     if (saved) {
-      Navigator.of(context).pop(candidate);
+      if (_previewMode && _opening.onPreviewReturn != null) {
+        _opening.onPreviewReturn!(candidate);
+      } else {
+        Navigator.of(context).pop(candidate);
+      }
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(
