@@ -1,4 +1,4 @@
-// Actual LOCK10 V4 local shell interactions. Insets prove layout only:
+// Actual LOCK10 V6 local shell interactions. Insets prove layout only:
 // the headless renderer cannot provide an iPhone system keyboard.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -47,7 +47,7 @@ void main() {
             file,
             file,
             inset
-                ? 'HEADLESS INSET LAYOUT ONLY; actual system keyboard proof pending OA-ZYRA-323.'
+                ? 'HEADLESS INSET LAYOUT ONLY; native keyboard proof is separately captured from installed V4 aab4973.'
                 : 'Actual sample shell; network blocked.',
             fileName: '$file.png',
           );
@@ -73,6 +73,11 @@ void main() {
       );
       await h.flush();
       expect(
+        t.getRect(key('concept_age_range')).top -
+            t.getRect(key('concept_age_segments')).bottom,
+        26,
+      );
+      expect(
         h.latest.browseFilter.hasAgeRange,
         isFalse,
         reason: 'Editing is not applied to the checkpoint.',
@@ -80,12 +85,23 @@ void main() {
       await cap('f02_age__range');
       await h.tap('concept_reset_filter_draft');
       await h.tap('filter_next');
-      expect(find.bySemanticsLabel('Where, filter 2 of 4'), findsOneWidget);
+      expect(find.bySemanticsLabel('Location, filter 2 of 4'), findsOneWidget);
+      expect(find.text('Location'), findsOneWidget);
       expect(find.text('United Kingdom'), findsOneWidget);
       await cap('f03_where__country');
       await h.tap('concept_where_0');
       expect(t.widget<Slider>(key('concept_radius')).value, 4);
       expect(find.text('Within 50 km'), findsOneWidget);
+      expect(
+        t.getRect(key('concept_filter_origin_row')).top -
+            t.getRect(key('concept_where_segments')).bottom,
+        22,
+      );
+      expect(
+        t.getRect(key('concept_radius')).top -
+            t.getRect(key('concept_filter_origin_row')).bottom,
+        18,
+      );
       await cap('f04_where__near_me');
       await h.tap('concept_filter_origin');
       expect(find.text('Where should distance start?'), findsOneWidget);

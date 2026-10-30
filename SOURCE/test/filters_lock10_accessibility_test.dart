@@ -79,6 +79,11 @@ void main() {
           expect(range.semanticFormatterCallback!(24), '24 years');
           await t.tap(k('filter_next'));
           await t.pumpAndSettle();
+          expect(
+            find.bySemanticsLabel('Location, filter 2 of 4'),
+            findsOneWidget,
+          );
+          expect(find.text('Location'), findsOneWidget);
           await t.ensureVisible(k('concept_where_0'));
           await t.tap(k('concept_where_0'));
           await t.pumpAndSettle();

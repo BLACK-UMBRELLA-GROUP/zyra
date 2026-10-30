@@ -1,7 +1,7 @@
 ---
 id: TBC (Fable assigns)
 type: SPEC
-status: CURRENT
+status: ARCHIVED (2026-10-30)
 feature: PRODUCT BLUEPRINT
 purpose: Spec for LOCK 10 - Filters page (V4 - swipe cards, one filter per card; Where; searchable Nationality and Ethnicity)
 links: [DOC-ZYRA-0284, DOC-ZYRA-0329, AD-AIOS-115]

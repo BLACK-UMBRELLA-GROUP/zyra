@@ -15,8 +15,8 @@ owner: ZYRA chat
 
 | Step | Detail |
 |---|---|
-| 1 | Read `../RECORD/` (spec **V4**) and the ten `../MASTERS/` pictures (f01–f10); also `LOCATION/` (LOCK 11 V2) for the origin line and sheets |
-| 2 | Founder preview `_filters` page: rebuild as four swipe cards (Age, Where, Nationality, Ethnicity) with dots, Clear (n), the preferences link and the bottom pill. Reuse the Profiles request-pill component (LOCK 7) and the Profiles dots; sample data only, no server change |
+| 1 | Read `../RECORD/` (spec **V6** — slider spacing; card titled "Location") and the ten `../MASTERS/` pictures (f01–f10); also `LOCATION/` (LOCK 11 V2) for the origin line and sheets |
+| 2 | Founder preview `_filters` page: rebuild as four swipe cards (Age, Location, Nationality, Ethnicity) with dots, Clear (n), the preferences link and the bottom pill. Reuse the Profiles request-pill component (LOCK 7) and the Profiles dots; sample data only, no server change |
 | 3 | Nationality / Ethnicity search: use the app's own lists in `SOURCE/lib/data/zyra_reference_data.dart` (nationality names; `zyraEthnicities` minus "Prefer not to say"); POPULAR, MATCHES, no-match text and chips exactly as the spec; show the two "Dominican" entries with their country in brackets |
 | 4 | Remove the old list layout, City search, Country of residence row, "Best matches are shown first" and any member count |
 | 5 | Preview distances: real latitude/longitude for the sample cities only and real km (great-circle); Near me / Country / Worldwide filter the sample people |

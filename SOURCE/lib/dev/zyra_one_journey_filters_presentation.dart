@@ -1,4 +1,4 @@
-// LOCK10 V4 presentation for the local sample preview. No repositories,
+// LOCK10 V6 presentation for the local sample preview. No repositories,
 // transports, device permission, private answers or member counts.
 import 'package:flutter/material.dart';
 import '../data/zyra_reference_data.dart';
@@ -36,7 +36,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
   final _focus = FocusNode();
   int _index = 0;
   int _pageEpoch = 0;
-  static const _names = ['Age', 'Where', 'Nationality', 'Ethnicity'];
+  static const _names = ['Age', 'Location', 'Nationality', 'Ethnicity'];
   static const _icons = [
     Icons.cake_outlined,
     Icons.public,
@@ -194,6 +194,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     );
     return _control(
       Container(
+        key: ValueKey('${prefix}_segments'),
         padding: const EdgeInsets.all(3),
         decoration: BoxDecoration(
           color: ZyraColors.surfaceFill,
@@ -311,6 +312,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           'concept_age',
         ),
         if (f.hasAgeRange) ...[
+          const SizedBox(height: 26),
           _slider(
             RangeSlider(
               key: const ValueKey('concept_age_range'),
@@ -351,7 +353,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           (i) => _change(f.withWhere(ZyraBrowseWhere.values[i])),
           'concept_where',
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 22),
         if (f.where == ZyraBrowseWhere.country) ...[
           _placeRow(
             Icons.outlined_flag,
@@ -367,18 +369,22 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
         ] else if (f.where == ZyraBrowseWhere.worldwide)
           _text('Members anywhere in the world.', align: TextAlign.center)
         else ...[
-          _placeRow(
-            widget.currentArea ? Icons.my_location : Icons.home_outlined,
-            widget.currentArea
-                ? 'From your current area'
-                : zyraBrowseSampleOriginLabel,
-            _button(
-              'concept_filter_origin',
-              'Change',
-              widget.canAct() ? widget.onOrigin : null,
-              size: 12,
+          KeyedSubtree(
+            key: const ValueKey('concept_filter_origin_row'),
+            child: _placeRow(
+              widget.currentArea ? Icons.my_location : Icons.home_outlined,
+              widget.currentArea
+                  ? 'From your current area'
+                  : zyraBrowseSampleOriginLabel,
+              _button(
+                'concept_filter_origin',
+                'Change',
+                widget.canAct() ? widget.onOrigin : null,
+                size: 12,
+              ),
             ),
           ),
+          const SizedBox(height: 18),
           _slider(
             Slider(
               key: const ValueKey('concept_radius'),
