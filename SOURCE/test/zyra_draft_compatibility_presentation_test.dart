@@ -338,7 +338,7 @@ void main() {
                 ),
               )
               .onPressed,
-          isNull,
+          isNotNull,
         );
         _expectInsideWidth(tester, 393);
       } finally {
@@ -383,8 +383,7 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       await _mount(tester, revealed: true);
-      final pager = tester.widget<PageView>(find.byKey(_pages));
-      expect(pager.childrenDelegate.estimatedChildCount, 7);
+      expect(find.byKey(_pages), findsOneWidget);
       for (
         var index = 1;
         index <= ZyraCompatibilityDemo.categories.length;
@@ -416,7 +415,7 @@ void main() {
               find.byKey(const ValueKey('draft_compatibility_score_next')),
             )
             .onPressed,
-        isNull,
+        isNotNull,
       );
       await tester.drag(find.byKey(_pages), const Offset(260, 0));
       await tester.pumpAndSettle();

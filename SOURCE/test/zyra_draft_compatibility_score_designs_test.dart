@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_compatibility_demo.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_score_designs.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
 
 const _font = 'PoppinsCompatibilityReaderFixture';
 const _names = [
@@ -44,11 +45,15 @@ Widget _app({
   double scale = 1,
   String personName = 'Sara Noor',
   int overallScore = 83,
+  bool disableAnimations = true,
+  bool accessibleNavigation = false,
 }) => MaterialApp(
   builder: (context, child) => MediaQuery(
-    data: MediaQuery.of(
-      context,
-    ).copyWith(textScaler: TextScaler.linear(scale), disableAnimations: true),
+    data: MediaQuery.of(context).copyWith(
+      textScaler: TextScaler.linear(scale),
+      disableAnimations: disableAnimations,
+      accessibleNavigation: accessibleNavigation,
+    ),
     child: child!,
   ),
   home: Scaffold(
@@ -86,6 +91,18 @@ void _expectPage(WidgetTester tester, int index) {
   );
   final title = find.byKey(ValueKey('draft_compatibility_score_title_$index'));
   expect(tester.widget<Text>(title).data, _names[index]);
+  final counter = tester.widget<Text>(
+    find.byKey(const ValueKey('draft_compatibility_score_position')),
+  );
+  expect(counter.semanticsLabel, 'Page ${index + 1} of 7: ${_names[index]}');
+  for (final (key, label) in [
+    (_previous, 'Previous page'),
+    (_next, 'Next page'),
+  ]) {
+    final arrow = tester.widget<IconButton>(find.byKey(key));
+    expect(arrow.onPressed, isNotNull);
+    expect(arrow.tooltip, label);
+  }
   expect(
     find.byKey(ValueKey('draft_compatibility_score_page_$index')),
     findsOneWidget,
@@ -172,12 +189,6 @@ void main() {
     'Golden Halo has seven ordered pages and unchanged fixture values',
     (tester) async {
       await _mount(tester);
-      final pages = tester.widget<PageView>(find.byKey(_pager));
-      expect(pages.childrenDelegate.estimatedChildCount, 7);
-      expect(
-        tester.widget<IconButton>(find.byKey(_previous)).onPressed,
-        isNull,
-      );
       for (var index = 0; index < 7; index++) {
         _expectPage(tester, index);
         _expectValues(index);
@@ -217,10 +228,12 @@ void main() {
           await tester.pumpAndSettle();
         }
       }
-      expect(tester.widget<IconButton>(find.byKey(_next)).onPressed, isNull);
+      await tester.tap(find.byKey(_next));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 0);
       await tester.tap(find.byKey(_previous));
       await tester.pumpAndSettle();
-      _expectPage(tester, 5);
+      _expectPage(tester, 6);
     },
   );
 
@@ -266,6 +279,131 @@ void main() {
     _expectPage(tester, 0);
     expect(find.byType(ZyraCompatibilityScoreReader), findsOneWidget);
   });
+
+  testWidgets('swipes repeatedly wrap both ends and retain the seven labels', (
+    tester,
+  ) async {
+    final semantics = tester.ensureSemantics();
+    try {
+      await _mount(tester);
+      for (var turn = 0; turn < 3; turn++) {
+        await tester.drag(find.byKey(_pager), const Offset(300, 0));
+        await tester.pumpAndSettle();
+        _expectPage(tester, 6);
+        expect(find.bySemanticsLabel('Page 7 of 7: Deen'), findsOneWidget);
+        _expectValues(6);
+        await tester.drag(find.byKey(_pager), const Offset(-300, 0));
+        await tester.pumpAndSettle();
+        _expectPage(tester, 0);
+        expect(find.bySemanticsLabel('Page 1 of 7: Overall'), findsOneWidget);
+        _expectValues(0);
+      }
+      await tester.tap(find.byKey(_next));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 1);
+    } finally {
+      semantics.dispose();
+    }
+  });
+
+  testWidgets(
+    'a second arrow during a wrap continues to the adjacent category',
+    (tester) async {
+      await _mount(tester);
+      await tester.pumpWidget(_app(disableAnimations: false));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(_previous));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.tap(find.byKey(_previous));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 5);
+      for (final index in [6, 0, 1]) {
+        await tester.tap(find.byKey(_next));
+        await tester.pumpAndSettle();
+        _expectPage(tester, index);
+      }
+    },
+  );
+
+  testWidgets('animated wraps travel one adjacent page in either direction', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await tester.pumpWidget(_app(disableAnimations: false));
+    await tester.pumpAndSettle();
+    final controller = tester.widget<PageView>(find.byKey(_pager)).controller!;
+    for (final (arrow, direction, destination) in [
+      (_previous, -1, 6),
+      (_next, 1, 0),
+    ]) {
+      final start = controller.page!;
+      await tester.tap(find.byKey(arrow));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      final travelled = (controller.page! - start) * direction;
+      expect(travelled, greaterThan(0));
+      expect(travelled, lessThan(1));
+      await tester.pumpAndSettle();
+      _expectPage(tester, destination);
+    }
+  });
+
+  testWidgets(
+    'accessible navigation wraps immediately and a new person resets',
+    (tester) async {
+      await _mount(tester);
+      await tester.pumpWidget(
+        _app(disableAnimations: false, accessibleNavigation: true),
+      );
+      await tester.tap(find.byKey(_previous));
+      await tester.pump();
+      _expectPage(tester, 6);
+      await tester.pumpWidget(_app(personName: 'Aisha'));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 0);
+    },
+  );
+
+  testWidgets(
+    'wrap arrows emit one selected haptic; swipes and Off stay silent',
+    (tester) async {
+      final pulses = <Object?>[];
+      ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.medium);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+            if (call.method == 'HapticFeedback.vibrate') {
+              pulses.add(call.arguments);
+            }
+            return null;
+          });
+      addTearDown(() {
+        ZyraInteractionStyle.restoreDefaults();
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(SystemChannels.platform, null);
+      });
+      await _mount(tester);
+      await tester.tap(find.byKey(_previous));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 6);
+      expect(pulses, ['HapticFeedbackType.mediumImpact']);
+      pulses.clear();
+      await tester.tap(find.byKey(_next));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 0);
+      expect(pulses, ['HapticFeedbackType.mediumImpact']);
+      pulses.clear();
+      await tester.drag(find.byKey(_pager), const Offset(300, 0));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 6);
+      expect(pulses, isEmpty);
+      ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.off);
+      await tester.tap(find.byKey(_next));
+      await tester.pumpAndSettle();
+      _expectPage(tester, 0);
+      expect(pulses, isEmpty);
+    },
+  );
 
   testWidgets('parent rebuilds preserve the currently selected category', (
     tester,

@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 163,908 lines in 323 files |
-| Developer and preview code inside it | 44,464 lines in 82 files |
-| The Founder preview (planned app) | 25,373 lines in 32 files |
-| Test code | 213,552 lines in 484 files |
+| All app code | 163,937 lines in 323 files |
+| Developer and preview code inside it | 44,493 lines in 82 files |
+| The Founder preview (planned app) | 25,402 lines in 32 files |
+| Test code | 213,776 lines in 485 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -53,6 +53,8 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-30 | Queue 19, LOCK7 single request pill and Larger Text (DR-ZYRA-305) | 163,373 / 322 | 44,301 / 82 | 25,235 / 32 | 213,304 / 483 | 2,612 / 307 MB | 39 | 1 |
 
 | 2026-10-30 | Queue 22: shared tap haptics across the planned app and OA-ZYRA-314 Journey helper | 163,908 / 323 | 44,464 / 82 | 25,373 / 32 | 213,552 / 484 | 2,612 / 307 MB | 39 | 1 |
+
+| 2026-10-30 | Queue 23: Compatibility pages loop by arrow and swipe (Founder-named brief; DR-ZYRA-288 / OA-ZYRA-286) | 163,937 / 323 | 44,493 / 82 | 25,402 / 32 | 213,776 / 485 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -296,3 +298,34 @@ Headless validation: 302 tests across 19 focused suites pass, including every cu
 request pills and sheets, Off, disabled/revoked controls, immediate Personalisation selection, photo editors and compact
 navigation geometry. The task note lists commands and the complete control-family inventory. Fable's independent
 verification remains separate; no native build/install/upload was attempted.
+
+
+## Queue 23 — Compatibility loop — 30 Oct 2026
+
+Built from `PRODUCT/APPROVED/COMPATIBILITY_LOOP/BRIEFS/COMPATIBILITY_LOOP_BRIEF_2026-10-30.md`: the Founder asked
+for page 7 → 1 and page 1 → 7 by arrow and swipe, keeping the existing design. Both arrows stay gold and enabled.
+The shared reader keeps seven logical pages and uses duplicate end pages to travel one adjacent page at each wrap,
+then silently recentres on the identical content. A reentrancy guard prevents scroll-end notifications recursively
+recentering. The existing reduced-motion/accessibility direct jump and person/value reset remain. No new state is saved.
+
+Live files: `SOURCE/lib/dev/zyra_draft_compatibility_score_designs.dart` owns the pagination; its shared caller remains
+`zyra_draft_compatibility_presentation.dart`. Profiles after an Unlock, Journey after reveal and the Ended Journey archive
+all use that caller and retain their access guards. No scoring, unlock spending, person loading, persistence or route
+authority moved into the reader. The Founder preview still uses sample people; ordinary member adoption waits for
+OA-ZYRA-317. No migration, native build, installation, upload, old member route or Blueprint change was made.
+
+Validation: seven focused/regression suites pass 75 cases before the final additional rapid-tap case; the final reader
+suite passes all 12 cases, making 76 distinct cases across those suites. Coverage includes both arrow/swipe wraps,
+repeated wraps, always-enabled arrows, exact counters and screen-reader labels, one-page animation in both directions,
+a second arrow during a wrap, person reset, rebuild retention, 200% text, haptic level and Off, and bounded Guardian
+LOCK3 cards. The analyser is clean. `SOURCE/test/zyra_draft_compatibility_score_designs_test.dart` adds wrap coverage;
+`zyra_draft_compatibility_presentation_test.dart` updates only the superseded endpoint/count expectations.
+
+The explicit iOS capture suite `SOURCE/test/visual/compatibility_loop_capture_test.dart` renders the real local Profiles
+reveal at 430 × 932 @3x. Before frames are in local evidence; page 7 after a previous-arrow wrap and page 1 after a
+left-swipe wrap are in `PRODUCT/APPROVED/COMPATIBILITY_LOOP/BUILT/`. Before/built comparison sheets sit alongside them.
+Both complete frames are pixel-identical outside the newly enabled endpoint arrow: page 7 changes only physical pixels
+(1099, 2516)–(1144, 2559), and page 1 only (146, 2516)–(191, 2559). The brief explicitly needs no new design master;
+existing actual frames are the reference. No approved master or baseline was overwritten. BUILD.json records code SHA,
+Flutter 3.44.2, headless test mode/target, timestamps, file hashes and capture scope. Fable and the ZYRA designer own
+independent verification and Founder acceptance; no product finding beyond this requested change was introduced.

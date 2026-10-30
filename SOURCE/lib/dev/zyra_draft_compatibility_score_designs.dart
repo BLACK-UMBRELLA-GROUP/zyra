@@ -31,9 +31,12 @@ class _ZyraCompatibilityScoreReaderState
     extends State<ZyraCompatibilityScoreReader> {
   // A newly revealed reader always starts on Overall, never a PageStorage page
   // left behind by another reveal. Rebuilding the same reveal keeps its pager.
-  final _pages = PageController(keepPage: false);
+  // Duplicate only the two end pages. After settling on a duplicate, recenter
+  // invisibly on its identical real page, so every wrap travels one page.
+  final _pages = PageController(initialPage: 1, keepPage: false);
   int _page = 0;
   int _personRevision = 0;
+  bool _recentering = false;
 
   static const _ink = Color(0xFFF6F0F8);
   static const _muted = Color(0xFFBDB0C8);
@@ -55,7 +58,7 @@ class _ZyraCompatibilityScoreReaderState
         if (!mounted || revision != _personRevision || !_pages.hasClients) {
           return;
         }
-        _pages.jumpToPage(0);
+        _pages.jumpToPage(1);
       });
     }
   }
@@ -67,19 +70,42 @@ class _ZyraCompatibilityScoreReaderState
   }
 
   void _goTo(int index) {
-    if (!_pages.hasClients || index < 0 || index >= _pageCount) {
+    if (!_pages.hasClients) {
       return;
     }
+    _recenterLoop();
+    final target = _pages.page!.round() + (index - _page);
     final media = MediaQuery.of(context);
     if (media.disableAnimations || media.accessibleNavigation) {
-      _pages.jumpToPage(index);
+      _pages.jumpToPage(target);
     } else {
       _pages.animateToPage(
-        index,
+        target,
         duration: const Duration(milliseconds: 280),
         curve: Curves.easeOutCubic,
       );
     }
+  }
+
+  void _recenterLoop() {
+    if (_recentering || !_pages.hasClients) return;
+    final index = _pages.page!.round();
+    final target = index == 0
+        ? _pageCount
+        : (index == _pageCount + 1 ? 1 : null);
+    if (target == null) return;
+    // jumpToPage can itself dispatch ScrollEnd before updating the pixels.
+    _recentering = true;
+    try {
+      _pages.jumpToPage(target);
+    } finally {
+      _recentering = false;
+    }
+  }
+
+  bool _settleLoop(ScrollEndNotification notification) {
+    if (notification.depth == 0) _recenterLoop();
+    return false;
   }
 
   @override
@@ -108,13 +134,18 @@ class _ZyraCompatibilityScoreReaderState
             child: Column(
               children: [
                 Expanded(
-                  child: PageView.builder(
-                    key: const ValueKey('draft_compatibility_score_pages'),
-                    controller: _pages,
-                    itemCount: _pageCount,
-                    physics: const ClampingScrollPhysics(),
-                    onPageChanged: (index) => setState(() => _page = index),
-                    itemBuilder: (context, index) => _scorePage(index),
+                  child: NotificationListener<ScrollEndNotification>(
+                    onNotification: _settleLoop,
+                    child: PageView.builder(
+                      key: const ValueKey('draft_compatibility_score_pages'),
+                      controller: _pages,
+                      itemCount: _pageCount + 2,
+                      physics: const ClampingScrollPhysics(),
+                      onPageChanged: (index) =>
+                          setState(() => _page = (index - 1) % _pageCount),
+                      itemBuilder: (context, index) =>
+                          _scorePage((index - 1) % _pageCount),
+                    ),
                   ),
                 ),
                 _navigation(),
@@ -146,7 +177,6 @@ class _ZyraCompatibilityScoreReaderState
   );
 
   Widget _arrow({required bool previous}) {
-    final enabled = previous ? _page > 0 : _page < _pageCount - 1;
     return IconButton(
       key: ValueKey(
         'draft_compatibility_score_${previous ? 'previous' : 'next'}',
@@ -156,10 +186,9 @@ class _ZyraCompatibilityScoreReaderState
       constraints: const BoxConstraints.tightFor(width: 48, height: 48),
       padding: const EdgeInsets.all(12),
       color: ZyraColors.journeyGold,
-      disabledColor: _muted.withValues(alpha: .35),
       onPressed: ZyraTapFeedback.onTap(
         context,
-        enabled ? () => _goTo(_page + (previous ? -1 : 1)) : null,
+        () => _goTo(_page + (previous ? -1 : 1)),
       ),
       icon: Icon(
         previous ? Icons.arrow_back_rounded : Icons.arrow_forward_rounded,
