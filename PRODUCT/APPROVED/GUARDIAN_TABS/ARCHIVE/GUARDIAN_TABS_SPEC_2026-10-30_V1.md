@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0326
 type: SPEC
-status: CURRENT
+status: ARCHIVED (2026-10-30)
 feature: PRODUCT BLUEPRINT
 purpose: Spec for LOCK 8 - Guardian tabs and pages (Guardian One)
 links: [DR-ZYRA-280, DR-ZYRA-292, DR-ZYRA-233, DOC-ZYRA-0278, DOC-ZYRA-0283]

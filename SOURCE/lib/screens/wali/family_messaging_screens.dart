@@ -1586,7 +1586,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
                             ),
                           ),
                           if (_canPresentComposer)
-                            _Composer(
+                            ZyraFamilyMessageComposer(
                               key: const ValueKey('circle_composer_owner'),
                               controller: _composer,
                               busy: _sending,
@@ -2340,7 +2340,7 @@ class _CircleEditorHeight extends InheritedWidget {
       height != oldWidget.height || keyboardOpen != oldWidget.keyboardOpen;
 }
 
-class _Composer extends StatelessWidget {
+class ZyraFamilyMessageComposer extends StatelessWidget {
   final TextEditingController controller;
   final bool busy;
   final bool contextEnabled;
@@ -2352,9 +2352,11 @@ class _Composer extends StatelessWidget {
   final VoidCallback? onOpenContext;
   final VoidCallback onSend;
   final bool compactDiscussion;
+  final String hint;
+  final bool privateGuardian;
   final Widget? discussionAction;
 
-  const _Composer({
+  const ZyraFamilyMessageComposer({
     super.key,
     required this.controller,
     required this.busy,
@@ -2367,6 +2369,8 @@ class _Composer extends StatelessWidget {
     this.pendingDiscussionTopic,
     this.onRemoveDiscussionTopic,
     this.compactDiscussion = false,
+    this.hint = 'Message your circle',
+    this.privateGuardian = false,
     this.discussionAction,
   });
 
@@ -2393,7 +2397,9 @@ class _Composer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(18, 6, 18, 12),
+    padding: privateGuardian
+        ? const EdgeInsets.fromLTRB(21, 6, 21, 31)
+        : const EdgeInsets.fromLTRB(18, 6, 18, 12),
     child: Column(
       key: const ValueKey('guardian-circle-composer'),
       mainAxisSize: MainAxisSize.min,
@@ -2484,7 +2490,9 @@ class _Composer extends StatelessWidget {
           const SizedBox(height: 8),
         ],
         Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: privateGuardian
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.end,
           children: [
             if (discussionAction != null) ...[
               discussionAction!,
@@ -2492,11 +2500,15 @@ class _Composer extends StatelessWidget {
             ],
             Expanded(
               child: Container(
-                constraints: const BoxConstraints(minHeight: 52),
+                constraints: BoxConstraints(
+                  minHeight: privateGuardian ? 46 : 52,
+                ),
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                   color: ZyraColors.surfaceFill,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(
+                    privateGuardian ? 14 : 20,
+                  ),
                   border: Border.all(
                     color: ZyraColors.surfaceBorder,
                     width: 0.8,
@@ -2543,13 +2555,17 @@ class _Composer extends StatelessWidget {
                         ),
                         child: TextField(
                           controller: controller,
+                          style: privateGuardian
+                              ? ZyraText.body(size: 13.5)
+                              : null,
                           maxLength: 2000,
                           maxLines: 4,
                           minLines: 1,
                           textCapitalization: TextCapitalization.sentences,
                           textInputAction: TextInputAction.newline,
                           decoration: InputDecoration(
-                            hintText: 'Message your circle',
+                            hintText: hint,
+                            isDense: privateGuardian,
                             hintMaxLines: compactDiscussion ? 1 : null,
                             hintStyle: ZyraText.subtext(
                               size: 13.5,
@@ -2559,9 +2575,9 @@ class _Composer extends StatelessWidget {
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                               horizontal: 9,
-                              vertical: 14,
+                              vertical: privateGuardian ? 11 : 14,
                             ),
                           ),
                         ),
@@ -2572,7 +2588,11 @@ class _Composer extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 9),
-            ZyraCircleSendButton(busy: busy, onSend: onSend),
+            ZyraCircleSendButton(
+              busy: busy,
+              onSend: onSend,
+              privateGuardian: privateGuardian,
+            ),
           ],
         ),
       ],

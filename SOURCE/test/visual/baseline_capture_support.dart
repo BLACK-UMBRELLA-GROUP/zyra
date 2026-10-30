@@ -353,8 +353,9 @@ class BaselineHarness {
     String area,
     String page,
     String state,
-    String reached,
-  ) async {
+    String reached, {
+    String? fileName,
+  }) async {
     await flush();
     for (final view in tester.widgetList<ZyraOneJourneyBrowsePresentation>(
       find.byType(ZyraOneJourneyBrowsePresentation),
@@ -417,7 +418,7 @@ class BaselineHarness {
       }
     }
     final relative = flatOutput
-        ? '${page}__$state.png'
+        ? fileName ?? '${page}__$state.png'
         : '${guardian ? 'guardian' : 'seeker'}/$area/${page}__$state.png';
     final boundary = tester.renderObject<RenderRepaintBoundary>(
       find.byKey(_boundary),

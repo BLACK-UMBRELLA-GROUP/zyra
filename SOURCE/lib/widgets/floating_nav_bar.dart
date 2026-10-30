@@ -281,6 +281,7 @@ class FloatingNavBar extends StatefulWidget {
   /// LOCK 6 is an explicit Founder-root opt-in. Shared member navigation and
   /// Browse action bars retain the original treatment by default.
   final bool compactWhenIdle;
+  final bool compactV2;
   final int collapseRevision;
   final bool interactionEnabled;
 
@@ -294,6 +295,7 @@ class FloatingNavBar extends StatefulWidget {
     this.contentEdgeInset,
     this.hapticLevel,
     this.compactWhenIdle = false,
+    this.compactV2 = false,
     this.collapseRevision = 0,
     this.interactionEnabled = true,
   }) : assert(
@@ -649,6 +651,7 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
         !widget.commitOnRelease &&
         ZyraInteractionStyle.navStyle == ZyraNavStyle.floatingGlass) {
       return _CompactFloatingTabBar(
+        compactV2: widget.compactV2,
         items: widget.items,
         currentIndex: widget.currentIndex,
         onTap: widget.onTap,
@@ -1034,6 +1037,7 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
 class _CompactFloatingTabBar extends StatefulWidget {
   const _CompactFloatingTabBar({
     required this.items,
+    required this.compactV2,
     required this.currentIndex,
     required this.onTap,
     required this.contentEdgeInset,
@@ -1042,6 +1046,7 @@ class _CompactFloatingTabBar extends StatefulWidget {
     required this.interactionEnabled,
   });
 
+  final bool compactV2;
   final List<FloatingNavItem> items;
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -1154,7 +1159,8 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
   void didUpdateWidget(covariant _CompactFloatingTabBar oldWidget) {
     super.didUpdateWidget(oldWidget);
     _semanticsEpoch++;
-    if (oldWidget.collapseRevision != widget.collapseRevision ||
+    if (oldWidget.compactV2 != widget.compactV2 ||
+        oldWidget.collapseRevision != widget.collapseRevision ||
         oldWidget.interactionEnabled != widget.interactionEnabled ||
         oldWidget.items.length != widget.items.length ||
         oldWidget.contentEdgeInset != widget.contentEdgeInset) {
@@ -1301,8 +1307,13 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                     ),
                     child: Container(
                       key: const ValueKey('compact-nav-surface'),
-                      width: fullWidth * (.4 + .6 * _sizeMotion.value),
-                      height: 46 + 12 * _sizeMotion.value,
+                      width:
+                          fullWidth *
+                          ((widget.compactV2 ? .6 : .4) +
+                              (widget.compactV2 ? .4 : .6) * _sizeMotion.value),
+                      height:
+                          (widget.compactV2 ? 50 : 46) +
+                          (widget.compactV2 ? 8 : 12) * _sizeMotion.value,
                       decoration: BoxDecoration(
                         color: _touching
                             ? ZyraColors.surfaceEmphasisFill
@@ -1320,12 +1331,17 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                         builder: (context, inner) {
                           final progress = fullWidth <= 0
                               ? 0.0
-                              : (((inner.maxWidth + 2) - fullWidth * .4) /
-                                        (fullWidth * .6))
+                              : (((inner.maxWidth + 2) -
+                                            fullWidth *
+                                                (widget.compactV2 ? .6 : .4)) /
+                                        (fullWidth *
+                                            (widget.compactV2 ? .4 : .6)))
                                     .clamp(0.0, 1.0);
-                          final iconSize = 16.0 + 5 * progress;
+                          final iconSize =
+                              (widget.compactV2 ? 18.0 : 16.0) +
+                              (widget.compactV2 ? 3 : 5) * progress;
                           final idleCellWidth = math.min(
-                            26.0,
+                            widget.compactV2 ? 38.0 : 26.0,
                             inner.maxWidth / widget.items.length,
                           );
                           final cellWidth =
@@ -1333,7 +1349,9 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                               (inner.maxWidth / widget.items.length -
                                       idleCellWidth) *
                                   progress;
-                          final underlineWidth = 16.0 + 8 * progress;
+                          final underlineWidth =
+                              (widget.compactV2 ? 28.0 : 16.0) +
+                              (widget.compactV2 ? -4 : 8) * progress;
                           final rowWidth = cellWidth * widget.items.length;
                           final rowLeft = (inner.maxWidth - rowWidth) / 2;
                           return Listener(

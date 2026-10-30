@@ -315,7 +315,13 @@ void main() {
           initialGuardianRole: true,
         ),
       );
-      for (final tab in ['Dashboard', 'Network', 'Seekers', 'Profile']) {
+      for (final tab in [
+        'Network',
+        'Journeys',
+        'My ZYRA',
+        'Seekers',
+        'Profile',
+      ]) {
         calls.clear();
         await _tapNavigation(tester, tab);
         expect(

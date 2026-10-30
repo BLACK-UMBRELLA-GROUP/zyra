@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'support/zyra_hidden_dev_controls_driver.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_journey_peer_guardians_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -896,7 +897,7 @@ void main() {
     );
   }
 
-  testWidgets('long Guardian return resets navigation to its dashboard', (
+  testWidgets('long Guardian return resets navigation to My ZYRA', (
     tester,
   ) async {
     final owner = _Owner();
@@ -906,7 +907,7 @@ void main() {
       checkpoint: _seed(guardian: true, tab: 3, pages: const ['manage_photos']),
       restoreLocation: false,
     );
-    _expectTab(tester, 0);
+    _expectTab(tester, 2);
     expect(owner.latest.pages, isEmpty);
     expect(find.byType(EditPhotosScreen), findsNothing);
   });
@@ -927,7 +928,7 @@ void main() {
       ),
     );
     expect(owner.latest.guardian, isTrue);
-    expect(owner.latest.tab, 0);
+    expect(owner.latest.tab, 2);
     expect(owner.latest.pages, isEmpty);
     expect(owner.latest.personId, isNull);
     expect(
@@ -935,7 +936,7 @@ void main() {
       0,
     );
     expect(find.byType(ZyraJourneyPeerGuardiansPresentation), findsNothing);
-    _expectTab(tester, 0);
+    _expectTab(tester, 2);
   });
 
   testWidgets('Browse restores history and gallery on first prepared frame', (
@@ -1084,6 +1085,7 @@ void main() {
         matching: find.byIcon(currentNavigation.items.first.icon),
       );
       expect(profilesIcon, findsOneWidget);
+      await expandZyraPreviewTabBarIfIdle(tester);
       await tester.tapAt(tester.getCenter(profilesIcon));
       await tester.pumpAndSettle();
       _expectTab(tester, 0);

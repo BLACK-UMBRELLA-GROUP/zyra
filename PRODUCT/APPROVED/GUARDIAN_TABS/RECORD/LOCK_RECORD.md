@@ -18,5 +18,7 @@ owner: ZYRA chat
 | 2026-10-29 | Several Seekers: My ZYRA covers all, Network and Journeys switch "for Adam ▾", Seekers lists everyone → **"no i liek yout thinking continue"** | Multi-Seeker behaviour |
 | 2026-10-29 (comment) | Journey requests chips → top-right "All Seekers ▾" switcher | Requests switcher |
 | 2026-10-29 20:09 | **"lock in 5 guardian tabs"** | **LOCK** of `RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V1.md` and the 14 `MASTERS/` (prototype V40, Guardian One layout) |
+| 2026-10-30 ~11:20 | Connect with Guardian accept: **"private chat but is the seeker only has a basic gairdian then thier profile wont be shown on network"** | Accept opens a private Guardian chat; Guardian-Basic-only Seekers are not in Network |
+| 2026-10-30 ~13:00 | Queue line 20 stopped (3 gaps). ZYRA chat drew Family Review pause/reopen, Connect received/accepted/chat/empty, fixed counts and stage text (V59); → **"LOCK all three (Recommended)"** | **LOCK V2**: `RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V2.md` + 20 `MASTERS/` g01–g20. V1 spec and 14 masters in `ARCHIVE/` |
 
 Guardian Basic differences are **not** part of this LOCK (drawn from rules; waiting for the queue line 15 capture).

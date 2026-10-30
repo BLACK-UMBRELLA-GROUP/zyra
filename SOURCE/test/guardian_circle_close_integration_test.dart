@@ -162,14 +162,13 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _openCircle(WidgetTester tester, {bool guardian = false}) async {
-  await _nav(tester, guardian ? 2 : 3);
+  await _nav(tester, 3);
+  if (guardian) {
+    await _press(tester, _key('guardian_seeker_0'));
+  }
   await _press(
     tester,
-    _key(
-      guardian
-          ? 'seeker-family-chat-draft-self'
-          : 'guardian-family-messages-top',
-    ),
+    _key(guardian ? 'guardian_circle' : 'guardian-family-messages-top'),
   );
   expect(_circle, findsOneWidget);
   final circle = tester.widget<ZyraGuardianCircleScreen>(_circle);
@@ -215,11 +214,7 @@ void _expectReturn(WidgetTester tester) {
 void _expectCircleParent({required bool guardian}) {
   expect(_circle, findsNothing);
   expect(
-    _key(
-      guardian
-          ? 'seeker-family-chat-draft-self'
-          : 'guardian-family-messages-top',
-    ),
+    _key(guardian ? 'guardian_circle' : 'guardian-family-messages-top'),
     findsOneWidget,
   );
 }

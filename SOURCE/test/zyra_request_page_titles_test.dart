@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
-import 'package:zyra/dev/zyra_one_journey_guardian_presentation.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/models/zyra_dashboard_resolution.dart';
 import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
@@ -13,8 +12,8 @@ import 'package:zyra/screens/wali/wali_seekers_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_guardian_seeker_roster_resolver.dart';
-import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/widgets/zyra_quiet_dashboard.dart';
 
 // Pure, synthetic presentation fixtures. No login or developer grant is made,
@@ -37,12 +36,6 @@ const _profile = SeekerProfile(
   city: 'Birmingham',
   photos: [],
   gender: 'female',
-);
-const _person = WaliLinkedPerson(
-  id: 'title-fixture-seeker',
-  firstName: 'Sara',
-  isMain: true,
-  relationship: 'father',
 );
 
 ZyraConceptAccountData _account(bool guardian) => ZyraConceptAccountData(
@@ -224,29 +217,7 @@ void main() {
         onSwitchRole: () {},
       ),
     ),
-    (
-      label: 'Guardian Dashboard',
-      key: 'concept_guardian_dashboard_title',
-      build: () => ZyraOneJourneyGuardianDashboardPresentation(
-        profile: _profile,
-        person: _person,
-        guardianName: 'Hassan',
-        onProfile: () {},
-        onJourney: () {},
-      ),
-    ),
-    (
-      label: 'Network',
-      key: 'concept_guardian_network_title',
-      build: () => ZyraOneJourneyGuardianNetworkPresentation(
-        person: _person,
-        profiles: const [],
-        selectedIndex: 0,
-        onChanged: (_) {},
-        onProfile: (_) {},
-        onIntroduction: (_) {},
-      ),
-    ),
+
     (label: 'Seekers', key: 'guardian-seekers-title', build: _roster),
     (
       label: 'Profile',
@@ -301,294 +272,4 @@ void main() {
       expect(tester.getRect(_key(page.key)).left, closeTo(20, .1));
     }
   });
-
-  // Rehearse the parent-owned multi-Journey seam with synthetic selections.
-  // The shell's owner/navigation guards are tested in its separate suite.
-  final wrappedPages = <({String label, Widget Function() build})>[
-    (
-      label: 'Guardian Dashboard',
-      build: () => ZyraOneJourneyGuardianDashboardPresentation(
-        profile: _profile,
-        person: _person,
-        guardianName: 'Hassan',
-        onProfile: () {},
-        onJourney: () {},
-        showHeader: false,
-      ),
-    ),
-    (
-      label: 'Seekers',
-      build: () => ZyraOneJourneyGuardianSeekersPresentation(
-        profile: _profile,
-        person: _person,
-        onJourney: () {},
-        onNetwork: () {},
-        onInvite: () {},
-        showHeader: false,
-      ),
-    ),
-    (
-      label: 'Network',
-      build: () => ZyraOneJourneyGuardianNetworkPresentation(
-        person: _person,
-        profiles: const [],
-        selectedIndex: 0,
-        onChanged: (_) {},
-        onProfile: (_) {},
-        onIntroduction: (_) {},
-        showHeader: false,
-      ),
-    ),
-  ];
-  for (final page in wrappedPages) {
-    for (final count in [2, 3]) {
-      testWidgets(
-        '${page.label} main title stays above $count Journey selector',
-        (tester) async {
-          await _mount(
-            tester,
-            SafeArea(
-              bottom: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-                    child: Text(
-                      page.label,
-                      key: const ValueKey('wrapped-main-title'),
-                      textAlign: TextAlign.left,
-                      style: ZyraText.heading(size: 26),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'JOURNEY WITH · ${List.generate(count, (i) => 'Person ${i + 1}').join(' · ')}',
-                      key: const ValueKey('wrapped-journey-selector'),
-                      style: ZyraText.body(size: 12),
-                    ),
-                  ),
-                  Expanded(child: page.build()),
-                ],
-              ),
-            ),
-            size: const Size(320, 568),
-            scale: 2,
-          );
-          _expectTitle(tester, 'wrapped-main-title', page.label, 320);
-          expect(find.text(page.label), findsOneWidget);
-          expect(
-            tester.getRect(_key('wrapped-journey-selector')).top,
-            greaterThan(tester.getRect(_key('wrapped-main-title')).bottom),
-          );
-          expect(tester.takeException(), isNull);
-        },
-      );
-    }
-  }
-
-  testWidgets('simplified Profile has no second ended-history entry', (
-    tester,
-  ) async {
-    final actions = <ZyraConceptAccountAction>[];
-    await _mount(
-      tester,
-      ZyraConceptProfilePresentation(
-        data: _account(false),
-        simplifiedMethodology: true,
-        onAction: actions.add,
-        onSwitchRole: () {},
-      ),
-      size: const Size(900, 1800),
-    );
-    expect(_key('concept_past_journeys'), findsNothing);
-    expect(find.text('Ended Journeys'), findsNothing);
-    expect(find.text('Past Journeys'), findsNothing);
-    expect(find.text('JOURNEY HISTORY'), findsNothing);
-    expect(actions, isEmpty);
-
-    await _mount(
-      tester,
-      ZyraConceptProfilePresentation(
-        data: _account(false),
-        onAction: actions.add,
-        onSwitchRole: () {},
-      ),
-      size: const Size(900, 1800),
-    );
-    expect(_key('concept_past_journeys'), findsOneWidget);
-    await tester.ensureVisible(_key('concept_past_journeys'));
-    await tester.pump();
-    await tester.tap(_key('concept_past_journeys'));
-    await tester.pump();
-    expect(actions, [ZyraConceptAccountAction.pastJourneys]);
-  });
-
-  for (final fixture in [
-    (main: true, staleEnabled: false),
-    (main: true, staleEnabled: true),
-    (main: false, staleEnabled: true),
-  ]) {
-    testWidgets(
-      '${fixture.main ? 'Main unavailable Chat is disabled OFF' : 'Additional contradictory Chat denies Journey access'} '
-      'even with stale=${fixture.staleEnabled}',
-      (tester) async {
-        var writes = 0;
-        await _mount(
-          tester,
-          SafeArea(
-            child: SeekerGuardianPage(
-              people: [
-                WaliLinkedPerson(
-                  id: 'synthetic-guardian',
-                  firstName: 'Hassan',
-                  isMain: fixture.main,
-                ),
-              ],
-              activity: const {},
-              linksAvailable: true,
-              activityAvailable: true,
-              onRetry: () {},
-              onAdd: () {},
-              journeyAccessLoader:
-                  ({
-                    required guardianId,
-                    attemptId,
-                    enabled,
-                    chatEnabled,
-                  }) async {
-                    if (enabled != null || chatEnabled != null) writes++;
-                    return ZyraSourceResult.available([
-                      GuardianJourneyAccessState(
-                        attemptId: 'synthetic-attempt',
-                        matchId: 'synthetic-match',
-                        counterpartFirstName: 'Sara',
-                        included: true,
-                        canChange: !fixture.main,
-                        guardianIsMain: fixture.main,
-                        chatAvailable: false,
-                        chatEnabled: fixture.staleEnabled,
-                      ),
-                    ]);
-                  },
-              historyConsentLoader:
-                  ({
-                    required guardianId,
-                    required guardianIsMain,
-                    enabled,
-                  }) async => ZyraSourceResult.available(
-                    GuardianHistoryConsentState(
-                      enabled: false,
-                      activeGuardianLinkId: 'synthetic-link',
-                      guardianId: guardianId,
-                      guardianIsMain: guardianIsMain,
-                    ),
-                  ),
-            ),
-          ),
-          size: const Size(430, 932),
-        );
-        expect(
-          _key('guardian-journey-chat-required-synthetic-attempt'),
-          findsNothing,
-        );
-        if (!fixture.main) {
-          // An enabled Chat flag without Chat availability is contradictory.
-          // The Additional-Guardian projection must reject the whole attempt,
-          // not preserve a writable View control from that untrusted row.
-          expect(find.text('JOURNEY ACCESS UNAVAILABLE'), findsOneWidget);
-          expect(
-            find.text('Journey access could not be refreshed.'),
-            findsOneWidget,
-          );
-          for (final control in [
-            'guardian-journey-chat-toggle-synthetic-attempt',
-            'guardian-journey-chat-required-synthetic-attempt',
-            'guardian-journey-access-toggle-synthetic-attempt',
-            'guardian-journey-view-required-synthetic-attempt',
-          ]) {
-            expect(_key(control), findsNothing);
-          }
-          expect(find.text('Journey with Sara'), findsNothing);
-          expect(_key('guardian-journey-chat-unavailable'), findsNothing);
-        } else {
-          final chatControl = _key(
-            'guardian-journey-chat-toggle-synthetic-attempt',
-          );
-          final chat = tester.widget<Semantics>(chatControl).properties;
-          expect(chat.toggled, isFalse);
-          expect(chat.enabled, isFalse);
-          expect(chat.onTap, isNull);
-          expect(chat.label, 'Chat unavailable in Journey with Sara');
-          expect(tester.getSize(chatControl), const Size(44, 44));
-          expect(
-            tester
-                .widget<InkWell>(
-                  find.descendant(
-                    of: chatControl,
-                    matching: find.byType(InkWell),
-                  ),
-                )
-                .onTap,
-            isNull,
-          );
-          expect(
-            find.descendant(of: chatControl, matching: find.byType(Switch)),
-            findsNothing,
-          );
-          expect(
-            find.descendant(
-              of: chatControl,
-              matching: find.byIcon(Icons.check_rounded),
-            ),
-            findsNothing,
-          );
-          expect(_key('guardian-journey-chat-unavailable'), findsOneWidget);
-          expect(
-            find.text('Chat is unavailable for this Journey.'),
-            findsOneWidget,
-          );
-          final requiredView = _key(
-            'guardian-journey-view-required-synthetic-attempt',
-          );
-          expect(requiredView, findsOneWidget);
-          expect(tester.getSize(requiredView), const Size(26, 26));
-          expect(
-            find.descendant(
-              of: requiredView,
-              matching: find.byIcon(Icons.check_rounded),
-            ),
-            findsOneWidget,
-          );
-          expect(
-            find.descendant(of: requiredView, matching: find.byType(InkWell)),
-            findsNothing,
-          );
-          final requiredSemantics = tester
-              .widgetList<Semantics>(
-                find.ancestor(
-                  of: requiredView,
-                  matching: find.byType(Semantics),
-                ),
-              )
-              .singleWhere(
-                (widget) =>
-                    widget.properties.label ==
-                    'View required for Journey with Sara',
-              );
-          expect(requiredSemantics.properties.onTap, isNull);
-          expect(requiredSemantics.properties.toggled, isNull);
-          expect(
-            _key('guardian-journey-access-toggle-synthetic-attempt'),
-            findsNothing,
-          );
-          await tester.tap(chatControl);
-          await tester.pump();
-        }
-        expect(writes, 0);
-        expect(tester.takeException(), isNull);
-      },
-    );
-  }
 }

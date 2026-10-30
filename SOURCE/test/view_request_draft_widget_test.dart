@@ -16,9 +16,9 @@ import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
-import 'package:zyra/dev/zyra_one_journey_guardian_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
@@ -32,7 +32,6 @@ import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
 import 'package:zyra/screens/wali/link_guardian_panel.dart';
 import 'package:zyra/screens/wali/zyra_code_screen.dart';
-import 'package:zyra/screens/wali/wali_seekers_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
@@ -49,7 +48,6 @@ import 'package:zyra/widgets/zyra_journey_icon.dart';
 import 'package:zyra/widgets/zyra_one_profile_avatar.dart';
 import 'package:zyra/widgets/zyra_profile_membership_row.dart';
 import 'package:zyra/widgets/zyra_profile_name_block.dart';
-import 'package:zyra/widgets/zyra_scrollable_seeker_selector.dart';
 import 'package:zyra/widgets/zyra_segmented_toggle.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
@@ -537,6 +535,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
   final nav = tester.widget<ZyraShellNavigation>(
     find.byType(ZyraShellNavigation),
   );
+  if (nav.items.first.label == 'Network') index = const [2, 0, 3, 4][index];
   nav.onTap(index);
   await tester.pumpAndSettle();
   final failure = tester.takeException();
@@ -1360,36 +1359,6 @@ void main() {
     );
   }
 
-  for (final count in [2, 3]) {
-    testWidgets('Guardian $count-Journey main titles remain above selectors', (
-      tester,
-    ) async {
-      await _mount(tester);
-      await _seedJourneyCards(tester, count);
-      await _press(tester, 'draft_rules');
-      await _press(tester, 'draft_role_guardian');
-      for (final page in [
-        (index: 0, title: 'Guardian Dashboard'),
-        (index: 2, title: 'Seekers'),
-      ]) {
-        await _nav(tester, page.index);
-        final titleFinder = _key('concept_main_title_${page.title}');
-        final title = tester.widget<Text>(titleFinder);
-        expect(title.style?.fontSize, 26);
-        expect(title.textAlign, TextAlign.left);
-        expect(find.text(page.title), findsOneWidget);
-        final rect = tester.getRect(titleFinder);
-        expect(rect.top, closeTo(60, .1));
-        expect(rect.left, closeTo(20, .1));
-        expect(
-          tester.getRect(find.text('JOURNEY WITH')).top,
-          greaterThan(rect.bottom),
-        );
-      }
-      expect(tester.takeException(), isNull);
-    });
-  }
-
   for (final action in ['hide', 'block']) {
     testWidgets(
       'fictional $action excludes Browse but retains ended archive without stale writes',
@@ -1691,39 +1660,6 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
-
-  testWidgets('blocked peer is removed from Guardian Network sent projection', (
-    tester,
-  ) async {
-    await _mount(tester);
-    await _press(tester, 'draft_rules');
-    await _press(tester, 'draft_role_guardian');
-    await _nav(tester, 1);
-    final network = tester.widget<ZyraOneJourneyGuardianNetworkPresentation>(
-      find.byType(ZyraOneJourneyGuardianNetworkPresentation),
-    );
-    final person = network.profiles.firstWhere((p) => p.id == _fixture);
-    network.onIntroduction(person);
-    await tester.pumpAndSettle();
-    await _press(tester, 'concept_confirm_network_request_$_fixture');
-    await _press(tester, 'draft_rules');
-    await _press(tester, 'draft_role_seeker');
-    final browse = tester.widget<ZyraOneJourneyBrowseDesigns>(
-      find.byType(ZyraOneJourneyBrowseDesigns),
-    );
-    expect(browse.onProfile, isNull);
-    await _openBrowseSafety(tester, _fixture);
-    await _press(tester, 'draft_safety_block');
-    await _press(tester, 'draft_rules');
-    await _press(tester, 'draft_role_guardian');
-    await _nav(tester, 1);
-    final after = tester.widget<ZyraOneJourneyGuardianNetworkPresentation>(
-      find.byType(ZyraOneJourneyGuardianNetworkPresentation),
-    );
-    expect(after.sentProfiles.map((p) => p.id), isNot(contains(_fixture)));
-    expect(after.profiles.map((p) => p.id), isNot(contains(_fixture)));
-    expect(tester.takeException(), isNull);
-  });
 
   for (final viewport in const [
     (size: Size(390, 844), scale: 1.0, suffix: 'standard'),
@@ -3822,22 +3758,11 @@ void main() {
       await _press(tester, 'draft_rules');
       await _press(tester, 'draft_role_guardian');
       await _nav(tester, 0);
-      expect(find.byType(ZyraScrollableSeekerSelector), findsOneWidget);
-      final profile = tester.widget<GuardianDashboardProfileCard>(
-        find.byType(GuardianDashboardProfileCard),
-      );
-      expect(profile.person.id, 'draft-self');
-      expect(profile.profile?.id, profile.person.id);
-      expect(profile.profile?.photos, isNotEmpty);
-      expect(
-        profile.profile!.photos.every(
-          (photo) => photo.startsWith('data:image/jpeg;base64,'),
-        ),
-        isTrue,
-      );
+      expect(find.byType(ZyraGuardianTabsPresentation), findsOneWidget);
+      expect(find.text('Family Review for\nAdam and Sara'), findsOneWidget);
       await _nav(tester, 3);
-      expect(find.byType(ZyraOneProfileAvatar), findsOneWidget);
-      expect(find.byType(ZyraProfileMembershipRow), findsOneWidget);
+      expect(find.text('Hassan Rahman'), findsOneWidget);
+      expect(find.text('Linked Seekers'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
@@ -4197,92 +4122,6 @@ void main() {
   );
 
   testWidgets(
-    'Guardian Network public taps cancel or confirm one local request and exclude sent profiles',
-    (tester) async {
-      final network = _NoNetwork();
-      final app = AppState.instance;
-      final ordinarySaved = List.of(app.saved);
-      final ordinaryPotential = List.of(app.potentialJourneys);
-      final ordinaryActive = List.of(app.activeJourneys);
-      final generation = ZyraAccountState.generation;
-      final userId = ZyraAccountState.userId;
-      var memberNotifications = 0;
-      void changed() => memberNotifications++;
-      app.addListener(changed);
-      addTearDown(() => app.removeListener(changed));
-      await HttpOverrides.runWithHttpOverrides(() async {
-        await _mount(tester);
-        await _press(tester, 'draft_rules');
-        await _press(tester, 'draft_role_guardian');
-        await _tapRootNav(tester, 'Network');
-        ZyraOneJourneyGuardianNetworkPresentation body() =>
-            tester.widget<ZyraOneJourneyGuardianNetworkPresentation>(
-              find.byType(ZyraOneJourneyGuardianNetworkPresentation),
-            );
-        final personId = body().profiles.first.id;
-        expect(personId, startsWith('draft-'));
-        expect(body().sentProfiles, isEmpty);
-        await _press(tester, 'concept_network_suggestion');
-        expect(_key('concept_network_request_$personId'), findsOneWidget);
-        expect(find.text('Speak to Guardian'), findsOneWidget);
-        expect(
-          find.text('No real request is sent and no conversation opens here.'),
-          findsOneWidget,
-        );
-        await _press(tester, 'concept_cancel_network_request_$personId');
-        expect(_key('concept_network_request_$personId'), findsNothing);
-        expect(body().sentProfiles, isEmpty);
-        expect(
-          body().profiles.map((profile) => profile.id),
-          contains(personId),
-        );
-        await _press(tester, 'concept_network_sent');
-        expect(find.text('No sent requests').hitTestable(), findsOneWidget);
-        await _press(tester, 'concept_network_browser');
-        await _press(tester, 'concept_network_suggestion');
-        final staleConfirm = _callback(
-          tester,
-          'concept_confirm_network_request_$personId',
-        );
-        await _press(tester, 'concept_confirm_network_request_$personId');
-        expect(_key('concept_network_request_$personId'), findsNothing);
-        expect(body().selectedIndex, 1);
-        expect(body().sentProfiles.map((profile) => profile.id), [personId]);
-        expect(
-          find
-              .text('Request sent · Awaiting their Main Guardian')
-              .hitTestable(),
-          findsOneWidget,
-        );
-        // A retained confirmation cannot submit again after its page closes.
-        staleConfirm();
-        await tester.pumpAndSettle();
-        expect(body().sentProfiles.map((profile) => profile.id), [personId]);
-        await _press(tester, 'concept_network_browser');
-        expect(body().selectedIndex, 0);
-        expect(
-          body().profiles.map((profile) => profile.id),
-          isNot(contains(personId)),
-        );
-        expect(
-          body().profiles.every((profile) => profile.id.startsWith('draft-')),
-          isTrue,
-        );
-        await _press(tester, 'concept_network_sent');
-        expect(body().sentProfiles.map((profile) => profile.id), [personId]);
-        expect(app.saved, ordinarySaved);
-        expect(app.potentialJourneys, ordinaryPotential);
-        expect(app.activeJourneys, ordinaryActive);
-        expect(ZyraAccountState.generation, generation);
-        expect(ZyraAccountState.userId, userId);
-        expect(memberNotifications, 0);
-        expect(tester.takeException(), isNull);
-      }, network);
-      expect(network.attempts, 0);
-    },
-  );
-
-  testWidgets(
     'Guardian plus reuses the Code page while Guardian-role invitations stay held and Circle stays working',
     (tester) async {
       final network = _NoNetwork();
@@ -4335,11 +4174,14 @@ void main() {
         await _press(tester, 'draft_role_guardian');
         await _tapRootNav(tester, 'Seekers');
         for (final route in const [
-          (key: 'guardian-seeker-add-top', title: 'Invite your Seeker'),
-          (key: 'seeker-family-chat-draft-self', title: 'Guardian Circle'),
+          (key: 'guardian_invite', title: 'Invite your Seeker'),
+          (key: 'guardian_circle', title: 'Guardian Circle'),
         ]) {
+          if (route.key == 'guardian_circle') {
+            await _press(tester, 'guardian_seeker_0');
+          }
           await _press(tester, route.key);
-          final circle = route.key == 'seeker-family-chat-draft-self';
+          final circle = route.key == 'guardian_circle';
           final title = route.title;
           expect(
             _key('concept_held_action'),
@@ -4355,7 +4197,7 @@ void main() {
           expect(_key('concept_held_back'), findsNothing);
           await _returnPage(tester, from: find.text(title));
           expect(_key('concept_held_action'), findsNothing);
-          expect(find.byType(GuardianSeekerRosterView), findsOneWidget);
+          expect(find.byType(ZyraGuardianTabsPresentation), findsOneWidget);
         }
         expect(tester.takeException(), isNull);
       }, network);
@@ -4557,20 +4399,20 @@ void main() {
         await _nav(tester, 4);
         await _press(tester, 'draft_role_guardian');
         await _nav(tester, 3);
-        final account = tester.widget<ZyraConceptProfilePresentation>(
-          find.byType(ZyraConceptProfilePresentation),
+        final account = tester.widget<ZyraGuardianTabsPresentation>(
+          find.byType(ZyraGuardianTabsPresentation),
         );
-        expect(account.data.linkedSeekers, '0');
+        expect(account.linked, isFalse);
         for (final index in [0, 1, 2]) {
           await _nav(tester, index);
           expect(find.byType(GuardianDashboardProfileCard), findsNothing);
           expect(find.byType(ZyraProfileImage), findsNothing);
           expect(find.text('Adam'), findsNothing);
         }
-        final roster = tester.widget<GuardianSeekerRosterView>(
-          find.byType(GuardianSeekerRosterView),
+        final roster = tester.widget<ZyraGuardianTabsPresentation>(
+          find.byType(ZyraGuardianTabsPresentation),
         );
-        expect(roster.resolution.isEmpty, isTrue);
+        expect(roster.linked, isFalse);
         expect(tester.takeException(), isNull);
       }, network);
       expect(network.attempts, 0);
@@ -4591,10 +4433,10 @@ void main() {
     await _nav(tester, 4);
     await _press(tester, 'draft_role_guardian');
     await _nav(tester, 2);
-    final roster = tester.widget<GuardianSeekerRosterView>(
-      find.byType(GuardianSeekerRosterView),
+    final roster = tester.widget<ZyraGuardianTabsPresentation>(
+      find.byType(ZyraGuardianTabsPresentation),
     );
-    expect(roster.decoration, const BoxDecoration());
+    expect(roster.page, 'seekers');
     final localPaint = tester
         .widgetList<CustomPaint>(find.byType(CustomPaint))
         .where(

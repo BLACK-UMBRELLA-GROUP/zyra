@@ -7,7 +7,6 @@ import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
-import 'package:zyra/dev/zyra_one_journey_guardian_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/state/app_state.dart';
@@ -16,7 +15,6 @@ import 'package:zyra/screens/profile/seeker_profile_screen.dart';
 import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_journey_icon.dart';
-import 'package:zyra/widgets/zyra_profile_image.dart';
 import 'package:zyra/widgets/zyra_pull_down_back_scope.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
@@ -413,77 +411,6 @@ void main() {
       _rootProfile(tester);
     },
   );
-
-  _case('Guardian linked-Seeker photo returns to its actual Dashboard', (
-    tester,
-  ) async {
-    await _mount(tester, guardian: true);
-    await _tap(tester, 'guardian-dashboard-view-profile-draft-self');
-    expect(find.byType(ZyraOneJourneyBrowsePresentation), findsOneWidget);
-    expect(
-      tester
-          .widget<ZyraOneJourneyBrowsePresentation>(
-            find.byType(ZyraOneJourneyBrowsePresentation),
-          )
-          .profile
-          .id,
-      'draft-self',
-    );
-    _oneMemberBack();
-    await _returnHeader(tester);
-    expect(find.byKey(_scope), findsNothing);
-    expect(_key('guardian-dashboard-view-profile-draft-self'), findsOneWidget);
-    expect(
-      tester
-          .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
-          .currentIndex,
-      0,
-    );
-  });
-
-  _case('Guardian Network photo returns without changing its people or tab', (
-    tester,
-  ) async {
-    await _mount(tester, guardian: true);
-    await _tapNav(tester, 'Network');
-    final before = tester.widget<ZyraOneJourneyGuardianNetworkPresentation>(
-      find.byType(ZyraOneJourneyGuardianNetworkPresentation),
-    );
-    final ids = before.profiles.map((p) => p.id).toList();
-    final photo = find
-        .descendant(
-          of: find.byType(ZyraOneJourneyGuardianNetworkPresentation),
-          matching: find.byType(ZyraProfileImage),
-        )
-        .first;
-    final open = find
-        .ancestor(
-          of: photo,
-          matching: find.byWidgetPredicate(
-            (w) => w is GestureDetector && w.onTap != null,
-          ),
-        )
-        .first;
-    await _tapFinder(tester, open);
-    expect(
-      tester
-          .widget<ZyraOneJourneyBrowsePresentation>(
-            find.byType(ZyraOneJourneyBrowsePresentation),
-          )
-          .profile
-          .id,
-      ids.first,
-    );
-    _oneMemberBack();
-    await _returnHeader(tester);
-    final after = tester.widget<ZyraOneJourneyGuardianNetworkPresentation>(
-      find.byType(ZyraOneJourneyGuardianNetworkPresentation),
-    );
-    expect(after.profiles.map((p) => p.id), ids);
-    expect(after.sentProfiles, isEmpty);
-    expect(after.selectedIndex, before.selectedIndex);
-    expect(find.byKey(_scope), findsNothing);
-  });
 
   _case('Filters Back discards the uncommitted draft, preserving Browse', (
     tester,

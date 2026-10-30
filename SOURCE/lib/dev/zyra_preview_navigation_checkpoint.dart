@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'zyra_browse_filter.dart';
+import 'zyra_one_journey_guardian_tabs.dart' show ZyraGuardianTabsSnapshot;
 import 'zyra_view_request_draft_model.dart';
 
 /// Measures the first real background departure, not the authorization wait.
@@ -51,6 +52,7 @@ class ZyraPreviewNavigationCheckpoint {
     required Iterable<String> pages,
     this.personId,
     this.requestsTab = 0,
+    this.guardianTabs = const ZyraGuardianTabsSnapshot(),
     this.myZyraLastOpenedRevision = 0,
     this.guardianPage = 0,
     this.networkTab = 0,
@@ -92,6 +94,7 @@ class ZyraPreviewNavigationCheckpoint {
        networkSent = Set.unmodifiable(networkSent.take(64));
 
   final bool guardian;
+  final ZyraGuardianTabsSnapshot guardianTabs;
   final ViewRequestDraftSnapshot model;
   final int tab, requestsTab, guardianPage, networkTab;
   // Tab attention is independent of individual received-request reads.

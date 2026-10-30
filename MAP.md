@@ -519,6 +519,12 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0198 | `SYSTEM/DOCUMENTS/ZYRA_REQUEST_ACTIVITY_DESIGN_CHOICES_HANDOVER_CURRENT_VERSION_V1.md` | HANDOVER | ZYRA — Journey requests and Introductions design choices | 26 |
 | DOC-ZYRA-0199 | `SYSTEM/DOCUMENTS/ZYRA_TRUTHFUL_FAILURE_DESIGN_2026-08-14.md` | SPEC | Truthful Failure Handling — Design | 7 |
 
+### GUARDIANS
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| AS-BUILT-ZYRA-LOCK8 | `REPORTS/CURRENT/ZYRA_GUARDIAN_TABS_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | As-built handover for queue 29, Guardian tabs LOCK 8 V2, local Founder preview | DR-ZYRA-306, DR-ZYRA-280, DR-ZYRA-292, DR-ZYRA-233, OA-ZYRA-325, OA-ZYRA-317, OA-ZYRA-316 | 7 |
+
 ### IDENTITY AND SIGN-IN
 
 | ID | File | Type | Purpose | KB |

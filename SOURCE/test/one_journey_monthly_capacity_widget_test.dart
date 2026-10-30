@@ -14,7 +14,6 @@ import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_card_content.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
-import 'package:zyra/dev/zyra_one_journey_guardian_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/models/seeker_profile.dart';
@@ -243,6 +242,13 @@ Future<void> _press(WidgetTester tester, String id) async {
 }
 
 Future<void> _nav(WidgetTester tester, int index) async {
+  final bars = tester.widgetList<ZyraShellNavigation>(
+    find.byType(ZyraShellNavigation),
+  );
+  if (bars.isNotEmpty && bars.first.items.first.label == 'Network') {
+    index = const [2, 0, 3, 4][index];
+  }
+
   for (
     var depth = 0;
     find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 6;
@@ -1337,77 +1343,6 @@ void main() {
           enabled: true,
         );
         expect(unknown.isUnavailable, isTrue);
-        expect(tester.takeException(), isNull);
-      }, network);
-      expect(network.attempts, 0);
-    },
-  );
-
-  testWidgets(
-    'Guardian monthly selector opens the chosen Journey not the first',
-    (tester) async {
-      final network = _NoNetwork();
-      await HttpOverrides.runWithHttpOverrides(() async {
-        await _mount(tester);
-        await _scenario(tester, 3);
-        await _openControls(tester);
-        await _press(tester, 'draft_role_guardian');
-        for (final person in _journeyPeople.reversed) {
-          await _press(tester, 'concept_guardian_journey_${person.id}');
-          final dashboard = tester
-              .widget<ZyraOneJourneyGuardianDashboardPresentation>(
-                find.byType(ZyraOneJourneyGuardianDashboardPresentation),
-              );
-          expect(
-            dashboard.currentJourney!.attemptId,
-            'draft-attempt-${person.id}',
-          );
-          expect(dashboard.currentJourney!.partner.id, person.id);
-          expect(dashboard.currentJourney!.partner.firstName, person.name);
-          if (person.id != 'draft-sara') {
-            await _captureCandidate(
-              tester,
-              'guardian_selected_${person.id}_standard',
-            );
-          }
-          await _nav(tester, 2);
-          final seekers = tester
-              .widget<ZyraOneJourneyGuardianSeekersPresentation>(
-                find.byType(ZyraOneJourneyGuardianSeekersPresentation),
-              );
-          expect(
-            seekers.currentJourney!.attemptId,
-            'draft-attempt-${person.id}',
-          );
-          // The rendered current roster owns this qualified route callback.
-          // This checks its selected-pair routing, not a claim that a new
-          // Dashboard CTA appears while there are no Guardian responsibilities.
-          seekers.onJourney();
-          await tester.pumpAndSettle();
-          expect(find.text('Adam & ${person.name}'), findsOneWidget);
-          if (person.id != 'draft-sara') {
-            await _captureCandidate(
-              tester,
-              'guardian_journey_${person.id}_standard',
-            );
-          }
-          await _nav(tester, 0);
-        }
-        final staleSara = _action(
-          tester,
-          'concept_guardian_journey_draft-sara',
-        )!;
-        await _press(tester, 'concept_guardian_journey_draft-aisha');
-        staleSara();
-        await tester.pumpAndSettle();
-        final dashboard = tester
-            .widget<ZyraOneJourneyGuardianDashboardPresentation>(
-              find.byType(ZyraOneJourneyGuardianDashboardPresentation),
-            );
-        expect(
-          dashboard.currentJourney!.attemptId,
-          'draft-attempt-draft-aisha',
-        );
         expect(tester.takeException(), isNull);
       }, network);
       expect(network.attempts, 0);

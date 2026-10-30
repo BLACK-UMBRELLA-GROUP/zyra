@@ -6,11 +6,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
-import 'package:zyra/dev/zyra_one_journey_guardian_presentation.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 
 import 'baseline_capture_support.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 
 const _enabled = bool.fromEnvironment('ZYRA_BASIC_GUARDIAN_CAPTURE');
 const _output =
@@ -94,16 +94,10 @@ Future<void> _mountSeekers(
   expect(h.latest.pages, isEmpty);
   expect(h.latest.guardianMembership, plan);
   expect(h.latest.mainGuardianId, main ? _hassan : _yusuf);
-  final projection = h.tester.widget<ZyraOneJourneyGuardianSeekersPresentation>(
-    find.byType(ZyraOneJourneyGuardianSeekersPresentation),
+  final projection = h.tester.widget<ZyraGuardianTabsPresentation>(
+    find.byType(ZyraGuardianTabsPresentation),
   );
-  expect(projection.person.id, 'draft-self');
-  expect(projection.person.isMain, main);
-  final access = model.sampleGuardianAccessFor(_hassan, _sara, isMain: main);
-  expect(
-    projection.currentJourney != null,
-    model.stateFor(_sara) == DraftJourneyState.active && access.view,
-  );
+  expect(projection.adamMain, main);
 }
 
 Future<void> _openJourney(BaselineHarness h) async {

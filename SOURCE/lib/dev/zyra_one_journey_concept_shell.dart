@@ -31,14 +31,11 @@ import '../screens/wali/family_messaging_screens.dart';
 import '../screens/wali/seeker_guardian_designs.dart';
 import '../screens/wali/link_guardian_panel.dart';
 import '../screens/wali/zyra_code_screen.dart' show ZyraCodeLocalPreview;
-import '../screens/wali/wali_seekers_screen.dart' show GuardianSeekerRosterView;
 import '../screens/settings/help_support_screen.dart';
 import '../screens/settings/personalisation_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../screens/profile/edit_photos_screen.dart';
 import '../screens/profile/my_profile_preview_screen.dart';
-import '../services/zyra_guardian_seeker_roster_resolver.dart'
-    show GuardianSeekerRosterResolution;
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -86,7 +83,7 @@ import 'zyra_my_zyra_activity_preview.dart';
 import 'zyra_one_journey_browse_designs.dart';
 import 'zyra_one_journey_card_content.dart';
 import 'zyra_one_journey_options.dart';
-import 'zyra_one_journey_guardian_presentation.dart';
+import 'zyra_one_journey_guardian_tabs.dart';
 import 'zyra_journey_peer_guardians_presentation.dart';
 import 'zyra_one_journey_account_presentation.dart';
 import 'zyra_one_journey_guardian_info_presentation.dart';
@@ -177,6 +174,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   String? _browseOptionsPersonId;
   int _guardianPage = 0;
   int _networkTab = 0;
+  ZyraGuardianTabsState _guardianTabs = ZyraGuardianTabsState();
   String? _personId;
   String? _guardianJourneyId;
   String? _confirmation;
@@ -351,7 +349,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   String? get _pageOptionsSource => _page;
   bool get _hasCircleDiscussionOptions =>
       _pageOptionsSource == 'guardian_circle' ||
-      (_pageOptionsSource == null && _tab == (_guardianRole ? 2 : 3));
+      (_pageOptionsSource == null && _tab == 3);
   String get _pageOptionsTitle => switch (_pageOptionsSource) {
     'settings' || 'settings_detail' => 'Settings',
     'account_action' =>
@@ -389,7 +387,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'ended' || 'past_journeys' => 'Ended Journeys',
     _ =>
       _guardianRole
-          ? const ['My ZYRA', 'Network', 'Seekers', 'Profile'][_tab]
+          ? const ['Network', 'Journeys', 'My ZYRA', 'Seekers', 'Profile'][_tab]
           : const [
               'Profiles',
               'Journey',
@@ -626,7 +624,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
     // A warm timeout returns to My ZYRA, not the fresh-launch Browse tab.
     // The host still owns elapsed-time and fresh-admission decisions.
-    _tab = !widget.restoreLocation && !_guardianRole ? 2 : 0;
+    _tab = _guardianRole || !widget.restoreLocation ? 2 : 0;
     final checkpoint = widget.initialCheckpoint;
     final sameRole = checkpoint?.guardian == _guardianRole;
     _model = sameRole
@@ -636,6 +634,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           )
         : ViewRequestDraftModel(capacity: 3, clock: widget.previewClock);
     if (sameRole) _restoreCheckpoint(checkpoint!);
+    if (_guardianRole && _tab == 2 && _page == null) {
+      _guardianTabs.attentionSeen = true;
+    }
     if (_allowed && !_guardianRole && _tab == 2 && _page == null) {
       // A warm timeout can visibly open My ZYRA without a navigation tap.
       _myZyraLastOpenedRevision = _model.receivedActivityRevision;
@@ -736,6 +737,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       };
 
   void _restoreCheckpoint(ZyraPreviewNavigationCheckpoint saved) {
+    _guardianTabs = ZyraGuardianTabsState(saved.guardianTabs);
+
     // Only the detached fictional model survives a long absence. Navigation
     // below is restored only inside the approved short-return window.
     _seekerMembership = saved.seekerMembership == 'Seeker Basic'
@@ -777,7 +780,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
     _conceptNetworkSent.addAll(saved.networkSent.where(_profileIds.contains));
     if (!widget.restoreLocation) return;
-    _tab = saved.tab.clamp(0, _guardianRole ? 3 : 4);
+    _tab = saved.tab.clamp(0, 4);
     _requestsTab = saved.requestsTab.clamp(0, 2);
     final pendingMain = saved.pendingMainGuardianNoticeId;
     if (!_guardianRole &&
@@ -850,6 +853,16 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       'ended_guardians',
       'ended_compatibility',
     };
+    const guardianPages = {
+      'guardian_requests',
+      'guardian_connect',
+      'guardian_introductions',
+      'guardian_seeker',
+      'guardian_private_chat',
+      'guardian',
+      'network_request',
+      'guardian_introduce',
+    };
     final accountDestination = ZyraConceptAccountAction.values
         .where((action) => action.name == saved.accountDestination)
         .firstOrNull;
@@ -859,6 +872,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     for (final savedPage in saved.pages) {
       final page = savedPage;
       if (page == 'controls') break;
+      if (_guardianRole && guardianPages.contains(page)) {
+        if (page == 'guardian_private_chat' &&
+            _guardianTabs.connection != ZyraGuardianConnection.accepted) {
+          break;
+        }
+        _pages.add(page);
+        continue;
+      }
       if (page == 'guardian_main_notice') {
         if (_guardianRole ||
             _tab != 3 ||
@@ -897,7 +918,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         continue;
       }
       if (page == 'help_support') {
-        final profileRoot = _pages.isEmpty && _tab == (_guardianRole ? 3 : 4);
+        final profileRoot = _pages.isEmpty && _tab == 4;
         if (!profileRoot &&
             !const {
               'settings',
@@ -1013,6 +1034,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         networkSent: _conceptNetworkSent,
         seekerMembership: _seekerMembership,
         guardianMembership: _guardianMembership,
+        guardianTabs: _guardianTabs.snapshot,
         compatibilityBalance: _compatibilityAccess.balance,
         compatibilityRevealed:
             _personId != null && _compatibilityAccess.isUnlocked(_personId!),
@@ -1135,9 +1157,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   void _tabTo(int index) {
-    if (!_allowed || index < 0 || index > (_guardianRole ? 3 : 4)) return;
+    if (!_allowed || index < 0 || index > 4) return;
     _move(() {
       _tab = index;
+      if (_guardianRole && index == 2) _guardianTabs.attentionSeen = true;
       if (!_guardianRole && index == 2) {
         _myZyraLastOpenedRevision = _model.receivedActivityRevision;
       }
@@ -1465,13 +1488,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final navigationGuardian = _guardianRole;
     final navigationControlsEpoch = _devControlsEpoch;
     final names = _guardianRole
-        ? ['Dashboard', 'Network', 'Seekers', 'Profile']
+        ? ['Network', 'Journeys', 'My ZYRA', 'Seekers', 'Profile']
         : ['Profiles', 'Journey', 'My ZYRA', 'Guardian', 'Profile'];
     final icons = _guardianRole
         ? [
-            Icons.dashboard_outlined,
             Icons.diversity_3_outlined,
             Icons.people_outline,
+            Icons.grid_view_outlined,
+            Icons.gpp_good_outlined,
             Icons.person_outline,
           ]
         : [
@@ -1515,6 +1539,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'settings_detail',
           'guardian_linked_profile',
           'guardian_network_profile',
+          'guardian_requests',
+          'guardian_connect',
+          'guardian_introductions',
+          'guardian_seeker',
+          'guardian_private_chat',
+          'guardian_introduce',
+          'network_request',
           'requests',
           'introductions',
           'saved',
@@ -1721,6 +1752,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                                 _accountSession.hapticLevel,
                                             contentEdgeInset: 20,
                                             compactWhenIdle: true,
+                                            compactV2: _guardianRole,
                                             collapseRevision: collapseRevision,
                                             interactionEnabled:
                                                 _allowed &&
@@ -1734,12 +1766,15 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                                 FloatingNavItem(
                                                   icon: icons[i],
                                                   label: names[i],
-                                                  useJourneyGlyph:
-                                                      !_guardianRole && i == 1,
+                                                  useJourneyGlyph: i == 1,
                                                   dot:
-                                                      !_guardianRole &&
                                                       i == 2 &&
-                                                      _hasNewMyZyraTabActivity,
+                                                      (_guardianRole
+                                                          ? !_guardianTabs
+                                                                    .attentionSeen &&
+                                                                _guardianTabs
+                                                                    .needsYou
+                                                          : _hasNewMyZyraTabActivity),
                                                 ),
                                             ],
                                             currentIndex: _tab,
@@ -1877,7 +1912,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'guardian_invite' => _guardianInvite(),
     'guardian_main_notice' => _mainGuardianNotice(),
     'guardian_info' => _guardianInfo(),
-    'network_request' => _networkRequestConfirmation(),
+    'network_request' => _guardianTabsView('connect_confirm'),
+    'guardian_introduce' => _guardianTabsView('introduce_confirm'),
+    'guardian_requests' => _guardianTabsView('requests'),
+    'guardian_connect' => _guardianTabsView('connect'),
+    'guardian_introductions' => _guardianTabsView('introductions'),
+    'guardian_seeker' => _guardianTabsView('seeker'),
+    'guardian_private_chat' => _guardianPrivateChat(),
+    'guardian_chat_report' => _guardianChatReport(),
     'held_action' => _heldPreviewAction(),
     'own_profile_preview' => _ownProfilePreview(),
     'switch_account_signup' => _switchSignupView(setupOverview: false),
@@ -1911,10 +1953,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     _ =>
       _guardianRole
           ? switch (_tab) {
-              0 => _guardianDashboard(),
-              1 => _network(),
-              2 => _guardianSeekers(),
-              _ => _ownProfile(),
+              0 => _guardianTabsView('network'),
+              1 => _guardianTabsView('journeys'),
+              2 => _guardianTabsView('my_zyra'),
+              3 => _guardianTabsView('seekers'),
+              _ => _guardianTabsView('profile'),
             }
           : switch (_tab) {
               0 => _discover(),
@@ -4890,7 +4933,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   WaliJourneyView? get _conceptGuardianJourney {
     if (!_conceptHassanLinked) return null;
-    final focus = _guardianFocus;
+    final focus =
+        _guardianFocus ??
+        (_guardianRole && _guardianTabs.main
+            ? draftProfiles.firstWhere((p) => p.id == 'draft-sara')
+            : null);
     if (focus == null) return null;
     final main = _conceptLinkedSeeker.isMain;
     final access = _conceptAccessFor('draft-guardian-hassan', focus.id);
@@ -4976,13 +5023,23 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     }
     final revision = _circleScopeRevision;
     final guardian = _guardianRole;
+    final circleYusuf = guardian && _guardianTabs.seeker == 1;
     final tab = _tab;
-    final people = _conceptGuardianPeople;
+    final people = circleYusuf
+        ? [
+            WaliLinkedPerson(
+              id: 'draft-guardian-hassan',
+              firstName: 'Hassan',
+              relationship: 'father',
+              isMain: false,
+            ),
+          ]
+        : _conceptGuardianPeople;
     final senderId = guardian ? 'draft-guardian-hassan' : 'draft-self';
     bool canReadPast() =>
         !guardian ||
         (_conceptHassanLinked && _conceptGuardianHistory[senderId] == true);
-    final pastShared = canReadPast();
+    final pastShared = (!guardian || _guardianTabs.main) && canReadPast();
     String linkStamp() => _conceptGuardianPeople
         .map((person) => '${person.id}:${person.isMain}')
         .join('|');
@@ -4995,13 +5052,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         (_page == 'guardian_circle' ||
             (_page == 'controls' && _pageOptionsSource == 'guardian_circle')) &&
         stamp == linkStamp() &&
-        pastShared == canReadPast() &&
+        pastShared == ((!guardian || _guardianTabs.main) && canReadPast()) &&
         (!guardian || _conceptHassanLinked);
 
     final contexts = [
       for (final person
           in guardian ? _permittedGuardianJourneys : _guardianJourneys)
-        if (_model.stateFor(person.id) == DraftJourneyState.active)
+        if ((!guardian || _guardianTabs.main) &&
+            _model.stateFor(person.id) == DraftJourneyState.active)
           ZyraFamilyMessageContext(
             referenceId: person.id,
             firstName: person.firstName,
@@ -5022,14 +5080,16 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               _model.sampleGuardianMembershipFor(person.id) ==
               DraftGuardianMembership.one,
         );
+    final circleSeekerId = circleYusuf ? 'draft-linked-yusuf' : 'draft-self';
+    final circleSeekerName = circleYusuf ? 'Yusuf' : 'Adam';
     final data = ZyraGuardianCirclePreviewData(
-      seekerId: 'draft-self',
+      seekerId: circleSeekerId,
       senderId: senderId,
       canSend: people.isNotEmpty && funded,
       participants: [
         ZyraFamilyCircleParticipant(
-          userId: 'draft-self',
-          firstName: 'Adam',
+          userId: circleSeekerId,
+          firstName: circleSeekerName,
           memberRole: 'seeker',
           isMainGuardian: false,
           isCurrentUser: !guardian,
@@ -5046,8 +5106,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       messages: [
         ZyraFamilyMessage(
           id: 'draft-circle-welcome',
-          senderId: 'draft-self',
-          senderFirstName: 'Adam',
+          senderId: circleSeekerId,
+          senderFirstName: circleSeekerName,
           senderRoleLabel: 'Seeker',
           body: 'Assalaamu alaikum. Let’s discuss the journey together.',
           createdAt: DateTime.utc(2026, 10, 12, 0, 10),
@@ -5077,8 +5137,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             unreadForMe: !guardian,
             readBy: [
               ZyraFamilyMessageReader(
-                userId: 'draft-self',
-                firstName: 'Adam',
+                userId: circleSeekerId,
+                firstName: circleSeekerName,
                 roleLabel: 'Seeker',
                 readAt: DateTime.utc(2026, 10, 12, 0, 14),
               ),
@@ -5102,12 +5162,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final ownerGuard = current;
     bool foreground() => current() && _page == 'guardian_circle';
     final currentTopicExamples = List<ZyraCircleDiscussionTopic>.unmodifiable([
-      for (final name in const ['Sara', 'Aisha', 'Maryam'])
-        ZyraCircleDiscussionTopic(
-          id: 'draft-circle-current-${name.toLowerCase()}',
-          firstName: name,
-          kind: ZyraCircleTopicKind.current,
-        ),
+      if (!circleYusuf)
+        for (final name in const ['Sara', 'Aisha', 'Maryam'])
+          ZyraCircleDiscussionTopic(
+            id: 'draft-circle-current-${name.toLowerCase()}',
+            firstName: name,
+            kind: ZyraCircleTopicKind.current,
+          ),
     ]);
     final pastTopics = List<ZyraCircleDiscussionTopic>.unmodifiable([
       if (pastShared)
@@ -5200,7 +5261,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         builder: (_) => ZyraGuardianCircleScreen(
           key: ValueKey(('request-guardian-circle', revision, senderId)),
           seekerId: data.seekerId,
-          seekerFirstName: 'Adam',
+          seekerFirstName: circleSeekerName,
           viewerIsSeeker: !guardian,
           preview: true,
           previewData: data,
@@ -5507,8 +5568,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           _card([
             _title('Adam & ${journey.partner.firstName}', size: 25),
             _body(
-              _model.stageFor(journey.partner.id)?.label ??
-                  'Journey in progress',
+              _model.stageFor(journey.partner.id)?.label ?? _guardianTabs.stage,
             ),
             if (journey.isJourneyLocked)
               _body(
@@ -5572,7 +5632,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       _clearActivityRehearsal();
       _paidGuardianAgreement = null;
       _guardianRole = guardian;
-      _tab = 0;
+      _tab = guardian ? 2 : 0;
       _pages.clear();
     });
     widget.onRoleChanged?.call(guardian);
@@ -5585,141 +5645,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       icon: Icons.people_outline_rounded,
       message: 'This Seeker is not available in your linked roster.',
     ),
-  );
-
-  // Current empty Guardian Dashboard hierarchy/copy, without a surviving
-  // linked-person selector, portrait or permitted Journey after unlinking.
-  Widget _conceptUnlinkedGuardianDashboard() => SafeArea(
-    bottom: false,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _mainHeading('Guardian Dashboard'),
-              const SizedBox(height: 4),
-              Text(
-                'Assalamu alaikum, Hassan.',
-                style: ZyraText.subtext(size: 13.5),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: ListView(
-            key: const PageStorageKey('concept_guardian_dashboard_empty'),
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 108),
-            children: [
-              _conceptEmptyGuardianStatus(
-                section: 'RIGHT NOW',
-                icon: Icons.check_circle_outline_rounded,
-                eyebrow: 'ALL SETTLED',
-                title: 'Everything is settled right now',
-                detail:
-                    'There are no linked Seeker responsibilities to review.',
-              ),
-              const SizedBox(height: 22),
-              _conceptEmptyGuardianStatus(
-                section: 'FAMILY SNAPSHOT',
-                icon: Icons.people_outline_rounded,
-                eyebrow: 'YOUR FAMILY',
-                title: '0 linked Seekers · Nothing needs you',
-                detail:
-                    'Open Seekers for relationships, roles and authorised context.',
-                actionLabel: 'View Seekers',
-                onAction: _bound(() => _tabTo(2)),
-              ),
-              const SizedBox(height: 22),
-              _conceptEmptyGuardianStatus(
-                section: 'UPDATES',
-                icon: Icons.notifications_none_rounded,
-                eyebrow: 'ALL CAUGHT UP',
-                title: 'No Guardian updates yet',
-                detail:
-                    'Meaningful Journey and Family Review movement will appear here.',
-              ),
-              const SizedBox(height: 22),
-              _conceptEmptyGuardianStatus(
-                section: 'INSIGHTS',
-                icon: Icons.insights_outlined,
-                eyebrow: 'GUARDIAN INSIGHTS',
-                title: 'No Guardian insights available yet',
-                detail:
-                    'ZYRA will only show a Guardian insight when real, governed family-process evidence supports it.',
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-
-  Widget _conceptEmptyGuardianStatus({
-    required String section,
-    required IconData icon,
-    required String eyebrow,
-    required String title,
-    required String detail,
-    String? actionLabel,
-    VoidCallback? onAction,
-  }) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 2, bottom: 10),
-        child: Text(
-          section,
-          style: ZyraText.chapterLabel(color: ZyraColors.ink(.54)),
-        ),
-      ),
-      Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: ZyraColors.surfaceBorder, width: .5),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, size: 21, color: ZyraColors.ink(.72)),
-            const SizedBox(width: 11),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    eyebrow,
-                    style: ZyraText.chapterLabel(color: ZyraColors.ink(.50)),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(title, style: ZyraText.body(size: 14.2)),
-                  const SizedBox(height: 4),
-                  Text(detail, style: ZyraText.subtext(size: 11.7)),
-                  if (actionLabel != null && onAction != null) ...[
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: _tap(onAction),
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(0, 32),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: Text(actionLabel),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    ],
   );
 
   Widget _guardianJourneySelector() {
@@ -5759,159 +5684,271 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
   }
 
-  Widget _withGuardianJourneySelector(String title, Widget child) =>
-      _permittedGuardianJourneys.length <= 1
-      ? child
-      : SafeArea(
-          bottom: false,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                child: _mainHeading(title),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
-                child: _guardianJourneySelector(),
-              ),
-              Expanded(child: child),
-            ],
-          ),
-        );
+  Widget _guardianTabsView(String page) => ZyraGuardianTabsPresentation(
+    state: _guardianTabs,
+    page: page,
+    linked: _conceptHassanLinked,
+    paid: _guardianMembership == 'Guardian One',
+    adamMain: _conceptLinkedSeeker.isMain,
+    photoFor: (id) {
+      final index = draftProfiles.indexWhere((p) => p.id == 'draft-$id');
+      return index < 0 ? null : _photos?.forIndex(index).firstOrNull;
+    },
+    onAction: _boundGuardianAction(page),
+  );
 
-  Widget _guardianDashboard() => !_conceptHassanLinked
-      ? _conceptUnlinkedGuardianDashboard()
-      : _withGuardianJourneySelector(
-          'Guardian Dashboard',
-          ZyraOneJourneyGuardianDashboardPresentation(
-            showHeader: _permittedGuardianJourneys.length <= 1,
-            profile: _conceptLinkedSeekerProfile,
-            person: _conceptLinkedSeeker,
-            guardianName: 'Hassan',
-            hasGuardianOne: _guardianMembership == 'Guardian One',
-            currentJourney: _conceptGuardianJourney,
-            onProfile: _bound(() => _open('guardian_linked_profile')),
-            onJourney: _bound(() => _open('guardian')),
-            onMembership: _bound(() => _open('membership')),
-          ),
-        );
-
-  Widget _guardianSeekers() => !_conceptHassanLinked
-      ? GuardianSeekerRosterView(
-          titleAlignment: Alignment.centerLeft,
-          decoration: const BoxDecoration(),
-          resolution: const GuardianSeekerRosterResolution(
-            mainSections: [],
-            additionalGuardianships: [],
-          ),
-          onRetry: _bound(() => _act(() {})),
-          onInvite: _bound(
-            () => _holdPreviewAction(
-              'Invite your Seeker',
-              'Support someone on their journey. Invitations stay in the current app; no real invitation is sent from this comparison.',
-            ),
-          ),
-          onOpenSeeker: (_) {},
-        )
-      : _withGuardianJourneySelector(
-          'Seekers',
-          ZyraOneJourneyGuardianSeekersPresentation(
-            showHeader: _permittedGuardianJourneys.length <= 1,
-            profile: _conceptLinkedSeekerProfile,
-            person: _conceptLinkedSeeker,
-            currentJourney: _conceptGuardianJourney,
-            hasGuardianOne: _guardianMembership == 'Guardian One',
-            onJourney: _bound(() => _open('guardian')),
-            onNetwork: _bound(() => _tabTo(1)),
-            onInvite: _bound(
-              () => _holdPreviewAction(
-                'Invite your Seeker',
-                'Support someone on their journey. Invitations stay in the current app; no real invitation is sent from this comparison.',
-              ),
-            ),
-            onFamilyChat: _bound(() => _open('guardian_circle')),
-          ),
-        );
-
-  Widget _network() {
-    if (!_conceptHassanLinked) {
-      return SafeArea(
-        bottom: false,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 6),
-              child: _mainHeading('Network'),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 96),
-                child: Center(
-                  child: ZyraAddCircle(
-                    label: 'Invite your Seeker',
-                    onTap: _bound(
-                      () => _holdPreviewAction(
-                        'Invite your Seeker',
-                        'Support someone on their journey. Invitations stay in the current app; no real invitation is sent from this comparison.',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+  ValueChanged<String> _boundGuardianAction(String source) {
+    final ownerPage = _page;
+    final ownerTab = _tab;
     final revision = _uiRevision;
-    bool current() =>
-        _allowed &&
-        revision == _uiRevision &&
-        _guardianRole &&
-        _conceptHassanLinked &&
-        _tab == 1 &&
-        _page == null;
-    void localAction(VoidCallback action) {
-      if (current()) _act(action);
-    }
+    final controls = _devControlsEpoch;
+    final routes = _devRouteStamp;
+    return (action) {
+      if (!_allowed ||
+          !_guardianRole ||
+          _devControlsVisible ||
+          revision != _uiRevision ||
+          controls != _devControlsEpoch ||
+          routes != _devRouteStamp ||
+          ownerPage != _page ||
+          ownerTab != _tab) {
+        return;
+      }
+      _guardianTabsAction(action);
+    };
+  }
 
-    return ZyraOneJourneyGuardianNetworkPresentation(
-      person: _conceptLinkedSeeker,
-      profiles: _model.canBrowse
-          ? _model.discoverableProfiles
-                .where((p) => !_conceptNetworkSent.contains(p.id))
-                .map(_displayProfile)
-                .toList()
-          : const [],
-      selectedIndex: _networkTab,
-      onChanged: (value) => localAction(() => _networkTab = value),
-      onViewingProfileChanged: () => localAction(() {}),
-      onSelectSeeker: _bound(() => _tabTo(2)),
-      onProfile: (profile) {
-        if (!current() || _model.isBlocked(profile.id)) return;
-        _open('guardian_network_profile', person: profile.id);
-      },
-      onIntroduction: (profile) {
-        if (!current() ||
-            !_conceptLinkedSeeker.isMain ||
-            !_model.canBrowse ||
-            _conceptNetworkSent.contains(profile.id) ||
-            !_model.discoverableProfiles.any((p) => p.id == profile.id)) {
-          return;
+  void _guardianTabsAction(String action) {
+    final state = _guardianTabs;
+    final paid = _guardianMembership == 'Guardian One';
+    if ((action == 'previous' && !state.canPrevious) ||
+        (action == 'next' && !state.canNext)) {
+      return;
+    }
+    if (action == 'back') {
+      _back();
+      return;
+    }
+    if (action == 'seeker' ||
+        action == 'request_seeker' ||
+        action.startsWith('requests_tab_') ||
+        action.startsWith('connect_tab_') ||
+        action == 'next' ||
+        action == 'previous') {
+      _act(() {
+        if (action == 'seeker') state.seeker = 1 - state.seeker;
+        if (action == 'request_seeker') {
+          state.requestSeeker = (state.requestSeeker + 1) % 3;
         }
-        _open('network_request', person: profile.id);
+        if (action.startsWith('requests_tab_')) {
+          state.requestsSent = action.endsWith('1');
+        }
+        if (action.startsWith('connect_tab_')) {
+          state.connectReceived = action.endsWith('1');
+        }
+        if (action == 'next' || action == 'previous') {
+          state.networkIndex += action == 'next' ? 1 : -1;
+        }
+      });
+      return;
+    }
+    if (action == 'continue' || action == 'pause' || action == 'reopen') {
+      if (!_conceptHassanLinked || !_conceptLinkedSeeker.isMain) return;
+      if (action == 'reopen'
+          ? state.review != ZyraGuardianReview.paused
+          : state.review != ZyraGuardianReview.open) {
+        return;
+      }
+      _act(() {
+        state.review = action == 'pause'
+            ? ZyraGuardianReview.paused
+            : action == 'continue'
+            ? ZyraGuardianReview.continued
+            : ZyraGuardianReview.open;
+        if (action == 'reopen') state.hours = 48;
+        _notice = action == 'continue'
+            ? 'The Journey continues to Building a Life.'
+            : action == 'pause'
+            ? 'Paused. Adam and Sara are told their families are taking more time.'
+            : 'Review reopened. 48 hours from now.';
+      });
+      return;
+    }
+    if (action == 'accept' || action == 'dismiss') {
+      if (!_conceptHassanLinked || !_conceptLinkedSeeker.isMain) return;
+      if (!paid || state.connection != ZyraGuardianConnection.pending) return;
+      _act(() {
+        state.connection = action == 'accept'
+            ? ZyraGuardianConnection.accepted
+            : ZyraGuardianConnection.dismissed;
+        if (action == 'dismiss') _notice = 'Not taken up';
+      });
+      return;
+    }
+    if (action == 'seeker_0' || action == 'seeker_1') {
+      if (!_conceptHassanLinked) return;
+      _move(() {
+        state.seeker = action.endsWith('0') ? 0 : 1;
+        _pages.add('guardian_seeker');
+      });
+      return;
+    }
+    if (action == 'requests') {
+      _move(() {
+        state.requestSeeker = 0;
+        state.requestsSent = false;
+        _pages.add('guardian_requests');
+      });
+      return;
+    }
+    if (action == 'received' || action == 'connect') {
+      if (!paid) return;
+      _move(() {
+        state.connectReceived = action == 'received';
+        _pages.add('guardian_connect');
+      });
+      return;
+    }
+    if (action == 'introductions') {
+      _open('guardian_introductions');
+      return;
+    }
+    if (action == 'introduce_confirm' || action == 'connect_confirm') {
+      if (!paid || !_conceptHassanLinked) return;
+      if (action == 'introduce_confirm' && state.introducedForCurrent()) return;
+      if (action == 'connect_confirm' &&
+          state.sent.contains(
+            ZyraGuardianTabsState.network[state.networkIndex].id,
+          )) {
+        return;
+      }
+      _open(
+        action == 'introduce_confirm'
+            ? 'guardian_introduce'
+            : 'network_request',
+      );
+      return;
+    }
+    if (action == 'introduce_send' || action == 'connect_send') {
+      if (!paid || !_conceptHassanLinked) return;
+      _act(() {
+        if (action == 'introduce_send') {
+          state.introduced.add(state.introducedKey);
+        } else {
+          state.sent.add(ZyraGuardianTabsState.network[state.networkIndex].id);
+        }
+        _pages.removeLast();
+      });
+      return;
+    }
+    if (action == 'chat') {
+      if (paid && state.connection == ZyraGuardianConnection.accepted) {
+        _open('guardian_private_chat');
+      }
+      return;
+    }
+    if (action == 'journey') {
+      if (state.main && _conceptHassanLinked) _open('guardian');
+      return;
+    }
+    if (action == 'circle') {
+      _open('guardian_circle');
+      return;
+    }
+    if (action == 'network') {
+      _tabTo(0);
+      return;
+    }
+    if (action == 'ended') {
+      _holdPreviewAction(
+        'Ended Journeys',
+        'Only what ${state.seekerName} shares with you. Past summaries are not shared.',
+      );
+      return;
+    }
+    if (action == 'invite') {
+      _holdPreviewAction(
+        'Invite your Seeker',
+        'Support someone on their journey. Invitations stay in the current app; no real invitation is sent from this comparison.',
+      );
+      return;
+    }
+    if (action == 'switch') {
+      _open('switch_account_signup');
+      return;
+    }
+    final accountAction = switch (action) {
+      'membership' => ZyraConceptAccountAction.membership,
+      'subscriptions' => ZyraConceptAccountAction.subscriptions,
+      'safety' => ZyraConceptAccountAction.safetyAdvice,
+      'invite_zyra' => ZyraConceptAccountAction.invite,
+      'personalisation' => ZyraConceptAccountAction.personalisation,
+      'settings' => ZyraConceptAccountAction.settings,
+      'sign_out' => ZyraConceptAccountAction.signOut,
+      _ => null,
+    };
+    if (accountAction != null) _accountDispatch(accountAction);
+  }
+
+  bool Function() _guardianPrivateGuard(String page) {
+    final revision = _uiRevision,
+        controls = _devControlsEpoch,
+        routes = _devRouteStamp;
+    return () =>
+        _allowed &&
+        _guardianRole &&
+        !_devControlsVisible &&
+        _conceptHassanLinked &&
+        _conceptLinkedSeeker.isMain &&
+        _guardianMembership == 'Guardian One' &&
+        _guardianTabs.connection == ZyraGuardianConnection.accepted &&
+        revision == _uiRevision &&
+        controls == _devControlsEpoch &&
+        routes == _devRouteStamp &&
+        _page == page;
+  }
+
+  Widget _guardianChatReport() {
+    final current = _guardianPrivateGuard('guardian_chat_report');
+    if (!current()) return _unavailable();
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ZyraDraftReportPresentation(
+          profile: SeekerProfile(
+            id: 'local-noor-guardian',
+            photos: const [],
+            firstName: "Noor’s Main Guardian",
+            age: 0,
+            city: '',
+            gender: 'female',
+          ),
+          canSelect: current,
+          onBlock: () {
+            if (!current()) return;
+            _act(() {
+              _guardianTabs.connection = ZyraGuardianConnection.blocked;
+              _pages.removeWhere(
+                (p) =>
+                    p == 'guardian_private_chat' || p == 'guardian_chat_report',
+              );
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _guardianPrivateChat() {
+    final current = _guardianPrivateGuard('guardian_private_chat');
+    if (!current()) return _unavailable();
+    return ZyraGuardianPrivateChat(
+      canAct: current,
+      onSend: () {
+        if (current()) _act(() => _notice = 'Messages send in the app.');
       },
-      sentProfiles: [
-        for (final person in draftProfiles)
-          if (!_model.isBlocked(person.id) &&
-              _conceptNetworkSent.contains(person.id))
-            _displayProfile(person),
-      ],
-      onWithdraw: (profile) {
-        if (_model.isBlocked(profile.id)) return;
-        localAction(() => _conceptNetworkSent.remove(profile.id));
+      onReport: () {
+        if (current()) _open('guardian_chat_report');
       },
     );
   }
@@ -5966,48 +6003,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     ],
   );
 
-  Widget _networkRequestConfirmation() {
-    final p = _person;
-    if (p == null) return _unavailable();
-    final canSend =
-        _guardianRole &&
-        _conceptHassanLinked &&
-        _conceptLinkedSeeker.isMain &&
-        _model.canBrowse &&
-        !_conceptNetworkSent.contains(p.id) &&
-        _model.discoverableProfiles.any((person) => person.id == p.id);
-    return Column(
-      key: ValueKey('concept_network_request_${p.id}'),
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _heading('Speak to Guardian', ''),
-        _card([
-          _body(
-            'Send a request to the Main Guardian supporting this Seeker. They choose whether to respond.',
-          ),
-          _body(
-            'No real request is sent and no conversation opens here.',
-            small: true,
-          ),
-          _button(
-            'concept_confirm_network_request_${p.id}',
-            'Send request',
-            canSend
-                ? () => _act(() {
-                    _conceptNetworkSent.add(p.id);
-                    _networkTab = 1;
-                    _pages.removeLast();
-                    _notice = 'Request recorded. No real request was sent.';
-                  })
-                : null,
-            primary: true,
-          ),
-          _button('concept_cancel_network_request_${p.id}', 'Not yet', _back),
-        ]),
-      ],
-    );
-  }
-
   Widget _ownProfilePreview() {
     if (_photos == null && !_photoLoadFailed) {
       return const ZyraLoading();
@@ -6041,7 +6036,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     membership: _membership,
     isOne: !_membership.contains('Basic'),
     relationship: 'Father',
-    linkedSeekers: _conceptHassanLinked ? '1' : '0',
+    linkedSeekers: _conceptHassanLinked ? '2' : '0',
     guardianCount: '${_conceptGuardianPeople.length}',
     signedInWith: 'Apple',
     backgroundLabel: _accountSession.palette.label.replaceAll(' · Current', ''),
@@ -7344,7 +7339,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             sourcePage == 'ended' ||
             sourcePage == 'past_journeys');
     final guardian = mainPage && !_guardianRole && _tab == 3;
-    final profile = mainPage && _tab == (_guardianRole ? 3 : 4);
+    final profile = mainPage && _tab == 4;
     final activityChoices = <ZyraMyZyraActivityExample?, VoidCallback>{
       if (_activityRoot)
         for (final example in <ZyraMyZyraActivityExample?>[

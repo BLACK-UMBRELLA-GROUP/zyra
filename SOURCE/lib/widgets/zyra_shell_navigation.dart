@@ -15,6 +15,7 @@ class ZyraShellNavigation extends StatelessWidget {
     this.contentEdgeInset,
     this.hapticLevel,
     this.compactWhenIdle = false,
+    this.compactV2 = false,
     this.collapseRevision = 0,
     this.interactionEnabled = true,
   }) : assert(
@@ -30,6 +31,7 @@ class ZyraShellNavigation extends StatelessWidget {
   /// The locked Founder root treatment; action and member bars retain their
   /// existing behavior unless their owner explicitly opts in.
   final bool compactWhenIdle;
+  final bool compactV2;
   final int collapseRevision;
   final bool interactionEnabled;
 
@@ -48,6 +50,7 @@ class ZyraShellNavigation extends StatelessWidget {
     contentEdgeInset: contentEdgeInset,
     hapticLevel: hapticLevel,
     compactWhenIdle: compactWhenIdle,
+    compactV2: compactV2,
     collapseRevision: collapseRevision,
     interactionEnabled: interactionEnabled,
   );

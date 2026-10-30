@@ -5,9 +5,15 @@ import '../theme/zyra_colors.dart';
 
 /// Fixed gold-outline presentation; sending remains caller-owned.
 class ZyraCircleSendButton extends StatelessWidget {
-  const ZyraCircleSendButton({super.key, required this.busy, this.onSend});
+  const ZyraCircleSendButton({
+    super.key,
+    required this.busy,
+    this.onSend,
+    this.privateGuardian = false,
+  });
 
   final bool busy;
+  final bool privateGuardian;
   final VoidCallback? onSend;
 
   @override
@@ -25,16 +31,19 @@ class ZyraCircleSendButton extends StatelessWidget {
       child: Tooltip(
         message: 'Send message',
         child: SizedBox(
-          width: 52,
-          height: 52,
+          width: privateGuardian ? 38 : 52,
+          height: privateGuardian ? 38 : 52,
           child: Material(
             color: Colors.transparent,
             borderRadius: radius,
             child: Ink(
               decoration: BoxDecoration(
                 borderRadius: radius,
+                color: privateGuardian ? ZyraColors.surfaceFill : null,
                 border: Border.all(
-                  color: gold.withValues(alpha: enabled ? .8 : .35),
+                  color: privateGuardian
+                      ? ZyraColors.surfaceBorder
+                      : gold.withValues(alpha: enabled ? .8 : .35),
                   width: 1,
                 ),
               ),
@@ -54,8 +63,10 @@ class ZyraCircleSendButton extends StatelessWidget {
                         )
                       : ExcludeSemantics(
                           child: Icon(
-                            Icons.arrow_upward_rounded,
-                            size: 23,
+                            privateGuardian
+                                ? Icons.send_rounded
+                                : Icons.arrow_upward_rounded,
+                            size: privateGuardian ? 20 : 23,
                             color: gold.withValues(alpha: enabled ? 1 : .55),
                           ),
                         ),
