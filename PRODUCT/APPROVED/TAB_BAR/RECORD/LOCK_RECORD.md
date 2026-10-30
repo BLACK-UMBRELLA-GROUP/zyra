@@ -15,6 +15,7 @@ owner: ZYRA chat
 | 2026-10-29 19:09 | "show me 5 optins of how this can look better" | Five options shown (labels, gold pill, floating dot, docked bar, underline) |
 | 2026-10-29 19:13 | "let lock in underline but the actual nav bar i was it 40% of size when not pressed" | Underline; two readings of "40%" shown (5a small bar, 5b faint bar) |
 | 2026-10-29 19:14 | "5a" | **LOCK** of `RECORD/TAB_BAR_SPEC_CURRENT_VERSION_V1.md` and `MASTERS/` (prototype V29) |
+| 2026-10-30 11:13 | Prototype comment on the small bar: **"can we change this to 60% when small"** → question → **"LOCK 60% (Recommended)"** | **LOCK V2**: `RECORD/TAB_BAR_SPEC_CURRENT_VERSION_V2.md` + 4 `MASTERS/` (prototype V59). V1 spec and masters in `ARCHIVE/` |
 
 Replaces the Floating Glass bar's gold selection ring (DR-ZYRA-276 kept Floating Glass as the chosen style; this changes how
 the current tab is shown and adds the small idle state).

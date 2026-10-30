@@ -1340,19 +1340,31 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                           final iconSize =
                               (widget.compactV2 ? 18.0 : 16.0) +
                               (widget.compactV2 ? 3 : 5) * progress;
+                          // V2 masters keep 38-point idle slots 6 points apart.
+                          // The gap closes as the existing full bar expands.
+                          final cellGap = widget.compactV2
+                              ? 6.0 * (1 - progress)
+                              : 0.0;
                           final idleCellWidth = math.min(
                             widget.compactV2 ? 38.0 : 26.0,
-                            inner.maxWidth / widget.items.length,
+                            (inner.maxWidth -
+                                    cellGap * (widget.items.length - 1)) /
+                                widget.items.length,
                           );
                           final cellWidth =
                               idleCellWidth +
-                              (inner.maxWidth / widget.items.length -
+                              ((inner.maxWidth -
+                                              cellGap *
+                                                  (widget.items.length - 1)) /
+                                          widget.items.length -
                                       idleCellWidth) *
                                   progress;
                           final underlineWidth =
                               (widget.compactV2 ? 28.0 : 16.0) +
                               (widget.compactV2 ? -4 : 8) * progress;
-                          final rowWidth = cellWidth * widget.items.length;
+                          final rowWidth =
+                              cellWidth * widget.items.length +
+                              cellGap * (widget.items.length - 1);
                           final rowLeft = (inner.maxWidth - rowWidth) / 2;
                           return Listener(
                             onPointerDown: _pointerDown,
@@ -1400,7 +1412,8 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                                   Positioned(
                                     left:
                                         rowLeft +
-                                        cellWidth * widget.currentIndex +
+                                        (cellWidth + cellGap) *
+                                            widget.currentIndex +
                                         (cellWidth - underlineWidth) / 2,
                                     top: inner.maxHeight / 2 + iconSize / 2 + 3,
                                     child: SizedBox(
@@ -1430,61 +1443,78 @@ class _CompactFloatingTabBarState extends State<_CompactFloatingTabBar>
                                             i < widget.items.length;
                                             i++
                                           )
-                                            Expanded(
-                                              child: Semantics(
-                                                key: ValueKey(
-                                                  'floating-nav-item-$i',
+                                            SizedBox(
+                                              width:
+                                                  cellWidth +
+                                                  (i < widget.items.length - 1
+                                                      ? cellGap
+                                                      : 0),
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                  right:
+                                                      i <
+                                                          widget.items.length -
+                                                              1
+                                                      ? cellGap
+                                                      : 0,
                                                 ),
-                                                container: true,
-                                                button: true,
-                                                enabled:
-                                                    widget.interactionEnabled,
-                                                selected:
-                                                    i == widget.currentIndex,
-                                                label: widget.items[i].label,
-                                                value: widget.items[i].badge > 0
-                                                    ? '${widget.items[i].badge} unread'
-                                                    : widget.items[i].dot
-                                                    ? 'New activity'
-                                                    : null,
-                                                excludeSemantics: true,
-                                                onTap: widget.interactionEnabled
-                                                    ? () =>
-                                                          _activateSemanticItem(
-                                                            i,
-                                                            epoch,
-                                                          )
-                                                    : null,
-                                                child: SizedBox(
-                                                  height: inner.maxHeight,
-                                                  child: Center(
-                                                    child: IgnorePointer(
-                                                      child: widget.items[i].buildIcon(
-                                                        color:
-                                                            widget
-                                                                .items[i]
-                                                                .hasUnread
-                                                            ? ZyraColors
-                                                                  .journeyGold
-                                                            : widget
+                                                child: Semantics(
+                                                  key: ValueKey(
+                                                    'floating-nav-item-$i',
+                                                  ),
+                                                  container: true,
+                                                  button: true,
+                                                  enabled:
+                                                      widget.interactionEnabled,
+                                                  selected:
+                                                      i == widget.currentIndex,
+                                                  label: widget.items[i].label,
+                                                  value:
+                                                      widget.items[i].badge > 0
+                                                      ? '${widget.items[i].badge} unread'
+                                                      : widget.items[i].dot
+                                                      ? 'New activity'
+                                                      : null,
+                                                  excludeSemantics: true,
+                                                  onTap:
+                                                      widget.interactionEnabled
+                                                      ? () =>
+                                                            _activateSemanticItem(
+                                                              i,
+                                                              epoch,
+                                                            )
+                                                      : null,
+                                                  child: SizedBox(
+                                                    height: inner.maxHeight,
+                                                    child: Center(
+                                                      child: IgnorePointer(
+                                                        child: widget.items[i].buildIcon(
+                                                          color:
+                                                              widget
                                                                   .items[i]
-                                                                  .dimmed
-                                                            ? ZyraColors.ink(
-                                                                i ==
-                                                                        widget
-                                                                            .currentIndex
-                                                                    ? .58
-                                                                    : .28,
-                                                              )
-                                                            : i ==
-                                                                  widget
-                                                                      .currentIndex
-                                                            ? ZyraColors
-                                                                  .foreground
-                                                            : ZyraColors.ink(
-                                                                .45,
-                                                              ),
-                                                        size: iconSize,
+                                                                  .hasUnread
+                                                              ? ZyraColors
+                                                                    .journeyGold
+                                                              : widget
+                                                                    .items[i]
+                                                                    .dimmed
+                                                              ? ZyraColors.ink(
+                                                                  i ==
+                                                                          widget
+                                                                              .currentIndex
+                                                                      ? .58
+                                                                      : .28,
+                                                                )
+                                                              : i ==
+                                                                    widget
+                                                                        .currentIndex
+                                                              ? ZyraColors
+                                                                    .foreground
+                                                              : ZyraColors.ink(
+                                                                  .45,
+                                                                ),
+                                                          size: iconSize,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),

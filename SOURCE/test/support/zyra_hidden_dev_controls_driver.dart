@@ -31,7 +31,8 @@ Future<void> expandZyraPreviewTabBarIfIdle(WidgetTester tester) async {
   final fullWidth =
       viewport -
       2 * (navigation.contentEdgeInset ?? ZyraNavBarMetrics.sideInset);
-  if (tester.getSize(surface).width > fullWidth * .4 + .01 &&
+  if (tester.getSize(surface).width >
+          fullWidth * (navigation.compactV2 ? .6 : .4) + .01 &&
       tester.getSize(surface).width < fullWidth - .01) {
     await tester.pump(const Duration(milliseconds: 300));
   }

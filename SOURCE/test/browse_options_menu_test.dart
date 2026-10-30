@@ -382,9 +382,9 @@ void main() {
         expect(_key('compact-nav-surface'), findsOneWidget);
         expect(
           before.width,
-          closeTo(viewport.scale > 1 ? fullWidth : fullWidth * .4, .001),
+          closeTo(viewport.scale > 1 ? fullWidth : fullWidth * .6, .001),
         );
-        expect(before.height, closeTo(viewport.scale > 1 ? 58 : 46, .001));
+        expect(before.height, closeTo(viewport.scale > 1 ? 58 : 50, .001));
         final bodyBefore = tester.getRect(
           find.byType(ZyraOneJourneyBrowseDesigns),
         );
@@ -444,8 +444,8 @@ void main() {
     await _mount(tester, reduce: false);
     final ids = _browse(tester).profiles.map((profile) => profile.id).toList();
     final rootBar = _barGlassRect(tester);
-    expect(rootBar.width, closeTo(141.2, .01));
-    expect(rootBar.height, closeTo(46, .01));
+    expect(rootBar.width, closeTo(211.8, .01));
+    expect(rootBar.height, closeTo(50, .01));
     await _openPulse(tester);
     final actionBar = _barGlassRect(tester);
     expect(actionBar.left, closeTo(20, .01));

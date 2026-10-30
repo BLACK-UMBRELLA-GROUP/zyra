@@ -1752,7 +1752,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                                 _accountSession.hapticLevel,
                                             contentEdgeInset: 20,
                                             compactWhenIdle: true,
-                                            compactV2: _guardianRole,
+                                            compactV2: true,
                                             collapseRevision: collapseRevision,
                                             interactionEnabled:
                                                 _allowed &&

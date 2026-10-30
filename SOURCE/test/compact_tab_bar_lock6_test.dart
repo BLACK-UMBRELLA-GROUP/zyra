@@ -25,9 +25,14 @@ const _seekerItems = [
   FloatingNavItem(icon: Icons.person_outline, label: 'Profile'),
 ];
 const _guardianItems = [
-  FloatingNavItem(icon: Icons.dashboard_outlined, label: 'Dashboard'),
   FloatingNavItem(icon: Icons.diversity_3_outlined, label: 'Network'),
-  FloatingNavItem(icon: Icons.people_outline, label: 'Seekers'),
+  FloatingNavItem(
+    icon: Icons.route_outlined,
+    label: 'Journeys',
+    useJourneyGlyph: true,
+  ),
+  FloatingNavItem(icon: Icons.dashboard_outlined, label: 'My ZYRA'),
+  FloatingNavItem(icon: Icons.gpp_good_outlined, label: 'Seekers'),
   FloatingNavItem(icon: Icons.person_outline, label: 'Profile'),
 ];
 
@@ -118,6 +123,7 @@ Future<void> _mount(WidgetTester tester, _Fixture fixture) async {
                   hapticLevel: fixture.haptic,
                   commitOnRelease: fixture.commitOnRelease,
                   compactWhenIdle: fixture.compact,
+                  compactV2: true,
                   collapseRevision: fixture.collapseRevision,
                   interactionEnabled: fixture.enabled,
                 ),
@@ -251,12 +257,17 @@ void main() {
       (tester) async {
         final fixture = _Fixture(guardian: guardian);
         await _mount(tester, fixture);
-        _expectSize(tester, const Size(156, 46));
-        expect(fixture.items.length, guardian ? 4 : 5);
-        expect(tester.getSize(_underline).width, closeTo(16, .001));
+        _expectSize(tester, const Size(234, 50));
+        expect(fixture.items.length, 5);
+        expect(tester.getSize(_underline).width, closeTo(28, .001));
         _expectSelection(tester, 0);
         for (var index = 0; index < fixture.items.length; index++) {
-          expect(_iconSize(tester, index), 16);
+          expect(_iconSize(tester, index), 18);
+          expect(tester.getSize(_cell(index)).width, 38);
+          expect(
+            tester.getCenter(_cell(index)).dx,
+            closeTo(127 + 44.0 * index, .001),
+          );
         }
         await _expand(tester);
         expect(fixture.selections, isEmpty);
@@ -274,7 +285,7 @@ void main() {
         expect(fixture.selections, [last]);
         _expectSelection(tester, last);
         await tester.pump(const Duration(seconds: 3));
-        _expectSize(tester, const Size(156, 46));
+        _expectSize(tester, const Size(234, 50));
         _expectSelection(tester, last);
         expect(tester.takeException(), isNull);
       },
@@ -282,13 +293,13 @@ void main() {
   }
 
   testWidgets(
-    'a narrow phone retains the 40 percent idle bar without overflow',
+    'a narrow phone retains the 60 percent idle bar without overflow',
     (tester) async {
       final fixture = _Fixture();
       await _mount(tester, fixture);
       tester.view.physicalSize = const Size(320, 568);
       await tester.pumpAndSettle();
-      expect(tester.getSize(_surface), const Size(112, 46));
+      expect(tester.getSize(_surface), const Size(168, 50));
       expect(tester.getCenter(_surface).dx, 160);
       for (var i = 0; i < fixture.items.length; i++) {
         final cell = tester.getRect(_cell(i));
@@ -343,7 +354,7 @@ void main() {
       expect(fixture.selections, isEmpty);
       _expectSelection(tester, 0);
       await tester.pump(const Duration(seconds: 3));
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
     },
   );
 
@@ -374,7 +385,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 2999));
     _expectSize(tester, const Size(390, 58));
     await tester.pump(const Duration(milliseconds: 1));
-    _expectSize(tester, const Size(156, 46));
+    _expectSize(tester, const Size(234, 50));
     expect(fixture.selections, isEmpty);
   });
 
@@ -393,7 +404,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 2999));
       _expectSize(tester, const Size(390, 58));
       await tester.pump(const Duration(milliseconds: 1));
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
     },
   );
 
@@ -410,7 +421,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 2999));
     _expectSize(tester, const Size(390, 58));
     await tester.pump(const Duration(milliseconds: 1));
-    _expectSize(tester, const Size(156, 46));
+    _expectSize(tester, const Size(234, 50));
     expect(fixture.selections, isEmpty);
   });
 
@@ -422,7 +433,7 @@ void main() {
       await _expand(tester);
       fixture.change(() => fixture.collapseRevision++);
       await tester.pump();
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
       expect(fixture.selections, isEmpty);
       await _expand(tester);
       // An ordinary owner rebuild does not impersonate another scroll event.
@@ -437,11 +448,11 @@ void main() {
     (tester) async {
       final fixture = _Fixture()..reducedMotion = false;
       await _mount(tester, fixture);
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
       final finger = await tester.startGesture(tester.getCenter(_surface));
       await tester.pump(const Duration(milliseconds: 120));
       await tester.pump(const Duration(milliseconds: 125));
-      expect(tester.getSize(_surface).width, greaterThan(156));
+      expect(tester.getSize(_surface).width, greaterThan(234));
       expect(tester.getSize(_surface).width, lessThanOrEqualTo(390));
       await tester.pump(const Duration(milliseconds: 125));
       _expectSize(tester, const Size(390, 58));
@@ -452,9 +463,9 @@ void main() {
       for (var frame = 0; frame < 16; frame++) {
         await tester.pump(const Duration(milliseconds: 16));
         final width = tester.getSize(_surface).width;
-        expect(width, inInclusiveRange(156, 390));
+        expect(width, inInclusiveRange(234, 390));
       }
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
       expect(fixture.selections, isEmpty);
     },
   );
@@ -471,7 +482,7 @@ void main() {
     await tester.pump();
     fixture.change(() => fixture.collapseRevision++);
     await tester.pump();
-    _expectSize(tester, const Size(156, 46));
+    _expectSize(tester, const Size(234, 50));
     expect(fixture.selections, isEmpty);
   });
 
@@ -492,7 +503,7 @@ void main() {
       await tester.pump();
       fixture.change(() => fixture.collapseRevision++);
       await tester.pump();
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
     },
   );
 
@@ -516,7 +527,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
       final movingWidth = tester.getSize(_surface).width;
-      expect(movingWidth, greaterThan(156));
+      expect(movingWidth, greaterThan(234));
       expect(movingWidth, lessThan(390));
       if (native) {
         tester.platformDispatcher.accessibilityFeaturesTestValue =
@@ -535,7 +546,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 2999));
       _expectSize(tester, const Size(390, 58));
       await tester.pump(const Duration(milliseconds: 1));
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
       expect(tester.takeException(), isNull);
     });
 
@@ -556,7 +567,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
       final movingWidth = tester.getSize(_surface).width;
-      expect(movingWidth, greaterThan(156));
+      expect(movingWidth, greaterThan(234));
       expect(movingWidth, lessThan(390));
       if (native) {
         tester.platformDispatcher.accessibilityFeaturesTestValue =
@@ -565,7 +576,7 @@ void main() {
         fixture.change(() => fixture.reducedMotion = true);
       }
       await tester.pump();
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
       final finger = await tester.startGesture(tester.getCenter(_surface));
       await tester.pump();
       _expectSize(tester, const Size(390, 58));
@@ -573,7 +584,7 @@ void main() {
       await tester.pump();
       expect(fixture.selections, isEmpty);
       await tester.pump(const Duration(seconds: 3));
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
       expect(tester.takeException(), isNull);
     });
   }
@@ -645,7 +656,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 1999));
       _expectSize(tester, const Size(390, 58));
       await tester.pump(const Duration(milliseconds: 1));
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
     },
   );
 
@@ -670,12 +681,12 @@ void main() {
       expect(_iconColor(tester, 2), ZyraColors.foreground);
       _expectSelection(tester, 2);
       await tester.pump(const Duration(seconds: 3));
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
       expect(_iconColor(tester, 2), ZyraColors.foreground);
       fixture.change(() => fixture.newActivity = true);
       await tester.pump();
       expect(_iconColor(tester, 2), ZyraColors.journeyGold);
-      _expectSize(tester, const Size(156, 46));
+      _expectSize(tester, const Size(234, 50));
     },
   );
 
@@ -702,8 +713,8 @@ void main() {
       beforeRole();
       await tester.pump();
       expect(fixture.selections, [1]);
-      expect(_cell(4), findsNothing);
-      expect(tester.widget<Semantics>(_cell(1)).properties.label, 'Network');
+      expect(_cell(4), findsOneWidget);
+      expect(tester.widget<Semantics>(_cell(1)).properties.label, 'Journeys');
       tester.widget<Semantics>(_cell(1)).properties.onTap!();
       await tester.pump();
       expect(fixture.selections, [1, 1]);

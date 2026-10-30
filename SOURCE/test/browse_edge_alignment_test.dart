@@ -103,9 +103,9 @@ void _expectRootBarGeometry(
     _edges(nav, size.width, 20);
     expect(nav.height, closeTo(58, .01));
   } else {
-    expect(nav.width, closeTo((size.width - 40) * .4, .01));
+    expect(nav.width, closeTo((size.width - 40) * .6, .01));
     expect(nav.center.dx, closeTo(size.width / 2, .01));
-    expect(nav.height, closeTo(46, .01));
+    expect(nav.height, closeTo(50, .01));
   }
   expect(nav.bottom, lessThanOrEqualTo(size.height - 14));
   _target(tester, _touchOwner());
@@ -151,12 +151,10 @@ void _expectBrowseGeometry(
   final request = _outerPill(tester, 'draft_profile_${_person(tester).id}');
   expect(previous.left, closeTo(20, .01));
   expect(next.right, closeTo(size.width - 20, .01));
-  expect(request.left - previous.right, closeTo(8, .01));
-  expect(next.left - request.right, closeTo(8, .01));
-  expect(previous.width, lessThan(next.width));
-  expect(next.width, lessThan(request.width));
-  expect(previous.center.dy, closeTo(request.center.dy, .01));
-  expect(next.center.dy, closeTo(request.center.dy, .01));
+  expect(previous, request, reason: 'LOCK7 uses one shared request pill.');
+  expect(next, request);
+  expect(tester.getSize(_key('concept_previous_profile')).width, 68);
+  expect(tester.getSize(_key('concept_next_profile')).width, 68);
   for (final key in [
     'concept_previous_profile',
     'concept_next_profile',

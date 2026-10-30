@@ -582,6 +582,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | KB |
 |---|---|---|---|---|
+| AS-BUILT-ZYRA-LOCK6-V2 | `REPORTS/CURRENT/ZYRA_TAB_BAR_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | As-built handover for queue 32, LOCK6 V2 idle navigation across the planned app | DR-ZYRA-304, DR-ZYRA-276, AD-AIOS-115, OA-ZYRA-316, OA-ZYRA-317, OA-ZYRA-325 | 4 |
 | DOC-ZYRA-0229 | `SYSTEM/DOCUMENTS/ZYRA_BACK_NAVIGATION_IMPLEMENTATION_HANDOVER_CURRENT_VERSION_V1.md` | HANDOVER | ZYRA Back Navigation Implementation Handover | 41 |
 | DOC-ZYRA-0230 | `SYSTEM/DOCUMENTS/ZYRA_NAVIGATION_HAPTICS_HANDOVER_CURRENT_VERSION_V1.md` | HANDOVER | ZYRA — Navigation Haptics Implementation Handover | 680 |
 | DOC-ZYRA-0231 | `SYSTEM/DOCUMENTS/ZYRA_NAV_DOT_CLEARANCE_HANDOVER_CURRENT_VERSION_V1.md` | HANDOVER | ZYRA Navigation Dot Clearance Handover | 16 |

@@ -427,13 +427,13 @@ void main() {
   ) async {
     final owner = _Owner();
     await owner.mount(tester, checkpoint: _seed(guardian: true));
-    expect(_navigation(tester).items, hasLength(4));
-    expect(_navigation(tester).items.every((item) => !item.dot), isTrue);
+    expect(_navigation(tester).items, hasLength(5));
+    expect(_navigation(tester).items[2].dot, isTrue);
     expect(owner.latest.myZyraLastOpenedRevision, 0);
     _expectPendingUnacknowledged(owner.latest);
     final otherTab = _navigation(tester).items[1].label;
     await _nav(tester, otherTab);
-    await _nav(tester, 'Dashboard');
+    await _nav(tester, 'My ZYRA');
     expect(_navigation(tester).items.every((item) => !item.dot), isTrue);
     expect(owner.latest.myZyraLastOpenedRevision, 0);
     _expectPendingUnacknowledged(owner.latest);

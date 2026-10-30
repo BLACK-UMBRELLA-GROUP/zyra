@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0321
 type: PLAN
-status: CURRENT
+status: ARCHIVED (2026-10-30)
 feature: PRODUCT BLUEPRINT
 purpose: Codex build brief for LOCK 6 - tab bar underline and small idle state
 links: [AD-AIOS-115]
