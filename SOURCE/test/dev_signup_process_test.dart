@@ -2017,7 +2017,7 @@ void main() {
               tester,
               find.byType(ZyraCodeScreen),
               direction,
-              accent: true,
+              accent: false,
             );
             expect(
               tester
@@ -3218,16 +3218,12 @@ void main() {
       expect(code.signupPreview, isTrue);
       expect(code.asGuardian, isTrue);
       expect(find.byKey(const ValueKey('signup_code_preview')), findsOneWidget);
-      expect(find.text('SIGN-UP PREVIEW').hitTestable(), findsOneWidget);
-      final appBar = find.byType(AppBar);
-      expect(
-        tester.getRect(find.text('SIGN-UP PREVIEW')).top,
-        greaterThanOrEqualTo(tester.getRect(appBar).bottom),
-      );
+      expect(find.text('Add a Seeker').hitTestable(), findsOneWidget);
+      expect(find.byKey(const ValueKey('local-code-field')), findsOneWidget);
       _expectNoHeader(tester);
       await _candidate(tester, 'guardian_code__standard');
-      for (final action in const ['copy', 'share', 'scan', 'enter']) {
-        final target = find.byKey(ValueKey('signup_code_$action'));
+      for (final action in const ['copy', 'share']) {
+        final target = find.byKey(ValueKey('local-code-$action'));
         await tester.ensureVisible(target);
         await tester.pumpAndSettle();
         await tester.tap(target);

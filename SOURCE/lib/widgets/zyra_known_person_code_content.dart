@@ -335,8 +335,10 @@ class ZyraCodeCapture extends StatefulWidget {
     required this.canCapture,
     required this.onCode,
     required this.onManualEntry,
+    this.unavailableMessage = 'Camera unavailable. Enter the code instead.',
   });
 
+  final String unavailableMessage;
   final bool Function() canCapture;
   final ValueChanged<String> onCode;
   final VoidCallback onManualEntry;
@@ -503,7 +505,7 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
             ),
             const SizedBox(height: 14),
             Text(
-              'Camera unavailable. Enter the code instead.',
+              widget.unavailableMessage,
               textAlign: TextAlign.center,
               style: ZyraText.subtext(size: 12.5),
             ),

@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 164,449 lines in 323 files |
-| Developer and preview code inside it | 44,964 lines in 82 files |
-| The Founder preview (planned app) | 25,859 lines in 32 files |
-| Test code | 213,661 lines in 486 files |
+| All app code | 165,020 lines in 325 files |
+| Developer and preview code inside it | 45,619 lines in 84 files |
+| The Founder preview (planned app) | 26,514 lines in 34 files |
+| Test code | 211,809 lines in 488 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -57,6 +57,8 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-30 | Queue 23: Compatibility pages loop by arrow and swipe (Founder-named brief; DR-ZYRA-288 / OA-ZYRA-286) | 163,937 / 323 | 44,493 / 82 | 25,402 / 32 | 213,776 / 485 | 2,612 / 307 MB | 39 | 1 |
 
 | 2026-10-30 | Queue 29, LOCK8 V2: Guardian five tabs, local Family Review and private Connect (DR-ZYRA-306 / OA-ZYRA-325) | 164,449 / 323 | 44,964 / 82 | 25,859 / 32 | 213,661 / 486 | 2,612 / 307 MB | 39 | 1 |
+
+| 2026-10-30 | Queue 30, LOCK9 V2: shared local Code page and fictional alias adapter (DR-ZYRA-231) | 165,020 / 325 | 45,619 / 84 | 26,514 / 34 | 211,809 / 488 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -335,3 +337,5 @@ independent verification and Founder acceptance; no product finding beyond this 
 ## Guardian tabs LOCK8 V2 — queue 29, 30 October 2026
 
 Replaced the old Guardian presenter with the locked five-tab pages and local Family Review / private Connect samples. The removed presenter and obsolete cases moved to /Users/shakeelahmad/_to_delete/ZYRA_LOCK8_GUARDIAN_TABS_2026-10-30/. The new presenter follows the existing zyra_one_journey_* naming so the planned-app count includes it. Existing member/sign-in routes, backend, personal Journey Pause retirement and the screenshot inventory stay unchanged. Default shared Circle/navigation behavior is retained; Guardian navigation alone opts into current LOCK6 V2 geometry. Thirteen affected suites and the twelve-case LOCK8 capture/behavior suite are recorded with exact measured results in Task 14 and its JSON evidence. Five starting-code test failures are separately reproduced and refused as unrelated OA-ZYRA-316 work, rather than counted as passing. The twenty feature captures are beside the masters, outside the SOURCE/test golden count. Fable's independent verification is pending.
+
+Queue 30: the two shared files follow the planned-app naming pattern and are counted above. The replaced local UI suites moved to the global _to_delete; ordinary member routes remain. Details, guards and measured scope: `ZYRA_CODE_PAGE_AS_BUILT_CURRENT_VERSION_V1.md`.

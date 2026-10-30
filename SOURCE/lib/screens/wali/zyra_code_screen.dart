@@ -11,6 +11,8 @@ import '../../data/zyra_membership_catalog.dart';
 import '../../data/zyra_reference_data.dart';
 import '../../data/zyra_guardian_capacity.dart';
 import '../../dev/zyra_dev_scenario.dart';
+import '../../dev/zyra_draft_local_code_page.dart';
+import '../../dev/zyra_draft_local_code_aliases.dart';
 import '../../dev/zyra_dev_personal_code_fixtures.dart';
 import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../dev/zyra_dev_local_preview.dart';
@@ -1211,145 +1213,85 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     ),
   );
 
-  /// The bounded signup rehearsal does not reuse the request composer: its
-  /// existing Founder demo can simulate a sent request, which would be a false
-  /// success in a first-use visual preview. These actions explain themselves
-  /// locally, without platform calls, live readers, or fabricated links.
-  Widget _buildSignupPreview() {
-    final previewStyle = OnboardingPreviewStyle.maybeOf(context);
-    return SingleChildScrollView(
-      key: const ValueKey('signup_code_preview'),
-      controller: _screenScrollController,
-      padding: const EdgeInsets.fromLTRB(24, 20, 24, 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (_canEnterGuardianPreview) ...[
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                key: const ValueKey('onboarding_dev_skip'),
-                onPressed: ZyraTapFeedback.onTap(
-                  context,
-                  _enterGuardianPreview,
-                ),
-                icon: const Icon(Icons.skip_next_rounded, size: 17),
-                label: Text(
-                  'Skip to Guardian · DEV',
-                  style: ZyraText.subtext(size: 11.5),
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-          ],
-          if (previewStyle != null) ...[
-            // This is a code orientation screen, not a counted final step.
-            // A full progress rail here implied setup was already complete.
-            Align(
-              alignment: previewStyle.centered
-                  ? Alignment.center
-                  : Alignment.centerLeft,
-              child: OnboardingPreviewAccent(
-                style: previewStyle,
-                size: 58,
-                progress: 1,
-              ),
-            ),
-            const SizedBox(height: 15),
-          ],
-          Text(
-            'SIGN-UP PREVIEW',
-            textAlign: previewStyle?.centered == true
-                ? TextAlign.center
-                : TextAlign.left,
-            style: ZyraText.chapterLabel(),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'A personal code, with consent at every step.',
-            textAlign: previewStyle?.centered == true
-                ? TextAlign.center
-                : TextAlign.left,
-            style: ZyraText.heading(size: previewStyle?.titleSize ?? 22),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'This fictional code shows what comes next. Explore the actions '
-            'below; no camera, clipboard, sharing or account actions run here.',
-            textAlign: previewStyle?.centered == true
-                ? TextAlign.center
-                : TextAlign.left,
-            style: ZyraText.subtext(size: 12.5),
-          ),
-          const SizedBox(height: 22),
-          _CodeCard(
-            code: _code!.code,
-            demoOnly: true,
-            showQr: _showQr,
-            previewStyle: previewStyle,
-          ),
-          const SizedBox(height: 16),
-          Wrap(
-            alignment: previewStyle?.centered == true
-                ? WrapAlignment.center
-                : WrapAlignment.start,
-            spacing: 9,
-            runSpacing: 9,
-            children: [
-              _PillAction(
-                key: const ValueKey('signup_code_copy'),
-                enableFeedback: false,
-                icon: Icons.copy_outlined,
-                label: 'Copy',
-                onTap: _copy,
-                previewStyle: previewStyle,
-              ),
-              _PillAction(
-                key: const ValueKey('signup_code_qr'),
-                enableFeedback: false,
-                icon: Icons.qr_code_2,
-                label: _showQr ? 'Hide QR' : 'QR',
-                onTap: _toggleQr,
-                previewStyle: previewStyle,
-              ),
-              _PillAction(
-                key: const ValueKey('signup_code_share'),
-                enableFeedback: false,
-                icon: Icons.ios_share_outlined,
-                label: 'Share',
-                onTap: () => _share(context),
-                previewStyle: previewStyle,
-              ),
-              _PillAction(
-                key: const ValueKey('signup_code_scan'),
-                enableFeedback: false,
-                icon: Icons.qr_code_scanner,
-                label: 'Scan code',
-                onTap: _scan,
-                previewStyle: previewStyle,
-              ),
-              _PillAction(
-                key: const ValueKey('signup_code_enter'),
-                enableFeedback: false,
-                icon: Icons.keyboard_outlined,
-                label: 'Enter code',
-                onTap: _enterCode,
-                previewStyle: previewStyle,
-              ),
-            ],
-          ),
-          if (_signupPreviewNotice case final message?) ...[
-            const SizedBox(height: 18),
-            Text(
-              message,
-              key: const ValueKey('signup_code_action_info'),
-              style: ZyraText.subtext(size: 12.5),
-            ),
-          ],
-        ],
-      ),
+  bool _lockedCanAct() =>
+      _localRequested ? _localOwnerAllows() : _signupPreviewAllowed;
+
+  bool _lockedCanInteract() =>
+      _localRequested ? _localInteractive() : _signupPreviewAllowed;
+
+  Future<ZyraLocalCodeIdentity?> _lockedLookup(String canonical) async {
+    if (!_lockedCanInteract()) return null;
+    final person = _localRequested
+        ? await _localPreview!.lookupCode(canonical)
+        : ZyraDevPersonalCodeFixtures.previewEntryCode(
+            canonical,
+            asGuardian: widget.asGuardian,
+          );
+    if (!_lockedCanInteract() || person == null) return null;
+    return ZyraLocalCodeIdentity(
+      person.firstName,
+      person.role == 'wali'
+          ? 'Guardian'
+          : person.role == 'seeker'
+          ? 'Seeker'
+          : '',
     );
   }
+
+  Widget _lockedLocalPage() => Scaffold(
+    key: widget.signupPreview ? const ValueKey('signup_code_preview') : null,
+    backgroundColor: Colors.transparent,
+    body: SizedBox.expand(
+      child: DecoratedBox(
+        decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+        child: ZyraLocalCodePage(
+          mode: widget.asGuardian
+              ? ZyraLocalCodeContext.addSeeker
+              : ZyraLocalCodeContext.addGuardian,
+          ownerKey:
+              _localPreview ??
+              (widget.signupPreviewIdentity, widget.asGuardian),
+          canAct: _lockedCanAct,
+          canInteract: _lockedCanInteract,
+          interactionEpoch: _localRequested ? _localOperationEpoch : null,
+          personalCode: _code?.code,
+          lookupCode: _lockedLookup,
+          onCopy: _copy,
+          onQr: _toggleQr,
+          onShare: () => _share(context),
+          extra: Column(
+            children: [
+              if (_showQr && _code != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14),
+                  child: QrImageView(
+                    data: _code!.code,
+                    backgroundColor: Colors.white,
+                    size: 160,
+                  ),
+                ),
+              if (_localRequested) _localInformationContent(),
+              if (widget.signupPreview && _signupPreviewNotice != null)
+                Text(
+                  _signupPreviewNotice!,
+                  key: const ValueKey('signup_code_action_info'),
+                  style: ZyraText.subtext(size: 12.5),
+                ),
+              if (_canEnterGuardianPreview)
+                TextButton(
+                  key: const ValueKey('onboarding_dev_skip'),
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    _enterGuardianPreview,
+                  ),
+                  child: const Text('Skip to Guardian · DEV'),
+                ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 
   AppBar _codeAppBar({bool denied = false}) {
     final hideInlineReturn =
@@ -1383,6 +1325,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         body: const SizedBox.expand(),
       );
     }
+    if (_localRequested || widget.signupPreview) return _lockedLocalPage();
     final previewStyle = widget.signupPreview
         ? OnboardingPreviewStyle.maybeOf(context)
         : null;
@@ -1398,9 +1341,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
               ZyraColors.genderGradient(AppState.instance.gender),
         ),
         child: SafeArea(
-          child: widget.signupPreview
-              ? _buildSignupPreview()
-              : _loading
+          child: _loading
               ? const ZyraLoading()
               : LayoutBuilder(
                   builder: (context, constraints) {
@@ -2170,7 +2111,6 @@ class _PillAction extends StatelessWidget {
   final VoidCallback? onTap;
   final bool enableFeedback;
   final bool adaptive;
-  final OnboardingPreviewStyle? previewStyle;
 
   const _PillAction({
     super.key,
@@ -2179,7 +2119,6 @@ class _PillAction extends StatelessWidget {
     this.onTap,
     this.enableFeedback = true,
     this.adaptive = false,
-    this.previewStyle,
   });
 
   Widget _content() => Row(
@@ -2202,27 +2141,6 @@ class _PillAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = previewStyle;
-    if (style != null) {
-      final radius = BorderRadius.circular(style.buttonRadius);
-      return Material(
-        color: Colors.transparent,
-        borderRadius: radius,
-        child: Ink(
-          decoration: style.cardDecoration().copyWith(borderRadius: radius),
-          child: InkWell(
-            borderRadius: radius,
-            enableFeedback: enableFeedback,
-            onTap: ZyraTapFeedback.onTap(context, onTap),
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 44),
-              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-              child: _content(),
-            ),
-          ),
-        ),
-      );
-    }
     return Material(
       color: ZyraColors.accentBg,
       borderRadius: BorderRadius.circular(999),
@@ -2284,13 +2202,11 @@ class _CodeCard extends StatelessWidget {
   final bool demoOnly;
   final bool prominent;
   final bool showQr;
-  final OnboardingPreviewStyle? previewStyle;
   const _CodeCard({
     required this.code,
     required this.demoOnly,
     this.prominent = false,
     this.showQr = false,
-    this.previewStyle,
   });
 
   Widget _details() => Column(
@@ -2364,13 +2280,11 @@ class _CodeCard extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(minHeight: 174),
       padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
-      decoration:
-          previewStyle?.cardDecoration() ??
-          BoxDecoration(
-            color: ZyraColors.surfaceFill,
-            border: Border.all(color: ZyraColors.surfaceBorder),
-            borderRadius: BorderRadius.circular(20),
-          ),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        border: Border.all(color: ZyraColors.surfaceBorder),
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Center(
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 320),

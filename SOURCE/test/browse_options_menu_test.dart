@@ -23,7 +23,6 @@ import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_options_button.dart';
-import 'package:zyra/widgets/zyra_known_person_code_content.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
@@ -837,81 +836,28 @@ void main() {
   );
 
   testWidgets(
-    'Scan reuses manual entry and returns the canonical profile without consent',
+    'Scan uses LOCK9 disclosure and returns its exact Browse parent',
     (tester) async {
       await _mount(tester);
       await _openMenu(tester);
       await _tapBar(tester, 'Scan');
       expect(find.byType(ZyraDraftCodeEntry), findsOneWidget);
-      expect(find.byType(ZyraKnownPersonCodeContent), findsOneWidget);
-      expect(_key('draft_scan_presentation'), findsOneWidget);
-      expect(_key('known-person-code-field'), findsOneWidget);
-      expect(_key('known-person-check-code').hitTestable(), findsOneWidget);
-      expect(find.text('Scan code'), findsOneWidget);
-      expect(find.text('Scan'), findsOneWidget);
-      expect(find.text('PREVIEW ONLY'), findsNothing);
-      expect(
-        tester
-            .widget<ZyraKnownPersonCodeContent>(
-              find.byType(ZyraKnownPersonCodeContent),
-            )
-            .onScan,
-        isNotNull,
-      );
-      expect(find.text('Consider'), findsNothing);
-      expect(
-        find.byWidgetPredicate(
-          (widget) => const [
-            'MobileScanner',
-            'CameraPreview',
-            'BarcodeScanner',
-          ].contains(widget.runtimeType.toString()),
-        ),
-        findsNothing,
-      );
-      expect(_key('draft_fill'), findsNothing);
+      expect(_key('local-code-field'), findsOneWidget);
+      expect(_key('local-code-check').hitTestable(), findsOneWidget);
+      expect(find.text('Enter code'), findsNothing);
+      await tester.enterText(_key('local-code-field'), 'ZYRA-DRAFT-SARA');
+      await _press(tester, 'local-code-check');
+      expect(find.text('Sara'), findsOneWidget);
+      expect(find.text('Seeker · first name and role only'), findsOneWidget);
+      expect(find.text('27 · Birmingham'), findsNothing);
+      expect(find.text('View profile'), findsNothing);
+      expect(find.text('Request sent'), findsNothing);
       expect(network.attempts, 0);
-      await _snapshot(tester, 'scan_zyra_code');
-      final canonical = ZyraDraftKnownPersonCodes.resolve('ZYRA-DRAFT-SARA')!;
-      await tester.enterText(
-        _key('known-person-code-field'),
-        ZyraDraftKnownPersonCodes.codeFor(canonical),
-      );
-      await _press(tester, 'known-person-check-code');
-      final content = tester.widget<ZyraKnownPersonCodeContent>(
-        find.byType(ZyraKnownPersonCodeContent),
-      );
-      expect(content.preview!.firstName, canonical.firstName);
-      expect(content.preview!.age, canonical.age);
-      expect(content.preview!.city, canonical.city);
-      expect(content.resultActionLabel, 'View profile');
-      expect(find.text('Consider'), findsNothing);
-      expect(_key('concept_message'), findsNothing);
-      await _press(tester, 'draft_known_person_view');
-      final profile = tester.widget<ZyraOneJourneyBrowsePresentation>(
-        find.byType(ZyraOneJourneyBrowsePresentation),
-      );
-      expect(profile.profile.id, canonical.id);
-      expect(profile.profile.firstName, canonical.firstName);
-      expect(profile.profile.age, canonical.age);
-      expect(profile.profile.city, canonical.city);
-      expect(profile.requestLabel, 'Request a Journey');
-      expect(profile.invitationSent, isFalse);
-      expect(_key('concept_message'), findsNothing);
-      expect(find.text('Consider'), findsNothing);
-      expect(network.attempts, 0);
-      await returnZyraPreviewPage(tester);
-      await tester.pumpAndSettle();
-      expect(find.byType(ZyraDraftCodeEntry), findsOneWidget);
       await returnZyraPreviewPage(tester);
       await tester.pumpAndSettle();
       expect(find.byType(ZyraOneJourneyBrowseDesigns), findsOneWidget);
       final browse = _browse(tester);
-      final person = browse.profiles[browse.selectedIndex];
-      expect(person.id, _sara);
-      expect(browse.requestLabel!(person), 'Request a Journey');
-      expect(browse.invitationSent!(person), isFalse);
-      expect(network.attempts, 0);
+      expect(browse.profiles[browse.selectedIndex].id, _sara);
     },
   );
 
@@ -1007,25 +953,10 @@ void main() {
         );
         expect(owner, findsOneWidget);
         if (action == 'Scan') {
-          expect(find.byType(ZyraKnownPersonCodeContent), findsOneWidget);
-          expect(
-            tester
-                .widget<ZyraKnownPersonCodeContent>(
-                  find.byType(ZyraKnownPersonCodeContent),
-                )
-                .onScan,
-            isNotNull,
-          );
-          expect(
-            tester
-                .widget<ZyraKnownPersonCodePill>(
-                  _key('known-person-check-code'),
-                )
-                .onTap,
-            isNotNull,
-          );
+          expect(_key('local-code-field'), findsOneWidget);
+          expect(_key('local-code-check').hitTestable(), findsOneWidget);
           expect(find.text('Consider'), findsNothing);
-          expect(find.byType(ZyraCodeCapture), findsNothing);
+          expect(find.text('View profile'), findsNothing);
         }
         expect(find.byType(ZyraShellNavigation), findsNothing);
         for (final element
@@ -1038,7 +969,7 @@ void main() {
         }
         for (final key
             in action == 'Scan'
-                ? ['known-person-code-field', 'known-person-check-code']
+                ? ['local-code-field', 'local-code-check']
                 : [
                     'draft_report_target',
                     'draft_report_reason_other',

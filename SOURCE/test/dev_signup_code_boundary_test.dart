@@ -11,6 +11,8 @@ import 'package:zyra/services/zyra_product_telemetry.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
+import 'package:zyra/widgets/zyra_tap_feedback.dart';
 
 class _Routes extends NavigatorObserver {
   int pushes = 0;
@@ -54,7 +56,11 @@ void main() {
           ).copyWith(textScaler: TextScaler.linear(scale)),
           child: child!,
         ),
-        home: const WaliInviteSeekerScreen(signupPreview: true),
+        home: ZyraTapFeedback(
+          level: () => ZyraHapticLevel.off,
+          canAct: () => true,
+          child: const WaliInviteSeekerScreen(signupPreview: true),
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -62,7 +68,7 @@ void main() {
 
   InkWell action(WidgetTester tester, String name) => tester.widget<InkWell>(
     find.descendant(
-      of: find.byKey(ValueKey('signup_code_$name')),
+      of: find.byKey(ValueKey('local-code-$name')),
       matching: find.byType(InkWell),
     ),
   );
@@ -82,6 +88,12 @@ void main() {
       // Scaffold updates OS descriptions and overlay styles as normal chrome.
       // Keep every other platform method observable: clipboard, haptics and
       // any unexpected feature operation must still fail the boundary tests.
+      if (call.method == 'LiveText.isLiveTextInputAvailable') {
+        return false;
+      }
+      if (call.method == 'Clipboard.hasStrings') {
+        return <String, dynamic>{'value': false};
+      }
       if (!call.method.startsWith('SystemChrome.')) {
         platformCalls.add('platform:${call.method}');
       }
@@ -120,7 +132,10 @@ void main() {
     expect(ZyraDeveloperAccess.isMainAppFounderPreview, isFalse);
     expect(find.byKey(const ValueKey('signup_code_preview')), findsOneWidget);
     expect(find.text('ZYRA-DEMO-GUARDIAN-IBRAHIM'), findsOneWidget);
-    expect(find.textContaining('fictional code'), findsOneWidget);
+    expect(
+      find.text('They can send a request. You still choose whether to link.'),
+      findsOneWidget,
+    );
     expect(find.textContaining("couldn't be refreshed"), findsNothing);
     expect(find.text('Change code'), findsNothing);
     expect(find.text('REQUESTS'), findsNothing);
@@ -140,7 +155,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.textContaining('ZYRA-DEMO-'), findsNothing);
-    expect(find.byKey(const ValueKey('signup_code_copy')), findsNothing);
+    expect(find.byKey(const ValueKey('local-code-copy')), findsNothing);
     expect(find.byType(MobileScanner), findsNothing);
     expect(platformCalls, isEmpty);
     expect(tester.takeException(), isNull);
@@ -168,9 +183,9 @@ void main() {
     await mount(tester, observer: routes);
     final originalPushes = routes.pushes;
 
-    for (final name in ['copy', 'share', 'scan', 'enter']) {
-      await tester.ensureVisible(find.byKey(ValueKey('signup_code_$name')));
-      await tester.tap(find.byKey(ValueKey('signup_code_$name')));
+    for (final name in ['copy', 'share']) {
+      await tester.ensureVisible(find.byKey(ValueKey('local-code-$name')));
+      await tester.tap(find.byKey(ValueKey('local-code-$name')));
       await tester.pumpAndSettle();
 
       expect(
@@ -196,17 +211,17 @@ void main() {
     tester,
   ) async {
     await mount(tester);
-    await tester.ensureVisible(find.byKey(const ValueKey('signup_code_qr')));
-    await tester.tap(find.byKey(const ValueKey('signup_code_qr')));
+    await tester.ensureVisible(find.byKey(const ValueKey('local-code-qr')));
+    await tester.tap(find.byKey(const ValueKey('local-code-qr')));
     await tester.pumpAndSettle();
 
     expect(find.byType(QrImageView), findsOneWidget);
-    expect(find.text('Hide QR'), findsOneWidget);
+    expect(find.text('QR'), findsOneWidget);
     expect(find.byType(MobileScanner), findsNothing);
     expect(platformCalls, isEmpty);
 
-    await tester.ensureVisible(find.byKey(const ValueKey('signup_code_qr')));
-    await tester.tap(find.byKey(const ValueKey('signup_code_qr')));
+    await tester.ensureVisible(find.byKey(const ValueKey('local-code-qr')));
+    await tester.tap(find.byKey(const ValueKey('local-code-qr')));
     await tester.pumpAndSettle();
     expect(find.byType(QrImageView), findsNothing);
     expect(platformCalls, isEmpty);
@@ -218,8 +233,7 @@ void main() {
     final routes = _Routes();
     await mount(tester, observer: routes);
     final callbacks = [
-      for (final name in ['copy', 'share', 'scan', 'enter', 'qr'])
-        action(tester, name).onTap!,
+      for (final name in ['copy', 'share', 'qr']) action(tester, name).onTap!,
     ];
     final originalPushes = routes.pushes;
 
@@ -255,8 +269,8 @@ void main() {
     tester,
   ) async {
     await mount(tester, size: const Size(320, 568), scale: 2);
-    for (final name in ['copy', 'qr', 'share', 'scan', 'enter']) {
-      final option = find.byKey(ValueKey('signup_code_$name'));
+    for (final name in ['copy', 'qr', 'share']) {
+      final option = find.byKey(ValueKey('local-code-$name'));
       await tester.ensureVisible(option);
       await tester.pumpAndSettle();
       expect(option.hitTestable(), findsOneWidget);

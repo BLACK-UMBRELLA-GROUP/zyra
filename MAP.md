@@ -70,7 +70,7 @@ re-run the tool.
 | DOC-ZYRA-0071 | `APP/UX Writing/Summary.md` | 9 |
 | DOC-ZYRA-0070 | `APP/UX Writing/ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md` | 6 |
 | DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | 9 |
-| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 18 |
+| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 29 |
 | DOC-ZYRA-0102 | `BUSINESS/COLOUR THEME/Summary.md` | 7 |
 | DOC-ZYRA-0282 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md` | 16 |
 | DOC-ZYRA-0266 | `SYSTEM/DOCUMENTS/ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md` | 10 |
@@ -414,9 +414,10 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 18 |
+| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 29 |
 | DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | REPORT | Deep review of the planned ZYRA app (the Founder preview) against the old member app and the database - what… | OA-ZYRA-316, OA-ZYRA-317, DR-ZYRA-274, DOC-ZYRA-0284 | 9 |
 
+| ASBUILT-ZYRA-QUEUE30 | `REPORTS/CURRENT/ZYRA_CODE_PAGE_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | As-built LOCK 9 V2 local Code page, queue 30 | AD-AIOS-115, DR-ZYRA-231, OA-ZYRA-316, OA-ZYRA-317 | 10 |
 ### COMPATIBILITY
 
 | ID | File | Type | Purpose | KB |
@@ -663,6 +664,7 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0327 | `PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-29.md` | PLAN | Codex build brief for LOCK 8 - Guardian five tabs and pages | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0328 | `PRODUCT/APPROVED/WEB_COPY/BRIEFS/WEB_COPY_BRIEF_2026-10-29.md` | PLAN | Codex task - export the Founder preview (the planned app, sample data only) as a private static web copy the… | DR-ZYRA-279, DR-ZYRA-274, OA-ZYRA-286, AD-AIOS-115 | 4 |
 | OA-ZYRA-316-BASELINE-2026-10-29 | `PRODUCT/APPROVED/BASELINE/SCREENSHOTS/INDEX.md` | INDEX | Generated capture artifact for DOC-ZYRA-0301; every available planned-app page and local preview state | DOC-ZYRA-0301, DOC-ZYRA-0278, DOC-ZYRA-0286, OA-ZYRA-316 | 405 |
+| TBC (Fable assigns) | `PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V4.md` | SPEC | Spec for LOCK 10 - Filters page (V4 - swipe cards, one filter per card; Where; searchable Nationality and… | DOC-ZYRA-0284, DOC-ZYRA-0329, AD-AIOS-115 | 5 |
 
 ### RELEASE
 

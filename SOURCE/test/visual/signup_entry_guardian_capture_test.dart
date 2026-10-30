@@ -473,7 +473,7 @@ Future<void> _guardianFlow(SignupCaptureHarness h) async {
     reached:
         'Actual responsibilities Continue opens the bounded fictional personal-code screen.',
   );
-  await h.tap('signup_code_qr');
+  await h.tap('local-code-qr');
   await _page(
     h,
     18,
@@ -482,7 +482,13 @@ Future<void> _guardianFlow(SignupCaptureHarness h) async {
     reached:
         'Actual QR control displays the fictional signup code; no share, clipboard or camera.',
   );
-  await h.tap('signup_code_enter');
+  await h.tap('local-code-qr');
+  await h.tester.enterText(
+    find.byKey(const ValueKey('local-code-field')),
+    '7K2MQ9TD4H',
+  );
+  FocusManager.instance.primaryFocus?.unfocus();
+  await h.flush();
   await _page(
     h,
     18,

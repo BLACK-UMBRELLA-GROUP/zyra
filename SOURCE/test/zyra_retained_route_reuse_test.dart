@@ -134,7 +134,7 @@ void main() {
       await _tap(tester, 'concept_browse_menu');
       await _nav(tester, 'Scan');
       expect(find.byType(ZyraDraftCodeEntry), findsOneWidget);
-      expect(_key('known-person-code-field'), findsOneWidget);
+      expect(_key('local-code-field'), findsOneWidget);
       expect(find.text('Scanning isn’t available yet.'), findsNothing);
       await _back(tester);
       expect(find.byType(ZyraDraftCodeEntry), findsNothing);
@@ -155,20 +155,13 @@ void main() {
       await _mount(tester);
       await _tap(tester, 'concept_browse_menu');
       await _nav(tester, 'Scan');
-      await tester.enterText(
-        _key('known-person-code-field'),
-        'ZYRA-DRAFT-SARA',
-      );
-      await _tap(tester, 'known-person-check-code');
+      await tester.enterText(_key('local-code-field'), 'ZYRA-DRAFT-SARA');
+      await _tap(tester, 'local-code-check');
       expect(find.text('Sara'), findsOneWidget);
-      expect(find.text('27 · Birmingham'), findsOneWidget);
-      expect(find.text('Consider'), findsNothing);
-      await _tap(tester, 'draft_known_person_view');
-      expect(find.text('Sara'), findsOneWidget);
-      expect(find.text('Request a Journey'), findsOneWidget);
+      expect(find.text('Seeker · first name and role only'), findsOneWidget);
+      expect(find.text('27 · Birmingham'), findsNothing);
+      expect(find.text('View profile'), findsNothing);
       expect(find.text('Request sent'), findsNothing);
-      await _back(tester);
-      expect(find.byType(ZyraDraftCodeEntry), findsOneWidget);
       await _back(tester);
       expect(find.text('Profiles'), findsOneWidget);
       expect(_key('concept_pull_down_back_scope'), findsNothing);
