@@ -44,9 +44,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>ZYRA uses the camera only when you choose to scan another member’s ZYRA Code.</string>
+	<string>Scanning ZYRA Codes, taking photos and the identity check.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>ZYRA uses Face ID so only you can open the app, even when your phone is unlocked.</string>
+	<string>Opening ZYRA when App lock is on.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your approximate area is used to measure distance in Filters. It is never shown to anyone.</string>
 	<key>NSLocationDefaultAccuracyReduced</key>
@@ -54,7 +54,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>ZYRA can save photos back to your library when you download them.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>ZYRA uses your photo library so you can add photos to your profile.</string>
+	<string>Choosing your profile photos. ZYRA only sees the ones you pick.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

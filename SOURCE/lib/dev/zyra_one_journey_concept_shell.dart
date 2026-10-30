@@ -98,6 +98,7 @@ import 'zyra_subscription_wallet_draft.dart';
 import 'zyra_subscription_wallet_preview.dart';
 import '../widgets/zyra_membership_choices.dart';
 import 'zyra_one_journey_settings_details.dart';
+import 'zyra_one_journey_phone_access.dart';
 import 'zyra_founder_launch_review.dart';
 import 'dev_settings_design_state.dart';
 import 'zyra_one_journey_journey_presentation.dart';
@@ -223,7 +224,35 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       ZyraMembershipPaymentHistory.paidBefore;
   bool _shareHistory = false;
   bool _guardianInfoSeen = false;
+  bool _phoneAccessSeen = false;
   static const _guardianInfoSeenKey = 'zyra_preview_guardian_info_seen_v1';
+
+  Future<void> _loadPhoneAccessSeen() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      if (mounted && _allowed && !_phoneAccessSeen) {
+        setState(
+          () => _phoneAccessSeen =
+              prefs.getBool('zyra_phone_access_seen_v1') ?? false,
+        );
+      }
+    } on MissingPluginException {
+      // A missing education receipt leaves NEW visible.
+    } on PlatformException {
+      // A failed receipt read never grants access.
+    }
+  }
+
+  Future<void> _savePhoneAccessSeen() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('zyra_phone_access_seen_v1', true);
+    } on MissingPluginException {
+      // The in-memory receipt still lasts for this shell.
+    } on PlatformException {
+      // NEW may reappear after restarting if the receipt cannot be saved.
+    }
+  }
 
   Future<void> _loadGuardianInfoSeen() async {
     try {
@@ -363,6 +392,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       (_pageOptionsSource == null && _tab == 3);
   String get _pageOptionsTitle => switch (_pageOptionsSource) {
     'settings' || 'settings_detail' => 'Settings',
+    'phone_access' => 'Phone access',
     'account_action' =>
       _accountDestination == null
           ? 'Settings'
@@ -696,6 +726,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     }
     unawaited(_loadBrowsePhotos());
     unawaited(_loadGuardianInfoSeen());
+    unawaited(_loadPhoneAccessSeen());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Restoring a list is not evidence that every request was viewed.
       _publishCheckpoint();
@@ -939,6 +970,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         if (!profileRoot &&
             !const {
               'settings',
+              'phone_access',
               'account_action',
               'settings_detail',
               'edit_profile',
@@ -1540,6 +1572,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'filters',
           'filter_preferences',
           'settings',
+          'phone_access',
           'personalisation',
           'edit_profile',
           'manage_photos',
@@ -1970,6 +2003,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'guardian_linked_profile' => _guardianLinkedProfile(),
     'guardian_network_profile' => _guardianNetworkProfile(),
     'settings' => _settings(),
+    'phone_access' => _phoneAccess(),
     'personalisation' => _personalisation(),
     'edit_profile' ||
     'manage_photos' ||
@@ -6161,6 +6195,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   ZyraConceptAccountData get _accountData => ZyraConceptAccountData(
     guardian: _guardianRole,
     guardianInfoSeen: _guardianInfoSeen,
+    phoneAccessSeen: _phoneAccessSeen,
     name: _guardianRole ? 'Hassan Rahman' : 'Adam Khan',
     age: _guardianRole ? '54' : '30',
     gender: 'Male',
@@ -6215,6 +6250,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         return;
       case ZyraConceptAccountAction.personalisation:
         _open('personalisation');
+      case ZyraConceptAccountAction.phoneAccess:
+        _phoneAccessSeen = true;
+        unawaited(_savePhoneAccessSeen());
+        _open('phone_access');
       case ZyraConceptAccountAction.settings:
         _open('settings');
       case ZyraConceptAccountAction.membership:
@@ -6519,6 +6558,22 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
   }
 
+  Widget _phoneAccess() {
+    final fresh = _accountFreshGuard();
+    return ZyraPhoneAccessPage(
+      key: ValueKey((
+        'phone_access',
+        _uiRevision,
+        _devControlsEpoch,
+        _devRouteStamp,
+      )),
+      canAct: () => fresh() && !_devControlsVisible,
+      onBack: () {
+        if (fresh()) _back();
+      },
+    );
+  }
+
   Widget _settings() {
     final fresh = _accountFreshGuard();
     return ZyraConceptSettingsPresentation(
@@ -6702,6 +6757,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         ZyraConceptAccountAction.signOut => 'Sign out',
         ZyraConceptAccountAction.signInSecurity => 'Sign-in & security',
         ZyraConceptAccountAction.appLock => 'App lock',
+        ZyraConceptAccountAction.phoneAccess => 'Phone access',
         ZyraConceptAccountAction.advanced => 'Advanced',
         ZyraConceptAccountAction.guardianPrivacy => 'Guardian privacy',
         ZyraConceptAccountAction.visibility => 'Pause My Profile',

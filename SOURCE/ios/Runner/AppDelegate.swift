@@ -1,12 +1,17 @@
 import Flutter
 import UIKit
 import CoreLocation
+import UserNotifications
+import Photos
+import AVFoundation
+import LocalAuthentication
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
   private var appIconChannel: FlutterMethodChannel?
   private var profilePhotoChannel: FlutterMethodChannel?
   private var roughLocation: ZyraRoughLocation?
+  private var phoneAccess: ZyraPhoneAccess?
 
   private func normaliseProfilePhoto(
     arguments: Any?,
@@ -123,6 +128,7 @@ import CoreLocation
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
     roughLocation = ZyraRoughLocation(messenger: engineBridge.applicationRegistrar.messenger())
+    phoneAccess = ZyraPhoneAccess(messenger: engineBridge.applicationRegistrar.messenger())
 
     let photoChannel = FlutterMethodChannel(
       name: "app.zyraconnect.zyra/profile_photo",
@@ -239,6 +245,182 @@ import CoreLocation
   }
 }
 
+
+// LOCK12: authorization metadata only. This adapter never acquires a fix,
+// creates a capture session, fetches a photo, or registers a remote push token.
+private final class ZyraPhoneAccess: NSObject, CLLocationManagerDelegate {
+  private let channel: FlutterMethodChannel
+  private var location: CLLocationManager?
+  private var locationReply: FlutterResult?
+  private var context: LAContext?
+  private var active: UUID?
+  private var backgroundObserver: NSObjectProtocol?
+  private let faceIDReceipt = "zyra_face_id_prompt_attempted_v1"
+
+  init(messenger: FlutterBinaryMessenger) {
+    channel = FlutterMethodChannel(name: "app.zyraconnect.zyra/phone_access", binaryMessenger: messenger)
+    super.init()
+    channel.setMethodCallHandler { [weak self] call, result in
+      guard let self else { result(nil); return }
+      switch call.method {
+      case "status":
+        let args = call.arguments as? [String: Any]
+        if args?["appLockEnabled"] as? Bool == true {
+          UserDefaults.standard.set(true, forKey: self.faceIDReceipt)
+        }
+        self.status(result)
+      case "request":
+        guard let args = call.arguments as? [String: Any],
+              let permission = args["permission"] as? String else { result(nil); return }
+        self.request(permission, result)
+      case "openSettings": self.openSettings(result)
+      case "faceIDAttempted":
+        UserDefaults.standard.set(true, forKey: self.faceIDReceipt); result(nil)
+      case "cancel": self.cancel(); result(nil)
+      default: result(FlutterMethodNotImplemented)
+      }
+    }
+    backgroundObserver = NotificationCenter.default.addObserver(
+      forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main
+    ) { [weak self] _ in self?.cancel() }
+  }
+  private func manager() -> CLLocationManager {
+    if let location { return location }
+    let value = CLLocationManager()
+    location = value
+    value.delegate = self
+    return value
+  }
+  private func locationStatus() -> String {
+    switch manager().authorizationStatus {
+    case .authorizedAlways, .authorizedWhenInUse: return "allowed"
+    case .notDetermined: return "notDetermined"
+    case .denied: return "denied"
+    case .restricted: return "restricted"
+    @unknown default: return "unavailable"
+    }
+  }
+  private func photoStatus() -> String {
+    switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+    case .authorized: return "allowed"
+    case .limited: return "limited"
+    case .denied: return "denied"
+    case .restricted: return "restricted"
+    case .notDetermined: return "notDetermined"
+    @unknown default: return "unavailable"
+    }
+  }
+  private func cameraStatus() -> String {
+    switch AVCaptureDevice.authorizationStatus(for: .video) {
+    case .authorized: return "allowed"
+    case .denied: return "denied"
+    case .restricted: return "restricted"
+    case .notDetermined: return "notDetermined"
+    @unknown default: return "unavailable"
+    }
+  }
+  private func notificationStatus(_ settings: UNNotificationSettings) -> String {
+    switch settings.authorizationStatus {
+    case .authorized, .provisional, .ephemeral: return "allowed"
+    case .denied: return "denied"
+    case .notDetermined: return "notDetermined"
+    @unknown default: return "unavailable"
+    }
+  }
+  private func faceStatus() -> String {
+    // Apple exposes capability, not a Face ID authorization-status API. Do not
+    // confuse canEvaluatePolicy with consent. Persist only a prompt receipt.
+    let probe = LAContext()
+    var error: NSError?
+    let capable = probe.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+    guard probe.biometryType == .faceID else { return "unavailable" }
+    if UserDefaults.standard.bool(forKey: faceIDReceipt) { return capable ? "allowed" : "denied" }
+    if !capable { return "denied" }
+    return "notDetermined"
+  }
+  private func status(_ result: @escaping FlutterResult) {
+    let local = ["location": locationStatus(), "photos": photoStatus(),
+                 "camera": cameraStatus(), "faceID": faceStatus()]
+    UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+      DispatchQueue.main.async {
+        guard let self else { result(nil); return }
+        var values = local
+        values["notifications"] = self.notificationStatus(settings)
+        result(values)
+      }
+    }
+  }
+  private func openSettings(_ result: @escaping FlutterResult) {
+    guard UIApplication.shared.applicationState == .active,
+          let url = URL(string: UIApplication.openSettingsURLString) else { result(false); return }
+    cancel()
+    UIApplication.shared.open(url, options: [:]) { opened in result(opened) }
+  }
+  private func request(_ permission: String, _ result: @escaping FlutterResult) {
+    guard UIApplication.shared.applicationState == .active, active == nil else { result(nil); return }
+    let token = UUID()
+    active = token
+    func finish() {
+      DispatchQueue.main.async { [weak self] in
+        guard let self, self.active == token else { result(nil); return }
+        self.active = nil
+        self.context = nil
+        result(nil)
+      }
+    }
+    // Check the OS again at the action boundary; never request a second time.
+    switch permission {
+    case "location":
+      guard locationStatus() == "notDetermined" else { active = nil; openSettings(result); return }
+      locationReply = result
+      manager().requestWhenInUseAuthorization()
+    case "notifications":
+      UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+        DispatchQueue.main.async {
+          guard let self, self.active == token,
+                UIApplication.shared.applicationState == .active else { finish(); return }
+          guard self.notificationStatus(settings) == "notDetermined" else {
+            self.active = nil; self.openSettings(result); return
+          }
+          UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { _, _ in finish() }
+        }
+      }
+    case "photos":
+      guard photoStatus() == "notDetermined" else { active = nil; openSettings(result); return }
+      PHPhotoLibrary.requestAuthorization(for: .readWrite) { _ in finish() }
+    case "camera":
+      guard cameraStatus() == "notDetermined" else { active = nil; openSettings(result); return }
+      AVCaptureDevice.requestAccess(for: .video) { _ in finish() }
+    case "faceID":
+      guard faceStatus() == "notDetermined" else { active = nil; openSettings(result); return }
+      let prompt = LAContext()
+      context = prompt
+      UserDefaults.standard.set(true, forKey: faceIDReceipt)
+      prompt.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                            localizedReason: "Opening ZYRA when App lock is on.") { _, _ in finish() }
+    default: active = nil; result(nil)
+    }
+  }
+  func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+    guard manager === location, locationStatus() != "notDetermined", let reply = locationReply else { return }
+    locationReply = nil
+    active = nil
+    reply(nil)
+  }
+  private func cancel() {
+    active = nil
+    context?.invalidate()
+    context = nil
+    let reply = locationReply
+    locationReply = nil
+    reply?(nil)
+  }
+  deinit {
+    if let backgroundObserver { NotificationCenter.default.removeObserver(backgroundObserver) }
+    context?.invalidate()
+    location?.delegate = nil
+  }
+}
 
 // One foreground fix, rounded BEFORE Flutter. No exact coordinate, raw error,
 // altitude, speed, preference, server write or log crosses this boundary.

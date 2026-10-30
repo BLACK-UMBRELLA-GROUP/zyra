@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 167,295 lines in 330 files |
-| Developer and preview code inside it | 47,823 lines in 89 files |
-| The Founder preview (planned app) | 28,698 lines in 39 files |
-| Test code | 213,972 lines in 494 files |
+| All app code | 167,772 lines in 331 files |
+| Developer and preview code inside it | 48,286 lines in 90 files |
+| The Founder preview (planned app) | 29,161 lines in 40 files |
+| Test code | 214,692 lines in 496 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -47,6 +47,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | Queue15 Basic/Guardian capture; app unchanged | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue16 LOCK7 preflight failed; unfinished source withdrawn | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue17 LOCK8 preflight failed; prerequisite13 incomplete | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-30 | Queue 40 LOCK12 V2 Phone access | 167,772 / 331 | 48,286 / 90 | 29,161 / 40 | 214,692 / 496 | 2,612 / 307 MB | 39 | 1 |
 
 | 2026-10-30 | Queue 18, LOCK3 Guardian information and consent (OA-ZYRA-324 / DR-ZYRA-233) | 163,176 / 322 | 44,292 / 82 | 25,226 / 32 | 212,900 / 481 | 2,612 / 307 MB | 39 | 1 |
 
@@ -379,3 +380,8 @@ navigation/glyph/font metrics and unframed app viewport differ from the prototyp
 Written refusal: no whole-suite cleanup or claim, no queue 39/35 work, no Blueprint edit/generated inventory rewrite, no
 old member/sign-in retirement, new dependency, backend/migration, native build/install, upload or publication. Fable owns
 inventory maintenance and independent verification; Founder acceptance remains separate.
+
+
+## Queue 40 — Phone access LOCK12 V2 — 30 October 2026
+
+Added the admitted Settings entry, education receipt, exact five-row permission page, native metadata/request/Settings adapter and three locked purpose strings. The actual App lock owns the Face ID pill; this page never enables it. No new dependency, location fix, photo fetch, camera session, remote push-token registration, backend or migration. Existing member routes and LOCK11 rounded location class remain. Seven focused suites passed 95 distinct cases and final analysis is clean; two real Flutter renders and two comparisons sit beside the masters. Mocked permission behaviour is separate from native/device proof (OA-ZYRA-323). Source/render manifest and exact commands are in LOCK12_PHONE_ACCESS_V2 evidence; current as-built handover is ZYRA_PHONE_ACCESS_AS_BUILT_CURRENT_VERSION_V1.md. No whole-suite or pixel-parity claim. Fable's existing oversized-history/archive and protected inventory maintenance remain out of this row's scope.

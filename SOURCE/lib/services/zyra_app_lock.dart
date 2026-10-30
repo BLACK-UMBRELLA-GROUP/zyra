@@ -50,6 +50,7 @@
 // resolution. widgets re-exports foundation, so ChangeNotifier and
 // debugPrint still come along.
 import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
 import 'zyra_local_prefs.dart';
@@ -187,7 +188,20 @@ class ZyraAppLock extends ChangeNotifier {
   Future<bool> _authenticate(String reason) async {
     if (_authenticating) return false;
     _authenticating = true;
+    final generation = _generation;
     try {
+      // LocalAuthentication has no permission-status API. Record an attempted
+      // prompt for Phone access without changing this lock's authority/lifetime.
+      try {
+        await const MethodChannel(
+          'app.zyraconnect.zyra/phone_access',
+        ).invokeMethod<void>('faceIDAttempted');
+      } on MissingPluginException {
+        // Non-iOS builds keep their existing authentication path.
+      } on PlatformException {
+        // A receipt failure must not prevent unlocking.
+      }
+      if (!_isCurrent(generation)) return false;
       return await _auth.authenticate(
         localizedReason: reason,
         // The point of the whole design — see the header. Device passcode

@@ -32,6 +32,7 @@ enum ZyraConceptAccountAction {
   guardianPrivacy,
   visibility,
   hiddenProfiles,
+  phoneAccess,
   notificationSettings,
   membership,
   helpSupport,
@@ -65,6 +66,7 @@ class ZyraConceptAccountData {
     this.standardUnlocks,
     this.plusUnlocks,
     this.appLock = false,
+    this.phoneAccessSeen = false,
     this.smoothSettings = false,
     this.versionLine,
     this.membershipPaymentHistory = ZyraMembershipPaymentHistory.unknown,
@@ -89,6 +91,7 @@ class ZyraConceptAccountData {
   final int? standardUnlocks;
   final int? plusUnlocks;
   final bool appLock;
+  final bool phoneAccessSeen;
   final bool smoothSettings;
   final String? versionLine;
   final ZyraMembershipPaymentHistory membershipPaymentHistory;
@@ -513,10 +516,12 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
       String label,
       ZyraConceptAccountAction action, {
       String? value,
+      bool isNew = false,
     }) => _SettingsRow(
       key: ValueKey('concept_settings_${action.name}'),
       label: label,
       value: value,
+      isNew: isNew,
       smooth: smooth,
       onTap: () => onAction(action),
     );
@@ -598,6 +603,11 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
                     'Hidden Profiles',
                     ZyraConceptAccountAction.hiddenProfiles,
                   ),
+                row(
+                  'Phone access',
+                  ZyraConceptAccountAction.phoneAccess,
+                  isNew: !data.phoneAccessSeen,
+                ),
               ],
             ),
             _SettingsSection(
@@ -1091,7 +1101,9 @@ class _SettingsRow extends StatelessWidget {
     required this.onTap,
     required this.smooth,
     this.value,
+    this.isNew = false,
   });
+  final bool isNew;
   final String label;
   final String? value;
   final VoidCallback onTap;
@@ -1102,6 +1114,7 @@ class _SettingsRow extends StatelessWidget {
     'Advanced' => Icons.tune_rounded,
     'Guardian privacy' || 'Pause My Profile' => Icons.visibility_outlined,
     'Hidden Profiles' => Icons.person_off_outlined,
+    'Phone access' => Icons.phonelink_lock_outlined,
     'Notifications & emails' => Icons.notifications_outlined,
     'Membership' => Icons.workspace_premium_outlined,
     'Help & support' => Icons.help_outline_rounded,
@@ -1134,9 +1147,34 @@ class _SettingsRow extends StatelessWidget {
               const SizedBox(width: 13),
             ],
             Expanded(
-              child: Text(
-                label,
-                style: ZyraText.body(size: 15, color: Colors.white),
+              child: Wrap(
+                spacing: 10,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(
+                    label,
+                    style: ZyraText.body(size: 15, color: Colors.white),
+                  ),
+                  if (isNew)
+                    Container(
+                      key: const ValueKey('phone_access_new'),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 1,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ZyraColors.journeyGold,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        'NEW',
+                        style: ZyraText.body(
+                          size: 10,
+                          color: const Color(0xFF24182F),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
             if (value != null && value!.isNotEmpty) ...[
