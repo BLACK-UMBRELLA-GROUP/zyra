@@ -3,12 +3,12 @@ id: DOC-ZYRA-0290
 type: SPEC
 status: CURRENT
 feature: PRODUCT BLUEPRINT
-purpose: Blueprint part 2 (Guardians) - every Guardian rule of the planned app - linking by ZYRA Code, Main and Additional Guardians, what a Guardian sees and does, chat and paid access, Family Reviews, past Journey summaries, the Guardian Circle, Introductions, Speak to Guardian, Family places - each marked built, different or missing on the server, with its decision
+purpose: Blueprint part 2 (Guardians) - every Guardian rule of the planned app - linking by ZYRA Code, Main and Additional Guardians, what a Guardian sees and does, chat and paid access, Family Reviews, past Journey summaries, the Guardian Circle, Introductions, Connect with Guardian, Family places - each marked built, different or missing on the server, with its decision
 links: [OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0283, DOC-ZYRA-0289, DR-ZYRA-280]
 owner: Fable
 ---
 
-# ZYRA BLUEPRINT — PART 2 — GUARDIAN RULES — V2 (CURRENT)
+# ZYRA BLUEPRINT — PART 2 — GUARDIAN RULES — V3 (CURRENT)
 
 Status: **CURRENT - approved by the Founder, 26 Oct 2026** (all 14 blueprint pages, review pack DOC-ZYRA-0299). Building anything that breaks this page needs a new decision first. Written 26 Oct 2026 from the planned app (`SOURCE/lib/dev/` — model
 `zyra_view_request_draft_model.dart`, shell `zyra_one_journey_concept_shell.dart`, `zyra_one_journey_guardian_presentation.dart`),
@@ -28,8 +28,8 @@ to a Seeker by entering the other's **permanent ZYRA Code**; the other person ac
 **Main Guardian**, who leads, is in every Journey and decides each **48-hour Family Review**. Other Guardians are
 **Additional**: the Seeker chooses, Journey by Journey, whether they can view and chat. **Chat needs a paid Guardian**
 (Guardian One); Guardian Basic can view only. Guardians talk together in the **Guardian Circle**, put people forward as
-**Introductions**, and may **Speak to Guardian** of another family's Seeker. Most of this is already on the server; the
-Circle is built but not yet live, and Speak to Guardian and the agreed-access step are missing.
+**Introductions**, and may **Connect with Guardian** of another family's Seeker. Most of this is already on the server; the
+Circle is built but not yet live, and Connect with Guardian and the agreed-access step are missing.
 
 ## 1. Linking
 
@@ -59,7 +59,7 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 
 | Rule | Decision | Server |
 |---|---|---|
-| **Before a Journey:** the Main Guardian sees the Seeker's pending Journey requests, sent and received, and who each is with (public profile card only). Additional Guardians don't. The Seeker is told when linking a Main Guardian; the other person is told when a request is sent or received | DR-ZYRA-292 | **Missing** (OA-ZYRA-317); wording and privacy notice OA-ZYRA-321 |
+| **Before a Journey:** the Main Guardian sees the Seeker's pending Journey requests, sent and received, and who each is with (public profile card only). Additional Guardians don't. The Seeker is told once when a Guardian becomes Main (one-time message, LOCK 2). **The other person is not told at the request** — it is explained in a Profile section "What Guardians can do" (Founder 29 Oct, "B: Profile section only"; changes DR-ZYRA-292's consequence) | DR-ZYRA-292, Founder 29 Oct | **Missing** (OA-ZYRA-317); wording and privacy notice OA-ZYRA-321 |
 | Main is in every active Journey of their Seeker and cannot be switched off | DR-ZYRA-232 §1, DR-ZYRA-233 §1 | **Built** |
 | Additional Guardians: the Seeker turns **View** and **Chat** on or off per Journey (Chat needs View); each family controls only its own | DR-ZYRA-232 §2 | **Built** — `zyra_set_guardian_journey_permission` |
 | Agreed paid Additional Guardians at the start of a new Journey stay on for it | DR-ZYRA-280 §7 | **Missing** |
@@ -94,12 +94,12 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 | Messages and reports are kept for a set time, then purged | DR-ZYRA-248 | **Built** — `zyra_purge_expired_family_message_data` |
 | Blocks and unlinking end Circle access | DR-ZYRA-248 | **Built** — lifecycle triggers |
 
-## 7. Introductions and Speak to Guardian
+## 7. Introductions and Connect with Guardian
 
 | Rule | Decision | Server |
 |---|---|---|
 | A Guardian puts a person forward to their Seeker; it appears in the Seeker's **Introductions** with "Suggested by …"; a gold dot until seen | DR-ZYRA-280 §9, DR-ZYRA-157 | **Built** — `wali_suggestions` table, `zyra_mark_suggestions_seen` |
-| **Speak to Guardian:** a Guardian sends a request to another Seeker's Main Guardian, who chooses whether to respond (Guardian Network tab) | DR-ZYRA-280 §8 | **Missing** — client screens only, in both apps |
+| **Connect with Guardian:** a Guardian sends a request to another Seeker's Main Guardian, who chooses whether to respond (Guardian Network tab; LOCK 8 — Network also has Introduce to <Seeker>) | DR-ZYRA-280 §8 | **Missing** — client screens only, in both apps |
 | Guardian My ZYRA shows what needs them across their Seekers ("All settled" otherwise) | DR-ZYRA-274 | **Built** in part — `zyra_guardian_activity` |
 
 ## 8. Family places
@@ -127,3 +127,5 @@ Circle is built but not yet live, and Speak to Guardian and the agreed-access st
 | 2026-10-26 | V1 | Family places: 10 in total, any mix (DR-ZYRA-291) |
 | 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
 | 2026-10-26 | V2 | Founder: the Main Guardian sees who the Seeker's requests are with (DR-ZYRA-292). V1 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
+| 2026-10-29 | V2 | §3: other person told in a Profile section, not at the request (Founder "B: Profile section only"; ZYRA chat). DR number from Fable |
+| 2026-10-29 | V3 | "Speak to Guardian" renamed "Connect with Guardian" (Founder: "let change to connect with gurdian"); Guardian tabs now five (LOCK 8). V2 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |

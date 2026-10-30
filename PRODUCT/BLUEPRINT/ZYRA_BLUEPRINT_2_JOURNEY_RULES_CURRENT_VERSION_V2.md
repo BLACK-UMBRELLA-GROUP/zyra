@@ -57,7 +57,7 @@ means a brand-new request the other person must accept.
 | Received / Sent | Two tabs in Journey requests; a gold dot for unseen received requests | **Missing** |
 | Accept | Needs a free place on both sides | **Missing** |
 | Decline / cancel | Nothing is reserved; the sender sees **"Not taken up"** (same as expired) and waits **30 days** before asking that person again; the decliner may also **Hide** the sender, which stops further requests (DR-ZYRA-284) | **Missing** |
-| Past requests | A third tab, **Past**: your declined, expired and cancelled sent requests, and requests you declined, for 30 days (DR-ZYRA-284) | **Missing** |
+| Past requests | A third tab, **Past**: your declined, expired and cancelled sent requests, and requests you declined. They **stay there** — no 30-day limit (Founder 29 Oct, changes DR-ZYRA-284 §1) | **Missing** |
 | Introductions | People your Guardians put forward appear here | **Built** — `wali_suggestions` (corrected 26 Oct) |
 | Limits (how many, how long) | Pending requests: **Basic 3, Seeker One 25** (DR-ZYRA-283); a request expires after **7 days** (DR-ZYRA-277) | **Missing** |
 
@@ -127,3 +127,4 @@ Still open for the server design: what happens when the 48-hour ready window run
 | 2026-10-26 | V2 | Rewritten from the planned app (DR-ZYRA-274), each rule marked against the server |
 | 2026-10-26 | V2 | §8 decided (DR-ZYRA-277): Family Review kept, request limits, restart expiry |
 | 2026-10-26 | V2 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
+| 2026-10-29 | V2 | §3 Past requests stay (no 30-day limit) - Founder (ZYRA chat); DR from Fable |

@@ -18,7 +18,7 @@ PROMOTED — SEE THE GOVERNED DOCUMENT
 This content was promoted to a governed CURRENT_VERSION
 document on 2026-08-13 under OA-ZYRA-209.
 
-SOURCE OF TRUTH:  ZYRA_TERMINOLOGY_CURRENT_VERSION_V1.md
+SOURCE OF TRUTH:  ZYRA_TERMINOLOGY_CURRENT_VERSION_V2.md
                   (same folder)
 
 This file is retained because SUMMARY_STANDARD expects a

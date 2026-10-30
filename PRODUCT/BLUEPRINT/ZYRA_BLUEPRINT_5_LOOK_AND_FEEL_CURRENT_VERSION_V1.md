@@ -94,12 +94,12 @@ the background. Remembered per account on that device; cleared on sign-out. Stil
 
 ## 3. Glass, surfaces and the surface styles
 
-Three surface styles exist; **Classic Glass is the locked default** (29 Aug 2026). The other two are developer comparisons.
+Three surface styles exist; **Glass Signals is the locked default** (Founder, 29 Aug 2026 in code; confirmed 29 Oct 2026 — "Glass Signals"). The other two are developer comparisons removed in the Tier 4 clean-up (DR-ZYRA-276). Until 29 Oct this page said Classic Glass, copied from a stale code comment; the app has run Glass Signals since 29 Aug.
 
 | Style | What changes |
 |---|---|
-| **Classic Glass (current)** | Plain white glass; signals in white |
-| Glass Signals | Adds a light gold wash to selected surfaces; signals in gold |
+| Classic Glass | Plain white glass; signals in white (removed, Tier 4) |
+| **Glass Signals (current, locked)** | Adds a light gold wash to selected surfaces; signals in gold |
 | Status Accents | Tints surfaces with the lavender action colour |
 
 On dark backgrounds (what members see) the values are:
@@ -124,7 +124,7 @@ Blur behind glass: σ22 for the navigation bar, segmented toggle and seeker sele
 | Gold action pill | **48** tall, fully round (999) |
 | Bottom sheets and centred dialogs | corner **24** |
 | Snackbar | corner **14**, floating, inset **20** left/right/bottom |
-| Navigation bar | **58** tall while dragged, **50** resting (86%), corner **28**, **24** from the sides, **14** from the bottom |
+| Navigation bar | Full: **390** wide (at 430), **58** tall, corner **28**, **24** from the sides, **14** from the bottom. Idle (not touched): **40%** wide (**156**), **46** tall, centred; back to idle 3 s after the last touch or when the page scrolls; full size always with VoiceOver, Switch Control or Larger Text (LOCK 6, DR-ZYRA-304, spec DOC-ZYRA-0320) |
 
 Corners used across the app (count of places): 14 (81), 18 (58), 12 (52), 20 (45), 16 (45), fully round 999 (41), 24 (21), 50 (19).
 There is no single corner scale — see OA-ZYRA-313.
@@ -136,7 +136,7 @@ There is no single corner scale — see OA-ZYRA-313.
 | **Main button** | theme in `main.dart` | Glass fill, gold 70% edge, white Poppins 400 15, round | ~30 buttons app-wide |
 | **Gold action pill** | `zyra_gold_action_pill.dart` | The premium action: gold-edged round pill, 48 tall (chosen 29 Aug from five designs) | 3 |
 | **Glass dialog** | `zyra_glass_dialog.dart` | Centred notice/confirm: #241A2F, corner 24, gold 28% edge; danger button coral with dark text | 17 |
-| **Floating navigation bar** | `floating_nav_bar.dart` | "Floating Glass": breathing glass bar with a moving circular highlight; Browse's action bar is the same bar | 11 |
+| **Floating navigation bar** | `floating_nav_bar.dart` | "Floating Glass" glass bar; the current tab has a **gold underline** (no ring) and the bar is small until touched (LOCK 6, DR-ZYRA-304); a gold icon means new activity until that tab is opened (LOCK 5, DR-ZYRA-303); Browse's ••• action bar is unchanged | 11 |
 | Shell navigation | `zyra_shell_navigation.dart` | Tabs, plus a side rail on wide screens | 3 |
 | **Segmented toggle** | `zyra_segmented_toggle.dart` | The Connections selector; **the app's motion reference** (slide 260 ms easeOutCubic) | 13 |
 | State widgets | `zyra_state_widgets.dart` | Field error line, soft glass error banner, empty states | 39 |
@@ -239,3 +239,5 @@ Accessibility notes (contrast, normal text needs 4.5):
 6. People rows: the card sizes in §4, everywhere.
 7. Motion: easeOutCubic, 180–420 ms; respect reduced motion. Haptics: selection click by default, member-adjustable.
 | 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
+| 2026-10-29 | V1 | §3 corrected: the locked surface style is Glass Signals, not Classic Glass (Founder, 29 Oct, answering Codex's Tier 4 question; ZYRA chat) |
+| 2026-10-30 | V1 | §4 navigation bar and §5 floating navigation bar updated to LOCK 5 and LOCK 6 as built on 29 Oct (DR-ZYRA-303, DR-ZYRA-304) - Fable, 04:15 maintenance |

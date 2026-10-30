@@ -10579,6 +10579,8 @@ Findings:    None.
 
 Dependencies: The 2026-07-26 two-line surname decision and the
              2026-07-27 divider decision, both superseded here.
+Confirmed:   2026-10-29 - Founder: "Show the surname" (DR-ZYRA-298). The Browse rules row that had dropped the
+             surname was corrected by the ZYRA chat.
 
 ------------------------------------------------------------
 
@@ -17208,6 +17210,8 @@ Decision:    In every design comparison set only the chosen design stays. Kept o
 Consequence: Codex, after the freeze, confirms each set's chosen design from the code and lists it in
              his daily report before removing the rest; if a choice is unclear he asks the Founder.
 Related:     DR-ZYRA-274, OA-ZYRA-316 Tier 4, lesson L34.
+Amended:     2026-10-29 - the surface style kept is Glass Signals, not Classic Glass (DR-ZYRA-296); the tab
+             bar marks the current tab with an underline (DR-ZYRA-304).
 
 ------------------------------------------------------------
 
@@ -17258,6 +17262,8 @@ Decision:    Keep SOURCE/android (a future Android release). Remove SOURCE/web, 
 Consequence: Added to OA-ZYRA-316; Codex does it after the freeze and confirms the iPhone build and
              tests still pass.
 Related:     DR-ZYRA-274, OA-ZYRA-316, DOC-ZYRA-0288.
+Extended:    2026-10-29 - iPhone and iPad at launch (DR-ZYRA-297). A private web copy of the preview for
+             testing (DR-ZYRA-307) does not change this decision.
 
 ------------------------------------------------------------
 
@@ -17370,6 +17376,7 @@ Decision:    1. Journey requests gain a third tab, Past: requests you sent that 
 Consequence: Hide (DOC-ZYRA-0292) now also blocks requests from the hidden person; the server design
              (OA-ZYRA-317) covers the Past tab, the 30-day wait and Hide.
 Related:     DR-ZYRA-241, DR-ZYRA-277, DR-ZYRA-283, DR-ZYRA-095, OA-ZYRA-317.
+Amended:     2026-10-29 - §1: Past items stay with no end date (DR-ZYRA-300); §2-§4 unchanged.
 
 ------------------------------------------------------------
 
@@ -17507,12 +17514,269 @@ Consequence: Openness must be declared, never discovered: the Seeker is told whe
              can see this request"); the privacy notice and the DPIA cover it (OA-ZYRA-321). Server:
              request visibility for the Main Guardian is server design work (OA-ZYRA-317).
 Related:     DR-ZYRA-232, DR-ZYRA-233, DR-ZYRA-277, OA-ZYRA-317, OA-ZYRA-321, DOC-ZYRA-0290.
+Amended:     2026-10-29 - the other person is told in Profile, not at each request (DR-ZYRA-299); wording
+             DR-ZYRA-294.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-292,
+DR-ZYRA-293
+Title:       Old-app clean-up order (OA-ZYRA-316): Tiers 1, 2 and 4 now; the old member app stays until the
+             planned app is connected to the server
+Date:        2026-10-29
+Status:      APPROVED - Founder direct (he sent the ZYRA chat's order to Codex as his own instruction: "ok i
+             pasted you message"; 15:22, to Codex: continue Tiers 2 -> 4 -> tests without waiting)
+Authority:   Founder, 29 Oct 2026, ZYRA chat sessions 1-2 (2026-10-29_ZYRA_CHAT_NOTE.md) and Codex task 3.
+Decision:    Follow DOC-ZYRA-0285 §7, one tier per task: Tier 1 (unused code) -> Tier 2 (app side: preview
+             model and shared files only) -> Tier 4 (unchosen design options, DR-ZYRA-276) -> matching tests
+             and screenshots. The old member app and its sign-in routes (Tier 3) are NOT removed until
+             OA-ZYRA-317 connects the planned app to the server. The preview stays Founder-only (OA-ZYRA-286).
+Consequence: Done 29 Oct: Tier 1 (a7b6fe3, 6d5735c), Tier 2 (d08b2d1), Tier 4 (9e903fb), tests and
+             captures (3f64e39). The old member app and its sign-in routes were not touched; Codex's picture
+             check found the chosen designs unchanged (261 of 261). Tier 3 waits for OA-ZYRA-317.
+Related:     DR-ZYRA-274, DR-ZYRA-276, OA-ZYRA-316, OA-ZYRA-317, OA-ZYRA-286, DOC-ZYRA-0285.
+
+------------------------------------------------------------
+
+DR-ZYRA-294
+Title:       Member wording approved for DR-ZYRA-289 (paying never guarantees chat) and DR-ZYRA-292 (the
+             Main Guardian sees requests)
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("Yes, approved"; "Yes, tick box"; "Short line"; "Yes, add it")
+Authority:   Founder, 29 Oct 2026, ZYRA chat session 1.
+Decision:    The texts A1-A4 and B1-B4 in the 29 Oct ZYRA chat note ("Approved wording") are approved.
+             A Guardian ticks "I understand <Seeker> decides." before Pay works. The request line is one
+             short line; tap it for the full sentence. The Main Guardian's own requests list says "You see
+             these as <Seeker>'s Main Guardian. <Seeker> decides on them." Names, never he/she: the Seeker's
+             first name when the Guardian is linked to one Seeker, "your Seeker" when none, "each Seeker"
+             when several. Changed the same day: B2 and B3 (the lines at each request) were withdrawn -
+             DR-ZYRA-299; B1 (at linking) stays ("Keep it").
+Consequence: A1-A3 go into the Membership LOCK; A4 into the member terms (OA-ZYRA-320; a solicitor reviews;
+             refund position open). B1 is built at Make Main (LOCK 2); its first-link moment waits for
+             OA-ZYRA-317. B4 is in LOCK 8 (DR-ZYRA-306).
+Related:     DR-ZYRA-289, DR-ZYRA-292, DR-ZYRA-299, OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0071.
+
+------------------------------------------------------------
+
+DR-ZYRA-295
+Title:       LOCK pictures come from Codex's screenshots of the planned app; Requests and Guardians is the
+             first area
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("Codex screenshots"; "Requests and Guardians")
+Authority:   Founder, 29 Oct 2026, ZYRA chat session 1; 15:45: the 10 Oct test screenshots are old -
+             "everything needs updating and Codex gotta do that".
+Decision:    Codex captures the planned app at real phone size, every reachable state, as the picture
+             baseline; the ZYRA chat adds states and specs and records each LOCK from it. The first area to
+             LOCK and connect is Requests and Guardians. The order after it (Journey, Browse, Membership,
+             Profile and settings, Ended and restart) is the ZYRA chat's plan shown to him, not his decision.
+Consequence: Baseline captured 29 Oct (DOC-ZYRA-0301, 0303-0306; queue lines 2, 3, 5, 10, 15): 1,165
+             pictures, 1.0 GB, in PRODUCT/APPROVED/BASELINE/SCREENSHOTS, committed to git (see OA-ZYRA-326).
+Related:     AD-AIOS-115, DR-ZYRA-274, DOC-ZYRA-0301, OA-ZYRA-316, OA-ZYRA-326.
+
+------------------------------------------------------------
+
+DR-ZYRA-296
+Title:       The surface style kept is Glass Signals (corrects DR-ZYRA-276, which said Classic Glass)
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("Glass Signals"; to Codex: "Keep current Glass Signals")
+Authority:   Founder, 29 Oct 2026, answering Codex's Tier 4 question (ZYRA chat note; Codex task 9).
+Decision:    Glass Signals - what the app shows today, with gold signals - is the one surface style kept.
+             DR-ZYRA-276's "Classic Glass locked" came from a stale code comment; the code's default since
+             29 Aug was Glass Signals.
+Consequence: Tier 4 kept Glass Signals (9e903fb). The ZYRA chat corrected blueprint part 5 §3
+             (DOC-ZYRA-0282) and the colour theme summary (DOC-ZYRA-0102) on 29 Oct. DR-ZYRA-276 amended.
+Related:     DR-ZYRA-276, OA-ZYRA-316, DOC-ZYRA-0282, DOC-ZYRA-0102.
+
+------------------------------------------------------------
+
+DR-ZYRA-297
+Title:       ZYRA launches on iPhone and iPad
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("iPhone and iPad")
+Authority:   Founder, 29 Oct 2026, ZYRA chat, answering "What should ZYRA do at launch?" after the ZYRA chat
+             found the app already installs on iPad (TARGETED_DEVICE_FAMILY = 1,2).
+Decision:    ZYRA supports iPhone and iPad at launch. Extends DR-ZYRA-279 (Android kept for later; web and
+             desktop removed), which is otherwise unchanged.
+Consequence: The ZYRA chat's working rule: every LOCK shows iPhone SE (375x667), iPhone 15 Pro Max (430x932)
+             and iPad (834x1194 portrait); iPad landscape is settled at the first LOCK. No iPad layout exists
+             yet (the iPad shows the phone layout stretched). iPad and small-phone pictures need Codex's native
+             build route, which is held (OA-ZYRA-323). App Store review will need iPad screenshots.
+Related:     DR-ZYRA-279, DOC-ZYRA-0288, OA-ZYRA-323.
+
+------------------------------------------------------------
+
+DR-ZYRA-298
+Title:       LOCK 2 - Journey requests and Guardians
+Date:        2026-10-29
+Status:      APPROVED - Founder direct (LOCK, 18:11: "ok we can remove saras main gurdia can you requests.
+             maybe these can be in a secion in profiel or somethign which shows what gurdian can do... now
+             add everything to files so i can type go and codex will build and update app")
+Authority:   Founder, 29 Oct 2026, ZYRA chat; LOCK record DOC-ZYRA-0307.
+Decision:    Build the requests and Guardians screens as locked in PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/
+             (spec DOC-ZYRA-0308, 14 masters, brief DOC-ZYRA-0309). His choices in it: cards show the surname
+             ("Show the surname" - as DR-ZYRA-162 already said); the Past tab stays ("No sorry add past",
+             DR-ZYRA-284); places-full buttons "End & accept request / Keep my Journeys"; after sending, the
+             profile button says "Request sent" (tapping again still cancels); the one-time Main Guardian
+             message at linking stays ("Keep it"). Two changes to earlier rules: DR-ZYRA-299 and DR-ZYRA-300.
+Consequence: Built 29 Oct in the Founder preview (queue line 11; ddadaf3, 1475daa) after two failed preflights
+             caused by the masters (lines 4 and 6). The first-link Main Guardian message waits for OA-ZYRA-317
+             (the preview has no link event).
+Related:     DR-ZYRA-162, DR-ZYRA-284, DR-ZYRA-292, DR-ZYRA-294, DR-ZYRA-299, DR-ZYRA-300, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-299
+Title:       The other person learns about the Main Guardian in a Profile section, not at each request
+             (changes DR-ZYRA-292's consequence)
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("B: Profile section only"), against the ZYRA chat's advice
+Authority:   Founder, 29 Oct 2026 (18:11-18:15), ZYRA chat, after the consequence was explained to him.
+Decision:    The lines "<Name>'s Main Guardian can see this request" when sending (B2) and receiving (B3) are
+             withdrawn. What Guardians can see is explained in Profile, "What Guardians can do" (LOCK 3,
+             DR-ZYRA-301). The Main Guardian still sees the requests (DR-ZYRA-292); B1 at linking stays.
+Risk:        In plain words: a person sending or receiving a request is no longer told, at that moment, that
+             the other person's Main Guardian can see it. DR-ZYRA-292 said openness must be "declared, never
+             discovered", and UK GDPR expects people to be told how their information is used.
+Consequence: For the solicitor review, the privacy notice and the DPIA (OA-ZYRA-321 - added there). Until LOCK 3
+             is built, nothing in the planned app tells the other person (DOC-ZYRA-0307).
+Related:     DR-ZYRA-292, DR-ZYRA-294, DR-ZYRA-301, OA-ZYRA-321.
+
+------------------------------------------------------------
+
+DR-ZYRA-300
+Title:       Past requests stay listed with no end date (amends DR-ZYRA-284 §1)
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("no i think we remomve listed date and ensure it stays there")
+Authority:   Founder, 29 Oct 2026 (18:42), comment on the prototype's Past tab.
+Decision:    Items in the Past tab stay, with no "listed until" date (DR-ZYRA-284 §1 said 30 days). The 30-day
+             wait before asking the same person again (§3) is unchanged. Still open: whether ended Journeys
+             show inside Past or stay in Ended Journeys (the ZYRA chat asked him).
+Consequence: The LOCK 2 spec, record and masters were changed before the build. Declined and expired requests
+             are now kept with no time limit - a storage-limitation question for the DPIA (OA-ZYRA-321); what
+             the server keeps of a request record, and for how long, is open (OA-ZYRA-317). Added to both.
+Related:     DR-ZYRA-284, DR-ZYRA-298, OA-ZYRA-317, OA-ZYRA-321.
+
+------------------------------------------------------------
+
+DR-ZYRA-301
+Title:       LOCK 3 - "What Guardians can do" in Profile, four swipeable cards
+Date:        2026-10-29
+Status:      APPROVED - Founder direct (LOCK, 18:33: "yeh u liek that locki n guridan cards")
+Authority:   Founder, 29 Oct 2026, ZYRA chat; LOCK record DOC-ZYRA-0310.
+Decision:    Profile gets a "What Guardians can do" row ("maybe it should live inside safety and sharing")
+             that opens four swipeable cards in the Profiles card style: Your Main Guardian · Your Additional
+             Guardians · Other Seekers' Guardians · No Guardian ever sees (spec DOC-ZYRA-0311, 5 masters,
+             brief DOC-ZYRA-0312). "Other Seekers' Guardians" is the ZYRA chat's wording for his "other users
+             gurdians", shown to him before the LOCK.
+Consequence: Not built. Line 7 failed: the preview's Guardian Circle shows past Journey summaries with sharing
+             off (breaks DR-ZYRA-233 and card 4). Line 13 (Circle fix first) failed: the fix as written still
+             shows named past topics, which DR-ZYRA-233 item 4 does not allow. The ZYRA chat corrects the spec;
+             the leak is OA-ZYRA-324.
+Related:     DR-ZYRA-233, DR-ZYRA-292, DR-ZYRA-299, OA-ZYRA-324.
+
+------------------------------------------------------------
+
+DR-ZYRA-302
+Title:       LOCK 4 - the profile photo in the Profiles details card circle
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("next the profiles. the info card should the little picture above name
+             be profile picture icon. ensure codex does that")
+Authority:   Founder, 29 Oct 2026 (18:33), ZYRA chat; LOCK record DOC-ZYRA-0313.
+Decision:    The small circle above the name on the Profiles details card shows the person's first photo, and
+             a gold person icon when there is none (spec DOC-ZYRA-0314, 2 masters, brief DOC-ZYRA-0315).
+Consequence: Built 29 Oct in the Founder preview (queue line 8; e677843, 9c2fc13).
+Related:     DR-ZYRA-162, DR-ZYRA-276, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-303
+Title:       LOCK 5 - a gold tab icon means new activity and clears when the tab is opened
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("ensure when the icon is gold it means u got a notification but when
+             icon is clciked the gold colour goes")
+Authority:   Founder, 29 Oct 2026 (18:36), comment on the prototype's tab bar; LOCK record DOC-ZYRA-0316.
+Decision:    Gold on a tab icon means something new arrived since that tab was last opened; opening the tab
+             clears it; a later arrival brings it back (spec DOC-ZYRA-0317, 2 masters, brief DOC-ZYRA-0318).
+             Before, My ZYRA stayed gold until the request itself was viewed.
+Consequence: Built 29 Oct in the Founder preview (queue line 9; 7fec19c, 56cca42).
+Related:     DR-ZYRA-276, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-304
+Title:       LOCK 6 - tab bar: gold underline, and a small bar until touched (option 5a)
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("let lock in underline but the actual nav bar i was it 40% of size
+             when not pressed" -> "5a")
+Authority:   Founder, 29 Oct 2026 (19:09-19:14), comments on the prototype; LOCK record DOC-ZYRA-0319.
+Decision:    The current tab is marked by a gold underline (replacing the Floating Glass gold ring); when idle
+             the bar shrinks and it expands when touched (spec DOC-ZYRA-0320, 4 masters, brief DOC-ZYRA-0321).
+             Added by the ZYRA chat within its remit, written in the spec: the first tap on the small bar only
+             expands it (small icons are under the 44-point touch minimum); the bar stays full size with
+             VoiceOver or Larger Text; instant with Reduce Motion.
+Consequence: Built 29 Oct in the Founder preview (queue line 14; a7df0e7, 9bc74cb). Changes how DR-ZYRA-276's
+             Floating Glass bar shows the current tab.
+Related:     DR-ZYRA-276, DR-ZYRA-303, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-305
+Title:       LOCK 7 - the Profiles request row becomes one pill with larger arrows (A4)
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("i dont mind a4 but would like arrow sections maybe a little larger"
+             -> "LOCK A4")
+Authority:   Founder, 29 Oct 2026 (19:23-19:45), ZYRA chat; LOCK record DOC-ZYRA-0322.
+Decision:    Previous / Request a Journey / Next become one pill (‹ · Request a Journey · ›), arrow sections
+             68 points wide, 56 points tall (spec DOC-ZYRA-0323, 3 masters, brief DOC-ZYRA-0324). His standing
+             instruction to the ZYRA chat with it: "always once i confirm somethgin remove optoins" - once he
+             confirms a choice, the other options leave the prototype.
+Consequence: Not built. Line 16 failed in preflight: at the largest text size the label needs about 259
+             points and the pill has 252 at 430 wide; nothing in the LOCK says what happens then. The ZYRA
+             chat locks a Larger Text rule and queues a new line.
+Related:     DR-ZYRA-276, DR-ZYRA-298, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-306
+Title:       Guardian side brought up to date - Insights scrapped, five tabs like the Seeker, "Connect with
+             Guardian" (LOCK 8)
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("5 tabs, mirror the Seeker"; "let change to connect with gurdian";
+             "no i liek yout thinking continue"; LOCK, 20:09: "lock in 5 guardian tabs")
+Authority:   Founder, 29 Oct 2026, ZYRA chat; LOCK record DOC-ZYRA-0325.
+Decision:    1. Guardian Insights are scrapped ("we screpped insight"); the Guardian side follows the Seeker
+                design "but of course keeping its own identy".
+             2. Five Guardian tabs mirroring the Seeker: Network · Journeys · My ZYRA · Seekers · Profile,
+                opening on My ZYRA.
+             3. "Speak to Guardian" is renamed "Connect with Guardian".
+             4. A Guardian with several Seekers: My ZYRA covers all of them, Network and Journeys switch per
+                Seeker, Seekers lists everyone - the ZYRA chat's proposal, approved by him.
+             Locked as spec DOC-ZYRA-0326, 14 masters, brief DOC-ZYRA-0327. Guardian Basic is not part of it.
+Consequence: Not built: line 17 needs line 13 (the Circle fix, OA-ZYRA-324) first. The preview still has
+             Guardian Insights and the "Guardian Dashboard" title (OA-ZYRA-325). Blueprint part 1 V3 and
+             Guardian rules V3 were updated by the ZYRA chat on 29 Oct.
+Related:     DR-ZYRA-280, DR-ZYRA-233, DR-ZYRA-292, DR-ZYRA-294, OA-ZYRA-324, OA-ZYRA-325.
+
+------------------------------------------------------------
+
+DR-ZYRA-307
+Title:       A private web copy of the Founder preview, for testing in chat - not a web app
+Date:        2026-10-29
+Status:      APPROVED - Founder direct ("Yes, make a real web copy"); gated on Fable's safety check
+Authority:   Founder, 29 Oct 2026, ZYRA chat, answering whether Codex should export the preview as a private
+             web page.
+Decision:    Codex exports the Founder preview (sample people only, nothing connected, no keys) as a private
+             static web page that the ZYRA chat publishes for the Founder to tap through. DR-ZYRA-279 stands:
+             ZYRA has no web app and the repo gets no web/ folder.
+Consequence: Brief DOC-ZYRA-0328, queue line 12. Fable's check, 30 Oct: safe only with the conditions added to
+             the brief (the preview's code reaches the two git-ignored key files in lib/config, so the real
+             files must never be copied into the build).
+Related:     DR-ZYRA-279, DR-ZYRA-274, OA-ZYRA-286.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-307,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-293 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-308 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

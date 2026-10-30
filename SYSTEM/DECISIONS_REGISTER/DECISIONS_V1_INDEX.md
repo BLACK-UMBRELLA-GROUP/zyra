@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**290 decisions; 3 marked superseded/retired.**
+**305 decisions; 3 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -306,3 +306,18 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-290 | 2026-10-26 | Pause My Profile is kept - it hides the profile and stops new requests; current Journeys … | APPROVED - Founder direct ("3a" - keep) |
 | DR-ZYRA-291 | 2026-10-26 | A family plan holds up to 10 places in total, any mix of Seeker One and Guardian One | APPROVED - Founder delegated ("you help… |
 | DR-ZYRA-292 | 2026-10-26 | A Seeker's Main Guardian sees who the Seeker's Journey requests are with | APPROVED - Founder direct ("pro c ... I… |
+| DR-ZYRA-293 | 2026-10-29 | Old-app clean-up order (OA-ZYRA-316): Tiers 1, 2 and 4 now; the old member app stays unti… | APPROVED - Founder direct (he sent the … |
+| DR-ZYRA-294 | 2026-10-29 | Member wording approved for DR-ZYRA-289 (paying never guarantees chat) and DR-ZYRA-292 (t… | APPROVED - Founder direct ("Yes, approv… |
+| DR-ZYRA-295 | 2026-10-29 | LOCK pictures come from Codex's screenshots of the planned app; Requests and Guardians is… | APPROVED - Founder direct ("Codex scree… |
+| DR-ZYRA-296 | 2026-10-29 | The surface style kept is Glass Signals (corrects DR-ZYRA-276, which said Classic Glass) | APPROVED - Founder direct ("Glass Signa… |
+| DR-ZYRA-297 | 2026-10-29 | ZYRA launches on iPhone and iPad | APPROVED - Founder direct ("iPhone and … |
+| DR-ZYRA-298 | 2026-10-29 | LOCK 2 - Journey requests and Guardians | APPROVED - Founder direct (LOCK, 18:11:… |
+| DR-ZYRA-299 | 2026-10-29 | The other person learns about the Main Guardian in a Profile section, not at each request… | APPROVED - Founder direct ("B: Profile … |
+| DR-ZYRA-300 | 2026-10-29 | Past requests stay listed with no end date (amends DR-ZYRA-284 §1) | APPROVED - Founder direct ("no i think … |
+| DR-ZYRA-301 | 2026-10-29 | LOCK 3 - "What Guardians can do" in Profile, four swipeable cards | APPROVED - Founder direct (LOCK, 18:33:… |
+| DR-ZYRA-302 | 2026-10-29 | LOCK 4 - the profile photo in the Profiles details card circle | APPROVED - Founder direct ("next the pr… |
+| DR-ZYRA-303 | 2026-10-29 | LOCK 5 - a gold tab icon means new activity and clears when the tab is opened | APPROVED - Founder direct ("ensure when… |
+| DR-ZYRA-304 | 2026-10-29 | LOCK 6 - tab bar: gold underline, and a small bar until touched (option 5a) | APPROVED - Founder direct ("let lock in… |
+| DR-ZYRA-305 | 2026-10-29 | LOCK 7 - the Profiles request row becomes one pill with larger arrows (A4) | APPROVED - Founder direct ("i dont mind… |
+| DR-ZYRA-306 | 2026-10-29 | Guardian side brought up to date - Insights scrapped, five tabs like the Seeker, "Connect… | APPROVED - Founder direct ("5 tabs, mir… |
+| DR-ZYRA-307 | 2026-10-29 | A private web copy of the Founder preview, for testing in chat - not a web app | APPROVED - Founder direct ("Yes, make a… |

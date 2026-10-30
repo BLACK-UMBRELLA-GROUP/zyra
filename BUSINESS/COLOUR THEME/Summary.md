@@ -79,7 +79,7 @@ The old names "Royal Purple #8A6A9E" and "Luxury Dark Purple #3D2A4A" now surviv
 
 ## 4. Surfaces (what members see)
 
-**Classic Glass** is the locked surface style (29 Aug 2026). Since 22 Oct the selected/important look is the **quiet gold halo**:
+**Glass Signals** is the locked surface style (29 Aug 2026 in code; the Founder confirmed "Glass Signals" on 29 Oct 2026 — this page said Classic Glass until then, copied from a stale code comment). Since 22 Oct the selected/important look is the **quiet gold halo**:
 the normal glass fill with a 70% gold edge, not a paler fill.
 
 | Surface | Fill | Edge |
@@ -129,9 +129,10 @@ those too if the wordmark font ever changes.
 | 11 Aug 2026 | One component system: lavender primary, plum text, glass dialogs, coral danger | Frost UI pass |
 | 20 Aug 2026 | Background no longer changes by gender | Founder direction |
 | 24 Aug 2026 | Midnight Plum becomes the default; Poppins the reading font | Founder direction |
-| 29 Aug 2026 | Classic Glass surfaces locked | Founder direction |
+| 29 Aug 2026 | Glass Signals surfaces locked (recorded here as Classic Glass until 29 Oct 2026) | Founder direction |
 | 27 Sep 2026 | Midnight Plum darkened to #30203F → #160E20 app-wide; sheets one opaque colour | OA-ZYRA-257 |
 | 30 Sep 2026 | Icon lettering uses wordmark gold #E5CE8E | OA-ZYRA-257 |
 | 3 Oct 2026 | Centred dialogs opaque #241A2F with a gold edge | OA-ZYRA-304/257 |
 | 4 Oct 2026 | Gold accents becomes a member option, default Off | DR-ZYRA-258 |
 | 22 Oct 2026 | Quiet gold halo for selected surfaces; Midnight blue background option | OA151, OA-ZYRA-304/305 |
+| 29 Oct 2026 | Surface style corrected to Glass Signals (Founder, answering Codex's Tier 4 question) | ZYRA chat |

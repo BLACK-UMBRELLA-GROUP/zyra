@@ -6,9 +6,11 @@
 These rules sit above every other instruction in this tree. Where any older
 document, overlay or AD says otherwise, this block wins.
 
-> **BUILD FREEZE — Founder, 24 Oct 2026.** No app feature building in any business
-> until Shakeel lifts it in writing. Allowed meanwhile: review, documentation, and
-> fixes Shakeel approves one by one. Tracked as OA-AIOS-406.
+> **BUILD FREEZE — Founder, 24 Oct 2026. LIFTED FOR ZYRA on 29 Oct 2026** ("so i wanna
+> do freeze lift do it"). ZYRA builds again - only from LOCKed designs (rule 11) and
+> work Shakeel names. AZMARA, SELAH and WAFA stay frozen until Shakeel lifts each in
+> writing. Allowed while frozen: review, documentation, and fixes Shakeel approves one
+> by one. Tracked as OA-AIOS-406.
 
 1. **Only the Founder (Shakeel) approves.** Agreement between AIs is never
    approval. His direct instruction in conversation is approval.
@@ -85,9 +87,10 @@ Update this paragraph the same day the direction changes (lesson S13).
 | 2-5 options, one picture at a time, each with "what changed" | ZYRA chat | Chat |
 | Pick and tweak, then `LOCK` | Shakeel | Chat |
 | Record the LOCK: screen pictures at **real phone size with the real tabs/bars on top**, every state (empty, loading, error), a spec with numbers (sizes, positions, rules, data), and a `LOCK_RECORD.md` line with Shakeel's words and the date | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/` - one live copy `<NAME>_CURRENT_VERSION_V<n>.<ext>`, old ones `<NAME>_<date>_V<n>` in `ARCHIVE/` |
-| Build brief: locked file paths, "copy exactly, no improvements", what not to touch, checks | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/BUILD_BRIEF_<YYYY-MM-DD>.md` - Shakeel only tells Codex "Build <that path>" |
+| Build brief: locked file paths, "copy exactly, no improvements", what not to touch, checks; then one WAITING line in `PRODUCT/APPROVED/BUILD_QUEUE.md` | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/BUILD_BRIEF_<YYYY-MM-DD>.md`. Codex builds the queue at 04:00, or when Shakeel types GO in the ZYRA Codex chat (charter rule 9). **Every** ZYRA instruction for Codex - LOCKed builds and Founder-named tasks (captures, fixes, clean-up) - goes in as a queue line with a brief; Shakeel only types GO (Founder, 29 Oct) |
 | Check the locked files first, report problems, then build exactly | Codex | Task note: "Built from: <paths>" plus a screenshot of the built screen beside the master |
 | Compare the build with the master | ZYRA chat | Its chat note; Fable files the decision (DR-ZYRA) at 04:15 |
+| Every morning (05:36 scheduled task, after Codex 04:00 and Fable 04:15): read the newest app screenshots and `BUILT/` folders, compare with the masters and the prototype, update the prototype to the real app, and list every difference | ZYRA chat | Chat note row "Morning check"; differences go to Shakeel and become OAs via Fable (Founder, 29 Oct: "every morning ... check app screenshots and update prototype ... spot any differences ... and highlight it") |
 
 Lessons from AZMARA: never specify a behaviour in words only - add a picture of the expected result; never lock art before the
 screen's data, navigation and states; review at real phone size before `LOCK`; locked design sources live in the repo, not only

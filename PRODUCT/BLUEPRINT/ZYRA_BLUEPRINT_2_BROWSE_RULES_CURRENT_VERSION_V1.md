@@ -61,9 +61,9 @@ or Consider any more.
 
 | Rule | Decision | Server |
 |---|---|---|
-| Portrait card: public details first, then photos you can swipe through; the one chosen design | DR-ZYRA-276 | — (app) |
+| Portrait card, **Details first**: page 1 is the name card (name, surname, age, location, nationality, ethnicity); the next pages are the photos **with no name or details on them**. The "Original photos" layout (name over the photo) is not used (Founder 29 Oct: "since users first picture is a name card the photos dont need info in them") | DR-ZYRA-276, Founder 29 Oct | — (app) |
 | Photos come from the private photo store, never public links | — | **Built** — private `profile-photos` bucket, owner checks |
-| Name shown as the first name and age · city | DR-ZYRA-162, DR-ZYRA-163 | — (app) |
+| Name shown as **first name and surname**, then age · city (corrected 29 Oct: DR-ZYRA-162 always had the surname; this row had dropped it. Founder confirmed 29 Oct: "Show the surname") | DR-ZYRA-162, DR-ZYRA-163 | — (app) |
 | Profiles you have looked at are remembered on the phone (for the "new" cue) | — | app only |
 
 ## 5. Actions
@@ -107,3 +107,5 @@ or Consider any more.
 | 2026-10-26 | V1 | First draft (OA-ZYRA-309) |
 | 2026-10-26 | V1 | Paused profiles: DR-ZYRA-290 |
 | 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
+| 2026-10-29 | V1 | §4 card: Details first, photos carry no name or details; Original photos not used (Founder) |
+| 2026-10-29 | V1 | §4 name row corrected to first name + surname (DR-ZYRA-162); Founder confirmed "Show the surname" (ZYRA chat) |

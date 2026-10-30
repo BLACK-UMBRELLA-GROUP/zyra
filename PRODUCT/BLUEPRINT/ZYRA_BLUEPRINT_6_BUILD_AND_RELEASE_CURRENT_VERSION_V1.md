@@ -121,5 +121,6 @@ connected to real members (OA-ZYRA-317).
 |---|---|---|
 | 2026-10-26 | V1 | First draft from the build scripts, iOS settings, release switches and runbook (OA-ZYRA-309) |
 | 2026-10-26 | V1 | Runbook rewritten (V3); platform folders decided (DR-ZYRA-279) |
+| 2026-10-29 | V1 | Founder (ZYRA chat): **iPhone and iPad at launch** — answering "What should ZYRA do at launch?" with "iPhone and iPad". Today the app already installs on iPad (`TARGETED_DEVICE_FAMILY = 1,2`; iPad allows all four orientations, iPhone portrait only). iPad layouts must be designed and LOCKed per area; awaiting a DR number from Fable |
 | 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
 | 2026-10-26 | V1 | Git line aligned with core rules V3 (AD-AIOS-114) |

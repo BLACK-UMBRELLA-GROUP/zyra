@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0126
 type: BRAND
-status: CURRENT
+status: SUPERSEDED
 feature: BUSINESS: ZYRA TERMINOLOGY
 purpose: Zyra Terminology — ZYRA TERMINOLOGY CURRENT VERSION V1: Owns official ZYRA terminology, definitions, language standards, terminology relationships, and terminology usage throughout the platform.
 links: []
@@ -11,7 +11,7 @@ owner: ZYRA chat
 # ZYRA — Terminology
 
 **Version:** V1
-**Status:** CURRENT_VERSION — **SOURCE OF TRUTH for every user-facing word**
+**Status:** ARCHIVED 2026-10-29 — superseded by ZYRA_TERMINOLOGY_CURRENT_VERSION_V2.md (same folder, one level up). Reference only; describes the old member app
 **Date:** 2026-08-13
 **Owner:** Founder
 **Governing Reference:** ZYRA_GOVERNANCE, TERMINOLOGY_STANDARDS

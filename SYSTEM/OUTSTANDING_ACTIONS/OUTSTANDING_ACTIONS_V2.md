@@ -735,7 +735,7 @@ OA-007
 Title:       Define pending ZYRA Terminology terms
 Category:    Terminology
 Priority:    Medium
-Status:      Blocked
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) rule pages, which define the terms in use - Blocked
 Owner:       Lead Architect
 Dependencies: None
 Decision:    None
@@ -4673,7 +4673,7 @@ Notes:       Raised from session 2026-06-28.
 OA-ZYRA-122
 Title:       Login / Welcome Screen — UX Review (Typography,
              Layout, Platform-Native Sign-In Priority)
-Status:      Awaiting Review — implemented 2026-07-19 per
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Onboarding rule page) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Awaiting Review — implemented 2026-07-19 per
              Founder instruction ("fix and run all"). See
              DR-ZYRA-088 (PROPOSED, not yet ratified). Not yet
              visually verified on device.
@@ -4764,7 +4764,7 @@ Notes:       Logged per Founder instruction 2026-07-19: a
 OA-ZYRA-123
 Title:       Theme Consistency During Onboarding — Light Purple
              Default, Gender Accents Reserved for Profile Only
-Status:      Awaiting Review — implemented 2026-07-19 per
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Onboarding and Profile rule pages, colour theme rewritten 25 Oct) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Awaiting Review — implemented 2026-07-19 per
              Founder instruction, with expanded scope: Founder
              directed that Luxury Dark Purple be removed from
              active use app-wide (not just onboarding), Royal
@@ -4972,7 +4972,7 @@ Notes:       Logged per Founder instruction 2026-07-19 — item 3
 OA-ZYRA-125
 Title:       Browse Screen UI Refinements — Full-Screen Photos,
              Floating Glassmorphism Nav, Remove Swipe Counter
-Status:      Awaiting Review — implemented 2026-07-19 per
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Browse rule page) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Awaiting Review — implemented 2026-07-19 per
              Founder instruction ("fix and run all"). See
              DR-ZYRA-089 (PROPOSED, not yet ratified). Not yet
              visually verified on device.
@@ -5075,7 +5075,7 @@ Notes:       Logged per Founder instruction 2026-07-19 — item 4
 OA-ZYRA-126
 Title:       Additional Note — Navigation Structure Must Align
              With Existing Approved Architecture, Not Redesign
-Status:      Awaiting Founder review (restamped 2026-08-20, OA-AIOS-326; was Open) — Discussion Item (source document is a
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (navigation fixed by the rule pages) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Awaiting Founder review (restamped 2026-08-20, OA-AIOS-326; was Open) — Discussion Item (source document is a
              clarifying note, not itself an OA; logged here for
              Founder review only — not yet ratified in ZYRA
              governance, not yet actioned)
@@ -5403,7 +5403,7 @@ OA-ZYRA-129
 Title:       Browse Navigation Bar Structure — 5-Tab Order
              (Browse/Connections/Guardian/Network/Profile), Network
              Premium Lock State
-Status:      Awaiting Founder review (restamped 2026-08-20, OA-AIOS-326; was Open) — Discussion Item (source document
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (navigation fixed by the rule pages) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Awaiting Founder review (restamped 2026-08-20, OA-AIOS-326; was Open) — Discussion Item (source document
              self-labelled "APPROVED" by ChatGPT; logged here
              for Founder review only — not yet ratified in ZYRA
              governance, not yet actioned)
@@ -6615,7 +6615,7 @@ Category:    Engineering / Architecture
 Priority:    HIGH — core Journey integrity and release blocker whenever
              Request New Journey can create attempt 2. It is no longer the
              empty-table migration described in the 2026-08-06 estimate.
-Status:      OPEN — work remains. REOPENED / UNBLOCKED 2026-09-10 / TEMPORARY HOLD LIVE AND
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey rule page; request records replace attempt-keyed conflicts) - OPEN — work remains. REOPENED / UNBLOCKED 2026-09-10 / TEMPORARY HOLD LIVE AND
              POST-VERIFIED 2026-09-11 — the recorded blocker,
              OA-ZYRA-155, closed on 2026-08-06. Stages 1 through 4e were
              only partially completed: conversations and timelines became
@@ -6676,6 +6676,7 @@ Dependencies: OA-ZYRA-155 (closed/unblocked); OA-ZYRA-157; DR-ZYRA-121;
              the live precedent for duplicated authorisation logic
              failing quietly.
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -6739,7 +6740,7 @@ Title:       Record ended_by, ended_at and end_reason on Every Journey
 Category:    Engineering / Product / Safety
 Priority:    High — independently valuable; can ship before the full
              restructure.
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey rule page) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
 Completed:   —
@@ -6769,6 +6770,7 @@ Target:      Ship early — this is small, independently valuable, and
              cases, analytics) depends on knowing how a Journey ended.
 Dependencies: OA-ZYRA-157 (safety hold); OA-ZYRA-161; DR-ZYRA-121.
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -6863,7 +6865,7 @@ Title:       Per-Person Opaque Reference Codes for Journey Attempts
 Category:    Product / Support / Moderation
 Priority:    Medium — must be decided before journey_attempts is created,
              since codes generate at attempt creation.
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey and Safety rule pages) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
 Completed:   —
@@ -6891,6 +6893,7 @@ Target:      Generate at attempt creation so the code exists in the audit
              a quiet reminder that this is a case file.
 Dependencies: OA-ZYRA-156; OA-ZYRA-163; DR-ZYRA-121.
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -6899,7 +6902,7 @@ Title:       Implement the Journey Notification Map, Including the Two
              Safety Rules
 Category:    Product / UX / Safety
 Priority:    High — contains two safety-bearing rules.
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey and Safety rule pages) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -6932,6 +6935,7 @@ Target:      Full map in ZYRA_JOURNEY_LIFECYCLE_CURRENT_VERSION_V3.md
 Dependencies: OA-ZYRA-157; OA-ZYRA-158; OA-ZYRA-162;
              WALI_ARCHITECTURE_CURRENT_VERSION_V6.md; DR-ZYRA-121.
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -6940,7 +6944,7 @@ Title:       Guardian Involvement Becomes Per-Attempt, With Fresh Family
              Review Each Attempt
 Category:    Product / Wali Architecture
 Priority:    High.
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -6968,6 +6972,7 @@ Target:      Update WALI_ARCHITECTURE_CURRENT_VERSION_V6.md alongside the
 Dependencies: OA-ZYRA-156; OA-ZYRA-161;
              WALI_ARCHITECTURE_CURRENT_VERSION_V6.md; DR-ZYRA-121.
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -6976,7 +6981,7 @@ Title:       Append-Only Audit Log, Scoped to Protection, Moderation,
              Appeals and Safety Endings
 Category:    Engineering / Governance / Legal
 Priority:    Medium-High.
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Safety rule page) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead)
 Raised:      2026-08-06
 Completed:   —
@@ -6996,6 +7001,7 @@ Description: Full event sourcing is NOT approved and was deliberately
 Target:      Build with OA-ZYRA-157, which supplies most of it.
 Dependencies: OA-ZYRA-157; OA-ZYRA-158; OA-ZYRA-160; DR-ZYRA-121.
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -7004,7 +7010,7 @@ Title:       Pause Remains Premium — Define the Gated Rule, Remove the
              Auto-End Timer, Apply the Guardrails
 Category:    Product / Premium / Safety
 Priority:    High — contains a direct conflict with an approved document.
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved as amended by the Founder.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved as amended by the Founder.
 Owner:       Opus (Implementation Lead), UX by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -7056,7 +7062,7 @@ Title:       Instrument the Pause Decision So It Can Be Revisited on
 Category:    Product / Analytics / Governance
 Priority:    Medium — must ship WITH beta, not after, or the evidence
              will not exist when the question is asked.
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved.
 Owner:       Opus (Implementation Lead), measurement design by Fable
 Raised:      2026-08-06
 Completed:   —
@@ -7439,7 +7445,7 @@ OA-ZYRA-142
 Title:       Build Entitlement-vs-Participation Messaging (DR-ZYRA-111)
 Category:    Product / UX
 Priority:    Medium
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership and Messaging rule pages) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (Shakeel)
 Raised:      2026-07-26
 Completed:   —
@@ -7482,6 +7488,7 @@ Dependencies: DR-ZYRA-111, DR-ZYRA-105, SOURCE/lib/screens/profile/
              journey_flow_screen.dart, SOURCE/lib/screens/guardian/
              wali_network_screen.dart.
 Automation:  None — awaiting Founder go-ahead to build.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -7489,7 +7496,7 @@ OA-ZYRA-143
 Title:       Build Report / Hide / Block Menu (DR-ZYRA-095, DR-ZYRA-112)
 Category:    Product / Safety
 Priority:    Medium
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Safety rule page) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (Shakeel)
 Raised:      2026-07-26
 Completed:   —
@@ -7532,6 +7539,7 @@ Dependencies: DR-ZYRA-095, DR-ZYRA-112, APP/Browse/BROWSE_UX_SPEC_
              SOURCE/lib/screens/journey/journey_flow_screen.dart
              (_JourneyAppBar, for the Block-forces-End-Journey wiring).
 Automation:  None — awaiting Founder go-ahead to build.
+Merged into OA-ZYRA-307
 
 ------------------------------------------------------------
 
@@ -7540,7 +7548,7 @@ Title:       Co-Termed Billing — Parked Pending Platform Verification
              (DR-ZYRA-118)
 Category:    Product / Billing
 Priority:    Low
-Status:      Parked — not rejected. Reopen only once all conditions
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership rule page: joining fee and places, no co-termed plans) - Parked — not rejected. Reopen only once all conditions
              below are met.
 Owner:       Founder (Shakeel)
 Raised:      2026-07-27
@@ -7590,7 +7598,7 @@ OA-ZYRA-145
 Title:       Build Surname Capture UI (Onboarding / Profile Settings)
 Category:    Product / Onboarding
 Priority:    Medium — required new-signup identity display and recovery
-Status:      OPEN — bounded onboarding capture verified and signed local
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Onboarding and Profile rule pages) - OPEN — bounded onboarding capture verified and signed local
              build ready under Founder GO; iPhone unavailable, installation
              pending (§90). Physical acceptance/live integration separate.
 Owner:       Codex (implementation/evidence); Founder (acceptance)
@@ -7643,6 +7651,7 @@ Dependencies: SOURCE/lib/models/seeker_profile.dart (surnameLine),
              SOURCE/lib/screens/settings/ (likely destinations for the
              capture field).
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -7756,7 +7765,7 @@ Title:       Build Monthly Profile Unlock+ Credit Allowance
              (ZYRA One)
 Category:    Product / Premium / Monetisation
 Priority:    Medium
-Status:      Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved direction, not designed or built
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership rule page; ZYRA One credits retired) - Queued — build lane, feature pause (restamped 2026-08-20, OA-AIOS-326; was Open) — approved direction, not designed or built
 Owner:       Founder (Shakeel)
 Raised:      2026-07-28
 Completed:   —
@@ -7951,7 +7960,7 @@ Title:       Browse Interaction-Mechanic Review — Should the
              Selection
 Category:    Product / UX
 Priority:    High — blocks truthful real-member non-swipe adoption
-Status:      OPEN — Founder real-member direction accepted 2026-10-09;
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Browse rule page) - OPEN — Founder real-member direction accepted 2026-10-09;
              local preparation tested; real integration and live GO outstanding
 Update 2026-10-14 (later contained delivery / latest candidate still held):
              Packet OA151_CIRCLE_DISCUSSION_ACTIONS_2026_10_13.nqocW0 records
@@ -8189,6 +8198,7 @@ Dependencies: SOURCE/lib/screens/browse/browse_screen.dart,
              SOURCE/lib/services/zyra_discovery_service.dart,
              DR-ZYRA-079 (compatibility scoring).
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -8250,7 +8260,7 @@ Category:    Engineering / Data
 Priority:    Medium — blocks nothing today (no real Seekers
              browsing yet), but must be closed before Browse
              curation can be relied on as a working capability
-Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — pending real onboarding_answers data and
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Browse rule page) - real-data connection is OA-ZYRA-317 - Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — pending real onboarding_answers data and
              re-verification
 Owner:       Founder (Shakeel)
 Raised:      2026-08-01
@@ -8287,6 +8297,7 @@ Dependencies: SOURCE/supabase/migrations/20260726120200_
              lib/services/zyra_discovery_service.dart, DR-ZYRA-079,
              DR-ZYRA-084 (engineering audit finding C3).
 Automation:  None.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -8296,7 +8307,7 @@ Title:       Upgrade Screen À-La-Carte Pricing and Product Names
 Category:    Product / Commercial
 Priority:    High — must be closed before paid tiers launch. No
              revenue impact today: no payment processing exists
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — blocked on Founder commercial decision
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership rule page) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — blocked on Founder commercial decision
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
 Completed:   —
@@ -8551,7 +8562,7 @@ Category:    Engineering / Observability
 Priority:    Medium — no known defect behind any of them, but
              this is the exact construct that concealed a release
              blocker for a month
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); old Journey service goes in the clean-code review - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -8589,6 +8600,7 @@ Dependencies: OA-ZYRA-167 (the precedent and the pattern);
 Automation:  A grep for "catch (_) {}" is trivial but would flag
              legitimate uses too. Not added to tools/zyra_check.py
              — new checks need explicit approval, invariant I7.
+Merged into OA-ZYRA-316
 
 ------------------------------------------------------------
 
@@ -8711,7 +8723,7 @@ Title:       Dev/Mock RPC Guard Depends on the '@zyra.test' Email
              Domain — Auth Configuration Dependency
 Category:    Operational / Pre-Launch Dependency
 Priority:    HIGH before real signups open. Zero risk today
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — must be confirmed before the first real
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by OA-ZYRA-312 (developer functions in the production database, same @zyra.test guard) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — must be confirmed before the first real
              account is created
              [Re-verified 2026-08-20 (OA-AIOS-325): 149 accounts, 0
              non-@zyra.test — unchanged since the 2026-08-08
@@ -8800,6 +8812,7 @@ Automation:  A query counting non-'@zyra.test' accounts would turn
 
              Removal of all seven is tracked as OA-ZYRA-184.
              DO NOT CLOSE THIS OA WITHOUT RE-READING THAT ONE.
+Merged into OA-ZYRA-312
 
 ------------------------------------------------------------
 
@@ -9079,7 +9092,7 @@ Title:       Tier-0 Is Clearable By Retiring the Link and Tier-1 Is
 Category:    Correctness / Invariants (I1)
 Priority:    High — but CONDITIONAL. Unreachable today; becomes
              reachable the moment the dual-role work lands
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -9163,6 +9176,7 @@ Automation:  One-clause change to zyra_can_match(), plus a
              regression assertion. The real work is the decision
              about what 'removed' means, which is shared with
              Tier-1.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -9172,7 +9186,7 @@ Title:       Tier-1 Evaporates If the Shared Guardian Deletes His
              Depends On
 Category:    Correctness / Invariants (I1)
 Priority:    High
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page); FK-cascade point carried to the server design - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -9260,6 +9274,7 @@ Dependencies: zyra_can_match() Tier-1 and Tier-0 clauses;
 Automation:  (a) is a schema migration. (b) is a table plus a
              trigger. Either way a regression assertion that deletes
              a Guardian account and re-checks zyra_can_match.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -9270,7 +9285,7 @@ Title:       Two Seekers Sharing a Main Guardian Collapse the Family
 Category:    Correctness / Product
 Priority:    Medium — depends entirely on whether this is judged
              correct behaviour, which it may well be
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -9345,6 +9360,7 @@ Automation:  One expression in wali_review_decision(), plus the
              matching change in resolve_family_review_if_due() if
              it computes the same count. A regression assertion in
              zyra_journey_suite.sql section C.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -9353,7 +9369,7 @@ Title:       Browse Selects Every Matching Profile With No Limit —
              Add Paging To fetchCandidates()
 Category:    Performance / Enumeration surface
 Priority:    Medium now, High before any real user volume
-Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder deferred 2026-08-09: "add paging to an
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Browse rule page); paging goes in the server design - Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder deferred 2026-08-09: "add paging to an
              OA and we do it later." Not started
 Owner:       Founder (Shakeel)
 Raised:      2026-08-09
@@ -9424,6 +9440,7 @@ Dependencies: SOURCE/lib/services/zyra_discovery_service.dart
              invariant I10; OA-ZYRA-175.
 Automation:  A .range() plus a scroll/deck trigger. The stable-sort
              question needs a decision before any of it is written.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -9686,7 +9703,7 @@ OA-ZYRA-182
 Title:       Rewrite the I4 Grants Corollary as a Union Statement
 Category:    Governance / Documentation
 Priority:    Medium
-Status:      Parked (restamped 2026-08-20, OA-AIOS-326; was Open) — PARKED by Founder instruction until OA-170 and
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) rule pages (invariants wording follows OA-ZYRA-170) - Parked (restamped 2026-08-20, OA-AIOS-326; was Open) — PARKED by Founder instruction until OA-170 and
              OA-181 settle, so the invariant is updated once with
              final wording rather than twice
 Owner:       Founder (Shakeel)
@@ -9718,6 +9735,7 @@ Target:      Fold into the next invariants version alongside any
 Dependencies: OA-ZYRA-170; OA-ZYRA-181; ZYRA_ENGINEERING_
              INVARIANTS (current version).
 Automation:  None.
+Merged into OA-ZYRA-170
 
 ------------------------------------------------------------
 
@@ -9727,7 +9745,7 @@ Title:       Relationship-State Master Matrix V2 — Consolidation
 Category:    Product Architecture
 Priority:    HIGH — Founder has gated further Guardian
              functionality on this
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder-led. Completeness before
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey and Guardian rule pages replace the matrix) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder-led. Completeness before
              implementation
 Owner:       Founder (Shakeel)
 Raised:      2026-08-08
@@ -9796,7 +9814,7 @@ Title:       Drop the Developer/Mock RPCs Before Public Launch —
 Category:    Pre-Launch / Security
 Priority:    BLOCKING for public launch. Zero risk while the
              database holds only seeded accounts
-Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — raised 2026-08-10, not started
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by OA-ZYRA-312 (the 13 developer functions in the production database) - Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — raised 2026-08-10, not started
 Owner:       Opus (Implementation Lead); Founder confirms the
              launch gate
 Raised:      2026-08-10
@@ -9891,6 +9909,7 @@ Automation:  One SQL assertion proves all nine are gone. Belongs
              in the launch checklist, not a scheduled job — there
              is nothing to watch until launch, and then it is
              checked once.
+Merged into OA-ZYRA-312
 
 ------------------------------------------------------------
 
@@ -10424,7 +10443,7 @@ Priority:    HIGH. Nothing after this can be trusted until it is
              done. Not urgent in the sense of risk to live users
              — there are none — but every hour of further work
              stacks on an unverified base
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — raised 2026-08-10, Founder to run
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); the build route is OA-ZYRA-323 - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — raised 2026-08-10, Founder to run
 Owner:       Founder (Shakeel). CANNOT be delegated to Opus —
              see "why" below
 Raised:      2026-08-10
@@ -10527,6 +10546,7 @@ Description: Onboarding Direction B shipped across six Dart files
              all committing for eight hours. RUN GIT FROM THE MAC
              TERMINAL, never through Claude. Two stale locks were
              moved to `_to_delete/` and that folder can be binned.
+Merged into OA-ZYRA-323
 
 ------------------------------------------------------------
 
@@ -10561,7 +10581,7 @@ Priority:    HIGH. No real users today, so no one has been
              showing a made-up number with nothing saying so,
              and the reason it was acceptable expired on
              2026-08-10
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership and Browse rule pages) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -10679,6 +10699,7 @@ Description: profile_unlock_screen.dart shows a hardcoded
 
              THE MARKER IS A HOLDING MEASURE. Delete _SampleMarker
              when step 3 lands.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -11228,7 +11249,7 @@ Category:    Product / Journey Architecture
 Priority:    HIGH as a decision. Nothing is broken; the request
              simply cannot be built as a data change and must not
              be done as a quiet loosening
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder stated the intent 2026-08-10 while
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership rule page decides places) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder stated the intent 2026-08-10 while
              setting up test accounts
 Owner:       Founder (Shakeel) — product decision; then Opus
 Raised:      2026-08-10
@@ -11367,7 +11388,7 @@ OA-ZYRA-197
 Title:       No Way Back Into Onboarding Once You Have Left It
 Category:    Onboarding / UX
 Priority:    MEDIUM, rising to HIGH the day a real user is gated
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Onboarding rule page) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -11397,6 +11418,7 @@ Description: Browse now tells a gated Seeker how many questions
              already returns exactly that list, in bank order,
              and it is already exposed to the client through
              zyra_my_onboarding_progress().
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -11649,7 +11671,7 @@ Title:       seeker_details.is_synthetic Was Set On Every Row —
              Scope the Launch Sweep by Account, Not Flag Alone
 Category:    Data Integrity / Launch Blocker
 Priority:    HIGH before launch, harmless today
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by OA-ZYRA-190 (the launch sweep scope) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -11678,6 +11700,7 @@ Description: That migration's UPDATE on seeker_details has NO WHERE
 
 Target:      Sweep spec updated before OA-ZYRA-190 executes.
 Dependencies: OA-ZYRA-190
+Merged into OA-ZYRA-190
 
 ------------------------------------------------------------
 
@@ -11729,7 +11752,7 @@ Title:       Reference Stability — Every CURRENT_VERSION Promotion
              Breaks Every Inbound Link
 Category:    Governance / Documentation
 Priority:    MEDIUM
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the DOC-ID scheme of the Knowledge Routing Standard (OA-AIOS-406) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder decision on the proposal, then Documentation
 Raised:      2026-08-12
 Source:      Stewardship docs audit: ten dead references fixed by
@@ -11749,6 +11772,7 @@ Description: Live docs cite the mutable CURRENT_VERSION filename,
 
 Target:      Proposal decided; references stop rotting.
 Dependencies: ZYRA_DOCUMENT_REFERENCE_STABILITY_PROPOSAL_2026-08-08
+Merged into OA-AIOS-406
 
 ------------------------------------------------------------
 
@@ -11757,7 +11781,7 @@ Title:       Dev Panel — Founder to Pick the Next Batch of Simulated
              Axes from the 2026-08-12 Build-List
 Category:    Developer Tooling
 Priority:    LOW
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) (developer panel retired) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (selection), then Engineering
 Raised:      2026-08-12
 Source:      Founder-directed Developer Toggle System redesign
@@ -11790,7 +11814,7 @@ Title:       Long-Pause Gentle Reminders (30/90 Days) Need a
              Scheduler
 Category:    Journey Lifecycle / Infrastructure
 Priority:    LOW
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -11874,7 +11898,7 @@ Dependencies: pause_frees_active_slot migrations (the reason a
 OA-ZYRA-205
 Title:       Transitional Moments — the unwired tail
 Raised:      2026-08-13, with the DR-ZYRA-148 build
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -12138,7 +12162,7 @@ OA-ZYRA-211
 Title:       Eleven contradictions between ZYRA_PRODUCT_SPEC V5
              and ZYRA_DECISIONS V2
 Raised:      2026-08-13, while building the Feature Catalogue
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder decision needed on each
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (replaces PRODUCT_SPEC V5 as the product description) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder decision needed on each
 
 Problem:     Cataloguing 139 features from the governing
              documents surfaced eleven places where two
@@ -12284,7 +12308,7 @@ Title:       An Additional Guardian Sees No Journeys At All —
              Intended, Or A Side Effect Of The Counterpart Card?
 Category:    Guardian / Visibility
 Priority:    MEDIUM
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -12334,6 +12358,7 @@ Target:      1. Founder decides: does an Additional Guardian see
 Dependencies: DR-ZYRA-152; GUARDIAN & ROMANTIC RULES section 7d
              (clause 3, closed 2026-08-08); OA-ZYRA-177 (same
              is_main line of reasoning, different way in).
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -12341,7 +12366,7 @@ OA-ZYRA-214
 Title:       A Guardian Cannot See The Introductions They Sent
 Category:    Guardian / Introductions
 Priority:    LOW
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page; Introductions) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -12372,6 +12397,7 @@ Target:      1. Decide whether a Guardian sees what they sent, and
              2. Build the reader; the panel's refused control
                 becomes a real one in the same change.
 Dependencies: DR-ZYRA-152; OA-ZYRA-202 (dev-panel build-list).
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -12380,7 +12406,7 @@ Title:       The Live notifications_type_check Holds Ten Types; The
              Repo Knows Seven And The Client Renders Three
 Category:    Notifications / Migration Drift
 Priority:    MEDIUM
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); notification types follow the server design - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -12438,6 +12464,7 @@ Target:      1. Export the three missing migrations into the repo
              3. Re-check the map whenever the constraint changes.
 Dependencies: OA-ZYRA-198 (migrations live only in the database),
              DR-ZYRA-154, OA-ZYRA-159 (added four of the ten).
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -12446,7 +12473,7 @@ Title:       Actionable Notifications — The "Go" Button, And Why Its
              Routing Table Is A Safety Question
 Category:    Notifications / UX / Safety
 Priority:    MEDIUM — routing must clear OA-ZYRA-161 before it ships.
-Status:      Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — deferred by the Founder on 2026-08-13, deliberately
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey and Safety rule pages) - Deferred (restamped 2026-08-20, OA-AIOS-326; was Open) — deferred by the Founder on 2026-08-13, deliberately
              and with the reason recorded below.
 Owner:       Engineering, after the routing table is agreed
 Raised:      2026-08-13
@@ -12487,6 +12514,7 @@ Target:      1. Write the routing table, type by type, with the
                 falling back to its section rather than its object.
 Dependencies: OA-ZYRA-161 (two safety rules), OA-ZYRA-159 (one decline
              type), DR-ZYRA-154, OA-ZYRA-146 (parked full spec).
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -12495,7 +12523,7 @@ Title:       "Hide Profile" Is A Mutual, Permanent Block — Should A
              One-Way Hide Exist?
 Category:    Privacy / Discovery
 Priority:    MEDIUM
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Safety rule page) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (product), then Engineering (schema)
 Raised:      2026-08-13
 Source:      DR-ZYRA-155. Surfaced by promoting Hide Profile out of the
@@ -12538,6 +12566,7 @@ Target:      1. Founder decides: is Hide Profile a mutual block with
                 Blocked users for undo.
 Dependencies: DR-ZYRA-155; blocked_users_screen (the existing undo
              surface); ZyraReportService.block.
+Merged into OA-ZYRA-307
 
 ------------------------------------------------------------
 
@@ -12546,7 +12575,7 @@ Title:       Connections And Guardian Detail Still Reach Block Through
              The Report Sheet
 Category:    UX Consistency / Privacy
 Priority:    LOW
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Safety rule page) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -12579,6 +12608,7 @@ Target:      1. Decide whether Connections needs its own Hide entry
              2. Fold in whatever OA-ZYRA-217 settles about what Hide
                 means — the two should not be decided separately.
 Dependencies: DR-ZYRA-155, OA-ZYRA-217.
+Merged into OA-ZYRA-307
 
 ------------------------------------------------------------
 
@@ -12590,7 +12620,7 @@ Category:    Premium / Consumer Fairness / UX
 Priority:    MEDIUM — no money has changed hands yet (no payment SDK),
              so this is fixable before it is ever chargeable. It stops
              being cheap the day payments land.
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — for Founder discussion. Do not build.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership and Browse rule pages) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — for Founder discussion. Do not build.
 Owner:       Founder (product + wording), then Engineering
 Raised:      2026-08-13
 Source:      Founder brief, "Compatibility Unlock purchases and declined
@@ -12858,7 +12888,7 @@ Title:       Swipe-To-Decide On The Read-Only Profile Needs Browse's
              Gesture Extracted, Not Copied
 Category:    UX / Refactor
 Priority:    MEDIUM
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -13031,7 +13061,7 @@ Title:       Truthful Failure Handling — Four Write Paths Report
              Success When They Failed
 Category:    Correctness / Data Integrity
 Priority:    HIGH — the most important cluster in the 2026-08-14 audit.
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -13485,7 +13515,7 @@ Title:       Green / Amber / Red Tallies Can Be Real Today Without
              Waiting On OA-ZYRA-193(d)
 Category:    Compatibility Engine / Subscription
 Priority:    Medium — three of seven figures on a PAID screen.
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -13516,6 +13546,7 @@ Target:      Add three counters to score_candidates, widen its return,
              only part of the screen becomes real.
 Dependencies: OA-ZYRA-193(d) (categories — deliberately NOT blocked by
              it), OA-ZYRA-227 option C.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -13524,7 +13555,7 @@ Title:       create_notification() Ignores notification_preferences —
              Two Visible Settings Toggles Gate Nothing
 Category:    Notifications / Consent
 Priority:    HIGH — a switch the user has operated does nothing.
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297); preference enforcement carried to the server design - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -13571,6 +13602,7 @@ Target:      Resolve type -> category inside create_notification, not
              consent decision.
 Dependencies: OA-ZYRA-146 (the specification this comes from),
              OA-ZYRA-161 (the approved Journey map).
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -13579,7 +13611,7 @@ Title:       A Guardian Invite That Nobody Opens Never Expires — So
              Three Of Its Four Outcomes Are Silent
 Category:    Guardian / Notifications
 Priority:    Medium — not a security hole; a dead end for the sender.
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page); invite expiry carried to the server design - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -13688,6 +13720,7 @@ Dependencies: OA-ZYRA-146 (the specification), OA-ZYRA-231 (consent
              DR-ZYRA-121 item 8 (the Journey rule this deliberately
              departs from), migrations 20260726120100,
              20260809170940, 20260809171103.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -13696,7 +13729,7 @@ Title:       Avatar Bandwidth — Server-Side Transform Sizing For
              Small Renders
 Category:    Performance / Cost
 Priority:    LOW
-Status:      Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by OA-AIOS-344 (Supabase egress mitigation plan) - Assigned — Codex (restamped 2026-08-22, OA-AIOS-341) —
              dispatched 2026-08-21 in the Founder-approved
              handoff pack
              CODEX_HANDOFF_ZYRA_QUEUE_2026-08-21_V1, Batch
@@ -13739,6 +13772,7 @@ Target:      Check the plan; if transforms are available, design
 
 Dependencies: DR-ZYRA-169; zyra_image_cache.dart;
              zyra_photo_service.dart.
+Merged into OA-AIOS-344
 
 ------------------------------------------------------------
 
@@ -13747,7 +13781,7 @@ Title:       Ward Browse-Activity Read — A Privacy Decision
              Before An RPC
 Category:    Guardian / Privacy / Product
 Priority:    MEDIUM
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open)
 Owner:       Founder (scope), then Engineering
 Raised:      2026-08-15
 Source:      DR-ZYRA-171 — the Dashboard's Ward-activity chips.
@@ -13774,6 +13808,7 @@ Target:      Founder decision first — counts only, full lists,
 
 Dependencies: DR-ZYRA-171; DR-ZYRA-168 (the visibility batch it
              must not contradict); guard suite AREA 1-2.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -13894,7 +13929,7 @@ Title:       Submitted Reports Have No Moderation Queue, Notification,
              Ownership or Resolution Path
 Category:    Safety / Moderation
 Priority:    Critical — release blocker for real users
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — awaiting a Founder-approved engineering brief. NOT a
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by OA-AIOS-413 (AIOS safety report review page) and the member-removal process in OA-ZYRA-317 - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — awaiting a Founder-approved engineering brief. NOT a
              UI-only fix.
 Owner:       Codex (Lead Architect) — authors the brief; the brief names
              its executor; Founder approves before implementation lands.
@@ -13966,6 +14001,7 @@ Dependencies: ZYRA build pause (DR-ZYRA-191 item 5) — implementation
              cannot start until the Founder approves the brief. Related:
              OA-ZYRA-163 (audit log), ZYRA_SAFETY_CONCERN_DISCLOSURE_AND_
              AUTHORITY_MODEL_2026-08-08 (SYSTEM/DOCUMENTS/).
+Merged into OA-AIOS-413
 
 ------------------------------------------------------------
 
@@ -14017,7 +14053,7 @@ Title:       Continuous Active Journey — Eight-Stage On-Device Evidence
 Category:    Verification / Journey / UX
 Priority:    High — scroll coordination and stage rhythm require a real
              device walk; source checks cannot prove the feel
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — implementation, analysis and automated tests complete;
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — implementation, analysis and automated tests complete;
              device evidence outstanding
 Owner:       Codex assembles the evidence and reviews any correction under
              the Founder's temporary execution instruction; Founder runs
@@ -14158,7 +14194,7 @@ Title:       Meet the Guardians Threshold — Identity, Privacy and One-Way
 Category:    Product / Journey / Guardian / Security
 Priority:    Medium — strong Journey transition idea; must not be mocked or
              built on an unreadable link
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder concept captured; narrow product/data contract
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder concept captured; narrow product/data contract
              required before implementation
 Owner:       Codex — recommend and brief; Founder — approve; database-enabled
              session — verify/apply any eventual guarded read contract
@@ -14211,6 +14247,7 @@ Target:      Founder ruling after the Stage 1 experience is accepted; build
 Dependencies: ACC-01 Additional Guardian Journey visibility (do not pre-empt
               it); Guardian Gate and Family Review architecture; database
               verification must run in the database-enabled main session.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -14219,7 +14256,7 @@ Title:       Mutual Between-Stage Continue — Complete the Server Checkpoints
 Category:    Journey / Database / Shared Decisions
 Priority:    High — Salam and Guardian Gate still allow one person's Continue
              to advance once their underlying prerequisites are satisfied
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — product contract approved; database implementation and
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey rule page) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — product contract approved; database implementation and
              deployed verification belong to the database-enabled main session
 Owner:       Database-enabled main session — implement and verify; Codex —
              align client waiting states after the deployed contract exists;
@@ -14274,6 +14311,7 @@ Target:      Complete before the chapter-choice experience is treated as
              production mutual across all eight stages.
 Dependencies: DR-ZYRA-167/202/204; journey_stage_checkpoints table and
               Salam-first server ordering; database-enabled main session.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -14282,7 +14320,7 @@ Title:       Enforce the 60-Day Post-End Window and Browser Rediscovery
 Category:    Journey / Database / Discovery / History Integrity
 Priority:    High — the client now hides an expired direct action, but the
              server must refuse it and Browser must safely own the later path
-Status:      Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder contract approved; implementation and deployed
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Journey rule page; DR-ZYRA-300 keeps past items with no end date) - Blocked (restamped 2026-08-20, OA-AIOS-326; was Open) — Founder contract approved; implementation and deployed
              verification belong to the database-enabled main session
 Owner:       Database-enabled main session — design, implement and verify;
              Codex — align client return shapes after deployment; Founder —
@@ -14351,6 +14389,7 @@ Target:      Complete before the 60-day End rule is described as production
 Dependencies: DR-ZYRA-121/206; OA-ZYRA-159 request/accept system; discovery
               filters; journey_attempts history model; database-enabled main
               session.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -14511,7 +14550,7 @@ Target:      Founder tests on phone; ratifies/amends D1-D13
 OA-ZYRA-246
 Title:       Guardian Network draft v6 — contradiction-review
              findings + build-contract completion
-Status:      Open — reconciled to current Draft 3.x code and
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Open — reconciled to current Draft 3.x code and
              handover 2026-08-23. CLOSED within this OA:
              initial-only name, verified badge, compatibility
              band, populated profile sheet, complete 44-rule
@@ -14574,7 +14613,7 @@ OA-ZYRA-247
 Title:       Guardian Network interaction model — Founder
              proposes symmetric double-blind mutual interest
              (amends the Suggest/FIR working rules)
-Status:      Open — RATIFIED IN FULL by Founder 2026-08-23
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) - Open — RATIFIED IN FULL by Founder 2026-08-23
              ("Ratify all" + clarifications: live-process cap
              meaning confirmed; photo default after-connect
              with Seeker override; per-stage analytics; no-
@@ -14659,7 +14698,7 @@ OA-ZYRA-248
 Title:       Guardian Network Draft 3 — Connections moves to
              the Dashboard; Seekers-by-name slider shared
              across both pages
-Status:      Open — built and committed 2026-08-23: new
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Guardian rule page) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Open — built and committed 2026-08-23: new
              shared GN library wali_gn_shared.dart (GNContext
              selection/state singleton, GNSeekerSlider,
              GNConnectionsPanel, shared sheets), Dashboard
@@ -14803,7 +14842,7 @@ OA-ZYRA-250
 Title:       Crash on account switch — dev-gated listener
              leak in wali screens (Null check operator on a
              null value in setState)
-Status:      Open — FIXED IN CODE 2026-08-23, awaiting
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) (developer panel retired) - Open — FIXED IN CODE 2026-08-23, awaiting
              Founder apply + retest. Found from the
              Founder's own flutter run log: after switching
              accounts through the dev panel, a tap on the
@@ -16633,7 +16672,7 @@ Update 2026-09-27: Founder reported the Network Choose Seeker sheet still
              devicectl install PASS, sequence 4552, new application container;
              separate launch PASS. Founder visual acceptance PENDING. Evidence
              in UI Consistency Gate handover 2026-09-27 follow-up.
-Status:      OPEN — permanent UI consistency checker; its approved pictures are out of date (OA-ZYRA-310). Open — Phase P0 COMPLETE same day: governed spec
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); the live pieces are the baselines (OA-ZYRA-310) and their storage (OA-ZYRA-326) - OPEN — permanent UI consistency checker; its approved pictures are out of date (OA-ZYRA-310). Open — Phase P0 COMPLETE same day: governed spec
              ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md;
              deterministic layer LIVE (SOURCE/tools/
              zyra_ui_gate.py — token/colour/radius/height
@@ -16717,6 +16756,7 @@ Evidence:    ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md;
 Target:      P1 triage -> P2 harness -> P3 Founder baseline
              approval + overnight arming -> P4 dashboard ->
              steady state; close when P3 arms cleanly
+Merged into OA-ZYRA-310
 
 ------------------------------------------------------------
 
@@ -16864,7 +16904,7 @@ Current:     2026-09-18 — complete public-site redesign implemented
              Purchases remain unavailable; Founder acceptance and exact
              publication GO are still required. No app-source, billing,
              database, DNS, deployment or git changes made in this round.
-Status:      Awaiting Review — 2026-09-18 local redesign; publication held.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by OA-AIOS-390 (improve the website) - Awaiting Review — 2026-09-18 local redesign; publication held.
 History:     Open — handover message filed 2026-08-25
              (MESSAGES/002): full design history D1 approved
              2026-08-20 -> D2 Daylight static REJECTED (too
@@ -16893,6 +16933,7 @@ Target:      Founder visual/copy acceptance -> exact publication GO -> Founder-c
 History target: Codex design proposal -> Founder approves ->
              Codex owns site design; Fable closes out with
              archive note in SITE/README (2026-08-25, superseded route).
+Merged into OA-AIOS-390
 
 ------------------------------------------------------------
 
@@ -16901,7 +16942,7 @@ Title:       Shared Pause Decision — implementation,
              activation gates and documentation (Founder
              brief to Codex 2026-08-25; supersedes the
              asymmetric personal-hold pause UX)
-Status:      Open — Codex build CODE COMPLETE same day:
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) - Open — Codex build CODE COMPLETE same day:
              5-state server-enforced decision machine
              (none/pause_requested/continue_requested/paused/
              resume_requested, CAS pause_version, single RPC
@@ -16964,7 +17005,7 @@ Title:       MASTER OA — Subscription Architecture Review: Readout,
 Category:    Product / Commercial / Architecture — MASTER OA for one
              report (REPORT -> OA governance, OA-AIOS-370)
 Priority:    High — sets the pricing and entitlement architecture.
-Status:      OPEN — waiting for a Founder decision. 🟠 REVIEW COMPLETE, VERIFIED WITH CONDITIONS —
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Membership rule page, approved by the Founder) - OPEN — waiting for a Founder decision. 🟠 REVIEW COMPLETE, VERIFIED WITH CONDITIONS —
              PENDING FOUNDER. **THIS OA IS DECISION PREPARATION, NOT
              IMPLEMENTATION AUTHORITY.** Nothing below may be built.
              Founder instruction 2026-08-26: "Do not change prices,
@@ -17574,6 +17615,8 @@ Dependencies: OA-ZYRA-253 (the 2026-08-23 repricing and its three open
              OA-AIOS-367 (engine failures and corrections during the
              three passes); OA-AIOS-370 (the REPORT -> OA rule this OA
              is the first instance of).
+Merged into OA-ZYRA-317
+
 ------------------------------------------------------------
 
 
@@ -17586,7 +17629,7 @@ Priority:    CRITICAL. Two separable things sit in this OA: a defect
              that is live on production onboarding today, and a
              biometric procurement/legal programme that will take
              months. Do not let the second delay the first.
-Status:      OPEN — waiting for a Founder decision. 🔴 REVIEW COMPLETE — CODE FINDINGS INDEPENDENTLY VERIFIED
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by OA-ZYRA-266 (identity verification, the later action on the same subject) - OPEN — waiting for a Founder decision. 🔴 REVIEW COMPLETE — CODE FINDINGS INDEPENDENTLY VERIFIED
              BY FABLE AGAINST SOURCE; PROVIDER, PRICING AND LEGAL
              CLAIMS SOURCED BUT NOT INDEPENDENTLY VERIFIED —
              PENDING FOUNDER. **THIS OA IS DECISION PREPARATION, NOT
@@ -18402,6 +18445,7 @@ Target:      Founder answers DECISION-011 -> truthfulness fix ships
              the acceptance test -> Fable and Founder approve a
              provider -> Codex reconciles this OA against the code
              audit -> Phase 4 authorised.
+Merged into OA-ZYRA-266
 
 ------------------------------------------------------------
 
@@ -18410,7 +18454,7 @@ Title:       Production Dashboard resolver + Guardian truth-
              boundary slice (DR-ZYRA-216; no-migration scope;
              Codex authorised by Founder instruction
              2026-08-28 on filing of this trace)
-Status:      Open — scope agreed via MESSAGES/007/008/009:
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) (My ZYRA in the preview) - Open — scope agreed via MESSAGES/007/008/009:
              (1) typed source layer available/empty/
              unavailable for Guardian links, activity and
              pending invites (repairs failure-as-empty in
@@ -18453,6 +18497,7 @@ Evidence:    Founder instruction 2026-08-28 (relayed, chat);
 Target:      Codex implements -> measured handover -> Fable
              disk verification -> Claude architecture pass ->
              Founder device acceptance
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -18462,7 +18507,7 @@ Title:       Dashboard-as-Home definition round — module
              (Founder direction 2026-08-28, 25 sections,
              after ChatGPT review of the current-state
              handover)
-Status:      Open — Founder redefined the Dashboard's
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) (My ZYRA) - Open — Founder redefined the Dashboard's
              purpose: the resolver stays as the BRAIN, the
              page becomes the user's ZYRA HOME (Right Now ->
              Journey/Search -> My ZYRA -> Family -> Recently
@@ -19382,7 +19427,7 @@ OA-ZYRA-277
 Title:       Sign-in & Security Settings copy fix — remove
              the unfulfillable "Add Apple/Google" promise
              (DR-ZYRA-219 item 5, Codex)
-Status:      Open — CODE COMPLETE (Codex 023, own hash
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) (Profile rule page; old settings screen retired) - Open — CODE COMPLETE (Codex 023, own hash
              matched Founder relay) and FABLE-VERIFIED
              2026-08-29: both live-file hashes match;
              zyra_auth.dart byte-identical to the 019 hash
@@ -19427,7 +19472,7 @@ Target:      Codex implements -> handover -> Fable
 OA-ZYRA-278
 Title:       Work-mailbox operations — organised + daily
              Founder triage (Founder directive 2026-08-29)
-Status:      Open — STANDING PROCESS, reviewed not closed.
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by Fable's daily 06:42 email check scheduled task (rebuilt under OA-AIOS-399) - Open — STANDING PROCESS, reviewed not closed.
              SET-UP DONE 2026-08-29: the admin@zyraconnect.
              app mailbox (Gmail connector) was fully triaged
              — all 31 inbox threads labelled into the
@@ -20856,7 +20901,7 @@ Title:       Compatibility Reveal Read Failure Is Rendered as
              "Neither Revealed" Instead of FAILED
 Category:    Journey / Truthful State
 Priority:    Medium — visible retry and consent-state ambiguity
-Status:      Open — found during the 2026-09-10 Journey truth fix;
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); truthful failure states go in the server design - Open — found during the 2026-09-10 Journey truth fix;
              not expanded into that bounded category correction
 Owner:       Engineering
 Raised:      2026-09-10
@@ -20978,6 +21023,7 @@ COMPATIBILITY TYPED-READ / KNOWN-CONTEXT CALLER MILESTONE — 2026-10-06
              f2f395e615bf6dd55e8208c422d2fdd95b8bd52f25419a7933b281b1704a559c
              Dated stage Journey screen SHA-256:
              468863f89851fd59089e6176f1f9eb448d6d19a421a4ec718560aa4d39db6449
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -21660,7 +21706,7 @@ Update 2026-10-01 (final-welcome cue local delivery):
              paired iPhone; no TestFlight upload. Founder device acceptance
              PENDING; OA286 remains OPEN. Onboarding Preview §49/receipt
              hold exact evidence.
-Status:      OPEN — ONE MAIN APP / TEST RESOURCES RETIRED / THREE CLOUD
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired) and OA-ZYRA-316; the build route is OA-ZYRA-323 - OPEN — ONE MAIN APP / TEST RESOURCES RETIRED / THREE CLOUD
              DELETIONS POST-VERIFIED / BUILD 3 UPLOADED, READY TO TEST AND
              ASSIGNED ONCE TO FOUNDER INTERNAL / PRECEDING §38 PROGRESS
              SOURCE BUILT/INSTALLED BUT LAUNCH BLOCKED BY PHONE LOCK; §39
@@ -22758,6 +22804,7 @@ Target:      Audited two-target contract -> shared-source implementation
              scroll-safe composition. Focused tests passed 16/16 and analyzer
              passed. The profile build is installed/launched as the sole app;
              security boundaries and all external systems are unchanged.
+Merged into OA-ZYRA-323
 
 ------------------------------------------------------------
 
@@ -24356,7 +24403,7 @@ Title:       Canonical Progressive Onboarding — Full Client Flow Cleanup
 Category:    Product / UX / Persistence / Verification
 Priority:    High — remove contradictory account/profile sequencing and
              prevent unconfirmed saves or stale-owner navigation
-Status:      OPEN — local implementation and internal verification recorded
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) (Onboarding rule page) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); the old-app onboarding audit no longer applies - OPEN — local implementation and internal verification recorded
              in the handover; Founder physical acceptance and separate
              backend/provider gates remain outstanding
 Owner:       Codex (implementation/evidence); Founder (acceptance/approvals)
@@ -24632,6 +24679,7 @@ GUARDIAN DEPENDENCY LIFETIME PROGRESS — 2026-10-06
              NEXT_GUARDIAN_ACCEPT_REPAIR.json
              SHA-256: f3fd2094ad816f136ca3d9272888d97a2566cc73ef175b68c5e1dd8268c720ec
              No OA status, approval, historical delivery fact or score is changed.
+Merged into OA-ZYRA-317
 
 ------------------------------------------------------------
 
@@ -24640,7 +24688,7 @@ Title:       Full Seeker/Guardian/onboarding client flow and UI review
 Raised:      2026-10-03
 Raised by:   Founder direct full-app review request
 Owner:       Codex under Founder authority / AD-AIOS-111
-Status:      OPEN — bounded client repairs internally verified; Founder
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); live client review continues on the preview - OPEN — bounded client repairs internally verified; Founder
              physical acceptance and existing held integrations separate
 Update 2026-10-13 (Circle discussion refinement):
              Navigation Haptics section82 / packet
@@ -24712,6 +24760,7 @@ Evidence:    ZYRA_APP_FLOW_UI_REVIEW_HANDOVER_CURRENT_VERSION_V1.md;
              check/device commands are recorded, not inferred.
 Target:      Internal checks → local delivery → Founder acceptance;
              separate exact scope/GO for held external/backend activation
+Merged into OA-ZYRA-325
 
 ------------------------------------------------------------
 
@@ -24720,7 +24769,7 @@ Title:       Full app authority/security/readiness audit and repair programme
 Raised:      2026-10-03
 Raised by:   Founder direct full-app audit brief, relayed in build chat
 Owner:       Codex under Founder authority / AD-AIOS-111
-Status:      OPEN — local repairs and isolated tests authorised/performed;
+Status:      CLOSED 2026-10-30 (Fable, Founder yes 29 Oct): superseded by the 26 Oct blueprint (DOC-ZYRA-0278 to 0297) and the planned-app decision DR-ZYRA-274 (Founder preview is the app; Pause and Save retired); the security items that still matter live in OA-ZYRA-312, OA-ZYRA-243 and OA-ZYRA-317 - OPEN — local repairs and isolated tests authorised/performed;
              critical live risks remain until exact production execution,
              post-verification and separate Founder acceptance
 Update 2026-10-14 (measured retained-host delivery; full native hold retained):
@@ -25850,6 +25899,7 @@ ADMIN RATINGS AGGREGATE REPAIR / TARGETED COHORT23 — 2026-10-07
              SHA-256: beed4ea756f3ac0f5772b1f04b500f0e4c2841a01c036bbfd02114588011992e
              NEXT_OA305_FAMILY_RATINGS_READ_LIFETIME_2026_10_07_FINAL_SEAL.json —86,326B
              SHA-256: 01f29871a15abb0c517e0d6e496132a297d3cdb6e31991f953d57a7a378a0cb8
+Merged into OA-ZYRA-312
 
 ------------------------------------------------------------
 
@@ -26214,7 +26264,7 @@ Category:    Product / Code health
 Priority:    HIGH (Founder, 25 Oct: "I kinda need to ensure the code building these apps dont have
              unnecessary things ... i want clean code")
 Date:        2026-10-25
-Status:      OPEN (decided 25 Oct, DR-ZYRA-274; review next) - found by Fable checking the Founder's statement that Pause is gone.
+Status:      OPEN (choice made 25 Oct, DR-ZYRA-274; review next) - found by Fable checking the Founder's statement that Pause is gone.
              When the Founder signs in, the app opens ZyraFounderLaunchScreen -> a LOCAL PREVIEW
              (ViewRequestDraftScreen / ZyraOneJourneyConceptShell, SOURCE/lib/dev, sample data, no real
              members). In that preview Pause is unreachable (canPause: false; only End is accepted),
@@ -26254,6 +26304,10 @@ Update:      26 Oct - Add: old-app call to the dropped function wali_has_wali_on
 Owner:       Founder decides · Fable reviews and plans · Codex removes after the freeze
 Acceptance:  One app; every line of code is used by it or by its tests; retired features gone from app
              and server.
+Update:      29 Oct - DR-ZYRA-293 (Founder): Tiers 1, 2 and 4 and the matching tests DONE by Codex - a7b6fe3,
+             6d5735c, d08b2d1, 9e903fb, 3f64e39 (pushed); retired files and pictures moved to ~/_to_delete
+             (OA-ZYRA-316_* folders, about 115 MB). App code 171,658 -> 162,681 lines (342 -> 320 files, DOC-ZYRA-0284).
+             Tier 3 (old member app, sign-in routes) waits for OA-ZYRA-317. Glass Signals kept (DR-ZYRA-296).
 
 ------------------------------------------------------------
 
@@ -26312,6 +26366,25 @@ Update:      26 Oct - DR-ZYRA-285: (15) account deletion detaches instead of cas
 Owner:       Founder decides · Fable designs · Codex builds after the freeze
 Acceptance:  Every planned-app screen works for real members with the server enforcing its rules.
 
+Update 29 Oct (Founder "yes both"): Fable starts the server design now - one document for items 1-6 plus OA-315 (a)(b),
+for the Founder's yes, then a brief in ZYRA/PRODUCT/APPROVED/SERVER/ and a BUILD_QUEUE line (charters rule 9).
+Codex builds area by area after approval. The freeze no longer blocks it (lifted for ZYRA 29 Oct).
+Update:      30 Oct (Fable, from the 29 Oct notes) - add to the server design: (a) request records - Past items now
+             stay with no end date (DR-ZYRA-300); decide what the server keeps, and for how long, with the DPIA
+             (OA-ZYRA-321); (b) a first-link event so the one-time Main Guardian message (B1, DR-ZYRA-294) can show
+             when a first Guardian links - the preview only has Make Main; (c) the Circle consent and link-date
+             check on the server (OA-ZYRA-324).
+Update:      30 Oct (triage, DOC-BUG-0031) - server points folded in from closed August/September actions, for the
+             server design: attempt-keyed conflicts (156), ended_by/ended_at/end_reason (158), reference codes (160),
+             notification map and preferences (161, 215, 216, 231), per-attempt Guardian review and FK cascade on
+             Guardian delete (162, 175-177), audit log (163), Browse paging and curation data (178, 153), Guardian
+             invite expiry (232), ward activity privacy (234), Meet the Guardians threshold (240), between-stage
+             checkpoints (241), post-end window (242), truthful failure states (284), surname capture (145).
+
+
+Update 30 Oct 05:38: server design DRAFT written - ZYRA/REPORTS/CURRENT/ZYRA_SERVER_DESIGN_2026-10-30_V1.md
+(DOC-ZYRA-0329): 10 gaps, six build areas in the Founder's order, 6 open questions. Waits for the Founder's yes;
+then the ZYRA chat queues one brief per area (SERVER 0 live pass first).
 ------------------------------------------------------------
 
 OA-ZYRA-318
@@ -26373,6 +26446,14 @@ Next:        After the freeze and before OA-ZYRA-317 item 7 (purchases). Needs t
              for the company details.
 Acceptance:  Approved terms published; every purchase screen states what payment does and does not give.
 
+Update 29 Oct (Founder "yes both"): Fable starts drafting now from the approved wording in the 29 Oct ZYRA chat
+note (A1-A4, B1-B4). Company details stay as placeholders until OA-AIOS-386.
+Scope added 29 Oct (ZYRA chat note (c)): the catalog text `guardianAccessTerms` in
+`SOURCE/lib/data/zyra_membership_catalog.dart` is softer than DR-ZYRA-289 and says Additional Guardians start with
+Chat on - replaced by the approved wording (A1-A4) at the Membership LOCK; the terms must match it.
+Update 30 Oct 05:36: member terms DRAFT written - ZYRA/REPORTS/CURRENT/ZYRA_MEMBER_TERMS_DRAFT_2026-10-30_V1.md
+(DOC-ZYRA-0330), A4 verbatim, B1/B4 used, B2/B3 withdrawn per DR-ZYRA-299. [DECISION NEEDED] items listed for the
+Founder; then solicitor review.
 ------------------------------------------------------------
 
 
@@ -26392,11 +26473,120 @@ Owner:       Fable drafts · a solicitor reviews · Founder approves
 Next:        After the freeze; needs the company formed (OA-AIOS-386) and the ICO registration (OA-AIOS-381).
 Acceptance:  Signed DPIA, approved safety procedure, recorded OSA assessment, privacy notice published.
 
+Update 29 Oct (Founder "yes both"): Fable starts the DPIA, safety response and OSA check now, from the blueprint
+(DR-ZYRA-287, 289, 292). Company and ICO details stay as placeholders until OA-AIOS-386 and OA-AIOS-381.
+Update:      30 Oct (Fable) - two Founder decisions of 29 Oct for the DPIA, privacy notice and solicitor review:
+             DR-ZYRA-299 (the other person is no longer told at the request that a Main Guardian sees it - only in
+             a Profile section; chosen against the ZYRA chat's advice; transparency) and DR-ZYRA-300 (declined and
+             expired requests kept with no time limit; storage limitation).
+
+Update 30 Oct 05:41: DRAFTS written - DPIA (DOC-ZYRA-0331), safety response (DOC-ZYRA-0332), Online Safety Act
+check (DOC-ZYRA-0333), all in ZYRA/REPORTS/CURRENT/. [DECISION NEEDED] items listed for the Founder; then solicitor
+review with OA-ZYRA-320.
+------------------------------------------------------------
+
+OA-ZYRA-322
+Title:       Terminology document V2 - retire Guardian+, Save, Consider and Potential Journey
+Category:    Product / Wording
+Priority:    MEDIUM - member-facing words must match the blueprint before the Membership LOCK
+Date:        2026-10-29
+Status:      CLOSED 2026-10-30 (Fable): the ZYRA chat issued V2 on 29 Oct - BUSINESS/ZYRA TERMINOLOGY/ZYRA_
+             TERMINOLOGY_CURRENT_VERSION_V2.md (DOC-ZYRA-0126, CURRENT; "Connect with Guardian" added the same
+             day); V1 archived as ARCHIVE/ZYRA_TERMINOLOGY_2026-10-29_V1.md; Summary.md points at V2; MAP current.
+             Was: OPEN - raised from the 29 Oct ZYRA chat note (b). DOC-ZYRA-0126 still names Guardian+ (now Guardian One,
+             DOC-ZYRA-0291), Save and Consider (retired, DR-ZYRA-274) and Potential Journey.
+Owner:       ZYRA chat writes V2 (saving standard: new version, V1 archived) · Fable checks the map and this register
+Next:        ZYRA chat issues V2; Fable files it at 04:15 and closes this.
+Acceptance:  DOC-ZYRA-0126 V2 CURRENT with the blueprint's words only; V1 archived; MAP regenerated.
+
+------------------------------------------------------------
+
+OA-ZYRA-323
+Title:       Codex's native iOS build route is held - phone and simulator builds and captures cannot run
+Category:    Build tooling / Release
+Priority:    HIGH - iPad and iPhone SE pictures (DR-ZYRA-297), phone checks and any TestFlight build depend on it
+Date:        2026-10-30
+Status:      OPEN - from the 29 Oct ZYRA chat note (items l, n) and Codex tasks 6-24: the native route is "HELD" by
+             a SwiftPM nested-sandbox refusal in Codex's no_git_driver.mjs; on 29 Oct the paired iPhone 15 Pro Max
+             was disconnected and no matching simulator existed. Codex captured with the visual-test render
+             instead (430x932 @3x, no native status bar) and, rightly, did not install, bypass or create a
+             simulator without authority (task 6).
+Owner:       Codex finds the cause and proposes the smallest safe fix · Founder approves · Fable checks
+Next:        Codex says in his next report what exactly is held and what he needs (including whether iPhone SE and
+             iPad simulators must be created); the Founder says yes or no.
+Acceptance:  Codex builds and captures on the simulator (iPhone SE, iPhone 15 Pro Max, iPad) and on the phone with
+             no sandbox bypass; the route is written in DOC-ZYRA-0288.
+
+------------------------------------------------------------
+
+OA-ZYRA-324
+Title:       Guardian Circle shows past Journey summaries with sharing off and from before the Guardian linked -
+             fix in the preview, then check the server and the old member app
+Category:    Privacy / Guardians
+Priority:    HIGH - breaks DR-ZYRA-233 (past Journey summaries only with the Seeker's consent)
+Date:        2026-10-30
+Status:      OPEN - found by Codex in the LOCK 3 preflight (queue line 7, 29 Oct; ZYRA/REPORTS/EVIDENCE/
+             LOCK3_GUARDIAN_INFO_2026-10-29/): in the Founder preview Hassan (linked 20 Sep) sees topics from
+             Hafsa's Journey that ended 10 Sep, with "Share past Journey summaries" off; the resolver gives 12 past
+             topics with no consent or link-date check. Line 13's fix failed because it still showed named topics
+             (DR-ZYRA-233 item 4 allows only anonymous facts). The server and the members' old app are not
+             checked yet (ZYRA chat item cc).
+Owner:       ZYRA chat corrects the LOCK 3 spec and queues it · Codex builds · Fable checks the server functions and
+             the old app read-only
+Next:        (1) ZYRA chat: corrected spec §3b and a new queue line. (2) Fable: read-only check of the server's
+             Circle/archive functions and the old app's Circle screen; result added here.
+Acceptance:  No Guardian sees a past Journey summary without the Seeker's consent or from before the link - in the
+             preview, on the server and in the old app - with tests that prove it.
+Update:      30 Oct (Fable, step 2 done, read-only): (a) the members' old app offers past-Journey topics in the Circle
+             only in preview mode (family_messaging_screens.dart: topic options need preview data) and calls no archive
+             function - no leak there. (b) Server, as written in the repo: zyra_attempt_summary_for_guardian (18 Sep, oa291)
+             gives a Guardian four anonymous fields only, and ended Journeys only from the current link period unless the
+             Seeker switched history on for that link - matches DR-ZYRA-233; the 5 Oct f02 "Guardian read boundary" also
+             stops ended Journeys giving any detail. (c) Production: the live check (DOC-ZYRA-0294) lists f02 as never
+             applied, so production lacks that boundary - part of OA-ZYRA-317's catch-up (Founder's GO). Left: step 1.
+
+------------------------------------------------------------
+
+OA-ZYRA-325
+Title:       Founder-preview defects found by the ZYRA chat on 29 Oct
+Category:    Product / Planned app
+Priority:    MEDIUM - the Founder sees them now; members would after launch
+Date:        2026-10-30
+Status:      OPEN - from the 29 Oct ZYRA chat note (items v, w, x, y, dd and the 18:30 baseline finding):
+             1. Preview my profile shows "Request a Journey" and the Profiles tab bar on the member's own profile.
+             2. Edit profile shows Gender "Brother" (a Guardian relationship word, not a gender).
+             3. Overall compatibility shows "Demo Guardian · Father" instead of the Seeker's Main Guardian.
+             4. Guardian My ZYRA is titled "Guardian Dashboard" and still shows Insights (scrapped, DR-ZYRA-306) -
+                covered by LOCK 8 once built.
+             5. Privacy & data and Pause My Profile show developer text to members ("Founder input needed before
+                launch", "No server setting is read or changed").
+             6. Privacy & data renders on a light background, unlike the rest of the app.
+Owner:       ZYRA chat designs each fix (a LOCK or a Founder-named line in BUILD_QUEUE.md) · Codex builds · Fable files
+Next:        ZYRA chat queues the fixes; item 4 goes with LOCK 8 (queue line 17).
+Acceptance:  Each item fixed in the preview and checked by the ZYRA chat against a new baseline picture.
+
+------------------------------------------------------------
+
+OA-ZYRA-326
+Title:       1 GB of baseline screenshots in git and on GitHub - keep committing them, or keep them on the Mac and
+             USB only
+Category:    Storage / Repository
+Priority:    MEDIUM - ZYRA grew 2.5 GB in one day (disk alarm 30 Oct); every full recapture adds about 1 GB twice
+Date:        2026-10-30
+Status:      OPEN - 29 Oct: 1,165 baseline pictures (1.0 GB, PRODUCT/APPROVED/BASELINE/SCREENSHOTS) were committed and
+             pushed (ff65027, 9aea367, 339d8f0 and later commits). Git stores a second full copy (ZYRA/.git is now
+             1.6 GB) and keeps every replaced picture for ever (history is never rewritten, core rule 2). They are
+             LOCK inputs by Founder decision (DR-ZYRA-295), not review evidence, so the choice is his.
+Owner:       Founder decides · Codex applies it (.gitignore) · Fable records and measures
+Next:        Founder: (a) keep committing them, or (b) from the next recapture keep the pictures on the Mac and the
+             USB only, with INDEX.md and BUILD.json still in git. Fable recommends (b).
+Acceptance:  Choice recorded here; .gitignore matches it; the next Disk check shows the effect.
+
 ------------------------------------------------------------
 
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-322 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-327 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
