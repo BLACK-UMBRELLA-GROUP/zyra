@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "indexed_before_bytes": 11807,
+  "indexed_before_sha256": "8b38f27d295c54268b874c70ab2b3950104943dc98fe2bc56b3dcf3e20e9b3e5",
+  "indexed_after_bytes": 12401,
+  "indexed_after_sha256": "f101bb91bc059b26c14e257a81cc81600eb2d86f4e78f93fc1889cff6a7ceead",
+  "only_index_change_before_other_staging": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+  "comparison": "Removing the one added row39 from the staged queue reproduces every byte of the original indexed blob. All other indexed entries match baseline. Working queue status/date only changed in row39.",
+  "working_queue_before_sha256": "74a4a83ea428cd3388c3a4e946d5a63ad0a60ec43d1c2c0619657f6d969e41d9",
+  "working_queue_after_sha256": "b18f3f14bec2bdd521797c52fc931849abb00c1d176416b1f12cfbbe508a9318",
+  "queue35_working_status": "WAITING",
+  "queue39_staged_status": "FAILED",
+  "other_working_queue_rows_untouched": true,
+  "app_blueprint_tracker_unchanged": true
+}

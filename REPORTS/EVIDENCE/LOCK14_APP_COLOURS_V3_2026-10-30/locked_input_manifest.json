@@ -1,0 +1,167 @@
+{
+  "timestamp_utc": "2026-10-30T21:12:28.005816+00:00",
+  "queue": 39,
+  "lock": "14 V3",
+  "live_lock_files": 17,
+  "master_count": 14,
+  "master_total_bytes": 10448786,
+  "reviewed_images": [
+    "c08_add_guardian_found.png",
+    "c14_traffic_light_dots.png"
+  ],
+  "scope": "Existing locked inputs and affected code hashes; no app or asset mutation and no built screenshots.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+      "bytes": 2581,
+      "sha256": "428816427455008eaf73900692a77583594f4af9158026e0cb6a1bfac6370ea5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V3.md",
+      "bytes": 6376,
+      "sha256": "a7217dfd90ab4350534af7e5de4956ebf351fc7e337057802da71bec057ced76"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md",
+      "bytes": 2357,
+      "sha256": "a9e2e8ad6d8142837d17e404590716fbd2766053cc27ba88283584c8da046b13"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c01_profiles.png",
+      "bytes": 530478,
+      "sha256": "aa1fe8b4c7eb485e8105b51d87c7f3644f200153cd02891a2816452d3e012b89",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c02_journey_tab.png",
+      "bytes": 1677362,
+      "sha256": "a7822e26397d243495f8cdb38eb8aba31d563e2f477eca3043bedf347087fe06",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c03_my_zyra.png",
+      "bytes": 709918,
+      "sha256": "840cc5347c01769d82f300bb0f974b8cff077847b130fbe59397a82bba779e28",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c04_guardian_tab.png",
+      "bytes": 746725,
+      "sha256": "5ce2df4ef9f7f27f46a640d2d9e09c34cbb62ebcbdb94072ae24436aaaefa7fb",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c05_profile_tab.png",
+      "bytes": 827702,
+      "sha256": "773f835ae3e9f34656543fa9e8392984a18d3013b73ccc1d998ee0377f71443b",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c06_filters_where.png",
+      "bytes": 520272,
+      "sha256": "e4ab08c1a3a6c0d80ff2a0aca7128feb457a79f3baf1264d302915d46bda7465",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c07_requests_opened.png",
+      "bytes": 707235,
+      "sha256": "0684c31f558df9084080366f3699f91d3d572bff851c0596cbb74d94e44b03a8",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c08_add_guardian_found.png",
+      "bytes": 820591,
+      "sha256": "9e4294433a05c6a0d49f3d6305e94100cc2a66bcc21ba1fa5e4c3cfda4fa508b",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c09_guardian_my_zyra.png",
+      "bytes": 860013,
+      "sha256": "f170f4fca3dc587381880b8bee91fca9575110d29ff69df9c92ec31ca64fba68",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c10_guardian_network.png",
+      "bytes": 588005,
+      "sha256": "ea07bef5d40788efc7f28e5ad888563d523e72a158cad635e530d38c45f52065",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c11_app_icon_1024.png",
+      "bytes": 576333,
+      "sha256": "3a6582507d7d7b822a646e5ab0e584107883e271622263dbfd7e3a71efbce8f8",
+      "width": 1024,
+      "height": 1024,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c12_splash.png",
+      "bytes": 1085754,
+      "sha256": "b88dba628f854d5f168718c9133d4e4841f980fee6de807b10acd28fc9fba515",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c13_iphone_launch.png",
+      "bytes": 80828,
+      "sha256": "40835dd7e52c1126992a39f4e2b2acaedb6d03d6299905e0c5a468d9e3b49cd5",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c14_traffic_light_dots.png",
+      "bytes": 717570,
+      "sha256": "9c6c119af6d5bb4632cb97014772a58f825dff0d4513ea506d448f5139156a8e",
+      "width": 1290,
+      "height": 2796,
+      "decoded": true
+    },
+    {
+      "path": "PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md",
+      "bytes": 17601,
+      "sha256": "7fc41334efb5668e0345006b08229cf8f744e11e750d6cf971a93d9377212787"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_local_code_page.dart",
+      "bytes": 29235,
+      "sha256": "fb9c77700251c1beb9752524a6cbf35078c127addccc3812af659d674af0bc98"
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_text.dart",
+      "bytes": 15952,
+      "sha256": "7ce08b59ebd62c130c883b5ab0df6643518fd7f41c1ae88d6093b799378a6f4d"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_code_entry.dart",
+      "bytes": 2375,
+      "sha256": "c5a824b391e86fd7d73e79a52111619fb16f61bff1532bb10a6bff5ce80ce51b"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "bytes": 84402,
+      "sha256": "b2f00e5eda6af921899a2db0d144ec4b9f6e89153d5fe9c888581af9e7b5a6ca"
+    }
+  ]
+}

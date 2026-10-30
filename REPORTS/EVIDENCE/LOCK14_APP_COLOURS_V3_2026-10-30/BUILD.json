@@ -1,0 +1,17 @@
+{
+  "timestamp_utc": "2026-10-30T21:12:28.005816+00:00",
+  "queue": 39,
+  "lock": "14 V3",
+  "status": "PREFLIGHT_FAILED_NO_BUILD",
+  "source_commit_sha_evaluated": "7e2f522ca76898e9d7ff77ecfc99d8e8093debab",
+  "source_commit_scope": "Existing source evaluated; this evidence records no new compiled build.",
+  "flutter_version": null,
+  "flutter_version_note": "Not queried; no SDK was run. Previous Task23 records 3.44.2, not reverified here.",
+  "build_mode": "none",
+  "build_target": "none",
+  "build_timestamp": null,
+  "sdk_commands_executed": 0,
+  "compiled_output_written": false,
+  "source_copy_written": false,
+  "new_screenshots": 0
+}

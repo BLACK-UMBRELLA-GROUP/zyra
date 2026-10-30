@@ -1,0 +1,25 @@
+{
+  "preflight": "FAIL as locked; refusal recorded, not a build PASS",
+  "document_contract_checks": "PASS: V3 only live spec, exact locked colour pair, no size/layout changes, V3 record, no explicit waiver in current pack",
+  "manifest": "PASS: all 17 live LOCK inputs hashed; all 14 masters decoded at expected dimensions",
+  "contrast_recomputation": "PASS reproduction of failing ratio: 3.969257610777275 < 4.5",
+  "affected_code": "PASS: both reachable labels use the default gold _CodeAction with size14 and shared weight400; source hashes retained",
+  "queue_preconditions": "PASS: 26,29,30,32,37,38,40 BUILT;31 WITHDRAWN/replaced;35 WAITING;39 WAITING before refusal",
+  "map_check": {
+    "command": "python3 ../BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_map.py . --check (path quoted)",
+    "exit_code": 1,
+    "documents_with_headers": 362,
+    "without_headers": 0,
+    "warnings": 77,
+    "map": "STALE",
+    "owner": "Fable",
+    "written_refusal": "Existing map/header-size and repeated TBC identifier debt is recorded, not repaired during queue39. No inventory, Blueprint or unrelated designer/admin file is edited."
+  },
+  "sdk_checks": "Not run: no code changed and the current locked contract failed preflight.",
+  "initial_tool_limits": "System python3 lacked PIL before any manifest checks; repeated using bundled Python/Pillow. Initial combined text output truncated; exact conflict sections were re-read bounded. Missing guessed BUILD_QUEUE/style filenames were recovered from AGENTS and rg.",
+  "report_baseline": {
+    "task1_23_bytes": 224709,
+    "task1_23_sha256": "49375c0a4af1c1158a930293e9c5663c4b8e0d187f60e63200181fb4f6d912bf"
+  },
+  "free_disk_bytes_at_preflight": 90274238464
+}

@@ -1,0 +1,95 @@
+{
+  "timestamp_utc": "2026-10-30T21:12:28.005816+00:00",
+  "status": "FAILED",
+  "queue": 39,
+  "authority": "AD-AIOS-115 / core rule 11",
+  "written_refusal": "Do not implement LOCK14 V3 as supplied. It requires #2B2420 on solid #A9792E for reachable size-14 weight-400 gold-button labels while prohibiting size/layout changes; measured contrast 3.969257610777275:1 is below the governing 4.5:1 normal-text threshold. No explicit exception is recorded in the current LOCK pack. Stop before any app/platform/assets/tests/palette code change; no self retry.",
+  "foreground": {
+    "hex": "#2B2420",
+    "srgb": [
+      0.16862745098039217,
+      0.1411764705882353,
+      0.12549019607843137
+    ],
+    "linear": [
+      0.024157632448504756,
+      0.017641954488384078,
+      0.014443843596092545
+    ],
+    "luminance": 0.018796284016282284
+  },
+  "background": {
+    "hex": "#A9792E",
+    "srgb": [
+      0.6627450980392157,
+      0.4745098039215686,
+      0.1803921568627451
+    ],
+    "linear": [
+      0.39675523072562685,
+      0.19120168274079138,
+      0.027320891639074894
+    ],
+    "luminance": 0.22307017392482348
+  },
+  "formula": "C=sRGB channel/255; linear=C/12.92 if C<=0.04045 else ((C+0.055)/1.055)^2.4; L=0.2126R+0.7152G+0.0722B; contrast=(Llighter+0.05)/(Ldarker+0.05)",
+  "ratio": 3.969257610777275,
+  "required_ratio": 4.5,
+  "passes_normal_text": false,
+  "labels": [
+    "Check code",
+    "Send request"
+  ],
+  "font_size": 14,
+  "font_weight": 400,
+  "type_scope": "Flutter logical size 14 at default text scale (14pt in the brief); regular weight, not large text. Larger Text cannot cure the default-size failure.",
+  "current_code": {
+    "action": "SOURCE/lib/dev/zyra_draft_local_code_page.dart:689-724",
+    "check_label_line": 453,
+    "send_label_line": 525,
+    "button_style": "SOURCE/lib/theme/zyra_text.dart:396-400",
+    "existing_fill_token": "ZyraColors.journeyGold (old Plum palette unchanged)",
+    "application_of_lock": "Only the proposed V3 replacement pair is evaluated; no claim that the existing Plum button is failing."
+  },
+  "rule": "PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md:226",
+  "spec": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V3.md",
+  "brief": "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+  "master_pixel_evidence": {
+    "gold_exact_pixels": 303513,
+    "espresso_exact_pixels": 18961,
+    "check_button_interior_xy_100_1980": [
+      169,
+      121,
+      46
+    ],
+    "send_button_interior_xy_200_2440": [
+      169,
+      121,
+      46
+    ]
+  },
+  "prerequisites": {
+    "26": "BUILT",
+    "29": "BUILT",
+    "30": "BUILT",
+    "32": "BUILT",
+    "37": "BUILT",
+    "38": "BUILT",
+    "40": "BUILT",
+    "31": "WITHDRAWN",
+    "35": "WAITING",
+    "39": "WAITING"
+  },
+  "queue35": "WAITING: its queue39 prerequisite has not landed",
+  "next_owner": "ZYRA lead designer and Founder: resolve and record the LOCK decision; any subsequent build requires a new queued instruction and GO, without retrying FAILED row39.",
+  "not_performed": [
+    "SDK commands",
+    "Flutter/Dart analysis or tests",
+    "app/platform/assets/tests/palette edits",
+    "native build/install",
+    "upload or publication",
+    "new BUILT screenshot or master-beside-build capture",
+    "Blueprint edits"
+  ],
+  "screenshot_beside_master": "Not produced: preflight refusal, no build exists to compare. Existing master c08 and c14 inspected; all fourteen PNGs decoded."
+}
