@@ -1,0 +1,11 @@
+{
+  "task": "Queue27 Phone access LOCK12",
+  "status": "FAILED_PREFLIGHT_NO_BUILD",
+  "source_commit": "f937c5cfbb6d90f1fbc438e6904f24415cd92299",
+  "flutter_version": "3.44.2 (prior queue26 recorded measurement; SDK not invoked)",
+  "build_mode": "none - stopped before code",
+  "target": "none",
+  "timestamp_utc": "2026-10-30T18:56:28.081156+00:00",
+  "compiled_output_or_source_copy": false,
+  "verification": "preflight.json"
+}

@@ -1,0 +1,263 @@
+{
+  "task": "Queue27 Phone access LOCK12",
+  "date": "2026-10-30",
+  "timestamp_utc": "2026-10-30T18:56:28.081156+00:00",
+  "status": "FAILED_PREFLIGHT",
+  "source_commit": "f937c5cfbb6d90f1fbc438e6904f24415cd92299",
+  "authority": [
+    "AD-AIOS-115",
+    "queue27 and explicit fresh-chat delegation"
+  ],
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+      "bytes": 1170,
+      "sha256": "833785fe66e200f397866f0a00541be2fa7334d112dd2b5f56384255d64b3b5a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/RECORD/LOCK_RECORD.md",
+      "bytes": 666,
+      "sha256": "4cfdcb74137c9b6a41555186325727c42fb45ce5baa12ea0ad3d6436d69a8c4b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 1738,
+      "sha256": "9c9dc454b777541e7bc14093029f4f337c3033f5af145038e07714b22d9c4ca0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/MASTERS/settings__phone_access_row.png",
+      "bytes": 862803,
+      "sha256": "f7fefdc6b25e84548586729d432b28cd0fb485788c6365f09d7e904af0bfe35b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/MASTERS/phone_access__normal.png",
+      "bytes": 1016709,
+      "sha256": "2aff088b77dc5195b89a86f4d3e0f9733637fd7be29362c606abaeee32bd0936"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LOCATION/RECORD/LOCATION_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 2939,
+      "sha256": "88ad111da5eb62314c784d33a07743f06201d73dc2ef5ed9fe72c8d2b7f5662c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LOCATION/RECORD/LOCK_RECORD.md",
+      "bytes": 1142,
+      "sha256": "b85165dace00abe2e47e54bb7a5dad111e22c81c6c3594a93a6979278af8b932"
+    },
+    {
+      "path": "SOURCE/ios/Runner/Info.plist",
+      "bytes": 3326,
+      "sha256": "a597a9968bee2010f7df69cbf343c7085d4ea3a9dc4a52fdd6f3898ebfb58108"
+    },
+    {
+      "path": "SOURCE/ios/Runner/AppDelegate.swift",
+      "bytes": 13058,
+      "sha256": "20b709eb3dd972c2721ab4907b56c54cc8980b90b61b96d939fae0817bbcf638"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "bytes": 43048,
+      "sha256": "ad7b0139fe1dccdaa918769db343959f46e9d959ae43a00574d215c85c6a077a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 299527,
+      "sha256": "5b9662f373d57af1dc556d4e8ece1c8d7a5bf86cb090cf976c3394c1fff2c611"
+    },
+    {
+      "path": "SOURCE/pubspec.yaml",
+      "bytes": 14473,
+      "sha256": "232d2739fa45a735be11f38b5d1523e0e0341bf3f7e6f2633e8dece8350e4287"
+    },
+    {
+      "path": "SOURCE/pubspec.lock",
+      "bytes": 39740,
+      "sha256": "81d8028f8ded2d63002e52d3a86ed36fd2c4bd21aabbde96ad252aa1153d7aea"
+    }
+  ],
+  "masters": [
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/MASTERS/settings__phone_access_row.png",
+      "width": 1290,
+      "height": 2796,
+      "viewed": true,
+      "state": "Settings row"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/MASTERS/phone_access__normal.png",
+      "width": 1290,
+      "height": 2796,
+      "viewed": true,
+      "state": "Normal Phone access page"
+    }
+  ],
+  "checks": [
+    {
+      "check": "Queue 26 prerequisite is BUILT",
+      "result": "PASS"
+    },
+    {
+      "check": "Queue 27 is a fresh WAITING preflight",
+      "result": "PASS"
+    },
+    {
+      "check": "All five current Phone access pack files exist",
+      "result": "PASS"
+    },
+    {
+      "check": "Both PNG dimensions are 1290x2796",
+      "result": "PASS"
+    },
+    {
+      "check": "Both current master PNGs viewed",
+      "result": "PASS"
+    },
+    {
+      "check": "Current pack inventory is exactly the five named files",
+      "result": "PASS"
+    },
+    {
+      "check": "LOCK12 specifies explain before first prompt",
+      "result": "PASS"
+    },
+    {
+      "check": "Current LOCK11 purpose matches existing Info.plist",
+      "result": "PASS"
+    },
+    {
+      "check": "Contradictory Location strings reproduced exactly",
+      "result": "PASS"
+    },
+    {
+      "check": "Only row27 Status and Built on differ in queue worktree",
+      "result": "PASS"
+    },
+    {
+      "check": "App/platform SOURCE is clean before preflight (git status)",
+      "result": "PASS"
+    },
+    {
+      "check": "Evidence JSON contains metadata only; no source or compiled copy",
+      "result": "PASS"
+    }
+  ],
+  "findings": [
+    {
+      "id": "LOCK12-PREFLIGHT-01",
+      "result": "BLOCKER",
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V1.md",
+      "line": 21,
+      "finding": "Not-yet-asked permissions require a ZYRA explain sheet before the iPhone prompt. The two locked masters show only Settings and the normal page; Notifications, Photos, Camera and Face ID explain sheets are absent.",
+      "written_refusal": "Implementation declined within queue27: Codex will not invent missing locked permission-sheet designs. No separate OA allocated or register edited in this scoped task.",
+      "required_designer_input": "Supply and LOCK the four explanation-sheet masters and exact title/body/actions/cancel behaviour, updating the pack and brief through the designer queue rules."
+    },
+    {
+      "id": "LOCK12-PREFLIGHT-02",
+      "result": "BLOCKER",
+      "path": "PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V1.md",
+      "lines": [
+        19,
+        24
+      ],
+      "finding": "LOCK12 requires each iOS purpose text to match its why, but its Location why differs from LOCK11 exact purpose and current Info.plist.",
+      "lock12_why": "Distance in Filters. Only your town is used — never shown to anyone.",
+      "lock11_and_current_plist_purpose": "Your approximate area is used to measure distance in Filters. It is never shown to anyone.",
+      "written_refusal": "Implementation declined within queue27: Codex will not silently choose between contradictory LOCK11 and LOCK12 purpose strings or edit Info.plist.",
+      "required_designer_input": "Reconcile LOCK12 with LOCK11 and explicitly LOCK the single intended Location iOS purpose text."
+    }
+  ],
+  "queue": {
+    "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+    "before_sha256": "d654222bf52e8e85c13a40375293b18fb10ac8766aaf6470fb10771ae0c3aa42",
+    "after_sha256": "ae3764fb965b659ae31d6951e5ce684816557dbe870f608061e28ca4aec069e4",
+    "other_rows_sha256": "3301b439c48afe16276968478d9a0ab7fb1e4dd573b529cee7acd0c03f6f25bb",
+    "changed_columns": [
+      "Status",
+      "Built on"
+    ],
+    "original_index_blob": "b504d3e292ff716724aa831a7887f8cfaa26104a",
+    "original_index_sha256": "0fa3049ca562dabc990c514ca1185fb7e9dc1b56aac8feb87a5a9b2fbdae5c8b"
+  },
+  "read_at_start": [
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V2.md",
+      "bytes": 27001
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/AGENTS.md",
+      "bytes": 11205
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/MAP.md",
+      "bytes": 9008
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/REPORTS/DAILY/2026-10/2026-10-29_FABLE_REVIEW.md",
+      "bytes": 17329
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "bytes": 13889
+    }
+  ],
+  "startup_bytes": 78432,
+  "operating_model_bytes": 8490,
+  "pack_text_bytes": 3574,
+  "masters_bytes": 1879512,
+  "source_tests": {
+    "analyser": "NOT RUN: no code change; stopped before implementation",
+    "flutter_dart_tests": "NOT RUN: no code change; stopped before implementation",
+    "sdk_commands": 0,
+    "native_install_upload_publish": "NOT RUN",
+    "actual_build_screenshots": "NOT RUN: no build exists; only approved masters viewed"
+  },
+  "code_size": {
+    "basis": "Unchanged prior queue26 measurement from DOC-ZYRA-0284; code_size.py not rerun and tracker not edited",
+    "tracker_sha256": "1f76ade51c242d39adbd0dd18628a2b8cc50e8b483101c5c228b103a2e0ea640",
+    "all_app": [
+      166377,
+      328
+    ],
+    "developer_preview": [
+      46905,
+      87
+    ],
+    "founder_preview": [
+      27784,
+      37
+    ],
+    "tests": [
+      213091,
+      492
+    ],
+    "goldens_images": 2612,
+    "goldens_mib": 307,
+    "old_pause_files": 39,
+    "old_restart_files": 1
+  },
+  "helpers": [
+    {
+      "name": "parent helperphone27_read_ahead",
+      "purpose": "Completed read-only pack and stock-API feasibility audit before this task",
+      "startup_bytes": 78353,
+      "with_operating_model_bytes": 86843,
+      "pack_text_bytes": 3574,
+      "masters_bytes": 1879512,
+      "tokens": "not shown",
+      "sdk_or_mutation": false
+    },
+    {
+      "name": "phone27_pack_check",
+      "purpose": "Completed independent fresh locked-pack/master and purpose-text verification",
+      "tokens": "not shown",
+      "sdk_or_mutation": false
+    }
+  ],
+  "limits": [
+    "No app/platform/dependency/test/blueprint change",
+    "No new dependency, native install, upload or publish",
+    "No other queue row processed",
+    "No request to Claude/Fable or another chat"
+  ],
+  "owner_next": "Designer completes and reconciles LOCK pack under normal queue rules; parent verifies and archives this one failed preflight."
+}
