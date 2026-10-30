@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 162,681 lines in 320 files |
-| Developer and preview code inside it | 43,813 lines in 81 files |
-| The Founder preview (planned app) | 24,783 lines in 31 files |
-| Test code | 212,463 lines in 479 files |
+| All app code | 163,176 lines in 322 files |
+| Developer and preview code inside it | 44,292 lines in 82 files |
+| The Founder preview (planned app) | 25,226 lines in 32 files |
+| Test code | 212,900 lines in 481 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -48,9 +48,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 | 2026-10-29 | Queue16 LOCK7 preflight failed; unfinished source withdrawn | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-29 | Queue17 LOCK8 preflight failed; prerequisite13 incomplete | 162,681 / 320 | 43,813 / 81 | 24,783 / 31 | 212,463 / 479 | 2,612 / 307 MB | 39 | 1 |
 
+| 2026-10-30 | Queue 18, LOCK3 Guardian information and consent (OA-ZYRA-324 / DR-ZYRA-233) | 163,176 / 322 | 44,292 / 82 | 25,226 / 32 | 212,900 / 481 | 2,612 / 307 MB | 39 | 1 |
+
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
-
 
 ## Tier 1 — 29 Oct 2026 (OA-ZYRA-316 / DR-ZYRA-274)
 
@@ -223,3 +224,18 @@ Guardian. Visible title/demo-code assertions prevent that frame being accepted b
 all320app files and1,113prior PNGs are unchanged. No new golden approvals or app implementation. INDEX/BUILD record
 19unreachable requested states and existing policy gaps, including quota/link caps, Basic restart and default credit,
 Guardian readers/Family Review and consent-bound past summaries. Capture-only scope explicitly refuses product fixes.
+
+
+## LOCK3 Guardian information and consent — 30 Oct 2026
+
+Queue 18 adds the Seeker Profile education row and four bounded cards, built from the revised LOCK3 V2.
+The device stores only the preview education marker. Existing Profiles details content and bottom pills are shared
+without changing their metrics. Guardian Circle past topics and safe archives now require that Guardian’s consent;
+revocation invalidates retained callbacks, removal clears the grant, and removed links cannot restore it from a checkpoint.
+Shared topics show only first names and dates. The Seeker’s own Circle remains unchanged.
+
+The analyser is clean; 281 focused tests pass, followed by six explicit iOS capture cases. Five 1290 × 2796 captures and
+the master-beside-build sheet live in PRODUCT/APPROVED/GUARDIAN_INFO/BUILT/. Existing LOCK4 card/action pixels above
+the navigation area are identical; its old full screenshot differs only where the later LOCK6 changed navigation.
+No old master or baseline was overwritten. Production remains under OA-ZYRA-317; no migration, native build, installation,
+upload or Tier 3 route removal was attempted. The daily task note records the two ZYRA commits and verification commands.

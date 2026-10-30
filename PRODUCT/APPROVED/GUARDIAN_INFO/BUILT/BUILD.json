@@ -1,0 +1,95 @@
+{
+  "code_commit": "abb446ffb2c498094afb54438baec1dedf9f9a43",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter debug widget-test rendering",
+  "target": "iOS test platform; local Founder preview; 430x932 logical @3x",
+  "timestamp_utc": "2026-10-30T08:40:00.339114+00:00",
+  "native_build": false,
+  "network_attempts": 0,
+  "source_sha256": {
+    "SOURCE/lib/dev/zyra_circle_discussion_archive.dart": "14f62916db61ff8eb69e4b2876e17b6b183f3a7fa7e1e6ca5e62b50df113232a",
+    "SOURCE/lib/dev/zyra_guardian_circle_topic_options.dart": "aac0046132631b1bd2664a0b72d0d0592d4409afe754f26da30aba5cdf89196d",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart": "676c102530ecefc16b2925a4b24dc66538b8ff2a2d9dccd9e4db5a875ee925d8",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "047ff4443c734b6fa6beeeb8e3f75a3435e645c00cd6250a8f3c2ec7c9490295",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_info_presentation.dart": "9ece84d6db76ec01fbebf1ad3c8751585f8a34a5e51d0a3e0158d8ac7d267731",
+    "SOURCE/lib/screens/wali/family_messaging_screens.dart": "adee309b9360830dcb33c232de3afad03650705440d36cabb09c64d9fef9a335",
+    "SOURCE/lib/widgets/zyra_browse_designs.dart": "0e602b6688af4a62e3ee39a203d33b720d2c8903bd15f3494434374bd5dcc2c8",
+    "SOURCE/lib/widgets/zyra_profile_details_page.dart": "9bbcdcc08e2dd8fee0c6386de1cc2f5dc043067f03287b11cdb495b2bc6742cc",
+    "SOURCE/lib/widgets/zyra_profiles_components.dart": "8b08e510c1922cf471bf715e1eed1eb071673ee27e7d7fbe58083630ab57620b"
+  },
+  "test_harness_sha256": {
+    "SOURCE/test/guardian_info_lock3_test.dart": "04246eeb84922dd8e6a9977ac1a25396fd615a243e636392761dcbbf14b53b27",
+    "SOURCE/test/guardian_circle_shared_summary_presentation_test.dart": "7bf6319413ade27effbac813e10b8d8b05f8c63f3830999bf1806d55e21f31af",
+    "SOURCE/test/guardian_circle_topic_options_test.dart": "c442673ae8b0dddee164a5f3f9b6dc180416768502977ce4cebc2d7d0c005d49"
+  },
+  "locked_inputs_sha256": {
+    "PRODUCT/APPROVED/GUARDIAN_INFO/BRIEFS/BUILD_BRIEF_2026-10-30.md": "1f272fa7a42d1059ab6bd7be1fb1ef824c1acecf8b4c531e19d078bc49eb33bd",
+    "PRODUCT/APPROVED/GUARDIAN_INFO/RECORD/LOCK_RECORD.md": "9f8354bee62183dc69f5c6355570b095a12adb2f0bc7730c18d5edcf3a9d9010",
+    "PRODUCT/APPROVED/GUARDIAN_INFO/RECORD/WHAT_GUARDIANS_CAN_DO_SPEC_CURRENT_VERSION_V2.md": "bdba190cd974e6381edca797ea9068146c605e2e40b4f3d6c1aac6edb845a812"
+  },
+  "masters_and_built": [
+    {
+      "file": "profile_tab__what_guardians_can_do_row.png",
+      "master_sha256": "69463b28f3a0ec8faca3dc4c385830291f1105f7c8e01a5526d53f3eb67491e8",
+      "built_sha256": "65a91be2ffa736ff6c53d340883789eb044c3d4d9c15ad955628118e770b960d",
+      "size": [
+        1290,
+        2796
+      ],
+      "comparison": "Content, order and behavior match. Fonts, spacing, palette, back navigation and components use the actual app per spec introduction; prototype drawings are not pixel baselines."
+    },
+    {
+      "file": "what_guardians_can_do__1_your_main_guardian.png",
+      "master_sha256": "941e7f204ff15b2086d12c9b9c4036dc093819417719ad4e4acb6c5b7bc27708",
+      "built_sha256": "03067cba45d59f984a929327f912f3fd9d2ecf6873e649b5e009162e2946b835",
+      "size": [
+        1290,
+        2796
+      ],
+      "comparison": "Content, order and behavior match. Fonts, spacing, palette, back navigation and components use the actual app per spec introduction; prototype drawings are not pixel baselines."
+    },
+    {
+      "file": "what_guardians_can_do__2_your_additional_guardians.png",
+      "master_sha256": "d3023ab3ffd71f22851728c2ca17ed5d5c807683af5a55f6041184f73ffb1027",
+      "built_sha256": "50b4defbb9ca0166457880bb4a30f8799ac1218a86d69d9cb7411e8fb0659ed5",
+      "size": [
+        1290,
+        2796
+      ],
+      "comparison": "Content, order and behavior match. Fonts, spacing, palette, back navigation and components use the actual app per spec introduction; prototype drawings are not pixel baselines."
+    },
+    {
+      "file": "what_guardians_can_do__3_other_seekers_guardians.png",
+      "master_sha256": "2549cf5211e154fc3a312c4cf8162a62c55bfed4bbbeb2fa697d6ce5535943c7",
+      "built_sha256": "7018e7e19cd621825432d4b5336ad04ea937b44c12dd72da4250b89bb9db1134",
+      "size": [
+        1290,
+        2796
+      ],
+      "comparison": "Content, order and behavior match. Fonts, spacing, palette, back navigation and components use the actual app per spec introduction; prototype drawings are not pixel baselines."
+    },
+    {
+      "file": "what_guardians_can_do__4_no_guardian_ever_sees.png",
+      "master_sha256": "1a8f51f2b631355d8245583342decdfe93772599f720a100ca8cf8a36a801d4c",
+      "built_sha256": "6b555db28bcee3a37e698458da2cdf0d83500f702706f0e9d65a1c1def8d9d9d",
+      "size": [
+        1290,
+        2796
+      ],
+      "comparison": "Content, order and behavior match. Fonts, spacing, palette, back navigation and components use the actual app per spec introduction; prototype drawings are not pixel baselines."
+    }
+  ],
+  "validation": {
+    "analyzer": "PASS: no issues; flutter analyze --no-pub via tooling/no_git_driver.mjs",
+    "focused_regression": "PASS: 281 tests across 11 named suites; final-tests.txt kept in task scratch until closure",
+    "ios_capture": "PASS: 6 explicit TargetPlatform.iOS cases; 5 actual shell PNGs, 430x932 @3x",
+    "network": "0 attempts asserted by baseline capture harness",
+    "comparison": "5 master/built pairs visually checked; profile details/card and controls above y2500 pixel-identical to existing LOCK4 capture; navigation-only difference from later LOCK6",
+    "native": "Not run: held native route, no install or upload",
+    "limitations": [
+      "Founder sample preview only; production server alignment remains OA-ZYRA-317.",
+      "Full old LOCK4 screenshot hash is not a current nav baseline. Written refusal to overwrite it; measured difference only at y2544-2694, after LOCK6."
+    ]
+  },
+  "authority": "LOCK3 V2; DR-ZYRA-233 amendment; OA-ZYRA-324; no production changes"
+}

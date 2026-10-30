@@ -134,6 +134,7 @@ void main() {
       await h.mount(guardian: true, tab: 3);
       expect(row, findsNothing);
     },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 
   testWidgets(
@@ -177,6 +178,7 @@ void main() {
       expect(tester.widget<InkWell>(_key('guardian_info_next')).onTap, isNull);
       expect(find.text('No Guardian ever sees'), findsOneWidget);
     },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 
   testWidgets(
@@ -201,6 +203,7 @@ void main() {
       expect(_circle(tester).previewPastTopics, isEmpty);
       expect(circle.previewDiscussionArchiveFor!(hafsa), isNull);
     },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 
   testWidgets(
@@ -234,6 +237,7 @@ void main() {
       await h.mount(tab: 3);
       expect(await consent(), isFalse);
     },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 
   testWidgets(
@@ -251,6 +255,7 @@ void main() {
       expect(archive.startedOn, DateTime.utc(2026, 9, 19));
       expect(archive.endedOn, DateTime.utc(2026, 10, 10));
     },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 
   testWidgets(
@@ -285,5 +290,6 @@ void main() {
       await tester.pumpAndSettle();
       expect(managed, 0);
     },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 }
