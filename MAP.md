@@ -70,7 +70,7 @@ re-run the tool.
 | DOC-ZYRA-0071 | `APP/UX Writing/Summary.md` | 9 |
 | DOC-ZYRA-0070 | `APP/UX Writing/ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md` | 6 |
 | DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | 9 |
-| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 29 |
+| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 33 |
 | DOC-ZYRA-0102 | `BUSINESS/COLOUR THEME/Summary.md` | 7 |
 | DOC-ZYRA-0282 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md` | 16 |
 | DOC-ZYRA-0266 | `SYSTEM/DOCUMENTS/ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md` | 10 |
@@ -733,6 +733,10 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0271 | `SYSTEM/DOCUMENTS/MASTER_STANDARDS/SUMMARY_STANDARD_CURRENT_VERSION_V3.md` | STANDARD | ['Feature name in uppercase'] | 14 |
 | DOC-ZYRA-0272 | `SYSTEM/DOCUMENTS/MASTER_STANDARDS/ZYRA_ENGINEERING_INVARIANTS_CURRENT_VERSION_V3.md` | STANDARD | ZYRA — Engineering Invariants | 12 |
 | DOC-ZYRA-0273 | `SYSTEM/DOCUMENTS/MASTER_STANDARDS/ZYRA_STANDARDS_LIBRARY_V1.md` | STANDARD | ZYRA — Standards Library | 1 |
+| DOC-ZYRA-0284 (large - search it) | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 33 |
+| TBC (Fable assigns) | `PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 13 - Seeker Journey tab swipe cards | AD-AIOS-115 | 1 |
+| TBC (Fable assigns) | `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 13 - Seeker Journey tab (swipe cards, one per Journey place) | DOC-ZYRA-0283, DR-ZYRA-277, AD-AIOS-115 | 4 |
+| TBC (Fable assigns) | `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 13 - Seeker Journey tab as swipe cards (design 2) | AD-AIOS-115 | 1 |
 
 ## Old versions (10) — superseded or retired; open only to check history
 

@@ -38,6 +38,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
     this.canViewGuardians = true,
     this.endedReadWindowOpen = false,
     this.archived = false,
+    this.lockedPage = false,
   });
   final String id;
   final String firstName;
@@ -51,6 +52,8 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
   final bool canViewGuardians;
   final bool endedReadWindowOpen;
   final bool archived;
+  // LOCK13 opts in; existing inline cards and sheets keep their geometry.
+  final bool lockedPage;
 
   @override
   Widget build(BuildContext context) => inline
@@ -69,9 +72,9 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
                   final painter = TextPainter(
                     text: TextSpan(
                       text: entry.$3,
-                      style: DefaultTextStyle.of(
-                        context,
-                      ).style.merge(ZyraText.button(size: 13)),
+                      style: DefaultTextStyle.of(context).style.merge(
+                        ZyraText.button(size: lockedPage ? 15 : 13),
+                      ),
                     ),
                     textDirection: Directionality.of(context),
                     textScaler: MediaQuery.textScalerOf(context),
@@ -86,7 +89,8 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
               if (readable &&
                   labelsFit &&
                   constraints.maxHeight.isFinite &&
-                  constraints.maxHeight >= rows.length * 56) {
+                  constraints.maxHeight >=
+                      rows.length * (lockedPage ? 60 : 56)) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [for (final row in rows) Expanded(child: row)],
@@ -245,7 +249,13 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
           key: ValueKey('draft_options_${option.name}_$id'),
           onTap: ZyraTapFeedback.onTap(context, () => onSelected(option)),
           child: Container(
-            constraints: BoxConstraints(minHeight: inline ? 56 : 62),
+            constraints: BoxConstraints(
+              minHeight: lockedPage
+                  ? 60
+                  : inline
+                  ? 56
+                  : 62,
+            ),
             padding: EdgeInsets.symmetric(vertical: inline ? 5 : 10),
             decoration: BoxDecoration(
               border: Border(
@@ -283,7 +293,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
                       Text(
                         title,
                         style: ZyraText.button(
-                          size: 13,
+                          size: lockedPage ? 15 : 13,
                           color: option == ZyraConceptJourneyOption.end
                               ? ZyraColors.destructive
                               : locked

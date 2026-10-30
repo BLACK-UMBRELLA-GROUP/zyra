@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 166,377 lines in 328 files |
-| Developer and preview code inside it | 46,905 lines in 87 files |
-| The Founder preview (planned app) | 27,784 lines in 37 files |
-| Test code | 213,091 lines in 492 files |
+| All app code | 167,295 lines in 330 files |
+| Developer and preview code inside it | 47,823 lines in 89 files |
+| The Founder preview (planned app) | 28,698 lines in 39 files |
+| Test code | 213,972 lines in 494 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -64,6 +64,7 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | 2026-10-30 | Queue 37 LOCK10 V6: Filters cards, public sets and preferences (AD-AIOS-115 / OA-ZYRA-316) | 165,880 / 326 | 46,408 / 85 | 27,289 / 35 | 212,438 / 490 | 2,612 / 307 MB | 39 | 1 |
 | 2026-10-30 | Queue 26 LOCK11: optional coarse foreground area and actual profile hometown (OA-ZYRA-321 / OA-ZYRA-323) | 166,377 / 328 | 46,905 / 87 | 27,784 / 37 | 213,091 / 492 | 2,612 / 307 MB | 39 | 1 |
+| 2026-10-30 | Queue 38 LOCK13 V2: Journey place cards and ordinary options page (AD-AIOS-115 / OA-ZYRA-317) | 167,295 / 330 | 47,823 / 89 | 28,698 / 39 | 213,972 / 494 | 2,612 / 307 MB | 39 | 1 |
 
 Note: the first count given to the Founder on 25 Oct said 45,620 lines / 84 files of developer code; it missed the three
 developer screens in `screens/dev/`. The baseline above is the corrected figure.
@@ -344,3 +345,37 @@ independent verification and Founder acceptance; no product finding beyond this 
 Replaced the old Guardian presenter with the locked five-tab pages and local Family Review / private Connect samples. The removed presenter and obsolete cases moved to /Users/shakeelahmad/_to_delete/ZYRA_LOCK8_GUARDIAN_TABS_2026-10-30/. The new presenter follows the existing zyra_one_journey_* naming so the planned-app count includes it. Existing member/sign-in routes, backend, personal Journey Pause retirement and the screenshot inventory stay unchanged. Default shared Circle/navigation behavior is retained; Guardian navigation alone opts into current LOCK6 V2 geometry. Thirteen affected suites and the twelve-case LOCK8 capture/behavior suite are recorded with exact measured results in Task 14 and its JSON evidence. Five starting-code test failures are separately reproduced and refused as unrelated OA-ZYRA-316 work, rather than counted as passing. The twenty feature captures are beside the masters, outside the SOURCE/test golden count. Fable's independent verification is pending.
 
 Queue 30: the two shared files follow the planned-app naming pattern and are counted above. The replaced local UI suites moved to the global _to_delete; ordinary member routes remain. Details, guards and measured scope: `ZYRA_CODE_PAGE_AS_BUILT_CURRENT_VERSION_V1.md`.
+
+
+## Queue 38 — Journey tab LOCK13 V2 — 30 October 2026
+
+Built from `PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-30.md`,
+`RECORD/LOCK_RECORD.md`, `RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V2.md` and all eight `MASTERS/j01–j08` pictures
+under that feature folder. Queue 38 was freshly checked as WAITING. The sample Seeker tab now has one swipe card per
+place, Journeys ordered by actual local activity before free places, non-looping shared LOCK7 arrows/pill and Profiles dots,
+an explicit empty state, Basic's one-place upsell, and the seven-row options page. The options page retains LOCK6 navigation
+and has no inner ellipsis. Existing shared pill/dot defaults and ordinary `zyra_one_journey_options.dart` remain.
+
+Live implementation: `SOURCE/lib/dev/zyra_one_journey_tab.dart` owns presentation; `zyra_one_journey_options_page.dart`
+composes the 104-pixel photo, 41-pixel painted Continue action with a 44-pixel hit area, and seven rows of at least 60 pixels.
+`zyra_one_journey_concept_shell.dart` owns selection, ordering, fresh callbacks and all existing destinations. Its Continue
+Journey body is byte-identical to the starting index; the only message-content hook records a successful local message's
+activity. `zyra_view_request_draft_model.dart` stores immutable local activity times on successful existing actions without
+changing relationship states, permissions or stages. `zyra_preview_navigation_checkpoint.dart` adds only a bounded detached
+place index, clamped again to current capacity and omitted by the existing long-return location-reset path.
+
+Actual preview state remains authoritative. Preparing uses the existing “Preparing together · place reserved” copy and
+shows no begun stage/progress; readiness and Begin still use the unchanged Journey page. The Seeker model has no open
+Family Review/deadline source. Therefore the built Sara frames truthfully show the current question action, not the master's
+illustrative 41-hour timer. This existing preview gap belongs to OA-ZYRA-317; no timer, answers, server workflow or relationship
+state was invented. Blocked occupied places redact identity/photo/VoiceOver and retain End. Bio and Compatibility retain
+their current gates and explanatory destinations; unlocked pages use the existing disclosure handlers.
+
+Validation and limits are recorded in daily Task 22 and JSON evidence. Nine focused suites passed 171 cases; the final local bottom-clearance and outline-button adjustments were checked by the final 14-case actual-shell capture suite and clean analyser. Normal body-to-bar clearance is 14 pixels; small-phone clearance is 28 at normal text and 20 at 200% text. The existing global tab bar is unchanged. All eight actual
+430×932 @3x renders and master-beside-build comparisons sit in `PRODUCT/APPROVED/JOURNEY_TAB/BUILT/`. These are headless
+Flutter renders with local photos and real shell routes, not an iPhone delivery or a pixel-identical claim. The current actual
+navigation/glyph/font metrics and unframed app viewport differ from the prototype's frame. No master was changed.
+
+Written refusal: no whole-suite cleanup or claim, no queue 39/35 work, no Blueprint edit/generated inventory rewrite, no
+old member/sign-in retirement, new dependency, backend/migration, native build/install, upload or publication. Fable owns
+inventory maintenance and independent verification; Founder acceptance remains separate.

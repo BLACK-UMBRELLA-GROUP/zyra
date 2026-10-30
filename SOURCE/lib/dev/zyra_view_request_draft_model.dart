@@ -334,6 +334,7 @@ final class ViewRequestDraftSnapshot {
       pastRequests = List.unmodifiable(model._pastRequests),
       pastRequestSequence = model._pastRequestSequence,
       journeyStartedAt = Map.unmodifiable(model._journeyStartedAt),
+      journeyLastActivityAt = Map.unmodifiable(model._journeyLastActivityAt),
       endedAttempts = List.unmodifiable(model._endedAttempts),
       currentEndedAttemptIds = Map.unmodifiable(model._currentEndedAttemptIds),
       progress = Map.unmodifiable({
@@ -363,6 +364,7 @@ final class ViewRequestDraftSnapshot {
   final List<DraftPastRequest> pastRequests;
   final int pastRequestSequence;
   final Map<String, DateTime> journeyStartedAt;
+  final Map<String, DateTime> journeyLastActivityAt;
   final List<DraftEndedJourneyAttempt> endedAttempts;
   final Map<String, String> currentEndedAttemptIds;
   final Map<String, ViewRequestDraftProgressSnapshot> progress;
@@ -433,6 +435,8 @@ final class ViewRequestDraftSnapshot {
               !entry.requestedAt.isAfter(entry.movedAt),
         ) &&
         journeyStartedAt.keys.every(peers.contains) &&
+        journeyLastActivityAt.keys.every(peers.contains) &&
+        journeyLastActivityAt.values.every((value) => value.isUtc) &&
         endedAttempts.map((attempt) => attempt.id).toSet().length ==
             endedAttempts.length &&
         endedAttempts.every(
@@ -582,6 +586,7 @@ class ViewRequestDraftModel {
     _pastRequests.addAll(snapshot.pastRequests);
     _pastRequestSequence = snapshot.pastRequestSequence;
     _journeyStartedAt.addAll(snapshot.journeyStartedAt);
+    _journeyLastActivityAt.addAll(snapshot.journeyLastActivityAt);
     _endedAttempts.addAll(snapshot.endedAttempts);
     _currentEndedAttemptIds.addAll(snapshot.currentEndedAttemptIds);
     // Detached local fixtures can add older attempts, never replace the current
@@ -642,6 +647,7 @@ class ViewRequestDraftModel {
   int _pastRequestSequence = 0;
   final Map<String, _DraftJourneyProgress> _progress = {};
   final Map<String, DateTime> _journeyStartedAt = {};
+  final Map<String, DateTime> _journeyLastActivityAt = {};
   final List<DraftEndedJourneyAttempt> _endedAttempts = [];
   final Map<String, String> _currentEndedAttemptIds = {};
   final Map<String, bool> _peerMainGuardianOverrides = {};
@@ -657,6 +663,23 @@ class ViewRequestDraftModel {
   Set<String> get blockedPeers => UnmodifiableSetView(_blockedPeers);
   bool isHidden(String id) => _hiddenPeers.contains(id);
   bool isBlocked(String id) => _blockedPeers.contains(id);
+
+  /// The last successful local Journey action, never a server timestamp or
+  /// a date fabricated from a Timeline example. Equal dates stay equal so the
+  /// presentation can keep its stable fixture order when the clock ties.
+  DateTime? lastActivityFor(String id) => _journeyLastActivityAt[id];
+
+  void _recordJourneyActivity(String id) {
+    _journeyLastActivityAt[id] = _clock().toUtc();
+  }
+
+  /// For an actual shell-owned local action, such as adding a sample message.
+  /// Merely viewing a card or attempting a refused action is not activity.
+  bool markJourneyActivity(String id) {
+    if (!canParticipateInJourney(id)) return false;
+    _recordJourneyActivity(id);
+    return true;
+  }
 
   /// Memory-only arrival order, independent of per-request acknowledgement.
   /// Scenario resets keep this monotonic so an older tab-open marker cannot
@@ -1075,6 +1098,8 @@ class ViewRequestDraftModel {
     _pendingRequestedAt.remove(requestId);
     _progress[requestId] = _DraftJourneyProgress();
     _initializePreparationGuardianAccess(requestId);
+    _recordJourneyActivity(endingId);
+    _recordJourneyActivity(requestId);
     return true;
   }
 
@@ -1114,6 +1139,7 @@ class ViewRequestDraftModel {
     _pendingRequestedAt.remove(id);
     _progress[id] = _DraftJourneyProgress();
     _initializePreparationGuardianAccess(id);
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1127,6 +1153,7 @@ class ViewRequestDraftModel {
       return false;
     }
     _progress[id]!.ready = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1137,6 +1164,7 @@ class ViewRequestDraftModel {
       return false;
     }
     _progress[id]!.peerReady = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1170,6 +1198,7 @@ class ViewRequestDraftModel {
       _guardianAccess[key] = (view: true, chat: true);
       _requiredPaidGuardianAccess.add(key);
     }
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1254,6 +1283,7 @@ class ViewRequestDraftModel {
       return false;
     }
     _progress[id]!.salam = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1262,6 +1292,7 @@ class ViewRequestDraftModel {
       return false;
     }
     _progress[id]!.peerSalam = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1278,6 +1309,7 @@ class ViewRequestDraftModel {
       return false;
     }
     _progress[id]!.compatibilityConsent = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1287,6 +1319,7 @@ class ViewRequestDraftModel {
       return false;
     }
     _progress[id]!.peerCompatibilityConsent = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1326,6 +1359,7 @@ class ViewRequestDraftModel {
     _progress[id]!
       ..compatibilityStepCompleted = true
       ..bioStepOpen = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1335,12 +1369,14 @@ class ViewRequestDraftModel {
   bool chooseBioReveal(String id) {
     if (!_atBioStep(id) || hasChosenBioReveal(id)) return false;
     _progress[id]!.bioConsent = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
   bool simulatePeerBioReveal(String id) {
     if (!_atBioStep(id) || peerHasChosenBioReveal(id)) return false;
     _progress[id]!.peerBioConsent = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1352,12 +1388,14 @@ class ViewRequestDraftModel {
   bool chooseBioContinue(String id) {
     if (!canChooseBioContinue(id)) return false;
     _progress[id]!.bioContinue = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
   bool simulatePeerBioContinue(String id) {
     if (!canPeerChooseBioContinue(id)) return false;
     _progress[id]!.peerBioContinue = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1375,6 +1413,7 @@ class ViewRequestDraftModel {
       ..stageIndex += 1
       ..stageContinue = false
       ..peerStageContinue = false;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1405,6 +1444,7 @@ class ViewRequestDraftModel {
   bool chooseStageContinue(String id) {
     if (!canChooseStageContinue(id)) return false;
     _progress[id]!.stageContinue = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1413,6 +1453,7 @@ class ViewRequestDraftModel {
       return false;
     }
     _progress[id]!.peerStageContinue = true;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1431,6 +1472,7 @@ class ViewRequestDraftModel {
       ..stageIndex += 1
       ..stageContinue = false
       ..peerStageContinue = false;
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1463,6 +1505,7 @@ class ViewRequestDraftModel {
     _recordEndedAttempt(id, endedAt: _clock());
     _states[id] = DraftJourneyState.ended;
     _clearRequiredPaidGuardianAccess(id);
+    _recordJourneyActivity(id);
     return true;
   }
 
@@ -1486,11 +1529,13 @@ class ViewRequestDraftModel {
   bool seedJourneys(int count) {
     if (count < 1 || count > capacity) return false;
     _seed();
+    final seededAt = _clock().toUtc();
     for (final profile in draftProfiles.skip(1).take(count)) {
       _states[profile.id] = DraftJourneyState.active;
       _progress[profile.id] = _DraftJourneyProgress()
         ..ready = true
         ..peerReady = true;
+      _journeyLastActivityAt[profile.id] = seededAt;
     }
     return true;
   }
@@ -1522,6 +1567,7 @@ class ViewRequestDraftModel {
     seedReceived(draftProfiles.first.id);
     _progress.clear();
     _journeyStartedAt.clear();
+    _journeyLastActivityAt.clear();
     _endedAttempts.clear();
     _currentEndedAttemptIds.clear();
     _guardianAccess.clear();

@@ -87,6 +87,8 @@ import 'zyra_my_zyra_activity_preview.dart';
 import 'zyra_one_journey_browse_designs.dart';
 import 'zyra_one_journey_card_content.dart';
 import 'zyra_one_journey_options.dart';
+import 'zyra_one_journey_options_page.dart';
+import 'zyra_one_journey_tab.dart';
 import 'zyra_one_journey_guardian_tabs.dart';
 import 'zyra_journey_peer_guardians_presentation.dart';
 import 'zyra_one_journey_account_presentation.dart';
@@ -162,6 +164,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   bool _photoLoadFailed = false;
   int _tab = 0;
   int _requestsTab = 0;
+  int _journeyTabIndex = 0;
   int _myZyraLastOpenedRevision = 0;
   final _tabBarCollapseRevision = ValueNotifier<int>(0);
   int _browseIndex = 1;
@@ -802,6 +805,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         !_conceptRemovedGuardians.contains(pendingMain)) {
       _pendingMainGuardianNoticeId = pendingMain;
     }
+    _journeyTabIndex = saved.journeyPlaceIndex.clamp(0, _model.capacity - 1);
     _guardianPage = saved.guardianPage.clamp(0, 1);
     _networkTab = saved.networkTab.clamp(0, 1);
     _personId = _profileIds.contains(saved.personId) ? saved.personId : null;
@@ -858,6 +862,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       'bio',
       'timeline',
       'journey',
+      'journey_options',
       'journey_compatibility',
       'journey_guardians',
       'compatibility',
@@ -982,6 +987,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       }
       if ({
             'journey',
+            'journey_options',
             'journey_compatibility',
             'journey_guardians',
             'bio',
@@ -1027,6 +1033,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         pages: _pages,
         personId: _personId,
         requestsTab: _requestsTab,
+        journeyPlaceIndex: _journeyTabIndex.clamp(0, _model.capacity - 1),
         myZyraLastOpenedRevision: _myZyraLastOpenedRevision,
         guardianPage: _guardianPage,
         networkTab: _networkTab,
@@ -1540,6 +1547,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'membership_review',
           'subscriptions',
           'journey',
+          'journey_options',
           'journey_action',
           'bio',
           'bio_locked',
@@ -1762,7 +1770,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                     ),
                                   if (_browseOptionsOpen)
                                     _browseOptionsNavigation()
-                                  else if (_page == null)
+                                  else if (_page == null ||
+                                      _page == 'journey_options')
                                     ValueListenableBuilder<int>(
                                       valueListenable: _tabBarCollapseRevision,
                                       builder: (context, collapseRevision, _) =>
@@ -1816,7 +1825,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                                                       false) &&
                                                   !_devControlsVisible &&
                                                   !_browseOptionsOpen &&
-                                                  _page == null) {
+                                                  (_page == null ||
+                                                      _page ==
+                                                          'journey_options')) {
                                                 _tabTo(index);
                                               }
                                             },
@@ -1922,6 +1933,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'controls' => _controls(),
     'profile' => _profileView(),
     'journey' => _journeyView(),
+    'journey_options' => _journeyOptionsPage(),
     'journey_action' => _journeyActionConfirmation(),
     'request_capacity' => _requestCapacityView(),
     'journey_compatibility' => _journeyCompatibility(),
@@ -2547,96 +2559,188 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
   }
 
+  // Only this tab sorts by real local activity; other screens keep their defaults.
+  List<DraftProfile> get _tabJourneys => _currentJourneys
+    ..sort((a, b) {
+      final aAt = _model.lastActivityFor(a.id);
+      final bAt = _model.lastActivityFor(b.id);
+      final order = aAt == null
+          ? (bAt == null ? 0 : 1)
+          : bAt == null
+          ? -1
+          : bAt.compareTo(aAt);
+      return order != 0
+          ? order
+          : draftProfiles.indexOf(a).compareTo(draftProfiles.indexOf(b));
+    });
+
+  String _journeyNextStep(DraftProfile person) {
+    final id = person.id;
+    if (_model.isBlocked(id)) return 'User not found';
+    if (!_model.ownMainGuardianPresent) {
+      return 'Your turn: add your Main Guardian';
+    }
+    if (!_model.peerMainGuardianPresentFor(id)) {
+      return 'Waiting for ${person.firstName}';
+    }
+    if (_model.stateFor(id) == DraftJourneyState.preparing) {
+      if (_model.isReady(id) && _model.peerIsReady(id)) {
+        return 'Your turn: begin Journey';
+      }
+      return _model.isReady(id)
+          ? 'Waiting for ${person.firstName}'
+          : 'Your turn: I’m ready to begin';
+    }
+    final stage = _model.stageFor(id);
+    // The existing Seeker model has no Family Review deadline. Do not copy the
+    // separate Guardian fixture's timer or the master's illustrative 41 hours.
+    if (_model.isBioStepOpen(id)) {
+      if (_model.canChooseBioContinue(id) || _model.canCompleteBioStep(id)) {
+        return 'Your turn: continue';
+      }
+    } else if (_model.canAdvanceStage(id) ||
+        (stage?.kind == ZyraStageKind.threshold &&
+            _model.canChooseStageContinue(id))) {
+      return 'Your turn: continue';
+    }
+    final waiting = switch (stage?.value) {
+      'salam_exchange' => _model.hasSentSalam(id),
+      'compatibility_reveal' =>
+        _model.isBioStepOpen(id)
+            ? _model.hasChosenBioReveal(id)
+            : _model.hasChosenCompatibilityReveal(id),
+      'conversation' => false,
+      _ => _model.hasChosenStageContinue(id),
+    };
+    if (waiting) {
+      return 'Waiting for ${person.firstName}';
+    }
+    final action = switch (stage?.value) {
+      'salam_exchange' => 'send Salam',
+      'compatibility_reveal' => 'choose to reveal',
+      'wali_gate' => 'continue',
+      'family_stage' => 'answer Family Compatibility',
+      'conversation' => 'open the conversation',
+      _ => 'answer ${stage?.label ?? ''}',
+    };
+    return 'Your turn: $action';
+  }
+
   Widget _connections() {
-    final journeys = _currentJourneys;
-    final expanded = journeys
-        .where((person) => person.id == _expandedJourneyOptionsId)
-        .firstOrNull;
-    return ZyraOneJourneyConnectionsPresentation(
-      title: 'Journey',
-      labels: const ['Journey'],
-      selectedIndex: 0,
-      onChanged: (_) {},
-      pageTopPadding: 12,
-      fillSinglePage: true,
-      expandedCard: expanded == null
-          ? null
-          : KeyedSubtree(
-              key: ValueKey('concept_expanded_journey_${expanded.id}'),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final reading =
-                      MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-                      constraints.maxHeight < 600;
-                  final card = _connectionCard(
-                    expanded,
-                    compact: true,
-                    fillHeight: !reading,
-                    expandedOptions: true,
-                    inlineOptionsFillHeight: !reading,
-                  );
-                  return reading
-                      ? SingleChildScrollView(
-                          key: ValueKey(
-                            'concept_expanded_journey_reading_${expanded.id}',
-                          ),
-                          physics: const ClampingScrollPhysics(),
-                          child: card,
-                        )
-                      : card;
-                },
-              ),
-            ),
-      pages: [
-        [
-          // Three stable slots keep an existing Journey the same size
-          // whether the other places are occupied, available or locked.
-          for (var index = 0; index < 3; index++) ...[
-            if (index < journeys.length)
-              _connectionCard(journeys[index], compact: true, fillHeight: true)
-            else
-              _journeyCapacitySlot(index),
-            if (index < 2) const SizedBox(height: 12),
-          ],
-        ],
+    final journeys = _tabJourneys;
+    final index = _journeyTabIndex.clamp(0, _model.capacity - 1);
+    final person = index < journeys.length ? journeys[index] : null;
+    final fresh = _accountFreshGuard();
+    bool current() =>
+        fresh() &&
+        !_devControlsVisible &&
+        !_guardianRole &&
+        _tab == 1 &&
+        _page == null &&
+        _journeyTabIndex.clamp(0, _model.capacity - 1) == index &&
+        (person == null ||
+            _tabJourneys.elementAtOrNull(index)?.id == person.id);
+    void dispatch(VoidCallback action) {
+      if (!current()) {
+        ZyraInteractionStyle.cancelSelectionTap();
+        return;
+      }
+      action();
+    }
+
+    return ZyraOneJourneyTab(
+      journeys: [
+        for (final p in journeys)
+          ZyraJourneyTabCard(
+            id: p.id,
+            firstName: p.firstName,
+            details: '${p.age} · ${p.city}',
+            stageNumber: _model.stateFor(p.id) == DraftJourneyState.preparing
+                ? 0
+                : (_model.stageFor(p.id)?.order ?? 1),
+            stageLabel: _model.stateFor(p.id) == DraftJourneyState.preparing
+                ? _stateLabel(DraftJourneyState.preparing)
+                : _model.stageFor(p.id)?.label ??
+                      _stateLabel(_model.stateFor(p.id)!),
+            nextStep: _journeyNextStep(p),
+            unavailable: _model.isBlocked(p.id),
+            photo: _photos == null || _model.isBlocked(p.id)
+                ? null
+                : AssetImage(
+                    'assets/dev/one_journey_photos/${ZyraOneJourneySamplePhotos.seeds[draftProfiles.indexOf(p)].first}.jpg',
+                  ),
+          ),
       ],
+      capacity: _model.capacity,
+      index: index,
+      sessionIdentity: (
+        _uiRevision,
+        _devControlsEpoch,
+        _devRouteStamp,
+        journeys.map((p) => p.id).join('/'),
+      ),
+      onIndexChanged: (value) => dispatch(() {
+        if (value >= 0 && value < _model.capacity) {
+          _act(() => _journeyTabIndex = value);
+        }
+      }),
+      onContinue: () => dispatch(() {
+        if (person != null && !_model.isBlocked(person.id)) _journey(person.id);
+      }),
+      onOptions: () => dispatch(() {
+        if (person != null && !_model.isBlocked(person.id)) {
+          _open('journey_options', person: person.id);
+        }
+      }),
+      onEndUnavailable: person != null && _model.isBlocked(person.id)
+          ? () => dispatch(() => _showJourneyAction(person, 'end'))
+          : null,
+      onBrowse: () => dispatch(() => _tabTo(0)),
+      onPlans: () =>
+          dispatch(() => _accountDispatch(ZyraConceptAccountAction.membership)),
     );
   }
 
-  Widget _journeyCapacitySlot(int index) {
-    final available = index < _model.capacity;
+  Widget _journeyOptionsPage() {
+    final person = _person;
+    if (person == null || !_canAddressJourneyDisclosure(person.id)) {
+      return _unavailable();
+    }
     final fresh = _accountFreshGuard();
-    return Container(
-      key: ValueKey('concept_journey_capacity_slot_$index'),
-      constraints: const BoxConstraints(minHeight: 144),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: ZyraColors.surfaceBorder),
-      ),
-      child: Center(
-        child: available
-            ? Text(
-                'Awaiting a Journey',
-                textAlign: TextAlign.center,
-                style: ZyraText.body(size: 14, color: ZyraColors.ink(.65)),
-              )
-            : _button(
-                'concept_journey_upgrade_slot_$index',
-                'Upgrade to get more Journeys',
-                () {
-                  if (!fresh() ||
-                      _devControlsVisible ||
-                      _guardianRole ||
-                      _tab != 1 ||
-                      _page != null ||
-                      index < _model.capacity) {
-                    return;
-                  }
-                  _accountDispatch(ZyraConceptAccountAction.membership);
-                },
-              ),
+    bool current() =>
+        fresh() &&
+        !_devControlsVisible &&
+        _page == 'journey_options' &&
+        _personId == person.id &&
+        _canAddressJourneyDisclosure(person.id);
+    void dispatch(VoidCallback action) {
+      if (!current()) {
+        ZyraInteractionStyle.cancelSelectionTap();
+        return;
+      }
+      action();
+    }
+
+    return ZyraOneJourneyOptionsPage(
+      id: person.id,
+      firstName: person.firstName,
+      surname: person.surname,
+      details: '${person.age} · ${person.city}',
+      nationality: zyraBrowseNationalityLabel(person.nationalityCode) ?? '—',
+      ethnicity: zyraBrowseEthnicityLabel(person.ethnicityCode) ?? '—',
+      photo: _photos?.forIndex(draftProfiles.indexOf(person)).firstOrNull,
+      onContinue: () => dispatch(() => _journey(person.id)),
+      options: ZyraConceptJourneyOptions(
+        id: person.id,
+        firstName: person.firstName,
+        inline: true,
+        lockedPage: true,
+        canEnd: true,
+        canViewBio: _canViewJourneyBio(person.id),
+        canViewCompatibility: _canViewJourneyCompatibility(person.id),
+        onSelected: (choice) =>
+            dispatch(() => _selectJourneyOption(person, choice)),
+        onCancel: () {},
       ),
     );
   }
@@ -4216,6 +4320,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                     final text = _message.text.trim();
                     if (text.isEmpty) return;
                     (_messages[id] ??= []).add(text);
+                    _model.markJourneyActivity(id);
                     _message.clear();
                   })
                 : null,

@@ -52,6 +52,7 @@ class ZyraPreviewNavigationCheckpoint {
     required Iterable<String> pages,
     this.personId,
     this.requestsTab = 0,
+    int journeyPlaceIndex = 0,
     this.guardianTabs = const ZyraGuardianTabsSnapshot(),
     this.myZyraLastOpenedRevision = 0,
     this.guardianPage = 0,
@@ -76,7 +77,8 @@ class ZyraPreviewNavigationCheckpoint {
     this.compatibilityRevealed = false,
     this.accountDestination,
     this.settingsDetail,
-  }) : browseFilter = browseFilter.detached(),
+  }) : journeyPlaceIndex = journeyPlaceIndex.clamp(0, 2),
+       browseFilter = browseFilter.detached(),
        pages = List.unmodifiable(pages.take(8)),
        browseHistory = List.unmodifiable(browseHistory.take(11)),
        photoIndices = Map.unmodifiable(
@@ -98,6 +100,8 @@ class ZyraPreviewNavigationCheckpoint {
   final ZyraGuardianTabsSnapshot guardianTabs;
   final ViewRequestDraftSnapshot model;
   final int tab, requestsTab, guardianPage, networkTab;
+  // Detached place position only; never a Journey or route permission.
+  final int journeyPlaceIndex;
   // Tab attention is independent of individual received-request reads.
   final int myZyraLastOpenedRevision;
   final List<String> pages, browseHistory;
