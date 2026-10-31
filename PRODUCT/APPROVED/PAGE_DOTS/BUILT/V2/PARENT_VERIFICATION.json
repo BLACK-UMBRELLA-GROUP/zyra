@@ -1,0 +1,130 @@
+{
+  "review": "Parent technical verification only; no Founder visual approval or full-suite pass",
+  "queue": 68,
+  "timestamp_utc": "2026-10-31T21:00:43.347543+00:00",
+  "source_commit": "373820e5f9e4ab26954b2fd24d0a8795a0d2ce9b",
+  "primary_evidence_commit": "3df319f2e8ac3a2ab8d8bb9fa9b978a0419319c9",
+  "primary_group_note_commit": "c5a8eb965026b229e7b7ae4e9bc6cd362ff4ec7d",
+  "verified_hashes": {
+    "source_tracker": 21,
+    "locked_inputs": 7,
+    "rendered_png": 35,
+    "primary_metadata": [
+      {
+        "path": "BUILD.json",
+        "bytes": 430,
+        "sha256": "a1e52d01ccc14156376ab278e9f3629e4506395df0fa64a42649596476ac498e"
+      },
+      {
+        "path": "CASE_LEDGER.json",
+        "bytes": 5441,
+        "sha256": "5ebda5a3545533df673bdca5171f4ff12fe5efbab063b60cda586c041072620a"
+      },
+      {
+        "path": "QA.json",
+        "bytes": 6781,
+        "sha256": "9aefd16ee784cbf7727f2edbddd6eb5db756d4953bbb751e4dce0662e1e636aa"
+      },
+      {
+        "path": "SOURCE_MANIFEST.json",
+        "bytes": 8289,
+        "sha256": "4c7f86382b94df3d6873d361dff1696e40dc0ea6124150c2690987a07533ee88"
+      },
+      {
+        "path": "RENDER_MANIFEST.json",
+        "bytes": 8340,
+        "sha256": "d84228208acb34d11467bfd99ee104afa315472cb4751e8621d2b52a856d3248"
+      },
+      {
+        "path": "UNCHANGED_BOUNDARIES.json",
+        "bytes": 3645,
+        "sha256": "eac0d4d39ad1e6108208fd59bd7f9fc03aaffd7b08e9ec20db2bda05d75add64"
+      }
+    ],
+    "historical_current_boundaries": 9,
+    "method": "Parent independently followed explicit loose/packed commit/tree/blob objects with inspected standard-library reader definitions only, never its writer, and compared exact declared subsections."
+  },
+  "tests": {
+    "root_sdk_runs": 0,
+    "final_counter_tails_verified": [
+      233,
+      2,
+      5
+    ],
+    "sum": 240,
+    "cohort_identity": "Three disjoint file/selector invocations, not per-file counts inferred from interleaved labels. Primary records 20-file analyser clean/format0 and protected driver checks.",
+    "driver": "Pinned Node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded, SOURCE cwd",
+    "regression_files": [
+      "test/zyra_focus_dashboard_test.dart",
+      "test/guardian_focus_dashboard_test.dart",
+      "test/focus_shell_guards_test.dart",
+      "test/guardian_card_interaction_test.dart",
+      "test/guardian_card_shell_test.dart",
+      "test/guardian_card_family_sheet_test.dart",
+      "test/guardian_info_lock3_test.dart",
+      "test/zyra_subscription_wallet_preview_test.dart",
+      "test/journey_peer_guardians_presentation_test.dart",
+      "test/photo_gallery_add_page_test.dart",
+      "test/edit_photos_screen_test.dart",
+      "test/browse_photo_top_pagination_test.dart",
+      "test/inline_invitation_presentation_test.dart",
+      "test/browse_photo_controls_polish_test.dart",
+      "test/visual/lock15_focus_capture_test.dart",
+      "test/zyra_browse_photo_renderer_test.dart",
+      "test/filters_lock10_accessibility_test.dart",
+      "test/visual/lock13_journey_tab_test.dart"
+    ],
+    "wallet_file": "test/membership_wallet_visual_test.dart",
+    "wallet_selector": "--plain-name 'component: wallet halo'",
+    "capture_file": "test/visual/lock18_page_dots_capture_test.dart",
+    "capture_define": "ZYRA_LOCK18_CAPTURE=true",
+    "capture_cases": [
+      "LOCK18 real routes: scale 1.0, narrow false (variant: TargetPlatform.iOS)",
+      "LOCK18 real routes: scale 2.0, narrow false (variant: TargetPlatform.iOS)",
+      "LOCK18 real routes: scale 2.0, narrow true (variant: TargetPlatform.iOS)",
+      "replaced admission cannot revive an earlier dot handler",
+      "shared dots deny stale owner/target before selection haptic"
+    ],
+    "wider_limits": "12 photo haptic assertions and2 Profile lookups recorded in CASE_LEDGER; no historical cause claim. Prior48 Circle3 were not rerun."
+  },
+  "visual_review": {
+    "all_four_master_build_pairs_viewed": true,
+    "corrected_d02_photo_rechecked": true,
+    "additional_frames_viewed": [
+      "d04_my_zyra_narrow_large_text.png",
+      "d03_guardian_tab_narrow_large_text.png",
+      "e06_photos_narrow_large_text.png",
+      "e07_subscriptions_narrow_large_text.png",
+      "e12_subscriptions_family.png",
+      "e06_photos_narrow_large_text_actions.png",
+      "d04_my_zyra_narrow_large_text_action.png",
+      "d04_my_zyra_narrow_large_text_bottom.png",
+      "d03_guardian_tab_narrow_large_text_access_bottom.png"
+    ],
+    "findings": "Top dots/24 targets, preserved48faces, MyZYRAarrowremoval verified. Initial missing decoded photos corrected in test harness only. Real request/stage/newerGuardianlayout differ from older masters. Narrow Focus word splitting and Photos Adjust clipping remain visible, expressly refused under OA-ZYRA-328R3/R4. No pixel-equality claim."
+  },
+  "handover": {
+    "row56": "QUESTION8/9; parent checked finalJSONhash, separate review/model focus and white master vs gold brief. Archived after Task42.",
+    "row51": "QUESTION6, archived after Task39",
+    "row67": "QUESTION7, archived afterTask40",
+    "row68": "BUILT archived afterTask43"
+  },
+  "queue_end": {
+    "question_rows": [
+      51,
+      56,
+      67
+    ],
+    "waiting_rows": [
+      44,
+      58,
+      60,
+      61,
+      62,
+      63
+    ],
+    "group_waiting": [],
+    "eligible_waiting": "None at this check:58requires56;60requires58;61requires60;62/63require61;44buildlastincludesheld51/56/67."
+  },
+  "phone": "Question2 remains OPEN/native HELD; no install attempted. Founder preview ivory."
+}
