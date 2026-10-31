@@ -1,0 +1,98 @@
+{
+  "task": "queue48",
+  "lock": "LOCK19 V2 (current V3 retains V2; V3 acceptance is queue67)",
+  "status": "QUESTION",
+  "question": 5,
+  "written_refusal": "QUEUE48-PREFLIGHT-R1",
+  "at": "2026-10-31T16:14:08.993688+00:00",
+  "scope": "Preflight only. No source edits, SDK, build, native, backend, payment, send, or entitlement change.",
+  "prerequisites": {
+    "42": "BUILT",
+    "46": "BUILT",
+    "49": "WITHDRAWN; not retried",
+    "68": "after 48"
+  },
+  "inputs": {
+    "brief": "PRODUCT/APPROVED/GUARDIAN_CARD/BRIEFS/BUILD_BRIEF_2026-10-31.md",
+    "lock": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/LOCK_RECORD.md",
+    "current_spec": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3.md",
+    "v2_spec": "PRODUCT/APPROVED/GUARDIAN_CARD/ARCHIVE/GUARDIAN_CARD_SPEC_2026-10-31_V2.md",
+    "masters_reviewed": [
+      "k01_card_front__hassan_main.png",
+      "k02_access__hassan_2_journeys.png",
+      "k03_access__hassan_3_journeys.png",
+      "k04_access__hassan_no_journeys.png",
+      "k05_card_front__ibrahim_basic.png",
+      "k06_access__ibrahim_chat_locked.png",
+      "k07_card__omar_invited.png",
+      "k08_card__add_a_guardian.png",
+      "k09_sheet__basic_no_family.png",
+      "k10_sheet__price_no_family.png",
+      "k11_sheet__basic_free_place.png",
+      "k12_sheet__basic_family_full.png",
+      "k13_sheet__price_family_full.png",
+      "k14_sheet__invite_sent.png",
+      "k15_access__ibrahim_invited.png",
+      "k16_access__ibrahim_accepted_chat_off.png",
+      "k17_basic__card_front_hassan.png",
+      "k18_basic__access_1_journey.png",
+      "k19_basic__add_more_locked.png"
+    ],
+    "master_image_bytes": 12710750,
+    "baseline": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/ and seeker_basic/"
+  },
+  "blocker": {
+    "required": "V2 section 5 / k07: named invited Guardian, relationship and Send invitation again using existing resend.",
+    "found": [
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "lines": "5979-5982",
+        "fact": "Founder preview pendingInvitesLoader returns an empty local list."
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "lines": "6689-6730",
+        "fact": "Existing local LOCK9 route supplies personal code and local lookup; it does not supply a resend handler."
+      },
+      {
+        "path": "SOURCE/lib/services/zyra_wali_link_service.dart",
+        "lines": "359-370",
+        "fact": "PendingInvite has token, optional label and timestamps; no target Guardian ID or relationship."
+      },
+      {
+        "path": "SOURCE/lib/services/zyra_wali_link_service.dart",
+        "lines": "454-472",
+        "fact": "Newer ZyraGuardianLinkRequest has addressed request metadata, but is not supplied as local pending Guardian data by this shell."
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_guardian_invitation_dashboard.dart",
+        "lines": "302-320,424-458",
+        "fact": "Existing pending invitation UI supports View/Cancel/details, not resend."
+      }
+    ],
+    "search": "Case-insensitive resend / Send invitation again search in SOURCE/lib has no matches. No mail, send or server action invented."
+  },
+  "resolved_preflight": {
+    "confirmations": "Existing inline Cancel/Confirm handlers: seeker_guardian_designs.dart 1032-1195; preserving them is possible.",
+    "past_summaries": "Existing GuardianHistoryConsentState.enabled/per-Guardian loader; no second setting needed.",
+    "pricing": "Existing ZyraMembershipCatalog.familyQuote app mirror: (1,1)=4998p; (1,2)=6647p. Not executed.",
+    "family_state": "Authoritative current Family allocation absent; brief permits NoFamily fallback. Would disclose on build.",
+    "scope": "k20-k22 and section6.4 remain queue67."
+  },
+  "validation": {
+    "source_changes": 0,
+    "sdk_invocations": 0,
+    "tests_run": 0,
+    "build_captures": 0,
+    "master_images_viewed": 19,
+    "result": "No build/visual-match/test-pass claim; row held in preflight."
+  },
+  "trace": {
+    "base_source_sha": "71e520c105cf5c3cea95473831fd28d14a23891c9b",
+    "source_status": "SOURCE clean before this refusal",
+    "startup_primary_text_bytes": 125323,
+    "helper": "family_formula (read-only; 93894 source-excerpt bytes plus search output; tokens unavailable)",
+    "addendum4_read": true
+  },
+  "next": "ZYRA chat answers question5 and identifies existing resend/owned data or updates LOCK/brief, then returns only row48 to WAITING."
+}
