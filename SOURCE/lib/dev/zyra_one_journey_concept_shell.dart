@@ -8101,6 +8101,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
         child: ZyraDraftReportPresentation(
           key: ValueKey(('draft_report', person?.id, _guardianRole)),
+          ownerIdentity: (
+            ZyraAccountState.userId,
+            ZyraAccountState.generation,
+            _guardianRole,
+          ),
           profile: person == null ? null : _displayProfile(person),
           canSelect: canSelect,
           onHide: localAction(true),

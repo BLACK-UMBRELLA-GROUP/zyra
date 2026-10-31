@@ -392,4 +392,142 @@ void main() {
       );
     }
   }
+
+  for (final stale in [
+    'owner revoked',
+    'account ABA',
+    'navigator ABA',
+    'controls ABA',
+    'role',
+    'reset',
+    'disposal',
+    'owned modal covering report',
+  ]) {
+    testWidgets('retained report buttons reject $stale before haptic', (
+      tester,
+    ) async {
+      final calls = <MethodCall>[];
+      List<Object?> vibrations() => calls
+          .where((call) => call.method == 'HapticFeedback.vibrate')
+          .map((call) => call.arguments)
+          .toList();
+      final previousLevel = ZyraInteractionStyle.hapticLevel;
+      ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.subtle);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+            calls.add(call);
+            return null;
+          });
+      addTearDown(() {
+        ZyraInteractionStyle.selectHapticLevel(previousLevel);
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(
+              SystemChannels.platform,
+              (_) async => null,
+            );
+      });
+
+      String? selectedReason() {
+        for (final reason in ZyraDraftReportReason.values) {
+          if (find
+              .descendant(
+                of: _key('draft_report_reason_${reason.name}'),
+                matching: find.byIcon(Icons.radio_button_checked),
+              )
+              .evaluate()
+              .isNotEmpty) {
+            return reason.name;
+          }
+        }
+        return null;
+      }
+
+      final h = _GuardHarness(tester);
+      await h.mount(_fixture());
+      expect(selectedReason(), ZyraDraftReportReason.fakeProfile.name);
+      final beforeSelection = _facts(h.latest.model);
+      calls.clear();
+      await h.tap('draft_report_reason_other');
+      expect(vibrations(), ['HapticFeedbackType.selectionClick']);
+      expect(selectedReason(), ZyraDraftReportReason.other.name);
+      expect(_facts(h.latest.model), beforeSelection);
+      // Capture the current physical controls after selection has rebuilt.
+      final retained = <String, VoidCallback>{
+        'reason': tester
+            .widget<OutlinedButton>(_key('draft_report_reason_fakeProfile'))
+            .onPressed!,
+        'hide': tester.widget<TextButton>(_key('draft_safety_hide')).onPressed!,
+        'block': tester
+            .widget<TextButton>(_key('draft_safety_block'))
+            .onPressed!,
+      };
+
+      if (stale == 'owner revoked') {
+        h.ownerAdmitted = false;
+      } else if (stale == 'account ABA') {
+        await tester.runAsync(() async {
+          await ZyraAccountState.synchronize('other-report-button-owner');
+          await ZyraAccountState.synchronize(_owner);
+        });
+        ZyraDeveloperAccess.setAuthorizedForTesting(true);
+      } else if (stale == 'navigator ABA') {
+        unawaited(
+          h.navigator.currentState!.push<void>(
+            MaterialPageRoute<void>(
+              builder: (_) => const Scaffold(body: Text('Unrelated page')),
+            ),
+          ),
+        );
+        await h.flush();
+        expect(h.routeCurrent, isFalse);
+        h.navigator.currentState!.pop();
+      } else if (stale == 'controls ABA' ||
+          stale == 'role' ||
+          stale == 'reset') {
+        await openZyraDevControls(tester);
+        if (stale == 'controls ABA') {
+          await closeZyraDevControls(tester);
+        } else {
+          await h.tap(stale == 'role' ? 'draft_role_guardian' : 'draft_reset');
+        }
+      } else if (stale == 'disposal') {
+        await tester.pumpWidget(const SizedBox.shrink());
+      } else {
+        await h.show(hide: true);
+        expect(h.routeCurrent, isFalse);
+      }
+      await h.flush();
+      final before = _facts(h.latest.model);
+      final beforePages = List<String>.of(h.latest.pages);
+      final beforeTab = h.latest.tab;
+      final beforeGuardian = h.latest.guardian;
+      final beforeReason = selectedReason();
+      final sheets = tester
+          .widgetList<ZyraDraftJourneyBlockHideSheet>(
+            find.byType(ZyraDraftJourneyBlockHideSheet),
+          )
+          .toList();
+      expect(sheets, hasLength(stale == 'owned modal covering report' ? 1 : 0));
+      calls.clear();
+      for (final entry in retained.entries) {
+        entry.value();
+        entry.value();
+        await h.flush();
+        final reason = '${entry.key} after $stale';
+        expect(vibrations(), isEmpty, reason: reason);
+        expect(_facts(h.latest.model), before, reason: reason);
+        expect(h.latest.pages, beforePages, reason: reason);
+        expect(h.latest.tab, beforeTab, reason: reason);
+        expect(h.latest.guardian, beforeGuardian, reason: reason);
+        expect(selectedReason(), beforeReason, reason: reason);
+        expect(
+          tester.widgetList<ZyraDraftJourneyBlockHideSheet>(
+            find.byType(ZyraDraftJourneyBlockHideSheet),
+          ),
+          sheets,
+          reason: reason,
+        );
+      }
+    });
+  }
 }

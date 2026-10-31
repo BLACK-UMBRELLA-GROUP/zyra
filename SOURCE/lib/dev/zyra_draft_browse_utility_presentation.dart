@@ -125,12 +125,14 @@ class ZyraDraftReportPresentation extends StatefulWidget {
   const ZyraDraftReportPresentation({
     super.key,
     this.profile,
+    this.ownerIdentity,
     this.canSelect,
     this.onHide,
     this.onBlock,
   });
 
   final SeekerProfile? profile;
+  final Object? ownerIdentity;
   final bool Function()? canSelect;
   final VoidCallback? onHide;
   final VoidCallback? onBlock;
@@ -142,14 +144,17 @@ class ZyraDraftReportPresentation extends StatefulWidget {
 
 class _ZyraDraftReportPresentationState
     extends State<ZyraDraftReportPresentation> {
-  ZyraDraftReportReason? _selected;
+  ZyraDraftReportReason _selected = ZyraDraftReportReason.fakeProfile;
   int _renderEpoch = 0;
 
   @override
   void didUpdateWidget(covariant ZyraDraftReportPresentation oldWidget) {
     super.didUpdateWidget(oldWidget);
     ++_renderEpoch;
-    if (oldWidget.profile?.id != widget.profile?.id) _selected = null;
+    if (oldWidget.profile?.id != widget.profile?.id ||
+        oldWidget.ownerIdentity != widget.ownerIdentity) {
+      _selected = ZyraDraftReportReason.fakeProfile;
+    }
   }
 
   bool _current(int epoch) =>
@@ -256,127 +261,142 @@ class _ZyraDraftReportPresentationState
                 const SizedBox(height: 16),
                 Semantics(
                   label: 'Reporting profile: $name',
-                  child: Row(
+                  child: Column(
                     key: const ValueKey('draft_report_target'),
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: SizedBox.square(
-                          dimension: 64,
+                      Container(
+                        key: const ValueKey('draft_report_photo'),
+                        width: 72,
+                        height: 72,
+                        padding: const EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: const Color(
+                              0xFFA9792E,
+                            ).withValues(alpha: .7),
+                          ),
+                        ),
+                        child: ClipOval(
                           child: _LocalReportPhoto(
                             profile.photos.isEmpty ? '' : profile.photos.first,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(name, style: ZyraText.heading(size: 21)),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Select the reason for your concern.',
-                              style: ZyraText.subtext(
-                                size: 13,
-                              ).copyWith(height: 1.35),
-                            ),
-                          ],
-                        ),
+                      const SizedBox(height: 12),
+                      Text(
+                        name,
+                        textAlign: TextAlign.center,
+                        style: ZyraText.heading(
+                          size: 22,
+                        ).copyWith(fontWeight: FontWeight.w300),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'CHOOSE THE REASON',
+                        textAlign: TextAlign.center,
+                        style: ZyraText.chapterLabel(
+                          color: ZyraColors.goldText,
+                        ).copyWith(fontSize: 11, letterSpacing: 1.2),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  for (final reason in ZyraDraftReportReason.values) ...[
-                    if (reason != ZyraDraftReportReason.values.first)
-                      const SizedBox(height: 6),
-                    Semantics(
-                      selected: _selected == reason,
-                      child: ZyraFloatingSurface(
-                        radius: 12,
-                        circle: false,
-                        gold: false,
-                        child: OutlinedButton(
-                          key: ValueKey('draft_report_reason_${reason.name}'),
-                          onPressed: ZyraTapFeedback.onTap(
-                            context,
-                            !_current(epoch)
-                                ? null
-                                : () {
-                                    if (!_current(epoch)) return;
-                                    setState(() {
-                                      _selected = _selected == reason
-                                          ? null
-                                          : reason;
-                                    });
-                                  },
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(44, 44),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 10,
-                            ),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            alignment: Alignment.centerLeft,
-                            foregroundColor: ZyraColors.foreground,
-                            backgroundColor: _selected == reason
-                                ? ZyraColors.journeyGold.withValues(alpha: .12)
-                                : ZyraColors.warmOverlay.withValues(
-                                    alpha: .045,
-                                  ),
-                            side: BorderSide(
-                              color: _selected == reason
-                                  ? ZyraColors.journeyGold.withValues(alpha: .6)
-                                  : ZyraColors.warmOverlay.withValues(
-                                      alpha: .16,
-                                    ),
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(
-                                _selected == reason
-                                    ? Icons.radio_button_checked
-                                    : Icons.radio_button_unchecked,
-                                size: 18,
-                                color: _selected == reason
-                                    ? ZyraColors.journeyGold
-                                    : ZyraColors.mutedText,
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Text(
-                                  reason.label,
-                                  style: ZyraText.body(
-                                    size: 14,
-                                  ).copyWith(height: 1.25),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                const SizedBox(height: 16),
+                ZyraFloatingSurface(
+                  key: const ValueKey('draft_report_reason_card'),
+                  radius: 20,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: ZyraColors.surfaceFill,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: ZyraColors.warmOverlay.withValues(alpha: .06),
                       ),
                     ),
-                  ],
-                ],
-              ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final reason in ZyraDraftReportReason.values) ...[
+                          if (reason != ZyraDraftReportReason.values.first)
+                            Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: ZyraColors.warmOverlay.withValues(
+                                alpha: .10,
+                              ),
+                            ),
+                          Semantics(
+                            selected: _selected == reason,
+                            inMutuallyExclusiveGroup: true,
+                            child: OutlinedButton(
+                              key: ValueKey(
+                                'draft_report_reason_${reason.name}',
+                              ),
+                              onPressed: ZyraTapFeedback.onTap(
+                                context,
+                                !_current(epoch)
+                                    ? null
+                                    : () {
+                                        if (!_current(epoch)) return;
+                                        setState(() => _selected = reason);
+                                      },
+                                canAct: () => _current(epoch),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size(44, 44),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                alignment: Alignment.centerLeft,
+                                foregroundColor: ZyraColors.foreground,
+                                backgroundColor: Colors.transparent,
+                                side: BorderSide.none,
+                                shape: const RoundedRectangleBorder(),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    _selected == reason
+                                        ? Icons.radio_button_checked
+                                        : Icons.radio_button_unchecked,
+                                    size: 18,
+                                    color: _selected == reason
+                                        ? ZyraColors.journeyGold
+                                        : ZyraColors.mutedText,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      reason.label,
+                                      style: ZyraText.body(
+                                        size: 14,
+                                      ).copyWith(height: 1.25),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const _UnavailableAction(
                   id: 'draft_report_submit',
+                  report: true,
                   label: 'Submit report',
                   icon: Icons.flag_outlined,
                 ),
@@ -395,6 +415,7 @@ class _ZyraDraftReportPresentationState
                             _current(epoch)
                                 ? _localAction(widget.onHide, epoch)
                                 : null,
+                            canAct: () => _current(epoch),
                           ),
                           style: _quietActionStyle,
                           child: const Text('Hide profile'),
@@ -407,8 +428,13 @@ class _ZyraDraftReportPresentationState
                             _current(epoch)
                                 ? _localAction(widget.onBlock, epoch)
                                 : null,
+                            canAct: () => _current(epoch),
                           ),
-                          style: _quietActionStyle,
+                          style: _quietActionStyle.copyWith(
+                            foregroundColor: const WidgetStatePropertyAll(
+                              ZyraColors.negativeRed,
+                            ),
+                          ),
                           child: const Text('Block profile'),
                         ),
                     ],
@@ -424,7 +450,7 @@ class _ZyraDraftReportPresentationState
 
   ButtonStyle get _quietActionStyle => TextButton.styleFrom(
     minimumSize: const Size(44, 44),
-    foregroundColor: ZyraColors.goldText,
+    foregroundColor: ZyraColors.mutedText,
     textStyle: ZyraText.body(size: 13),
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -472,8 +498,10 @@ class _UnavailableAction extends StatelessWidget {
     required this.id,
     required this.label,
     required this.icon,
+    this.report = false,
   });
 
+  final bool report;
   final String id;
   final String label;
   final IconData icon;
@@ -489,9 +517,17 @@ class _UnavailableAction extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         minimumSize: const Size(44, 48),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        disabledForegroundColor: ZyraColors.goldText.withValues(alpha: .6),
-        backgroundColor: ZyraColors.journeyGold.withValues(alpha: .06),
-        side: BorderSide(color: ZyraColors.journeyGold.withValues(alpha: .25)),
+        disabledForegroundColor: report
+            ? ZyraColors.foreground
+            : ZyraColors.goldText.withValues(alpha: .6),
+        backgroundColor: report
+            ? ZyraColors.surfaceFill
+            : ZyraColors.journeyGold.withValues(alpha: .06),
+        side: BorderSide(
+          color: report
+              ? ZyraColors.warmOverlay.withValues(alpha: .06)
+              : ZyraColors.journeyGold.withValues(alpha: .25),
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       ),
       child: Row(
@@ -500,14 +536,18 @@ class _UnavailableAction extends StatelessWidget {
           Icon(
             icon,
             size: 18,
-            color: ZyraColors.journeyGold.withValues(alpha: .6),
+            color: report
+                ? ZyraColors.foreground
+                : ZyraColors.journeyGold.withValues(alpha: .6),
           ),
           const SizedBox(width: 10),
           Flexible(
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: ZyraText.button(size: 14),
+              style: report
+                  ? ZyraText.body(size: 14)
+                  : ZyraText.button(size: 14),
             ),
           ),
         ],

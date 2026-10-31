@@ -561,3 +561,18 @@ Added the locked warning to every person-level Hide/Block dispatcher for current
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. All 375 distinct cases across16 complete suites pass, including33 atomic model cases,28 real-route/ownership/feedback cases and17 actual-shell flow/render cases. Analyser, format and pinned SDK checks pass. b01–b03,4 Larger Text frames,3 full-size master/build pairs, contact sheet, source/input/render/metadata manifests and exact CASE_LEDGER are in JOURNEY_BLOCK_HIDE/BUILT/V2. QA records the native shared-surface/font/shadow/device-frame differences,21pt higher sheet edge, existing Journey layout and required transient toast. Parent visual/contract verification remains OA-ZYRA-328; no pixel-parity or whole-app pass claim. Known broader65 failures were not rerun or repaired; ordinary member retirement remains OA-ZYRA-317. No native delivery or backend work.
+
+## Queue 59 — Report profile LOCK22 V2 — 31 October 2026
+
+Built the subject Report page from x05/x06: 72 pt gold-ring photo, 22 Light name, gold reason label, one floating card with seven mandatory radio choices, first selected by default, neutral disabled Submit, muted Hide and red Block. Removed separate reason pills. Existing local safety flows and queue69 owned-modal guards remain; selection survives Keep/dismiss, resets on subject/account ownership change, and stale physical callbacks are rejected before feedback. Only Report receives the new action styling; Scan and no-subject Safety retain their presentation. No new lib file or classifier change.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 170,170 lines / 337 files | 170,215 lines / 337 files |
+| Developer/preview | 50,380 / 95 | 50,425 / 95 |
+| Founder planned app | 31,198 / 45 | 31,243 / 45 |
+| Tests | 219,553 / 518 | 220,224 / 519 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. 279 passed, 5 failed across 15 complete scoped suites (14 entirely passing); all Report, owner, warning, model, no-subject Safety and advice cases pass. The five browse_options_menu_test cases fail before Report/Scan is reached: held Filters x2, My ZYRA request entry, old nationality entry and compatibility-card text. These were not in queue69's CASE_LEDGER; no historical attribution. Written refusal to change those routes under59 is in BUILT/V2/QA.json with exact names/first assertions and execution trace. Analyser, format and protected SDK checks pass. Eight actual frames, both full-size master/build pairs, contact sheet, CASE_LEDGER and allowlisted source/input/render/metadata manifests live in UNITY_PASS/BUILT/V2. Native font/surface/radio/device-frame differences and higher footer are disclosed there; no pixel-parity or whole-app pass claim. Parent visual/contract review remains OA-ZYRA-328. No native delivery or backend work.
