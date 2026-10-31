@@ -89,10 +89,10 @@ Future<void> _tap(WidgetTester tester, Key key) async {
 void _expectLocked(WidgetTester tester, int balance) {
   expect(find.text('Compatibility score'), findsOneWidget);
   expect(find.text('You and Sara'), findsOneWidget);
-  expect(find.text('Overall'), findsOneWidget);
-  expect(find.text('Your compatibility, ready to reveal'), findsOneWidget);
+  expect(find.text('Your overall score and six areas'), findsOneWidget);
+  expect(find.text('READY TO REVEAL'), findsOneWidget);
   expect(
-    find.text('Unlock your overall score and six areas of compatibility.'),
+    find.text('Faith & Values, Family, Lifestyle and more'),
     findsOneWidget,
   );
   expect(find.text('OVERALL'), findsNothing);
@@ -114,17 +114,19 @@ void _expectLocked(WidgetTester tester, int balance) {
   expect(find.text('__%'), findsNothing);
   expect(find.text('Demo Guardian · Father'), findsNothing);
   expect(find.text('Developer demo'), findsNothing);
-  final label = balance == 1 ? '1 unlock left' : '$balance unlocks left';
+  final label =
+      '$balance ${balance == 1 ? 'Unlock' : 'Unlocks'} left · Get more';
   expect(
     tester
         .widget<Text>(
           find.byKey(const ValueKey('draft_compatibility_balances')),
         )
-        .data,
+        .textSpan!
+        .toPlainText(),
     label,
   );
   expect(
-    tester.widget<OutlinedButton>(find.byKey(_reveal)).onPressed == null,
+    tester.widget<FilledButton>(find.byKey(_reveal)).onPressed == null,
     balance == 0,
   );
   for (final category in ZyraCompatibilityDemo.categories) {
@@ -140,7 +142,7 @@ void _expectLocked(WidgetTester tester, int balance) {
   for (final key in [_reveal, _more]) {
     expect(
       find.descendant(of: find.byKey(_card), matching: find.byKey(key)),
-      findsOneWidget,
+      findsNothing,
     );
   }
 }
@@ -268,10 +270,7 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     await _mount(tester, balance: 5);
-    expect(
-      tester.widget<OutlinedButton>(find.byKey(_reveal)).onPressed,
-      isNull,
-    );
+    expect(tester.widget<FilledButton>(find.byKey(_reveal)).onPressed, isNull);
     expect(tester.widget<TextButton>(find.byKey(_more)).onPressed, isNull);
     expect(find.byKey(_reader), findsNothing);
     expect(find.text('81%'), findsNothing);

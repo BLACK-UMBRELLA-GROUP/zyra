@@ -460,7 +460,7 @@ void main() {
         find.byType(ZyraDraftCompatibilityStorePresentation),
         findsOneWidget,
       );
-      expect(find.text('Unlocks remaining'), findsOneWidget);
+      expect(find.text('Unlocks remaining'), findsNothing);
       expect(
         tester
             .widget<Text>(_key('draft_compatibility_store_balance_count'))
@@ -477,16 +477,9 @@ void main() {
         reason: 'Inline Unlocks must not cover the role and Family pills.',
       );
       await _capture(tester, '12-inline-unlocks-component');
-      await _tap(tester, 'draft_compatibility_store_included');
-      expect(_key('draft_compatibility_store_info_dialog'), findsOneWidget);
-      expect(find.text('See your overall match score'), findsOneWidget);
-      expect(
-        find.text(
-          'An unlock is permanent. Once you unlock a profile it stays unlocked, including after a Journey ends.',
-        ),
-        findsOneWidget,
-      );
-      await _tap(tester, 'draft_compatibility_store_info_close');
+      expect(_key('draft_compatibility_store_info_dialog'), findsNothing);
+      expect(find.text('Your match, revealed'), findsOneWidget);
+      expect(find.text('1 / 8'), findsOneWidget);
       await _tap(tester, 'draft_compatibility_store_unlock_three');
       expect(
         tester
@@ -495,8 +488,8 @@ void main() {
         isNull,
       );
       expect(find.textContaining('£6.99'), findsWidgets);
-      expect(find.textContaining('22%'), findsWidgets);
-      expect(find.text('Purchasing isn’t available yet.'), findsOneWidget);
+      expect(find.text('£2.33 each'), findsOneWidget);
+      expect(find.text(' · Purchasing isn’t available yet'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

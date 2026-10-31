@@ -10,7 +10,7 @@ import 'zyra_draft_compatibility_score_designs.dart';
 ///
 /// The caller owns balances, reveal state, navigation and callback lifetime.
 /// This widget cannot read answers, grant access, spend credits or load people.
-/// The locked halo is neutral artwork, not a concealed or approximate score.
+/// The locked Monogram is neutral artwork, not a concealed or approximate score.
 class ZyraDraftCompatibilityPresentation extends StatelessWidget {
   const ZyraDraftCompatibilityPresentation({
     super.key,
@@ -20,6 +20,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
     required this.revealed,
     this.onUnlock,
     this.onBuyMore,
+    this.canAct,
   }) : assert(balance >= 0),
        assert(overallScore >= 0 && overallScore <= 100);
 
@@ -29,6 +30,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
   final bool revealed;
   final VoidCallback? onUnlock;
   final VoidCallback? onBuyMore;
+  final bool Function()? canAct;
 
   Widget _lockedActions() {
     final enabled = balance > 0 && onUnlock != null;
@@ -40,30 +42,28 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
         children: [
           ZyraFloatingSurface(
             radius: 999,
-            circle: false,
-            gold: false,
-            child: OutlinedButton(
+            gold: true,
+            child: FilledButton(
               key: const ValueKey('draft_compatibility_reveal'),
               onPressed: ZyraTapFeedback.onTap(
                 context,
                 enabled ? onUnlock : null,
+                canAct: canAct,
               ),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size(44, 52),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size(44, 48),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 14,
                 ),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                foregroundColor: ZyraColors.goldText,
-                disabledForegroundColor: ZyraColors.goldText.withValues(
-                  alpha: .45,
+                foregroundColor: ZyraColors.onPrimaryAction,
+                backgroundColor: ZyraColors.goldTextFill,
+                side: BorderSide.none,
+                disabledBackgroundColor: ZyraColors.journeyGold.withValues(
+                  alpha: .35,
                 ),
-                backgroundColor: ZyraColors.journeyGold.withValues(alpha: .08),
-                side: BorderSide(
-                  color: ZyraColors.journeyGold.withValues(
-                    alpha: enabled ? .6 : .2,
-                  ),
+                disabledForegroundColor: ZyraColors.espresso.withValues(
+                  alpha: .6,
                 ),
                 shape: const StadiumBorder(),
               ),
@@ -74,35 +74,39 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          Text(
-            '$balance ${balance == 1 ? 'unlock' : 'unlocks'} left',
-            key: const ValueKey('draft_compatibility_balances'),
-            textAlign: TextAlign.center,
-            style: ZyraText.subtext(
-              size: 11.5,
-              color: ZyraColors.secondaryText,
+          const SizedBox(height: 6),
+          TextButton(
+            key: const ValueKey('draft_compatibility_buy_more'),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              onBuyMore,
+              canAct: canAct,
             ),
-          ),
-          const SizedBox(height: 4),
-          Center(
-            child: TextButton(
-              key: const ValueKey('draft_compatibility_buy_more'),
-              onPressed: ZyraTapFeedback.onTap(context, onBuyMore),
-              style: TextButton.styleFrom(
-                minimumSize: const Size(44, 44),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                foregroundColor: ZyraColors.goldText,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
+            style: TextButton.styleFrom(
+              minimumSize: const Size(44, 44),
+              foregroundColor: ZyraColors.goldText,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text:
+                        '$balance ${balance == 1 ? 'Unlock' : 'Unlocks'} left · ',
+                    style: ZyraText.subtext(
+                      size: 13,
+                      color: ZyraColors.secondaryText,
+                    ),
+                  ),
+                  TextSpan(
+                    text: 'Get more',
+                    style: ZyraText.body(size: 13, color: ZyraColors.goldText),
+                  ),
+                ],
               ),
-              child: Text(
-                'Get more unlocks',
-                textAlign: TextAlign.center,
-                style: ZyraText.button(size: 12.5),
-              ),
+              key: const ValueKey('draft_compatibility_balances'),
+              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -110,65 +114,49 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
     );
   }
 
-  Widget _locked(BuildContext context, BoxConstraints constraints) {
-    final largeText = MediaQuery.textScalerOf(context).scale(14) > 20;
-    final compactHeading =
-        constraints.maxWidth < 300 &&
-        MediaQuery.textScalerOf(context).scale(26) > 40;
-    final headingStyle = ZyraText.heading(
-      size: compactHeading ? 20 : 26,
-    ).copyWith(height: 1.2);
-    final headingHeight =
-        _textSize(
-          context,
-          'Compatibility score',
-          headingStyle,
-          constraints.maxWidth,
-        ).height +
-        16;
-    final available = constraints.hasBoundedHeight
-        ? (constraints.maxHeight - headingHeight).clamp(0.0, double.infinity)
-        : 660.0;
-    // Only decorative artwork adapts to a short phone. Text and controls retain
-    // their full accessible sizes; overflow scrolls the entire composition.
-    final diameter = (available - 376)
-        .clamp(144.0, 248.0)
-        .clamp(0.0, (constraints.maxWidth - 42).clamp(0.0, double.infinity))
-        .toDouble();
-    return ZyraShadowScrollView(
-      key: const ValueKey('draft_compatibility_viewport'),
-      child: Column(
-        key: const ValueKey('draft_compatibility_presentation'),
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text('Compatibility score', style: headingStyle),
-          const SizedBox(height: 16),
-          Container(
-            key: const ValueKey('draft_compatibility_card'),
-            constraints: BoxConstraints(minHeight: available),
-            padding: const EdgeInsets.fromLTRB(20, 22, 20, 16),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [ZyraColors.cardSurface, ZyraColors.lowerSurface],
+  Widget _informationRow(IconData icon, String title, String detail) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 20, color: ZyraColors.journeyGold),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(title, style: ZyraText.body(size: 14)),
+              const SizedBox(height: 3),
+              Text(
+                detail,
+                style: ZyraText.subtext(size: 12.5).copyWith(height: 1.4),
               ),
-              borderRadius: BorderRadius.circular(26),
-              border: Border.all(
-                color: ZyraColors.espresso.withValues(alpha: .13),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Overall',
-                  style: ZyraText.heading(size: 25, color: ZyraColors.espresso),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: largeText ? 20 : 18),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Widget _locked(
+    BuildContext context,
+    BoxConstraints constraints,
+  ) => ZyraShadowScrollView(
+    key: const ValueKey('draft_compatibility_viewport'),
+    child: ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: constraints.hasBoundedHeight ? constraints.maxHeight : 0,
+      ),
+      child: IntrinsicHeight(
+        child: Column(
+          key: const ValueKey('draft_compatibility_presentation'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text('Compatibility score', style: ZyraText.heading(size: 26)),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -177,34 +165,20 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
                           key: const ValueKey(
                             'draft_compatibility_locked_halo',
                           ),
-                          width: diameter,
-                          height: diameter,
-                          padding: const EdgeInsets.all(16),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 12,
-                                color: ZyraColors.journeyGold.withValues(
-                                  alpha: .22,
-                                ),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: ZyraColors.journeyGold.withValues(
-                                    alpha: .04,
-                                  ),
-                                  blurRadius: 34,
-                                ),
-                              ],
+                          width: 96,
+                          height: 96,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(
+                                0xFFA9792E,
+                              ).withValues(alpha: .7),
                             ),
-                            child: Icon(
-                              Icons.lock_outline_rounded,
-                              size: 38,
-                              color: ZyraColors.journeyGold.withValues(
-                                alpha: .85,
-                              ),
-                            ),
+                          ),
+                          child: const Icon(
+                            Icons.lock_outline_rounded,
+                            size: 34,
+                            color: ZyraColors.journeyGold,
                           ),
                         ),
                       ),
@@ -212,40 +186,64 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
                       Text(
                         'You and $personName',
                         textAlign: TextAlign.center,
-                        style: ZyraText.heading(
-                          size: 21,
-                          color: ZyraColors.espresso,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                      Text(
-                        'Your compatibility, ready to reveal',
-                        textAlign: TextAlign.center,
-                        style: ZyraText.body(
-                          size: 14,
-                          color: ZyraColors.goldText,
-                        ),
+                        style: ZyraText.heading(size: 26),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Unlock your overall score and six areas of compatibility.',
+                        'READY TO REVEAL',
                         textAlign: TextAlign.center,
-                        style: ZyraText.subtext(
-                          size: 12.5,
-                          color: ZyraColors.secondaryText,
+                        style: ZyraText.body(
+                          size: 11,
+                          color: ZyraColors.goldText,
+                        ).copyWith(letterSpacing: 1.2),
+                      ),
+                      const SizedBox(height: 22),
+                      ZyraFloatingSurface(
+                        child: Container(
+                          key: const ValueKey('draft_compatibility_card'),
+                          decoration: BoxDecoration(
+                            color: ZyraColors.surfaceFill,
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                          child: Column(
+                            children: [
+                              _informationRow(
+                                Icons.insights_rounded,
+                                'Your overall score and six areas',
+                                'Faith & Values, Family, Lifestyle and more',
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 54,
+                                  right: 18,
+                                ),
+                                child: Divider(
+                                  height: 1,
+                                  color: ZyraColors.espresso.withValues(
+                                    alpha: .10,
+                                  ),
+                                ),
+                              ),
+                              _informationRow(
+                                Icons.lock_outline_rounded,
+                                'Uses 1 Unlock',
+                                'It stays unlocked for $personName, also in a Journey Bio',
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                _lockedActions(),
-              ],
+              ),
             ),
-          ),
-        ],
+            _lockedActions(),
+          ],
+        ),
       ),
-    );
-  }
+    ),
+  );
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(

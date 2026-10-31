@@ -426,6 +426,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
   }
 
   Widget _storeContent() => ZyraDraftCompatibilityStorePresentation(
+    isSeekerOne: !_guardian && _isOne,
     balance: _storeOwnerCurrent ? _storeBalance : null,
     storePlatform: _storePlatform,
     onTerms: _storeExpired ? null : _openUnlockTerms,

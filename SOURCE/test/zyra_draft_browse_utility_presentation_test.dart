@@ -258,16 +258,13 @@ void main() {
   ) async {
     await _mount(tester, const ZyraDraftReportPresentation());
     _expectTitle(tester, 'draft_report_title', 'Safety');
-    expect(find.text('Choose a profile to report.'), findsOneWidget);
+    expect(find.text('Choose a profile to report'), findsOneWidget);
     expect(_key('draft_report_target'), findsNothing);
     expect(find.text('Sara Ahmed'), findsNothing);
     expect(find.byIcon(Icons.radio_button_unchecked), findsNothing);
     expect(_key('draft_safety_hide'), findsNothing);
     expect(_key('draft_safety_block'), findsNothing);
-    expect(
-      tester.widget<OutlinedButton>(_key('draft_report_submit')).onPressed,
-      isNull,
-    );
+    expect(_key('draft_report_submit'), findsNothing);
   });
 
   for (final scan in [false, true]) {

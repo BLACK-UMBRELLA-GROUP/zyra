@@ -765,13 +765,23 @@ void main() {
       find.byKey(const ValueKey('draft_compatibility_store_use_unlocks')),
       findsNothing,
     );
-    await tapKey(tester, 'draft_compatibility_store_info');
     expect(
-      find.byKey(const ValueKey('draft_compatibility_store_info_dialog')),
-      findsOneWidget,
+      find.byKey(const ValueKey('draft_compatibility_store_info')),
+      findsNothing,
     );
-    expect(find.text('See your overall match score'), findsOneWidget);
-    await tapKey(tester, 'draft_compatibility_store_info_close');
+    expect(
+      tester
+          .widget<ZyraDraftCompatibilityStorePresentation>(
+            find.byType(ZyraDraftCompatibilityStorePresentation),
+          )
+          .isSeekerOne,
+      isTrue,
+    );
+    expect(
+      find.byKey(const ValueKey('draft_compatibility_store_balance_count')),
+      findsNothing,
+    );
+    expect(find.text('Your match, revealed'), findsOneWidget);
     expect(find.byKey(const ValueKey('membership-current')), findsNothing);
     expect(
       find.byKey(const ValueKey('compatibility-offer-unlock-one')),
@@ -811,9 +821,9 @@ void main() {
           .onPressed,
       isNull,
     );
-    expect(find.text('Purchasing isn’t available yet.'), findsOneWidget);
+    expect(find.text(' · Purchasing isn’t available yet'), findsOneWidget);
     expect(find.textContaining('£6.99'), findsWidgets);
-    expect(find.textContaining('22%'), findsWidgets);
+    expect(find.text('£2.33 each'), findsWidgets);
     expect(find.text('Purchase terms'), findsOneWidget);
     final terms = find.byKey(const ValueKey('draft_compatibility_store_terms'));
     await tester.ensureVisible(terms);

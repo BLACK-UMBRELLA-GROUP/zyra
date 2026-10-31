@@ -6734,6 +6734,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           .forRole(_walletRole)
           .coverageLabel(_walletRole),
       unlocksContent: ZyraDraftCompatibilityStorePresentation(
+        isSeekerOne: _seekerMembership == 'Seeker One',
+        canAct: unlocksCurrent,
         balance: _guardianRole ? null : _compatibilityAccess.balance,
         onTerms: _bound(() {
           if (!unlocksCurrent()) return;
@@ -7417,6 +7419,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
         child: ZyraDraftCompatibilityPresentation(
           key: ValueKey(('draft_compatibility', route)),
+          canAct: current,
           personName: person.firstName,
           balance: _compatibilityAccess.balance,
           overallScore:
@@ -7448,6 +7451,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
         child: ZyraDraftCompatibilityStorePresentation(
+          isSeekerOne: _seekerMembership == 'Seeker One',
+          canAct: current,
           balance: _guardianRole ? null : _compatibilityAccess.balance,
           onTerms: _bound(() {
             if (!current()) return;

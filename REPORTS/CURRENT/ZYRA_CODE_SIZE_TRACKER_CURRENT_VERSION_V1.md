@@ -465,3 +465,19 @@ Replaced the old bare card head with the locked 92pt ring,36pt icon,28pt light t
 Measured with SYSTEM/tools/blueprint/code_size.py. Validation:52 distinct scoped cases across6 suites; analyser/format/protected SDK clean. Ten430×932 @3x renders, four200% text renders and an all-ten master/build sheet are in FILTERS/BUILT/V7. QA.json records actual full-content centering and raster head-anchor differences, inherited paint/pill/font/footer differences, London sample origin versus Manchester illustration, and headless keyboard-inset limits. Written refusal to redesign inherited surfaces/footer or build failed queue49 under this head-only row; parent visual review remains OA-ZYRA-328. Existing37 wider failures were not rerun or claimed green. Old member routes remain under OA-ZYRA-317. No native delivery, server, dependency or other queue work.
 
 Parent-requested footer triage: two actual-shell diagnostic runs at430×932/200% Poppins reproduced identical18pt clipping with V7 enabled and with only the old head/top placement restored in memory. Intrinsic label68pt is constrained to50pt at y795; following pill starts845. Exact source restored in finally (matching SHA). FOOTER_DIAGNOSTIC.json records method/assertions and written refusal under OA-ZYRA-328; no exact old whole-baseline claim, no all-Larger-Text-clean claim.
+
+
+## Queue 55 — Unity pass LOCK22 V1 — 31 October 2026
+
+Replaced the locked Compatibility, Unlocks catalogue and account Safety layouts with the retained V1 Monogram specification. Removed the old locked big-ring layouts, balance strip, information dialog and Safety's disabled submission action. Existing catalogue prices, eight examples, unlock/debit/reveal ownership, report-profile flow and ordinary routes remain; unknown ordinary balances remain undisclosed. Existing plan data supplies both header variants; stale pack/pager/terms delegates reject before haptics. No new source file or classifier exception.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,323 lines / 335 files | 168,980 lines / 335 files |
+| Developer/preview | 49,534 / 93 | 49,190 / 93 |
+| Founder planned app | 30,352 / 43 | 30,008 / 43 |
+| Tests | 216,995 / 507 | 216,034 / 508 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. Validation:97 distinct scoped cases across8 suites; analyser and format clean. Four standard and seven200% text actual-shell frames plus four full-size master/build pairs and contact sheet are in UNITY_PASS/BUILT/V1. QA.json records native Flutter typography, safe-area/frame, shadow and anchor differences; no pixel-parity or full-app/a11y-clean claim. Two unrelated Profile-row fixture failures from the broader Membership visual suite are refused under OA-ZYRA-328; full inherited37 failures not rerun. Obsolete ring-specific store test moved to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE55_UNITY_V1_2026-10-31/, replaced with catalogue/ownership/reachability checks. Ordinary member routes remain under OA-ZYRA-317; parent visual/contract review remains OA-ZYRA-328. No later UNITY V2–V5 build, native delivery or backend work.

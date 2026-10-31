@@ -166,35 +166,34 @@ void _expectLockedActions(WidgetTester tester) {
   expect(actionLabel, findsOneWidget);
   expect(credits, findsOneWidget);
   expect(
-    tester.widget<Text>(credits).data,
-    balance == 1 ? '1 unlock left' : '$balance unlocks left',
+    tester.widget<Text>(credits).textSpan!.toPlainText(),
+    '$balance ${balance == 1 ? 'Unlock' : 'Unlocks'} left · Get more',
   );
   expect(find.text('Compatibility Unlock'), findsNothing);
   expect(
-    find.descendant(of: page, matching: find.byType(OutlinedButton)),
+    find.descendant(of: page, matching: find.byType(FilledButton)),
     findsOneWidget,
   );
   expect(tester.widget(more), isA<TextButton>());
   expect(find.descendant(of: reveal, matching: credits), findsNothing);
   expect(
     find.descendant(of: _key('draft_compatibility_card'), matching: actions),
-    findsOneWidget,
+    findsNothing,
   );
   final revealRect = tester.getRect(reveal);
   final moreRect = tester.getRect(more);
   final cardRect = tester.getRect(_key('draft_compatibility_card'));
   final labelRect = tester.getRect(actionLabel);
   final creditsRect = tester.getRect(credits);
-  expect(revealRect.left, greaterThan(cardRect.left));
-  expect(revealRect.right, lessThan(cardRect.right));
+  expect(revealRect.left, greaterThanOrEqualTo(cardRect.left));
+  expect(revealRect.right, lessThanOrEqualTo(cardRect.right));
   expect(revealRect.height, greaterThanOrEqualTo(44));
   expect(moreRect.height, greaterThanOrEqualTo(44));
   expect(moreRect.center.dx, closeTo(revealRect.center.dx, .01));
   for (final rect in [revealRect, moreRect, creditsRect]) {
     expect(rect.left, greaterThanOrEqualTo(cardRect.left));
     expect(rect.right, lessThanOrEqualTo(cardRect.right));
-    expect(rect.top, greaterThanOrEqualTo(cardRect.top));
-    expect(rect.bottom, lessThanOrEqualTo(cardRect.bottom));
+    expect(rect.top, greaterThanOrEqualTo(cardRect.bottom));
   }
   expect(labelRect.left, greaterThanOrEqualTo(revealRect.left));
   expect(labelRect.right, lessThanOrEqualTo(revealRect.right));
@@ -222,12 +221,12 @@ void _expectFittedPage(WidgetTester tester, Size size) {
   final headingRect = tester.getRect(find.text('Compatibility score'));
   final selectorRect = tester.getRect(_key('draft_compatibility_reveal'));
   final footerRect = tester.getRect(_key('draft_compatibility_buy_more'));
-  // Surplus height belongs inside the card, not in empty space around it.
-  expect(cardRect.top - headingRect.bottom, inInclusiveRange(6, 24));
+  // The Monogram and information card sit in the free space above the action.
+  expect(cardRect.top, greaterThan(headingRect.bottom));
   expect(selectorRect.top, greaterThan(cardRect.top));
-  expect(selectorRect.bottom, lessThan(cardRect.bottom));
+  expect(selectorRect.top, greaterThan(cardRect.bottom));
   expect(footerRect.top, greaterThan(selectorRect.bottom));
-  expect(cardRect.height, greaterThan((size.height - 59 - 34 - 32) * .60));
+  expect(cardRect.height, greaterThan(100));
   final scrollables = find.descendant(
     of: page,
     matching: find.byType(Scrollable),
@@ -514,7 +513,7 @@ void main() {
       await _press(tester, 'draft_compatibility_buy_more');
       expect(find.byType(ZyraDraftCompatibilityPresentation), findsNothing);
       expect(find.text('Compatibility Unlocks'), findsOneWidget);
-      expect(find.text('Purchasing isn’t available yet.'), findsOneWidget);
+      expect(find.text(' · Purchasing isn’t available yet'), findsOneWidget);
       expect(_key('draft_compatibility_test_credits'), findsNothing);
       coveredUnlock();
       await tester.pumpAndSettle();
@@ -612,7 +611,7 @@ void main() {
       find.byType(ZyraDraftCompatibilityStorePresentation),
     );
     expect(store.balance, 1);
-    expect(find.text('Unlocks remaining'), findsOneWidget);
+    expect(find.text('Unlocks remaining'), findsNothing);
     expect(
       tester.widget<Text>(_key('draft_compatibility_store_balance_count')).data,
       '1',
@@ -661,7 +660,7 @@ void main() {
         find.byType(ZyraDraftCompatibilityStorePresentation),
       );
       expect(store.balance, 1);
-      expect(find.text('Unlocks remaining'), findsOneWidget);
+      expect(find.text('Unlocks remaining'), findsNothing);
       expect(_key('draft_compatibility_store_use_unlocks'), findsNothing);
       expect(_key('draft_compatibility_store_use_guidance'), findsNothing);
       await _press(tester, 'draft_compatibility_store_unlock_five');
@@ -707,7 +706,7 @@ void main() {
       find.byType(ZyraDraftCompatibilityStorePresentation),
       findsOneWidget,
     );
-    expect(find.text('Unlocks remaining'), findsOneWidget);
+    expect(find.text('Unlocks remaining'), findsNothing);
     expect(
       tester.widget<Text>(_key('draft_compatibility_store_balance_count')).data,
       '1',
@@ -841,7 +840,7 @@ void main() {
       _expectLockedActions(tester);
       expect(
         tester
-            .widget<OutlinedButton>(_key('draft_compatibility_reveal'))
+            .widget<FilledButton>(_key('draft_compatibility_reveal'))
             .onPressed,
         isNotNull,
       );

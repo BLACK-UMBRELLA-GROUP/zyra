@@ -174,44 +174,64 @@ class _ZyraDraftReportPresentationState
         return _UtilityViewport(
           viewportKey: const ValueKey('draft_report_viewport'),
           minHeight: height,
-          child: Column(
-            key: const ValueKey('draft_report_presentation'),
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const _UtilityTitle('Safety', id: 'draft_report_title'),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.shield_outlined,
-                      size: 100,
-                      color: ZyraColors.journeyGold,
+          child: IntrinsicHeight(
+            child: Column(
+              key: const ValueKey('draft_report_presentation'),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const _UtilityTitle('Safety', id: 'draft_report_title'),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ExcludeSemantics(
+                            child: Container(
+                              key: const ValueKey('draft_safety_monogram'),
+                              width: 96,
+                              height: 96,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(
+                                    0xFFA9792E,
+                                  ).withValues(alpha: .7),
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.security,
+                                size: 34,
+                                color: ZyraColors.journeyGold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Choose a profile to report',
+                            textAlign: TextAlign.center,
+                            style: ZyraText.heading(size: 26),
+                          ),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 22),
+                            child: Text(
+                              'Open the person’s profile and choose Report. '
+                              'You can then pick the reason that fits best.',
+                              textAlign: TextAlign.center,
+                              style: ZyraText.subtext(
+                                size: 12.5,
+                              ).copyWith(height: 1.5),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Choose a profile to report.',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.heading(size: 23),
-                    ),
-                    const SizedBox(height: 14),
-                    Text(
-                      'Open the person’s profile and choose Report. '
-                      'You can then select the reason that best fits.',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.body(size: 16).copyWith(height: 1.4),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              const _UnavailableAction(
-                id: 'draft_report_submit',
-                label: 'Submit report',
-                icon: Icons.flag_outlined,
-              ),
-            ],
+              ],
+            ),
           ),
         );
       }

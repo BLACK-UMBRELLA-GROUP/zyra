@@ -1,24 +1,26 @@
-import '../widgets/zyra_floating_surface.dart';
-import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../data/zyra_membership_catalog.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_floating_surface.dart';
+import '../widgets/zyra_tap_feedback.dart';
 
-/// Halo focus is the shared Unlocks catalogue, not purchase authority.
-/// Pack selection and a fictional-example pager are local presentation state.
-/// Balance is confirmed and read-only; no real score, Guardian, spending or
-/// checkout callback can enter this widget.
+/// LOCK 22 V1 Unlocks catalogue. Balance is read-only and the eight illustrated
+/// examples remain local presentation data; selecting a pack is not payment.
 class ZyraDraftCompatibilityStorePresentation extends StatefulWidget {
   const ZyraDraftCompatibilityStorePresentation({
     super.key,
     this.balance,
+    this.isSeekerOne = false,
+    this.canAct,
     this.onTerms,
     this.storePlatform = TargetPlatform.iOS,
   }) : assert(balance == null || balance >= 0);
 
   final int? balance;
+  final bool isSeekerOne;
+  final bool Function()? canAct;
   final VoidCallback? onTerms;
   final TargetPlatform storePlatform;
 
@@ -29,120 +31,21 @@ class ZyraDraftCompatibilityStorePresentation extends StatefulWidget {
 
 class _ZyraDraftCompatibilityStorePresentationState
     extends State<ZyraDraftCompatibilityStorePresentation> {
-  String? _selected;
+  String _selected = 'unlock_three';
+  int _revision = 0;
+  int _previewPage = 0;
 
-  _StoreOffer? get _selectedOffer {
-    for (final offer in _offers) {
-      if (offer.id == _selected) return offer;
-    }
-    return null;
+  @override
+  void didUpdateWidget(ZyraDraftCompatibilityStorePresentation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _revision++;
   }
 
-  String get _refundTerms =>
-      'One-off purchase. Refunds are subject to '
-      '${widget.storePlatform == TargetPlatform.android ? 'Google Play’s' : 'Apple’s'} '
-      'terms and applicable law';
-
-  void _showInformation() {
-    if (!mounted || !(ModalRoute.of(context)?.isCurrent ?? false)) return;
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) => Dialog(
-        key: const ValueKey('draft_compatibility_store_info_dialog'),
-        backgroundColor: _dialogSurface,
-        surfaceTintColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(26),
-          side: BorderSide(color: _accent),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Semantics(
-                      header: true,
-                      child: Text(
-                        'Every unlock includes',
-                        style: _body(size: 20),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    key: const ValueKey('draft_compatibility_store_info_close'),
-                    onPressed: ZyraTapFeedback.onTap(context, () {
-                      if (!dialogContext.mounted ||
-                          !(ModalRoute.of(dialogContext)?.isCurrent ?? false)) {
-                        return;
-                      }
-                      Navigator.of(dialogContext).pop();
-                    }),
-                    tooltip: 'Close',
-                    constraints: const BoxConstraints(
-                      minWidth: 44,
-                      minHeight: 44,
-                    ),
-                    icon: Icon(Icons.close_rounded, color: _accent),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Flexible(
-                child: ZyraShadowScrollView(
-                  key: const ValueKey(
-                    'draft_compatibility_store_info_viewport',
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const _Benefit(
-                        icon: Icons.insights_outlined,
-                        label: 'See your overall match score',
-                      ),
-                      const SizedBox(height: 14),
-                      const _Benefit(
-                        icon: Icons.subject_outlined,
-                        label:
-                            'See how you match on faith, family and lifestyle',
-                      ),
-                      const SizedBox(height: 14),
-                      const _Benefit(
-                        icon: Icons.groups_outlined,
-                        label: 'See who their Guardian is, where available',
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        _lifetime,
-                        key: const ValueKey(
-                          'draft_compatibility_store_lifetime',
-                        ),
-                        style: _body(size: 13),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        _refundTerms,
-                        key: const ValueKey(
-                          'draft_compatibility_store_refund_terms',
-                        ),
-                        style: _body(size: 12),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  bool _current(int revision) =>
+      mounted &&
+      revision == _revision &&
+      (ModalRoute.of(context)?.isCurrent ?? false) &&
+      (widget.canAct?.call() ?? true);
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -150,148 +53,108 @@ class _ZyraDraftCompatibilityStorePresentationState
       final width = constraints.maxWidth;
       final scaler = MediaQuery.textScalerOf(context);
       final direction = Directionality.of(context);
-      final titleStyle =
-          ZyraText.heading(size: width < scaler.scale(220) ? 20 : 26).copyWith(
-            height: 1.2,
-            leadingDistribution: TextLeadingDistribution.even,
-            textBaseline: TextBaseline.alphabetic,
-            letterSpacing: .25,
-          );
-      final wordWidth = _textSize(
-        'Compatibility',
-        titleStyle,
-        scaler,
-        direction,
-        double.infinity,
-      ).width;
-      // Enlarged text gives info its own row instead of splitting the word.
-      final stackedHeader = wordWidth > width - 52;
-      final titleWidth = stackedHeader
-          ? width
-          : (width - 52).clamp(0, 260).toDouble();
-      final titleHeight = _textSize(
-        'Compatibility Unlocks',
-        titleStyle,
-        scaler,
-        direction,
-        titleWidth,
-      ).height;
-      final headerHeight = stackedHeader
-          ? titleHeight + 44
-          : titleHeight.clamp(44, double.infinity).toDouble();
-      final hasBalance = (widget.balance ?? 0) > 0;
-      final balanceHeight = hasBalance
-          ? _balanceHeight(widget.balance!, scaler, direction, width)
-          : 0.0;
-      final equalCardWidth = (width - 16) / 3;
-      final rail = equalCardWidth < scaler.scale(78);
+      final balance = widget.balance ?? 0;
+      final balanceLabel = balance == 1 ? 'Unlock left' : 'Unlocks left';
+      final membershipLine = widget.isSeekerOne
+          ? '3 MORE EACH MONTH WITH SEEKER ONE'
+          : 'SEEKER ONE INCLUDES 3 EACH MONTH';
+      final ringSize = _balanceDiameter(balance, width, scaler, direction);
+      final rail = (width - 16) / 3 < scaler.scale(78);
       final cardWidth = rail
           ? _preferredCardWidth(scaler, direction)
-          : equalCardWidth;
+          : (width - 16) / 3;
       final cardHeight = _cardHeight(cardWidth, scaler, direction);
-      final continueHeight = _continueHeight(
-        _selectedOffer,
+      final pagerHeight = _previewHeight(
+        width,
         scaler,
         direction,
-        width,
+        _previewPage,
       );
-      final termsHeight =
-          (_textSize(
-                    'Purchase terms',
-                    _buttonBody(size: 12),
-                    scaler,
-                    direction,
-                    width - 8,
-                  ).height +
-                  16)
-              .clamp(44, double.infinity)
-              .toDouble();
-      final noticeHeight = _textSize(
-        'Purchasing isn’t available yet.',
-        _body(size: 11),
+      final headHeight = widget.balance == null
+          ? 0.0
+          : ringSize +
+                14 +
+                _textSize(
+                  balanceLabel,
+                  _headStyle,
+                  scaler,
+                  direction,
+                  width,
+                ).height +
+                8 +
+                _textSize(
+                  membershipLine,
+                  _capsStyle,
+                  scaler,
+                  direction,
+                  width,
+                ).height +
+                22;
+      final groupHeight = headHeight + pagerHeight + 16 + cardHeight;
+      final titleHeight = _textSize(
+        'Compatibility Unlocks',
+        _pageTitleStyle,
         scaler,
         direction,
         width,
       ).height;
-      final fixedHeight =
-          headerHeight +
-          (hasBalance ? 10 + balanceHeight : 0) +
-          36 +
-          cardHeight +
-          continueHeight +
-          4 +
-          termsHeight +
-          noticeHeight;
-      final heroHeight = _heroHeight(width, scaler, direction);
-      final fillHeight =
+      final footerHeight = _footerHeight(width, scaler, direction);
+      final fits =
           constraints.hasBoundedHeight &&
-          constraints.maxHeight >= fixedHeight + heroHeight;
-      final hero = _ScorePreviewPager(
-        onInformation: _showInformation,
-        ringSize: _previewRingSize(width, scaler, direction),
-      );
-      final title = Semantics(
-        header: true,
-        child: SizedBox(
-          width: titleWidth,
-          child: Text(
-            'Compatibility Unlocks',
-            key: const ValueKey('draft_compatibility_store_title'),
-            textAlign: TextAlign.left,
-            style: titleStyle,
+          constraints.maxHeight >=
+              titleHeight + 48 + groupHeight + footerHeight;
+      final group = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (widget.balance != null) ...[
+            _BalanceHead(
+              balance: balance,
+              diameter: ringSize,
+              label: balanceLabel,
+              membershipLine: membershipLine,
+            ),
+            const SizedBox(height: 22),
+          ],
+          SizedBox(
+            height: pagerHeight,
+            child: _ScorePreviewPager(
+              canAct: widget.canAct,
+              onPageChanged: (page) {
+                if (!mounted) return;
+                setState(() => _previewPage = page);
+              },
+            ),
           ),
-        ),
-      );
-      final information = IconButton(
-        key: const ValueKey('draft_compatibility_store_info'),
-        onPressed: ZyraTapFeedback.onTap(context, _showInformation),
-        tooltip: 'What an unlock includes',
-        constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
-        icon: Icon(Icons.info_outline_rounded, color: _accent, size: 20),
+          const SizedBox(height: 16),
+          _offerChoices(rail, cardWidth, cardHeight),
+        ],
       );
       return ZyraShadowScrollView(
         key: const ValueKey('draft_compatibility_store_viewport'),
         physics: const ClampingScrollPhysics(),
         child: SizedBox(
-          height: fillHeight ? constraints.maxHeight : null,
+          height: fits ? constraints.maxHeight : null,
           child: Column(
             key: const ValueKey('draft_compatibility_store_presentation'),
-            mainAxisSize: fillHeight ? MainAxisSize.max : MainAxisSize.min,
+            mainAxisSize: fits ? MainAxisSize.max : MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (stackedHeader)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Align(alignment: Alignment.centerRight, child: information),
-                    title,
-                  ],
-                )
-              else
-                Row(
-                  children: [
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: title,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    information,
-                  ],
+              Semantics(
+                header: true,
+                child: Text(
+                  'Compatibility Unlocks',
+                  key: const ValueKey('draft_compatibility_store_title'),
+                  style: _pageTitleStyle,
                 ),
-              if (hasBalance) ...[
-                const SizedBox(height: 10),
-                _BalanceStrip(balance: widget.balance!),
+              ),
+              if (fits)
+                Expanded(child: Center(child: group))
+              else ...[
+                const SizedBox(height: 32),
+                group,
+                const SizedBox(height: 32),
               ],
-              const SizedBox(height: 12),
-              if (fillHeight)
-                Expanded(child: hero)
-              else
-                SizedBox(height: heroHeight, child: hero),
-              const SizedBox(height: 12),
-              _offerChoices(rail, cardWidth, cardHeight),
-              const SizedBox(height: 12),
               _footer(),
             ],
           ),
@@ -301,12 +164,17 @@ class _ZyraDraftCompatibilityStorePresentationState
   );
 
   Widget _offerChoices(bool rail, double width, double height) {
+    final revision = _revision;
     Widget choice(_StoreOffer offer) => _SelectableOffer(
       offer: offer,
       selected: _selected == offer.id,
+      canAct: () => _current(revision),
       onSelect: () {
-        if (!mounted || !(ModalRoute.of(context)?.isCurrent ?? false)) return;
-        setState(() => _selected = offer.id);
+        if (!_current(revision)) return;
+        setState(() {
+          _selected = offer.id;
+          _revision++;
+        });
       },
     );
     if (rail) {
@@ -340,173 +208,134 @@ class _ZyraDraftCompatibilityStorePresentationState
   }
 
   Widget _footer() {
-    final selected = _selectedOffer;
+    final revision = _revision;
+    final terms = widget.onTerms;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ZyraFloatingSurface(
           radius: 999,
-          circle: false,
-          gold: false,
+          gold: true,
           child: FilledButton(
             key: const ValueKey('draft_compatibility_store_continue'),
-            // Selecting is not payment. StoreKit/receipt authority is not live;
-            // do not debit a balance or simulate a completed purchase here.
+            // The approved draft has no checkout authority. Keep this disabled;
+            // choosing a pack never debits the balance or grants an Unlock.
             onPressed: null,
             style: FilledButton.styleFrom(
               minimumSize: const Size(44, 48),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              disabledForegroundColor: ZyraColors.goldText,
-              disabledBackgroundColor: _accent.withValues(alpha: .05),
-              side: BorderSide(color: _accent.withValues(alpha: .65)),
+              disabledForegroundColor: ZyraColors.onPrimaryAction,
+              disabledBackgroundColor: ZyraColors.goldTextFill,
+              side: BorderSide.none,
               shape: const StadiumBorder(),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  selected == null
-                      ? 'Continue'
-                      : 'Continue · ${ZyraMembershipCatalog.pounds(selected.pricePence)}',
-                  textAlign: TextAlign.center,
-                  style: _buttonBody(
-                    size: 14,
-                  ).copyWith(color: ZyraColors.goldText),
-                ),
-                if (selected?.saving != null) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    selected!.saving!,
-                    textAlign: TextAlign.center,
-                    style: _buttonBody(size: 11),
-                  ),
-                ],
-              ],
+            child: Text(
+              'Continue',
+              textAlign: TextAlign.center,
+              style: _buttonBody(
+                size: 14,
+              ).copyWith(color: ZyraColors.onPrimaryAction),
             ),
           ),
         ),
-        const SizedBox(height: 4),
-        TextButton(
-          key: const ValueKey('draft_compatibility_store_terms'),
-          onPressed: ZyraTapFeedback.onTap(context, widget.onTerms),
-          style: TextButton.styleFrom(
-            minimumSize: const Size(44, 44),
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-            foregroundColor: _ink,
-            disabledForegroundColor: _ink,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: Text(
-            'Purchase terms',
-            textAlign: TextAlign.center,
-            style: _buttonBody(size: 12).copyWith(
-              decoration: TextDecoration.underline,
-              decorationColor: _ink,
+        const SizedBox(height: 6),
+        Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            TextButton(
+              key: const ValueKey('draft_compatibility_store_terms'),
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                terms,
+                canAct: () => _current(revision),
+              ),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(44, 44),
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                foregroundColor: ZyraColors.foregroundMuted,
+                disabledForegroundColor: ZyraColors.foregroundMuted,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text('Purchase terms', style: _muted(size: 12)),
             ),
-          ),
-        ),
-        Text(
-          'Purchasing isn’t available yet.',
-          key: const ValueKey('draft_compatibility_store_unavailable'),
-          textAlign: TextAlign.center,
-          style: _body(size: 11),
+            Text(
+              ' · Purchasing isn’t available yet',
+              key: const ValueKey('draft_compatibility_store_unavailable'),
+              textAlign: TextAlign.center,
+              style: _muted(size: 12),
+            ),
+          ],
         ),
       ],
     );
   }
 }
 
-class _BalanceStrip extends StatelessWidget {
-  const _BalanceStrip({required this.balance});
+class _BalanceHead extends StatelessWidget {
+  const _BalanceHead({
+    required this.balance,
+    required this.diameter,
+    required this.label,
+    required this.membershipLine,
+  });
   final int balance;
+  final double diameter;
+  final String label;
+  final String membershipLine;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    key: const ValueKey('draft_compatibility_store_balance'),
-    label: 'Unlocks remaining: $balance',
-    child: ExcludeSemantics(
-      child: ZyraFloatingSurface(
-        radius: 18,
-        circle: false,
-        gold: false,
+  Widget build(BuildContext context) => Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Center(
         child: Container(
-          constraints: const BoxConstraints(minHeight: 52),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          key: const ValueKey('draft_compatibility_store_balance'),
+          width: diameter,
+          height: diameter,
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: ZyraColors.surfaceFill,
-            border: Border.all(color: ZyraColors.surfaceBorder),
-            borderRadius: BorderRadius.circular(18),
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: ZyraColors.journeyGold.withValues(alpha: .70),
+              width: 1,
+            ),
           ),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final label = Text(
-                'Unlocks remaining',
-                key: const ValueKey('draft_compatibility_store_balance_label'),
-                style: _body(size: 14),
-              );
-              final count = Container(
-                key: const ValueKey(
-                  'draft_compatibility_store_balance_capsule',
-                ),
-                constraints: const BoxConstraints(minWidth: 36, minHeight: 32),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: ZyraColors.modalSheetSurface,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: _accent.withValues(alpha: .70)),
-                ),
-                child: Text(
-                  '$balance',
-                  key: const ValueKey(
-                    'draft_compatibility_store_balance_count',
-                  ),
-                  textAlign: TextAlign.center,
-                  style: _balanceCountStyle,
-                ),
-              );
-              if (_balanceNeedsStack(
-                balance,
-                MediaQuery.textScalerOf(context),
-                Directionality.of(context),
-                constraints.maxWidth,
-              )) {
-                return Column(
-                  key: const ValueKey(
-                    'draft_compatibility_store_balance_stacked',
-                  ),
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    label,
-                    const SizedBox(height: 4),
-                    Align(alignment: Alignment.centerRight, child: count),
-                  ],
-                );
-              }
-              return Row(
-                children: [
-                  Expanded(child: label),
-                  const SizedBox(width: 16),
-                  count,
-                ],
-              );
-            },
+          child: Center(
+            child: Text(
+              '$balance',
+              key: const ValueKey('draft_compatibility_store_balance_count'),
+              textAlign: TextAlign.center,
+              style: _balanceCountStyle,
+            ),
           ),
         ),
       ),
-    ),
+      const SizedBox(height: 14),
+      Text(
+        label,
+        key: const ValueKey('draft_compatibility_store_balance_label'),
+        textAlign: TextAlign.center,
+        style: _headStyle,
+      ),
+      const SizedBox(height: 8),
+      Text(
+        membershipLine,
+        key: const ValueKey('draft_compatibility_store_membership_line'),
+        textAlign: TextAlign.center,
+        style: _capsStyle,
+      ),
+    ],
   );
 }
 
 class _ScorePreviewPager extends StatefulWidget {
-  const _ScorePreviewPager({
-    required this.onInformation,
-    required this.ringSize,
-  });
-  final VoidCallback onInformation;
-  final double ringSize;
+  const _ScorePreviewPager({this.canAct, required this.onPageChanged});
+  final bool Function()? canAct;
+  final ValueChanged<int> onPageChanged;
 
   @override
   State<_ScorePreviewPager> createState() => _ScorePreviewPagerState();
@@ -515,8 +344,14 @@ class _ScorePreviewPager extends StatefulWidget {
 class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
   final _pages = PageController(keepPage: false);
   int _page = 0;
-
+  int _revision = 0;
   static final _pageCount = 1 + _fictionalScores.length;
+
+  @override
+  void didUpdateWidget(_ScorePreviewPager oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _revision++;
+  }
 
   @override
   void dispose() {
@@ -524,14 +359,15 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
     super.dispose();
   }
 
+  bool _current(int revision) =>
+      mounted &&
+      revision == _revision &&
+      (ModalRoute.of(context)?.isCurrent ?? false) &&
+      (widget.canAct?.call() ?? true);
+
   void _goTo(int page) {
-    if (!mounted ||
-        !(ModalRoute.of(context)?.isCurrent ?? false) ||
-        !_pages.hasClients ||
-        page < 0 ||
-        page >= _pageCount) {
-      return;
-    }
+    if (!_pages.hasClients || page < 0 || page >= _pageCount) return;
+    _revision++;
     final media = MediaQuery.of(context);
     if (media.disableAnimations || media.accessibleNavigation) {
       _pages.jumpToPage(page);
@@ -544,154 +380,193 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
     }
   }
 
-  Widget _arrow({required bool previous}) => IconButton(
-    key: ValueKey(
-      'draft_compatibility_store_preview_${previous ? 'previous' : 'next'}',
-    ),
-    tooltip: previous ? 'Previous preview page' : 'Next preview page',
-    constraints: const BoxConstraints.tightFor(width: 44, height: 44),
-    padding: const EdgeInsets.all(10),
-    // Keep the complete hit target at the same 44px reserved by _heroHeight.
-    // Material's padded 48px target otherwise steals height from the page.
-    style: IconButton.styleFrom(
-      minimumSize: const Size(44, 44),
-      maximumSize: const Size(44, 44),
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    ),
-    color: _accent,
-    disabledColor: _ink.withValues(alpha: .35),
-    onPressed: ZyraTapFeedback.onTap(
-      context,
-      (previous ? _page > 0 : _page < _pageCount - 1)
-          ? () => _goTo(_page + (previous ? -1 : 1))
-          : null,
-    ),
-    icon: Icon(
-      previous ? Icons.arrow_back_rounded : Icons.arrow_forward_rounded,
-      size: 22,
-    ),
+  Widget _arrow({required bool previous}) {
+    final revision = _revision;
+    final target = _page + (previous ? -1 : 1);
+    return IconButton(
+      key: ValueKey(
+        'draft_compatibility_store_preview_${previous ? 'previous' : 'next'}',
+      ),
+      tooltip: previous ? 'Previous preview page' : 'Next preview page',
+      constraints: const BoxConstraints.tightFor(width: 44, height: 44),
+      padding: const EdgeInsets.all(10),
+      style: IconButton.styleFrom(
+        minimumSize: const Size(44, 44),
+        maximumSize: const Size(44, 44),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      color: ZyraColors.goldText,
+      disabledColor: ZyraColors.goldText,
+      onPressed: ZyraTapFeedback.onTap(
+        context,
+        target >= 0 && target < _pageCount ? () => _goTo(target) : null,
+        canAct: () => _current(revision),
+      ),
+      icon: Icon(
+        previous ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
+        size: 20,
+      ),
+    );
+  }
+
+  Widget _navigation() => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      _arrow(previous: true),
+      Text(
+        '${_page + 1} / $_pageCount',
+        key: const ValueKey('draft_compatibility_store_preview_position'),
+        semanticsLabel: _page == 0
+            ? 'Score preview page 1 of $_pageCount: Locked score. '
+                  'Swipe left or right to see the illustrated design.'
+            : 'Score preview page ${_page + 1} of $_pageCount: '
+                  '${_fictionalScores[_page - 1].title}. Not a real profile result.',
+        textAlign: TextAlign.center,
+        style: _muted(size: 12),
+      ),
+      _arrow(previous: false),
+    ],
   );
 
   @override
-  Widget build(BuildContext context) => ZyraFloatingSurface(
-    radius: 26,
-    circle: false,
-    gold: false,
-    child: Container(
-      key: const ValueKey('draft_compatibility_store_preview'),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: ZyraColors.surfaceBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: PageView.builder(
-              key: const ValueKey('draft_compatibility_store_preview_pages'),
-              controller: _pages,
-              physics: const ClampingScrollPhysics(),
-              itemCount: _pageCount,
-              onPageChanged: (page) => setState(() => _page = page),
-              itemBuilder: (context, page) => page == 0
-                  ? _lockedPage()
-                  : _FictionalScorePreview(
-                      sample: _fictionalScores[page - 1],
-                      page: page,
-                      ringSize: widget.ringSize,
-                    ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              _arrow(previous: true),
-              Expanded(
-                child: Text(
-                  '${_page + 1} / $_pageCount',
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final stacked = _stackPreview(
+        constraints.maxWidth,
+        MediaQuery.textScalerOf(context),
+      );
+      final pages = PageView.builder(
+        key: const ValueKey('draft_compatibility_store_preview_pages'),
+        controller: _pages,
+        physics: const ClampingScrollPhysics(),
+        itemCount: _pageCount,
+        onPageChanged: (page) {
+          if (!mounted ||
+              !(ModalRoute.of(context)?.isCurrent ?? false) ||
+              !(widget.canAct?.call() ?? true)) {
+            return;
+          }
+          setState(() {
+            _page = page;
+            _revision++;
+          });
+          widget.onPageChanged(page);
+        },
+        // PageView also lays out the adjacent example while its viewport still
+        // has the current row's height. Let that offscreen item take its own
+        // reading height; onPageChanged grows the visible card to that height.
+        itemBuilder: (context, page) => OverflowBox(
+          minHeight: 0,
+          maxHeight: double.infinity,
+          alignment: Alignment.center,
+          child: page == 0
+              ? _PreviewRow(
                   key: const ValueKey(
-                    'draft_compatibility_store_preview_position',
+                    'draft_compatibility_store_preview_locked',
                   ),
-                  semanticsLabel: _page == 0
-                      ? 'Score preview page 1 of $_pageCount: Locked score. '
-                            'Swipe left or right to see the illustrated design.'
-                      : 'Score preview page ${_page + 1} of $_pageCount: '
-                            '${_fictionalScores[_page - 1].title}. Not a real profile result.',
-                  textAlign: TextAlign.center,
-                  style: _body(size: 11),
+                  icon: Icons.lock_outline_rounded,
+                  title: 'Your match, revealed',
+                  subtitle: 'One profile. Every score.',
+                  semanticsLabel:
+                      'Locked compatibility score preview. No scores or Guardian information are loaded.',
+                )
+              : _FictionalScorePreview(
+                  sample: _fictionalScores[page - 1],
+                  page: page,
                 ),
-              ),
-              _arrow(previous: false),
-            ],
+        ),
+      );
+      return ZyraFloatingSurface(
+        radius: 20,
+        child: Container(
+          key: const ValueKey('draft_compatibility_store_preview'),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: stacked
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(child: pages),
+                    const SizedBox(height: 4),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: _navigation(),
+                    ),
+                  ],
+                )
+              : Row(
+                  children: [
+                    Expanded(child: pages),
+                    const SizedBox(width: 6),
+                    _navigation(),
+                  ],
+                ),
+        ),
+      );
+    },
+  );
+}
+
+class _PreviewRow extends StatelessWidget {
+  const _PreviewRow({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.semanticsLabel,
+    this.page,
+  });
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final String semanticsLabel;
+  final int? page;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: semanticsLabel,
+    child: ExcludeSemantics(
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: ZyraColors.journeyGold),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  title,
+                  key: page == null
+                      ? null
+                      : ValueKey(
+                          'draft_compatibility_store_example_title_$page',
+                        ),
+                  style: _body(size: 14),
+                ),
+                Text(
+                  subtitle,
+                  key: page == null
+                      ? null
+                      : ValueKey(
+                          'draft_compatibility_store_example_score_$page',
+                        ),
+                  style: _muted(size: 12.5),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     ),
   );
-
-  Widget _lockedPage() => Column(
-    key: const ValueKey('draft_compatibility_store_preview_locked'),
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Center(
-        child: Semantics(
-          key: const ValueKey('draft_compatibility_store_preview_semantics'),
-          label:
-              'Locked compatibility score preview. No scores or Guardian information are loaded.',
-          child: ExcludeSemantics(
-            child: Container(
-              key: const ValueKey('draft_compatibility_store_halo'),
-              width: widget.ringSize,
-              height: widget.ringSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: _accent.withValues(alpha: .30),
-                  width: 7,
-                ),
-              ),
-              child: Icon(Icons.lock_outline_rounded, size: 30, color: _accent),
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Text(
-        'Your match, revealed',
-        textAlign: TextAlign.center,
-        style: _body(size: 21).copyWith(height: 1.25),
-      ),
-      const SizedBox(height: 2),
-      Text(
-        'One profile. Every score.',
-        textAlign: TextAlign.center,
-        style: _body(size: 13),
-      ),
-      const SizedBox(height: 8),
-      TextButton(
-        key: const ValueKey('draft_compatibility_store_included'),
-        onPressed: ZyraTapFeedback.onTap(context, widget.onInformation),
-        style: TextButton.styleFrom(
-          minimumSize: const Size(44, 44),
-          foregroundColor: ZyraColors.goldText,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        child: Text(
-          'What’s included',
-          textAlign: TextAlign.center,
-          style: _buttonBody(size: 13).copyWith(color: ZyraColors.goldText),
-        ),
-      ),
-    ],
-  );
 }
 
-/// These constant, invented results describe the UI, never a real profile.
-/// They are deliberately separate from protected score readers and services.
+/// Invented examples describe the included design, never a real profile.
 class _FictionalScore {
   const _FictionalScore({
     required this.title,
@@ -703,6 +578,10 @@ class _FictionalScore {
   final int aligned;
   final int? discuss;
   final int? opposed;
+
+  String get subtitle =>
+      '$aligned% Aligned'
+      '${discuss == null ? '' : ' · Discuss $discuss% · Opposed $opposed%'}';
 }
 
 const _fictionalScores = [
@@ -726,123 +605,24 @@ const _fictionalScores = [
 ];
 
 class _FictionalScorePreview extends StatelessWidget {
-  const _FictionalScorePreview({
-    required this.sample,
-    required this.page,
-    required this.ringSize,
-  });
+  const _FictionalScorePreview({required this.sample, required this.page});
   final _FictionalScore sample;
   final int page;
-  final double ringSize;
 
   @override
   Widget build(BuildContext context) => Semantics(
     key: ValueKey('draft_compatibility_store_example_$page'),
-    label:
-        'Score preview. ${sample.title}: '
-        '${sample.aligned} percent aligned. '
-        '${sample.discuss == null ? '' : '${sample.discuss} percent discuss, ${sample.opposed} percent opposed. '}'
-        'Not a real profile result.',
-    child: ExcludeSemantics(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final number = _textSize(
-            '${sample.aligned}%',
-            _exampleNumberStyle,
-            MediaQuery.textScalerOf(context),
-            Directionality.of(context),
-            double.infinity,
-          );
-          final outside =
-              number.width > ringSize - 28 || number.height > ringSize - 28;
-          final score = Text(
-            '${sample.aligned}%',
-            key: ValueKey('draft_compatibility_store_example_score_$page'),
-            textAlign: TextAlign.center,
-            style: _exampleNumberStyle,
-          );
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                sample.title,
-                key: ValueKey('draft_compatibility_store_example_title_$page'),
-                textAlign: TextAlign.center,
-                style: _exampleTitleStyle,
-              ),
-              const SizedBox(height: 8),
-              Center(
-                child: SizedBox(
-                  width: ringSize,
-                  height: ringSize,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned.fill(
-                        child: CircularProgressIndicator(
-                          value: sample.aligned / 100,
-                          strokeWidth: 7,
-                          color: _accent,
-                          backgroundColor: _accent.withValues(alpha: .18),
-                        ),
-                      ),
-                      if (outside)
-                        Icon(Icons.balance_rounded, size: 30, color: _accent)
-                      else
-                        score,
-                    ],
-                  ),
-                ),
-              ),
-              if (outside) ...[const SizedBox(height: 6), score],
-              const SizedBox(height: 6),
-              Text(
-                'Aligned',
-                textAlign: TextAlign.center,
-                style: _body(size: 13),
-              ),
-              if (sample.discuss != null) ...[
-                const SizedBox(height: 6),
-                Wrap(
-                  key: ValueKey(
-                    'draft_compatibility_store_example_details_$page',
-                  ),
-                  alignment: WrapAlignment.center,
-                  spacing: 16,
-                  runSpacing: 4,
-                  children: [
-                    Text('Discuss ${sample.discuss}%', style: _body(size: 11)),
-                    Text('Opposed ${sample.opposed}%', style: _body(size: 11)),
-                  ],
-                ),
-              ],
-            ],
-          );
-        },
-      ),
+    child: _PreviewRow(
+      icon: Icons.insights_outlined,
+      title: sample.title,
+      subtitle: sample.subtitle,
+      page: page,
+      semanticsLabel:
+          'Score preview. ${sample.title}: '
+          '${sample.aligned} percent aligned. '
+          '${sample.discuss == null ? '' : '${sample.discuss} percent discuss, ${sample.opposed} percent opposed. '}'
+          'Not a real profile result.',
     ),
-  );
-}
-
-class _Benefit extends StatelessWidget {
-  const _Benefit({required this.icon, required this.label});
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      ExcludeSemantics(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 2),
-          child: Icon(icon, size: 22, color: _accent),
-        ),
-      ),
-      const SizedBox(width: 12),
-      Expanded(child: Text(label, style: _body(size: 14))),
-    ],
   );
 }
 
@@ -857,15 +637,7 @@ class _StoreOffer {
   final int count;
   final int pricePence;
   final String unitLine;
-  String get quantity => '$count ${count == 1 ? 'unlock' : 'unlocks'}';
-
-  // Floor integer-pence percentages so the saving is never overstated.
-  String? get saving {
-    if (count == 1) return null;
-    final singles = count * ZyraMembershipCatalog.compatibilitySinglePence;
-    final percent = ((singles - pricePence) * 100) ~/ singles;
-    return 'Save $percent% vs singles';
-  }
+  String get quantity => '$count ${count == 1 ? 'Unlock' : 'Unlocks'}';
 }
 
 const _offers = [
@@ -893,10 +665,12 @@ class _SelectableOffer extends StatelessWidget {
   const _SelectableOffer({
     required this.offer,
     required this.selected,
+    required this.canAct,
     required this.onSelect,
   });
   final _StoreOffer offer;
   final bool selected;
+  final bool Function() canAct;
   final VoidCallback onSelect;
 
   @override
@@ -905,34 +679,36 @@ class _SelectableOffer extends StatelessWidget {
     selected: selected,
     inMutuallyExclusiveGroup: true,
     button: true,
-    onTap: ZyraTapFeedback.onTap(context, onSelect),
+    onTap: ZyraTapFeedback.onTap(context, onSelect, canAct: canAct),
     label: [
       offer.quantity,
       ZyraMembershipCatalog.pounds(offer.pricePence),
       offer.unitLine,
-      if (offer.saving != null) offer.saving!,
     ].join(', '),
     child: ExcludeSemantics(
       child: ZyraFloatingSurface(
-        radius: 18,
-        circle: false,
-        gold: false,
+        radius: 16,
         child: OutlinedButton(
           key: ValueKey('draft_compatibility_store_${offer.id}'),
-          onPressed: ZyraTapFeedback.onTap(context, onSelect),
+          onPressed: ZyraTapFeedback.onTap(context, onSelect, canAct: canAct),
           style: OutlinedButton.styleFrom(
-            minimumSize: const Size(44, 96),
+            minimumSize: const Size(44, 92),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
-            foregroundColor: _ink,
+            foregroundColor: ZyraColors.foreground,
             backgroundColor: selected
-                ? _accent.withValues(alpha: .12)
+                ? Color.alphaBlend(
+                    ZyraColors.journeyGold.withValues(alpha: .12),
+                    const Color(0xFFFAF5EC),
+                  )
                 : ZyraColors.surfaceFill,
             side: BorderSide(
-              color: selected ? _accent : ZyraColors.surfaceBorder,
-              width: 1.5,
+              color: selected
+                  ? ZyraColors.journeyGold
+                  : ZyraColors.surfaceBorder,
+              width: 1,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(16),
             ),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
@@ -943,21 +719,21 @@ class _SelectableOffer extends StatelessWidget {
               Text(
                 offer.quantity,
                 textAlign: TextAlign.center,
-                style: _buttonBody(size: 13),
+                style: _muted(
+                  size: 13,
+                ).copyWith(color: selected ? ZyraColors.goldText : null),
               ),
-              const SizedBox(height: 3),
+              const SizedBox(height: 4),
               Text(
                 ZyraMembershipCatalog.pounds(offer.pricePence),
                 textAlign: TextAlign.center,
-                style: _buttonBody(
-                  size: 19,
-                ).copyWith(color: ZyraColors.goldText, height: 1.2),
+                style: _priceStyle,
               ),
-              const SizedBox(height: 3),
+              const SizedBox(height: 4),
               Text(
                 offer.unitLine,
                 textAlign: TextAlign.center,
-                style: _buttonBody(size: 11),
+                style: _muted(size: 11),
               ),
             ],
           ),
@@ -966,10 +742,6 @@ class _SelectableOffer extends StatelessWidget {
     ),
   );
 }
-
-const _lifetime =
-    'An unlock is permanent. Once you unlock a profile it stays unlocked, '
-    'including after a Journey ends.';
 
 Size _textSize(
   String text,
@@ -982,89 +754,36 @@ Size _textSize(
     text: TextSpan(text: text, style: style),
     textDirection: direction,
     textScaler: scaler,
-  )..layout(maxWidth: maxWidth);
+  )..layout(maxWidth: maxWidth.clamp(1, double.infinity).toDouble());
   final size = painter.size;
   painter.dispose();
   return size;
 }
 
-double _balanceHeight(
+double _balanceDiameter(
   int balance,
-  TextScaler scaler,
-  TextDirection direction,
   double width,
-) {
-  final innerWidth = (width - 34).clamp(1, double.infinity).toDouble();
-  final stacked = _balanceNeedsStack(balance, scaler, direction, innerWidth);
-  final count = _balanceCountSize(
-    balance,
-    scaler,
-    direction,
-    stacked ? innerWidth : double.infinity,
-  );
-  final label = _textSize(
-    'Unlocks remaining',
-    _body(size: 14),
-    scaler,
-    direction,
-    stacked ? innerWidth : innerWidth - count.width - 16,
-  );
-  final contentHeight = stacked
-      ? label.height + 4 + count.height
-      : (label.height > count.height ? label.height : count.height);
-  return (contentHeight + 18).clamp(52, double.infinity).toDouble();
-}
-
-bool _balanceNeedsStack(
-  int balance,
   TextScaler scaler,
   TextDirection direction,
-  double innerWidth,
-) =>
-    _textSize(
-          'Unlocks remaining',
-          _body(size: 14),
-          scaler,
-          direction,
-          double.infinity,
-        ).width +
-        16 +
-        _balanceCountSize(balance, scaler, direction, double.infinity).width >
-    innerWidth;
-
-// Includes the capsule's padding AND one-pixel border. The fixed-page
-// measurement must agree with real layout even for a wrapped large balance.
-Size _balanceCountSize(
-  int balance,
-  TextScaler scaler,
-  TextDirection direction,
-  double maxWidth,
 ) {
-  final text = _textSize(
+  final number = _textSize(
     '$balance',
     _balanceCountStyle,
     scaler,
     direction,
-    (maxWidth - 18).clamp(1, double.infinity).toDouble(),
+    width - 26,
   );
-  return Size(
-    (text.width + 18).clamp(36, double.infinity).toDouble(),
-    (text.height + 10).clamp(32, double.infinity).toDouble(),
-  );
+  return (number.longestSide + 26).clamp(96, width).toDouble();
 }
 
 double _preferredCardWidth(TextScaler scaler, TextDirection direction) {
   var width = 96.0;
   for (final offer in _offers) {
-    final labels = [
-      (offer.quantity, _buttonBody(size: 13)),
-      (
-        ZyraMembershipCatalog.pounds(offer.pricePence),
-        _buttonBody(size: 19).copyWith(height: 1.2),
-      ),
-      (offer.unitLine, _buttonBody(size: 11)),
-    ];
-    for (final (text, style) in labels) {
+    for (final (text, style) in [
+      (offer.quantity, _muted(size: 13)),
+      (ZyraMembershipCatalog.pounds(offer.pricePence), _priceStyle),
+      (offer.unitLine, _muted(size: 11)),
+    ]) {
       final candidate =
           _textSize(text, style, scaler, direction, double.infinity).width + 20;
       if (candidate > width) width = candidate;
@@ -1074,29 +793,29 @@ double _preferredCardWidth(TextScaler scaler, TextDirection direction) {
 }
 
 double _cardHeight(double width, TextScaler scaler, TextDirection direction) {
-  var height = 96.0;
+  var height = 92.0;
   for (final offer in _offers) {
     final candidate =
         _textSize(
           offer.quantity,
-          _buttonBody(size: 13),
+          _muted(size: 13),
           scaler,
           direction,
-          width - 12,
+          width - 14,
         ).height +
         _textSize(
           ZyraMembershipCatalog.pounds(offer.pricePence),
-          _buttonBody(size: 19).copyWith(height: 1.2),
+          _priceStyle,
           scaler,
           direction,
-          width - 12,
+          width - 14,
         ).height +
         _textSize(
           offer.unitLine,
-          _buttonBody(size: 11),
+          _muted(size: 11),
           scaler,
           direction,
-          width - 12,
+          width - 14,
         ).height +
         34;
     if (candidate > height) height = candidate;
@@ -1104,193 +823,107 @@ double _cardHeight(double width, TextScaler scaler, TextDirection direction) {
   return height;
 }
 
-double _continueHeight(
-  _StoreOffer? offer,
+bool _stackPreview(double width, TextScaler scaler) =>
+    width < 340 || scaler.scale(14) > 18;
+
+double _previewHeight(
+  double width,
   TextScaler scaler,
   TextDirection direction,
-  double width,
+  int page,
 ) {
-  final title = offer == null
-      ? 'Continue'
-      : 'Continue · ${ZyraMembershipCatalog.pounds(offer.pricePence)}';
-  final titleHeight = _textSize(
-    title,
-    _buttonBody(size: 14),
+  final stacked = _stackPreview(width, scaler);
+  final counterWidth = _textSize(
+    '8 / 8',
+    _muted(size: 12),
     scaler,
     direction,
-    width - 32,
-  ).height;
-  final savingHeight = offer?.saving == null
-      ? 0.0
-      : _textSize(
-              offer!.saving!,
-              _buttonBody(size: 11),
-              scaler,
-              direction,
-              width - 32,
-            ).height +
-            2;
-  return (titleHeight + savingHeight + 20)
-      .clamp(48, double.infinity)
-      .toDouble();
-}
-
-double _heroHeight(double width, TextScaler scaler, TextDirection direction) {
-  final innerWidth = (width - 34).clamp(1, double.infinity).toDouble();
-  final ringSize = _previewRingSize(width, scaler, direction);
-  final heading = _textSize(
-    'Your match, revealed',
-    _body(size: 21).copyWith(height: 1.25),
-    scaler,
-    direction,
-    innerWidth,
-  ).height;
-  final subtitle = _textSize(
-    'One profile. Every score.',
-    _body(size: 13),
-    scaler,
-    direction,
-    innerWidth,
-  ).height;
-  final included =
-      (_textSize(
-                'What’s included',
-                _buttonBody(size: 13),
-                scaler,
-                direction,
-                innerWidth - 16,
-              ).height +
-              20)
-          .clamp(44, double.infinity)
-          .toDouble();
-  var pageHeight = ringSize + 12 + heading + 2 + subtitle + 8 + included;
-  for (final sample in _fictionalScores) {
-    final titleHeight = _textSize(
-      sample.title,
-      _exampleTitleStyle,
-      scaler,
-      direction,
-      innerWidth,
-    ).height;
-    final number = _textSize(
-      '${sample.aligned}%',
-      _exampleNumberStyle,
-      scaler,
-      direction,
-      double.infinity,
-    );
-    final outside =
-        number.width > ringSize - 28 || number.height > ringSize - 28;
-    final numberHeight = outside
-        ? 6 +
-              _textSize(
-                '${sample.aligned}%',
-                _exampleNumberStyle,
-                scaler,
-                direction,
-                innerWidth,
-              ).height
-        : 0.0;
-    final alignedHeight = _textSize(
-      'Aligned',
-      _body(size: 13),
-      scaler,
-      direction,
-      innerWidth,
-    ).height;
-    var detailsHeight = 0.0;
-    if (sample.discuss != null) {
-      final discuss = _textSize(
-        'Discuss ${sample.discuss}%',
-        _body(size: 11),
+    double.infinity,
+  ).width;
+  final textWidth = width - 34 - 32 - (stacked ? 0 : counterWidth + 94);
+  final title = page == 0
+      ? 'Your match, revealed'
+      : _fictionalScores[page - 1].title;
+  final subtitle = page == 0
+      ? 'One profile. Every score.'
+      : _fictionalScores[page - 1].subtitle;
+  final textHeight =
+      _textSize(title, _body(size: 14), scaler, direction, textWidth).height +
+      _textSize(
+        subtitle,
+        _muted(size: 12.5),
         scaler,
         direction,
-        innerWidth,
-      );
-      final opposed = _textSize(
-        'Opposed ${sample.opposed}%',
-        _body(size: 11),
-        scaler,
-        direction,
-        innerWidth,
-      );
-      detailsHeight =
-          6 +
-          (discuss.width + 16 + opposed.width <= innerWidth
-              ? (discuss.height > opposed.height
-                    ? discuss.height
-                    : opposed.height)
-              : discuss.height + 4 + opposed.height);
-    }
-    final sampleHeight =
-        titleHeight +
-        8 +
-        ringSize +
-        numberHeight +
-        6 +
-        alignedHeight +
-        detailsHeight;
-    if (sampleHeight > pageHeight) pageHeight = sampleHeight;
-  }
+        textWidth,
+      ).height;
   final navigationHeight = _textSize(
     '8 / 8',
-    _body(size: 11),
+    _muted(size: 12),
     scaler,
     direction,
-    (innerWidth - 88).clamp(1, double.infinity).toDouble(),
+    double.infinity,
   ).height.clamp(44, double.infinity).toDouble();
-  return pageHeight + 34 + 8 + navigationHeight;
+  return 22 +
+      (stacked
+          ? textHeight + 4 + navigationHeight
+          : textHeight.clamp(navigationHeight, double.infinity));
 }
 
-double _previewRingSize(
-  double width,
-  TextScaler scaler,
-  TextDirection direction,
-) {
-  var diameter = width < 340 ? 112.0 : 136.0;
-  for (final sample in _fictionalScores) {
-    final number = _textSize(
-      '${sample.aligned}%',
-      _exampleNumberStyle,
-      scaler,
-      direction,
-      double.infinity,
-    );
-    final measured =
-        (number.width > number.height ? number.width : number.height) + 32;
-    if (measured > diameter) diameter = measured;
-  }
-  return diameter.clamp(0, (width - 34).clamp(0, double.infinity)).toDouble();
+double _footerHeight(double width, TextScaler scaler, TextDirection direction) {
+  final button =
+      (_textSize(
+                'Continue',
+                _buttonBody(size: 14),
+                scaler,
+                direction,
+                width - 32,
+              ).height +
+              20)
+          .clamp(48, double.infinity)
+          .toDouble();
+  final terms = _textSize(
+    'Purchase terms',
+    _muted(size: 12),
+    scaler,
+    direction,
+    width,
+  );
+  final notice = _textSize(
+    ' · Purchasing isn’t available yet',
+    _muted(size: 12),
+    scaler,
+    direction,
+    width,
+  );
+  final termsHeight = (terms.height + 16).clamp(44, double.infinity).toDouble();
+  return button +
+      6 +
+      (terms.width + notice.width <= width
+          ? termsHeight.clamp(notice.height, double.infinity)
+          : termsHeight + notice.height);
 }
 
-// Opaque reading copy; the existing light palette uses dark gold for contrast.
-Color get _ink => ZyraColors.foreground;
-Color get _accent => ZyraColors.isLightPalette
-    ? const Color(0xFF76531F)
-    : ZyraColors.journeyGold;
-Color get _dialogSurface =>
-    ZyraColors.isLightPalette ? ZyraColors.cardSurface : ZyraColors.cardSurface;
 TextStyle _body({required double size}) =>
-    ZyraText.body(size: size, color: _ink).copyWith(
-      height: 1.45,
-      // Match the app's inherited reading metrics explicitly so intrinsic
-      // measurement and rendered multiline paragraphs use identical leading.
+    ZyraText.body(size: size, color: ZyraColors.foreground).copyWith(
+      height: 1.4,
       leadingDistribution: TextLeadingDistribution.even,
       textBaseline: TextBaseline.alphabetic,
-      letterSpacing: .25,
     );
+TextStyle _muted({required double size}) =>
+    _body(size: size).copyWith(color: ZyraColors.foregroundMuted);
 TextStyle _buttonBody({required double size}) =>
-    _body(size: size).copyWith(letterSpacing: .1);
-TextStyle get _balanceCountStyle => _body(size: 18).copyWith(
-  color: ZyraColors.goldText,
-  fontWeight: FontWeight.w400,
-  letterSpacing: .1,
-);
-TextStyle get _exampleTitleStyle => _body(size: 20).copyWith(height: 1.25);
-TextStyle get _exampleNumberStyle =>
-    ZyraText.heading(size: 36, color: _accent).copyWith(
-      height: 1.1,
+    ZyraText.button(size: size, color: ZyraColors.foreground).copyWith(
+      height: 1.4,
       leadingDistribution: TextLeadingDistribution.even,
       textBaseline: TextBaseline.alphabetic,
-      letterSpacing: .25,
     );
+TextStyle get _pageTitleStyle =>
+    ZyraText.heading(size: 28).copyWith(height: 1.2);
+TextStyle get _headStyle => ZyraText.heading(size: 26).copyWith(height: 1.2);
+TextStyle get _capsStyle =>
+    _body(size: 11).copyWith(color: ZyraColors.goldText, letterSpacing: 1.2);
+TextStyle get _balanceCountStyle => ZyraText.heading(
+  size: 40,
+  color: ZyraColors.journeyGold,
+).copyWith(height: 1.1);
+TextStyle get _priceStyle => ZyraText.heading(size: 20).copyWith(height: 1.2);
