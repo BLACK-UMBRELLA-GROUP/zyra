@@ -1,0 +1,167 @@
+[
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c01_profiles",
+    "state": "c01_profiles",
+    "reached": "Actual Sara Profiles details, sent request.",
+    "file": "c01_profiles.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c02_journey_tab",
+    "state": "c02_journey_tab",
+    "reached": "Actual LOCK13 next step; c02 illustrative clock is not fabricated.",
+    "file": "c02_journey_tab.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 1
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c03_my_zyra",
+    "state": "c03_my_zyra",
+    "reached": "Actual existing My ZYRA; LOCK15 Focus is separate queue43.",
+    "file": "c03_my_zyra.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c04_guardian_tab",
+    "state": "c04_guardian_tab",
+    "reached": "Actual Seeker Guardian tab.",
+    "file": "c04_guardian_tab.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 3
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c05_profile_tab",
+    "state": "c05_profile_tab",
+    "reached": "Actual Adam Profile; London home preserved.",
+    "file": "c05_profile_tab.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c06_filters_where",
+    "state": "c06_filters_where",
+    "reached": "Actual LOCK10V6 Location wording/London, not old c06 Where/Manchester.",
+    "file": "c06_filters_where.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c07_requests_opened",
+    "state": "c07_requests_opened",
+    "reached": "Actual opened Amira request and original actions.",
+    "file": "c07_requests_opened.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "requests"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c08_add_guardian_found",
+    "state": "c08_add_guardian_found",
+    "reached": "Actual Code page found state; Check code and Send request gold fills.",
+    "file": "c08_add_guardian_found.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "guardian_invite"
+    ],
+    "tab": 3
+  },
+  {
+    "role": "Guardian",
+    "area": "ivory",
+    "page": "c09_guardian_my_zyra",
+    "state": "c09_guardian_my_zyra",
+    "reached": "Actual Guardian My ZYRA.",
+    "file": "c09_guardian_my_zyra.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 2
+  },
+  {
+    "role": "Guardian",
+    "area": "ivory",
+    "page": "c10_guardian_network",
+    "state": "c10_guardian_network",
+    "reached": "Actual Guardian Network.",
+    "file": "c10_guardian_network.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c14_traffic_light_dots",
+    "state": "c14_traffic_light_dots",
+    "reached": "Actual retained daily-prayer editor, selected green/gold/red via real taps.",
+    "file": "c14_traffic_light_dots.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters",
+      "filter_preferences"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c12_splash",
+    "state": "c12_splash",
+    "reached": "Actual production Quiet Horizon final-frame splash; motion geometry retained.",
+    "file": "c12_splash.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "c13_iphone_launch",
+    "state": "c13_iphone_launch",
+    "reached": "HEADLESS ASSET PROJECTION: native launch background and centred LaunchImage at storyboard centre mode; no device/native launch attempted.",
+    "file": "c13_iphone_launch.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  }
+]

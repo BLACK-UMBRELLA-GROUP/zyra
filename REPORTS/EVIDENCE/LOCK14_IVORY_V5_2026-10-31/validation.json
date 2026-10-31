@@ -1,0 +1,152 @@
+{
+  "sdk": "3.44.2",
+  "driver": "SOURCE/tooling/no_git_driver.mjs via pinned bundled Node only; one SDK owner",
+  "protected_driver_check": {
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS",
+    "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "format": "107 changed Dart files checked,0 formatting changes",
+  "targeted_tests": {
+    "distinct_cases": 297,
+    "combined_18_suites": {
+      "passed": 296,
+      "failed": 1,
+      "reason": "Requestsent Text colour assertion expected accentgold; V5 nowrequiresgoldText. Product label/geometry/outline correct."
+    },
+    "corrected_request_row_suite": {
+      "passed": 6,
+      "failed": 0,
+      "change": "Only text-colour expectation updated to goldText; border still journeyGold."
+    },
+    "final_footer_and_token_tests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "final_capture_and_Journey_tests": {
+      "passed": 10,
+      "failed": 0,
+      "after": "Last planned Journey lilac shadow mapped to warmOverlay; final captures and Journey regression rerun."
+    }
+  },
+  "analyzer": "No issues found after final colour cleanup (4.2s).",
+  "logs": {
+    "final-v5-combined.log": {
+      "sha256": "e9a847484f6b72b66ecef9ff631017dc579ae0dec267397f57fc047d6981d6a9",
+      "last_lines": [
+        "00:24 +293 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 Larger Text plus Increase Contrast reachable tabs and retained pages",
+        "00:25 +294 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 Larger Text plus Increase Contrast reachable tabs and retained pages",
+        "00:25 +295 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 Larger Text plus Increase Contrast reachable tabs and retained pages",
+        "00:26 +296 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: (tearDownAll)",
+        "00:26 +296 -1: Some tests failed.",
+        "",
+        "Failing tests:",
+        "  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/request_row_lock7_test.dart: first Previous unavailable; sent paint and cancel label retained"
+      ]
+    },
+    "request-v5-final.log": {
+      "sha256": "62941b893c0b48fe3ef37cb293a27196bc7720ae3f528dcb4b847427a824ff07",
+      "last_lines": [
+        "00:00 +0: one glass pill, 68 point arrows, 56 height and three real taps",
+        "00:00 +1: first Previous unavailable; sent paint and cancel label retained",
+        "00:00 +2: 200 percent text wraps with stable height at 430.0",
+        "00:00 +3: 200 percent text wraps with stable height at 393.0",
+        "00:00 +4: 200 percent text wraps with stable height at 320.0",
+        "00:00 +5: disabled request does not dispatch and default callers keep their row",
+        "00:00 +6: (tearDownAll)",
+        "00:00 +6: All tests passed!"
+      ]
+    },
+    "footer-v5-final.log": {
+      "sha256": "05fb6d0635e42c9d891d9885bee8dd44db519248f543a1f181c5688eb1f1d88e",
+      "last_lines": [
+        "00:00 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_ivory_lock14_test.dart: floating owner suppresses nested shadow without moving content",
+        "00:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 c01-c10 and c14 actual routes and locked colour roles",
+        "00:00 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 c01-c10 and c14 actual routes and locked colour roles",
+        "00:00 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 c01-c10 and c14 actual routes and locked colour roles",
+        "00:05 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 c12 actual splash and c13 native asset projection",
+        "00:06 +8: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 Larger Text plus Increase Contrast reachable tabs and retained pages",
+        "00:12 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: (tearDownAll)",
+        "00:12 +9: All tests passed!"
+      ]
+    },
+    "analyze-final-2.log": {
+      "sha256": "5cbeafa6169bb5d1ea11ce927b9a9a728362882d05aa601ff4bc0350a7c5fd6d",
+      "last_lines": [
+        "  web 1.1.1 (1.1.2 available)",
+        "  xml 7.0.1 (7.1.0 available)",
+        "  yaml 3.1.3 (3.1.4 available)",
+        "Got dependencies!",
+        "82 packages have newer versions incompatible with dependency constraints.",
+        "Try `flutter pub outdated` for more information.",
+        "Analyzing SOURCE...                                             ",
+        "No issues found! (ran in 4.7s)"
+      ]
+    },
+    "final-colour-capture.log": {
+      "sha256": "520e5049cd5930de30a948cb7d02a27cd75b6d5d29deef0209f058ff85af633d",
+      "last_lines": [
+        "00:00 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/journey_activity_lock13_test.dart: shell activity is limited to a current active unblocked participant",
+        "00:00 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/journey_activity_lock13_test.dart: replacement records both addressed transitions and preserves other dates",
+        "00:00 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: (setUpAll)",
+        "00:00 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 c01-c10 and c14 actual routes and locked colour roles",
+        "00:06 +8: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 c12 actual splash and c13 native asset projection",
+        "00:06 +9: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: LOCK14 Larger Text plus Increase Contrast reachable tabs and retained pages",
+        "00:13 +10: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock14_ivory_capture_test.dart: (tearDownAll)",
+        "00:13 +10: All tests passed!"
+      ]
+    },
+    "analyze-post-colour.log": {
+      "sha256": "92a7e9b01b19241d12410b499092527d863a81de9436ae2369071aabe4dcd6ab",
+      "last_lines": [
+        "  web 1.1.1 (1.1.2 available)",
+        "  xml 7.0.1 (7.1.0 available)",
+        "  yaml 3.1.3 (3.1.4 available)",
+        "Got dependencies!",
+        "82 packages have newer versions incompatible with dependency constraints.",
+        "Try `flutter pub outdated` for more information.",
+        "Analyzing SOURCE...                                             ",
+        "No issues found! (ran in 4.2s)"
+      ]
+    }
+  },
+  "commands": {
+    "combined_test": "node tooling/no_git_driver.mjs flutter test --dart-define=ZYRA_LOCK14_CAPTURE=true test/request_row_lock7_test.dart test/local_code_page_lock9_test.dart test/filters_lock10_accessibility_test.dart test/compact_tab_bar_lock6_test.dart test/journey_activity_lock13_test.dart test/zyra_phone_access_lock12_test.dart test/zyra_location_lock11_test.dart test/visual/lock13_journey_tab_test.dart test/welcome_splash_palette_test.dart test/visual/lock14_ivory_capture_test.dart test/zyra_ivory_lock14_test.dart test/seeker_guardian_page_polish_test.dart test/guardian_permission_circle_controls_test.dart test/personalisation_screen_test.dart test/personalisation_page_health_test.dart test/retained_personalisation_reuse_test.dart test/retained_account_routes_test.dart test/one_journey_current_presentation_test.dart",
+    "request_row_rerun": "node tooling/no_git_driver.mjs flutter test test/request_row_lock7_test.dart",
+    "final_capture": "node tooling/no_git_driver.mjs flutter test --dart-define=ZYRA_LOCK14_CAPTURE=true test/visual/lock14_ivory_capture_test.dart test/journey_activity_lock13_test.dart",
+    "analyze": "node tooling/no_git_driver.mjs flutter analyze"
+  },
+  "limits": [
+    "No hardware/native build, install, launch or signing attempted",
+    "No whole498-file test suite claim",
+    "No pixel-identical claim; differences explicitly enumerated",
+    "Source pack hash checked before and after capture/comparison generation"
+  ],
+  "disk": {
+    "baseline_free_kib": 89440396,
+    "final_free_bytes": 88804954112,
+    "built_png_bytes": 35169244,
+    "test_cache_bytes_before_move": 202646992,
+    "cache_policy": "Move expendable task test cache to home _to_delete; moving within disk does not free space."
+  },
+  "retired_material": {
+    "background_test_snippets": {
+      "files": 7,
+      "bytes": 11366,
+      "path": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE42_IVORY_V4/retired_background_tests"
+    },
+    "moves": [
+      {
+        "from": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/test_cache",
+        "to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE42_IVORY_V4/final_test_cache",
+        "bytes": 202647472
+      },
+      {
+        "from": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/REPORTS/EVIDENCE/LOCK14_IVORY_V4_2026-10-31",
+        "to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE42_IVORY_V4/early_v4_evidence",
+        "bytes": 10656
+      }
+    ]
+  }
+}

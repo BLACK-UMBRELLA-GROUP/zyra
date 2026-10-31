@@ -1,0 +1,303 @@
+{
+  "scope": "Final14-frame contact sheet and full-resolution c14 footer",
+  "inspected_at_utc": "2026-10-31T07:33:09.538041+00:00",
+  "pack_hashes_unchanged": true,
+  "comparison_count": 14,
+  "all_comparison_frames_pixel_preserved": true,
+  "icon_exact_source_copy": true,
+  "unresolved_findings": [],
+  "contact_sheet": "/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue42-ivory-v4/work/lock14_v5_contact_sheet.png",
+  "resolved_history": [
+    {
+      "status": "resolved history",
+      "title": "c14 SafeArea shadow seam remains",
+      "boundary_logical_y": 898,
+      "boundary_physical_y": 2694,
+      "description": "Straight horizontal transition in shadow colour below footer at SafeArea boundary. Despite Clip.none, centre and inset pixels darken abruptly at the same row.",
+      "measurements": [
+        {
+          "x": 35,
+          "y_before": 2693,
+          "y_after": 2694,
+          "before": [
+            238,
+            230,
+            216
+          ],
+          "after": [
+            235,
+            227,
+            214
+          ],
+          "max_rgb_jump": 3
+        },
+        {
+          "x": 65,
+          "y_before": 2693,
+          "y_after": 2694,
+          "before": [
+            237,
+            228,
+            213
+          ],
+          "after": [
+            230,
+            221,
+            208
+          ],
+          "max_rgb_jump": 7
+        },
+        {
+          "x": 100,
+          "y_before": 2693,
+          "y_after": 2694,
+          "before": [
+            236,
+            227,
+            211
+          ],
+          "after": [
+            220,
+            209,
+            195
+          ],
+          "max_rgb_jump": 18
+        },
+        {
+          "x": 645,
+          "y_before": 2693,
+          "y_after": 2694,
+          "before": [
+            234,
+            224,
+            207
+          ],
+          "after": [
+            217,
+            206,
+            189
+          ],
+          "max_rgb_jump": 18
+        },
+        {
+          "x": 1190,
+          "y_before": 2693,
+          "y_after": 2694,
+          "before": [
+            236,
+            227,
+            211
+          ],
+          "after": [
+            220,
+            210,
+            194
+          ],
+          "max_rgb_jump": 17
+        },
+        {
+          "x": 1225,
+          "y_before": 2693,
+          "y_after": 2694,
+          "before": [
+            237,
+            228,
+            213
+          ],
+          "after": [
+            230,
+            221,
+            207
+          ],
+          "max_rgb_jump": 7
+        }
+      ],
+      "full_frame": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c14_traffic_light_dots.png",
+      "inspection_crop": "/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue42-ivory-v4/work/c14_footer_inspection.png",
+      "inspection_crop_sha256": "a7755752d0f73948a1f83e3ccbfb3930b321962f9013ff37a103bac9fbb94ec6"
+    }
+  ],
+  "final_footer": {
+    "status": "resolved",
+    "title": "SafeArea shadow seam removed",
+    "boundary_logical_y": 898,
+    "boundary_physical_y": 2694,
+    "original_max_rgb_jump": 18,
+    "final_max_rgb_jump": 2,
+    "visual_result": "No straight horizontal shadow stop remains in final full-resolution footer crop. Shadow fades smoothly through the SafeArea boundary.",
+    "remediation_reported_by_primary": "Painting-only footer CustomPainter retains original gradient shader and box through898pt and clamps its continuation64pt belowSafeArea. No footer box, hit or scroll geometry changes.",
+    "measurements": [
+      {
+        "x": 0,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          238,
+          230,
+          216
+        ],
+        "after": [
+          238,
+          230,
+          216
+        ],
+        "max_rgb_jump": 0
+      },
+      {
+        "x": 15,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          238,
+          230,
+          216
+        ],
+        "after": [
+          238,
+          230,
+          216
+        ],
+        "max_rgb_jump": 0
+      },
+      {
+        "x": 35,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          238,
+          230,
+          216
+        ],
+        "after": [
+          238,
+          230,
+          216
+        ],
+        "max_rgb_jump": 0
+      },
+      {
+        "x": 65,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          237,
+          228,
+          213
+        ],
+        "after": [
+          238,
+          229,
+          215
+        ],
+        "max_rgb_jump": 2
+      },
+      {
+        "x": 100,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          236,
+          227,
+          211
+        ],
+        "after": [
+          236,
+          227,
+          211
+        ],
+        "max_rgb_jump": 0
+      },
+      {
+        "x": 645,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          234,
+          224,
+          207
+        ],
+        "after": [
+          235,
+          225,
+          209
+        ],
+        "max_rgb_jump": 2
+      },
+      {
+        "x": 1190,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          236,
+          227,
+          211
+        ],
+        "after": [
+          236,
+          227,
+          210
+        ],
+        "max_rgb_jump": 1
+      },
+      {
+        "x": 1225,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          237,
+          228,
+          213
+        ],
+        "after": [
+          238,
+          229,
+          215
+        ],
+        "max_rgb_jump": 2
+      },
+      {
+        "x": 1275,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          238,
+          230,
+          216
+        ],
+        "after": [
+          238,
+          230,
+          216
+        ],
+        "max_rgb_jump": 0
+      },
+      {
+        "x": 1289,
+        "y_before": 2693,
+        "y_after": 2694,
+        "before": [
+          238,
+          230,
+          216
+        ],
+        "after": [
+          238,
+          230,
+          216
+        ],
+        "max_rgb_jump": 0
+      }
+    ],
+    "full_frame": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c14_traffic_light_dots.png",
+    "full_frame_sha256": "c01463e48b1d347774f56236f8672769f83844cd7425c259ace093fcb783d815",
+    "inspection_crop": "/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue42-ivory-v4/work/c14_footer_inspection.png",
+    "inspection_crop_sha256": "87a0a42768f284e3eaba2c8a134ec047d92b5c22b7120e3f8a890b2aeed2b863",
+    "before_inspection_crop": "/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue42-ivory-v4/work/c14_footer_before_inspection.png",
+    "before_inspection_crop_sha256": "a7755752d0f73948a1f83e3ccbfb3930b321962f9013ff37a103bac9fbb94ec6"
+  },
+  "limits": [
+    "Headless Flutter/asset renders; no device launch claimed.",
+    "Contact sheet is visual screening; source/master wording and artwork exceptions remain those documented in the render manifest.",
+    "Primary owns final analyzer and code-count checks."
+  ]
+}

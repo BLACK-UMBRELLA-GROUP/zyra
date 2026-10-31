@@ -1,0 +1,271 @@
+{
+  "old_table_and_purple_literals": [
+    {
+      "file": "lib/screens/matches/journey_timeline_screen.dart",
+      "line": 867,
+      "hex": "24CEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/matches/journey_timeline_screen.dart",
+      "line": 869,
+      "hex": "66CEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/matches/journey_timeline_screen.dart",
+      "line": 1076,
+      "hex": "D9CEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/matches/journey_timeline_screen.dart",
+      "line": 1101,
+      "hex": "40CEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/matches/journey_timeline_screen.dart",
+      "line": 1381,
+      "hex": "D9CEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/matches/journey_timeline_screen.dart",
+      "line": 1575,
+      "hex": "D9CEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/matches/journey_timeline_screen.dart",
+      "line": 1591,
+      "hex": "D9CEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 1944,
+      "hex": "FF73579A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 2123,
+      "hex": "FFCEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 2139,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 2163,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 2182,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 2254,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 2397,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 2657,
+      "hex": "FF9D86AD",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 3397,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 3415,
+      "hex": "FFCEA2D1",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 3532,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 5054,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 5472,
+      "hex": "FF34283F",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 5475,
+      "hex": "FF5B4867",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/journey/journey_flow_screen.dart",
+      "line": 7981,
+      "hex": "FFE8C98A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/connections/connections_screen.dart",
+      "line": 5462,
+      "hex": "48140C1A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/screens/profile/seeker_profile_screen.dart",
+      "line": 420,
+      "hex": "59140C1A",
+      "classification": "retained old member/sign-in presentation; no retirement or redesign in row42; OA-ZYRA-317"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 27,
+      "hex": "FF8A6A9E",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 27,
+      "hex": "FF3D2A4A",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 45,
+      "hex": "FFA6788F",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 45,
+      "hex": "FF503343",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 54,
+      "hex": "FF30203F",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 54,
+      "hex": "FF160E20",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 99,
+      "hex": "FF55505D",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    },
+    {
+      "file": "lib/theme/zyra_colors.dart",
+      "line": 99,
+      "hex": "FF211E27",
+      "classification": "retained developer palette definitions for queue44; selector always resolves Ivory"
+    }
+  ],
+  "unclassified_planned_literals": [],
+  "scope": "All lib Dart colour constructors scanned. Remaining sites classified as legacy member presentation or retained comparison definitions; neither is the current planned presenter. Runtime capture audit also checks small Text roles on every sampled normal/enlarged state. Not a claim that every old route is restyled.",
+  "contrast": {
+    "gold_text_845F24": {
+      "FBF7F0": 5.397171204780615,
+      "EEE6D8": 4.65099203905232,
+      "F4EEE4": 4.994344555437868,
+      "F1EBDF": 4.855001526616895,
+      "F3EDE2": 4.946612116030938,
+      "FAF5EC": 5.307306706244224
+    },
+    "primary_2B2420": {
+      "FBF7F0": 14.291764479400035,
+      "EEE6D8": 12.315874426740963,
+      "F4EEE4": 13.225075397287359,
+      "F1EBDF": 12.85609363365688,
+      "F3EDE2": 13.098679410177143,
+      "FAF5EC": 14.053802369359152
+    },
+    "secondary_6E6257": {
+      "FBF7F0": 5.54286615376911,
+      "EEE6D8": 4.776544114790702,
+      "F4EEE4": 5.129165324990438,
+      "F1EBDF": 4.986060774678727,
+      "F3EDE2": 5.0801443633075545,
+      "FAF5EC": 5.4505757911951775
+    },
+    "espresso_on_goldfill_C08A3A": 5.042265616485711,
+    "old_accent_fill_reference": 3.9692576107772752
+  },
+  "preserved": [
+    "White photo text/dark fades and photo clipping",
+    "LOCK10 V6 Location/London",
+    "LOCK13 actual next-step, no fabricated41h timer",
+    "Existing stencil lettering/geometry; c11 colour reference only",
+    "Permission actions/coarse coordinates/session gates",
+    "Haptics and Gold switch, stored preference values"
+  ],
+  "surfaces_checked": [
+    "Profiles card/request pill/menu/tabbar",
+    "Journey card/action/footer/tabbar",
+    "MyZYRA cards",
+    "Guardian Active strip/access table/header controls/remove actions",
+    "Profile Switch",
+    "Filters card/segments/location sheet/action",
+    "Requests segments/opened card/actions",
+    "Code card/input/check/results/request",
+    "Guardian MyZYRA cards/Continue/Pause",
+    "Network profile/actions",
+    "Partner option groups/traffic controls/fixed footer",
+    "Appearance,Phone access and enlarged-text leaf pages"
+  ],
+  "written_refusals": [
+    "No queue43 Focus implementation or queue44 developer retirement",
+    "No old member/sign-in retirement (OA-ZYRA-317)",
+    "No native launch/install or device acceptance (OA-ZYRA-323)",
+    "No backend/migration/dependency changes",
+    "No layout/font/wording redesign to force prototype pixel parity"
+  ],
+  "known_master_differences": [
+    "c01/c04/c05/c07/c09/c10 preserve existing actual glyph/font/content metrics and unframed viewport; prototype rounded outercorners/statusframe are not added.",
+    "c02 uses actual LOCK13 Faith&Values nextstep; master illustrative41h Family Review timer is not fabricated. Existing current filled ContinueJourney gets V4fill.",
+    "c03 existing MyZYRA used for surfaces; queue43Focus remains separate.",
+    "c06 actual LOCK10V6 Location/London supersedes older Where/Manchester reference; existing filled Showprofiles action getsV4fill.",
+    "c08 real localcode fixture resolves Ibrahim instead of reference Hassan; no lookup/data identity changed.",
+    "c11/c13 retain original current stencil lettering/line/glow rather than redrawing reference letters; c13 is headless launch-asset projection.",
+    "c12 original QuietHorizon artwork/motion geometry retained.",
+    "c14 actual retained editor groups/footer and wording remain; no prototype-only hard-requirement checkbox added. Fixed footer background now fades past SafeArea."
+  ],
+  "capture_count": {
+    "required_frames": 14,
+    "normal_route_capture_rows": 13,
+    "accessibility_rows": 17,
+    "accessibility": "430x932 logical,150%text and highContrastMediaQuery; separate Filters320x200% checks passed"
+  }
+}

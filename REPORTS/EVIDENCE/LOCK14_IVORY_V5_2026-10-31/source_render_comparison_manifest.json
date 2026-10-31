@@ -1,0 +1,601 @@
+{
+  "task": "queue42 LOCK14 V5",
+  "generated_at_utc": "2026-10-31T07:34:35.032258+00:00",
+  "pack_hashes_unchanged": true,
+  "sources": [
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c01_profiles.png",
+      "bytes": 530691,
+      "sha256": "0ac8b279917b91f073f565aaf53989320d9d494c38312863e65857b31e7d4991",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c02_journey_tab.png",
+      "bytes": 1676684,
+      "sha256": "276aa9bf3e334f213005ec0899e19a4e8879f78051394ee08e6a6121854876e6",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c03_my_zyra.png",
+      "bytes": 709918,
+      "sha256": "840cc5347c01769d82f300bb0f974b8cff077847b130fbe59397a82bba779e28",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c04_guardian_tab.png",
+      "bytes": 746725,
+      "sha256": "5ce2df4ef9f7f27f46a640d2d9e09c34cbb62ebcbdb94072ae24436aaaefa7fb",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c05_profile_tab.png",
+      "bytes": 828695,
+      "sha256": "046f3b4d1ccb8ab90e07abc7143a8e4ed02e1ffd48e7da520b74f2098d7f8223",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c06_filters_where.png",
+      "bytes": 523300,
+      "sha256": "af5cf7458f8f8b07125ae654bae4bdc5001792175e2568569617046977935aa6",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c07_requests_opened.png",
+      "bytes": 709928,
+      "sha256": "679510db22d374b7c5754d7e308aeebd33bf36b621afc2a21f4ce89a1218141b",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c08_add_guardian_found.png",
+      "bytes": 825344,
+      "sha256": "3050cb433990110471682cd1395fce2fe8b71338b58a71d95608bcecde148169",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c09_guardian_my_zyra.png",
+      "bytes": 859643,
+      "sha256": "a30ff06664f899ba1d030fc5d414ea9640a9f9d7fbeaab90611b09ec0722cbdb",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c10_guardian_network.png",
+      "bytes": 588008,
+      "sha256": "a800cb81cc2774e5227d3f6d5573ea6119586fb8f95cd3de503aeddc4aead879",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c11_app_icon_1024.png",
+      "bytes": 576333,
+      "sha256": "3a6582507d7d7b822a646e5ab0e584107883e271622263dbfd7e3a71efbce8f8",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c12_splash.png",
+      "bytes": 1085754,
+      "sha256": "b88dba628f854d5f168718c9133d4e4841f980fee6de807b10acd28fc9fba515",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c13_iphone_launch.png",
+      "bytes": 80828,
+      "sha256": "40835dd7e52c1126992a39f4e2b2acaedb6d03d6299905e0c5a468d9e3b49cd5",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c14_traffic_light_dots.png",
+      "bytes": 727400,
+      "sha256": "339b2a650690867061f429780e8e1f7552542cbb7058c2e13adffcac7c3683c7",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+      "bytes": 2991,
+      "sha256": "cbf01fef93ac4369ae5645a4d1323e9fb99f9868cbf3fd238b5fd59682b17ddd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md",
+      "bytes": 7608,
+      "sha256": "59737f0f60b4bd9dac2c3c077eb9afb359943c09b6fe9a10f28fb7b6e91042a4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md",
+      "bytes": 3147,
+      "sha256": "45d373702beaf70b4dd4c89bce299bfbd905b63965628e4683637ac001a2c330"
+    }
+  ],
+  "method": "Full-resolution frames pasted pixel-for-pixel; labels and margin are outside frames. Contact sheet alone uses thumbnails.",
+  "limits": [
+    "Normal frames are headless Flutter/asset renders; no device launch claimed.",
+    "c11 is colour reference only; current approved stencil, line and glow are preserved.",
+    "c03 is a surface reference; current My ZYRA layout awaits queue43.",
+    "Current LOCK10V6 Location/London and LOCK13 live activity labels override older illustrative master wording."
+  ],
+  "renders": [
+    {
+      "name": "c01_profiles.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c01_profiles.png",
+        "bytes": 530691,
+        "sha256": "0ac8b279917b91f073f565aaf53989320d9d494c38312863e65857b31e7d4991",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c01_profiles.png",
+        "bytes": 406534,
+        "sha256": "428f6f0ccb1d506edf5715dce9e83bcb50df45352c1c16ff871177d144d17c55",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c01_profiles_master_built.png",
+        "bytes": 944222,
+        "sha256": "bbd77070ac98bda899a162cc2cdc5c8c40e278fe0d3ed6fbcb5d57acdfd46253",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c02_journey_tab.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c02_journey_tab.png",
+        "bytes": 1676684,
+        "sha256": "276aa9bf3e334f213005ec0899e19a4e8879f78051394ee08e6a6121854876e6",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c02_journey_tab.png",
+        "bytes": 1636215,
+        "sha256": "70dc34c3563d90ed3917ec1f1977fef8f0ed563d3a1caaf6ab4f10bd4c93a3c7",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c02_journey_tab_master_built.png",
+        "bytes": 3295473,
+        "sha256": "99a7927418278692350aa0d7bf592580aa5aea5630e3dddce8ef1357c399ba15",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c03_my_zyra.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c03_my_zyra.png",
+        "bytes": 709918,
+        "sha256": "840cc5347c01769d82f300bb0f974b8cff077847b130fbe59397a82bba779e28",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c03_my_zyra.png",
+        "bytes": 442424,
+        "sha256": "60005331ec6a6333ba3a8cb5edf9fa5e56bd7e4f1fb9576a53aa5d6b8db07fe0",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c03_my_zyra_master_built.png",
+        "bytes": 1053673,
+        "sha256": "42fb487dd0f3eee3f3f63c357207c7b59466d12205b3db5ccd386d984b650f81",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c04_guardian_tab.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c04_guardian_tab.png",
+        "bytes": 746725,
+        "sha256": "5ce2df4ef9f7f27f46a640d2d9e09c34cbb62ebcbdb94072ae24436aaaefa7fb",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c04_guardian_tab.png",
+        "bytes": 594307,
+        "sha256": "76d656c8ce9fc7876810be7fdc19df441b2089e39c3af8eb53fd18570153fcc8",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c04_guardian_tab_master_built.png",
+        "bytes": 1260704,
+        "sha256": "a9e64d2196db3493fe335b9b3864154021b7269ddad19aed3aa1a50ac7fb359a",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c05_profile_tab.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c05_profile_tab.png",
+        "bytes": 828695,
+        "sha256": "046f3b4d1ccb8ab90e07abc7143a8e4ed02e1ffd48e7da520b74f2098d7f8223",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c05_profile_tab.png",
+        "bytes": 517940,
+        "sha256": "112c41c2a678e0322aea5ac215144e07ad5a79145de38ef7225d31ed61ce4da9",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c05_profile_tab_master_built.png",
+        "bytes": 1219588,
+        "sha256": "02f1243b4bfeab2ee43c95614a994a08534151cb1c7088c09bf8dae9caae1f0a",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c06_filters_where.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c06_filters_where.png",
+        "bytes": 523300,
+        "sha256": "af5cf7458f8f8b07125ae654bae4bdc5001792175e2568569617046977935aa6",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c06_filters_where.png",
+        "bytes": 437282,
+        "sha256": "ae71be054c64588032916dab309d1068f7c1b8b138b4318c4fc1bc42e8d3d0c1",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c06_filters_where_master_built.png",
+        "bytes": 990950,
+        "sha256": "7e82cb0f3e1be182847b669ace6fe01fabbad48573a3de4738e9175b1ffa125e",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c07_requests_opened.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c07_requests_opened.png",
+        "bytes": 709928,
+        "sha256": "679510db22d374b7c5754d7e308aeebd33bf36b621afc2a21f4ce89a1218141b",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c07_requests_opened.png",
+        "bytes": 463825,
+        "sha256": "a347aa54e48081b78b01b73a80d8f4b7f7dfbea3d38579b643cf680b19bbd568",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c07_requests_opened_master_built.png",
+        "bytes": 1114967,
+        "sha256": "5fbee537b52ded11bd86361beb3c20b99abdd66603b02597739a62c5cbc0428d",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c08_add_guardian_found.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c08_add_guardian_found.png",
+        "bytes": 825344,
+        "sha256": "3050cb433990110471682cd1395fce2fe8b71338b58a71d95608bcecde148169",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c08_add_guardian_found.png",
+        "bytes": 533891,
+        "sha256": "369eed3015c3ca7e7addfb2cd7ff38372898f539d1e4ebaddf0a5b2b27a832d6",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c08_add_guardian_found_master_built.png",
+        "bytes": 1260928,
+        "sha256": "27f9d4ee05dc89a59c91504089bd7fdc474402f7d836e0f2e5cff8320cfc8ae3",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c09_guardian_my_zyra.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c09_guardian_my_zyra.png",
+        "bytes": 859643,
+        "sha256": "a30ff06664f899ba1d030fc5d414ea9640a9f9d7fbeaab90611b09ec0722cbdb",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c09_guardian_my_zyra.png",
+        "bytes": 638638,
+        "sha256": "a4921b416090ed56d5a74da5e17d798ab445b8d120dfbfca1ed08ba6b7c47cf6",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c09_guardian_my_zyra_master_built.png",
+        "bytes": 1404524,
+        "sha256": "9f699cfe0a5df24948c12dfed1e4da28782494c5b9cd423a5fc6ce057cecfe9d",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c10_guardian_network.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c10_guardian_network.png",
+        "bytes": 588008,
+        "sha256": "a800cb81cc2774e5227d3f6d5573ea6119586fb8f95cd3de503aeddc4aead879",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c10_guardian_network.png",
+        "bytes": 457453,
+        "sha256": "4f048fa1de8d36a55824b29b3d1acf28ca521b6e4db188e25abc9724c641154a",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c10_guardian_network_master_built.png",
+        "bytes": 1109463,
+        "sha256": "311ab9eaa5b45d8051331d90dcb0390defa2b065dd002fa8c67c09505dc11f84",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c11_app_icon_1024.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c11_app_icon_1024.png",
+        "bytes": 576333,
+        "sha256": "3a6582507d7d7b822a646e5ab0e584107883e271622263dbfd7e3a71efbce8f8",
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c11_app_icon_1024.png",
+        "bytes": 768123,
+        "sha256": "8c5191c3831f4cfc0e65730b4a7f1326dbfa24202646a30040ddf273b495fc2e",
+        "size": [
+          1024,
+          1024
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c11_app_icon_1024_master_built.png",
+        "bytes": 958146,
+        "sha256": "55280949f577aabdcbdb449a061752e885a44a04cef6656d9fc4516ec904a993",
+        "size": [
+          2108,
+          1108
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c12_splash.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c12_splash.png",
+        "bytes": 1085754,
+        "sha256": "b88dba628f854d5f168718c9133d4e4841f980fee6de807b10acd28fc9fba515",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c12_splash.png",
+        "bytes": 582513,
+        "sha256": "cf2b6331c1e9997dee831d05640cb1fb08480b05b8023796007163b0bc38a258",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c12_splash_master_built.png",
+        "bytes": 1069144,
+        "sha256": "2b72941dd879e60ce3b7bc35217643fe19f26a92f7bda123cd28c09e3aca4f20",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c13_iphone_launch.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c13_iphone_launch.png",
+        "bytes": 80828,
+        "sha256": "40835dd7e52c1126992a39f4e2b2acaedb6d03d6299905e0c5a468d9e3b49cd5",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c13_iphone_launch.png",
+        "bytes": 34449,
+        "sha256": "2bc50f363a4a971cbb57dc0081ed4811aee66cf3391708b4f130537482046935",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c13_iphone_launch_master_built.png",
+        "bytes": 75161,
+        "sha256": "9629e6afc33e483bc48fd81136865529783ec9b4c64717a0c9d20cb2c664f32e",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    },
+    {
+      "name": "c14_traffic_light_dots.png",
+      "master": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c14_traffic_light_dots.png",
+        "bytes": 727400,
+        "sha256": "339b2a650690867061f429780e8e1f7552542cbb7058c2e13adffcac7c3683c7",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "built": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/c14_traffic_light_dots.png",
+        "bytes": 572156,
+        "sha256": "c01463e48b1d347774f56236f8672769f83844cd7425c259ace093fcb783d815",
+        "size": [
+          1290,
+          2796
+        ]
+      },
+      "comparison": {
+        "path": "PRODUCT/APPROVED/APP_COLOURS/BUILT/COMPARISONS/c14_traffic_light_dots_master_built.png",
+        "bytes": 1286318,
+        "sha256": "32b65415dbe7a06261f9f927b36cb5bd2f3a37d9dad04acd6bbf32f2d739841c",
+        "size": [
+          2640,
+          2880
+        ]
+      },
+      "frames_pixel_preserved": true
+    }
+  ],
+  "contact_sheet": {
+    "path": "/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue42-ivory-v4/work/lock14_v5_contact_sheet.png",
+    "sha256": "0420407f67e6fd172465c8247709ca98abf3d13b86f0cf95d74e0a1c9045c6dd",
+    "size": [
+      2400,
+      2780
+    ],
+    "thumbnails_only": true
+  },
+  "icon_exact_source_copy": true
+}

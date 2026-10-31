@@ -1,0 +1,147 @@
+{
+  "task": "queue42 LOCK14 V5",
+  "captured_at_utc": "2026-10-31T07:28:59.141179+00:00",
+  "sources": [
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c01_profiles.png",
+      "bytes": 530691,
+      "sha256": "0ac8b279917b91f073f565aaf53989320d9d494c38312863e65857b31e7d4991",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c02_journey_tab.png",
+      "bytes": 1676684,
+      "sha256": "276aa9bf3e334f213005ec0899e19a4e8879f78051394ee08e6a6121854876e6",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c03_my_zyra.png",
+      "bytes": 709918,
+      "sha256": "840cc5347c01769d82f300bb0f974b8cff077847b130fbe59397a82bba779e28",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c04_guardian_tab.png",
+      "bytes": 746725,
+      "sha256": "5ce2df4ef9f7f27f46a640d2d9e09c34cbb62ebcbdb94072ae24436aaaefa7fb",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c05_profile_tab.png",
+      "bytes": 828695,
+      "sha256": "046f3b4d1ccb8ab90e07abc7143a8e4ed02e1ffd48e7da520b74f2098d7f8223",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c06_filters_where.png",
+      "bytes": 523300,
+      "sha256": "af5cf7458f8f8b07125ae654bae4bdc5001792175e2568569617046977935aa6",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c07_requests_opened.png",
+      "bytes": 709928,
+      "sha256": "679510db22d374b7c5754d7e308aeebd33bf36b621afc2a21f4ce89a1218141b",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c08_add_guardian_found.png",
+      "bytes": 825344,
+      "sha256": "3050cb433990110471682cd1395fce2fe8b71338b58a71d95608bcecde148169",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c09_guardian_my_zyra.png",
+      "bytes": 859643,
+      "sha256": "a30ff06664f899ba1d030fc5d414ea9640a9f9d7fbeaab90611b09ec0722cbdb",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c10_guardian_network.png",
+      "bytes": 588008,
+      "sha256": "a800cb81cc2774e5227d3f6d5573ea6119586fb8f95cd3de503aeddc4aead879",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c11_app_icon_1024.png",
+      "bytes": 576333,
+      "sha256": "3a6582507d7d7b822a646e5ab0e584107883e271622263dbfd7e3a71efbce8f8",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c12_splash.png",
+      "bytes": 1085754,
+      "sha256": "b88dba628f854d5f168718c9133d4e4841f980fee6de807b10acd28fc9fba515",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c13_iphone_launch.png",
+      "bytes": 80828,
+      "sha256": "40835dd7e52c1126992a39f4e2b2acaedb6d03d6299905e0c5a468d9e3b49cd5",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c14_traffic_light_dots.png",
+      "bytes": 727400,
+      "sha256": "339b2a650690867061f429780e8e1f7552542cbb7058c2e13adffcac7c3683c7",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+      "bytes": 2991,
+      "sha256": "cbf01fef93ac4369ae5645a4d1323e9fb99f9868cbf3fd238b5fd59682b17ddd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md",
+      "bytes": 7608,
+      "sha256": "59737f0f60b4bd9dac2c3c077eb9afb359943c09b6fe9a10f28fb7b6e91042a4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md",
+      "bytes": 3147,
+      "sha256": "45d373702beaf70b4dd4c89bce299bfbd905b63965628e4683637ac001a2c330"
+    }
+  ]
+}

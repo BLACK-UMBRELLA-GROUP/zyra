@@ -1,0 +1,223 @@
+[
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_seeker_tab0",
+    "state": "a11y_seeker_tab0",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_seeker_tab0.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_seeker_tab1",
+    "state": "a11y_seeker_tab1",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_seeker_tab1.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 1
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_seeker_tab2",
+    "state": "a11y_seeker_tab2",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_seeker_tab2.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_seeker_tab3",
+    "state": "a11y_seeker_tab3",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_seeker_tab3.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 3
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_seeker_tab4",
+    "state": "a11y_seeker_tab4",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_seeker_tab4.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 4
+  },
+  {
+    "role": "Guardian",
+    "area": "ivory",
+    "page": "a11y_guardian_tab0",
+    "state": "a11y_guardian_tab0",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_guardian_tab0.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Guardian",
+    "area": "ivory",
+    "page": "a11y_guardian_tab1",
+    "state": "a11y_guardian_tab1",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_guardian_tab1.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 1
+  },
+  {
+    "role": "Guardian",
+    "area": "ivory",
+    "page": "a11y_guardian_tab2",
+    "state": "a11y_guardian_tab2",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_guardian_tab2.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 2
+  },
+  {
+    "role": "Guardian",
+    "area": "ivory",
+    "page": "a11y_guardian_tab3",
+    "state": "a11y_guardian_tab3",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_guardian_tab3.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 3
+  },
+  {
+    "role": "Guardian",
+    "area": "ivory",
+    "page": "a11y_guardian_tab4",
+    "state": "a11y_guardian_tab4",
+    "reached": "Actual route at 150% Larger Text with MediaQuery Increase Contrast; no overflow exceptions.",
+    "file": "a11y_guardian_tab4.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_filters",
+    "state": "a11y_filters",
+    "reached": "150% Larger Text and Increase Contrast; actual Location controls remain reachable.",
+    "file": "a11y_filters.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_requests",
+    "state": "a11y_requests",
+    "reached": "150% Larger Text and Increase Contrast; opened request actions.",
+    "file": "a11y_requests.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "requests"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_code",
+    "state": "a11y_code",
+    "reached": "150% Larger Text and Increase Contrast; actual Add a Guardian found state, actions reached by scrolling.",
+    "file": "a11y_code.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "guardian_invite"
+    ],
+    "tab": 3
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_appearance",
+    "state": "a11y_appearance",
+    "reached": "Background absent; real Haptic choice and Gold accents remain.",
+    "file": "a11y_appearance.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "personalisation"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_phone_access",
+    "state": "a11y_phone_access",
+    "reached": "Actual Phone access with mocked metadata only; permission lifetimes unchanged.",
+    "file": "a11y_phone_access.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "phone_access"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_partner_preference",
+    "state": "a11y_partner_preference",
+    "reached": "150% Larger Text and Increase Contrast; all choices reached by scrolling.",
+    "file": "a11y_partner_preference.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters",
+      "filter_preferences"
+    ],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "ivory",
+    "page": "a11y_partner_preference_last",
+    "state": "a11y_partner_preference_last",
+    "reached": "Last answer and exclusion control scroll fully clear of fixed Use this answer footer at 150% Larger Text and Increase Contrast.",
+    "file": "a11y_partner_preference_last.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "filters",
+      "filter_preferences"
+    ],
+    "tab": 0
+  }
+]

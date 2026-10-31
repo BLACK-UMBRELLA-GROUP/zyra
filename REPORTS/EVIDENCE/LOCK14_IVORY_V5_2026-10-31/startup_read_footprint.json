@@ -1,0 +1,21 @@
+{
+  "method": "Reconstructed distinct bounded startup text footprint from read files; current brief/queue include later V5 wording. Tool transcript I/O totals and token counts unavailable. PNG bytes excluded.",
+  "startup_text_bytes": 48052,
+  "parts": {
+    "ZYRA/AGENTS.md": 11205,
+    "ZYRA/MAP.md:1-87": 9008,
+    "LOCK14 brief": 2991,
+    "LOCK14 V4 initial spec": 6865,
+    "LOCK14 initial lock record": 2761,
+    "latest review through Corrections1-104": 11654,
+    "latest review Founder addendum143-148": 618,
+    "queue39-44 bounded rows": 2950
+  },
+  "v5_spec_delta_read_bytes": 7608,
+  "helpers": {
+    "ivory_assets_initial_docs_kib": 31.933,
+    "ivory_assets_docs_and_bounded_source_kib": 62.934,
+    "ivory_pref_tests_initial_docs_bytes": 20213,
+    "ivory_route_tests": "Bounded stale route-helper audit; token/I/O counters unavailable."
+  }
+}

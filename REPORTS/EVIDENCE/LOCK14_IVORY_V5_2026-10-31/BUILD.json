@@ -1,0 +1,20 @@
+{
+  "commit_sha": "37f5323cf069f8d60d51763ed68c19938ce66711",
+  "flutter_version": "3.44.2",
+  "build_mode": "headless Flutter widget-render/test evidence plus deterministic primary icon/launch assets; no native application build",
+  "timestamp_utc": "2026-10-31T07:35:29.286216+00:00",
+  "task": "Queue42 LOCK14 V5 Ivory (OA-ZYRA-327)",
+  "source_manifest_sha256": "de3a23d1c54747165ce663cc2aee4dc8bce4a3c82b62a66a2807f740951b8de8",
+  "pack_manifest_sha256": "3b12c1ee7de8b1c9d5ffcb3f90f03b3fe69167ff533b06abd31fa78a5e4bdc19",
+  "required_frames": 14,
+  "comparison_pairs": 14,
+  "accessibility_frames": 17,
+  "targeted_tests_distinct_passed": 297,
+  "post_final_colour_capture_and_journey_passed": 10,
+  "native_launch_projection": "c13 uses actual LaunchBackground/LaunchImage assets and storyboard geometry; does not establish an iPhone launch",
+  "limitations": [
+    "Device acceptance remains OA-ZYRA-323",
+    "Existing prototype/current-layout differences are listed in colour_surface_audit.json",
+    "No row43 Focus or row44 developer removal"
+  ]
+}
