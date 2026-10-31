@@ -1,4 +1,6 @@
-// Actual LOCK10 V6 local shell interactions. Insets prove layout only:
+import 'dart:convert';
+import 'dart:io';
+// Actual LOCK10 V7 local shell interactions. Insets prove layout only:
 // the headless renderer cannot provide an iPhone system keyboard.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,7 +10,7 @@ import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'baseline_capture_support.dart';
 
 const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
-const evidence = '$root/REPORTS/EVIDENCE/LOCK10_FILTERS_2026-10-30';
+const evidence = '$root/REPORTS/EVIDENCE/LOCK10_FILTERS_V7_2026-10-31';
 const capture = bool.fromEnvironment('ZYRA_LOCK10_CAPTURE');
 Finder key(String id) => find.byKey(ValueKey(id));
 void main() {
@@ -25,7 +27,7 @@ void main() {
       final h = BaselineHarness(
         t,
         group: 'lock10_filters',
-        outputRoot: '$root/PRODUCT/APPROVED/FILTERS/BUILT',
+        outputRoot: '$root/PRODUCT/APPROVED/FILTERS/BUILT/V7',
         evidenceRoot: evidence,
         flatOutput: true,
       );
@@ -42,12 +44,39 @@ void main() {
       await h.flush();
       Future<void> cap(String file, {bool inset = false}) async {
         if (capture) {
+          final geometry = <String, Object?>{
+            'state': file,
+            'keyboard': inset
+                ? 'headless system-keyboard inset layout only'
+                : 'closed',
+            'logical_viewport': [430, 932],
+            for (final id in [
+              'filters_card',
+              'filter_viewport',
+              'filter_content',
+              'filter_monogram',
+              'filter_title',
+              'filter_current_choice',
+            ])
+              id: (() {
+                final r = t.getRect(key(id));
+                return [r.left, r.top, r.width, r.height];
+              })(),
+            'choice': t.widget<Text>(key('filter_current_choice')).data,
+          };
+          await t.runAsync(() async {
+            final output = File('$evidence/geometry_$file.json');
+            await output.parent.create(recursive: true);
+            await output.writeAsString(
+              const JsonEncoder.withIndent('  ').convert(geometry),
+            );
+          });
           await h.capture(
             'filters',
             file,
             file,
             inset
-                ? 'HEADLESS INSET LAYOUT ONLY; native keyboard proof is separately captured from installed V4 aab4973.'
+                ? 'HEADLESS SYSTEM-KEYBOARD INSET LAYOUT ONLY; no V7 native keyboard capture or device install.'
                 : 'Actual sample shell; network blocked.',
             fileName: '$file.png',
           );
@@ -114,7 +143,7 @@ void main() {
         ),
         Offset(rangeBounds.right + 50, rangeBounds.center.dy),
       );
-      expect(find.text('18 – 70'), findsOneWidget);
+      expect(find.text('18 – 70'), findsNWidgets(2));
       expect(key('concept_age_range'), findsOneWidget);
       await h.tap('concept_reset_filter_draft');
       await h.tap('filter_next');
@@ -176,10 +205,7 @@ void main() {
       t.view.viewInsets = const FakeViewPadding(bottom: 759);
       await h.flush();
       expect(t.getRect(key('filters_card')).bottom, 669);
-      await cap(
-        'f07_nationality__typing_keyboard__headless_layout',
-        inset: true,
-      );
+      await cap('f07_nationality__typing_keyboard', inset: true);
       await h.tap('filter_add_2_DZ');
       expect(
         t.widget<TextField>(key('filter_search_nationality')).controller!.text,
@@ -218,10 +244,7 @@ void main() {
       expect(find.text('No ethnicity called “xyzq”.'), findsOneWidget);
       t.view.viewInsets = const FakeViewPadding(bottom: 759);
       await h.flush();
-      await cap(
-        'f10_ethnicity__no_match_keyboard__headless_layout',
-        inset: true,
-      );
+      await cap('f10_ethnicity__no_match_keyboard', inset: true);
       FocusManager.instance.primaryFocus?.unfocus();
       t.view.resetViewInsets();
       await h.flush();
@@ -238,6 +261,52 @@ void main() {
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
+  testWidgets('V7 actual shell Larger Text Age and Location remain reachable', (
+    t,
+  ) async {
+    addTearDown(t.view.resetPhysicalSize);
+    addTearDown(t.view.resetDevicePixelRatio);
+    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
+    ZyraInternalPreviewClient.beginPreview();
+    final h = BaselineHarness(
+      t,
+      group: 'lock10_v7_larger_text',
+      outputRoot: '$root/PRODUCT/APPROVED/FILTERS/BUILT/V7',
+      evidenceRoot: evidence,
+      flatOutput: true,
+      textScale: 2,
+    );
+    await h.mount();
+    await h.tap('concept_browse_menu');
+    await t.tapAt(
+      t.getCenter(
+        find.descendant(
+          of: key('concept_browse_options_navigation'),
+          matching: key('floating-nav-item-3'),
+        ),
+      ),
+    );
+    await h.flush();
+    Future<void> capLarge(String name) async {
+      if (capture) {
+        await h.capture(
+          'filters',
+          name,
+          name,
+          'Actual sample shell at 200% text; scroll fallback available; headless only.',
+          fileName: '$name.png',
+        );
+      }
+    }
+
+    await capLarge('large_age');
+    await h.tap('filter_next');
+    await capLarge('large_location');
+    await h.tap('filter_next');
+    await capLarge('large_nationality');
+    await h.tap('filter_next');
+    await capLarge('large_ethnicity');
+  });
   testWidgets('Filters link opens detached traffic-light preferences', (
     t,
   ) async {

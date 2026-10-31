@@ -1,5 +1,5 @@
 import '../widgets/zyra_floating_surface.dart';
-// LOCK10 V6 presentation for the local sample preview. No repositories,
+// LOCK10 V7 presentation for the local sample preview. No repositories,
 // transports, device permission, private answers or member counts.
 import 'package:flutter/material.dart';
 import '../data/zyra_reference_data.dart';
@@ -667,6 +667,105 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     );
   }
 
+  String get _currentChoice {
+    final f = widget.filter;
+    return switch (_index) {
+      0 =>
+        f.hasAgeRange
+            ? '${f.minAge ?? 18} – ${f.maxAge ?? 70}'
+            : 'ANY AGE (18+)',
+      1 => switch (f.where) {
+        ZyraBrowseWhere.nearMe => 'WITHIN ${f.radiusKm.round()} KM',
+        ZyraBrowseWhere.country =>
+          (zyraBrowseCountryLabel(f.countryCode) ?? '').toUpperCase(),
+        ZyraBrowseWhere.worldwide => 'WORLDWIDE',
+      },
+      2 =>
+        f.nationalityCodes.isEmpty
+            ? 'ANY NATIONALITY'
+            : '${f.nationalityCodes.length} CHOSEN',
+      _ =>
+        f.ethnicityCodes.isEmpty
+            ? 'ANY ETHNICITY'
+            : '${f.ethnicityCodes.length} CHOSEN',
+    };
+  }
+
+  Widget _cardContent() => LayoutBuilder(
+    key: const ValueKey('filter_viewport'),
+    builder: (context, bounds) {
+      final centered = _index < 2;
+      final content = Column(
+        key: const ValueKey('filter_content'),
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Center(
+            child: Container(
+              key: const ValueKey('filter_monogram'),
+              width: 92,
+              height: 92,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: ZyraColors.journeyGold.withValues(alpha: .7),
+                ),
+              ),
+              child: Icon(
+                _icons[_index],
+                size: 36,
+                color: ZyraColors.journeyGold,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            _names[_index],
+            key: const ValueKey('filter_title'),
+            textAlign: TextAlign.center,
+            style: ZyraText.heading(
+              size: 28,
+            ).copyWith(fontWeight: FontWeight.w300),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _currentChoice,
+            key: const ValueKey('filter_current_choice'),
+            textAlign: TextAlign.center,
+            style: ZyraText.body(
+              size: 11,
+              color: ZyraColors.goldText,
+            ).copyWith(letterSpacing: 1.2),
+          ),
+          const SizedBox(height: 8),
+          _text(_subtitles[_index], align: TextAlign.center),
+          const SizedBox(height: 20),
+          if (_index == 0)
+            _age()
+          else if (_index == 1)
+            _where()
+          else
+            _heritage(),
+        ],
+      );
+      return ZyraShadowScrollView(
+        key: ValueKey('filter_scroll_$_index'),
+        padding: EdgeInsets.fromLTRB(18, centered ? 18 : 36, 18, 18),
+        child: centered
+            ? ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: (bounds.maxHeight - 36).clamp(
+                    0.0,
+                    double.infinity,
+                  ),
+                ),
+                child: Center(child: content),
+              )
+            : content,
+      );
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     final keyboard =
@@ -755,35 +854,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                           ],
                         ),
                       ),
-                      child: ZyraShadowScrollView(
-                        key: ValueKey('filter_scroll_$_index'),
-                        padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Icon(
-                              _icons[_index],
-                              size: 34,
-                              color: ZyraColors.journeyGold,
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              _names[_index],
-                              textAlign: TextAlign.center,
-                              style: ZyraText.heading(size: 26),
-                            ),
-                            const SizedBox(height: 6),
-                            _text(_subtitles[_index], align: TextAlign.center),
-                            const SizedBox(height: 20),
-                            if (_index == 0)
-                              _age()
-                            else if (_index == 1)
-                              _where()
-                            else
-                              _heritage(),
-                          ],
-                        ),
-                      ),
+                      child: _cardContent(),
                     ),
                   ),
                 ),
