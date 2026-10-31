@@ -750,12 +750,11 @@ void main() {
     (tester) async {
       await _mountShell(tester);
       await _nav(tester, 3);
-      final heading = _key('guardian-journey-access-heading');
+      await tester.tap(_key('guardian-card-center'));
+      await tester.pumpAndSettle();
+      final heading = find.text('JOURNEY ACCESS');
       final icon = _key('guardian-journey-access-icon');
-      final label = find.descendant(
-        of: heading,
-        matching: find.text('Active Journey access'),
-      );
+      final label = heading;
       expect(heading, findsOneWidget);
       expect(icon, findsNothing);
       expect(label, findsOneWidget);
@@ -777,7 +776,8 @@ void main() {
         findsNothing,
       );
       final text = tester.widget<Text>(label);
-      expect(text.style, ZyraText.body(size: 13.25));
+      expect(text.style?.fontSize, 11.5);
+      expect(text.style?.color, ZyraColors.goldText);
       expect(tester.takeException(), isNull);
       await _capture(tester, 'guardian-access-text-only');
     },

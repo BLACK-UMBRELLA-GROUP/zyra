@@ -1004,6 +1004,28 @@ class _GuardianDetailsStrip extends StatelessWidget {
   );
 }
 
+// LOCK19 reuses the existing inline Cancel/Confirm flow and action delegates.
+Widget zyraGuardianCardManageActions({
+  required WaliLinkedPerson person,
+  required List<WaliLinkedPerson> otherGuardians,
+  required bool Function() canAct,
+  required GuardianMakeMainAction makeMainGuardian,
+  required GuardianClearMainAction clearMainGuardian,
+  required GuardianRemoveAction removeGuardian,
+}) => _GuardianManageActions(
+  key: ValueKey(('guardian-card-actions', person.id, person.isMain)),
+  person: person,
+  otherGuardians: otherGuardians,
+  preview: true,
+  makeMainGuardian: makeMainGuardian,
+  clearMainGuardian: clearMainGuardian,
+  removeGuardian: removeGuardian,
+  onChanged: null,
+  compact: true,
+  cardLayout: true,
+  canAct: canAct,
+);
+
 class _GuardianManageActions extends StatefulWidget {
   final WaliLinkedPerson person;
   final List<WaliLinkedPerson> otherGuardians;
@@ -1013,8 +1035,11 @@ class _GuardianManageActions extends StatefulWidget {
   final GuardianRemoveAction? removeGuardian;
   final VoidCallback? onChanged;
   final bool compact;
+  final bool cardLayout;
+  final bool Function()? canAct;
 
   const _GuardianManageActions({
+    super.key,
     required this.person,
     required this.otherGuardians,
     required this.preview,
@@ -1023,6 +1048,8 @@ class _GuardianManageActions extends StatefulWidget {
     required this.removeGuardian,
     required this.onChanged,
     this.compact = false,
+    this.cardLayout = false,
+    this.canAct,
   });
 
   @override
@@ -1034,30 +1061,52 @@ enum _GuardianManageIntent { makeMain, clearMain, removeGuardian }
 class _GuardianManageActionsState extends State<_GuardianManageActions> {
   bool _busy = false;
   _GuardianManageIntent? _confirming;
+  int _interactionRevision = 0;
+
+  @override
+  void didUpdateWidget(covariant _GuardianManageActions oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.canAct != widget.canAct && widget.cardLayout) {
+      _interactionRevision++;
+      _confirming = null;
+      _busy = false;
+    }
+  }
+
+  bool get _current => mounted && (widget.canAct?.call() ?? true);
 
   void _failure(String message) => ScaffoldMessenger.of(
     context,
   ).showSnackBar(SnackBar(content: Text(message)));
 
   void _ask(_GuardianManageIntent intent) {
-    if (_busy) return;
-    setState(() => _confirming = intent);
+    if (_busy || !_current) return;
+    setState(() {
+      _interactionRevision++;
+      _confirming = intent;
+    });
   }
 
   void _cancel() {
-    if (_busy) return;
-    setState(() => _confirming = null);
+    if (_busy || !_current) return;
+    setState(() {
+      _interactionRevision++;
+      _confirming = null;
+    });
   }
 
   Future<void> _makeMain() async {
-    if (_busy) return;
+    if (_busy || !_current) return;
     final action = widget.makeMainGuardian;
     if (action == null) {
       return _failure('Main Guardian could not be changed right now.');
     }
-    setState(() => _busy = true);
+    setState(() {
+      _interactionRevision++;
+      _busy = true;
+    });
     final changed = await action(widget.person.id);
-    if (!mounted) return;
+    if (!_current) return;
     setState(() {
       _busy = false;
       _confirming = changed ? null : _GuardianManageIntent.makeMain;
@@ -1067,14 +1116,17 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
   }
 
   Future<void> _clearMain() async {
-    if (_busy) return;
+    if (_busy || !_current) return;
     final action = widget.clearMainGuardian;
     if (action == null) {
       return _failure('Main Guardian status could not be removed right now.');
     }
-    setState(() => _busy = true);
+    setState(() {
+      _interactionRevision++;
+      _busy = true;
+    });
     final changed = await action(widget.person.id);
-    if (!mounted) return;
+    if (!_current) return;
     setState(() {
       _busy = false;
       _confirming = changed ? null : _GuardianManageIntent.clearMain;
@@ -1084,14 +1136,17 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
   }
 
   Future<void> _remove() async {
-    if (_busy) return;
+    if (_busy || !_current) return;
     final action = widget.removeGuardian;
     if (action == null) {
       return _failure('This Guardian could not be removed right now.');
     }
-    setState(() => _busy = true);
+    setState(() {
+      _interactionRevision++;
+      _busy = true;
+    });
     final error = await action(widget.person.id);
-    if (!mounted) return;
+    if (!_current) return;
     setState(() {
       _busy = false;
       _confirming = error == null ? null : _GuardianManageIntent.removeGuardian;
@@ -1102,41 +1157,51 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (widget.person.isMain) ...[
-          _actionOrConfirmation(
-            intent: _GuardianManageIntent.clearMain,
-            actionKey: const ValueKey('guardian-clear-main'),
-            confirmationKey: const ValueKey('guardian-clear-main-confirmation'),
-            icon: Icons.shield_outlined,
-            label: 'Remove as Main Guardian',
-            onConfirm: _clearMain,
-          ),
-          SizedBox(height: widget.compact ? 6 : 9),
-        ],
-        if (!widget.person.isMain) ...[
-          _actionOrConfirmation(
-            intent: _GuardianManageIntent.makeMain,
-            actionKey: const ValueKey('guardian-make-main'),
-            confirmationKey: const ValueKey('guardian-make-main-confirmation'),
-            icon: Icons.shield_outlined,
-            label: 'Make Main Guardian',
-            onConfirm: _makeMain,
-          ),
-          SizedBox(height: widget.compact ? 6 : 9),
-        ],
+    final actions = <Widget>[
+      if (widget.person.isMain) ...[
         _actionOrConfirmation(
-          intent: _GuardianManageIntent.removeGuardian,
-          actionKey: const ValueKey('guardian-remove'),
-          confirmationKey: const ValueKey('guardian-remove-confirmation'),
-          icon: Icons.person_remove_outlined,
-          label: 'Remove Guardian',
-          destructive: true,
-          onConfirm: _remove,
+          intent: _GuardianManageIntent.clearMain,
+          actionKey: const ValueKey('guardian-clear-main'),
+          confirmationKey: const ValueKey('guardian-clear-main-confirmation'),
+          icon: Icons.shield_outlined,
+          label: widget.cardLayout
+              ? 'Remove as Main'
+              : 'Remove as Main Guardian',
+          onConfirm: _clearMain,
         ),
+        if (!widget.cardLayout) SizedBox(height: widget.compact ? 6 : 9),
       ],
-    );
+      if (!widget.person.isMain) ...[
+        _actionOrConfirmation(
+          intent: _GuardianManageIntent.makeMain,
+          actionKey: const ValueKey('guardian-make-main'),
+          confirmationKey: const ValueKey('guardian-make-main-confirmation'),
+          icon: Icons.shield_outlined,
+          label: widget.cardLayout ? 'Make Main' : 'Make Main Guardian',
+          onConfirm: _makeMain,
+        ),
+        if (!widget.cardLayout) SizedBox(height: widget.compact ? 6 : 9),
+      ],
+      _actionOrConfirmation(
+        intent: _GuardianManageIntent.removeGuardian,
+        actionKey: const ValueKey('guardian-remove'),
+        confirmationKey: const ValueKey('guardian-remove-confirmation'),
+        icon: Icons.person_remove_outlined,
+        label: widget.cardLayout ? 'Remove' : 'Remove Guardian',
+        destructive: true,
+        onConfirm: _remove,
+      ),
+    ];
+    return widget.cardLayout
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: actions.first),
+              const SizedBox(width: 8),
+              Expanded(child: actions.last),
+            ],
+          )
+        : Column(children: actions);
   }
 
   Widget _actionOrConfirmation({
@@ -1148,6 +1213,8 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
     required Future<void> Function() onConfirm,
     bool destructive = false,
   }) {
+    final revision = _interactionRevision;
+    bool current() => _current && revision == _interactionRevision;
     final confirming = _confirming == intent;
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 140),
@@ -1161,6 +1228,8 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
               children: [
                 Expanded(
                   child: _ManageActionButton(
+                    canAct: current,
+                    cardLayout: widget.cardLayout,
                     label: 'Cancel',
                     compact: widget.compact,
                     onTap: _busy ? null : _cancel,
@@ -1169,6 +1238,8 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
                 const SizedBox(width: 9),
                 Expanded(
                   child: _ManageActionButton(
+                    canAct: current,
+                    cardLayout: widget.cardLayout,
                     label: 'Confirm',
                     destructive: destructive,
                     compact: widget.compact,
@@ -1178,6 +1249,8 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
               ],
             )
           : _ManageActionButton(
+              canAct: current,
+              cardLayout: widget.cardLayout,
               key: actionKey,
               icon: icon,
               label: label,
@@ -1195,6 +1268,8 @@ class _ManageActionButton extends StatelessWidget {
   final bool destructive;
   final VoidCallback? onTap;
   final bool compact;
+  final bool cardLayout;
+  final bool Function()? canAct;
 
   const _ManageActionButton({
     super.key,
@@ -1202,19 +1277,52 @@ class _ManageActionButton extends StatelessWidget {
     required this.label,
     this.destructive = false,
     this.compact = false,
+    this.cardLayout = false,
+    this.canAct,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final signal = destructive ? ZyraColors.destructive : ZyraColors.ink(0.68);
+    if (cardLayout) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: ZyraFloatingSurface.standardShadows,
+        ),
+        child: Material(
+          color: const Color(0xFFFBF7F0),
+          borderRadius: BorderRadius.circular(24),
+          child: InkWell(
+            onTap: ZyraTapFeedback.onTap(context, onTap, canAct: canAct),
+            borderRadius: BorderRadius.circular(24),
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 42),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+              alignment: Alignment.center,
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: ZyraText.body(
+                  size: 13,
+                  color: destructive
+                      ? const Color(0xFFB84A42)
+                      : ZyraColors.foreground,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
     return ZyraFloatingSurface(
       radius: 16,
       child: Material(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
-          onTap: ZyraTapFeedback.onTap(context, onTap),
+          onTap: ZyraTapFeedback.onTap(context, onTap, canAct: canAct),
           borderRadius: BorderRadius.circular(16),
           child: ZyraFloatingSurface(
             radius: 20,

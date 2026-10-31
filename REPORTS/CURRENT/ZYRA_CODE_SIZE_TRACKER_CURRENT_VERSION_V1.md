@@ -609,3 +609,23 @@ The shared three-part Profiles/Journey/Filters pill now uses the LOCK14 ivory su
 Measured with SYSTEM/tools/blueprint/code_size.py; queue70 baseline confirmed by the exact -7 app/-2 preview line delta before test edits. No new app file or classifier change. Ten complete scoped suites: 124 passed, zero failed/skipped. Analyser clean; ten-file format and pinned protected-driver check pass. Real Poppins at 430/393/320 points and 200% validates all four Filters footers. Actual route labels contrast at least 13.79:1. Test fixtures now use bundled Poppins; stale V4/V5 gold expectations corrected without changing CTA source. Five actual frames and five full-size master/build pairs, geometry, case ledger and explicit allowlisted manifests are in PRODUCT/APPROVED/FILTERS/BUILT/V7FIX.
 
 QUEUE71-R1 (written refusal, OA-ZYRA-328): full-screen prototype geometry/surface and sample-content differences visible in the pairs are outside these two authorised fixes and were preserved. In particular c06 predates the V7 Monogram head and uses Manchester; the real sample uses London. Gold labels in c01/Filters masters are intentionally superseded by the newer explicit normal-ink V7FIX brief. No full-screen pixel-equality claim, native install, backend change or keyboard/VoiceOver device verification. Historical V7 handover and FOOTER_DIAGNOSTIC remain unchanged. Parent visual/contract verification follows.
+
+
+## Queue 48 — Guardian cards LOCK19 V2 — 31 October 2026
+
+The Seeker Guardian tab now uses Monogram front/access cards, Main/date order, preview-only Omar then Add, two face dots and an ivory three-part pager. Ends use 35% opacity; the parent corrected its earlier shorthand: 35% is not a swipe-distance requirement. Horizontal drags use Flutter touch slop. Existing per-Guardian history, permission, Main/Remove confirmation and checkpoint data remain the authority. Basic and paid-agreement/Main restrictions fail closed. Local Family price/invite/cancel steps never grant entitlement or call a store/server; the unresolved Family allocation uses the brief's NoFamily fallback. Question5 ANSWERED A routes Omar's pill to unchanged local LOCK9. Earlier preflight JSON stays historical.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 170,567 / 337 | 172,045 / 339 |
+| Developer/preview | 50,782 / 95 | 52,152 / 97 |
+| Founder planned app | 31,604 / 45 | 32,974 / 47 |
+| Tests | 221,583 / 522 | 223,561 / 526 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. Both new app files match the existing zyra_one_journey_* classifier and are counted in developer/preview and Founder categories; no classifier change. The replaced shell layout/caches are removed; the shared old member presenter stays because member routes still use it. The card adapter reuses existing inline Cancel/Confirm actions with a guard before haptics; affected LOCK3 and paid-agreement shell tests use the replacement presenter.
+
+Thirteen complete scoped suites: 161 passed, 3 wider Circle/Journey cases failed, no skipped cases; 12 suites pass completely. All new card/Family/actual-shell, paid-agreement, code-route lifetime, unread and LOCK3 cases pass. Analyser clean; 12-file format and pinned protected-driver checks pass. Actual k01–k19 captures and nineteen master/build pairs, 200%/320-point frames, separate real-shell samples and allowlisted manifests are in PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2. Golden count is unchanged; these are handover screenshots.
+
+QUEUE48-R1 (written refusal, OA-ZYRA-328): the Circle regression's Seeker and Guardian cases reach the unchanged Circle, send a message and retain the same Circle state, then cannot find its composer after existing page-option/held-pull steps (first source assertion test/guardian_circle_close_integration_test.dart:552, StateError No element). Guardian-role routing bypasses the replaced Seeker cards. A third case returns from Circle, navigates Journey tab 1 and expects three legacy “Awaiting a Journey” slots (:723); it finds zero. This task replaces Seeker Guardian tab 3, and does not change the Circle presentation/options or Journey-tab empty presentation. Cause is not claimed historical. Those wider repairs are refused in this row; exact diagnostics and changed-site analysis are in CASE_LEDGER/QA. The directly affected old access-heading assertion was migrated and passes. No whole-suite or full-screen pixel-equality claim; parent visual/contract review follows.

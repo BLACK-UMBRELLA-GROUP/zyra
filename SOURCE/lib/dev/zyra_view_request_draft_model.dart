@@ -1158,7 +1158,7 @@ class ViewRequestDraftModel {
       return (view: false, chat: false);
     }
     final grant =
-        _guardianAccess['$guardianId|$peerId'] ?? (view: true, chat: true);
+        _guardianAccess['$guardianId|$peerId'] ?? (view: true, chat: false);
     final required = hasRequiredPaidGuardianAccess(guardianId, peerId);
     final view = isMain || required || grant.view;
     return (

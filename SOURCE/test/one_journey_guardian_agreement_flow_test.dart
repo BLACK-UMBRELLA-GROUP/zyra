@@ -11,11 +11,11 @@ import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -121,7 +121,7 @@ class _Owner {
     await tester.pumpAndSettle();
     expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
     if (guardianPanel) {
-      expect(find.byType(SeekerGuardianPage), findsOneWidget);
+      expect(find.byType(ZyraOneJourneyGuardianCards), findsOneWidget);
     } else {
       expect(_key('draft_begin_$_amira'), findsOneWidget);
     }
@@ -164,6 +164,8 @@ VoidCallback _begin(WidgetTester tester) =>
 
 Map<String, Object?> _data(ViewRequestDraftSnapshot value) => {
   'capacity': value.capacity,
+  'attemptSequence': value.attemptSequence,
+  'attempts': value.attemptRevisions,
   'states': value.states,
   'busy': value.busyPeers,
   'hidden': value.hiddenPeers,
@@ -354,17 +356,27 @@ void main() {
     );
 
     testWidgets(
-      'Additional Guardian loader rejects retained writes across '
+      'Additional Guardian card presenter rejects retained writes across '
       '${native ? 'native-route' : 'Page options'} ABA and admits fresh writes',
       (tester) async {
         addTearDown(tester.view.resetPhysicalSize);
         addTearDown(tester.view.resetDevicePixelRatio);
         final current = owner();
         await current.mount(tester, basic: true, guardianPanel: true);
-        final stale = tester
-            .widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage))
-            .journeyAccessLoader!;
+        final original = tester.widget<ZyraOneJourneyGuardianCards>(
+          find.byType(ZyraOneJourneyGuardianCards),
+        );
+        final stale = original.onPermission;
         final before = _data(current.latest.model);
+        final attempt = current.model.attemptRevisionFor(_sara);
+        final originalJourney = original
+            .journeysFor(_yusuf)
+            .singleWhere((row) => row.id == _sara);
+        expect(originalJourney.attempt, attempt);
+        expect(originalJourney.view, isFalse);
+        expect(originalJourney.chat, isFalse);
+        expect(originalJourney.canChange, isTrue);
+        expect(current.latest.guardianPage, 1);
         if (native) {
           unawaited(
             current.navigator.currentState!.push<void>(
@@ -377,12 +389,8 @@ void main() {
         } else {
           await openZyraDevControls(tester);
         }
-        final covered = await stale(
-          guardianId: _yusuf,
-          attemptId: 'draft-attempt-$_sara',
-          enabled: true,
-        );
-        expect(covered.isUnavailable, isTrue);
+        stale(_yusuf, _sara, view: true);
+        await tester.pumpAndSettle();
         expect(_data(current.latest.model), before);
         if (native) {
           current.navigator.currentState!.pop();
@@ -390,25 +398,28 @@ void main() {
         } else {
           await closeZyraDevControls(tester);
         }
-        final returned = await stale(
-          guardianId: _yusuf,
-          attemptId: 'draft-attempt-$_sara',
-          enabled: true,
-        );
-        expect(returned.isUnavailable, isTrue);
+        stale(_yusuf, _sara, view: true);
+        await tester.pumpAndSettle();
         expect(_data(current.latest.model), before);
-        final fresh = tester
-            .widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage))
-            .journeyAccessLoader!;
-        final read = await fresh(guardianId: _yusuf);
-        expect(read.isAvailable, isTrue);
-        expect(read.valueOrNull!.first.included, isFalse);
-        final updated = await fresh(
-          guardianId: _yusuf,
-          attemptId: 'draft-attempt-$_sara',
-          enabled: true,
+        final fresh = tester.widget<ZyraOneJourneyGuardianCards>(
+          find.byType(ZyraOneJourneyGuardianCards),
         );
-        expect(updated.isAvailable, isTrue);
+        final read = fresh
+            .journeysFor(_yusuf)
+            .singleWhere((row) => row.id == _sara);
+        expect(read.attempt, attempt);
+        expect(read.view, isFalse);
+        expect(read.chat, isFalse);
+        expect(read.canChange, isTrue);
+        // The presenter is bound to the visible Guardian and the real Journey
+        // id/attempt; a Main target, fabricated id, or Basic Chat request is
+        // never interchangeable with the permitted Additional View write.
+        fresh.onPermission('draft-guardian-hassan', _sara, view: false);
+        fresh.onPermission(_yusuf, 'draft-attempt-$_sara', view: true);
+        fresh.onPermission(_yusuf, _sara, chat: true);
+        await tester.pumpAndSettle();
+        expect(_data(current.latest.model), before);
+        fresh.onPermission(_yusuf, _sara, view: true);
         await tester.pumpAndSettle();
         expect(current.model.sampleGuardianAccessFor(_yusuf, _sara), (
           view: true,
@@ -418,6 +429,20 @@ void main() {
           current.model.hasRequiredPaidGuardianAccess(_yusuf, _sara),
           isFalse,
         );
+        expect(current.latest.model.attemptRevisions, before['attempts']);
+        expect(current.latest.guardianPage, 1);
+        expect(current.latest.tab, 3);
+        expect(current.latest.guardian, isFalse);
+        expect(current.latest.pages, isEmpty);
+        expect(
+          Map<String, Object?>.of(_data(current.latest.model))
+            ..remove('permissions'),
+          Map<String, Object?>.of(before)..remove('permissions'),
+        );
+        final after = _data(current.latest.model);
+        fresh.onPermission(_yusuf, _sara, view: false);
+        await tester.pumpAndSettle();
+        expect(_data(current.latest.model), after);
         expect(current.access.balance, 1);
       },
     );

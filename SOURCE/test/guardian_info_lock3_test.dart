@@ -7,7 +7,7 @@ import 'package:zyra/dev/zyra_one_journey_guardian_info_presentation.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
-import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'visual/baseline_capture_support.dart';
 
 const _hassan = 'draft-guardian-hassan';
@@ -230,21 +230,23 @@ void main() {
     (tester) async {
       final h = _h(tester);
       await h.mount(tab: 3);
-      SeekerGuardianPage page() =>
-          tester.widget(find.byType(SeekerGuardianPage));
-      Future<bool> consent({bool? enabled}) async =>
-          (await page().historyConsentLoader!(
-            guardianId: _hassan,
-            guardianIsMain: true,
-            enabled: enabled,
-          )).valueOrNull!.enabled;
+      ZyraOneJourneyGuardianCards page() =>
+          tester.widget(find.byType(ZyraOneJourneyGuardianCards));
+      Future<bool> consent({bool? enabled}) async {
+        if (enabled != null) {
+          page().onHistory(_hassan, enabled);
+          await h.flush();
+        }
+        return page().people.firstWhere((p) => p.person.id == _hassan).history;
+      }
+
       expect(await consent(), isFalse);
       expect(await consent(enabled: true), isTrue);
       expect(h.latest.guardianHistory[_hassan], isTrue);
       expect(await consent(enabled: false), isFalse);
       expect(h.latest.guardianHistory[_hassan], isFalse);
       expect(await consent(enabled: true), isTrue);
-      expect(await page().removeGuardian!(_hassan), isNull);
+      expect(await page().remove(_hassan), isNull);
       await h.flush();
       expect(h.latest.removedGuardians, contains(_hassan));
       expect(h.latest.guardianHistory.containsKey(_hassan), isFalse);

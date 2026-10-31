@@ -15,14 +15,7 @@ import '../data/journey_questions.dart';
 import '../data/zyra_reference_data.dart';
 import '../data/zyra_journey_pause_state.dart';
 import '../models/seeker_profile.dart';
-import '../services/zyra_wali_link_service.dart'
-    show
-        WaliLinkedPerson,
-        ZyraSourceResult,
-        ZyraSourceFailure,
-        GuardianHistoryConsentState,
-        GuardianJourneyAccessState,
-        PendingInvite;
+import '../services/zyra_wali_link_service.dart' show WaliLinkedPerson;
 import '../services/zyra_wali_journey_service.dart' show WaliJourneyView;
 import '../services/zyra_family_messaging_service.dart';
 import '../services/zyra_account_state.dart';
@@ -81,7 +74,6 @@ import 'zyra_request_help_content.dart';
 import 'zyra_request_account_session.dart';
 import 'zyra_request_capacity_choice.dart';
 import 'zyra_guardian_circle_preview.dart';
-import 'zyra_conversation_unread_badge.dart';
 import 'zyra_guardian_circle_topic_options.dart';
 import 'zyra_circle_discussion_archive.dart';
 import 'zyra_one_journey_sample_photos.dart';
@@ -94,6 +86,7 @@ import 'zyra_one_journey_options.dart';
 import 'zyra_one_journey_options_page.dart';
 import 'zyra_one_journey_tab.dart';
 import 'zyra_one_journey_guardian_tabs.dart';
+import 'zyra_one_journey_guardian_cards.dart';
 import 'zyra_journey_peer_guardians_presentation.dart';
 import 'zyra_one_journey_account_presentation.dart';
 import 'zyra_one_journey_guardian_info_presentation.dart';
@@ -330,10 +323,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   int _accountLeafRevision = -1;
   Widget? _ownProfilePreviewView;
   int _ownProfilePreviewRevision = -1;
-  Widget? _guardianManagerView;
-  int _guardianManagerRevision = -1;
-  int _guardianManagerControlsEpoch = -1;
-  int _guardianManagerRouteStamp = -1;
   Widget? _guardianInviteView;
   int _guardianInviteRevision = -1;
   Widget? _circleEntryView;
@@ -848,7 +837,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       _pendingMainGuardianNoticeId = pendingMain;
     }
     _journeyTabIndex = saved.journeyPlaceIndex.clamp(0, _model.capacity - 1);
-    _guardianPage = saved.guardianPage.clamp(0, 1);
+    _guardianPage = saved.guardianPage.clamp(0, draftGuardians.length + 1);
     _networkTab = saved.networkTab.clamp(0, 1);
     _personId = _profileIds.contains(saved.personId) ? saved.personId : null;
     _guardianJourneyId = _profileIds.contains(saved.guardianJourneyId)
@@ -5890,242 +5879,185 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   Widget _guardians() {
-    // Keep an owned information sheet's child lifetime through its cover.
-    // On return, rebuild fresh delegates: captured pre-cover callbacks remain
-    // denied by both interaction epochs, without dismissing the sheet itself.
-    if (_guardianManagerView != null &&
-        _guardianManagerRevision == _uiRevision &&
-        (_devControlsVisible ||
-            !(ModalRoute.of(context)?.isCurrent ?? true) ||
-            (_guardianManagerControlsEpoch == _devControlsEpoch &&
-                _guardianManagerRouteStamp == _devRouteStamp))) {
-      return _guardianManagerView!;
-    }
-    _guardianManagerRevision = _uiRevision;
-    _guardianManagerControlsEpoch = _devControlsEpoch;
-    _guardianManagerRouteStamp = _devRouteStamp;
-    final fresh = _accountFreshGuard();
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final session = _accountSession;
     final revision = _uiRevision;
-    final controlsEpoch = _devControlsEpoch;
-    final routeStamp = _devRouteStamp;
+    final controls = _devControlsEpoch;
+    final navigatorStamp = _devRouteStamp;
     final journeys = _guardianJourneys;
-    String journeyStamp() => _guardianJourneys
-        .map((p) => '${p.id}:${_model.stateFor(p.id)}')
-        .join('|');
-    final stamp = journeyStamp();
-    final people = _conceptGuardianPeople;
-    final orderedPeople = [
-      ...people.where((person) => person.isMain),
-      ...people.where((person) => !person.isMain),
-    ];
-    final viewedGuardianId = orderedPeople.isEmpty
-        ? null
-        : orderedPeople[_guardianPage.clamp(0, orderedPeople.length - 1)].id;
+    final people = [..._conceptGuardianPeople]
+      ..sort((a, b) {
+        if (a.isMain != b.isMain) return a.isMain ? -1 : 1;
+        return (a.linkedAt ?? DateTime(2100)).compareTo(
+          b.linkedAt ?? DateTime(2100),
+        );
+      });
+    String permissionStamp() => [
+      _conceptMainGuardianId,
+      _model.ownMainGuardianPresent,
+      _seekerMembership,
+      for (final person in people) ...[
+        person.id,
+        _conceptRemovedGuardians.contains(person.id),
+        _model.sampleGuardianMembershipFor(person.id),
+        _conceptGuardianHistory[person.id] ?? _shareHistory,
+        for (final p in _guardianJourneys) ...[
+          p.id,
+          _model.attemptRevisionFor(p.id),
+          _model.stateFor(p.id),
+          _conceptAccessFor(person.id, p.id),
+          _model.hasRequiredPaidGuardianAccess(person.id, p.id),
+        ],
+      ],
+    ].join('|');
+    final stamp = permissionStamp();
     bool current() =>
-        fresh() &&
+        mounted &&
         _allowed &&
         !_devControlsVisible &&
-        controlsEpoch == _devControlsEpoch &&
-        routeStamp == _devRouteStamp &&
-        (ModalRoute.of(context)?.isCurrent ?? true) &&
+        session.current &&
+        identical(session, _accountSession) &&
+        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
         revision == _uiRevision &&
+        controls == _devControlsEpoch &&
         !_guardianRole &&
         _tab == 3 &&
         _page == null &&
-        journeyStamp() == stamp;
-    ZyraSourceResult<T> unavailable<T>() =>
-        const ZyraSourceResult.unavailable(ZyraSourceFailure.notReady);
-    WaliLinkedPerson? personFor(String id) =>
-        people.where((person) => person.id == id).firstOrNull;
+        permissionStamp() == stamp;
+    bool currentAction() =>
+        current() &&
+        navigatorStamp == _devRouteStamp &&
+        ModalRoute.of(context)?.isCurrent == true;
+    WaliLinkedPerson? target(String id) {
+      if (!currentAction()) return null;
+      final visible = _seekerMembership.contains('Basic')
+          ? people.take(1).toList()
+          : people;
+      if (_guardianPage >= visible.length ||
+          _guardianPage < 0 ||
+          visible[_guardianPage].id != id) {
+        return null;
+      }
+      return visible[_guardianPage];
+    }
 
-    return _guardianManagerView = SafeArea(
-      bottom: false,
-      child: NotificationListener<ScrollEndNotification>(
-        onNotification: (notification) {
-          final metrics = notification.metrics;
-          if (metrics is! PageMetrics || metrics.axis != Axis.horizontal) {
-            return false;
-          }
-          final next = metrics.page?.round();
-          if (next != null && next != _guardianPage && current()) {
-            _act(() => _guardianPage = next);
-          }
-          return false;
-        },
-        child: SeekerGuardianPage(
-          titleAlignment: Alignment.centerLeft,
-          titleSize: ZyraText.pageTitleSize,
-          people: people,
-          viewOnlyGuardianIds: {
-            for (final person in people)
-              if (_model.sampleGuardianMembershipFor(person.id) ==
-                  DraftGuardianMembership.basic)
-                person.id,
-          },
-          activity: const {},
-          linksAvailable: true,
-          activityAvailable: true,
-          historyConsentPreview: false,
-          previewActiveJourneyCount: journeys.length,
-          onRetry: _bound(() => _act(() {})),
-          onAdd: _bound(() => _open('guardian_invite')),
-          onOpenMessages: () {
-            if (current()) _open('guardian_circle');
-          },
-          conversationButtonBuilder: (child) => ZyraConversationUnreadBadge(
-            unreadCount: _currentCircleUnreadCount,
-            backgroundColor: ZyraColors.brandGradient.colors.first,
-            child: child,
+    return ZyraOneJourneyGuardianCards(
+      key: ValueKey(('guardian-cards', account, identityHashCode(session))),
+      people: [
+        for (final p in people)
+          ZyraGuardianCardPerson(
+            person: p,
+            membership: _model.canUseSampleGuardianChat(p.id)
+                ? 'Guardian One'
+                : 'Guardian Basic',
+            history: _conceptGuardianHistory[p.id] ?? _shareHistory,
           ),
-          pendingInvitesLoader: () async => current()
-              ? const ZyraSourceResult.available(<PendingInvite>[])
-              : unavailable<List<PendingInvite>>(),
-          historyConsentLoader:
-              ({required guardianId, required guardianIsMain, enabled}) async {
-                final person = personFor(guardianId);
-                if (!current() ||
-                    person == null ||
-                    person.isMain != guardianIsMain) {
-                  return unavailable<GuardianHistoryConsentState>();
-                }
-                if (enabled != null) {
-                  if (guardianId != viewedGuardianId) {
-                    return unavailable<GuardianHistoryConsentState>();
-                  }
-                  // This control owns its confirmed value and busy state.
-                  // A consent write is not a new navigation lifetime: _act
-                  // would replace its loader and briefly reset nearby controls.
-                  _conceptGuardianHistory[guardianId] = enabled;
-                  _circleScopeRevision++;
-                  _publishCheckpoint();
-                }
-                return ZyraSourceResult.available(
-                  GuardianHistoryConsentState(
-                    enabled:
-                        _conceptGuardianHistory[guardianId] ?? _shareHistory,
-                    activeGuardianLinkId: 'draft-link-$guardianId',
-                    guardianId: guardianId,
-                    guardianIsMain: guardianIsMain,
-                  ),
-                );
-              },
-          journeyAccessLoader:
-              ({required guardianId, attemptId, enabled, chatEnabled}) async {
-                final person = personFor(guardianId);
-                if (!current() || person == null) {
-                  return unavailable<List<GuardianJourneyAccessState>>();
-                }
-                final target = journeys
-                    .where((p) => 'draft-attempt-${p.id}' == attemptId)
-                    .firstOrNull;
-                if (attemptId != null && target == null) {
-                  return unavailable<List<GuardianJourneyAccessState>>();
-                }
-                if (enabled != null || chatEnabled != null) {
-                  if (guardianId != viewedGuardianId ||
-                      person.isMain ||
-                      target == null ||
-                      _model.hasRequiredPaidGuardianAccess(
-                        guardianId,
-                        target.id,
-                      )) {
-                    return unavailable<List<GuardianJourneyAccessState>>();
-                  }
-                  final oldAccess = _conceptAccessFor(guardianId, target.id);
-                  if (chatEnabled == true &&
-                      (!_model.canUseSampleGuardianChat(guardianId) ||
-                          !(enabled ?? oldAccess.view))) {
-                    return unavailable<List<GuardianJourneyAccessState>>();
-                  }
-                  var changed = false;
-                  _act(() {
-                    changed = _model.setSampleGuardianJourneyAccess(
-                      guardianId,
-                      target.id,
-                      viewEnabled: enabled,
-                      chatEnabled: chatEnabled,
-                    );
-                  });
-                  if (!changed) {
-                    return unavailable<List<GuardianJourneyAccessState>>();
-                  }
-                }
-                return ZyraSourceResult.available([
-                  for (final counterpart in journeys)
-                    GuardianJourneyAccessState(
-                      attemptId: 'draft-attempt-${counterpart.id}',
-                      matchId: 'draft-match-${counterpart.id}',
-                      counterpartFirstName: counterpart.firstName,
-                      included:
-                          person.isMain ||
-                          _conceptAccessFor(guardianId, counterpart.id).view,
-                      canChange:
-                          !person.isMain &&
-                          !_model.hasRequiredPaidGuardianAccess(
-                            guardianId,
-                            counterpart.id,
-                          ),
-                      requiredByPaidAgreement: _model
-                          .hasRequiredPaidGuardianAccess(
-                            guardianId,
-                            counterpart.id,
-                          ),
-                      guardianIsMain: person.isMain,
-                      chatAvailable: _model.canUseSampleGuardianChat(
-                        guardianId,
-                      ),
-                      chatEnabled: _conceptAccessFor(
-                        guardianId,
-                        counterpart.id,
-                      ).chat,
-                    ),
-                ]);
-              },
-          makeMainGuardian: (guardianId) async {
-            if (!current() ||
-                guardianId != viewedGuardianId ||
-                personFor(guardianId) == null ||
-                personFor(guardianId)!.isMain) {
-              return false;
-            }
-            _act(() {
-              _conceptMainGuardianId = guardianId;
-              _model.setOwnMainGuardianPresent(true);
-              _guardianPage = 0;
-              _pendingMainGuardianNoticeId = guardianId;
-              _pages.add('guardian_main_notice');
-            });
-            return true;
-          },
-          clearMainGuardian: (guardianId) async {
-            if (!current() ||
-                guardianId != viewedGuardianId ||
-                personFor(guardianId)?.isMain != true) {
-              return false;
-            }
-            _act(() => _model.setOwnMainGuardianPresent(false));
-            return true;
-          },
-          removeGuardian: (guardianId) async {
-            if (!current() ||
-                guardianId != viewedGuardianId ||
-                personFor(guardianId) == null) {
-              return 'This is no longer available. Nothing changed.';
-            }
-            _act(() {
-              _model.revokeSampleGuardianAccess(guardianId);
-              _conceptRemovedGuardians.add(guardianId);
-              _conceptGuardianHistory.remove(guardianId);
-              if (guardianId == _conceptMainGuardianId) {
-                _model.setOwnMainGuardianPresent(false);
-              }
-              _guardianPage = 0;
-            });
-            return null;
-          },
-          onChanged: () {},
-        ),
+      ],
+      journeysFor: (id) => [
+        for (final p in journeys)
+          ZyraGuardianCardJourney(
+            id: p.id,
+            attempt: _model.attemptRevisionFor(p.id),
+            name: p.firstName,
+            stage:
+                'Stage ${_model.stageFor(p.id)?.order ?? 1} of 8 · ${_model.stageFor(p.id)?.label ?? 'Salam Exchange'}',
+            photo: _photos?.forIndex(draftProfiles.indexOf(p)).firstOrNull,
+            view: _conceptAccessFor(id, p.id).view,
+            chat: _conceptAccessFor(id, p.id).chat,
+            canChange:
+                people.where((g) => g.id == id).firstOrNull?.isMain != true &&
+                !_model.hasRequiredPaidGuardianAccess(id, p.id),
+          ),
+      ],
+      capacity: _seekerMembership.contains('Basic') ? 1 : _model.capacity,
+      basic: _seekerMembership.contains('Basic'),
+      initialPage: _guardianPage,
+      canAct: current,
+      interactionEpoch: () => (_uiRevision, _devControlsEpoch, _devRouteStamp),
+      contextIdentity: (
+        account,
+        identityHashCode(session),
+        _guardianRole,
+        _seekerMembership,
+        stamp,
       ),
+      renderIdentity: (_uiRevision, _devControlsEpoch),
+      unread: _currentCircleUnreadCount,
+      onPage: (page) {
+        if (currentAction()) _act(() => _guardianPage = page);
+      },
+      onCircle: () {
+        if (currentAction()) _open('guardian_circle');
+      },
+      onResume: () {
+        if (current() && ModalRoute.of(context)?.isCurrent == true) _act(() {});
+      },
+      onAdd: () {
+        if (!currentAction()) return;
+        if (_seekerMembership.contains('Basic')) {
+          _accountDispatch(ZyraConceptAccountAction.membership);
+        } else {
+          _open('guardian_invite');
+        }
+      },
+      onHistory: (id, enabled) {
+        if (target(id) == null) return;
+        _act(() => _conceptGuardianHistory[id] = enabled);
+      },
+      onPermission: (id, journeyId, {view, chat}) {
+        final guardian = target(id);
+        if (guardian == null ||
+            guardian.isMain ||
+            !journeys.any((p) => p.id == journeyId) ||
+            _model.hasRequiredPaidGuardianAccess(id, journeyId)) {
+          return;
+        }
+        final old = _conceptAccessFor(id, journeyId);
+        if (chat == true &&
+            (!_model.canUseSampleGuardianChat(id) || !(view ?? old.view))) {
+          return;
+        }
+        _act(
+          () => _model.setSampleGuardianJourneyAccess(
+            id,
+            journeyId,
+            viewEnabled: view,
+            chatEnabled: chat,
+          ),
+        );
+      },
+      makeMain: (id) async {
+        final guardian = target(id);
+        if (guardian == null || guardian.isMain) return false;
+        _act(() {
+          _conceptMainGuardianId = id;
+          _model.setOwnMainGuardianPresent(true);
+          _guardianPage = 0;
+          _pendingMainGuardianNoticeId = id;
+          _pages.add('guardian_main_notice');
+        });
+        return true;
+      },
+      clearMain: (id) async {
+        if (target(id)?.isMain != true) return false;
+        _act(() => _model.setOwnMainGuardianPresent(false));
+        return true;
+      },
+      remove: (id) async {
+        if (target(id) == null) {
+          return 'This is no longer available. Nothing changed.';
+        }
+        _act(() {
+          _model.revokeSampleGuardianAccess(id);
+          _conceptRemovedGuardians.add(id);
+          _conceptGuardianHistory.remove(id);
+          if (id == _conceptMainGuardianId) {
+            _model.setOwnMainGuardianPresent(false);
+          }
+          _guardianPage = 0;
+        });
+        return null;
+      },
     );
   }
 
