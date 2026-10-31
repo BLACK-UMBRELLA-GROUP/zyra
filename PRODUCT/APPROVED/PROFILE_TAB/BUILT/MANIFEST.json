@@ -1,0 +1,189 @@
+{
+  "policy": "Explicit task source and named LOCK21 inputs only; ignored config and credential files excluded. Parent review scratch excluded.",
+  "source": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "bytes": 35208,
+      "sha256": "28667ddb8b52b37985c1770934589ff2d25eb9bfe803138f0c5a9dbfea3d058d"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 315167,
+      "sha256": "4f215fc5fa9cb35dea8ccc2b1eebc0576c7b6514f4ed4c22bb6d36512d9b704d"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "bytes": 43909,
+      "sha256": "a53554c4c90e1e7ceac38e14aef0194b4eb9f116ac792fff2fb025d9adb01a0d"
+    },
+    {
+      "path": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "bytes": 17865,
+      "sha256": "c7c365a5da56d50c296d3a95d253aeec831d14593ceef6cfff9088df4ce7ec43"
+    },
+    {
+      "path": "SOURCE/test/profile_action_subtitle_removal_test.dart",
+      "bytes": 14498,
+      "sha256": "55c40e1a43b97c6e94462b104954bed83c42e97706bd8aa588adff0ae418942e"
+    },
+    {
+      "path": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "bytes": 55693,
+      "sha256": "a697601af7d09812e3decb1a88b84832761858ca041e128c6a4b178ea03e3635"
+    },
+    {
+      "path": "SOURCE/test/visual/profile_tab_monogram_capture_test.dart",
+      "bytes": 3729,
+      "sha256": "963c427b6687c8e60597c001b8fac12387c0197a58e8f257776cd5ee5d5f268f"
+    },
+    {
+      "path": "SOURCE/test/guardian_info_lock3_test.dart",
+      "bytes": 11599,
+      "sha256": "0d1cf3f650241f744b65165e891432124f7e62cdbdc9a59fb9293ba3aa89f0fb"
+    },
+    {
+      "path": "SOURCE/test/retained_account_routes_test.dart",
+      "bytes": 24580,
+      "sha256": "0fecbd539cd1aba3434599536840cf2e57275868072c3461bad2d8440456d15f"
+    }
+  ],
+  "locked_inputs_and_named_baselines": [
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BRIEFS/BUILD_BRIEF_2026-10-31.md",
+      "bytes": 1448,
+      "sha256": "1fb113568c3ada203c607949d34cd894662a31952d820dc7fa90aa85e2e19684"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/LOCK_RECORD.md",
+      "bytes": 798,
+      "sha256": "83c5c6202d7e8245bb1ce0f8d3c07e0cf4daa986821e6dfea94eda9277ec1ce7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 3636,
+      "sha256": "12f8c97f99fb745a8182c0799c3d7ca206d7c2f8c335c5b634163447ce02bd24"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p01_seeker_one__top.png",
+      "bytes": 767367,
+      "sha256": "d8dfdf7b1f62ad61f28ef586b07ae345617cd7191110b7a2db92d239870f0995"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p02_seeker_one__scrolled.png",
+      "bytes": 633879,
+      "sha256": "ce786c7c777c141adde579a3c1bc290aedec9ce6a8a5e19d03e2b6338fc45f88"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p03_seeker_basic__top.png",
+      "bytes": 761914,
+      "sha256": "870fe4a0ad7dbded989e29ad7ecb52c740fbbb76651b9ee853a4514e55cac4de"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p04_guardian_one__top.png",
+      "bytes": 684917,
+      "sha256": "0fab5eb1af84ec7bc055f545165a5c6ca99737c5acd1b6e1a32a2abaf9f97680"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p05_guardian_one__scrolled.png",
+      "bytes": 649724,
+      "sha256": "2af33bf5a0051a7affacceb4f9d4c0ca7c8d937a9fe4bfc028256e69e0c409f5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p06_guardian_basic__top.png",
+      "bytes": 686659,
+      "sha256": "3541d63fd96b2fde8077a42ed0536d57341f16c2692e7e81cb33f0ef9909d502"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/profile_membership_settings/profile_tab__normal.png",
+      "bytes": 911360,
+      "sha256": "4dfedc3afd77110e9a4801d280856eb74b4e4ed984cc14628a6a960fc9d291dd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/guardian/profile_membership_settings/tab_profile__normal.png",
+      "bytes": 853730,
+      "sha256": "5bff9f0421a77f5b9df2c5ddf3a04baf9f5aeafe1fa09c0228a652feb0c44340"
+    }
+  ],
+  "renders": [
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/p01_seeker_one__top.png",
+      "bytes": 656950,
+      "sha256": "54d751b7e68abe13b7f6ab47ead30af7a3cb394a1d145589d2627079c76186cd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/p02_seeker_one__scrolled.png",
+      "bytes": 564128,
+      "sha256": "f5864a78c2e4a4949899aceb19440ecb166ae3662bf19d62a761347d58eb8742"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/p03_seeker_basic__top.png",
+      "bytes": 650898,
+      "sha256": "43bb49f6bb571adfb352ae313b39ff32cc1afd101b8c536963977c1434fa2e90"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/p04_guardian_one__top.png",
+      "bytes": 521024,
+      "sha256": "71d044e0f05f6fa37571496eef50e1d28757600891398e4f6f8297437316cfc0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/p05_guardian_one__scrolled.png",
+      "bytes": 524290,
+      "sha256": "43ebd2d6d5801a85061615c2be10c3341fef2eb84c63152c54acd711de7ad1c2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/p06_guardian_basic__top.png",
+      "bytes": 522014,
+      "sha256": "416b68b150dc18c3a866690195b00876601de25dce4c2929cd3de9d3b8e40570"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/seeker_large_text__top.png",
+      "bytes": 632646,
+      "sha256": "d16e5261ab7c05f0574c9627e78975f4aea93bd24a807d9600f69acf1c4dd7f4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/seeker_large_text__last.png",
+      "bytes": 462987,
+      "sha256": "bd93d60d173d24189fa2509d904cd9dc1fd9b50e131dee1cdaa1ddcb44993181"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/guardian_large_text__top.png",
+      "bytes": 467196,
+      "sha256": "081dec2d83e90e7ede05b2ff0dbd539c7932de7b021e2c2546a645bf98c7d878"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/guardian_large_text__last.png",
+      "bytes": 487733,
+      "sha256": "02bdee6a994e10e3e1664ccd528e9a0ce1fe2a06b976c0cd057b13ee27589eb4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/COMPARISONS/p01_seeker_one__top_master_built.png",
+      "bytes": 441973,
+      "sha256": "792dd4b4b458a15a942768ef5b3faf8fb02bda7ea091a5fdcaf01d59b10c7de0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/COMPARISONS/p02_seeker_one__scrolled_master_built.png",
+      "bytes": 405852,
+      "sha256": "8d539fdc36799becb1fe80437292ea4be86819adc4c8f0e09ec1e720b7805257"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/COMPARISONS/p03_seeker_basic__top_master_built.png",
+      "bytes": 434982,
+      "sha256": "2ee88b9877c2fce353f45a09385a717a8afdcf0852b9a369f4d79d941b6b7ea8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/COMPARISONS/p04_guardian_one__top_master_built.png",
+      "bytes": 379414,
+      "sha256": "2f6187bf64fa83296e0ee1c8072ae4d1670c80f95692cdae187597a70e0cad7b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/COMPARISONS/p05_guardian_one__scrolled_master_built.png",
+      "bytes": 382001,
+      "sha256": "d96e5d3a292e8799536a8c4887437322bdc32b9e498661d407231fe3f73230b9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PROFILE_TAB/BUILT/COMPARISONS/p06_guardian_basic__top_master_built.png",
+      "bytes": 381405,
+      "sha256": "1e5f292b2e48271792d811a02ed670442be47c0c9300dd8359673e5fbdbd2cd2"
+    }
+  ]
+}

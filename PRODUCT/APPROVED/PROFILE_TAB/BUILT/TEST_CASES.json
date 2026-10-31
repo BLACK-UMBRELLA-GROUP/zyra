@@ -1,0 +1,648 @@
+{
+  "distinct_cases": 107,
+  "passing": 107,
+  "cases": [
+    {
+      "file": "SOURCE/test/visual/profile_tab_monogram_capture_test.dart",
+      "name": "LOCK21 renders p01-p06 actual Profile roots",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/visual/profile_tab_monogram_capture_test.dart",
+      "name": "LOCK21 larger text retains wrapped pills and final Sign out",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker One keeps locked row order and caller actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker One Larger Text keeps pills and rows readable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker One retains membership, wallet and settings destinations",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker Basic keeps locked row order and caller actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker Basic Larger Text keeps pills and rows readable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker Basic retains membership, wallet and settings destinations",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian One keeps locked row order and caller actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian One Larger Text keeps pills and rows readable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian One retains membership, wallet and settings destinations",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian Basic keeps locked row order and caller actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian Basic Larger Text keeps pills and rows readable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian Basic retains membership, wallet and settings destinations",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Profile controls obey Off and revoke disabled taps",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Profile controls obey Subtle and revoke disabled taps",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "retained Profile actions reject changed revoked admission owner",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "retained Profile actions reject changed account generation owner",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "retained Profile actions reject changed route owner",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_action_subtitle_removal_test.dart",
+      "name": "protected Profile keeps clean actions 393px",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_action_subtitle_removal_test.dart",
+      "name": "protected Profile keeps clean actions 320px200%",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_action_subtitle_removal_test.dart",
+      "name": "ordinary Profile keeps clean actions 393px",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/profile_action_subtitle_removal_test.dart",
+      "name": "ordinary Profile keeps clean actions 320px200%",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "portraitCard bounded Browse at 1.0 is local and deliberate",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "portraitCard bounded Browse at 1.4 is local and deliberate",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "portraitCard bounded Browse at 2.0 is local and deliberate",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current Portrait rejects network photo input",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "ordinary Guardian roster decoration is unchanged; isolated canvas is explicit",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "all sixteen original local stock portraits load offline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current Browse gallery does not invoke Journey actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Connections uses current linked PageView and segmented motion",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current Connections cards share one expansion and photo metrics (reduced true)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current Connections cards share one expansion and photo metrics (reduced false)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile preserves LOCK 21 copy and callbacks",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile preserves LOCK 21 copy and callbacks",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Profile Unlocks word, row and chevron share one action and retain balances at 393.0/1.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Profile Unlocks word, row and chevron share one action and retain balances at 320.0/2.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile chevrons use one size and tone at 393.0/1.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile chevrons use one size and tone at 320.0/2.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile chevrons use one size and tone at 393.0/1.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile chevrons use one size and tone at 320.0/2.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Profile Unlocks unknown and zero balances stay distinct and accessible",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile full name stays clear of Switch at 440.0/1.0/Adam Khan",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile full name stays clear of Switch at 430.0/1.0/Muhammad Ibrahim",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile full name stays clear of Switch at 393.0/1.0/Abdulrahman Muhammad Khan",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile full name stays clear of Switch at 320.0/2.0/Abdulrahman Muhammad Khan",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Profile full name stays clear of Switch at 320.0/2.0/ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile full name stays clear of Switch at 440.0/1.0/Adam Khan",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile full name stays clear of Switch at 430.0/1.0/Muhammad Ibrahim",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile full name stays clear of Switch at 393.0/1.0/Abdulrahman Muhammad Khan",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile full name stays clear of Switch at 320.0/2.0/Abdulrahman Muhammad Khan",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Profile full name stays clear of Switch at 320.0/2.0/ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Seeker Settings keeps the actual category and row wording",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Guardian Settings keeps the actual category and row wording",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Personalisation keeps exact current pretexts, Poppins and Syne",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "Membership has Current controls, inline Unlocks and separate Peek plan sections",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current salam_exchange arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current compatibility_reveal arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current wali_gate arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current phase_1 arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current phase_2 arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current phase_3 arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current family_stage arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current conversation arrival keeps canonical copy",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "name": "current Journey frame pages without completing a stage",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Seeker first safety row omits NEW, seen persists and Manage opens Guardian tab; all masters (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Tap halves, swipe, back arrow and endpoints never wrap; no Main wording (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Guardian sharing defaults off and is per person; on exposes only names/dates and safe archive (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Actual consent writes off/on/off, removal clears grant, removed-link checkpoint cannot restore it (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Seeker Circle catalog and archive presentation stay unchanged with sharing off (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Larger text cards scroll without overflow and revoked presenter callbacks cannot navigate (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "session keeps owner roles separate, rejects remote photos and revokes",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "compatibility repository detaches and canonicalises without a global merge",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_edit_profile opens the retained editor and returns one parent",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_manage_photos opens the retained editor and returns one parent",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "retained Seeker Profile and Settings keep their own paid label and avatar semantics",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "retained Guardian Profile and Settings keep their own paid label and avatar semantics",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_manage_photos uses the canonical reduced-motion loader only while its actual photo preparation is pending",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_preview_profile uses the canonical reduced-motion loader only while its actual photo preparation is pending",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "local Personalisation applies and survives reopening without global writes",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "local Off governs actual Browse invitation haptics without changing member preferences",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "local Strong governs actual Browse invitation haptics without changing member preferences",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "own profile preview survives harmless shell rebuilds and repeatedly returns one parent",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "pure retained content uses supplied snapshot and explicit actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "preview choices update only caller state and never member prefs",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "preview header stays top-left and its sample uses Ivory for legacy input",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "legacy preview background input is ignored without member writes",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "in-place preview rebuild uses current supplied values",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "retained gold callback cannot overwrite a newer supplied snapshot",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "observed preview denial stays revoked after owner returns",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "exceptional preview admission is fail-closed without escaping",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "preview constructor cannot become member setters in same State",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "member constructor cannot become preview authority in same State",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "preview without an owning route never mounts actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "denial while sheet is pending cannot apply its returned choice",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "owner containing parent-route guard survives its own choice sheet",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "covered sheet callback cannot pop covering route or change state",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "backgrounded picker completion is cancelled after resuming",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "callback replacement invalidates an outstanding choice intent",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "disposed preview leaves retained choices inert",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "member Ivory leaves stored legacy background and revision untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "member haptic remains connected and Poppins remains fixed",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "member choice cannot stamp an account that changed while sheet was open",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "member A-to-B-to-A lifetime still rejects retained gold callback",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "member haptic choice cannot overwrite a newer selection",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "member gold rejects an older selection revision",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "file": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "name": "compact large text retains reachable controls without layout exceptions",
+      "result": "success",
+      "skipped": false
+    }
+  ]
+}

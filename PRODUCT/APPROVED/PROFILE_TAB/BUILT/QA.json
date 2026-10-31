@@ -1,0 +1,111 @@
+{
+  "status": "107 scoped cases PASS; 6 locked states + 4 larger-text captures; no pixel-parity or native device claim",
+  "locked_layout": {
+    "avatar": [
+      104,
+      104
+    ],
+    "guardian_ring_pt": 1,
+    "guardian_initial_pt": 50,
+    "guardian_initial_weight": 200,
+    "name_pt": 28,
+    "name_weight": 200,
+    "membership_letter_spacing": 1.2,
+    "card_radius": 20,
+    "sign_out": "#B84A42"
+  },
+  "visual_fixture_differences": [
+    "Guardian sample already links Adam and Yusuf; uses the spec’s several-Seeker summary instead of the master’s single Adam relationship line.",
+    "Seeker Basic retains actual sample balance 1; master illustrates 0. Spec requires <n> left, so no sample data was changed.",
+    "Existing current tab attention highlights and the floating bar geometry remain those of the app; masters omit current attention.",
+    "Masters include a rounded phone frame; captures are the actual rectangular 430×932 app viewport.",
+    "Own photo retains the existing local account image and avatar crop; the master illustration frames the seated photo slightly differently.",
+    "Current shared Ivory surface/shadow/font/icon primitives are used; these headless comparisons do not claim pixel equivalence.",
+    "With name/cards aligned in p05, Flutter’s existing Profile viewport leaves a larger visible gold monogram arc than the prototype mask. No screenshot pixels were altered."
+  ],
+  "scrolled_capture_offsets_pt": {
+    "p02": 204,
+    "p05": 105
+  },
+  "behavior": "All rows and pills retain caller-owned existing destinations; Basic membership opens its existing role upgrade section; Your Seekers selects tab3. Safety opens existing Safety. Invite retains current held action. Sign out exits disposable preview as before.",
+  "limits": [
+    "Founder preview remains sample-backed; ordinary member routes remain under OA-ZYRA-317.",
+    "No queue48/49/50/51/64 implementation or retry; no native build/install/upload, backend, migration or new page.",
+    "Prior broader failures under OA-ZYRA-328 remain outside this task; no whole-suite pass is claimed."
+  ],
+  "startup": {
+    "primary_text_bytes": 93749,
+    "primary_text_KiB": 91.552,
+    "includes_required_lessons_bytes": 27513,
+    "includes_repeated_reads_after_truncated_batch": true,
+    "helper": "profile_contract_tests",
+    "helper_text_bytes": 66100,
+    "helper_text_KiB": 64.551,
+    "helper_tokens": "unavailable",
+    "primary_tokens": "unavailable"
+  },
+  "source_manifest_policy": "Only 9 explicitly edited source/test files. No shared Founder-only file was added; both preview category counts decrease by the same278 source lines.",
+  "code_size": {
+    "all_app": {
+      "before": [
+        169530,
+        335
+      ],
+      "after": [
+        169252,
+        335
+      ]
+    },
+    "developer_preview": {
+      "before": [
+        49741,
+        93
+      ],
+      "after": [
+        49463,
+        93
+      ]
+    },
+    "Founder_preview": {
+      "before": [
+        30559,
+        43
+      ],
+      "after": [
+        30281,
+        43
+      ]
+    },
+    "tests": {
+      "before": [
+        215980,
+        504
+      ],
+      "after": [
+        216633,
+        506
+      ]
+    },
+    "goldens": {
+      "before_after": [
+        2612,
+        307
+      ],
+      "unit": "images,MB"
+    },
+    "old_pause_restart_files": [
+      39,
+      1
+    ]
+  },
+  "validation": {
+    "distinct_cases": 107,
+    "suites": 7,
+    "last_capture_only_rerun": "2 PASS",
+    "last_retained_route_API_rerun": "12 PASS",
+    "analyzer": "No issues found",
+    "format": "9 task-owned Dart files clean",
+    "protected_driver": "3.44.2; 5 pins and both exec-denial proofs PASS"
+  },
+  "source_commit": "0728036f985dcb2105667d2e03609eb3ef974565"
+}

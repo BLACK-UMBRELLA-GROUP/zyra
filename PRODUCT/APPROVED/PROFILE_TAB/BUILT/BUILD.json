@@ -1,0 +1,27 @@
+{
+  "queue": 52,
+  "lock": 21,
+  "source_commit": "0728036f985dcb2105667d2e03609eb3ef974565",
+  "baseline_source_commit": "8974860a7edcac9b423a68f95ea574e363354943",
+  "flutter": "3.44.2",
+  "mode": "headless widget-test render; actual admitted Founder preview",
+  "target": "iOS production-theme projection, 430x932 logical @3x",
+  "timestamp_utc": "2026-10-31T11:32:45.439993+00:00",
+  "render_pack": "MANIFEST.json",
+  "tests": "TEST_CASES.json: 107 distinct PASS cases across 7 suites",
+  "evidence": "screenshots and JSON/text metadata only; no native app, compiled output or source copies",
+  "remaining_review": "Parent visual/contract verification; Founder acceptance; OA-ZYRA-328",
+  "staged_source_allowlist": [
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart",
+    "SOURCE/test/profile_action_subtitle_removal_test.dart",
+    "SOURCE/test/one_journey_current_presentation_test.dart",
+    "SOURCE/test/visual/profile_tab_monogram_capture_test.dart",
+    "SOURCE/test/guardian_info_lock3_test.dart",
+    "SOURCE/test/retained_account_routes_test.dart"
+  ],
+  "trace": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md Queue52; Group daily Task12",
+  "input_pack_policy": "Named LOCK pack remains the designer-owned working files; this task stages its own source/tests/trace, BUILT evidence and row52 only."
+}
