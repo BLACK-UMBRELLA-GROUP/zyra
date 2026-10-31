@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_safety_advice_presentation.dart';
-import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
@@ -85,23 +84,6 @@ void main() {
         await _back(h);
         expect(h.latest.pages, isEmpty);
         expect(h.latest.tab, 4);
-      },
-    );
-    testWidgets(
-      'V5 Guardian ${one ? "One" : "Basic"} keeps original Safety instructions',
-      (t) async {
-        final h = _h(t);
-        await h.mount(
-          tab: 4,
-          guardian: true,
-          initialGuardianBasic: !one,
-          guardianMembership: one ? 'Guardian One' : 'Guardian Basic',
-        );
-        await h.tap('concept_safety_advice');
-        h.assertPage('safety');
-        expect(find.byType(ZyraDraftReportPresentation), findsOneWidget);
-        expect(find.byType(ZyraDraftSafetyAdvicePresentation), findsNothing);
-        expect(find.text('Choose a profile to report'), findsOneWidget);
       },
     );
   }
@@ -203,7 +185,7 @@ void main() {
   }
   for (final guardian in [true, false]) {
     testWidgets(
-      'V5 rejects advice checkpoint outside Seeker Profile: guardian=$guardian',
+      'V5 rejects advice checkpoint outside Profile: guardian=$guardian',
       (t) async {
         final h = _h(t);
         await h.mount(
@@ -211,7 +193,7 @@ void main() {
           checkpoint: ZyraPreviewNavigationCheckpoint(
             guardian: guardian,
             model: ViewRequestDraftModel().snapshot(),
-            tab: guardian ? 4 : 0,
+            tab: 0,
             pages: const ['safety_advice', 'help_support'],
           ),
         );

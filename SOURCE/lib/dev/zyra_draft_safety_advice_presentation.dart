@@ -1,4 +1,4 @@
-// LOCK22 V5: local Seeker advice. Navigation and account authority stay in the host.
+// LOCK22 V5/V6: local Seeker and Guardian advice. Navigation and account authority stay in the host.
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -12,8 +12,10 @@ class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
     required this.onReport,
     required this.onHelp,
     required this.canAct,
+    this.guardian = false,
   });
 
+  final bool guardian;
   final VoidCallback onReport, onHelp;
   final bool Function() canAct;
 
@@ -45,81 +47,123 @@ class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
     ),
   ];
 
+  static const _guardianTips = [
+    (
+      Icons.groups,
+      "Support, don't decide",
+      'You are part of every Journey a Seeker you support begins. They choose whether to continue; share your view in the Guardian Circle.',
+    ),
+    (
+      Icons.place,
+      'Be there when they meet',
+      'First meetings should be in a public place, with you or another family member present.',
+    ),
+    (
+      Icons.payments,
+      'Never send money',
+      'No one on ZYRA should ask you or the Seeker for money, gifts or bank details. If they do, report them.',
+    ),
+    (
+      Icons.lock_outline,
+      'Protect family details',
+      'Keep your home address, work and family finances private until both families have met and feel sure.',
+    ),
+    (
+      Icons.outlined_flag,
+      'Speak up early',
+      'If something worries you, talk to the Seeker first, and report the profile if you need to.',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) => SafeArea(
-    child: ZyraShadowScrollView(
-      key: const ValueKey('draft_safety_advice_scroll'),
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text('Safety & advice', style: ZyraText.heading(size: 26)),
-          const SizedBox(height: 20),
-          Center(
-            child: Container(
-              key: const ValueKey('draft_safety_advice_monogram'),
-              width: 88,
-              height: 88,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: const Color(0xFFA9792E).withValues(alpha: .7),
+    child: LayoutBuilder(
+      builder: (context, bounds) {
+        // Fit Guardian's longer copy above the home indicator by reclaiming
+        // lower whitespace on short viewports. x07's spacing stays unchanged.
+        final compact = guardian && bounds.maxHeight < 860;
+        return ZyraShadowScrollView(
+          key: const ValueKey('draft_safety_advice_scroll'),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Safety & advice', style: ZyraText.heading(size: 26)),
+              const SizedBox(height: 20),
+              Center(
+                child: Container(
+                  key: const ValueKey('draft_safety_advice_monogram'),
+                  width: 88,
+                  height: 88,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFFA9792E).withValues(alpha: .7),
+                    ),
+                  ),
+                  child: const ExcludeSemantics(
+                    child: Icon(
+                      Icons.health_and_safety,
+                      color: ZyraColors.journeyGold,
+                      size: 34,
+                    ),
+                  ),
                 ),
               ),
-              child: const ExcludeSemantics(
-                child: Icon(
-                  Icons.health_and_safety,
-                  color: ZyraColors.journeyGold,
-                  size: 34,
-                ),
+              const SizedBox(height: 12),
+              Text(
+                guardian
+                    ? 'Support a safe Journey'
+                    : 'Stay safe on your Journey',
+                textAlign: TextAlign.center,
+                style: ZyraText.heading(size: 26),
               ),
-            ),
+              const SizedBox(height: 4),
+              Text(
+                guardian ? 'ZYRA SAFETY · GUARDIANS' : 'ZYRA SAFETY',
+                textAlign: TextAlign.center,
+                style: ZyraText.body(
+                  size: 11,
+                  color: ZyraColors.goldText,
+                ).copyWith(letterSpacing: 1.2),
+              ),
+              const SizedBox(height: 12),
+              _card([
+                for (final (icon, title, copy)
+                    in (guardian ? _guardianTips : _tips))
+                  _AdviceRow(icon: icon, title: title, copy: copy),
+              ]),
+              SizedBox(height: compact ? 8 : 16),
+              _card([
+                _AdviceRow(
+                  key: const ValueKey('draft_safety_advice_report'),
+                  icon: Icons.outlined_flag,
+                  title: 'Report a profile',
+                  copy: 'Open their profile and choose Report',
+                  onTap: ZyraTapFeedback.onTap(
+                    context,
+                    onReport,
+                    canAct: canAct,
+                  ),
+                ),
+                _AdviceRow(
+                  key: const ValueKey('draft_safety_advice_help'),
+                  icon: Icons.help_outline,
+                  title: 'Help & support',
+                  onTap: ZyraTapFeedback.onTap(context, onHelp, canAct: canAct),
+                ),
+              ]),
+              SizedBox(height: compact ? 6 : 14),
+              Text(
+                'In danger right now? Call your local emergency number (999 in the UK).',
+                key: const ValueKey('draft_safety_advice_emergency'),
+                textAlign: TextAlign.center,
+                style: ZyraText.subtext(size: 12).copyWith(height: 1.4),
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            'Stay safe on your Journey',
-            textAlign: TextAlign.center,
-            style: ZyraText.heading(size: 26),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'ZYRA SAFETY',
-            textAlign: TextAlign.center,
-            style: ZyraText.body(
-              size: 11,
-              color: ZyraColors.goldText,
-            ).copyWith(letterSpacing: 1.2),
-          ),
-          const SizedBox(height: 12),
-          _card([
-            for (final (icon, title, copy) in _tips)
-              _AdviceRow(icon: icon, title: title, copy: copy),
-          ]),
-          const SizedBox(height: 16),
-          _card([
-            _AdviceRow(
-              key: const ValueKey('draft_safety_advice_report'),
-              icon: Icons.outlined_flag,
-              title: 'Report a profile',
-              copy: 'Open their profile and choose Report',
-              onTap: ZyraTapFeedback.onTap(context, onReport, canAct: canAct),
-            ),
-            _AdviceRow(
-              key: const ValueKey('draft_safety_advice_help'),
-              icon: Icons.help_outline,
-              title: 'Help & support',
-              onTap: ZyraTapFeedback.onTap(context, onHelp, canAct: canAct),
-            ),
-          ]),
-          const SizedBox(height: 14),
-          Text(
-            'In danger right now? Call your local emergency number (999 in the UK).',
-            key: const ValueKey('draft_safety_advice_emergency'),
-            textAlign: TextAlign.center,
-            style: ZyraText.subtext(size: 12).copyWith(height: 1.4),
-          ),
-        ],
-      ),
+        );
+      },
     ),
   );
 

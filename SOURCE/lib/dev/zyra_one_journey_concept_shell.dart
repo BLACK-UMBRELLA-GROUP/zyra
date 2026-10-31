@@ -975,7 +975,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         continue;
       }
       if (page == 'safety_advice') {
-        if (_guardianRole || _tab != 4 || _pages.isNotEmpty) break;
+        if (_tab != 4 || _pages.isNotEmpty) break;
         _personId = null;
         _pages.add(page);
         continue;
@@ -6733,7 +6733,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       case ZyraConceptAccountAction.safetyAdvice:
         _move(() {
           _personId = null;
-          _pages.add(_guardianRole ? 'safety' : 'safety_advice');
+          _pages.add('safety_advice');
         });
       case ZyraConceptAccountAction.signOut:
         // Leaving the disposable preview never signs out the live account.
@@ -7897,9 +7897,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   Widget _safetyAdvice() {
-    if (_guardianRole) return _unavailable();
     final fresh = _accountFreshGuard();
     return ZyraDraftSafetyAdvicePresentation(
+      guardian: _guardianRole,
       canAct: fresh,
       onReport: () {
         if (fresh()) _open('safety');

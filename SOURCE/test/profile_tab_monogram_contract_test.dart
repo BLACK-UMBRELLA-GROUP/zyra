@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_safety_advice_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -411,13 +410,9 @@ void main() {
         await start();
         await _tap(tester, 'concept_safety_advice');
         expect(
-          find.byType(
-            role.guardian
-                ? ZyraDraftReportPresentation
-                : ZyraDraftSafetyAdvicePresentation,
-          ),
+          find.byType(ZyraDraftSafetyAdvicePresentation),
           findsOneWidget,
-          reason: 'LOCK22 V5 replaces only the Seeker advice destination.',
+          reason: 'LOCK22 V5/V6 provides advice for each role.',
         );
         await start();
         await _tap(tester, 'concept_invite');
