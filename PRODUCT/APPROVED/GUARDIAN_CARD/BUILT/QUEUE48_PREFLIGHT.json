@@ -88,7 +88,7 @@
     "result": "No build/visual-match/test-pass claim; row held in preflight."
   },
   "trace": {
-    "base_source_sha": "71e520c105cf5c3cea95473831fd28d14a23891c9b",
+    "base_source_sha": "e520c105cf5c3cea95473831fd28d14a23891c9b",
     "source_status": "SOURCE clean before this refusal",
     "startup_primary_text_bytes": 125323,
     "helper": "family_formula (read-only; 93894 source-excerpt bytes plus search output; tokens unavailable)",
