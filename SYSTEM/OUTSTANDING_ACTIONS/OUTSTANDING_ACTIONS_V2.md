@@ -15114,7 +15114,8 @@ OA-ZYRA-255
 Title:       Build the app-local respectful promotion and permission
              engine, Guardian Network locked states and notification
              Settings parity
-Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). Handover Complete / Founder Device Review Pending — NOT CLOSED.
+Status:      CLOSED 2026-10-30 (Fable, Founder "Close them" clickable): the walkthrough was of the old member app, which
+             DR-ZYRA-274 retires; the server parts carry on in OA-ZYRA-317 (DOC-ZYRA-0329). Was: OPEN — waiting for the Founder's walkthrough on the phone (built and live). Handover Complete / Founder Device Review Pending — NOT CLOSED.
              App-local implementation, documentation reconciliation and
              automated/device-deployment gates passed 2026-08-23; the
              Founder's human walkthrough across both roles and all four
@@ -20753,7 +20754,8 @@ Category:    Security / Authorization
 Priority:    HIGH — blocker before any untrusted real-user or
              external-tester release; Founder-only internal
              TestFlight may proceed only as a controlled test
-Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). EXECUTED / POST-VERIFIED / FOUNDER ACCEPTANCE PENDING — under
+Status:      CLOSED 2026-10-30 (Fable, Founder "Close them" clickable): the walkthrough was of the old member app, which
+             DR-ZYRA-274 retires; the server parts carry on in OA-ZYRA-317 (DOC-ZYRA-0329). Was: OPEN — waiting for the Founder's walkthrough on the phone (built and live). EXECUTED / POST-VERIFIED / FOUNDER ACCEPTANCE PENDING — under
              the Founder's exact single-use 2026-09-11 GO, migrations
              `20260910184252` and `20260910195642` were applied atomically,
              byte-identically and in that order to production project
@@ -22860,7 +22862,8 @@ Title:       All-Guardian Data-Minimised Journey Summary — client correction
              and staged server-authority change
 Category:    Feature / Privacy / Security
 Priority:    High
-Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE AND POST-APPLY VERIFIED — exact migration applied;
+Status:      CLOSED 2026-10-30 (Fable, Founder "Close them" clickable): the walkthrough was of the old member app, which
+             DR-ZYRA-274 retires; the server parts carry on in OA-ZYRA-317 (DOC-ZYRA-0329). Was: OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE AND POST-APPLY VERIFIED — exact migration applied;
              corrected profile build installed and launched on Founder iPhone;
              Founder visual acceptance pending
 Owner:       Codex (implementation, evidence and reconciliation);
@@ -22920,7 +22923,8 @@ OA-ZYRA-289
 Title:       Permanent ZYRA Codes and Two-Sided Guardian Requests
 Category:    Feature / Security / Guardian Relationships
 Priority:    High
-Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE AND POST-APPLY VERIFIED — exact migration applied; corrected
+Status:      CLOSED 2026-10-30 (Fable, Founder "Close them" clickable): the walkthrough was of the old member app, which
+             DR-ZYRA-274 retires; the server parts carry on in OA-ZYRA-317 (DOC-ZYRA-0329). Was: OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE AND POST-APPLY VERIFIED — exact migration applied; corrected
              profile build installed and launched on Founder iPhone; Founder
              visual acceptance pending
 Owner:       Codex (implementation and evidence); Founder (apply GO and
@@ -23288,7 +23292,8 @@ OA-ZYRA-290
 Title:       Per-Journey Additional Guardian Access with Main Leadership
 Category:    Feature / Security / Guardian Relationships
 Priority:    High
-Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
+Status:      CLOSED 2026-10-30 (Fable, Founder "Close them" clickable): the walkthrough was of the old member app, which
+             DR-ZYRA-274 retires; the server parts carry on in OA-ZYRA-317 (DOC-ZYRA-0329). Was: OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
              visual acceptance of the revised Guardian detail page
 Update 2026-10-10 (DR268 Basic Chat boundary):
              Restored Guardian Basic must have disabled Journey Chat, including
@@ -23346,7 +23351,8 @@ OA-ZYRA-291
 Title:       Per-Guardian Past Journey Summary Permission
 Category:    Feature / Security / Guardian Relationships
 Priority:    High
-Status:      OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
+Status:      CLOSED 2026-10-30 (Fable, Founder "Close them" clickable): the walkthrough was of the old member app, which
+             DR-ZYRA-274 retires; the server parts carry on in OA-ZYRA-317 (DOC-ZYRA-0329). Was: OPEN — waiting for the Founder's walkthrough on the phone (built and live). LIVE / POST-APPLY VERIFIED / DEVICE INSTALLED — awaiting Founder
              visual acceptance of the live per-Guardian controls
 Owner:       Codex (implementation/evidence); Founder (device acceptance)
 Dependencies: DR-ZYRA-233 · DR-ZYRA-225 · DR-ZYRA-230 · DR-ZYRA-232
@@ -26385,6 +26391,10 @@ Update:      30 Oct (triage, DOC-BUG-0031) - server points folded in from closed
 Update 30 Oct 05:38: server design DRAFT written - ZYRA/REPORTS/CURRENT/ZYRA_SERVER_DESIGN_2026-10-30_V1.md
 (DOC-ZYRA-0329): 10 gaps, six build areas in the Founder's order, 6 open questions. Waits for the Founder's yes;
 then the ZYRA chat queues one brief per area (SERVER 0 live pass first).
+APPROVED 30 Oct 11:10 (Founder, clickable "Yes, approved"): DOC-ZYRA-0329 is CURRENT with his six §6 answers (Q1 expires,
+can ask again; Q2 hide both ways; Q4 paused profile keeps sent requests; Q5 the 17-file plan; Q6 Connect with Guardian
+after the core). Next: the ZYRA chat queues SERVER 0 (live read-only pass), then areas 1-6 in order; Codex builds each
+from its brief; Fable checks each at 04:15.
 ------------------------------------------------------------
 
 OA-ZYRA-318
@@ -26582,6 +26592,11 @@ Next:        Founder: (a) keep committing them, or (b) from the next recapture k
              USB only, with INDEX.md and BUILD.json still in git. Fable recommends (b).
 Acceptance:  Choice recorded here; .gitignore matches it; the next Disk check shows the effect.
 
+DECIDED 30 Oct (Founder, clickable): "Mac and USB only". Baseline screenshots leave git from the next recapture:
+Codex adds PRODUCT/APPROVED/BASELINE/SCREENSHOTS/ to ZYRA/.gitignore and, as a one-off Founder-approved exception
+to core rule 2 (the obvious consequence of this decision, recorded in the 29 Oct review addendum), removes that
+folder from the index with `git rm -r --cached` - files stay on disk and in the Sunday USB snapshot. No history
+rewrite. Fable checks at 04:15 that the folder is untracked and still present.
 ------------------------------------------------------------
 
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,

@@ -179,6 +179,10 @@ ZYRA code, invites, Personalisation). **One file does not:** `screens/journey/jo
 directly four times (stage continue, life snapshot reveal, guardian profiles reveal, guardian salam), so it buzzes even when the
 member chose Off — OA-ZYRA-314.
 
+**Rule (Founder, 30 Oct 2026: "ensure this and all buttons have haptic feedback"):** every enabled tappable control gives one
+haptic per tap at the member's level, through `emitSelectionHaptic()` in the shared tap components; none when Off, on disabled
+controls, scrolling, photo swipes or typing. Being built by queue line 22.
+
 ## 7. Motion
 
 | Thing | Value |
@@ -241,3 +245,4 @@ Accessibility notes (contrast, normal text needs 4.5):
 | 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
 | 2026-10-29 | V1 | §3 corrected: the locked surface style is Glass Signals, not Classic Glass (Founder, 29 Oct, answering Codex's Tier 4 question; ZYRA chat) |
 | 2026-10-30 | V1 | §4 navigation bar and §5 floating navigation bar updated to LOCK 5 and LOCK 6 as built on 29 Oct (DR-ZYRA-303, DR-ZYRA-304) - Fable, 04:15 maintenance |
+| 2026-10-30 | V1 | §6: haptic on every enabled tappable control (Founder "ensure this and all buttons have haptic feedback"); queue line 22 - ZYRA chat |

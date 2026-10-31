@@ -18,3 +18,4 @@ owner: ZYRA chat
 | 2026-10-29 19:45 | Question "Should I LOCK it so Codex builds it into the app?" → **"LOCK A4"** | **LOCK** of `RECORD/REQUEST_ROW_SPEC_CURRENT_VERSION_V1.md` and `MASTERS/` (prototype V39) |
 
 Replaces today's three separate pills (‹ · Request a Journey · ›) under the Profiles card.
+| 2026-10-30 06:2x | Codex's preflight: "Request a Journey" does not fit at very large text. Question → **"Pill grows taller (Recommended)"** | Spec **V2** (Larger Text row). Masters unchanged |

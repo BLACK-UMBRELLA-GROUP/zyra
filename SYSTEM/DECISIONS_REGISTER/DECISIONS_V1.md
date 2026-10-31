@@ -17654,6 +17654,10 @@ Consequence: The LOCK 2 spec, record and masters were changed before the build. 
              are now kept with no time limit - a storage-limitation question for the DPIA (OA-ZYRA-321); what
              the server keeps of a request record, and for how long, is open (OA-ZYRA-317). Added to both.
 Related:     DR-ZYRA-284, DR-ZYRA-298, OA-ZYRA-317, OA-ZYRA-321.
+Note 30 Oct: Founder accepted the legal decisions sheet (DOC-ZYRA-0334 #13, clickable "Accept all"): Past request
+             rows are kept for 12 months, then anonymised (name and photo removed, the record of "asked, declined" kept
+             for the 30-day rule). The Past tab still shows no "listed until" date. Server rule goes into the
+             design DOC-ZYRA-0329; the DPIA records the 12-month limit.
 
 ------------------------------------------------------------
 

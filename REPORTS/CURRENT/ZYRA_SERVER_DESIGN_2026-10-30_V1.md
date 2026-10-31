@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0329
 type: DESIGN
-status: DRAFT
+status: CURRENT
 feature: SERVER
 purpose: Server design that connects the planned app to real data - Introductions, Preparing, Basic place, Journey Bio, Pause/Save removal, Request restart, plus the OA-315 server rules - for the Founder's yes before Codex builds area by area
 links: [OA-ZYRA-317, OA-ZYRA-315, OA-ZYRA-319, OA-ZYRA-324, DOC-ZYRA-0280, DOC-ZYRA-0283, DOC-ZYRA-0290, DOC-ZYRA-0291, DOC-ZYRA-0294]
@@ -259,3 +259,10 @@ Each line: a brief in `PRODUCT/APPROVED/SERVER/BRIEFS/`, "Built from: DOC-ZYRA-0
 | Date | Version | Change |
 |---|---|---|
 | 2026-10-30 | V1 | First draft for the Founder's yes (Fable; OA-ZYRA-317 "yes both", 29 Oct) |
+
+## Approval
+
+| Date | Who | Words |
+|---|---|---|
+| 2026-10-30 08:15 | Founder (clickable, in the ZYRA chat) | §6: Q1 "Expires, can ask again"; Q2 "Both ways"; Q3 decided 30 Oct (12 months then anonymised, DR-ZYRA-300 note); Q4 "Stay waiting"; Q5 "Yes, Fable's plan"; Q6 "After the core" |
+| 2026-10-30 11:10 | Founder (clickable, admin chat) | "Yes, approved" - the whole design. The ZYRA chat queues SERVER 0 first, then areas 1-6 in order |

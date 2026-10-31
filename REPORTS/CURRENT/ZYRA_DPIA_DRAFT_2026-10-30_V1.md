@@ -39,7 +39,7 @@ DRAFT for solicitor review - not legal advice - placeholders in [brackets]
 | Who the data subjects are | Seekers; Guardians (full accounts, full data subjects); the other Seeker in a Journey; people named in free text (bios, messages); people shown in photos | DOC-ZYRA-0148 §3 |
 | How data is collected | Google/Apple sign-in; onboarding answers; photos; identity-check provider (Sumsub, planned); messages; reports; store purchase records | DOC-ZYRA-0296 §1 |
 | Where it is held | Supabase (AWS eu-west-1, Ireland - adequacy applies); photos in a private bucket served by short-lived signed links | DOC-ZYRA-0148 §4.1; DOC-ZYRA-0297 §5 (DR-ZYRA-085) |
-| Processors | Supabase; Google and Apple (sign-in, payments); identity provider **[Sumsub - contract not yet signed, DOC-ZYRA-0205 §7]**; **[DECISION NEEDED: any analytics, push or crash-reporting provider - none named in the blueprint; product events collection is off (DOC-ZYRA-0280)]** | DOC-ZYRA-0280; DOC-ZYRA-0148 §4.1 |
+| Processors | Supabase; Google and Apple (sign-in, payments); identity provider **[Sumsub - contract not yet signed, DOC-ZYRA-0205 §7]**; Apple and Google push notification services (when push is built); **[crash reporting provider - OA-ZYRA-297]**; no analytics provider - product events collection is off (DOC-ZYRA-0280) (DOC-ZYRA-0334 #14) | DOC-ZYRA-0280; DOC-ZYRA-0148 §4.1 |
 | Automated decisions | Compatibility scoring ranks who a Seeker sees; no solely-automated decision with legal or similar effect - members choose whom to request; identity duplicate flags go to human review | DOC-ZYRA-0205 §3 (Art 22); DOC-ZYRA-0148 §4.1 |
 
 ### 2.2 Data inventory (from DOC-ZYRA-0280, blueprint part 3). **SC** = special-category (Art 9).
@@ -63,8 +63,8 @@ DRAFT for solicitor review - not legal advice - placeholders in [brackets]
 
 | Item | Value |
 |---|---|
-| Members at launch | **[DECISION NEEDED: expected member numbers in the first 12 months - needed for the "large scale" test]** |
-| Territories | **[DECISION NEEDED: UK only, or wider - changes transfers (DOC-ZYRA-0148 §4.3)]** |
+| Members at launch | Launch target **[number]** members in the first year (DOC-ZYRA-0334 #15) |
+| Territories | UK only in the first year (DOC-ZYRA-0334 #15); no transfers outside the UK/EEA beyond the processors named above |
 | Retention | See Step 2.5 |
 
 ### 2.4 Context
@@ -84,20 +84,20 @@ DRAFT for solicitor review - not legal advice - placeholders in [brackets]
 | The other person's ended Journey after a deletion | Timeline and messages kept **3 months** for the other Seeker; Guardian links end; Circle shows "Former member" | DOC-ZYRA-0295 §5, §7 (DR-ZYRA-285) |
 | Ended Journey archive | Messages readable to the two Seekers for **3 months**, never reopened | DOC-ZYRA-0293 §4 |
 | Past Journeys list | 3 months | DOC-ZYRA-0295 §3 |
-| Declined and expired Journey requests | **Kept with no time limit** | Founder 29 Oct (DR-ZYRA-300) - **storage-limitation risk, Step 5 R6**; **[DECISION NEEDED: a maximum retention period for Past requests, or a documented reason for none]** |
-| Safety reports and evidence | Kept after deletion; "a set time, then purged" | DOC-ZYRA-0297 §1; DOC-ZYRA-0295 §5; **[DECISION NEEDED: the number of months]** |
-| Guardian Circle messages and reports | "A set time, then purged" | DOC-ZYRA-0290 §6; **[DECISION NEEDED: the number of months]** |
+| Declined and expired Journey requests | Kept **12 months**, then anonymised (replaces "no time limit") | Founder 29 Oct (DR-ZYRA-300), amended by DOC-ZYRA-0334 #13 - resolves Step 5 R6; DR-ZYRA-300 to be amended |
+| Safety reports and evidence | Kept after deletion for **24 months**, then purged | DOC-ZYRA-0297 §1; DOC-ZYRA-0295 §5; DOC-ZYRA-0334 #13 |
+| Guardian Circle messages and reports | Kept while the Journey record exists, then **12 months**, then purged | DOC-ZYRA-0290 §6; DOC-ZYRA-0334 #13 |
 | Identity-check results | Per DOC-ZYRA-0205; documents and biometrics at the provider only | DOC-ZYRA-0205 §5 risk 4-5 |
 | Trial ledger / verified-person hash | Lifetime (to enforce one trial and one account per person) - survives deletion | DOC-ZYRA-0291 §2; DOC-ZYRA-0280 `verified_people`; **flag for solicitor: justify under LI** |
-| Consents log | Append-only; **[DECISION NEEDED: how long after deletion]** | DOC-ZYRA-0280 |
+| Consents log | Append-only; kept **6 years** after deletion | DOC-ZYRA-0280; DOC-ZYRA-0334 #13 |
 
 ## Step 3 — Consultation
 
 | Who | How | Status |
 |---|---|---|
-| Members | **[DECISION NEEDED: whether to run a short pre-launch survey or rely on the pilot (ZYRA_RETENTION_PILOT…)]** | Open |
+| Members | A closed pilot of invited members before public launch; their feedback is recorded against this DPIA | DOC-ZYRA-0334 #16 |
 | Solicitor | Reviews this DPIA with DOC-ZYRA-0330, 0332, 0333 | OA-ZYRA-321 |
-| DPO/adviser | **[DPO/adviser]** - not mandatory at ZYRA's scale, but a named privacy contact is (DOC-ZYRA-0148 §4.1) | **[DECISION NEEDED: who]** |
+| DPO/adviser | No DPO required at ZYRA's scale; the named adviser **[solicitor]** is the privacy contact (DOC-ZYRA-0148 §4.1) | DOC-ZYRA-0334 #16 |
 | Processors | Sumsub contract (bias documentation, under-18 handling, breach duties, rights SLA) | DOC-ZYRA-0205 §5 |
 
 ## Step 4 — Necessity, proportionality and lawful bases
@@ -105,7 +105,7 @@ DRAFT for solicitor review - not legal advice - placeholders in [brackets]
 | Purpose | Art 6 basis | Art 9 condition (where SC) | Necessity note |
 |---|---|---|---|
 | Running the account, profile, Browse, Journeys, Guardians, membership | Contract (Art 6(1)(b)) | — | Core service; members cannot be matched without it |
-| Faith and background matching | Contract for the scoring; **explicit consent** for holding the answers | Art 9(2)(a) explicit consent, taken just before the questions; without consent the answers are not saved (DOC-ZYRA-0296 §1 step 10) | A marriage app for Muslims cannot work without faith data; consent is genuine because the questions are the member's own choice of what to disclose. **Flag:** the ICO expects consent to be withdrawable - withdrawal is a new `consents` row; the app must offer the control **[DECISION NEEDED: where in Settings]** |
+| Faith and background matching | Contract for the scoring; **explicit consent** for holding the answers | Art 9(2)(a) explicit consent, taken just before the questions; without consent the answers are not saved (DOC-ZYRA-0296 §1 step 10) | A marriage app for Muslims cannot work without faith data; consent is genuine because the questions are the member's own choice of what to disclose. **Flag:** the ICO expects consent to be withdrawable - withdrawal is a new `consents` row; the app offers the control in Settings → Privacy (DOC-ZYRA-0334 #17) |
 | Identity check | Contract / LI | Explicit consent for biometrics (known freely-given tension - DOC-ZYRA-0205 §3, DR-ZYRA-220) | Necessary to keep minors and duplicates out; proportionate because ZYRA holds only references and results |
 | Sharing with Guardians | Contract (the Seeker chooses and controls Guardians; the Guardian is a contract party too) | — | Data minimisation: Main sees requests + public card; Additional see only what the Seeker switches on; nobody sees private answers or Family Review responses (DOC-ZYRA-0290 §3; DOC-ZYRA-0280) |
 | Disclosure of a request to the **other** person's Main Guardian | **Legitimate interests** (the other Seeker's family involvement is the product's purpose) with transparency via the Profile section | — | **The weakest point:** the person whose request is seen is told once, in a Profile section, not at the moment (DR-ZYRA-299). Solicitor to confirm LI balance; alternative is restoring B2/B3 wording at the request |
@@ -114,7 +114,7 @@ DRAFT for solicitor review - not legal advice - placeholders in [brackets]
 | Tax and purchase records | Legal obligation | — | Store receipts; ZYRA holds no card data |
 | Push notifications (when built) | Consent | — | DR-ZYRA-278 |
 
-Individual rights: access, rectification (profile edit; DOB and gender frozen after publish - DOC-ZYRA-0295 §2, so rectification of those goes through support), erasure (delete account, DOC-ZYRA-0295 §5), restriction (Pause My Profile is a partial analogue), portability **[DECISION NEEDED: export route]**, objection to LI processing, withdrawal of consent, complaint to the ICO.
+Individual rights: access, rectification (profile edit; DOB and gender frozen after publish - DOC-ZYRA-0295 §2, so rectification of those goes through support), erasure (delete account, DOC-ZYRA-0295 §5), restriction (Pause My Profile is a partial analogue), portability (Settings → Download my data - to be built, **[OA placeholder]**; DOC-ZYRA-0334 #17), objection to LI processing, withdrawal of consent, complaint to the ICO.
 
 ## Step 5 — Risks (L = likelihood, S = severity; Remote/Possible/Probable × Minimal/Significant/Severe)
 
@@ -138,11 +138,11 @@ Individual rights: access, rectification (profile edit; DOB and gender frozen af
 | Risk | Measures (built / planned, with source) | Effect | Residual | Approved? |
 |---|---|---|---|---|
 | R1 | Private answers never shown, functions only; Unlock details only after a paid Unlock or in a Journey; consent before the questions; RLS; private schema (DOC-ZYRA-0295 §1, DOC-ZYRA-0297 §5, DR-ZYRA-250) | Reduced | Low-Medium | [ ] |
-| R2 | Seeker alone links, designates Main, sets View/Chat per Journey, removes any Guardian; may have no Main; Family Review responses hidden from Seekers; safety-concern endings show "prefer not to say" (DOC-ZYRA-0290 §2-3; DOC-ZYRA-0297 §3). **Planned:** in-app guidance on coercive control and a private report route **[DECISION NEEDED: a "report my own Guardian" route in the Safety page]** | Reduced | Medium | [ ] |
+| R2 | Seeker alone links, designates Main, sets View/Chat per Journey, removes any Guardian; may have no Main; Family Review responses hidden from Seekers; safety-concern endings show "prefer not to say" (DOC-ZYRA-0290 §2-3; DOC-ZYRA-0297 §3). **Planned:** in-app guidance on coercive control and a "report my Guardian" route from the Guardian's page, hidden from the Guardian (DOC-ZYRA-0334 #18) | Reduced | Medium | [ ] |
 | R3 | B1 and B4 notices to the Seeker and Main Guardian; Profile section "What Guardians can do"; Privacy Notice section "What Guardians see" (DOC-ZYRA-0290 §3; DR-ZYRA-299). **Recommended:** restore the one-line B2/B3 notice at the request (withdrawn 29 Oct) or add a one-time first-request notice | Reduced | **Medium-High until the solicitor confirms** | [ ] Founder to decide |
 | R4 | All DOC-ZYRA-0205 §5 measures; provider contract terms | Reduced | Medium-Low | [ ] |
 | R5 | Photo moderation before display (launch gate, DOC-ZYRA-0297 §6 item 3); report and block from every surface; evidence captured at report; safety procedure DOC-ZYRA-0332; OSA duties DOC-ZYRA-0333 | Reduced once built | Medium | [ ] |
-| R6 | Set numbers for report, Circle and consent retention; set a maximum for Past requests or record the reason; review the lifetime hash under LI **[DECISION NEEDED x3]** | Reduced once decided | Medium | [ ] |
+| R6 | Retention set (DOC-ZYRA-0334 #13): reports 24 months; Circle messages while the Journey record exists then 12 months; consents 6 years; Past requests 12 months then anonymised; the lifetime verified-person hash still needs an LI justification from the solicitor | Reduced | Low-Medium | [ ] |
 | R7 | Safety procedure with response times, a named deputy and an escalation path when the Founder is unavailable (DOC-ZYRA-0332 §10); records of every decision | Reduced | Medium | [ ] |
 | R8 | 3-month limit on the other person's archive (DR-ZYRA-285); the deleted member is shown as "has left ZYRA", not by name **[confirm with Codex at build]** | Reduced | Low | [ ] |
 | R9 | OA-ZYRA-319: fix the send rule before any of those files are applied; production still has the 9 Aug rule | Eliminated once fixed | Low | [ ] |
@@ -154,14 +154,27 @@ Individual rights: access, rectification (profile edit; DOB and gender frozen af
 
 | Item | Name / date | Notes |
 |---|---|---|
-| Measures approved by | Founder: Shakeel Ahmad, [date] | Integrate the DECISION NEEDED answers into the blueprint and OA-ZYRA-317 |
+| Measures approved by | Founder: Shakeel Ahmad, [date] | Carry the DOC-ZYRA-0334 answers into the blueprint and OA-ZYRA-317 |
 | Residual risks approved by | Founder: [date] | If any residual risk stays High after measures, prior consultation with the ICO (Art 36) is required - **solicitor to advise on R3 and R6** |
-| DPO/adviser advice | **[DPO/adviser]**, [date] | Advice accepted / overruled (reason) |
+| DPO/adviser advice | **[solicitor]**, [date] | Advice accepted / overruled (reason) |
 | Solicitor review | [name], [date] | With DOC-ZYRA-0330, 0332, 0333 |
-| Review date | **[DECISION NEEDED: e.g. 6 months after launch, and on any change to Guardian visibility, retention or the identity provider]** | |
+| Review date | 6 months after launch, and on any change to Guardian visibility, retention or the identity provider | Fable proposal; **[review date - confirm]** |
 
 ## Change log
 
 | Date | Version | Change |
 |---|---|---|
 | 2026-10-30 | V1 | First draft from DOC-ZYRA-0280 and the part 2 blueprint pages; DR-ZYRA-299 and DR-ZYRA-300 recorded as risks R3 and R6 |
+| 2026-10-30 | V1 | Founder accepted all 25 decisions (DOC-ZYRA-0334); placeholders applied |
+
+## Placeholders still to fill
+
+| Placeholder | Where | Who |
+|---|---|---|
+| [COMPANY NAME, number, address - OA-AIOS-386], [ICO registration - OA-AIOS-381] | Header note | Founder |
+| [Sumsub - contract not yet signed] | Step 2.1 | Founder (OA-ZYRA-317 item 8) |
+| [crash reporting provider - OA-ZYRA-297] | Step 2.1 | Founder |
+| [number] launch target | Step 2.3 | Founder |
+| [solicitor] named adviser | Step 3, Step 7 | Founder |
+| [OA placeholder] for Download my data | Step 4 | Fable (raise the OA) |
+| [review date - confirm]; names and dates in Step 7 | Step 7 | Founder, solicitor |

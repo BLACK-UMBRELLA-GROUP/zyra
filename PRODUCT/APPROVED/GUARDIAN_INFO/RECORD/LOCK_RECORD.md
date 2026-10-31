@@ -19,3 +19,4 @@ owner: ZYRA chat
 
 Wording note: the Founder said "other users' Guardians"; the ZYRA chat wrote **"Other Seekers' Guardians"** (ZYRA never says
 "users" to members, DOC-ZYRA-0071) and showed it before the LOCK.
+| 2026-10-30 06:2x | After Codex's second preflight (line 13 FAILED: named past topics vs DR-ZYRA-233 item 4). Question: what should Hassan see of Adam's past Journey with Hafsa when Adam shares? → **"Show the name"** | Spec **V2** §3b (first name + dates when shared, nothing when not). Masters unchanged |
