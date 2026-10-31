@@ -278,7 +278,7 @@ class _HiddenProfilesScreenState extends State<HiddenProfilesScreen> {
           : 'Unhide profile?',
       body:
           'This profile may appear for you in Profiles again. '
-          'This does not change blocks or Journeys.',
+          'This does not change blocks or bring back an ended Journey.',
       primaryLabel: 'Unhide',
       secondaryLabel: 'Cancel',
     );
@@ -350,7 +350,7 @@ class _HiddenProfilesScreenState extends State<HiddenProfilesScreen> {
                 children: [
                   Text(
                     'These profiles are hidden from your view. '
-                    'Hiding does not block them or end a Journey.',
+                    "Hiding does not block them. Hiding someone you're in a Journey with ends that Journey.",
                     style: ZyraText.subtext(size: 12.5),
                   ),
                   const SizedBox(height: 16),

@@ -75,6 +75,7 @@ import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
 import 'zyra_draft_safety_advice_presentation.dart';
 import 'zyra_draft_journey_end_presentation.dart';
+import 'zyra_draft_journey_block_hide_sheet.dart';
 import 'zyra_draft_code_entry.dart';
 import 'zyra_request_help_content.dart';
 import 'zyra_request_account_session.dart';
@@ -172,6 +173,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   int _tab = 0;
   int _requestsTab = 0;
   int _journeyTabIndex = 0;
+  bool _personSafetyConfirmationOpen = false;
   int _myZyraLastOpenedRevision = 0;
   int _myZyraFocusIndex = 0;
   final _myZyraConsumedFocusTokens = <String>{};
@@ -1452,6 +1454,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         },
         onConfirm: () {
           if (!current() || id == null) return;
+          final person = draftProfiles.where((p) => p.id == id).firstOrNull;
+          if (person == null ||
+              _warnBeforePersonSafety(person, hide: true, canAct: current)) {
+            return;
+          }
           _move(() {
             if (!_model.hide(id)) return;
             _pages.clear();
@@ -1496,9 +1503,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           case ZyraBrowseAction.scan:
             _open('scan');
           case ZyraBrowseAction.hide:
+            if (_warnBeforePersonSafety(person!, hide: true, canAct: current)) {
+              return;
+            }
             _act(() {
               _browseOptionsOpen = true;
-              _browseOptionsPersonId = person!.id;
+              _browseOptionsPersonId = person.id;
               _browseHideConfirmation = true;
             });
           case ZyraBrowseAction.filters:
@@ -2511,6 +2521,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         pending.navigatorStamp == _devRouteStamp;
     void finish(bool block) {
       if (!current() || (block && !confirming())) return;
+      if (block &&
+          _warnBeforePersonSafety(person, hide: false, canAct: confirming)) {
+        return;
+      }
       _move(() {
         final changed = block
             ? _model.block(person.id)
@@ -2542,6 +2556,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       'Block profile',
       () {
         if (!current()) return;
+        if (_warnBeforePersonSafety(person, hide: false, canAct: current)) {
+          return;
+        }
         if (isConfirming) {
           finish(true);
         } else {
@@ -7910,6 +7927,149 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
   }
 
+  // A waiting acceptance does not occupy a place, even when it holds an
+  // ending against a different person. Only this person's current attempt
+  // may be ended by this deliberate confirmation.
+  bool _warnBeforePersonSafety(
+    DraftProfile person, {
+    required bool hide,
+    required bool Function() canAct,
+  }) {
+    if (_guardianRole) return false;
+    final state = _model.stateFor(person.id);
+    if (state != DraftJourneyState.preparing &&
+        state != DraftJourneyState.active) {
+      return false;
+    }
+    if (!_personSafetyConfirmationOpen && canAct()) {
+      unawaited(
+        _confirmJourneyPersonSafety(person, hide: hide, canAct: canAct),
+      );
+    }
+    return true;
+  }
+
+  Future<void> _confirmJourneyPersonSafety(
+    DraftProfile person, {
+    required bool hide,
+    required bool Function() canAct,
+  }) async {
+    var expectedStamp = _devRouteStamp;
+    final fresh = _accountFreshGuard(
+      expectedNavigatorStamp: () => expectedStamp,
+    );
+    final attempt = _model.attemptRevisionFor(person.id);
+    final safetyRevision = _model.personSafetyRevision;
+    final sourcePersonId = _personId;
+    final sourceAccount = (
+      ZyraAccountState.userId,
+      ZyraAccountState.generation,
+    );
+    final sourceRevision = _uiRevision;
+    final sourceControlsEpoch = _devControlsEpoch;
+    bool current() =>
+        fresh() &&
+        _personId == sourcePersonId &&
+        !_guardianRole &&
+        !_devControlsVisible &&
+        _model.canApplyPersonSafety(
+          person.id,
+          hide: hide,
+          expectedAttemptRevision: attempt,
+          expectedSafetyRevision: safetyRevision,
+          endCurrentJourney: true,
+        );
+    if (!canAct() || !current() || _personSafetyConfirmationOpen) return;
+    _personSafetyConfirmationOpen = true;
+    int? sheetStamp;
+    var consumed = false;
+    try {
+      final pending = showModalBottomSheet<bool>(
+        context: _tapContext,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.black38,
+        builder: (sheetContext) {
+          bool modalCurrent() =>
+              sheetContext.mounted &&
+              !consumed &&
+              ModalRoute.of(sheetContext)?.isCurrent == true &&
+              sheetStamp == _devRouteStamp &&
+              (widget.canActInOwnedDialog?.call() ?? _allowed) &&
+              sourceAccount ==
+                  (ZyraAccountState.userId, ZyraAccountState.generation) &&
+              sourceRevision == _uiRevision &&
+              sourceControlsEpoch == _devControlsEpoch &&
+              !_guardianRole &&
+              !_devControlsVisible &&
+              _personId == sourcePersonId &&
+              _model.canApplyPersonSafety(
+                person.id,
+                hide: hide,
+                expectedAttemptRevision: attempt,
+                expectedSafetyRevision: safetyRevision,
+                endCurrentJourney: true,
+              );
+          void choose(bool value) {
+            if (consumed ||
+                !sheetContext.mounted ||
+                ModalRoute.of(sheetContext)?.isCurrent != true) {
+              return;
+            }
+            final unchanged = modalCurrent();
+            consumed = true;
+            Navigator.of(sheetContext).pop(value && unchanged);
+            // Only this sheet's own pop may advance the captured route stamp.
+            expectedStamp = _devRouteStamp;
+          }
+
+          return ZyraTapFeedback(
+            level: () => _accountSession.hapticLevel,
+            canAct: modalCurrent,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(sheetContext).height * .90,
+              ),
+              child: ZyraDraftJourneyBlockHideSheet(
+                firstName: person.firstName,
+                hide: hide,
+                onKeep: () => choose(false),
+                onConfirm: () => choose(true),
+              ),
+            ),
+          );
+        },
+      );
+      // Capture synchronously after our push, before any unrelated navigation
+      // can be mistaken for this owned modal's first presentation.
+      sheetStamp = _devRouteStamp;
+      final confirmed = await pending;
+      if (confirmed != true || !current()) return;
+      // The model validates the complete transaction again before either
+      // mutation. No asynchronous work separates ending from hide/block.
+      _move(() {
+        if (!_model.applyPersonSafety(
+          person.id,
+          hide: hide,
+          expectedAttemptRevision: attempt,
+          expectedSafetyRevision: safetyRevision,
+          endCurrentJourney: true,
+        )) {
+          return;
+        }
+        _pages.clear();
+        _personId = null;
+        _tab = 1;
+        _journeyTabIndex = 0;
+        _notice = hide
+            ? "Your Journey with ${person.firstName} has ended. ${person.firstName} won't appear again."
+            : 'Your Journey with ${person.firstName} has ended and ${person.firstName} is blocked.';
+      });
+    } finally {
+      _personSafetyConfirmationOpen = false;
+    }
+  }
+
   Widget _safety() {
     final person = _person;
     final canSelect = _accountFreshGuard();
@@ -7917,6 +8077,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         ? null
         : _bound(() {
             if (!canSelect() || _personId != person.id) return;
+            if (_warnBeforePersonSafety(
+              person,
+              hide: hide,
+              canAct: () => canSelect() && _personId == person.id,
+            )) {
+              return;
+            }
             _move(() {
               final changed = hide
                   ? _model.hide(person.id)

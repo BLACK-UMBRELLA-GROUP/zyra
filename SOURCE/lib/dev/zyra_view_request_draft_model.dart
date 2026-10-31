@@ -761,6 +761,7 @@ class ViewRequestDraftModel {
   final Map<String, DateTime> _pendingRequestedAt = {};
   int _attemptSequence = 0;
   final Map<String, int> _attemptRevisions = {};
+  int _personSafetyRevision = 0;
   int _acceptanceIntentSequence = 0;
   final Map<String, DraftWaitingAcceptance> _waitingAcceptances = {};
   int _outgoingAcceptedActivityRevision = 0;
@@ -786,6 +787,12 @@ class ViewRequestDraftModel {
   Set<String> get blockedPeers => UnmodifiableSetView(_blockedPeers);
   bool isHidden(String id) => _hiddenPeers.contains(id);
   bool isBlocked(String id) => _blockedPeers.contains(id);
+
+  /// Capture both revisions when opening a person-level safety action. The
+  /// safety revision also invalidates absent-attempt actions after reset or
+  /// a completed visibility action, including an intervening unhide.
+  int get personSafetyRevision => _personSafetyRevision;
+  int? attemptRevisionFor(String id) => _attemptRevisions[id];
 
   /// The last successful local Journey action, never a server timestamp or
   /// a date fabricated from a Timeline example. Equal dates stay equal so the
@@ -1008,17 +1015,58 @@ class ViewRequestDraftModel {
   /// Only disposable fictional visibility changes; archive records survive.
   bool hide(String id) {
     if (!_fixtureIds.contains(id)) return false;
-    _hiddenPeers.add(id);
+    if (_hiddenPeers.add(id)) _personSafetyRevision++;
     return true;
   }
 
   /// Removes only this preview's hide flag; never a block or relationship.
-  bool unhide(String id) => _fixtureIds.contains(id) && _hiddenPeers.remove(id);
+  bool unhide(String id) {
+    if (!_fixtureIds.contains(id) || !_hiddenPeers.remove(id)) return false;
+    _personSafetyRevision++;
+    return true;
+  }
 
   bool block(String id) {
     if (!_fixtureIds.contains(id)) return false;
-    _blockedPeers.add(id);
+    if (_blockedPeers.add(id)) _personSafetyRevision++;
     return true;
+  }
+
+  bool canApplyPersonSafety(
+    String id, {
+    required bool hide,
+    required int? expectedAttemptRevision,
+    required int expectedSafetyRevision,
+    required bool endCurrentJourney,
+  }) =>
+      _fixtureIds.contains(id) &&
+      _attemptRevisions[id] == expectedAttemptRevision &&
+      _personSafetyRevision == expectedSafetyRevision &&
+      _usesActivePlace(_states[id]) == endCurrentJourney &&
+      !(hide ? isHidden(id) : isBlocked(id));
+
+  /// A deliberate, synchronous local action against one exact person and
+  /// occupied attempt. Validate before ending anything; accepted-waiting is
+  /// never occupied and its held ending belongs to a different Journey.
+  /// Ordinary hide/block APIs retain their existing visibility-only behavior.
+  bool applyPersonSafety(
+    String id, {
+    required bool hide,
+    required int? expectedAttemptRevision,
+    required int expectedSafetyRevision,
+    required bool endCurrentJourney,
+  }) {
+    if (!canApplyPersonSafety(
+      id,
+      hide: hide,
+      expectedAttemptRevision: expectedAttemptRevision,
+      expectedSafetyRevision: expectedSafetyRevision,
+      endCurrentJourney: endCurrentJourney,
+    )) {
+      return false;
+    }
+    if (endCurrentJourney) end(id);
+    return hide ? this.hide(id) : block(id);
   }
 
   int get activeCount =>
@@ -1812,6 +1860,7 @@ class ViewRequestDraftModel {
   }
 
   void _seed() {
+    _personSafetyRevision++;
     _states.clear();
     _attemptRevisions.clear();
     _waitingAcceptances.clear();
