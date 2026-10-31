@@ -1,0 +1,33 @@
+{
+  "source_commit": "e0d9f8a85dd09f7d05d506547644ada5314cca37",
+  "base_commit": "8962bd1192d848927878d0b9c8063847bf0fa82e",
+  "allowlist_only": true,
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "bytes": 23038,
+      "sha256": "8b8ece30e4204aa1cb458f76a1250722ab1ac77a1bb2ae663fa61d26171490d8"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 330592,
+      "sha256": "648f8a9d69ac3d703f029d0914ab500a57aa42eaf1c039b01a86fd19cc057120"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "bytes": 23336,
+      "sha256": "ba09f75cc5e8237fac5e7df08ef251452e6afb5b63a1a6b6098b90cd44de5de0"
+    },
+    {
+      "path": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "bytes": 19948,
+      "sha256": "aef0c3721a68e4a3f2f01dcd1fe8d1ae2971938c28a8b2083e8999611dfe177a"
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "bytes": 9975,
+      "sha256": "b1176bc9306b6b6df5ec199e8e10d15ec417c30a8e268a5cae98125520e39eac"
+    }
+  ],
+  "excluded": "All ignored configuration, credential files and unrelated sources; no broad filesystem hashing."
+}

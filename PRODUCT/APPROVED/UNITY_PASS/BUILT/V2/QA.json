@@ -1,0 +1,37 @@
+{
+  "queue": 59,
+  "status": "BUILT; parent fidelity verification pending OA-ZYRA-328",
+  "source_commit": "e0d9f8a85dd09f7d05d506547644ada5314cca37",
+  "contract": "72 round photo/gold ring; name22 w300; gold smallcaps; one floating7-row card, first default and mandatory single radio; disabled neutral Submit; mutedHide/redBlock; no report/backend/member-flow change.",
+  "tests": {
+    "distinct": 284,
+    "passed": 279,
+    "failed": 5,
+    "complete_passing_suites": 14,
+    "broader_partial_suite": "browse_options_menu_test:25 passed/5 failed; see BROADER_FAILURES",
+    "report_unit": 18,
+    "actual_report_route_render": 15,
+    "owned_route_guard": 36,
+    "guard_matrix": "8 stale conditions x3 retained physical button delegates; fresh haptic baseline then no haptic/mutation/modal",
+    "network_attempts_in_offline_fixtures": 0
+  },
+  "visual_review": {
+    "normal": "x05 first selected, x06 third reason selected; both normal430x932 and full-size pairs inspected.",
+    "large": "200% top/middle/footer at430x932 and actual320x568 top/footer inspected; all7 reasons and disabledSubmit/Hide/Block reachable without overflow; narrowlinks wrap vertically.",
+    "differences": [
+      "Prototype device corner/surround is absent from the native full-frame capture.",
+      "Bundled Poppins/native font rasterization, shared Ivory floating-surface tone and shadows differ from prototype.",
+      "Native checked gold radio includes a centre dot, following the brief; prototype shows a gold outlined selected ring.",
+      "Native safe-area/action touch geometry leaves the bottom action group roughly30–40pt higher than prototype; photo/head is roughly5pt higher. Existing native frame, usable44pt targets and inherited navigation remain."
+    ],
+    "pixel_parity_claim": false,
+    "parent_review": "OA-ZYRA-328"
+  },
+  "limits": [
+    "Five broader pre-Report assertions are refused separately; no historical attribution or whole-app pass claim.",
+    "No native build/install/upload/signing/backend/migration/publish.",
+    "Tier3 member/sign-in routes retained for OA-ZYRA-317.",
+    "Other queue rows, designer questions/specs/masters and evidence versions preserved."
+  ],
+  "founder_decisions": "GO31Oct2026; existing LOCK22V2 and LOCK16V2; no new question or inferred LOCK."
+}

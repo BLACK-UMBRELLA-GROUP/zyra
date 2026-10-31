@@ -1,0 +1,24 @@
+{
+  "analyzer": "Analyzing SOURCE...                                             \nNo issues found! (ran in 4.3s)",
+  "format": "Formatted 5 files (0 changed) in 0.16 seconds.",
+  "protected_sdk_check": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS",
+    "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "dart": "Dart SDK version: 3.12.2 (stable) (Tue Jun 9 01:11:39 2026 -0700) on \"macos_arm64\"",
+  "code_size": "| What | Size |\n|---|---|\n| All app code | 170,215 lines in 337 files |\n| Developer and preview code inside it | 50,425 lines in 95 files |\n| The Founder preview (planned app) | 31,243 lines in 45 files |\n| Test code | 220,224 lines in 519 files |\n| Test screenshots (goldens) | 2,612 images, 307 MB |\n| Old-app files that still mention Pause | 39 |\n| Old-app files that still mention Restart | 1 |",
+  "runs": {
+    "report_render_test.jsonl": true,
+    "report_render_final_test.jsonl": true,
+    "report_regression_test.jsonl": false,
+    "report_guard_test.jsonl": true
+  },
+  "helper": {
+    "name": "report_widget_tests",
+    "scope": "Only utility unit tests and physical-button guard additions; no SDK/git or independent review",
+    "tokens": "Not exposed by collaboration tools; no usage logs read."
+  }
+}

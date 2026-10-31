@@ -1,0 +1,107 @@
+{
+  "source_commit": "e0d9f8a85dd09f7d05d506547644ada5314cca37",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/CONTACT_SHEET.png",
+      "bytes": 466161,
+      "sha256": "5b5d3cd40f1d07537169683b1df5b435f37c2495ebfbcd64d003b384675a4fad",
+      "png_size": [
+        1112,
+        1200
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x05_report__sara.png",
+      "bytes": 483651,
+      "sha256": "7586af9a4c5ffac56d29bd54fbded064a4fba6bffa7bd5465bc28f6c16b29058",
+      "png_size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x05_report__sara__master_beside_build.png",
+      "bytes": 981132,
+      "sha256": "d2d808c59a4fc7808fbfeca434b7445f6c1ef0113b3e29a01bd8ece9f484697b",
+      "png_size": [
+        2580,
+        2860
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x05_report__sara__narrow320_text200.png",
+      "bytes": 276948,
+      "sha256": "96cc8ef3e46916999f02b4a018d467d9534064eaac715c60eb58898be7c43873",
+      "png_size": [
+        960,
+        1704
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x05_report__sara__text200.png",
+      "bytes": 545947,
+      "sha256": "1d68c18f3de09c268a2bb87bf67410f57b49e09e304062dc71e60af37e87482f",
+      "png_size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x05_report__sara__text200__middle.png",
+      "bytes": 504809,
+      "sha256": "ba58dc53e6fcb477c293ed32d93d5a30b56bf11e6ca4a01c3bffaceff7b01cf5",
+      "png_size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x06_report__reason_chosen.png",
+      "bytes": 483694,
+      "sha256": "440706846ce11f96fdfb6ccdebc71e43883dadb42f34e1ea9a0ddfb1211ecd53",
+      "png_size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x06_report__reason_chosen__master_beside_build.png",
+      "bytes": 981162,
+      "sha256": "96a1fbfb36843e3f16c541c2a9d2988a54e22081dd5d8ac8ba9676b829f61533",
+      "png_size": [
+        2580,
+        2860
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x06_report__reason_chosen__narrow320_text200__footer.png",
+      "bytes": 288990,
+      "sha256": "a9f781442ab335f24c972919c5c5dd28e1cef023afab654b43c5c6f2851dfab8",
+      "png_size": [
+        960,
+        1704
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x06_report__reason_chosen__text200.png",
+      "bytes": 517461,
+      "sha256": "668f6e12ca6ddcc32f50588ebeeada763fe27f3e7692c0c33acc6b5eee5926f2",
+      "png_size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/x06_report__reason_chosen__text200__footer.png",
+      "bytes": 517461,
+      "sha256": "668f6e12ca6ddcc32f50588ebeeada763fe27f3e7692c0c33acc6b5eee5926f2",
+      "png_size": [
+        1290,
+        2796
+      ]
+    }
+  ],
+  "actual_frames": 8,
+  "normal_master_pairs": 2,
+  "contact_sheets": 1
+}

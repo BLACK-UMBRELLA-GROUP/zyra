@@ -1,0 +1,19 @@
+{
+  "text_bytes_loaded": 126225,
+  "text_KB_decimal": 126.225,
+  "basis": {
+    "lessons": 28099,
+    "agents": 11205,
+    "map87": 9008,
+    "review_to_corrections": 11654,
+    "review_second_stream_including_lighter_addendum": 18655,
+    "queue_stream": 28585,
+    "brief": 1436,
+    "lock": 2268,
+    "specV6_stream": 10885,
+    "archivedV2_stream": 4415,
+    "review_break_line_consumed": 15
+  },
+  "input_image_bytes": 2290952,
+  "notes": "Full streamed queue/spec and second review scan bytes are counted, not just emitted excerpts. The direct human instruction required the lessons read. Image bytes are separate; failed initial baseline lookup read zero image bytes. OS buffering is not counted."
+}

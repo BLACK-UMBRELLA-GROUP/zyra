@@ -1,0 +1,1763 @@
+{
+  "source_commit": "e0d9f8a85dd09f7d05d506547644ada5314cca37",
+  "total_distinct": 284,
+  "passed": 279,
+  "failed": 5,
+  "skipped": 0,
+  "suite_files": 15,
+  "complete_passing_suites": 14,
+  "suites": {
+    "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart": {
+      "success": 18
+    },
+    "SOURCE/test/visual/lock22_report_v2_capture_test.dart": {
+      "success": 15
+    },
+    "SOURCE/test/browse_options_menu_test.dart": {
+      "success": 25,
+      "error": 5
+    },
+    "SOURCE/test/journey_report_accessibility_test.dart": {
+      "success": 4
+    },
+    "SOURCE/test/report_account_lifetime_test.dart": {
+      "success": 13
+    },
+    "SOURCE/test/one_journey_hidden_profiles_test.dart": {
+      "success": 47
+    },
+    "SOURCE/test/view_request_draft_snapshot_test.dart": {
+      "success": 13
+    },
+    "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart": {
+      "success": 17
+    },
+    "SOURCE/test/journey_block_hide_v2_model_test.dart": {
+      "success": 33
+    },
+    "SOURCE/test/visual/lock22_unity_v1_capture_test.dart": {
+      "success": 2
+    },
+    "SOURCE/test/lock22_safety_advice_contract_test.dart": {
+      "success": 13
+    },
+    "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart": {
+      "success": 34
+    },
+    "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart": {
+      "success": 3
+    },
+    "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart": {
+      "success": 6
+    },
+    "SOURCE/test/journey_block_hide_v2_guard_test.dart": {
+      "success": 36
+    }
+  },
+  "cases": [
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(390.0, 844.0) with a truthful disabled camera action",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(390.0, 844.0) with all reasons and no submission",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(393.0, 852.0) with a truthful disabled camera action",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(393.0, 852.0) with all reasons and no submission",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(430.0, 932.0) with a truthful disabled camera action",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(430.0, 932.0) with all reasons and no submission",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "seven mandatory radio reasons stay local with Submit disabled",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "target-free account Safety does not choose a previous person",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "large-text Report remains readable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "large-text Scan remains readable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "guard revocation rejects retained reason and secondary actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "target replacement resets radio and revokes old delegates",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "same-owner rebuild preserves radio and revokes prior callbacks",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "same-subject owner replacement resets radio before feedback",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "subject removal keeps Safety free of retained report actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "secondary actions remain explicit caller-owned actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "utility display settles with reduced motion false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "utility display settles with reduced motion true",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report x05/x06 actual route at text 1.0 selects all reasons, stays offline and draft",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report x05/x06 actual route at text 2.0 selects all reasons, stays offline and draft",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report actual narrow 320x568 at 200 percent reaches every reason and disabled action without overflow",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One none Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One preparing Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One active Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One none Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One preparing Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One active Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic none Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic preparing Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic active Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic none Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic preparing Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic active Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Browse keeps its five-action bar unchanged beside the LOCK 6 root bar 1.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Browse keeps its five-action bar unchanged beside the LOCK 6 root bar 2.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Browse opening cue is finite, gold and purely decorative",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "quiet Browse cue is static with no pulse false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "quiet Browse cue is static with no pulse true",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "enabling quiet motion disposes an in-flight opening pulse",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "a real action touch passes through the visible opening cue",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "first held bar touch removes cue before breathing false",
+      "result": "error",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "first held bar touch removes cue before breathing true",
+      "result": "error",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "closing and reopening the cue cannot revive old menu authority",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Hide applies only to displayed Sara and preserves her sent invitation",
+      "result": "error",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Portrait photo stays in Browse and menu Hide excludes only that person",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Filters remain functional and do not cancel the first invitation",
+      "result": "error",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Compatibility score keeps the selected person and reveals all with one local unlock",
+      "result": "error",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Scan uses LOCK9 disclosure and returns its exact Browse parent",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Report identifies the peer without submitting or opening Help",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Help and support remain accessible from Profile settings",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "account Safety does not retain the last reported Browse peer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Scan and Report fit the actual safe viewport Size(375.0, 812.0)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Scan and Report fit the actual safe viewport Size(393.0, 852.0)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Scan and Report fit the actual safe viewport Size(430.0, 932.0)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "retained action selection cannot hide the next displayed person",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Hide Cancel retains both people and rejects its stale confirmation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "Hide confirmation is denied after authority revocation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "ordinary Hide confirmation keeps its existing outer surface",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "canAct revocation denies a pending menu mutation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "retained Seeker menu cannot act after a Guardian role round trip",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "optional header passes null context without substituting a person",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "new offline candidates show header and existing five-action bar",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "name": "packet-only Current sent card and held photo seam candidates",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "selected Portrait split remains",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "portraitSplit, compact=false, scale=2.0 keeps an accessible report target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "portraitSplit, compact=true, scale=2.0 keeps an accessible report target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "a card without a report callback exposes no fake report action",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late report cannot chain a block into a replacement account",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late block acknowledgement cannot become current-account success",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "block explicitly pins the initiating bearer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late unblock acknowledgement cannot become current-account success",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "unblock explicitly pins the initiating bearer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late safety history is unavailable after account replacement",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "report sheet discards late acknowledgement and never hides as B",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "retained submit callback cannot dispatch after A to B to A",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "retained duplicate submit callback sends one report only",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "loaded safety statuses withdraw when the account changes",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "pending safety statuses cannot publish after A to B to A",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "thrown safety-status lookup stays recoverable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "an owned report acknowledgement survives a temporary covering page",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "unhide removes only a known hidden fixture flag",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "unhide never removes a block or revives a blocked discovery row",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "hidden list is detached in checkpoints and explicit reset clears it",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "Profiles hide appears in Settings and restore keeps request and unlock",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "cancel restoration keeps the same profile hidden",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "an empty Hidden profiles page has only its title and Help",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "Compact halo uses its admitted fixture photo and one action card",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "Compact halo list scrolls at 200 percent while Help stays fixed",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "Missing-photo long-name halo fits standard dark and attention styles",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "Missing-photo long-name halo fits compact200 dark and attention styles",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "View profile inspects without unhiding or changing requests",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "current hidden card Unhide changes only hide and returns once",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "hidden card Block needs explicit confirmation and can cancel",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "confirmed hidden-card Block does not unhide or restore a pair",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card unhide refuses after Back",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card unhide refuses after controls",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card unhide refuses after cover",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card unhide refuses after role",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card unhide refuses after revocation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card unhide refuses after disposal",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card block refuses after Back",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card block refuses after controls",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card block refuses after cover",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card block refuses after role",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card block refuses after revocation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card block refuses after disposal",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card confirm_block refuses after Back",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card confirm_block refuses after controls",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card confirm_block refuses after cover",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card confirm_block refuses after role",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card confirm_block refuses after revocation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "retained hidden-card confirm_block refuses after disposal",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "compact enlarged hidden inspection keeps both actions readable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "a blocked hidden row cannot open View or remove its block",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "Hidden profiles Help opens searchable preview and returns",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "a retained View choice refuses after Back",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "a retained View choice refuses after controls",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "a retained View choice refuses after role",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "a retained View choice refuses after revocation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "a retained View choice refuses after disposal",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "covered-and-returned View cannot regain its old menu lease",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "unknown row IDs and a retained control-epoch row cannot restore",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "a confirmation retained after leaving Settings cannot restore",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "covered-and-returned confirmation cannot regain authority",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "revoked shell admission rejects a retained restoration",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "same-role checkpoint restores the list but not its confirmation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "name": "hidden list and three actions remain readable at 320px and 200 percent",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "default seed round-trips as a distinct mutable fictional model",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "every collection is copied and unmodifiable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "full three-Journey capacity survives without a fourth-place grant",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "one-sided preparation readiness is not upgraded by restoration",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "progress, one-sided reveal and continuation remain detached values",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "every valid stage including destination survives without advancing",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "blocked, hidden, busy and ended fixtures retain their restrictions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "missing own or addressed peer Main is never silently repaired",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "Basic Guardian chat denial and revoked grants survive independently",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "two restores do not share progress, sets or Guardian grants",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "dated attempt metadata round-trips without replacing time with now",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "three prior attempts remain ordered and never grant fresh-attempt consent",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "name": "undated legacy attempt remains unknown after snapshot restoration",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block One active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block One preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block Basic active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block Basic preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block absent person stays immediate with no warning or report",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block accepted waiting never ends its held other Journey",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide One active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide One preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide Basic active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide Basic preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide absent person stays immediate with no warning or report",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide accepted waiting never ends its held other Journey",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "barrier dismissal preserves report choice and all Journey state",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Journey options and View profile warn; Profiles keeps occupied people excluded",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Browse no-Journey Hide preserves current Journey; hidden inspection Block warns",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block sheet 200 percent narrow scroll reaches both actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide sheet 200 percent narrow scroll reaches both actions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact preparing attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact active attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact preparing attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact active attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves absent relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves received relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves sent relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves ended relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block of accepted Waiting without held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block of accepted Waiting with held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects stale reset and replacement attempt with no mutation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects absent-attempt reset ABA with no mutation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects occupancy changes before ending or flagging",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects wrong target attempt and unknown person atomically",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block refuses a fresh duplicate as well as a replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact preparing attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact active attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact preparing attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact active attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves absent relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves received relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves sent relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves ended relationship untouched",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide of accepted Waiting without held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide of accepted Waiting with held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects stale reset and replacement attempt with no mutation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects absent-attempt reset ABA with no mutation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects occupancy changes before ending or flagging",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects wrong target attempt and unknown person atomically",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide refuses a fresh duplicate as well as a replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "unhide cannot revive an old hide confirmation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "already hidden current person can be ended and blocked explicitly",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "ordinary hide and block retain visibility-only public behavior",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "name": "LOCK22 V1 actual x01-x04 at text 1.0 and real unlock navigation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "name": "LOCK22 V1 actual x01-x04 at text 2.0 and real unlock navigation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 Seeker One: entry, report, Help and back stack",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 Seeker Basic: entry, report, Help and back stack",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject route change",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject account change",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject controls change",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject role change",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject disposal change",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject admission change",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 restores fresh advice root stack without peer target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 restores fresh advice safety stack without peer target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 restores fresh advice help_support stack without peer target",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 rejects advice checkpoint outside Profile: guardian=true",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 rejects advice checkpoint outside Profile: guardian=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One: entry, exact tips, targets and back stack",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One restores advice root and clears peer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One restores safety and clears peer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One restores help_support and clears peer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 1",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 2",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 3",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject route",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject route return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject tab return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject account",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject controls",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject controls return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject role return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject disposal",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject admission revocation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic: entry, exact tips, targets and back stack",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic restores advice root and clears peer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic restores safety and clears peer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic restores help_support and clears peer",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 1",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 2",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 3",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject route",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject route return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject tab return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject account",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject controls",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject controls return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject role return",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject disposal",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject admission revocation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "name": "V5 actual advice: scale=1.0, narrow=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "name": "V5 actual advice: scale=2.0, narrow=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "name": "V5 actual advice: scale=2.0, narrow=true",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian One actual advice: scale=1.0, narrow=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian One actual advice: scale=2.0, narrow=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian One actual advice: scale=2.0, narrow=true",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian Basic actual advice: scale=1.0, narrow=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian Basic actual advice: scale=2.0, narrow=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian Basic actual advice: scale=2.0, narrow=true",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact active Journey with 1 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact preparing Journey with 1 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact active Journey with 3 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact preparing Journey with 3 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block Keep preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block barrier dismissal preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block pending owned modal rejects account ABA and replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block pending owned modal rejects owner revoked and replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block pending owned modal rejects navigator ABA and replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block retained report entry rejects controls ABA",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block retained report entry rejects role",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block retained report entry rejects reset",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact active Journey with 1 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact preparing Journey with 1 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact active Journey with 3 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact preparing Journey with 3 places",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide Keep preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide barrier dismissal preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide pending owned modal rejects account ABA and replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide pending owned modal rejects owner revoked and replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide pending owned modal rejects navigator ABA and replay",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide retained report entry rejects controls ABA",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide retained report entry rejects role",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide retained report entry rejects reset",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block stale physical confirm emits no haptic after owner revoked",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block stale physical confirm emits no haptic after account ABA",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide stale physical confirm emits no haptic after owner revoked",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide stale physical confirm emits no haptic after account ABA",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject owner revoked before haptic",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject account ABA before haptic",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject navigator ABA before haptic",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject controls ABA before haptic",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject role before haptic",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject reset before haptic",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject disposal before haptic",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject owned modal covering report before haptic",
+      "result": "success",
+      "skipped": false
+    }
+  ]
+}

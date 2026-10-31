@@ -1,0 +1,54 @@
+{
+  "lock": "LOCK22 V2",
+  "queue": 59,
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md",
+      "bytes": 1436,
+      "sha256": "a1db83d0a5a2ffcef1eac104e72e3eda4679e78fef0704cc82ed8a0db8eecb8e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/LOCK_RECORD.md",
+      "bytes": 2268,
+      "sha256": "4b6118170956a3f2e2132e1f58c10854abccdc85221907b939e16ae226624748"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V6.md",
+      "bytes": 10885,
+      "sha256": "95a179f2dbd8f8b8f1c7939ad6aafe56ae53b118e5a3b71bcda76a8b324e980e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/ARCHIVE/UNITY_PASS_SPEC_2026-10-31_V2.md",
+      "bytes": 4415,
+      "sha256": "fb02dec32690e7cfe14c49739c92a6a599037adeb33e0659785aaa4a88b66ed6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x05_report__sara.png",
+      "bytes": 679777,
+      "sha256": "7ba6da6c3afab45d8439c3f580c77c9864bda279477c86262e5ec82d673ed114"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x06_report__reason_chosen.png",
+      "bytes": 679829,
+      "sha256": "dd4cb8fa6d0c29f4f90e912396ea7b0c4e083ad6cad25a94f620be72d573c54e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/browse_and_requests/report__reason_selected.png",
+      "bytes": 931346,
+      "sha256": "afbdea61e7bd043ba46f71fbb99a694c30e320fdc3cb92ee1c7587175d0ce242"
+    }
+  ],
+  "queue_preflight_rows": [
+    "| 42 | 2026-10-31 | `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md` | BUILT | 2026-10-31 | **LOCKed build** (LOCK 14 **V5**, app colours Ivory; V4 fixes the line 39 stop: gold fills with text #C08A3A + #2B2420 = 5.0 : 1, Founder 31 Oct \"1 · Brighter gold\"; V5: small gold text #845F24, Founder 31 Oct \"Deeper gold\"; replaces line 39). After lines 26, 29–32, 37, 38 and 40. `APP_COLOURS/RECORD/LOCK_RECORD.md` |",
+    "| 50 | 2026-10-31 | `PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BRIEFS/BUILD_BRIEF_2026-10-31.md` | WITHDRAWN | 2026-10-31 | **LOCKed build** (LOCK 16 **V2**, block or hide during a Journey ends it after a warning sheet; V2: reporting unchanged (draft, nothing sent) — Founder 31 Oct \"Keep draft as today\"; Hidden Profiles texts only where they exist; replaces line 45). After 42; before 44. `JOURNEY_BLOCK_HIDE/RECORD/LOCK_RECORD.md` — FAILED because the brief file was empty (ZYRA chat mistake); reissued as line 69 with BUILD_BRIEF_2026-10-31_V2.md |",
+    "| 55 | 2026-10-31 | `PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V1.md` | BUILT | 2026-10-31 | **LOCKed build** (LOCK 22 **V1**, Unity pass — Compatibility score (locked), Compatibility Unlocks and Safety in the Monogram style; Safety's dead Submit button removed; Founder 31 Oct Unity review \"After A · Monogram\"). After 42; before 44. `UNITY_PASS/RECORD/LOCK_RECORD.md` Source `30ab177`; 97 scoped cases; `UNITY_PASS/BUILT/V1/QA.json`; parent visual/contract review OA-ZYRA-328. |",
+    "| 59 | 2026-10-31 | `PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md` | WAITING | | **LOCKed build** (LOCK 22 **V2**, Report profile — round photo head, reasons in one floating card, red Block profile; same Unity review). After 42, 50 and 55; before 44. `UNITY_PASS/RECORD/LOCK_RECORD.md` |",
+    "| 69 | 2026-10-31 | `PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md` | BUILT | 2026-10-31 | **LOCKed build** (LOCK 16 **V2**, block or hide during a Journey ends it after a warning sheet; reporting stays a draft; Hidden Profiles texts only where they exist — reissue of line 50, whose brief was empty; answers Codex question 1). After 42; before 44. `JOURNEY_BLOCK_HIDE/RECORD/LOCK_RECORD.md` |"
+  ],
+  "dependency_resolution": "42/55 BUILT; 69 is the explicit reissue of50 for the same LOCK16 V2. Row50 is not retried or changed.",
+  "baseline_resolution": "Brief-relative BASELINE resolves inside PRODUCT/APPROVED. The actual baseline was viewed and hashed; initial repo-root lookup corrected before handover.",
+  "spec_consistency": "ArchivedV2 Report row retained verbatim in currentV6. Only that row and the shared head context govern this work.",
+  "x05_selection": "fakeProfile default",
+  "x06_selection": "harassment matches master third row",
+  "design_invention": false
+}

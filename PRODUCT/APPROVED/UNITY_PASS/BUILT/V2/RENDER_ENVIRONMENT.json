@@ -1,0 +1,42 @@
+{
+  "standard": {
+    "logical_size": [
+      430,
+      932
+    ],
+    "device_pixel_ratio": 3,
+    "png_size": [
+      1290,
+      2796
+    ],
+    "ios_status_bar": false,
+    "target_platform": "iOS",
+    "theme": "actual ZyraApp MaterialApp.theme + documented glyph fallback",
+    "scroll_behavior": "actual ZyraApp MaterialApp.scrollBehavior",
+    "primary_reading_font": "bundled Poppins",
+    "wordmark": "bundled Syne",
+    "missing_glyph_fallback": {
+      "family": "ZYRABaselineSystemSymbols",
+      "source": "/System/Library/Fonts/SFNS.ttf",
+      "bytes": 7872432,
+      "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+      "purpose": "San Francisco platform fallback for U+2713; primary fonts unchanged; font not copied"
+    }
+  },
+  "narrow": {
+    "logical_size": [
+      320,
+      568
+    ],
+    "device_pixel_ratio": 3,
+    "png_size": [
+      960,
+      1704
+    ],
+    "text_scale": 2
+  },
+  "mode": "actual Flutter widget-test shell, host debug renderer; no native install",
+  "shadows": "Enabled for final captures",
+  "http_attempts": 0,
+  "submit": "null onPressed in every state; no reporting transport"
+}

@@ -1,0 +1,61 @@
+{
+  "source_commit": "e0d9f8a85dd09f7d05d506547644ada5314cca37",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/BROADER_FAILURES.json",
+      "bytes": 5838,
+      "sha256": "8e18b4e1cf9b07e9225755810068cd0462de5bb04e091d49952f7800a5f73cd8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/BUILD.json",
+      "bytes": 589,
+      "sha256": "fbe20e8e284c2bbfb1db8224266eec4ca0893c2924022c49ee87472d3afef733"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/CASE_LEDGER.json",
+      "bytes": 61409,
+      "sha256": "e8b6c412afc73dbb4ad03cd804bf3f60bd7e93d7d16f384b6f3d55c92743499b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/LOCK_INPUTS.json",
+      "bytes": 4343,
+      "sha256": "c22e719edd53fbda822a22657710cc94e63709bbb16ac9c9e0f8ab05a97a8c90"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/QA.json",
+      "bytes": 2302,
+      "sha256": "69cc99510e0d05a2b623a5287cd63b80db88b084e45c94a95825eb3afaf5e67d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/QUEUE_ROW_CHANGE.json",
+      "bytes": 1017,
+      "sha256": "30f6b27523832197f0179636b3cc465f4bf25afc30bd058ec5378431c198419e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/RENDER_ENVIRONMENT.json",
+      "bytes": 1164,
+      "sha256": "1c3295745d29cd6c47cb2d3bfcceab4f0dcd9904582bd155066f839cf5c39c1d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/RENDER_MANIFEST.json",
+      "bytes": 3086,
+      "sha256": "e82faa182e8b3967520c78ed1f55b89a7571c42bec3ee8316bfdbeb5814bdc33"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/SOURCE_MANIFEST.json",
+      "bytes": 1233,
+      "sha256": "a7aea9a77c6577c545aa78c4f29c2287c02302e6fcc79c36067c31b01814d949"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/STARTUP_READS.json",
+      "bytes": 707,
+      "sha256": "35ad0ad697f58a12c81c0fc08db3ff15ba22d14f5ad514ca033ef5e2d4758e97"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V2/VALIDATION.json",
+      "bytes": 1329,
+      "sha256": "89495031f57f47395d454dfea0e2a2f50fa938c3565ff898cabf64aaef1e0e91"
+    }
+  ],
+  "excludes": "This manifest avoids self-hash recursion; all listed metadata is task-owned."
+}

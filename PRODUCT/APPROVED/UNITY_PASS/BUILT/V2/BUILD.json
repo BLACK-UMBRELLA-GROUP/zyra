@@ -1,0 +1,12 @@
+{
+  "source_commit": "e0d9f8a85dd09f7d05d506547644ada5314cca37",
+  "base_commit": "8962bd1192d848927878d0b9c8063847bf0fa82e",
+  "flutter_version": "3.44.2 stable",
+  "dart_version": "3.12.2 stable",
+  "build_mode": "Flutter widget-test host debug renderer, protected pinned SDK, no native build",
+  "target": "SOURCE/test/visual/lock22_report_v2_capture_test.dart / actual protected Founder shell",
+  "captured_utc": "2026-10-31T13:34:50.928388+00:00",
+  "queue": 59,
+  "lock": "22 V2",
+  "artifact_policy": "Screenshots, JSON and text metadata only; no compiled apps or source copies."
+}

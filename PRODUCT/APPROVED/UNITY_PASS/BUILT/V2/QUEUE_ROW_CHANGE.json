@@ -1,0 +1,10 @@
+{
+  "queue": 59,
+  "staged_patch_sha256": "ae5610a8d743e5d28406c3e27b7a5284340427a5870f755aa913775f06eefe92",
+  "before": null,
+  "after": "| 59 | 2026-10-31 | `PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md` | BUILT | 2026-10-31 | **LOCKed build** (LOCK 22 **V2**, Report profile — round photo head, reasons in one floating card, red Block profile; same Unity review). After 42, 50 and 55; before 44. `UNITY_PASS/RECORD/LOCK_RECORD.md` |",
+  "other_rows_staged": false,
+  "working_tree_before": "| 59 | 2026-10-31 | `PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md` | WAITING | | **LOCKed build** (LOCK 22 **V2**, Report profile — round photo head, reasons in one floating card, red Block profile; same Unity review). After 42, 50 and 55; before 44. `UNITY_PASS/RECORD/LOCK_RECORD.md` |",
+  "working_tree_only_status_and_built_date_changed": true,
+  "staged_change": "Add only the named row because designer row59 was not yet in HEAD; preserve all other unstaged queue edits."
+}

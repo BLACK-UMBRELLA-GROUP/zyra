@@ -1,0 +1,61 @@
+{
+  "finding_disposition": "Written refusal under core rule5; parent may route follow-up.",
+  "failures": [
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "first held bar touch removes cue before breathing false",
+      "first_assertion": "Expected: exactly one matching candidate\n  Actual: _TextWidgetFinder:<Found 0 widgets with text \"Filters\": []>\n   Which: means none were found but one was expected",
+      "stack_first": [
+        "#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_options_menu_test.dart:597:7)"
+      ],
+      "listed_in_passing_queue69_ledger": false,
+      "execution_scope": "Failing case never opens Report or Scan before its first assertion. _safety is dispatched only for safety; Report state/owner/feedback and report:true action styling therefore do not execute. No shared navigation, Filters, requests or Compatibility code was changed.",
+      "written_refusal": "Do not change this route or its expectation under queue59; it is outside the locked Report profile task. No assertion is made about its historical origin."
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "first held bar touch removes cue before breathing true",
+      "first_assertion": "Expected: exactly one matching candidate\n  Actual: _TextWidgetFinder:<Found 0 widgets with text \"Filters\": []>\n   Which: means none were found but one was expected",
+      "stack_first": [
+        "#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_options_menu_test.dart:597:7)"
+      ],
+      "listed_in_passing_queue69_ledger": false,
+      "execution_scope": "Failing case never opens Report or Scan before its first assertion. _safety is dispatched only for safety; Report state/owner/feedback and report:true action styling therefore do not execute. No shared navigation, Filters, requests or Compatibility code was changed.",
+      "written_refusal": "Do not change this route or its expectation under queue59; it is outside the locked Report profile task. No assertion is made about its historical origin."
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Hide applies only to displayed Sara and preserves her sent invitation",
+      "first_assertion": "Expected: exactly one matching candidate\n  Actual: _HitTestableWidgetFinder:<Found 0 widgets with widget matching predicate (considering only\nhit-testable widgets with a RenderBox): []>\n   Which: means none were found but one was expected\nThe visible guarded scroll owner must contain my-zyra-route-concept-my-requests.",
+      "stack_first": [
+        "#4      _press (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_options_menu_test.dart:142:5)"
+      ],
+      "listed_in_passing_queue69_ledger": false,
+      "execution_scope": "Failing case never opens Report or Scan before its first assertion. _safety is dispatched only for safety; Report state/owner/feedback and report:true action styling therefore do not execute. No shared navigation, Filters, requests or Compatibility code was changed.",
+      "written_refusal": "Do not change this route or its expectation under queue59; it is outside the locked Report profile task. No assertion is made about its historical origin."
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Filters remain functional and do not cancel the first invitation",
+      "first_assertion": "Expected: exactly one matching candidate\n  Actual: _KeyWidgetFinder:<Found 0 widgets with key [<'concept_nationality'>]: []>\n   Which: means none were found but one was expected",
+      "stack_first": [
+        "#4      _press (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_options_menu_test.dart:153:3)"
+      ],
+      "listed_in_passing_queue69_ledger": false,
+      "execution_scope": "Failing case never opens Report or Scan before its first assertion. _safety is dispatched only for safety; Report state/owner/feedback and report:true action styling therefore do not execute. No shared navigation, Filters, requests or Compatibility code was changed.",
+      "written_refusal": "Do not change this route or its expectation under queue59; it is outside the locked Report profile task. No assertion is made about its historical origin."
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Compatibility score keeps the selected person and reveals all with one local unlock",
+      "first_assertion": "Expected: exactly one matching candidate\n  Actual: _DescendantWidgetFinder:<Found 0 widgets with text \"You and Sara\" descending from widgets\nwith key [<'draft_compatibility_card'>]: []>\n   Which: means none were found but one was expected",
+      "stack_first": [
+        "#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_options_menu_test.dart:739:7)"
+      ],
+      "listed_in_passing_queue69_ledger": false,
+      "execution_scope": "Failing case never opens Report or Scan before its first assertion. _safety is dispatched only for safety; Report state/owner/feedback and report:true action styling therefore do not execute. No shared navigation, Filters, requests or Compatibility code was changed.",
+      "written_refusal": "Do not change this route or its expectation under queue59; it is outside the locked Report profile task. No assertion is made about its historical origin."
+    }
+  ],
+  "queue69_ledger_comparison": "All five were absent from queue69 passing ledger, which did not run browse_options_menu_test. All current complete report/owner/warning suites pass; no passing baseline case is reclassified as old."
+}
