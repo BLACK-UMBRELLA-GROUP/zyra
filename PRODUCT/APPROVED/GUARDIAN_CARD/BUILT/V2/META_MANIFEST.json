@@ -1,0 +1,41 @@
+{
+  "source_commit_sha": "5774ba8bec97e20d30bb21dc8dbab2329ecc2278",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/BUILD.json",
+      "bytes": 1727,
+      "sha256": "30bd92cc8926c0827d525ec2b6f59b89b2184c1558a8fdd06d1b62606c5b4522"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/SOURCE_MANIFEST.json",
+      "bytes": 2634,
+      "sha256": "af24a8024c529509115fe5b7ed1f8d45008542bdd659911d201b926726d72b7d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/INPUT_MANIFEST.json",
+      "bytes": 7335,
+      "sha256": "d48b717adc2c7e0d061f7b93a9e119f70cbfd0cd96fee90267a3d7f0005b6561"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/RENDER_MANIFEST.json",
+      "bytes": 22999,
+      "sha256": "51a10c67a28b058fbae0b37ba8befdab9930d3914b2a3f729fa72a009407f917"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/CASE_LEDGER.json",
+      "bytes": 53699,
+      "sha256": "bf119e524bf7ab36572f43fc4dec53c363080a88a2519ec16030c891b72b7e57"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/QA.json",
+      "bytes": 4555,
+      "sha256": "952cd3b5ca8f9387886511ece95fd551243357ac2c12085babf2ae63cdea5857"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/VISUAL_COMPARISON.json",
+      "bytes": 10808,
+      "sha256": "2d269de1c26a2186c84a507c35e43f062f12a699e115ca7fd8784092476e632b"
+    }
+  ],
+  "self_hash_excluded": true
+}

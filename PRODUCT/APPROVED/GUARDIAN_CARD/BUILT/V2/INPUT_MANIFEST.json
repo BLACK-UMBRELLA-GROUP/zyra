@@ -1,0 +1,245 @@
+{
+  "scope": "Corrected current V3 section5 plus V2 card/sheet work k01-k19 only; k20-k22/acceptance belong to queue67.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BRIEFS/BUILD_BRIEF_2026-10-31.md",
+      "bytes": 3064,
+      "sha256": "92eeb0c13397889a966e8e6791f050064c8798dcd3a13a509b2ec067c4fb3723"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/LOCK_RECORD.md",
+      "bytes": 1708,
+      "sha256": "9f07d60d0757cb137c762ba288c1ea8ffc1fc017994b3f57bb368fa579aa51d7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3.md",
+      "bytes": 12038,
+      "sha256": "e52b4483241e65a7e6d987eece8469e0f9272276bf39791e3d8bbff5ca9321c2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k01_card_front__hassan_main.png",
+      "bytes": 458733,
+      "sha256": "f15ea6b0ae0e90406c82de715383dc93af6904e888658c9284ba68443a780c08",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k02_access__hassan_2_journeys.png",
+      "bytes": 859889,
+      "sha256": "891a5ad5fda09d015917249f845c7464a3eb273173b96cc7c719f0ffbd7740b5",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k03_access__hassan_3_journeys.png",
+      "bytes": 1017904,
+      "sha256": "e4799c4d91b6325ca4939a4e584dd0e6d43b2c375688e7c23e65d17a630ef323",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k04_access__hassan_no_journeys.png",
+      "bytes": 501302,
+      "sha256": "992a8c70d31431666f2cda062b22cc5d18f98b3d42412d61ad9f7834e076287b",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k05_card_front__ibrahim_basic.png",
+      "bytes": 461799,
+      "sha256": "874562ed03c00cf6166d94a6b39de689c3f2f0d01bf103150c7f996f20528509",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k06_access__ibrahim_chat_locked.png",
+      "bytes": 857627,
+      "sha256": "da2b3eebfcdb267d4456095f267fe1fc695367a4285ddb479c84ea1b255b22d5",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k07_card__omar_invited.png",
+      "bytes": 444977,
+      "sha256": "f559e23081903899e803ca1e9f989dfd2070ff9dbbc28fd4a79d630f17944a62",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k08_card__add_a_guardian.png",
+      "bytes": 455228,
+      "sha256": "53de56a8e7ed373aa9d1bd6f9f93744a3af8302b83404ac0cf6034a74d5fdeb6",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k09_sheet__basic_no_family.png",
+      "bytes": 618549,
+      "sha256": "adbe5d38e5b4c5bb8c3ee00fd7cb381f6843ac510568dfbb713fa6df2c97cef3",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k10_sheet__price_no_family.png",
+      "bytes": 783733,
+      "sha256": "be911c7e784802ad08617883e849b2d4b8c467621d2f1f0ed77cc3197f2d7c93",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k11_sheet__basic_free_place.png",
+      "bytes": 621638,
+      "sha256": "d701c069d1585b2ca3af5788d62995fee257833500bb8774ebee07ea89c26efd",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k12_sheet__basic_family_full.png",
+      "bytes": 614134,
+      "sha256": "a81e798aeb82714791f00f6415b27c8f14dedfefd6e131f4e32090bfd5844df9",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k13_sheet__price_family_full.png",
+      "bytes": 765809,
+      "sha256": "3bcccb77e14d725110f5bf3b45aac27d5175e6f9aaa9fea8de0c4ae446ff1a9f",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k14_sheet__invite_sent.png",
+      "bytes": 759196,
+      "sha256": "df5d1df258bc10553b43c3995d3783b8f934b996489f6aec6e8ecd9bcc2e4649",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k15_access__ibrahim_invited.png",
+      "bytes": 858889,
+      "sha256": "5e0eb6e73b6f1694e0e6574481517be854e89791c68e7cdcd180afa9a71a43d8",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k16_access__ibrahim_accepted_chat_off.png",
+      "bytes": 855541,
+      "sha256": "efadbec6ba6dbc2f78f3ba89b88df37a1f48880ff7829d5caf3b9916d2633dc1",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k17_basic__card_front_hassan.png",
+      "bytes": 458733,
+      "sha256": "d9c9ae3eb2fdf1d1ee5b086421cda13d4719491b01bdc0af838c9d4667efb012",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k18_basic__access_1_journey.png",
+      "bytes": 852850,
+      "sha256": "119f158b9464befc1ec26a0d2faecb63b1cfcc697948706fafabc019b7db7404",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k19_basic__add_more_locked.png",
+      "bytes": 464219,
+      "sha256": "8ae26645ec8b97a3e4f7cfe7892ea99a66d62631bd05fd6d8cc9e0963497c577",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/guardian_invite__normal.png",
+      "bytes": 904969,
+      "sha256": "aeef666e5ef7afca81a87b9c0bb5bf2ce1649c64cbd68c3b7c7c014caf3d2148",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/guardian_circle__normal.png",
+      "bytes": 833951,
+      "sha256": "80b397a7fbceb14f1c2be45dfbb358e0f176c562763201649afdabe0b1cb65ed",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/guardian_tab__normal.png",
+      "bytes": 862265,
+      "sha256": "94d0d801ff8783b57bb09ae3f99198fb6ac7ec87c1e249cb7af9dba80473de84",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/controls__circle_current.png",
+      "bytes": 778560,
+      "sha256": "d1a8a46231efcc469caa2fe95be2dff3e5aaa85091788cde1be3ba4fef896e5d",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker_basic/guardian_tab__one_linked.png",
+      "bytes": 867010,
+      "sha256": "7c03a7b6bf73bcd233fef93a5421508bcd54c8c7eaa62ea9da83e07fd8c0a3b9",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker_basic/guardian_tab__normal.png",
+      "bytes": 869830,
+      "sha256": "1d6839e6843f5d0909fb8ff5a95e13d2b5fece545be68d59adbc0f0371ec9775",
+      "pixels": [
+        1290,
+        2796
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "source_commit_sha": "5774ba8bec97e20d30bb21dc8dbab2329ecc2278",
+  "checks": {
+    "analyzer": "No issues found (protected flutter analyze --no-pub)",
+    "format": "12 changed Dart files, 0 changes, protected format --set-exit-if-changed",
+    "protected_driver": {
+      "sdk": "3.44.2",
+      "pins": 5,
+      "execDenial": "PASS",
+      "nestedExecDenial": "PASS",
+      "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+    },
+    "tests": {
+      "passed": 161,
+      "failed": 3,
+      "skipped": 0,
+      "complete_suites": 13,
+      "fully_passing_suites": 12,
+      "whole_suite_claim": false
+    },
+    "renders": {
+      "normal_master_states": 19,
+      "large_200": 5,
+      "narrow320_200": 5,
+      "actual_shell_samples": 2,
+      "full_size_pairs": 19
+    }
+  },
+  "written_refusals": [
+    {
+      "id": "QUEUE48-R1a",
+      "cases": [
+        "Seeker the selected interior retains the exact conversation, then button and edge return once",
+        "Guardian the selected interior retains the exact conversation, then button and edge return once"
+      ],
+      "first_failure": "StateError: No element at test/guardian_circle_close_integration_test.dart:552; tester.widget<TextField>(_composer).controller cannot find the composer after existing Circle page-option selection and held-pull steps.",
+      "exercised_entry": "Both cases pass _openCircle: Seeker uses guardian-family-messages-top (preserved in new card header); Guardian uses guardian_seeker_0 then guardian_circle. The message is sent, the unsent draft entered, and the same Circle state is still found immediately before the missing-composer assertion.",
+      "changed_site_analysis": "The task replaces only the Seeker _guardians body, its model fallback and management adapter. Guardian-role routing never builds the new Seeker card. Existing _guardianCircle, _circleAppearancePicker and Circle screen source were not edited. The new-header unread/return and LOCK3/code-route suites pass. This is not classified from an old entry key; the failure is inside the already-open Circle after its own controls/gesture sequence.",
+      "written_refusal": "No cause or historical origin claimed. Do not change Circle owner/options or add Topics in row48; preserve the failure for separate authorised work/parent review (OA-ZYRA-328)."
+    },
+    {
+      "id": "QUEUE48-R1b",
+      "case": "empty Journey slots retain theme and canonical Couple navigation after Circle return",
+      "first_failure": "test/guardian_circle_close_integration_test.dart:723 expects three Text(\"Awaiting a Journey\"); actual count0.",
+      "exercised_entry": "The Circle edge return reaches its parent; the test then physically navigates tab1, passes the canonical Couple navigation-painter check, and fails on legacy empty-slot text.",
+      "changed_site_analysis": "Tab1 dispatches _connections, not the replaced Seeker Guardian tab3 _guardians. This task does not edit Journey-tab empty presentation or Journey state seeding. Changing the actual Journey UI or rebaselining its old slot assertions is outside this row. The directly affected tab3 access-heading test was updated to the locked flip side and passes.",
+      "written_refusal": "Leave this wider Journey case failing with exact evidence; no historical-origin claim or entire-suite pass claim."
+    }
+  ],
+  "guard_evidence": "Actual shell and interaction cases cover owner/generation, target Guardian, Journey attempt/permission, Main/membership, control/nav/render epochs, semantic and retained handlers before haptics, same-widget authority replacement and denial/return. Local Family purchase/give/cancel never changes entitlement; context replacement clears owned invitations/sheets.",
+  "family_resolution": "Current actual Family allocation is unresolved. Actual shell deliberately uses brief-authorised NoFamily fallback; free/full and accepted projection are explicit presentation data fixtures. No store/server/new database field or acceptance screen added.",
+  "preserved_targets": [
+    "LOCK9 Add a Guardian code/share route (including Omar centre action)",
+    "LOCK3 What Guardians can do and one per-Guardian Past-summary bit",
+    "LOCK17 existing Circle unread/read owner",
+    "Existing inline Main/Remove Cancel/Confirm flows",
+    "Old member/sign-in routes; phone Q2 remains HELD"
+  ],
+  "new_file_classification": "Both new app files match existing zyra_one_journey_* and count in developer/preview and Founder planned-app categories. No classifier policy change."
+}

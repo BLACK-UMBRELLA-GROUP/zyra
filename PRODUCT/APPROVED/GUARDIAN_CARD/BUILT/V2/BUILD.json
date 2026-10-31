@@ -1,0 +1,44 @@
+{
+  "queue": 48,
+  "lock": "LOCK19 V2; corrected current V3 section5; acceptance section6.4 excluded (queue67)",
+  "source_commit_sha": "5774ba8bec97e20d30bb21dc8dbab2329ecc2278",
+  "previous_source_sha": "e520c105cf5c3cea95473831fd28d14a23891c9b",
+  "starting_handover_sha": "6ed9c551104728f2d19b646dc562117aa472dbbf",
+  "flutter_version": "3.44.2",
+  "build_mode": "flutter_test debug raster; production font/theme frame; no native build",
+  "target": "offline admitted Founder preview + explicitly labelled read-only master fixtures",
+  "generated_at_uk": "2026-10-31T20:27:23.645279+00:00",
+  "capture_min_utc": "2026-10-31T20:26:47.424377+00:00",
+  "capture_max_utc": "2026-10-31T20:26:55.758407+00:00",
+  "app_source_precedes_every_capture": true,
+  "checks": {
+    "analyzer": "No issues found (protected flutter analyze --no-pub)",
+    "format": "12 changed Dart files, 0 changes, protected format --set-exit-if-changed",
+    "protected_driver": {
+      "sdk": "3.44.2",
+      "pins": 5,
+      "execDenial": "PASS",
+      "nestedExecDenial": "PASS",
+      "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+    },
+    "tests": {
+      "passed": 161,
+      "failed": 3,
+      "skipped": 0,
+      "complete_suites": 13,
+      "fully_passing_suites": 12,
+      "whole_suite_claim": false
+    },
+    "renders": {
+      "normal_master_states": 19,
+      "large_200": 5,
+      "narrow320_200": 5,
+      "actual_shell_samples": 2,
+      "full_size_pairs": 19
+    }
+  },
+  "question5": "ANSWERED A plus sample data; no resend or real send",
+  "phone_native": "HELD/Q2; no native or upgrades",
+  "addendum4_read": true,
+  "historical_preflight": "../QUEUE48_PREFLIGHT.json preserved unchanged"
+}

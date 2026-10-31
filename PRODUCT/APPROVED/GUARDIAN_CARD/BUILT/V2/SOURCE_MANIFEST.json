@@ -1,0 +1,71 @@
+{
+  "source_commit_sha": "5774ba8bec97e20d30bb21dc8dbab2329ecc2278",
+  "policy": "Explicit task-owned committed files only; no ignored configuration or credentials read or hashed.",
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 329614,
+      "sha256": "8c4730d4aa9ae5c11fb3516c304339d089f9237af6b3bbb1f196ffee0189f2f2"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "bytes": 34336,
+      "sha256": "e6a7e723b492d13102251ec91070a636e057d465b3f57e20f771e008df010142"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+      "bytes": 15437,
+      "sha256": "648f83efb3d1aad4d0e7064a886e07ecb5167ba684305940b08a480a0328dde8"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "bytes": 67865,
+      "sha256": "32a8b585e626596fb6338752b91757d7a4df75c66664d427961faad69a4615b8"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+      "bytes": 98335,
+      "sha256": "8f5e7de1004f785c84e46808567c4ac42a708791bda1948f4b99e60f64c2ec36"
+    },
+    {
+      "path": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "bytes": 12758,
+      "sha256": "5c66dab1928909ec3425b7d4c417dbea7416f3856fc328195cbc3dbae89278ae"
+    },
+    {
+      "path": "SOURCE/test/guardian_card_interaction_test.dart",
+      "bytes": 28363,
+      "sha256": "649653b7a5b7cd85d9a32c4e4b152af24f254baf4a91d9de16e5d9107f913c25"
+    },
+    {
+      "path": "SOURCE/test/guardian_card_shell_test.dart",
+      "bytes": 9113,
+      "sha256": "f1e1f9d2f3f84f789d5c609787b52e1df937bcb22e8280def95920accfb14840"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "bytes": 15339,
+      "sha256": "c77d3c5e0ead5421007b711632204b0c4ebc05f02b0c1307675cf066aa72e4f5"
+    },
+    {
+      "path": "SOURCE/test/guardian_info_lock3_test.dart",
+      "bytes": 11630,
+      "sha256": "e574131ffcabc53baefe2ff13b47ad0aa21025263c3f15087ca80a5f96edf09b"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "bytes": 28402,
+      "sha256": "1f8c911a5596332c5d188a38767d73463f25d015b437dcf531594189ca2a101b"
+    },
+    {
+      "path": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "bytes": 19905,
+      "sha256": "d3667fb09db278bd6a32ce5658a14d1d0a19cc376b1a1671dac775c3df702121"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes": 65966,
+      "sha256": "3dc9fb7d53bff9cbe138d0f82f511144f2b133dda8e3c313cac145a7a809c652"
+    }
+  ]
+}

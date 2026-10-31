@@ -1,0 +1,162 @@
+{
+  "source_commit_sha": "5774ba8bec97e20d30bb21dc8dbab2329ecc2278",
+  "reviewed_master_pairs": [
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k01_card_front__hassan_main.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k01_card_front__hassan_main.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k01_card_front__hassan_main_master_build.png",
+      "state": "k01_card_front__hassan_main",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k02_access__hassan_2_journeys.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k02_access__hassan_2_journeys.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k02_access__hassan_2_journeys_master_build.png",
+      "state": "k02_access__hassan_2_journeys",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k03_access__hassan_3_journeys.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k03_access__hassan_3_journeys.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k03_access__hassan_3_journeys_master_build.png",
+      "state": "k03_access__hassan_3_journeys",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k04_access__hassan_no_journeys.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k04_access__hassan_no_journeys.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k04_access__hassan_no_journeys_master_build.png",
+      "state": "k04_access__hassan_no_journeys",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k05_card_front__ibrahim_basic.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k05_card_front__ibrahim_basic.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k05_card_front__ibrahim_basic_master_build.png",
+      "state": "k05_card_front__ibrahim_basic",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k06_access__ibrahim_chat_locked.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k06_access__ibrahim_chat_locked.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k06_access__ibrahim_chat_locked_master_build.png",
+      "state": "k06_access__ibrahim_chat_locked",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k07_card__omar_invited.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k07_card__omar_invited.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k07_card__omar_invited_master_build.png",
+      "state": "k07_card__omar_invited",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k08_card__add_a_guardian.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k08_card__add_a_guardian.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k08_card__add_a_guardian_master_build.png",
+      "state": "k08_card__add_a_guardian",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k09_sheet__basic_no_family.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k09_sheet__basic_no_family.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k09_sheet__basic_no_family_master_build.png",
+      "state": "k09_sheet__basic_no_family",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k10_sheet__price_no_family.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k10_sheet__price_no_family.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k10_sheet__price_no_family_master_build.png",
+      "state": "k10_sheet__price_no_family",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k11_sheet__basic_free_place.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k11_sheet__basic_free_place.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k11_sheet__basic_free_place_master_build.png",
+      "state": "k11_sheet__basic_free_place",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k12_sheet__basic_family_full.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k12_sheet__basic_family_full.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k12_sheet__basic_family_full_master_build.png",
+      "state": "k12_sheet__basic_family_full",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k13_sheet__price_family_full.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k13_sheet__price_family_full.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k13_sheet__price_family_full_master_build.png",
+      "state": "k13_sheet__price_family_full",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k14_sheet__invite_sent.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k14_sheet__invite_sent.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k14_sheet__invite_sent_master_build.png",
+      "state": "k14_sheet__invite_sent",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k15_access__ibrahim_invited.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k15_access__ibrahim_invited.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k15_access__ibrahim_invited_master_build.png",
+      "state": "k15_access__ibrahim_invited",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k16_access__ibrahim_accepted_chat_off.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k16_access__ibrahim_accepted_chat_off.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k16_access__ibrahim_accepted_chat_off_master_build.png",
+      "state": "k16_access__ibrahim_accepted_chat_off",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k17_basic__card_front_hassan.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k17_basic__card_front_hassan.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k17_basic__card_front_hassan_master_build.png",
+      "state": "k17_basic__card_front_hassan",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k18_basic__access_1_journey.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k18_basic__access_1_journey.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k18_basic__access_1_journey_master_build.png",
+      "state": "k18_basic__access_1_journey",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k19_basic__add_more_locked.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k19_basic__add_more_locked.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k19_basic__add_more_locked_master_build.png",
+      "state": "k19_basic__add_more_locked",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    }
+  ],
+  "review_status": "Builder compared all19 actual captures beside masters; parent visual/contract verification is pending (OA-ZYRA-328).",
+  "known_differences": [
+    {
+      "frames": "all",
+      "detail": "Existing Flutter root frame, native safe-area and compact tab bar are retained; master rounded outer-phone mask is not painted into the app. Glyph shapes, font metrics and minor positions/strokes differ; no pixel-equality claim."
+    },
+    {
+      "frames": "all pager/caps",
+      "detail": "Newer already-built LOCK14V5/queue71 governs: pager labels normal ink #2B2420; small gold text #845F24. This intentionally supersedes older gold-label master pixels."
+    },
+    {
+      "frames": "k03",
+      "detail": "Long Compatibility Reveal stage copy wraps naturally to preserve readability; no clipping."
+    },
+    {
+      "frames": "k09-k14",
+      "detail": "Flutter sheet safe-area/font/row metrics produce a taller sheet than the prototype; locked wording and steps are preserved. Parent must review the visible height difference in each pair."
+    },
+    {
+      "frames": "actual shell supplemental",
+      "detail": "Actual source samples remain Yusuf/linked23Sep and actual unread1; k05-k16 comparison fixtures explicitly use the named Ibrahim/2Oct/unread2 master data. Fixture captures are labelled in manifests and are not entitlement/source truth."
+    }
+  ],
+  "matched_design_contract": "Monogram110 ring and52weight200; name34light; role11.5/letter-spacing1.2; Main/date order; 2face dots/1forOmar+Add; linked face flip and controls do not flip; solid Omar card; dashed Add; View/Chat pills and free-place tiles; one-Guardian Basic; all three Family introductions/formula/invited/off Chat projection; larger text grows and scrolls; at320points/200% header and controls stack, with rendered-line assertions for Guardian/Ibrahim/View/Remove."
+}

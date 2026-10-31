@@ -1,0 +1,598 @@
+{
+  "source_commit_sha": "5774ba8bec97e20d30bb21dc8dbab2329ecc2278",
+  "captures": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k01_card_front__hassan_main.png",
+      "bytes": 344925,
+      "sha256": "df742414657b2b27e3763a16f861b9cac9aa38d37cf148dcb2b58631236b241e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k02_access__hassan_2_journeys.png",
+      "bytes": 905635,
+      "sha256": "832c95bfe40ba1249e7a7407a57c879b420b6d958101e1e98ab75321e8e218b0",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k03_access__hassan_3_journeys.png",
+      "bytes": 1121214,
+      "sha256": "434ca17d4fb66a6772b4bbc8c1af4a10ed459bad39c7bb21af9074bf1f5bc342",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k04_access__hassan_no_journeys.png",
+      "bytes": 395633,
+      "sha256": "b866ead40ea56a7ddd67ff16f3d9339d753adc0e2d5a9dbf0926897b71ff3384",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k05_card_front__ibrahim_basic.png",
+      "bytes": 346201,
+      "sha256": "53e60ae5241a3ae3352bd034c7484f3778ef8742f996b48ced4b9cabb6ebdc47",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k06_access__ibrahim_chat_locked.png",
+      "bytes": 902756,
+      "sha256": "94f8bfe554fd89543f0c814b23bcf104f5da13295862c47702e297b0f09d7571",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k07_card__omar_invited.png",
+      "bytes": 326053,
+      "sha256": "2f2ceaf77a79e3f15995647377d721cde349a3150545d83fe16b93599229d001",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k08_card__add_a_guardian.png",
+      "bytes": 344628,
+      "sha256": "88012756d7f8bccbc7f301b59c4ac4639cb311941a2fb04a9c21783d23f75719",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k09_sheet__basic_no_family.png",
+      "bytes": 541774,
+      "sha256": "4f97da70a8e25be21c59ad05bb413d93312c436c50a7a18b5eb3db1d5649549e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k10_sheet__price_no_family.png",
+      "bytes": 771563,
+      "sha256": "ab12581991c470bdb41f3c588cd78067db2df75213b9da1d08b55f09c3757409",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k11_sheet__basic_free_place.png",
+      "bytes": 542461,
+      "sha256": "f15153ac9812ab8a65c92d4eaeec851600e81a29f29a4749cda0f731c222f156",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k12_sheet__basic_family_full.png",
+      "bytes": 537602,
+      "sha256": "d0fe1cbb491d5f2b99580cfc7445d82c61072b227a87ed4cf8c6868b0e637726",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k13_sheet__price_family_full.png",
+      "bytes": 771566,
+      "sha256": "1c8fbb4894e19aaf861925929f567396e5bcae950209e8c1e779c2deea012492",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k14_sheet__invite_sent.png",
+      "bytes": 753791,
+      "sha256": "7285a3b20ba8972f1ed8ef016afc03ae80264c269e26d7c60021ed984de0ac85",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k15_access__ibrahim_invited.png",
+      "bytes": 903398,
+      "sha256": "10987f7f09d95fd93de358f25811a05b3ceb7ff0a40e5141c05a56342a6621e6",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k16_access__ibrahim_accepted_chat_off.png",
+      "bytes": 901781,
+      "sha256": "ed973c1760d5205ef3f15a1b14f74400c9b517d90adbdded6af600b2dbaf7c9e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k17_basic__card_front_hassan.png",
+      "bytes": 344925,
+      "sha256": "df742414657b2b27e3763a16f861b9cac9aa38d37cf148dcb2b58631236b241e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k18_basic__access_1_journey.png",
+      "bytes": 866095,
+      "sha256": "27c059d1e426ff543695831a0c0d548d6321887fe5fc6619ed7d0be278c1ca71",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k19_basic__add_more_locked.png",
+      "bytes": 352172,
+      "sha256": "1b3598565888b45f625190c0ee2e7189365d22a23153f5ab720a6d465cbdfe40",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/large_200_access_actions.png",
+      "bytes": 1004459,
+      "sha256": "6ba036d6cf91c80ee5ae091ca695cb1eea7ec91a7cf84491c700ef76091e12b8",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/large_200_access_top.png",
+      "bytes": 1070452,
+      "sha256": "a8b1edd30a08697815ad365f7cbac9304e6a5102891050f60bec46d0e4891723",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/large_200_family_actions.png",
+      "bytes": 338235,
+      "sha256": "a194c4a23fac64e5e4c42af56b8af902a9ed4635abe97ec9bc9d070fd3913157",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/large_200_family_top.png",
+      "bytes": 308494,
+      "sha256": "170b2e4a7c20799a6249695a89cfa2a1dbd1260749c330a80a89c39900bfd1a4",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/large_200_price_actions.png",
+      "bytes": 346876,
+      "sha256": "26bba38c283d839e35ae5cd319c39f1d3384a1dade15792604bd106afd79e14c",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_access_actions.png",
+      "bytes": 339047,
+      "sha256": "8fc6c85ffd7e5f1631cdbb8e14b2efb203d62067d134133b15f555efac678bcd",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_access_top.png",
+      "bytes": 257123,
+      "sha256": "652f88d261db09723d55dad0631950e72ef05fed076535b463008ccb366bc9e8",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_price_actions.png",
+      "bytes": 205479,
+      "sha256": "b8bad39e0ba8f94d1a641c31ce1938b0d6f913ba4f4c39b5119eee92b6af95a2",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_sheet_actions.png",
+      "bytes": 193246,
+      "sha256": "d3bd3d2002c07a78d4ed41d4f0de15cb0c5c8980b922abe45ecb21805b209471",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/narrow_320_200_sheet_top.png",
+      "bytes": 161215,
+      "sha256": "4ff3861f57682a720d7bfce214c4113a4f4bf41a553568462969ea991f8e8ad4",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/shell_actual_samples_basic_sheet.png",
+      "bytes": 542702,
+      "sha256": "f3d5a257cbac58684f521489c759de3a7beb20cbf833803c4eae45aa8171bfe4",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/shell_actual_samples_front.png",
+      "bytes": 344527,
+      "sha256": "058f099c047d6d152de23e012e8a97605614271f3bf96a371c02e64c31ab0def",
+      "pixels": [
+        1290,
+        2796
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k01_card_front__hassan_main_master_build.png",
+      "bytes": 686488,
+      "sha256": "93e6b7806dfa702cc4bb81c05042b866436dcd2982cdc55b4d24606b2ac62674",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k02_access__hassan_2_journeys_master_build.png",
+      "bytes": 1590567,
+      "sha256": "7c45032034830eeac0affef9aed696a6bdfee8c31b294a5378ed88af50c25068",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k03_access__hassan_3_journeys_master_build.png",
+      "bytes": 1930180,
+      "sha256": "eeb285a6fc73848974062154ad2c71fab9756de3ff4874a2b844913b9974b28b",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k04_access__hassan_no_journeys_master_build.png",
+      "bytes": 770956,
+      "sha256": "1ee41e4c83e220788559dd94410be12e3b1e63bd0933d212fa6188f2691ed28a",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k05_card_front__ibrahim_basic_master_build.png",
+      "bytes": 693940,
+      "sha256": "f0706c3f26125bdfd545c93a5a98b3021397924ca0725fd99fb95c51fea0d60a",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k06_access__ibrahim_chat_locked_master_build.png",
+      "bytes": 1586202,
+      "sha256": "aedacddbe565638506aea2888cbb5c2e1e8cbb7966f2262fa9e12770ad3c8364",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k07_card__omar_invited_master_build.png",
+      "bytes": 654786,
+      "sha256": "120a8c8439a2b117c3da986591217a651399694ea9a29ded935ce09720f62206",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k08_card__add_a_guardian_master_build.png",
+      "bytes": 680906,
+      "sha256": "141445bbbcb50d55c85b6a86d743242248a63090b682482bebb104f701a4dbbd",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k09_sheet__basic_no_family_master_build.png",
+      "bytes": 1067012,
+      "sha256": "302b9474f5a2e41a9dbb3c246cebd2178f75e9a47fa4211d91474868bae0a329",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k10_sheet__price_no_family_master_build.png",
+      "bytes": 1427155,
+      "sha256": "b77fa3222ed8abbf7170c1e0530a615b9c7556a3cc005287da74ac187d93b7d0",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k11_sheet__basic_free_place_master_build.png",
+      "bytes": 1071350,
+      "sha256": "2e8f89dd8468960c5a8f6376845865fa049864db5bf2ecc7e3077e6ef20c13f2",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k12_sheet__basic_family_full_master_build.png",
+      "bytes": 1058760,
+      "sha256": "8b94e31bf7ee2c66206613a38f414a195a6d0e66fffbd6fab7004367e2bac9b5",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k13_sheet__price_family_full_master_build.png",
+      "bytes": 1409749,
+      "sha256": "4fa2b3069daa47ba54c87571e491687c4a650a285da7e6c6b1ca2ef21dc6be1c",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k14_sheet__invite_sent_master_build.png",
+      "bytes": 1385410,
+      "sha256": "c39b82c41c18714597d7def5c5ca3e3226c8812fc901e258bc42d229b013d7e9",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k15_access__ibrahim_invited_master_build.png",
+      "bytes": 1587634,
+      "sha256": "ef5617511dc1e03cf38352e484ff2ed5de56dea1c520b7a80c56dafc8891f459",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k16_access__ibrahim_accepted_chat_off_master_build.png",
+      "bytes": 1582969,
+      "sha256": "4da6b7a5f4ee07c58858969db323ab609cd73260aa33dff60c9e1d1132c227a2",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k17_basic__card_front_hassan_master_build.png",
+      "bytes": 686488,
+      "sha256": "93e6b7806dfa702cc4bb81c05042b866436dcd2982cdc55b4d24606b2ac62674",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k18_basic__access_1_journey_master_build.png",
+      "bytes": 1524248,
+      "sha256": "7ca2872cfb2a734167151665a8fd17cd603f5c63048c6c9603ef8149f59dc552",
+      "pixels": [
+        2580,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k19_basic__add_more_locked_master_build.png",
+      "bytes": 697122,
+      "sha256": "ef301a0a57dc7281771d5033e937ceb88a59cf8000f920c008f952e36d2dae0e",
+      "pixels": [
+        2580,
+        2796
+      ]
+    }
+  ],
+  "mapping": [
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k01_card_front__hassan_main.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k01_card_front__hassan_main.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k01_card_front__hassan_main_master_build.png",
+      "state": "k01_card_front__hassan_main",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k02_access__hassan_2_journeys.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k02_access__hassan_2_journeys.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k02_access__hassan_2_journeys_master_build.png",
+      "state": "k02_access__hassan_2_journeys",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k03_access__hassan_3_journeys.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k03_access__hassan_3_journeys.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k03_access__hassan_3_journeys_master_build.png",
+      "state": "k03_access__hassan_3_journeys",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k04_access__hassan_no_journeys.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k04_access__hassan_no_journeys.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k04_access__hassan_no_journeys_master_build.png",
+      "state": "k04_access__hassan_no_journeys",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k05_card_front__ibrahim_basic.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k05_card_front__ibrahim_basic.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k05_card_front__ibrahim_basic_master_build.png",
+      "state": "k05_card_front__ibrahim_basic",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k06_access__ibrahim_chat_locked.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k06_access__ibrahim_chat_locked.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k06_access__ibrahim_chat_locked_master_build.png",
+      "state": "k06_access__ibrahim_chat_locked",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k07_card__omar_invited.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k07_card__omar_invited.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k07_card__omar_invited_master_build.png",
+      "state": "k07_card__omar_invited",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k08_card__add_a_guardian.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k08_card__add_a_guardian.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k08_card__add_a_guardian_master_build.png",
+      "state": "k08_card__add_a_guardian",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k09_sheet__basic_no_family.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k09_sheet__basic_no_family.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k09_sheet__basic_no_family_master_build.png",
+      "state": "k09_sheet__basic_no_family",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k10_sheet__price_no_family.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k10_sheet__price_no_family.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k10_sheet__price_no_family_master_build.png",
+      "state": "k10_sheet__price_no_family",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k11_sheet__basic_free_place.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k11_sheet__basic_free_place.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k11_sheet__basic_free_place_master_build.png",
+      "state": "k11_sheet__basic_free_place",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k12_sheet__basic_family_full.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k12_sheet__basic_family_full.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k12_sheet__basic_family_full_master_build.png",
+      "state": "k12_sheet__basic_family_full",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k13_sheet__price_family_full.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k13_sheet__price_family_full.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k13_sheet__price_family_full_master_build.png",
+      "state": "k13_sheet__price_family_full",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k14_sheet__invite_sent.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k14_sheet__invite_sent.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k14_sheet__invite_sent_master_build.png",
+      "state": "k14_sheet__invite_sent",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k15_access__ibrahim_invited.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k15_access__ibrahim_invited.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k15_access__ibrahim_invited_master_build.png",
+      "state": "k15_access__ibrahim_invited",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k16_access__ibrahim_accepted_chat_off.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k16_access__ibrahim_accepted_chat_off.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k16_access__ibrahim_accepted_chat_off_master_build.png",
+      "state": "k16_access__ibrahim_accepted_chat_off",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k17_basic__card_front_hassan.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k17_basic__card_front_hassan.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k17_basic__card_front_hassan_master_build.png",
+      "state": "k17_basic__card_front_hassan",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k18_basic__access_1_journey.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k18_basic__access_1_journey.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k18_basic__access_1_journey_master_build.png",
+      "state": "k18_basic__access_1_journey",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k19_basic__add_more_locked.png",
+      "capture": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/k19_basic__add_more_locked.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2/pairs/k19_basic__add_more_locked_master_build.png",
+      "state": "k19_basic__add_more_locked",
+      "binding": "Actual production widgets with explicit master-data fixtures, no service/entitlement mutation."
+    }
+  ],
+  "capture_kinds": {
+    "k01-k19": "Explicit immutable master-data fixtures using actual card/sheet/compact-nav presenters in the production theme/font frame.",
+    "shell_actual_samples_front/basic_sheet": "Actual admitted shell, existing model/checkpoint/data and source truth; Yusuf is the existing Additional sample and actual unread count is preserved.",
+    "large_200_*": "430-point viewport at200% actual render, including scroll to controls.",
+    "narrow_320_200_*": "320x640-point viewport at200%, actual grown cards and scroll/reachable controls."
+  }
+}

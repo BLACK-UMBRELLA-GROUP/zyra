@@ -1,0 +1,1373 @@
+{
+  "source_commit_sha": "5774ba8bec97e20d30bb21dc8dbab2329ecc2278",
+  "counts": {
+    "success": 161,
+    "error": 3
+  },
+  "skipped": 0,
+  "complete_suites": {
+    "SOURCE/test/guardian_card_family_sheet_test.dart": {
+      "success": 15
+    },
+    "SOURCE/test/guardian_card_interaction_test.dart": {
+      "success": 28
+    },
+    "SOURCE/test/guardian_paid_additional_consent_test.dart": {
+      "success": 11
+    },
+    "SOURCE/test/guardian_card_shell_test.dart": {
+      "success": 8
+    },
+    "SOURCE/test/zyra_guardian_chat_access_authority_test.dart": {
+      "success": 10
+    },
+    "SOURCE/test/guardian_controls_preview_authority_test.dart": {
+      "success": 10
+    },
+    "SOURCE/test/guardian_permission_circle_controls_test.dart": {
+      "success": 23
+    },
+    "SOURCE/test/visual/lock17_unread_badge_capture_test.dart": {
+      "success": 5
+    },
+    "SOURCE/test/guardian_circle_close_integration_test.dart": {
+      "success": 10,
+      "error": 3
+    },
+    "SOURCE/test/guardian_info_lock3_test.dart": {
+      "success": 6
+    },
+    "SOURCE/test/one_journey_guardian_agreement_flow_test.dart": {
+      "success": 10
+    },
+    "SOURCE/test/visual/lock19_guardian_card_capture_test.dart": {
+      "success": 7
+    },
+    "SOURCE/test/zyra_code_capture_lifetime_test.dart": {
+      "success": 18
+    }
+  },
+  "cases": [
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Family prices use the existing catalogue formula",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Model starts Main Chat on and Additional Chat off",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Model View off clears Chat and Basic cannot write a Chat grant",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "No Family introduction keeps the locked Guardian Basic text",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Main then linked-date order, invited Omar, Add last",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "no agreement means no Begin, grant or readiness convenience mutation",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "exact agreement atomically begins only that pair with fixed access",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "unknown, extra, Main, missing-link and stale-plan consent fail closed",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "current role rather than fixture Main label defines agreed Additional",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "missing Main and upgrade after a Basic preparation require a fresh decision",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "linked Main alone needs no Additional agreement; Basic Main remains View",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "legacy seeded grants stay optional and upgrade never shares old chat",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "downgrade and unlink withdraw stored Chat and agreement evidence",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "end, blocked eligibility, replacement and reset never leak required pairs",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "required evidence is detached, immutable, restored and eligibility-checked",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_paid_additional_consent_test.dart",
+      "name": "server rows cannot assert undeployed paid-agreement presentation proof",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "No Family price is the current membership and two places",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Pager ends are disabled at 35 percent opacity",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Full Family adds one Guardian using the existing composition",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Normal horizontal touch slop separates a tap from a swipe both ways",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Full Family formula follows caller place counts",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "model defaults and view revocation retain entitlement boundary",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Free place sends a local invite directly without a price step",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Continue sends once and Done only closes",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Physical swipe moves and card background tap flips",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Existing invite opens sent state and Cancel withdraws once",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Not now closes without creating an invite",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "History physical and semantic taps change one existing bit without flip",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Denied retained callback has no haptic or local mutation",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Semantic activation checks authority before invite and haptics",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Step changes invalidate retained handles before haptics",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "View switch and management buttons do not flip the card",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Guardian input replacement invalidates retained handlers",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Seeker Basic keeps one Guardian and locked Add without paid Chat",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "Local invite display follows refreshed caller input",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained page and history handlers reject a new Guardian target",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained page/history handlers reject changed account generation",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_family_sheet_test.dart",
+      "name": "320 width and 200 percent text scroll through every step",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained page/history handlers reject changed external epoch",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained page/history handlers reject changed render revision",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained page/history handlers reject changed context",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained View and manage Confirm reject moved Guardian",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained View/Confirm handlers reject changed account generation",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained View/Confirm handlers reject changed external epoch",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "Additional Basic cannot send a Chat-enable write",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained View/Confirm handlers reject changed render revision",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "Main Basic cannot send a Chat-enable write",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "legacy response without entitlement proof never sends enable",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "One confirmation permits only the guarded current enable write",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "stage unavailable rejects enable even with paid confirmation",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "account replacement during preflight sends no old-owner write",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "same-account replacement during preflight sends no old-generation write",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "late permission read cannot be returned to another account",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "Basic may revoke Chat without a paid-enable preflight",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "default startup-not-ready guard sends zero HTTP",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Retained View/Confirm handlers reject changed context",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Actual semantic View activation denies changed epoch before haptic",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "External cover and recovery never revive old handlers",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "actual shell saves one Past summary bit without flipping and opens unchanged code route",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Covered navigation route and return do not revive a page handle",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "actual shell View/Chat target and retained mutation deny after page change",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Local Family send reopens Invited and Cancel never enables Chat",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Context replacement clears a local invite and any owned sheet",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Same widget replacement never revives the original admission before feedback",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Observed denial permanently revokes that handle through authority return",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "LOCK14V5 small gold and queue71 normal-ink pager contrast are preserved",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_interaction_test.dart",
+      "name": "Invited card has a solid surface; only Add uses a dashed outline",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "actual local Family invite never grants Chat and can be cancelled",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "requested raw preview cannot seed Journey or consent grants",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "actual Main/Remove confirm flows preserve other Guardian and Journey facts",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "retained preview controls deny authorization withdrawal pre-frame",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "retained preview controls deny live withdrawal pre-frame",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "retained preview controls deny generation withdrawal pre-frame",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "actual Basic displays one Guardian and routes locked Add to membership",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "known Basic circle-main has View only with 0 Journeys",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "opened consent explanation closes and stale info cannot reopen",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "known Basic circle-main has View only with 1 Journeys",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "known Basic circle-additional has View only with 0 Journeys",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "actual tab switch invalidates retained confirm and permission delegates",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "older live read cannot overwrite the replacement source",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "live write result cannot refill permission after owner reset",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "known Basic circle-additional has View only with 1 Journeys",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "old preview circle cannot write into a replacement binding",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "known Basic unavailable page omits Chat notes and pending controls",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "old consent switch cannot write into a replacement source",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_card_shell_test.dart",
+      "name": "actual Make Main confirms into existing notice without removing links or Journeys",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "explicit agreed paid Additional renders fixed View and Chat only on real rows",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "removing permission owner closes its separate consent sheet",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "known Basic confirmed row keeps optional View without any Chat",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "membership display change retires an old Chat callback",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Additional immutable/proof malformed state fails closed (canChange: false, chatAvailable: true, chatEnabled: true, included: true, proof: false)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Additional immutable/proof malformed state fails closed (canChange: true, chatAvailable: true, chatEnabled: true, included: true, proof: true)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Additional immutable/proof malformed state fails closed (canChange: false, chatAvailable: true, chatEnabled: false, included: false, proof: true)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Additional immutable/proof malformed state fails closed (canChange: false, chatAvailable: false, chatEnabled: false, included: true, proof: true)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Additional immutable/proof malformed state fails closed (canChange: false, chatAvailable: true, chatEnabled: false, included: true, proof: true)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Additional circles remain interactive when unticked; Chat needs View",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Main required circles stay locked and preserve their 26px face",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "empty Journey permission slots are dim disabled circles",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Main empty slots are unticked and disabled; real access stays required count=0",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Main empty slots are unticked and disabled; real access stays required count=1",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Main empty slots are unticked and disabled; real access stays required count=2",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "Main unavailable read never paints verified required ticks",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "permission writes keep confirmed state and disable circles while busy",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "retained circle callback cannot survive developer withdrawal",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_permission_circle_controls_test.dart",
+      "name": "past-summary sharing remains a real Switch with slightly larger visual size",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u01 u02: existing Circle unread clears only when opened (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u03: no linked Guardian has no Circle unread bubble (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u04: Guardian role adds no unsupported count (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u05: actual Guardian tab at 430 and text scale 1.3 (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 isolated component count boundaries and external ring (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "Seeker starts with fixed floating entry and Back; reset restores interior defaults",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Seeker first safety row omits NEW, seen persists and Manage opens Guardian tab; all masters (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "paid consent is explicit and scroll reachable at Size(393.0, 852.0) 1.0x; legacy pair remains unchanged",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "paid consent is explicit and scroll reachable at Size(320.0, 568.0) 2.0x; legacy pair remains unchanged",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Tap halves, swipe, back arrow and endpoints never wrap; no Main wording (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "Seeker the selected interior retains the exact conversation, then button and edge return once",
+      "result": "error",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": [
+        "══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following StateError was thrown running a test:\nBad state: No element\n\nWhen the exception was thrown, this was the stack:\n#0      Iterable.single (dart:core/iterable.dart:694:25)\n#1      WidgetController.widget (package:flutter_test/src/controller.dart:828:30)\n#2      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart:552:20)\n<asynchronous suspension>\n#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n\nThe test description was:\n  Seeker the selected interior retains the exact conversation, then button and edge return once\n════════════════════════════════════════════════════════════════════════════════════════════════════",
+        "Test failed. See exception logs above.\nThe test description was: Seeker the selected interior retains the exact conversation, then button and edge return once"
+      ]
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "Basic Additional Guardian does not acquire Chat or require a paid-access agreement",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "retained Basic Begin is denied across Page options ABA; fresh Begin still works",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "Seeker retained interior selector cannot survive authorization ABA",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "Additional Guardian card presenter rejects retained writes across Page options ABA and admits fresh writes",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Guardian sharing defaults off and is per person; on exposes only names/dates and safe archive (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "retained Basic Begin is denied across native-route ABA; fresh Begin still works",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "Guardian starts with fixed floating entry and Back; reset restores interior defaults",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "Additional Guardian card presenter rejects retained writes across native-route ABA and admits fresh writes",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Actual consent writes off/on/off, removal clears grant, removed-link checkpoint cannot restore it (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "Guardian the selected interior retains the exact conversation, then button and edge return once",
+      "result": "error",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": [
+        "══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following StateError was thrown running a test:\nBad state: No element\n\nWhen the exception was thrown, this was the stack:\n#0      Iterable.single (dart:core/iterable.dart:694:25)\n#1      WidgetController.widget (package:flutter_test/src/controller.dart:828:30)\n#2      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart:552:20)\n<asynchronous suspension>\n#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n\nThe test description was:\n  Guardian the selected interior retains the exact conversation, then button and edge return once\n════════════════════════════════════════════════════════════════════════════════════════════════════",
+        "Test failed. See exception logs above.\nThe test description was: Guardian the selected interior retains the exact conversation, then button and edge return once"
+      ]
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "Back and a newer agreement invalidate the earlier Agree callback",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Seeker Circle catalog and archive presentation stay unchanged with sharing off (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "name": "LOCK19 k01-k04 Main front, two/three/no Journey access (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "Guardian retained interior selector cannot survive authorization ABA",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "standalone Circle owns exactly one accessible Dismiss return",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_info_lock3_test.dart",
+      "name": "Larger text cards scroll without overflow and revoked presenter callbacks cannot navigate (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "standalone Circle owns exactly one interactive edge return",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "a changed plan cannot reuse a retained paid agreement",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "a parent return scope prevents nested Circle recognizers and double return",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "name": "native route roundtrip and Guardian role change invalidate Agree",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "empty Journey slots retain theme and canonical Couple navigation after Circle return",
+      "result": "error",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": [
+        "══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following TestFailure was thrown running a test:\nExpected: exactly 3 matching candidates\n  Actual: _TextWidgetFinder:<Found 0 widgets with text \"Awaiting a Journey\": []>\n   Which: means none were found but some were expected\n\nWhen the exception was thrown, this was the stack:\n#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart:723:7)\n<asynchronous suspension>\n#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n\nThis was caught by the test expectation on the following line:\n  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart line 723\nThe test description was:\n  empty Journey slots retain theme and canonical Couple navigation after Circle return\n════════════════════════════════════════════════════════════════════════════════════════════════════",
+        "Test failed. See exception logs above.\nThe test description was: empty Journey slots retain theme and canonical Couple navigation after Circle return"
+      ]
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "Seeker Guardian access heading is text-only without changing navigation",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "current purple Circle edge has no legacy hint and closes only once after genuine release",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "name": "LOCK19 k05-k08 Additional Basic, invited sample and add last (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "name": "narrow purple 200 percent Circle edge has no legacy hint and closes only once after genuine release",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "real capture starts native bridge and disposes its session",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "native stream ignores unrelated values and captures trimmed code",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "native duplicate frames and duplicate codes produce one result",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "capture rejects overlong input while forwarding bounded prefix",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "permission denial offers manual entry without code acceptance",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "native initialization error also has manual-entry fallback",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "native barcode error stops capture and preserves manual fallback",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "initial caller denial never starts the native camera",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "caller revocation rejects stale capture and manual callbacks",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "throwing capture guard is denied without a native start",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "guard exception after start cannot recover a revoked session",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "inactive camera stops, rejects stale events and resumes cleanly",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "covered modal route stops capture until it is current again",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "disposing while native start is pending releases it afterwards",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "revocation during pending native start is rechecked after await",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "inactive pending start stops then resumes without overlap",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "manual entry is one-shot and suppresses later native results",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_code_capture_lifetime_test.dart",
+      "name": "no ModalRoute means no native capture authority",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "name": "LOCK19 k09-k16 three Family states, formula, invite and accepted projection (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "name": "LOCK19 k17-k19 Seeker Basic one Guardian and locked add (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "name": "LOCK19 Larger Text tiles and all sheet controls remain reachable (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "name": "LOCK19 narrow320 and200percent tiles/sheet/actions reachable (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+      "name": "LOCK19 actual shell samples are captured separately from named master data (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "run": "FINAL_SOURCE_CASES.jsonl",
+      "diagnostics": []
+    }
+  ]
+}
