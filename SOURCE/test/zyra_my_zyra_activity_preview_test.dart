@@ -46,7 +46,7 @@ void main() {
   tearDown(() => ZyraText.useTestFontStubs = previousStubs);
 
   test('catalog has ten immutable local examples and no quiet event', () {
-    expect(ZyraMyZyraActivityExample.values, hasLength(10));
+    expect(ZyraMyZyraActivityExample.values, hasLength(13));
     expect(ZyraMyZyraActivityExample.quiet.items, isEmpty);
     for (final example in ZyraMyZyraActivityExample.values) {
       expect(example.label, isNotEmpty);
@@ -70,7 +70,7 @@ void main() {
     final items = ZyraMyZyraActivityExample.values
         .expand((example) => example.items)
         .toList();
-    expect(items, hasLength(11));
+    expect(items, hasLength(14));
     expect(items.map((item) => item.id).toSet(), hasLength(items.length));
     for (final item in items) {
       expect(item.id, startsWith('concept-activity-preview-'));
@@ -176,7 +176,7 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
-        expect(find.text('2 of 10 viewed'), findsOneWidget);
+        expect(find.text('2 of 13 viewed'), findsOneWidget);
         final received = tester.getSemantics(
           _key('activity-checklist-requestReceived'),
         );
@@ -218,7 +218,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('7 / 10 · Journey ready'), findsOneWidget);
+    expect(find.text('7 / 13 · Journey ready'), findsOneWidget);
     for (final id in ['previous', 'next', 'checklist', 'current']) {
       await _tap(tester, 'activity-preview-$id');
       expect(
@@ -227,7 +227,7 @@ void main() {
       );
     }
     expect(events, ['previous', 'next', 'checklist', 'current']);
-    expect(find.text('7 / 10 · Journey ready'), findsOneWidget);
+    expect(find.text('7 / 13 · Journey ready'), findsOneWidget);
   });
 
   testWidgets(
@@ -248,7 +248,7 @@ void main() {
         final current = tester.getSemantics(_key('activity-checklist-current'));
         expect(current.flagsCollection.isSelected, ui.Tristate.isTrue);
         expect(current.flagsCollection.isChecked, ui.CheckedState.none);
-        expect(find.text('1 of 10 viewed'), findsOneWidget);
+        expect(find.text('1 of 13 viewed'), findsOneWidget);
       } finally {
         semantics.dispose();
       }

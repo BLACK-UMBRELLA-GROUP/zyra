@@ -109,6 +109,17 @@ class ZyraPhoneAccessController extends ChangeNotifier
           ? _lock.enabled
           : const ['allowed', 'limited'].contains(_statuses[permission.name]));
 
+  // Unknown or unavailable platform status is not reported as "off".
+  bool? get notificationPermissionAllowed {
+    if (!_current || !_foreground) return null;
+    final status = _statuses['notifications'];
+    return switch (status) {
+      'allowed' || 'limited' => true,
+      'denied' || 'restricted' || 'notDetermined' => false,
+      _ => null,
+    };
+  }
+
   Future<void> activate(ZyraPhonePermission permission) async {
     if (!_current || !_foreground || _inactive || _busy) return;
     final epoch = ++_epoch;

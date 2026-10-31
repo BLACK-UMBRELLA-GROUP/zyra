@@ -331,6 +331,14 @@ final class ViewRequestDraftSnapshot {
         model._receivedRequestRevisions,
       ),
       pendingRequestedAt = Map.unmodifiable(model._pendingRequestedAt),
+      outgoingAcceptedActivityRevision =
+          model._outgoingAcceptedActivityRevision,
+      outgoingRequestAcceptedAt = Map.unmodifiable(
+        model._outgoingRequestAcceptedAt,
+      ),
+      outgoingRequestAcceptedRevisions = Map.unmodifiable(
+        model._outgoingRequestAcceptedRevisions,
+      ),
       pastRequests = List.unmodifiable(model._pastRequests),
       pastRequestSequence = model._pastRequestSequence,
       journeyStartedAt = Map.unmodifiable(model._journeyStartedAt),
@@ -361,6 +369,9 @@ final class ViewRequestDraftSnapshot {
   final int receivedActivityRevision;
   final Map<String, int> receivedRequestRevisions;
   final Map<String, DateTime> pendingRequestedAt;
+  final int outgoingAcceptedActivityRevision;
+  final Map<String, DateTime> outgoingRequestAcceptedAt;
+  final Map<String, int> outgoingRequestAcceptedRevisions;
   final List<DraftPastRequest> pastRequests;
   final int pastRequestSequence;
   final Map<String, DateTime> journeyStartedAt;
@@ -419,6 +430,25 @@ final class ViewRequestDraftSnapshot {
                   entry.value != DraftJourneyState.sent) ||
               pendingRequestedAt.containsKey(entry.key),
         ) &&
+        outgoingAcceptedActivityRevision >= 0 &&
+        outgoingRequestAcceptedAt.entries.every(
+          (entry) =>
+              peers.contains(entry.key) &&
+              (states[entry.key] == DraftJourneyState.preparing ||
+                  states[entry.key] == DraftJourneyState.active ||
+                  states[entry.key] == DraftJourneyState.ended) &&
+              entry.value.isUtc &&
+              outgoingRequestAcceptedRevisions.containsKey(entry.key),
+        ) &&
+        outgoingRequestAcceptedRevisions.keys.every(
+          outgoingRequestAcceptedAt.containsKey,
+        ) &&
+        outgoingRequestAcceptedRevisions.values.every(
+          (revision) =>
+              revision > 0 && revision <= outgoingAcceptedActivityRevision,
+        ) &&
+        outgoingRequestAcceptedRevisions.values.toSet().length ==
+            outgoingRequestAcceptedRevisions.length &&
         pastRequestSequence >= 0 &&
         pastRequests.map((entry) => entry.id).toSet().length ==
             pastRequests.length &&
@@ -583,6 +613,12 @@ class ViewRequestDraftModel {
     _receivedActivityRevision = snapshot.receivedActivityRevision;
     _receivedRequestRevisions.addAll(snapshot.receivedRequestRevisions);
     _pendingRequestedAt.addAll(snapshot.pendingRequestedAt);
+    _outgoingAcceptedActivityRevision =
+        snapshot.outgoingAcceptedActivityRevision;
+    _outgoingRequestAcceptedAt.addAll(snapshot.outgoingRequestAcceptedAt);
+    _outgoingRequestAcceptedRevisions.addAll(
+      snapshot.outgoingRequestAcceptedRevisions,
+    );
     _pastRequests.addAll(snapshot.pastRequests);
     _pastRequestSequence = snapshot.pastRequestSequence;
     _journeyStartedAt.addAll(snapshot.journeyStartedAt);
@@ -643,6 +679,9 @@ class ViewRequestDraftModel {
   int _receivedActivityRevision = 0;
   final Map<String, int> _receivedRequestRevisions = {};
   final Map<String, DateTime> _pendingRequestedAt = {};
+  int _outgoingAcceptedActivityRevision = 0;
+  final Map<String, DateTime> _outgoingRequestAcceptedAt = {};
+  final Map<String, int> _outgoingRequestAcceptedRevisions = {};
   final List<DraftPastRequest> _pastRequests = [];
   int _pastRequestSequence = 0;
   final Map<String, _DraftJourneyProgress> _progress = {};
@@ -690,6 +729,24 @@ class ViewRequestDraftModel {
       _states[id] == DraftJourneyState.received
       ? _receivedRequestRevisions[id]
       : null;
+
+  /// Immutable evidence that the other person accepted our sent request.
+  /// Incoming acceptance, seeded Active scenarios and later Journey actions
+  /// never manufacture or refresh this event. A current state still needs
+  /// separate validation before a presentation opens its target.
+  DateTime? outgoingRequestAcceptedAt(String id) =>
+      _outgoingRequestAcceptedAt[id];
+
+  /// Stable owner ordering for clock ties. Resets clear events but retain the
+  /// sequence, so a later local scenario cannot reuse an earlier revision.
+  int get outgoingAcceptedActivityRevision => _outgoingAcceptedActivityRevision;
+  int? outgoingRequestAcceptedRevision(String id) =>
+      _outgoingRequestAcceptedRevisions[id];
+
+  void _recordOutgoingRequestAcceptance(String id) {
+    _outgoingRequestAcceptedAt[id] = _clock().toUtc();
+    _outgoingRequestAcceptedRevisions[id] = ++_outgoingAcceptedActivityRevision;
+  }
 
   /// Explicit fictional arrival only. Never overwrites a request or Journey,
   /// and never creates a member record or proves server notification state.
@@ -1095,6 +1152,7 @@ class ViewRequestDraftModel {
     _states[endingId] = DraftJourneyState.ended;
     _clearRequiredPaidGuardianAccess(endingId);
     _states[requestId] = DraftJourneyState.preparing;
+    if (!incoming) _recordOutgoingRequestAcceptance(requestId);
     _pendingRequestedAt.remove(requestId);
     _progress[requestId] = _DraftJourneyProgress();
     _initializePreparationGuardianAccess(requestId);
@@ -1136,6 +1194,9 @@ class ViewRequestDraftModel {
   bool _accept(String id, DraftJourneyState expected) {
     if (_states[id] != expected || !canAccept(id)) return false;
     _states[id] = DraftJourneyState.preparing;
+    if (expected == DraftJourneyState.sent) {
+      _recordOutgoingRequestAcceptance(id);
+    }
     _pendingRequestedAt.remove(id);
     _progress[id] = _DraftJourneyProgress();
     _initializePreparationGuardianAccess(id);
@@ -1559,6 +1620,8 @@ class ViewRequestDraftModel {
     _states.clear();
     _receivedRequestRevisions.clear();
     _pendingRequestedAt.clear();
+    _outgoingRequestAcceptedAt.clear();
+    _outgoingRequestAcceptedRevisions.clear();
     _pastRequests.clear();
     _pastRequestSequence = 0;
     _hiddenPeers.clear();

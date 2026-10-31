@@ -96,7 +96,7 @@ void main() {
       expect(t.getSize(_key('compact-nav-surface')), const Size(234, 50));
       expect(find.text('Guardian Dashboard'), findsNothing);
       expect(find.textContaining('Insights'), findsNothing);
-      expect(find.text('0 sent · 1 received'), findsOneWidget);
+      expect(find.text('1 new'), findsWidgets);
       await _cap(h, 'g01_my_zyra', 'needs_you');
       await h.tap('guardian_pause');
       expect(_view(t).state.review, ZyraGuardianReview.paused);
@@ -252,8 +252,8 @@ void main() {
         ),
       );
       await _cap(h, 'g14_my_zyra', 'all_caught_up');
-      expect(find.text('1 sent · 1 received'), findsOneWidget);
-      expect(find.text('Needs you'), findsNothing);
+      expect(find.text('1 sent'), findsOneWidget);
+      expect(find.textContaining('NEEDS YOU'), findsNothing);
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );

@@ -74,6 +74,18 @@ enum ZyraMyZyraActivityExample {
   ),
   journeyEnded('Journey ended', 'A recorded ending leads to its archive.'),
   guardianUpdate('Guardian update', 'A confirmed Guardian link has changed.'),
+  familyReviewOpened(
+    'Family Review opened',
+    'Existing dashboard review-opened display fixture.',
+  ),
+  milestoneToConfirm(
+    'Milestone to confirm',
+    'Existing dashboard milestone-proposed display fixture.',
+  ),
+  guardianInvitationExpiring(
+    'Guardian invitation expiring',
+    'Existing dashboard invitation-expiring display fixture.',
+  ),
   circleMessage(
     'Circle message',
     'A Guardian Circle conversation has activity.',
@@ -178,6 +190,37 @@ enum ZyraMyZyraActivityExample {
         id: 'concept-activity-preview-guardianUpdate-yusuf',
         title: 'Yusuf joined your Guardians',
         detail: 'Review the confirmed Guardian link.',
+        actionLabel: 'View Guardian',
+        owner: ZyraMyZyraActivityOwner.guardian,
+      ),
+    ],
+    // These display-only adapters use the existing dashboard update keys.
+    // They never establish a review, milestone, invitation or new permission.
+    familyReviewOpened => const [
+      ZyraMyZyraActivityItem(
+        id: 'concept-activity-preview-dashboard_updates.guardian.review_opened',
+        title: 'Family Review opened',
+        detail: 'Your Guardians are reviewing your Journey with Sara.',
+        actionLabel: 'View Journey',
+        owner: ZyraMyZyraActivityOwner.journey,
+        personId: 'draft-sara',
+      ),
+    ],
+    milestoneToConfirm => const [
+      ZyraMyZyraActivityItem(
+        id: 'concept-activity-preview-dashboard_updates.notification.milestone_proposed',
+        title: 'Milestone to confirm',
+        detail: 'Confirm the step you and Sara reached.',
+        actionLabel: 'Open Timeline',
+        owner: ZyraMyZyraActivityOwner.journey,
+        personId: 'draft-sara',
+      ),
+    ],
+    guardianInvitationExpiring => const [
+      ZyraMyZyraActivityItem(
+        id: 'concept-activity-preview-dashboard_updates.notification.wali_invite_expiring',
+        title: 'Guardian invitation expiring',
+        detail: 'Your invitation to Yusuf ends soon.',
         actionLabel: 'View Guardian',
         owner: ZyraMyZyraActivityOwner.guardian,
       ),

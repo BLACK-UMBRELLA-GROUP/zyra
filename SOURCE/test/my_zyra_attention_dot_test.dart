@@ -199,15 +199,15 @@ void main() {
       final expectedStyle = switch (variant) {
         _TitleCase.prominent => ZyraText.heading(
           size: 29,
-          color: const Color(0xFFF6F0F8),
+          color: ZyraColors.foreground,
         ).copyWith(height: 1.22),
         _TitleCase.summary => ZyraText.heading(
           size: 18,
-          color: const Color(0xFFF6F0F8),
+          color: ZyraColors.foreground,
         ).copyWith(height: 1.22),
         _ => ZyraText.body(
           size: variant == _TitleCase.compact ? 14 : 17,
-          color: const Color(0xFFF6F0F8),
+          color: ZyraColors.foreground,
         ).copyWith(height: 1.45),
       };
       expect(text.style, expectedStyle);

@@ -1,11 +1,12 @@
 import '../widgets/zyra_floating_surface.dart';
-// LOCK 8 V2: fictional Guardian presentation only. No service, RPC or member
+// LOCK 8 V3 / LOCK 15 V2: fictional Guardian presentation only. No service, RPC or member
 // authority. The admitted shell owns changes and the lifetime of callbacks.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_focus_dashboard.dart';
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
@@ -17,6 +18,7 @@ class ZyraGuardianTabsSnapshot {
   const ZyraGuardianTabsSnapshot({
     this.review = ZyraGuardianReview.open,
     this.hours = 41,
+    this.reviewRevision = 0,
     this.connection = ZyraGuardianConnection.pending,
     this.seeker = 0,
     this.requestSeeker = 0,
@@ -26,12 +28,15 @@ class ZyraGuardianTabsSnapshot {
     this.introduced = const {},
     this.sent = const {},
     this.attentionSeen = false,
+    this.focusIndex = 0,
+    this.consumedFocus = const {},
   });
   final ZyraGuardianReview review;
   final ZyraGuardianConnection connection;
-  final int hours, seeker, requestSeeker, networkIndex;
+  final int hours, seeker, requestSeeker, networkIndex, reviewRevision;
   final bool requestsSent, connectReceived, attentionSeen;
-  final Set<String> introduced, sent;
+  final Set<String> introduced, sent, consumedFocus;
+  final int focusIndex;
 }
 
 class ZyraGuardianTabsState {
@@ -39,7 +44,8 @@ class ZyraGuardianTabsState {
     ZyraGuardianTabsSnapshot saved = const ZyraGuardianTabsSnapshot(),
   ]) {
     review = saved.review;
-    hours = saved.hours == 48 ? 48 : 41;
+    hours = saved.hours.clamp(0, 48);
+    reviewRevision = saved.reviewRevision < 0 ? 0 : saved.reviewRevision;
     connection = saved.connection;
     seeker = saved.seeker.clamp(0, 1);
     requestSeeker = saved.requestSeeker.clamp(0, 2);
@@ -53,6 +59,8 @@ class ZyraGuardianTabsState {
     );
     sent.addAll(saved.sent.where(validId));
     attentionSeen = saved.attentionSeen;
+    focusIndex = saved.focusIndex < 0 ? 0 : saved.focusIndex;
+    consumedFocus.addAll(saved.consumedFocus);
   }
   // Basic-only families are excluded before any Network card can be selected.
   static const candidates = [
@@ -72,9 +80,12 @@ class ZyraGuardianTabsState {
   static bool validId(String id) => network.any((p) => p.id == id);
   late ZyraGuardianReview review;
   late ZyraGuardianConnection connection;
-  late int hours, seeker, requestSeeker, networkIndex;
+  late int hours, seeker, requestSeeker, networkIndex, reviewRevision;
   late bool requestsSent, connectReceived, attentionSeen;
-  final introduced = <String>{}, sent = <String>{};
+  final introduced = <String>{}, sent = <String>{}, consumedFocus = <String>{};
+  late int focusIndex;
+  String get reviewFocusId =>
+      'review-${review == ZyraGuardianReview.paused ? 'paused' : 'open'}-$reviewRevision';
   String get seekerName => seeker == 0 ? 'Adam' : 'Yusuf';
   bool get main => seeker == 0;
   bool get canPrevious => networkIndex > 0;
@@ -103,6 +114,7 @@ class ZyraGuardianTabsState {
   ZyraGuardianTabsSnapshot get snapshot => ZyraGuardianTabsSnapshot(
     review: review,
     hours: hours,
+    reviewRevision: reviewRevision,
     connection: connection,
     seeker: seeker,
     requestSeeker: requestSeeker,
@@ -112,6 +124,8 @@ class ZyraGuardianTabsState {
     introduced: Set.unmodifiable(introduced),
     sent: Set.unmodifiable(sent),
     attentionSeen: attentionSeen,
+    focusIndex: focusIndex,
+    consumedFocus: Set.unmodifiable(consumedFocus),
   );
 }
 
@@ -125,12 +139,16 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.linked = true,
     this.paid = true,
     this.adamMain = true,
+    this.focusItems,
+    this.notificationCount = 0,
   });
   final ZyraGuardianTabsState state;
   final String page;
   final ValueChanged<String> onAction;
   final String? Function(String) photoFor;
   final bool linked, paid, adamMain;
+  final List<ZyraFocusItem>? focusItems;
+  final int notificationCount;
   Widget _text(
     String text, {
     double size = 14,
@@ -410,91 +428,135 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     ),
   );
 
-  Widget _home() => _viewport(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _header('My ZYRA'),
-        _text(
-          linked
-              ? 'Assalamu alaikum, Hassan. You support Adam and Yusuf.'
-              : 'Assalamu alaikum, Hassan.',
-          size: 11.5,
-          muted: true,
+  List<ZyraFocusItem> get _homeFocusItems {
+    final review = state.review;
+    final hours = state.hours;
+    return [
+      if (linked && review != ZyraGuardianReview.continued)
+        ZyraFocusItem(
+          id: state.reviewFocusId,
+          icon: Icons.verified_user_outlined,
+          title: 'Family Review for\nAdam and Sara',
+          detail: review == ZyraGuardianReview.paused
+              ? 'You paused the move to Building a Life. Adam and Sara stay on Faith & Values. When your families have spoken, reopen the review for a fresh 48 hours.'
+              : 'Faith & Values is complete. Continue, or pause the move to the next stage. $hours hours left — if you do nothing, the Journey continues.',
+          actionLabel: !adamMain
+              ? ''
+              : review == ZyraGuardianReview.paused
+              ? 'Reopen review'
+              : 'Continue',
+          actionKey: !adamMain
+              ? null
+              : review == ZyraGuardianReview.paused
+              ? 'guardian_reopen'
+              : 'guardian_continue',
+          onAction: () {
+            if (!adamMain) return;
+            onAction(
+              review == ZyraGuardianReview.paused ? 'reopen' : 'continue',
+            );
+          },
+          secondaryLabel: adamMain && review == ZyraGuardianReview.open
+              ? 'Pause'
+              : null,
+          secondaryKey: 'guardian_pause',
+          onSecondaryAction: adamMain && review == ZyraGuardianReview.open
+              ? () => onAction('pause')
+              : null,
         ),
-        const SizedBox(height: 18),
-        if (linked && state.needsYou) ...[
-          _label('Needs you', gold: true),
-          const SizedBox(height: 6),
-          if (state.review != ZyraGuardianReview.continued) ...[
-            _title('Family Review for\nAdam and Sara', size: 26),
-            const SizedBox(height: 10),
-            _text(
-              state.review == ZyraGuardianReview.paused
-                  ? 'You paused the move to Building a Life. Adam and Sara stay on Faith & Values. When your families have spoken, reopen the review for a fresh 48 hours.'
-                  : 'Faith & Values is complete. Continue, or pause the move to the next stage. ${state.hours} hours left — if you do nothing, the Journey continues.',
-              size: 13,
-            ),
-            const SizedBox(height: 16),
-            if (!adamMain)
-              _text(state.stage, muted: true)
-            else if (state.review == ZyraGuardianReview.paused)
-              _button('Reopen review', 'reopen', gold: true)
-            else
-              Row(
-                children: [
-                  Expanded(child: _button('Continue', 'continue', gold: true)),
-                  const SizedBox(width: 8),
-                  Expanded(child: _button('Pause', 'pause')),
-                ],
-              ),
-            const SizedBox(height: 14),
-          ],
-          if (adamMain && state.connection == ZyraGuardianConnection.pending)
-            _tile(
-              'Adam · Connect with Guardian',
-              "Noor's Main Guardian asks to connect about Adam",
-              Icons.forum_outlined,
-              'received',
-            ),
-        ] else ...[
-          _label('All caught up'),
-          const SizedBox(height: 6),
-          _title('Nothing needs you right now.', size: 24),
-        ],
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: Divider(),
+      if (linked &&
+          paid &&
+          adamMain &&
+          state.connection == ZyraGuardianConnection.pending)
+        ZyraFocusItem(
+          id: 'connect-pending',
+          icon: Icons.forum_outlined,
+          title: 'Adam · Connect\nwith Guardian',
+          detail: "Noor's Main Guardian asks to connect about Adam.",
+          actionLabel: 'View request',
+          actionKey: 'guardian_received',
+          onAction: () => onAction('received'),
         ),
-        const SizedBox(height: 4),
-        _label('Quick access'),
-        const SizedBox(height: 10),
-        _tile(
-          'Journey requests',
-          linked
-              ? 'Adam 1 received · 1 sent · Yusuf none'
-              : 'No linked Seekers',
-          Icons.inbox_outlined,
-          'requests',
-        ),
-        if (linked && paid)
-          _tile(
-            'Connect with Guardian',
-            '${state.sent.length} sent · ${state.receivedCount} received',
-            Icons.forum_outlined,
-            'connect',
+    ];
+  }
+
+  Widget _home() {
+    final hasRequest = linked && adamMain;
+    final hasConnect =
+        linked &&
+        paid &&
+        adamMain &&
+        state.connection == ZyraGuardianConnection.pending;
+    final items = (focusItems ?? _homeFocusItems)
+        .where((item) => !state.consumedFocus.contains(item.id))
+        .toList(growable: false);
+    return ZyraFocusDashboard(
+      greeting: linked
+          ? 'Assalamu alaikum, Hassan. You support Adam and Yusuf.'
+          : 'Assalamu alaikum, Hassan.',
+      items: items,
+      initialIndex: state.focusIndex,
+      onIndexChanged: (index) => onAction('focus_index_$index'),
+      chips: [
+        if (linked) ...[
+          ZyraFocusChip(
+            id: 'guardian_focus_adam',
+            label: 'Adam · ${state.stage}',
+            icon: Icons.people_outline,
+            onTap: () => onAction('focus_adam'),
           ),
-        _tile(
-          "Introductions you've made",
-          linked
-              ? '${state.introductionCount} for ${state.seekerName}'
-              : 'No linked Seekers',
-          Icons.groups_outlined,
-          'introductions',
+          ZyraFocusChip(
+            id: 'guardian_focus_yusuf',
+            label: 'Yusuf · no Journey',
+            icon: Icons.person_outline,
+            onTap: () => onAction('focus_yusuf'),
+          ),
+        ],
+      ],
+      tiles: [
+        ZyraFocusTile(
+          id: 'guardian_requests',
+          label: 'Journey\nrequests',
+          status: hasRequest ? '1 new' : 'None',
+          icon: Icons.inbox_outlined,
+          isNew: hasRequest,
+          onTap: () => onAction('requests'),
+        ),
+        ZyraFocusTile(
+          id: 'guardian_connect',
+          label: 'Connect with\nGuardian',
+          status: paid
+              ? hasConnect
+                    ? '1 new'
+                    : '${state.sent.length} sent'
+              : 'Guardian One',
+          icon: Icons.forum_outlined,
+          isNew: hasConnect,
+          locked: !paid,
+          onTap: () => onAction(paid ? 'connect' : 'membership'),
+        ),
+        ZyraFocusTile(
+          id: 'guardian_introductions',
+          label: 'Introductions',
+          status: paid ? '${state.introduced.length} made' : 'Guardian One',
+          icon: Icons.groups_outlined,
+          locked: !paid,
+          onTap: () => onAction(paid ? 'introductions' : 'membership'),
+        ),
+        ZyraFocusTile(
+          id: 'guardian_notifications',
+          label: 'Notifications',
+          status: notificationCount > 0
+              ? '$notificationCount new'
+              : 'Nothing new',
+          icon: Icons.notifications_none,
+          isNew: notificationCount > 0,
+          onTap: () => onAction('notifications'),
         ),
       ],
-    ),
-  );
+    );
+  }
+
   Widget _requests() => _viewport(
     Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

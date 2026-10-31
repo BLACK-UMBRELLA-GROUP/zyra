@@ -15,8 +15,6 @@ import '../data/journey_questions.dart';
 import '../data/zyra_reference_data.dart';
 import '../data/zyra_journey_pause_state.dart';
 import '../models/seeker_profile.dart';
-import '../models/zyra_dashboard_resolution.dart';
-import '../models/zyra_supportive_dashboard.dart';
 import '../services/zyra_wali_link_service.dart'
     show
         WaliLinkedPerson,
@@ -27,6 +25,7 @@ import '../services/zyra_wali_link_service.dart'
         PendingInvite;
 import '../services/zyra_wali_journey_service.dart' show WaliJourneyView;
 import '../services/zyra_family_messaging_service.dart';
+import '../services/zyra_account_state.dart';
 import '../services/zyra_guardian_info_service.dart' show GuardianInfo;
 import '../screens/wali/family_messaging_screens.dart';
 import '../screens/wali/seeker_guardian_designs.dart';
@@ -53,7 +52,8 @@ import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_glass_dialog.dart';
 import '../widgets/zyra_segmented_toggle.dart';
 import '../widgets/zyra_shell_navigation.dart';
-import '../widgets/zyra_quiet_dashboard.dart';
+import '../widgets/zyra_focus_dashboard.dart';
+import 'zyra_my_zyra_focus.dart';
 import '../widgets/zyra_pull_down_back_scope.dart';
 import '../widgets/zyra_state_widgets.dart';
 import '../widgets/searchable_list_picker.dart';
@@ -168,6 +168,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   int _requestsTab = 0;
   int _journeyTabIndex = 0;
   int _myZyraLastOpenedRevision = 0;
+  int _myZyraFocusIndex = 0;
+  final _myZyraConsumedFocusTokens = <String>{};
   final _tabBarCollapseRevision = ValueNotifier<int>(0);
   int _browseIndex = 1;
   // Session-only viewing order, never a visibility or request permission.
@@ -340,7 +342,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   final _reviewedActivityExamples = <ZyraMyZyraActivityExample>{};
   bool _activityChecklistExpanded = false;
   int _activityPreviewEpoch = 0;
-  ZyraMyZyraActivityItem? _activityDetail;
   ({
     String personId,
     Set<String> linkedIds,
@@ -623,10 +624,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       )
       .toList(growable: false);
 
-  bool get _hasNewReceivedRequests => _visibleRequests(
-    DraftJourneyState.received,
-  ).any((person) => _model.hasUnseenReceivedRequest(person.id));
-
   bool get _hasNewMyZyraTabActivity =>
       _visibleRequests(DraftJourneyState.received).any(
         (person) =>
@@ -785,6 +782,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _restoreCheckpoint(ZyraPreviewNavigationCheckpoint saved) {
     _guardianTabs = ZyraGuardianTabsState(saved.guardianTabs);
+    _myZyraConsumedFocusTokens.addAll(saved.myZyraConsumedFocusTokens);
+    _myZyraFocusIndex = widget.restoreLocation ? saved.myZyraFocusIndex : 0;
 
     // Only the detached fictional model survives a long absence. Navigation
     // below is restored only inside the approved short-return window.
@@ -802,6 +801,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     _subscriptionWallet = _subscriptionWallet
         .withRole(
           ZyraWalletRole.seeker,
+          readiness: saved.seekerReadiness,
           coverage: _seekerMembership == 'Seeker Basic'
               ? ZyraWalletCoverage.basic
               : ZyraWalletCoverage.assignedFamily,
@@ -1068,6 +1068,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         requestsTab: _requestsTab,
         journeyPlaceIndex: _journeyTabIndex.clamp(0, _model.capacity - 1),
         myZyraLastOpenedRevision: _myZyraLastOpenedRevision,
+        seekerReadiness: _subscriptionWallet
+            .forRole(ZyraWalletRole.seeker)
+            .readiness,
+        myZyraConsumedFocusTokens: _myZyraConsumedFocusTokens,
+        myZyraFocusIndex: _myZyraFocusIndex,
         guardianPage: _guardianPage,
         networkTab: _networkTab,
         guardianJourneyId: _guardianJourneyId,
@@ -1218,7 +1223,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _myZyraLastOpenedRevision = _model.receivedActivityRevision;
       }
       _expansion.collapseAll();
-      if (!_guardianRole && index == 3) _guardianPage = 0;
+      if (!_guardianRole && index == 3) {
+        _guardianPage = 0;
+        _consumeFocusTarget('guardian');
+      }
       _pages.clear();
     });
   }
@@ -1300,6 +1308,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         ? person
         : null;
     _move(() {
+      _consumeFocusTarget(page, personId: person);
       if (receivedBeingOpened != null) {
         _model.acknowledgeReceivedRequests([receivedBeingOpened]);
       }
@@ -1593,7 +1602,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'ended_guardians',
           'ended_compatibility',
           'ended_restart',
-          'activity_preview_detail',
           'guardian_access_agreement',
           'guardian_circle',
           'guardian_invite',
@@ -1977,7 +1985,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'ended_guardians' => _endedJourneyDetail(bio: false),
     'ended_restart' => _endedRestart(),
     'ended_compatibility' => _endedCompatibility(),
-    'activity_preview_detail' => _activityPreviewDetail(),
     'guardian_access_agreement' => _guardianAccessAgreement(),
     'guardian_circle' => _guardianCircle(),
     'guardian_invite' => _guardianInvite(),
@@ -2807,6 +2814,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       return;
     }
     _move(() {
+      _consumeFocusTarget(
+        page == 'requests' && requestsTab == 2 ? 'requests_past' : page,
+      );
       // Opening an addressed highlight consumes only that item's attention,
       // never its pending request. Generic list entry remains unacknowledged.
       if (viewedId != null) _model.acknowledgeReceivedRequests([viewedId]);
@@ -4637,7 +4647,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     _activityExample = null;
     _reviewedActivityExamples.clear();
     _activityChecklistExpanded = false;
-    _activityDetail = null;
     _activityPreviewEpoch++;
   }
 
@@ -4664,8 +4673,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _selectActivityExample(ZyraMyZyraActivityExample? example) => _move(() {
     _activityExample = example;
+    _myZyraFocusIndex = 0;
     if (example != null) _reviewedActivityExamples.add(example);
-    _activityDetail = null;
     _activityPreviewEpoch++;
   });
 
@@ -4680,297 +4689,400 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       (_profileIds.contains(item.personId) &&
           !_model.isBlocked(item.personId!));
 
-  void _openActivityItem(ZyraMyZyraActivityItem item) {
-    if (!_activityRoot ||
-        !_activityItemVisible(item) ||
-        !(_activityExample?.items.any((known) => known.id == item.id) ??
-            false)) {
-      return;
+  String _receivedFocusToken(String id) =>
+      'received:$id:${_model.receivedRequestRevision(id)}';
+
+  List<ZyraFocusEvent> _focusEvents({bool includeConsumed = false}) {
+    final events = <ZyraFocusEvent>[];
+    final example = _activityExample;
+    final fixtureRequests =
+        example == ZyraMyZyraActivityExample.requestReceived ||
+        example == ZyraMyZyraActivityExample.severalRequests;
+    final incoming = _visibleRequests(DraftJourneyState.received)
+        .where(
+          (p) =>
+              _model.hasUnseenReceivedRequest(p.id) &&
+              (includeConsumed ||
+                  !_myZyraConsumedFocusTokens.contains(
+                    _receivedFocusToken(p.id),
+                  )),
+        )
+        .toList();
+    final requested = _model.snapshot().pendingRequestedAt;
+    incoming.sort((a, b) {
+      final time = (requested[b.id] ?? DateTime.utc(1970)).compareTo(
+        requested[a.id] ?? DateTime.utc(1970),
+      );
+      return time != 0
+          ? time
+          : (_model.receivedRequestRevision(b.id) ?? 0).compareTo(
+              _model.receivedRequestRevision(a.id) ?? 0,
+            );
+    });
+    if (example != ZyraMyZyraActivityExample.quiet &&
+        !fixtureRequests &&
+        incoming.isNotEmpty) {
+      final names = incoming.map((p) => p.firstName).toList();
+      events.add(
+        ZyraFocusEvent(
+          tokens: incoming.map((p) => _receivedFocusToken(p.id)).toList(),
+          target: 'requests',
+          title: incoming.length == 1
+              ? 'Journey request from ${names.first}'
+              : '${incoming.length} Journey requests',
+          detail:
+              '${zyraFocusRequestNames(names)} would like to begin a Journey with you.',
+          action: incoming.length == 1 ? 'View request' : 'View requests',
+          icon: Icons.mail_outline,
+          occurredAt: requested[incoming.first.id] ?? DateTime.utc(1970),
+          order: _model.receivedRequestRevision(incoming.first.id) ?? 0,
+        ),
+      );
     }
-    final id = item.personId;
-    final state = id == null ? null : _model.stateFor(id);
-    if ((_activityExample == ZyraMyZyraActivityExample.requestReceived ||
-            _activityExample == ZyraMyZyraActivityExample.severalRequests) &&
-        state == DraftJourneyState.received) {
-      _activity('requests');
-    } else if ((_activityExample == ZyraMyZyraActivityExample.requestAccepted &&
-            state == DraftJourneyState.preparing) ||
-        (_activityExample == ZyraMyZyraActivityExample.journeyReady &&
-            state == DraftJourneyState.active)) {
-      _journey(id!);
-    } else if (_activityExample == ZyraMyZyraActivityExample.journeyEnded &&
-        state == DraftJourneyState.ended) {
-      _activity('ended');
-      _journey(id!);
-    } else if (_activityExample == ZyraMyZyraActivityExample.circleMessage &&
-        _conceptGuardianPeople.isNotEmpty) {
-      _open('guardian_circle');
-    } else {
-      // A fictional event never becomes a live source or a made-up permission.
-      _move(() {
-        _activityDetail = item;
-        _pages.add('activity_preview_detail');
-      });
+    if (example == null) {
+      // The current Circle fixture explicitly marks this fixed response unread
+      // for the Seeker (the Guardian view does not). No message-read write here.
+      final circleSender = _conceptGuardianPeople.firstOrNull;
+      if (circleSender != null) {
+        events.add(
+          ZyraFocusEvent(
+            tokens: ['circle:response:${circleSender.id}'],
+            target: 'guardian_circle',
+            title: 'New message in Guardian Circle',
+            detail:
+                '${circleSender.firstName} has added to your Circle conversation.',
+            action: 'Open Circle',
+            icon: Icons.forum_outlined,
+            occurredAt: DateTime.utc(2026, 10, 12, 0, 12),
+          ),
+        );
+      }
+      for (final p in _currentJourneys) {
+        final at = _model.outgoingRequestAcceptedAt(p.id);
+        if (at != null && !_model.isBlocked(p.id)) {
+          events.add(
+            ZyraFocusEvent(
+              tokens: [
+                'accepted:${p.id}:${_model.outgoingRequestAcceptedRevision(p.id)}:${at.microsecondsSinceEpoch}',
+              ],
+              target: 'journey',
+              personId: p.id,
+              occurredAt: at,
+              order: _model.outgoingRequestAcceptedRevision(p.id) ?? 0,
+              title: '${p.firstName} accepted your Journey request',
+              detail: 'Review the next step before beginning together.',
+              action: 'View Journey',
+              icon: Icons.check,
+            ),
+          );
+        }
+      }
+    } else if (example != ZyraMyZyraActivityExample.quiet) {
+      final samples = example.items.where(_activityItemVisible).toList();
+      if (fixtureRequests && samples.isNotEmpty) {
+        final names = samples
+            .map(
+              (x) =>
+                  draftProfiles.firstWhere((p) => p.id == x.personId).firstName,
+            )
+            .toList();
+        events.add(
+          ZyraFocusEvent(
+            tokens: samples
+                .map((x) => 'fixture:$_activityPreviewEpoch:${x.id}')
+                .toList(),
+            target: 'requests',
+            occurredAt: DateTime.utc(1970),
+            title: names.length == 1
+                ? 'Journey request from ${names.first}'
+                : '${names.length} Journey requests',
+            detail:
+                '${zyraFocusRequestNames(names)} would like to begin a Journey with you.',
+            action: names.length == 1 ? 'View request' : 'View requests',
+            icon: Icons.mail_outline,
+          ),
+        );
+      } else {
+        for (final item in samples) {
+          final id = item.personId;
+          final state = id == null ? null : _model.stateFor(id);
+          final target = switch (example) {
+            ZyraMyZyraActivityExample.requestAccepted ||
+            ZyraMyZyraActivityExample.journeyReady ||
+            ZyraMyZyraActivityExample.familyReviewOpened => 'journey',
+            ZyraMyZyraActivityExample.milestoneToConfirm => 'timeline',
+            ZyraMyZyraActivityExample.requestDeclined => 'requests_past',
+            ZyraMyZyraActivityExample.introductionReceived => 'introductions',
+            ZyraMyZyraActivityExample.journeyEnded => 'ended',
+            ZyraMyZyraActivityExample.guardianUpdate ||
+            ZyraMyZyraActivityExample.guardianInvitationExpiring => 'guardian',
+            ZyraMyZyraActivityExample.circleMessage => 'guardian_circle',
+            _ => '',
+          };
+          // A selected fictional event cannot invent its target's current access.
+          if (target == 'journey' &&
+              !(state == DraftJourneyState.active ||
+                  state == DraftJourneyState.preparing)) {
+            continue;
+          }
+          if (target == 'timeline' && !_canViewTimeline(id)) continue;
+          if ((target == 'guardian_circle' || target == 'guardian') &&
+              _conceptGuardianPeople.isEmpty) {
+            continue;
+          }
+          events.add(
+            ZyraFocusEvent(
+              tokens: ['fixture:$_activityPreviewEpoch:${item.id}'],
+              target: target,
+              personId: id,
+              occurredAt: DateTime.utc(1970),
+              title: item.title,
+              detail: target == 'ended'
+                  ? 'It stays in your read-only Ended Journeys.'
+                  : item.detail,
+              action: target == 'ended'
+                  ? 'View Ended Journeys'
+                  : item.actionLabel,
+              icon: switch (target) {
+                'requests_past' => Icons.close,
+                'introductions' => Icons.groups_outlined,
+                'journey' => switch (example) {
+                  ZyraMyZyraActivityExample.requestAccepted => Icons.check,
+                  ZyraMyZyraActivityExample.familyReviewOpened =>
+                    Icons.verified_user_outlined,
+                  _ => Icons.people_outline,
+                },
+                'timeline' => Icons.check,
+                'ended' => Icons.history,
+                'guardian' => Icons.verified_user_outlined,
+                _ => Icons.forum_outlined,
+              },
+            ),
+          );
+        }
+      }
+    }
+    final visible = events
+        .where(
+          (e) =>
+              includeConsumed ||
+              e.tokens.any(
+                (token) => !_myZyraConsumedFocusTokens.contains(token),
+              ),
+        )
+        .toList();
+    visible.sort((a, b) {
+      final time = b.occurredAt.compareTo(a.occurredAt);
+      if (time != 0) return time;
+      final order = b.order.compareTo(a.order);
+      return order != 0 ? order : a.tokens.first.compareTo(b.tokens.first);
+    });
+    return visible;
+  }
+
+  void _consumeFocusTarget(String target, {String? personId}) {
+    if (_guardianRole) return;
+    for (final event in _focusEvents(includeConsumed: true)) {
+      if (event.target == target &&
+          (event.personId == null ||
+              personId == null ||
+              event.personId == personId)) {
+        _myZyraConsumedFocusTokens.addAll(event.tokens);
+      }
     }
   }
 
-  Widget _activityPreviewDetail() {
-    final item = _activityDetail;
-    if (!_allowed ||
-        _guardianRole ||
-        _tab != 2 ||
-        item == null ||
-        !_activityItemVisible(item) ||
-        !(_activityExample?.items.any((known) => known.id == item.id) ??
-            false)) {
-      return _unavailable();
+  void _openFocusEvent(ZyraFocusEvent event) {
+    if (!_activityRoot || _devControlsVisible || !_allowed) return;
+    if (!_focusEvents().any(
+      (current) => current.tokens.join('|') == event.tokens.join('|'),
+    )) {
+      return;
     }
-    return _pageScroll([
-      _heading('Activity', ''),
-      _card([
-        _title(item.title, size: 25),
-        _body(item.detail),
-        _body('No request, Journey, permission or notification has changed.'),
-        _body(
-          'This activity relates to ${switch (item.owner) {
-            ZyraMyZyraActivityOwner.requests => 'the addressed Journey request',
-            ZyraMyZyraActivityOwner.introductions => 'the addressed Introduction',
-            ZyraMyZyraActivityOwner.journey => 'the addressed Journey',
-            ZyraMyZyraActivityOwner.ended => 'the read-only Journey archive',
-            ZyraMyZyraActivityOwner.guardian => 'the linked Guardian',
-            ZyraMyZyraActivityOwner.circle => 'Guardian Circle',
-          }} when its current authorised source is available.',
-        ),
-      ]),
-    ], key: const ValueKey('activity-preview-detail'));
+    final id = event.personId;
+    if (id != null && (!_profileIds.contains(id) || _model.isBlocked(id))) {
+      return;
+    }
+    switch (event.target) {
+      case 'requests':
+        _activity('requests');
+      case 'requests_past':
+        _activity('requests', requestsTab: 2);
+      case 'introductions':
+        _activity('introductions');
+      case 'ended':
+        _activity('ended');
+      case 'journey':
+        if (id != null && _currentJourneys.any((p) => p.id == id)) _journey(id);
+      case 'guardian':
+        _tabTo(3);
+      case 'guardian_circle':
+        if (_conceptGuardianPeople.isNotEmpty) _open('guardian_circle');
+      case 'timeline':
+        if (id != null && _canViewTimeline(id)) _open('timeline', person: id);
+    }
   }
 
   Widget _dashboard() {
-    final focus = _focus;
-    final receivedRequests = _visibleRequests(DraftJourneyState.received);
-    final sentRequests = _visibleRequests(DraftJourneyState.sent);
-    final focusBlocked = focus != null && _model.isBlocked(focus.id);
-    final mainGuardian = _conceptGuardianPeople
-        .where((person) => person.isMain)
-        .firstOrNull;
-    final mainFixture = draftGuardians
-        .where((guardian) => guardian.id == mainGuardian?.id)
-        .firstOrNull;
-    final stage = focus == null ? null : _model.stageFor(focus.id);
-    final preparing =
-        focus != null &&
-        _model.stateFor(focus.id) == DraftJourneyState.preparing;
-    final signals = <DashboardSignal>[
-      // Current Journey cards/stages belong in Journey. Mere presence is not
-      // an obligation; only a sourced, addressed decision belongs in My ZYRA.
-      if (_activityExample == null)
-        for (final p in receivedRequests.where(
-          (person) => _model.hasUnseenReceivedRequest(person.id),
-        ))
-          DashboardSignal(
-            id: 'concept-request-${p.id}',
-            kind: DashboardSignalKind.addressedDecision,
-            title: 'Journey request from ${p.firstName}',
-            actionLabel: 'View requests',
-            target: ZyraDashboardTarget.connectionsActivity,
-          ),
-    ];
-    final resolution = const DashboardResolver().resolve(
-      DashboardSnapshot(
-        role: DashboardRole.seeker,
-        onboarding: const DashboardSource.available([]),
-        journeys: DashboardSource.available(
-          DashboardJourneyState(
-            summary: DashboardJourneySummary(
-              id: focus?.id ?? 'concept-search',
-              kind: focus == null
-                  ? DashboardJourneyKind.searching
-                  : DashboardJourneyKind.active,
-              title: _currentJourneys.length > 1
-                  ? '${_currentJourneys.length} Journeys in progress'
-                  : focus == null
-                  ? 'Ready for introductions'
-                  : focusBlocked
-                  ? 'User not found'
-                  : 'You & ${focus.firstName}',
-              detail: _currentJourneys.length > 1
-                  ? '${_model.occupiedCount} of ${_model.capacity} places in use'
-                  : focus == null
-                  ? 'New introductions will appear when they are available.'
-                  : focusBlocked
-                  ? 'Your Journey place is retained.'
-                  : preparing
-                  ? 'Preparing together'
-                  : '${stage?.label} · Stage ${stage?.order} of ${ZyraJourneyStages.count}',
-              progress:
-                  stage == null || focusBlocked || _currentJourneys.length > 1
-                  ? null
-                  : stage.order / ZyraJourneyStages.count,
-            ),
-            signals: signals,
-          ),
-        ),
-        updates: const DashboardSource.available([]),
-        guardianInvitations: const DashboardSource.available([]),
-        insights: const DashboardSource.available([]),
-        stableState: DashboardStableState(
-          orientationItems: const DashboardSource.available([]),
-          family: DashboardSource.available(
-            DashboardFamilyStatus(
-              kind: DashboardFamilyKind.connected,
-              title: mainFixture != null
-                  ? '${mainFixture.firstName} ${mainFixture.surname} · Guardian connected'
-                  : 'Choose a Main Guardian',
-              detail: mainFixture != null
-                  ? null
-                  : 'Your Guardians stay linked, but your Journey waits until you choose who leads.',
-              linkedCount: _conceptGuardianPeople.length,
-              actionLabel: 'Manage Guardians',
-            ),
-          ),
-        ),
-      ),
-    );
-    final revision = _uiRevision;
-    final activityEpoch = _activityPreviewEpoch;
-    final controlsEpoch = _devControlsEpoch;
-    final routeStamp = _devRouteStamp;
+    final events = _focusEvents();
+    final incoming = _visibleRequests(
+      DraftJourneyState.received,
+    ).where((p) => _model.hasUnseenReceivedRequest(p.id)).length;
+    final sent = _visibleRequests(DraftJourneyState.sent).length;
+    final ended = _visibleRequests(DraftJourneyState.ended).length;
+    final introductions = events
+        .where((event) => event.target == 'introductions')
+        .length;
     final fresh = _accountFreshGuard();
-    final example = _activityExample;
-    final sampleItems =
-        example?.items.where(_activityItemVisible).toList() ??
-        const <ZyraMyZyraActivityItem>[];
-    return ZyraQuietDashboard(
-      titleAlignment: Alignment.centerLeft,
-      resolution: resolution,
-      fixtureMode: true,
-      singlePage: true,
-      permanentNavigation: true,
-      activityPreviewKey: example == null ? null : activityEpoch,
-      activityPreviewControls: example == null
-          ? null
-          : ZyraMyZyraActivityPreviewBar(
-              example: example,
-              onPrevious: _activityAction(() => _stepActivityExample(-1)),
-              onNext: _activityAction(() => _stepActivityExample(1)),
-              onChecklist: _activityAction(() {
-                _activityChecklistExpanded = true;
-                _openDevControls();
-              }),
-              onCurrent: _activityAction(() => _selectActivityExample(null)),
-            ),
-      fixtureCards: [
-        if (example != null) ...sampleItems.map((item) => item.card),
-        if (example == null)
-          for (final person in receivedRequests.where(
-            (person) => _model.hasUnseenReceivedRequest(person.id),
-          ))
-            SupportiveCard(
-              id: 'concept-request-${person.id}',
-              section: SupportiveSection.needsYou,
-              title: 'Journey request from ${person.firstName}',
-              actionLabel: 'View request',
-              target: ZyraDashboardTarget.connectionsActivity,
-              hasNewActivity: _model.hasUnseenReceivedRequest(person.id),
-            ),
-        SupportiveCard(
-          id: 'concept-my-requests',
-          section: SupportiveSection.stand,
-          title: 'Journey requests',
-          detail:
-              '${receivedRequests.length} received · ${sentRequests.length} sent',
-          actionLabel: 'View requests',
-          target: ZyraDashboardTarget.connectionsActivity,
-          hasNewActivity: _hasNewReceivedRequests,
-        ),
-        SupportiveCard(
-          id: 'concept-my-introductions',
-          section: SupportiveSection.stand,
-          title: 'Introductions',
-          detail: '0 introductions',
-          actionLabel: 'View introductions',
-          target: ZyraDashboardTarget.connectionsActivity,
-        ),
-        SupportiveCard(
-          id: 'concept-my-ended',
-          section: SupportiveSection.stand,
-          title: 'Ended Journeys',
-          detail:
-              '${_model.states.values.where((state) => state == DraftJourneyState.ended).length} ended',
-          actionLabel: 'View Ended',
-          target: ZyraDashboardTarget.connectionsActivity,
-        ),
-      ],
-      firstName: 'Adam',
-      comparisonClock: DateTime.utc(2026, 10, 9),
-      decoration: const BoxDecoration(),
-      onRefresh: () async {},
-      onNavigate: (card) {
-        if (!fresh() ||
-            _devControlsVisible ||
-            revision != _uiRevision ||
-            controlsEpoch != _devControlsEpoch ||
-            routeStamp != _devRouteStamp ||
-            activityEpoch != _activityPreviewEpoch ||
-            !(ModalRoute.of(context)?.isCurrent ?? true) ||
-            _guardianRole ||
-            _tab != 2 ||
-            _page != null) {
-          return;
-        }
-        final sample = sampleItems
-            .where((item) => item.id == card.id)
-            .firstOrNull;
-        if (sample != null) {
-          _openActivityItem(sample);
-          return;
-        }
-        if (card.id.startsWith('concept-activity-preview-')) return;
-        switch (card.target) {
-          case ZyraDashboardTarget.discovery:
-            _tabTo(0);
-          case ZyraDashboardTarget.connectionsJourneys:
-            final addressed = _currentJourneys
-                .where(
-                  (journey) =>
-                      card.id == 'concept-current-journey-${journey.id}',
-                )
-                .firstOrNull;
-            if (addressed != null) {
-              _journey(addressed.id);
-            } else if (focus != null && _currentJourneys.length == 1) {
-              _journey(focus.id);
-            } else {
-              _tabTo(1);
-            }
-          case ZyraDashboardTarget.connectionsActivity:
-            if (card.id == 'concept-my-ended') {
-              _activity('ended');
-            } else if (card.id == 'concept-my-introductions') {
-              _activity('introductions');
-            } else if (card.id == 'concept-my-requests') {
-              _activity('requests');
-            } else {
-              final addressed = receivedRequests
-                  .where((person) => card.id == 'concept-request-${person.id}')
-                  .firstOrNull;
-              if (addressed != null) {
-                _activity('requests', viewedReceivedRequestId: addressed.id);
-              }
-            }
-          case ZyraDashboardTarget.guardian:
-            _tabTo(3);
-          case ZyraDashboardTarget.profile:
-            _tabTo(4);
-          case ZyraDashboardTarget.notifications:
-            _open('notifications');
-          default:
-            _act(
-              () => _notice =
-                  'This action is held in the local preview. Your account is unchanged.',
-            );
-        }
-      },
+    final revision = _uiRevision,
+        controls = _devControlsEpoch,
+        routes = _devRouteStamp,
+        epoch = _activityPreviewEpoch;
+    VoidCallback action(VoidCallback callback) => () {
+      if (!fresh() ||
+          !_activityRoot ||
+          _devControlsVisible ||
+          revision != _uiRevision ||
+          controls != _devControlsEpoch ||
+          routes != _devRouteStamp ||
+          epoch != _activityPreviewEpoch ||
+          !(ModalRoute.of(context)?.isCurrent ?? true)) {
+        return;
+      }
+      callback();
+    };
+    final setup =
+        _subscriptionWallet.forRole(ZyraWalletRole.seeker).readiness ==
+        ZyraWalletReadiness.ready;
+    return ZyraFocusPermissionStatus(
+      canAct: () => _allowed && _activityRoot && !_devControlsVisible,
+      builder: (notificationsAllowed) => FutureBuilder(
+        future: _accountSession.compatibility.load('draft-self'),
+        builder: (context, snapshot) {
+          final preferences = ZyraCompatibilityDraft.fromSnapshot(
+            gender: 'male',
+            snapshot: snapshot.data,
+          );
+          final set = preferences.preferenceAnswerCount,
+              total = preferences.preferenceOptionCount;
+          return ZyraFocusDashboard(
+            initialIndex: _myZyraFocusIndex,
+            onIndexChanged: (index) => action(() {
+              _myZyraFocusIndex = index;
+              _publishCheckpoint();
+            })(),
+            previewControls: _activityExample == null
+                ? null
+                : ZyraMyZyraActivityPreviewBar(
+                    example: _activityExample!,
+                    onPrevious: _activityAction(() => _stepActivityExample(-1)),
+                    onNext: _activityAction(() => _stepActivityExample(1)),
+                    onChecklist: _activityAction(() {
+                      _activityChecklistExpanded = true;
+                      _openDevControls();
+                    }),
+                    onCurrent: _activityAction(
+                      () => _selectActivityExample(null),
+                    ),
+                  ),
+            items: [
+              for (final event in events)
+                ZyraFocusItem(
+                  id: event.tokens.join('|'),
+                  icon: event.icon,
+                  title: event.title,
+                  detail: event.detail,
+                  actionLabel: event.action,
+                  actionKey:
+                      event.target == 'requests' && event.tokens.length == 1
+                      ? 'concept-request-draft-amira'
+                      : 'focus-open-${event.target}',
+                  onAction: action(() => _openFocusEvent(event)),
+                ),
+            ],
+            chips: [
+              if (!setup)
+                ZyraFocusChip(
+                  id: 'focus-setup',
+                  label: 'Finish setup',
+                  icon: Icons.person_outline,
+                  onTap: action(() => _walletSetup(ZyraWalletRole.seeker)),
+                ),
+              if (_conceptGuardianPeople.isEmpty)
+                ZyraFocusChip(
+                  id: 'focus-guardian',
+                  label: 'No Guardian yet',
+                  icon: Icons.verified_user_outlined,
+                  onTap: action(() => _tabTo(3)),
+                ),
+              if (setup)
+                ZyraFocusChip(
+                  id: 'focus-places',
+                  label:
+                      '${_model.occupiedCount} of ${_model.capacity} ${_model.capacity == 1 ? 'place' : 'places'} in use',
+                  icon: Icons.people_outline,
+                  onTap: action(() => _tabTo(1)),
+                ),
+              if (notificationsAllowed == false)
+                ZyraFocusChip(
+                  id: 'focus-notifications-off',
+                  label: 'Notifications off',
+                  icon: Icons.notifications_none,
+                  onTap: action(() {
+                    _open('settings');
+                    _open('phone_access');
+                  }),
+                ),
+              if (set < total)
+                ZyraFocusChip(
+                  id: 'focus-preferences',
+                  label: 'Preferences $set/$total',
+                  icon: Icons.tune,
+                  onTap: action(() => _open('filter_preferences')),
+                ),
+            ],
+            tiles: [
+              ZyraFocusTile(
+                id: 'concept-my-requests',
+                label: 'Journey\nrequests',
+                status: incoming > 0
+                    ? '$incoming new'
+                    : sent > 0
+                    ? '$sent sent'
+                    : 'None',
+                isNew: incoming > 0,
+                icon: Icons.inbox_outlined,
+                onTap: action(() => _activity('requests')),
+              ),
+              ZyraFocusTile(
+                id: 'concept-my-introductions',
+                label: 'Introductions',
+                status: introductions > 0 ? '$introductions new' : 'None yet',
+                isNew: introductions > 0,
+                icon: Icons.groups_outlined,
+                onTap: action(() => _activity('introductions')),
+              ),
+              ZyraFocusTile(
+                id: 'concept-my-ended',
+                label: 'Ended\nJourneys',
+                status: ended > 0 ? '$ended ended' : 'None',
+                icon: Icons.history,
+                onTap: action(() => _activity('ended')),
+              ),
+              ZyraFocusTile(
+                id: 'focus-notifications',
+                label: 'Notifications',
+                status: events.isNotEmpty
+                    ? '${events.length} new'
+                    : 'Nothing new',
+                isNew: events.isNotEmpty,
+                icon: Icons.notifications_none,
+                onTap: action(() => _open('notifications')),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -5866,10 +5978,20 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       final index = draftProfiles.indexWhere((p) => p.id == 'draft-$id');
       return index < 0 ? null : _photos?.forIndex(index).firstOrNull;
     },
+    notificationCount: _conceptHassanLinked
+        ? (_guardianTabs.review != ZyraGuardianReview.continued ? 1 : 0) +
+              (_guardianMembership == 'Guardian One' &&
+                      _guardianTabs.connection ==
+                          ZyraGuardianConnection.pending &&
+                      !_guardianTabs.consumedFocus.contains('connect-pending')
+                  ? 1
+                  : 0)
+        : 0,
     onAction: _boundGuardianAction(page),
   );
 
   ValueChanged<String> _boundGuardianAction(String source) {
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final ownerPage = _page;
     final ownerTab = _tab;
     final revision = _uiRevision;
@@ -5877,6 +5999,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final routes = _devRouteStamp;
     return (action) {
       if (!_allowed ||
+          account != (ZyraAccountState.userId, ZyraAccountState.generation) ||
           !_guardianRole ||
           _devControlsVisible ||
           revision != _uiRevision ||
@@ -5893,6 +6016,31 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   void _guardianTabsAction(String action) {
     final state = _guardianTabs;
     final paid = _guardianMembership == 'Guardian One';
+    if (action.startsWith('focus_index_')) {
+      final index = int.tryParse(action.substring('focus_index_'.length));
+      if (index != null && index >= 0 && index < 2) {
+        state.focusIndex = index;
+        _publishCheckpoint();
+      }
+      return;
+    }
+    if (action == 'notifications') {
+      _open('notifications');
+      return;
+    }
+    if (action == 'focus_adam') {
+      if (!_conceptHassanLinked) return;
+      _move(() {
+        state.seeker = 0;
+        state.consumedFocus.add(state.reviewFocusId);
+        _pages.add('guardian');
+      });
+      return;
+    }
+    if (action == 'focus_yusuf') {
+      if (_conceptHassanLinked) _tabTo(3);
+      return;
+    }
     if ((action == 'previous' && !state.canPrevious) ||
         (action == 'next' && !state.canNext)) {
       return;
@@ -5917,6 +6065,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         }
         if (action.startsWith('connect_tab_')) {
           state.connectReceived = action.endsWith('1');
+          if (state.connectReceived) state.consumedFocus.add('connect-pending');
         }
         if (action == 'next' || action == 'previous') {
           state.networkIndex += action == 'next' ? 1 : -1;
@@ -5938,6 +6087,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             ? ZyraGuardianReview.continued
             : ZyraGuardianReview.open;
         if (action == 'reopen') state.hours = 48;
+        if (action == 'pause' || action == 'reopen') state.reviewRevision++;
+        state.focusIndex = 0;
+        state.consumedFocus.remove(state.reviewFocusId);
         _notice = action == 'continue'
             ? 'The Journey continues to Building a Life.'
             : action == 'pause'
@@ -5977,6 +6129,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       if (!paid) return;
       _move(() {
         state.connectReceived = action == 'received';
+        if (state.connectReceived) state.consumedFocus.add('connect-pending');
         _pages.add('guardian_connect');
       });
       return;
@@ -6020,7 +6173,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       return;
     }
     if (action == 'journey') {
-      if (state.main && _conceptHassanLinked) _open('guardian');
+      if (state.main && _conceptHassanLinked) {
+        state.consumedFocus.add(state.reviewFocusId);
+        _open('guardian');
+      }
       return;
     }
     if (action == 'circle') {
@@ -6223,6 +6379,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   );
 
   bool Function() _accountFreshGuard() {
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final revision = _uiRevision;
     final guardian = _guardianRole;
     final page = _page;
@@ -6231,6 +6388,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final navigatorStamp = _devRouteStamp;
     return () =>
         _allowed &&
+        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
         controlsEpoch == _devControlsEpoch &&
         navigatorStamp == _devRouteStamp &&
         ModalRoute.of(context)?.isCurrent == true &&
@@ -7471,6 +7629,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _showJourneyCount(int count, {int tab = 1}) => _move(() {
     if (!_model.seedJourneys(count)) return;
+    _myZyraConsumedFocusTokens.clear();
+    _myZyraFocusIndex = 0;
     _messages.clear();
     _message.clear();
     _conceptGuardianHistory.clear();

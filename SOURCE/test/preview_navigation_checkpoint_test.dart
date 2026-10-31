@@ -123,6 +123,7 @@ void main() {
     final removed = ['draft-guardian-yusuf'];
     final guardianHistory = {'draft-guardian-hassan': true};
     final sent = ['draft-maryam'];
+    final consumedFocus = ['accepted:draft-sara:1793437200000000'];
     final model = ViewRequestDraftModel(capacity: 3)..fillCapacity();
     final checkpoint = ZyraPreviewNavigationCheckpoint(
       guardian: false,
@@ -142,6 +143,8 @@ void main() {
       removedGuardians: removed,
       guardianHistory: guardianHistory,
       networkSent: sent,
+      myZyraConsumedFocusTokens: consumedFocus,
+      myZyraFocusIndex: 2,
     );
     nationalities.clear();
     ethnicities.clear();
@@ -163,6 +166,7 @@ void main() {
     removed.clear();
     guardianHistory.clear();
     sent.clear();
+    consumedFocus.clear();
     model.reset();
     expect(checkpoint.pages, ['journey', 'timeline']);
     expect(checkpoint.browseHistory, ['draft-sara', 'draft-aisha']);
@@ -172,6 +176,10 @@ void main() {
     expect(checkpoint.removedGuardians, {'draft-guardian-yusuf'});
     expect(checkpoint.guardianHistory, {'draft-guardian-hassan': true});
     expect(checkpoint.networkSent, {'draft-maryam'});
+    expect(checkpoint.myZyraConsumedFocusTokens, {
+      'accepted:draft-sara:1793437200000000',
+    });
+    expect(checkpoint.myZyraFocusIndex, 2);
     expect(checkpoint.model.states['draft-sara'], DraftJourneyState.active);
     expect(() => checkpoint.pages.clear(), throwsUnsupportedError);
     expect(() => checkpoint.browseHistory.clear(), throwsUnsupportedError);
@@ -181,7 +189,39 @@ void main() {
     expect(() => checkpoint.removedGuardians.clear(), throwsUnsupportedError);
     expect(() => checkpoint.guardianHistory.clear(), throwsUnsupportedError);
     expect(() => checkpoint.networkSent.clear(), throwsUnsupportedError);
+    expect(
+      () => checkpoint.myZyraConsumedFocusTokens.clear(),
+      throwsUnsupportedError,
+    );
   });
+
+  test(
+    'Focus checkpoint defaults and bounds do not infer consumed activity',
+    () {
+      final fresh = ZyraPreviewNavigationCheckpoint(
+        guardian: false,
+        model: ViewRequestDraftModel().snapshot(),
+        tab: 0,
+        pages: const [],
+      );
+      expect(fresh.myZyraConsumedFocusTokens, isEmpty);
+      expect(fresh.myZyraFocusIndex, 0);
+      final bounded = ZyraPreviewNavigationCheckpoint(
+        guardian: false,
+        model: ViewRequestDraftModel().snapshot(),
+        tab: 0,
+        pages: const [],
+        myZyraConsumedFocusTokens: List.generate(
+          100,
+          (index) => 'event-$index',
+        ),
+        myZyraFocusIndex: -1,
+      );
+      expect(bounded.myZyraConsumedFocusTokens.length, 64);
+      expect(bounded.myZyraConsumedFocusTokens.last, 'event-63');
+      expect(bounded.myZyraFocusIndex, 0);
+    },
+  );
 
   test('page and Browse-history lists remain bounded', () {
     final checkpoint = ZyraPreviewNavigationCheckpoint(

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'zyra_browse_filter.dart';
+import 'zyra_subscription_wallet_draft.dart' show ZyraWalletReadiness;
 import 'zyra_one_journey_guardian_tabs.dart' show ZyraGuardianTabsSnapshot;
 import 'zyra_view_request_draft_model.dart';
 
@@ -55,6 +56,9 @@ class ZyraPreviewNavigationCheckpoint {
     int journeyPlaceIndex = 0,
     this.guardianTabs = const ZyraGuardianTabsSnapshot(),
     this.myZyraLastOpenedRevision = 0,
+    this.seekerReadiness = ZyraWalletReadiness.ready,
+    Iterable<String> myZyraConsumedFocusTokens = const [],
+    int myZyraFocusIndex = 0,
     this.guardianPage = 0,
     this.networkTab = 0,
     this.guardianJourneyId,
@@ -78,6 +82,10 @@ class ZyraPreviewNavigationCheckpoint {
     this.accountDestination,
     this.settingsDetail,
   }) : journeyPlaceIndex = journeyPlaceIndex.clamp(0, 2),
+       myZyraConsumedFocusTokens = Set.unmodifiable(
+         myZyraConsumedFocusTokens.take(64),
+       ),
+       myZyraFocusIndex = myZyraFocusIndex < 0 ? 0 : myZyraFocusIndex,
        browseFilter = browseFilter.detached(),
        pages = List.unmodifiable(pages.take(8)),
        browseHistory = List.unmodifiable(browseHistory.take(11)),
@@ -97,6 +105,7 @@ class ZyraPreviewNavigationCheckpoint {
        networkSent = Set.unmodifiable(networkSent.take(64));
 
   final bool guardian;
+  final ZyraWalletReadiness seekerReadiness;
   final ZyraGuardianTabsSnapshot guardianTabs;
   final ViewRequestDraftSnapshot model;
   final int tab, requestsTab, guardianPage, networkTab;
@@ -104,6 +113,9 @@ class ZyraPreviewNavigationCheckpoint {
   final int journeyPlaceIndex;
   // Tab attention is independent of individual received-request reads.
   final int myZyraLastOpenedRevision;
+  // Focus consumption is independent of unread requests and tab attention.
+  final Set<String> myZyraConsumedFocusTokens;
+  final int myZyraFocusIndex;
   final List<String> pages, browseHistory;
   final String? personId, guardianJourneyId, browseId;
   final ZyraBrowseFilter browseFilter;
