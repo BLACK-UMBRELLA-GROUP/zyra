@@ -1,0 +1,71 @@
+{
+  "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
+  "scope": "Exact 13-file allowlist staged and committed in source commit; no config/credential/blanket lib scan.",
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart",
+      "bytes": 12165,
+      "sha256": "589a880277ea56d676f5c6dd3cfd64054ca18e881aefa276eeeb3722f3e05f67"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "bytes": 28534,
+      "sha256": "a3f18844f629b1d049e5608d0db9865adb42267c6fd5dbf7e380a4819dfa7191"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "bytes": 21381,
+      "sha256": "9b6a05265f5a6df77913894c337884a3675a4a3302da495c6e9e4f4d35d6bd9f"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 315367,
+      "sha256": "a86550dd5f372606bcfb0f123f498f10438eaa1ba0f2b1c35f22b0634d64bbe9"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/upgrade_screen.dart",
+      "bytes": 25061,
+      "sha256": "6587e372b524228fe12383ffb9793a33763cb7bb815cdb613e6455629c62c33c"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "bytes": 17648,
+      "sha256": "8b5c8f27c4897571b1c7c174f9fc44fd57bfc96c578ed7fd62cc083bad2d951f"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "bytes": 7323,
+      "sha256": "ac4e954569ae836ef06ce1f7400202374c99866fe68b4620f0cfacc4326c2e93"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "bytes": 13517,
+      "sha256": "980145d86604cb6a09846855914f4604c7c76bb99be90189cd4a6be127d36362"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "bytes": 34431,
+      "sha256": "a39081ca5bdec64634a6542b4e177bf7cf98a56890345b56c82a29d26ba0fc99"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "bytes": 34823,
+      "sha256": "9c824b3916070f4ba5b863e526bd570d5717f1d0f7bee602193f35610573a5cc"
+    },
+    {
+      "path": "SOURCE/test/membership_management_screen_test.dart",
+      "bytes": 31170,
+      "sha256": "2990e8154794e5417486e1bfbafbfbc1a93bfebb6216735c69091256a9b48871"
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "bytes": 5855,
+      "sha256": "52aaceb6ffe54636894151067a5536134a9b16ceb4ed400283a44a9fa78e540b"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes": 47019,
+      "sha256": "647725b0cacd2b555987badc3debf3ea0ecfabcef002396d9ef9bfb2b57f3cbd"
+    }
+  ]
+}

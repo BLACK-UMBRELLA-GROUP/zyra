@@ -1,0 +1,150 @@
+{
+  "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
+  "method": "Actual protected shell in Flutter widget renderer; bundled Poppins/Material icons, offline sample people; decorative phone border is only in masters.",
+  "frames": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01-x04__master_beside_build.png",
+      "bytes": 1036214,
+      "sha256": "343907ba140b6325e90ecca950d9f4ab5d5ce60530f272f0bfda54e7076d2812",
+      "pixels": [
+        1720,
+        1894
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked.png",
+      "bytes": 389257,
+      "sha256": "c9d4731f73a81bf582e06ecf0e1b33d73a42f4e56a19e44f4e5575001d632f87",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked__master_beside_build.png",
+      "bytes": 901286,
+      "sha256": "5c9f0689f9b68f52d5402d62ed262525cecbf70f8fa167951fafb6f5005f240e",
+      "pixels": [
+        2580,
+        2840
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked__text200.png",
+      "bytes": 482415,
+      "sha256": "fc901f4665085dfc8431af447bac69868ad8791d05b57bef796a22b4ff364d90",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked__text200__footer.png",
+      "bytes": 484532,
+      "sha256": "a4588fc6cb4941f4bb6774c08be8a6fc030a730e974c7ef914caf7a5c18bfb9b",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one.png",
+      "bytes": 480872,
+      "sha256": "a643f01a750d109e07972889da6ef9dcb852fdfa1d154d15d431ee3cbebaaab8",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one__master_beside_build.png",
+      "bytes": 1059714,
+      "sha256": "2db47e9ff1112bacf8f527b274b1b251e63a87b526f395548ee897d6bec79fd9",
+      "pixels": [
+        2580,
+        2840
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one__text200.png",
+      "bytes": 534957,
+      "sha256": "a74820ffce9cd72c61a42aebe2f2967370e25486f8f251182c2494072f48da9e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one__text200__footer.png",
+      "bytes": 537484,
+      "sha256": "aa1afe08b545b6fbd5af9e1edcc8ec37b8a985187a0d9136401bd0fef9aa7269",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic.png",
+      "bytes": 484504,
+      "sha256": "c2129c531e6f6dd127273fe7265fd6cafbf450f8fa4bad645183abb5c296ff71",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic__master_beside_build.png",
+      "bytes": 1066122,
+      "sha256": "345ca08e03255f0ad6eac423e6438665aae49660d95d22e0810e910cdac21f94",
+      "pixels": [
+        2580,
+        2840
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic__text200.png",
+      "bytes": 542160,
+      "sha256": "c404c26e3a4d83d60a5799fea507b69518f374f388c6364c25e86b319ad882df",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic__text200__footer.png",
+      "bytes": 543642,
+      "sha256": "2ea4f6cfe6b73c0fad773b92935898e63a0e5ce4922d08c49e9615a54188a21c",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x04_safety.png",
+      "bytes": 297350,
+      "sha256": "5abe03fdef315bd34bac03e911893ec9880c63644d79bddc41cae58ed9a3d129",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x04_safety__master_beside_build.png",
+      "bytes": 765251,
+      "sha256": "692d17499c6d09331379968ed1258e6f3d040b6d392e0fda2f3b7b077534fd79",
+      "pixels": [
+        2580,
+        2840
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x04_safety__text200.png",
+      "bytes": 388389,
+      "sha256": "1e840cfbb01ce0ca6705d73c20b4600d7b9aefffb6b280af4ee982184f9c434a",
+      "pixels": [
+        1290,
+        2796
+      ]
+    }
+  ]
+}

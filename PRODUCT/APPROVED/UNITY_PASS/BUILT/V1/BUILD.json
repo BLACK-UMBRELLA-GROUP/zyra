@@ -1,0 +1,12 @@
+{
+  "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
+  "base_commit": "0909fdfc42f82c0be432e826eb65d5643ef3405b",
+  "flutter": "3.44.2",
+  "mode": "Flutter widget-test renderer, actual protected shell with bundled fonts",
+  "target": "430x932 logical, DPR3, text1.0/2.0",
+  "timestamp_utc": "2026-10-31T12:02:07.764153+00:00",
+  "queue": 55,
+  "lock": "22 V1",
+  "metadata_only": true,
+  "compiled_products_or_source_copies": false
+}

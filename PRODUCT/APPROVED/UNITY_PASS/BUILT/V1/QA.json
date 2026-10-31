@@ -1,0 +1,133 @@
+{
+  "queue": 55,
+  "lock": "22 V1",
+  "status": "BUILT; parent visual/contract review pending OA-ZYRA-328",
+  "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
+  "built_from": {
+    "brief": "PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V1.md",
+    "lock": "PRODUCT/APPROVED/UNITY_PASS/RECORD/LOCK_RECORD.md",
+    "spec": "PRODUCT/APPROVED/UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V5.md, retained V1 shared head and Compatibility/Unlocks/Safety rows only",
+    "masters": [
+      "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x01_compatibility__locked.png",
+      "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x02_unlocks__seeker_one.png",
+      "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x03_unlocks__seeker_basic.png",
+      "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x04_safety.png"
+    ],
+    "baselines": [
+      "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/profile_membership_settings/compatibility_store__normal.png",
+      "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/profile_membership_settings/safety__no_subject.png",
+      "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/browse_and_requests/compatibility__locked_zero_unlocks.png"
+    ]
+  },
+  "checks": {
+    "distinct_scoped_cases": 97,
+    "suites": {
+      "compatibility_and_browse_utility": 33,
+      "unlocks_catalogue": 17,
+      "actual_compatibility_routes": 19,
+      "actual_shell_capture": 2,
+      "unlock_ownership_read": 22,
+      "membership_inline_catalogue": 1,
+      "ordinary_member_store_routes": 3
+    },
+    "analyser": "No issues found",
+    "format": "12 Dart files, 0 changes",
+    "sdk_driver": "Flutter 3.44.2, 5 pins, direct and nested exec denial PASS",
+    "frames": {
+      "standard_430x932_3x": 4,
+      "text200": 7,
+      "full_resolution_master_build_pairs": 4,
+      "contact_sheet": 1
+    },
+    "behaviour": [
+      "Existing callback debits 1 to 0 and mounts existing revealed score reader; revealed branch unchanged.",
+      "Get more opens actual Compatibility Unlocks route.",
+      "0/1/5 balance grammar and One/Basic header lines tested.",
+      "Three-pack default; all existing catalogue prices and all eight included examples retained.",
+      "Pack/pager/terms ownership and stale replay tested before haptics, including disposal.",
+      "Unknown ordinary balance omits the balance head instead of claiming zero; ordinary membership field comes from existing plan.",
+      "Account Safety has no Submit report; targeted report remains draft-only with no transport.",
+      "Larger text grows and scrolls; actual footer captures show controls fully reachable."
+    ]
+  },
+  "visual_comparison": {
+    "review": "Primary inspected x01-x04 masters and built pages, four large-text tops and compatibility/Unlocks footer captures. Parent comparison pending.",
+    "differences": [
+      "Master has a drawn rounded phone border; actual capture is the existing rectangular shell frame with real top59/bottom34 safe-area insets.",
+      "Native Poppins metrics, baseline weight, line wrapping and Material glyphs differ visibly from prototype raster; numeric 96pt circle,26pt light title,11pt caps and1.2 letter spacing follow V1.",
+      "Content/action anchors sit higher in the retained safe-area frame than the raster masters; floating primitive shadows and card text leading also differ. No pixel-parity claim.",
+      "Large text uses scrolling and a horizontal pack rail; all controls grow and remain reachable."
+    ],
+    "refusal": "No change to shared shell safe-area/navigation, app-wide type metrics or floating primitives to erase raster differences under this page-only row; review any desired change with designer/Founder under OA-ZYRA-328."
+  },
+  "limits": {
+    "unrelated_seen": [
+      "Two Profile row targets/arrows compact false/true cases in broader membership_wallet_visual_test fail at their old Profile scroll finder, outside Unlocks. Written refusal to repair those unrelated fixtures in queue55; affected inline case separately passes."
+    ],
+    "full_suite": "Inherited37 wider failures were not rerun or claimed green. No full-app/a11y-clean claim.",
+    "native_backend": "No native build/install/upload/signing, auth, API, backend, entitlement or migration work.",
+    "later_versions": "UNITY V2-V5 report-profile/empty/settings/advice work not built. Existing ordinary member routes retained OA-ZYRA-317."
+  },
+  "code_size": {
+    "before": {
+      "app": [
+        169323,
+        335
+      ],
+      "dev_preview": [
+        49534,
+        93
+      ],
+      "founder": [
+        30352,
+        43
+      ],
+      "tests": [
+        216995,
+        507
+      ],
+      "goldens": [
+        2612,
+        307
+      ],
+      "old_pause_restart": [
+        39,
+        1
+      ]
+    },
+    "after": {
+      "app": [
+        168980,
+        335
+      ],
+      "dev_preview": [
+        49190,
+        93
+      ],
+      "founder": [
+        30008,
+        43
+      ],
+      "tests": [
+        216034,
+        508
+      ],
+      "goldens": [
+        2612,
+        307
+      ],
+      "old_pause_restart": [
+        39,
+        1
+      ]
+    }
+  },
+  "reading": {
+    "primary_startup_text_bytes_approx": 128982,
+    "primary_startup_KiB": 126.0,
+    "reason": "Mandatory lessons plus AGENTS/MAP87/brief/LOCK/spec/queue filtering and review scans; review scan overhead counted rather than only emitted excerpt.",
+    "locked_master_bytes": 2891541,
+    "helper": "unlocks_presenter, isolated store implementation and pager fix; 51001 startup bytes; no SDK/git; token totals unavailable in tools."
+  },
+  "retirement": "Obsolete ring-specific store test moved to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE55_UNITY_V1_2026-10-31/; replaced by behaviour/ownership/reachability tests."
+}
