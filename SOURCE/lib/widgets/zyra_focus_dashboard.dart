@@ -4,6 +4,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_floating_surface.dart';
 import 'zyra_tap_feedback.dart';
+import 'zyra_profiles_components.dart';
 
 class ZyraFocusItem {
   const ZyraFocusItem({
@@ -81,6 +82,7 @@ class ZyraFocusDashboard extends StatefulWidget {
 
 class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
   late int _index = widget.initialIndex;
+  int _render = 0;
   int get index =>
       widget.items.isEmpty ? 0 : _index.clamp(0, widget.items.length - 1);
   @override
@@ -92,9 +94,10 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     _index = index;
   }
 
-  void step(int delta) {
+  void select(int next, int render) {
+    if (!mounted || render != _render) return;
     if (widget.items.length < 2) return;
-    final next = (index + delta).clamp(0, widget.items.length - 1);
+    next = next.clamp(0, widget.items.length - 1);
     if (next == index) return;
     setState(() => _index = next);
     widget.onIndexChanged?.call(next);
@@ -253,65 +256,6 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
             ],
           ),
         ],
-        if (widget.items.length > 1) ...[
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                key: const ValueKey('focus-previous'),
-                tooltip: 'Previous item',
-                style: IconButton.styleFrom(
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                padding: const EdgeInsets.only(bottom: 24),
-                constraints: const BoxConstraints.tightFor(
-                  width: 44,
-                  height: 44,
-                ),
-                onPressed: index == 0
-                    ? null
-                    : ZyraTapFeedback.onTap(context, () => step(-1)),
-                icon: const Icon(Icons.chevron_left, size: 16),
-                color: ZyraColors.foreground,
-                disabledColor: ZyraColors.foregroundMuted.withValues(alpha: .5),
-              ),
-              for (var i = 0; i < widget.items.length; i++)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 3),
-                    width: i == index ? 30 : 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: i == index
-                          ? ZyraColors.journeyGold
-                          : ZyraColors.foregroundMuted.withValues(alpha: .6),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                ),
-              IconButton(
-                key: const ValueKey('focus-next'),
-                tooltip: 'Next item',
-                style: IconButton.styleFrom(
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                padding: const EdgeInsets.only(bottom: 24),
-                constraints: const BoxConstraints.tightFor(
-                  width: 44,
-                  height: 44,
-                ),
-                onPressed: index == widget.items.length - 1
-                    ? null
-                    : ZyraTapFeedback.onTap(context, () => step(1)),
-                icon: const Icon(Icons.chevron_right, size: 16),
-                color: ZyraColors.foreground,
-                disabledColor: ZyraColors.foregroundMuted.withValues(alpha: .5),
-              ),
-            ],
-          ),
-        ],
       ],
     );
   }
@@ -441,91 +385,107 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
   }
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-    bottom: false,
-    child: LayoutBuilder(
-      builder: (context, bounds) => ZyraShadowScrollView(
-        key: const PageStorageKey('my-zyra-focus-scroll'),
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: (bounds.maxHeight - 116).clamp(0, double.infinity),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    widget.title,
-                    style: ZyraText.heading(
-                      size: 28,
-                    ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
-                  ),
-                  if (widget.greeting != null) ...[
-                    const SizedBox(height: 14),
-                    Text(widget.greeting!, style: ZyraText.subtext(size: 12.5)),
+  Widget build(BuildContext context) {
+    final render = ++_render;
+    bool current() => mounted && render == _render;
+    return SafeArea(
+      bottom: false,
+      child: LayoutBuilder(
+        builder: (context, bounds) => ZyraShadowScrollView(
+          key: const PageStorageKey('my-zyra-focus-scroll'),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: (bounds.maxHeight - 116).clamp(0, double.infinity),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: ZyraText.heading(
+                        size: 28,
+                      ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
+                    ),
+                    if (widget.greeting != null) ...[
+                      const SizedBox(height: 14),
+                      Text(
+                        widget.greeting!,
+                        style: ZyraText.subtext(size: 12.5),
+                      ),
+                    ],
+                    if (widget.items.length > 1) ...[
+                      const SizedBox(height: 12),
+                      ZyraProfilesDots(
+                        count: widget.items.length,
+                        index: index,
+                        dotKey: (i) => ValueKey('focus-dot-$i'),
+                        targetKey: (i) => ValueKey('focus-dot-target-$i'),
+                        itemLabel: (i) =>
+                            'Item ${i + 1} of ${widget.items.length}',
+                        canAct: current,
+                        onSelected: (i) => select(i, render),
+                      ),
+                    ],
+                    if (widget.previewControls != null) widget.previewControls!,
                   ],
-                  if (widget.previewControls != null) widget.previewControls!,
-                ],
-              ),
-              GestureDetector(
-                key: const ValueKey('focus-area'),
-                behavior: HitTestBehavior.opaque,
-                onHorizontalDragEnd: (details) {
-                  final velocity = details.primaryVelocity ?? 0;
-                  if (velocity.abs() < 100) return;
-                  ZyraTapFeedback.onTap(
-                    context,
-                    () => step(velocity < 0 ? 1 : -1),
-                  )?.call();
-                },
-                child: Padding(
-                  // The visible pager is 20px. Its 44px touch boxes extend 24px
-                  // below that paint; balancing space above preserves centring.
-                  padding: EdgeInsets.only(
-                    top: widget.items.length > 1 ? 48 : 24,
-                    bottom: 24,
-                  ),
-                  child: focus(),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (widget.chips.isNotEmpty) ...[
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: widget.chips.map(chip).toList(),
-                    ),
-                    const SizedBox(height: 14),
-                  ],
-                  SizedBox(
-                    height: tileHeight(
+                GestureDetector(
+                  key: const ValueKey('focus-area'),
+                  behavior: HitTestBehavior.opaque,
+                  onHorizontalDragEnd: (details) {
+                    final velocity = details.primaryVelocity ?? 0;
+                    if (velocity.abs() < 100) return;
+                    ZyraTapFeedback.onTap(
                       context,
-                      (bounds.maxWidth - 40 - (widget.tiles.length - 1) * 8) /
-                          widget.tiles.length,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        for (var i = 0; i < widget.tiles.length; i++) ...[
-                          if (i > 0) const SizedBox(width: 8),
-                          Expanded(child: tile(widget.tiles[i])),
-                        ],
-                      ],
-                    ),
+                      () => select(index + (velocity < 0 ? 1 : -1), render),
+                      canAct: current,
+                    )?.call();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: focus(),
                   ),
-                ],
-              ),
-            ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (widget.chips.isNotEmpty) ...[
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: widget.chips.map(chip).toList(),
+                      ),
+                      const SizedBox(height: 14),
+                    ],
+                    SizedBox(
+                      height: tileHeight(
+                        context,
+                        (bounds.maxWidth - 40 - (widget.tiles.length - 1) * 8) /
+                            widget.tiles.length,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          for (var i = 0; i < widget.tiles.length; i++) ...[
+                            if (i > 0) const SizedBox(width: 8),
+                            Expanded(child: tile(widget.tiles[i])),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

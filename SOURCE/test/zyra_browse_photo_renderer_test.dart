@@ -66,8 +66,8 @@ void _expectSelectedDot(WidgetTester tester, int index) {
   final dot = tester.widget<AnimatedContainer>(
     _key('concept_browse_photo_dot_${_member.id}_$index'),
   );
-  expect(dot.constraints!.maxWidth, 20);
-  expect(dot.constraints!.maxHeight, 5);
+  expect(dot.constraints!.maxWidth, 30);
+  expect(dot.constraints!.maxHeight, 6);
   expect((dot.decoration! as BoxDecoration).color, ZyraColors.journeyGold);
 }
 

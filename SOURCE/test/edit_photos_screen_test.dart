@@ -59,9 +59,10 @@ void main() {
     expect(find.byKey(const ValueKey('photo-page-dot-0')), findsOneWidget);
     expect(find.byKey(const ValueKey('photo-page-dot-1')), findsOneWidget);
     expect(
-      tester.getTopLeft(find.byKey(const ValueKey('photo-page-dot-0'))).dy -
-          tester.getBottomLeft(find.byKey(const ValueKey('photo-large-0'))).dy,
-      greaterThanOrEqualTo(16),
+      tester.getBottomLeft(find.byKey(const ValueKey('photo-page-dot-0'))).dy,
+      lessThan(
+        tester.getTopLeft(find.byKey(const ValueKey('photo-large-0'))).dy,
+      ),
     );
     expect(
       find.byKey(const ValueKey('main-photo-solid-gold-border')),

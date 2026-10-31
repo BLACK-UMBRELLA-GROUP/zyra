@@ -809,6 +809,11 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                   activeWidth: 30,
                   size: 6,
                   lift: 0,
+                  canAct: guard,
+                  onSelected: (value) {
+                    if (guard()) _page(value);
+                  },
+                  targetKey: (i) => ValueKey('filter_dot_target_$i'),
                 ),
               ),
             ),

@@ -154,12 +154,12 @@ Future<void> _mount(
 void _expectSelected(WidgetTester tester, int selected, {String id = _id}) {
   for (var index = 0; index < 4; index++) {
     final dot = tester.widget<AnimatedContainer>(_dot(index, id));
-    expect(dot.constraints!.maxWidth, index == selected ? 20 : 5);
-    expect(dot.constraints!.maxHeight, 5);
-    expect(dot.margin, const EdgeInsets.symmetric(horizontal: 3));
+    expect(dot.constraints!.maxWidth, index == selected ? 30 : 6);
+    expect(dot.constraints!.maxHeight, 6);
+    expect(dot.margin, isNull);
     expect(
       (dot.decoration! as BoxDecoration).color,
-      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.25),
+      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.35),
     );
   }
 }
@@ -167,7 +167,7 @@ void _expectSelected(WidgetTester tester, int selected, {String id = _id}) {
 void _expectPlacement(WidgetTester tester) {
   final row = tester.getRect(_row);
   final card = tester.getRect(_card);
-  expect(row.height, 16);
+  expect(row.height, 24);
   expect(row.left, closeTo(card.left, .01));
   expect(row.right, closeTo(card.right, .01));
   expect(row.center.dx, closeTo(card.center.dx, .01));
@@ -179,7 +179,7 @@ void _expectPlacement(WidgetTester tester) {
     final dot = tester.getRect(_dot(index));
     expect(row.contains(dot.topLeft), isTrue);
     expect(row.contains(dot.bottomRight), isTrue);
-    expect(dot.center.dy, closeTo(row.center.dy - 4, .01));
+    expect(dot.center.dy, closeTo(row.center.dy, .01));
     expect(dot.bottom, lessThan(card.top));
   }
   expect(
@@ -369,7 +369,7 @@ void main() {
     expect(changes, 0);
   });
 
-  testWidgets('pagination is decorative with one photo-count semantics node', (
+  testWidgets('pagination exposes accessible item selection at the top', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
@@ -377,23 +377,15 @@ void main() {
       var changes = 0;
       await _mount(tester, _presenter(changed: (_, _) => changes++));
       expect(
-        find.ancestor(of: _row, matching: find.byType(IgnorePointer)),
-        findsWidgets,
-      );
-      expect(
-        find.ancestor(of: _row, matching: find.byType(ExcludeSemantics)),
-        findsWidgets,
-      );
-      expect(
         find.descendant(of: _row, matching: find.byType(GestureDetector)),
-        findsNothing,
+        findsNWidgets(4),
       );
       expect(find.bySemanticsLabel(RegExp(r'Profile details')), findsOneWidget);
       await tester.tapAt(tester.getCenter(_dot(2)));
       await tester.pumpAndSettle();
-      _expectSelected(tester, 0);
-      expect(changes, 0);
-      expect(find.bySemanticsLabel(RegExp(r'Profile details')), findsOneWidget);
+      _expectSelected(tester, 2);
+      expect(changes, 1);
+      expect(find.bySemanticsLabel('Page 3 of 4'), findsOneWidget);
     } finally {
       semantics.dispose();
     }

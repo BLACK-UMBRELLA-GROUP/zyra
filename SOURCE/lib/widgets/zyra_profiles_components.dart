@@ -342,48 +342,96 @@ class ZyraProfilesRequestRow extends StatelessWidget {
   );
 }
 
-/// The shared Profiles marks. Filters changes dimensions only; Profiles keeps
-/// its original 20x5 active mark, 5x5 dots, six-point gap and lift.
+/// LOCK18 V2 page marks: 30x6 active pill, 6x6 dots and a six-point gap.
+/// Callers supply item selection and its admission guard; this owns no authority.
 class ZyraProfilesDots extends StatelessWidget {
   const ZyraProfilesDots({
     super.key,
     required this.count,
     required this.index,
     required this.dotKey,
-    this.activeWidth = 20,
-    this.size = 5,
-    this.lift = -4,
+    this.activeWidth = 30,
+    this.size = 6,
+    this.lift = 0,
+    this.onSelected,
+    this.canAct,
+    this.itemLabel,
+    this.targetKey,
   });
   final int count, index;
   final Key Function(int) dotKey;
   final double activeWidth, size, lift;
+  final ValueChanged<int>? onSelected;
+  final bool Function()? canAct;
+  final String Function(int)? itemLabel;
+  final Key Function(int)? targetKey;
   @override
-  Widget build(BuildContext context) => IgnorePointer(
-    child: ExcludeSemantics(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          for (var i = 0; i < count; i++)
-            Transform.translate(
-              offset: Offset(0, lift),
-              child: AnimatedContainer(
-                key: dotKey(i),
-                duration: MediaQuery.disableAnimationsOf(context)
-                    ? Duration.zero
-                    : const Duration(milliseconds: 180),
-                width: i == index ? activeWidth : size,
-                height: size,
-                margin: const EdgeInsets.symmetric(horizontal: 3),
-                decoration: BoxDecoration(
-                  color: i == index
-                      ? ZyraColors.journeyGold
-                      : ZyraColors.ink(.25),
-                  borderRadius: BorderRadius.circular(20),
+  Widget build(BuildContext context) {
+    final select = onSelected;
+    final admitted = canAct;
+    final feedback = context
+        .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
+    var revoked = false;
+    bool current() {
+      if (revoked) return false;
+      if (!context.mounted ||
+          !identical(context.widget, this) ||
+          (admitted != null && !admitted()) ||
+          (feedback != null && !feedback.canAct())) {
+        revoked = true;
+        return false;
+      }
+      return true;
+    }
+
+    final dots = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (var i = 0; i < count; i++)
+          Semantics(
+            button: select != null,
+            selected: i == index,
+            label: itemLabel?.call(i) ?? 'Page ${i + 1} of $count',
+            excludeSemantics: true,
+            child: GestureDetector(
+              key: targetKey?.call(i),
+              behavior: HitTestBehavior.opaque,
+              onTap: select == null
+                  ? null
+                  : ZyraTapFeedback.onTap(
+                      context,
+                      () => select(i),
+                      canAct: current,
+                    ),
+              child: Container(
+                height: 24,
+                padding: const EdgeInsets.symmetric(horizontal: 3),
+                child: Center(
+                  child: Transform.translate(
+                    offset: Offset(0, lift),
+                    child: AnimatedContainer(
+                      key: dotKey(i),
+                      duration: MediaQuery.disableAnimationsOf(context)
+                          ? Duration.zero
+                          : const Duration(milliseconds: 180),
+                      width: i == index ? activeWidth : size,
+                      height: size,
+                      decoration: BoxDecoration(
+                        color: i == index
+                            ? ZyraColors.journeyGold
+                            : ZyraColors.ink(.35),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
-        ],
-      ),
-    ),
-  );
+          ),
+      ],
+    );
+    return select == null
+        ? IgnorePointer(child: ExcludeSemantics(child: dots))
+        : dots;
+  }
 }

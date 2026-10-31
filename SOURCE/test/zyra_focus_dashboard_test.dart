@@ -91,15 +91,15 @@ void main() {
     await _mount(tester, items: [_item('Amira', onAction: () => opened++)]);
     expect(find.text('NEEDS YOU'), findsOneWidget);
     expect(_title('Journey request from Amira'), findsOneWidget);
-    expect(find.byTooltip('Previous item'), findsNothing);
-    expect(find.byTooltip('Next item'), findsNothing);
+    expect(_key('focus-dot-target-0'), findsNothing);
+    expect(_key('focus-dot-target-1'), findsNothing);
     await tester.tap(_key('action-Amira'));
     await tester.pump();
     expect(opened, 1);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('arrows step between items and stop at each end', (tester) async {
+  testWidgets('top dots select items in the existing order', (tester) async {
     final changed = <int>[];
     await _mount(
       tester,
@@ -107,20 +107,20 @@ void main() {
       onIndexChanged: changed.add,
     );
     expect(find.text('NEEDS YOU · 1 OF 2'), findsOneWidget);
-    await tester.tap(find.byTooltip('Previous item'));
+    await tester.tap(_key('focus-dot-target-0'));
     await tester.pumpAndSettle();
     expect(_title('Journey request from Amira'), findsOneWidget);
     expect(changed, isEmpty);
-    await tester.tap(find.byTooltip('Next item'));
+    await tester.tap(_key('focus-dot-target-1'));
     await tester.pumpAndSettle();
     expect(find.text('NEEDS YOU · 2 OF 2'), findsOneWidget);
     expect(_title('Journey request from Sara'), findsOneWidget);
     expect(_title('Journey request from Amira'), findsNothing);
-    await tester.tap(find.byTooltip('Next item'));
+    await tester.tap(_key('focus-dot-target-1'));
     await tester.pumpAndSettle();
     expect(_title('Journey request from Sara'), findsOneWidget);
     expect(changed, [1]);
-    await tester.tap(find.byTooltip('Previous item'));
+    await tester.tap(_key('focus-dot-target-0'));
     await tester.pumpAndSettle();
     expect(_title('Journey request from Amira'), findsOneWidget);
     expect(changed, [1, 0]);
@@ -163,8 +163,8 @@ void main() {
     expect(find.text('Nothing needs you right now.'), findsOneWidget);
     expect(find.text('NEEDS YOU'), findsNothing);
     expect(find.text('View request'), findsNothing);
-    expect(find.byTooltip('Previous item'), findsNothing);
-    expect(find.byTooltip('Next item'), findsNothing);
+    expect(_key('focus-dot-target-0'), findsNothing);
+    expect(_key('focus-dot-target-1'), findsNothing);
   });
 
   testWidgets(

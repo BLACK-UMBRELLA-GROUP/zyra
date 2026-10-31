@@ -1,6 +1,7 @@
 // LOCK19 V2: Founder-only Guardian cards. No live transport or entitlement grant.
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '../widgets/zyra_profiles_components.dart';
 import 'package:flutter/gestures.dart' show kTouchSlop;
 import '../services/zyra_account_state.dart';
 import '../services/zyra_wali_link_service.dart' show WaliLinkedPerson;
@@ -302,6 +303,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     final linked = person != null;
     final scale = MediaQuery.textScalerOf(context).scale(1);
     final render = _render, epoch = widget.interactionEpoch(), target = _target;
+    final faceLease = _lease();
     return SafeArea(
       bottom: false,
       child: Padding(
@@ -350,26 +352,18 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                 );
               },
             ),
-            SizedBox(
-              height: 24,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (var i = 0; i < (linked ? 2 : 1); i++)
-                    Container(
-                      key: ValueKey('guardian-card-dot-$i'),
-                      margin: const EdgeInsets.symmetric(horizontal: 3),
-                      height: 6,
-                      width: i == (linked && _access ? 1 : 0) ? 30 : 6,
-                      decoration: BoxDecoration(
-                        color: i == (linked && _access ? 1 : 0)
-                            ? ZyraColors.journeyGold
-                            : ZyraColors.ink(.3),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                ],
-              ),
+            ZyraProfilesDots(
+              count: linked ? 2 : 1,
+              index: linked && _access ? 1 : 0,
+              dotKey: (i) => ValueKey('guardian-card-dot-$i'),
+              targetKey: (i) => ValueKey('guardian-card-dot-target-$i'),
+              itemLabel: (i) => i == 0 ? 'Guardian details' : 'Journey access',
+              canAct: faceLease,
+              onSelected: linked
+                  ? (i) {
+                      if (faceLease() && (i == 1) != _access) _flip();
+                    }
+                  : null,
             ),
             const SizedBox(height: 8),
             Expanded(

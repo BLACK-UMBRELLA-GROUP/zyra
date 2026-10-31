@@ -629,3 +629,21 @@ Measured with SYSTEM/tools/blueprint/code_size.py. Both new app files match the 
 Thirteen complete scoped suites: 161 passed, 3 wider Circle/Journey cases failed, no skipped cases; 12 suites pass completely. All new card/Family/actual-shell, paid-agreement, code-route lifetime, unread and LOCK3 cases pass. Analyser clean; 12-file format and pinned protected-driver checks pass. Actual k01–k19 captures and nineteen master/build pairs, 200%/320-point frames, separate real-shell samples and allowlisted manifests are in PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2. Golden count is unchanged; these are handover screenshots. At320points/200%, the header and View/Chat/management controls stack and cards grow; rendered-line assertions keep Guardian, Ibrahim, View and Remove as whole words.
 
 QUEUE48-R1 (written refusal, OA-ZYRA-328): the Circle regression's Seeker and Guardian cases reach the unchanged Circle, send a message and retain the same Circle state, then cannot find its composer after existing page-option/held-pull steps (first source assertion test/guardian_circle_close_integration_test.dart:552, StateError No element). Guardian-role routing bypasses the replaced Seeker cards. A third case returns from Circle, navigates Journey tab 1 and expects three legacy “Awaiting a Journey” slots (:723); it finds zero. This task replaces Seeker Guardian tab 3, and does not change the Circle presentation/options or Journey-tab empty presentation. Cause is not claimed historical. Those wider repairs are refused in this row; exact diagnostics and changed-site analysis are in CASE_LEDGER/QA. The directly affected old access-heading assertion was migrated and passes. No whole-suite or full-screen pixel-equality claim; parent visual/contract review follows.
+
+
+## Queue 68 — Page dots LOCK18 V2 — 31 October 2026
+
+Every current Founder page pager now uses one shared 30×6 active pill, 6×6 dots, six-point gaps and 35% ink. Tappable targets are 24 points high and reject revoked/replaced admission before haptics. My ZYRA Seeker/Guardian dots move below the title/greeting; their old bottom arrows are removed. Photos (including Add), current subscription profile/Family pages, peer Guardians, Filters, Journey, Guardian information and row48 Details/Access faces preserve their real counts and existing actions. Roster/wallet arrows remain; full-screen vertical photo dots and step bars remain untouched.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 172,102 / 339 | 172,093 / 339 |
+| Developer/preview | 52,199 / 97 | 52,151 / 97 |
+| Founder planned app | 33,021 / 47 | 32,973 / 47 |
+| Tests | 223,589 / 526 | 224,074 / 527 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. No new app file or classifier change. 233 focused regressions, two wallet layout cases and five actual-route/lifetime/capture cases pass (240 total); 430/320-point, 200% text and actual tap/swipe/scroll paths. Image providers are explicitly decoded before capture. Analyser/20-file format and protected pinned-driver checks pass. PAGE_DOTS/BUILT/V2 holds d01–d04 beside masters, other real screens, narrow action/bottom frames, case/refusal details, hashes and text BUILD metadata. No whole-screen pixel-match claim: d03 preserves newer LOCK19 cards; request/stage data and existing framing differ.
+
+Written refusals QUEUE68-R1–R4 (OA-ZYRA-328), detailed in QA.json: twelve wider photo-navigation haptic timing/count cases and two unchanged Profile-row lookup cases remain failures; no historical cause claimed. A representative haptic case also fails alone (3 expected, 1 actual). Explicit baseline/current comparisons prove the photo pager implementation, excluded full-screen sources, feedback helpers and Profile presenter unchanged. Profiles header grows 16→24 for the target, reducing its available photo budget by eight; this geometry change is disclosed. At320/200%, existing Focus tile text splits words and the revealed Photos Adjust label clips in the unchanged54-point tray; tiles/actions are reachable, not claimed visually flawless. Those wider layout/feedback changes need their own authorised scope. Row48's three wider Circle failures remain disclosed and were not rerun. No native/backend/upgrade action.

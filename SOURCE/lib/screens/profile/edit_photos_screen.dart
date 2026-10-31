@@ -1,5 +1,6 @@
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_tap_feedback.dart';
+import '../../widgets/zyra_profiles_components.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -116,6 +117,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     viewportFraction: 0.98,
   );
   int _currentPage = 0;
+  int _dotsEpoch = 0;
   int _compactSelected = 0;
   bool _compactView = false;
 
@@ -848,6 +850,14 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dotsEpoch = ++_dotsEpoch;
+    bool dotsCurrent() =>
+        mounted &&
+        dotsEpoch == _dotsEpoch &&
+        _canUse &&
+        !_working &&
+        !_loading &&
+        !_compactView;
     if (!_previewMode && !_ownerCanAct) {
       return const SizedBox.expand(key: ValueKey('photos-owner-unavailable'));
     }
@@ -921,6 +931,39 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
                   ],
                 ),
               ),
+              if (!_loading &&
+                  !_compactView &&
+                  _photos.isNotEmpty &&
+                  (_photos.length > 1 || _photos.length < _maximumNewPhotos))
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                  child: ZyraProfilesDots(
+                    count:
+                        _photos.length +
+                        (_photos.length < _maximumNewPhotos ? 1 : 0),
+                    index: _currentPage,
+                    dotKey: (i) => i == _photos.length
+                        ? const ValueKey('photo-add-page-indicator')
+                        : ValueKey('photo-page-dot-$i'),
+                    targetKey: (i) => ValueKey('photo-page-dot-target-$i'),
+                    itemLabel: (i) => i == _photos.length
+                        ? 'Add photo page'
+                        : 'Photo ${i + 1} of ${_photos.length}',
+                    canAct: dotsCurrent,
+                    onSelected: (i) {
+                      if (!dotsCurrent() || !_pageController.hasClients) return;
+                      if (MediaQuery.disableAnimationsOf(context)) {
+                        _pageController.jumpToPage(i);
+                      } else {
+                        _pageController.animateToPage(
+                          i,
+                          duration: const Duration(milliseconds: 180),
+                          curve: Curves.easeOut,
+                        );
+                      }
+                    },
+                  ),
+                ),
               if (_error != null)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
@@ -991,7 +1034,6 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
                                 key: const ValueKey('photos-large-view'),
                                 photos: _photos,
                                 controller: _pageController,
-                                selected: _currentPage,
                                 working: _working,
                                 canAdd: _photos.length < _maximumNewPhotos,
                                 onAdd: _addPhoto,
@@ -1058,7 +1100,6 @@ class _PhotoGallery extends StatelessWidget {
     super.key,
     required this.photos,
     required this.controller,
-    required this.selected,
     required this.working,
     required this.canAdd,
     required this.onAdd,
@@ -1071,7 +1112,6 @@ class _PhotoGallery extends StatelessWidget {
 
   final List<String> photos;
   final PageController controller;
-  final int selected;
   final bool working;
   final bool canAdd;
   final VoidCallback onAdd;
@@ -1112,14 +1152,6 @@ class _PhotoGallery extends StatelessWidget {
                 ),
         ),
       ),
-      if (photos.length > 1 || canAdd) ...[
-        const SizedBox(height: 16),
-        _PhotoPageDots(
-          count: photos.length,
-          selected: selected,
-          hasAddPage: canAdd,
-        ),
-      ],
       const SizedBox(height: 16),
     ],
   );
@@ -1434,58 +1466,6 @@ class _RevealedPhotoActions extends StatelessWidget {
       ],
     );
   }
-}
-
-class _PhotoPageDots extends StatelessWidget {
-  const _PhotoPageDots({
-    required this.count,
-    required this.selected,
-    this.hasAddPage = false,
-  });
-
-  final int count;
-  final int selected;
-  final bool hasAddPage;
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    label: hasAddPage && selected == count
-        ? 'Add photo page'
-        : 'Photo ${selected + 1} of $count',
-    child: ExcludeSemantics(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          for (var index = 0; index < count; index++)
-            AnimatedContainer(
-              key: ValueKey('photo-page-dot-$index'),
-              duration: const Duration(milliseconds: 180),
-              width: index == selected ? 22 : 5,
-              height: 5,
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              decoration: BoxDecoration(
-                color: index == selected
-                    ? ZyraColors.journeyGold
-                    : ZyraColors.journeyGold.withValues(alpha: 0.28),
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-          if (hasAddPage)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
-              child: Icon(
-                Icons.add_rounded,
-                key: const ValueKey('photo-add-page-indicator'),
-                size: 14,
-                color: selected == count
-                    ? ZyraColors.journeyGold
-                    : ZyraColors.journeyGold.withValues(alpha: .28),
-              ),
-            ),
-        ],
-      ),
-    ),
-  );
 }
 
 class _CompactPhotoView extends StatelessWidget {

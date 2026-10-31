@@ -105,12 +105,12 @@ void _expectDots(
   expect(position.properties.label, 'Guardian ${selected + 1} of $count');
   for (var index = 0; index < count; index++) {
     final dot = _key('peer_guardian_dot_${subjectId}_$index');
-    expect(tester.getSize(dot), Size(index == selected ? 20 : 5, 5));
+    expect(tester.getSize(dot), Size(index == selected ? 30 : 6, 6));
     final decoration =
         tester.widget<AnimatedContainer>(dot).decoration! as BoxDecoration;
     expect(
       decoration.color,
-      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.25),
+      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.35),
     );
   }
 }
@@ -433,8 +433,11 @@ void main() {
       if (index < 2) await _swipe(tester);
     }
     final dots = tester.getRect(_key('peer_guardians_position_$_subject'));
-    expect(dots.top - viewport.bottom, closeTo(12, .1));
-    expect(dots.bottom, closeTo(852 - 34 - 12 - 4, .1));
+    expect(viewport.top - dots.bottom, closeTo(12, .1));
+    expect(
+      dots.top,
+      greaterThan(tester.getRect(_key('peer_guardians_title')).bottom),
+    );
     _expectNoException(tester);
   });
 

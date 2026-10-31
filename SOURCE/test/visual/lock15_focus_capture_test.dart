@@ -126,16 +126,10 @@ void main() {
       await h.mount(tab: 2, model: one());
       expect(find.text('NEEDS YOU · 1 OF 2'), findsOneWidget);
       await cap(h, 'm01_needs_you_1_of_2');
-      final semantics = t.ensureSemantics();
-      expect(t.getSize(k('focus-next')), const Size(44, 44));
-      try {
-        expect(t.getSemantics(k('focus-next')).rect.size, const Size(44, 44));
-      } finally {
-        semantics.dispose();
-      }
-      expect(t.getSize(k('focus-previous')), const Size(44, 44));
-      // Hit the lower part of the full target, outside the visible chevron.
-      await t.tapAt(t.getCenter(k('focus-next')) + const Offset(0, 17));
+      expect(k('focus-next'), findsNothing);
+      expect(k('focus-previous'), findsNothing);
+      expect(t.getSize(k('focus-dot-target-1')).height, 24);
+      await t.tap(k('focus-dot-target-1'));
       await h.flush();
       expect(find.text('New message in\nGuardian Circle'), findsOneWidget);
       await cap(h, 'm02_needs_you_2_of_2');
@@ -305,7 +299,7 @@ void main() {
       final h = harness(t);
       await h.mount(guardian: true, tab: 2);
       await cap(h, 'gm01_family_review');
-      await h.tap('focus-next');
+      await h.tap('focus-dot-target-1');
       await cap(h, 'gm02_connect_request');
       await h.tap('guardian_received');
       h.assertPage('guardian_connect');
@@ -375,7 +369,7 @@ void main() {
         await h.tap('activity-checklist-${example.name}');
         if (example != ZyraMyZyraActivityExample.requestReceived &&
             example != ZyraMyZyraActivityExample.severalRequests) {
-          await h.tap('focus-next');
+          await h.tap('focus-dot-target-1');
         }
         final dashboard = t.widget<ZyraFocusDashboard>(
           find.byType(ZyraFocusDashboard),

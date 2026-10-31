@@ -577,25 +577,36 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
 
   // Use the existing header/card gap so pagination never covers a portrait
   // or shifts its actions. Match the Guardian pager's quiet gold treatment.
-  Widget _photoPagination(SeekerProfile? profile) => SizedBox(
-    height: 16,
-    child: profile == null || _galleryPageCount(profile) < 2
-        ? null
-        : ZyraProfilesDots(
-            key: const ValueKey('concept_browse_photo_pagination'),
-            count: _galleryPageCount(profile),
-            index: _galleryIndex(profile),
-            dotKey: (i) =>
-                ValueKey('concept_browse_photo_dot_${profile.id}_$i'),
-          ),
-  );
+  Widget _photoPagination(SeekerProfile? profile) {
+    final revision = _layoutRevision;
+    bool current() =>
+        mounted &&
+        revision == _layoutRevision &&
+        profile != null &&
+        _isCurrent(profile);
+    return SizedBox(
+      height: 24,
+      child: profile == null || _galleryPageCount(profile) < 2
+          ? null
+          : ZyraProfilesDots(
+              key: const ValueKey('concept_browse_photo_pagination'),
+              count: _galleryPageCount(profile),
+              index: _galleryIndex(profile),
+              dotKey: (i) =>
+                  ValueKey('concept_browse_photo_dot_${profile.id}_$i'),
+              targetKey: (i) => ValueKey('concept_browse_dot_target_$i'),
+              canAct: current,
+              onSelected: (i) => _selectGalleryPage(profile, i, revision),
+            ),
+    );
+  }
 
   Widget _portraitPage(SeekerProfile? profile) => SafeArea(
     bottom: false,
     child: LayoutBuilder(
       builder: (context, constraints) {
         final bottom = widget.showFeedChrome ? _footerReserve(context) : 0.0;
-        final available = math.max(0.0, constraints.maxHeight - 16 - bottom);
+        final available = math.max(0.0, constraints.maxHeight - 24 - bottom);
         final contentWidth = math.max(1.0, constraints.maxWidth - 40);
         // Ink's one-pixel borders contribute two pixels to each pill/card.
         // Do not measure hidden feed labels: their delegates are outside an

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../services/zyra_guardian_info_service.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_profiles_components.dart';
 
 /// A read-only presentation of the Guardians disclosed for one other Seeker.
 ///
@@ -114,6 +115,7 @@ class _PeerGuardianPager extends StatefulWidget {
 class _PeerGuardianPagerState extends State<_PeerGuardianPager> {
   final _controller = PageController(keepPage: false);
   int _page = 0;
+  int _render = 0;
 
   @override
   void dispose() {
@@ -122,69 +124,69 @@ class _PeerGuardianPagerState extends State<_PeerGuardianPager> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Expanded(
-        child: PageView.builder(
-          key: ValueKey('peer_guardians_pager_${widget.subjectId}'),
-          controller: _controller,
-          physics: const BouncingScrollPhysics(),
-          itemCount: widget.people.length,
-          onPageChanged: (value) {
-            if (mounted && value >= 0 && value < widget.people.length) {
-              setState(() => _page = value);
-            }
-          },
-          itemBuilder: (context, index) => Semantics(
-            key: ValueKey('peer_guardian_${widget.subjectId}_$index'),
-            label:
-                'Guardian ${index + 1} of ${widget.people.length}: '
-                '${widget.people[index].firstName}',
-            child: _PeerGuardianContent(
-              subjectId: widget.subjectId,
-              index: index,
-              guardian: widget.people[index],
+  Widget build(BuildContext context) {
+    final render = ++_render;
+    bool current() =>
+        mounted &&
+        render == _render &&
+        (ModalRoute.of(context)?.isCurrent ?? true);
+    return Column(
+      children: [
+        if (widget.people.length > 1) ...[
+          Semantics(
+            key: ValueKey('peer_guardians_position_${widget.subjectId}'),
+            liveRegion: true,
+            label: 'Guardian ${_page + 1} of ${widget.people.length}',
+            child: ZyraProfilesDots(
+              count: widget.people.length,
+              index: _page,
+              dotKey: (i) =>
+                  ValueKey('peer_guardian_dot_${widget.subjectId}_$i'),
+              targetKey: (i) => ValueKey('peer_guardian_dot_target_$i'),
+              canAct: current,
+              onSelected: (i) {
+                if (!current() || !_controller.hasClients) return;
+                if (MediaQuery.disableAnimationsOf(context)) {
+                  _controller.jumpToPage(i);
+                } else {
+                  _controller.animateToPage(
+                    i,
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOut,
+                  );
+                }
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
+        ],
+        Expanded(
+          child: PageView.builder(
+            key: ValueKey('peer_guardians_pager_${widget.subjectId}'),
+            controller: _controller,
+            physics: const BouncingScrollPhysics(),
+            itemCount: widget.people.length,
+            onPageChanged: (value) {
+              if (mounted && value >= 0 && value < widget.people.length) {
+                setState(() => _page = value);
+              }
+            },
+            itemBuilder: (context, index) => Semantics(
+              key: ValueKey('peer_guardian_${widget.subjectId}_$index'),
+              label:
+                  'Guardian ${index + 1} of ${widget.people.length}: '
+                  '${widget.people[index].firstName}',
+              child: _PeerGuardianContent(
+                subjectId: widget.subjectId,
+                index: index,
+                guardian: widget.people[index],
+              ),
             ),
           ),
         ),
-      ),
-      if (widget.people.length > 1) ...[
-        const SizedBox(height: 12),
-        Semantics(
-          key: ValueKey('peer_guardians_position_${widget.subjectId}'),
-          liveRegion: true,
-          label: 'Guardian ${_page + 1} of ${widget.people.length}',
-          child: ExcludeSemantics(
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 6,
-              runSpacing: 6,
-              children: [
-                for (var index = 0; index < widget.people.length; index++)
-                  AnimatedContainer(
-                    key: ValueKey(
-                      'peer_guardian_dot_${widget.subjectId}_$index',
-                    ),
-                    duration: MediaQuery.disableAnimationsOf(context)
-                        ? Duration.zero
-                        : const Duration(milliseconds: 180),
-                    width: index == _page ? 20 : 5,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: index == _page
-                          ? ZyraColors.journeyGold
-                          : ZyraColors.ink(.25),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 4),
       ],
-    ],
-  );
+    );
+  }
 }
 
 class _PeerGuardianContent extends StatelessWidget {

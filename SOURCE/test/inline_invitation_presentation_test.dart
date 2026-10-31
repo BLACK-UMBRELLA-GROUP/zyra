@@ -281,16 +281,16 @@ void _expectCardOutline(WidgetTester tester, String id, {required bool sent}) {
 void _expectDots(WidgetTester tester, {int selected = 0}) {
   final pager = tester.getRect(_key('concept_browse_photo_swipe_$_personId'));
   final pagination = tester.getRect(_key('concept_browse_photo_pagination'));
-  expect(pagination.height, 16);
+  expect(pagination.height, 24);
   expect(pagination.bottom, closeTo(pager.top, .01));
   final dots = <Rect>[];
   for (var index = 0; index <= _people.first.photos.length; index++) {
     final finder = _key('concept_browse_photo_dot_${_personId}_$index');
     final container = tester.widget<AnimatedContainer>(finder);
-    final width = index == selected ? 20.0 : 5.0;
+    final width = index == selected ? 30.0 : 6.0;
     expect(container.constraints!.maxWidth, width);
-    expect(container.constraints!.maxHeight, 5);
-    expect(container.margin, const EdgeInsets.symmetric(horizontal: 3));
+    expect(container.constraints!.maxHeight, 6);
+    expect(container.margin, isNull);
     expect(
       container.duration,
       MediaQuery.disableAnimationsOf(tester.element(finder))
@@ -303,13 +303,13 @@ void _expectDots(WidgetTester tester, {int selected = 0}) {
     );
     expect(
       (container.decoration! as BoxDecoration).color,
-      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.25),
+      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.35),
     );
     final rect = tester.getRect(
       find.descendant(of: finder, matching: find.byType(DecoratedBox)),
     );
-    expect(rect.size, Size(width, 5));
-    expect(rect.center.dy, closeTo(pagination.center.dy - 4, .01));
+    expect(rect.size, Size(width, 6));
+    expect(rect.center.dy, closeTo(pagination.center.dy, .01));
     if (dots.isNotEmpty) {
       expect(rect.left - dots.last.right, closeTo(6, .01));
     }

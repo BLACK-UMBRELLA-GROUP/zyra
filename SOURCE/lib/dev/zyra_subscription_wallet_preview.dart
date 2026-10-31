@@ -1,4 +1,5 @@
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_profiles_components.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
@@ -218,33 +219,6 @@ class _WalletHaloPagerState extends State<_WalletHaloPager> {
                       textAlign: TextAlign.center,
                       style: _walletBodyStyle(11),
                     ),
-                    const SizedBox(height: 7),
-                    ExcludeSemantics(
-                      child: SizedBox(
-                        height: 6,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            for (var page = 0; page < widget.count; page++) ...[
-                              if (page > 0) const SizedBox(width: 6),
-                              Container(
-                                key: ValueKey(
-                                  'wallet_${widget.group}_dot_$page',
-                                ),
-                                width: page == _page ? 22 : 5,
-                                height: 5,
-                                decoration: BoxDecoration(
-                                  color: page == _page
-                                      ? _walletGold
-                                      : ZyraColors.foregroundSecondary,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -440,6 +414,8 @@ class _ZyraSubscriptionWalletPreviewState
   bool _family = false;
   int _profilePage = 0;
   int _familyPage = 0;
+  Object? _pagerIdentity;
+  GlobalKey<_WalletHaloPagerState> _pagerKey = GlobalKey();
 
   @override
   void didUpdateWidget(covariant ZyraSubscriptionWalletPreview oldWidget) {
@@ -631,6 +607,7 @@ class _ZyraSubscriptionWalletPreviewState
             40 +
             backHeight +
             headerHeight +
+            (hasPages ? 24 : 0) +
             16 +
             pillHeight +
             16 +
@@ -644,9 +621,15 @@ class _ZyraSubscriptionWalletPreviewState
             ? widget.draft.places.length
             : ZyraWalletRole.values.length;
         final current = _family ? _familyPage : _profilePage;
+        final pagerIdentity = (group, widget.draft.ownerId, count);
+        if (_pagerIdentity != pagerIdentity) {
+          _pagerIdentity = pagerIdentity;
+          _pagerKey = GlobalKey();
+        }
+        final pagerKey = _pagerKey;
         final pager = hasPages
             ? _WalletHaloPager(
-                key: ValueKey('wallet_${group}_${widget.draft.ownerId}_$count'),
+                key: pagerKey,
                 group: group,
                 count: count,
                 initialPage: current,
@@ -747,6 +730,21 @@ class _ZyraSubscriptionWalletPreviewState
                 const SizedBox(width: 8),
                 information,
               ],
+            ),
+          if (hasPages)
+            ZyraProfilesDots(
+              count: count,
+              index: current,
+              dotKey: (i) => ValueKey('wallet_${group}_dot_$i'),
+              targetKey: (i) => ValueKey('wallet_${group}_dot_target_$i'),
+              itemLabel: (i) =>
+                  '${family ? 'Family place' : 'Profile'} ${i + 1} of $count',
+              canAct: pagerFresh,
+              onSelected: (i) {
+                if (!pagerFresh()) return;
+                final state = pagerKey.currentState;
+                if (state != null) state._go(i, state._epoch);
+              },
             ),
           const SizedBox(height: 16),
           _groupPills(fresh, width, pillHeight, scaler, direction),

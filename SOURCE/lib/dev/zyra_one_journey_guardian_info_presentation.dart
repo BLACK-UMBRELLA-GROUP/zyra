@@ -26,6 +26,7 @@ class _ZyraGuardianInfoPresentationState
     extends State<ZyraGuardianInfoPresentation> {
   final _controller = PageController();
   int _index = 0;
+  int _render = 0;
   @override
   void dispose() {
     _controller.dispose();
@@ -45,6 +46,8 @@ class _ZyraGuardianInfoPresentationState
 
   @override
   Widget build(BuildContext context) {
+    final render = ++_render, authority = widget.canAct;
+    bool current() => mounted && render == _render && authority();
     final cards =
         <({IconData icon, String title, String subtitle, List<String> rows})>[
           (
@@ -97,28 +100,15 @@ class _ZyraGuardianInfoPresentationState
           children: [
             Text('What Guardians can do', style: ZyraText.pageTitle()),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 16,
-              child: ExcludeSemantics(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (var i = 0; i < 4; i++)
-                      Container(
-                        key: ValueKey('guardian_info_dot_$i'),
-                        width: i == _index ? 20 : 5,
-                        height: 5,
-                        margin: const EdgeInsets.symmetric(horizontal: 3),
-                        decoration: BoxDecoration(
-                          color: i == _index
-                              ? ZyraColors.journeyGold
-                              : ZyraColors.ink(.25),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+            ZyraProfilesDots(
+              count: 4,
+              index: _index,
+              dotKey: (i) => ValueKey('guardian_info_dot_$i'),
+              targetKey: (i) => ValueKey('guardian_info_dot_target_$i'),
+              canAct: current,
+              onSelected: (i) {
+                if (current()) _move(i);
+              },
             ),
             Expanded(
               child: ClipRRect(

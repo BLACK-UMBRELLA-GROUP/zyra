@@ -119,26 +119,26 @@ void _expectHeaderDots(WidgetTester tester, {int selected = 0}) {
   final photo = tester.getRect(_pager);
   final pagination = tester.getRect(_key('concept_browse_photo_pagination'));
   final dots = List.generate(4, (index) => _paintRect(tester, index));
-  expect(pagination.height, 16);
+  expect(pagination.height, 24);
   expect(pagination.bottom, closeTo(photo.top, .01));
   for (var index = 0; index < 4; index++) {
     final container = tester.widget<AnimatedContainer>(_dot(index));
-    final width = index == selected ? 20.0 : 5.0;
+    final width = index == selected ? 30.0 : 6.0;
     expect(container.constraints!.maxWidth, width);
-    expect(container.constraints!.maxHeight, 5);
-    expect(container.margin, const EdgeInsets.symmetric(horizontal: 3));
+    expect(container.constraints!.maxHeight, 6);
+    expect(container.margin, isNull);
     expect(container.duration, Duration.zero);
     expect(
       (container.decoration! as BoxDecoration).borderRadius,
       BorderRadius.circular(20),
     );
-    expect(dots[index].size, Size(width, 5));
-    expect(dots[index].center.dy, closeTo(pagination.center.dy - 4, .01));
+    expect(dots[index].size, Size(width, 6));
+    expect(dots[index].center.dy, closeTo(pagination.center.dy, .01));
     expect(dots[index].top, greaterThanOrEqualTo(pagination.top));
     expect(dots[index].bottom, lessThan(photo.top));
     expect(
       _color(tester, index),
-      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.25),
+      index == selected ? ZyraColors.journeyGold : ZyraColors.ink(.35),
     );
   }
   expect(dots[1].left - dots[0].right, closeTo(6, .01));
@@ -155,13 +155,9 @@ void _expectHeaderDots(WidgetTester tester, {int selected = 0}) {
     reason: 'Pagination is outside the photograph, not an overlay.',
   );
   expect(
-    find.ancestor(of: _dot(0), matching: find.byType(IgnorePointer)),
+    find.ancestor(of: _dot(0), matching: find.byType(GestureDetector)),
     findsWidgets,
-  );
-  expect(
-    find.ancestor(of: _dot(0), matching: find.byType(ExcludeSemantics)),
-    findsWidgets,
-    reason: 'Decorative dots do not duplicate the accessible photo count.',
+    reason: 'LOCK18 dots provide guarded selection as well as photo swipes.',
   );
 }
 

@@ -784,10 +784,10 @@ void main() {
             tester.getSemantics(position).getSemanticsData().label,
             '${group == 'profiles' ? 'Profile' : 'Family place'} ${page + 1} of $count',
           );
-          final active = tester.widget<Container>(
+          final active = tester.widget<AnimatedContainer>(
             _key('wallet_${group}_dot_$page'),
           );
-          expect(active.constraints!.minWidth, 22);
+          expect(active.constraints!.minWidth, 30);
           expect(find.text('Sample'), findsNothing);
           expect(find.textContaining('(sample)'), findsNothing);
           if (page < count - 1) await _tap(tester, 'wallet_${group}_next');
