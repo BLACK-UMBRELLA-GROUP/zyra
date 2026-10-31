@@ -73,6 +73,7 @@ import 'zyra_draft_journey_bio_presentation.dart';
 import 'zyra_draft_compatibility_presentation.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
+import 'zyra_draft_safety_advice_presentation.dart';
 import 'zyra_draft_journey_end_presentation.dart';
 import 'zyra_draft_code_entry.dart';
 import 'zyra_request_help_content.dart';
@@ -418,6 +419,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'journey_compatibility_locked' => 'Compatibility score',
     'help_support' => 'Help & support',
     'safety' => 'Report profile',
+    'safety_advice' => 'Safety & advice',
     'scan' => 'Find by ZYRA Code',
     'guardian_circle' => 'Guardian Circle',
     'compatibility' || 'ended_compatibility' => 'Compatibility score',
@@ -969,6 +971,17 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _pages.add(page);
         continue;
       }
+      if (page == 'safety_advice') {
+        if (_guardianRole || _tab != 4 || _pages.isNotEmpty) break;
+        _personId = null;
+        _pages.add(page);
+        continue;
+      }
+      if (page == 'safety' && _pages.lastOrNull == 'safety_advice') {
+        _personId = null;
+        _pages.add(page);
+        continue;
+      }
       if (page == 'help_support') {
         final profileRoot = _pages.isEmpty && _tab == 4;
         if (!profileRoot &&
@@ -978,6 +991,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               'account_action',
               'settings_detail',
               'edit_profile',
+              'safety_advice',
             }.contains(_pages.lastOrNull)) {
           break;
         }
@@ -1639,6 +1653,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'scan',
           'help_support',
           'safety',
+          'safety_advice',
         ].contains(_page);
     final founderPageId = switch (_page) {
       'account_action' when _accountDestination != null =>
@@ -2034,6 +2049,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'scan' => _scanEntry(),
     'help_support' => _helpSupport(),
     'safety' => _safety(),
+    'safety_advice' => _safetyAdvice(),
     'timeline' => _timeline(_personId ?? ''),
     'account_action' => _accountActionView(),
     'settings_detail' => _settingsDetailView(),
@@ -6526,7 +6542,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       case ZyraConceptAccountAction.safetyAdvice:
         _move(() {
           _personId = null;
-          _pages.add('safety');
+          _pages.add(_guardianRole ? 'safety' : 'safety_advice');
         });
       case ZyraConceptAccountAction.signOut:
         // Leaving the disposable preview never signs out the live account.
@@ -7687,6 +7703,20 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       _syncLocationOrigins();
       if (!allowed && !settings) _notice = zyraLocationFallback;
     });
+  }
+
+  Widget _safetyAdvice() {
+    if (_guardianRole) return _unavailable();
+    final fresh = _accountFreshGuard();
+    return ZyraDraftSafetyAdvicePresentation(
+      canAct: fresh,
+      onReport: () {
+        if (fresh()) _open('safety');
+      },
+      onHelp: () {
+        if (fresh()) _open('help_support');
+      },
+    );
   }
 
   Widget _safety() {

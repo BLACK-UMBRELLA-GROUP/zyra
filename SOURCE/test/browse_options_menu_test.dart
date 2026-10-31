@@ -929,7 +929,8 @@ void main() {
     await tester.pumpAndSettle();
     await _tapBar(tester, 'Profile');
     await _press(tester, 'concept_safety_advice');
-    expect(find.text('Choose a profile to report.'), findsOneWidget);
+    await _press(tester, 'draft_safety_advice_report');
+    expect(find.text('Choose a profile to report'), findsOneWidget);
     expect(_key('draft_report_target'), findsNothing);
     expect(_key('draft_safety_hide'), findsNothing);
     expect(_key('draft_safety_block'), findsNothing);

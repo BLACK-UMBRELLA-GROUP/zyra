@@ -497,3 +497,19 @@ Replaced only the V2 Journey options page with its locked round identity head, f
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. Validation: 73 distinct scoped cases across six suites (five complete, eight selected prior-Compatibility cases); analyser, format and protected SDK check clean. Three430×932 @3x actual-shell renders, four200% head/end frames, three master/build pairs and contact sheet are in JOURNEY_TAB/BUILT/V3. CASE_LEDGER.json excludes loading/setup events and names two stale My ZYRA entry fixtures that fail before options; written refusal under OA-ZYRA-328 to repair those in this row. QA.json records retained Poppins/icon/shadow/frame differences and the actual Sara stage4 Compatibility unlock versus illustrative locked masters. No pixel-parity, full-app, whole-suite or all-accessibility claim; inherited wider37 failures not rerun. Parent visual/contract verification remains OA-ZYRA-328, old member retirement OA-ZYRA-317. No native delivery/backend work. Source3341baf.
+
+
+## Queue 64 — Seeker Safety & advice LOCK22 V5 — 31 October 2026
+
+Added the locked Seeker advice page, with the five exact tips, separate report-instructions and existing Help destinations, and emergency line. Profile Basic/One enters advice; Guardian Safety remains unchanged for queue66. Account, role, route, controls and disposal guards own its callbacks; restored advice stacks clear stale peer targets. The new dev/zyra_draft_safety_advice_presentation.dart is counted in both developer/preview and Founder planned app by the existing wildcard; no classifier change.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,082 lines / 335 files | 169,327 lines / 336 files |
+| Developer/preview | 49,292 / 93 | 49,537 / 94 |
+| Founder planned app | 30,110 / 43 | 30,355 / 44 |
+| Tests | 216,511 / 509 | 216,863 / 511 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py (before = queue57 recorded baseline). 107 distinct scoped cases across10 suites pass; CASE_LEDGER.json names each case and selected Browse subset. Standard430×932 advice has zero scroll extent and both actions plus the complete emergency line visible;200% at430×932 and320×568 reaches all tips/actions/footer without layout exceptions. Three actual x07 frames and the full-size master/build pair are in UNITY_PASS/BUILT/V5; prior V1 evidence retained. QA.json records native typography, shadow and frame differences; no pixel-parity or full-app claim. Known older Membership/My ZYRA fixtures and wider37 failures not rerun or repaired; written scope refusal under OA-ZYRA-328. Parent visual/contract verification remains OA-ZYRA-328, ordinary member retirement OA-ZYRA-317. Local Founder sample only; no backend/native delivery.

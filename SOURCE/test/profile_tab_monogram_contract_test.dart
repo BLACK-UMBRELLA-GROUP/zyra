@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
+import 'package:zyra/dev/zyra_draft_safety_advice_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
@@ -410,9 +411,13 @@ void main() {
         await start();
         await _tap(tester, 'concept_safety_advice');
         expect(
-          find.byType(ZyraDraftReportPresentation),
+          find.byType(
+            role.guardian
+                ? ZyraDraftReportPresentation
+                : ZyraDraftSafetyAdvicePresentation,
+          ),
           findsOneWidget,
-          reason: 'LOCK 21 retains the existing Safety destination.',
+          reason: 'LOCK22 V5 replaces only the Seeker advice destination.',
         );
         await start();
         await _tap(tester, 'concept_invite');

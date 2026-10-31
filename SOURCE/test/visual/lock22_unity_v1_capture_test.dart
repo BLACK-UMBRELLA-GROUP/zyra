@@ -130,6 +130,7 @@ void main() {
         }
         await h.mount(tab: 4);
         await h.tap('concept_safety_advice');
+        await h.tap('draft_safety_advice_report');
         h.assertPage('safety');
         expect(find.text('Choose a profile to report'), findsOneWidget);
         expect(find.text('Submit report'), findsNothing);
