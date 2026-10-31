@@ -4777,6 +4777,24 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           );
         }
       }
+      for (final person in _visibleRequests(DraftJourneyState.ended)) {
+        final attempt = _model.currentEndedAttemptFor(person.id);
+        final at = attempt?.endedAt;
+        // An undated history example does not manufacture a new ending event.
+        if (attempt == null || at == null) continue;
+        events.add(
+          ZyraFocusEvent(
+            tokens: ['ended:${attempt.id}'],
+            target: 'ended',
+            personId: person.id,
+            occurredAt: at,
+            title: 'Your Journey with ${person.firstName} has ended',
+            detail: 'It stays in your read-only Ended Journeys.',
+            action: 'View Ended Journeys',
+            icon: Icons.history,
+          ),
+        );
+      }
     } else if (example != ZyraMyZyraActivityExample.quiet) {
       final samples = example.items.where(_activityItemVisible).toList();
       if (fixtureRequests && samples.isNotEmpty) {

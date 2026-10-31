@@ -403,15 +403,15 @@ Measured with SYSTEM/tools/blueprint/code_size.py. Goldens remain 2,612 images /
 
 ## Queue 43 — My ZYRA Focus LOCK15 V2 — 31 October 2026
 
-Built the locked Seeker and Guardian Focus presentation with one addressed item, bounded paging/swipe, actual status chips and four quick tiles. Focus consumption is separate from request attention; immutable outgoing-acceptance provenance and event tie ordering survive restore. Guardian review identity uses a revision, not countdown hours. Existing review/Connect rules and Basic locks remain. Extra Guardian kinds without an addressed local source remain absent; details are in MY_ZYRA/BUILT/SOURCE_LIMITS.json.
+Built the locked Seeker and Guardian Focus presentation with one addressed item, bounded paging/swipe, actual status chips and four quick tiles. Focus consumption is separate from request attention; immutable outgoing-acceptance provenance, dated ending events and event tie ordering survive restore. Undated history creates no new event. Guardian review identity uses a revision, not countdown hours. Existing review/Connect rules and Basic locks remain. Extra Guardian kinds without an addressed local source remain absent; details are in MY_ZYRA/BUILT/SOURCE_LIMITS.json.
 
 | Scope | Before | After |
 |---|---:|---:|
-| All app code | 168,386 lines / 332 files | 169,342 lines / 334 files |
-| Developer/preview | 48,626 / 90 | 49,051 / 91 |
-| Founder planned app | 29,504 / 40 | 29,800 / 40 |
-| Tests | 215,160 / 498 | 215,257 / 501 |
+| All app code | 168,386 lines / 332 files | 169,360 lines / 334 files |
+| Developer/preview | 48,626 / 90 | 49,600 / 92 |
+| Founder planned app | 29,504 / 40 | 30,423 / 42 |
+| Tests | 215,160 / 498 | 215,310 / 501 |
 | Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
-Measured with SYSTEM/tools/blueprint/code_size.py. Validation: 223 cases across 14 targeted suites; full analyser clean; protected SDK 3.44.2 and format checks pass. Eleven 430×932 @3x master/build pairs, two 430pt enlarged-text renders and two end-scrolled 320pt/200% renders are in MY_ZYRA/BUILT. The compact checks prove 8pt clearance above the unchanged navigation, including Guardian Basic locked labels; pager hit and semantics rectangles are 44×44. Existing widget/font/icon and inherited navigation differences are recorded, without a pixel-parity or device claim. Two obsolete Founder dashboard integration tests and generic activity-detail code moved to ~/_to_delete/ZYRA_QUEUE43_FOCUS_V2; replacement coverage preserves model/permission invariants. Five legacy pale-text expectations in my_zyra_attention_dot_test.dart now use the locked foreground token; all 19 cases there pass. No native build/install/upload, backend, migration or row44/45 work.
+Measured with SYSTEM/tools/blueprint/code_size.py, explicitly including the two new Founder-only Focus files in both preview categories; historical classifications are unchanged. Validation: 224 cases across 14 targeted suites; full analyser clean; protected SDK 3.44.2 and format checks pass. Eleven 430×932 @3x master/build pairs, two 430pt enlarged-text renders and two end-scrolled 320pt/200% renders are in MY_ZYRA/BUILT. The compact checks prove 8pt clearance above the unchanged navigation, including Guardian Basic locked labels; pager hit and semantics rectangles are 44×44. Existing widget/font/icon and inherited navigation differences are recorded, without a pixel-parity or device claim. Two obsolete Founder dashboard integration tests and generic activity-detail code moved to ~/_to_delete/ZYRA_QUEUE43_FOCUS_V2; replacement coverage preserves model/permission invariants. Five legacy pale-text expectations in my_zyra_attention_dot_test.dart now use the locked foreground token; all 19 cases there pass. No native build/install/upload, backend, migration or row44/45 work.

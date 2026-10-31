@@ -73,6 +73,59 @@ void main() {
   );
 
   testWidgets(
+    'dated local endings appear once; undated history creates no event',
+    (tester) async {
+      final harness = _harness(tester);
+      final model = ViewRequestDraftModel(
+        capacity: 3,
+        clock: () => DateTime.utc(2026, 10, 29, 11),
+      );
+      model.seedJourneys(1);
+      model.acknowledgeReceivedRequests(['draft-amira']);
+      model.seedHistory();
+      await harness.mount(
+        checkpoint: ZyraPreviewNavigationCheckpoint(
+          guardian: false,
+          model: model.snapshot(),
+          tab: 2,
+          pages: [],
+          myZyraConsumedFocusTokens: const [
+            'circle:response:draft-guardian-hassan',
+          ],
+        ),
+      );
+      expect(_dashboard(tester).items, isEmpty);
+      expect(model.end('draft-sara'), isTrue);
+      await harness.mount(
+        checkpoint: ZyraPreviewNavigationCheckpoint(
+          guardian: false,
+          model: model.snapshot(),
+          tab: 2,
+          pages: [],
+          myZyraConsumedFocusTokens: const [
+            'circle:response:draft-guardian-hassan',
+          ],
+        ),
+      );
+      expect(
+        _dashboard(tester).items.single.title,
+        'Your Journey with Sara has ended',
+      );
+      await harness.tap('focus-open-ended');
+      harness.assertPage('ended');
+      expect(
+        harness.latest.model.states['draft-sara'],
+        DraftJourneyState.ended,
+      );
+      await _back(harness);
+      expect(_dashboard(tester).items, isEmpty);
+      await harness.mount(checkpoint: harness.latest);
+      expect(_dashboard(tester).items, isEmpty);
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
+
+  testWidgets(
     'equal-time event kinds keep a stable order after restore',
     (tester) async {
       final harness = _harness(tester);

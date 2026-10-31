@@ -10,14 +10,18 @@ import os, re, glob
 LIB = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'SOURCE', 'lib')
 LIB = os.path.normpath(LIB)
 PREVIEW = ['zyra_one_journey_*.dart', 'zyra_view_request_draft_model.dart', 'zyra_request_*.dart',
-           'zyra_draft_*.dart', 'zyra_founder_launch_*.dart', 'dev_discovery_directions.dart']
+           'zyra_draft_*.dart', 'zyra_founder_launch_*.dart', 'dev_discovery_directions.dart',
+           'zyra_my_zyra_focus.dart']
+# LOCK15: this shared presenter is currently imported only by the two Founder hosts.
+FOUNDER_ONLY_SHARED = [os.path.join(LIB, 'widgets', 'zyra_focus_dashboard.dart')]
 # 'Save' (saved profiles) is not counted: the word is too common to measure honestly by search.
 RETIRED = {'Pause': r'pause', 'Restart': r'restart_journey|restartJourney'}
 
 def lines(paths): return sum(sum(1 for _ in open(p, encoding='utf-8', errors='replace')) for p in paths)
 alld = [p for p in glob.glob(LIB + '/**/*.dart', recursive=True)]
-dev = [p for p in alld if os.sep + 'dev' + os.sep in p]
-prev = sorted({p for g in PREVIEW for p in glob.glob(os.path.join(LIB, 'dev', g))})
+dev = [p for p in alld if os.sep + 'dev' + os.sep in p or p in FOUNDER_ONLY_SHARED]
+prev = sorted({p for g in PREVIEW for p in glob.glob(os.path.join(LIB, 'dev', g))}
+              | {p for p in FOUNDER_ONLY_SHARED if os.path.isfile(p)})
 nondev = [p for p in alld if p not in dev]
 print('| What | Size |\n|---|---|')
 print(f'| All app code | {lines(alld):,} lines in {len(alld)} files |')
