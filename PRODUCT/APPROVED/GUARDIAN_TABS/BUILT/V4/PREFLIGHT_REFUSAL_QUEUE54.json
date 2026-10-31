@@ -1,0 +1,124 @@
+{
+  "queue": 54,
+  "status": "FAILED_PREFLIGHT",
+  "refusal_id": "QUEUE54-R1",
+  "governing_rule": "AD-AIOS-115 / core rule 11",
+  "recorded_at": "2026-10-31T11:48:37Z",
+  "scope": "LOCK 8 V4 Guardian chat only; local Founder preview",
+  "built": false,
+  "source_changed": false,
+  "sdk_invoked": false,
+  "backend_actions": false,
+  "written_refusal": "Do not build queue 54 from this pack: brief step 5 requires an existing Guardian-connection block confirmation, but the current local flow blocks immediately and the three locked chat masters contain no confirmation. Creating its copy or layout would invent an unlocked state. Reusing the other person-level confirmation would falsely say that a live Journey ends.",
+  "built_from_reviewed": [
+    "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V4.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/ARCHIVE/GUARDIAN_TABS_SPEC_2026-10-31_V4.md"
+  ],
+  "contract": {
+    "brief_step_5": "Block Noor's Main Guardian (red; existing block flow with its confirm)",
+    "archived_v4_guardian_chat_row_line": 50,
+    "v9_guardian_chat_row_line": 75,
+    "version_resolution": "V9 preserves the Guardian-chat V4 row; V5-V9 changes are outside queue54. The V4 archive master pointer in V9 concerns Journey g09, not chat g19/g21/g22.",
+    "prerequisite_42": "BUILT; rows49 and51 are not prerequisites of queue54"
+  },
+  "source_observations": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "lines": "6315-6344",
+      "finding": "_guardianChatReport uses local-noor-guardian; onBlock immediately sets connection blocked and removes private-chat/report routes; no confirmation."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "lines": "364-393",
+      "finding": "draft_safety_block directly invokes the guarded onBlock callback."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "lines": "2480-2591",
+      "finding": "Other preview confirmation is hidden Seeker profile inspection, bound to hidden profile/model.block and a full Seeker profile layout; not an existing Guardian-connection flow."
+    },
+    {
+      "path": "SOURCE/lib/widgets/report_profile_sheet.dart",
+      "lines": "488-534,894-965",
+      "finding": "Private _HideConfirmation is a person-level safety block. Copy promises any live Journey ends; block-only UI is explicitly excluded when source is Guardian. Cannot reuse faithfully for connection-only block."
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "lines": "384-420",
+      "finding": "Existing test asserts block affects only this connection and preserves Journey model. Inspected, not executed."
+    }
+  ],
+  "locked_masters_inspected": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g19_guardian_chat__new.png",
+      "bytes": 669361,
+      "state": "Empty chat; no block confirmation"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g21_guardian_chat__sent.png",
+      "bytes": 654682,
+      "state": "Own message; no block confirmation"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g22_guardian_chat__options.png",
+      "bytes": 483743,
+      "state": "Options sheet Report a message / Block Noor's Main Guardian / Done; no confirmation copy, layout, or confirm/cancel actions"
+    }
+  ],
+  "renders": {
+    "executed": 0,
+    "master_beside_build": "Not produced: preflight refusal before any app change or SDK invocation."
+  },
+  "checks": {
+    "runtime_tests": 0,
+    "analyser_runs": 0,
+    "reason": "No-code preflight refusal; SDK and code-size recount not required."
+  },
+  "baseline_inherited_not_recounted": {
+    "all_lib": {
+      "lines": 169323,
+      "files": 335
+    },
+    "developer_preview": {
+      "lines": 49534,
+      "files": 93
+    },
+    "founder_preview": {
+      "lines": 30352,
+      "files": 43
+    },
+    "tests": {
+      "lines": 216995,
+      "files": 507
+    },
+    "goldens": {
+      "files": 2612,
+      "MB": 307
+    },
+    "old_pause_files": 39,
+    "restart_files": 1
+  },
+  "read_accounting": {
+    "primary_startup_document_bytes": 94203,
+    "primary_startup_decimal_KB": 94.203,
+    "method": "Sum of exact mandatory file/slice bytes plus startup queue excerpt; source/search output is additional and unmetered. Includes mandatory 27513-byte lessons file. One combined spec output was truncated; exact relevant rows were then read by bounded search.",
+    "helper": "chat54_master_states",
+    "helper_purpose": "Separate locked-image state inventory while primary checked source reuse",
+    "helper_text_bytes": 58989,
+    "helper_image_bytes": 1807786,
+    "tokens": "Unavailable"
+  },
+  "task_owned_allowlist": [
+    "PRODUCT/APPROVED/BUILD_QUEUE.md (only row54 Status and Built on)",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/PREFLIGHT_REFUSAL_QUEUE54.json"
+  ],
+  "next_action": "ZYRA lead designer corrects the locked pack with a Guardian-connection confirmation (copy, layout, actions and state), or records Founder-authorised scope change; a fresh queued brief is needed. Do not retry FAILED row54 automatically.",
+  "limits": [
+    "No app-wide pass claimed; inherited OA-ZYRA-328 failures remain.",
+    "No queue rows besides54 changed by this task.",
+    "No source, lock, master, blueprint, native, backend, config or credential changes.",
+    "No compiled output, source copies or render evidence created."
+  ]
+}
