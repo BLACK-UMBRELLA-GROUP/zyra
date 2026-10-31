@@ -1,0 +1,76 @@
+{
+  "source_commit": "5f8212dce6d55893ac25e4af740222ecaedb77ff",
+  "source_commits": [
+    "a4f4f4f",
+    "5f8212dce6d55893ac25e4af740222ecaedb77ff"
+  ],
+  "flutter_version": "3.44.2",
+  "mode": "headless Flutter widget tests; actual offline Founder shell",
+  "target": "iOS platform variant;430x932@3x and320x568@3x/200%",
+  "timestamp_utc": "2026-10-31T08:24:57.753664+00:00",
+  "locked_design": "LOCK15 V2; six Seeker and five Guardian masters; LOCK14 V5 roles",
+  "authority": "Founder GO31Oct2026; queue43 only",
+  "prerequisites": [
+    40,
+    42
+  ],
+  "verification": "224 targeted cases /14suites; full analyser clean; parent handover verification pending",
+  "code_size": {
+    "before": {
+      "app": [
+        168386,
+        332
+      ],
+      "developer_preview": [
+        48626,
+        90
+      ],
+      "founder_preview": [
+        29504,
+        40
+      ],
+      "tests": [
+        215160,
+        498
+      ],
+      "goldens": [
+        2612,
+        307
+      ],
+      "old_pause_restart": [
+        39,
+        1
+      ]
+    },
+    "after": {
+      "app": [
+        169360,
+        334
+      ],
+      "developer_preview": [
+        49600,
+        92
+      ],
+      "founder_preview": [
+        30423,
+        42
+      ],
+      "tests": [
+        215310,
+        501
+      ],
+      "goldens": [
+        2612,
+        307
+      ],
+      "old_pause_restart": [
+        39,
+        1
+      ]
+    },
+    "counter": "SYSTEM/tools/blueprint/code_size.py",
+    "classifier_change": "Only new zyra_my_zyra_focus.dart and Founder-only widgets/zyra_focus_dashboard.dart explicitly included; historical classes unchanged."
+  },
+  "native_build_install_upload": false,
+  "backend_migration": false
+}

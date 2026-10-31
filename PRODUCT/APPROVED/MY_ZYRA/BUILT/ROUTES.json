@@ -1,0 +1,76 @@
+{
+  "source_commit": "5f8212dce6d55893ac25e4af740222ecaedb77ff",
+  "seeker": [
+    {
+      "kind": "Journey request (one/several)",
+      "target": "requests",
+      "contract": "Received; aggregate opening consumes only Focus tokens"
+    },
+    {
+      "kind": "Request accepted",
+      "target": "journey",
+      "contract": "Exact current person"
+    },
+    {
+      "kind": "Request declined",
+      "target": "requests",
+      "contract": "Past"
+    },
+    {
+      "kind": "Introduction",
+      "target": "introductions",
+      "contract": "Current list"
+    },
+    {
+      "kind": "Journey ready",
+      "target": "journey",
+      "contract": "Exact current person"
+    },
+    {
+      "kind": "Family Review opened",
+      "target": "journey",
+      "contract": "Sara fixture with actual route access"
+    },
+    {
+      "kind": "Milestone to confirm",
+      "target": "timeline",
+      "contract": "Sara fixture with actual Timeline access"
+    },
+    {
+      "kind": "Circle message",
+      "target": "guardian_circle",
+      "contract": "Actual linked Circle"
+    },
+    {
+      "kind": "Guardian joined",
+      "target": "Guardian tab",
+      "contract": "Current linked context"
+    },
+    {
+      "kind": "Invitation expiring",
+      "target": "Guardian tab",
+      "contract": "Current linked context"
+    },
+    {
+      "kind": "Journey ended",
+      "target": "ended",
+      "contract": "Read-only list; no private row silently opened"
+    }
+  ],
+  "guardian": {
+    "review": "Existing Continue/Pause/Reopen rules; review event identity uses revision, not remaining hours.",
+    "connect": "Connect with Guardian Received; opening consumes Focus without accepting.",
+    "adam_chip": "Actual Guardian Journey; consumes addressed review Focus.",
+    "yusuf_chip": "Seekers tab",
+    "basic_locked_tiles": "Guardian One membership page",
+    "notifications": "Existing notifications page"
+  },
+  "status_chips": {
+    "setup": "Current role account setup",
+    "guardian": "Guardian tab",
+    "places": "Journey tab",
+    "notifications": "Settings then Phone access",
+    "preferences": "Retained filter_preferences editor"
+  },
+  "consumption": "Per-event tokens; request unread/revision, message scopes and permissions remain independent."
+}

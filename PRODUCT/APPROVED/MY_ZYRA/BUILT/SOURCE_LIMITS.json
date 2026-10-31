@@ -1,0 +1,101 @@
+{
+  "scope": "Admitted offline Founder preview only; no member/server event claims.",
+  "guardian_audit": {
+    "task": "queue43 LOCK15 V2 Guardian source audit",
+    "author": "guardian_focus helper",
+    "authority": "Existing fictional sources only. No new fixture enum, events, routes, SDK, Git or server changes were added during this follow-up.",
+    "shown_sources": [
+      {
+        "kind": "Family Review open/paused",
+        "source": "ZyraGuardianTabsState.review + hours; seeded Founder local state",
+        "target": "Existing Continue/Pause/Reopen actions; LOCK8 guards retained"
+      },
+      {
+        "kind": "Connect request received",
+        "source": "ZyraGuardianTabsState.connection == pending; Noor received request",
+        "target": "guardian_connect Received; linked, Guardian One and Main guards retained"
+      }
+    ],
+    "absent_sources": [
+      {
+        "kind": "Guardian invitation",
+        "status": "Not shown: absent exact Founder local source/target",
+        "evidence": [
+          "Founder shell _guardianInvite creates LinkGuardianScreen under !_guardianRole, tab 3; this is Seeker adding a Guardian, not Guardian reviewing Yusuf invitation.",
+          "LinkGuardianScreen hardcodes ZyraCodeScreen(asGuardian:false). Its existing local entry fixture resolves Ibrahim as Guardian, not Yusuf as Seeker.",
+          "AcceptGuardianInviteScreen is explicitly Seeker confirmation of incoming Guardian relationship; wrong direction for this event.",
+          "AcceptWaliInviteScreen supports both directions but directly calls ZyraWaliLinkService.previewInvite, acceptInvite and declineInvite, and has no localPreview seam. Routing it would introduce live-server authority outside this task.",
+          "dashboard_updates.notification.wali_invite_received is a template key, not an incoming Founder fixture record."
+        ]
+      },
+      {
+        "kind": "Guardian Circle message",
+        "status": "Not shown: no existing unread Guardian event",
+        "evidence": [
+          "Current Founder Circle has Adam/Yusuf welcome and Hassan response. The response uses unreadForMe:!guardian, so it is not a new incoming message for Guardian.",
+          "Existing ZyraMyZyraActivityExample.circleMessage is Seeker-facing: Hassan added to your Circle; not the specified Guardian event from Sara father.",
+          "The actual Guardian Circle destination exists; an unread Guardian event source is absent. A message list alone must not be converted into a new-message event."
+        ]
+      },
+      {
+        "kind": "Connect accepted",
+        "status": "Not shown: no sent-request acceptance event",
+        "evidence": [
+          "Existing Guardian connection accepted state is produced when this Guardian accepts incoming Noor request.",
+          "The existing private chat is explicitly Noor Main Guardian about Adam and Noor.",
+          "The LOCK15 item is Aisha Main Guardian accepted this Guardian sent request. state.sent is a Set of pending sent target IDs and contains no accepted response event. These directions must not be conflated."
+        ]
+      },
+      {
+        "kind": "Family Review answer",
+        "status": "Not shown: no addressed Founder event",
+        "evidence": [
+          "dashboard_updates.guardian.review_answered is a template key only in the Founder Focus path.",
+          "ZyraDevScenario.fakeActivityFor(dev-guardian-1) contains an old fictional review_answered/approve event, but it has no Adam/Sara Journey context or exact permitted target in the Founder shell.",
+          "Existing review open/paused/continued state does not establish that Sara family chose Continue. No event is inferred from this state."
+        ]
+      }
+    ],
+    "result": "No pack blocker under brief step 3: kinds without an existing Founder event source remain absent and disclosed. No generic held_action substitute.",
+    "files_changed_during_followup": []
+  },
+  "audit_reference_note": "Preparation line numbers precede the implementation; named functions and final source hashes are authoritative.",
+  "seeker_actual_local_sources": [
+    "Unseen/unblocked received requests: immutable pendingRequestedAt and received revision.",
+    "Our sent request accepted: explicit outgoing acceptance timestamp/revision; incoming acceptance is never inferred.",
+    "Circle response: existing fixed local message explicitly unreadForMe for the Seeker, existing sender/link context and timestamp.",
+    "Dated current ended attempt: immutable endedAt; undated history makes no event."
+  ],
+  "seeker_fixture_only": [
+    "declined request",
+    "Guardian introduction",
+    "Journey ready",
+    "Guardian joined"
+  ],
+  "seeker_existing_dashboard_key_adapters": [
+    "dashboard_updates.guardian.review_opened",
+    "dashboard_updates.notification.milestone_proposed",
+    "dashboard_updates.notification.wali_invite_expiring"
+  ],
+  "fixture_rules": [
+    "Explicit display rehearsals only; actual current route/person/link/block checks still apply.",
+    "No generic activity-detail fallback; no request acceptance, decline, cancellation, message-read or permission grant on target opening.",
+    "Unavailable addressed Journey/Timeline fixtures are suppressed rather than creating access."
+  ],
+  "guardian_actual_local_sources": [
+    "Existing review open/paused fixture and its Continue/Pause/Reopen actions.",
+    "Existing incoming Noor Connect request; existing Guardian One/Main/link checks."
+  ],
+  "guardian_absent_sources": [
+    "Yusuf invitation received",
+    "new Guardian Circle message",
+    "Aisha accepted a sent Connect request",
+    "Family Review answer"
+  ],
+  "quick_counts": "Local preview attention/request/introduction/end counts only. Notifications permission comes from a status-only platform read; unknown is not shown as off.",
+  "limits": [
+    "No iPhone acceptance; no native build/install; no server/backend changes.",
+    "Row44 developer removal and row45 Hide/Block ending are separate.",
+    "Unrelated designer/admin edits remain outside task staging."
+  ]
+}

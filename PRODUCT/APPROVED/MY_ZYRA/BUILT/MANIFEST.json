@@ -1,0 +1,494 @@
+{
+  "source_commit": "5f8212dce6d55893ac25e4af740222ecaedb77ff",
+  "source_binding": "Final render/test run used this committed task-owned source allowlist. No source walk or ignored local configuration/credential hashes.",
+  "source_files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_my_zyra_activity_preview.dart",
+      "bytes": 15623,
+      "sha256": "e9d87ca8fddc852f89c3b57d0bc77e48e4253b83691d9496f8955ac2157630a2"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_my_zyra_focus.dart",
+      "bytes": 2085,
+      "sha256": "891a4e4dd7d9410c28d46f313697c704656631190209d774eeed7db04cb307bf"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 312505,
+      "sha256": "b5e32f3c1d58af4e9474cc628966bc4e9b96e67f3a54c0a3533f02fe28a2e846"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "bytes": 46949,
+      "sha256": "258386c69b78d5b95dc01efe3240b3ea265672c34b3f09e6ade275f586a390b7"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_phone_access.dart",
+      "bytes": 12257,
+      "sha256": "a634d4f946dd1d5af1f06cbdc391ee145382456661f94f7f9cb027b83145070b"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+      "bytes": 7680,
+      "sha256": "384cb7cceb5a16e3caf39e0433499e18863f21e43efd66ef81bdd09215bc9a16"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "bytes": 58570,
+      "sha256": "36a455513465514adac0fd2101972991d53d397bc5f3b10e0194a68104c1eb07"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "bytes": 17662,
+      "sha256": "41e32e64128f51a03fdba85107854c1e6b58d310b698225cf00c8c3f9c99e84b"
+    },
+    {
+      "path": "SOURCE/test/focus_shell_guards_test.dart",
+      "bytes": 11711,
+      "sha256": "e71c902b769d25331bde03e5d4e922fd342e95421e0d7d03c70bd64d91e21d7d"
+    },
+    {
+      "path": "SOURCE/test/guardian_focus_dashboard_test.dart",
+      "bytes": 7649,
+      "sha256": "77ac6576995946110dc170b7417ad6975bad0fc1ed3d7bc11fd0f30d7feec7aa"
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_accepted_activity_test.dart",
+      "bytes": 7016,
+      "sha256": "d73be3dea76c4cff08d9940bde7863a354a405d56da39fcefe6ad9611a08beea"
+    },
+    {
+      "path": "SOURCE/test/zyra_focus_dashboard_test.dart",
+      "bytes": 10525,
+      "sha256": "6825f016a2adc335f6574cd1ba0aebca3f52e1c1be83f40a37ef3cf456f1d0bb"
+    },
+    {
+      "path": "SOURCE/test/visual/lock15_focus_capture_test.dart",
+      "bytes": 19194,
+      "sha256": "8a16aeb845def138a2a42085d2cc3e11ddec882b106fb36a7674119e7044b28b"
+    },
+    {
+      "path": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "bytes": 15235,
+      "sha256": "2e4701a94f32ca561ed853d48c06c3cb57cc2bb5d908e85e9646a39de3a949c5"
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "bytes": 18488,
+      "sha256": "5556fa31aaf94452f987bbf921c3f5694174cb374468d4d9d371cbe37d46a1c3"
+    },
+    {
+      "path": "SOURCE/test/zyra_my_zyra_activity_preview_test.dart",
+      "bytes": 10800,
+      "sha256": "36c6a03df4dd5833aa17c1837d731d220383fede404a61d70db87a64689166d1"
+    },
+    {
+      "path": "SOURCE/test/my_zyra_attention_dot_test.dart",
+      "bytes": 10768,
+      "sha256": "53f8c47de71ce2d467f7cf4ea001e9796f1b07246d6326c004fb078a6dc89761"
+    },
+    {
+      "path": "SYSTEM/tools/blueprint/code_size.py",
+      "bytes": 2430,
+      "sha256": "5abc9f7880313ea0ae744a13b923a71d8385d569798f021d043d514c0a0a9d9c"
+    }
+  ],
+  "approved_pack": [
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BRIEFS/BUILD_BRIEF_2026-10-30.md",
+      "bytes": 2509,
+      "sha256": "8075adeaddf1494bdda532093b9d945a836e6dc73e9f220e15695bfc71807846"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/RECORD/LOCK_RECORD.md",
+      "bytes": 1877,
+      "sha256": "974841eb5ae1ee170932c75898859f7f2ae36036b2cc3b613c8f99d968f38a4b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/RECORD/MY_ZYRA_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 9227,
+      "sha256": "0566e5b2e10bf86aa670ea84277e928b475e8da7312ad5a31688c2c3a66f9e81"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+      "bytes": 2610,
+      "sha256": "e4e9672f767ffa45e64aa8774be9ab97e331a5d6f5b5fbb15a392abfa3f17312"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V3.md",
+      "bytes": 10495,
+      "sha256": "94e2e161dbd7160227d7cc9430ee9d61050b20564372a36103a2f7f5d8d6c333"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/m01_needs_you_1_of_2.png",
+      "bytes": 793371,
+      "sha256": "6fba7b467d357cbbf0f97e0bf323cade87d8a6ec3e2fd20dc87ee617cc34be0f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/m02_needs_you_2_of_2.png",
+      "bytes": 807098,
+      "sha256": "7b85d2610772862d1b4699937481998defa37f1fd2dd1a17e18d48736a88e449"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/m03_several_requests.png",
+      "bytes": 791459,
+      "sha256": "728354ea9dd0258062a8f3820573c224e85e9fa7a2390bd61fc08d41b3687603"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/m04_all_caught_up.png",
+      "bytes": 708707,
+      "sha256": "d5eb41e9729d462c41d8f3891cbb9f5a139f15afe2b9c68d5c0f720e16cdfb06"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/m05_new_member.png",
+      "bytes": 756445,
+      "sha256": "85c06753b751d00dbfbcd186e4ef6bb72c783554fb0c37016ba95084303a26c2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/m06_seeker_basic.png",
+      "bytes": 792521,
+      "sha256": "5e78521dc879055477d9fd49e65392b34fa1719db95a8af6517a25dfad938fdb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/gm01_family_review.png",
+      "bytes": 877158,
+      "sha256": "6a4d12714d9de55386ac3d7bf6789e681299fb6bb9c01d8430519fdcc0dbc2ac"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/gm02_connect_request.png",
+      "bytes": 830161,
+      "sha256": "2db312c54945d889fa867a05f4d6d3a4eb14e78b62f9750150352887230f2f9d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/gm03_review_paused.png",
+      "bytes": 877046,
+      "sha256": "2f546bae23c8af20b48a027a43be5772efc8d634014cfc11d66081e225796181"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/gm04_all_caught_up.png",
+      "bytes": 750289,
+      "sha256": "0e1795a5a72ba052f6d1a50b21b469cf07e3c305e808308da3d0e6dba5e4bfeb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/MASTERS/gm05_guardian_basic.png",
+      "bytes": 882637,
+      "sha256": "3e508dcebe5be5abfe18d94b9675e9cf5124dda1989b5038dff166145f7090d9"
+    }
+  ],
+  "rendered_outputs": [
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/m01_needs_you_1_of_2.png",
+      "bytes": 576954,
+      "sha256": "a4690250d2c61c67fda64c3ad849d45107bbf793f7b02c4e0f45390c44a7e24f",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/m02_needs_you_2_of_2.png",
+      "bytes": 587011,
+      "sha256": "19b0a18e89ca0a1455768b494ede559e0c2645f1f909b2280600c7abe6886c9f",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/m03_several_requests.png",
+      "bytes": 575478,
+      "sha256": "8d6d8a25038d092037482735fcdbc1c839a985c6278ddd6fb54cecbf81d2b99d",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/m04_all_caught_up.png",
+      "bytes": 495616,
+      "sha256": "57a6227b6497311711cb1d7d337aa2260bee54d0b69ca9286c547536ac6e3f79",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/m05_new_member.png",
+      "bytes": 551361,
+      "sha256": "62278359ebc7cddc8ee7d12fd3079264d0e73e7361fb523b859f394529068b82",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/m06_seeker_basic.png",
+      "bytes": 575407,
+      "sha256": "e8419f5ac97b4ba1416c120c29cc56d0cf32328eafa61e987401890668143aad",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/gm01_family_review.png",
+      "bytes": 667953,
+      "sha256": "097b30ac476c2326757704d196184e80db3008331d26486fb0c7a96bd4e86dfa",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/gm02_connect_request.png",
+      "bytes": 608450,
+      "sha256": "27d6c0228ddf4e97bd2b99e4fe64d9063929b7ed26f20e748efc9f2e259d570a",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/gm03_review_paused.png",
+      "bytes": 651170,
+      "sha256": "80689e3c9aa932c88cda2ec555e3110d759ebceca569dcfd9bf3ec00fb27a2f6",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/gm04_all_caught_up.png",
+      "bytes": 540130,
+      "sha256": "d9492616ace8e2d5184ca927790c81e931b69dfe5998a74e49999c8f93d1c3fe",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/gm05_guardian_basic.png",
+      "bytes": 677044,
+      "sha256": "1caea4d80361b742e2351769b117ac658f5ab050d4aee34ad701937b16e1451b",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/large_seeker.png",
+      "bytes": 487628,
+      "sha256": "68c60bd0b34afc789871eff10524f322de094153ef8ba9d1e1a3b36db062e1df",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/large_guardian.png",
+      "bytes": 522231,
+      "sha256": "b498055f1b4d74b7f2e964c62722a633faa221a3dd08f56ae8ee8cacdda4f70e",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compact_200_seeker_end.png",
+      "bytes": 474288,
+      "sha256": "eefb1fc533baeccc6567f64d53410f9dbfcd2c2555f43a0c07bf8015c48ae593",
+      "pixels": [
+        960,
+        1704
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compact_200_guardian_basic_end.png",
+      "bytes": 458731,
+      "sha256": "362a29519d7ac8da9e3d44819de683af291501edda4a23711620c99467faddbc",
+      "pixels": [
+        960,
+        1704
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_m01_needs_you_1_of_2.png",
+      "bytes": 1142214,
+      "sha256": "c68fb1bc22c07834718bd908f9bf0db4fa0def23c257857b3aadb96a7d925d86",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_m02_needs_you_2_of_2.png",
+      "bytes": 1160830,
+      "sha256": "6c1afda0747240e0416d9bfa30439abffd52b6086adb83fd5023011c52382199",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_m03_several_requests.png",
+      "bytes": 1137450,
+      "sha256": "c4dcd6465fd4f330182167b754e58ca0ad0330fd888ac7550d5bfe4b2f81b6e5",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_m04_all_caught_up.png",
+      "bytes": 984725,
+      "sha256": "e6f5439f42559c76f56460bc8c9d10c349addfc5f560e1cad6a0293043e2f52b",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_m05_new_member.png",
+      "bytes": 1081841,
+      "sha256": "ad33fe7d04dd1a88e8a4ed879e4d3ff065d8a9611c2c285b145aacb41d812f6c",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_m06_seeker_basic.png",
+      "bytes": 1138259,
+      "sha256": "e6b03ca9a3c632066c84322c1312a1d84e0efd8417e8bb05c2d210054d930db9",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_gm01_family_review.png",
+      "bytes": 1301739,
+      "sha256": "33f827d5d92b3b18026c050c3484afb144c0bfba0245a1a85e0729b27dbebfa0",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_gm02_connect_request.png",
+      "bytes": 1200890,
+      "sha256": "f16aee59cc606419a965531f63ef249eb29ba092709c7f7e34729d182faecc5c",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_gm03_review_paused.png",
+      "bytes": 1286721,
+      "sha256": "79aa27e9af4700a4631d4a9d0024e1f7305838c42617108b953bbff338d87611",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_gm04_all_caught_up.png",
+      "bytes": 1065208,
+      "sha256": "3436b5e23b38a67ca5adca3fefee314cc0aebb009d48ff42b9058b0835f94d0d",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compare_gm05_guardian_basic.png",
+      "bytes": 1315685,
+      "sha256": "822911203d7f8480732ebc53e5524b0ae4f3d7a7ce16fe292ba815d16143c262",
+      "pixels": [
+        2580,
+        2850
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/contact_master_beside_build.png",
+      "bytes": 605624,
+      "sha256": "c0221dc4045ba717c876ef0537bdf7293f8418944dd536221e183e522ce81dff",
+      "pixels": [
+        1720,
+        1530
+      ]
+    }
+  ],
+  "proof_files": [
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/BUILD.json",
+      "bytes": 1712,
+      "sha256": "5b9263d7d4535d6eb0886dc52c323989ec59b414ef720505a6230ac596498f8a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/VALIDATION.json",
+      "bytes": 3683,
+      "sha256": "dd1d1beb16831dad96ae2e1b56d5ed8267062270dd910fb58dd0c7308e49015c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/TEST_CASES.json",
+      "bytes": 15507,
+      "sha256": "0e6ba3a080d067c5b4b944b491137e2c5ec1e9cfd9afd047841a3f998a37d3cb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/SOURCE_LIMITS.json",
+      "bytes": 6072,
+      "sha256": "940ac17b9d089dd5307c0e731713685e4fd7e19f71b699c888c0761fba93823b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/ROUTES.json",
+      "bytes": 2258,
+      "sha256": "88e7f0e0d0f9531c4f866a88dfc438c01036d5fd17861f500dfefba28037e91b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compact_200_seeker_end.json",
+      "bytes": 401,
+      "sha256": "e8ff723e27fb3912765727a55c4401cf73be4148735b9605d9114fba4f2ea0a9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/BUILT/compact_200_guardian_basic_end.json",
+      "bytes": 536,
+      "sha256": "bcb19d5579a057f0db8cda1fe448c91cb2e051baf15d891dbc37c8a0178ff0b3"
+    }
+  ],
+  "owned_document_fragments": {
+    "queue43_sha256": "132e5647523c860e81aa20f9a0d2904dc5434a4ba677fffb4b0b065a9747fc6e",
+    "code_size_section_sha256": "4ed21a0a465511ace4686784de84621f1901361d845e9afd7bc318f9b69ccb3b"
+  },
+  "retired_source_paths": [
+    "SOURCE/test/my_zyra_request_attention_shell_test.dart",
+    "SOURCE/test/one_journey_activity_checklist_integration_test.dart"
+  ],
+  "visual_limits": [
+    "No pixel-parity or iPhone claim. Masters include a rounded outer phone frame; actual Flutter output is the full viewport.",
+    "Existing bundled Poppins, Material icons and unchanged LOCK6 navigation geometry are retained; glyphs and paragraph wraps differ from the prototype.",
+    "m02 title is balanced as locked; its native12.5pt/300pt-width paragraph wraps over two lines.",
+    "The Focus footer preserves clearance around inherited navigation rather than moving that navigation to prototype coordinates."
+  ],
+  "startup": {
+    "root_document_text_bytes": 78419,
+    "root_master_bytes": 8866892,
+    "path_search_output_excluded": true,
+    "note": "Includes the lessons file explicitly required by the direct user instructions, plus review overlap.",
+    "helpers": [
+      "guardian_focus",
+      "focus_event_state"
+    ],
+    "helper_tokens": "unavailable",
+    "prior_input": {
+      "name": "focus43_read_ahead",
+      "scope": "Seeker-only; not a V2 Guardian audit",
+      "startup_bytes": 51450,
+      "source_excerpt_bytes": 66506,
+      "master_bytes": 4660528,
+      "tokens": "unavailable"
+    }
+  },
+  "task_scope": "queue43 only; rows44/45 untouched; no native/backend authority exercised"
+}

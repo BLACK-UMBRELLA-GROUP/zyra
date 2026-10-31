@@ -1,0 +1,39 @@
+{
+  "logical_size": [
+    320,
+    568
+  ],
+  "text_scale": 2,
+  "device_pixel_ratio": 3,
+  "role": "Guardian Basic",
+  "scroll_offset": 1209.0,
+  "max_scroll_extent": 1209.0,
+  "navigation_rect": [
+    20.0,
+    476.0,
+    300.0,
+    534.0
+  ],
+  "last_tile_rect": [
+    236.0,
+    59.0,
+    300.0,
+    468.0
+  ],
+  "locked_label_rects": [
+    [
+      114.0,
+      303.0,
+      151.0,
+      453.0
+    ],
+    [
+      186.0,
+      216.0,
+      223.0,
+      366.0
+    ]
+  ],
+  "clearance": 8.0,
+  "all_geometry_assertions_passed": true
+}

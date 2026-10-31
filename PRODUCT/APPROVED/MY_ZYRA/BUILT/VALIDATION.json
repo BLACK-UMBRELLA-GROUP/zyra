@@ -1,0 +1,127 @@
+{
+  "status": "PASS scoped checks",
+  "source_commit": "5f8212dce6d55893ac25e4af740222ecaedb77ff",
+  "test_count": 224,
+  "suite_count": 14,
+  "suites": [
+    {
+      "path": "SOURCE/test/focus_shell_guards_test.dart",
+      "passed": 7
+    },
+    {
+      "path": "SOURCE/test/guardian_focus_dashboard_test.dart",
+      "passed": 8
+    },
+    {
+      "path": "SOURCE/test/my_zyra_attention_dot_test.dart",
+      "passed": 19
+    },
+    {
+      "path": "SOURCE/test/my_zyra_request_attention_model_test.dart",
+      "passed": 6
+    },
+    {
+      "path": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "passed": 56
+    },
+    {
+      "path": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "passed": 21
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_accepted_activity_test.dart",
+      "passed": 7
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_activity_revision_test.dart",
+      "passed": 9
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_snapshot_test.dart",
+      "passed": 13
+    },
+    {
+      "path": "SOURCE/test/visual/lock15_focus_capture_test.dart",
+      "passed": 9
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "passed": 12
+    },
+    {
+      "path": "SOURCE/test/zyra_focus_dashboard_test.dart",
+      "passed": 9
+    },
+    {
+      "path": "SOURCE/test/zyra_my_zyra_activity_preview_test.dart",
+      "passed": 10
+    },
+    {
+      "path": "SOURCE/test/zyra_phone_access_lock12_test.dart",
+      "passed": 38
+    }
+  ],
+  "case_names": "TEST_CASES.json",
+  "full_repository_test_suite_run": false,
+  "full_flutter_analyze": "No issues found",
+  "format": "17 task-owned Dart files unchanged by formatter check",
+  "sdk": {
+    "version": "3.44.2",
+    "runner": "pinned tooling/no_git_driver.mjs",
+    "primary_only": true,
+    "exec_denial_probe": "PASS",
+    "nested_exec_denial_probe": "PASS",
+    "pins": 5
+  },
+  "legacy_failures_resolved": {
+    "file": "SOURCE/test/my_zyra_attention_dot_test.dart",
+    "cases": [
+      "prominent false preserves the unwrapped title branch",
+      "compact false preserves the unwrapped title branch",
+      "regular false preserves the unwrapped title branch",
+      "summary false preserves the unwrapped title branch",
+      "expanded false preserves the unwrapped title branch"
+    ],
+    "old_assertion": "Hard-coded former pale text #F6F0F8.",
+    "replacement": "LOCK14 V5 ZyraColors.foreground (#2B2420); geometry/unread assertions retained.",
+    "final_suite_result": "19 of 19 passed"
+  },
+  "pager_geometry": {
+    "physical_hit_rect": [
+      44,
+      44
+    ],
+    "semantics_rect": [
+      44,
+      44
+    ],
+    "proof": "m01 test taps 17pt below the target centre, outside the visible chevron."
+  },
+  "compact_geometry": [
+    "compact_200_seeker_end.json",
+    "compact_200_guardian_basic_end.json"
+  ],
+  "required_coverage": [
+    "all11master states",
+    "2/3/4+ request wording",
+    "arrow/swipe bounds and single item",
+    "all12Seeker destinations",
+    "Focus consumption distinct from unread and domain actions",
+    "later arrivals and short returns",
+    "stable cross-kind timestamp ties",
+    "immutable outgoing acceptance provenance",
+    "dated ending versus undated history",
+    "Guardian review countdown and new revision",
+    "Basic locks",
+    "account A-B-A; navigation; developer control epochs",
+    "status-only permission observation",
+    "actual preference totals",
+    "320pt/200% last-tile and locked-label clearance"
+  ],
+  "not_run": [
+    "native build/install/launch",
+    "upload/signing/publish",
+    "backend/migration",
+    "full repository tests"
+  ]
+}
