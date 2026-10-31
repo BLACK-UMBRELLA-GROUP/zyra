@@ -1,0 +1,43 @@
+{
+  "source_commits": [
+    "6d1efb95cbb42eb40ef0fb206598b61a5afdb513",
+    "d3f87a1214438c702255509eb3f0964e1555ec19",
+    "0c6f26da32cc766b507c55bd4ecdb73c11ae8321"
+  ],
+  "driver": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tooling/no_git_driver.mjs",
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "full_scoped_invocation": "flutter test --no-pub <19 explicit suite paths in CASE_LEDGER> --reporter json",
+  "final_capture_invocation": "flutter test --no-pub --dart-define=ZYRA_GUARDIAN_CHAT_V4_CAPTURE=true test/guardian_chat_v4_owner_test.dart test/visual/guardian_chat_v4_capture_test.dart test/visual/lock8_guardian_tabs_capture_test.dart test/guardian_circle_send_button_designs_test.dart --reporter json",
+  "run_output_hashes": [
+    {
+      "name": "scoped_results.jsonl",
+      "bytes": 208170,
+      "sha256": "b10fc9f05dc3b3e7f1c5d9948ea2a92db71a686261c80f11bb8493d37410315d"
+    },
+    {
+      "name": "final_layout_results.jsonl",
+      "bytes": 41293,
+      "sha256": "ffd06d753c63627c83ffa7caf89424931b830cc6ad9c628e8e1610459fe6bc33"
+    },
+    {
+      "name": "analyze.log",
+      "bytes": 96,
+      "sha256": "d0f46cee0576fec0173ca1376586416cc775d50fc0b57c2106763f8baa2c771f"
+    },
+    {
+      "name": "format.log",
+      "bytes": 47,
+      "sha256": "c6a24c465410c0038b6872fec220c42ac6ede68c964c82aa5c57f788f42b40e1"
+    }
+  ],
+  "analyzer_output": "Analyzing 8 items...                                            \nNo issues found! (ran in 3.2s)\n",
+  "format_output": "Formatted 8 files (0 changed) in 0.22 seconds.\n",
+  "sdk_check": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS",
+    "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "no_native_install_backend_or_transmission": true
+}

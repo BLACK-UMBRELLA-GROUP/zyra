@@ -1,0 +1,133 @@
+{
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/CONTACT_SHEET.png",
+      "bytes": 556934,
+      "sha256": "0833cc016dc3c39ea052aefde7505f7e5ba8fad2675ca49a5d05640178fe8978",
+      "pixels": [
+        2580,
+        952
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/g19_guardian_chat__new.png",
+      "bytes": 364255,
+      "sha256": "4d98222fa31e872badbd37ebf97b477a3a057f1605b68382992bd0672041d0c6",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/g19_guardian_chat__new__master_beside_build.png",
+      "bytes": 853422,
+      "sha256": "05374b13927bbafa6715549344e73c19d0db0c3e5644839b12d59551b3733d6b",
+      "pixels": [
+        2580,
+        2856
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/g21_guardian_chat__sent.png",
+      "bytes": 351351,
+      "sha256": "8ea0ddab677358dc47ac60e36131c99db5bf39d2c81274b12717b20ee7bde84f",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/g21_guardian_chat__sent__master_beside_build.png",
+      "bytes": 828029,
+      "sha256": "9e66a11ee31ae6b148dd5ae4daea965635b6af153dffac383864868676cde719",
+      "pixels": [
+        2580,
+        2856
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/g22_guardian_chat__options.png",
+      "bytes": 284298,
+      "sha256": "cd2924a0284318f34fa3cc095ae4ff49584d66d27d06758b7c327b00bcde6c98",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/g22_guardian_chat__options__master_beside_build.png",
+      "bytes": 649217,
+      "sha256": "6028bc5264bc59236d9b90efc18f6f24f8537817edbba086e1a5611aa844f166",
+      "pixels": [
+        2580,
+        2856
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/large200_empty.png",
+      "bytes": 482118,
+      "sha256": "7ef51ef52abf21d19dc9268b5370079e259b9d56f7ba25a7ccf6fed34f0a0ba0",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/large200_options.png",
+      "bytes": 313261,
+      "sha256": "8d7701df1876f6d82fff9aa6a5ec8431441c60c3c95db0684b0c3f97c240b226",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/large200_sent.png",
+      "bytes": 459776,
+      "sha256": "9c2373b7d7b9214c7d86d14e5a73b4796455e418fb31079a8f138335ba1b6c67",
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/narrow200_empty.png",
+      "bytes": 361450,
+      "sha256": "0df7cb75ce12a1592374906fd5ab8646f663821c35f26f60b57b6fe014923541",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/narrow200_header.png",
+      "bytes": 299972,
+      "sha256": "4bce7701a550d3e9386b3d816f7e5f7d85456fcc2d4a9b6a4a24c71588702abe",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/narrow200_options.png",
+      "bytes": 143372,
+      "sha256": "b2fe1e6d1c55bbcb83f023fa91f5247dd3da507a294a89f6b70a3378ec808262",
+      "pixels": [
+        960,
+        1920
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/narrow200_sent.png",
+      "bytes": 328882,
+      "sha256": "87c3e8b297bb5ddf4fe0b8e92569d7a0225a2dffd4c7c12cf841f85c17ddf0a6",
+      "pixels": [
+        960,
+        1920
+      ]
+    }
+  ],
+  "actual_frames": 10,
+  "full_master_build_pairs": 3,
+  "contact_sheets": 1
+}

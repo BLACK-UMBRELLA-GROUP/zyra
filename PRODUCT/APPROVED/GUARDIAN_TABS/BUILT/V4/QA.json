@@ -1,0 +1,148 @@
+{
+  "status": "BUILT; parent visual/contract verification pending OA-ZYRA-328",
+  "built_from": "V4R brief + LOCK record V4 row + unchanged Guardian chat row in archived V4/current V9 + g19/g21/g22",
+  "contract": {
+    "identity": "Accepted sample connection Adam/Noor; monogram N; unaffected by selected Aisha Network card or Yusuf Seeker. No surname/photo disclosed.",
+    "composer": "Existing Circle composer/send presenter; changes only privateGuardian mode; actual trimmed own message bubble. Existing controller/route-local lifetime: options preserve, departure/remount clears. Widget state is keyed by account ID/generation and exact accepted connection identity. Actual same-host account ABA rebuild, connection replacement, and same-host reset tests prove transcript/draft isolation; globally selected Yusuf/Aisha never changes the accepted Adam/Noor context. No server/message-store contract changed.",
+    "report": "Both empty and own-message-only conversations preserve existing long-press Guardian-profile report (local-noor-guardian); options route to that same page. No received-message selection policy, target invention or report transmission added.",
+    "block": "One exact existing immediate Guardian connection block function shared by report and options; no confirm, no Seeker Journey Block/Hide dispatcher, model Journey facts unchanged.",
+    "guards": "Fresh captured account/generation, role, Main/paid/link, connection/state identity, UI revision, tab/page, controls epoch, route stamp/focus, owned-modal admission, disposal and terminal callback denial; physical/semantic feedback checked before haptics.",
+    "shared_scope": "Ordinary Guardian Circle/default send mode unchanged. Private-only composer corner/send/bottom geometry aligned to g19/g21."
+  },
+  "checks": {
+    "scoped_complete_suites": 19,
+    "scoped_cases": 355,
+    "scoped_pass": 353,
+    "scoped_fail": 2,
+    "scoped_skip": 0,
+    "final_private_layout_suites": 4,
+    "final_private_layout_pass": 70,
+    "final_private_layout_fail": 0,
+    "analyzer": "8 explicit changed paths, no issues",
+    "format": "8 changed paths, zero changes",
+    "protected_sdk": "3.44.2, five pin checks, direct and nested exec denial PASS"
+  },
+  "written_refusals": [
+    {
+      "id": "QUEUE70-R1",
+      "finding": "Two wider Guardian Circle assertions expect journeyGold for Discussing/Past Journey small text; actual is current goldText.",
+      "tests": [
+        {
+          "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+          "name": "selection stages a gold composer chip and publishes its context only with Send",
+          "first_assertion": [
+            "══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following TestFailure was thrown running a test:\nExpected: Color:<Color(alpha: 1.0000, red: 0.6627, green: 0.4745, blue: 0.1804, colorSpace:\nColorSpace.sRGB)>\n  Actual: Color:<Color(alpha: 1.0000, red: 0.5176, green: 0.3725, blue: 0.1412, colorSpace:\nColorSpace.sRGB)>\n\nWhen the exception was thrown, this was the stack:\n#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart:791:7)\n<asynchronous suspension>\n#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n\nThis was caught by the test expectation on the following line:\n  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart line 791\nThe test description was:\n  selection stages a gold composer chip and publishes its context only with Send\n════════════════════════════════════════════════════════════════════════════════════════════════════"
+          ]
+        },
+        {
+          "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+          "name": "owned archive rebuild preserves the same chat and draft",
+          "first_assertion": [
+            "══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following TestFailure was thrown running a test:\nExpected: Color:<Color(alpha: 1.0000, red: 0.6627, green: 0.4745, blue: 0.1804, colorSpace:\nColorSpace.sRGB)>\n  Actual: Color:<Color(alpha: 1.0000, red: 0.5176, green: 0.3725, blue: 0.1412, colorSpace:\nColorSpace.sRGB)>\n\nWhen the exception was thrown, this was the stack:\n#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart:1782:5)\n<asynchronous suspension>\n#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n\nThis was caught by the test expectation on the following line:\n  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart line 1782\nThe test description was:\n  owned archive rebuild preserves the same chat and draft\n════════════════════════════════════════════════════════════════════════════════════════════════════"
+          ]
+        }
+      ],
+      "classification": {
+        "Discussing": "SOURCE/lib/dev/zyra_guardian_circle_topic_options.dart:204–210 reads ZyraColors.goldText; path unchanged by queue70.",
+        "Past Journey": "SOURCE/lib/dev/zyra_circle_discussion_archive.dart:150–153 reads ZyraColors.goldText; path unchanged by queue70.",
+        "changed_sites": "SOURCE/lib/screens/wali/family_messaging_screens.dart privateGuardian-only padding/corner radius; ordinary Circle uses false. SOURCE/lib/dev/zyra_circle_send_button_presentation.dart privateGuardian-only send size/icon/border. Neither failing Text lives at a changed site.",
+        "proof": "git status --short on both exact text-owner paths is empty; neither path appears in the explicit eight-path committed source allowlist. No historical pass or pre-change runtime claim."
+      },
+      "refusal": "No Circle design/colour rule change or assertion rewrite is authorised by queue70. Preserve and report both failures; no historical-origin or whole-app pass claim."
+    }
+  ],
+  "visual_comparison": {
+    "pairs": [
+      "g19_guardian_chat__new__master_beside_build.png",
+      "g21_guardian_chat__sent__master_beside_build.png",
+      "g22_guardian_chat__options__master_beside_build.png"
+    ],
+    "contract": "Correct title/card/44-point ring/monogram/privacy body/own bubble/three sheet actions; empty disappears on real send. All 200% states scroll and remain reachable without overflow.",
+    "differences": "Masters include a rounded device mask; Flutter capture is rectangular. Existing app/native font, icon stroke, surface/shadow and sheet metrics differ visibly from prototype; no pixel-parity claim. Empty-copy line breaks, header card height and options control metrics remain visible in full-size pairs. Parent judges visual fidelity.",
+    "review_authority": "Primary self-check only; parent verification still required."
+  },
+  "limits": [
+    "Offline sample only; no new data policy, transport, backend, auth entitlement change, native build/install, upload/signing or publish.",
+    "Old ordinary member/sign-in routes retained under OA-ZYRA-317.",
+    "Queue54 historical refusal retained byte-for-byte; all unrelated queue/designer/admin changes preserved."
+  ],
+  "startup": {
+    "primary_text_bytes": 157479,
+    "primary_text_kib": 153.8,
+    "master_image_bytes": 1807786,
+    "helper": "chat_test_map",
+    "helper_scope": "Separate owner test harness/cases only; no SDK/git/visual approval",
+    "helper_startup_bytes": 67403,
+    "helper_tokens": "Not exposed by collaboration API; not inferred from usage logs."
+  },
+  "size_before": {
+    "app": [
+      170215,
+      337
+    ],
+    "dev_preview": [
+      50425,
+      95
+    ],
+    "founder": [
+      31243,
+      45
+    ],
+    "tests": [
+      220224,
+      519
+    ],
+    "goldens": [
+      2612,
+      307
+    ],
+    "old_pause_restart": [
+      39,
+      1
+    ]
+  },
+  "size_after": {
+    "app": [
+      170574,
+      337
+    ],
+    "dev_preview": [
+      50784,
+      95
+    ],
+    "founder": [
+      31606,
+      45
+    ],
+    "tests": [
+      221257,
+      521
+    ],
+    "goldens": [
+      2612,
+      307
+    ],
+    "old_pause_restart": [
+      39,
+      1
+    ]
+  },
+  "disk": {
+    "evidence_png_bytes": 6276337,
+    "moved_regenerable_caches": [
+      {
+        "from": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/test_cache",
+        "to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE70_GUARDIAN_CHAT_V4_2026-10-31/test_cache",
+        "bytes": 406405792
+      },
+      {
+        "from": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/unit_test_assets",
+        "to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE70_GUARDIAN_CHAT_V4_2026-10-31/unit_test_assets",
+        "bytes": 17007259
+      }
+    ],
+    "free_bytes": 74034036736,
+    "scratch_destination": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE70_GUARDIAN_CHAT_V4_2026-10-31/work",
+    "compiled_or_source_copies_in_evidence": false
+  }
+}

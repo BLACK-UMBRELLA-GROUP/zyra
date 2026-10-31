@@ -1,0 +1,3230 @@
+{
+  "policy": "Distinct cases by suite path + exact test name; final source private-composer padding rerun replaces earlier result for the same case. No duplicated totals and no hidden setup/teardown counted.",
+  "runs": [
+    {
+      "file": "scoped_results.jsonl",
+      "complete": true,
+      "success": false,
+      "elapsed_ms": 37847,
+      "suite_count": 19,
+      "pass": 353,
+      "fail": 2,
+      "skip": 0
+    },
+    {
+      "file": "final_layout_results.jsonl",
+      "complete": true,
+      "success": true,
+      "elapsed_ms": 12432,
+      "suite_count": 4,
+      "pass": 70,
+      "fail": 0,
+      "skip": 0
+    }
+  ],
+  "distinct_case_count": 355,
+  "pass": 353,
+  "fail": 2,
+  "skip": 0,
+  "cases": [
+    {
+      "suite": "SOURCE/test/guardian_circle_send_button_designs_test.dart",
+      "name": "fixed gold circle keeps the selected outline and send callback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 14,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_send_button_designs_test.dart",
+      "name": "fixed send semantic action invokes the same caller once",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 54,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_send_button_designs_test.dart",
+      "name": "fixed send refuses disabled input busy=false",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 74,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_send_button_designs_test.dart",
+      "name": "fixed send refuses disabled input busy=true",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 74,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 actual sent text replaces the empty state and reuses composer",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 351,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/guardian_chat_v4_capture_test.dart",
+      "name": "Guardian chat V4 standard: empty, sheet, draft, actual sent message (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 84,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 83,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "Additional Basic cannot send a Chat-enable write",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 105,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "Main Basic cannot send a Chat-enable write",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 105,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "legacy response without entitlement proof never sends enable",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 116,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "One confirmation permits only the guarded current enable write",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 124,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "stage unavailable rejects enable even with paid confirmation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 135,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "account replacement during preflight sends no old-owner write",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 144,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "same-account replacement during preflight sends no old-generation write",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 153,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "late permission read cannot be returned to another account",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 165,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "Basic may revoke Chat without a paid-enable preflight",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 175,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_guardian_chat_access_authority_test.dart",
+      "name": "default startup-not-ready guard sends zero HTTP",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 187,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 fresh physical options report has one feedback and exact effect",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 379,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/guardian_chat_v4_capture_test.dart",
+      "name": "Guardian chat V4 large200: empty, sheet, draft, actual sent message (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 84,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 136,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 fresh physical options block has one feedback and exact effect",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 379,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 fresh physical options done has one feedback and exact effect",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 379,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/guardian_chat_v4_capture_test.dart",
+      "name": "Guardian chat V4 narrow200: empty, sheet, draft, actual sent message (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 84,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 press hold report keeps Guardian target with empty conversation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 443,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 options report keeps Guardian target with empty conversation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 443,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 180,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 press hold report keeps Guardian target with own message only",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 443,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 options report keeps Guardian target with own message only",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 443,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "requested raw preview cannot seed Journey or consent grants",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 113,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "retained preview controls deny authorization withdrawal pre-frame",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "retained preview controls deny live withdrawal pre-frame",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "raw Circle preview request cannot create Developer Access",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 49,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "raw inbox preview request cannot seed sample Circles",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 64,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 options preserve sent text and draft while route departure clears both",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 490,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "retained preview controls deny generation withdrawal pre-frame",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 227,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 fresh role launch defaults to My ZYRA (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 262,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 account ABA rebuild isolates actual transcript and draft",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 515,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "opened consent explanation closes and stale info cannot reopen",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 180,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "older live read cannot overwrite the replacement source",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 213,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "stale context/send callbacks and delayed local send are denied",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 76,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "switch-to-live withdraws preview without starting live messaging",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 114,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "live write result cannot refill permission after owner reset",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 256,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 Additional authority and revoked connection fail closed (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 283,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "old preview circle cannot write into a replacement binding",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 296,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 long return retains local decisions while returning My ZYRA (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 322,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "old consent switch cannot write into a replacement source",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 328,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_controls_preview_authority_test.dart",
+      "name": "removing permission owner closes its separate consent sheet",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 347,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "retained selected-person chip denies after context withdrawal",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 Yusuf Circle isolates the local seeker identity and topics (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 357,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "an opened members sheet clears on authorization revocation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 153,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "an opened readers sheet clears on authorization revocation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 153,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 replacement connection and same-host reset isolate chat state",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 538,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "an opened context sheet clears on authorization revocation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 153,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 local private chat report and block end only this connection (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 384,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "account generation clears an already-open readers sheet",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 188,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical send checks owner revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 579,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "revocation removes only the stale Circle route",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 206,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 Network actions remain clear of nav and keep master label colours (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 419,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "removing the Circle owner withdraws its open members sheet",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 242,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical options checks owner revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 579,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/family_circle_preview_authority_test.dart",
+      "name": "removing the Circle owner withdraws its open readers sheet",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 242,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 all five tabs remain readable on compact phone at 200 percent text (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 440,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical press hold checks owner revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 579,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "name": "LOCK8 Network arrows stop at both boundaries and keep the master colours (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 478,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical send checks account ABA before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 579,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_preview_authority_test.dart",
+      "name": "ordinary launch/reset cannot enable Guardian fixtures",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 60,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical options checks account ABA before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 579,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical press hold checks account ABA before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 579,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject owner revoked",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject account ABA",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_preview_authority_test.dart",
+      "name": "ordinary member uses real roster despite default demo preference",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 78,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_preview_authority_test.dart",
+      "name": "ordinary unavailable does not substitute fake Guardians",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 90,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_preview_authority_test.dart",
+      "name": "revocation withdraws preview and stale local action callbacks",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 105,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject navigator ABA",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_preview_authority_test.dart",
+      "name": "late older request cannot overwrite a refreshed roster",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 133,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_preview_authority_test.dart",
+      "name": "account generation invalidates a pending member response",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 151,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject route covered",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "name": "zero and negative counts have no bubble",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 43,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "name": "counts one through nine show their actual number",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 52,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "name": "ten and larger counts show 9+ with the actual semantic count",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 62,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject controls ABA",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "name": "bubble uses locked size, type, colours, radius and page ring",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 77,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "name": "wide count keeps 16 height and minimum 16 width",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 103,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "name": "bubble is offset minus three from the button top and right",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 113,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "name": "badge preserves the conversation tap and clears with its count",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 138,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject role",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject reset",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject connection blocked",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject UI revision",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained composer and header callbacks reject disposal",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 630,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 denied chat callbacks cannot revive when owner admission returns",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 669,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "badge entry preserves the actual Circle composer and local send (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 denied sheet callbacks cannot revive when owned admission returns",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 704,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical sheet report checks owner revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 747,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "real Circle count clears only its own read facts and survives restore (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 116,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical sheet block checks owner revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 747,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "Focus consumption cannot mark a Circle message read (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 148,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical sheet done checks owner revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 747,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u01 u02: existing Circle unread clears only when opened (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 93,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical sheet report checks owned admission revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 747,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact active Journey with 1 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical sheet block checks owned admission revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 747,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u03: no linked Guardian has no Circle unread bubble (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 119,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "opening from Focus also clears the current Circle only (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 170,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 physical sheet done checks owned admission revoked before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 747,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u04: Guardian role adds no unsupported count (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 138,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact preparing Journey with 1 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "no current Guardian link means zero, regardless of Focus fixture (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 186,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject owner revoked and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 u05: actual Guardian tab at 430 and text scale 1.3 (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 149,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "name": "LOCK17 isolated component count boundaries and external ring (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 160,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "an already-read different sender cannot clear current sender (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 208,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject owned admission revoked and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact active Journey with 3 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject account ABA and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "retained Circle callback expires after controls changes (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 235,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject navigator ABA and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block owned modal ends exact preparing Journey with 3 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject route covered and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "retained Circle callback expires after navigation changes (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 235,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact preparing attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact active attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact preparing attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block ends exact active attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves absent relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves received relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves sent relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block without a Journey leaves ended relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block of accepted Waiting without held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 157,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block of accepted Waiting with held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 157,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects stale reset and replacement attempt with no mutation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 193,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block Keep preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 232,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects absent-attempt reset ABA with no mutation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 208,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects occupancy changes before ending or flagging",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 217,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block rejects wrong target attempt and unknown person atomically",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 232,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "block refuses a fresh duplicate as well as a replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 249,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact preparing attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact active attempt at capacity 1 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact preparing attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide ends exact active attempt at capacity 3 and retains Timeline",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 79,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves absent relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves received relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves sent relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide without a Journey leaves ended relationship untouched",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 129,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide of accepted Waiting without held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 157,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide of accepted Waiting with held ending preserves every current Journey",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 157,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects stale reset and replacement attempt with no mutation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 193,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects absent-attempt reset ABA with no mutation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 208,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects occupancy changes before ending or flagging",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 217,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide rejects wrong target attempt and unknown person atomically",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 232,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "hide refuses a fresh duplicate as well as a replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 249,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "unhide cannot revive an old hide confirmation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 264,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "already hidden current person can be ended and blocked explicitly",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 274,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "name": "ordinary hide and block retain visibility-only public behavior",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 287,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject controls ABA and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block barrier dismissal preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 232,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject role and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "retained Circle callback expires after role changes (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 235,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject reset and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block pending owned modal rejects account ABA and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 258,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "retained Circle callback expires after account changes (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 235,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject connection blocked and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block pending owned modal rejects owner revoked and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 258,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 retained sheet callbacks reject disposal and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 783,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "retained Circle callback expires after link changes (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 235,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 private route remains unavailable for Basic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 822,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block pending owned modal rejects navigator ABA and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 258,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 private route remains unavailable for Additional",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 822,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "name": "restoring an open reader clears its messages, without another account fact (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 290,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 private route remains unavailable for missing Main",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 822,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block retained report entry rejects controls ABA",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 304,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 private route remains unavailable for pending",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 822,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 private route remains unavailable for dismissed",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 822,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block retained report entry rejects role",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 304,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "name": "V4 private route remains unavailable for blocked",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 822,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block retained report entry rejects reset",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 304,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact active Journey with 1 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact preparing Journey with 1 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block One active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(390.0, 844.0) with a truthful disabled camera action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 207,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact active Journey with 3 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(390.0, 844.0) with all reasons and no submission",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 229,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(393.0, 852.0) with a truthful disabled camera action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 207,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(393.0, 852.0) with all reasons and no submission",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 229,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide owned modal ends exact preparing Journey with 3 places",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 194,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block One preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(430.0, 932.0) with a truthful disabled camera action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 207,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(430.0, 932.0) with all reasons and no submission",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 229,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide Keep preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 232,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block Basic active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "seven mandatory radio reasons stay local with Submit disabled",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 324,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "target-free account Safety does not choose a previous person",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 351,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide barrier dismissal preserves Journey and rejects retained confirmation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 232,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide pending owned modal rejects account ABA and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 258,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block Basic preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "large-text Report remains readable",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 366,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "large-text Scan remains readable",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 366,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "guard revocation rejects retained reason and secondary actions",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 419,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide pending owned modal rejects owner revoked and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 258,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "target replacement resets radio and revokes old delegates",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 464,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report x05/x06 actual route at text 1.0 selects all reasons, stays offline and draft",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 116,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "same-owner rebuild preserves radio and revokes prior callbacks",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 509,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block absent person stays immediate with no warning or report",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 169,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "same-subject owner replacement resets radio before feedback",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 547,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide pending owned modal rejects navigator ABA and replay",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 258,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block accepted waiting never ends its held other Journey",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 189,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "subject removal keeps Safety free of retained report actions",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 587,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "secondary actions remain explicit caller-owned actions",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 629,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "utility display settles with reduced motion false",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 651,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide retained report entry rejects controls ABA",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 304,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report x05/x06 actual route at text 2.0 selects all reasons, stays offline and draft",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 116,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "utility display settles with reduced motion true",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 651,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide retained report entry rejects role",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 304,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide One active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide retained report entry rejects reset",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 304,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report actual narrow 320x568 at 200 percent reaches every reason and disabled action without overflow",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 173,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide One preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One none Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block stale physical confirm emits no haptic after owner revoked",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 332,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide Basic active warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late report cannot chain a block into a replacement account",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 77,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late block acknowledgement cannot become current-account success",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 101,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "block explicitly pins the initiating bearer",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 120,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late unblock acknowledgement cannot become current-account success",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 101,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "unblock explicitly pins the initiating bearer",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 120,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late safety history is unavailable after account replacement",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 131,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide Basic preparing warns, keeps, confirms exact attempt and toast",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 112,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "block stale physical confirm emits no haptic after account ABA",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 332,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One preparing Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide absent person stays immediate with no warning or report",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 169,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide accepted waiting never ends its held other Journey",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 189,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One active Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide stale physical confirm emits no haptic after owner revoked",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 332,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "barrier dismissal preserves report choice and all Journey state",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 220,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One none Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "report sheet discards late acknowledgement and never hides as B",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 185,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "hide stale physical confirm emits no haptic after account ABA",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 332,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "retained submit callback cannot dispatch after A to B to A",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 217,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject owner revoked before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "retained duplicate submit callback sends one report only",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 235,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One preparing Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject account ABA before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "loaded safety statuses withdraw when the account changes",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 273,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "pending safety statuses cannot publish after A to B to A",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 288,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "thrown safety-status lookup stays recoverable",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 305,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Journey options and View profile warn; Profiles keeps occupied people excluded",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 244,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject navigator ABA before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report One active Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "an owned report acknowledgement survives a temporary covering page",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 318,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject controls ABA before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic none Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject role before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Browse no-Journey Hide preserves current Journey; hidden inspection Block warns",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 294,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic preparing Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject reset before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Block sheet 200 percent narrow scroll reaches both actions",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 346,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject disposal before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic active Block retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "name": "retained report buttons reject owned modal covering report before haptic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 406,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "name": "Hide sheet 200 percent narrow scroll reaches both actions",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 346,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "selected Portrait split remains",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 64,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic none Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic preparing Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "portraitSplit, compact=false, scale=2.0 keeps an accessible report target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 75,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "portraitSplit, compact=true, scale=2.0 keeps an accessible report target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 75,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/journey_report_accessibility_test.dart",
+      "name": "a card without a report callback exposes no fake report action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 136,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_report_v2_capture_test.dart",
+      "name": "Report Basic active Hide retains reason through Keep/dismiss and confirms exact target",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 211,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "detached Current names remain label-only guardian=false",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 460,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "detached Current names remain label-only guardian=true",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 460,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "actual contexts win over detached Current fallback names",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 506,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "invalid detached metadata cannot enable discussion: real-id",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 533,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "invalid detached metadata cannot enable discussion: draft-circle-current-empty",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 533,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "invalid detached metadata cannot enable discussion: draft-circle-current-past",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 533,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "duplicate detached IDs fail closed",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 547,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "replacing detached catalogue permanently withdraws retained owner",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 556,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "request shell source binds profile projection to its exact permitted Seeker context and stable loaded-photo cache",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 640,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "a second quick Send replaces only the prior owned reveal animation",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 695,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "selection stages a gold composer chip and publishes its context only with Send",
+      "result": "error",
+      "skipped": false,
+      "definition_line": 756,
+      "failure": "Test failed. See exception logs above.\nThe test description was: selection stages a gold composer chip and publishes its context only with Send",
+      "assertion_output": [
+        "══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following TestFailure was thrown running a test:\nExpected: Color:<Color(alpha: 1.0000, red: 0.6627, green: 0.4745, blue: 0.1804, colorSpace:\nColorSpace.sRGB)>\n  Actual: Color:<Color(alpha: 1.0000, red: 0.5176, green: 0.3725, blue: 0.1412, colorSpace:\nColorSpace.sRGB)>\n\nWhen the exception was thrown, this was the stack:\n#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart:791:7)\n<asynchronous suspension>\n#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n\nThis was caught by the test expectation on the following line:\n  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart line 791\nThe test description was:\n  selection stages a gold composer chip and publishes its context only with Send\n════════════════════════════════════════════════════════════════════════════════════════════════════"
+      ]
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "initial dismissal, repeated topic and pending removal do not append duplicate markers",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 796,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "an empty Circle keeps its empty transcript until a message is sent",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 832,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "returning to an earlier topic keeps distinct chronological cards without duplicate sibling keys",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 851,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "sent markers stay chronological and dismissing the picker creates no transcript entry",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 873,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "covered controls retain the same marker, local history and draft",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 919,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Basic Seeker cannot add markers or profile access",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 966,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Basic Guardian cannot add markers or profile access",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 966,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "a covered picker cannot append a marker through its retained selection",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 980,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "busy chat denies retained topic and profile callbacks while the original tagged send completes",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1020,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "permitted current Seeker profile is an owned read-only child and close preserves the exact Circle",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1051,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "owned profile swipe Back returns exactly once to the same ongoing chat",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1098,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "no resolver never creates a current profile link or navigation grant",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "null never creates a current profile link or navigation grant",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "throw never creates a current profile link or navigation grant",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "wrong id never creates a current profile link or navigation grant",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "wrong name never creates a current profile link or navigation grant",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1134,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Past and dismissed picker markers never consult a profile resolver",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1154,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Guardian current markers never consult a profile resolver",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1154,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained profile callback rechecks permission and cannot open a stale child",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1173,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained profile callback rechecks different object and cannot open a stale child",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1173,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained profile callback rechecks foreground and cannot open a stale child",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1173,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "caller withdrawal clears markers and denies retained profile access after restoration",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1204,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "developer withdrawal clears markers and denies retained profile access after restoration",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1204,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "replacing captured resolver identity withdraws rather than retargeting markers and child access",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1230,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "replacing active contexts with a stale catalog cannot publish old markers or profile access",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1252,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained owned close cannot pop a covering unrelated route",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1279,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained owned close after profile permission loss cannot dismiss its protected child",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1313,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "developer withdrawal clears the discussion marker and its owned profile route",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1334,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "gold marker and profile action remain reachable at 320 wide with 200 percent text",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1353,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "request shell supplies a stable detached past archive projection without profile or history lookup",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1375,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Seeker can view only an explicitly supplied past summary and return to the same Circle",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1412,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Guardian can view only an explicitly supplied past summary and return to the same Circle",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1412,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "no resolver leaves the past discussion visible without creating an archive action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1503,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "null leaves the past discussion visible without creating an archive action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1503,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "throw leaves the past discussion visible without creating an archive action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1503,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "wrong id leaves the past discussion visible without creating an archive action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1503,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "wrong name leaves the past discussion visible without creating an archive action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1503,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "wrong ended date leaves the past discussion visible without creating an archive action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1503,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "starts after end leaves the past discussion visible without creating an archive action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1503,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Current sent markers and picker dismissal never consult the separate past archive resolver",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1526,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Basic Seeker cannot consult a supplied archive capability",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1541,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Basic Guardian cannot consult a supplied archive capability",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1541,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "busy sending denies a retained archive action without changing the original Circle send",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1559,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "owned archive swipe Back returns once to the unchanged ongoing Circle",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1583,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained archive callback rechecks permission rather than opening stale past data",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1616,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained archive callback rechecks different object rather than opening stale past data",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1616,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "retained archive callback rechecks foreground rather than opening stale past data",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1616,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "caller withdrawal permanently denies retained archive callbacks after restoration",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1647,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "developer withdrawal permanently denies retained archive callbacks after restoration",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1647,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "replacing the captured archive resolver withdraws the Circle instead of retargeting old cards",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1672,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "owned archive close cannot dismiss an unrelated covering route",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1695,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "covering page options denies interaction without revoking the owned archive",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1731,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "owned archive rebuild preserves the same chat and draft",
+      "result": "error",
+      "skipped": false,
+      "definition_line": 1761,
+      "failure": "Test failed. See exception logs above.\nThe test description was: owned archive rebuild preserves the same chat and draft",
+      "assertion_output": [
+        "══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════\nThe following TestFailure was thrown running a test:\nExpected: Color:<Color(alpha: 1.0000, red: 0.6627, green: 0.4745, blue: 0.1804, colorSpace:\nColorSpace.sRGB)>\n  Actual: Color:<Color(alpha: 1.0000, red: 0.5176, green: 0.3725, blue: 0.1412, colorSpace:\nColorSpace.sRGB)>\n\nWhen the exception was thrown, this was the stack:\n#4      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart:1782:5)\n<asynchronous suspension>\n#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)\n<asynchronous suspension>\n#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)\n<asynchronous suspension>\n<asynchronous suspension>\n(elided one frame from package:stack_trace)\n\nThis was caught by the test expectation on the following line:\n  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_discussion_bubble_test.dart line 1782\nThe test description was:\n  owned archive rebuild preserves the same chat and draft\n════════════════════════════════════════════════════════════════════════════════════════════════════"
+      ]
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "archive permission loss blanks the protected child and denies retained close",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1796,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "developer withdrawal removes the owned archive and old discussion cards",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1822,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "past discussion action and read-only archive remain reachable at 320 wide with 200 percent text",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1846,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Seeker links only one own message without changing the draft or composer topic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1874,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Seeker can replace or remove only the selected message reference",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1945,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Seeker cannot relabel another member and still has the Report action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1981,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Guardian links only one own message without changing the draft or composer topic",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1874,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Guardian can replace or remove only the selected message reference",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1945,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Guardian cannot relabel another member and still has the Report action",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1981,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "cancelling the message menu or picker changes nothing and does not disable later linking",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 1998,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "Basic never offers a local own-message Journey link",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2025,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "No local discussion adapter never offers a local own-message Journey link",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2025,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "lifecycle records cannot be rewritten as message references",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2041,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "existing context records cannot be rewritten as message references",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2041,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "an open message picker cannot apply after owner withdrawal and restoration",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2071,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "an open message picker cannot apply after developer withdrawal and restoration",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2071,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "an open message picker cannot apply after visibility withdrawal and restoration",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2071,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "a retained message-menu action is stale after visibility changes",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2108,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "a covered message-menu callback cannot dismiss another route",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2131,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "an unknown selected Journey cannot be attached or grant a destination",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2160,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "preview send IDs cannot collide with a foreign transcript and tag another sender",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2186,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "own-message Journey reference fits 393-wide normal current view",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2215,
+      "failure": null,
+      "assertion_output": []
+    },
+    {
+      "suite": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "name": "own-message Journey reference fits 320-wide 200-percent current view",
+      "result": "success",
+      "skipped": false,
+      "definition_line": 2215,
+      "failure": null,
+      "assertion_output": []
+    }
+  ]
+}

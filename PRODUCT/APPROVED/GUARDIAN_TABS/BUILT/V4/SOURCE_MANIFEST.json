@@ -1,0 +1,45 @@
+{
+  "policy": "Exactly eight task-owned staged/committed paths; no configs, credentials, ignored local inputs or source copies. All hashes match the committed index blobs.",
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "bytes": 56681,
+      "sha256": "751da8bfdcf3134317f6fa60aec9a0b027d594504721e76909f4f07395f60e33"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 333706,
+      "sha256": "e12a58292429d603a98c1550a42f28caa251094f324c0abd64ebdeccb7cd6db1"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_send_button_presentation.dart",
+      "bytes": 2498,
+      "sha256": "e138b4615f483f492ffaa35857887a2f9f27431ccc5a22ededa1168cc6dab30b"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "bytes": 100656,
+      "sha256": "de3467cd90b2969e26b74f6024652ba54c81681e3ec3b2d01765a52f002e6317"
+    },
+    {
+      "path": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "bytes": 30480,
+      "sha256": "c7900852e42c824db582918bf38d1ca69fcd3ccf68c9a074031ad091dd7a5a51"
+    },
+    {
+      "path": "SOURCE/test/visual/guardian_chat_v4_capture_test.dart",
+      "bytes": 6960,
+      "sha256": "bbd41660068ef5ba82e0d016169cfa0bb3e9db9b29e82a0dd42a46507e79bec7"
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "bytes": 18536,
+      "sha256": "72b59a246cd350302f240751bea74168d48f73677a5d082493b9f522e94963c9"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_send_button_designs_test.dart",
+      "bytes": 4048,
+      "sha256": "d2b51c025d4d0a7c509405a4451c4c0ca1d6327eb1cb0d602b9b518ca3d48f45"
+    }
+  ]
+}

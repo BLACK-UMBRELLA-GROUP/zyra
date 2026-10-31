@@ -576,3 +576,18 @@ Built the subject Report page from x05/x06: 72 pt gold-ring photo, 22 Light name
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. 279 passed, 5 failed across 15 complete scoped suites (14 entirely passing); all Report, owner, warning, model, no-subject Safety and advice cases pass. The five browse_options_menu_test cases fail before Report/Scan is reached: held Filters x2, My ZYRA request entry, old nationality entry and compatibility-card text. These were not in queue69's CASE_LEDGER; no historical attribution. Written refusal to change those routes under59 is in BUILT/V2/QA.json with exact names/first assertions and execution trace. Analyser, format and protected SDK checks pass. Eight actual frames, both full-size master/build pairs, contact sheet, CASE_LEDGER and allowlisted source/input/render/metadata manifests live in UNITY_PASS/BUILT/V2. Native font/surface/radio/device-frame differences and higher footer are disclosed there; no pixel-parity or whole-app pass claim. Parent visual/contract review remains OA-ZYRA-328. No native delivery or backend work.
+
+## Queue 70 — Guardian chat LOCK8 V4 — 31 October 2026
+
+Built only the accepted Guardian connection chat: floating 44-point monogram header, private empty state, actual local own-message bubble, shared private Circle composer and Report / immediate Block / Done sheet. Existing report target and connection-only Block retained. Actual transcript/draft isolation passes after same-host account-generation rebuild, connection replacement and same-host reset; the exact accepted connection owns ephemeral widget state. Captured guards expire before physical/semantic feedback and cannot revive after a denial. No Circle/default composer or server authority change.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 170,215 / 337 | 170,574 / 337 |
+| Developer/preview | 50,425 / 95 | 50,784 / 95 |
+| Founder planned app | 31,243 / 45 | 31,606 / 45 |
+| Tests | 220,224 / 519 | 221,257 / 521 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. No new app file/classifier needed. Nineteen complete scoped suites: 353 passed, 2 wider Circle colour assertions failed, 0 skipped; 18 suites entirely passing. Final spacing/owner-key checks: all 70 cases in four complete chat/tab/send suites passed, with actual standard/200%/320-point captures. Analyser clean; eight-file format and protected SDK checks passed. QUEUE70-R1 refuses unrelated Circle colour/test changes and records exact first assertions without claiming historical origin. Ten actual frames, three full-size master/build pairs, CASE_LEDGER and explicit source/input/render/metadata manifests: PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4. Queue54 refusal preserved. Parent visual/contract verification remains OA-ZYRA-328; no native delivery/backend work.

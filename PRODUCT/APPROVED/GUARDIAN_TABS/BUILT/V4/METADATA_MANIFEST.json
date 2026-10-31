@@ -1,0 +1,40 @@
+{
+  "policy": "Self excluded. Exactly seven task-owned metadata files; no ignored config/credentials. Historical refusal is unchanged input.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/BUILD.json",
+      "bytes": 1142,
+      "sha256": "e797db0c11f8026dffa35fcff15852330f803eb4ee3377751da9a59ff2e298ce"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/QA.json",
+      "bytes": 10207,
+      "sha256": "7e39b31fb9d4967f9bec9bac8a656e44d37b1ec8a772e9d52d6b15ebd76fe4e9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/CASE_LEDGER.json",
+      "bytes": 111467,
+      "sha256": "0b959cbd95461ec61e4af6c10ec9e47d4ae9879c9980ed9ef835660a7e25554b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/SOURCE_MANIFEST.json",
+      "bytes": 1698,
+      "sha256": "99d26c07cda8485806010401cbffb85cea29028c8b81058ac4026374f8e6a9d4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/INPUT_MANIFEST.json",
+      "bytes": 2374,
+      "sha256": "24d889f895ad25b226a7be7cac6ed220e2a9d69748c1b7e9ca9fed685f9c8ee4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/RENDER_MANIFEST.json",
+      "bytes": 3706,
+      "sha256": "3c910c6124abe6682dbc2f3c4c9fde881cabf40f502890d3a4a46839bb7a170d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/EXECUTION_TRACE.json",
+      "bytes": 1872,
+      "sha256": "8151f21404c1f7f6fca35a017d6a972ceb1634d1e48a293a65ac69e64da5e80d"
+    }
+  ]
+}

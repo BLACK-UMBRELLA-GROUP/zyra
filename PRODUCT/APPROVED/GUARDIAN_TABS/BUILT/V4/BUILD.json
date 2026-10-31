@@ -1,0 +1,40 @@
+{
+  "queue": 70,
+  "lock": "LOCK8 V4",
+  "source_commit": "0c6f26da32cc766b507c55bd4ecdb73c11ae8321",
+  "implementation_commit": "6d1efb95cbb42eb40ef0fb206598b61a5afdb513",
+  "timestamp_utc": "2026-10-31T13:55:26.632227+00:00",
+  "sdk": "Flutter 3.44.2 pinned protected tooling/no_git_driver.mjs",
+  "mode": "debug widget-test renderer",
+  "target": "actual admitted offline Founder Guardian shell; iOS target platform",
+  "sizes": {
+    "standard": [
+      430,
+      932,
+      3,
+      1
+    ],
+    "large200": [
+      430,
+      932,
+      3,
+      2
+    ],
+    "narrow200": [
+      320,
+      640,
+      3,
+      2
+    ]
+  },
+  "font": "bundled Poppins and documented baseline SF glyph fallback; no copied fonts",
+  "shadows": "Actual app shadows enabled only for capture paint; all RenderObjects marked for repaint; restored before test invariant check.",
+  "native_delivery": false,
+  "compiled_artifacts_in_evidence": false,
+  "source_copies_in_evidence": false,
+  "source_commits": [
+    "6d1efb95cbb42eb40ef0fb206598b61a5afdb513",
+    "d3f87a1214438c702255509eb3f0964e1555ec19",
+    "0c6f26da32cc766b507c55bd4ecdb73c11ae8321"
+  ]
+}

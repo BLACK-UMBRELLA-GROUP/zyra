@@ -1,0 +1,48 @@
+{
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V4R.md",
+      "bytes": 1813,
+      "sha256": "6f29a54353dc42f7a9fb93104d11a2efcbf4896f2a9274fde56607a426c1015e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+      "bytes": 4076,
+      "sha256": "14e47fe356f0be0bd88d835b9663c5e8b483d4244dca726bc8530530fa804030"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md",
+      "bytes": 14658,
+      "sha256": "26a5d90693f61b5286ddb45c5fbc51d325989210e50d02cb26771e6622a2d918"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/ARCHIVE/GUARDIAN_TABS_SPEC_2026-10-31_V4.md",
+      "bytes": 11062,
+      "sha256": "cabd886a56a4eb894a9591e34a0a78a43cb1b7a89431c5ec907882c202fb9d6e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g19_guardian_chat__new.png",
+      "bytes": 669361,
+      "sha256": "d5d3a6785dcbb8aab08144b36f6b256b46644e741bca14675cd3038ec5f60b6b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g21_guardian_chat__sent.png",
+      "bytes": 654682,
+      "sha256": "27523ec06c2a191c4a114448a78b95d2ed584890f269d8ef7bc5f50b2e38cca9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g22_guardian_chat__options.png",
+      "bytes": 483743,
+      "sha256": "5edd843c244a9e8956944ebe0430c90d01b2693ea3710f083c49d430d593359d"
+    }
+  ],
+  "queue70_input_row": "| 70 | 2026-10-31 | `PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V4R.md` | BUILT | 2026-10-31 | **LOCKed build** (LOCK 8 **V4**, Guardian chat header card, private-chat empty state, Circle composer, ••• sheet Report a message / Block — reissue of line 54: Block uses today's action as it is, no confirm step). After 42; before 44. `GUARDIAN_TABS/RECORD/LOCK_RECORD.md` |",
+  "queue70_input_row_sha256": "ba7557bfccd97b462f7eed91e8c0ea76f2232c8cb9e5095f57c819d402d1f7a1",
+  "queue42_prerequisite": "BUILT 2026-10-31",
+  "historical_queue54_unchanged": {
+    "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4/PREFLIGHT_REFUSAL_QUEUE54.json",
+    "bytes": 5628,
+    "sha256": "dece77b2548faa95f37ac19cb04750152387b4bbba0fffba9836abfefd2e58d8"
+  },
+  "queue54_status_note": "Working queue is designer-WITHDRAWN, index is historical FAILED; neither row nor refusal changed by queue70."
+}
