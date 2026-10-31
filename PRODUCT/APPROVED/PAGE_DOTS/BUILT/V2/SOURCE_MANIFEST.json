@@ -1,0 +1,192 @@
+{
+  "queue": 68,
+  "baseline_commit": "13a90089b85b07f9a251da17f9a68abb162af1ad",
+  "source_commit": "373820e5f9e4ab26954b2fd24d0a8795a0d2ce9b",
+  "explicit_commit_allowlist": [
+    {
+      "path": "SOURCE/lib/widgets/zyra_profiles_components.dart",
+      "bytes_after": 14796,
+      "sha256_after": "f552c21c0bc121e38c5bb42dc897f91c2562a498e74970f5322d1b87608c6732",
+      "bytes_before": 13206,
+      "sha256_before": "e01871558fd18f05cd68b3661e6ee42c7baf13bbd01d5aa3cfe57ea96c359617"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "bytes_after": 36854,
+      "sha256_after": "a019cb1247506b1eb4585261b17ea55fd0108e018387bfcb75763404e001c0bb",
+      "bytes_before": 36464,
+      "sha256_before": "1e222402bcc89b1b45c7f2eab75016929e6acead27c4a00c217a3c8d5e0ff85c"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "bytes_after": 16049,
+      "sha256_after": "1a3b8746cba4bf93a35ff40c992fb72558defbcf999290d791733013133c81d4",
+      "bytes_before": 17662,
+      "sha256_before": "41e32e64128f51a03fdba85107854c1e6b58d310b698225cf00c8c3f9c99e84b"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "bytes_after": 23090,
+      "sha256_after": "d0ca67174de5bd211f235b72484a1e651b7919dc46e41764c00bccd4d9066d63",
+      "bytes_before": 22898,
+      "sha256_before": "1e15346061c01732c78dc358a99d95aa86977cb51b7e7e1da415a45c1401d9ae"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+      "bytes_after": 28566,
+      "sha256_after": "13494c87c221243d9cb0df14e2871efb8df8b0761791877ce1d4fb636fc3b57b",
+      "bytes_before": 28355,
+      "sha256_before": "df8a793363423b82aa688de7b0e057b4c911556f431d04c149fc0d94888379d2"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "bytes_after": 34103,
+      "sha256_after": "864bc43c2bbd420acf4592100b91f51cbf694b9c1fbb9ccd516dd5d456a36cb7",
+      "bytes_before": 34336,
+      "sha256_before": "e6a7e723b492d13102251ec91070a636e057d465b3f57e20f771e008df010142"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_info_presentation.dart",
+      "bytes_after": 9771,
+      "sha256_after": "a3f0d863ec12a63b91548f4991936c0b59dd8db0ac7b07fdb0d960ac657df73e",
+      "bytes_before": 10183,
+      "sha256_before": "9a317ee37fd3259f84fd3cbcd816e12629efeab28b490065a4983619a64699a0"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_journey_peer_guardians_presentation.dart",
+      "bytes_after": 12390,
+      "sha256_after": "68bc2c1ce0d53ebb3038e295f119631b33bb200f32b2abd355f67930b47b1de2",
+      "bytes_before": 12351,
+      "sha256_before": "685fc5a0f5c82ba2f64d56e6412c1ee199c9d760188948843c2faea49e7f5631"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+      "bytes_after": 52972,
+      "sha256_after": "7fe498b271313c5c777e1181c2ca80a2b1a11fedda2c09eb6d5eca74171c54c9",
+      "bytes_before": 53262,
+      "sha256_before": "300e22d8120d396ea2aeff914a2e08d478261e3f90e90f9e7a9b2fa0b114fb76"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "bytes_after": 61359,
+      "sha256_after": "0db78e99f2d15b035af033bb34eb157a8945fce25cba73db826fe868394db8a4",
+      "bytes_before": 61487,
+      "sha256_before": "c7ff32d3f5b44a0bf726a0bfe5882dbac7dbcfe62322ae2a405611e3f31b5301"
+    },
+    {
+      "path": "SOURCE/test/browse_photo_controls_polish_test.dart",
+      "bytes_after": 15439,
+      "sha256_after": "0cdc5844ca73cd89553abe0b628ae14cc80e753f8fd5dc9e052cd0906abe509a",
+      "bytes_before": 15580,
+      "sha256_before": "da5211dde8fd4eed6429eb2343a9a6c41dfcaa229f25c3e63cb29617f6e449dc"
+    },
+    {
+      "path": "SOURCE/test/browse_photo_top_pagination_test.dart",
+      "bytes_after": 17583,
+      "sha256_after": "0b02b2280cbbad91660269a8984f9c902fac0ed9c4ae157fcd6fda201868b392",
+      "bytes_before": 17871,
+      "sha256_before": "c90e6cd3c9d7117a66abdcc0b2be3ec93912489d688fbc34bb9bd83d1fbb4d86"
+    },
+    {
+      "path": "SOURCE/test/edit_photos_screen_test.dart",
+      "bytes_after": 10443,
+      "sha256_after": "d403c2c455df37c8d00bf68410d3151ada19a6935c53cbdc655b68f4d959ad60",
+      "bytes_before": 10453,
+      "sha256_before": "e5c363f9732fed3efbc19ecfdf1199e9edae7a9fab0a9aa148e378e6edc5e1b8"
+    },
+    {
+      "path": "SOURCE/test/inline_invitation_presentation_test.dart",
+      "bytes_after": 28815,
+      "sha256_after": "5253af9f9ba28e2eb6bf5b9ce88f0c9ea8fb2d1bab74ea8223de1b996d00aa96",
+      "bytes_before": 28854,
+      "sha256_before": "4a56a209a31ce1c6013dc4701736c4e50ef5d399ed36153ae4967a8a02d551a1"
+    },
+    {
+      "path": "SOURCE/test/journey_peer_guardians_presentation_test.dart",
+      "bytes_after": 25163,
+      "sha256_after": "58c7f073c153118731b43d89dc08e2f369e56991c906eabcf3b346ee86a47d06",
+      "bytes_before": 25113,
+      "sha256_before": "0fd07e3c580b849e34b733281f4181c48857461029cb113c07a1544eea1f7493"
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "bytes_after": 34831,
+      "sha256_after": "6e5a002a75079f5649ed46af4f4dea653bce47abc2e3ed4faaed57e40c8e8eb9",
+      "bytes_before": 34823,
+      "sha256_before": "9c824b3916070f4ba5b863e526bd570d5717f1d0f7bee602193f35610573a5cc"
+    },
+    {
+      "path": "SOURCE/test/visual/lock15_focus_capture_test.dart",
+      "bytes_after": 18940,
+      "sha256_after": "37be9fa38eefb92b28b1a3dca51faaa1d2b5bd91c0e7b6dff9228722e1fe2e98",
+      "bytes_before": 19194,
+      "sha256_before": "8a16aeb845def138a2a42085d2cc3e11ddec882b106fb36a7674119e7044b28b"
+    },
+    {
+      "path": "SOURCE/test/visual/lock18_page_dots_capture_test.dart",
+      "bytes_after": 16961,
+      "sha256_after": "118949362128190f7fb06f4581eef390aa24bd9c1b7a8c6154a09e3181ae0f9b",
+      "bytes_before": null,
+      "sha256_before": null
+    },
+    {
+      "path": "SOURCE/test/zyra_focus_dashboard_test.dart",
+      "bytes_after": 10498,
+      "sha256_after": "fbecdd86b81e2dd077c01b13a32449a34a633f1c5813b1cc51b92f91c701d0e1",
+      "bytes_before": 10525,
+      "sha256_before": "6825f016a2adc335f6574cd1ba0aebca3f52e1c1be83f40a37ef3cf456f1d0bb"
+    },
+    {
+      "path": "SOURCE/test/zyra_browse_photo_renderer_test.dart",
+      "bytes_after": 10902,
+      "sha256_after": "5acdfc4476001725f77e6154d42079290bc7d920dec728aed246c07840b6d28a",
+      "bytes_before": 10902,
+      "sha256_before": "bb9369a71182dd8306fd7d6167a6c9976c6d8c58a11bf810f75bbeed7f6c41a5"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes_after": 68537,
+      "sha256_after": "cbb8f7b781dc78344a169a800377230cefef04153f8c5faa386a8d05d1312794",
+      "bytes_before": 65966,
+      "sha256_before": "3dc9fb7d53bff9cbe138d0f82f511144f2b133dda8e3c313cac145a7a809c652"
+    }
+  ],
+  "locked_pack": [
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md",
+      "bytes": 1793,
+      "sha256": "ee243610f5ff0610a86af3a4d0ffbe6e96cbe0cd7793eb1ea88c200226e8dffa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/RECORD/LOCK_RECORD.md",
+      "bytes": 965,
+      "sha256": "3be56ca2141c0a08502fb8082448f7f11a7e12789fd7b3d4b386293885f360e8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/RECORD/PAGE_DOTS_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 1981,
+      "sha256": "840d0fc534359375874feb54be0b8ad04591ad29b13a39acfc566b00b9f09ffc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/MASTERS/d01_profiles.png",
+      "bytes": 530691,
+      "sha256": "63e580f9f7c1ef43139916acf8d21392ae20a8c95b11a96262d6e55cf3f07dc9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/MASTERS/d02_journey_tab.png",
+      "bytes": 1676684,
+      "sha256": "5bb1ab315a20eb3493d47d36411e784821ab975cc89c8f1f6f9614d79886eb04"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/MASTERS/d03_guardian_tab.png",
+      "bytes": 750006,
+      "sha256": "f816cdb777733f2e8f285c7ab033261a500254d042160af2b3028789025f7fab"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAGE_DOTS/MASTERS/d04_my_zyra.png",
+      "bytes": 793681,
+      "sha256": "38d414b666075f4e15e3fc94477e28054b02a667856ae8b55a2a318fd73c9be7"
+    }
+  ],
+  "policy": "Explicit task-owned file allowlist only; no configs, ignored local settings, credentials or source copies."
+}

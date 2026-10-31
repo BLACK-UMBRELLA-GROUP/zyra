@@ -1,0 +1,172 @@
+{
+  "queue": 68,
+  "lock": "LOCK18 V2 + My ZYRA LOCK15 V3",
+  "built_from": [
+    "BRIEFS/BUILD_BRIEF_2026-10-31_V2.md",
+    "RECORD/LOCK_RECORD.md",
+    "RECORD/PAGE_DOTS_SPEC_CURRENT_VERSION_V2.md",
+    "MASTERS/d01_profiles.png",
+    "MASTERS/d02_journey_tab.png",
+    "MASTERS/d03_guardian_tab.png",
+    "MASTERS/d04_my_zyra.png"
+  ],
+  "baseline_commit": "13a90089b85b07f9a251da17f9a68abb162af1ad",
+  "source_commit": "373820e5f9e4ab26954b2fd24d0a8795a0d2ce9b",
+  "status": "Scoped dots requirements implemented; parent visual review received no new blocker; wider limits explicitly refused below.",
+  "shared_widget": "lib/widgets/zyra_profiles_components.dart ZyraProfilesDots:30×6 active,6×6 inactive,gap6,35%ink,animated180ms/reduced-motion0,24-point targets. Original callback/admission captured; exact-widget lifetime and latched denial checked before selection feedback.",
+  "current_callers": [
+    [
+      "Profiles",
+      "lib/widgets/zyra_browse_designs.dart",
+      "Actual details/photo gallery count and index. Top row16→24; available photo-height budget decreases8."
+    ],
+    [
+      "Seeker Journey",
+      "lib/dev/zyra_one_journey_tab.dart",
+      "Capacity/index; existing guarded paging."
+    ],
+    [
+      "Filters",
+      "lib/dev/zyra_one_journey_filters_presentation.dart",
+      "Four existing cards and existing guard."
+    ],
+    [
+      "My ZYRA Seeker/Guardian",
+      "lib/widgets/zyra_focus_dashboard.dart",
+      "Existing Focus items/index/callback; remove only its bottom arrows."
+    ],
+    [
+      "Seeker Guardian cards",
+      "lib/dev/zyra_one_journey_guardian_cards.dart",
+      "Row48 Details/Access faces; preserve all View/Chat/Family/authority and roster arrows."
+    ],
+    [
+      "Photos",
+      "lib/screens/profile/edit_photos_screen.dart",
+      "Actual photos plus virtual Add page; compact grid has no page pager."
+    ],
+    [
+      "Your subscriptions",
+      "lib/dev/zyra_subscription_wallet_preview.dart",
+      "Actual profile roles/Family place counts; existing controller/freshness/reduced-motion/intent clearing; preserve bottom navigation arrows."
+    ],
+    [
+      "Journey peer Guardians",
+      "lib/dev/zyra_journey_peer_guardians_presentation.dart",
+      "Actual immutable Main-first peer roster; subject/roster keyed reset."
+    ],
+    [
+      "What Guardians can do",
+      "lib/dev/zyra_one_journey_guardian_info_presentation.dart",
+      "Four existing LOCK3 cards and existing movement guard."
+    ]
+  ],
+  "excluded": [
+    "concept_shell _profileView→_photoSurface, _guardianLinkedProfile, _guardianNetworkProfile and ZyraOneJourneyBrowsePresentation vertical photograph marks",
+    "Journey stage and sign-up step-progress bars",
+    "Tier3 old member/sign-in/Guardian/membership routes; no removals",
+    "Row48 card/Family logic, wallet/Guardian roster arrows and current data"
+  ],
+  "master_comparison": {
+    "d01": "Dots match locked look/top placement. Actual fresh Sara is Request a Journey versus older Request sent master; existing card surface/border/navigation differ.",
+    "d02": "Actual bundled Sara image decoded and painted; actual Stage1/Salam Exchange versus master Stage4/Faith & Values. Stage bar retained.",
+    "d03": "Newer row48 LOCK19 Monogram card preserved. Older d03 manager layout is not rebuilt; dots remain Details/Access faces.",
+    "d04": "Top dots and bottom arrow removal match scope. Actual existing fonts/frame/footer metrics differ; no full-screen pixel equality claimed."
+  },
+  "written_refusals": [
+    {
+      "id": "QUEUE68-R1",
+      "oa": "OA-ZYRA-328",
+      "finding": "12 wider photo-navigation haptic-count/timing failures",
+      "refusal": "Do not alter or silently rebaseline unchanged photo event/motion/feedback behavior under the page-dots brief. CASE_LEDGER gives exact cases/counts/lines; one representative repeated alone. UNCHANGED_BOUNDARIES hashes the entire photo pager and feedback helpers. No historical cause claim.",
+      "geometry_limit": "Profiles row grows8 for24 target; do not claim all Profiles geometry unchanged. The excluded titleless full-screen sources/inputs are unchanged."
+    },
+    {
+      "id": "QUEUE68-R2",
+      "oa": "OA-ZYRA-328",
+      "finding": "2 wider Profile-row tests cannot find membership-manage",
+      "refusal": "Do not repair unmodified Profile presentation/key contracts under this dots brief. Exact StateError and lines in CASE_LEDGER; Profile presenter byte-identical."
+    },
+    {
+      "id": "QUEUE68-R3",
+      "oa": "OA-ZYRA-328",
+      "finding": "Focus tiles split words at320/200%; initial Focus CTA is below fold",
+      "refusal": "Do not redesign unchanged tile/tileHeight layout. Actual CTA and last tiles are reachable by scroll; action/bottom frames disclose word splitting. Byte-identical tile methods verified."
+    },
+    {
+      "id": "QUEUE68-R4",
+      "oa": "OA-ZYRA-328",
+      "finding": "Photos revealed54-point action tray clips Adjust at320/200%",
+      "refusal": "Do not resize/restyle unchanged Photos action tray. After actual image decode, settled horizontal paging and vertical swipe-up, Adjust/Edit/Delete targets are reachable; action screenshot shows clipped label. LargePhotoCard/revealed-controls bytes match baseline."
+    }
+  ],
+  "validation": {
+    "passed_cases": 240,
+    "analyzer": "20 changed Dart files clean",
+    "format": "20 files,0 changes",
+    "pinned_driver": {
+      "flutter": "3.44.2",
+      "pins": 5,
+      "exec_denial": "PASS",
+      "nested_exec_denial": "PASS"
+    },
+    "device_limits": "Headless iOS frame, no native install/build/signing/upload/backend/upgrade or device VoiceOver/keyboard verification."
+  },
+  "counts": {
+    "app_before": [
+      172102,
+      339
+    ],
+    "app_after": [
+      172093,
+      339
+    ],
+    "developer_before": [
+      52199,
+      97
+    ],
+    "developer_after": [
+      52151,
+      97
+    ],
+    "founder_before": [
+      33021,
+      47
+    ],
+    "founder_after": [
+      32973,
+      47
+    ],
+    "tests_before": [
+      223589,
+      526
+    ],
+    "tests_after": [
+      224074,
+      527
+    ],
+    "old_pause_restart": [
+      39,
+      1
+    ],
+    "goldens": [
+      2612,
+      307
+    ]
+  },
+  "startup": {
+    "text_bytes_loaded": 114114,
+    "text_kib": 111.439,
+    "master_bytes": 3751062,
+    "method": "Mandatory lessons,AGENTS,MAP1–87,brief/record/spec,streamed queue and newest review scans including addendum lookup; source-search excerpts separate.",
+    "fable_addendum4_read": true,
+    "helpers": [
+      {
+        "name": "dots_inventory",
+        "purpose": "Read-only current caller/route inventory; no review/SDK/edits",
+        "measured_minimum_bytes": 208733,
+        "tokens": "Unavailable; no usage-log inspection."
+      }
+    ]
+  }
+}

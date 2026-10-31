@@ -1,0 +1,11 @@
+{
+  "queue": 68,
+  "lock": "18V2",
+  "commit_sha": "373820e5f9e4ab26954b2fd24d0a8795a0d2ce9b",
+  "baseline_sha": "13a90089b85b07f9a251da17f9a68abb162af1ad",
+  "flutter_version": "3.44.2",
+  "mode": "headless Flutter widget test, iOS TargetPlatformVariant",
+  "target": "test/visual/lock18_page_dots_capture_test.dart",
+  "timestamp_utc": "2026-10-31T20:55:53.512984+00:00",
+  "compiled_apps_or_source_copies_in_evidence": false
+}

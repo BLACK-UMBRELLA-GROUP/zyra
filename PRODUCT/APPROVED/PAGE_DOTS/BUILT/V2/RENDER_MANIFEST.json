@@ -1,0 +1,327 @@
+{
+  "queue": 68,
+  "source_commit": "373820e5f9e4ab26954b2fd24d0a8795a0d2ce9b",
+  "timestamp_utc": "2026-10-31T20:55:53.512984+00:00",
+  "raw_screenshots": 31,
+  "master_beside_build": 4,
+  "total_bytes": 23040509,
+  "renders": [
+    {
+      "file": "d01_profiles.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 421069,
+      "sha256": "f8d407c03f5df32138af1defd46515a9ee981cc5519c7ace9c8e7be8d121501e"
+    },
+    {
+      "file": "d02_journey_tab.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 1647426,
+      "sha256": "0244ebc0ec622fc03a7a91622ba3bebc1eb0ba385af3325daf1d8765fcc38c96"
+    },
+    {
+      "file": "d03_guardian_tab.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 344520,
+      "sha256": "fc5a2ddc68a9936411a5f1d8dc9610f1311b770dc7739a2ea61572f0cd8a7aa9"
+    },
+    {
+      "file": "d04_my_zyra.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 576373,
+      "sha256": "c7223b09318764d9004b06938a31bb292f079225dc07c04d2e34ab13b7f8a738"
+    },
+    {
+      "file": "e05_guardian_my_zyra.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 666824,
+      "sha256": "6828116c9726c2e4484239ecd438963d41bbfe7264c259298fbf7b8293cd6509"
+    },
+    {
+      "file": "e06_photos.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 1649130,
+      "sha256": "b0fa66e3d4c4fce36b2832d4019a003473074318b0bdea0839c8fb738574eb06"
+    },
+    {
+      "file": "e07_subscriptions.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 297860,
+      "sha256": "4599bbc1d6b3ed383cbe97c10718f373d36abea7de4556de1e810f88c805033c"
+    },
+    {
+      "file": "e08_peer_guardians.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 266269,
+      "sha256": "9df9f1d917615a47cdf5628e3d99061c9498cb6fa8bec9b10ca0f41cef417434"
+    },
+    {
+      "file": "e09_guardian_info.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 371248,
+      "sha256": "b35c8a238a53a098543bd1c65f4056c08e035dec046af747362969043e074a25"
+    },
+    {
+      "file": "e10_filters.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 427532,
+      "sha256": "c040a371db59902e0e7d6b299d97fd8b29603b2f0c1aad140e1cb19b626aac65"
+    },
+    {
+      "file": "e12_subscriptions_family.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 288411,
+      "sha256": "fee5821df010a5b49b3f12f8f11065421f087f8935d4ace40e0ec48f3f9ba582"
+    },
+    {
+      "file": "x11_full_screen_profile_unchanged.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 293663,
+      "sha256": "c7c136862f4e2376963df5ec43a08b948e0e92511cd942bac2210319aeef3795"
+    },
+    {
+      "file": "d01_profiles_large_text.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 482911,
+      "sha256": "554fda97cd240b2417750fa0125ac093d9ea5fc4584d1b22810e7476ad36a6c0"
+    },
+    {
+      "file": "d01_profiles_narrow_large_text.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 294316,
+      "sha256": "a77bebedf6079d3cbadc8e970cf61c67c06b1ec51dab526a228d02abadee5f7b"
+    },
+    {
+      "file": "d02_journey_tab_large_text.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 1611574,
+      "sha256": "d3c3f3c2cbafc9bb7c43a9fe832a8d2ab0fff8043d170062a76915c7e4749279"
+    },
+    {
+      "file": "d02_journey_tab_narrow_large_text.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 635915,
+      "sha256": "c3bdd22841d94f7682df836793dbea959e2de33798e8c52f98693b4605d97f2a"
+    },
+    {
+      "file": "d03_guardian_tab_large_text.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 315849,
+      "sha256": "ea29f83459c62d604fc51a906b082c7c09df3e40a343fed775befac3ccd7c60b"
+    },
+    {
+      "file": "d03_guardian_tab_narrow_large_text.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 236365,
+      "sha256": "1adaca94907a079f24df56cb539ff89fd531e1f4d403b42da09e105edd914f1c"
+    },
+    {
+      "file": "d04_my_zyra_large_text.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 517690,
+      "sha256": "791f435556f4ecb0a779268cf06aef7666fa7f65b072c6fe8448e0df4f3fa5b1"
+    },
+    {
+      "file": "d04_my_zyra_narrow_large_text.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 276466,
+      "sha256": "3a8d69c58293da3cff52818e752b0cb4ccc59a78cd6de8d85c612debacbd0567"
+    },
+    {
+      "file": "e06_photos_large_text.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 1614826,
+      "sha256": "0edb2047cda353405be0e0034ee65abbc30f8cc90bb702616679e5361284b81b"
+    },
+    {
+      "file": "e06_photos_narrow_large_text.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 795355,
+      "sha256": "824f3b738856ec1e9ce7897c267c23c9e595636f91c2ce780ee9f023e3d8040a"
+    },
+    {
+      "file": "e07_subscriptions_large_text.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "bytes": 401810,
+      "sha256": "14cb80e4e807342e161d194096b7c0d82e53479b489f896992e24fe5a8ea06d8"
+    },
+    {
+      "file": "e07_subscriptions_narrow_large_text.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 231775,
+      "sha256": "703eb14011806049737a21d1f414aa98e0f82324dabdf079a6aa4624c4829595"
+    },
+    {
+      "file": "d04_my_zyra_narrow_large_text_action.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 465317,
+      "sha256": "f3ba4a6f67e0f7150c40dcdecc57b5e71f2811e5f95f1b3a61d0d631122fc1e3"
+    },
+    {
+      "file": "d04_my_zyra_narrow_large_text_bottom.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 474288,
+      "sha256": "eefb1fc533baeccc6567f64d53410f9dbfcd2c2555f43a0c07bf8015c48ae593"
+    },
+    {
+      "file": "e05_guardian_my_zyra_narrow_large_text_action.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 422798,
+      "sha256": "342994924ccc2d4f7980b208cee22be1482d864bb49dc053aefdd84b244c791a"
+    },
+    {
+      "file": "e05_guardian_my_zyra_narrow_large_text_bottom.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 460431,
+      "sha256": "5854af58d3c79bd5db063628454927de44cddefe10a867dd7ba50e39984f7061"
+    },
+    {
+      "file": "d03_guardian_tab_narrow_large_text_access.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 245495,
+      "sha256": "cac4fccff5bd628de3edf0fab10e9eaa877fd9031409be8d9e98d01b6b7d1402"
+    },
+    {
+      "file": "d03_guardian_tab_narrow_large_text_access_bottom.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 276921,
+      "sha256": "6cd05e2ef008144b7f7e2d958c590fd2fabab79a6e046857b8328f1769cbc566"
+    },
+    {
+      "file": "e06_photos_narrow_large_text_actions.png",
+      "pixels": [
+        960,
+        1704
+      ],
+      "bytes": 574206,
+      "sha256": "c554db3ecdea99b821f1325394761bbd1d13c341198bc3b3753c8b9d29ba6c17"
+    },
+    {
+      "file": "d01_profiles_master_beside_build.png",
+      "pixels": [
+        2580,
+        2882
+      ],
+      "bytes": 747562,
+      "sha256": "7021703b7acda3f86a1da90cd52958f58540881ac93752322975fbe5e46774de"
+    },
+    {
+      "file": "d02_journey_tab_master_beside_build.png",
+      "pixels": [
+        2580,
+        2882
+      ],
+      "bytes": 2769433,
+      "sha256": "8ea46b80f44a11c7c54993888f05108d8ce02ab38e76447573892218ee83e02c"
+    },
+    {
+      "file": "d03_guardian_tab_master_beside_build.png",
+      "pixels": [
+        2580,
+        2882
+      ],
+      "bytes": 885987,
+      "sha256": "246a329218966f773c918ad175e78a9bcee22f259932811ac7ea537b9482fc56"
+    },
+    {
+      "file": "d04_my_zyra_master_beside_build.png",
+      "pixels": [
+        2580,
+        2882
+      ],
+      "bytes": 1052894,
+      "sha256": "f8057ff66e45a056b9b6e93a73dcba1de22623bd9ffa2157d96dfc29e307b593"
+    }
+  ],
+  "frame": "Actual ZyraApp theme/scroll behavior in offline BaselineHarness. Bundled Poppins/Syne and app navigation. iOS headless widget renderer; no device capture.",
+  "image_readiness": "Precache the Image.image providers actually mounted by each real route in tester.runAsync, then flush; no replacement provider/data."
+}

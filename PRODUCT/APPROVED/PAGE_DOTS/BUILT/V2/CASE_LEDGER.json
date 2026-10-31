@@ -1,0 +1,166 @@
+{
+  "focused": {
+    "regression_suites": 18,
+    "regression_passed": 233,
+    "wallet_layout_passed": 2,
+    "actual_route_lifetime_capture_passed": 5,
+    "total_passed": 240,
+    "failed": 0,
+    "skipped": 0
+  },
+  "new_coverage": [
+    "10 actual surfaces × normal430/932,200%430/932,200%320/568",
+    "Tap and swipe select actual items; Guardian dots retain Details/Access face meaning and swipe keeps roster meaning",
+    "Family wallet actual count and group/old-handler isolation",
+    "Retained prior-render, denied-owner/target-return and replaced-admission reject before haptic",
+    "Focus CTA/last tile and Guardian access-bottom reachable at320/200%; Photos real swipe-up reveals actual actions",
+    "Full-screen profile retains separate vertical photo marks; no shared page dots"
+  ],
+  "wider_photo_failures": [
+    {
+      "case": "tap then swipe uses the same pager and selected gold dot",
+      "expected_haptics": 3,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "298"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "3-photo gallery wraps to details over 420ms",
+      "expected_haptics": 1,
+      "actual_haptics": 3,
+      "assertion_lines": [
+        "222",
+        "397"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "4-photo gallery wraps to details over 420ms",
+      "expected_haptics": 1,
+      "actual_haptics": 3,
+      "assertion_lines": [
+        "222",
+        "397"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "real photo swipe interrupts wrap slide and owns the next index",
+      "expected_haptics": 2,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "459"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "same-count source replacement cancels an early adjacent move",
+      "expected_haptics": 0,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "542"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "enabling reduced motion finishes the owned adjacent tap",
+      "expected_haptics": 0,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "584"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "enabling accessible navigation finishes the owned adjacent tap",
+      "expected_haptics": 0,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "584"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "a captured tap cannot act after photos changes",
+      "expected_haptics": 0,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "830"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "a captured tap cannot act after photo count changes",
+      "expected_haptics": 0,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "830"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "additional taps during an animated page move are ignored",
+      "expected_haptics": 1,
+      "actual_haptics": 3,
+      "assertion_lines": [
+        "222",
+        "856"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "a tap cannot interrupt an in-progress finger swipe",
+      "expected_haptics": 0,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "882"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    },
+    {
+      "case": "accessible tap and Next page advance details and photos",
+      "expected_haptics": 2,
+      "actual_haptics": 1,
+      "assertion_lines": [
+        "222",
+        "968"
+      ],
+      "diagnostic": "Haptic count/timing assertion after actual selection checks."
+    }
+  ],
+  "wider_profile_failures": [
+    {
+      "case": "component: Profile row targets and arrows compact=false",
+      "expected_haptics": null,
+      "actual_haptics": null,
+      "assertion_lines": [],
+      "diagnostic": "StateError No element in arrow helper at membership_wallet_visual_test.dart:391, called at401; missing membership-manage target; unchanged Profile presenter."
+    },
+    {
+      "case": "component: Profile row targets and arrows compact=true",
+      "expected_haptics": null,
+      "actual_haptics": null,
+      "assertion_lines": [],
+      "diagnostic": "StateError No element in arrow helper at membership_wallet_visual_test.dart:391, called at401; missing membership-manage target; unchanged Profile presenter."
+    }
+  ],
+  "standalone_recheck": {
+    "case": "tap then swipe uses the same pager and selected gold dot",
+    "expected_haptics": 3,
+    "actual_haptics": 1,
+    "first_case_failure_line": 298,
+    "helper_line": 222,
+    "cohort_timing_ruled_out_for_this_case": true
+  },
+  "prior48_circle_cases": "Three wider Circle/Journey failures remain disclosed in row48; not rerun and no historical-cause claim."
+}

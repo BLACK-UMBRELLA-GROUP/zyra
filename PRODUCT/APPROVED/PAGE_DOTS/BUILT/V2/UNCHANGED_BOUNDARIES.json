@@ -1,0 +1,87 @@
+{
+  "baseline_commit": "13a90089b85b07f9a251da17f9a68abb162af1ad",
+  "method": "Read only explicit paths from local loose/packed Git objects; no Git command or source copy.",
+  "comparisons": [
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "boundary": "_BrowsePhotoPager through EOF",
+      "bytes_before": 10979,
+      "bytes_after": 10979,
+      "sha256_before": "4f21cc2035032ea34fa2f08fef2ceb16750d1f5e7436fe40c8439a12c2bc0e04",
+      "sha256_after": "4f21cc2035032ea34fa2f08fef2ceb16750d1f5e7436fe40c8439a12c2bc0e04",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "boundary": "whole file",
+      "bytes_before": 329614,
+      "bytes_after": 329614,
+      "sha256_before": "8c4730d4aa9ae5c11fb3516c304339d089f9237af6b3bbb1f196ffee0189f2f2",
+      "sha256_after": "8c4730d4aa9ae5c11fb3516c304339d089f9237af6b3bbb1f196ffee0189f2f2",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_discovery_presentation.dart",
+      "boundary": "whole file",
+      "bytes_before": 43844,
+      "bytes_after": 43844,
+      "sha256_before": "bcacb4bce2b8d670242c17ea22a9924cb2a083d20bc3500b290ce108a4803917",
+      "sha256_after": "bcacb4bce2b8d670242c17ea22a9924cb2a083d20bc3500b290ce108a4803917",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+      "boundary": "whole file",
+      "bytes_before": 4976,
+      "bytes_after": 4976,
+      "sha256_before": "9fb4997dc68192ce21112ac0d7d5a734a8f5d41e8cb873b9c9b6e3bd45a2c2d8",
+      "sha256_after": "9fb4997dc68192ce21112ac0d7d5a734a8f5d41e8cb873b9c9b6e3bd45a2c2d8",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_interaction_style.dart",
+      "boundary": "whole file",
+      "bytes_before": 4511,
+      "bytes_after": 4511,
+      "sha256_before": "04264f4c101afe754aac89aafaa76ab580ae61f6cb92dbc663dd3b2da07c30fc",
+      "sha256_after": "04264f4c101afe754aac89aafaa76ab580ae61f6cb92dbc663dd3b2da07c30fc",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_tap_feedback.dart",
+      "boundary": "whole file",
+      "bytes_before": 1928,
+      "bytes_after": 1928,
+      "sha256_before": "4448d7539e855ee45380bb84a75c8c24003db464de9311e534f23f0334703599",
+      "sha256_after": "4448d7539e855ee45380bb84a75c8c24003db464de9311e534f23f0334703599",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "boundary": "whole file",
+      "bytes_before": 35208,
+      "bytes_after": 35208,
+      "sha256_before": "28667ddb8b52b37985c1770934589ff2d25eb9bfe803138f0c5a9dbfea3d058d",
+      "sha256_after": "28667ddb8b52b37985c1770934589ff2d25eb9bfe803138f0c5a9dbfea3d058d",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "boundary": "tile and tileHeight methods",
+      "bytes_before": 3170,
+      "bytes_after": 3170,
+      "sha256_before": "3456a53d40ae9e236ebf97144491b9b01fde78cce0c0598086a6139c5e8afe14",
+      "sha256_after": "3456a53d40ae9e236ebf97144491b9b01fde78cce0c0598086a6139c5e8afe14",
+      "identical": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "boundary": "LargePhotoCard and revealed controls (outer whitespace stripped)",
+      "bytes_before": 8451,
+      "bytes_after": 8451,
+      "sha256_before": "f3288f7372ac7357e39eeb1e994f0dee4ab4b672de7f0e6ed6dc4d24121a126f",
+      "sha256_after": "f3288f7372ac7357e39eeb1e994f0dee4ab4b672de7f0e6ed6dc4d24121a126f",
+      "identical": true
+    }
+  ]
+}
