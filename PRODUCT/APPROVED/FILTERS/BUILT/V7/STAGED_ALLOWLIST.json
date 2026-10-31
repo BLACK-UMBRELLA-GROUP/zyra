@@ -1,0 +1,40 @@
+{
+  "already_committed_source_files": [
+    "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+    "SOURCE/test/filters_lock10_v7_test.dart",
+    "SOURCE/test/visual/lock10_filters_capture_test.dart"
+  ],
+  "handover_full_files": [
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/BUILD.json",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/FOOTER_DIAGNOSTIC.json",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/INPUT_MANIFEST.json",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/QA.json",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/RENDER_MANIFEST.json",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/SOURCE_MANIFEST.json",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/TEST_RESULTS.json",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f01_age__any.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f02_age__range.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f03_where__country.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f04_where__near_me.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f05_where__worldwide.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f06_nationality__popular.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f07_nationality__typing_keyboard.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f08_nationality__chosen.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f09_ethnicity__popular.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/f10_ethnicity__no_match_keyboard.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/footer_200_before_after.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_age.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_ethnicity.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_location.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_nationality.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/master_beside_build.png",
+    "PRODUCT/APPROVED/FILTERS/BUILT/V7/STAGED_ALLOWLIST.json",
+    "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md"
+  ],
+  "partial_queue_file": {
+    "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+    "row": 53,
+    "scope": "Only named row53; other designer/admin rows excluded by bounded git add -e patch."
+  },
+  "no_ignored_or_config_files": true
+}

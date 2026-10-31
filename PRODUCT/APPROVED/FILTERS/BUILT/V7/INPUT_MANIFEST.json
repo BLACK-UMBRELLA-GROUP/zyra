@@ -1,0 +1,70 @@
+{
+  "scope": "Explicit LOCK10 V7 brief/LOCK/spec/ten masters only. Designer-owned inputs are not staged by queue53.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BRIEFS/BUILD_BRIEF_2026-10-31_V7.md",
+      "bytes": 1531,
+      "sha256": "456b8bf3e15d04c6117093acf7694f9cb402dc45ab86337d1a2e1fcfa8e59316"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/RECORD/LOCK_RECORD.md",
+      "bytes": 3252,
+      "sha256": "632d5c38e957009cf11d4519b564fd2cf96ff705c5731044971459eaf2021163"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V7.md",
+      "bytes": 7543,
+      "sha256": "d9c6b9c3d30f67faaf6cf304ccbc529a228a9314916dd01c9dc8f07cf7a65813"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f01_age__any.png",
+      "bytes": 500824,
+      "sha256": "2e584037346c0ce0db4b99e0142daa345dd4e410f7af356193eaff59483afeb4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f02_age__range.png",
+      "bytes": 519349,
+      "sha256": "be0eac82f01b92a7f4d1071ab5521af356239b9be871d3e6222ec1441598d526"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f03_where__country.png",
+      "bytes": 545662,
+      "sha256": "a90c7a6e99865bbbfc5b9bdda7565144638cf640c2717273e6b7459e68acfa18"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f04_where__near_me.png",
+      "bytes": 547800,
+      "sha256": "c4a96809e8b8393b71c3ef4469d9b32785877ddecb246dce6625c6df924b9038"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f05_where__worldwide.png",
+      "bytes": 521575,
+      "sha256": "58adeaf87327dece2dc38fa6ac2561daeaf6e69f877cb968513e42adde8d160b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f06_nationality__popular.png",
+      "bytes": 678620,
+      "sha256": "71a73d7eec5ba72b9690597fc370770851f7bcf684e4f09de23ff3f449084709"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f07_nationality__typing_keyboard.png",
+      "bytes": 432529,
+      "sha256": "336062e7a52542c5fcb455dd096486ccd21e0b1f7795a4a313f79237883a0c09"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f08_nationality__chosen.png",
+      "bytes": 700594,
+      "sha256": "821b7640fc13c8b41b9718e1906d7f0baac0e9d57e486e656dd666150348d338"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f09_ethnicity__popular.png",
+      "bytes": 680746,
+      "sha256": "430f550a2dc9fb6f54bc3cfa7f756abcd1b9c1d4bff2ac98d3d3a85cac79e20a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/MASTERS/f10_ethnicity__no_match_keyboard.png",
+      "bytes": 413007,
+      "sha256": "f4629d809fa025f586c99e8ea2061092d652c7cfbcfd64e9c076ecd6b28aece9"
+    }
+  ]
+}

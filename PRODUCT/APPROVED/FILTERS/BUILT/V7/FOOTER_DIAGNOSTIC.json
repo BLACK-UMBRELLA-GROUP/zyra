@@ -1,0 +1,141 @@
+{
+  "finding": "Inherited preferences link visual clipping at430x932,200% Poppins. Reproduces unchanged when queue53 head and centering are disabled.",
+  "source": "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart:864 (SizedBox height50 around filter_preferences); following request row begins at845.",
+  "reproduction": "Two bounded runs of one temporary actual-shell test. First with committed V7 source; second replacing only _cardContent in memory with prior icon34/title26/no-choice/top36 implementation. Current checkout otherwise unchanged; this is a counterfactual test, not an exact old whole-commit baseline claim. Original bytes restored in finally, SHA checked equal.",
+  "assertions": [
+    "At text scale2, RenderParagraph.getMaxIntrinsicHeight(width388)=68 exceeds constrained RenderParagraph.height50.",
+    "Unconstrained text bottom863 exceeds button bottom845 and following pill top845 by18.",
+    "Age and Location records byte-for-byte equal between V7 enabled and disabled runs."
+  ],
+  "V7_enabled": {
+    "variant": "V7_enabled",
+    "logical_size": [
+      430,
+      932
+    ],
+    "text_scale": 2,
+    "records": [
+      {
+        "page": "Age",
+        "button": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "label": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "pill": [
+          89.0,
+          845.0,
+          252.0,
+          56.0
+        ],
+        "intrinsic_text_height": 68.0,
+        "full_text_bottom": 863.0,
+        "overflow_below_button": 18.0,
+        "overlap_pill": 18.0
+      },
+      {
+        "page": "Location",
+        "button": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "label": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "pill": [
+          89.0,
+          845.0,
+          252.0,
+          56.0
+        ],
+        "intrinsic_text_height": 68.0,
+        "full_text_bottom": 863.0,
+        "overflow_below_button": 18.0,
+        "overlap_pill": 18.0
+      }
+    ]
+  },
+  "V7_disabled": {
+    "variant": "V7_disabled_old_head_top_placement",
+    "logical_size": [
+      430,
+      932
+    ],
+    "text_scale": 2,
+    "records": [
+      {
+        "page": "Age",
+        "button": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "label": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "pill": [
+          89.0,
+          845.0,
+          252.0,
+          56.0
+        ],
+        "intrinsic_text_height": 68.0,
+        "full_text_bottom": 863.0,
+        "overflow_below_button": 18.0,
+        "overlap_pill": 18.0
+      },
+      {
+        "page": "Location",
+        "button": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "label": [
+          21.0,
+          795.0,
+          388.0,
+          50.0
+        ],
+        "pill": [
+          89.0,
+          845.0,
+          252.0,
+          56.0
+        ],
+        "intrinsic_text_height": 68.0,
+        "full_text_bottom": 863.0,
+        "overflow_below_button": 18.0,
+        "overlap_pill": 18.0
+      }
+    ]
+  },
+  "runs": {
+    "V7_enabled": 0,
+    "V7_disabled_old_head_top_placement": 0,
+    "restored_sha256": "73d311f6d2450bdb1aab50b0268244a67c92e2ffca816c3e3ea9d53fad35ee1f",
+    "original_sha256": "73d311f6d2450bdb1aab50b0268244a67c92e2ffca816c3e3ea9d53fad35ee1f",
+    "restored_exact_bytes": true
+  },
+  "impact": "The second line cannot be fully read visually at this size;18pt of intrinsic text is clipped by the inherited fixed-height link container. All Larger Text is not claimed clean.",
+  "written_refusal": "Do not redesign inherited link/footer under queue53 explicit card-head/vertical-placement-only brief. Keep as follow-up to existing OA-ZYRA-328 for parent/designer/Founder decision. Location/search/ownership behavior unchanged.",
+  "diagnostic_test": "Queue53 exact 200% preferences link bounds with head variant (TargetPlatform.iOS); two final passes. Initial diagnostic incorrectly compared already-constrained RenderBox heights; replaced with intrinsic text measurement.",
+  "diagnostic_test_retirement": "Temporary diagnostic moved to ~/_to_delete/ZYRA_QUEUE53_FILTERS_V7; no permanent diagnostic-only test/code added."
+}

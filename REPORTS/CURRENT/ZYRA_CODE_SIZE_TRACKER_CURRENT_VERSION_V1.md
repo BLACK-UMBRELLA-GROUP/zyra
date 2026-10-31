@@ -447,3 +447,21 @@ Seeker and Guardian One/Basic now share the locked centred header, wrapping pill
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. Validation: 107 distinct scoped cases across seven suites; final capture and retained-route cases rerun after their final fixture/API repairs; analyser/format/protected driver clean. Six 430×932 @3x states, four 200% text states and six master/build pairs are in PROFILE_TAB/BUILT. QA.json records the actual two-Seeker summary, Basic balance1, existing tab attention, photo crop and native-widget/frame differences; no pixel-parity or device claim. Existing old member routes remain under OA-ZYRA-317, parent verification under OA-ZYRA-328. No queue48/49/50/51/64, native delivery or server work.
+
+
+## Queue 53 — Filters Monogram LOCK10 V7 — 31 October 2026
+
+Replaced the old bare card head with the locked 92pt ring,36pt icon,28pt light title and11pt live current choice. Age/Location center their full intrinsic content when it fits; taller content scrolls without negative minimum-height constraints. Nationality/Ethnicity retain their existing top placement. No filter model, Location permissions/origin/cancel, full-list search, chip, haptic, swipe, arrow or bottom-pill behavior changed. No new app source file or classifier exception.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,252 lines / 335 files | 169,323 lines / 335 files |
+| Developer/preview | 49,463 / 93 | 49,534 / 93 |
+| Founder planned app | 30,281 / 43 | 30,352 / 43 |
+| Tests | 216,633 / 506 | 216,995 / 507 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. Validation:52 distinct scoped cases across6 suites; analyser/format/protected SDK clean. Ten430×932 @3x renders, four200% text renders and an all-ten master/build sheet are in FILTERS/BUILT/V7. QA.json records actual full-content centering and raster head-anchor differences, inherited paint/pill/font/footer differences, London sample origin versus Manchester illustration, and headless keyboard-inset limits. Written refusal to redesign inherited surfaces/footer or build failed queue49 under this head-only row; parent visual review remains OA-ZYRA-328. Existing37 wider failures were not rerun or claimed green. Old member routes remain under OA-ZYRA-317. No native delivery, server, dependency or other queue work.
+
+Parent-requested footer triage: two actual-shell diagnostic runs at430×932/200% Poppins reproduced identical18pt clipping with V7 enabled and with only the old head/top placement restored in memory. Intrinsic label68pt is constrained to50pt at y795; following pill starts845. Exact source restored in finally (matching SHA). FOOTER_DIAGNOSTIC.json records method/assertions and written refusal under OA-ZYRA-328; no exact old whole-baseline claim, no all-Larger-Text-clean claim.

@@ -1,0 +1,337 @@
+{
+  "cases": [
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "default filters keep adult eligibility, source order and exclusions",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "age, residence, nationality and ethnicity are distinct conjunctive codes",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "invalid ranges, labels-as-codes and unknown metadata fail closed",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "radius never treats missing origin or coordinates as zero distance",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "exclusive Where, OR within heritage, conjunction and four-kind Clear",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "Haversine handles boundaries, dateline, poles, antipodes and symmetry",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "public labels are optional and only separately supplied fixture labels",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_browse_filter_test.dart",
+      "name": "Basic Guardian chat is revoked at the local model write boundary",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 monogram head uses locked ring, icon and text on every card",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 Age choice follows range, slider, any age and Clear live",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_accessibility_test.dart",
+      "name": "LOCK10 accessible controls wrap at 320 and scale 1.0; haptic ownership",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 Location choice follows country, radius, worldwide and Clear",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_accessibility_test.dart",
+      "name": "LOCK10 accessible controls wrap at 320 and scale 2.0; haptic ownership",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 Nationality choice counts live selections through add/remove/Clear",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "home town does no channel work; real profile city and radius",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "invalid/coarse-boundary reply 2011 stays home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "invalid/coarse-boundary reply 897561999 stays home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "invalid/coarse-boundary reply 311793301 stays home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "invalid/coarse-boundary reply 198417959 stays home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "invalid/coarse-boundary reply 608873785 stays home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "invalid/coarse-boundary reply 912834459 stays home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "invalid/coarse-boundary reply 898247887 stays home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "denial stays home; later explicit attempt opens Settings only",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 Ethnicity choice counts live selections through add/remove/Clear",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "missing plugin and unsupported platform stay home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "late fix is dropped after route",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "late fix is dropped after background",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "late fix is dropped after owner",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "late fix is dropped after admission",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "late fix is dropped after cancel",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "inactive-only permission wait survives; resume rechecks before using",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "permission recheck rejects late revoked authorization",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "resume withdraws area until delayed permission check completes",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "Settings grant rechecks without fix then permits explicit request",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "replacement controller retains its permission handler after old disposal",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "real-city radius uses coarse point and reverts to home",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "dispose drops pending result without publishing",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 Age/Location center and heritage starts at top at scale 1.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 Age/Location center and heritage starts at top at scale 2.0",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 narrow Larger Text wraps current choice and scrolls full controls",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "location sheet wraps and scrolls at 320pt / 2x; explain=false",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "location sheet wraps and scrolls at 320pt / 2x; explain=true",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/zyra_location_lock11_test.dart",
+      "name": "native privacy contract: exact purpose, reduced accuracy, no full authorization",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/filters_lock10_v7_test.dart",
+      "name": "V7 short Larger Text viewport keeps nonnegative scroll constraints",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock11_location_capture_test.dart",
+      "name": "LOCK11 choose, Not now, Continue, coarse radius and home restore (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock11_location_capture_test.dart",
+      "name": "deny toast then Settings; stale Continue after Back is inert",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock11_location_capture_test.dart",
+      "name": "late result after Back and re-entry cannot apply",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock11_location_capture_test.dart",
+      "name": "controls open/close revokes retained Continue and pending result",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock11_location_capture_test.dart",
+      "name": "actual admitted host allows inline sheets and revokes covered callbacks",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock10_filters_capture_test.dart",
+      "name": "LOCK10 ten states: real shell, no network, paging, controls and keyboard layout (variant: TargetPlatform.iOS)",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock10_filters_capture_test.dart",
+      "name": "V7 actual shell Larger Text Age and Location remain reachable",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "suite": "SOURCE/test/visual/lock10_filters_capture_test.dart",
+      "name": "Filters link opens detached traffic-light preferences",
+      "result": "success",
+      "skipped": false
+    }
+  ],
+  "counts": {
+    "passed": 52,
+    "failed": 0,
+    "skipped": 0,
+    "suites": 6
+  },
+  "command": "protected no_git_driver.mjs flutter test --no-pub test/filters_lock10_v7_test.dart test/filters_lock10_accessibility_test.dart test/zyra_browse_filter_test.dart test/zyra_location_lock11_test.dart test/visual/lock10_filters_capture_test.dart test/visual/lock11_location_capture_test.dart --dart-define=ZYRA_LOCK10_CAPTURE=true --reporter json",
+  "analyzer": "Analyzing SOURCE...                                             \nNo issues found! (ran in 3.9s)",
+  "format": "3 owned Dart files checked; 0 changes",
+  "protected_driver": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "exec_denial": "PASS",
+    "nested_exec_denial": "PASS"
+  },
+  "repair_history": [
+    "First V7 tests exposed negative minimum-height at short viewport; clamped to zero and added regression case.",
+    "Placement assertions now normalize actual scroll offset; no behavior change to scroll position.",
+    "Final analyzer info in capture helper repaired with braces."
+  ],
+  "limits": "Full suite not run; inherited 37 wider failures remain under OA-ZYRA-328; no full-suite-green claim."
+}

@@ -1,0 +1,543 @@
+{
+  "queue": 53,
+  "lock": "LOCK10 V7",
+  "result": "Scoped implementation and 52 checks pass; parent visual verification pending.",
+  "scope": "Only Filters card head/current-choice and content placement. No filter model, location permission, haptic, slider, paging, arrow or bottom-pill logic changes.",
+  "head_contract": {
+    "circle_pt": 92,
+    "ring_pt": 1,
+    "ring_rgba": [
+      169,
+      121,
+      46,
+      0.7
+    ],
+    "icon_pt": 36,
+    "title_pt": 28,
+    "title_weight": 300,
+    "choice_pt": 11,
+    "choice_tracking": 1.2,
+    "choice_foreground": "#845F24",
+    "current_choice_counts": "selected nationalities/ethnicities only; no member counts"
+  },
+  "placement": "Age/Location full intrinsic content centered when it fits; scroll from top when taller. Nationality/Ethnicity retain top36/bottom18. Scroll minHeight clamped to zero for very short viewports.",
+  "geometry": [
+    {
+      "state": "f01_age__any",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        340.5,
+        350.0,
+        261.0
+      ],
+      "filter_monogram": [
+        169.0,
+        340.5,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        444.5,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        490.5,
+        350.0,
+        16.0
+      ],
+      "choice": "ANY AGE (18+)",
+      "master_monogram_raster_top_estimate": 309.67,
+      "actual_monogram_top": 340.5,
+      "top_delta_vs_raster_estimate": 30.83
+    },
+    {
+      "state": "f02_age__range",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        308.0,
+        350.0,
+        326.0
+      ],
+      "filter_monogram": [
+        169.0,
+        308.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        412.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        458.0,
+        350.0,
+        16.0
+      ],
+      "choice": "24 \u2013 32",
+      "master_monogram_raster_top_estimate": 283.67,
+      "actual_monogram_top": 308.0,
+      "top_delta_vs_raster_estimate": 24.33
+    },
+    {
+      "state": "f03_where__country",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        299.0,
+        350.0,
+        344.0
+      ],
+      "filter_monogram": [
+        169.0,
+        299.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        403.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        449.0,
+        350.0,
+        16.0
+      ],
+      "choice": "UNITED KINGDOM",
+      "master_monogram_raster_top_estimate": 284.67,
+      "actual_monogram_top": 299.0,
+      "top_delta_vs_raster_estimate": 14.33
+    },
+    {
+      "state": "f04_where__near_me",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        279.0,
+        350.0,
+        384.0
+      ],
+      "filter_monogram": [
+        169.0,
+        279.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        383.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        429.0,
+        350.0,
+        16.0
+      ],
+      "choice": "WITHIN 50 KM",
+      "master_monogram_raster_top_estimate": 262.67,
+      "actual_monogram_top": 279.0,
+      "top_delta_vs_raster_estimate": 16.33
+    },
+    {
+      "state": "f05_where__worldwide",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        320.0,
+        350.0,
+        302.0
+      ],
+      "filter_monogram": [
+        169.0,
+        320.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        424.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        470.0,
+        350.0,
+        16.0
+      ],
+      "choice": "WORLDWIDE",
+      "master_monogram_raster_top_estimate": 301.67,
+      "actual_monogram_top": 320.0,
+      "top_delta_vs_raster_estimate": 18.33
+    },
+    {
+      "state": "f06_nationality__popular",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        184.0,
+        350.0,
+        490.0
+      ],
+      "filter_monogram": [
+        169.0,
+        184.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        288.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        334.0,
+        350.0,
+        16.0
+      ],
+      "choice": "ANY NATIONALITY",
+      "master_monogram_raster_top_estimate": 177.67,
+      "actual_monogram_top": 184.0,
+      "top_delta_vs_raster_estimate": 6.33
+    },
+    {
+      "state": "f07_nationality__typing_keyboard",
+      "keyboard": "headless system-keyboard inset layout only",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        522.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        520.0
+      ],
+      "filter_content": [
+        40.0,
+        184.0,
+        350.0,
+        340.0
+      ],
+      "filter_monogram": [
+        169.0,
+        184.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        288.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        334.0,
+        350.0,
+        16.0
+      ],
+      "choice": "ANY NATIONALITY",
+      "master_monogram_raster_top_estimate": 177.67,
+      "actual_monogram_top": 184.0,
+      "top_delta_vs_raster_estimate": 6.33
+    },
+    {
+      "state": "f08_nationality__chosen",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        184.0,
+        350.0,
+        494.0
+      ],
+      "filter_monogram": [
+        169.0,
+        184.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        288.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        334.0,
+        350.0,
+        16.0
+      ],
+      "choice": "2 CHOSEN",
+      "master_monogram_raster_top_estimate": 177.67,
+      "actual_monogram_top": 184.0,
+      "top_delta_vs_raster_estimate": 6.33
+    },
+    {
+      "state": "f09_ethnicity__popular",
+      "keyboard": "closed",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        648.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        646.0
+      ],
+      "filter_content": [
+        40.0,
+        184.0,
+        350.0,
+        490.0
+      ],
+      "filter_monogram": [
+        169.0,
+        184.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        288.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        334.0,
+        350.0,
+        16.0
+      ],
+      "choice": "ANY ETHNICITY",
+      "master_monogram_raster_top_estimate": 177.67,
+      "actual_monogram_top": 184.0,
+      "top_delta_vs_raster_estimate": 6.33
+    },
+    {
+      "state": "f10_ethnicity__no_match_keyboard",
+      "keyboard": "headless system-keyboard inset layout only",
+      "logical_viewport": [
+        430,
+        932
+      ],
+      "filters_card": [
+        21.0,
+        147.0,
+        388.0,
+        522.0
+      ],
+      "filter_viewport": [
+        22.0,
+        148.0,
+        386.0,
+        520.0
+      ],
+      "filter_content": [
+        40.0,
+        184.0,
+        350.0,
+        315.0
+      ],
+      "filter_monogram": [
+        169.0,
+        184.0,
+        92.0,
+        92.0
+      ],
+      "filter_title": [
+        40.0,
+        288.0,
+        350.0,
+        40.0
+      ],
+      "filter_current_choice": [
+        40.0,
+        334.0,
+        350.0,
+        16.0
+      ],
+      "choice": "ANY ETHNICITY",
+      "master_monogram_raster_top_estimate": 177.67,
+      "actual_monogram_top": 184.0,
+      "top_delta_vs_raster_estimate": 6.33
+    }
+  ],
+  "limits_and_written_refusals": [
+    {
+      "finding": "Head/placement follows explicit V7 sizes and full-content vertical-centering rule; actual raster head anchors differ from prototype due to current widget line/control metrics. State-by-state coordinates and estimated master ring top deltas are recorded below.",
+      "action": "Parent visual/contract review under OA-ZYRA-328; no pixel-parity claim."
+    },
+    {
+      "finding": "Inherited page/header font metrics, flat child surfaces/shadow ownership, selected fill, gold-filled Show profiles pill and absent simulated phone frame differ from the masters. These existed before V7 and are outside card-head/placement scope.",
+      "action": "Written refusal to redesign inherited shared paint or build failed queue49 under this row; OA-ZYRA-328 review link retained."
+    },
+    {
+      "finding": "Near-me actual sample home town is London; master illustrates Manchester. Existing shell-owned origin/permission/cancel behavior and chosen-country semantics retained.",
+      "action": "No invented sample target or origin change; parent review OA-ZYRA-328."
+    },
+    {
+      "finding": "Counterfactual triage proved inherited footer clipping:430x932,200% Poppins, Age and Location; full label68pt constrained to50pt,18pt clipped. Both variants have identical geometry; see FOOTER_DIAGNOSTIC.json.",
+      "action": "Written refusal to expand head-only queue53 into inherited footer layout; OA-ZYRA-328 review linkage."
+    },
+    {
+      "finding": "f07 and f10 use real TextField with synthetic system-keyboard viewInsets; no native keyboard pixels.",
+      "action": "Headless-only disclosure; no native build/install/capture authority for this task."
+    }
+  ],
+  "retired_code": "Old bare icon34/title26 head replaced in place; no unused head-only file, model or alternative retained.",
+  "founder_only_classification": "No new application source file; existing presenter remains counted in both developer/preview and Founder categories.",
+  "source_owned_files": [
+    "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+    "SOURCE/test/filters_lock10_v7_test.dart",
+    "SOURCE/test/visual/lock10_filters_capture_test.dart"
+  ],
+  "text_scale_evidence": [
+    "large_age.png",
+    "large_location.png",
+    "large_nationality.png",
+    "large_ethnicity.png"
+  ],
+  "older_built_preserved": true,
+  "footer_triage": "FOOTER_DIAGNOSTIC.json: clipping demonstrably inherited with exact same18pt overflow at200% on Age and Location after disabling V7 head/centering."
+}

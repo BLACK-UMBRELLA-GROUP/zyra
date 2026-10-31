@@ -1,0 +1,22 @@
+{
+  "source_commit": "e6a00ca2f2331c66cbac60b6ae050cb1c8b62926",
+  "base_source_commit": "5caa13ffdfa5aa7b373b1e6f44ad2816129615ed",
+  "scope": "Explicit three task-owned source/test files, all committed together; no config, keys, credential, ignored-local or blanket source hashing.",
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+      "bytes": 28361,
+      "sha256": "73d311f6d2450bdb1aab50b0268244a67c92e2ffca816c3e3ea9d53fad35ee1f"
+    },
+    {
+      "path": "SOURCE/test/filters_lock10_v7_test.dart",
+      "bytes": 10958,
+      "sha256": "1a9ff687281be9acb267de7552c79d333d576028075cf1ab213d2b15481f16d3"
+    },
+    {
+      "path": "SOURCE/test/visual/lock10_filters_capture_test.dart",
+      "bytes": 13181,
+      "sha256": "78c7fd22f4e8e02480714e94ef5f9d16ae6a0b27da00eed226d813e6c3a2d9a7"
+    }
+  ]
+}

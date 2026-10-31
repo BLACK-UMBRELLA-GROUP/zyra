@@ -1,0 +1,95 @@
+{
+  "source_commit": "e6a00ca2f2331c66cbac60b6ae050cb1c8b62926",
+  "source_manifest_sha256": "557d7ac93c00704ae9d9d177fa5eb02d34cb90e2fc2a79fe217ca6d500d00bd9",
+  "logical_size": [
+    430,
+    932
+  ],
+  "png_size": [
+    1290,
+    2796
+  ],
+  "comparison_sheet": "master_beside_build.png, all ten masters left / actuals right, 430x932 logical per image.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f01_age__any.png",
+      "bytes": 331612,
+      "sha256": "1c24e9c446acd3b0a7b93a14d1ed87fb1fc2be72bd347a775c2022be0f9f4441"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f02_age__range.png",
+      "bytes": 340034,
+      "sha256": "d7e0c6a9405a0621f5569829e768e49df460df18c5ee20c1fd49087240924a0a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f03_where__country.png",
+      "bytes": 374208,
+      "sha256": "2fd94191fa7a85b1fec00c79bcfc25854fc7dd2db752aa2cb5cf99b14bddbbfb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f04_where__near_me.png",
+      "bytes": 373115,
+      "sha256": "314ca32b22aa2623bea548fe1f22ceaa2eec3018341bc52401172e544f8a55c2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f05_where__worldwide.png",
+      "bytes": 351905,
+      "sha256": "e7b970b6851784e424f99177f943a3c53f838a49902aa6ed9dc1ac1113d8dab5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f06_nationality__popular.png",
+      "bytes": 389961,
+      "sha256": "b5d6ec3227c115ea2eba474c73ec54082df6d02620c99c78c7564fd951e43425"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f07_nationality__typing_keyboard.png",
+      "bytes": 305136,
+      "sha256": "f279a0980842d476301bb467263f29896ddfda111c0c81e0be37f458ec45284b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f08_nationality__chosen.png",
+      "bytes": 396092,
+      "sha256": "144d14d2395673ef5d3b3d7c7f6e92aa923fba510391e9dcdec74d58449c20b1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f09_ethnicity__popular.png",
+      "bytes": 388760,
+      "sha256": "d77ef5dbb43be7db6c736c91ae055731278451ddf1946599434aea46e1027532"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/f10_ethnicity__no_match_keyboard.png",
+      "bytes": 308550,
+      "sha256": "b4b845dd4b618e3ed155baef348d4ed8e0b129e4fec3b7b7183f7fd13bfd1459"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/footer_200_before_after.png",
+      "bytes": 214406,
+      "sha256": "15231d425677f9a08f13845a27eb541a22344577b290100ac13328755574c869"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_age.png",
+      "bytes": 393203,
+      "sha256": "7cb05ed0f71c8414b9f81a07333eaafc3c7987d5d38c028c4aedfd4217bff3be"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_ethnicity.png",
+      "bytes": 437415,
+      "sha256": "dc3d9253849c33260b25b9aa4cecc69771577409c6dc162289ca9a02cc79d56a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_location.png",
+      "bytes": 437445,
+      "sha256": "67723b12cff5581a4a3686467e9b0016f722df07a436a166d166afbb33162c2d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/large_nationality.png",
+      "bytes": 445636,
+      "sha256": "851dc89d404283ca46ff48d9c8ba83093687b88d316c9c287b6c4bd48759fc6f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7/master_beside_build.png",
+      "bytes": 2082363,
+      "sha256": "e786dae52b8010a6c647fbdb7cf3663c65e851844a5d608c59411543afacfc86"
+    }
+  ]
+}

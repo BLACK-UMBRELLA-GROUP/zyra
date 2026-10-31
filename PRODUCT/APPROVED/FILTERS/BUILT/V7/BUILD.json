@@ -1,0 +1,86 @@
+{
+  "queue": 53,
+  "lock": "LOCK10 V7",
+  "source_commit": "e6a00ca2f2331c66cbac60b6ae050cb1c8b62926",
+  "base_source_commit": "5caa13ffdfa5aa7b373b1e6f44ad2816129615ed",
+  "flutter": "3.44.2 stable pinned protected driver",
+  "mode": "Flutter headless widget test raster, iOS target platform; local sample preview; network denied",
+  "timestamp_utc": "2026-10-31T11:40:48.381208+00:00",
+  "renders": 10,
+  "larger_text_renders": 4,
+  "native_device_capture": false,
+  "native_build_install_upload": false,
+  "backend_migration_changes": false,
+  "parent_visual_verification": "pending",
+  "startup_read": {
+    "primary_text_bytes": 75326,
+    "primary_KiB": 73.56,
+    "masters_bytes": 5540706,
+    "helper": "v7_contract_tests: implementation of V7 tests only; 103378 bytes/100.96KiB; tokens unavailable"
+  },
+  "before_after_code_size": {
+    "all_app": [
+      [
+        169252,
+        335
+      ],
+      [
+        169323,
+        335
+      ]
+    ],
+    "developer_preview": [
+      [
+        49463,
+        93
+      ],
+      [
+        49534,
+        93
+      ]
+    ],
+    "founder_preview": [
+      [
+        30281,
+        43
+      ],
+      [
+        30352,
+        43
+      ]
+    ],
+    "tests": [
+      [
+        216633,
+        506
+      ],
+      [
+        216995,
+        507
+      ]
+    ],
+    "goldens": [
+      [
+        2612,
+        307
+      ],
+      [
+        2612,
+        307
+      ]
+    ],
+    "old_pause_restart": [
+      [
+        39,
+        1
+      ],
+      [
+        39,
+        1
+      ]
+    ]
+  },
+  "evidence_policy": "Screenshots + JSON only. No compiled apps/source copies. REPORTS/EVIDENCE is ignored and not force-added; committed handover here.",
+  "footer_diagnostic_runs": 2,
+  "footer_diagnostic": "Inherited18pt clipping reproduced with V7 enabled/disabled; exact source restored; current-checkout counterfactual, not old full baseline."
+}
