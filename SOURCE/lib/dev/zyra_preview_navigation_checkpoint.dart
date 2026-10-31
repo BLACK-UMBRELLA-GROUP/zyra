@@ -58,6 +58,7 @@ class ZyraPreviewNavigationCheckpoint {
     this.myZyraLastOpenedRevision = 0,
     this.seekerReadiness = ZyraWalletReadiness.ready,
     Iterable<String> myZyraConsumedFocusTokens = const [],
+    Iterable<String> circleReadMessageKeys = const [],
     int myZyraFocusIndex = 0,
     this.guardianPage = 0,
     this.networkTab = 0,
@@ -85,6 +86,7 @@ class ZyraPreviewNavigationCheckpoint {
        myZyraConsumedFocusTokens = Set.unmodifiable(
          myZyraConsumedFocusTokens.take(64),
        ),
+       circleReadMessageKeys = Set.unmodifiable(circleReadMessageKeys.take(64)),
        myZyraFocusIndex = myZyraFocusIndex < 0 ? 0 : myZyraFocusIndex,
        browseFilter = browseFilter.detached(),
        pages = List.unmodifiable(pages.take(8)),
@@ -115,6 +117,9 @@ class ZyraPreviewNavigationCheckpoint {
   final int myZyraLastOpenedRevision;
   // Focus consumption is independent of unread requests and tab attention.
   final Set<String> myZyraConsumedFocusTokens;
+  // Fixed-fixture read facts only, isolated by Circle and viewer. This is
+  // neither Focus consumption nor authority to read a conversation.
+  final Set<String> circleReadMessageKeys;
   final int myZyraFocusIndex;
   final List<String> pages, browseHistory;
   final String? personId, guardianJourneyId, browseId;

@@ -94,6 +94,7 @@ class GuardianshipManagerView extends StatelessWidget {
   final ValueChanged<WaliLinkedPerson> onOpenGuardian;
   final VoidCallback onAdd;
   final VoidCallback? onOpenMessages;
+  final Widget Function(Widget)? conversationButtonBuilder;
   final GuardianPendingInvitesLoader? pendingInvitesLoader;
   final DateTime? comparisonNow;
   final Alignment titleAlignment;
@@ -109,6 +110,7 @@ class GuardianshipManagerView extends StatelessWidget {
     required this.onOpenGuardian,
     required this.onAdd,
     this.onOpenMessages,
+    this.conversationButtonBuilder,
     this.pendingInvitesLoader,
     this.comparisonNow,
     this.titleAlignment = Alignment.centerLeft,
@@ -143,6 +145,7 @@ class GuardianshipManagerView extends StatelessWidget {
               child: _ManagerHeader(
                 onAdd: onAdd,
                 onOpenMessages: onOpenMessages,
+                conversationButtonBuilder: conversationButtonBuilder,
                 titleAlignment: titleAlignment,
                 titleSize: titleSize,
               ),
@@ -173,6 +176,7 @@ class GuardianshipManagerView extends StatelessWidget {
         _ManagerHeader(
           onAdd: onAdd,
           onOpenMessages: onOpenMessages,
+          conversationButtonBuilder: conversationButtonBuilder,
           titleAlignment: titleAlignment,
           titleSize: titleSize,
         ),
@@ -218,15 +222,30 @@ class GuardianshipManagerView extends StatelessWidget {
 class _ManagerHeader extends StatelessWidget {
   final VoidCallback onAdd;
   final VoidCallback? onOpenMessages;
+  final Widget Function(Widget)? conversationButtonBuilder;
   final Alignment titleAlignment;
   final double? titleSize;
 
   const _ManagerHeader({
     required this.onAdd,
     this.onOpenMessages,
+    this.conversationButtonBuilder,
     this.titleAlignment = Alignment.centerLeft,
     this.titleSize,
   });
+
+  List<Widget> _actionPaintOrder(List<Widget> reversed) =>
+      conversationButtonBuilder == null ? reversed.reversed.toList() : reversed;
+
+  Widget _conversationButton() {
+    final button = _HeaderCircleAction(
+      key: const ValueKey('guardian-family-messages-top'),
+      label: 'Guardian Circle',
+      icon: Icons.forum_outlined,
+      onTap: onOpenMessages!,
+    );
+    return conversationButtonBuilder?.call(button) ?? button;
+  }
 
   Widget _title() => Expanded(
     child: Text(
@@ -244,49 +263,50 @@ class _ManagerHeader extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       if (titleAlignment.x <= 0) _title(),
-      if (onOpenMessages != null) ...[
-        _HeaderCircleAction(
-          key: const ValueKey('guardian-family-messages-top'),
-          label: 'Guardian Circle',
-          icon: Icons.forum_outlined,
-          onTap: onOpenMessages!,
-        ),
-        const SizedBox(width: 4),
-      ],
-      const SizedBox(width: 8),
-      Tooltip(
-        message: 'Add a Guardian',
-        excludeFromSemantics: true,
-        child: Semantics(
-          button: true,
-          label: 'Add a Guardian',
-          child: ZyraFloatingSurface(
-            radius: 16,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                key: const ValueKey('guardian-add-top'),
-                customBorder: const CircleBorder(),
-                onTap: ZyraTapFeedback.onTap(context, onAdd),
-                child: SizedBox.square(
-                  dimension: 48,
-                  child: Center(
-                    child: ZyraFloatingSurface(
-                      circle: true,
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: ZyraColors.iconButtonBg,
-                          border: Border.all(
-                            color: ZyraColors.iconButtonBorder,
+      // Paint the Add shadow first, then the conversation icon and badge.
+      // RTL changes paint order only; the original positions/gaps stay exact.
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        textDirection: conversationButtonBuilder == null
+            ? TextDirection.ltr
+            : TextDirection.rtl,
+        children: _actionPaintOrder([
+          Tooltip(
+            message: 'Add a Guardian',
+            excludeFromSemantics: true,
+            child: Semantics(
+              button: true,
+              label: 'Add a Guardian',
+              child: ZyraFloatingSurface(
+                radius: 16,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    key: const ValueKey('guardian-add-top'),
+                    customBorder: const CircleBorder(),
+                    onTap: ZyraTapFeedback.onTap(context, onAdd),
+                    child: SizedBox.square(
+                      dimension: 48,
+                      child: Center(
+                        child: ZyraFloatingSurface(
+                          circle: true,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: ZyraColors.iconButtonBg,
+                              border: Border.all(
+                                color: ZyraColors.iconButtonBorder,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.add_rounded,
+                              size: 23,
+                              color: ZyraColors.foreground,
+                            ),
                           ),
-                        ),
-                        child: Icon(
-                          Icons.add_rounded,
-                          size: 23,
-                          color: ZyraColors.foreground,
                         ),
                       ),
                     ),
@@ -295,7 +315,12 @@ class _ManagerHeader extends StatelessWidget {
               ),
             ),
           ),
-        ),
+          const SizedBox(width: 8),
+          if (onOpenMessages != null) ...[
+            const SizedBox(width: 4),
+            _conversationButton(),
+          ],
+        ]),
       ),
       if (titleAlignment.x > 0) ...[const SizedBox(width: 8), _title()],
     ],
@@ -514,6 +539,7 @@ class SeekerGuardianPage extends StatelessWidget {
   final VoidCallback onRetry;
   final VoidCallback onAdd;
   final VoidCallback? onOpenMessages;
+  final Widget Function(Widget)? conversationButtonBuilder;
   final GuardianPendingInvitesLoader? pendingInvitesLoader;
   final GuardianPageHistoryConsentLoader? historyConsentLoader;
   final GuardianPageJourneyAccessLoader? journeyAccessLoader;
@@ -542,6 +568,7 @@ class SeekerGuardianPage extends StatelessWidget {
     required this.onRetry,
     required this.onAdd,
     this.onOpenMessages,
+    this.conversationButtonBuilder,
     this.pendingInvitesLoader,
     this.historyConsentLoader,
     this.journeyAccessLoader,
@@ -568,6 +595,7 @@ class SeekerGuardianPage extends StatelessWidget {
         onOpenGuardian: (_) {},
         onAdd: onAdd,
         onOpenMessages: onOpenMessages,
+        conversationButtonBuilder: conversationButtonBuilder,
         pendingInvitesLoader: pendingInvitesLoader,
         comparisonNow: comparisonNow,
         titleAlignment: titleAlignment,
@@ -594,6 +622,7 @@ class SeekerGuardianPage extends StatelessWidget {
           child: _ManagerHeader(
             onAdd: onAdd,
             onOpenMessages: onOpenMessages,
+            conversationButtonBuilder: conversationButtonBuilder,
             titleAlignment: titleAlignment,
             titleSize: titleSize,
           ),

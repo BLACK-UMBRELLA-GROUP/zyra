@@ -415,3 +415,19 @@ Built the locked Seeker and Guardian Focus presentation with one addressed item,
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py, explicitly including the two new Founder-only Focus files in both preview categories; historical classifications are unchanged. Validation: 224 cases across 14 targeted suites; full analyser clean; protected SDK 3.44.2 and format checks pass. Eleven 430×932 @3x master/build pairs, two 430pt enlarged-text renders and two end-scrolled 320pt/200% renders are in MY_ZYRA/BUILT. The compact checks prove 8pt clearance above the unchanged navigation, including Guardian Basic locked labels; pager hit and semantics rectangles are 44×44. Existing widget/font/icon and inherited navigation differences are recorded, without a pixel-parity or device claim. Two obsolete Founder dashboard integration tests and generic activity-detail code moved to ~/_to_delete/ZYRA_QUEUE43_FOCUS_V2; replacement coverage preserves model/permission invariants. Five legacy pale-text expectations in my_zyra_attention_dot_test.dart now use the locked foreground token; all 19 cases there pass. No native build/install/upload, backend, migration or row44/45 work.
+
+
+## Queue 46 — conversation unread badge LOCK17 — 31 October 2026
+
+Shared gold badge on the Seeker Guardian header's existing Circle icon; its count is projected from the same admitted Circle fixture as the reader. Opening marks only that Circle/viewer/message/sender read in the account-owned memory checkpoint. Focus consumption remains separate. Other preview conversation icons have no existing unread-count source and receive no invented count. The gold box is16pt plus an external2pt page ring; paint order prevents the adjacent Add shadow shading it. Existing member header paint order is retained when no preview decorator is supplied.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,360 lines / 334 files | 169,530 lines / 335 files |
+| Developer/preview | 49,600 / 92 | 49,741 / 93 |
+| Founder planned app | 30,423 / 42 | 30,559 / 43 |
+| Tests | 215,310 / 501 | 215,980 / 504 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured by SYSTEM/tools/blueprint/code_size.py; the new Founder-only badge is explicitly counted in both preview categories without reclassifying historical files. Final scoped validation:139 cases across8 complete suites plus5 selected actual Circle ownership/admission guards; analyser clean. Wider run:145 passed/37 failed, with29 Founder white-canvas/internal-hold,5 Journey-title/slot and3 Circle-control/old-slot cases enumerated in UNREAD_BADGE/BUILT/REGRESSION_LIMITS.json under existing OA-ZYRA-328 review linkage. The two composer-loss cases also reproduce with both badge decoration and read clearing disabled; exact transient denial cause remains unproven. Those behaviours were not changed under LOCK17. Actual local sample count1 is retained (master illustrates2). Six renders and u01 comparison/geometry are in UNREAD_BADGE/BUILT; no device/native/server work. Current Guardian layout and page dots await queue47.

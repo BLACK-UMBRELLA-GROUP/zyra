@@ -79,6 +79,7 @@ import 'zyra_request_help_content.dart';
 import 'zyra_request_account_session.dart';
 import 'zyra_request_capacity_choice.dart';
 import 'zyra_guardian_circle_preview.dart';
+import 'zyra_conversation_unread_badge.dart';
 import 'zyra_guardian_circle_topic_options.dart';
 import 'zyra_circle_discussion_archive.dart';
 import 'zyra_one_journey_sample_photos.dart';
@@ -170,6 +171,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   int _myZyraLastOpenedRevision = 0;
   int _myZyraFocusIndex = 0;
   final _myZyraConsumedFocusTokens = <String>{};
+  final _circleReadMessageKeys = <String>{};
   final _tabBarCollapseRevision = ValueNotifier<int>(0);
   int _browseIndex = 1;
   // Session-only viewing order, never a visibility or request permission.
@@ -783,6 +785,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   void _restoreCheckpoint(ZyraPreviewNavigationCheckpoint saved) {
     _guardianTabs = ZyraGuardianTabsState(saved.guardianTabs);
     _myZyraConsumedFocusTokens.addAll(saved.myZyraConsumedFocusTokens);
+    _circleReadMessageKeys.addAll(saved.circleReadMessageKeys);
     _myZyraFocusIndex = widget.restoreLocation ? saved.myZyraFocusIndex : 0;
 
     // Only the detached fictional model survives a long absence. Navigation
@@ -1050,6 +1053,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             ?.id;
       }
     }
+    if (_page == 'guardian_circle') _markCurrentCircleRead();
     _circleVisibility.value = _page == 'guardian_circle';
   }
 
@@ -1072,6 +1076,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             .forRole(ZyraWalletRole.seeker)
             .readiness,
         myZyraConsumedFocusTokens: _myZyraConsumedFocusTokens,
+        circleReadMessageKeys: _circleReadMessageKeys,
         myZyraFocusIndex: _myZyraFocusIndex,
         guardianPage: _guardianPage,
         networkTab: _networkTab,
@@ -1309,6 +1314,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         : null;
     _move(() {
       _consumeFocusTarget(page, personId: person);
+      if (page == 'guardian_circle') _markCurrentCircleRead();
       if (receivedBeingOpened != null) {
         _model.acknowledgeReceivedRequests([receivedBeingOpened]);
       }
@@ -5317,16 +5323,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     return 'Adam & ${names[index]} · $startLabel–${end.day} ${months[end.month - 1]} ${end.year}';
   }
 
-  Widget _guardianCircle() {
-    if (_guardianRole && !_conceptHassanLinked) return _unavailable();
-    if (_circleEntryView != null &&
-        _circleEntryRevision == _circleScopeRevision) {
-      return _circleEntryView!;
-    }
-    final revision = _circleScopeRevision;
+  // One caller-owned fixture feeds both the icon and the admitted reader.
+  // No notification total, Focus dismissal or unrelated message list is used.
+  ZyraGuardianCirclePreviewData? _currentCircleData() {
+    if (!_allowed || (_guardianRole && !_conceptHassanLinked)) return null;
     final guardian = _guardianRole;
     final circleYusuf = guardian && _guardianTabs.seeker == 1;
-    final tab = _tab;
     final people = circleYusuf
         ? [
             WaliLinkedPerson(
@@ -5337,26 +5339,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             ),
           ]
         : _conceptGuardianPeople;
+    if (people.isEmpty) return null;
     final senderId = guardian ? 'draft-guardian-hassan' : 'draft-self';
-    bool canReadPast() =>
-        !guardian ||
-        (_conceptHassanLinked && _conceptGuardianHistory[senderId] == true);
-    final pastShared = (!guardian || _guardianTabs.main) && canReadPast();
-    String linkStamp() => _conceptGuardianPeople
-        .map((person) => '${person.id}:${person.isMain}')
-        .join('|');
-    final stamp = linkStamp();
-    bool current() =>
-        _allowed &&
-        revision == _circleScopeRevision &&
-        guardian == _guardianRole &&
-        tab == _tab &&
-        (_page == 'guardian_circle' ||
-            (_page == 'controls' && _pageOptionsSource == 'guardian_circle')) &&
-        stamp == linkStamp() &&
-        pastShared == ((!guardian || _guardianTabs.main) && canReadPast()) &&
-        (!guardian || _conceptHassanLinked);
-
     final contexts = [
       for (final person
           in guardian ? _permittedGuardianJourneys : _guardianJourneys)
@@ -5368,10 +5352,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             kind: ZyraFamilyMessageContextKind.active,
           ),
     ];
-    // Snapshot lazily after the existing bundled photo reader is ready. A
-    // fast Circle entry must not freeze an empty photo list, and once exposed
-    // each profile keeps its identity for this owned child-route lifetime.
-    final discussionProfiles = <String, SeekerProfile>{};
     // The later paid-participant contract remains held server-side. Mirror
     // its restrictive display boundary here; another person's plan cannot
     // grant a Basic participant paid conversation access.
@@ -5384,7 +5364,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         );
     final circleSeekerId = circleYusuf ? 'draft-linked-yusuf' : 'draft-self';
     final circleSeekerName = circleYusuf ? 'Yusuf' : 'Adam';
-    final data = ZyraGuardianCirclePreviewData(
+    return ZyraGuardianCirclePreviewData(
       seekerId: circleSeekerId,
       senderId: senderId,
       canSend: people.isNotEmpty && funded,
@@ -5436,7 +5416,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 : 'Additional Guardian',
             body: 'Wa alaikum assalaam. We’re here to support you.',
             createdAt: DateTime.utc(2026, 10, 12, 0, 12),
-            unreadForMe: !guardian,
+            unreadForMe:
+                !guardian &&
+                !_circleReadMessageKeys.contains(
+                  '$circleSeekerId:$senderId:draft-circle-response:${people.first.id}',
+                ),
             readBy: [
               ZyraFamilyMessageReader(
                 userId: circleSeekerId,
@@ -5458,6 +5442,73 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       ],
       contexts: contexts,
     );
+  }
+
+  String _circleMessageKey(
+    ZyraGuardianCirclePreviewData data,
+    ZyraFamilyMessage message,
+  ) => '${data.seekerId}:${data.senderId}:${message.id}:${message.senderId}';
+
+  int get _currentCircleUnreadCount {
+    final data = _currentCircleData();
+    if (data == null ||
+        !data.validFor(data.seekerId, viewerIsSeeker: !_guardianRole)) {
+      return 0;
+    }
+    return data.messages.where((message) => message.unreadForMe).length;
+  }
+
+  void _markCurrentCircleRead() {
+    final data = _currentCircleData();
+    if (data == null ||
+        !data.validFor(data.seekerId, viewerIsSeeker: !_guardianRole)) {
+      return;
+    }
+    _circleReadMessageKeys.addAll(
+      data.messages
+          .where((message) => message.unreadForMe)
+          .map((message) => _circleMessageKey(data, message)),
+    );
+  }
+
+  Widget _guardianCircle() {
+    if (_guardianRole && !_conceptHassanLinked) return _unavailable();
+    if (_circleEntryView != null &&
+        _circleEntryRevision == _circleScopeRevision) {
+      return _circleEntryView!;
+    }
+    final revision = _circleScopeRevision;
+    final guardian = _guardianRole;
+    final circleYusuf = guardian && _guardianTabs.seeker == 1;
+    final tab = _tab;
+    final senderId = guardian ? 'draft-guardian-hassan' : 'draft-self';
+    bool canReadPast() =>
+        !guardian ||
+        (_conceptHassanLinked && _conceptGuardianHistory[senderId] == true);
+    final pastShared = (!guardian || _guardianTabs.main) && canReadPast();
+    String linkStamp() => _conceptGuardianPeople
+        .map((person) => '${person.id}:${person.isMain}')
+        .join('|');
+    final stamp = linkStamp();
+    bool current() =>
+        _allowed &&
+        revision == _circleScopeRevision &&
+        guardian == _guardianRole &&
+        tab == _tab &&
+        (_page == 'guardian_circle' ||
+            (_page == 'controls' && _pageOptionsSource == 'guardian_circle')) &&
+        stamp == linkStamp() &&
+        pastShared == ((!guardian || _guardianTabs.main) && canReadPast()) &&
+        (!guardian || _conceptHassanLinked);
+
+    final data = _currentCircleData();
+    if (data == null) return _unavailable();
+    final contexts = data.contexts;
+    final circleSeekerName = circleYusuf ? 'Yusuf' : 'Adam';
+    // Snapshot lazily after the existing bundled photo reader is ready. A
+    // fast Circle entry must not freeze an empty photo list, and once exposed
+    // each profile keeps its identity for this owned child-route lifetime.
+    final discussionProfiles = <String, SeekerProfile>{};
     final navigator = GlobalKey<NavigatorState>();
     _circleNavigator = navigator;
     _circleEntryRevision = revision;
@@ -5688,7 +5739,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           previewActiveJourneyCount: journeys.length,
           onRetry: _bound(() => _act(() {})),
           onAdd: _bound(() => _open('guardian_invite')),
-          onOpenMessages: _bound(() => _open('guardian_circle')),
+          onOpenMessages: () {
+            if (current()) _open('guardian_circle');
+          },
+          conversationButtonBuilder: (child) => ZyraConversationUnreadBadge(
+            unreadCount: _currentCircleUnreadCount,
+            backgroundColor: ZyraColors.brandGradient.colors.first,
+            child: child,
+          ),
           pendingInvitesLoader: () async => current()
               ? const ZyraSourceResult.available(<PendingInvite>[])
               : unavailable<List<PendingInvite>>(),
