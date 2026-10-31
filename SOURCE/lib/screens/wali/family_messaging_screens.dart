@@ -2395,7 +2395,7 @@ class ZyraFamilyMessageComposer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: privateGuardian
-        ? const EdgeInsets.fromLTRB(21, 6, 21, 31)
+        ? const EdgeInsets.fromLTRB(21, 6, 21, 16)
         : const EdgeInsets.fromLTRB(18, 6, 18, 12),
     child: Column(
       key: const ValueKey('guardian-circle-composer'),
