@@ -1,0 +1,69 @@
+{
+  "queue": 71,
+  "logical_size": [
+    430,
+    932
+  ],
+  "device_pixel_ratio": 3,
+  "frames_px": [
+    1290,
+    2796
+  ],
+  "comparison_px": [
+    2580,
+    2860
+  ],
+  "scope": "Five actual frames; five pairs with original pixels beneath a labelled 64px header. No capture is a native device screenshot.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/c01_profiles.png",
+      "bytes": 406775,
+      "sha256": "24c22b125e8526892d7e9a8e772be039a94adc4e31a522df7bf15e2992ec3972"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/c02_journey_tab.png",
+      "bytes": 1648250,
+      "sha256": "e4cb2bb4b723c9f589393f4755f0f4204fd01fba6f4ffd74e77d09c3a3e0cd5f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/c06_filters_where.png",
+      "bytes": 466821,
+      "sha256": "51ecf159778d6014627cd9936a30051e07102d71721768748f407850a0cff2a1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/f01_age__any.png",
+      "bytes": 427608,
+      "sha256": "30dd5c4e0d704eb9899c7d559f87997c39bc9734847636e4e095795710e865cc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/f01_age__any_200.png",
+      "bytes": 500396,
+      "sha256": "baf4dc1c1c6f299d8eecf7bf29af9990b6fd6696ca0b315fcdc393fa908c4416"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/COMPARISONS/c01_profiles_master_beside_build.png",
+      "bytes": 819407,
+      "sha256": "4a6dc0148960ced3994fa49bc2c0a6c47caebefddf6399556a53658c177d7a8d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/COMPARISONS/c02_journey_tab_master_beside_build.png",
+      "bytes": 2955181,
+      "sha256": "b55c1b6c05a199204f9ad4cd74cd59d767ec851f2663c2117249d0d73b890780"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/COMPARISONS/c06_filters_where_master_beside_build.png",
+      "bytes": 890672,
+      "sha256": "5775e390c9dc0e689327b94ceb0f25dcd2656f299b39248148e79e61cc939e47"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/COMPARISONS/f01_age__any_master_beside_build.png",
+      "bytes": 827986,
+      "sha256": "c1ca041e8a8d974a2e00e965e29d1c73cf085c68f5396effce61987786a45b9f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/COMPARISONS/f01_age__any_200_master_beside_build.png",
+      "bytes": 905887,
+      "sha256": "ffc6dd1291d886fac4e4a6ce8856c1a011f6ee3abbf929f7c9e87a7aea4adc43"
+    }
+  ]
+}

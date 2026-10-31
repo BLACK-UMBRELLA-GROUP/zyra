@@ -1,0 +1,731 @@
+{
+  "queue": 71,
+  "totals": {
+    "suites": 10,
+    "passed": 124,
+    "failed": 0,
+    "skipped": 0
+  },
+  "suites": [
+    {
+      "path": "test/request_row_lock7_test.dart",
+      "cases": [
+        {
+          "name": "one glass pill, 68 point arrows, 56 height and three real taps",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "first Previous unavailable; sent paint and cancel label retained",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7FIX ivory and readable ink in every page and action state",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "200 percent text wraps with stable height at 430.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "200 percent text wraps with stable height at 393.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "200 percent text wraps with stable height at 320.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "disabled request does not dispatch and default callers keep their row",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/filters_lock10_v7_test.dart",
+      "cases": [
+        {
+          "name": "V7FIX 200% footer fits all four cards at width 430.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7FIX 200% footer fits all four cards at width 393.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7FIX 200% footer fits all four cards at width 320.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 monogram head uses locked ring, icon and text on every card",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 Age choice follows range, slider, any age and Clear live",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 Location choice follows country, radius, worldwide and Clear",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 Nationality choice counts live selections through add/remove/Clear",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 Ethnicity choice counts live selections through add/remove/Clear",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 Age/Location center and heritage starts at top at scale 1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 Age/Location center and heritage starts at top at scale 2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 narrow Larger Text wraps current choice and scrolls full controls",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "V7 short Larger Text viewport keeps nonnegative scroll constraints",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/filters_lock10_accessibility_test.dart",
+      "cases": [
+        {
+          "name": "LOCK10 accessible controls wrap at 320 and scale 1.0; haptic ownership",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK10 accessible controls wrap at 320 and scale 2.0; haptic ownership",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/zyra_gold_action_pill_test.dart",
+      "cases": [
+        {
+          "name": "preserves the LOCK14 V4 readable gold button contract",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "taps only while enabled and exposes a 48 point target",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "busy state is distinct and cannot submit twice",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "fits compact width and accessibility text on every palette",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/inline_invitation_presentation_test.dart",
+      "cases": [
+        {
+          "name": "label uses a short feedback-only gold fade and small slide",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "quiet motion true/false is instantaneous",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "quiet motion false/true is instantaneous",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "current action semantics exclude both animated label children (full=false)",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "current action semantics exclude both animated label children (full=true)",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current inline labels stay bounded throughout transition 320.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current inline labels stay bounded throughout transition 393.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current inline labels stay bounded throughout transition 430.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current inline labels stay bounded throughout transition 320.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current inline labels stay bounded throughout transition 393.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current inline labels stay bounded throughout transition 430.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current photo selection and footer styling survive send/cancel",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "only sent person has a gold outline in portraitCard",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current photo fills its card at 320.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current photo fills its card at 320.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current photo fills its card at 393.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current photo fills its card at 393.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current photo fills its card at 430.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current photo fills its card at 430.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "full photo remains on the selected image after send/cancel at 1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "full photo remains on the selected image after send/cancel at 2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "fresh offline real-font candidates preserve the same profile",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/zyra_ivory_lock14_test.dart",
+      "cases": [
+        {
+          "name": "LOCK14 opaque reading roles and gold text fills meet 4.5:1",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "startup ignores old palette without changing any stored member preference",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "session adopts Ivory and retains admission and haptic lifetime",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "floating owner suppresses nested shadow without moving content",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "scroll shadow clearance preserves viewport content positions and extent",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "unbounded nested scroll keeps natural height",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/visual/lock10_v7fix_capture_test.dart",
+      "cases": [
+        {
+          "name": "V7FIX actual c01/c02/c06/f01 and 200% footer (variant: TargetPlatform.iOS)",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/visual/lock13_journey_tab_test.dart",
+      "cases": [
+        {
+          "name": "LOCK13 eight master states, actual stages and full height geometry",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 V3 actual Sara Aisha and Basic options captures",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 V3 actual 200 percent One and Basic scroll head to End",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 One 0 1 2 3 and Basic 0 1 have exact capacity and end arrows",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 empty and free Browse go to Profiles and Basic upsell goes to Plans",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 all seven options open existing destinations and preserve disclosure locks",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 actual actions order Journeys and never invent a review timer",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 available Continue beats waiting after mutual choices",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 preparing has no begun stage and retains readiness gates",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 question and Family next-step use actual stage wording",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 short return restores chosen place and options Back; bounded Basic clamp",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 unlocked Bio and Compatibility remain actual guarded destinations",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 blocked occupied place redacts identity and preserves End",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 retained callbacks refuse swipe, pushed-page and controls ABA",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 shared haptics one per enabled tap, no swipe or disabled pulse, Off respected",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "LOCK13 small phone and Larger Text keep bounded cards with reachable wrapped content",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/local_code_page_lock9_test.dart",
+      "cases": [
+        {
+          "name": "all explicit aliases are20 nonhex and adapt exact canonical samples only",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "five boxes fill uppercase on type and canonical paste with one field label",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "every length0 through19 errors before lookup; Check is enabled gold",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "unknown20, real hex and malformed paste never call canonical reader",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "ZyraLocalCodeContext.scan found reveals first name and role; only Add can locally send",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "ZyraLocalCodeContext.addGuardian found reveals first name and role; only Add can locally send",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "ZyraLocalCodeContext.addSeeker found reveals first name and role; only Add can locally send",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "empty or wrong-role local result cannot disclose identity Instance of 'ZyraLocalCodeIdentity'",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "empty or wrong-role local result cannot disclose identity Instance of 'ZyraLocalCodeIdentity'",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "lookup exception retains existing error without live fallback",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "pending lookup cannot publish after edit",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "pending lookup cannot publish after epoch",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "pending lookup cannot publish after cover",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "pending lookup cannot publish after background",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "pending lookup cannot publish after revoke",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "pending lookup cannot publish after dispose",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "pending lookup cannot publish after rebind",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "stale send callback after input edit and epoch change cannot claim sent",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "guarded camera canonical capture is one-shot and typing keeps it mounted",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "ZyraLocalCodeContext.scan compact200 percent has no overflow and actions remain reachable",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "ZyraLocalCodeContext.addGuardian compact200 percent has no overflow and actions remain reachable",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "ZyraLocalCodeContext.addSeeker compact200 percent has no overflow and actions remain reachable",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "inactive permission prompt keeps the guarded scan session",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "throwing epoch fails closed without a build or tap exception",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "scan line moves slowly and reduced motion holds its position",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "enabled code tap emits one shared haptic and a revoked callback emits none",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "test/zyra_membership_choices_test.dart",
+      "cases": [
+        {
+          "name": "draft snapshots external collections and permits one choice per role",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "draft rejects out-of-range navigation and Family quantities",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current and Unlocks cannot review or erase retained plan intentions",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "one swipeable pill strip separates information from role and Family choices",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "initial guardian pill is visible in one full-size strip at 393.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "initial family pill is visible in one full-size strip at 393.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "initial unlocks pill is visible in one full-size strip at 393.0/1.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "initial guardian pill is visible in one full-size strip at 320.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "initial family pill is visible in one full-size strip at 320.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "initial unlocks pill is visible in one full-size strip at 320.0/2.0",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "header terms target is accessible and old callbacks fail closed",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current and Unlocks keep controls reachable at Size(393.0, 852.0)",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Current and Unlocks keep controls reachable at Size(320.0, 568.0)",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "review excludes current products and unresolved Basic quotes",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Family review contains only Family and canonical savings from 0 to 40%",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "two-card Peek pager never swipes to another section",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "role pills remember their own One or Basic position",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "individual selection is per-role and has one combined review",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "keeping current plan clears only that role and optional choice removes",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Basic reflects only explicit unknown payment history",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Basic reflects only explicit neverPaid payment history",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Basic reflects only explicit paidBefore payment history",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "Family calculator has one review and respects limits and savings",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "captured controls deny revoked authority and a new render epoch",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "current-products constructor defensively copies external facts",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "320px at 200% text keeps personal and Family controls reachable",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "reduced-motion arrow pages immediately without changing section",
+          "result": "success",
+          "skipped": false
+        },
+        {
+          "name": "review stays read-only with store and final-price warnings",
+          "result": "success",
+          "skipped": false
+        }
+      ],
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "checks": {
+    "analyzer": "No issues found",
+    "format": "10 files, zero changes",
+    "protected_driver": {
+      "sdk": "3.44.2",
+      "pins": 5,
+      "exec_denial": "PASS",
+      "nested_exec_denial": "PASS",
+      "policy_sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+    }
+  },
+  "fixture_corrections": [
+    "Use bundled Poppins in Filters accessibility/geometry tests; the unresolved test font caused a synthetic 200% overflow.",
+    "Keep non-pill sent labels at LOCK14 V5 goldText; correct two pre-V5 test expectations.",
+    "Ordinary CTA assertion now checks its existing LOCK14 V4 gold fill and espresso text."
+  ],
+  "intermediate_repairs": [
+    "Capture fixture missing phone-access-channel import fixed before successful capture run.",
+    "Import placement/curly-brace format/analyser diagnostics repaired; final format and whole SOURCE analyser passed."
+  ]
+}

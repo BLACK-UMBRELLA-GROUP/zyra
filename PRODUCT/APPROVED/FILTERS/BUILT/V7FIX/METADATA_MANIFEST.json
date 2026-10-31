@@ -1,0 +1,46 @@
+{
+  "queue": 71,
+  "scope": "Explicit metadata allowlist; excludes this self-manifest.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/BUILD.json",
+      "bytes": 733,
+      "sha256": "9dcb1ce5abfec657b871d51cbae138e73d9ba107f08b796a905f1af1ca723e55"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/CASE_LEDGER.json",
+      "bytes": 22869,
+      "sha256": "73c5328c1fc3304823ef2ff3b996d417be222b0249ab59971d4b14dca9714ffe"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/SOURCE_MANIFEST.json",
+      "bytes": 2237,
+      "sha256": "6b2afff9153e9c6cd8f4611537d9eeb698130618e1695bd95e62f09482bd51b8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/INPUT_MANIFEST.json",
+      "bytes": 3698,
+      "sha256": "9483b6e8445a34a7c779132b1201e5f07ae5233a21bdb4127d29680bc533904d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/RENDER_MANIFEST.json",
+      "bytes": 2416,
+      "sha256": "08a1fbde02442ed1e634dd042816e0d69fd48943840eb24dcff7561902e9fb56"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/GEOMETRY.json",
+      "bytes": 2409,
+      "sha256": "2239e1bff034e563d95693d06327334253503913b65a336c9568dc54d7a57736"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/ENVIRONMENT.json",
+      "bytes": 714,
+      "sha256": "5827d6bda09c0ac40982c1fa0b0fcb7789750e8b509f3e1a4a0cb31a927f4b6a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FILTERS/BUILT/V7FIX/TASK_TRACE.json",
+      "bytes": 3967,
+      "sha256": "809752a9b756cf33b3a47178fbbd5e76e3d0dc7fa2a4bb45954d84eda72d4567"
+    }
+  ]
+}

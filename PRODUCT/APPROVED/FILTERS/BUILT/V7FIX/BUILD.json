@@ -1,0 +1,18 @@
+{
+  "queue": 71,
+  "source_commit": "e520c105cf5c3cea95473831fd28d14a23891c9b",
+  "previous_source_commit": "0c6f26da32cc766b507c55bd4ecdb73c11ae8321",
+  "starting_handover_commit": "46388f992dccbb5c763cf5feb6e198abc2b9a8a5",
+  "flutter_version": "3.44.2",
+  "build_mode": "flutter test; headless iOS-target widget rendering",
+  "target": "test/visual/lock10_v7fix_capture_test.dart",
+  "timestamp_utc": "2026-10-31T14:05:49.050046+00:00",
+  "capture_timestamp_source": "Own baseline harness environment/rows metadata; screenshots emitted during successful 124-case scoped run.",
+  "logical_viewport": [
+    430,
+    932
+  ],
+  "pixel_ratio": 3,
+  "compiled_artifacts_in_evidence": false,
+  "native_install_or_backend_work": false
+}

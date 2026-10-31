@@ -1,0 +1,105 @@
+{
+  "queue": 71,
+  "action_ids": [
+    "AD-AIOS-115",
+    "OA-ZYRA-328",
+    "OA-ZYRA-316"
+  ],
+  "built_from": [
+    "PRODUCT/APPROVED/FILTERS/BRIEFS/BUILD_BRIEF_2026-10-31_V7FIX.md",
+    "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md",
+    "PRODUCT/APPROVED/FILTERS/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V7.md"
+  ],
+  "implementation": "Ivory three-part bottom pill for every sent/unsent and enabled/disabled state; espresso label, gold enabled arrows, existing disabled arrows/borders/dividers/callback guards. Local sent-colour override leaves other invitation callers unchanged. Filters uses minHeight50 and natural larger-text height.",
+  "explicit_new_instruction": "The V7FIX brief and parent dispatch explicitly require normal ink #2B2420. This supersedes gold label pixels in c01 and Filters prototypes; the master files were not redrawn.",
+  "footer_result": {
+    "scale": 2,
+    "previous_height": 50,
+    "required_and_rendered_height": 68,
+    "link_full_bottom": 845,
+    "pill_top": 845,
+    "overlap": 0,
+    "historical_diagnostic": "PRODUCT/APPROVED/FILTERS/BUILT/V7/FOOTER_DIAGNOSTIC.json (preserved)"
+  },
+  "minimum_label_contrast": 13.78561966893459,
+  "cases": "124 passed, zero failed/skipped in ten complete suites; unit tests include real Poppins at 430/393/320 points and 200% on all four Filters pages.",
+  "visual_comparison": {
+    "scope_pass": "Ivory pill, ink label, gold arrows, thin border/dividers and soft shadow; 200% full preferences text visible. Normal Filters pill y845 and preferences minimum50 preserved.",
+    "inherited_differences": [
+      "c06 predates V7 Monogram and uses Manchester; actual accepted sample uses London.",
+      "c02 prototype illustrative timer differs from actual next-step state.",
+      "Existing framework/prototype geometry, type, card/segment surface and nav glyph differences remain visible in full-size pairs."
+    ],
+    "written_refusal": "QUEUE71-R1: no unrelated full-screen geometry/surface/sample changes under this two-fix brief. Existing OA-ZYRA-328 covers parent/designer visual review. No full-screen pixel-equality claim."
+  },
+  "code_size": {
+    "before": {
+      "app": [
+        170574,
+        337
+      ],
+      "developer_preview": [
+        50784,
+        95
+      ],
+      "founder": [
+        31606,
+        45
+      ],
+      "tests": [
+        221257,
+        521
+      ]
+    },
+    "after": {
+      "app": [
+        170567,
+        337
+      ],
+      "developer_preview": [
+        50782,
+        95
+      ],
+      "founder": [
+        31604,
+        45
+      ],
+      "tests": [
+        221583,
+        522
+      ]
+    },
+    "goldens": [
+      2612,
+      "307 MB"
+    ],
+    "old_pause_restart": [
+      39,
+      1
+    ],
+    "measurement": "Primary code_size.py after changes. Parent queue70 baseline independently reconciles with exact -7 app/-2 dev/Founder line delta before tests changed.",
+    "classifier_changes": false
+  },
+  "reading": {
+    "primary_startup_document_bytes": 132616,
+    "primary_startup_kib": 129.51,
+    "thirteen_master_bytes": 8271381,
+    "separate_historical_diagnostic_bytes": 4347,
+    "helper": {
+      "name": "regression_map",
+      "purpose": "Read-only mapping of existing regression and capture sites",
+      "reported_startup_bytes": 50550,
+      "reported_excerpt_payload_bytes": 93105,
+      "search_io": "not instrumented",
+      "tokens": "not available; usage logs not opened"
+    }
+  },
+  "limits": [
+    "Offline Founder sample preview, no native install/build/upload or backend/migration authority used.",
+    "200% is headless text scale, not physical iPhone Larger Text/VoiceOver verification.",
+    "No old-member routes, standalone CTA source, PRODUCT/BLUEPRINT, QUESTIONS or other queue rows changed.",
+    "Parent visual/contract verification remains pending."
+  ]
+}

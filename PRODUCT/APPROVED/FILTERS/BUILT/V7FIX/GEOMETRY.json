@@ -1,0 +1,132 @@
+[
+  {
+    "frame": "c01_profiles",
+    "text_scale": 1.0,
+    "pill": [
+      20.0,
+      772.0,
+      390.0,
+      56.0
+    ],
+    "label": "Request sent",
+    "fill_argb": 3657102828,
+    "ink_argb": 4281017376,
+    "contrast_on_ivory_endpoints": [
+      14.089085527148374,
+      13.78561966893459
+    ]
+  },
+  {
+    "frame": "c02_journey_tab",
+    "text_scale": 1.0,
+    "pill": [
+      20.0,
+      778.0,
+      390.0,
+      56.0
+    ],
+    "label": "Continue Journey",
+    "fill_argb": 3657102828,
+    "ink_argb": 4281017376,
+    "contrast_on_ivory_endpoints": [
+      14.089085527148374,
+      13.78561966893459
+    ]
+  },
+  {
+    "frame": "c06_filters_where",
+    "text_scale": 1.0,
+    "pill": [
+      21.0,
+      845.0,
+      388.0,
+      56.0
+    ],
+    "label": "Show profiles",
+    "fill_argb": 3657102828,
+    "ink_argb": 4281017376,
+    "contrast_on_ivory_endpoints": [
+      14.089085527148374,
+      13.78561966893459
+    ],
+    "preferences_button": [
+      21.0,
+      795.0,
+      388.0,
+      50.0
+    ],
+    "preferences_text": [
+      85.82804870605469,
+      811.5,
+      258.3439025878906,
+      17.0
+    ],
+    "preferences_intrinsic_height": 17.0,
+    "full_text_bottom": 828.5,
+    "overlap_pill": 0
+  },
+  {
+    "frame": "f01_age__any",
+    "text_scale": 1.0,
+    "pill": [
+      21.0,
+      845.0,
+      388.0,
+      56.0
+    ],
+    "label": "Show profiles",
+    "fill_argb": 3657102828,
+    "ink_argb": 4281017376,
+    "contrast_on_ivory_endpoints": [
+      14.089085527148374,
+      13.78561966893459
+    ],
+    "preferences_button": [
+      21.0,
+      795.0,
+      388.0,
+      50.0
+    ],
+    "preferences_text": [
+      85.82804870605469,
+      811.5,
+      258.3439025878906,
+      17.0
+    ],
+    "preferences_intrinsic_height": 17.0,
+    "full_text_bottom": 828.5,
+    "overlap_pill": 0
+  },
+  {
+    "frame": "f01_age__any_200",
+    "text_scale": 2.0,
+    "pill": [
+      21.0,
+      845.0,
+      388.0,
+      56.0
+    ],
+    "label": "Show profiles",
+    "fill_argb": 3657102828,
+    "ink_argb": 4281017376,
+    "contrast_on_ivory_endpoints": [
+      14.089085527148374,
+      13.78561966893459
+    ],
+    "preferences_button": [
+      21.0,
+      777.0,
+      388.0,
+      68.0
+    ],
+    "preferences_text": [
+      21.0,
+      777.0,
+      388.0,
+      68.0
+    ],
+    "preferences_intrinsic_height": 68.0,
+    "full_text_bottom": 845.0,
+    "overlap_pill": 0.0
+  }
+]

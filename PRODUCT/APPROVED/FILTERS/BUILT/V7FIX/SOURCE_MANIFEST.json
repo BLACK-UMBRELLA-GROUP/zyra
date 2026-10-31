@@ -1,0 +1,62 @@
+{
+  "queue": 71,
+  "source_commit": "e520c105cf5c3cea95473831fd28d14a23891c9b",
+  "scope": "Exact explicit task-owned committed source/test/tracker allowlist. No config or credentials, no source copies.",
+  "files": [
+    {
+      "path": "SOURCE/lib/widgets/zyra_profiles_components.dart",
+      "bytes": 13206,
+      "sha256": "e01871558fd18f05cd68b3661e6ee42c7baf13bbd01d5aa3cfe57ea96c359617"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_invitation_label.dart",
+      "bytes": 1785,
+      "sha256": "79bde510a5342f727bd7d432d495108ba2dfd23973f677d2b66722fa0a715ce2"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+      "bytes": 28355,
+      "sha256": "df8a793363423b82aa688de7b0e057b4c911556f431d04c149fc0d94888379d2"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "bytes": 22898,
+      "sha256": "1e15346061c01732c78dc358a99d95aa86977cb51b7e7e1da415a45c1401d9ae"
+    },
+    {
+      "path": "SOURCE/test/request_row_lock7_test.dart",
+      "bytes": 10916,
+      "sha256": "c3a31e7e2bcc88fa60c1bfaf2523bf68e2479583805c83cbfd45f8d84e8794ef"
+    },
+    {
+      "path": "SOURCE/test/filters_lock10_v7_test.dart",
+      "bytes": 12515,
+      "sha256": "7c1f65ce81b8dfa26f558db2e6f12cac49c7816048330828d58d5265a8e685a5"
+    },
+    {
+      "path": "SOURCE/test/filters_lock10_accessibility_test.dart",
+      "bytes": 5537,
+      "sha256": "8402f931824967bf0068654c191d84ebd101037d01c06d09b11b310d9e5b22b3"
+    },
+    {
+      "path": "SOURCE/test/inline_invitation_presentation_test.dart",
+      "bytes": 28854,
+      "sha256": "4a56a209a31ce1c6013dc4701736c4e50ef5d399ed36153ae4967a8a02d551a1"
+    },
+    {
+      "path": "SOURCE/test/zyra_gold_action_pill_test.dart",
+      "bytes": 4247,
+      "sha256": "30b926f517d23e99c45e830cdd1b38b0d6f3d4a0602ffeeea91bbe5339833599"
+    },
+    {
+      "path": "SOURCE/test/visual/lock10_v7fix_capture_test.dart",
+      "bytes": 8058,
+      "sha256": "b25c4e5ad6d28b1c7b29872a18364fc07b0b8f27aaa7dffa8f9a0ea467e65e0c"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes": 62652,
+      "sha256": "9d840b76245c0f75ec3ba09f6c0678ad247224bfb4b9fe7b953f25496961602f"
+    }
+  ]
+}
