@@ -237,7 +237,7 @@ void main() {
   for (final protected in [true, false]) {
     for (final compact in [false, true]) {
       testWidgets(
-        '${protected ? 'protected' : 'ordinary'} Profile keeps clean action rows ${compact ? '320px200%' : '393px'}',
+        '${protected ? 'protected' : 'ordinary'} Profile keeps clean actions ${compact ? '320px200%' : '393px'}',
         (tester) async {
           final semantics = tester.ensureSemantics();
           try {
@@ -254,6 +254,33 @@ void main() {
               );
               await _reveal(tester, protected, row);
               _expectRemovedCopy();
+              if (protected) {
+                final label = switch (entry.action) {
+                  ZyraConceptAccountAction.previewProfile => 'Preview',
+                  ZyraConceptAccountAction.editProfile => 'Edit',
+                  _ => entry.label,
+                };
+                expect(
+                  find.descendant(of: row, matching: find.text(label)),
+                  findsOneWidget,
+                );
+                if (entry.action != ZyraConceptAccountAction.managePhotos) {
+                  expect(
+                    find.descendant(
+                      of: row,
+                      matching: find.byIcon(Icons.chevron_right_rounded),
+                    ),
+                    findsNothing,
+                  );
+                }
+                expect(tester.getSize(row).width, greaterThanOrEqualTo(44));
+                expect(tester.getSize(row).height, greaterThanOrEqualTo(44));
+                await tester.tap(row);
+                await tester.pumpAndSettle();
+                expect(actions.last, entry.action);
+                expect(tester.takeException(), isNull);
+                continue;
+              }
               final ink = find.descendant(
                 of: row,
                 matching: find.byType(InkWell),
@@ -326,6 +353,13 @@ void main() {
             final scrollable = _scrollable(protected);
             tester.state<ScrollableState>(scrollable).position.jumpTo(0);
             await tester.pumpAndSettle();
+            if (protected) {
+              await _capture(
+                tester,
+                compact ? '02-protected-compact-200' : '01-protected',
+              );
+              return;
+            }
             await _reveal(tester, protected, first);
             final viewport = tester.getRect(scrollable);
             final last = _key(

@@ -167,7 +167,6 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   );
   Widget _title(String text, {double size = 28}) => Text(
     text,
-    key: text == 'Profile' ? const ValueKey('concept_profile_title') : null,
     style: ZyraText.heading(
       size: size,
     ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
@@ -1189,96 +1188,6 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       ],
     ),
   );
-  Widget _profile() => _viewport(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _header('Profile'),
-        Row(
-          children: [
-            _avatar('Hassan', size: 64, color: Colors.transparent),
-            const SizedBox(width: 14),
-            Expanded(child: _text('Hassan Rahman', size: 20)),
-            KeyedSubtree(
-              key: const ValueKey('draft_role_seeker'),
-              child: _switcher(
-                'Switch',
-                'switch',
-                chevron: false,
-                icon: Icons.swap_horiz,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        _label('MEMBERSHIP'),
-        _profileRow(
-          paid ? 'Guardian One' : 'Guardian Basic',
-          Icons.verified_user_outlined,
-          'membership',
-          detail: 'Manage membership',
-        ),
-        _profileRow(
-          'Your subscriptions',
-          Icons.inbox_outlined,
-          'subscriptions',
-        ),
-        const SizedBox(height: 16),
-        _label('ABOUT ME'),
-        _info('Relationship', 'Father', rule: false),
-        _info('Linked Seekers', linked ? '2' : '0', rule: false),
-        const SizedBox(height: 16),
-        _label('SAFETY & SHARING'),
-        _profileRow('Safety & advice', Icons.outlined_flag, 'safety'),
-        _profileRow('Invite someone to ZYRA', Icons.add, 'invite_zyra'),
-        const SizedBox(height: 16),
-        _label('PERSONALISATION'),
-        _profileRow(
-          'Appearance & haptics',
-          Icons.grid_view_outlined,
-          'personalisation',
-        ),
-        _profileRow('Settings', Icons.tune, 'settings'),
-        _profileRow('Sign out', Icons.history, 'sign_out'),
-      ],
-    ),
-  );
-  Widget _profileRow(
-    String title,
-    IconData icon,
-    String action, {
-    String? detail,
-  }) => Builder(
-    builder: (context) => KeyedSubtree(
-      key: ValueKey('concept_${action == 'safety' ? 'safetyAdvice' : action}'),
-      child: InkWell(
-        key: ValueKey('guardian_$action'),
-        onTap: ZyraTapFeedback.onTap(context, () => onAction(action)),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: ZyraColors.surfaceBorder)),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, size: 20, color: ZyraColors.journeyGold),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _text(title, size: 15),
-                    if (detail != null) _text(detail, size: 12, gold: true),
-                  ],
-                ),
-              ),
-              _text('›', muted: true),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
   @override
   Widget build(BuildContext context) => switch (page) {
     'my_zyra' => _home(),
@@ -1291,7 +1200,6 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     'journeys' => _journeys(),
     'seekers' => _seekers(),
     'seeker' => _seeker(),
-    'profile' => _profile(),
     _ => const SizedBox.shrink(),
   };
 }

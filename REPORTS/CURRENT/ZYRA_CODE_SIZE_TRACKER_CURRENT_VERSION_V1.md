@@ -431,3 +431,19 @@ Shared gold badge on the Seeker Guardian header's existing Circle icon; its coun
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured by SYSTEM/tools/blueprint/code_size.py; the new Founder-only badge is explicitly counted in both preview categories without reclassifying historical files. Final scoped validation:139 cases across8 complete suites plus5 selected actual Circle ownership/admission guards; analyser clean. Wider run:145 passed/37 failed, with29 Founder white-canvas/internal-hold,5 Journey-title/slot and3 Circle-control/old-slot cases enumerated in UNREAD_BADGE/BUILT/REGRESSION_LIMITS.json under existing OA-ZYRA-328 review linkage. The two composer-loss cases also reproduce with both badge decoration and read clearing disabled; exact transient denial cause remains unproven. Those behaviours were not changed under LOCK17. Actual local sample count1 is retained (master illustrates2). Six renders and u01 comparison/geometry are in UNREAD_BADGE/BUILT; no device/native/server work. Current Guardian layout and page dots await queue47.
+
+
+## Queue 52 — Profile tab Monogram LOCK21 — 31 October 2026
+
+Seeker and Guardian One/Basic now share the locked centred header, wrapping pills and four floating card groups. Existing account actions stay shell-owned; Basic membership selects the existing role upgrade section, Your Seekers selects its tab, Safety stays on the existing page, and Invite stays held. Removed the former Profile-only row/info/balance widgets and duplicate Guardian Profile presentation. No new Founder-only file or classifier exception was needed.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,530 lines / 335 files | 169,252 lines / 335 files |
+| Developer/preview | 49,741 / 93 | 49,463 / 93 |
+| Founder planned app | 30,559 / 43 | 30,281 / 43 |
+| Tests | 215,980 / 504 | 216,633 / 506 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. Validation: 107 distinct scoped cases across seven suites; final capture and retained-route cases rerun after their final fixture/API repairs; analyser/format/protected driver clean. Six 430×932 @3x states, four 200% text states and six master/build pairs are in PROFILE_TAB/BUILT. QA.json records the actual two-Seeker summary, Basic balance1, existing tab attention, photo crop and native-widget/frame differences; no pixel-parity or device claim. Existing old member routes remain under OA-ZYRA-317, parent verification under OA-ZYRA-328. No queue48/49/50/51/64, native delivery or server work.

@@ -23,12 +23,9 @@ import 'package:zyra/theme/zyra_card_metrics.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_account_switch_sheet.dart';
 import 'package:zyra/widgets/zyra_membership_choices.dart';
-import 'package:zyra/widgets/zyra_one_profile_avatar.dart';
 import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
-import 'package:zyra/widgets/zyra_profile_membership_row.dart';
 import 'package:zyra/widgets/zyra_profile_name_block.dart';
 import 'package:zyra/widgets/zyra_segmented_toggle.dart';
 
@@ -807,7 +804,7 @@ void main() {
 
   for (final guardian in [false, true]) {
     testWidgets(
-      '${guardian ? 'Guardian' : 'Seeker'} Profile preserves current sections, copy and callbacks',
+      '${guardian ? 'Guardian' : 'Seeker'} Profile preserves LOCK 21 copy and callbacks',
       (tester) async {
         final actions = <ZyraConceptAccountAction>[];
         var switches = 0;
@@ -819,42 +816,27 @@ void main() {
             onSwitchRole: () => switches++,
           ),
         );
-        expect(find.byType(ZyraOneProfileAvatar), findsOneWidget);
-        expect(find.byType(ZyraProfileMembershipRow), findsOneWidget);
-        expect(find.byType(ZyraAccountSwitchButton), findsOneWidget);
+        expect(_key('concept_membership'), findsOneWidget);
+        expect(_key('switch-account-button'), findsOneWidget);
         final title = tester.widget<Text>(_key('concept_profile_title'));
         expect(title.data, 'Profile');
         expect(title.style?.fontSize, 26);
         expect(title.textAlign, TextAlign.left);
         await _expectCopy(tester, 'concept-current-profile-scroll', [
           guardian ? 'Hassan Rahman' : 'Adam Khan',
-          'MEMBERSHIP',
           if (!guardian) ...[
-            'COMPATIBILITY',
-            'Compatibility unlocks',
-            'YOUR PROFILE',
-            'Preview my profile',
-            'Edit profile',
+            'Compatibility Unlocks',
+            'Preview',
+            'Edit',
             'Manage photos',
           ],
-          'ABOUT ME',
-          if (guardian) ...[
-            'Relationship',
-            'Linked Seekers',
-          ] else ...[
-            'Age',
-            'Gender',
-            'Location',
-            'JOURNEY HISTORY',
-            'Past Journeys',
-          ],
-          'SAFETY & SHARING',
+          if (guardian) 'Your Seekers',
+          'Profiles & Family places',
           'Safety & advice',
           'Invite someone to ZYRA',
-          'PERSONALISATION',
           'Appearance & haptics',
           'Settings',
-          'Sign Out',
+          'Sign out',
         ]);
         for (final hint in [
           'See exactly what another Seeker sees',
@@ -890,8 +872,9 @@ void main() {
             'concept_preview_profile': ZyraConceptAccountAction.previewProfile,
             'concept_edit_profile': ZyraConceptAccountAction.editProfile,
             'concept_manage_photos': ZyraConceptAccountAction.managePhotos,
-            'concept_past_journeys': ZyraConceptAccountAction.pastJourneys,
           },
+          if (guardian)
+            'concept_your_seekers': ZyraConceptAccountAction.yourSeekers,
           'concept_safety_advice': ZyraConceptAccountAction.safetyAdvice,
           'concept_invite': ZyraConceptAccountAction.invite,
           'concept_personalisation': ZyraConceptAccountAction.personalisation,
@@ -914,9 +897,9 @@ void main() {
           expect(actions.last, entry.value);
         }
         expect(actions, keyToAction.values);
-        await tester.ensureVisible(find.byType(ZyraAccountSwitchButton));
+        await tester.ensureVisible(_key('switch-account-button'));
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(ZyraAccountSwitchButton));
+        await tester.tap(_key('switch-account-button'));
         expect(switches, 1);
         expect(tester.takeException(), isNull);
       },
@@ -953,21 +936,21 @@ void main() {
             matching: find.byType(Scrollable),
           );
           await tester.scrollUntilVisible(
-            _key('concept_edit_profile'),
+            _key('concept_manage_photos'),
             180,
             scrollable: scrollable,
           );
           await tester.pumpAndSettle();
           final profileArrow = tester.widget<Icon>(
             find.descendant(
-              of: _key('concept_edit_profile'),
+              of: _key('concept_manage_photos'),
               matching: find.byIcon(Icons.chevron_right_rounded),
             ),
           );
           final profileArrowRight = tester
               .getRect(
                 find.descendant(
-                  of: _key('concept_edit_profile'),
+                  of: _key('concept_manage_photos'),
                   matching: find.byIcon(Icons.chevron_right_rounded),
                 ),
               )
@@ -980,8 +963,6 @@ void main() {
           await tester.ensureVisible(control);
           await tester.pumpAndSettle();
           expect(control.hitTestable(), findsOneWidget);
-          expect(tester.widget<InkWell>(control).onTap, isNotNull);
-          expect(find.byTooltip('View compatibility unlocks'), findsOneWidget);
           final arrowFinder = find.descendant(
             of: control,
             matching: find.byIcon(Icons.chevron_right_rounded),
@@ -998,31 +979,24 @@ void main() {
           expect(targetSize.width, greaterThanOrEqualTo(44));
           expect(targetSize.height, greaterThanOrEqualTo(44));
           expect(find.text('Buy more'), findsNothing);
-          expect(find.text('3  Unlocks', findRichText: true), findsOneWidget);
+          expect(find.text('3 left · 3 more each month'), findsOneWidget);
+          expect(find.textContaining('Earlier overall credits'), findsNothing);
           expect(
-            find.text('2  Earlier overall credits', findRichText: true),
-            findsOneWidget,
-          );
-          expect(
-            _hasNamedTap(
-              tester.getSemantics(control),
-              'View compatibility unlocks',
-            ),
+            _hasNamedTap(tester.getSemantics(control), 'Compatibility Unlocks'),
             isTrue,
             reason:
-                'The merged row must expose its action label alongside its balances.',
+                'The merged row must expose its action label and current balance.',
           );
           final accessible = tester.getSemantics(control);
           expect(_tapActions(accessible), 1);
-          expect(accessible.getSemanticsData().label, contains('3  Unlocks'));
           expect(
             accessible.getSemanticsData().label,
-            contains('2  Earlier overall credits'),
+            contains('3 left · 3 more each month'),
           );
           expect(actions, isEmpty);
           final label = find.descendant(
             of: control,
-            matching: find.text('Compatibility unlocks'),
+            matching: find.text('Compatibility Unlocks'),
           );
           await tester.tap(label);
           await tester.pumpAndSettle();
@@ -1041,11 +1015,7 @@ void main() {
             List.filled(3, ZyraConceptAccountAction.compatibilityStore),
             reason: 'Each physical word, arrow or padding tap dispatches once.',
           );
-          expect(find.text('3  Unlocks', findRichText: true), findsOneWidget);
-          expect(
-            find.text('2  Earlier overall credits', findRichText: true),
-            findsOneWidget,
-          );
+          expect(find.text('3 left · 3 more each month'), findsOneWidget);
           expect(tester.takeException(), isNull);
         } finally {
           semantics.dispose();
@@ -1101,8 +1071,6 @@ void main() {
               'concept_subscriptions',
               if (!guardian) ...[
                 'concept_compatibility_buy_more',
-                'concept_preview_profile',
-                'concept_edit_profile',
                 'concept_manage_photos',
               ],
             ]) {
@@ -1153,14 +1121,14 @@ void main() {
           final control = _key('concept_compatibility_buy_more');
           await tester.ensureVisible(control);
           await tester.pumpAndSettle();
-          final copy = '${balance?.toString() ?? '—'}  Unlocks';
+          final copy = '${balance?.toString() ?? '—'} left · 3 more each month';
           expect(find.text(copy, findRichText: true), findsOneWidget);
           expect(find.textContaining('Earlier overall credits'), findsNothing);
           final node = tester.getSemantics(control);
-          expect(_hasNamedTap(node, 'View compatibility unlocks'), isTrue);
+          expect(_hasNamedTap(node, 'Compatibility Unlocks'), isTrue);
           expect(node.getSemanticsData().label, contains(copy));
           expect(_tapActions(node), 1);
-          await tester.tap(find.text('Compatibility unlocks'));
+          await tester.tap(find.text('Compatibility Unlocks'));
           await tester.pumpAndSettle();
           expect(actions.length, balance == null ? 1 : 2);
           expect(actions.last, ZyraConceptAccountAction.compatibilityStore);
@@ -1225,9 +1193,9 @@ void main() {
             final switchButton = _key('switch-account-button');
             final text = tester.widget<Text>(name);
             expect(text.data, sample.name);
-            expect(text.semanticsLabel, sample.name);
-            expect(text.style?.fontSize, 20);
-            expect(text.softWrap, isTrue);
+            expect(text.style?.fontSize, 28);
+            expect(text.textAlign, TextAlign.center);
+            expect(text.softWrap, isNot(false));
             final paragraph = tester.renderObject<RenderParagraph>(
               find.descendant(of: name, matching: find.byType(RichText)),
             );
@@ -1235,25 +1203,12 @@ void main() {
             final nameRect = tester.getRect(name);
             final switchRect = tester.getRect(switchButton);
             expect(nameRect.overlaps(switchRect), isFalse);
-            expect(nameRect.left, greaterThanOrEqualTo(24));
-            expect(nameRect.right, lessThanOrEqualTo(sample.size.width - 24));
+            expect(nameRect.left, greaterThanOrEqualTo(22));
+            expect(nameRect.right, lessThanOrEqualTo(sample.size.width - 22));
             expect(switchRect.width, greaterThanOrEqualTo(44));
             expect(switchRect.height, greaterThanOrEqualTo(44));
-            if (sample.inline) {
-              expect(text.maxLines, 2);
-              expect(nameRect.right + 9, lessThanOrEqualTo(switchRect.left));
-              expect(nameRect.center.dy, closeTo(switchRect.center.dy, 1));
-              final lineTops = paragraph
-                  .getBoxesForSelection(
-                    TextSelection(
-                      baseOffset: 0,
-                      extentOffset: sample.name.length,
-                    ),
-                  )
-                  .map((box) => box.top)
-                  .toSet();
-              expect(lineTops.length, sample.name == 'Adam Khan' ? 1 : 2);
-            }
+            expect(text.maxLines, isNull);
+            expect(nameRect.bottom, lessThanOrEqualTo(switchRect.top));
             final accessible = tester.getSemantics(name).getSemanticsData();
             expect(accessible.label, contains(sample.name));
             await _purePress(tester, 'switch-account-button');

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,6 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/widgets/zyra_loading.dart';
-import 'package:zyra/widgets/zyra_one_profile_avatar.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
@@ -288,46 +288,29 @@ void main() {
             expect(find.text(title), findsOneWidget);
             expect(find.text(otherTitle), findsNothing);
             expect(find.textContaining('ZYRA One'), findsNothing);
-            if (guardian) {
-              // LOCK8's Guardian header has its own initial avatar and Switch
-              // control; it does not use the retained Seeker avatar presenter.
-              await _reveal(tester, find.text(accountName));
-              final initial = find.text('H');
-              expect(initial, findsOneWidget);
-              final avatar = find
-                  .ancestor(
-                    of: initial,
-                    matching: find.byWidgetPredicate(
-                      (widget) =>
-                          widget is Container &&
-                          widget.constraints?.maxWidth == 64 &&
-                          widget.constraints?.maxHeight == 64,
-                    ),
-                  )
-                  .first;
-              expect(tester.getSize(avatar), const Size(64, 64));
-              expect(find.text(accountName), findsOneWidget);
-              expect(
-                tester.getSemantics(_key('guardian_switch')),
-                matchesSemantics(label: 'Switch', hasTapAction: true),
-              );
-            } else {
-              final avatar = find.byType(ZyraOneProfileAvatar);
-              expect(avatar, findsOneWidget);
-              expect(tester.widget<ZyraOneProfileAvatar>(avatar).isOne, isTrue);
-              expect(
-                tester.widget<ZyraOneProfileAvatar>(avatar).guardian,
-                guardian,
-              );
-              expect(
-                tester.getSemantics(avatar),
-                matchesSemantics(
-                  label: '$title profile\n$accountName\nSwitch Account',
-                  isButton: true,
-                  isImage: true,
-                ),
-              );
-            }
+            expect(
+              find.descendant(
+                of: _key('concept_membership'),
+                matching: find.text(title),
+              ),
+              findsOneWidget,
+            );
+            await _reveal(tester, find.text(accountName));
+            final avatar = _key('concept_profile_avatar');
+            expect(avatar, findsOneWidget);
+            expect(tester.getSize(avatar), const Size(104, 104));
+            if (guardian) expect(find.text('H'), findsOneWidget);
+            expect(find.text(accountName), findsOneWidget);
+            expect(
+              tester.getSemantics(avatar),
+              matchesSemantics(label: '$title profile', isImage: true),
+            );
+            final switchSemantics = tester
+                .getSemantics(_key('switch-account-button'))
+                .getSemanticsData();
+            expect(switchSemantics.label, 'Switch');
+            expect(switchSemantics.hasAction(ui.SemanticsAction.tap), isTrue);
+            expect(switchSemantics.flagsCollection.isButton, isTrue);
             await _tap(tester, 'concept_settings');
             expect(find.text('Settings'), findsOneWidget);
             expect(find.text(title), findsWidgets);

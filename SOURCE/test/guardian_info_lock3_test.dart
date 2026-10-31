@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_info_presentation.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
@@ -67,10 +68,19 @@ void main() {
   setUp(() => baselineSetUp(evidenceRoot: _evidence));
   tearDown(baselineTearDown);
   testWidgets(
-    'Seeker first safety row, NEW persists after opening and Manage opens Guardian tab; all masters',
+    'Seeker first safety row omits NEW, seen persists and Manage opens Guardian tab; all masters',
     (tester) async {
       final h = _h(tester);
       await h.mount(tab: 4);
+      expect(
+        tester
+            .widget<ZyraConceptProfilePresentation>(
+              find.byType(ZyraConceptProfilePresentation),
+            )
+            .data
+            .guardianInfoSeen,
+        isFalse,
+      );
       final row = _key('concept_guardian_info');
       await Scrollable.ensureVisible(tester.element(row), alignment: .5);
       await h.flush();
@@ -78,7 +88,7 @@ void main() {
         tester.getTopLeft(row).dy,
         lessThan(tester.getTopLeft(_key('concept_safety_advice')).dy),
       );
-      expect(_key('guardian_info_new'), findsOneWidget);
+      expect(_key('guardian_info_new'), findsNothing);
       if (_capture) {
         await h.capture(
           'profile',
@@ -130,8 +140,17 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool('zyra_preview_guardian_info_seen_v1'), isTrue);
       await h.mount(tab: 4);
+      expect(
+        tester
+            .widget<ZyraConceptProfilePresentation>(
+              find.byType(ZyraConceptProfilePresentation),
+            )
+            .data
+            .guardianInfoSeen,
+        isTrue,
+      );
       expect(_key('guardian_info_new'), findsNothing);
-      await h.mount(guardian: true, tab: 3);
+      await h.mount(guardian: true, tab: 4);
       expect(row, findsNothing);
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),

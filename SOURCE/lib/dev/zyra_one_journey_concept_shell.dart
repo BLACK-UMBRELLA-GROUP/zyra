@@ -2044,7 +2044,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               1 => _guardianTabsView('journeys'),
               2 => _guardianTabsView('my_zyra'),
               3 => _guardianTabsView('seekers'),
-              _ => _guardianTabsView('profile'),
+              _ => _ownProfile(),
             }
           : switch (_tab) {
               0 => _discover(),
@@ -6442,6 +6442,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     isOne: !_membership.contains('Basic'),
     relationship: 'Father',
     linkedSeekers: _conceptHassanLinked ? '2' : '0',
+    linkedSeekerSummary: _conceptHassanLinked ? 'Adam, Yusuf' : null,
     guardianCount: '${_conceptGuardianPeople.length}',
     signedInWith: 'Apple',
     backgroundLabel: _accountSession.palette.label.replaceAll(' · Current', ''),
@@ -6483,6 +6484,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   void _accountDispatch(ZyraConceptAccountAction action) {
     if (_devControlsVisible) return;
     switch (action) {
+      case ZyraConceptAccountAction.yourSeekers:
+        if (_guardianRole) _tabTo(3);
       case ZyraConceptAccountAction.previewProfile:
         _open('own_profile_preview');
       case ZyraConceptAccountAction.pastJourneys:
@@ -6498,7 +6501,11 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _open('settings');
       case ZyraConceptAccountAction.membership:
         _membershipDraft = _membershipDraft.copyWith(
-          section: ZyraMembershipSection.current,
+          section: _membership.contains('Basic')
+              ? (_guardianRole
+                    ? ZyraMembershipSection.guardian
+                    : ZyraMembershipSection.seeker)
+              : ZyraMembershipSection.current,
         );
         _open('membership');
       case ZyraConceptAccountAction.subscriptions:
@@ -6977,6 +6984,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   String _accountActionLabel(ZyraConceptAccountAction action) =>
       switch (action) {
+        ZyraConceptAccountAction.yourSeekers => 'Your Seekers',
         ZyraConceptAccountAction.previewProfile => 'Preview my profile',
         ZyraConceptAccountAction.editProfile => 'Edit profile',
         ZyraConceptAccountAction.managePhotos => 'Manage photos',
