@@ -142,16 +142,6 @@
       "sha256": "49b73cb8d2f67839a53b863de38be81fa739251ab42e2ecf66b0a3771e390ab8"
     },
     {
-      "path": "SOURCE/lib/config/oauth_config.dart",
-      "bytes": 1786,
-      "sha256": "3001164dadb455696c4ed0e6e83e82cc0d2dde795f36f3cf6a64a5f671583cb5"
-    },
-    {
-      "path": "SOURCE/lib/config/supabase_config.dart",
-      "bytes": 1004,
-      "sha256": "969ebc83f6d5c3652a49f3c89095f2b4ed898cb1e424c379d496657dbb898418"
-    },
-    {
       "path": "SOURCE/lib/config/zyra_app_variant.dart",
       "bytes": 730,
       "sha256": "f0750e6cbc462538518bf08cb91dc56c647940d5e5ad501bc4e010b450848015"
@@ -1891,5 +1881,23 @@
     "founder_files": 40,
     "test_lines": 215160,
     "test_files": 498
+  },
+  "tracking_metadata_audit": {
+    "method": "Metadata only: manifest paths, Git index and exact SOURCE/.gitignore lines36/40. No config contents or protected folder inspected.",
+    "manifest_entries": 372,
+    "all_entries_tracked": true,
+    "tracked_config_sources": [
+      "SOURCE/lib/config/zyra_app_variant.dart",
+      "SOURCE/lib/config/zyra_external_tester_policy.dart",
+      "SOURCE/lib/config/zyra_internal_founder_policy.dart",
+      "SOURCE/lib/config/zyra_native_identity_policy.dart",
+      "SOURCE/lib/config/zyra_supabase_config_policy.dart"
+    ],
+    "ignored_local_config_metadata_removed": [
+      "SOURCE/lib/config/oauth_config.dart",
+      "SOURCE/lib/config/supabase_config.dart"
+    ],
+    "ignored_or_untracked_entries": 0,
+    "content_scan_claim": false
   }
 }

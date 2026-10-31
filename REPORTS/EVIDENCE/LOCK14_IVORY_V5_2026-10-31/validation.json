@@ -148,5 +148,23 @@
         "bytes": 10656
       }
     ]
+  },
+  "source_manifest_tracking_audit": {
+    "method": "Metadata only: manifest paths, Git index and exact SOURCE/.gitignore lines36/40. No config contents or protected folder inspected.",
+    "manifest_entries": 372,
+    "all_entries_tracked": true,
+    "tracked_config_sources": [
+      "SOURCE/lib/config/zyra_app_variant.dart",
+      "SOURCE/lib/config/zyra_external_tester_policy.dart",
+      "SOURCE/lib/config/zyra_internal_founder_policy.dart",
+      "SOURCE/lib/config/zyra_native_identity_policy.dart",
+      "SOURCE/lib/config/zyra_supabase_config_policy.dart"
+    ],
+    "ignored_local_config_metadata_removed": [
+      "SOURCE/lib/config/oauth_config.dart",
+      "SOURCE/lib/config/supabase_config.dart"
+    ],
+    "ignored_or_untracked_entries": 0,
+    "content_scan_claim": false
   }
 }
