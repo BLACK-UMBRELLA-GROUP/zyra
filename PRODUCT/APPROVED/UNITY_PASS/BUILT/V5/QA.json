@@ -1,0 +1,71 @@
+{
+  "queue": 64,
+  "result": "PASS, scoped self-report; parent visual/contract review outstanding under OA-ZYRA-328",
+  "source_commit": "1d7fb480b93d1e4aa23c8daa471699912584d927",
+  "cases": 107,
+  "suites": 10,
+  "analyze": "Analyzing SOURCE...                                             \nNo issues found! (ran in 4.2s)",
+  "format": "Formatted 7 files (0 changed) in 0.16 seconds.",
+  "protected_sdk": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS",
+    "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "checks": {
+    "seeker_basic_and_one": "Profile → advice → Report instructions → back → advice → Help → back → advice → back Profile",
+    "guardian_basic_and_one": "original Safety report instructions unchanged",
+    "report_context": "clears prior peer; report remains a local draft; no submit added",
+    "stale_callbacks": [
+      "page change",
+      "account generation",
+      "controls overlay",
+      "role roundtrip",
+      "disposal",
+      "admission revocation"
+    ],
+    "checkpoint": "fresh Seeker Profile advice/report/Help paths; reject wrong role/tab; clear saved peer",
+    "normal_fit": "430×932; scroll extent 0, scroll offset 0; Report/Help/emergency hit-testable and bottom ≤898 before scrolling",
+    "larger_text": "200% at430×932 and320×568; all five tips/actions/emergency reachable without layout exceptions",
+    "network": "baseline harness rejects any network attempt; 0 attempts"
+  },
+  "comparison": {
+    "pair": "x07_master_beside_build.png",
+    "matches": [
+      "88-point gold health-and-safety shield",
+      "exact five titles and copies",
+      "gold icons, floating tips/action cards",
+      "separate Report and retained Help destinations",
+      "full emergency wording",
+      "no hearts"
+    ],
+    "native_differences": [
+      "Bundled Poppins and Flutter Material glyphs/line boxes differ from prototype raster typography. Shared Monogram26-point head retained.",
+      "Existing Ivory floating-surface shadows, live safe-area and rectangular test boundary differ from rounded prototype frame.",
+      "Actual tips and footer use12-point muted reading text to preserve x07 wrapping and one-screen standard fit; text scales normally."
+    ],
+    "pixel_parity_claim": false,
+    "pair_pixels_match_named_master_and_final_capture": true
+  },
+  "code_size": "| What | Size |\n|---|---|\n| All app code | 169,327 lines in 336 files |\n| Developer and preview code inside it | 49,537 lines in 94 files |\n| The Founder preview (planned app) | 30,355 lines in 44 files |\n| Test code | 216,863 lines in 511 files |\n| Test screenshots (goldens) | 2,612 images, 307 MB |\n| Old-app files that still mention Pause | 39 |\n| Old-app files that still mention Restart | 1 |\n",
+  "classification": "New dev/zyra_draft_* presenter counted by existing developer and Founder preview rules; no classifier change.",
+  "limits": [
+    "Local Founder sample preview only; ordinary member flows retained under OA-ZYRA-317.",
+    "Guardian advice is separately queued66.",
+    "Two older Membership Profile-wallet fixtures, two prior-Compatibility My ZYRA fixtures and prior wider37 failures were not rerun or repaired; no current full-suite failure total. Written scope refusal under OA-ZYRA-328.",
+    "No native build/install, backend, signing or delivery."
+  ],
+  "reading": {
+    "startup_bytes": 104531,
+    "startup_basis": "Raw mandatory document payloads, full sub30KB V5/V6 specs, queue header; review streaming prefixes counted when skipped by islice. Excludes rg scan internals, source implementation reads and image bytes.",
+    "master_png_bytes": 739406,
+    "helper": {
+      "name": "route_test_map",
+      "purpose": "Separate test reconnaissance only; no SDK or writes",
+      "read_bytes": 130159,
+      "tokens": "unavailable; no usage logs read"
+    }
+  },
+  "founder_rule10": "No question required; no QUESTIONS.md edits. Parent question rows untouched."
+}

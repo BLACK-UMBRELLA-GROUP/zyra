@@ -1,0 +1,113 @@
+{
+  "queue": 64,
+  "source_commit": "1d7fb480b93d1e4aa23c8daa471699912584d927",
+  "scope": "Explicit task-owned source commit allowlist, named approved inputs and four final renders only. No ignored local config, credentials, broad source tree or binary inventory.",
+  "committed_source_files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart",
+      "bytes": 6632,
+      "sha256": "587fe8064360ccec01e73a7678c59a238d2ce7f42f8a7b0693bb70fb718327fc"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 316564,
+      "sha256": "3b197a0194a295e2026567e4ac81ba6f1c5da19ae3b7804153a292890423a1d8"
+    },
+    {
+      "path": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "bytes": 8079,
+      "sha256": "530d5c81716c66f1cd2c5322503ccdd7e4ab969ed11cde49533dd6231c7e283b"
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "bytes": 3898,
+      "sha256": "ec4a0d175c9f39e93fdf99098b7a34f8295f12954812fefc706ecbb942a0c5c5"
+    },
+    {
+      "path": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "bytes": 18050,
+      "sha256": "864e1506950a5dff5adb7fecbaec755f4c4e9ba6a9880123b5621dfec36a347d"
+    },
+    {
+      "path": "SOURCE/test/browse_options_menu_test.dart",
+      "bytes": 47783,
+      "sha256": "97ced756e177d634d9f981fb7cfd5a4537e34ae4ba5549db3d20d76f595bcbe6"
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "bytes": 5906,
+      "sha256": "6983f11e85dedab1e6093e20573a8f9562f86fac9643a71b64aa183cf8202898"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes": 50627,
+      "sha256": "cbaaa81384344bc9b12eb214e60c90a99dcc3f47cd109c839cc4977f1ea36fd6"
+    }
+  ],
+  "approved_inputs": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V5.md",
+      "bytes": 1394,
+      "sha256": "dfe47a3113ac528012116fc0b052d971539bd05cae8827ba4b907d71ce685930"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/LOCK_RECORD.md",
+      "bytes": 2268,
+      "sha256": "4b6118170956a3f2e2132e1f58c10854abccdc85221907b939e16ae226624748"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/ARCHIVE/UNITY_PASS_SPEC_2026-10-31_V5.md",
+      "bytes": 9007,
+      "sha256": "4ec468c4c4495fa2fbb67644cb1b247419de31992ee88b16c85c35e8eb873a62"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V6.md",
+      "bytes": 10885,
+      "sha256": "95a179f2dbd8f8b8f1c7939ad6aafe56ae53b118e5a3b71bcda76a8b324e980e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x07_safety_advice.png",
+      "bytes": 739406,
+      "sha256": "424443c7ae926d0a27e499b255b04019bc317bddf7633e4fd809005777011132"
+    }
+  ],
+  "retained_v5_section_matches_v6": true,
+  "section_3d_sha256": "7fe7975f98970564386558911da5db850819ecbae7ce09ba16bce0e982407faa",
+  "renders": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V5/x07_safety_advice.png",
+      "bytes": 601069,
+      "sha256": "b10364b3da66060dc28c8150062ece43bd0c50475c4a889bc7123c4c4c258c36"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V5/x07_safety_advice__text200.png",
+      "bytes": 509345,
+      "sha256": "32a4c360a0dec7c6fe5201670fa6c0aa6ce14330d522e899cb58a360553bc950"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V5/x07_safety_advice__text200__end.png",
+      "bytes": 597180,
+      "sha256": "2afc6cd072a173a5d63c41c992b3e625b4bf0066e2be9ad5aad90ca3d139aa57"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V5/x07_master_beside_build.png",
+      "bytes": 1167430,
+      "sha256": "ec40cce8aec2bf4b68f65238b56fcc251056b5094fcb99b34f6cbba0d98ddf0d"
+    }
+  ],
+  "queue_projection": {
+    "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+    "row": 64,
+    "changed_fields": [
+      "Status",
+      "Built on"
+    ],
+    "row_sha256": "0bd11af36efbb04410cc8dc0a5b20674a08fe1eecf6d8eae164db452c3e685db"
+  },
+  "metadata_allowlist": [
+    "BUILD.json",
+    "QA.json",
+    "CASE_LEDGER.json",
+    "SOURCE_RENDER_MANIFEST.json"
+  ]
+}

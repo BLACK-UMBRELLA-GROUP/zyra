@@ -1,0 +1,784 @@
+{
+  "queue": 64,
+  "source_commit": "1d7fb480b93d1e4aa23c8daa471699912584d927",
+  "distinct_cases": 107,
+  "suites": 10,
+  "counting": "Reporter testStart/testDone records; exclude loading/setup/teardown, deduplicate suite+case, latest final capture replaces its earlier run. No compact-output inference.",
+  "runs": [
+    {
+      "reporter": "new_cases_final.jsonl",
+      "cases": 18,
+      "success": true,
+      "sha256": "b987e398cb60058a45bd613c85e56b835ff61facc571302e2d43947f59a2e072"
+    },
+    {
+      "reporter": "inherited_cases.jsonl",
+      "cases": 83,
+      "success": true,
+      "sha256": "7c7a8dc47e601beb912f7373080ae4190e26273645c30f610ae0f9d049b253d2"
+    },
+    {
+      "reporter": "browse_cases.jsonl",
+      "cases": 6,
+      "success": true,
+      "sha256": "2df1a7ba703feb4c2b25b402378c0da5473082b580ccfbaf42131442a1fae5d7"
+    },
+    {
+      "reporter": "capture_final.jsonl",
+      "cases": 3,
+      "success": true,
+      "sha256": "596cd1434e8e140f32778b94e88ae8e16fce9c0a961415e755a05fc0fc91656b"
+    }
+  ],
+  "cases": [
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 Seeker One: entry, report, Help and back stack",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 8
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "case": "V5 actual advice: scale=1.0, narrow=false",
+      "result": "success",
+      "reporter": "capture_final.jsonl",
+      "test_id": 4
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "case": "V5 actual advice: scale=2.0, narrow=false",
+      "result": "success",
+      "reporter": "capture_final.jsonl",
+      "test_id": 5
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 Guardian One keeps original Safety instructions",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 11
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 Seeker Basic: entry, report, Help and back stack",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 12
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 Guardian Basic keeps original Safety instructions",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 13
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "case": "V5 actual advice: scale=2.0, narrow=true",
+      "result": "success",
+      "reporter": "capture_final.jsonl",
+      "test_id": 6
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 saved advice callbacks reject route change",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 15
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 saved advice callbacks reject account change",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 17
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 saved advice callbacks reject controls change",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 18
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 saved advice callbacks reject role change",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 19
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 saved advice callbacks reject disposal change",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 20
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 saved advice callbacks reject admission change",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 21
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 restores fresh advice root stack without peer target",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 22
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 restores fresh advice safety stack without peer target",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 23
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 restores fresh advice help_support stack without peer target",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 24
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 rejects advice checkpoint outside Seeker Profile: guardian=true",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 25
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "case": "V5 rejects advice checkpoint outside Seeker Profile: guardian=false",
+      "result": "success",
+      "reporter": "new_cases_final.jsonl",
+      "test_id": 26
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "embedded preview reuses original FAQ UI without account tools",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 9
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "case": "request Help never includes retired matching or restart instructions",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 11
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "case": "Browse Scan uses retained entry and returns one parent",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 12
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Seeker One keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 15
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "Scan fits Size(390.0, 844.0) with a truthful disabled camera action",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 18
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "search matches supplied questions answers and category titles",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 19
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "initial query and supplied content are local frozen route data",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 20
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "revoked stale search and FAQ callbacks hide rather than act",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 21
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Seeker One Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 22
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "a preview cannot fall back to default live Help on widget reuse",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 23
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "failed admission remains closed without live fallback",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 24
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Seeker One retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 25
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "compact large-text layout retains readable scrollable FAQs",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 26
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "standalone preview stays local and uses the shared brand canvas",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 27
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "case": "code lookup finds exact person without sending a Journey",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 28
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "case": "original Help constructor and live tools retain their contract",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 29
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "Report fits Size(390.0, 844.0) with all reasons and no submission",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 30
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "Scan fits Size(393.0, 852.0) with a truthful disabled camera action",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 33
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "Report fits Size(393.0, 852.0) with all reasons and no submission",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 34
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "Scan fits Size(430.0, 932.0) with a truthful disabled camera action",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 35
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "Report fits Size(430.0, 932.0) with all reasons and no submission",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 36
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "reasons only select locally and never enable submission",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 37
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "case": "Seeker Help uses original FAQ and returns to Settings",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 38
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "target-free account Safety does not choose a previous person",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 39
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "large-text Report remains readable",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 40
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "large-text Scan remains readable",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 41
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "guard revocation rejects retained reason and secondary actions",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 42
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "target replacement clears selection and revokes old delegates",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 43
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "secondary actions remain explicit caller-owned actions",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 44
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "case": "Guardian Help uses original FAQ and returns to Settings",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 45
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "utility display settles with reduced motion false",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 46
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "case": "utility display settles with reduced motion true",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 49
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked 0-credit page has no mounted score reader",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 50
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Seeker Basic keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 54
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Seeker Basic Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 57
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Seeker Basic retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 58
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked 1-credit page has no mounted score reader",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 59
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked 5-credit page has no mounted score reader",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 60
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked Halo exposes no score or Guardian semantics",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 61
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "positive balance cannot enable an absent unlock callback",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 62
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked Halo long name and 200% text stay reachable Size(320.0, 568.0)",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 63
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked Halo long name and 200% text stay reachable Size(568.0, 320.0)",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 64
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "revealed page has only the fixed Halo reader and score preview semantics",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 65
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "one grant swaps locked content for reader without replay or spend",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 66
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "reader navigates Overall plus six category pages by touch and swipe",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 67
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "quiet navigation jumps without a reveal animation: false",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 68
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "quiet navigation jumps without a reveal animation: true",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 69
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Guardian One keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 70
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "changing the addressed person revokes the old result page",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 71
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked and Halo states stay within phone width Size(375.0, 812.0)",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 72
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Guardian One Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 73
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Guardian One retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 74
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked and Halo states stay within phone width Size(393.0, 852.0)",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 75
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "locked and Halo states stay within phone width Size(430.0, 932.0)",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 76
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "compact 200% Halo reader remains reachable reduced=false",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 77
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "case": "compact 200% Halo reader remains reachable reduced=true",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 78
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "balance 0 and membership One=false, default three and catalog prices",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 81
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "case": "LOCK22 V1 actual x01-x04 at text 1.0 and real unlock navigation",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 84
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "balance 0 and membership One=true, default three and catalog prices",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 85
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Guardian Basic keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 86
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Guardian Basic Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 87
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "balance 1 and membership One=false, default three and catalog prices",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 88
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Guardian Basic retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 89
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "balance 1 and membership One=true, default three and catalog prices",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 90
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "balance 5 and membership One=false, default three and catalog prices",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 91
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "balance 5 and membership One=true, default three and catalog prices",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 92
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "unconfirmed balance does not claim zero Unlocks",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 93
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "all eight retained included examples, forward and backward",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 94
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "owner revoked: retained pack, page and terms callbacks have no haptics or effect",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 95
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "old pack delegate cannot replay after fresh selection",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 96
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "reachable packs, pager and terms at Size(320.0, 568.0) text1.0",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 97
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Profile controls obey Off and revoke disabled taps",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 98
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "reachable packs, pager and terms at Size(320.0, 568.0) text2.0",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 99
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "case": "LOCK22 V1 actual x01-x04 at text 2.0 and real unlock navigation",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 100
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "reachable packs, pager and terms at Size(430.0, 932.0) text1.0",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 101
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "Profile controls obey Subtle and revoke disabled taps",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 102
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "reachable packs, pager and terms at Size(430.0, 932.0) text2.0",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 103
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "retained Profile actions reject changed revoked admission owner",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 104
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "reachable packs, pager and terms at Size(852.0, 393.0) text1.0",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 105
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "retained Profile actions reject changed account generation owner",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 106
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "reachable packs, pager and terms at Size(852.0, 393.0) text2.0",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 107
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "case": "unbounded membership embed scrolls its natural content",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 108
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "case": "retained Profile actions reject changed route owner",
+      "result": "success",
+      "reporter": "inherited_cases.jsonl",
+      "test_id": 109
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Report identifies the peer without submitting or opening Help",
+      "result": "success",
+      "reporter": "browse_cases.jsonl",
+      "test_id": 4
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Help and support remain accessible from Profile settings",
+      "result": "success",
+      "reporter": "browse_cases.jsonl",
+      "test_id": 5
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "account Safety does not retain the last reported Browse peer",
+      "result": "success",
+      "reporter": "browse_cases.jsonl",
+      "test_id": 6
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Scan and Report fit the actual safe viewport Size(375.0, 812.0)",
+      "result": "success",
+      "reporter": "browse_cases.jsonl",
+      "test_id": 7
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Scan and Report fit the actual safe viewport Size(393.0, 852.0)",
+      "result": "success",
+      "reporter": "browse_cases.jsonl",
+      "test_id": 8
+    },
+    {
+      "suite": "SOURCE/test/browse_options_menu_test.dart",
+      "case": "Scan and Report fit the actual safe viewport Size(430.0, 932.0)",
+      "result": "success",
+      "reporter": "browse_cases.jsonl",
+      "test_id": 9
+    }
+  ]
+}
