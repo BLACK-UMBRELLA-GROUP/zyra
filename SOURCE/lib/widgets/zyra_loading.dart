@@ -290,9 +290,7 @@ class _ZyraQuietLoadingState extends State<ZyraQuietLoading>
                               key: const ValueKey('zyra_quiet_loading_status'),
                               textAlign: TextAlign.center,
                               softWrap: true,
-                              style: style.copyWith(
-                                color: ZyraColors.journeyGold,
-                              ),
+                              style: style.copyWith(color: ZyraColors.goldText),
                             ),
                           ),
                         ),

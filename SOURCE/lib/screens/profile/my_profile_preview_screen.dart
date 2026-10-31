@@ -455,7 +455,7 @@ class _OwnProfileEmptyPhoto extends StatelessWidget {
       child: Icon(
         Icons.person_outline,
         size: 104,
-        color: Colors.white.withValues(alpha: 0.16),
+        color: ZyraColors.warmOverlay.withValues(alpha: 0.16),
       ),
     ),
   );

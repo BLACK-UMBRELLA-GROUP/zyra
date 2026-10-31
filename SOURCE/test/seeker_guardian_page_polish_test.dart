@@ -427,7 +427,8 @@ void main() {
           _page(people: [_main, _additional, _unrecorded].take(count).toList()),
         );
         expect(find.byType(SingleChildScrollView), findsNothing);
-        final page = tester.getRect(_key('guardian-page-view'));
+        // LOCK14 expands the painting viewport; locked content geometry stays fixed.
+        final page = tester.getRect(_currentPage(_main.id));
         final remove = tester.getRect(_key('guardian-remove'));
         expect(remove.bottom, lessThanOrEqualTo(page.bottom + .01));
         final nav = _key('floating-nav-quiet-true');

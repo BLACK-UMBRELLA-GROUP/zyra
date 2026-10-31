@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -123,119 +124,129 @@ class ZyraOneJourneyLocationSheet extends StatelessWidget {
             label: explain
                 ? 'Use your current area?'
                 : 'Where should distance start?',
-            child: Container(
-              key: const ValueKey('location_sheet_surface'),
-              width: double.infinity,
-              // Measured live LOCK11 masters at 430 pt: 400 / 332 pt sheets.
-              // Larger Text uses natural content height within the scroll cap.
-              height: MediaQuery.textScalerOf(context).scale(1) > 1.3
-                  ? null
-                  : (explain ? 332 : 400),
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.sizeOf(context).height * .9,
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xFF2C1F3B), Color(0xFF191123)],
+            child: ZyraFloatingSurface(
+              radius: 22,
+              circle: false,
+              gold: false,
+              child: Container(
+                key: const ValueKey('location_sheet_surface'),
+                width: double.infinity,
+                // Measured live LOCK11 masters at 430 pt: 400 / 332 pt sheets.
+                // Larger Text uses natural content height within the scroll cap.
+                height: MediaQuery.textScalerOf(context).scale(1) > 1.3
+                    ? null
+                    : (explain ? 332 : 400),
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.sizeOf(context).height * .9,
                 ),
-                border: Border.all(color: ZyraColors.ink(.12)),
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(34),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [ZyraColors.cardSurface, ZyraColors.lowerSurface],
+                  ),
+                  border: Border.all(color: ZyraColors.ink(.12)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(34),
+                  ),
                 ),
-              ),
-              child: SingleChildScrollView(
-                key: ValueKey(('location_sheet_scroll', explain)),
-                primary: false,
-                padding: const EdgeInsets.fromLTRB(21, 10, 21, 32),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 40,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: ZyraColors.ink(.25),
-                          borderRadius: BorderRadius.circular(3),
+                child: ZyraShadowScrollView(
+                  key: ValueKey(('location_sheet_scroll', explain)),
+                  primary: false,
+                  padding: const EdgeInsets.fromLTRB(21, 10, 21, 32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: ZyraColors.ink(.25),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    if (explain) ...[
-                      const Icon(
-                        Icons.my_location,
-                        size: 38,
-                        color: ZyraColors.journeyGold,
-                      ),
-                      const SizedBox(height: 12),
-                      _text(
-                        'Use your current area?',
-                        size: 21,
-                        color: ZyraColors.ink(.95),
-                        align: TextAlign.center,
-                        weight: FontWeight.w300,
-                      ),
-                      const SizedBox(height: 12),
-                      _text(
-                        'ZYRA uses your approximate area only to measure distance in Filters. '
-                        'It is never shown on your profile or to anyone else, and you can '
-                        'switch it off in Phone access.',
-                        size: 12.5,
-                        align: TextAlign.center,
-                      ),
-                      const SizedBox(height: 20),
-                      FilledButton(
-                        key: const ValueKey('location_continue'),
-                        onPressed: _tap(context, onContinue),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: ZyraColors.journeyGold,
-                          foregroundColor: ZyraColors.luxuryDarkPurple,
-                          minimumSize: const Size(44, 52),
+                      const SizedBox(height: 16),
+                      if (explain) ...[
+                        const Icon(
+                          Icons.my_location,
+                          size: 38,
+                          color: ZyraColors.journeyGold,
+                        ),
+                        const SizedBox(height: 12),
+                        _text(
+                          'Use your current area?',
+                          size: 21,
+                          color: ZyraColors.ink(.95),
+                          align: TextAlign.center,
+                          weight: FontWeight.w300,
+                        ),
+                        const SizedBox(height: 12),
+                        _text(
+                          'ZYRA uses your approximate area only to measure distance in Filters. '
+                          'It is never shown on your profile or to anyone else, and you can '
+                          'switch it off in Phone access.',
+                          size: 12.5,
+                          align: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+                        ZyraFloatingSurface(
+                          radius: 999,
+                          circle: false,
+                          gold: true,
+                          child: FilledButton(
+                            key: const ValueKey('location_continue'),
+                            onPressed: _tap(context, onContinue),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: ZyraColors.goldTextFill,
+                              foregroundColor: ZyraColors.luxuryDarkPurple,
+                              minimumSize: const Size(44, 52),
+                            ),
+                            child: _text(
+                              'Continue',
+                              size: 14,
+                              weight: FontWeight.w500,
+                              color: ZyraColors.luxuryDarkPurple,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                      ] else ...[
+                        _text(
+                          'Where should distance start?',
+                          size: 20,
+                          color: ZyraColors.ink(.95),
+                          weight: FontWeight.w300,
+                        ),
+                        const SizedBox(height: 10),
+                        _text(
+                          'Only used to sort and filter by distance. Nobody else ever sees it.',
+                        ),
+                        const SizedBox(height: 20),
+                        _option(context, false),
+                        const SizedBox(height: 10),
+                        _option(context, true),
+                        const SizedBox(height: 12),
+                      ],
+                      TextButton(
+                        key: ValueKey(
+                          explain ? 'location_not_now' : 'filter_origin_done',
+                        ),
+                        onPressed: _tap(context, onClose),
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size(44, 44),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: _text(
-                          'Continue',
-                          size: 14,
-                          weight: FontWeight.w500,
-                          color: ZyraColors.luxuryDarkPurple,
+                          explain ? 'Not now' : 'Done',
+                          size: 13,
+                          color: ZyraColors.ink(.95),
                         ),
                       ),
-                      const SizedBox(height: 12),
-                    ] else ...[
-                      _text(
-                        'Where should distance start?',
-                        size: 20,
-                        color: ZyraColors.ink(.95),
-                        weight: FontWeight.w300,
-                      ),
-                      const SizedBox(height: 10),
-                      _text(
-                        'Only used to sort and filter by distance. Nobody else ever sees it.',
-                      ),
-                      const SizedBox(height: 20),
-                      _option(context, false),
-                      const SizedBox(height: 10),
-                      _option(context, true),
-                      const SizedBox(height: 12),
                     ],
-                    TextButton(
-                      key: ValueKey(
-                        explain ? 'location_not_now' : 'filter_origin_done',
-                      ),
-                      onPressed: _tap(context, onClose),
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(44, 44),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: _text(
-                        explain ? 'Not now' : 'Done',
-                        size: 13,
-                        color: ZyraColors.ink(.95),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

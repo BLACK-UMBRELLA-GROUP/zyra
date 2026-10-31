@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // LOCK 8 V2: fictional Guardian presentation only. No service, RPC or member
 // authority. The admitted shell owns changes and the lifetime of callbacks.
 import 'package:flutter/material.dart';
@@ -140,7 +141,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     style: ZyraText.body(
       size: size,
       color: gold
-          ? ZyraColors.journeyGold
+          ? (size < 24 ? ZyraColors.goldText : ZyraColors.journeyGold)
           : muted
           ? ZyraColors.ink(.55)
           : ZyraColors.foreground,
@@ -163,33 +164,36 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   }) => Builder(
     builder: (context) => ConstrainedBox(
       constraints: BoxConstraints(minHeight: network ? 52 : 46),
-      child: TextButton(
-        key: ValueKey('guardian_$action'),
-        onPressed: ZyraTapFeedback.onTap(context, () => onAction(action)),
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.symmetric(
-            horizontal: network ? 10 : 14,
-            vertical: network ? 8 : 11,
-          ),
-          backgroundColor: ZyraColors.surfaceFill,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
-            side: BorderSide(
-              color: gold
-                  ? ZyraColors.journeyGold.withValues(alpha: .75)
-                  : ZyraColors.surfaceBorder,
+      child: ZyraFloatingSurface(
+        radius: 28,
+        child: TextButton(
+          key: ValueKey('guardian_$action'),
+          onPressed: ZyraTapFeedback.onTap(context, () => onAction(action)),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.symmetric(
+              horizontal: network ? 10 : 14,
+              vertical: network ? 8 : 11,
+            ),
+            backgroundColor: ZyraColors.surfaceFill,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(28),
+              side: BorderSide(
+                color: gold
+                    ? ZyraColors.journeyGold.withValues(alpha: .75)
+                    : ZyraColors.surfaceBorder,
+              ),
             ),
           ),
-        ),
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: ZyraText.body(
-            size: 13,
-            color: gold && !network
-                ? ZyraColors.journeyGold
-                : ZyraColors.foreground,
-          ).copyWith(height: network ? 1.35 : 1.45),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: ZyraText.body(
+              size: 13,
+              color: gold && !network
+                  ? ZyraColors.goldText
+                  : ZyraColors.foreground,
+            ).copyWith(height: network ? 1.35 : 1.45),
+          ),
         ),
       ),
     ),
@@ -198,19 +202,24 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     Widget child, {
     bool gold = false,
     EdgeInsets padding = const EdgeInsets.all(16),
-  }) => Container(
-    width: double.infinity,
-    padding: padding,
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(20),
-      border: Border.all(
-        color: gold
-            ? ZyraColors.journeyGold.withValues(alpha: .6)
-            : ZyraColors.surfaceBorder,
+  }) => ZyraFloatingSurface(
+    radius: 20,
+    circle: false,
+    gold: false,
+    child: Container(
+      width: double.infinity,
+      padding: padding,
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: gold
+              ? ZyraColors.journeyGold.withValues(alpha: .6)
+              : ZyraColors.surfaceBorder,
+        ),
       ),
+      child: child,
     ),
-    child: child,
   );
   Widget _tile(String title, String detail, IconData icon, String action) =>
       Padding(
@@ -223,14 +232,23 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
             child: _box(
               Row(
                 children: [
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      color: ZyraColors.surfaceFill,
-                      borderRadius: BorderRadius.circular(12),
+                  ZyraFloatingSurface(
+                    radius: 12,
+                    circle: false,
+                    gold: false,
+                    child: Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: ZyraColors.surfaceFill,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        icon,
+                        color: ZyraColors.journeyGold,
+                        size: 20,
+                      ),
                     ),
-                    child: Icon(icon, color: ZyraColors.journeyGold, size: 20),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -269,21 +287,24 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       key: ValueKey('guardian_$action'),
       behavior: HitTestBehavior.opaque,
       onTap: ZyraTapFeedback.onTap(context, () => onAction(action)),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(color: ZyraColors.surfaceBorder),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 14, color: ZyraColors.foreground),
-              const SizedBox(width: 4),
+      child: ZyraFloatingSurface(
+        radius: 22,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 14, color: ZyraColors.foreground),
+                const SizedBox(width: 4),
+              ],
+              _text(chevron ? '$label ▾' : label, size: 12),
             ],
-            _text(chevron ? '$label ▾' : label, size: 12),
-          ],
+          ),
         ),
       ),
     ),
@@ -293,7 +314,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     height: size,
     decoration: BoxDecoration(
       shape: BoxShape.circle,
-      color: color ?? const Color(0xff3e455c),
+      color: color ?? ZyraColors.avatarDeepSand,
       border: Border.all(color: ZyraColors.journeyGold.withValues(alpha: .6)),
     ),
     child: Center(child: _text(name[0], size: size * .35)),
@@ -315,35 +336,38 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           for (var i = 0; i < labels.length; i++) ...[
             if (i > 0) const SizedBox(width: 8),
             Expanded(
-              child: TextButton(
-                key: ValueKey('guardian_$action$i'),
-                onPressed: ZyraTapFeedback.onTap(
-                  context,
-                  () => onAction('$action$i'),
-                ),
-                style: TextButton.styleFrom(
-                  minimumSize: const Size(0, 42),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
+              child: ZyraFloatingSurface(
+                radius: 28,
+                child: TextButton(
+                  key: ValueKey('guardian_$action$i'),
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    () => onAction('$action$i'),
                   ),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  backgroundColor: selected == i
-                      ? ZyraColors.surfaceFill
-                      : Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    side: BorderSide(
-                      color: selected == i
-                          ? ZyraColors.journeyGold.withValues(alpha: .75)
-                          : ZyraColors.surfaceBorder,
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size(0, 42),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    backgroundColor: selected == i
+                        ? ZyraColors.surfaceFill
+                        : Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      side: BorderSide(
+                        color: selected == i
+                            ? ZyraColors.journeyGold.withValues(alpha: .75)
+                            : ZyraColors.surfaceBorder,
+                      ),
                     ),
                   ),
-                ),
-                child: Text(
-                  labels[i],
-                  style: ZyraText.body(size: 13),
-                  textAlign: TextAlign.center,
+                  child: Text(
+                    labels[i],
+                    style: ZyraText.body(size: 13),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),
@@ -356,7 +380,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       SafeArea(
         bottom: false,
         child: scroll
-            ? SingleChildScrollView(
+            ? ZyraShadowScrollView(
                 key: PageStorageKey('guardian_tabs_$page'),
                 padding: EdgeInsets.fromLTRB(20, 16, 20, bottom),
                 child: child,
@@ -748,7 +772,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                           child: DecoratedBox(
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Color(0xff685239),
+                              color: ZyraColors.avatarDeepSand,
                             ),
                             child: Center(
                               child: Text(
@@ -907,7 +931,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                   width: 140,
                   height: 170,
                   decoration: BoxDecoration(
-                    color: const Color(0xff3a4b65),
+                    color: ZyraColors.avatarSand,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(child: _text('S', size: 40, muted: true)),
@@ -1006,7 +1030,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                         _avatar(
                           i == 0 ? 'Adam' : 'Yusuf',
                           size: 62,
-                          color: i == 0 ? null : const Color(0xff365957),
+                          color: i == 0 ? null : ZyraColors.avatarWarmSand,
                         ),
                         const SizedBox(width: 14),
                         Expanded(

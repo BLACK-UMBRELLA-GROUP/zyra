@@ -50,7 +50,7 @@ class ZyraInvitationLabel extends StatelessWidget {
           textAlign: TextAlign.center,
           maxLines: maxLines,
           overflow: overflow,
-          style: sent ? style.copyWith(color: ZyraColors.journeyGold) : style,
+          style: sent ? style.copyWith(color: ZyraColors.goldText) : style,
         ),
       ),
     );

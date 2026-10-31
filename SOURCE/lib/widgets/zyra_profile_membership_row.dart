@@ -65,7 +65,7 @@ class ZyraProfileMembershipRow extends StatelessWidget {
                         style: ZyraText.subtext(
                           size: 11.5,
                           color: isOne
-                              ? ZyraColors.journeyGold
+                              ? ZyraColors.goldText
                               : ZyraColors.foregroundSecondary,
                         ),
                       ),

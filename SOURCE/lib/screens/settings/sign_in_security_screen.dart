@@ -1,3 +1,4 @@
+import '../../widgets/zyra_floating_surface.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -443,7 +444,7 @@ class _MethodCard extends StatelessWidget {
     return _SecurityCard(
       child: Row(
         children: [
-          Icon(icon, color: Colors.white, size: 23),
+          Icon(icon, color: ZyraColors.foreground, size: 23),
           SizedBox(width: 13),
           Expanded(
             child: Column(
@@ -568,7 +569,7 @@ class _ConnectedBadge extends StatelessWidget {
       ),
       child: Text(
         'Connected',
-        style: ZyraText.subtext(size: 10.5, color: const Color(0xFFBCEBD2)),
+        style: ZyraText.subtext(size: 10.5, color: ZyraColors.espresso),
       ),
     );
   }
@@ -702,15 +703,18 @@ class _SecurityActionButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: 50,
-      child: FilledButton(
-        onPressed: busy ? null : onTap,
-        child: busy
-            ? SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(strokeWidth: 1.8),
-              )
-            : Text(label, style: ZyraText.button(size: 14)),
+      child: ZyraFloatingSurface(
+        radius: 999,
+        child: FilledButton(
+          onPressed: busy ? null : onTap,
+          child: busy
+              ? SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(strokeWidth: 1.8),
+                )
+              : Text(label, style: ZyraText.button(size: 14)),
+        ),
       ),
     );
   }

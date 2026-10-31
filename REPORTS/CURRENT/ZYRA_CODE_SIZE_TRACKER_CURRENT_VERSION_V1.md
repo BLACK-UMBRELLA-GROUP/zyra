@@ -385,3 +385,17 @@ inventory maintenance and independent verification; Founder acceptance remains s
 ## Queue 40 — Phone access LOCK12 V2 — 30 October 2026
 
 Added the admitted Settings entry, education receipt, exact five-row permission page, native metadata/request/Settings adapter and three locked purpose strings. The actual App lock owns the Face ID pill; this page never enables it. No new dependency, location fix, photo fetch, camera session, remote push-token registration, backend or migration. Existing member routes and LOCK11 rounded location class remain. Seven focused suites passed 95 distinct cases and final analysis is clean; two real Flutter renders and two comparisons sit beside the masters. Mocked permission behaviour is separate from native/device proof (OA-ZYRA-323). Source/render manifest and exact commands are in LOCK12_PHONE_ACCESS_V2 evidence; current as-built handover is ZYRA_PHONE_ACCESS_AS_BUILT_CURRENT_VERSION_V1.md. No whole-suite or pixel-parity claim. Fable's existing oversized-history/archive and protected inventory maintenance remain out of this row's scope.
+
+
+## Queue 42 — Ivory LOCK14 V5 — 31 October 2026
+
+Built the locked Ivory roles, separate small-gold text and text-bearing gold fill, shared warm floating surfaces, sole member palette and matching icon/launch/splash assets. Existing content/navigation, permission ownership and member preferences remain; Background picker removed. The source pack contains the single live V5 spec and its related archive trace. Rows 43/44 remain separate.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 167,772 lines / 331 files | 168,386 lines / 332 files |
+| Developer/preview | 48,286 / 90 | 48,626 / 90 |
+| Founder planned app | 29,161 / 40 | 29,504 / 40 |
+| Tests | 214,692 / 496 | 215,160 / 498 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. Goldens remain 2,612 images / 307 MB; old Pause/Restart file counts 39/1 unchanged. Validation: 297 distinct targeted cases (18 suites, V5 expectation rerun); final render/colour and footer checks also rerun after the final paint-only fixes. Analyzer and protected SDK checks clean. Fourteen master/build pairs plus 17 enlarged-text/high-contrast states are in APP_COLOURS/BUILT; bound JSON evidence is REPORTS/EVIDENCE/LOCK14_IVORY_V5_2026-10-31. These are headless Flutter renders and native asset projection, not an iPhone launch/install or pixel-parity claim. Existing current-layout/fixture/stencil differences are enumerated in evidence. Old member-route retirement remains OA-ZYRA-317, device acceptance OA-ZYRA-323, independent build review OA-ZYRA-328. No backend, migration, native build/install, dependency change or row43/44 implementation. Seven obsolete Background-only test snippets (11,366 bytes) moved to ~/_to_delete/ZYRA_QUEUE42_IVORY_V4/retired_background_tests; no member data removed.

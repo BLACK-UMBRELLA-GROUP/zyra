@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // Disposable account presentation, copied from the current account owners.
 // The caller supplies every sample fact and every action. This file neither
 // reads a member account nor changes preferences, security or paid access.
@@ -409,7 +410,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                                   'What Guardians can do',
                                   style: ZyraText.body(
                                     size: 13.5,
-                                    color: Colors.white,
+                                    color: ZyraColors.foreground,
                                   ),
                                 ),
                                 const SizedBox(height: 3),
@@ -417,7 +418,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                                   'Who sees what, and what you control',
                                   style: ZyraText.body(
                                     size: 12.5,
-                                    color: ZyraColors.journeyGold,
+                                    color: ZyraColors.goldText,
                                   ),
                                 ),
                               ],
@@ -432,7 +433,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: ZyraColors.journeyGold,
+                                color: ZyraColors.goldTextFill,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
@@ -830,7 +831,7 @@ class _ProfileSettingsRow extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: ZyraText.body(size: 13.5, color: Colors.white),
+              style: ZyraText.body(size: 13.5, color: ZyraColors.foreground),
             ),
           ),
           Icon(Icons.chevron_right, color: ZyraColors.ink(0.24), size: 16),
@@ -866,7 +867,7 @@ class _InfoRow extends StatelessWidget {
             textAlign: TextAlign.end,
             style: ZyraText.body(
               size: 13,
-              color: guardian ? ZyraColors.foreground : Colors.white,
+              color: guardian ? ZyraColors.foreground : ZyraColors.foreground,
             ),
           ),
         ),
@@ -889,7 +890,7 @@ class _UnlockBalance extends StatelessWidget {
       children: [
         TextSpan(
           text: value?.toString() ?? '—',
-          style: ZyraText.body(size: 12.5, color: ZyraColors.journeyGold),
+          style: ZyraText.body(size: 12.5, color: ZyraColors.goldText),
         ),
         TextSpan(text: '  $label', style: ZyraText.subtext(size: 11.5)),
       ],
@@ -984,7 +985,7 @@ class _SettingsSummary extends StatelessWidget {
             textAlign: TextAlign.right,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: ZyraText.body(size: 14, color: Colors.white),
+            style: ZyraText.body(size: 14, color: ZyraColors.foreground),
           ),
         ),
       ],
@@ -1153,7 +1154,10 @@ class _SettingsRow extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: ZyraText.body(size: 15, color: Colors.white),
+                    style: ZyraText.body(
+                      size: 15,
+                      color: ZyraColors.foreground,
+                    ),
                   ),
                   if (isNew)
                     Container(
@@ -1163,14 +1167,14 @@ class _SettingsRow extends StatelessWidget {
                         vertical: 1,
                       ),
                       decoration: BoxDecoration(
-                        color: ZyraColors.journeyGold,
+                        color: ZyraColors.goldTextFill,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         'NEW',
                         style: ZyraText.body(
                           size: 10,
-                          color: const Color(0xFF24182F),
+                          color: ZyraColors.espresso,
                         ),
                       ),
                     ),
@@ -1245,41 +1249,49 @@ class _MembershipAction extends StatelessWidget {
     final accent = destructive
         ? ZyraColors.negativeRed
         : ZyraColors.foregroundSecondary;
-    return Material(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-      child: InkWell(
+    return ZyraFloatingSurface(
+      radius: ZyraCardMetrics.cardRadius,
+      circle: false,
+      gold: false,
+      child: Material(
+        color: ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        onTap: ZyraTapFeedback.onTap(context, onTap),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-            border: Border.all(
-              color: accent.withValues(alpha: destructive ? 0.34 : 0.18),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+          onTap: ZyraTapFeedback.onTap(context, onTap),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+              border: Border.all(
+                color: accent.withValues(alpha: destructive ? 0.34 : 0.18),
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, size: 21, color: accent),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: ZyraText.body(size: 14, color: accent)),
-                    const SizedBox(height: 3),
-                    Text(detail, style: ZyraText.subtext(size: 11.5)),
-                  ],
+            child: Row(
+              children: [
+                Icon(icon, size: 21, color: accent),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: ZyraText.body(size: 14, color: accent),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(detail, style: ZyraText.subtext(size: 11.5)),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 20,
-                color: ZyraColors.foregroundMuted,
-              ),
-            ],
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  size: 20,
+                  color: ZyraColors.foregroundMuted,
+                ),
+              ],
+            ),
           ),
         ),
       ),

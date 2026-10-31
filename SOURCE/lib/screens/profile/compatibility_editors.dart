@@ -1,3 +1,4 @@
+import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -597,16 +598,22 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 18),
           child: SizedBox(
             width: double.infinity,
-            child: FilledButton(
-              key: const ValueKey('compatibility-save'),
-              onPressed: ZyraTapFeedback.onTap(context, _saving ? null : _save),
-              child: _saving
-                  ? const SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 1.5),
-                    )
-                  : const Text('Save changes'),
+            child: ZyraFloatingSurface(
+              radius: 999,
+              child: FilledButton(
+                key: const ValueKey('compatibility-save'),
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  _saving ? null : _save,
+                ),
+                child: _saving
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 1.5),
+                      )
+                    : const Text('Save changes'),
+              ),
             ),
           ),
         ),
@@ -1119,77 +1126,86 @@ class _HardQuestionCard extends StatelessWidget {
   final ValueChanged<String> onToggle;
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(15),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: ZyraColors.surfaceBorder),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(question.prompt, style: ZyraText.body(size: 13.5)),
-        const SizedBox(height: 12),
-        for (final option in redOptions)
-          InkWell(
-            key: ValueKey('hard-option-${question.responseKey}-$option'),
-            onTap: ZyraTapFeedback.onTap(context, () => onToggle(option)),
-            borderRadius: BorderRadius.circular(12),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    selected.contains(option)
-                        ? Icons.check_box_rounded
-                        : Icons.check_box_outline_blank_rounded,
-                    size: 19,
-                    color: selected.contains(option)
-                        ? ZyraColors.negativeRed
-                        : ZyraColors.ink(0.50),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(option, style: ZyraText.subtext(size: 12.5)),
-                  ),
-                ],
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 16,
+    child: Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(question.prompt, style: ZyraText.body(size: 13.5)),
+          const SizedBox(height: 12),
+          for (final option in redOptions)
+            InkWell(
+              key: ValueKey('hard-option-${question.responseKey}-$option'),
+              onTap: ZyraTapFeedback.onTap(context, () => onToggle(option)),
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 9),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      selected.contains(option)
+                          ? Icons.check_box_rounded
+                          : Icons.check_box_outline_blank_rounded,
+                      size: 19,
+                      color: selected.contains(option)
+                          ? ZyraColors.negativeRed
+                          : ZyraColors.ink(0.50),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(option, style: ZyraText.subtext(size: 12.5)),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-      ],
+        ],
+      ),
     ),
   );
 }
 
 class _MeaningCard extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(15),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: ZyraColors.surfaceBorder),
-    ),
-    child: const Row(
-      children: [
-        Expanded(
-          child: _LightMeaning(
-            color: ZyraColors.positiveGreen,
-            label: 'Prefer',
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 16,
+    child: Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: const Row(
+        children: [
+          Expanded(
+            child: _LightMeaning(
+              color: ZyraColors.positiveGreen,
+              label: 'Prefer',
+            ),
           ),
-        ),
-        Expanded(
-          child: _LightMeaning(color: ZyraColors.journeyGold, label: 'Neutral'),
-        ),
-        Expanded(
-          child: _LightMeaning(
-            color: ZyraColors.negativeRed,
-            label: 'Not for me',
+          Expanded(
+            child: _LightMeaning(
+              color: ZyraColors.journeyGold,
+              label: 'Neutral',
+            ),
           ),
-        ),
-      ],
+          Expanded(
+            child: _LightMeaning(
+              color: ZyraColors.negativeRed,
+              label: 'Not for me',
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -1229,37 +1245,40 @@ class _CategoryDoor extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 11),
-    child: Material(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(16),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: ZyraColors.surfaceBorder),
-        ),
-        child: InkWell(
-          onTap: ZyraTapFeedback.onTap(context, onTap),
-          borderRadius: BorderRadius.circular(16),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 14, 12, 14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(label, style: ZyraText.body(size: 14)),
-                      const SizedBox(height: 4),
-                      Text(status, style: ZyraText.subtext(size: 11.5)),
-                    ],
+    child: ZyraFloatingSurface(
+      radius: 16,
+      child: Material(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(16),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: InkWell(
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(15, 14, 12, 14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(label, style: ZyraText.body(size: 14)),
+                        const SizedBox(height: 4),
+                        Text(status, style: ZyraText.subtext(size: 11.5)),
+                      ],
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  size: 19,
-                  color: ZyraColors.ink(0.48),
-                ),
-              ],
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 19,
+                    color: ZyraColors.ink(0.48),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -1283,48 +1302,51 @@ class _QuestionDoor extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(bottom: 10),
-    child: Material(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(15),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: ZyraColors.surfaceBorder),
-        ),
-        child: InkWell(
-          onTap: ZyraTapFeedback.onTap(context, onTap),
-          borderRadius: BorderRadius.circular(15),
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(question, style: ZyraText.body(size: 13.5)),
-                      const SizedBox(height: 6),
-                      Text(
-                        value,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: ZyraText.subtext(
-                          size: 11.5,
-                          color: value == 'Not answered'
-                              ? ZyraColors.negativeRed
-                              : ZyraColors.ink(0.58),
+    child: ZyraFloatingSurface(
+      radius: 16,
+      child: Material(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(15),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: InkWell(
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            borderRadius: BorderRadius.circular(15),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(question, style: ZyraText.body(size: 13.5)),
+                        const SizedBox(height: 6),
+                        Text(
+                          value,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: ZyraText.subtext(
+                            size: 11.5,
+                            color: value == 'Not answered'
+                                ? ZyraColors.negativeRed
+                                : ZyraColors.ink(0.58),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  size: 18,
-                  color: ZyraColors.ink(0.44),
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 18,
+                    color: ZyraColors.ink(0.44),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -1366,6 +1388,9 @@ class _EditorScaffold extends StatelessWidget {
     }
     final preview = owner?.preview ?? false;
     final content = Stack(
+      // The fixed footer keeps its box while its gold glow fades through
+      // the bottom SafeArea instead of stopping at that painting boundary.
+      clipBehavior: Clip.none,
       children: [
         Positioned.fill(child: child),
         if (bottom != null)
@@ -1435,27 +1460,56 @@ class _BottomSave extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.fromLTRB(20, 10, 20, 18),
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [
-          ZyraColors.luxuryDarkPurple.withValues(alpha: 0),
-          ZyraColors.luxuryDarkPurple.withValues(alpha: 0.94),
-        ],
-      ),
-    ),
-    child: SizedBox(
-      width: double.infinity,
-      child: FilledButton(
-        key: const ValueKey('question-save'),
-        onPressed: ZyraTapFeedback.onTap(context, enabled ? onPressed : null),
-        child: const Text('Use this answer'),
+  Widget build(BuildContext context) => CustomPaint(
+    // Continue the existing fade beneath the SafeArea. Painting clearance
+    // does not change the footer box, hit area or scroll padding.
+    painter: const _FooterFadePainter(),
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 18),
+      child: SizedBox(
+        width: double.infinity,
+        child: ZyraFloatingSurface(
+          radius: 999,
+          gold: true,
+          child: FilledButton(
+            key: const ValueKey('question-save'),
+            style: FilledButton.styleFrom(
+              backgroundColor: ZyraColors.goldTextFill,
+              foregroundColor: ZyraColors.espresso,
+            ),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              enabled ? onPressed : null,
+            ),
+            child: const Text('Use this answer'),
+          ),
+        ),
       ),
     ),
   );
+}
+
+class _FooterFadePainter extends CustomPainter {
+  const _FooterFadePainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final shader = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        ZyraColors.ivoryBottom.withValues(alpha: 0),
+        ZyraColors.ivoryBottom.withValues(alpha: 0.94),
+      ],
+    ).createShader(Offset.zero & size);
+    canvas.drawRect(
+      Rect.fromLTRB(0, 0, size.width, size.height + 64),
+      Paint()..shader = shader,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_FooterFadePainter oldDelegate) => false;
 }
 
 String _answerLabel(dynamic value) {

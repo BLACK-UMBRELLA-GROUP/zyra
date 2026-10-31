@@ -1,3 +1,4 @@
+import 'zyra_floating_surface.dart';
 import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -53,20 +54,25 @@ class ZyraMyZyraNavigationCard extends StatelessWidget {
   }
 
   Widget _iconBadge() => ExcludeSemantics(
-    child: Container(
-      width: 44,
-      height: 44,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceEmphasisFill,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Icon(
-        _icon,
-        size: 22,
-        color: ZyraColors.isLightPalette
-            ? ZyraColors.luxuryDarkPurple
-            : ZyraColors.journeyGold,
+    child: ZyraFloatingSurface(
+      radius: 15,
+      circle: false,
+      gold: false,
+      child: Container(
+        width: 44,
+        height: 44,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceEmphasisFill,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Icon(
+          _icon,
+          size: 22,
+          color: ZyraColors.isLightPalette
+              ? ZyraColors.luxuryDarkPurple
+              : ZyraColors.journeyGold,
+        ),
       ),
     ),
   );
@@ -95,76 +101,88 @@ class ZyraMyZyraNavigationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final detail = card.detail?.trim();
-    return Material(
-      key: ValueKey('my-zyra-item-${card.id}'),
-      color: ZyraColors.surfaceFill,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
-        side: BorderSide(color: ZyraColors.surfaceBorder),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        key: ValueKey('my-zyra-route-${card.id}'),
-        onTap: ZyraTapFeedback.onTap(context, onOpen),
-        child: Semantics(
-          key: card.hasNewActivity
-              ? ValueKey('my-zyra-activity-${card.id}')
-              : null,
-          value: card.hasNewActivity ? 'New activity' : null,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 98),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final inlineTitleWidth =
-                      constraints.maxWidth - 44 - 14 - 12 - 20;
-                  final stacked =
-                      MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-                      !_wholeWordsFit(context, inlineTitleWidth, 17);
-                  final titleSize = stacked
-                      ? [17.0, 16.0, 15.0, 14.0, 13.0, 12.0, 11.0].firstWhere(
-                          (size) => _wholeWordsFit(
-                            context,
-                            constraints.maxWidth,
-                            size,
+    return ZyraFloatingSurface(
+      radius: 22,
+      circle: false,
+      gold: false,
+      child: Material(
+        key: ValueKey('my-zyra-item-${card.id}'),
+        color: ZyraColors.surfaceFill,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(22),
+          side: BorderSide(color: ZyraColors.surfaceBorder),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          key: ValueKey('my-zyra-route-${card.id}'),
+          onTap: ZyraTapFeedback.onTap(context, onOpen),
+          child: Semantics(
+            key: card.hasNewActivity
+                ? ValueKey('my-zyra-activity-${card.id}')
+                : null,
+            value: card.hasNewActivity ? 'New activity' : null,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 98),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 17,
+                ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final inlineTitleWidth =
+                        constraints.maxWidth - 44 - 14 - 12 - 20;
+                    final stacked =
+                        MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
+                        !_wholeWordsFit(context, inlineTitleWidth, 17);
+                    final titleSize = stacked
+                        ? [17.0, 16.0, 15.0, 14.0, 13.0, 12.0, 11.0].firstWhere(
+                            (size) => _wholeWordsFit(
+                              context,
+                              constraints.maxWidth,
+                              size,
+                            ),
+                            orElse: () => 11,
+                          )
+                        : 17.0;
+                    if (stacked) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              _iconBadge(),
+                              const Spacer(),
+                              _chevron(),
+                            ],
                           ),
-                          orElse: () => 11,
-                        )
-                      : 17.0;
-                  if (stacked) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                          const SizedBox(height: 12),
+                          Text(card.title, style: _titleStyle(titleSize)),
+                          _detail(detail),
+                        ],
+                      );
+                    }
+                    return Row(
                       children: [
-                        Row(
-                          children: [_iconBadge(), const Spacer(), _chevron()],
+                        _iconBadge(),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(card.title, style: _titleStyle(titleSize)),
+                              _detail(detail),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 12),
-                        Text(card.title, style: _titleStyle(titleSize)),
-                        _detail(detail),
+                        const SizedBox(width: 12),
+                        _chevron(),
                       ],
                     );
-                  }
-                  return Row(
-                    children: [
-                      _iconBadge(),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(card.title, style: _titleStyle(titleSize)),
-                            _detail(detail),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      _chevron(),
-                    ],
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),

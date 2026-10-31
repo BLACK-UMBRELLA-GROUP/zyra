@@ -231,7 +231,7 @@ class _KnownPersonEntryCard extends StatelessWidget {
                         preview!.firstName.substring(0, 1).toUpperCase(),
                         style: ZyraText.heading(
                           size: 21,
-                          color: ZyraColors.surfaceSignal,
+                          color: ZyraColors.goldText,
                         ),
                       ),
                     ),
@@ -311,10 +311,7 @@ class ZyraKnownPersonCodePill extends StatelessWidget {
                 overflow: MediaQuery.textScalerOf(context).scale(12.5) > 18.75
                     ? TextOverflow.visible
                     : TextOverflow.ellipsis,
-                style: ZyraText.body(
-                  size: 12.5,
-                  color: ZyraColors.surfaceSignal,
-                ),
+                style: ZyraText.body(size: 12.5, color: ZyraColors.goldText),
               ),
             ),
           ],

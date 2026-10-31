@@ -761,7 +761,7 @@ class _PreferenceQuestionBlock extends StatelessWidget {
               SizedBox(width: 10),
               Text(
                 'QUESTION $position OF $total',
-                style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
+                style: ZyraText.chapterLabel(color: ZyraColors.goldText),
               ),
             ],
           ),
@@ -816,7 +816,7 @@ class _PreferenceGuideScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'COMPATIBILITY · PART 2',
-                    style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
+                    style: ZyraText.chapterLabel(color: ZyraColors.goldText),
                   ),
                 ),
                 SizedBox(height: 12),
@@ -970,7 +970,7 @@ class _CompatibilityBoundaryScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     eyebrow,
-                    style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
+                    style: ZyraText.chapterLabel(color: ZyraColors.goldText),
                   ),
                 ),
                 SizedBox(height: 12),
@@ -1003,7 +1003,7 @@ class _CompatibilityBoundaryScreen extends StatelessWidget {
                           count,
                           style: ZyraText.heading(
                             size: 15,
-                            color: ZyraColors.unlockText,
+                            color: ZyraColors.goldText,
                           ),
                         ),
                       ),

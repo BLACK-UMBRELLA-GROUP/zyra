@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // LOCK12 V2: real device permissions inside the admitted Founder shell.
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -270,30 +271,31 @@ class ZyraPhoneAccessPresentation extends StatelessWidget {
               style: ZyraText.heading(size: 22),
             ),
             const SizedBox(height: 18),
-            Container(
-              key: const ValueKey('phone_access_card'),
-              decoration: BoxDecoration(
-                color: ZyraColors.foreground.withValues(alpha: .07),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: ZyraColors.foreground.withValues(alpha: .16),
+            ZyraFloatingSurface(
+              radius: 20,
+              child: Container(
+                key: const ValueKey('phone_access_card'),
+                decoration: BoxDecoration(
+                  color: ZyraColors.surfaceFill,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: ZyraColors.surfaceBorder),
                 ),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  for (var i = 0; i < rows.length; i++) ...[
-                    if (i > 0)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Divider(
-                          height: 1,
-                          color: ZyraColors.foreground.withValues(alpha: .08),
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: [
+                    for (var i = 0; i < rows.length; i++) ...[
+                      if (i > 0)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Divider(
+                            height: 1,
+                            color: ZyraColors.foreground.withValues(alpha: .08),
+                          ),
                         ),
-                      ),
-                    _row(context, rows[i]),
+                      _row(context, rows[i]),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -358,7 +360,10 @@ class ZyraPhoneAccessPresentation extends StatelessWidget {
               ),
               child: Text(
                 controller.label(row.permission),
-                style: ZyraText.body(size: 11.5, color: color),
+                style: ZyraText.body(
+                  size: 11.5,
+                  color: gold ? ZyraColors.goldText : color,
+                ),
               ),
             ),
           ],

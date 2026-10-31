@@ -361,7 +361,7 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
                           'Skip · DEV',
                           style: ZyraText.button(
                             size: 13,
-                            color: ZyraColors.journeyGold,
+                            color: ZyraColors.goldText,
                           ),
                         ),
                       ),
@@ -513,7 +513,7 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
             onPressed: _busy ? null : _loadReview,
             child: Text(
               'Refresh status',
-              style: ZyraText.button(size: 14, color: ZyraColors.journeyGold),
+              style: ZyraText.button(size: 14, color: ZyraColors.goldText),
             ),
           ),
         ],
@@ -562,7 +562,7 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
             onPressed: _busy ? null : _verifyIdentity,
             child: Text(
               'Complete verification',
-              style: ZyraText.button(size: 14, color: ZyraColors.journeyGold),
+              style: ZyraText.button(size: 14, color: ZyraColors.goldText),
             ),
           ),
         if (!_devPreview &&
@@ -577,7 +577,7 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
             onPressed: _busy ? null : _continueSetup,
             child: Text(
               'Continue setup',
-              style: ZyraText.button(size: 14, color: ZyraColors.journeyGold),
+              style: ZyraText.button(size: 14, color: ZyraColors.goldText),
             ),
           ),
         TextButton(
@@ -585,7 +585,7 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
           onPressed: _busy ? null : _openHome,
           child: Text(
             'Return to My ZYRA',
-            style: ZyraText.button(size: 14, color: ZyraColors.journeyGold),
+            style: ZyraText.button(size: 14, color: ZyraColors.goldText),
           ),
         ),
       ],
@@ -650,7 +650,7 @@ class _ReviewStatus extends StatelessWidget {
                     actionLabel!,
                     style: ZyraText.button(
                       size: 13,
-                      color: ZyraColors.journeyGold,
+                      color: ZyraColors.goldText,
                     ),
                   ),
                 ),

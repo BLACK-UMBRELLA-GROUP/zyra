@@ -1019,7 +1019,7 @@ class _AccountPathOverview extends StatelessWidget {
                             'Skip · DEV',
                             style: ZyraText.button(
                               size: 12,
-                              color: ZyraColors.unlockText,
+                              color: ZyraColors.goldText,
                             ),
                           ),
                         ),

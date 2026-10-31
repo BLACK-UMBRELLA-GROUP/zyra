@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -37,32 +38,40 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          OutlinedButton(
-            key: const ValueKey('draft_compatibility_reveal'),
-            onPressed: ZyraTapFeedback.onTap(
-              context,
-              enabled ? onUnlock : null,
-            ),
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(44, 52),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              foregroundColor: ZyraColors.journeyGold,
-              disabledForegroundColor: ZyraColors.journeyGold.withValues(
-                alpha: .45,
+          ZyraFloatingSurface(
+            radius: 999,
+            circle: false,
+            gold: false,
+            child: OutlinedButton(
+              key: const ValueKey('draft_compatibility_reveal'),
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                enabled ? onUnlock : null,
               ),
-              backgroundColor: ZyraColors.journeyGold.withValues(alpha: .08),
-              side: BorderSide(
-                color: ZyraColors.journeyGold.withValues(
-                  alpha: enabled ? .6 : .2,
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(44, 52),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
                 ),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                foregroundColor: ZyraColors.goldText,
+                disabledForegroundColor: ZyraColors.goldText.withValues(
+                  alpha: .45,
+                ),
+                backgroundColor: ZyraColors.journeyGold.withValues(alpha: .08),
+                side: BorderSide(
+                  color: ZyraColors.journeyGold.withValues(
+                    alpha: enabled ? .6 : .2,
+                  ),
+                ),
+                shape: const StadiumBorder(),
               ),
-              shape: const StadiumBorder(),
-            ),
-            child: Text(
-              'Unlock compatibility',
-              textAlign: TextAlign.center,
-              style: ZyraText.button(size: 14),
+              child: Text(
+                'Unlock compatibility',
+                textAlign: TextAlign.center,
+                style: ZyraText.button(size: 14),
+              ),
             ),
           ),
           const SizedBox(height: 10),
@@ -70,7 +79,10 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
             '$balance ${balance == 1 ? 'unlock' : 'unlocks'} left',
             key: const ValueKey('draft_compatibility_balances'),
             textAlign: TextAlign.center,
-            style: ZyraText.subtext(size: 11.5, color: const Color(0xFFBDB0C8)),
+            style: ZyraText.subtext(
+              size: 11.5,
+              color: ZyraColors.secondaryText,
+            ),
           ),
           const SizedBox(height: 4),
           Center(
@@ -80,7 +92,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
               style: TextButton.styleFrom(
                 minimumSize: const Size(44, 44),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                foregroundColor: ZyraColors.journeyGold,
+                foregroundColor: ZyraColors.goldText,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 8,
@@ -123,7 +135,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
         .clamp(144.0, 248.0)
         .clamp(0.0, (constraints.maxWidth - 42).clamp(0.0, double.infinity))
         .toDouble();
-    return SingleChildScrollView(
+    return ZyraShadowScrollView(
       key: const ValueKey('draft_compatibility_viewport'),
       child: Column(
         key: const ValueKey('draft_compatibility_presentation'),
@@ -139,11 +151,11 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF34263F), Color(0xFF1C132B)],
+                colors: [ZyraColors.cardSurface, ZyraColors.lowerSurface],
               ),
               borderRadius: BorderRadius.circular(26),
               border: Border.all(
-                color: const Color(0xFFF6F0F8).withValues(alpha: .13),
+                color: ZyraColors.espresso.withValues(alpha: .13),
               ),
             ),
             child: Column(
@@ -153,10 +165,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
               children: [
                 Text(
                   'Overall',
-                  style: ZyraText.heading(
-                    size: 25,
-                    color: const Color(0xFFF6F0F8),
-                  ),
+                  style: ZyraText.heading(size: 25, color: ZyraColors.espresso),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: largeText ? 20 : 18),
@@ -205,7 +214,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: ZyraText.heading(
                           size: 21,
-                          color: const Color(0xFFF6F0F8),
+                          color: ZyraColors.espresso,
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -214,7 +223,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: ZyraText.body(
                           size: 14,
-                          color: ZyraColors.journeyGold,
+                          color: ZyraColors.goldText,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -223,7 +232,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: ZyraText.subtext(
                           size: 12.5,
-                          color: const Color(0xFFBDB0C8),
+                          color: ZyraColors.secondaryText,
                         ),
                       ),
                     ],
@@ -275,7 +284,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
             constraints.maxHeight < headingHeight + minimumReaderHeight) {
           // Short landscape/very large text must scroll the composition, not
           // squeeze the pager or scale down its text and touch targets.
-          return SingleChildScrollView(
+          return ZyraShadowScrollView(
             key: const ValueKey('draft_compatibility_reader_scroll_fallback'),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

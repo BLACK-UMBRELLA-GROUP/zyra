@@ -313,10 +313,9 @@ class ZyraApp extends StatelessWidget {
           brightness: ZyraColors.isLightPalette
               ? Brightness.light
               : Brightness.dark,
-          textTheme: ZyraText.textTheme(
-            ZyraColors.isLightPalette
-                ? ThemeData.light().textTheme
-                : ThemeData.dark().textTheme,
+          textTheme: ZyraText.textTheme(ThemeData.light().textTheme).apply(
+            bodyColor: ZyraColors.espresso,
+            displayColor: ZyraColors.espresso,
           ),
           // ADDED 2026-08-06 (Founder: "when I scroll down then back up it
           // creates that pink line at top, remove that so it's all seamless").
@@ -410,14 +409,12 @@ class ZyraApp extends StatelessWidget {
             brightness: ZyraColors.isLightPalette
                 ? Brightness.light
                 : Brightness.dark,
-            seedColor: ZyraColors.royalPurple,
+            seedColor: ZyraColors.journeyGold,
             primary: ZyraColors.actionFill,
             onPrimary: ZyraColors.onAction,
             secondary: ZyraColors.actionFill,
             onSecondary: ZyraColors.onAction,
-            surface: ZyraColors.isLightPalette
-                ? const Color(0xFFFDFBFD)
-                : ZyraColors.luxuryDarkPurple,
+            surface: ZyraColors.cardSurface,
             onSurface: ZyraColors.foreground,
             error: ZyraColors.destructive,
             onError: ZyraColors.luxuryDarkPurple,
@@ -466,9 +463,7 @@ class ZyraApp extends StatelessWidget {
             ),
           ),
           iconTheme: IconThemeData(color: ZyraColors.foreground),
-          dividerColor: ZyraColors.isLightPalette
-              ? const Color(0x243D2A4A)
-              : const Color(0x24FFFFFF),
+          dividerColor: ZyraColors.divider,
           // ADDED 2026-08-01 (Founder: "it shows a white tab at bottom
           // again doesn't match app system"). No snackBarTheme was ever
           // set, so all 14 SnackBars in the app fell back to Material's

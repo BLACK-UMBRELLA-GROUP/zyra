@@ -94,7 +94,7 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
                           child: Text(
                             'COMPATIBILITY SECTION',
                             style: ZyraText.chapterLabel(
-                              color: ZyraColors.unlockText,
+                              color: ZyraColors.goldText,
                             ),
                           ),
                         ),
@@ -124,7 +124,7 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
                             '$questionCount ${questionCount == 1 ? 'question' : 'questions'}',
                             style: ZyraText.subtext(
                               size: 11.5,
-                              color: ZyraColors.unlockText,
+                              color: ZyraColors.goldText,
                             ),
                           ),
                         ),
@@ -191,7 +191,7 @@ class _VisibilityLine extends StatelessWidget {
             width: 86,
             child: Text(
               label,
-              style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
+              style: ZyraText.chapterLabel(color: ZyraColors.goldText),
             ),
           ),
           Expanded(child: Text(text, style: ZyraText.subtext(size: 12))),

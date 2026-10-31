@@ -1324,7 +1324,7 @@ void main() {
     final actions = <ZyraConceptAccountAction>[];
     final goldChanges = <bool>[];
     const snapshot = ZyraPersonalisationSnapshot(
-      palette: ZyraDevPalette.midnightPlum,
+      palette: ZyraDevPalette.ivory,
       hapticLevel: ZyraHapticLevel.subtle,
       goldEnabled: false,
     );
@@ -1332,8 +1332,6 @@ void main() {
       tester,
       ZyraPersonalisationContent(
         snapshot: snapshot,
-        onChooseBackground: () =>
-            actions.add(ZyraConceptAccountAction.background),
         onChooseHaptic: () => actions.add(ZyraConceptAccountAction.haptics),
         onGoldChanged: goldChanges.add,
       ),
@@ -1347,9 +1345,6 @@ void main() {
       'Connecting Through Trust',
       'Your background changes appear immediately.',
       'YOUR EXPERIENCE',
-      'Background',
-      'Midnight Plum',
-      'Choose the colour atmosphere used across ZYRA.',
       'Gold accents',
       'Subtle gold details; motion follows your device settings.',
       'App text',
@@ -1379,7 +1374,6 @@ void main() {
       findsNothing,
     );
     for (final key in [
-      'personalisation_background',
       'personalisation_haptic',
       'personalisation_gold_toggle',
     ]) {
@@ -1388,10 +1382,9 @@ void main() {
       await tester.tap(_key(key));
       await tester.pumpAndSettle();
     }
-    expect(actions, [
-      ZyraConceptAccountAction.background,
-      ZyraConceptAccountAction.haptics,
-    ]);
+    expect(_key('personalisation_background'), findsNothing);
+    expect(find.text('Background'), findsNothing);
+    expect(actions, [ZyraConceptAccountAction.haptics]);
     expect(goldChanges, [true]);
     expect(
       snapshot.goldEnabled,

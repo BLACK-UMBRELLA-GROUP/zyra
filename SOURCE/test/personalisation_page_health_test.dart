@@ -46,8 +46,6 @@ const _hapticHint = 'Choose how taps feel on this device.';
 Finder _key(String name) => find.byKey(ValueKey(name));
 Finder _choice(Object option) =>
     _key('personalisation_choice_${option.toString()}');
-String _paletteLabel(ZyraDevPalette palette) =>
-    palette.label.replaceAll(' · Current', '');
 
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
@@ -60,7 +58,7 @@ class _NoNetwork extends HttpOverrides {
 }
 
 Widget _app(Widget child, {bool compact = false}) => MaterialApp(
-  theme: ThemeData.dark(),
+  theme: ThemeData.light(),
   builder: (context, child) => MediaQuery(
     data: MediaQuery.of(context).copyWith(
       padding: const EdgeInsets.only(top: 59, bottom: 34),
@@ -82,26 +80,23 @@ void _size(WidgetTester tester, {bool compact = false}) {
   addTearDown(tester.view.resetDevicePixelRatio);
 }
 
+Finder _visibleVerticalScroll() => find
+    .byWidgetPredicate(
+      (widget) =>
+          widget is Scrollable &&
+          axisDirectionToAxis(widget.axisDirection) == Axis.vertical,
+    )
+    .hitTestable();
+
 Future<void> _reveal(WidgetTester tester, Finder target) async {
   if (target.evaluate().isEmpty) {
-    final owners = [
-      'dev_controls_scroll',
-      'concept-current-profile-scroll',
-      'personalisation-scroll',
-    ].map(_key).where((finder) => finder.evaluate().isNotEmpty);
-    final sheets = find.byWidgetPredicate(
-      (widget) => widget is ZyraPersonalisationChoiceSheet,
-    );
-    final owner = sheets.evaluate().isNotEmpty
-        ? sheets.last
-        : owners.isNotEmpty
-        ? owners.first
-        : find.byType(ListView).last;
-    final scroll = find.descendant(
-      of: owner,
-      matching: find.byType(Scrollable),
-    );
+    // Lazy lists do not build their distant rows. Discover the active viewport
+    // rather than assuming that its wrapper is a ListView or has a legacy key.
+    final scroll = _visibleVerticalScroll();
     expect(scroll, findsOneWidget);
+    final position = tester.state<ScrollableState>(scroll).position;
+    position.jumpTo(position.minScrollExtent);
+    await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
       target,
       140,
@@ -139,7 +134,7 @@ Future<void> _top(WidgetTester tester) async {
 }
 
 class _PreviewOwner extends StatefulWidget {
-  const _PreviewOwner({super.key, this.palette = ZyraDevPalette.midnightPlum});
+  const _PreviewOwner({super.key, this.palette = ZyraDevPalette.ivory});
   final ZyraDevPalette palette;
 
   @override
@@ -158,7 +153,6 @@ class _PreviewOwnerState extends State<_PreviewOwner> {
     palette: palette,
     hapticLevel: haptic,
     goldEnabled: gold,
-    onPaletteChanged: (value) => setState(() => palette = value),
     onHapticChanged: (value) => setState(() => haptic = value),
     onGoldChanged: (value) => setState(() => gold = value),
     embedded: false,
@@ -168,7 +162,7 @@ class _PreviewOwnerState extends State<_PreviewOwner> {
 Future<GlobalKey<_PreviewOwnerState>> _preview(
   WidgetTester tester, {
   bool compact = false,
-  ZyraDevPalette palette = ZyraDevPalette.midnightPlum,
+  ZyraDevPalette palette = ZyraDevPalette.ivory,
 }) async {
   _size(tester, compact: compact);
   final owner = GlobalKey<_PreviewOwnerState>();
@@ -298,7 +292,7 @@ class _ShellOwner {
           initialCheckpoint: ZyraPreviewNavigationCheckpoint(
             guardian: guardian,
             model: ViewRequestDraftModel(capacity: 3).snapshot(),
-            tab: guardian ? 3 : 4,
+            tab: 4,
             pages: const [],
           ),
           onCheckpoint: checkpoints.add,
@@ -509,7 +503,7 @@ void main() {
     }
   });
 
-  testWidgets('ordinary screen preview uses the selected real background', (
+  testWidgets('ordinary screen uses Ivory despite a stored legacy background', (
     tester,
   ) async {
     _size(tester);
@@ -518,42 +512,40 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(_ordinaryScope), findsOneWidget);
     expect(find.text(_previewScope), findsNothing);
-    expect(_snapshot(tester).palette, ZyraDevPalette.deepEmerald);
-    expect(
-      _previewDecoration(tester).gradient,
-      ZyraDevPalette.deepEmerald.gradient,
-    );
+    expect(_snapshot(tester).palette, ZyraDevPalette.ivory);
+    expect(_previewDecoration(tester).gradient, ZyraDevPalette.ivory.gradient);
     await tester.pumpWidget(const SizedBox.shrink());
     ZyraColors.restoreAppPalette(null);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('ordinary Midnight blue uses the real-font selected background', (
-    tester,
-  ) async {
-    _size(tester);
-    ZyraColors.restoreAppPalette(ZyraDevPalette.midnightBlue.name);
-    await tester.pumpWidget(_app(const PersonalisationScreen()));
-    await tester.pumpAndSettle();
-    expect(find.text(_ordinaryScope), findsOneWidget);
-    expect(find.text(_previewScope), findsNothing);
-    expect(_snapshot(tester).palette, ZyraDevPalette.midnightBlue);
-    expect(
-      _previewDecoration(tester).gradient,
-      ZyraDevPalette.midnightBlue.gradient,
-    );
-    expect(
-      tester
-          .widget<Text>(find.text('Connecting Through Trust'))
-          .style!
-          .fontFamily,
-      _readingFont,
-    );
-    await _capture(tester, '04-midnight-blue-member');
-    await tester.pumpWidget(const SizedBox.shrink());
-    ZyraColors.restoreAppPalette(null);
-    expect(tester.takeException(), isNull);
-  });
+  testWidgets(
+    'ordinary real-font preview ignores a legacy Midnight blue request',
+    (tester) async {
+      _size(tester);
+      ZyraColors.restoreAppPalette(ZyraDevPalette.midnightBlue.name);
+      await tester.pumpWidget(_app(const PersonalisationScreen()));
+      await tester.pumpAndSettle();
+      expect(find.text(_ordinaryScope), findsOneWidget);
+      expect(find.text(_previewScope), findsNothing);
+      expect(_snapshot(tester).palette, ZyraDevPalette.ivory);
+      expect(
+        _previewDecoration(tester).gradient,
+        ZyraDevPalette.ivory.gradient,
+      );
+      expect(
+        tester
+            .widget<Text>(find.text('Connecting Through Trust'))
+            .style!
+            .fontFamily,
+        _readingFont,
+      );
+      await _capture(tester, '04-ivory-member');
+      await tester.pumpWidget(const SizedBox.shrink());
+      ZyraColors.restoreAppPalette(null);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets(
     'current preview has honest scope, readable values, fixed fonts',
@@ -570,17 +562,10 @@ void main() {
       );
       expect(
         _previewDecoration(tester).gradient,
-        ZyraDevPalette.midnightPlum.gradient,
+        ZyraDevPalette.ivory.gradient,
       );
-      final value = find.descendant(
-        of: _key('personalisation_background'),
-        matching: find.text('Midnight Plum'),
-      );
-      expect(tester.widget<Text>(value).style!.color, ZyraColors.journeyGold);
-      expect(
-        tester.widget<Text>(find.text('LIVE PREVIEW')).style!.color,
-        ZyraColors.journeyGold,
-      );
+      expect(_key('personalisation_background'), findsNothing);
+      expect(find.text('Background'), findsNothing);
       await _tap(tester, _key('personalisation_font'));
       expect(
         find.byType(ZyraPersonalisationChoiceSheet<ZyraAppFont>),
@@ -603,24 +588,18 @@ void main() {
     },
   );
 
-  testWidgets('320px200% longest selected palette wraps without clipping', (
+  testWidgets('320px200% retained controls wrap without clipping', (
     tester,
   ) async {
-    final longest = PersonalisationScreen.availablePalettes.reduce(
-      (a, b) => _paletteLabel(a).length >= _paletteLabel(b).length ? a : b,
-    );
-    await _preview(tester, compact: true, palette: longest);
-    await _reveal(tester, _key('personalisation_background'));
+    await _preview(tester, compact: true, palette: ZyraDevPalette.midnightBlue);
+    expect(_key('personalisation_background'), findsNothing);
+    expect(_snapshot(tester).palette, ZyraDevPalette.ivory);
+    await _reveal(tester, _key('personalisation_gold'));
     _readableText(
       tester,
-      _key('personalisation_background'),
-      _paletteLabel(longest),
+      _key('personalisation_gold'),
+      _goldHint,
       wrapped: true,
-    );
-    _readableText(
-      tester,
-      _key('personalisation_background'),
-      'Choose the colour atmosphere used across ZYRA.',
     );
     await _capture(tester, '03-compact-200');
     for (final entry in <(String, String)>[
@@ -633,46 +612,6 @@ void main() {
       expect(tester.takeException(), isNull);
     }
   });
-
-  testWidgets(
-    'real background chooser exposes all ten dark choices accessibly',
-    (tester) async {
-      final semantics = tester.ensureSemantics();
-      try {
-        final owner = await _preview(tester);
-        await _tap(tester, _key('personalisation_background'));
-        final sheet = tester
-            .widget<ZyraPersonalisationChoiceSheet<ZyraDevPalette>>(
-              find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
-            );
-        expect(sheet.options, PersonalisationScreen.availablePalettes);
-        expect(sheet.options, hasLength(10));
-        expect(sheet.options.every((option) => !option.isLight), isTrue);
-        await _capture(tester, '02-background-choice');
-        for (final option in sheet.options) {
-          await _choiceSemantics(
-            tester,
-            option,
-            selected: option == ZyraDevPalette.midnightPlum,
-          );
-          expect(find.text(_paletteLabel(option)), findsWidgets);
-        }
-        await _tap(tester, _choice(ZyraDevPalette.sapphireNight));
-        expect(owner.currentState!.palette, ZyraDevPalette.sapphireNight);
-        expect(_snapshot(tester).palette, ZyraDevPalette.sapphireNight);
-        expect(
-          _previewDecoration(tester).gradient,
-          ZyraDevPalette.sapphireNight.gradient,
-        );
-        expect(
-          find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
-          findsNothing,
-        );
-      } finally {
-        semantics.dispose();
-      }
-    },
-  );
 
   testWidgets('haptic chooser has actual 44px actions and selected semantics', (
     tester,
@@ -702,105 +641,77 @@ void main() {
     }
   });
 
-  testWidgets(
-    'contrast audit samples actual page text on ten member palettes',
-    (tester) async {
-      _size(tester);
-      for (final palette in PersonalisationScreen.availablePalettes) {
-        ZyraColors.restoreAppPalette(palette.name);
-        await tester.pumpWidget(
-          _app(_PreviewOwner(key: UniqueKey(), palette: palette)),
-        );
-        await tester.pumpAndSettle();
-        final valueText = find.descendant(
-          of: _key('personalisation_background'),
-          matching: find.text(_paletteLabel(palette)),
-        );
-        final samples = <String, Color>{
-          'selected-value': tester.widget<Text>(valueText).style!.color!,
-          'row-hint': tester
-              .widget<Text>(
-                find.text('Choose the colour atmosphere used across ZYRA.'),
-              )
-              .style!
-              .color!,
-          'eyebrow': tester
-              .widget<Text>(find.text('MAKE IT YOURS'))
-              .style!
-              .color!,
-          'live-label': tester
-              .widget<Text>(find.text('LIVE PREVIEW'))
-              .style!
-              .color!,
-          'preview-hint': tester
-              .widget<Text>(
-                find.text('Your background changes appear immediately.'),
-              )
-              .style!
-              .color!,
-        };
-        for (final sample in samples.entries) {
-          final ratios = palette.gradient.colors.map((background) {
-            final surface = ['selected-value', 'row-hint'].contains(sample.key)
-                ? Color.alphaBlend(ZyraColors.surfaceFill, background)
-                : background;
-            return _contrast(sample.value, surface);
-          });
-          final minimum = ratios.reduce(math.min);
-          debugPrint(
-            'PERSONALISATION_CONTRAST ${palette.name} ${sample.key} '
-            '${minimum.toStringAsFixed(3)}:1',
-          );
-          // The retained brighter historical palettes are measured, not falsely
-          // certified AA or frozen as desired failures. Their shared surface
-          // contrast is a separate existing-theme follow-up under OA304.
-          if (palette == ZyraDevPalette.midnightPlum ||
-              palette == ZyraDevPalette.midnightBlue) {
-            expect(
-              minimum,
-              greaterThanOrEqualTo(4.5),
-              reason:
-                  '${palette.label} ${sample.key} must reach AA '
-                  'normal-text contrast.',
-            );
-          }
-        }
-        expect(tester.takeException(), isNull);
-      }
-      await tester.pumpWidget(const SizedBox.shrink());
-      ZyraColors.restoreAppPalette(null);
-    },
-  );
+  testWidgets('contrast audit checks actual normal text on locked Ivory', (
+    tester,
+  ) async {
+    await _preview(tester);
+    final valueText = find.descendant(
+      of: _key('personalisation_gold'),
+      matching: find.text('Off'),
+    );
+    final samples = <String, Color>{
+      'selected-value': tester.widget<Text>(valueText).style!.color!,
+      'row-hint': tester.widget<Text>(find.text(_goldHint)).style!.color!,
+      'eyebrow': tester.widget<Text>(find.text('MAKE IT YOURS')).style!.color!,
+      'accent-eyebrow': tester
+          .widget<Text>(find.text('LIVE PREVIEW'))
+          .style!
+          .color!,
+      'preview-hint': tester
+          .widget<Text>(
+            find.text('Your background changes appear immediately.'),
+          )
+          .style!
+          .color!,
+    };
+    for (final sample in samples.entries) {
+      final ratios = ZyraDevPalette.ivory.gradient.colors.map((background) {
+        final surface = ['selected-value', 'row-hint'].contains(sample.key)
+            ? Color.alphaBlend(ZyraColors.surfaceFill, background)
+            : background;
+        return _contrast(sample.value, surface);
+      });
+      final minimum = ratios.reduce(math.min);
+      debugPrint(
+        'PERSONALISATION_CONTRAST ivory ${sample.key} '
+        '${minimum.toStringAsFixed(3)}:1',
+      );
+      expect(
+        minimum,
+        greaterThanOrEqualTo(4.5),
+        reason: '${sample.key} must reach AA normal-text contrast on Ivory.',
+      );
+    }
+    expect(tester.takeException(), isNull);
+  });
 
   for (final guardian in [false, true]) {
-    testWidgets(
-      '${guardian ? 'Guardian' : 'Seeker'} selects Midnight blue in the '
-      'protected real-font Personalisation page without member writes',
-      (tester) async {
-        final paletteBefore = ZyraLocalPrefs.cachedAppPaletteName;
-        final owner = _ShellOwner();
-        await owner.mount(tester, guardian: guardian);
-        await owner.openPersonalisation(tester);
-        await _tap(tester, _key('personalisation_background'));
-        await _tap(tester, _choice(ZyraDevPalette.midnightBlue));
-        expect(_snapshot(tester).palette, ZyraDevPalette.midnightBlue);
-        expect(
-          _previewDecoration(tester).gradient,
-          ZyraDevPalette.midnightBlue.gradient,
-        );
-        expect(find.text(_previewScope), findsOneWidget);
-        expect(find.text(_ordinaryScope), findsNothing);
-        expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
-        expect(ZyraLocalPrefs.cachedAppPaletteName, paletteBefore);
-        expect(_snapshot(tester).goldEnabled, isFalse);
-        await _top(tester);
-        await _capture(
-          tester,
-          guardian ? '06-midnight-blue-guardian' : '05-midnight-blue-seeker',
-        );
-        expect(tester.takeException(), isNull);
-      },
-    );
+    testWidgets('${guardian ? 'Guardian' : 'Seeker'} uses locked Ivory in the '
+        'protected real-font Personalisation page without member writes', (
+      tester,
+    ) async {
+      final paletteBefore = ZyraLocalPrefs.cachedAppPaletteName;
+      final owner = _ShellOwner();
+      await owner.mount(tester, guardian: guardian);
+      await owner.openPersonalisation(tester);
+      expect(_key('personalisation_background'), findsNothing);
+      expect(_snapshot(tester).palette, ZyraDevPalette.ivory);
+      expect(
+        _previewDecoration(tester).gradient,
+        ZyraDevPalette.ivory.gradient,
+      );
+      expect(find.text(_previewScope), findsOneWidget);
+      expect(find.text(_ordinaryScope), findsNothing);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
+      expect(ZyraLocalPrefs.cachedAppPaletteName, paletteBefore);
+      expect(_snapshot(tester).goldEnabled, isFalse);
+      await _top(tester);
+      await _capture(
+        tester,
+        guardian ? '06-ivory-guardian' : '05-ivory-seeker',
+      );
+      expect(tester.takeException(), isNull);
+    });
 
     testWidgets(
       '${guardian ? 'Guardian' : 'Seeker'} controls cover blocks saved '
@@ -819,7 +730,10 @@ void main() {
         final pageState = tester.state(find.byType(PersonalisationScreen));
         await openZyraDevControls(tester);
         final checkpoint = owner.checkpoints.last;
-        saved.onPaletteChanged!(ZyraDevPalette.deepEmerald);
+        expect(
+          find.byKey(const ValueKey('personalisation_haptic')),
+          findsNothing,
+        );
         saved.onHapticChanged!(ZyraHapticLevel.strong);
         saved.onGoldChanged!(!before.goldEnabled);
         savedBack();
@@ -837,9 +751,10 @@ void main() {
         await _tap(tester, _key('personalisation_gold_toggle'));
         expect(_snapshot(tester).goldEnabled, !before.goldEnabled);
         expect(_goldCanvas(), findsOneWidget);
-        await _tap(tester, _key('personalisation_background'));
-        await _tap(tester, _choice(ZyraDevPalette.deepEmerald));
-        expect(_snapshot(tester).palette, ZyraDevPalette.deepEmerald);
+        await _tap(tester, _key('personalisation_haptic'));
+        await _tap(tester, _choice(ZyraHapticLevel.strong));
+        expect(_snapshot(tester).hapticLevel, ZyraHapticLevel.strong);
+        expect(_snapshot(tester).palette, ZyraDevPalette.ivory);
         expect(_snapshot(tester).goldEnabled, !before.goldEnabled);
         expect(_goldCanvas(), findsOneWidget);
       },
@@ -847,7 +762,7 @@ void main() {
   }
 
   testWidgets(
-    'Gold On survives Reset as rendered dust and later palette change',
+    'Gold On survives Reset as rendered dust and later haptic change',
     (tester) async {
       final owner = _ShellOwner();
       await owner.mount(tester);
@@ -890,9 +805,10 @@ void main() {
         isTrue,
       );
       expect(_goldCanvas(), findsOneWidget);
-      await _tap(tester, _key('personalisation_background'));
-      await _tap(tester, _choice(ZyraDevPalette.sapphireNight));
-      expect(_snapshot(tester).palette, ZyraDevPalette.sapphireNight);
+      await _tap(tester, _key('personalisation_haptic'));
+      await _tap(tester, _choice(ZyraHapticLevel.strong));
+      expect(_snapshot(tester).hapticLevel, ZyraHapticLevel.strong);
+      expect(_snapshot(tester).palette, ZyraDevPalette.ivory);
       expect(_snapshot(tester).goldEnabled, isTrue);
       expect(_goldCanvas(), findsOneWidget);
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);

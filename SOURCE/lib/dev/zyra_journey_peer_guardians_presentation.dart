@@ -301,7 +301,7 @@ class _PeerGuardianContent extends StatelessWidget {
                     guardian.isMain ? 'Main Guardian' : 'Additional Guardian',
                     style: ZyraText.body(
                       size: 12.25,
-                      color: guardian.isMain ? accent : null,
+                      color: guardian.isMain ? ZyraColors.goldText : null,
                     ),
                   ),
                 ),

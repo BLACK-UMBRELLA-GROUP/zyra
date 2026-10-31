@@ -406,8 +406,8 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: widget.closure
-                    ? [const Color(0xB8140C1A), const Color(0xE60A060E)]
-                    : [const Color(0x8C140C1A), const Color(0xC7140C1A)],
+                    ? [const Color(0xB82B2420), const Color(0xE62B2420)]
+                    : [const Color(0x8C2B2420), const Color(0xC72B2420)],
               ),
             ),
             child: Stack(
@@ -424,7 +424,7 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
-                            colors: [Color(0x47CEA2D1), Color(0x00CEA2D1)],
+                            colors: [Color(0x47A9792E), Color(0x00A9792E)],
                           ),
                         ),
                       ),
@@ -480,9 +480,9 @@ class ZyraStageBeat extends StatelessWidget {
         margin: const EdgeInsets.fromLTRB(16, 10, 16, 0),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
         decoration: BoxDecoration(
-          color: const Color(0x29CEA2D1),
+          color: const Color(0x29A9792E),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0x73CEA2D1)),
+          border: Border.all(color: const Color(0x73A9792E)),
         ),
         child: Column(
           children: [

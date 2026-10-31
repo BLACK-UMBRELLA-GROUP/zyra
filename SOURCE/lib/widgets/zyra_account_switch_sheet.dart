@@ -1,3 +1,4 @@
+import 'zyra_floating_surface.dart';
 import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -148,7 +149,7 @@ class ZyraAccountSwitchScreen extends StatelessWidget {
                         Text(
                           'ONE TRUSTED IDENTITY',
                           style: ZyraText.chapterLabel(
-                            color: ZyraColors.unlockText,
+                            color: ZyraColors.goldText,
                           ),
                         ),
                       ],
@@ -191,18 +192,22 @@ class ZyraAccountSwitchButton extends StatelessWidget {
     return Semantics(
       button: true,
       label: 'Switch Account',
-      child: OutlinedButton.icon(
-        key: const ValueKey('switch-account-button'),
-        onPressed: ZyraTapFeedback.onTap(context, onPressed),
-        icon: const Icon(Icons.swap_horiz_rounded, size: 16),
-        label: Text('Switch', style: ZyraText.subtext(size: 11.5)),
-        style: OutlinedButton.styleFrom(
-          foregroundColor: ZyraColors.foreground,
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
-          minimumSize: Size.zero,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          side: BorderSide(color: ZyraColors.ink(0.22), width: 0.7),
-          shape: const StadiumBorder(),
+      child: ZyraFloatingSurface(
+        radius: 999,
+        child: OutlinedButton.icon(
+          key: const ValueKey('switch-account-button'),
+          onPressed: ZyraTapFeedback.onTap(context, onPressed),
+          icon: const Icon(Icons.swap_horiz_rounded, size: 16),
+          label: Text('Switch', style: ZyraText.subtext(size: 11.5)),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: ZyraColors.foreground,
+            backgroundColor: ZyraColors.surfaceFill,
+            padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            side: BorderSide(color: ZyraColors.ink(0.22), width: 0.7),
+            shape: const StadiumBorder(),
+          ),
         ),
       ),
     );
@@ -225,76 +230,82 @@ class _AccountOption extends StatelessWidget {
       enabled: onTap != null,
       selected: option.current,
       label: '${option.title}. ${option.subtitle}. $action',
-      child: Material(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(
-          onTap: ZyraTapFeedback.onTap(context, onTap),
+      child: ZyraFloatingSurface(
+        radius: 16,
+        child: Material(
+          color: ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(16),
-          child: Opacity(
-            opacity: contentOpacity,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 17),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: option.current
-                      ? ZyraColors.accentBorder
-                      : ZyraColors.surfaceBorder,
-                  width: option.current ? 0.9 : 0.6,
+          child: InkWell(
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            borderRadius: BorderRadius.circular(16),
+            child: Opacity(
+              opacity: contentOpacity,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 17,
                 ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ZyraColors.iconButtonBg,
-                      border: Border.all(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: option.current
+                        ? ZyraColors.accentBorder
+                        : ZyraColors.surfaceBorder,
+                    width: option.current ? 0.9 : 0.6,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 42,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: ZyraColors.iconButtonBg,
+                        border: Border.all(
+                          color: option.current
+                              ? ZyraColors.unlockDot
+                              : ZyraColors.iconButtonBorder,
+                        ),
+                      ),
+                      child: Icon(
+                        option.icon,
+                        size: 19,
                         color: option.current
-                            ? ZyraColors.unlockDot
-                            : ZyraColors.iconButtonBorder,
+                            ? ZyraColors.unlockText
+                            : ZyraColors.ink(0.70),
                       ),
                     ),
-                    child: Icon(
-                      option.icon,
-                      size: 19,
-                      color: option.current
-                          ? ZyraColors.unlockText
-                          : ZyraColors.ink(0.70),
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(option.title, style: ZyraText.body(size: 14)),
-                        SizedBox(height: 3),
-                        Text(
-                          option.subtitle,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: ZyraText.subtext(
-                            size: 10.5,
-                            color: ZyraColors.ink(0.38),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(option.title, style: ZyraText.body(size: 14)),
+                          SizedBox(height: 3),
+                          Text(
+                            option.subtitle,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: ZyraText.subtext(
+                              size: 10.5,
+                              color: ZyraColors.ink(0.38),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    action,
-                    style: ZyraText.chapterLabel(
-                      color: option.current || option.enabled
-                          ? ZyraColors.unlockText
-                          : ZyraColors.ink(0.30),
+                    SizedBox(width: 10),
+                    Text(
+                      action,
+                      style: ZyraText.chapterLabel(
+                        color: option.current || option.enabled
+                            ? ZyraColors.goldText
+                            : ZyraColors.ink(0.30),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

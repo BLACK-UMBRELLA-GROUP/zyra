@@ -1,17 +1,12 @@
-// Rebuilds Current plus ten original app-icon comparison studies.
+// Rebuilds only the LOCK14V4 primary icon and launch assets.
 //
 // Run from SOURCE with:
 //   xcrun swift tool/generate_dev_app_icons.swift
 //
-// Gold Horizon at the current wordmark size is written to the primary AppIcon
-// and assets/icon/icon.png. The locked lettering stencil is tinted to the
-// Quiet Horizon splash's exact #E5CE8E gold without changing its geometry.
-// Ten iOS alternates explore genuinely different compositions. Every icon is
-// rebuilt from the same deterministic
-// Midnight Plum background and the exact locked Syne stencil in
-// splash_logo.png, so repeated generation cannot compound an earlier treatment
-// or inherit a damaged base. Midnight Plum is the live app palette:
-// Hulu-inspired #30203F top-left → #160E20 bottom-right (Founder 2026-09-27).
+// Current's locked lettering, line, glow and geometry are preserved. Only
+// colours change: #A9792E artwork on the #FBF7F0 → #EEE6D8 ivory gradient.
+// The existing splash_logo.png alpha is the deterministic lettering stencil.
+// Comparison studies and contact sheets are deliberately not exported here.
 
 import CoreGraphics
 import CoreText
@@ -21,17 +16,17 @@ import UniformTypeIdentifiers
 
 let iconColorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
 
-let midnightPlumTop = CGColor(
+let ivoryTop = CGColor(
   colorSpace: iconColorSpace,
-  components: [0x30 / 255.0, 0x20 / 255.0, 0x3F / 255.0, 1]
+  components: [0xFB / 255.0, 0xF7 / 255.0, 0xF0 / 255.0, 1]
 )!
-let midnightPlumBottom = CGColor(
+let ivoryBottom = CGColor(
   colorSpace: iconColorSpace,
-  components: [0x16 / 255.0, 0x0E / 255.0, 0x20 / 255.0, 1]
+  components: [0xEE / 255.0, 0xE6 / 255.0, 0xD8 / 255.0, 1]
 )!
 let splashWordmarkGold = CGColor(
   colorSpace: iconColorSpace,
-  components: [0xE5 / 255.0, 0xCE / 255.0, 0x8E / 255.0, 1]
+  components: [0xA9 / 255.0, 0x79 / 255.0, 0x2E / 255.0, 1]
 )!
 
 enum Treatment {
@@ -57,16 +52,6 @@ let variants = [
     previewName: "goldHorizonCurrent",
     treatment: .goldHorizon
   ),
-  Variant(assetName: "ZyraGoldHalo", previewName: "goldHalo", treatment: .goldHalo),
-  Variant(assetName: "ZyraOrbitLight", previewName: "orbitLight", treatment: .orbitLight),
-  Variant(assetName: "ZyraTwinGlow", previewName: "twinGlow", treatment: .twinGlow),
-  Variant(assetName: "ZyraOpenFrame", previewName: "openFrame", treatment: .openFrame),
-  Variant(assetName: "ZyraEditorialGold", previewName: "editorialGold", treatment: .editorialGold),
-  Variant(assetName: "ZyraRisingDawn", previewName: "risingDawn", treatment: .risingDawn),
-  Variant(assetName: "ZyraQuietMonogram", previewName: "quietMonogram", treatment: .quietMonogram),
-  Variant(assetName: "ZyraSilkRibbon", previewName: "silkRibbon", treatment: .silkRibbon),
-  Variant(assetName: "ZyraConstellation", previewName: "constellation", treatment: .constellation),
-  Variant(assetName: "ZyraRoyalSeal", previewName: "royalSeal", treatment: .royalSeal),
 ]
 
 let iconSizes = [
@@ -114,16 +99,17 @@ func loadImage(_ url: URL) throws -> CGImage {
   return image
 }
 
-func makeContext(size: Int) throws -> CGContext {
+func makeContext(size: Int, height: Int? = nil, transparent: Bool = false) throws -> CGContext {
   guard
     let context = CGContext(
       data: nil,
       width: size,
-      height: size,
+      height: height ?? size,
       bitsPerComponent: 8,
       bytesPerRow: size * 4,
       space: iconColorSpace,
-      bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue
+      bitmapInfo: transparent ? CGImageAlphaInfo.premultipliedLast.rawValue
+        : CGImageAlphaInfo.noneSkipLast.rawValue
     )
   else {
     throw NSError(
@@ -196,9 +182,9 @@ func goldGradient(alpha: CGFloat) -> CGGradient {
   CGGradient(
     colorsSpace: iconColorSpace,
     colors: [
-      CGColor(red: 0.97, green: 0.87, blue: 0.58, alpha: alpha),
-      CGColor(red: 0.88, green: 0.70, blue: 0.31, alpha: alpha * 0.5),
-      CGColor(red: 0.88, green: 0.70, blue: 0.31, alpha: 0),
+      splashWordmarkGold.copy(alpha: alpha)!,
+      splashWordmarkGold.copy(alpha: alpha * 0.5)!,
+      splashWordmarkGold.copy(alpha: 0)!,
     ] as CFArray,
     locations: [0, 0.48, 1]
   )!
@@ -208,8 +194,8 @@ func drawBackground(in context: CGContext) {
   let background = CGGradient(
     colorsSpace: iconColorSpace,
     colors: [
-      midnightPlumTop,
-      midnightPlumBottom,
+      ivoryTop,
+      ivoryBottom,
     ] as CFArray,
     locations: [0, 1]
   )!
@@ -228,9 +214,9 @@ func drawGoldHorizon(in context: CGContext) {
   let lineGradient = CGGradient(
     colorsSpace: iconColorSpace,
     colors: [
-      CGColor(red: 0.91, green: 0.77, blue: 0.40, alpha: 0),
-      CGColor(red: 0.96, green: 0.86, blue: 0.57, alpha: 0.95),
-      CGColor(red: 0.91, green: 0.77, blue: 0.40, alpha: 0),
+      splashWordmarkGold.copy(alpha: 0)!,
+      splashWordmarkGold.copy(alpha: 0.95)!,
+      splashWordmarkGold.copy(alpha: 0)!,
     ] as CFArray,
     locations: [0, 0.5, 1]
   )!
@@ -252,7 +238,7 @@ func drawGoldHorizon(in context: CGContext) {
     options: []
   )
   context.setFillColor(
-    CGColor(red: 0.97, green: 0.87, blue: 0.58, alpha: 1)
+    splashWordmarkGold
   )
   context.fillEllipse(in: CGRect(x: dot.x - 8, y: dot.y - 8, width: 16, height: 16))
 }
@@ -399,10 +385,11 @@ func drawStudyArt(_ treatment: Treatment, in context: CGContext) {
 
 func makeMaster(
   variant: Variant,
-  wordmark: CGImage
+  wordmark: CGImage,
+  transparent: Bool = false
 ) throws -> CGImage {
-  let context = try makeContext(size: 1024)
-  drawBackground(in: context)
+  let context = try makeContext(size: 1024, transparent: transparent)
+  if !transparent { drawBackground(in: context) }
 
   if variant.treatment == .goldHorizon {
     drawGoldHorizon(in: context)
@@ -470,7 +457,7 @@ func writeContactSheet(_ masters: [CGImage]) throws {
   // Inspection-only candidate, never an approved screenshot baseline.
   let size = 1536
   let context = try makeContext(size: size)
-  context.setFillColor(midnightPlumBottom)
+  context.setFillColor(ivoryBottom)
   context.fill(CGRect(x: 0, y: 0, width: size, height: size))
   let labels = ["Current", "1 · Gold Halo", "2 · Orbit Light", "3 · Together",
     "4 · Open Frame", "5 · Editorial Gold", "6 · Rising Dawn", "7 · Quiet Monogram",
@@ -505,41 +492,44 @@ do {
     )
   }
   let tintedWordmark = try tintWordmark(wordmark)
-  let contentsTemplate = try Data(
-    contentsOf: assetsURL.appendingPathComponent(
-      "ZyraGoldHorizonLarge.appiconset/Contents.json"
-    )
-  )
-
-  try fileManager.createDirectory(at: previewsURL, withIntermediateDirectories: true)
-  var masters: [CGImage] = []
-  for variant in variants {
-    let master = try makeMaster(variant: variant, wordmark: tintedWordmark)
-    masters.append(master)
-    try writePNG(master, to: previewsURL.appendingPathComponent("\(variant.previewName).png"))
-    let destination = assetsURL.appendingPathComponent(
-      "\(variant.assetName).appiconset"
-    )
-    try fileManager.createDirectory(
-      at: destination,
-      withIntermediateDirectories: true
-    )
-    if variant.assetName != "AppIcon" {
-      try contentsTemplate.write(
-        to: destination.appendingPathComponent("Contents.json"),
-        options: .atomic
-      )
-    }
-    for iconSize in iconSizes {
-      let icon = try resize(master, to: iconSize.pixels)
-      try writePNG(icon, to: destination.appendingPathComponent(iconSize.filename))
-    }
-    if variant.assetName == "AppIcon" {
-      try writePNG(master, to: primarySourceURL)
-    }
+  let variant = variants[0]
+  let master = try makeMaster(variant: variant, wordmark: tintedWordmark)
+  let destination = assetsURL.appendingPathComponent("AppIcon.appiconset")
+  for iconSize in iconSizes {
+    let icon = try resize(master, to: iconSize.pixels)
+    try writePNG(icon, to: destination.appendingPathComponent(iconSize.filename))
   }
-  try writeContactSheet(masters)
-  print("Generated \(variants.count) ZYRA app-icon sets/previews (Current + ten new studies).")
+  try writePNG(master, to: primarySourceURL)
+  // Export transparent art directly, avoiding background-colour recovery that
+  // would erode the darker gold edges after the ivory palette change.
+  let foreground = try makeMaster(
+    variant: variant, wordmark: tintedWordmark, transparent: true
+  )
+  try writePNG(foreground, to: root.appendingPathComponent(
+    "assets/icon/android_adaptive_foreground.png"
+  ))
+  try writePNG(try tintWordmark(logo), to: wordmarkURL)
+
+  let launchBackground = try makeContext(size: 1)
+  launchBackground.setFillColor(ivoryTop)
+  launchBackground.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
+  try writePNG(launchBackground.makeImage()!, to: assetsURL.appendingPathComponent(
+    "LaunchBackground.imageset/background.png"
+  ))
+  // c13 centres a roughly 190pt visible wordmark. Preserve the existing
+  // 720×180 crop/aspect ratio inside a 200×50pt image; the source stencil's
+  // transparent insets leave 187.8pt of visible approved lettering.
+  for scale in 1...3 {
+    let width = 200 * scale
+    let height = 50 * scale
+    let context = try makeContext(size: width, height: height, transparent: true)
+    context.draw(tintedWordmark, in: CGRect(x: 0, y: 0, width: width, height: height))
+    let suffix = scale == 1 ? "" : "@\(scale)x"
+    try writePNG(context.makeImage()!, to: assetsURL.appendingPathComponent(
+      "LaunchImage.imageset/LaunchImage\(suffix).png"
+    ))
+  }
+  print("Generated LOCK14V4 primary AppIcon, Android art, splash stencil and launch assets.")
 } catch {
   fputs("ZYRA app-icon generation failed: \(error)\n", stderr)
   exit(1)

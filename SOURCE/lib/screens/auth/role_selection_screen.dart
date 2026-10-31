@@ -760,9 +760,7 @@ class _RoleCard extends StatelessWidget {
           children: [
             Text(
               'PATH $_number',
-              style: ZyraText.chapterLabel(
-                color: ZyraColors.journeyGold.withValues(alpha: .82),
-              ),
+              style: ZyraText.chapterLabel(color: ZyraColors.goldText),
             ),
             const SizedBox(height: 9),
             _title,

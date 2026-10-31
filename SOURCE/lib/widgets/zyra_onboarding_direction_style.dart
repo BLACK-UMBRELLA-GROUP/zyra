@@ -77,7 +77,7 @@ class OnboardingPreviewStyle extends InheritedWidget {
   }
 
   ButtonStyle get primaryButtonStyle => FilledButton.styleFrom(
-    backgroundColor: ZyraColors.journeyGold,
+    backgroundColor: ZyraColors.goldTextFill,
     foregroundColor: ZyraColors.luxuryDarkPurple,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(buttonRadius),

@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -104,38 +105,41 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  OutlinedButton(
-                    key: const ValueKey('request_capacity_continue'),
-                    onPressed: ZyraTapFeedback.onTap(
-                      context,
-                      canContinue ? onContinue : null,
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(48, 52),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 14,
+                  ZyraFloatingSurface(
+                    radius: 999,
+                    child: OutlinedButton(
+                      key: const ValueKey('request_capacity_continue'),
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        canContinue ? onContinue : null,
                       ),
-                      foregroundColor: ZyraColors.journeyGold,
-                      disabledForegroundColor: ZyraColors.ink(.4),
-                      backgroundColor: canContinue
-                          ? ZyraColors.journeyGold.withValues(alpha: .08)
-                          : Colors.transparent,
-                      side: BorderSide(
-                        color: canContinue
-                            ? ZyraColors.journeyGold.withValues(alpha: .75)
-                            : ZyraColors.surfaceBorder,
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(48, 52),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 14,
+                        ),
+                        foregroundColor: ZyraColors.goldText,
+                        disabledForegroundColor: ZyraColors.ink(.4),
+                        backgroundColor: canContinue
+                            ? ZyraColors.journeyGold.withValues(alpha: .08)
+                            : Colors.transparent,
+                        side: BorderSide(
+                          color: canContinue
+                              ? ZyraColors.journeyGold.withValues(alpha: .75)
+                              : ZyraColors.surfaceBorder,
+                        ),
+                        shape: const StadiumBorder(),
                       ),
-                      shape: const StadiumBorder(),
-                    ),
-                    child: Text(
-                      'End & accept request',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.button(
-                        size: 13,
-                        color: canContinue
-                            ? ZyraColors.journeyGold
-                            : ZyraColors.ink(.4),
+                      child: Text(
+                        'End & accept request',
+                        textAlign: TextAlign.center,
+                        style: ZyraText.button(
+                          size: 13,
+                          color: canContinue
+                              ? ZyraColors.goldText
+                              : ZyraColors.ink(.4),
+                        ),
                       ),
                     ),
                   ),
@@ -195,68 +199,73 @@ class _CapacityRow extends StatelessWidget {
       inMutuallyExclusiveGroup: true,
       onTap: ZyraTapFeedback.onTap(context, select),
       excludeSemantics: true,
-      child: Material(
-        color: ZyraColors.surfaceFill,
-        shape: RoundedRectangleBorder(
-          borderRadius: radius,
-          side: BorderSide(
-            color: selected ? ZyraColors.journeyGold : ZyraColors.surfaceBorder,
-            width: selected ? 1.4 : .8,
+      child: ZyraFloatingSurface(
+        radius: 20,
+        child: Material(
+          color: ZyraColors.surfaceFill,
+          shape: RoundedRectangleBorder(
+            borderRadius: radius,
+            side: BorderSide(
+              color: selected
+                  ? ZyraColors.journeyGold
+                  : ZyraColors.surfaceBorder,
+              width: selected ? 1.4 : .8,
+            ),
           ),
-        ),
-        child: InkWell(
-          onTap: ZyraTapFeedback.onTap(context, select),
-          borderRadius: radius,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 48),
-            child: Padding(
-              padding: const EdgeInsets.all(ZyraCardMetrics.padding),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      ZyraCardMetrics.thumbRadius,
-                    ),
-                    child: SizedBox(
-                      width: ZyraCardMetrics.thumb,
-                      height: ZyraCardMetrics.thumb,
-                      child:
-                          item.portrait ??
-                          ColoredBox(
-                            color: ZyraColors.ink(.08),
-                            child: Icon(
-                              Icons.person_outline,
-                              size: 24,
-                              color: ZyraColors.ink(.6),
+          child: InkWell(
+            onTap: ZyraTapFeedback.onTap(context, select),
+            borderRadius: radius,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48),
+              child: Padding(
+                padding: const EdgeInsets.all(ZyraCardMetrics.padding),
+                child: Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        ZyraCardMetrics.thumbRadius,
+                      ),
+                      child: SizedBox(
+                        width: ZyraCardMetrics.thumb,
+                        height: ZyraCardMetrics.thumb,
+                        child:
+                            item.portrait ??
+                            ColoredBox(
+                              color: ZyraColors.ink(.08),
+                              child: Icon(
+                                Icons.person_outline,
+                                size: 24,
+                                color: ZyraColors.ink(.6),
+                              ),
                             ),
-                          ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: ZyraCardMetrics.gap),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item.name, style: ZyraText.heading(size: 17)),
-                        if (subtitle != null && subtitle.isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Text(subtitle, style: ZyraText.subtext(size: 12)),
+                    const SizedBox(width: ZyraCardMetrics.gap),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(item.name, style: ZyraText.heading(size: 17)),
+                          if (subtitle != null && subtitle.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Text(subtitle, style: ZyraText.subtext(size: 12)),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  Icon(
-                    selected
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_unchecked,
-                    size: 20,
-                    color: selected
-                        ? ZyraColors.journeyGold
-                        : ZyraColors.ink(.5),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    Icon(
+                      selected
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_unchecked,
+                      size: 20,
+                      color: selected
+                          ? ZyraColors.journeyGold
+                          : ZyraColors.ink(.5),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

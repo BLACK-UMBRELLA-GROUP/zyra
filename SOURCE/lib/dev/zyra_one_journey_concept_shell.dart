@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // Disposable methodology comparison using the current app's presentation.
 // No production routes/services are called, no member records are loaded,
 // and only a device-local education marker is persisted (LOCK 3).
@@ -1641,7 +1642,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         ? _content()
         : SafeArea(
             bottom: false,
-            child: SingleChildScrollView(
+            child: ZyraShadowScrollView(
               key: const ValueKey('draft_scroll'),
               controller: _scroll,
               physics: const BouncingScrollPhysics(),
@@ -1689,12 +1690,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 },
                 child: Scaffold(
                   backgroundColor: founderWhite
-                      ? Colors.white
-                      : ZyraColors.luxuryDarkPurple,
+                      ? ZyraColors.foreground
+                      : ZyraColors.ivoryTop,
                   extendBody: true,
                   body: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: founderWhite ? Colors.white : null,
+                      color: founderWhite ? ZyraColors.foreground : null,
                       gradient: founderWhite
                           ? null
                           : _accountSession.palette.gradient,
@@ -1940,7 +1941,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               ],
             ),
             Expanded(
-              child: SingleChildScrollView(
+              child: ZyraShadowScrollView(
                 key: const ValueKey('dev_controls_scroll'),
                 controller: _devControlsScroll,
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 34),
@@ -2243,7 +2244,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final people = _browseFilter.apply(_model.discoverableProfiles);
     if (!_model.canBrowse) {
       return SafeArea(
-        child: SingleChildScrollView(
+        child: ZyraShadowScrollView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 110),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -2290,7 +2291,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               Expanded(
                 child: LayoutBuilder(
                   key: const ValueKey('concept_profiles_empty_viewport'),
-                  builder: (context, constraints) => SingleChildScrollView(
+                  builder: (context, constraints) => ZyraShadowScrollView(
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
                         minHeight: constraints.maxHeight,
@@ -3243,16 +3244,21 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 style: ZyraText.subtext(),
               ),
               const SizedBox(height: 20),
-              OutlinedButton(
-                key: const ValueKey('request_capacity_confirm'),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(0, 48),
-                  side: BorderSide(color: ZyraColors.destructive),
-                ),
-                onPressed: _tap(() => choose(true)),
-                child: Text(
-                  'End & accept request',
-                  style: ZyraText.button(color: ZyraColors.destructive),
+              ZyraFloatingSurface(
+                radius: 999,
+                circle: false,
+                gold: false,
+                child: OutlinedButton(
+                  key: const ValueKey('request_capacity_confirm'),
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: const Size(0, 48),
+                    side: BorderSide(color: ZyraColors.destructive),
+                  ),
+                  onPressed: _tap(() => choose(true)),
+                  child: Text(
+                    'End & accept request',
+                    style: ZyraText.button(color: ZyraColors.destructive),
+                  ),
                 ),
               ),
               TextButton(
@@ -3586,7 +3592,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         'draft_${bio ? 'bio' : 'journey_compatibility'}_locked_${person.id}',
       ),
       child: LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
+        builder: (context, constraints) => ZyraShadowScrollView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -3860,7 +3866,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     if (_model.isBioStepOpen(p.id) && _model.canParticipateInJourney(p.id)) {
       return _journeyBioStep(p);
     }
-    final actions = SingleChildScrollView(
+    final actions = ZyraShadowScrollView(
       key: const ValueKey('draft_scroll'),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 80),
       child: _journeyLocalActions(),
@@ -3930,7 +3936,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           ],
         ),
         Expanded(
-          child: SingleChildScrollView(
+          child: ZyraShadowScrollView(
             key: const ValueKey('draft_scroll'),
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
             child: Column(
@@ -4248,7 +4254,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 key: ValueKey('concept_family_display_${q.id}'),
                 readOnly: true,
                 maxLines: 3,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: ZyraColors.foreground),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
@@ -5020,7 +5026,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     return SafeArea(
       key: const ValueKey('concept_main_guardian_notice'),
       child: LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
+        builder: (context, constraints) => ZyraShadowScrollView(
           padding: const EdgeInsets.all(20),
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -6648,12 +6654,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       if (current()) _accountSession.setAvatar(guardian, alignment);
     }
 
-    void paletteChanged(ZyraDevPalette palette) {
-      if (current() && !_devControlsVisible) {
-        _accountSession.setPalette(palette);
-      }
-    }
-
     void hapticChanged(ZyraHapticLevel level) {
       if (!current() ||
           _devControlsVisible ||
@@ -6731,7 +6731,6 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 palette: _accountSession.palette,
                 hapticLevel: _accountSession.hapticLevel,
                 goldEnabled: _accountSession.goldEnabled,
-                onPaletteChanged: paletteChanged,
                 onHapticChanged: hapticChanged,
                 onGoldChanged: goldChanged,
               ),
@@ -7008,7 +7007,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final peerReady = _model.peerHasChosenBioContinue(id);
     return SafeArea(
       key: ValueKey('draft_journey_bio_step_$id'),
-      child: SingleChildScrollView(
+      child: ZyraShadowScrollView(
         key: const ValueKey('draft_scroll'),
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         child: Column(
@@ -8160,7 +8159,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     text,
     style: ZyraText.body(
       size: small ? 12 : 15,
-      color: gold ? ZyraColors.journeyGold : ZyraColors.foregroundMuted,
+      color: gold ? ZyraColors.goldText : ZyraColors.foregroundMuted,
     ),
   );
   Widget _controlSection(List<Widget> children) => ZyraDevToolSection(
@@ -8192,48 +8191,55 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         : ZyraColors.foregroundMuted.withValues(alpha: .5);
     return Semantics(
       selected: selected,
-      child: OutlinedButton(
-        key: ValueKey(id),
-        onPressed: _tap(enabled ? _bound(action) : null),
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size(44, 44),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          foregroundColor: color,
-          backgroundColor: selected == true
-              ? ZyraColors.surfaceEmphasisFill
-              : Colors.transparent,
-          side: BorderSide(
-            color: selected == true
-                ? ZyraColors.surfaceEmphasisBorder
-                : ZyraColors.surfaceBorder,
-            width: selected == true ? 1 : .6,
-          ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-        ),
-        child: Row(
-          children: [
-            if (icon != null) ...[
-              Icon(icon, size: 17, color: color.withValues(alpha: .65)),
-              const SizedBox(width: 9),
-            ],
-            Expanded(
-              child: Text(
-                label,
-                semanticsLabel: semanticLabel,
-                textAlign: centered ? TextAlign.center : TextAlign.start,
-                style: ZyraText.body(size: 12.5, color: color),
-              ),
+      child: ZyraFloatingSurface(
+        radius: 9,
+        circle: false,
+        gold: false,
+        child: OutlinedButton(
+          key: ValueKey(id),
+          onPressed: _tap(enabled ? _bound(action) : null),
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(44, 44),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            foregroundColor: color,
+            backgroundColor: selected == true
+                ? ZyraColors.surfaceEmphasisFill
+                : Colors.transparent,
+            side: BorderSide(
+              color: selected == true
+                  ? ZyraColors.surfaceEmphasisBorder
+                  : ZyraColors.surfaceBorder,
+              width: selected == true ? 1 : .6,
             ),
-            if (showChevron) ...[
-              const SizedBox(width: 8),
-              Icon(
-                Icons.chevron_right,
-                size: 17,
-                color: color.withValues(alpha: .4),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(9),
+            ),
+          ),
+          child: Row(
+            children: [
+              if (icon != null) ...[
+                Icon(icon, size: 17, color: color.withValues(alpha: .65)),
+                const SizedBox(width: 9),
+              ],
+              Expanded(
+                child: Text(
+                  label,
+                  semanticsLabel: semanticLabel,
+                  textAlign: centered ? TextAlign.center : TextAlign.start,
+                  style: ZyraText.body(size: 12.5, color: color),
+                ),
               ),
+              if (showChevron) ...[
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.chevron_right,
+                  size: 17,
+                  color: color.withValues(alpha: .4),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -8241,7 +8247,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   Widget _pageScroll(List<Widget> children, {Key? key}) => SafeArea(
     key: key,
-    child: SingleChildScrollView(
+    child: ZyraShadowScrollView(
       key: const ValueKey('draft_scroll'),
       controller: _scroll,
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
@@ -8252,21 +8258,26 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     ),
   );
 
-  Widget _card(List<Widget> children) => Container(
-    padding: EdgeInsets.all(ZyraCardMetrics.padding),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-      border: Border.all(color: ZyraColors.surfaceBorder),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        for (var i = 0; i < children.length; i++) ...[
-          if (i > 0) const SizedBox(height: 13),
-          children[i],
+  Widget _card(List<Widget> children) => ZyraFloatingSurface(
+    radius: ZyraCardMetrics.cardRadius,
+    circle: false,
+    gold: false,
+    child: Container(
+      padding: EdgeInsets.all(ZyraCardMetrics.padding),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < children.length; i++) ...[
+            if (i > 0) const SizedBox(height: 13),
+            children[i],
+          ],
         ],
-      ],
+      ),
     ),
   );
   Widget _button(
@@ -8277,39 +8288,77 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     IconData? icon,
     bool alignStart = false,
     bool fitLabel = false,
-  }) => OutlinedButton(
-    key: ValueKey(id),
-    onPressed: _tap(action == null ? null : _bound(action)),
-    style: OutlinedButton.styleFrom(
-      minimumSize: const Size(48, 48),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      foregroundColor: ZyraColors.foreground,
-      disabledForegroundColor: ZyraColors.foregroundMuted.withValues(alpha: .5),
-      backgroundColor: primary
-          ? ZyraColors.surfaceEmphasisFill
-          : ZyraColors.surfaceFill,
-      side: BorderSide(
-        color: primary
-            ? ZyraColors.surfaceEmphasisBorder
-            : ZyraColors.surfaceBorder,
+  }) => ZyraFloatingSurface(
+    radius: 999,
+    circle: false,
+    gold: false,
+    child: OutlinedButton(
+      key: ValueKey(id),
+      onPressed: _tap(action == null ? null : _bound(action)),
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(48, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        foregroundColor: ZyraColors.foreground,
+        disabledForegroundColor: ZyraColors.foregroundMuted.withValues(
+          alpha: .5,
+        ),
+        backgroundColor: primary
+            ? ZyraColors.surfaceEmphasisFill
+            : ZyraColors.surfaceFill,
+        side: BorderSide(
+          color: primary
+              ? ZyraColors.surfaceEmphasisBorder
+              : ZyraColors.surfaceBorder,
+        ),
+        shape: const StadiumBorder(),
       ),
-      shape: const StadiumBorder(),
-    ),
-    child: Row(
-      mainAxisSize: alignStart ? MainAxisSize.max : MainAxisSize.min,
-      mainAxisAlignment: alignStart
-          ? MainAxisAlignment.start
-          : MainAxisAlignment.center,
-      children: [
-        if (icon != null) ...[Icon(icon, size: 22), const SizedBox(width: 12)],
-        Flexible(
-          child: fitLabel
-              ? FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
+      child: Row(
+        mainAxisSize: alignStart ? MainAxisSize.max : MainAxisSize.min,
+        mainAxisAlignment: alignStart
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 22),
+            const SizedBox(width: 12),
+          ],
+          Flexible(
+            child: fitLabel
+                ? FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      label,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: ZyraText.button(
+                        size: 14,
+                        color: action == null
+                            ? ZyraColors.foregroundMuted.withValues(alpha: .5)
+                            : ZyraColors.foreground,
+                      ),
+                    ),
+                  )
+                : label.contains('\n')
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label.split('\n').first,
+                        style: ZyraText.button(
+                          size: 14,
+                          color: ZyraColors.foreground,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        label.substring(label.indexOf('\n') + 1),
+                        style: ZyraText.subtext(size: 12),
+                      ),
+                    ],
+                  )
+                : Text(
                     label,
-                    maxLines: 1,
-                    softWrap: false,
+                    textAlign: alignStart ? TextAlign.start : TextAlign.center,
                     style: ZyraText.button(
                       size: 14,
                       color: action == null
@@ -8317,41 +8366,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                           : ZyraColors.foreground,
                     ),
                   ),
-                )
-              : label.contains('\n')
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label.split('\n').first,
-                      style: ZyraText.button(
-                        size: 14,
-                        color: ZyraColors.foreground,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      label.substring(label.indexOf('\n') + 1),
-                      style: ZyraText.subtext(size: 12),
-                    ),
-                  ],
-                )
-              : Text(
-                  label,
-                  textAlign: alignStart ? TextAlign.start : TextAlign.center,
-                  style: ZyraText.button(
-                    size: 14,
-                    color: action == null
-                        ? ZyraColors.foregroundMuted.withValues(alpha: .5)
-                        : ZyraColors.foreground,
-                  ),
-                ),
-        ),
-        if (alignStart) ...[
-          const SizedBox(width: 8),
-          const Icon(Icons.chevron_right, size: 18),
+          ),
+          if (alignStart) ...[
+            const SizedBox(width: 8),
+            const Icon(Icons.chevron_right, size: 18),
+          ],
         ],
-      ],
+      ),
     ),
   );
   Widget _choices(

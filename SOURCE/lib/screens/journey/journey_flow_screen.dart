@@ -4392,7 +4392,7 @@ class _JourneyQuestionBriefingStep extends StatelessWidget {
           ),
           child: Text(
             '$number',
-            style: ZyraText.subtext(size: 9.5, color: ZyraColors.journeyGold),
+            style: ZyraText.subtext(size: 9.5, color: ZyraColors.goldText),
           ),
         ),
         SizedBox(height: 6),
@@ -5088,7 +5088,7 @@ class _DevStageJumperState extends State<_DevStageJumper> {
                               '${ZyraJourneyLifeSnapshotMock.fields.length} details shared',
                               style: ZyraText.subtext(
                                 size: 10,
-                                color: ZyraColors.journeyGold,
+                                color: ZyraColors.goldText,
                               ),
                             ),
                           ],
@@ -5135,7 +5135,7 @@ class _DevStageJumperState extends State<_DevStageJumper> {
                                   : '${widget.selectedGuardians.length} selected',
                               style: ZyraText.subtext(
                                 size: 10,
-                                color: ZyraColors.journeyGold,
+                                color: ZyraColors.goldText,
                               ),
                             ),
                           ],
@@ -7246,10 +7246,7 @@ class _LifeSnapshotView extends StatelessWidget {
               else
                 Text(
                   'Profile revealed · waiting together',
-                  style: ZyraText.subtext(
-                    size: 12,
-                    color: ZyraColors.journeyGold.withValues(alpha: 0.7),
-                  ),
+                  style: ZyraText.subtext(size: 12, color: ZyraColors.goldText),
                 ),
             ],
           ),
@@ -7325,9 +7322,7 @@ class _LifeSnapshotView extends StatelessWidget {
           SizedBox(height: 5),
           Text(
             'SHARED FOR THIS JOURNEY',
-            style: ZyraText.chapterLabel(
-              color: ZyraColors.journeyGold.withValues(alpha: 0.82),
-            ),
+            style: ZyraText.chapterLabel(color: ZyraColors.goldText),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 28),
@@ -7839,7 +7834,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
                               'Salam sent',
                               style: ZyraText.subtext(
                                 size: 11,
-                                color: ZyraColors.journeyGold,
+                                color: ZyraColors.goldText,
                               ),
                             ),
                           ],
@@ -8331,7 +8326,7 @@ class _RevealedGuardianPortrait extends StatelessWidget {
                 SizedBox(width: 4),
                 Text(
                   'SALAM SENT',
-                  style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
+                  style: ZyraText.chapterLabel(color: ZyraColors.goldText),
                 ),
               ],
             ),
@@ -8494,7 +8489,7 @@ class _JourneyGuardianHistoryViewState
                                 'Salam sent to $salamSummary',
                                 style: ZyraText.subtext(
                                   size: 12,
-                                  color: ZyraColors.journeyGold,
+                                  color: ZyraColors.goldText,
                                 ),
                                 textAlign: TextAlign.center,
                                 maxLines: 2,
@@ -9059,7 +9054,7 @@ class _PhaseViewState extends State<_PhaseView> {
                       text: 'You are answering privately. ',
                       style: ZyraText.subtext(
                         size: 11.5,
-                        color: ZyraColors.journeyGold,
+                        color: ZyraColors.goldText,
                       ),
                     ),
                     TextSpan(
@@ -9096,7 +9091,7 @@ class _PhaseViewState extends State<_PhaseView> {
                       size: 11,
                       color:
                           currentLength >= (answerCharacterLimit * 0.9).round()
-                          ? ZyraColors.journeyGold
+                          ? ZyraColors.goldText
                           : ZyraColors.ink(0.38),
                     ),
                   ),
@@ -9232,9 +9227,7 @@ class _JourneyRevealedQuestion extends StatelessWidget {
         children: [
           Text(
             'QUESTION $questionNumber OF $questionCount',
-            style: ZyraText.chapterLabel(
-              color: ZyraColors.journeyGold.withValues(alpha: 0.9),
-            ),
+            style: ZyraText.chapterLabel(color: ZyraColors.goldText),
           ),
           SizedBox(height: 9),
           Text(question.text, style: ZyraText.heading(size: 16)),

@@ -1290,10 +1290,7 @@ class _GuardianStatusCard extends StatelessWidget {
                   child: Text(
                     actionLabel!,
                     style: premiumBoundary
-                        ? ZyraText.button(
-                            size: 13,
-                            color: ZyraColors.journeyGold,
-                          )
+                        ? ZyraText.button(size: 13, color: ZyraColors.goldText)
                         : null,
                   ),
                 ),

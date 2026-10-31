@@ -1187,7 +1187,7 @@ class _DemoNotice extends StatelessWidget {
       children: [
         Text(
           'Developer demo',
-          style: ZyraText.body(size: 12, color: ZyraColors.journeyGold),
+          style: ZyraText.body(size: 12, color: ZyraColors.goldText),
         ),
         const SizedBox(height: 4),
         Text(

@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import 'package:flutter/material.dart';
 
 import '../data/zyra_journey_life_snapshot.dart';
@@ -216,7 +217,7 @@ class ZyraDraftJourneyBioPresentation extends StatelessWidget {
     );
     if (!ownedViewport) return content;
     return SafeArea(
-      child: SingleChildScrollView(
+      child: ZyraShadowScrollView(
         key: PageStorageKey('draft_journey_bio_scroll_$subjectId'),
         primary: false,
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
@@ -244,26 +245,31 @@ class _ProfileHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ExcludeSemantics(
-          child: Container(
-            key: ValueKey('draft_journey_bio_portrait_$subjectId'),
-            width: 88,
-            height: 108,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: ZyraColors.surfaceFill,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child:
-                portrait ??
-                Center(
-                  child: Text(
-                    name.isEmpty ? '—' : name.characters.first.toUpperCase(),
-                    style: ZyraText.heading(
-                      size: 32,
-                      color: ZyraColors.journeyGold,
+          child: ZyraFloatingSurface(
+            radius: 18,
+            circle: false,
+            gold: false,
+            child: Container(
+              key: ValueKey('draft_journey_bio_portrait_$subjectId'),
+              width: 88,
+              height: 108,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: ZyraColors.surfaceFill,
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child:
+                  portrait ??
+                  Center(
+                    child: Text(
+                      name.isEmpty ? '—' : name.characters.first.toUpperCase(),
+                      style: ZyraText.heading(
+                        size: 32,
+                        color: ZyraColors.journeyGold,
+                      ),
                     ),
                   ),
-                ),
+            ),
           ),
         ),
         const SizedBox(width: 18),
@@ -303,7 +309,7 @@ class _SectionHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
     label,
-    style: ZyraText.subtext(size: 13, color: ZyraColors.journeyGold),
+    style: ZyraText.subtext(size: 13, color: ZyraColors.goldText),
   );
 }
 
@@ -312,14 +318,19 @@ class _BioSurface extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: ZyraColors.surfaceBorder),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 18,
+    circle: false,
+    gold: false,
+    child: Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: child,
     ),
-    child: child,
   );
 }
 

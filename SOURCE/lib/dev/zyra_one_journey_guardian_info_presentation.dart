@@ -193,7 +193,7 @@ class _ZyraGuardianInfoPresentationState
                                 textAlign: TextAlign.center,
                                 style: ZyraText.body(
                                   size: 14,
-                                  color: ZyraColors.journeyGold,
+                                  color: ZyraColors.goldText,
                                 ),
                               ),
                               const SizedBox(height: 24),

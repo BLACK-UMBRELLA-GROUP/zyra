@@ -342,7 +342,7 @@ class _DraftButton extends StatelessWidget {
           child: Text(
             label,
             textAlign: TextAlign.center,
-            style: ZyraText.body(size: 12.5, color: ZyraColors.journeyGold),
+            style: ZyraText.body(size: 12.5, color: ZyraColors.goldText),
           ),
         ),
       ],

@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // LOCK13 presentation only. The shell retains every destination and gate.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
@@ -81,15 +82,20 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
       borderRadius: BorderRadius.circular(999),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 1.5),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 41),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: ZyraColors.surfaceFill,
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: ZyraColors.surfaceBorder),
+        child: ZyraFloatingSurface(
+          radius: 999,
+          circle: false,
+          gold: false,
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 41),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: ZyraColors.surfaceFill,
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(color: ZyraColors.surfaceBorder),
+            ),
+            child: Text('Continue Journey', style: ZyraText.button(size: 14)),
           ),
-          child: Text('Continue Journey', style: ZyraText.button(size: 14)),
         ),
       ),
     ),
@@ -106,44 +112,49 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
           Text('Journey', style: ZyraText.heading(size: 26)),
           const SizedBox(height: 16),
           Expanded(
-            child: Container(
-              key: ValueKey('journey_options_card_$id'),
-              padding: const EdgeInsets.all(11),
-              decoration: BoxDecoration(
-                color: ZyraColors.surfaceFill,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: ZyraColors.journeyGold.withValues(alpha: .6),
+            child: ZyraFloatingSurface(
+              radius: 20,
+              circle: false,
+              gold: false,
+              child: Container(
+                key: ValueKey('journey_options_card_$id'),
+                padding: const EdgeInsets.all(11),
+                decoration: BoxDecoration(
+                  color: ZyraColors.surfaceFill,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: ZyraColors.journeyGold.withValues(alpha: .6),
+                  ),
                 ),
-              ),
-              child: LayoutBuilder(
-                builder: (context, bounds) {
-                  final reading =
-                      MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-                      MediaQuery.boldTextOf(context) ||
-                      bounds.maxHeight < 600;
-                  final header = [
-                    _identity(),
-                    const SizedBox(height: 14),
-                    _continue(context),
-                    const SizedBox(height: 12),
-                  ];
-                  return reading
-                      ? SingleChildScrollView(
-                          key: ValueKey('journey_options_scroll_$id'),
-                          child: Column(
+                child: LayoutBuilder(
+                  builder: (context, bounds) {
+                    final reading =
+                        MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
+                        MediaQuery.boldTextOf(context) ||
+                        bounds.maxHeight < 600;
+                    final header = [
+                      _identity(),
+                      const SizedBox(height: 14),
+                      _continue(context),
+                      const SizedBox(height: 12),
+                    ];
+                    return reading
+                        ? ZyraShadowScrollView(
+                            key: ValueKey('journey_options_scroll_$id'),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [...header, options],
+                            ),
+                          )
+                        : Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [...header, options],
-                          ),
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            ...header,
-                            Expanded(child: options),
-                          ],
-                        );
-                },
+                            children: [
+                              ...header,
+                              Expanded(child: options),
+                            ],
+                          );
+                  },
+                ),
               ),
             ),
           ),

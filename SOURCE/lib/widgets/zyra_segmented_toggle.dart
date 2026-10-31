@@ -1,3 +1,4 @@
+import 'zyra_floating_surface.dart';
 // The app's top segmented pill — frosted glass, a single sliding fill,
 // labels that brighten and dim continuously with the gesture.
 //
@@ -101,64 +102,69 @@ class ZyraSegmentedToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: ZyraColors.frostFill,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: ZyraColors.frostBorder, width: 1),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(3),
-            child: LayoutBuilder(
-              builder: (context, c) {
-                final seg = c.maxWidth / labels.length;
-                return SizedBox(
-                  height: 34,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: position * seg,
-                        top: 0,
-                        bottom: 0,
-                        width: seg,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: ZyraColors.frostSelectedFill,
-                            borderRadius: BorderRadius.circular(17),
-                            border: Border.all(
-                              color: ZyraColors.frostSelectedBorder,
-                              width: 1,
+    return ZyraFloatingSurface(
+      radius: 20,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: ZyraColors.surfaceFill,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: ZyraColors.frostBorder, width: 1),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(3),
+              child: LayoutBuilder(
+                builder: (context, c) {
+                  final seg = c.maxWidth / labels.length;
+                  return SizedBox(
+                    height: 34,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: position * seg,
+                          top: 0,
+                          bottom: 0,
+                          width: seg,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: ZyraColors.frostSelectedFill,
+                              borderRadius: BorderRadius.circular(17),
+                              border: Border.all(
+                                color: ZyraColors.frostSelectedBorder,
+                                width: 1,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          for (var i = 0; i < labels.length; i++)
-                            Expanded(
-                              child: _label(
-                                labels[i],
-                                // Distance from this segment, clamped — the
-                                // label is fully lit at its own index and
-                                // dims as the fill leaves it, in either
-                                // direction.
-                                (1 - (position - i).abs()).clamp(0.0, 1.0),
-                                () => onChanged(i),
-                                badges.length > i ? badges[i] : 0,
-                                segmentKeys.length > i ? segmentKeys[i] : null,
-                                lockedIndexes.contains(i),
+                        Row(
+                          children: [
+                            for (var i = 0; i < labels.length; i++)
+                              Expanded(
+                                child: _label(
+                                  labels[i],
+                                  // Distance from this segment, clamped — the
+                                  // label is fully lit at its own index and
+                                  // dims as the fill leaves it, in either
+                                  // direction.
+                                  (1 - (position - i).abs()).clamp(0.0, 1.0),
+                                  () => onChanged(i),
+                                  badges.length > i ? badges[i] : 0,
+                                  segmentKeys.length > i
+                                      ? segmentKeys[i]
+                                      : null,
+                                  lockedIndexes.contains(i),
+                                ),
                               ),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),

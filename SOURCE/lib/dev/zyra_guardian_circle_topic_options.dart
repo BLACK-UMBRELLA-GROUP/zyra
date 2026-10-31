@@ -147,7 +147,7 @@ class ZyraCircleTopicTag extends StatelessWidget {
     ),
     child: Text(
       _topicLabel(topic),
-      style: ZyraText.subtext(size: 11, color: ZyraColors.journeyGold),
+      style: ZyraText.subtext(size: 11, color: ZyraColors.goldText),
     ),
   );
 }
@@ -204,7 +204,7 @@ class ZyraCircleDiscussionBubble extends StatelessWidget {
                         : 'Discussing',
                     style: ZyraText.subtext(
                       size: 11,
-                      color: ZyraColors.journeyGold,
+                      color: ZyraColors.goldText,
                     ),
                   ),
                   if (!topic.isGeneral) ...[
@@ -242,10 +242,7 @@ class ZyraCircleDiscussionBubble extends StatelessWidget {
                   style: _actionStyle(),
                   child: Text(
                     'View Journey',
-                    style: ZyraText.body(
-                      size: 12,
-                      color: ZyraColors.journeyGold,
-                    ),
+                    style: ZyraText.body(size: 12, color: ZyraColors.goldText),
                   ),
                 ),
               if (onViewProfile != null)
@@ -255,10 +252,7 @@ class ZyraCircleDiscussionBubble extends StatelessWidget {
                   style: _actionStyle(),
                   child: Text(
                     'View profile',
-                    style: ZyraText.body(
-                      size: 12,
-                      color: ZyraColors.journeyGold,
-                    ),
+                    style: ZyraText.body(size: 12, color: ZyraColors.goldText),
                   ),
                 ),
             ],
@@ -271,7 +265,7 @@ class ZyraCircleDiscussionBubble extends StatelessWidget {
   ButtonStyle _actionStyle() => OutlinedButton.styleFrom(
     minimumSize: const Size(0, 44),
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-    foregroundColor: ZyraColors.journeyGold,
+    foregroundColor: ZyraColors.goldText,
     side: BorderSide(
       color: ZyraColors.journeyGold.withValues(alpha: .45),
       width: .8,
@@ -655,7 +649,7 @@ class _ZyraCircleTopicPickerState extends State<ZyraCircleTopicPicker> {
         topic.firstName.trim().isEmpty
             ? '?'
             : topic.firstName.characters.first.toUpperCase(),
-        style: ZyraText.heading(size: 18, color: ZyraColors.journeyGold),
+        style: ZyraText.heading(size: 18, color: ZyraColors.goldText),
       ),
     );
     final content = Row(

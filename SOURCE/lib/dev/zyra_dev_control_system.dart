@@ -186,7 +186,7 @@ class ZyraDevControlsPageHeader extends StatelessWidget {
                         style: ZyraText.subtext(
                           size: 11,
                           color: selected == section
-                              ? ZyraColors.accentOnCanvas
+                              ? ZyraColors.goldText
                               : Colors.white60,
                         ),
                       ),

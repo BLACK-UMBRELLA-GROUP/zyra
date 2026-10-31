@@ -118,9 +118,9 @@ class MyZyraReviewData {
 /// Shared factual rendering and callbacks. Candidate files only arrange these
 /// parts; they cannot independently reclassify, deduplicate or route a card.
 class MyZyraDesignKit {
-  static Color get ink => const Color(0xFFF6F0F8);
-  static Color get secondary => const Color(0xFFDDD2E4);
-  static Color get lavender => const Color(0xFFDFBFEA);
+  static Color get ink => ZyraColors.espresso;
+  static Color get secondary => ZyraColors.strongSecondaryText;
+  static Color get lavender => ZyraColors.journeyGold;
   final MyZyraReviewData data;
   final String? firstName;
   final bool showAllActions;
@@ -486,7 +486,7 @@ class MyZyraDesignKit {
                 text,
                 style: ZyraText.body(
                   size: 12.5,
-                  color: lavender,
+                  color: ZyraColors.goldText,
                 ).copyWith(height: 1.4),
               ),
             ),

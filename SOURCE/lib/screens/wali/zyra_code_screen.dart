@@ -1802,7 +1802,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
 
   Widget _buildPersonInitial(String firstName) {
     final initial = firstName.substring(0, 1).toUpperCase();
-    final style = ZyraText.heading(size: 20, color: ZyraColors.surfaceSignal);
+    final style = ZyraText.heading(size: 20, color: ZyraColors.goldText);
     final text = _codeTextSize(context, initial, style);
     final textExtent = text.height > text.width ? text.height : text.width;
     final dimension = _localRequested && textExtent + 18 > 48
@@ -1842,7 +1842,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
         onTap: _busy ? null : _localBound(_send),
       ),
     );
-    final style = ZyraText.body(size: 12.5, color: ZyraColors.surfaceSignal);
+    final style = ZyraText.body(size: 12.5, color: ZyraColors.goldText);
     final requiredWidth = ['Change code', confirmLabel]
         .map(
           (label) => _codeTextSize(context, label, style).width + 17 + 7 + 34,
@@ -1987,7 +1987,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
                                   _busy ? 'Checking…' : 'Check',
                                   style: ZyraText.button(
                                     size: 12.5,
-                                    color: ZyraColors.surfaceSignal,
+                                    color: ZyraColors.goldText,
                                   ),
                                 ),
                               ],
@@ -2133,7 +2133,7 @@ class _PillAction extends StatelessWidget {
           maxLines: adaptive ? null : 1,
           overflow: adaptive ? TextOverflow.visible : TextOverflow.ellipsis,
           softWrap: adaptive ? true : null,
-          style: ZyraText.body(size: 12.5, color: ZyraColors.surfaceSignal),
+          style: ZyraText.body(size: 12.5, color: ZyraColors.goldText),
         ),
       ),
     ],
@@ -2240,7 +2240,7 @@ class _CodeCard extends StatelessWidget {
           textAlign: TextAlign.center,
           style: ZyraText.subtext(
             size: prominent ? 11.5 : 10.5,
-          ).copyWith(color: ZyraColors.journeyGold.withValues(alpha: 0.78)),
+          ).copyWith(color: ZyraColors.goldText),
         ),
       ],
     ],
@@ -2368,7 +2368,7 @@ class _SmallAction extends StatelessWidget {
       label,
       style: ZyraText.body(
         size: large ? 13.5 : 12.5,
-        color: selected ? ZyraColors.surfaceSignal : null,
+        color: selected ? ZyraColors.goldText : null,
       ),
     );
     return Material(

@@ -1,3 +1,4 @@
+import '../../widgets/zyra_floating_surface.dart';
 // Generic per-option preference screen. Every possible answer receives its
 // own explicit Prefer this / No preference / Not for me choice.
 //
@@ -142,125 +143,128 @@ class _TrafficLightQuestionScreenState
         ...widget.options.map((option) {
           final current = _values[option];
           final isRed = current == TrafficLight.red;
-          return Container(
-            key: ValueKey('preference_option_$option'),
-            width: double.infinity,
-            margin: const EdgeInsets.only(bottom: 12),
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 11),
-            decoration: BoxDecoration(
-              color: ZyraColors.foreground.withValues(alpha: 0.035),
-              borderRadius: BorderRadius.circular(13),
-              border: Border.all(
-                color: ZyraColors.foreground.withValues(alpha: 0.09),
+          return ZyraFloatingSurface(
+            radius: 13,
+            child: Container(
+              key: ValueKey('preference_option_$option'),
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 11),
+              decoration: BoxDecoration(
+                color: ZyraColors.surfaceFill,
+                borderRadius: BorderRadius.circular(13),
+                border: Border.all(
+                  color: ZyraColors.foreground.withValues(alpha: 0.09),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: Text(option, style: ZyraText.option())),
-                    if (widget.yourAnswers.contains(option)) ...[
-                      SizedBox(width: 9),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 7,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: ZyraColors.accentBg,
-                          borderRadius: BorderRadius.circular(99),
-                          border: Border.all(
-                            color: ZyraColors.accentBorder,
-                            width: 0.7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: Text(option, style: ZyraText.option())),
+                      if (widget.yourAnswers.contains(option)) ...[
+                        SizedBox(width: 9),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: ZyraColors.accentBg,
+                            borderRadius: BorderRadius.circular(99),
+                            border: Border.all(
+                              color: ZyraColors.accentBorder,
+                              width: 0.7,
+                            ),
+                          ),
+                          child: Text(
+                            'YOUR ANSWER',
+                            style: ZyraText.chapterLabel(
+                              color: ZyraColors.ink(0.70),
+                            ),
                           ),
                         ),
-                        child: Text(
-                          'YOUR ANSWER',
-                          style: ZyraText.chapterLabel(
-                            color: ZyraColors.ink(0.70),
-                          ),
+                      ],
+                    ],
+                  ),
+                  SizedBox(height: 11),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _LightButton(
+                          key: ValueKey('preference_${option}_green'),
+                          light: TrafficLight.green,
+                          label: 'Prefer this',
+                          semanticLabel: 'Prefer this for $option',
+                          active: current == TrafficLight.green,
+                          onTap: () => _set(option, TrafficLight.green),
+                        ),
+                      ),
+                      SizedBox(width: 7),
+                      Expanded(
+                        child: _LightButton(
+                          key: ValueKey('preference_${option}_yellow'),
+                          light: TrafficLight.yellow,
+                          label: 'No preference',
+                          semanticLabel: 'No preference for $option',
+                          active: current == TrafficLight.yellow,
+                          onTap: () => _set(option, TrafficLight.yellow),
+                        ),
+                      ),
+                      SizedBox(width: 7),
+                      Expanded(
+                        child: _LightButton(
+                          key: ValueKey('preference_${option}_red'),
+                          light: TrafficLight.red,
+                          label: 'Not for me',
+                          semanticLabel: 'Not for me: $option',
+                          active: isRed,
+                          onTap: () => _set(option, TrafficLight.red),
                         ),
                       ),
                     ],
-                  ],
-                ),
-                SizedBox(height: 11),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _LightButton(
-                        key: ValueKey('preference_${option}_green'),
-                        light: TrafficLight.green,
-                        label: 'Prefer this',
-                        semanticLabel: 'Prefer this for $option',
-                        active: current == TrafficLight.green,
-                        onTap: () => _set(option, TrafficLight.green),
-                      ),
-                    ),
-                    SizedBox(width: 7),
-                    Expanded(
-                      child: _LightButton(
-                        key: ValueKey('preference_${option}_yellow'),
-                        light: TrafficLight.yellow,
-                        label: 'No preference',
-                        semanticLabel: 'No preference for $option',
-                        active: current == TrafficLight.yellow,
-                        onTap: () => _set(option, TrafficLight.yellow),
-                      ),
-                    ),
-                    SizedBox(width: 7),
-                    Expanded(
-                      child: _LightButton(
-                        key: ValueKey('preference_${option}_red'),
-                        light: TrafficLight.red,
-                        label: 'Not for me',
-                        semanticLabel: 'Not for me: $option',
-                        active: isRed,
-                        onTap: () => _set(option, TrafficLight.red),
-                      ),
-                    ),
-                  ],
-                ),
-                // The exclusion belongs to the option, not the question, so it
-                // renders under the option — indented, so it reads as a
-                // qualifier on the row above rather than a new question.
-                if (showHard && isRed) ...[
-                  SizedBox(height: 6),
-                  InkWell(
-                    onTap: ZyraTapFeedback.onTap(
-                      context,
-                      () => _toggleHardOption(option),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 2,
-                        top: 2,
-                        bottom: 2,
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            _hard.contains(option)
-                                ? Icons.check_box
-                                : Icons.check_box_outline_blank,
-                            color: ZyraColors.ink(0.54),
-                            size: 17,
-                          ),
-                          SizedBox(width: 9),
-                          Expanded(
-                            child: Text(
-                              'Never introduce anyone who answered "$option".',
-                              style: ZyraText.subtext(size: 12),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
+                  // The exclusion belongs to the option, not the question, so it
+                  // renders under the option — indented, so it reads as a
+                  // qualifier on the row above rather than a new question.
+                  if (showHard && isRed) ...[
+                    SizedBox(height: 6),
+                    InkWell(
+                      onTap: ZyraTapFeedback.onTap(
+                        context,
+                        () => _toggleHardOption(option),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 2,
+                          top: 2,
+                          bottom: 2,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _hard.contains(option)
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                              color: ZyraColors.ink(0.54),
+                              size: 17,
+                            ),
+                            SizedBox(width: 9),
+                            Expanded(
+                              child: Text(
+                                'Never introduce anyone who answered "$option".',
+                                style: ZyraText.subtext(size: 12),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           );
         }),
@@ -378,7 +382,9 @@ class _LightButton extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: ZyraText.subtext(
                     size: 10.5,
-                    color: active ? Colors.white : ZyraColors.ink(0.60),
+                    color: active
+                        ? ZyraColors.espresso
+                        : ZyraColors.secondaryText,
                   ),
                 ),
               ],

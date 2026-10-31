@@ -1038,7 +1038,7 @@ class _FounderResumeStatus extends StatelessWidget {
                         'Updating…',
                         style: ZyraText.body().copyWith(
                           fontSize: 13,
-                          color: ZyraColors.journeyGold,
+                          color: ZyraColors.goldText,
                         ),
                       ),
                     ],

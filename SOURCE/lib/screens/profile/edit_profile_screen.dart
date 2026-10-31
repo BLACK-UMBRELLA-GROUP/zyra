@@ -1,3 +1,4 @@
+import '../../widgets/zyra_floating_surface.dart';
 // Edit Profile — everything that changes what is ON your profile.
 //
 // NEW 2026-08-07. Founder: "in settings if the compatibility section is the
@@ -656,15 +657,18 @@ class _CompatibilityRow extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 14),
           child: Row(
             children: [
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: ZyraColors.surfaceFill,
-                  border: Border.all(color: ZyraColors.surfaceBorder),
+              ZyraFloatingSurface(
+                radius: 18,
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ZyraColors.surfaceFill,
+                    border: Border.all(color: ZyraColors.surfaceBorder),
+                  ),
+                  child: Icon(kind.icon, size: 18, color: ZyraColors.ink(0.68)),
                 ),
-                child: Icon(kind.icon, size: 18, color: ZyraColors.ink(0.68)),
               ),
               const SizedBox(width: 13),
               Expanded(
@@ -673,7 +677,10 @@ class _CompatibilityRow extends StatelessWidget {
                   children: [
                     Text(
                       kind.label,
-                      style: ZyraText.body(size: 15, color: Colors.white),
+                      style: ZyraText.body(
+                        size: 15,
+                        color: ZyraColors.foreground,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(status, style: ZyraText.subtext(size: 11.5)),

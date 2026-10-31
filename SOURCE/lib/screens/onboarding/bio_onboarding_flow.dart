@@ -663,7 +663,7 @@ class _BioVisibilityReview extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             '${bio.sharedItemCount} item${bio.sharedItemCount == 1 ? '' : 's'} selected for Journey reveal',
-            style: ZyraText.subtext(size: 11.5, color: ZyraColors.unlockText),
+            style: ZyraText.subtext(size: 11.5, color: ZyraColors.goldText),
           ),
         ),
       ],

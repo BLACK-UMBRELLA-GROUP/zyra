@@ -450,7 +450,7 @@ class _OnboardingWalkthroughState extends State<_OnboardingWalkthrough> {
                         'Skip · DEV',
                         style: ZyraText.button(
                           size: 11,
-                          color: ZyraColors.journeyGold,
+                          color: ZyraColors.goldText,
                         ),
                       ),
                     ),
@@ -503,7 +503,7 @@ class _OnboardingWalkthroughState extends State<_OnboardingWalkthrough> {
                       key: const ValueKey('dev_onboarding_continue'),
                       onPressed: _canNavigate ? _continue : null,
                       style: FilledButton.styleFrom(
-                        backgroundColor: ZyraColors.journeyGold,
+                        backgroundColor: ZyraColors.goldTextFill,
                         foregroundColor: ZyraColors.luxuryDarkPurple,
                         shape: const StadiumBorder(),
                       ),

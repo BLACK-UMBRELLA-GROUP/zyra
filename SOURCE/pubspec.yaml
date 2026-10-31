@@ -174,8 +174,8 @@ flutter_launcher_icons:
     generate: true
   web:
     generate: true
-    background_color: "#160E20"
-    theme_color: "#160E20"
+    background_color: "#FBF7F0"
+    theme_color: "#FBF7F0"
   windows:
     generate: true
     icon_size: 48
@@ -186,46 +186,18 @@ flutter_launcher_icons:
   # These layers give Android a full-bleed ZYRA background and a transparent,
   # safely inset foreground instead. Android 13+ uses the same silhouette for
   # optional themed icons. Older Android versions retain image_path above.
-  adaptive_icon_background: "#160E20"
+  adaptive_icon_background: "#FBF7F0"
   adaptive_icon_foreground: "assets/icon/android_adaptive_foreground.png"
   adaptive_icon_foreground_inset: 16
   adaptive_icon_monochrome: "assets/icon/android_adaptive_foreground.png"
 
-# Native splash screen — added 2026-07-18. Background is the dark end
-# of the current Hulu-inspired brandGradient (0xFF160E20); native splash can only
-# render a solid colour, not a gradient, so this is the closest single
-# colour to that gradient's anchor tone, already used as a solid
-# fallback background elsewhere in the app (e.g. AuthGate's loading
-# state). The image is the "ZYRA" wordmark rendered as a static PNG —
-# see assets/splash/splash_logo.png's own note on the font substitute
-# used (this sandbox has no network access to fetch the real Playfair
-# Display font file the live app uses via google_fonts; Liberation
-# Serif Bold was used as a close local stand-in for this one static
-# asset only — everything else in the running app renders with the
-# real Playfair Display / Jost fonts via google_fonts as normal).
-# Regenerate with the real Playfair Display TTF for a pixel-exact
-# match whenever convenient — not urgent, the difference is minor at
-# splash-flash duration.
-# NATIVE SPLASH — IMAGE REMOVED 2026-08-07, and it must stay removed.
-#
-# This used to paint the ZYRA wordmark. Now that the in-app splash animates
-# the letters in one at a time (lib/screens/splash_screen.dart, Founder-
-# approved), an assembled wordmark here means the user sees the name whole,
-# then watches it vanish and rebuild itself. The launch image is the ONLY
-# thing on screen before Flutter draws, so it cannot be fixed from Dart.
-#
-# A flat colour instead. It shows for a fraction of a second and hands over
-# to a screen that starts on the same colour, so the join is invisible —
-# which is the whole reason the animation opens on brand purple rather than
-# on black or on one of the gender palettes.
-#
-# assets/splash/splash_logo.png is not referenced by the native splash.
-# Its Syne wordmark remains the locked lettering stencil for the icon
-# generator; that generator applies the in-app splash's exact gold tint.
+# LOCK14 V4: Ivory native launch with current gold stencil. iOS assets are
+# exported by tool/generate_dev_app_icons.swift; preserve the source geometry.
 flutter_native_splash:
-  color: "#160E20"
+  color: "#FBF7F0"
+  image: assets/splash/splash_logo.png
   android_12:
-    color: "#160E20"
+    color: "#FBF7F0"
   web: false
 
 # For information on the generic Dart part of this file, see the

@@ -84,7 +84,7 @@ class ZyraMessageReceipt extends StatelessWidget {
                   size: 10,
                   color: readBy.isEmpty
                       ? ZyraColors.foregroundSecondary
-                      : ZyraColors.surfaceSignal,
+                      : ZyraColors.goldText,
                 ),
               ),
             ],
@@ -141,7 +141,7 @@ class ZyraMessageReceipt extends StatelessWidget {
                             reader.firstName.substring(0, 1).toUpperCase(),
                             style: ZyraText.body(
                               size: 13,
-                              color: ZyraColors.surfaceSignal,
+                              color: ZyraColors.goldText,
                             ),
                           ),
                         ),
@@ -186,7 +186,7 @@ class ZyraUnreadMessagesDivider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             'UNREAD MESSAGES',
-            style: ZyraText.chapterLabel(color: ZyraColors.surfaceSignal),
+            style: ZyraText.chapterLabel(color: ZyraColors.goldText),
           ),
         ),
         Expanded(

@@ -134,7 +134,7 @@ class SignupMembershipChoiceScreen extends StatelessWidget {
                         : () => _select(ZyraSignupMembershipKind.one),
                     style: FilledButton.styleFrom(
                       foregroundColor: ZyraColors.luxuryDarkPurple,
-                      backgroundColor: ZyraColors.journeyGold,
+                      backgroundColor: ZyraColors.goldTextFill,
                       minimumSize: const Size.fromHeight(48),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -281,7 +281,7 @@ class SignupMembershipChoiceScreen extends StatelessWidget {
             Text(
               '${ZyraMembershipCatalog.pounds(quote.introFirstMonthPence)} first month total',
               key: const ValueKey('signup_family_first_month_total'),
-              style: ZyraText.body(size: 18, color: ZyraColors.journeyGold),
+              style: ZyraText.body(size: 18, color: ZyraColors.goldText),
             ),
             Text(
               '${quote.members} ${quote.members == 1 ? 'person' : 'people'} × ${ZyraMembershipCatalog.pounds(ZyraMembershipCatalog.familyIntroMonthPerPlacePence)}',
@@ -295,7 +295,7 @@ class SignupMembershipChoiceScreen extends StatelessWidget {
                 ? 'Then ${ZyraMembershipCatalog.pounds(quote.formulaMonthlyPence)} / month estimate'
                 : '${ZyraMembershipCatalog.pounds(quote.formulaMonthlyPence)} / month estimate',
             key: const ValueKey('signup_family_monthly_estimate'),
-            style: ZyraText.body(size: 16, color: ZyraColors.journeyGold),
+            style: ZyraText.body(size: 16, color: ZyraColors.goldText),
           ),
           Text(
             _familyIntroOfferPreview
@@ -404,7 +404,7 @@ class _ChoiceCard extends StatelessWidget {
                       badge!,
                       style: ZyraText.body(
                         size: 11,
-                        color: ZyraColors.journeyGold,
+                        color: ZyraColors.goldText,
                       ),
                     ),
                   ),
@@ -415,7 +415,7 @@ class _ChoiceCard extends StatelessWidget {
                 price,
                 style: ZyraText.body(
                   size: emphasizePrice ? 18 : 14,
-                  color: ZyraColors.journeyGold,
+                  color: ZyraColors.goldText,
                 ),
               ),
               if (renewal != null) ...[

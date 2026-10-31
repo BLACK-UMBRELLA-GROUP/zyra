@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SafeArea(
-    child: SingleChildScrollView(
+    child: ZyraShadowScrollView(
       key: ValueKey(
         setupOverview ? 'concept_switch_setup' : 'concept_switch_signup',
       ),
@@ -99,7 +100,7 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 'CURRENT',
-                style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
+                style: ZyraText.chapterLabel(color: ZyraColors.goldText),
               ),
             ],
           ),
@@ -129,7 +130,7 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
                     'Not set up yet',
                     style: ZyraText.subtext(
                       size: 13,
-                      color: ZyraColors.unlockText,
+                      color: ZyraColors.goldText,
                     ),
                   ),
                 ],
@@ -245,7 +246,7 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
       children: [
         Text(
           'ONE LOGIN',
-          style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
+          style: ZyraText.chapterLabel(color: ZyraColors.goldText),
         ),
         const SizedBox(height: 10),
         Text(
@@ -274,21 +275,26 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
   );
 
   Widget _card({String? id, bool emphasized = false, required Widget child}) =>
-      Container(
-        key: id == null ? null : ValueKey(id),
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: emphasized
-              ? ZyraColors.surfaceEmphasisFill
-              : ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
+      ZyraFloatingSurface(
+        radius: 20,
+        circle: false,
+        gold: false,
+        child: Container(
+          key: id == null ? null : ValueKey(id),
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
             color: emphasized
-                ? ZyraColors.surfaceEmphasisBorder
-                : ZyraColors.surfaceBorder,
+                ? ZyraColors.surfaceEmphasisFill
+                : ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: emphasized
+                  ? ZyraColors.surfaceEmphasisBorder
+                  : ZyraColors.surfaceBorder,
+            ),
           ),
+          child: child,
         ),
-        child: child,
       );
 
   Widget _action({
@@ -297,25 +303,30 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
     required VoidCallback onPressed,
     bool emphasized = false,
   }) => Builder(
-    builder: (context) => OutlinedButton(
-      key: ValueKey(id),
-      onPressed: ZyraTapFeedback.onTap(context, onPressed),
-      style: OutlinedButton.styleFrom(
-        minimumSize: const Size(44, 48),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-        foregroundColor: ZyraColors.foreground,
-        backgroundColor: emphasized ? ZyraColors.surfaceEmphasisFill : null,
-        side: BorderSide(
-          color: emphasized
-              ? ZyraColors.surfaceEmphasisBorder
-              : ZyraColors.surfaceBorder,
+    builder: (context) => ZyraFloatingSurface(
+      radius: 999,
+      circle: false,
+      gold: false,
+      child: OutlinedButton(
+        key: ValueKey(id),
+        onPressed: ZyraTapFeedback.onTap(context, onPressed),
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size(44, 48),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+          foregroundColor: ZyraColors.foreground,
+          backgroundColor: emphasized ? ZyraColors.surfaceEmphasisFill : null,
+          side: BorderSide(
+            color: emphasized
+                ? ZyraColors.surfaceEmphasisBorder
+                : ZyraColors.surfaceBorder,
+          ),
+          shape: const StadiumBorder(),
         ),
-        shape: const StadiumBorder(),
-      ),
-      child: Text(
-        label,
-        textAlign: TextAlign.center,
-        style: ZyraText.button(size: 14),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: ZyraText.button(size: 14),
+        ),
       ),
     ),
   );

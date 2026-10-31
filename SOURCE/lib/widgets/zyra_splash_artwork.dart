@@ -153,7 +153,7 @@ class _HuluArtwork extends CustomPainter {
   final double progress;
   final double design;
   static const gold = ZyraColors.splashWordmark;
-  static const plumLight = Color(0xFFB691C9);
+  static const plumLight = ZyraColors.avatarSand;
 
   void _glow(
     Canvas canvas,

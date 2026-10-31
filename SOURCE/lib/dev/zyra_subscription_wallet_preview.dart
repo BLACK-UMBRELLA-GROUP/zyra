@@ -276,7 +276,7 @@ TextStyle _walletHeading(double size) =>
       textBaseline: TextBaseline.alphabetic,
     );
 TextStyle get _walletButtonStyle =>
-    ZyraText.button(size: 13, color: _walletGold).copyWith(
+    ZyraText.button(size: 13, color: ZyraColors.goldText).copyWith(
       height: 1.5,
       letterSpacing: .1,
       leadingDistribution: TextLeadingDistribution.even,
@@ -508,7 +508,7 @@ class _ZyraSubscriptionWalletPreviewState
                   icon: const Icon(Icons.arrow_back, size: 22),
                   label: Text(
                     'Back',
-                    style: ZyraText.button(color: ZyraColors.journeyGold),
+                    style: ZyraText.button(color: ZyraColors.goldText),
                   ),
                 ),
               ),
@@ -934,8 +934,8 @@ class _ZyraSubscriptionWalletPreviewState
       builder: (dialogContext) => Dialog(
         key: const ValueKey('wallet_info_dialog'),
         backgroundColor: ZyraColors.isLightPalette
-            ? const Color(0xFFF4EFF6)
-            : const Color(0xFF30253E),
+            ? ZyraColors.cardSurface
+            : ZyraColors.cardSurface,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -1549,7 +1549,7 @@ class _ZyraSubscriptionWalletPreviewState
   }) => OutlinedButton(
     key: ValueKey(id),
     style: OutlinedButton.styleFrom(
-      foregroundColor: ZyraColors.journeyGold,
+      foregroundColor: ZyraColors.goldText,
       disabledForegroundColor: ZyraColors.foregroundSecondary,
       minimumSize: const Size(48, 48),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -1572,12 +1572,12 @@ class _ZyraSubscriptionWalletPreviewState
               size: 13,
               color: onPressed == null
                   ? ZyraColors.foregroundSecondary
-                  : ZyraColors.journeyGold,
+                  : ZyraColors.goldText,
             )
           : _walletButtonStyle.copyWith(
               color: onPressed == null
                   ? ZyraColors.foregroundSecondary
-                  : _walletGold,
+                  : ZyraColors.goldText,
             ),
     ),
   );

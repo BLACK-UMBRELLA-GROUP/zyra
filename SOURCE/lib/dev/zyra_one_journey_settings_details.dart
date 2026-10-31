@@ -1,3 +1,5 @@
+import '../theme/zyra_colors.dart';
+import '../widgets/zyra_floating_surface.dart';
 // Detached Settings click-through content for the protected comparison.
 // Callers own navigation and admission. Nothing here reads an account, device,
 // service or preference, or carries out a security, consent or account action.
@@ -235,43 +237,48 @@ class _HiddenProfileCard extends StatelessWidget {
                 children: [
                   Divider(height: 1, thickness: 1, color: border),
                   const SizedBox(height: 5),
-                  OutlinedButton(
-                    key: const ValueKey('concept_hidden_profile_view'),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(44, 48),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 12,
+                  ZyraFloatingSurface(
+                    radius: 999,
+                    circle: false,
+                    gold: false,
+                    child: OutlinedButton(
+                      key: const ValueKey('concept_hidden_profile_view'),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(44, 48),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 12,
+                        ),
+                        foregroundColor: ink,
+                        side: BorderSide.none,
                       ),
-                      foregroundColor: ink,
-                      side: BorderSide.none,
-                    ),
-                    onPressed: ZyraTapFeedback.onTap(context, onView),
-                    child: Row(
-                      children: [
-                        ExcludeSemantics(
-                          child: Icon(
-                            Icons.person_outline_rounded,
-                            size: 20,
-                            color: viewInk,
+                      onPressed: ZyraTapFeedback.onTap(context, onView),
+                      child: Row(
+                        children: [
+                          ExcludeSemantics(
+                            child: Icon(
+                              Icons.person_outline_rounded,
+                              size: 20,
+                              color: viewInk,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'View profile',
-                            style: ZyraText.button(size: 14, color: viewInk),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'View profile',
+                              style: ZyraText.button(size: 14, color: viewInk),
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        ExcludeSemantics(
-                          child: Icon(
-                            Icons.chevron_right_rounded,
-                            size: 20,
-                            color: viewInk,
+                          const SizedBox(width: 8),
+                          ExcludeSemantics(
+                            child: Icon(
+                              Icons.chevron_right_rounded,
+                              size: 20,
+                              color: viewInk,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -298,7 +305,10 @@ class _HiddenProfileCard extends StatelessWidget {
                     label: Text(
                       'Unhide profile',
                       textAlign: TextAlign.center,
-                      style: ZyraText.button(size: 14, color: gold),
+                      style: ZyraText.button(
+                        size: 14,
+                        color: ZyraColors.goldText,
+                      ),
                     ),
                   ),
                   TextButton(
@@ -808,7 +818,7 @@ class _SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) => Material(
     key: ValueKey('concept_settings_$id'),
     color: ZyraFounderLaunchPageStyle.activeOf(context)
-        ? Colors.white
+        ? ZyraColors.foreground
         : Colors.transparent,
     child: SafeArea(
       child: Column(
@@ -908,10 +918,7 @@ class _FounderLaunchNote extends StatelessWidget {
           header: true,
           child: Text(
             'Founder input needed before launch',
-            style: ZyraText.button(
-              size: 14,
-              color: ZyraFounderLaunchPageStyle.darkGoldInk,
-            ),
+            style: ZyraText.button(size: 14, color: ZyraColors.goldText),
           ),
         ),
         const SizedBox(height: 8),

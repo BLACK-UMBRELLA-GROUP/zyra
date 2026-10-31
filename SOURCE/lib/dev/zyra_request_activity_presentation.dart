@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // Founder-selected Soft cards for caller-owned requests and Introductions.
 // No member reads, preference writes, request decisions or acknowledgement.
 import '../widgets/zyra_tap_feedback.dart';
@@ -179,35 +180,38 @@ class _ZyraRequestActivityPresentationState
       label: widget.labels[index],
       onTap: ZyraTapFeedback.onTap(context, action),
       excludeSemantics: true,
-      child: Material(
-        color: selected
-            ? ZyraColors.accentOnCanvas.withValues(alpha: .12)
-            : Colors.transparent,
-        borderRadius: radius,
-        child: InkWell(
-          key: widget.segmentKeys.length > index
-              ? widget.segmentKeys[index]
-              : null,
+      child: ZyraFloatingSurface(
+        radius: 999,
+        child: Material(
+          color: selected
+              ? ZyraColors.accentOnCanvas.withValues(alpha: .12)
+              : ZyraColors.surfaceFill,
           borderRadius: radius,
-          onTap: ZyraTapFeedback.onTap(context, action),
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 44),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
-            decoration: BoxDecoration(
-              borderRadius: radius,
-              border: Border.all(
-                color: selected
-                    ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
-                    : ZyraColors.surfaceBorder,
+          child: InkWell(
+            key: widget.segmentKeys.length > index
+                ? widget.segmentKeys[index]
+                : null,
+            borderRadius: radius,
+            onTap: ZyraTapFeedback.onTap(context, action),
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 44),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+              decoration: BoxDecoration(
+                borderRadius: radius,
+                border: Border.all(
+                  color: selected
+                      ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
+                      : ZyraColors.surfaceBorder,
+                ),
               ),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              widget.labels[index],
-              textAlign: TextAlign.center,
-              style: ZyraText.button(
-                size: 12,
-                color: selected ? ZyraColors.foreground : _helperInk,
+              alignment: Alignment.center,
+              child: Text(
+                widget.labels[index],
+                textAlign: TextAlign.center,
+                style: ZyraText.button(
+                  size: 12,
+                  color: selected ? ZyraColors.foreground : _helperInk,
+                ),
               ),
             ),
           ),
@@ -225,7 +229,7 @@ class _ZyraRequestActivityPresentationState
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 110),
         child: LayoutBuilder(
           key: ValueKey('request_activity_empty_viewport_$index'),
-          builder: (context, constraints) => SingleChildScrollView(
+          builder: (context, constraints) => ZyraShadowScrollView(
             key: PageStorageKey('concept_connections_page_$index'),
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -595,36 +599,43 @@ class ZyraRequestActivityCard extends StatelessWidget {
       final actions = open
           ? _expandedActions()
           : const SizedBox(width: double.infinity);
-      return Container(
-        key: ValueKey('request_activity_card_$cardId'),
-        margin: const EdgeInsets.only(bottom: 16),
-        decoration: BoxDecoration(
-          color: open ? ZyraColors.surfaceEmphasisFill : ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(26),
-          border: Border.all(
+      return ZyraFloatingSurface(
+        radius: 26,
+        circle: false,
+        gold: false,
+        child: Container(
+          key: ValueKey('request_activity_card_$cardId'),
+          margin: const EdgeInsets.only(bottom: 16),
+          decoration: BoxDecoration(
             color: open
-                ? ZyraColors.surfaceEmphasisBorder
-                : ZyraColors.surfaceBorder,
+                ? ZyraColors.surfaceEmphasisFill
+                : ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: open
+                  ? ZyraColors.surfaceEmphasisBorder
+                  : ZyraColors.surfaceBorder,
+            ),
           ),
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _header(context, open),
-              // No RenderAnimatedSize exists on reduced-motion/accessibility
-              // paths: zero-duration animation still had layout state/tickers.
-              if (_quietMotion(context))
-                actions
-              else
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOutCubic,
-                  alignment: Alignment.topCenter,
-                  child: actions,
-                ),
-            ],
+          child: Material(
+            type: MaterialType.transparency,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _header(context, open),
+                // No RenderAnimatedSize exists on reduced-motion/accessibility
+                // paths: zero-duration animation still had layout state/tickers.
+                if (_quietMotion(context))
+                  actions
+                else
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOutCubic,
+                    alignment: Alignment.topCenter,
+                    child: actions,
+                  ),
+              ],
+            ),
           ),
         ),
       );
@@ -671,45 +682,50 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) => Container(
-    key: ValueKey('past_request_activity_card_$cardId'),
-    margin: const EdgeInsets.only(bottom: 16),
-    padding: const EdgeInsets.all(18),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(26),
-      border: Border.all(color: ZyraColors.surfaceBorder),
-    ),
-    child: LayoutBuilder(
-      builder: (context, constraints) {
-        final stackIdentity =
-            MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-            !_wholeWordsFit(
-              context,
-              _name,
-              ZyraText.heading(size: 21),
-              constraints.maxWidth - 64 - 16,
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 26,
+    circle: false,
+    gold: false,
+    child: Container(
+      key: ValueKey('past_request_activity_card_$cardId'),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final stackIdentity =
+              MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
+              !_wholeWordsFit(
+                context,
+                _name,
+                ZyraText.heading(size: 21),
+                constraints.maxWidth - 64 - 16,
+              );
+          if (stackIdentity) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _requestActivityPortrait(profile),
+                const SizedBox(height: 16),
+                _identity(),
+              ],
             );
-        if (stackIdentity) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
+          }
+          return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _requestActivityPortrait(profile),
-              const SizedBox(height: 16),
-              _identity(),
+              const SizedBox(width: 16),
+              Expanded(child: _identity()),
             ],
           );
-        }
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _requestActivityPortrait(profile),
-            const SizedBox(width: 16),
-            Expanded(child: _identity()),
-          ],
-        );
-      },
+        },
+      ),
     ),
   );
 }

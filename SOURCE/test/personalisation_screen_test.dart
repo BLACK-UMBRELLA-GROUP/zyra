@@ -37,31 +37,11 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
-  test('Personalisation exposes ten dark backgrounds and no light studies', () {
-    expect(PersonalisationScreen.availablePalettes, hasLength(10));
-    expect(
-      PersonalisationScreen.availablePalettes,
-      contains(ZyraDevPalette.midnightBlue),
-    );
-    expect(
-      PersonalisationScreen.availablePalettes.every(
-        (palette) => !palette.isLight,
-      ),
-      isTrue,
-    );
-    expect(
-      PersonalisationScreen.availablePalettes.map((palette) => palette.name),
-      isNot(contains('paperWhite')),
-    );
-    expect(
-      PersonalisationScreen.availablePalettes.map((palette) => palette.name),
-      isNot(contains('crystalMist')),
-    );
+  test('Personalisation offers only the locked Ivory background', () {
+    expect(PersonalisationScreen.availablePalettes, [ZyraDevPalette.ivory]);
   });
 
-  testWidgets('screen starts from Midnight Plum, Poppins and Subtle', (
-    tester,
-  ) async {
+  testWidgets('screen starts from Ivory, Poppins and Subtle', (tester) async {
     tester.view.physicalSize = const Size(320, 568);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -83,56 +63,37 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('YOUR EXPERIENCE'), findsOneWidget);
-    expect(find.text('Midnight Plum'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('personalisation_background')),
+      findsNothing,
+    );
+    expect(find.text('Background'), findsNothing);
+    expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
     expect(find.text('Poppins'), findsOneWidget);
     expect(find.text('Subtle'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('background sheet omits light choices and applies a dark one', (
+  testWidgets('legacy background requests leave member preferences intact', (
     tester,
   ) async {
+    final paletteBefore = ZyraLocalPrefs.cachedAppPaletteName;
+    final revisionBefore = ZyraLocalPrefs.cachedAppPaletteRevision;
+    ZyraColors.restoreAppPalette(ZyraDevPalette.deepEmerald.name);
+    ZyraColors.selectAppPalette(ZyraDevPalette.midnightBlue);
+    ZyraColors.restoreCurrentAppPalette();
     await tester.pumpWidget(const MaterialApp(home: PersonalisationScreen()));
-
-    await tester.tap(find.byKey(const ValueKey('personalisation_background')));
-    await tester.pumpAndSettle();
-    expect(find.text('Paper White'), findsNothing);
-    expect(find.text('Crystal Mist'), findsNothing);
-    expect(find.text('Deep Emerald'), findsOneWidget);
-
-    await tester.tap(find.text('Deep Emerald'));
-    await tester.pumpAndSettle();
-    expect(ZyraColors.devPalette, ZyraDevPalette.deepEmerald);
-  });
-
-  testWidgets('Midnight blue is selected through the Background sheet', (
-    tester,
-  ) async {
-    await tester.pumpWidget(const MaterialApp(home: PersonalisationScreen()));
-    expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
-    await tester.tap(find.byKey(const ValueKey('personalisation_background')));
-    await tester.pumpAndSettle();
-    final choice = find.byKey(
-      const ValueKey('personalisation_choice_ZyraDevPalette.midnightBlue'),
-    );
-    await tester.scrollUntilVisible(
-      choice,
-      160,
-      scrollable: find.descendant(
-        of: find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
-        matching: find.byType(Scrollable),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(choice);
-    await tester.pumpAndSettle();
-    expect(ZyraColors.devPalette, ZyraDevPalette.midnightBlue);
-    expect(ZyraLocalPrefs.cachedAppPaletteName, 'midnightBlue');
     expect(
-      ZyraLocalPrefs.cachedAppPaletteRevision,
-      ZyraColors.currentPaletteRevision,
+      find.byKey(const ValueKey('personalisation_background')),
+      findsNothing,
     );
-    expect(find.text('Midnight blue'), findsOneWidget);
+    expect(
+      find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
+      findsNothing,
+    );
+    expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
+    expect(ZyraLocalPrefs.cachedAppPaletteName, paletteBefore);
+    expect(ZyraLocalPrefs.cachedAppPaletteRevision, revisionBefore);
     expect(tester.takeException(), isNull);
   });
 

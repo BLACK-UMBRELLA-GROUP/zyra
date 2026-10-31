@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // Caller-owned Journey options, either in the original opaque sheet or
 // expanded inside a card. Choosing an option does not itself change a Journey.
 import '../widgets/zyra_tap_feedback.dart';
@@ -111,7 +112,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
               // The caller's whole-card reading fallback already scrolls.
               // Do not add a competing nested gesture owner when unbounded.
               return constraints.maxHeight.isFinite
-                  ? SingleChildScrollView(
+                  ? ZyraShadowScrollView(
                       key: ValueKey('draft_options_inline_scroll_$id'),
                       child: content,
                     )
@@ -124,7 +125,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           child: SafeArea(
             top: false,
-            child: SingleChildScrollView(
+            child: ZyraShadowScrollView(
               padding: const EdgeInsets.fromLTRB(20, 11, 20, 18),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -348,24 +349,29 @@ class ZyraConceptJourneyOptionsButton extends StatelessWidget {
       message: isExpandable
           ? '${expanded ? 'Collapse' : 'Expand'} Journey options'
           : 'Journey options',
-      child: Material(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(999),
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: ZyraColors.surfaceBorder, width: .6),
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(999),
-            onTap: ZyraTapFeedback.onTap(context, onTap),
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: Icon(
-                Icons.more_horiz,
-                size: 16,
-                color: ZyraColors.ink(.8),
+      child: ZyraFloatingSurface(
+        radius: 999,
+        circle: false,
+        gold: false,
+        child: Material(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(999),
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(color: ZyraColors.surfaceBorder, width: .6),
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(999),
+              onTap: ZyraTapFeedback.onTap(context, onTap),
+              child: SizedBox(
+                width: 36,
+                height: 36,
+                child: Icon(
+                  Icons.more_horiz,
+                  size: 16,
+                  color: ZyraColors.ink(.8),
+                ),
               ),
             ),
           ),

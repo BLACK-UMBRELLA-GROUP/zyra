@@ -2029,7 +2029,7 @@ class _CircleMemberRow extends StatelessWidget {
           ),
           child: Text(
             participant.firstName.substring(0, 1).toUpperCase(),
-            style: ZyraText.body(size: 15, color: ZyraColors.surfaceSignal),
+            style: ZyraText.body(size: 15, color: ZyraColors.goldText),
           ),
         ),
         const SizedBox(width: 11),
@@ -2053,10 +2053,7 @@ class _CircleMemberRow extends StatelessWidget {
             ),
             child: Text(
               'You',
-              style: ZyraText.subtext(
-                size: 10.5,
-                color: ZyraColors.surfaceSignal,
-              ),
+              style: ZyraText.subtext(size: 10.5, color: ZyraColors.goldText),
             ),
           ),
       ],
@@ -2431,7 +2428,7 @@ class ZyraFamilyMessageComposer extends StatelessWidget {
                       softWrap: false,
                       style: ZyraText.subtext(
                         size: 12,
-                        color: ZyraColors.journeyGold,
+                        color: ZyraColors.goldText,
                       ),
                     ),
                   ),
@@ -2834,7 +2831,7 @@ class _ContextAvatar extends StatelessWidget {
     ),
     child: Text(
       this.context.firstName.substring(0, 1).toUpperCase(),
-      style: ZyraText.body(size: size * 0.36, color: ZyraColors.surfaceSignal),
+      style: ZyraText.body(size: size * 0.36, color: ZyraColors.goldText),
     ),
   );
 }

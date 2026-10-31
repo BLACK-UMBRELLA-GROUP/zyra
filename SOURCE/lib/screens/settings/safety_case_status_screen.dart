@@ -219,7 +219,7 @@ class _SafetyCaseCard extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 value.statusLabel,
-                style: ZyraText.body(size: 12.5, color: ZyraColors.journeyGold),
+                style: ZyraText.body(size: 12.5, color: ZyraColors.goldText),
               ),
               const SizedBox(height: 4),
               Text(

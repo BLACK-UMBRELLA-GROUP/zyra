@@ -331,9 +331,7 @@ class _OnboardingStageIntroScreenState
               'Skip · DEV',
               style: ZyraText.button(
                 size: 11,
-                color: arrowMode
-                    ? ZyraColors.journeyGold.withValues(alpha: 0.58)
-                    : ZyraColors.journeyGold,
+                color: arrowMode ? ZyraColors.goldText : ZyraColors.goldText,
               ),
             ),
           )
@@ -909,7 +907,7 @@ class _RoadmapRow extends StatelessWidget {
                   '$number',
                   style: ZyraText.subtext(
                     size: 10.5,
-                    color: ZyraColors.unlockText,
+                    color: ZyraColors.goldText,
                   ),
                 ),
               ),
@@ -1046,9 +1044,7 @@ class _StagePage extends StatelessWidget {
                     child: Text(
                       stage.title.toUpperCase(),
                       textAlign: TextAlign.center,
-                      style: ZyraText.chapterLabel(
-                        color: ZyraColors.unlockText,
-                      ),
+                      style: ZyraText.chapterLabel(color: ZyraColors.goldText),
                     ),
                   ),
                   const SizedBox(height: 12),

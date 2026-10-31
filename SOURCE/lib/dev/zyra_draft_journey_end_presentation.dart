@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class ZyraDraftJourneyEndPresentation extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SafeArea(
     child: LayoutBuilder(
-      builder: (context, constraints) => SingleChildScrollView(
+      builder: (context, constraints) => ZyraShadowScrollView(
         key: ValueKey('draft_end_reader_$subjectId'),
         physics: const ClampingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
@@ -51,34 +52,39 @@ class ZyraDraftJourneyEndPresentation extends StatelessWidget {
                   children: [
                     _identity(context),
                     const SizedBox(height: 24),
-                    Container(
-                      key: ValueKey('draft_end_consequences_$subjectId'),
-                      padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
-                        color: ZyraColors.surfaceFill,
-                        borderRadius: BorderRadius.circular(22),
-                        border: Border.all(color: ZyraColors.surfaceBorder),
-                      ),
-                      child: Column(
-                        children: [
-                          _consequence(
-                            Icons.chat_bubble_outline_rounded,
-                            'Your conversation closes',
-                            'This Journey ends for both of you and cannot be reopened.',
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 18),
-                            child: Divider(
-                              height: 1,
-                              color: ZyraColors.surfaceBorder,
+                    ZyraFloatingSurface(
+                      radius: 22,
+                      circle: false,
+                      gold: false,
+                      child: Container(
+                        key: ValueKey('draft_end_consequences_$subjectId'),
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: ZyraColors.surfaceFill,
+                          borderRadius: BorderRadius.circular(22),
+                          border: Border.all(color: ZyraColors.surfaceBorder),
+                        ),
+                        child: Column(
+                          children: [
+                            _consequence(
+                              Icons.chat_bubble_outline_rounded,
+                              'Your conversation closes',
+                              'This Journey ends for both of you and cannot be reopened.',
                             ),
-                          ),
-                          _consequence(
-                            Icons.history_rounded,
-                            'Your Timeline stays',
-                            'Your shared history is kept.',
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 18),
+                              child: Divider(
+                                height: 1,
+                                color: ZyraColors.surfaceBorder,
+                              ),
+                            ),
+                            _consequence(
+                              Icons.history_rounded,
+                              'Your Timeline stays',
+                              'Your shared history is kept.',
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -136,7 +142,7 @@ class ZyraDraftJourneyEndPresentation extends StatelessWidget {
       children: [
         Text(
           'YOUR JOURNEY',
-          style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
+          style: ZyraText.chapterLabel(color: ZyraColors.goldText),
         ),
         const SizedBox(height: 8),
         Text(
@@ -196,34 +202,39 @@ class ZyraDraftJourneyEndPresentation extends StatelessWidget {
   }) {
     final color = destructive ? ZyraColors.destructive : ZyraColors.foreground;
     return Builder(
-      builder: (context) => OutlinedButton(
-        key: ValueKey(id),
-        onPressed: ZyraTapFeedback.onTap(context, onPressed),
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size(48, 52),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-          foregroundColor: color,
-          disabledForegroundColor: ZyraColors.foregroundMuted.withValues(
-            alpha: .5,
+      builder: (context) => ZyraFloatingSurface(
+        radius: 999,
+        circle: false,
+        gold: false,
+        child: OutlinedButton(
+          key: ValueKey(id),
+          onPressed: ZyraTapFeedback.onTap(context, onPressed),
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(48, 52),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+            foregroundColor: color,
+            disabledForegroundColor: ZyraColors.foregroundMuted.withValues(
+              alpha: .5,
+            ),
+            backgroundColor: destructive
+                ? ZyraColors.destructive.withValues(alpha: .08)
+                : ZyraColors.surfaceEmphasisFill,
+            side: BorderSide(
+              color: destructive
+                  ? ZyraColors.destructiveBorder
+                  : ZyraColors.surfaceEmphasisBorder,
+            ),
+            shape: const StadiumBorder(),
           ),
-          backgroundColor: destructive
-              ? ZyraColors.destructive.withValues(alpha: .08)
-              : ZyraColors.surfaceEmphasisFill,
-          side: BorderSide(
-            color: destructive
-                ? ZyraColors.destructiveBorder
-                : ZyraColors.surfaceEmphasisBorder,
-          ),
-          shape: const StadiumBorder(),
-        ),
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: ZyraText.button(
-            size: 14,
-            color: onPressed == null
-                ? ZyraColors.foregroundMuted.withValues(alpha: .5)
-                : color,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: ZyraText.button(
+              size: 14,
+              color: onPressed == null
+                  ? ZyraColors.foregroundMuted.withValues(alpha: .5)
+                  : color,
+            ),
           ),
         ),
       ),

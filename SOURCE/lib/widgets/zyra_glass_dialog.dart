@@ -1,3 +1,4 @@
+import 'zyra_floating_surface.dart';
 // ZYRA's shared centred dialog. The historical Glass API names stay stable
 // so all existing notices and confirmations use the same current chrome.
 // Founder full-app consistency review, 2026-10-03: opaque plum like the
@@ -78,7 +79,7 @@ class ZyraGlassCard extends StatelessWidget {
                   ),
                   child: Material(
                     type: MaterialType.transparency,
-                    child: SingleChildScrollView(
+                    child: ZyraShadowScrollView(
                       padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
                       child: child,
                     ),
@@ -149,25 +150,30 @@ Future<bool?> showZyraGlassChoice({
         const SizedBox(height: 20),
         SizedBox(
           width: double.infinity,
-          child: FilledButton(
-            key: primaryKey,
-            style: destructivePrimary
-                ? FilledButton.styleFrom(
-                    backgroundColor: ZyraColors.destructive,
-                    foregroundColor: ZyraColors.onPrimaryAction,
-                  )
-                : null,
-            onPressed: ZyraTapFeedback.onTap(
-              context,
-              () => Navigator.of(ctx).pop(true),
-            ),
-            child: Text(
-              primaryLabel,
-              textAlign: TextAlign.center,
-              style: ZyraText.button(
-                color: destructivePrimary
-                    ? ZyraColors.onPrimaryAction
-                    : ZyraColors.foreground,
+          child: ZyraFloatingSurface(
+            radius: 999,
+            circle: false,
+            gold: false,
+            child: FilledButton(
+              key: primaryKey,
+              style: destructivePrimary
+                  ? FilledButton.styleFrom(
+                      backgroundColor: ZyraColors.destructive,
+                      foregroundColor: ZyraColors.onPrimaryAction,
+                    )
+                  : null,
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                () => Navigator.of(ctx).pop(true),
+              ),
+              child: Text(
+                primaryLabel,
+                textAlign: TextAlign.center,
+                style: ZyraText.button(
+                  color: destructivePrimary
+                      ? ZyraColors.onPrimaryAction
+                      : ZyraColors.foreground,
+                ),
               ),
             ),
           ),
@@ -213,15 +219,20 @@ Future<void> showZyraGlassNotice({
         const SizedBox(height: 20),
         SizedBox(
           width: double.infinity,
-          child: FilledButton(
-            onPressed: ZyraTapFeedback.onTap(
-              context,
-              () => Navigator.of(ctx).pop(),
-            ),
-            child: Text(
-              buttonLabel,
-              textAlign: TextAlign.center,
-              style: ZyraText.button(),
+          child: ZyraFloatingSurface(
+            radius: 999,
+            circle: false,
+            gold: false,
+            child: FilledButton(
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                () => Navigator.of(ctx).pop(),
+              ),
+              child: Text(
+                buttonLabel,
+                textAlign: TextAlign.center,
+                style: ZyraText.button(),
+              ),
             ),
           ),
         ),

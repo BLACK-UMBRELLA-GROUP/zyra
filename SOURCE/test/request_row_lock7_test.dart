@@ -189,7 +189,7 @@ void main() {
         'Request sent. Tap to cancel request',
       );
       final text = tester.widget<Text>(find.text('Request sent'));
-      expect(text.style!.color, ZyraColors.journeyGold);
+      expect(text.style!.color, ZyraColors.goldText);
       final ink = tester.widget<Container>(
         find.descendant(of: _surface, matching: find.byType(Container)).first,
       );

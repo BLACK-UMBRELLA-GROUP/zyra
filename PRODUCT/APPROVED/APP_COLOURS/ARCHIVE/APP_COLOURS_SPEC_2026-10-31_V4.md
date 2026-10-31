@@ -1,14 +1,14 @@
 ---
-id: TBC (Fable assigns)
+id: DOC-ZYRA-0338
 type: SPEC
-status: CURRENT
+status: ARCHIVED (2026-10-31)
 feature: PRODUCT BLUEPRINT
 purpose: Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash; no member colour choice
 links: [DR-ZYRA-276, AD-AIOS-115]
 owner: ZYRA chat
 ---
 
-# APP COLOURS — SPEC — V3 (LOCKED 30 OCT 2026)
+# APP COLOURS — SPEC — V4 (LOCKED 31 OCT 2026)
 
 V1 is in `../ARCHIVE/APP_COLOURS_SPEC_2026-10-30_V1.md` (masters in `../ARCHIVE/MASTERS_V1/`). **What changed (V2):** the **floating
 look** — surfaces are ivory like the background and separated by a soft warm shadow instead of white boxes (Founder 30 Oct:
@@ -22,6 +22,7 @@ earlier LOCK master (LOCK 2–13) shows the old Plum colours: build those layout
 Masters (430 × 932 @3x, prototype **V82**; c11–c13 unchanged from V79) in `../MASTERS/`: c01 profiles · c02 journey_tab · c03 my_zyra · c04 guardian_tab ·
 c05 profile_tab · c06 filters_where · c07 requests_opened · c08 add_guardian_found · c09 guardian_my_zyra · c10 guardian_network;
 c11 app_icon_1024 (colour reference) · c12 splash · c13 iphone_launch; **c14 traffic_light_dots (V3, prototype V86)**.
+**V4 (31 Oct, prototype V94):** gold-button fill changed for readability; c08 and c14 re-rendered (V3 pictures in `../ARCHIVE/MASTERS_V3/`).
 
 ## Colour table (old → new)
 
@@ -34,7 +35,7 @@ c11 app_icon_1024 (colour reference) · c12 splash · c13 iphone_launch; **c14 t
 | Icons / quiet text | `#CFC3DC` | `#7A6E62` |
 | Muted / hints | `#B7A9C6`, `#A99CB7`, `#9D92A9` | `#857868` / `#867A6E` |
 | Gold accent (eyebrows, links, active underline, outlines, sliders, checks) | `#E8C98A`, `rgba(232,201,138,a)` | `#A9792E`, `rgba(169,121,46,a)` |
-| Gold buttons | fill `#E8C98A`, text `#241A2F` | fill `#A9792E`, text `#2B2420` |
+| **Gold fills with text (V4)** — gold buttons, the filled "Request a Journey" pill, NEW badges and other gold pills with text | fill `#E8C98A`, text `#241A2F` | fill **`#C08A3A`**, text `#2B2420` (contrast 5.0 : 1; was `#A9792E` = 3.97 : 1, failed). Button shadow tint follows the fill. The accent gold `#A9792E` stays for icons, lines, outlines, sliders, dots and the active underline |
 | Glass cards, tiles, pills, tab bar | `rgba(255,255,255,.07)` | `rgba(250,245,236,.85)` — ivory like the background (**floating**, see below); tab bar solid `#F1EBDF` |
 | Borders | `rgba(255,255,255,.14)` | `rgba(62,46,30,.06)` (almost invisible) — gold borders stay gold |
 | Dividers | `rgba(255,255,255,.12)` | `rgba(62,46,30,.10)` |
@@ -77,5 +78,5 @@ c11 app_icon_1024 (colour reference) · c12 splash · c13 iphone_launch; **c14 t
 ## Accessibility
 
 Body text `#2B2420` and secondary `#6E6257` meet WCAG AA on the ivory background; gold `#A9792E` is used for large text,
-icons, outlines and the gold-button fill (with `#2B2420` text), not for small body text. Check every screen with Larger Text and
+icons and outlines, not for small body text. Gold fills that carry text use `#C08A3A` with `#2B2420` text (5.0 : 1, V4). Check every screen with Larger Text and
 Increase Contrast.

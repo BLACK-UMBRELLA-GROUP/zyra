@@ -21,8 +21,8 @@ void main() {
   testWidgets('settled main splash uses the canonical brand text colours', (
     tester,
   ) async {
-    expect(ZyraColors.splashWordmark, const Color(0xFFE5CE8E));
-    expect(ZyraColors.splashTagline, Colors.white.withValues(alpha: .78));
+    expect(ZyraColors.splashWordmark, const Color(0xFFA9792E));
+    expect(ZyraColors.splashTagline, ZyraColors.secondaryText);
     await tester.pumpWidget(const MaterialApp(home: SplashScreen()));
     await tester.pump(const Duration(milliseconds: 2401));
 

@@ -682,11 +682,7 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
           ),
           style: ZyraText.body(
             size: 11,
-            color: gold
-                ? ZyraColors.isLightPalette
-                      ? ZyraColors.luxuryDarkPurple
-                      : ZyraColors.journeyGold
-                : ZyraColors.foregroundSecondary,
+            color: gold ? ZyraColors.goldText : ZyraColors.foregroundSecondary,
           ).copyWith(letterSpacing: 1.2, height: 1.5),
         ),
       ),

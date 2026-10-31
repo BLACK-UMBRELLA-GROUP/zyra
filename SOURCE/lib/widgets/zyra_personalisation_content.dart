@@ -1,3 +1,4 @@
+import 'zyra_floating_surface.dart';
 import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,6 @@ class ZyraPersonalisationContent extends StatelessWidget {
   const ZyraPersonalisationContent({
     super.key,
     required this.snapshot,
-    required this.onChooseBackground,
     required this.onChooseHaptic,
     required this.onGoldChanged,
     this.previewGradient,
@@ -36,7 +36,6 @@ class ZyraPersonalisationContent extends StatelessWidget {
   });
 
   final ZyraPersonalisationSnapshot snapshot;
-  final VoidCallback? onChooseBackground;
   final VoidCallback? onChooseHaptic;
   final ValueChanged<bool>? onGoldChanged;
   final LinearGradient? previewGradient;
@@ -81,57 +80,57 @@ class ZyraPersonalisationContent extends StatelessWidget {
         style: ZyraText.chapterLabel(color: ZyraColors.foregroundSecondary),
       ),
       const SizedBox(height: 10),
-      Container(
-        decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: ZyraColors.surfaceBorder, width: 0.6),
-        ),
-        child: Column(
-          children: [
-            _PersonalisationRow(
-              key: const ValueKey('personalisation_background'),
-              icon: Icons.gradient_outlined,
-              title: 'Background',
-              value: snapshot.palette.label.replaceAll(' · Current', ''),
-              hint: 'Choose the colour atmosphere used across ZYRA.',
-              onTap: onChooseBackground,
-            ),
-            const _PersonalisationDivider(),
-            _PersonalisationRow(
-              key: const ValueKey('personalisation_gold'),
-              icon: Icons.auto_awesome_outlined,
-              title: 'Gold accents',
-              value: snapshot.goldEnabled ? 'On' : 'Off',
-              hint: 'Subtle gold details; motion follows your device settings.',
-              trailing: Semantics(
-                label: 'Gold accents',
-                child: Switch.adaptive(
-                  key: const ValueKey('personalisation_gold_toggle'),
-                  value: snapshot.goldEnabled,
-                  activeTrackColor: ZyraColors.journeyGold,
-                  onChanged: ZyraTapFeedback.onChanged(context, onGoldChanged),
+      ZyraFloatingSurface(
+        radius: 18,
+        circle: false,
+        gold: false,
+        child: Container(
+          decoration: BoxDecoration(
+            color: ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: ZyraColors.surfaceBorder, width: 0.6),
+          ),
+          child: Column(
+            children: [
+              _PersonalisationRow(
+                key: const ValueKey('personalisation_gold'),
+                icon: Icons.auto_awesome_outlined,
+                title: 'Gold accents',
+                value: snapshot.goldEnabled ? 'On' : 'Off',
+                hint:
+                    'Subtle gold details; motion follows your device settings.',
+                trailing: Semantics(
+                  label: 'Gold accents',
+                  child: Switch.adaptive(
+                    key: const ValueKey('personalisation_gold_toggle'),
+                    value: snapshot.goldEnabled,
+                    activeTrackColor: ZyraColors.journeyGold,
+                    onChanged: ZyraTapFeedback.onChanged(
+                      context,
+                      onGoldChanged,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            const _PersonalisationDivider(),
-            const _PersonalisationRow(
-              key: ValueKey('personalisation_font'),
-              icon: Icons.text_fields_outlined,
-              title: 'App text',
-              value: 'Poppins',
-              hint: 'ZYRA uses a separate wordmark font.',
-            ),
-            const _PersonalisationDivider(),
-            _PersonalisationRow(
-              key: const ValueKey('personalisation_haptic'),
-              icon: Icons.vibration_outlined,
-              title: 'Haptic feel',
-              value: snapshot.hapticLevel.label,
-              hint: 'Choose how taps feel on this device.',
-              onTap: onChooseHaptic,
-            ),
-          ],
+              const _PersonalisationDivider(),
+              const _PersonalisationRow(
+                key: ValueKey('personalisation_font'),
+                icon: Icons.text_fields_outlined,
+                title: 'App text',
+                value: 'Poppins',
+                hint: 'ZYRA uses a separate wordmark font.',
+              ),
+              const _PersonalisationDivider(),
+              _PersonalisationRow(
+                key: const ValueKey('personalisation_haptic'),
+                icon: Icons.vibration_outlined,
+                title: 'Haptic feel',
+                value: snapshot.hapticLevel.label,
+                hint: 'Choose how taps feel on this device.',
+                onTap: onChooseHaptic,
+              ),
+            ],
+          ),
         ),
       ),
     ],
@@ -145,73 +144,78 @@ class _PersonalisationPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(18, 16, 18, 17),
-      decoration: BoxDecoration(
-        color: gradient == null ? ZyraColors.surfaceFill : null,
-        gradient: gradient,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: ZyraColors.surfaceBorder, width: 0.6),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 7,
-                height: 7,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: ZyraColors.journeyGold,
+    return ZyraFloatingSurface(
+      radius: 18,
+      circle: false,
+      gold: false,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.fromLTRB(18, 16, 18, 17),
+        decoration: BoxDecoration(
+          color: gradient == null ? ZyraColors.surfaceFill : null,
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: ZyraColors.surfaceBorder, width: 0.6),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 7,
+                  height: 7,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: ZyraColors.journeyGold,
+                  ),
+                ),
+                const SizedBox(width: 7),
+                Flexible(
+                  child: Text(
+                    'LIVE PREVIEW',
+                    style: ZyraText.chapterLabel(color: ZyraColors.goldText),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            Text('ZYRA', style: ZyraText.wordmark(size: 25)),
+            const SizedBox(height: 5),
+            Text(
+              'Connecting Through Trust',
+              style: ZyraText.preview(
+                ZyraAppFont.poppins,
+                size: 15,
+                color: ZyraColors.foreground,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              'Your background changes appear immediately.',
+              style: ZyraText.preview(
+                ZyraAppFont.poppins,
+                size: 11,
+                color: ZyraColors.foregroundSecondary,
+              ),
+            ),
+            const SizedBox(height: 14),
+            Container(
+              width: 74,
+              height: 1.2,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(99),
+                gradient: LinearGradient(
+                  colors: [
+                    ZyraColors.journeyGold.withValues(alpha: 0),
+                    ZyraColors.journeyGold,
+                    ZyraColors.journeyGold.withValues(alpha: 0),
+                  ],
                 ),
               ),
-              const SizedBox(width: 7),
-              Flexible(
-                child: Text(
-                  'LIVE PREVIEW',
-                  style: ZyraText.chapterLabel(color: _personalisationAccent),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          Text('ZYRA', style: ZyraText.wordmark(size: 25)),
-          const SizedBox(height: 5),
-          Text(
-            'Connecting Through Trust',
-            style: ZyraText.preview(
-              ZyraAppFont.poppins,
-              size: 15,
-              color: ZyraColors.foreground,
             ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'Your background changes appear immediately.',
-            style: ZyraText.preview(
-              ZyraAppFont.poppins,
-              size: 11,
-              color: ZyraColors.foregroundSecondary,
-            ),
-          ),
-          const SizedBox(height: 14),
-          Container(
-            width: 74,
-            height: 1.2,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(99),
-              gradient: LinearGradient(
-                colors: [
-                  ZyraColors.journeyGold.withValues(alpha: 0),
-                  ZyraColors.journeyGold,
-                  ZyraColors.journeyGold.withValues(alpha: 0),
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -292,7 +296,7 @@ class _PersonalisationRow extends StatelessWidget {
                       value,
                       style: ZyraText.subtext(
                         size: 12,
-                        color: _personalisationAccent,
+                        color: ZyraColors.espresso,
                       ),
                     ),
                     const SizedBox(height: 4),

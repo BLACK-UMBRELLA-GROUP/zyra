@@ -628,7 +628,7 @@ class _QuietWorkspacePair extends StatelessWidget {
             textAlign: TextAlign.right,
             style: ZyraText.body(
               size: 13,
-              color: signal ? ZyraColors.journeyGold : ZyraColors.foreground,
+              color: signal ? ZyraColors.goldText : ZyraColors.foreground,
             ),
           ),
         ),

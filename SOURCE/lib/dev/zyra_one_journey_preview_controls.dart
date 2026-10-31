@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // Compact current-theme local choices; no preferences or member authority.
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
@@ -21,51 +22,61 @@ class ZyraConceptPreviewChoice extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     selected: selected,
     button: true,
-    child: Material(
-      color: selected ? ZyraColors.surfaceEmphasisFill : ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(14),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected
-                ? ZyraColors.surfaceEmphasisBorder
-                : ZyraColors.surfaceBorder,
-            width: selected ? 1 : .6,
+    child: ZyraFloatingSurface(
+      radius: 14,
+      circle: false,
+      gold: false,
+      child: Material(
+        color: selected
+            ? ZyraColors.surfaceEmphasisFill
+            : ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(14),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: selected
+                  ? ZyraColors.surfaceEmphasisBorder
+                  : ZyraColors.surfaceBorder,
+              width: selected ? 1 : .6,
+            ),
           ),
-        ),
-        child: InkWell(
-          onTap: ZyraTapFeedback.onTap(context, onTap),
-          borderRadius: BorderRadius.circular(14),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 44),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-              child: Row(
-                children: [
-                  Icon(
-                    selected
-                        ? Icons.check_circle_outline
-                        : Icons.circle_outlined,
-                    size: 18,
-                    color: selected
-                        ? ZyraColors.journeyGold
-                        : ZyraColors.ink(.4),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(label, style: ZyraText.body(size: 12.5)),
-                        if (detail.isNotEmpty) ...[
-                          const SizedBox(height: 3),
-                          Text(detail, style: ZyraText.subtext(size: 10.5)),
-                        ],
-                      ],
+          child: InkWell(
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            borderRadius: BorderRadius.circular(14),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 44),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 9,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      selected
+                          ? Icons.check_circle_outline
+                          : Icons.circle_outlined,
+                      size: 18,
+                      color: selected
+                          ? ZyraColors.journeyGold
+                          : ZyraColors.ink(.4),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(label, style: ZyraText.body(size: 12.5)),
+                          if (detail.isNotEmpty) ...[
+                            const SizedBox(height: 3),
+                            Text(detail, style: ZyraText.subtext(size: 10.5)),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

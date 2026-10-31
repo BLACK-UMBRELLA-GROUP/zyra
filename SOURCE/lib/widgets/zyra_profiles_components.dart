@@ -1,3 +1,4 @@
+import 'zyra_floating_surface.dart';
 // Shared current Profiles presentation. No account, permission or navigation authority.
 import 'zyra_tap_feedback.dart';
 import 'dart:math' as math;
@@ -22,7 +23,7 @@ class ZyraProfilesDetailsContent extends StatelessWidget {
     key: surfaceKey,
     decoration: BoxDecoration(color: ZyraColors.surfaceFill),
     child: LayoutBuilder(
-      builder: (context, constraints) => SingleChildScrollView(
+      builder: (context, constraints) => ZyraShadowScrollView(
         key: scrollKey,
         physics: const ClampingScrollPhysics(),
         child: ConstrainedBox(
@@ -66,78 +67,83 @@ Widget zyraProfilesPill({
     excludeSemantics: true,
     child: ZyraPressFeedback(
       enabled: primary && onTap != null,
-      child: Material(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(999),
-        child: Ink(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(
-              color: primary
-                  ? ZyraColors.journeyGold.withValues(
-                      alpha: invitationSent == true ? .85 : .55,
-                    )
-                  : ZyraColors.surfaceBorder,
-            ),
-          ),
-          child: InkWell(
-            key: key,
-            onTap: ZyraTapFeedback.onTap(context, onTap),
-            excludeFromSemantics: true,
-            borderRadius: BorderRadius.circular(999),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minWidth: 48,
-                minHeight: minimumHeight,
+      child: ZyraFloatingSurface(
+        radius: 999,
+        circle: false,
+        gold: false,
+        child: Material(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(999),
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(
+                color: primary
+                    ? ZyraColors.journeyGold.withValues(
+                        alpha: invitationSent == true ? .85 : .55,
+                      )
+                    : ZyraColors.surfaceBorder,
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: icon == null ? 10 : 8,
-                  vertical: 8,
+            ),
+            child: InkWell(
+              key: key,
+              onTap: ZyraTapFeedback.onTap(context, onTap),
+              excludeFromSemantics: true,
+              borderRadius: BorderRadius.circular(999),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: 48,
+                  minHeight: minimumHeight,
                 ),
-                child: Center(
-                  child: icon == null
-                      ? invitationSent != null
-                            ? ZyraInvitationLabel(
-                                label: label,
-                                sent: invitationSent,
-                                style: zyraProfilesActionStyle(
-                                  color: ZyraColors.ink(
-                                    onTap == null && !previewEnabledAppearance
-                                        ? .34
-                                        : .90,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: icon == null ? 10 : 8,
+                    vertical: 8,
+                  ),
+                  child: Center(
+                    child: icon == null
+                        ? invitationSent != null
+                              ? ZyraInvitationLabel(
+                                  label: label,
+                                  sent: invitationSent,
+                                  style: zyraProfilesActionStyle(
+                                    color: ZyraColors.ink(
+                                      onTap == null && !previewEnabledAppearance
+                                          ? .34
+                                          : .90,
+                                    ),
                                   ),
-                                ),
-                              )
-                            : Text(
-                                label,
-                                textAlign: TextAlign.center,
-                                style: primary
-                                    ? zyraProfilesActionStyle(
-                                        color: ZyraColors.ink(
-                                          onTap == null &&
-                                                  !previewEnabledAppearance
-                                              ? .34
-                                              : .90,
+                                )
+                              : Text(
+                                  label,
+                                  textAlign: TextAlign.center,
+                                  style: primary
+                                      ? zyraProfilesActionStyle(
+                                          color: ZyraColors.ink(
+                                            onTap == null &&
+                                                    !previewEnabledAppearance
+                                                ? .34
+                                                : .90,
+                                          ),
+                                        )
+                                      : ZyraText.button(
+                                          size: 12.5,
+                                          color: ZyraColors.ink(
+                                            onTap == null &&
+                                                    !previewEnabledAppearance
+                                                ? .34
+                                                : .90,
+                                          ),
                                         ),
-                                      )
-                                    : ZyraText.button(
-                                        size: 12.5,
-                                        color: ZyraColors.ink(
-                                          onTap == null &&
-                                                  !previewEnabledAppearance
-                                              ? .34
-                                              : .90,
-                                        ),
-                                      ),
-                              )
-                      : Icon(
-                          icon,
-                          size: iconSize,
-                          color: onTap == null && !previewEnabledAppearance
-                              ? ZyraColors.ink(.34)
-                              : ZyraColors.journeyGold,
-                        ),
+                                )
+                        : Icon(
+                            icon,
+                            size: iconSize,
+                            color: onTap == null && !previewEnabledAppearance
+                                ? ZyraColors.ink(.34)
+                                : ZyraColors.journeyGold,
+                          ),
+                  ),
                 ),
               ),
             ),
@@ -246,87 +252,96 @@ class ZyraProfilesRequestRow extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => SizedBox(
       height: heightFor(context, constraints.maxWidth, labels),
-      child: Material(
-        key: const ValueKey('concept_request_row_surface'),
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(999),
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          foregroundDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(
-              color: ZyraColors.journeyGold.withValues(alpha: sent ? 1 : .6),
+      child: ZyraFloatingSurface(
+        radius: 999,
+        circle: false,
+        gold: !sent,
+        child: Material(
+          key: const ValueKey('concept_request_row_surface'),
+          color: sent ? ZyraColors.surfaceFill : ZyraColors.goldTextFill,
+          borderRadius: BorderRadius.circular(999),
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            foregroundDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(
+                color: ZyraColors.journeyGold.withValues(alpha: sent ? 1 : .6),
+              ),
             ),
-          ),
-          child: Stack(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(
-                    width: arrowWidth,
-                    child: _button(
-                      key: previousKey,
-                      label: previousLabel,
-                      onTap: onPrevious,
-                      child: Icon(
-                        Icons.chevron_left,
-                        size: 24,
-                        color: onPrevious == null
-                            ? ZyraColors.ink(.28)
-                            : ZyraColors.journeyGold,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: _button(
-                      key: actionKey,
-                      label: semanticLabel ?? label,
-                      onTap: onRequest,
-                      primary: true,
-                      child: ZyraInvitationLabel(
-                        label: label,
-                        sent: sent,
-                        style: zyraProfilesActionStyle(
-                          color:
-                              actionColor ??
-                              ZyraColors.ink(onRequest == null ? .34 : .90),
+            child: Stack(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      width: arrowWidth,
+                      child: _button(
+                        key: previousKey,
+                        label: previousLabel,
+                        onTap: onPrevious,
+                        child: Icon(
+                          Icons.chevron_left,
+                          size: 24,
+                          color: onPrevious == null
+                              ? ZyraColors.ink(.28)
+                              : (sent
+                                    ? ZyraColors.journeyGold
+                                    : ZyraColors.espresso),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: arrowWidth,
-                    child: _button(
-                      key: nextKey,
-                      label: nextLabel,
-                      onTap: onNext,
-                      child: Icon(
-                        Icons.chevron_right,
-                        size: 24,
-                        color: onNext == null
-                            ? ZyraColors.ink(.28)
-                            : ZyraColors.journeyGold,
+                    Expanded(
+                      child: _button(
+                        key: actionKey,
+                        label: semanticLabel ?? label,
+                        onTap: onRequest,
+                        primary: true,
+                        child: ZyraInvitationLabel(
+                          label: label,
+                          sent: sent,
+                          style: zyraProfilesActionStyle(
+                            color:
+                                actionColor ??
+                                ZyraColors.ink(onRequest == null ? .34 : .90),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: arrowWidth,
+                      child: _button(
+                        key: nextKey,
+                        label: nextLabel,
+                        onTap: onNext,
+                        child: Icon(
+                          Icons.chevron_right,
+                          size: 24,
+                          color: onNext == null
+                              ? ZyraColors.ink(.28)
+                              : (sent
+                                    ? ZyraColors.journeyGold
+                                    : ZyraColors.espresso),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                for (final left in [true, false])
+                  Positioned(
+                    left: left ? arrowWidth : null,
+                    right: left ? null : arrowWidth,
+                    top: 0,
+                    bottom: 0,
+                    child: Center(
+                      child: SizedBox(
+                        width: 1,
+                        height: 28,
+                        child: ColoredBox(color: ZyraColors.surfaceBorder),
                       ),
                     ),
                   ),
-                ],
-              ),
-              for (final left in [true, false])
-                Positioned(
-                  left: left ? arrowWidth : null,
-                  right: left ? null : arrowWidth,
-                  top: 0,
-                  bottom: 0,
-                  child: Center(
-                    child: SizedBox(
-                      width: 1,
-                      height: 28,
-                      child: ColoredBox(color: ZyraColors.surfaceBorder),
-                    ),
-                  ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

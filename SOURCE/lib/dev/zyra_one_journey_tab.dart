@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -78,39 +79,44 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
     bool filled = false,
     bool outline = false,
     Color? color,
-  }) => Material(
-    color: filled ? ZyraColors.journeyGold : Colors.transparent,
-    shape: StadiumBorder(
-      side: outline
-          ? BorderSide(color: ZyraColors.journeyGold.withValues(alpha: .7))
-          : BorderSide.none,
-    ),
-    clipBehavior: Clip.antiAlias,
-    child: InkWell(
-      key: ValueKey(key),
-      onTap: ZyraTapFeedback.onTap(context, action, canAct: current),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: filled ? 52 : 44),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: outline ? 16 : 20,
-            vertical: 10,
-          ),
-          child: Center(
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style:
-                  ZyraText.body(
-                    size: outline ? 13 : 14,
-                    color:
-                        color ??
-                        (filled
-                            ? ZyraColors.luxuryDarkPurple
-                            : ZyraColors.journeyGold),
-                  ).copyWith(
-                    fontWeight: filled ? FontWeight.w500 : FontWeight.w300,
-                  ),
+  }) => ZyraFloatingSurface(
+    radius: 999,
+    circle: false,
+    gold: true,
+    child: Material(
+      color: filled ? ZyraColors.goldTextFill : Colors.transparent,
+      shape: StadiumBorder(
+        side: outline
+            ? BorderSide(color: ZyraColors.journeyGold.withValues(alpha: .7))
+            : BorderSide.none,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        key: ValueKey(key),
+        onTap: ZyraTapFeedback.onTap(context, action, canAct: current),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: filled ? 52 : 44),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: outline ? 16 : 20,
+              vertical: 10,
+            ),
+            child: Center(
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style:
+                    ZyraText.body(
+                      size: outline ? 13 : 14,
+                      color:
+                          color ??
+                          (filled
+                              ? ZyraColors.luxuryDarkPurple
+                              : ZyraColors.goldText),
+                    ).copyWith(
+                      fontWeight: filled ? FontWeight.w500 : FontWeight.w300,
+                    ),
+              ),
             ),
           ),
         ),
@@ -120,7 +126,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
 
   Widget _upsell(bool Function() current) => _DashedJourneySurface(
     key: const ValueKey('journey_tab_upsell'),
-    child: SingleChildScrollView(
+    child: ZyraShadowScrollView(
       key: const ValueKey('journey_tab_upsell_scroll'),
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       child: Column(
@@ -156,7 +162,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
   );
 
   Widget _empty(bool Function() current) => LayoutBuilder(
-    builder: (context, constraints) => SingleChildScrollView(
+    builder: (context, constraints) => ZyraShadowScrollView(
       key: const ValueKey('journey_tab_empty_scroll'),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -219,7 +225,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
 
   Widget _freePlace(bool Function() current) => _DashedJourneySurface(
     child: LayoutBuilder(
-      builder: (context, constraints) => SingleChildScrollView(
+      builder: (context, constraints) => ZyraShadowScrollView(
         key: const ValueKey('journey_tab_free_scroll'),
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -283,122 +289,137 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
               '${card.stageLabel}, ${card.nextStep.replaceAll(' · ', ' ')}, '
               '${index + 1} of ${widget.capacity}',
     excludeSemantics: !card.unavailable,
-    child: Container(
-      key: ValueKey('journey_tab_person_${card.id}'),
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(22),
-      ),
-      foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: ZyraColors.journeyGold.withValues(alpha: .6)),
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) => Stack(
-          fit: StackFit.expand,
-          children: [
-            if (card.photo != null && !card.unavailable)
-              Image(image: card.photo!, fit: BoxFit.cover)
-            else
-              Center(
-                child: ZyraJourneyIcon(color: ZyraColors.ink(.35), size: 64),
-              ),
-            Positioned(
-              top: constraints.maxHeight * .3,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: const DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Color(0xE6160E20)],
+    child: ZyraFloatingSurface(
+      radius: 22,
+      circle: false,
+      gold: false,
+      child: Container(
+        key: ValueKey('journey_tab_person_${card.id}'),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        foregroundDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(
+            color: ZyraColors.journeyGold.withValues(alpha: .6),
+          ),
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) => Stack(
+            fit: StackFit.expand,
+            children: [
+              if (card.photo != null && !card.unavailable)
+                Image(image: card.photo!, fit: BoxFit.cover)
+              else
+                Center(
+                  child: ZyraJourneyIcon(color: ZyraColors.ink(.35), size: 64),
+                ),
+              Positioned(
+                top: constraints.maxHeight * .3,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.transparent, Color(0xE6000000)],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SingleChildScrollView(
-              key: ValueKey('journey_tab_overlay_scroll_${card.id}'),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (!card.unavailable)
+              ZyraShadowScrollView(
+                key: ValueKey('journey_tab_overlay_scroll_${card.id}'),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (!card.unavailable)
+                          Text(
+                            card.stageNumber > 0
+                                ? 'Stage ${card.stageNumber} of 8 · ${card.stageLabel}'
+                                : card.stageLabel,
+                            style: ZyraText.body(
+                              size: 12.5,
+                              color: Colors.white,
+                            ),
+                          ),
+                        const SizedBox(height: 6),
                         Text(
-                          card.stageNumber > 0
-                              ? 'Stage ${card.stageNumber} of 8 · ${card.stageLabel}'
-                              : card.stageLabel,
-                          style: ZyraText.body(
-                            size: 12.5,
-                            color: ZyraColors.journeyGold,
+                          card.unavailable ? 'User not found' : card.firstName,
+                          style: ZyraText.heading(
+                            size: 30,
+                            color: Colors.white,
                           ),
                         ),
-                      const SizedBox(height: 6),
-                      Text(
-                        card.unavailable ? 'User not found' : card.firstName,
-                        style: ZyraText.heading(size: 30),
-                      ),
-                      if (card.unavailable) ...[
-                        const SizedBox(height: 8),
-                        Text(
-                          'This Journey place is retained. The profile and conversation are unavailable.',
-                          style: ZyraText.body(color: ZyraColors.ink(.7)),
-                        ),
-                        if (widget.onEndUnavailable != null) ...[
-                          const SizedBox(height: 12),
-                          _button(
-                            key: 'journey_tab_end_unavailable',
-                            label: 'End Journey',
-                            action: widget.onEndUnavailable!,
-                            current: current,
-                            color: ZyraColors.destructive,
+                        if (card.unavailable) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            'This Journey place is retained. The profile and conversation are unavailable.',
+                            style: ZyraText.body(
+                              color: Colors.white.withValues(alpha: .7),
+                            ),
                           ),
+                          if (widget.onEndUnavailable != null) ...[
+                            const SizedBox(height: 12),
+                            _button(
+                              key: 'journey_tab_end_unavailable',
+                              label: 'End Journey',
+                              action: widget.onEndUnavailable!,
+                              current: current,
+                              color: ZyraColors.destructive,
+                            ),
+                          ],
                         ],
-                      ],
-                      const SizedBox(height: 2),
-                      if (!card.unavailable)
-                        Text(card.details, style: ZyraText.body(size: 15)),
-                      const SizedBox(height: 12),
-                      if (!card.unavailable && card.stageNumber > 0)
-                        Row(
-                          children: [
-                            for (var stage = 1; stage <= 8; stage++) ...[
-                              if (stage > 1) const SizedBox(width: 3),
-                              Expanded(
-                                child: Container(
-                                  height: 4,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(2),
-                                    color: stage <= card.stageNumber
-                                        ? ZyraColors.journeyGold
-                                        : ZyraColors.ink(.2),
+                        const SizedBox(height: 2),
+                        if (!card.unavailable)
+                          Text(
+                            card.details,
+                            style: ZyraText.body(size: 15, color: Colors.white),
+                          ),
+                        const SizedBox(height: 12),
+                        if (!card.unavailable && card.stageNumber > 0)
+                          Row(
+                            children: [
+                              for (var stage = 1; stage <= 8; stage++) ...[
+                                if (stage > 1) const SizedBox(width: 3),
+                                Expanded(
+                                  child: Container(
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(2),
+                                      color: stage <= card.stageNumber
+                                          ? ZyraColors.journeyGold
+                                          : Colors.white.withValues(alpha: .2),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ],
-                          ],
-                        ),
-                      const SizedBox(height: 6),
-                      if (!card.unavailable)
-                        Text(
-                          card.nextStep,
-                          style: ZyraText.body(
-                            size: 12,
-                            color: ZyraColors.ink(.75),
                           ),
-                        ),
-                    ],
+                        const SizedBox(height: 6),
+                        if (!card.unavailable)
+                          Text(
+                            card.nextStep,
+                            style: ZyraText.body(
+                              size: 12,
+                              color: Colors.white.withValues(alpha: .75),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ),
@@ -504,7 +525,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                         : 'Continue Journey',
                     labels: const ['Continue Journey', 'Browse profiles'],
                     sent: false,
-                    actionColor: card == null ? ZyraColors.journeyGold : null,
+                    actionColor: card == null ? ZyraColors.goldText : null,
                     previousKey: const ValueKey('journey_tab_previous'),
                     nextKey: const ValueKey('journey_tab_next'),
                     previousLabel: 'Previous Journey place',
@@ -554,13 +575,18 @@ class _DashedJourneySurface extends StatelessWidget {
   @override
   Widget build(BuildContext context) => CustomPaint(
     foregroundPainter: _JourneyDashedBorder(color: ZyraColors.surfaceBorder),
-    child: Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(22),
+    child: ZyraFloatingSurface(
+      radius: 22,
+      circle: false,
+      gold: false,
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: child,
       ),
-      child: child,
     ),
   );
 }

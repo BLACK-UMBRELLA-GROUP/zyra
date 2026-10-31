@@ -283,7 +283,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           'Skip · DEV',
                           style: ZyraText.button(
                             size: 11,
-                            color: ZyraColors.journeyGold,
+                            color: ZyraColors.goldText,
                           ),
                         ),
                       ),

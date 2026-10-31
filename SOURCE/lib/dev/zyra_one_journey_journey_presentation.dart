@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // Current Journey presentation with caller-owned, disposable local actions.
 // No JourneyFlowScreen, transport, member singleton or preference mutation.
 import '../widgets/zyra_tap_feedback.dart';
@@ -82,15 +83,17 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
                     width: 2,
                     color: salam && !complete
                         ? Colors.transparent
-                        : (complete ? ZyraColors.journeyGold : Colors.white)
+                        : (complete
+                                  ? ZyraColors.journeyGold
+                                  : ZyraColors.foreground)
                               .withValues(alpha: complete ? 0.9 : 0.32),
                   ),
                   boxShadow: complete
                       ? [
                           BoxShadow(
-                            color: const Color(
-                              0xFFE8C98A,
-                            ).withValues(alpha: 0.2),
+                            color: ZyraColors.journeyGold.withValues(
+                              alpha: 0.2,
+                            ),
                             blurRadius: 12,
                           ),
                         ]
@@ -254,7 +257,7 @@ class ZyraConceptJourneyFirstQuestion extends StatelessWidget {
                     text: 'You are answering privately. ',
                     style: ZyraText.subtext(
                       size: 11.5,
-                      color: ZyraColors.journeyGold,
+                      color: ZyraColors.goldText,
                     ),
                   ),
                   TextSpan(
@@ -277,7 +280,7 @@ class ZyraConceptJourneyFirstQuestion extends StatelessWidget {
             readOnly: true,
             maxLines: 5,
             maxLength: JourneyQuestions.answerCharacterLimitForPhase(phase),
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: ZyraColors.foreground),
             decoration: InputDecoration(
               filled: true,
               fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
@@ -343,9 +346,9 @@ class _LocalRoundAction extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(
-                                0xFFE8C98A,
-                              ).withValues(alpha: 0.28),
+                              color: ZyraColors.journeyGold.withValues(
+                                alpha: 0.28,
+                              ),
                             ),
                           ),
                         ),
@@ -363,9 +366,9 @@ class _LocalRoundAction extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(
-                                0xFFCEA2D1,
-                              ).withValues(alpha: 0.14),
+                              color: ZyraColors.warmOverlay.withValues(
+                                alpha: 0.14,
+                              ),
                               blurRadius: 21,
                             ),
                           ],
@@ -577,7 +580,10 @@ class ZyraConceptJourneyRibbon extends StatelessWidget {
                 ),
                 child: Text(
                   '${current.order} · ${reviewOpen ? ZyraJourneyStages.familyReviewOverride : current.label}',
-                  style: ZyraText.subtext(size: 11.5, color: gold),
+                  style: ZyraText.subtext(
+                    size: 11.5,
+                    color: ZyraColors.goldText,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -1107,7 +1113,7 @@ class ZyraConceptJourneyArrival extends StatelessWidget {
             // the resting gold cue throughout scrolling/ensureVisible.
             return Padding(
               padding: const EdgeInsets.only(bottom: 34),
-              child: SingleChildScrollView(
+              child: ZyraShadowScrollView(
                 key: const ValueKey('concept_journey_arrival_body'),
                 physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.only(top: 16),
@@ -1145,7 +1151,7 @@ class ZyraConceptJourneyArrival extends StatelessWidget {
                 alignment: const Alignment(0, -0.12),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: maxBodyHeight),
-                  child: SingleChildScrollView(
+                  child: ZyraShadowScrollView(
                     key: const ValueKey('concept_journey_arrival_body'),
                     physics: const ClampingScrollPhysics(),
                     child: body,
@@ -1205,7 +1211,7 @@ class ZyraConceptJourneyDecisionPresentation extends StatelessWidget {
       final centredHeight = constraints.hasBoundedHeight
           ? (constraints.maxHeight - 50).clamp(0.0, double.infinity).toDouble()
           : 0.0;
-      return SingleChildScrollView(
+      return ZyraShadowScrollView(
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(28, 22, 28, 28),
         child: ConstrainedBox(
@@ -1252,7 +1258,7 @@ class ZyraConceptJourneyDecisionPresentation extends StatelessWidget {
                     ),
                   ),
                   _DecisionBeat(
-                    nodeColor: const Color(0xFFE0C678),
+                    nodeColor: ZyraColors.journeyGold,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1282,7 +1288,7 @@ class ZyraConceptJourneyDecisionPresentation extends StatelessWidget {
                     ),
                   ),
                   _DecisionBeat(
-                    nodeColor: const Color(0xFF9D86AD),
+                    nodeColor: ZyraColors.avatarWarmSand,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1430,7 +1436,7 @@ class _BriefingStep extends StatelessWidget {
         ),
         child: Text(
           '$number',
-          style: ZyraText.subtext(size: 9.5, color: ZyraColors.journeyGold),
+          style: ZyraText.subtext(size: 9.5, color: ZyraColors.goldText),
         ),
       ),
       const SizedBox(height: 6),
@@ -1467,7 +1473,7 @@ class _CompletedStage extends StatelessWidget {
   final VoidCallback onTimeline;
   @override
   Widget build(BuildContext context) => LayoutBuilder(
-    builder: (context, constraints) => SingleChildScrollView(
+    builder: (context, constraints) => ZyraShadowScrollView(
       key: ValueKey('concept_completed_stage_reader_${stage.value}'),
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
@@ -1726,12 +1732,12 @@ class _DecisionRail extends StatelessWidget {
                 children: [
                   _DecisionAction(
                     label: 'Request Pause',
-                    dotColor: const Color(0xFFDFBD62),
+                    dotColor: ZyraColors.journeyGold,
                     onTap: busy ? null : onPause,
                   ),
                   _DecisionAction(
                     label: 'End Journey',
-                    dotColor: const Color(0xFFDF7D82),
+                    dotColor: ZyraColors.negativeRed,
                     destructive: true,
                     onTap: busy ? null : onEnd,
                   ),
@@ -1792,7 +1798,9 @@ class _DecisionAction extends StatelessWidget {
                   label,
                   style: ZyraText.body(
                     size: 13,
-                    color: destructive ? ZyraColors.destructive : Colors.white,
+                    color: destructive
+                        ? ZyraColors.destructive
+                        : ZyraColors.foreground,
                   ),
                 ),
               ),
@@ -1840,7 +1848,7 @@ class _JourneyAtmosphere extends StatelessWidget {
                 scale: 1.005,
                 child: const _Glow(
                   size: 330,
-                  colour: Color(0xFF73579A),
+                  colour: ZyraColors.avatarWarmSand,
                   opacity: 0.26,
                 ),
               ),

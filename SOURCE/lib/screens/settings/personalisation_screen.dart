@@ -19,7 +19,6 @@ class PersonalisationScreen extends StatefulWidget {
       palette = null,
       hapticLevel = null,
       goldEnabled = null,
-      onPaletteChanged = null,
       onHapticChanged = null,
       onGoldChanged = null,
       embedded = false;
@@ -30,7 +29,6 @@ class PersonalisationScreen extends StatefulWidget {
     required ZyraDevPalette this.palette,
     required ZyraHapticLevel this.hapticLevel,
     required bool this.goldEnabled,
-    required ValueChanged<ZyraDevPalette> this.onPaletteChanged,
     required ValueChanged<ZyraHapticLevel> this.onHapticChanged,
     required ValueChanged<bool> this.onGoldChanged,
     this.embedded = true,
@@ -44,13 +42,13 @@ class PersonalisationScreen extends StatefulWidget {
   final ZyraDevPalette? palette;
   final ZyraHapticLevel? hapticLevel;
   final bool? goldEnabled;
-  final ValueChanged<ZyraDevPalette>? onPaletteChanged;
   final ValueChanged<ZyraHapticLevel>? onHapticChanged;
   final ValueChanged<bool>? onGoldChanged;
   final bool embedded;
 
-  static List<ZyraDevPalette> get availablePalettes =>
-      ZyraDevPalette.values.where((palette) => !palette.isLight).toList();
+  static List<ZyraDevPalette> get availablePalettes => const [
+    ZyraDevPalette.ivory,
+  ];
 
   @override
   State<PersonalisationScreen> createState() => _PersonalisationScreenState();
@@ -112,7 +110,7 @@ class _PersonalisationScreenState extends State<PersonalisationScreen>
       _admitted;
 
   ZyraPersonalisationSnapshot get _snapshot => ZyraPersonalisationSnapshot(
-    palette: _previewMode ? widget.palette! : ZyraColors.devPalette,
+    palette: ZyraColors.currentDefaultPalette,
     hapticLevel: _previewMode
         ? widget.hapticLevel!
         : ZyraInteractionStyle.hapticLevel,
@@ -154,7 +152,6 @@ class _PersonalisationScreenState extends State<PersonalisationScreen>
         oldWidget.palette != widget.palette ||
         oldWidget.hapticLevel != widget.hapticLevel ||
         oldWidget.goldEnabled != widget.goldEnabled ||
-        oldWidget.onPaletteChanged != widget.onPaletteChanged ||
         oldWidget.onHapticChanged != widget.onHapticChanged ||
         oldWidget.onGoldChanged != widget.onGoldChanged) {
       ++_revision;
@@ -225,38 +222,6 @@ class _PersonalisationScreenState extends State<PersonalisationScreen>
     }
   }
 
-  Future<void> _chooseBackground() async {
-    final before = _snapshot.palette;
-    final choice = await _choose<ZyraDevPalette>(
-      'Background',
-      PersonalisationScreen.availablePalettes,
-      before,
-      (palette) => palette.label.replaceAll(' · Current', ''),
-      detailFor: (palette) => palette.detail,
-      leadingFor: (palette) => Container(
-        width: 44,
-        height: 34,
-        decoration: BoxDecoration(
-          gradient: palette.gradient,
-          borderRadius: BorderRadius.circular(9),
-          border: Border.all(color: ZyraColors.ink(0.16), width: 0.6),
-        ),
-      ),
-    );
-    if (choice == null ||
-        !_current ||
-        _snapshot.palette != before ||
-        choice.isLight) {
-      return;
-    }
-    if (_previewMode) {
-      widget.onPaletteChanged!(choice);
-    } else {
-      ZyraColors.selectAppPalette(choice);
-      if (mounted && _current) setState(() {});
-    }
-  }
-
   Future<void> _chooseHaptic() async {
     final before = _snapshot.hapticLevel;
     final choice = await _choose<ZyraHapticLevel>(
@@ -283,9 +248,6 @@ class _PersonalisationScreenState extends State<PersonalisationScreen>
       snapshot: snapshot,
       previewOnly: _previewMode,
       previewGradient: snapshot.palette.gradient,
-      onChooseBackground: () {
-        if (current()) _chooseBackground();
-      },
       onChooseHaptic: () {
         if (current()) _chooseHaptic();
       },
@@ -335,7 +297,7 @@ class _PersonalisationScreenState extends State<PersonalisationScreen>
       return Scaffold(
         backgroundColor: Colors.transparent,
         body: DecoratedBox(
-          decoration: BoxDecoration(gradient: widget.palette!.gradient),
+          decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
           child: content,
         ),
       );

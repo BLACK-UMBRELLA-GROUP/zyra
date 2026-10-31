@@ -91,7 +91,7 @@ class ZyraPagePreviewScreen extends StatelessWidget {
               children: [
                 Text(
                   '$roleLabel · $pageLabel',
-                  style: ZyraText.chapterLabel(color: ZyraColors.unlockText),
+                  style: ZyraText.chapterLabel(color: ZyraColors.goldText),
                 ),
                 const SizedBox(height: 7),
                 Text(

@@ -314,7 +314,7 @@ class _ActivityChecklistRow extends StatelessWidget {
                         style: ZyraText.body(
                           size: 13,
                           color: selected
-                              ? ZyraColors.journeyGold
+                              ? ZyraColors.goldText
                               : ZyraColors.foreground,
                         ),
                       ),
@@ -359,7 +359,10 @@ class ZyraMyZyraActivityPreviewBar extends StatelessWidget {
       key: ValueKey('activity-preview-$id'),
       onPressed: ZyraTapFeedback.onTap(context, callback),
       icon: Icon(icon, size: 18),
-      label: Text(label, style: ZyraText.button(size: 11.5)),
+      label: Text(
+        label,
+        style: ZyraText.button(size: 11.5, color: ZyraColors.goldText),
+      ),
       style: TextButton.styleFrom(
         foregroundColor: ZyraColors.journeyGold,
         minimumSize: const Size(44, 44),

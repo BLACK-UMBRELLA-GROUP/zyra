@@ -1,3 +1,4 @@
+import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -259,27 +260,35 @@ class _ManagerHeader extends StatelessWidget {
         child: Semantics(
           button: true,
           label: 'Add a Guardian',
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              key: const ValueKey('guardian-add-top'),
-              customBorder: const CircleBorder(),
-              onTap: ZyraTapFeedback.onTap(context, onAdd),
-              child: SizedBox.square(
-                dimension: 48,
-                child: Center(
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ZyraColors.iconButtonBg,
-                      border: Border.all(color: ZyraColors.iconButtonBorder),
-                    ),
-                    child: Icon(
-                      Icons.add_rounded,
-                      size: 23,
-                      color: ZyraColors.foreground,
+          child: ZyraFloatingSurface(
+            radius: 16,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                key: const ValueKey('guardian-add-top'),
+                customBorder: const CircleBorder(),
+                onTap: ZyraTapFeedback.onTap(context, onAdd),
+                child: SizedBox.square(
+                  dimension: 48,
+                  child: Center(
+                    child: ZyraFloatingSurface(
+                      circle: true,
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ZyraColors.iconButtonBg,
+                          border: Border.all(
+                            color: ZyraColors.iconButtonBorder,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.add_rounded,
+                          size: 23,
+                          color: ZyraColors.foreground,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -308,12 +317,15 @@ class _HeaderCircleAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Tooltip(
     message: label,
-    child: IconButton(
-      onPressed: ZyraTapFeedback.onTap(context, onTap),
-      icon: Icon(icon, color: ZyraColors.foreground),
-      style: IconButton.styleFrom(
-        backgroundColor: ZyraColors.iconButtonBg,
-        side: BorderSide(color: ZyraColors.iconButtonBorder),
+    child: ZyraFloatingSurface(
+      circle: true,
+      child: IconButton(
+        onPressed: ZyraTapFeedback.onTap(context, onTap),
+        icon: Icon(icon, color: ZyraColors.foreground),
+        style: IconButton.styleFrom(
+          backgroundColor: ZyraColors.iconButtonBg,
+          side: BorderSide(color: ZyraColors.iconButtonBorder),
+        ),
       ),
     ),
   );
@@ -357,63 +369,66 @@ class _ManagerGuardianCard extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     button: true,
     label: 'Open ${person.firstName} Guardian details',
-    child: Material(
-      key: ValueKey('guardian-manager-card-${person.id}'),
-      color: person.isMain
-          ? ZyraColors.surfaceEmphasisFill
-          : ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(24),
-      child: InkWell(
-        onTap: ZyraTapFeedback.onTap(context, onOpen),
+    child: ZyraFloatingSurface(
+      radius: 16,
+      child: Material(
+        key: ValueKey('guardian-manager-card-${person.id}'),
+        color: person.isMain
+            ? ZyraColors.surfaceEmphasisFill
+            : ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(24),
-        child: Container(
-          padding: const EdgeInsets.all(17),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: person.isMain
-                  ? ZyraColors.surfaceEmphasisBorder
-                  : ZyraColors.surfaceBorder,
-            ),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _ManagerMonogram(name: person.firstName, main: person.isMain),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(person.firstName, style: ZyraText.heading(size: 18)),
-                    const SizedBox(height: 3),
-                    Text(
-                      _recordedGuardianRole(person),
-                      style: ZyraText.subtext(size: 12.25),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      person.isMain
-                          ? 'Asked to act on your Journey.'
-                          : 'Supports you with your Journey.',
-                      style: ZyraText.body(size: 12.25),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      person.linkedDateLabel == null
-                          ? 'Linked date not recorded'
-                          : 'Linked ${person.linkedDateLabel}',
-                      style: ZyraText.subtext(
-                        size: 11.25,
-                        color: ZyraColors.ink(0.44),
-                      ),
-                    ),
-                  ],
-                ),
+        child: InkWell(
+          onTap: ZyraTapFeedback.onTap(context, onOpen),
+          borderRadius: BorderRadius.circular(24),
+          child: Container(
+            padding: const EdgeInsets.all(17),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: person.isMain
+                    ? ZyraColors.surfaceEmphasisBorder
+                    : ZyraColors.surfaceBorder,
               ),
-              const SizedBox(width: 8),
-              Icon(Icons.chevron_right_rounded, color: ZyraColors.ink(0.52)),
-            ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _ManagerMonogram(name: person.firstName, main: person.isMain),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(person.firstName, style: ZyraText.heading(size: 18)),
+                      const SizedBox(height: 3),
+                      Text(
+                        _recordedGuardianRole(person),
+                        style: ZyraText.subtext(size: 12.25),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        person.isMain
+                            ? 'Asked to act on your Journey.'
+                            : 'Supports you with your Journey.',
+                        style: ZyraText.body(size: 12.25),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        person.linkedDateLabel == null
+                            ? 'Linked date not recorded'
+                            : 'Linked ${person.linkedDateLabel}',
+                        style: ZyraText.subtext(
+                          size: 11.25,
+                          color: ZyraColors.ink(0.44),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(Icons.chevron_right_rounded, color: ZyraColors.ink(0.52)),
+              ],
+            ),
           ),
         ),
       ),
@@ -434,22 +449,25 @@ class _ManagerMonogram extends StatelessWidget {
   const _ManagerMonogram({required this.name, required this.main});
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: 48,
-    height: 48,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: ZyraColors.surfaceFill,
-      border: Border.all(
-        color: main
-            ? ZyraColors.surfaceEmphasisBorder
-            : ZyraColors.surfaceBorder,
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 20,
+    child: Container(
+      width: 48,
+      height: 48,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: ZyraColors.surfaceFill,
+        border: Border.all(
+          color: main
+              ? ZyraColors.surfaceEmphasisBorder
+              : ZyraColors.surfaceBorder,
+        ),
       ),
-    ),
-    child: Text(
-      name.trim().isEmpty ? '?' : name.trim()[0].toUpperCase(),
-      style: ZyraText.heading(size: 19),
+      child: Text(
+        name.trim().isEmpty ? '?' : name.trim()[0].toUpperCase(),
+        style: ZyraText.heading(size: 19),
+      ),
     ),
   );
 }
@@ -676,42 +694,50 @@ class _GuardianPagerState extends State<_GuardianPager> {
     return Column(
       children: [
         Expanded(
-          child: PageView.builder(
-            key: const ValueKey('guardian-page-view'),
-            controller: _controller,
-            physics: const BouncingScrollPhysics(),
-            itemCount: widget.people.length,
-            onPageChanged: (value) => setState(() => _page = value),
-            itemBuilder: (context, index) {
-              final person = widget.people[index];
-              final activities = widget.activity[person.id] ?? const [];
-              return Semantics(
-                label:
-                    'Guardian ${index + 1} of ${widget.people.length}: '
-                    '${person.firstName}',
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: _GuardianPageContent(
-                    person: person,
-                    activities: activities,
-                    activityAvailable: widget.activityAvailable,
-                    onRetry: widget.onRetry,
-                    historyConsentLoader: widget.historyConsentLoader,
-                    journeyAccessLoader: widget.journeyAccessLoader,
-                    historyConsentPreview: widget.historyConsentPreview,
-                    previewActiveJourneyCount: widget.previewActiveJourneyCount,
-                    showChat: !widget.viewOnlyGuardianIds.contains(person.id),
-                    otherGuardians: widget.people
-                        .where((candidate) => candidate.id != person.id)
-                        .toList(growable: false),
-                    makeMainGuardian: widget.makeMainGuardian,
-                    clearMainGuardian: widget.clearMainGuardian,
-                    removeGuardian: widget.removeGuardian,
-                    onChanged: widget.onChanged,
+          child: ZyraVerticalShadowViewport(
+            builder: (context, clearance) => PageView.builder(
+              key: const ValueKey('guardian-page-view'),
+              controller: _controller,
+              physics: const BouncingScrollPhysics(),
+              itemCount: widget.people.length,
+              onPageChanged: (value) => setState(() => _page = value),
+              itemBuilder: (context, index) {
+                final person = widget.people[index];
+                final activities = widget.activity[person.id] ?? const [];
+                return Padding(
+                  padding: clearance,
+                  child: Semantics(
+                    label:
+                        'Guardian ${index + 1} of ${widget.people.length}: '
+                        '${person.firstName}',
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: _GuardianPageContent(
+                        person: person,
+                        activities: activities,
+                        activityAvailable: widget.activityAvailable,
+                        onRetry: widget.onRetry,
+                        historyConsentLoader: widget.historyConsentLoader,
+                        journeyAccessLoader: widget.journeyAccessLoader,
+                        historyConsentPreview: widget.historyConsentPreview,
+                        previewActiveJourneyCount:
+                            widget.previewActiveJourneyCount,
+                        showChat: !widget.viewOnlyGuardianIds.contains(
+                          person.id,
+                        ),
+                        otherGuardians: widget.people
+                            .where((candidate) => candidate.id != person.id)
+                            .toList(growable: false),
+                        makeMainGuardian: widget.makeMainGuardian,
+                        clearMainGuardian: widget.clearMainGuardian,
+                        removeGuardian: widget.removeGuardian,
+                        onChanged: widget.onChanged,
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
         if (widget.people.length > 1) ...[
@@ -898,50 +924,53 @@ class _GuardianDetailsStrip extends StatelessWidget {
   const _GuardianDetailsStrip({required this.person});
 
   @override
-  Widget build(BuildContext context) => Container(
-    key: const ValueKey('guardian-details-strip'),
-    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: ZyraColors.surfaceBorder),
-    ),
-    child: Row(
-      children: [
-        const Icon(
-          Icons.check_circle_outline_rounded,
-          size: 17,
-          color: ZyraColors.journeyGold,
-        ),
-        const SizedBox(width: 7),
-        Flexible(
-          child: Text(
-            'Active',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: ZyraText.body(size: 12.25),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 20,
+    child: Container(
+      key: const ValueKey('guardian-details-strip'),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.check_circle_outline_rounded,
+            size: 17,
+            color: ZyraColors.journeyGold,
           ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text('Linked', style: ZyraText.subtext(size: 10.75)),
-              const SizedBox(width: 7),
-              Flexible(
-                child: Text(
-                  person.linkedDateLabel ?? 'Not recorded',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
-                  style: ZyraText.body(size: 12.25),
+          const SizedBox(width: 7),
+          Flexible(
+            child: Text(
+              'Active',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: ZyraText.body(size: 12.25),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text('Linked', style: ZyraText.subtext(size: 10.75)),
+                const SizedBox(width: 7),
+                Flexible(
+                  child: Text(
+                    person.linkedDateLabel ?? 'Not recorded',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: ZyraText.body(size: 12.25),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }
@@ -1150,49 +1179,55 @@ class _ManageActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final signal = destructive ? ZyraColors.destructive : ZyraColors.ink(0.68);
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(16),
-      child: InkWell(
-        onTap: ZyraTapFeedback.onTap(context, onTap),
+    return ZyraFloatingSurface(
+      radius: 16,
+      child: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
-        child: Container(
-          constraints: BoxConstraints(minHeight: compact ? 42 : 49),
-          padding: EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: compact ? 8 : 11,
-          ),
-          decoration: BoxDecoration(
-            color: destructive
-                ? signal.withValues(alpha: 0.06)
-                : Colors.white.withValues(alpha: 0.025),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: destructive
-                  ? signal.withValues(alpha: 0.30)
-                  : ZyraColors.ink(0.16),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null) ...[
-                Icon(icon, size: 18, color: signal),
-                const SizedBox(width: 9),
-              ],
-              Flexible(
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: ZyraText.body(
-                    size: 13,
-                    color: destructive
-                        ? ZyraColors.destructive
-                        : ZyraColors.foreground,
-                  ),
+        child: InkWell(
+          onTap: ZyraTapFeedback.onTap(context, onTap),
+          borderRadius: BorderRadius.circular(16),
+          child: ZyraFloatingSurface(
+            radius: 20,
+            child: Container(
+              constraints: BoxConstraints(minHeight: compact ? 42 : 49),
+              padding: EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: compact ? 8 : 11,
+              ),
+              decoration: BoxDecoration(
+                color: destructive
+                    ? signal.withValues(alpha: 0.06)
+                    : ZyraColors.surfaceFill,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: destructive
+                      ? signal.withValues(alpha: 0.30)
+                      : ZyraColors.ink(0.16),
                 ),
               ),
-            ],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (icon != null) ...[
+                    Icon(icon, size: 18, color: signal),
+                    const SizedBox(width: 9),
+                  ],
+                  Flexible(
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      style: ZyraText.body(
+                        size: 13,
+                        color: destructive
+                            ? ZyraColors.destructive
+                            : ZyraColors.foreground,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -1825,111 +1860,120 @@ class _JourneyAccessSummary extends StatelessWidget {
             ? 'View and Chat are required for agreed new Journeys. Other Journey permissions are set separately.'
             : 'View and Chat permissions are set separately for each active Journey.',
       ].join('. '),
-      child: Container(
-        key: const ValueKey('guardian-journey-access-summary'),
-        padding: const EdgeInsets.fromLTRB(14, 11, 10, 8),
-        decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: ZyraColors.surfaceBorder),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (statusLabel != null) ...[
-              Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      statusLabel!,
-                      style: ZyraText.subtext(
-                        size: 9.5,
-                        color: ZyraColors.ink(0.54),
-                      ).copyWith(letterSpacing: 0.9),
-                    ),
-                  ),
-                  if (onRetry != null)
-                    Flexible(
-                      flex: 2,
-                      child: TextButton(
-                        onPressed: ZyraTapFeedback.onTap(context, onRetry),
-                        child: const Text('Try again'),
+      child: ZyraFloatingSurface(
+        radius: 20,
+        child: Container(
+          key: const ValueKey('guardian-journey-access-summary'),
+          padding: const EdgeInsets.fromLTRB(14, 11, 10, 8),
+          decoration: BoxDecoration(
+            color: ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (statusLabel != null) ...[
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Text(
+                        statusLabel!,
+                        style: ZyraText.subtext(
+                          size: 9.5,
+                          color: ZyraColors.ink(0.54),
+                        ).copyWith(letterSpacing: 0.9),
                       ),
                     ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                statusLabel == 'LOADING JOURNEY ACCESS'
-                    ? 'Checking your current Journey access…'
-                    : 'Journey access could not be refreshed.',
-                style: ZyraText.subtext(size: 10.75),
-              ),
-              const SizedBox(height: 8),
-            ],
-            _JourneyPermissionHeader(
-              permissionColumnWidth: permissionColumnWidth,
-              showChat: showChat,
-            ),
-            const SizedBox(
-              key: ValueKey('guardian-journey-permission-header-gap'),
-              height: 8,
-            ),
-            Divider(
-              key: const ValueKey('guardian-journey-permission-header-divider'),
-              height: 1,
-              color: ZyraColors.ink(0.10),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  for (
-                    var index = 0;
-                    index < math.max(3, states.length);
-                    index++
-                  ) ...[
-                    Expanded(
-                      child: index >= states.length
-                          ? _PendingJourneyPermissionRow(
-                              slot: index,
-                              label: placeholderLabel,
-                              permissionColumnWidth: permissionColumnWidth,
-                              showChat: showChat,
-                            )
-                          : _JourneyPermissionTableRow(
-                              state: states[index],
-                              permissionColumnWidth: permissionColumnWidth,
-                              showChat: showChat,
-                              busy: busyAttempt != null,
-                              requiredAccess:
-                                  requiredAccess ||
-                                  states[index].requiredByPaidAgreement,
-                              onViewChanged: onViewChanged == null
-                                  ? null
-                                  : (enabled) =>
-                                        onViewChanged!(states[index], enabled),
-                              onChatChanged: onChatChanged == null
-                                  ? null
-                                  : (enabled) =>
-                                        onChatChanged!(states[index], enabled),
-                            ),
-                    ),
-                    if (index < math.max(3, states.length) - 1)
-                      Divider(height: 1, color: ZyraColors.ink(0.08)),
+                    if (onRetry != null)
+                      Flexible(
+                        flex: 2,
+                        child: TextButton(
+                          onPressed: ZyraTapFeedback.onTap(context, onRetry),
+                          child: const Text('Try again'),
+                        ),
+                      ),
                   ],
-                ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  statusLabel == 'LOADING JOURNEY ACCESS'
+                      ? 'Checking your current Journey access…'
+                      : 'Journey access could not be refreshed.',
+                  style: ZyraText.subtext(size: 10.75),
+                ),
+                const SizedBox(height: 8),
+              ],
+              _JourneyPermissionHeader(
+                permissionColumnWidth: permissionColumnWidth,
+                showChat: showChat,
               ),
-            ),
-            if (showChat && states.any((state) => !state.chatAvailable)) ...[
-              const SizedBox(height: 8),
-              Text(
-                'Chat is unavailable for this Journey.',
-                key: const ValueKey('guardian-journey-chat-unavailable'),
-                style: ZyraText.subtext(size: 10.75),
+              const SizedBox(
+                key: ValueKey('guardian-journey-permission-header-gap'),
+                height: 8,
               ),
+              Divider(
+                key: const ValueKey(
+                  'guardian-journey-permission-header-divider',
+                ),
+                height: 1,
+                color: ZyraColors.ink(0.10),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    for (
+                      var index = 0;
+                      index < math.max(3, states.length);
+                      index++
+                    ) ...[
+                      Expanded(
+                        child: index >= states.length
+                            ? _PendingJourneyPermissionRow(
+                                slot: index,
+                                label: placeholderLabel,
+                                permissionColumnWidth: permissionColumnWidth,
+                                showChat: showChat,
+                              )
+                            : _JourneyPermissionTableRow(
+                                state: states[index],
+                                permissionColumnWidth: permissionColumnWidth,
+                                showChat: showChat,
+                                busy: busyAttempt != null,
+                                requiredAccess:
+                                    requiredAccess ||
+                                    states[index].requiredByPaidAgreement,
+                                onViewChanged: onViewChanged == null
+                                    ? null
+                                    : (enabled) => onViewChanged!(
+                                        states[index],
+                                        enabled,
+                                      ),
+                                onChatChanged: onChatChanged == null
+                                    ? null
+                                    : (enabled) => onChatChanged!(
+                                        states[index],
+                                        enabled,
+                                      ),
+                              ),
+                      ),
+                      if (index < math.max(3, states.length) - 1)
+                        Divider(height: 1, color: ZyraColors.ink(0.08)),
+                    ],
+                  ],
+                ),
+              ),
+              if (showChat && states.any((state) => !state.chatAvailable)) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'Chat is unavailable for this Journey.',
+                  key: const ValueKey('guardian-journey-chat-unavailable'),
+                  style: ZyraText.subtext(size: 10.75),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -2159,28 +2203,31 @@ class _JourneyPermissionFace extends StatelessWidget {
   final bool disabled;
 
   @override
-  Widget build(BuildContext context) => Container(
-    key: faceKey,
-    width: 26,
-    height: 26,
-    decoration: BoxDecoration(
-      color: value ? ZyraColors.surfaceFill : Colors.transparent,
-      shape: BoxShape.circle,
-      border: Border.all(
-        color: ZyraColors.journeyGold.withValues(
-          alpha: value ? (disabled ? 0.30 : 0.52) : (disabled ? 0.14 : 0.28),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 20,
+    child: Container(
+      key: faceKey,
+      width: 26,
+      height: 26,
+      decoration: BoxDecoration(
+        color: value ? ZyraColors.surfaceFill : Colors.transparent,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: ZyraColors.journeyGold.withValues(
+            alpha: value ? (disabled ? 0.30 : 0.52) : (disabled ? 0.14 : 0.28),
+          ),
         ),
       ),
+      child: value
+          ? Icon(
+              Icons.check_rounded,
+              size: 16,
+              color: disabled
+                  ? ZyraColors.journeyGold.withValues(alpha: 0.5)
+                  : ZyraColors.journeyGold,
+            )
+          : null,
     ),
-    child: value
-        ? Icon(
-            Icons.check_rounded,
-            size: 16,
-            color: disabled
-                ? ZyraColors.journeyGold.withValues(alpha: 0.5)
-                : ZyraColors.journeyGold,
-          )
-        : null,
   );
 }
 
@@ -2209,18 +2256,21 @@ class _JourneyPermissionCircle extends StatelessWidget {
       enabled: change != null,
       onTap: ZyraTapFeedback.onTap(context, toggle),
       excludeSemantics: true,
-      child: Material(
-        color: Colors.transparent,
-        shape: const CircleBorder(),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: ZyraTapFeedback.onTap(context, toggle),
-          child: SizedBox.square(
-            dimension: 44,
-            child: Center(
-              child: _JourneyPermissionFace(
-                value: value,
-                disabled: change == null,
+      child: ZyraFloatingSurface(
+        radius: 16,
+        child: Material(
+          color: Colors.transparent,
+          shape: const CircleBorder(),
+          child: InkWell(
+            customBorder: const CircleBorder(),
+            onTap: ZyraTapFeedback.onTap(context, toggle),
+            child: SizedBox.square(
+              dimension: 44,
+              child: Center(
+                child: _JourneyPermissionFace(
+                  value: value,
+                  disabled: change == null,
+                ),
               ),
             ),
           ),
@@ -2505,57 +2555,60 @@ class _GuardianHistoryConsentControlState
         backgroundColor: Colors.transparent,
         builder: (sheetContext) => ZyraGuardianPreviewRouteBoundary(
           authority: lifetime,
-          child: SingleChildScrollView(
+          child: ZyraShadowScrollView(
             key: const ValueKey('guardian-history-consent-explanation-scroll'),
             child: SafeArea(
               top: false,
-              child: Container(
-                key: const ValueKey('guardian-history-consent-explanation'),
-                margin: const EdgeInsets.all(12),
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                decoration: BoxDecoration(
-                  color: ZyraColors.waliSheetBg,
-                  borderRadius: BorderRadius.circular(26),
-                  border: Border.all(color: ZyraColors.surfaceBorder),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 36,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: ZyraColors.ink(0.22),
-                          borderRadius: BorderRadius.circular(2),
+              child: ZyraFloatingSurface(
+                radius: 20,
+                child: Container(
+                  key: const ValueKey('guardian-history-consent-explanation'),
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                  decoration: BoxDecoration(
+                    color: ZyraColors.waliSheetBg,
+                    borderRadius: BorderRadius.circular(26),
+                    border: Border.all(color: ZyraColors.surfaceBorder),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 36,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: ZyraColors.ink(0.22),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 18),
-                    Text(
-                      'Past Journey summaries',
-                      style: ZyraText.heading(size: 20),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Right now ${person.firstName} only sees Journeys '
-                      'from the day $subject ${pronouns.plural ? 'were' : 'was'} '
-                      'linked onwards. Turn this on to also show '
-                      '${pronouns.object} the ones before that.',
-                      style: ZyraText.subtext(size: 12.5),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      '$capitalizedSubject ${pronouns.plural ? 'see' : 'sees'} '
-                      'start date, end date and status — nothing else. Never '
-                      'names, messages, answers, reasons, notes or safety information.',
-                      style: ZyraText.subtext(
-                        size: 12.5,
-                        color: ZyraColors.ink(0.56),
+                      const SizedBox(height: 18),
+                      Text(
+                        'Past Journey summaries',
+                        style: ZyraText.heading(size: 20),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      Text(
+                        'Right now ${person.firstName} only sees Journeys '
+                        'from the day $subject ${pronouns.plural ? 'were' : 'was'} '
+                        'linked onwards. Turn this on to also show '
+                        '${pronouns.object} the ones before that.',
+                        style: ZyraText.subtext(size: 12.5),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '$capitalizedSubject ${pronouns.plural ? 'see' : 'sees'} '
+                        'start date, end date and status — nothing else. Never '
+                        'names, messages, answers, reasons, notes or safety information.',
+                        style: ZyraText.subtext(
+                          size: 12.5,
+                          color: ZyraColors.ink(0.56),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -2750,20 +2803,23 @@ class _GuardianMonogram extends StatelessWidget {
   const _GuardianMonogram({required this.person, required this.size});
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: size,
-    height: size,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: ZyraColors.surfaceFill,
-      border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
-    ),
-    child: Text(
-      person.firstName.trim().isEmpty
-          ? '?'
-          : person.firstName.trim()[0].toUpperCase(),
-      style: ZyraText.heading(size: size * 0.38),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 20,
+    child: Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: ZyraColors.surfaceFill,
+        border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
+      ),
+      child: Text(
+        person.firstName.trim().isEmpty
+            ? '?'
+            : person.firstName.trim()[0].toUpperCase(),
+        style: ZyraText.heading(size: size * 0.38),
+      ),
     ),
   );
 }

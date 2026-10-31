@@ -760,7 +760,7 @@ class _UnlockCount extends StatelessWidget {
       children: [
         TextSpan(
           text: value?.toString() ?? '—',
-          style: ZyraText.body(size: 12.5, color: ZyraColors.journeyGold),
+          style: ZyraText.body(size: 12.5, color: ZyraColors.goldText),
         ),
         TextSpan(text: '  $label', style: ZyraText.subtext(size: 11.5)),
       ],

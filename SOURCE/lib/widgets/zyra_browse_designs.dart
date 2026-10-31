@@ -1,3 +1,4 @@
+import 'zyra_floating_surface.dart';
 // Shared Portrait Browse with caller-owned identity, selection and actions.
 // This presenter owns only per-profile gallery position and layout. It has no
 // services, account, matching, admission, entitlement or persistence authority.
@@ -247,42 +248,47 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     final onProfile = widget.readOnlyPreview || !widget.showFeedChrome
         ? null
         : widget.onProfile;
-    return Material(
-      key: _cardAnchors.putIfAbsent(profile.id, GlobalKey.new),
-      color: edgeToEdge ? Colors.transparent : ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-      clipBehavior: edgeToEdge ? Clip.antiAlias : Clip.none,
-      child: Stack(
-        children: [
-          InkWell(
-            key: ValueKey('concept_browse_open_${profile.id}'),
-            borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-            onTap: ZyraTapFeedback.onTap(
-              context,
-              selectOnTap && onProfile != null
-                  ? () => onProfile(profile)
-                  : null,
-            ),
-            child: Padding(
-              // Portrait uses the same outer bounds, with the photo filling
-              // its former inset.
-              padding: edgeToEdge
-                  ? EdgeInsets.zero
-                  : const EdgeInsets.all(ZyraCardMetrics.padding + 1),
-              child: child,
-            ),
-          ),
-          if (widget.showFeedChrome)
-            Positioned.fill(
-              child: ZyraInvitationOutline(
-                key: ValueKey('browse_invitation_outline_${profile.id}'),
-                sent:
-                    !widget.readOnlyPreview &&
-                    widget.invitationSent?.call(profile) == true,
-                borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+    return ZyraFloatingSurface(
+      radius: ZyraCardMetrics.cardRadius,
+      child: Material(
+        key: _cardAnchors.putIfAbsent(profile.id, GlobalKey.new),
+        color: edgeToEdge ? Colors.transparent : ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+        clipBehavior: edgeToEdge ? Clip.antiAlias : Clip.none,
+        child: Stack(
+          children: [
+            InkWell(
+              key: ValueKey('concept_browse_open_${profile.id}'),
+              borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+              onTap: ZyraTapFeedback.onTap(
+                context,
+                selectOnTap && onProfile != null
+                    ? () => onProfile(profile)
+                    : null,
+              ),
+              child: Padding(
+                // Portrait uses the same outer bounds, with the photo filling
+                // its former inset.
+                padding: edgeToEdge
+                    ? EdgeInsets.zero
+                    : const EdgeInsets.all(ZyraCardMetrics.padding + 1),
+                child: child,
               ),
             ),
-        ],
+            if (widget.showFeedChrome)
+              Positioned.fill(
+                child: ZyraInvitationOutline(
+                  key: ValueKey('browse_invitation_outline_${profile.id}'),
+                  sent:
+                      !widget.readOnlyPreview &&
+                      widget.invitationSent?.call(profile) == true,
+                  borderRadius: BorderRadius.circular(
+                    ZyraCardMetrics.cardRadius,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -633,7 +639,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                 2,
           ),
         );
-        return SingleChildScrollView(
+        return ZyraShadowScrollView(
           key: const ValueKey('concept_browse_design_scroll'),
           physics: const ClampingScrollPhysics(),
           padding: EdgeInsets.fromLTRB(20, 16, 20, bottom),
@@ -655,12 +661,15 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                       key: const ValueKey('concept_browse_portrait_card'),
                       child: SizedBox(
                         height: photoHeight + 2 * ZyraCardMetrics.padding + 2,
-                        child: ZyraBrowseNextPhotoMotion(
-                          key: const ValueKey('concept_browse_next_motion'),
-                          profileId: profile.id,
-                          epoch: widget.nextProfileMotionEpoch,
-                          style: widget.nextProfileMotion,
-                          child: _portraitCard(profile, photoHeight),
+                        child: ZyraFloatingSurface(
+                          radius: ZyraCardMetrics.cardRadius,
+                          child: ZyraBrowseNextPhotoMotion(
+                            key: const ValueKey('concept_browse_next_motion'),
+                            profileId: profile.id,
+                            epoch: widget.nextProfileMotionEpoch,
+                            style: widget.nextProfileMotion,
+                            child: _portraitCard(profile, photoHeight),
+                          ),
                         ),
                       ),
                     ),

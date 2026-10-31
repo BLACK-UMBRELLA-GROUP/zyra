@@ -678,7 +678,7 @@ class _SectionPill extends StatelessWidget {
             color: onPressed == null
                 ? ZyraColors.ink(.4)
                 : selected
-                ? ZyraColors.journeyGold
+                ? ZyraColors.goldText
                 : ZyraColors.foregroundSecondary,
           ),
         ),
@@ -769,7 +769,7 @@ class _PersonalCard extends StatelessWidget {
                     current ? 'Current' : 'Selected change',
                     style: ZyraText.subtext(
                       size: 11,
-                      color: ZyraColors.journeyGold,
+                      color: ZyraColors.goldText,
                     ),
                   ),
               ],
@@ -879,7 +879,7 @@ class _PersonalCard extends StatelessWidget {
               Text(
                 price,
                 textAlign: TextAlign.center,
-                style: ZyraText.body(color: ZyraColors.journeyGold),
+                style: ZyraText.body(color: ZyraColors.goldText),
               ),
             ],
             const SizedBox(height: 24),
@@ -921,10 +921,7 @@ class _PersonalCard extends StatelessWidget {
                 child: Text(
                   _seeker ? 'Remove Seeker choice' : 'Remove Guardian choice',
                   textAlign: TextAlign.center,
-                  style: ZyraText.button(
-                    size: 12,
-                    color: ZyraColors.journeyGold,
-                  ),
+                  style: ZyraText.button(size: 12, color: ZyraColors.goldText),
                 ),
               ),
           ],
@@ -995,7 +992,7 @@ class _FamilyCard extends StatelessWidget {
             Text(
               '${quote.discountPercent}% saving',
               key: const ValueKey('membership-family-saving'),
-              style: ZyraText.body(color: ZyraColors.journeyGold),
+              style: ZyraText.body(color: ZyraColors.goldText),
             ),
             const SizedBox(height: 18),
           ],
@@ -1171,7 +1168,7 @@ class ZyraMembershipTermsSheet extends StatelessWidget {
               ),
               child: Text(
                 'Close',
-                style: ZyraText.button(color: ZyraColors.journeyGold),
+                style: ZyraText.button(color: ZyraColors.goldText),
               ),
             ),
           ],
@@ -1246,7 +1243,7 @@ class ZyraMembershipReviewPresentation extends StatelessWidget {
                     ),
                     Text(
                       '${family.discountPercent}% saving',
-                      style: ZyraText.body(color: ZyraColors.journeyGold),
+                      style: ZyraText.body(color: ZyraColors.goldText),
                     ),
                     const SizedBox(height: 24),
                     Text(
@@ -1314,7 +1311,7 @@ class _ReviewLine extends StatelessWidget {
         Text(title, style: ZyraText.heading(size: 20)),
         if (detail != null) ...[
           const SizedBox(height: 6),
-          Text(detail!, style: ZyraText.body(color: ZyraColors.journeyGold)),
+          Text(detail!, style: ZyraText.body(color: ZyraColors.goldText)),
         ],
       ],
     ),
@@ -1349,10 +1346,7 @@ class _BackAction extends StatelessWidget {
     child: TextButton.icon(
       onPressed: ZyraTapFeedback.onTap(context, onPressed),
       icon: const Icon(Icons.arrow_back_rounded, color: ZyraColors.journeyGold),
-      label: Text(
-        'Back',
-        style: ZyraText.button(color: ZyraColors.journeyGold),
-      ),
+      label: Text('Back', style: ZyraText.button(color: ZyraColors.goldText)),
       style: TextButton.styleFrom(
         minimumSize: const Size(48, 48),
         padding: EdgeInsets.zero,
@@ -1397,7 +1391,7 @@ class _GoldButton extends StatelessWidget {
             style: ZyraText.button(
               color: onPressed == null
                   ? ZyraColors.ink(.4)
-                  : ZyraColors.journeyGold,
+                  : ZyraColors.goldText,
             ),
           ),
         ),

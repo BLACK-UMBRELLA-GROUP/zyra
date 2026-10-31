@@ -618,7 +618,7 @@ class _InvitationAction extends StatelessWidget {
             overflow: TextOverflow.fade,
             style: ZyraText.button(
               size: 11,
-              color: quiet ? ZyraColors.ink(0.60) : ZyraColors.surfaceSignal,
+              color: quiet ? ZyraColors.ink(0.60) : ZyraColors.goldText,
             ),
           ),
         ),

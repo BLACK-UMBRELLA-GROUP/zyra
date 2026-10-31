@@ -142,7 +142,7 @@ class _ZyraCircleDiscussionArchiveViewState
                                     _archive.sharedSummaryLabel!,
                                     style: ZyraText.body(
                                       size: 17,
-                                      color: ZyraColors.journeyGold,
+                                      color: ZyraColors.goldText,
                                     ),
                                   )
                                 else ...[
@@ -150,7 +150,7 @@ class _ZyraCircleDiscussionArchiveViewState
                                     'Past Journey',
                                     style: ZyraText.body(
                                       size: 17,
-                                      color: ZyraColors.journeyGold,
+                                      color: ZyraColors.goldText,
                                     ),
                                   ),
                                   const SizedBox(height: 7),

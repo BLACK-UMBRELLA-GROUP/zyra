@@ -1,16 +1,23 @@
-// ZYRA brand colours and background gradients.
-// Source of truth: ZYRA/BUSINESS/COLOUR THEME/Summary.md and
-// APP/Onboarding/SEEKER ONBOARDING QUESTIONS/Onboarding Rules & UX.md
-// (§ COLOUR SYSTEM). Do not invent new colours here — every value below
-// traces to one of those two documents.
+// LOCK14 V4: Ivory palette, warm floating surfaces and distinct gold roles.
+// Source: PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V4.md.
+// Retained comparison values are retired separately by queue44.
 
 import 'package:flutter/material.dart';
 
 import '../services/zyra_local_prefs.dart';
 
-/// Background directions available to members from Profile → Personalisation.
-/// The ten approved dark backgrounds remain available.
+/// Legacy comparison values remain until queue44. Every app coordinator uses
+/// Ivory; these values never restore or write a member background choice.
 enum ZyraDevPalette {
+  ivory(
+    'Ivory',
+    'The locked app background',
+    LinearGradient(
+      begin: Alignment(-0.173648, -0.984808),
+      end: Alignment(0.173648, 0.984808),
+      colors: [Color(0xFFFBF7F0), Color(0xFFEEE6D8)],
+    ),
+  ),
   zyraPurple(
     'ZYRA Purple',
     'Royal Purple to Luxury Dark Purple',
@@ -105,7 +112,7 @@ enum ZyraDevPalette {
   final String label;
   final String detail;
   final LinearGradient gradient;
-  bool get isLight => false;
+  bool get isLight => this == ivory;
   bool get usesWhiteGlass => false;
   const ZyraDevPalette(this.label, this.detail, this.gradient);
 }
@@ -128,17 +135,36 @@ enum ZyraBackgroundVariant { neutral, male, female }
 class ZyraColors {
   ZyraColors._();
 
-  // Founder-directed Hulu purple, 2026-09-27 (OA-ZYRA-257). Historical
-  // ZYRA Purple remains an opt-in personalisation choice, not the default.
-  static const Color royalPurple = Color(0xFF30203F);
-  static const Color luxuryDarkPurple = Color(0xFF160E20);
-  static const Color darkPlumSurface = Color(0xFF241A2F);
+  static const Color ivoryTop = Color(0xFFFBF7F0);
+  static const Color ivoryBottom = Color(0xFFEEE6D8);
+  static const Color espresso = Color(0xFF2B2420);
+  static const Color secondaryText = Color(0xFF6E6257);
+  static const Color strongSecondaryText = Color(0xFF4F443A);
+  static const Color quietText = Color(0xFF7A6E62);
+  static const Color mutedText = Color(0xFF857868);
+  static const Color warmOverlay = Color(0xFF3E2E1E);
+
+  /// LOCK14 V5: gold reading text below 24 regular / 18.66 bold.
+  static const Color goldText = Color(0xFF845F24);
+  static const Color goldTextFill = Color(0xFFC08A3A);
+  static const Color cardSurface = Color(0xFFF4EEE4);
+  static const Color lowerSurface = Color(0xFFF1EBDF);
+  static const Color sheetIvory = Color(0xFFF3EDE2);
+  static const Color divider = Color(0x1A3E2E1E);
+  static const Color avatarSand = Color(0xFF9C8A72);
+  static const Color avatarDeepSand = Color(0xFF6B5B49);
+  static const Color avatarWarmSand = Color(0xFF857560);
+
+  // Compatibility aliases for retained callers. LOCK14 roles are authoritative.
+  static const Color royalPurple = Color(0xFFFBF7F0);
+  static const Color luxuryDarkPurple = Color(0xFF2B2420);
+  static const Color darkPlumSurface = Color(0xFFF1EBDF);
 
   // The main Quiet Horizon splash is the colour authority for the brand
   // lockup on Welcome as well. Keep these separate from theme-dependent
   // foreground and from the slightly different Journey gold accent.
-  static const Color splashWordmark = Color(0xFFE5CE8E);
-  static Color get splashTagline => Colors.white.withValues(alpha: 0.78);
+  static const Color splashWordmark = Color(0xFFA9792E);
+  static Color get splashTagline => secondaryText;
 
   // Founder 2026-10-22: selection is a quiet surface with a gold edge, not
   // another pale lavender wash. Legacy aliases share that same boundary so
@@ -153,10 +179,10 @@ class ZyraColors {
   //    whether they merge is a Founder design decision recorded in
   //    SYSTEM/tools/ui_gate/P1_TRIAGE_2026-08-23.md — do not unify
   //    values here without that ruling.
-  static const Color journeyGold = Color(0xFFE8C98A);
-  static const Color positiveGreen = Color(0xFF84D0A8);
-  static const Color journeyDotGreen = Color(0xFF78C69D);
-  static const Color negativeRed = Color(0xFFE18A91);
+  static const Color journeyGold = Color(0xFFA9792E);
+  static const Color positiveGreen = Color(0xFF4E9A72);
+  static const Color journeyDotGreen = Color(0xFF4E9A72);
+  static const Color negativeRed = Color(0xFFB84A42);
   static const Color successTick = Color(0xFF50B478);
 
   /// Canonical surface for every modal sheet that rises from the bottom.
@@ -170,18 +196,18 @@ class ZyraColors {
 
   // Contrast-aware foreground and translucent chrome. Dark palettes retain
   // their exact approved values.
-  static bool get isLightPalette => false;
-  static Color get foreground => Colors.white;
-  static Color get foregroundBody => const Color(0xE6FFFFFF);
-  static Color get foregroundSecondary => const Color(0xB3FFFFFF);
-  static Color get foregroundMuted => const Color(0x8AFFFFFF);
+  static bool get isLightPalette => true;
+  static Color get foreground => espresso;
+  static Color get foregroundBody => espresso;
+  static Color get foregroundSecondary => secondaryText;
+  static Color get foregroundMuted => mutedText;
 
   /// Neutral app-card fill. This is the shared visual-language boundary for
   /// the three App Surface choices; page code should use this rather than
   /// inventing a private white-alpha recipe.
-  static Color get surfaceFill => const Color(0x12FFFFFF);
+  static Color get surfaceFill => const Color(0xD9FAF5EC);
 
-  static Color get surfaceBorder => const Color(0x24FFFFFF);
+  static Color get surfaceBorder => const Color(0x0F3E2E1E);
 
   /// Selected/expanded cards stay dark; the edge carries their emphasis.
   /// Never layer the former white/gold wash over another app card.
@@ -197,12 +223,12 @@ class ZyraColors {
   // selection.
   static Color get progressFill => Color.alphaBlend(
     journeyGold.withValues(alpha: 0.58),
-    const Color(0x47FFFFFF),
+    const Color(0x473E2E1E),
   );
 
   static Color get progressTrack => Color.alphaBlend(
     journeyGold.withValues(alpha: 0.10),
-    const Color(0x12FFFFFF),
+    const Color(0x123E2E1E),
   );
 
   static const Color progressCompleteFill = Color(
@@ -252,25 +278,25 @@ class ZyraColors {
   // white, which is ~2:1 on this fill and was the failing pairing on the
   // old stock button.
   //
-  // destructive replaces the 0xFFE08080 coral that already appears as a
+  // destructive replaces the 0xFFB84A42 coral that already appears as a
   // literal 20+ times across 9 files (End Journey, etc.) — same value,
   // now named. journey_flow_screen is migrated; sweep the rest as each
   // file comes up for review.
   // ---------------------------------------------------------------------
 
   /// Primary action fill — Pastel Grey Lavender, both gender themes.
-  static const Color primaryAction = Color(0xFFCEA2D1);
+  static const Color primaryAction = Color(0xFFC08A3A);
 
   /// Text/icon colour ON [primaryAction]. Always this, never white.
-  static const Color onPrimaryAction = luxuryDarkPurple;
+  static const Color onPrimaryAction = espresso;
 
   /// Destructive text/accents (End Journey coral).
-  static const Color destructive = Color(0xFFE08080);
-  static const Color destructiveBorder = Color(0x66E08080); // coral 0.4
+  static const Color destructive = Color(0xFFB84A42);
+  static const Color destructiveBorder = Color(0x66B84A42); // coral 0.4
 
   // Frost pills — sampled from the Connections segmented control.
-  static Color get frostFill => const Color(0x1AFFFFFF);
-  static Color get frostBorder => const Color(0x2EFFFFFF);
+  static Color get frostFill => const Color(0x1A3E2E1E);
+  static Color get frostBorder => const Color(0x2E3E2E1E);
   static Color get frostSelectedFill => surfaceFill;
 
   static Color get frostSelectedBorder => surfaceEmphasisBorder;
@@ -322,20 +348,20 @@ class ZyraColors {
   static Color get toastSurface => darkPlumSurface;
 
   // FAB states
-  static Color get fabDimmedBg => const Color(0x0AFFFFFF);
-  static Color get fabDimmedBorder => const Color(0x17FFFFFF);
-  static Color get fabDimmedArrow => const Color(0x33FFFFFF);
-  static Color get fabActiveBg => const Color(0x1AFFFFFF);
-  static Color get fabActiveBorder => const Color(0x38FFFFFF);
-  static Color get fabActiveArrow => const Color(0xD9FFFFFF);
+  static Color get fabDimmedBg => const Color(0x0A3E2E1E);
+  static Color get fabDimmedBorder => const Color(0x173E2E1E);
+  static Color get fabDimmedArrow => const Color(0x333E2E1E);
+  static Color get fabActiveBg => const Color(0x1A3E2E1E);
+  static Color get fabActiveBorder => const Color(0x383E2E1E);
+  static Color get fabActiveArrow => const Color(0xD93E2E1E);
 
   // Privacy indicator states
   static const Color publicDot = Color(0xD93D9A6A); // rgba(61,154,106,0.85)
   static const Color publicText = Color(0x80C8DC8C); // rgba(100,200,140,0.5)
-  static const Color unlockDot = Color(0xD9C49A44); // rgba(196,154,68,0.85)
-  static const Color unlockText = Color(0x73DCB964); // rgba(220,185,100,0.45)
-  static const Color privateDot = Color(0xB38A6A9E); // rgba(138,106,158,0.7)
-  static const Color privateText = Color(0x73B496D2); // rgba(180,150,210,0.45)
+  static const Color unlockDot = Color(0xD9A9792E); // rgba(196,154,68,0.85)
+  static const Color unlockText = Color(0x73A9792E); // rgba(220,185,100,0.45)
+  static const Color privateDot = Color(0xB3857560); // rgba(138,106,158,0.7)
+  static const Color privateText = Color(0x73857560); // rgba(180,150,210,0.45)
 
   // ---------------------------------------------------------------------
   // UNIFIED 2026-08-20 — Founder direction.
@@ -347,15 +373,11 @@ class ZyraColors {
   // accents; they are not alternate app themes.
   // ---------------------------------------------------------------------
 
-  /// Current launch default, darkened on Founder direction 2026-09-27.
-  /// Existing Midnight Plum preferences follow the new purple without
-  /// clearing member data. Members may choose
-  /// another approved dark background from Profile → Personalisation.
-  static const ZyraDevPalette currentDefaultPalette =
-      ZyraDevPalette.midnightPlum;
+  /// LOCK14: the default and only app background; stored choices stay intact.
+  static const ZyraDevPalette currentDefaultPalette = ZyraDevPalette.ivory;
   // Founder clarification 2026-09-27: apply the new colour to existing
   // installations too, not only installations without a saved palette.
-  static const String currentPaletteRevision = 'dark-hulu-app-2026-09-27-v1';
+  static const String currentPaletteRevision = 'lock14-ivory-2026-10-31-v4';
 
   /// Founder-selected and locked app-wide surface, 2026-08-29.
   static const ZyraAppSurfaceStyle currentDefaultSurfaceStyle =
@@ -371,43 +393,18 @@ class ZyraColors {
   static ZyraAppSurfaceStyle get appSurfaceStyle =>
       appSurfaceStyleSelection.value;
 
-  static void selectDevPalette(ZyraDevPalette palette) {
-    if (devPaletteSelection.value != palette) {
-      devPaletteSelection.value = palette;
-    }
+  // LOCK14: legacy palette preferences are ignored, never cleared or rewritten.
+  // Comparison enums stay until the separately queued developer retirement.
+  static void selectDevPalette(ZyraDevPalette _) {
+    devPaletteSelection.value = currentDefaultPalette;
   }
 
-  /// Selects the member's persisted background from Profile →
-  /// Personalisation. Only the ten retained dark backgrounds are selectable.
-  static void selectAppPalette(ZyraDevPalette palette) {
-    selectDevPalette(palette);
-    ZyraLocalPrefs.setCachedAppPaletteName(palette.name);
-    ZyraLocalPrefs.setCachedAppPaletteRevision(currentPaletteRevision);
-  }
+  static void selectAppPalette(ZyraDevPalette _) => restoreAppPalette(null);
 
-  /// Startup-only adoption of the current app-wide theme. Only palette
-  /// preferences change; account state, fonts, haptics and app lock survive.
-  /// Both writes capture the same owner/generation synchronously, so a queued
-  /// update cannot stamp the next account. Later explicit choices still work.
-  static void restoreCurrentAppPalette() {
-    if (ZyraLocalPrefs.cachedAppPaletteRevision == currentPaletteRevision) {
-      restoreAppPalette(ZyraLocalPrefs.cachedAppPaletteName);
-      return;
-    }
-    restoreAppPalette(null);
-    ZyraLocalPrefs.setCachedAppPaletteName(currentDefaultPalette.name);
-    ZyraLocalPrefs.setCachedAppPaletteRevision(currentPaletteRevision);
-  }
+  static void restoreCurrentAppPalette() => restoreAppPalette(null);
 
-  /// Hydrates the background before `runApp` without rewriting disk.
-  /// Unknown, retired and light values fall back to Midnight Plum.
-  static void restoreAppPalette(String? storedName) {
-    final restored = ZyraDevPalette.values.where(
-      (palette) => palette.name == storedName,
-    );
-    devPaletteSelection.value = restored.isEmpty
-        ? currentDefaultPalette
-        : restored.first;
+  static void restoreAppPalette(String? _) {
+    devPaletteSelection.value = currentDefaultPalette;
   }
 
   static void selectAppSurfaceStyle(ZyraAppSurfaceStyle style) {
@@ -423,18 +420,23 @@ class ZyraColors {
     ZyraLocalPrefs.setCachedAppSurfaceStyleName(null);
   }
 
-  /// Active interactive accent. Dark backgrounds retain the approved
-  /// lavender.
+  /// V4 separates text-bearing gold fills from decorative accent gold.
   static Color get actionFill => primaryAction;
   static Color get onAction => onPrimaryAction;
 
   /// Neutral contrast helpers for glass and page-level UI.
-  static Color ink(double opacity) => foreground.withValues(alpha: opacity);
-  static Color get accentOnCanvas => unlockText;
+  static Color ink(double opacity) {
+    if (opacity >= .85) return espresso;
+    if (opacity >= .65) return secondaryText;
+    if (opacity >= .5) return secondaryText;
+    if (opacity >= .34) return mutedText;
+    return warmOverlay.withValues(alpha: opacity);
+  }
 
-  /// The live app background. Midnight Plum now uses the Hulu dark purple;
-  /// explicit member personalisation and temporary developer choices survive.
-  static LinearGradient get brandGradient => devPalette.gradient;
+  static Color get accentOnCanvas => journeyGold;
+
+  /// The live app background always resolves to locked Ivory.
+  static LinearGradient get brandGradient => currentDefaultPalette.gradient;
 
   /// Compatibility aliases retained while older call sites and documents
   /// are retired. Both deliberately resolve to the one ZYRA gradient.

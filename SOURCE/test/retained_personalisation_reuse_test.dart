@@ -36,7 +36,6 @@ class _PreviewHarnessState extends State<_PreviewHarness> {
   ZyraDevPalette palette = ZyraDevPalette.midnightPlum;
   ZyraHapticLevel haptic = ZyraHapticLevel.subtle;
   bool gold = false;
-  int paletteCalls = 0;
   int hapticCalls = 0;
   int goldCalls = 0;
   int alternateCalls = 0;
@@ -45,13 +44,6 @@ class _PreviewHarnessState extends State<_PreviewHarness> {
     if (exceptional) throw StateError('Denied owner');
     return allowed &&
         (!widget.guardUsesRoute || ModalRoute.of(context)?.isCurrent == true);
-  }
-
-  void selectPalette(ZyraDevPalette value) {
-    setState(() {
-      palette = value;
-      paletteCalls++;
-    });
   }
 
   void selectHaptic(ZyraHapticLevel value) {
@@ -68,7 +60,7 @@ class _PreviewHarnessState extends State<_PreviewHarness> {
     });
   }
 
-  void alternatePalette(ZyraDevPalette value) {
+  void alternateHaptic(ZyraHapticLevel value) {
     setState(() => alternateCalls++);
   }
 
@@ -83,10 +75,9 @@ class _PreviewHarnessState extends State<_PreviewHarness> {
             palette: palette,
             hapticLevel: haptic,
             goldEnabled: gold,
-            onPaletteChanged: alternateCallbacks
-                ? alternatePalette
-                : selectPalette,
-            onHapticChanged: selectHaptic,
+            onHapticChanged: alternateCallbacks
+                ? alternateHaptic
+                : selectHaptic,
             onGoldChanged: selectGold,
           )
         : const PersonalisationScreen(
@@ -113,21 +104,6 @@ Future<_PreviewHarnessState> _mount(
 
 Future<void> _openChoice(WidgetTester tester, Key row) async {
   await _tapVisible(tester, find.byKey(row));
-}
-
-Future<void> _selectMidnightBlue(WidgetTester tester) async {
-  final choice = find.byKey(
-    const ValueKey('personalisation_choice_ZyraDevPalette.midnightBlue'),
-  );
-  await tester.scrollUntilVisible(
-    choice,
-    160,
-    scrollable: find.descendant(
-      of: find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
-      matching: find.byType(Scrollable),
-    ),
-  );
-  await _tapVisible(tester, choice);
 }
 
 Future<void> _tapVisible(WidgetTester tester, Finder target) async {
@@ -262,7 +238,6 @@ void main() {
   testWidgets(
     'pure retained content uses supplied snapshot and explicit actions',
     (tester) async {
-      var background = 0;
       var haptic = 0;
       bool? gold;
       await tester.pumpWidget(
@@ -274,22 +249,19 @@ void main() {
                 hapticLevel: ZyraHapticLevel.strong,
                 goldEnabled: true,
               ),
-              onChooseBackground: () => background++,
               onChooseHaptic: () => haptic++,
               onGoldChanged: (value) => gold = value,
             ),
           ),
         ),
       );
-      expect(find.text('Deep Emerald'), findsOneWidget);
+      expect(find.byKey(_background), findsNothing);
       expect(find.text('Strong'), findsOneWidget);
-      await _tapVisible(tester, find.byKey(_background));
       await _tapVisible(tester, find.byKey(_haptics));
       await _tapVisible(tester, find.byKey(_gold));
-      expect(background, 1);
       expect(haptic, 1);
       expect(gold, isFalse);
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
       expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.subtle);
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);
     },
@@ -301,13 +273,7 @@ void main() {
       final state = await _mount(tester);
       final paletteCache = ZyraLocalPrefs.cachedAppPaletteName;
       final hapticCache = ZyraLocalPrefs.cachedHapticLevelName;
-      await _openChoice(tester, _background);
-      expect(find.text('Paper White'), findsNothing);
-      expect(find.text('Crystal Mist'), findsNothing);
-      await tester.tap(find.text('Deep Emerald'));
-      await tester.pumpAndSettle();
-      expect(state.palette, ZyraDevPalette.deepEmerald);
-      expect(state.paletteCalls, 1);
+      expect(find.byKey(_background), findsNothing);
       await _openChoice(tester, _haptics);
       await tester.tap(find.text('Strong'));
       await tester.pumpAndSettle();
@@ -319,7 +285,7 @@ void main() {
       expect(state.hapticCalls, 1);
       expect(state.gold, isTrue);
       expect(state.goldCalls, 1);
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
       expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.subtle);
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);
       expect(ZyraLocalPrefs.cachedAppPaletteName, paletteCache);
@@ -330,7 +296,7 @@ void main() {
   );
 
   testWidgets(
-    'preview header is shared top-left and its sample shows local gradient',
+    'preview header stays top-left and its sample uses Ivory for legacy input',
     (tester) async {
       final state = await _mount(tester);
       state.update(() => state.palette = ZyraDevPalette.deepEmerald);
@@ -350,14 +316,14 @@ void main() {
       );
       expect(
         (sample.decoration as BoxDecoration).gradient,
-        ZyraDevPalette.deepEmerald.gradient,
+        ZyraDevPalette.ivory.gradient,
       );
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
     },
   );
 
   testWidgets(
-    'Midnight blue preview choice publishes only a caller-owned intention',
+    'legacy preview background input is ignored without member writes',
     (tester) async {
       final state = await _mount(tester);
       final beforePalette = ZyraLocalPrefs.cachedAppPaletteName;
@@ -368,11 +334,14 @@ void main() {
       final beforeDisk = {
         for (final key in beforePrefs.getKeys()) key: beforePrefs.get(key),
       };
-      await _openChoice(tester, _background);
-      await _selectMidnightBlue(tester);
-      expect(state.palette, ZyraDevPalette.midnightBlue);
-      expect(state.paletteCalls, 1);
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+      state.update(() => state.palette = ZyraDevPalette.midnightBlue);
+      await tester.pump();
+      expect(find.byKey(_background), findsNothing);
+      final content = tester.widget<ZyraPersonalisationContent>(
+        find.byType(ZyraPersonalisationContent),
+      );
+      expect(content.snapshot.palette, ZyraDevPalette.ivory);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
       expect(ZyraLocalPrefs.cachedAppPaletteName, beforePalette);
       expect(ZyraLocalPrefs.cachedAppPaletteRevision, beforeRevision);
       expect(ZyraLocalPrefs.accountOwner, beforeOwner);
@@ -396,10 +365,10 @@ void main() {
       state.gold = true;
     });
     await tester.pump();
-    expect(find.text('Deep Emerald'), findsOneWidget);
+    expect(find.byKey(_background), findsNothing);
     expect(find.text('Medium'), findsOneWidget);
     expect(tester.widget<Switch>(find.byKey(_gold)).value, isTrue);
-    expect(state.paletteCalls + state.hapticCalls + state.goldCalls, 0);
+    expect(state.hapticCalls + state.goldCalls, 0);
   });
 
   testWidgets(
@@ -477,7 +446,6 @@ void main() {
                       palette: ZyraDevPalette.deepEmerald,
                       hapticLevel: ZyraHapticLevel.strong,
                       goldEnabled: true,
-                      onPaletteChanged: (_) => calls++,
                       onHapticChanged: (_) => calls++,
                       onGoldChanged: (_) => calls++,
                     )
@@ -506,7 +474,6 @@ void main() {
         palette: ZyraDevPalette.midnightPlum,
         hapticLevel: ZyraHapticLevel.subtle,
         goldEnabled: false,
-        onPaletteChanged: (_) => calls++,
         onHapticChanged: (_) => calls++,
         onGoldChanged: (_) => calls++,
       ),
@@ -521,14 +488,14 @@ void main() {
     'denial while sheet is pending cannot apply its returned choice',
     (tester) async {
       final state = await _mount(tester);
-      await _openChoice(tester, _background);
+      await _openChoice(tester, _haptics);
       state.update(() => state.allowed = false);
       await tester.pump();
-      await tester.tap(find.text('Deep Emerald'));
+      await tester.tap(find.text('Strong'));
       await tester.pumpAndSettle();
-      expect(state.paletteCalls, 0);
-      expect(state.palette, ZyraDevPalette.midnightPlum);
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+      expect(state.hapticCalls, 0);
+      expect(state.haptic, ZyraHapticLevel.subtle);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
     },
   );
 
@@ -536,11 +503,11 @@ void main() {
     'owner containing parent-route guard survives its own choice sheet',
     (tester) async {
       final state = await _mount(tester, guardUsesRoute: true);
-      await _openChoice(tester, _background);
-      await tester.tap(find.text('Deep Emerald'));
+      await _openChoice(tester, _haptics);
+      await tester.tap(find.text('Strong'));
       await tester.pumpAndSettle();
-      expect(state.paletteCalls, 1);
-      expect(state.palette, ZyraDevPalette.deepEmerald);
+      expect(state.hapticCalls, 1);
+      expect(state.haptic, ZyraHapticLevel.strong);
       expect(find.byKey(_unavailable), findsNothing);
     },
   );
@@ -550,20 +517,20 @@ void main() {
     (tester) async {
       final navigator = GlobalKey<NavigatorState>();
       final state = await _mount(tester, navigatorKey: navigator);
-      await _openChoice(tester, _background);
+      await _openChoice(tester, _haptics);
       final sheet = tester
-          .widget<ZyraPersonalisationChoiceSheet<ZyraDevPalette>>(
-            find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
+          .widget<ZyraPersonalisationChoiceSheet<ZyraHapticLevel>>(
+            find.byType(ZyraPersonalisationChoiceSheet<ZyraHapticLevel>),
           );
       navigator.currentState!.push<void>(
         MaterialPageRoute(builder: (_) => const Scaffold(body: Text('Cover'))),
       );
       await tester.pumpAndSettle();
-      sheet.onSelected(ZyraDevPalette.deepEmerald);
+      sheet.onSelected(ZyraHapticLevel.strong);
       await tester.pump();
       expect(find.text('Cover'), findsOneWidget);
-      expect(state.paletteCalls, 0);
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+      expect(state.hapticCalls, 0);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
       navigator.currentState!.pop();
       await tester.pumpAndSettle();
       navigator.currentState!.pop();
@@ -594,72 +561,54 @@ void main() {
     tester,
   ) async {
     final state = await _mount(tester);
-    await _openChoice(tester, _background);
+    await _openChoice(tester, _haptics);
     state.update(() => state.alternateCallbacks = true);
     await tester.pump();
-    await tester.tap(find.text('Deep Emerald'));
+    await tester.tap(find.text('Strong'));
     await tester.pumpAndSettle();
-    expect(state.paletteCalls, 0);
+    expect(state.hapticCalls, 0);
     expect(state.alternateCalls, 0);
-    expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+    expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
   });
 
   testWidgets('disposed preview leaves retained choices inert', (tester) async {
     final state = await _mount(tester);
-    await _openChoice(tester, _background);
-    final sheet = tester.widget<ZyraPersonalisationChoiceSheet<ZyraDevPalette>>(
-      find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
-    );
+    await _openChoice(tester, _haptics);
+    final sheet = tester
+        .widget<ZyraPersonalisationChoiceSheet<ZyraHapticLevel>>(
+          find.byType(ZyraPersonalisationChoiceSheet<ZyraHapticLevel>),
+        );
     await tester.pumpWidget(const MaterialApp(home: SizedBox.shrink()));
-    sheet.onSelected(ZyraDevPalette.deepEmerald);
+    sheet.onSelected(ZyraHapticLevel.strong);
     await tester.pumpAndSettle();
-    expect(state.paletteCalls, 0);
-    expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
+    expect(state.hapticCalls, 0);
+    expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
     expect(tester.takeException(), isNull);
   });
 
   testWidgets(
-    'member background remains connected to existing preference setter',
+    'member Ivory leaves stored legacy background and revision untouched',
     (tester) async {
+      await _completeMemberOperation(tester, () async {
+        await ZyraLocalPrefs.setCachedAppPaletteName('midnightBlue');
+        await ZyraLocalPrefs.setCachedAppPaletteRevision('legacy-revision');
+      }, 'seed legacy member background preferences');
+      final beforePrefs = await _persistedMemberPrefs(tester);
+      final beforeDisk = {
+        for (final key in beforePrefs.getKeys()) key: beforePrefs.get(key),
+      };
+      ZyraColors.restoreCurrentAppPalette();
+      ZyraColors.selectAppPalette(ZyraDevPalette.deepEmerald);
       await tester.pumpWidget(const MaterialApp(home: PersonalisationScreen()));
-      await _openChoice(tester, _background);
-      await tester.tap(find.text('Deep Emerald'));
-      await tester.pumpAndSettle();
-      expect(ZyraColors.devPalette, ZyraDevPalette.deepEmerald);
-      expect(
-        ZyraLocalPrefs.cachedAppPaletteName,
-        ZyraDevPalette.deepEmerald.name,
-      );
-      final prefs = await _persistedMemberPrefs(tester);
-      expect(prefs.getString('zyra.cached_account_owner'), 'member-a');
-      expect(
-        prefs.getString('zyra.app_palette'),
-        ZyraDevPalette.deepEmerald.name,
-      );
-      expect(find.byType(BackButton), findsNothing);
-      // End the real member lifetime while its fake-zone callbacks can still
-      // be flushed. Global tearDown must not inherit a frozen queue tail.
-      await _synchronizeMember(tester, null);
-    },
-  );
-
-  testWidgets(
-    'member Midnight blue choice uses the existing bound preference writer',
-    (tester) async {
-      await tester.pumpWidget(const MaterialApp(home: PersonalisationScreen()));
-      await _openChoice(tester, _background);
-      await _selectMidnightBlue(tester);
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightBlue);
+      expect(find.byKey(_background), findsNothing);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
       expect(ZyraLocalPrefs.cachedAppPaletteName, 'midnightBlue');
-      expect(
-        ZyraLocalPrefs.cachedAppPaletteRevision,
-        ZyraColors.currentPaletteRevision,
-      );
-      final prefs = await _persistedMemberPrefs(tester);
-      expect(prefs.getString('zyra.cached_account_owner'), 'member-a');
-      expect(prefs.getString('zyra.app_palette'), 'midnightBlue');
-      expect(ZyraColors.currentDefaultPalette, ZyraDevPalette.midnightPlum);
-      expect(tester.takeException(), isNull);
+      expect(ZyraLocalPrefs.cachedAppPaletteRevision, 'legacy-revision');
+      final afterPrefs = await _persistedMemberPrefs(tester);
+      expect({
+        for (final key in afterPrefs.getKeys()) key: afterPrefs.get(key),
+      }, beforeDisk);
+      expect(find.byType(BackButton), findsNothing);
       await _synchronizeMember(tester, null);
     },
   );
@@ -684,13 +633,13 @@ void main() {
     'member choice cannot stamp an account that changed while sheet was open',
     (tester) async {
       await tester.pumpWidget(const MaterialApp(home: PersonalisationScreen()));
-      await _openChoice(tester, _background);
+      await _openChoice(tester, _haptics);
       await _synchronizeMember(tester, 'member-b');
       await tester.pump();
-      await tester.tap(find.text('Deep Emerald'));
+      await tester.tap(find.text('Strong'));
       await tester.pumpAndSettle();
-      expect(ZyraColors.devPalette, ZyraDevPalette.midnightPlum);
-      expect(ZyraLocalPrefs.cachedAppPaletteName, isNull);
+      expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.subtle);
+      expect(ZyraLocalPrefs.cachedHapticLevelName, isNull);
       expect(find.byKey(_unavailable), findsOneWidget);
     },
   );
@@ -709,22 +658,23 @@ void main() {
     },
   );
 
-  testWidgets('member background choice cannot overwrite a newer selection', (
+  testWidgets('member haptic choice cannot overwrite a newer selection', (
     tester,
   ) async {
     await tester.pumpWidget(const MaterialApp(home: PersonalisationScreen()));
-    await _openChoice(tester, _background);
-    final sheet = tester.widget<ZyraPersonalisationChoiceSheet<ZyraDevPalette>>(
-      find.byType(ZyraPersonalisationChoiceSheet<ZyraDevPalette>),
-    );
-    ZyraColors.selectDevPalette(ZyraDevPalette.deepEmerald);
+    await _openChoice(tester, _haptics);
+    final sheet = tester
+        .widget<ZyraPersonalisationChoiceSheet<ZyraHapticLevel>>(
+          find.byType(ZyraPersonalisationChoiceSheet<ZyraHapticLevel>),
+        );
+    ZyraInteractionStyle.restoreHapticLevel(ZyraHapticLevel.strong.name);
     final choice = sheet.options.firstWhere(
-      (option) => option != ZyraDevPalette.deepEmerald,
+      (option) => option != ZyraHapticLevel.strong,
     );
     sheet.onSelected(choice);
     await tester.pumpAndSettle();
-    expect(ZyraColors.devPalette, ZyraDevPalette.deepEmerald);
-    expect(ZyraLocalPrefs.cachedAppPaletteName, isNull);
+    expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.strong);
+    expect(ZyraLocalPrefs.cachedHapticLevelName, isNull);
   });
 
   testWidgets('member gold rejects an older selection revision', (

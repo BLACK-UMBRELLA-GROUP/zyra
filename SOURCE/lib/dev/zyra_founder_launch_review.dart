@@ -68,8 +68,8 @@ class ZyraFounderLaunchPageStyle extends InheritedWidget {
   });
 
   final Set<ZyraFounderLaunchRequirement> pending;
-  static const darkInk = Color(0xFF24202B);
-  static const darkSecondaryInk = Color(0xFF514C58);
+  static const darkInk = ZyraColors.espresso;
+  static const darkSecondaryInk = ZyraColors.secondaryText;
   static const darkGoldInk = Color(0xFF725A25);
 
   static Set<ZyraFounderLaunchRequirement> pendingOf(BuildContext context) =>

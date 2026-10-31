@@ -48,7 +48,7 @@ class ZyraIntelligenceCard extends StatelessWidget {
         children: [
           Text(
             it.label.toUpperCase(),
-            style: ZyraText.chapterLabel(color: const Color(0xCCD8BEEE)),
+            style: ZyraText.chapterLabel(color: ZyraColors.goldText),
           ),
           const SizedBox(height: 8),
           Text(it.body, style: ZyraText.body(size: 13.5)),
@@ -65,7 +65,7 @@ class ZyraIntelligenceCard extends StatelessWidget {
                       height: 4,
                       margin: const EdgeInsets.only(top: 7, right: 9),
                       decoration: const BoxDecoration(
-                        color: Color(0x99D8BEEE),
+                        color: Color(0x99A9792E),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -117,7 +117,7 @@ class ZyraIntelligenceInvitation extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               _label.toUpperCase(),
-              style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
+              style: ZyraText.chapterLabel(color: ZyraColors.goldText),
             ),
           ],
         ),

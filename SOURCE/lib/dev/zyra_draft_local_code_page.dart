@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -309,7 +310,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     final scan = widget.mode == ZyraLocalCodeContext.scan;
     final person = _person;
     return SafeArea(
-      child: SingleChildScrollView(
+      child: ZyraShadowScrollView(
         key: const ValueKey('local-code-scroll'),
         padding: EdgeInsets.fromLTRB(21, scan ? 18 : 18, 21, 28),
         child: Column(
@@ -471,7 +472,10 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                             gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: [Color(0xFF4A4869), Color(0xFF302D47)],
+                              colors: [
+                                ZyraColors.avatarSand,
+                                ZyraColors.avatarDeepSand,
+                              ],
                             ),
                           ),
                           child: Text(
@@ -501,7 +505,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                                   'Request sent',
                                   style: ZyraText.body(
                                     size: 12,
-                                    color: ZyraColors.journeyGold,
+                                    color: ZyraColors.goldText,
                                   ),
                                 ),
                               ],
@@ -627,48 +631,55 @@ class _CodeBoxes extends StatelessWidget {
                     'ZYRA',
                     style: ZyraText.body(
                       size: 12,
-                      color: ZyraColors.journeyGold,
+                      color: ZyraColors.goldText,
                     ).copyWith(letterSpacing: 1),
                   ),
                   const SizedBox(width: 10),
                   for (int i = 0; i < 5; i++) ...[
                     if (i != 0) const SizedBox(width: 6),
                     Expanded(
-                      child: Container(
-                        key: ValueKey('local-code-box-$i'),
-                        height: 56,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: .055),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color:
-                                controller.text.length < 20 &&
-                                    controller.text.length ~/ 4 == i
-                                ? ZyraColors.journeyGold
-                                : Colors.white.withValues(alpha: .15),
-                          ),
-                        ),
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            child: Text(
-                              controller.text.length <= i * 4
-                                  ? '····'
-                                  : controller.text.substring(
-                                      i * 4,
-                                      math.min(
-                                        i * 4 + 4,
-                                        controller.text.length,
-                                      ),
+                      child: ZyraFloatingSurface(
+                        radius: 22,
+                        child: Container(
+                          key: ValueKey('local-code-box-$i'),
+                          height: 56,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: ZyraColors.surfaceFill,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color:
+                                  controller.text.length < 20 &&
+                                      controller.text.length ~/ 4 == i
+                                  ? ZyraColors.journeyGold
+                                  : ZyraColors.warmOverlay.withValues(
+                                      alpha: .15,
                                     ),
-                              style: ZyraText.body(
-                                size: 14,
-                                color: controller.text.length <= i * 4
-                                    ? ZyraColors.ink(.6)
-                                    : null,
-                              ).copyWith(letterSpacing: 1.3),
+                            ),
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 3,
+                              ),
+                              child: Text(
+                                controller.text.length <= i * 4
+                                    ? '····'
+                                    : controller.text.substring(
+                                        i * 4,
+                                        math.min(
+                                          i * 4 + 4,
+                                          controller.text.length,
+                                        ),
+                                      ),
+                                style: ZyraText.body(
+                                  size: 14,
+                                  color: controller.text.length <= i * 4
+                                      ? ZyraColors.ink(.6)
+                                      : null,
+                                ).copyWith(letterSpacing: 1.3),
+                              ),
                             ),
                           ),
                         ),
@@ -697,29 +708,35 @@ class _CodeAction extends StatelessWidget {
   final VoidCallback? onTap;
   final bool gold;
   @override
-  Widget build(BuildContext context) => Material(
-    color: gold ? ZyraColors.journeyGold : Colors.white.withValues(alpha: .075),
-    borderRadius: BorderRadius.circular(gold ? 999 : 15),
-    child: InkWell(
-      enableFeedback: false,
-      onTap: ZyraTapFeedback.onTap(context, onTap),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 999,
+    gold: gold,
+    child: Material(
+      color: gold ? ZyraColors.goldTextFill : ZyraColors.surfaceFill,
       borderRadius: BorderRadius.circular(gold ? 999 : 15),
-      child: Container(
-        constraints: BoxConstraints(minHeight: gold ? 52 : 42),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(gold ? 999 : 15),
-          border: gold
-              ? null
-              : Border.all(color: Colors.white.withValues(alpha: .17)),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: gold
-              ? ZyraText.button(size: 14, color: const Color(0xFF30203F))
-              : ZyraText.body(size: 13),
+      child: InkWell(
+        enableFeedback: false,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
+        borderRadius: BorderRadius.circular(gold ? 999 : 15),
+        child: Container(
+          constraints: BoxConstraints(minHeight: gold ? 52 : 42),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(gold ? 999 : 15),
+            border: gold
+                ? null
+                : Border.all(
+                    color: ZyraColors.warmOverlay.withValues(alpha: .17),
+                  ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: gold
+                ? ZyraText.button(size: 14, color: ZyraColors.espresso)
+                : ZyraText.body(size: 13),
+          ),
         ),
       ),
     ),
@@ -730,14 +747,19 @@ class _CodeGlass extends StatelessWidget {
   const _CodeGlass({super.key, required this.child});
   final Widget child;
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Colors.white.withValues(alpha: .065),
-      border: Border.all(color: Colors.white.withValues(alpha: .16)),
-      borderRadius: BorderRadius.circular(22),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 22,
+    child: Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        border: Border.all(
+          color: ZyraColors.warmOverlay.withValues(alpha: .16),
+        ),
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: child,
     ),
-    child: child,
   );
 }
 
@@ -756,12 +778,16 @@ class _CodeDivider extends StatelessWidget {
     );
     return Row(
       children: [
-        Expanded(child: Divider(color: Colors.white.withValues(alpha: .13))),
+        Expanded(
+          child: Divider(color: ZyraColors.warmOverlay.withValues(alpha: .13)),
+        ),
         if (MediaQuery.textScalerOf(context).scale(10) > 15)
           Flexible(flex: 4, child: text)
         else
           text,
-        Expanded(child: Divider(color: Colors.white.withValues(alpha: .13))),
+        Expanded(
+          child: Divider(color: ZyraColors.warmOverlay.withValues(alpha: .13)),
+        ),
       ],
     );
   }
@@ -823,7 +849,7 @@ class _CodeCameraFrameState extends State<_CodeCameraFrame> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(26),
           child: ColoredBox(
-            color: const Color(0xFF180F23),
+            color: ZyraColors.avatarWarmSand,
             child: Stack(
               fit: StackFit.expand,
               children: [

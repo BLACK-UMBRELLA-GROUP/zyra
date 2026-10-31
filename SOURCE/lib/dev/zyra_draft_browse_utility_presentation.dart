@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'dart:convert';
 import 'dart:math' as math;
@@ -53,7 +54,7 @@ class ZyraDraftScanPresentation extends StatelessWidget {
                       painter: _ScanCorners(ZyraColors.journeyGold),
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: .035),
+                          color: ZyraColors.warmOverlay.withValues(alpha: .035),
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Column(
@@ -68,7 +69,7 @@ class ZyraDraftScanPresentation extends StatelessWidget {
                             Text(
                               'ZYRA CODE',
                               style: ZyraText.chapterLabel(
-                                color: ZyraColors.journeyGold,
+                                color: ZyraColors.goldText,
                               ),
                             ),
                           ],
@@ -278,63 +279,72 @@ class _ZyraDraftReportPresentationState
                       const SizedBox(height: 6),
                     Semantics(
                       selected: _selected == reason,
-                      child: OutlinedButton(
-                        key: ValueKey('draft_report_reason_${reason.name}'),
-                        onPressed: ZyraTapFeedback.onTap(
-                          context,
-                          !_current(epoch)
-                              ? null
-                              : () {
-                                  if (!_current(epoch)) return;
-                                  setState(() {
-                                    _selected = _selected == reason
-                                        ? null
-                                        : reason;
-                                  });
-                                },
-                        ),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size(44, 44),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 10,
+                      child: ZyraFloatingSurface(
+                        radius: 12,
+                        circle: false,
+                        gold: false,
+                        child: OutlinedButton(
+                          key: ValueKey('draft_report_reason_${reason.name}'),
+                          onPressed: ZyraTapFeedback.onTap(
+                            context,
+                            !_current(epoch)
+                                ? null
+                                : () {
+                                    if (!_current(epoch)) return;
+                                    setState(() {
+                                      _selected = _selected == reason
+                                          ? null
+                                          : reason;
+                                    });
+                                  },
                           ),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          alignment: Alignment.centerLeft,
-                          foregroundColor: ZyraColors.foreground,
-                          backgroundColor: _selected == reason
-                              ? ZyraColors.journeyGold.withValues(alpha: .12)
-                              : Colors.white.withValues(alpha: .045),
-                          side: BorderSide(
-                            color: _selected == reason
-                                ? ZyraColors.journeyGold.withValues(alpha: .6)
-                                : Colors.white.withValues(alpha: .16),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              _selected == reason
-                                  ? Icons.radio_button_checked
-                                  : Icons.radio_button_unchecked,
-                              size: 18,
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(44, 44),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            alignment: Alignment.centerLeft,
+                            foregroundColor: ZyraColors.foreground,
+                            backgroundColor: _selected == reason
+                                ? ZyraColors.journeyGold.withValues(alpha: .12)
+                                : ZyraColors.warmOverlay.withValues(
+                                    alpha: .045,
+                                  ),
+                            side: BorderSide(
                               color: _selected == reason
-                                  ? ZyraColors.journeyGold
-                                  : Colors.white38,
+                                  ? ZyraColors.journeyGold.withValues(alpha: .6)
+                                  : ZyraColors.warmOverlay.withValues(
+                                      alpha: .16,
+                                    ),
                             ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                reason.label,
-                                style: ZyraText.body(
-                                  size: 14,
-                                ).copyWith(height: 1.25),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                _selected == reason
+                                    ? Icons.radio_button_checked
+                                    : Icons.radio_button_unchecked,
+                                size: 18,
+                                color: _selected == reason
+                                    ? ZyraColors.journeyGold
+                                    : ZyraColors.mutedText,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  reason.label,
+                                  style: ZyraText.body(
+                                    size: 14,
+                                  ).copyWith(height: 1.25),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -394,7 +404,7 @@ class _ZyraDraftReportPresentationState
 
   ButtonStyle get _quietActionStyle => TextButton.styleFrom(
     minimumSize: const Size(44, 44),
-    foregroundColor: ZyraColors.journeyGold,
+    foregroundColor: ZyraColors.goldText,
     textStyle: ZyraText.body(size: 13),
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -413,7 +423,7 @@ class _UtilityViewport extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => SingleChildScrollView(
+  Widget build(BuildContext context) => ZyraShadowScrollView(
     key: viewportKey,
     physics: const ClampingScrollPhysics(),
     child: ConstrainedBox(
@@ -449,30 +459,39 @@ class _UnavailableAction extends StatelessWidget {
   final IconData icon;
 
   @override
-  Widget build(BuildContext context) => OutlinedButton(
-    key: ValueKey(id),
-    onPressed: null,
-    style: OutlinedButton.styleFrom(
-      minimumSize: const Size(44, 48),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      disabledForegroundColor: ZyraColors.journeyGold.withValues(alpha: .6),
-      backgroundColor: ZyraColors.journeyGold.withValues(alpha: .06),
-      side: BorderSide(color: ZyraColors.journeyGold.withValues(alpha: .25)),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, size: 18),
-        const SizedBox(width: 10),
-        Flexible(
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: ZyraText.button(size: 14),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 999,
+    circle: false,
+    gold: false,
+    child: OutlinedButton(
+      key: ValueKey(id),
+      onPressed: null,
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(44, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        disabledForegroundColor: ZyraColors.goldText.withValues(alpha: .6),
+        backgroundColor: ZyraColors.journeyGold.withValues(alpha: .06),
+        side: BorderSide(color: ZyraColors.journeyGold.withValues(alpha: .25)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: ZyraColors.journeyGold.withValues(alpha: .6),
           ),
-        ),
-      ],
+          const SizedBox(width: 10),
+          Flexible(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: ZyraText.button(size: 14),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -485,7 +504,7 @@ class _LocalReportPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     const neutral = ColoredBox(
       color: ZyraColors.luxuryDarkPurple,
-      child: Icon(Icons.person_outline, size: 28, color: Colors.white38),
+      child: Icon(Icons.person_outline, size: 28, color: ZyraColors.mutedText),
     );
     // Only the caller's in-memory public sample can render. A URL cannot
     // silently open a network provider or load a real member/cached image.

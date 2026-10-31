@@ -145,7 +145,13 @@ Future<void> baselineTearDown() async {
 // startup/auth home, lock gate, or invoking main(). Only the local preview
 // below is mounted. This keeps every Material theme and scroll setting exact.
 class _ProductionPreviewFrame extends StatelessWidget {
-  const _ProductionPreviewFrame({required this.child});
+  const _ProductionPreviewFrame({
+    required this.child,
+    this.textScale = 1,
+    this.highContrast = false,
+  });
+  final double textScale;
+  final bool highContrast;
   final Widget child;
 
   @override
@@ -167,7 +173,8 @@ class _ProductionPreviewFrame extends StatelessWidget {
             data: MediaQuery.of(context).copyWith(
               padding: const EdgeInsets.only(top: 59, bottom: 34),
               viewPadding: const EdgeInsets.only(top: 59, bottom: 34),
-              textScaler: TextScaler.noScaling,
+              textScaler: TextScaler.linear(textScale),
+              highContrast: highContrast,
               disableAnimations: false,
             ),
             child: DefaultTextStyle.merge(
@@ -189,11 +196,15 @@ class BaselineHarness {
     this.outputRoot = baselineRoot,
     this.evidenceRoot = baselineEvidence,
     this.flatOutput = false,
+    this.textScale = 1,
+    this.highContrast = false,
   });
   final WidgetTester tester;
   final String group;
   final String outputRoot, evidenceRoot;
   final bool flatOutput;
+  final double textScale;
+  final bool highContrast;
   bool guardian = false;
   List<Map<String, Object?>> get rows => _rowsByGroup.putIfAbsent(group, () {
     final file = File('$evidenceRoot/rows_$group.json');
@@ -227,7 +238,13 @@ class BaselineHarness {
       ..add(checkpoint);
     tester.view.physicalSize = const Size(1290, 2796);
     tester.view.devicePixelRatio = 3;
-    await tester.pumpWidget(_ProductionPreviewFrame(child: child));
+    await tester.pumpWidget(
+      _ProductionPreviewFrame(
+        textScale: textScale,
+        highContrast: highContrast,
+        child: child,
+      ),
+    );
     await flush();
   }
 
@@ -255,6 +272,8 @@ class BaselineHarness {
     final ready = Completer<void>();
     await tester.pumpWidget(
       _ProductionPreviewFrame(
+        textScale: textScale,
+        highContrast: highContrast,
         child: ZyraOneJourneyConceptShell(
           key: UniqueKey(),
           canAct: () => true,
@@ -319,6 +338,8 @@ class BaselineHarness {
         key('dev_controls_scroll'),
         key('my-zyra-quiet-scroll-0'),
         key('draft_scroll'),
+        key('concept-current-profile-scroll'),
+        key('personalisation-scroll'),
       ];
       final owners = containers.where((f) => f.evaluate().isNotEmpty).toList();
       if (owners.isNotEmpty) {

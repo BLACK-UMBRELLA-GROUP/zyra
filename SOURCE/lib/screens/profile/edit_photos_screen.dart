@@ -1,3 +1,4 @@
+import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -1138,50 +1139,53 @@ class _AddPhotoPage extends StatelessWidget {
       enabled: onAdd != null,
       onTap: ZyraTapFeedback.onTap(context, onAdd),
       child: ExcludeSemantics(
-        child: Material(
-          color: ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(26),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            key: const ValueKey('photos-add-page-action'),
-            onTap: ZyraTapFeedback.onTap(context, onAdd),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(26),
-                border: Border.all(
-                  color: ZyraColors.journeyGold.withValues(alpha: .45),
+        child: ZyraFloatingSurface(
+          radius: 18,
+          child: Material(
+            color: ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(26),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              key: const ValueKey('photos-add-page-action'),
+              onTap: ZyraTapFeedback.onTap(context, onAdd),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(26),
+                  border: Border.all(
+                    color: ZyraColors.journeyGold.withValues(alpha: .45),
+                  ),
                 ),
-              ),
-              child: LayoutBuilder(
-                builder: (context, constraints) => SingleChildScrollView(
-                  primary: false,
-                  physics: const ClampingScrollPhysics(),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add_rounded,
-                            key: const ValueKey('photos-add-page-icon'),
-                            size: 64,
-                            color: ZyraColors.journeyGold,
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Add a new photo',
-                            key: const ValueKey('photos-add-page-title'),
-                            textAlign: TextAlign.center,
-                            style: ZyraText.heading(
-                              size: 20,
-                            ).copyWith(height: 1.3),
-                          ),
-                        ],
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    primary: false,
+                    physics: const ClampingScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_rounded,
+                              key: const ValueKey('photos-add-page-icon'),
+                              size: 64,
+                              color: ZyraColors.journeyGold,
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Add a new photo',
+                              key: const ValueKey('photos-add-page-title'),
+                              textAlign: TextAlign.center,
+                              style: ZyraText.heading(
+                                size: 20,
+                              ).copyWith(height: 1.3),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -1408,17 +1412,22 @@ class _RevealedPhotoActions extends StatelessWidget {
           height: 52,
           child: Tooltip(
             message: 'Delete photo',
-            child: OutlinedButton(
-              key: ValueKey('remove-photo-$index'),
-              onPressed: ZyraTapFeedback.onTap(context, onRemove),
-              style: OutlinedButton.styleFrom(
-                padding: EdgeInsets.zero,
-                foregroundColor: ZyraColors.destructive,
-                side: BorderSide(color: ZyraColors.destructiveBorder),
-                backgroundColor: ZyraColors.destructive.withValues(alpha: 0.08),
-                shape: const CircleBorder(),
+            child: ZyraFloatingSurface(
+              radius: 999,
+              child: OutlinedButton(
+                key: ValueKey('remove-photo-$index'),
+                onPressed: ZyraTapFeedback.onTap(context, onRemove),
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  foregroundColor: ZyraColors.destructive,
+                  side: BorderSide(color: ZyraColors.destructiveBorder),
+                  backgroundColor: ZyraColors.destructive.withValues(
+                    alpha: 0.08,
+                  ),
+                  shape: const CircleBorder(),
+                ),
+                child: const Icon(Icons.delete_outline_rounded, size: 21),
               ),
-              child: const Icon(Icons.delete_outline_rounded, size: 21),
             ),
           ),
         ),
@@ -1574,12 +1583,15 @@ class _CompactPhotoView extends StatelessWidget {
                 : SizedBox(
                     key: ValueKey('make-main-$selected'),
                     width: double.infinity,
-                    child: FilledButton(
-                      onPressed: ZyraTapFeedback.onTap(
-                        context,
-                        working ? null : onMakeMain,
+                    child: ZyraFloatingSurface(
+                      radius: 999,
+                      child: FilledButton(
+                        onPressed: ZyraTapFeedback.onTap(
+                          context,
+                          working ? null : onMakeMain,
+                        ),
+                        child: const Text('Make main photo'),
                       ),
-                      child: const Text('Make main photo'),
                     ),
                   ),
           ),
@@ -1671,23 +1683,26 @@ class _CompactAddTile extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: ZyraColors.surfaceFill,
-    borderRadius: BorderRadius.circular(17),
-    child: InkWell(
-      key: ValueKey('compact-add-$index'),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 18,
+    child: Material(
+      color: ZyraColors.surfaceFill,
       borderRadius: BorderRadius.circular(17),
-      onTap: ZyraTapFeedback.onTap(context, onTap),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(17),
-          border: Border.all(color: ZyraColors.surfaceBorder),
-        ),
-        child: const Center(
-          child: Icon(
-            Icons.add_rounded,
-            color: ZyraColors.journeyGold,
-            size: 34,
+      child: InkWell(
+        key: ValueKey('compact-add-$index'),
+        borderRadius: BorderRadius.circular(17),
+        onTap: ZyraTapFeedback.onTap(context, onTap),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(17),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: const Center(
+            child: Icon(
+              Icons.add_rounded,
+              color: ZyraColors.journeyGold,
+              size: 34,
+            ),
           ),
         ),
       ),

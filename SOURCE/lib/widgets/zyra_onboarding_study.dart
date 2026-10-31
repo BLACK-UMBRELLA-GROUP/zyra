@@ -203,7 +203,7 @@ class ZyraOnboardingStudy extends StatelessWidget {
               sectionLead && contentPage == 0
                   ? 'HOW ZYRA WORKS'
                   : _storyEyebrows[contentPage],
-              ZyraText.chapterLabel(color: ZyraColors.journeyGold),
+              ZyraText.chapterLabel(color: ZyraColors.goldText),
             ),
           ),
           SizedBox(height: sectionLead ? 6 : 10),
@@ -280,7 +280,7 @@ class ZyraOnboardingStudy extends StatelessWidget {
                                       'Reported from Imam Ahmad',
                                       ZyraText.subtext(
                                         size: compact ? 12 : 13,
-                                        color: ZyraColors.journeyGold,
+                                        color: ZyraColors.goldText,
                                       ),
                                       textKey: ValueKey(
                                         'onboarding-study-quote-attribution-${direction.name}-$page',
@@ -488,7 +488,7 @@ class _QuotePage extends StatelessWidget {
                 Text(
                   'A PRINCIPLE BEHIND ZYRA',
                   textAlign: alignment,
-                  style: ZyraText.chapterLabel(color: ZyraColors.journeyGold),
+                  style: ZyraText.chapterLabel(color: ZyraColors.goldText),
                 ),
               ),
               const SizedBox(height: 10),

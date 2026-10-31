@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // Pure presentation for the protected One Journey comparison. The source of
 // the visual rules is the current Browse/Connections screen, not a new design.
 // No account, service, persistence, matching or permission authority lives here.
@@ -500,7 +501,7 @@ class _ZyraOneJourneyConnectionsPresentationState
       available,
       widget.singlePageMaxHeight ?? available,
     );
-    return SingleChildScrollView(
+    return ZyraShadowScrollView(
       key: const PageStorageKey('concept_connections_page_0'),
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.fromLTRB(20, widget.pageTopPadding, 20, bottom),
@@ -714,72 +715,77 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
         : primary
         ? ZyraColors.foreground
         : ZyraColors.ink(.80);
-    final button = Material(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(999),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(
-            color: invitationSent == true
-                ? ZyraColors.journeyGold.withValues(alpha: .85)
-                : ZyraColors.surfaceBorder,
-            width: primary ? 1 : .6,
-          ),
-        ),
-        child: InkWell(
-          key: action.key,
-          borderRadius: BorderRadius.circular(999),
-          onTap: ZyraTapFeedback.onTap(context, action.onTap),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: primary ? 14 : 10,
-              vertical: primary ? 11 : 8,
+    final button = ZyraFloatingSurface(
+      radius: 999,
+      circle: false,
+      gold: false,
+      child: Material(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(999),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(
+              color: invitationSent == true
+                  ? ZyraColors.journeyGold.withValues(alpha: .85)
+                  : ZyraColors.surfaceBorder,
+              width: primary ? 1 : .6,
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (action.icon != null) ...[
-                  Icon(action.icon, size: 14, color: tint),
-                  const SizedBox(width: 6),
-                ],
-                Flexible(
-                  child: action.fitLabel
-                      ? FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
+          ),
+          child: InkWell(
+            key: action.key,
+            borderRadius: BorderRadius.circular(999),
+            onTap: ZyraTapFeedback.onTap(context, action.onTap),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: primary ? 14 : 10,
+                vertical: primary ? 11 : 8,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (action.icon != null) ...[
+                    Icon(action.icon, size: 14, color: tint),
+                    const SizedBox(width: 6),
+                  ],
+                  Flexible(
+                    child: action.fitLabel
+                        ? FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              action.label,
+                              maxLines: 1,
+                              softWrap: false,
+                              style: ZyraText.button(
+                                size: primary ? 12.5 : 10.5,
+                                color: tint,
+                              ),
+                            ),
+                          )
+                        : invitationSent != null
+                        ? ZyraInvitationLabel(
+                            label: action.label,
+                            sent: invitationSent!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: ZyraText.button(
+                              size: primary ? 12.5 : 10.5,
+                              color: tint,
+                            ),
+                          )
+                        : Text(
                             action.label,
                             maxLines: 1,
-                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
                             style: ZyraText.button(
                               size: primary ? 12.5 : 10.5,
                               color: tint,
                             ),
                           ),
-                        )
-                      : invitationSent != null
-                      ? ZyraInvitationLabel(
-                          label: action.label,
-                          sent: invitationSent!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: ZyraText.button(
-                            size: primary ? 12.5 : 10.5,
-                            color: tint,
-                          ),
-                        )
-                      : Text(
-                          action.label,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: ZyraText.button(
-                            size: primary ? 12.5 : 10.5,
-                            color: tint,
-                          ),
-                        ),
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

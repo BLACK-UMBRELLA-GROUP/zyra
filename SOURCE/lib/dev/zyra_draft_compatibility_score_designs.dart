@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'dart:math' as math;
 
@@ -38,10 +39,10 @@ class _ZyraCompatibilityScoreReaderState
   int _personRevision = 0;
   bool _recentering = false;
 
-  static const _ink = Color(0xFFF6F0F8);
-  static const _muted = Color(0xFFBDB0C8);
-  static const _discuss = Color(0xFFC9ACD7);
-  static const _opposed = Color(0xFFB4A6C0);
+  static const _ink = ZyraColors.espresso;
+  static const _muted = ZyraColors.secondaryText;
+  static const _discuss = ZyraColors.journeyGold;
+  static const _opposed = ZyraColors.mutedText;
   static final _pageCount = 1 + ZyraCompatibilityDemo.categories.length;
 
   String _name(int index) =>
@@ -124,7 +125,7 @@ class _ZyraCompatibilityScoreReaderState
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF34263F), Color(0xFF1C132B)],
+              colors: [ZyraColors.cardSurface, ZyraColors.lowerSurface],
             ),
             borderRadius: BorderRadius.circular(26),
             border: Border.all(color: _ink.withValues(alpha: .13)),
@@ -203,7 +204,7 @@ class _ZyraCompatibilityScoreReaderState
         ? null
         : ZyraCompatibilityDemo.categories[index - 1];
     final score = category?.aligned ?? widget.overallScore;
-    return SingleChildScrollView(
+    return ZyraShadowScrollView(
       key: ValueKey('draft_compatibility_score_page_$index'),
       primary: false,
       padding: const EdgeInsets.fromLTRB(20, 22, 20, 24),
@@ -338,7 +339,15 @@ class _ZyraCompatibilityScoreReaderState
           runSpacing: 4,
           children: [
             Text(label, style: ZyraText.body(size: 15, color: _ink)),
-            Text('$value%', style: ZyraText.body(size: 15, color: color)),
+            Text(
+              '$value%',
+              style: ZyraText.body(
+                size: 15,
+                color: color == ZyraColors.journeyGold
+                    ? ZyraColors.goldText
+                    : color,
+              ),
+            ),
           ],
         ),
       ),
@@ -463,7 +472,7 @@ class _DemoRings extends CustomPainter {
       ..strokeWidth = 13;
     final ringRadius = math.max(1.0, radius);
     final rect = Rect.fromCircle(center: center, radius: ringRadius);
-    paint.color = Colors.white.withValues(alpha: .075);
+    paint.color = ZyraColors.warmOverlay.withValues(alpha: .075);
     canvas.drawCircle(center, ringRadius, paint);
     var start = -math.pi / 2;
     for (var value = 0; value < values.length; value++) {

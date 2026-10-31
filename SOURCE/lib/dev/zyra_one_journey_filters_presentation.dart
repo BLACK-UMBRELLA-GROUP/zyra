@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 // LOCK10 V6 presentation for the local sample preview. No repositories,
 // transports, device permission, private answers or member counts.
 import 'package:flutter/material.dart';
@@ -200,7 +201,11 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           minimumSize: const Size(44, 44),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        child: _text(label, size: size, color: ZyraColors.journeyGold),
+        child: _text(
+          label,
+          size: size,
+          color: size < 24 ? ZyraColors.goldText : ZyraColors.journeyGold,
+        ),
       ),
     );
   }
@@ -246,27 +251,32 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
       ),
     );
     return _control(
-      Container(
-        key: ValueKey('${prefix}_segments'),
-        padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
-          border: Border.all(color: ZyraColors.surfaceBorder),
-          borderRadius: BorderRadius.circular(28),
-        ),
-        child: large
-            ? Column(
-                children: [for (var i = 0; i < labels.length; i++) item(i)],
-              )
-            : IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (var i = 0; i < labels.length; i++)
-                      Expanded(child: item(i)),
-                  ],
+      ZyraFloatingSurface(
+        radius: 28,
+        circle: false,
+        gold: false,
+        child: Container(
+          key: ValueKey('${prefix}_segments'),
+          padding: const EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            color: ZyraColors.surfaceFill,
+            border: Border.all(color: ZyraColors.surfaceBorder),
+            borderRadius: BorderRadius.circular(28),
+          ),
+          child: large
+              ? Column(
+                  children: [for (var i = 0; i < labels.length; i++) item(i)],
+                )
+              : IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      for (var i = 0; i < labels.length; i++)
+                        Expanded(child: item(i)),
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -304,7 +314,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     final label = _text(
       value,
       size: 12,
-      color: ZyraColors.journeyGold,
+      color: ZyraColors.goldText,
       align: TextAlign.center,
     );
     if (MediaQuery.textScalerOf(context).scale(1) > 1.3) {
@@ -505,41 +515,46 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
             }
           }),
           borderRadius: BorderRadius.circular(24),
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 42),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: ZyraColors.surfaceFill,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: selected
-                    ? ZyraColors.journeyGold.withValues(alpha: .7)
-                    : ZyraColors.surfaceBorder,
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (!selected) ...[
-                  const Icon(
-                    Icons.add,
-                    size: 14,
-                    color: ZyraColors.journeyGold,
-                  ),
-                  const SizedBox(width: 8),
-                ],
-                Flexible(
-                  child: _text(label, size: 13, color: ZyraColors.ink(.95)),
+          child: ZyraFloatingSurface(
+            radius: 24,
+            circle: false,
+            gold: false,
+            child: Container(
+              constraints: const BoxConstraints(minHeight: 42),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: ZyraColors.surfaceFill,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: selected
+                      ? ZyraColors.journeyGold.withValues(alpha: .7)
+                      : ZyraColors.surfaceBorder,
                 ),
-                if (selected) ...[
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.close,
-                    size: 14,
-                    color: ZyraColors.journeyGold,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!selected) ...[
+                    const Icon(
+                      Icons.add,
+                      size: 14,
+                      color: ZyraColors.journeyGold,
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  Flexible(
+                    child: _text(label, size: 13, color: ZyraColors.ink(.95)),
                   ),
+                  if (selected) ...[
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.close,
+                      size: 14,
+                      color: ZyraColors.journeyGold,
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
@@ -714,55 +729,60 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                   onTap: () {
                     if (guard()) _focus.unfocus();
                   },
-                  child: Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      border: Border.all(
-                        color: ZyraColors.journeyGold.withValues(alpha: .6),
+                  child: ZyraFloatingSurface(
+                    radius: 22,
+                    circle: false,
+                    gold: false,
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(22),
+                        border: Border.all(
+                          color: ZyraColors.journeyGold.withValues(alpha: .6),
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color.alphaBlend(
+                              ZyraColors.surfaceFill,
+                              ZyraColors.ivoryTop,
+                            ),
+                            Color.alphaBlend(
+                              ZyraColors.surfaceFill,
+                              ZyraColors.ivoryBottom,
+                            ),
+                          ],
+                        ),
                       ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color.alphaBlend(
-                            ZyraColors.surfaceFill,
-                            const Color(0xFF30203F),
-                          ),
-                          Color.alphaBlend(
-                            ZyraColors.surfaceFill,
-                            const Color(0xFF160E20),
-                          ),
-                        ],
-                      ),
-                    ),
-                    child: SingleChildScrollView(
-                      key: ValueKey('filter_scroll_$_index'),
-                      padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Icon(
-                            _icons[_index],
-                            size: 34,
-                            color: ZyraColors.journeyGold,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            _names[_index],
-                            textAlign: TextAlign.center,
-                            style: ZyraText.heading(size: 26),
-                          ),
-                          const SizedBox(height: 6),
-                          _text(_subtitles[_index], align: TextAlign.center),
-                          const SizedBox(height: 20),
-                          if (_index == 0)
-                            _age()
-                          else if (_index == 1)
-                            _where()
-                          else
-                            _heritage(),
-                        ],
+                      child: ZyraShadowScrollView(
+                        key: ValueKey('filter_scroll_$_index'),
+                        padding: const EdgeInsets.fromLTRB(18, 36, 18, 18),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Icon(
+                              _icons[_index],
+                              size: 34,
+                              color: ZyraColors.journeyGold,
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              _names[_index],
+                              textAlign: TextAlign.center,
+                              style: ZyraText.heading(size: 26),
+                            ),
+                            const SizedBox(height: 6),
+                            _text(_subtitles[_index], align: TextAlign.center),
+                            const SizedBox(height: 20),
+                            if (_index == 0)
+                              _age()
+                            else if (_index == 1)
+                              _where()
+                            else
+                              _heritage(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -784,7 +804,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 label: 'Show profiles',
                 labels: const ['Show profiles'],
                 sent: false,
-                actionColor: ZyraColors.journeyGold,
+                actionColor: ZyraColors.goldText,
                 previousKey: const ValueKey('filter_previous'),
                 nextKey: const ValueKey('filter_next'),
                 previousLabel: 'Previous filter',

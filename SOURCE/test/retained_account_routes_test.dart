@@ -86,38 +86,48 @@ Future<void> _mount(
   }
 }
 
-Future<void> _tap(WidgetTester tester, String key) async {
-  final finder = _key(key);
-  if (finder.evaluate().isEmpty) {
-    final owner = [
-      'concept-current-profile-scroll',
-      'personalisation-scroll',
-    ].map(_key).firstWhere((f) => f.evaluate().isNotEmpty);
+Finder _visibleVerticalScroll() => find
+    .byWidgetPredicate(
+      (widget) =>
+          widget is Scrollable &&
+          axisDirectionToAxis(widget.axisDirection) == Axis.vertical,
+    )
+    .hitTestable();
+
+Future<void> _reveal(WidgetTester tester, Finder target) async {
+  if (target.evaluate().isEmpty) {
+    // The current page may own a lazy ListView or a shadow-clearance wrapper.
+    // Its visible vertical Scrollable remains the authority for finding rows.
+    final scroll = _visibleVerticalScroll();
+    expect(scroll, findsOneWidget);
+    final position = tester.state<ScrollableState>(scroll).position;
+    position.jumpTo(position.minScrollExtent);
+    await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
-      finder,
+      target,
       180,
-      scrollable: find
-          .descendant(of: owner, matching: find.byType(Scrollable))
-          .first,
+      scrollable: scroll,
+      maxScrolls: 40,
     );
   }
-  await tester.ensureVisible(finder);
+  expect(target, findsOneWidget);
+  await Scrollable.ensureVisible(tester.element(target), alignment: .5);
   await tester.pumpAndSettle();
+  expect(target.hitTestable(), findsOneWidget);
+}
+
+Future<void> _tap(WidgetTester tester, String key) async {
+  final finder = _key(key);
+  await _reveal(tester, finder);
   await tester.tap(finder);
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
 }
 
-Future<void> _profile(WidgetTester tester) async {
-  final nav = tester.widget<ZyraShellNavigation>(
-    find.byType(ZyraShellNavigation),
-  );
-  final index = nav.items.indexWhere((item) => item.label == 'Profile');
-  nav.onTap(index);
-  await tester.pumpAndSettle();
-}
+Future<void> _profile(WidgetTester tester) => _tapTab(tester, 'Profile');
 
 Future<void> _tapTab(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = find.byType(ZyraShellNavigation);
   final nav = tester.widget<ZyraShellNavigation>(navigation);
   final index = nav.items.indexWhere((item) => item.label == label);
@@ -138,6 +148,7 @@ Future<void> _tapTab(WidgetTester tester, String label) async {
   );
   await tester.tapAt(rect.center);
   await tester.pumpAndSettle();
+  expect(tester.widget<ZyraShellNavigation>(navigation).currentIndex, index);
   expect(tester.takeException(), isNull);
 }
 
@@ -273,24 +284,50 @@ void main() {
           await HttpOverrides.runWithHttpOverrides(() async {
             await _mount(tester, guardian: guardian);
             await _tapTab(tester, 'Profile');
+            await _reveal(tester, find.text(title));
             expect(find.text(title), findsOneWidget);
             expect(find.text(otherTitle), findsNothing);
             expect(find.textContaining('ZYRA One'), findsNothing);
-            final avatar = find.byType(ZyraOneProfileAvatar);
-            expect(avatar, findsOneWidget);
-            expect(tester.widget<ZyraOneProfileAvatar>(avatar).isOne, isTrue);
-            expect(
-              tester.widget<ZyraOneProfileAvatar>(avatar).guardian,
-              guardian,
-            );
-            expect(
-              tester.getSemantics(avatar),
-              matchesSemantics(
-                label: '$title profile\n$accountName\nSwitch Account',
-                isButton: true,
-                isImage: true,
-              ),
-            );
+            if (guardian) {
+              // LOCK8's Guardian header has its own initial avatar and Switch
+              // control; it does not use the retained Seeker avatar presenter.
+              await _reveal(tester, find.text(accountName));
+              final initial = find.text('H');
+              expect(initial, findsOneWidget);
+              final avatar = find
+                  .ancestor(
+                    of: initial,
+                    matching: find.byWidgetPredicate(
+                      (widget) =>
+                          widget is Container &&
+                          widget.constraints?.maxWidth == 64 &&
+                          widget.constraints?.maxHeight == 64,
+                    ),
+                  )
+                  .first;
+              expect(tester.getSize(avatar), const Size(64, 64));
+              expect(find.text(accountName), findsOneWidget);
+              expect(
+                tester.getSemantics(_key('guardian_switch')),
+                matchesSemantics(label: 'Switch', hasTapAction: true),
+              );
+            } else {
+              final avatar = find.byType(ZyraOneProfileAvatar);
+              expect(avatar, findsOneWidget);
+              expect(tester.widget<ZyraOneProfileAvatar>(avatar).isOne, isTrue);
+              expect(
+                tester.widget<ZyraOneProfileAvatar>(avatar).guardian,
+                guardian,
+              );
+              expect(
+                tester.getSemantics(avatar),
+                matchesSemantics(
+                  label: '$title profile\n$accountName\nSwitch Account',
+                  isButton: true,
+                  isImage: true,
+                ),
+              );
+            }
             await _tap(tester, 'concept_settings');
             expect(find.text('Settings'), findsOneWidget);
             expect(find.text(title), findsWidgets);
@@ -298,6 +335,7 @@ void main() {
             expect(find.textContaining('ZYRA One'), findsNothing);
             await _returnPage(tester);
             expect(find.text('Profile'), findsOneWidget);
+            await _reveal(tester, find.text(title));
             expect(find.text(title), findsOneWidget);
             await tester.pumpWidget(const SizedBox.shrink());
           }, network);
@@ -411,17 +449,32 @@ void main() {
         await _profile(tester);
         await _tap(tester, 'concept_personalisation');
         expect(find.byType(PersonalisationScreen), findsOneWidget);
-        await _tap(tester, 'personalisation_background');
-        await tester.tap(find.text('Deep Emerald'));
-        await tester.pumpAndSettle();
-        expect(find.text('Deep Emerald'), findsOneWidget);
+        expect(_key('personalisation_background'), findsNothing);
+        expect(
+          tester
+              .widget<ZyraPersonalisationContent>(
+                find.byType(ZyraPersonalisationContent),
+              )
+              .snapshot
+              .palette,
+          ZyraDevPalette.ivory,
+        );
+        await _tap(tester, 'personalisation_gold_toggle');
+        expect(
+          tester.widget<Switch>(_key('personalisation_gold_toggle')).value,
+          isTrue,
+        );
         await _tap(tester, 'personalisation_haptic');
         await tester.tap(find.text('Strong'));
         await tester.pumpAndSettle();
         expect(find.text('Strong'), findsOneWidget);
         await _returnPage(tester);
         await _tap(tester, 'concept_personalisation');
-        expect(find.text('Deep Emerald'), findsOneWidget);
+        expect(_key('personalisation_background'), findsNothing);
+        expect(
+          tester.widget<Switch>(_key('personalisation_gold_toggle')).value,
+          isTrue,
+        );
         expect(find.text('Strong'), findsOneWidget);
         await _returnPage(tester);
         await _tap(tester, 'concept_preview_profile');
@@ -496,7 +549,7 @@ void main() {
             find.byType(ZyraOneJourneyBrowseDesigns),
           );
           expect(requested.profiles[requested.selectedIndex].id, person.id);
-          expect(requested.requestLabel!(person), 'Journey invitation sent');
+          expect(requested.requestLabel!(person), 'Request sent');
           expect(
             calls
                 .where((call) => call.method == 'HapticFeedback.vibrate')

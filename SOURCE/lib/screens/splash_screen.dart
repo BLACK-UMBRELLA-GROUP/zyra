@@ -36,37 +36,8 @@
 // fetch outlasts the animation and the last frame simply holds, which is
 // why the composition ends in a state that is calm to sit in.
 //
-// ── THE NATIVE LAUNCH IMAGE MUST BE A FLAT COLOUR, and this is not
-// optional. iOS and Android paint a static image before Flutter draws
-// anything. If that image contains the wordmark — as it did until today —
-// the user sees ZYRA fully assembled, then watches it vanish and rebuild
-// itself letter by letter. flutter_native_splash is now configured with a
-// colour and no image; assets/splash/splash_logo.png is no longer
-// referenced. Do not put it back.
-//
-// ── GRADIENT. THE BRAND PURPLE, ALWAYS. Never gender-matched.
-//
-// The Founder-directed 2026-09-27 palette is Hulu-inspired deep purple
-// #30203F → #160E20, shared by production, all twelve preview studies,
-// navigation and both roles. Gender never changes this presentation.
-//
-// ── THIS REVERSES THE 2026-08-07 CHANGE, deliberately. Founder,
-// 2026-08-08: "it's got the pink purple colour but it should be the purple
-// colour."
-//
-// That earlier change made the splash gender-matched to kill a flash the
-// Founder had reported as "a second of purple before it goes pink" — the
-// splash painting neutral, then main.dart's gendered layer taking over
-// underneath it. The diagnosis was right and the fix was aimed at the
-// wrong half: it removed the flash by making the splash the WRONG COLOUR
-// for the whole four seconds, rather than by softening the handoff.
-//
-// The handoff is now where it belongs — AuthGate cross-fades the splash
-// into the resolved screen (see auth_gate.dart), so brand purple resolves
-// into the member's own colour as a transition instead of a cut. The
-// splash itself stays brand purple start to finish.
-//
-// If a flash ever reappears, fix it in AuthGate. Do not re-tint the splash.
+// LOCK14 V4 supersedes the old flat/no-logo launch instruction: the native
+// launch now shows the existing gold logo on Ivory. Splash motion is unchanged.
 
 import 'package:flutter/material.dart';
 

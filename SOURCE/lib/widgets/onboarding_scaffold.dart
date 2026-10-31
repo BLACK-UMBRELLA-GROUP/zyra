@@ -166,7 +166,7 @@ class OnboardingScaffold extends StatelessWidget {
                     'Finish later',
                     style: ZyraText.subtext(
                       size: 12,
-                      color: ZyraColors.unlockText,
+                      color: ZyraColors.goldText,
                     ),
                   ),
                 ),
@@ -348,7 +348,7 @@ class _DevSkipButton extends StatelessWidget {
         ),
         label: Text(
           '$label · DEV',
-          style: ZyraText.subtext(size: 11.5, color: ZyraColors.unlockText),
+          style: ZyraText.subtext(size: 11.5, color: ZyraColors.goldText),
         ),
         style: TextButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),

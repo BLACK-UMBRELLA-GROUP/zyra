@@ -106,7 +106,12 @@ class ZyraFullScreenError extends StatelessWidget {
                                         : Icons.refresh_rounded,
                                     size: 19,
                                   ),
-                                  label: Text(content.primaryLabel),
+                                  label: Text(
+                                    content.primaryLabel,
+                                    style: const TextStyle(
+                                      color: ZyraColors.goldText,
+                                    ),
+                                  ),
                                   style: OutlinedButton.styleFrom(
                                     foregroundColor: ZyraColors.journeyGold,
                                     backgroundColor: ZyraColors.journeyGold
@@ -255,6 +260,11 @@ class ZyraCompactRecoverySurface extends StatelessWidget {
                           ),
                           child: Text(
                             primaryLabel,
+                            style: TextStyle(
+                              color: onPrimary == null
+                                  ? ZyraColors.ink(0.42)
+                                  : ZyraColors.goldText,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),

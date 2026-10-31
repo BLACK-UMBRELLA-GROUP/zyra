@@ -1,3 +1,4 @@
+import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -93,7 +94,7 @@ class _ZyraDraftCompatibilityStorePresentationState
               ),
               const SizedBox(height: 12),
               Flexible(
-                child: SingleChildScrollView(
+                child: ZyraShadowScrollView(
                   key: const ValueKey(
                     'draft_compatibility_store_info_viewport',
                   ),
@@ -248,7 +249,7 @@ class _ZyraDraftCompatibilityStorePresentationState
         constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
         icon: Icon(Icons.info_outline_rounded, color: _accent, size: 20),
       );
-      return SingleChildScrollView(
+      return ZyraShadowScrollView(
         key: const ValueKey('draft_compatibility_store_viewport'),
         physics: const ClampingScrollPhysics(),
         child: SizedBox(
@@ -309,7 +310,7 @@ class _ZyraDraftCompatibilityStorePresentationState
       },
     );
     if (rail) {
-      return SingleChildScrollView(
+      return ZyraShadowScrollView(
         key: const ValueKey('draft_compatibility_store_packs_rail'),
         scrollDirection: Axis.horizontal,
         physics: const ClampingScrollPhysics(),
@@ -344,39 +345,46 @@ class _ZyraDraftCompatibilityStorePresentationState
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        FilledButton(
-          key: const ValueKey('draft_compatibility_store_continue'),
-          // Selecting is not payment. StoreKit/receipt authority is not live;
-          // do not debit a balance or simulate a completed purchase here.
-          onPressed: null,
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(44, 48),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            disabledForegroundColor: _accent,
-            disabledBackgroundColor: _accent.withValues(alpha: .05),
-            side: BorderSide(color: _accent.withValues(alpha: .65)),
-            shape: const StadiumBorder(),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                selected == null
-                    ? 'Continue'
-                    : 'Continue · ${ZyraMembershipCatalog.pounds(selected.pricePence)}',
-                textAlign: TextAlign.center,
-                style: _buttonBody(size: 14).copyWith(color: _accent),
-              ),
-              if (selected?.saving != null) ...[
-                const SizedBox(height: 2),
+        ZyraFloatingSurface(
+          radius: 999,
+          circle: false,
+          gold: false,
+          child: FilledButton(
+            key: const ValueKey('draft_compatibility_store_continue'),
+            // Selecting is not payment. StoreKit/receipt authority is not live;
+            // do not debit a balance or simulate a completed purchase here.
+            onPressed: null,
+            style: FilledButton.styleFrom(
+              minimumSize: const Size(44, 48),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              disabledForegroundColor: ZyraColors.goldText,
+              disabledBackgroundColor: _accent.withValues(alpha: .05),
+              side: BorderSide(color: _accent.withValues(alpha: .65)),
+              shape: const StadiumBorder(),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 Text(
-                  selected!.saving!,
+                  selected == null
+                      ? 'Continue'
+                      : 'Continue · ${ZyraMembershipCatalog.pounds(selected.pricePence)}',
                   textAlign: TextAlign.center,
-                  style: _buttonBody(size: 11),
+                  style: _buttonBody(
+                    size: 14,
+                  ).copyWith(color: ZyraColors.goldText),
                 ),
+                if (selected?.saving != null) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    selected!.saving!,
+                    textAlign: TextAlign.center,
+                    style: _buttonBody(size: 11),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
         const SizedBox(height: 4),
@@ -419,64 +427,73 @@ class _BalanceStrip extends StatelessWidget {
     key: const ValueKey('draft_compatibility_store_balance'),
     label: 'Unlocks remaining: $balance',
     child: ExcludeSemantics(
-      child: Container(
-        constraints: const BoxConstraints(minHeight: 52),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
-          border: Border.all(color: ZyraColors.surfaceBorder),
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final label = Text(
-              'Unlocks remaining',
-              key: const ValueKey('draft_compatibility_store_balance_label'),
-              style: _body(size: 14),
-            );
-            final count = Container(
-              key: const ValueKey('draft_compatibility_store_balance_capsule'),
-              constraints: const BoxConstraints(minWidth: 36, minHeight: 32),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: ZyraColors.modalSheetSurface,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: _accent.withValues(alpha: .70)),
-              ),
-              child: Text(
-                '$balance',
-                key: const ValueKey('draft_compatibility_store_balance_count'),
-                textAlign: TextAlign.center,
-                style: _balanceCountStyle,
-              ),
-            );
-            if (_balanceNeedsStack(
-              balance,
-              MediaQuery.textScalerOf(context),
-              Directionality.of(context),
-              constraints.maxWidth,
-            )) {
-              return Column(
+      child: ZyraFloatingSurface(
+        radius: 18,
+        circle: false,
+        gold: false,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 52),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: ZyraColors.surfaceFill,
+            border: Border.all(color: ZyraColors.surfaceBorder),
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final label = Text(
+                'Unlocks remaining',
+                key: const ValueKey('draft_compatibility_store_balance_label'),
+                style: _body(size: 14),
+              );
+              final count = Container(
                 key: const ValueKey(
-                  'draft_compatibility_store_balance_stacked',
+                  'draft_compatibility_store_balance_capsule',
                 ),
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                constraints: const BoxConstraints(minWidth: 36, minHeight: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: ZyraColors.modalSheetSurface,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: _accent.withValues(alpha: .70)),
+                ),
+                child: Text(
+                  '$balance',
+                  key: const ValueKey(
+                    'draft_compatibility_store_balance_count',
+                  ),
+                  textAlign: TextAlign.center,
+                  style: _balanceCountStyle,
+                ),
+              );
+              if (_balanceNeedsStack(
+                balance,
+                MediaQuery.textScalerOf(context),
+                Directionality.of(context),
+                constraints.maxWidth,
+              )) {
+                return Column(
+                  key: const ValueKey(
+                    'draft_compatibility_store_balance_stacked',
+                  ),
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    label,
+                    const SizedBox(height: 4),
+                    Align(alignment: Alignment.centerRight, child: count),
+                  ],
+                );
+              }
+              return Row(
                 children: [
-                  label,
-                  const SizedBox(height: 4),
-                  Align(alignment: Alignment.centerRight, child: count),
+                  Expanded(child: label),
+                  const SizedBox(width: 16),
+                  count,
                 ],
               );
-            }
-            return Row(
-              children: [
-                Expanded(child: label),
-                const SizedBox(width: 16),
-                count,
-              ],
-            );
-          },
+            },
+          ),
         ),
       ),
     ),
@@ -556,56 +573,61 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
   );
 
   @override
-  Widget build(BuildContext context) => Container(
-    key: const ValueKey('draft_compatibility_store_preview'),
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(26),
-      border: Border.all(color: ZyraColors.surfaceBorder),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: PageView.builder(
-            key: const ValueKey('draft_compatibility_store_preview_pages'),
-            controller: _pages,
-            physics: const ClampingScrollPhysics(),
-            itemCount: _pageCount,
-            onPageChanged: (page) => setState(() => _page = page),
-            itemBuilder: (context, page) => page == 0
-                ? _lockedPage()
-                : _FictionalScorePreview(
-                    sample: _fictionalScores[page - 1],
-                    page: page,
-                    ringSize: widget.ringSize,
-                  ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            _arrow(previous: true),
-            Expanded(
-              child: Text(
-                '${_page + 1} / $_pageCount',
-                key: const ValueKey(
-                  'draft_compatibility_store_preview_position',
-                ),
-                semanticsLabel: _page == 0
-                    ? 'Score preview page 1 of $_pageCount: Locked score. '
-                          'Swipe left or right to see the illustrated design.'
-                    : 'Score preview page ${_page + 1} of $_pageCount: '
-                          '${_fictionalScores[_page - 1].title}. Not a real profile result.',
-                textAlign: TextAlign.center,
-                style: _body(size: 11),
-              ),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 26,
+    circle: false,
+    gold: false,
+    child: Container(
+      key: const ValueKey('draft_compatibility_store_preview'),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: PageView.builder(
+              key: const ValueKey('draft_compatibility_store_preview_pages'),
+              controller: _pages,
+              physics: const ClampingScrollPhysics(),
+              itemCount: _pageCount,
+              onPageChanged: (page) => setState(() => _page = page),
+              itemBuilder: (context, page) => page == 0
+                  ? _lockedPage()
+                  : _FictionalScorePreview(
+                      sample: _fictionalScores[page - 1],
+                      page: page,
+                      ringSize: widget.ringSize,
+                    ),
             ),
-            _arrow(previous: false),
-          ],
-        ),
-      ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              _arrow(previous: true),
+              Expanded(
+                child: Text(
+                  '${_page + 1} / $_pageCount',
+                  key: const ValueKey(
+                    'draft_compatibility_store_preview_position',
+                  ),
+                  semanticsLabel: _page == 0
+                      ? 'Score preview page 1 of $_pageCount: Locked score. '
+                            'Swipe left or right to see the illustrated design.'
+                      : 'Score preview page ${_page + 1} of $_pageCount: '
+                            '${_fictionalScores[_page - 1].title}. Not a real profile result.',
+                  textAlign: TextAlign.center,
+                  style: _body(size: 11),
+                ),
+              ),
+              _arrow(previous: false),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 
@@ -654,14 +676,14 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
         onPressed: ZyraTapFeedback.onTap(context, widget.onInformation),
         style: TextButton.styleFrom(
           minimumSize: const Size(44, 44),
-          foregroundColor: _accent,
+          foregroundColor: ZyraColors.goldText,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         child: Text(
           'What’s included',
           textAlign: TextAlign.center,
-          style: _buttonBody(size: 13).copyWith(color: _accent),
+          style: _buttonBody(size: 13).copyWith(color: ZyraColors.goldText),
         ),
       ),
     ],
@@ -891,49 +913,54 @@ class _SelectableOffer extends StatelessWidget {
       if (offer.saving != null) offer.saving!,
     ].join(', '),
     child: ExcludeSemantics(
-      child: OutlinedButton(
-        key: ValueKey('draft_compatibility_store_${offer.id}'),
-        onPressed: ZyraTapFeedback.onTap(context, onSelect),
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size(44, 96),
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
-          foregroundColor: _ink,
-          backgroundColor: selected
-              ? _accent.withValues(alpha: .12)
-              : ZyraColors.surfaceFill,
-          side: BorderSide(
-            color: selected ? _accent : ZyraColors.surfaceBorder,
-            width: 1.5,
+      child: ZyraFloatingSurface(
+        radius: 18,
+        circle: false,
+        gold: false,
+        child: OutlinedButton(
+          key: ValueKey('draft_compatibility_store_${offer.id}'),
+          onPressed: ZyraTapFeedback.onTap(context, onSelect),
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(44, 96),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+            foregroundColor: _ink,
+            backgroundColor: selected
+                ? _accent.withValues(alpha: .12)
+                : ZyraColors.surfaceFill,
+            side: BorderSide(
+              color: selected ? _accent : ZyraColors.surfaceBorder,
+              width: 1.5,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                offer.quantity,
+                textAlign: TextAlign.center,
+                style: _buttonBody(size: 13),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                ZyraMembershipCatalog.pounds(offer.pricePence),
+                textAlign: TextAlign.center,
+                style: _buttonBody(
+                  size: 19,
+                ).copyWith(color: ZyraColors.goldText, height: 1.2),
+              ),
+              const SizedBox(height: 3),
+              Text(
+                offer.unitLine,
+                textAlign: TextAlign.center,
+                style: _buttonBody(size: 11),
+              ),
+            ],
           ),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              offer.quantity,
-              textAlign: TextAlign.center,
-              style: _buttonBody(size: 13),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              ZyraMembershipCatalog.pounds(offer.pricePence),
-              textAlign: TextAlign.center,
-              style: _buttonBody(
-                size: 19,
-              ).copyWith(color: _accent, height: 1.2),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              offer.unitLine,
-              textAlign: TextAlign.center,
-              style: _buttonBody(size: 11),
-            ),
-          ],
         ),
       ),
     ),
@@ -1241,9 +1268,8 @@ Color get _ink => ZyraColors.foreground;
 Color get _accent => ZyraColors.isLightPalette
     ? const Color(0xFF76531F)
     : ZyraColors.journeyGold;
-Color get _dialogSurface => ZyraColors.isLightPalette
-    ? const Color(0xFFF4EFF6)
-    : const Color(0xFF30253E);
+Color get _dialogSurface =>
+    ZyraColors.isLightPalette ? ZyraColors.cardSurface : ZyraColors.cardSurface;
 TextStyle _body({required double size}) =>
     ZyraText.body(size: size, color: _ink).copyWith(
       height: 1.45,
@@ -1255,9 +1281,11 @@ TextStyle _body({required double size}) =>
     );
 TextStyle _buttonBody({required double size}) =>
     _body(size: size).copyWith(letterSpacing: .1);
-TextStyle get _balanceCountStyle => _body(
-  size: 18,
-).copyWith(color: _accent, fontWeight: FontWeight.w400, letterSpacing: .1);
+TextStyle get _balanceCountStyle => _body(size: 18).copyWith(
+  color: ZyraColors.goldText,
+  fontWeight: FontWeight.w400,
+  letterSpacing: .1,
+);
 TextStyle get _exampleTitleStyle => _body(size: 20).copyWith(height: 1.25);
 TextStyle get _exampleNumberStyle =>
     ZyraText.heading(size: 36, color: _accent).copyWith(

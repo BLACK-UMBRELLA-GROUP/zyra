@@ -66,7 +66,7 @@ class ZyraSignupFirstPhotoCard extends StatelessWidget {
           Text(
             readyText,
             textAlign: TextAlign.center,
-            style: ZyraText.body(size: 16, color: ZyraColors.journeyGold),
+            style: ZyraText.body(size: 16, color: ZyraColors.goldText),
           ),
         if (footerText != null) ...[
           const SizedBox(height: 14),

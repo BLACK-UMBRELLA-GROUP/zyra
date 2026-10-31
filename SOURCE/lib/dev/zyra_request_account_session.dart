@@ -21,7 +21,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     // Public constructor names intentionally do not expose private state.
     // ignore: prefer_initializing_formals
   }) : _canAct = canAct,
-       _palette = palette.isLight ? ZyraColors.currentDefaultPalette : palette,
+       _palette = ZyraColors.currentDefaultPalette,
        // ignore: prefer_initializing_formals
        _hapticLevel = hapticLevel,
        // ignore: prefer_initializing_formals
@@ -85,7 +85,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   }
 
   bool setPalette(ZyraDevPalette value) {
-    if (!current || value.isLight) return false;
+    if (!current || value != ZyraColors.currentDefaultPalette) return false;
     if (value == _palette) return true;
     _palette = value;
     notifyListeners();

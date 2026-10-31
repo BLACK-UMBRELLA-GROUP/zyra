@@ -396,7 +396,7 @@ class _InitialIdentityCheckScreenState
       onPressed: _busy ? null : _devSkip,
       child: Text(
         'Skip · DEV',
-        style: ZyraText.button(size: 12, color: ZyraColors.journeyGold),
+        style: ZyraText.button(size: 12, color: ZyraColors.goldText),
       ),
     ),
   );
@@ -604,10 +604,7 @@ class _InitialIdentityCheckScreenState
                   ),
                   child: Text(
                     'Privacy policy',
-                    style: ZyraText.body(
-                      size: 13,
-                      color: ZyraColors.unlockText,
-                    ),
+                    style: ZyraText.body(size: 13, color: ZyraColors.goldText),
                   ),
                 ),
                 if (_error != null) _ErrorText(_error!),
