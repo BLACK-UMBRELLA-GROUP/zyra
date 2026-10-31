@@ -5,8 +5,9 @@
   "dart_version": "3.12.2 stable",
   "build_mode": "Flutter widget-test host debug renderer, protected pinned SDK, no native build",
   "target": "SOURCE/test/visual/lock22_report_v2_capture_test.dart / actual protected Founder shell",
-  "captured_utc": "2026-10-31T13:34:50.928388+00:00",
   "queue": 59,
   "lock": "22 V2",
-  "artifact_policy": "Screenshots, JSON and text metadata only; no compiled apps or source copies."
+  "artifact_policy": "Screenshots, JSON and text metadata only; no compiled apps or source copies.",
+  "recorded_utc": "2026-10-31T13:34:50.928388+00:00",
+  "captured_utc": "2026-10-31T13:32:49.834052+00:00"
 }
