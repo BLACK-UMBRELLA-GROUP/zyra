@@ -1,0 +1,162 @@
+{
+  "queue": 57,
+  "source_commit": "3341baf41a0c1ce1e1b380136876aedcbd7e6896",
+  "inputs": [
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-31_V3.md",
+      "bytes": 1571,
+      "sha256": "6c58d9dd9b079ffb6d41c4d4195c6cf4e1a1a3f791e7fbf2cbb3baaeef42f521"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V3.md",
+      "bytes": 5283,
+      "sha256": "4d49b9d284b944e4820ec4c398e47e4708fa0c5fe209efb0d513f68b4b6b18cd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/RECORD/LOCK_RECORD.md",
+      "bytes": 2081,
+      "sha256": "4eed2edb772e65e742ebd1a376b7fd39c85377638c3887b584d3702ed28117ff"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j10_journey_options__sara.png",
+      "bytes": 668413,
+      "sha256": "733c256117a077876b8f230a80610f93bb01d6a4a2550ff958c7c8c901d47f6c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j11_journey_options__aisha.png",
+      "bytes": 677588,
+      "sha256": "bcd50cde38c20a0ae69707c90158430190aec57a08d65526e809a0af52a87940"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j12_journey_options__basic.png",
+      "bytes": 668413,
+      "sha256": "2a1d001a3d3e2f831a74f1cd6c0f6ec138c6dedb97a6af9901afcfceba591c0f"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 315674,
+      "sha256": "d83495e119f1a5e1e855a2afb62e32fe0bf36c954e4be2a3d3b90bc76f125ae7"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "bytes": 16492,
+      "sha256": "2d7ab6ebd6543e26f8ec53c378a9186327ad19af33b99a4393bb927e35047b87"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_options_page.dart",
+      "bytes": 5271,
+      "sha256": "67375ffbefc02ec3cd2b570b038a401eaa25f6bf2d975da41fc8472a7bcc0d72"
+    },
+    {
+      "path": "SOURCE/test/journey_options_v3_layout_test.dart",
+      "bytes": 13368,
+      "sha256": "045b62cabefa8699b25fa4a764cf2f94da49e8616db4fed342a998665690c1c6"
+    },
+    {
+      "path": "SOURCE/test/visual/lock13_journey_tab_test.dart",
+      "bytes": 27322,
+      "sha256": "bb4e009d2e2e383c9261fec434b4ddff37075d376d135e50121c86b1cc9ed65d"
+    }
+  ],
+  "render_and_metadata_files": [
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_journey_options__sara.png",
+      "bytes": 385684,
+      "sha256": "adbd3e516cdbb7ebf00545e23d6842de168e6189cd5c95016e391adf9adea6ca"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j11_journey_options__aisha.png",
+      "bytes": 396464,
+      "sha256": "9035f085b9d479379083e467d47291b48dc41f7d59a4c104532f542a3119848f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_journey_options__basic.png",
+      "bytes": 385684,
+      "sha256": "adbd3e516cdbb7ebf00545e23d6842de168e6189cd5c95016e391adf9adea6ca"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_one_200pct_head.png",
+      "bytes": 447953,
+      "sha256": "d009273e22e508d6a78af5fc622ff44fb8d4143b0b89124131c4fd876c57de38"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_one_200pct_end.png",
+      "bytes": 347565,
+      "sha256": "e070c736906567880d7c01c3c2c6f462f21923e0db77df02288f3ae87a22a909"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_basic_200pct_head.png",
+      "bytes": 447953,
+      "sha256": "d009273e22e508d6a78af5fc622ff44fb8d4143b0b89124131c4fd876c57de38"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_basic_200pct_end.png",
+      "bytes": 347565,
+      "sha256": "e070c736906567880d7c01c3c2c6f462f21923e0db77df02288f3ae87a22a909"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_journey_options__sara__master_beside_build.png",
+      "bytes": 882655,
+      "sha256": "c7833c9be24c1ea85e53661842090fb0e7e63ac92764534da00e0ddcb0f50906"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j11_journey_options__aisha__master_beside_build.png",
+      "bytes": 899535,
+      "sha256": "75316744818ae6c2220e757277570dccc45755dc27f339eab117aa08956377eb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_journey_options__basic__master_beside_build.png",
+      "bytes": 882655,
+      "sha256": "c7833c9be24c1ea85e53661842090fb0e7e63ac92764534da00e0ddcb0f50906"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/MASTER_BUILD_CONTACT.png",
+      "bytes": 112963,
+      "sha256": "7b661f87aea30d1ea33e565ceacfe564232de9d8dfc26038923df0eeda662e2a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/CASE_LEDGER.json",
+      "bytes": 15440,
+      "sha256": "d40fb8b78270b70f0eb6b79ea9a92176dbd52889522128205ffaab718365073e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/BUILD.json",
+      "bytes": 1448,
+      "sha256": "949ef944ab637c9b6b1a0f8b08700e96c1c0f7cb845b4ce5268033d77e63433b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/QA.json",
+      "bytes": 4082,
+      "sha256": "bfefe38959d0f93e753d308706ce7d2840b7f685b1a9e2a8e306fa13b24c9417"
+    }
+  ],
+  "source_commit_allowlist": [
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_options.dart",
+    "SOURCE/lib/dev/zyra_one_journey_options_page.dart",
+    "SOURCE/test/journey_options_v3_layout_test.dart",
+    "SOURCE/test/visual/lock13_journey_tab_test.dart"
+  ],
+  "handover_staging_allowlist": [
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_journey_options__sara.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j11_journey_options__aisha.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_journey_options__basic.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_one_200pct_head.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_one_200pct_end.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_basic_200pct_head.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_basic_200pct_end.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j10_journey_options__sara__master_beside_build.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j11_journey_options__aisha__master_beside_build.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/j12_journey_options__basic__master_beside_build.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/MASTER_BUILD_CONTACT.png",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/CASE_LEDGER.json",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/BUILD.json",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/QA.json",
+    "PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3/MANIFEST.json",
+    "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md (queue57 appended section only)",
+    "PRODUCT/APPROVED/BUILD_QUEUE.md (row57 Status/Built on only)"
+  ],
+  "policy": "Explicit task-owned source/pack/render allowlists only. No ignored local config, credential, broad repo or evidence-directory hashes. Manifest excludes its own hash."
+}

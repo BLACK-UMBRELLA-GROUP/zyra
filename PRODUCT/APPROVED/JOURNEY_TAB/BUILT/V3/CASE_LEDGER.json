@@ -1,0 +1,402 @@
+{
+  "queue": 57,
+  "verified_cases": [
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "430x932 head keeps locked identity and full width gold Continue",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "three floating cards divide available height 4:1:2 at 46 minimum",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "Bio=false Compatibility=false preserve locks and seven identities",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "inline rows keep exact IDs and delegate each action once",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "Bio=false Compatibility=true preserve locks and seven identities",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "Bio=true Compatibility=false preserve locks and seven identities",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "archived inline rows delegate six options and omit lifecycle actions",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "Bio=true Compatibility=true preserve locks and seven identities",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "shared feedback guard rejects actions after caller loses ownership",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "archived modal rows delegate six options and omit lifecycle actions",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "archived Report remains caller-owned",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "archived details respect caller grants when shared is false",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "archived details respect caller grants when shared is true",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "explicit nonarchived options retain active rows and lock copy",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "200% text at width 430.0 scrolls every readable row into reach",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "7 rows, Report=true, End=true: one pixel below natural minimum scrolls without compressing rows",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "inline has no sheet chrome, cancel or row descriptions",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "seven inline rows fit evenly without scrolling at 320.0",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "7 rows, Report=true, End=true: height=392.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_v3_layout_test.dart",
+      "name": "200% text at width 320.0 scrolls every readable row into reach",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "seven inline rows fit evenly without scrolling at 393.0",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "7 rows, Report=true, End=true: height=532.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "6 rows, Report=true, End=false: one pixel below natural minimum scrolls without compressing rows",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "200 percent text uses natural scrolling without clipping actions",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "inline can be hosted in unbounded reading space without flex",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "6 rows, Report=true, End=false: height=336.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "caller flags hide optional Report and End rows",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "6 rows, Report=true, End=false: height=476.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "default modal preserves chrome, descriptions and cancel",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "expandable button keeps 36px content framing and exposes toggled state",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "6 rows, Report=false, End=true: one pixel below natural minimum scrolls without compressing rows",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_inline_options_test.dart",
+      "name": "default options button retains modal tooltip without toggle",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "6 rows, Report=false, End=true: height=336.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 eight master states, actual stages and full height geometry",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "6 rows, Report=false, End=true: height=476.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "5 rows, Report=false, End=false: one pixel below natural minimum scrolls without compressing rows",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "5 rows, Report=false, End=false: height=280.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "5 rows, Report=false, End=false: height=420.0 divides the actual centred touch cells",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "near-threshold rows measure inherited line height before dividing",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "accessibility Bold Text uses natural readable rows",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "large text keeps natural readable rows even when the bounded height is ample",
+      "result": "success"
+    },
+    {
+      "suite": "test/journey_options_row_geometry_test.dart",
+      "name": "legacy sheet retains natural 62px rows rather than bounded inline expansion",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "balanced layout and separated actions at Size(390.0, 844.0)",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "balanced layout and separated actions at Size(393.0, 852.0)",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "balanced layout and separated actions at Size(430.0, 932.0)",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 V3 actual Sara Aisha and Basic options captures",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "compact double text scrolls fully without shrinking and both actions work",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "blocked identity stays absent and confirmation has no swipe cue",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "disabled confirmation stays disabled and has destructive styling",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "rendering never invokes actions with motion false",
+      "result": "success"
+    },
+    {
+      "suite": "test/draft_journey_end_presentation_test.dart",
+      "name": "rendering never invokes actions with motion true",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "unspent credits alone do not open either Journey destination",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "forged compatibility checkpoint is never an access grant",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "forged journey_compatibility checkpoint is never an access grant",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "forged bio checkpoint is never an access grant",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 V3 actual 200 percent One and Basic scroll head to End",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "fresh child UI epoch keeps only the same external owner grant",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "Guardian child rejects Seeker routes and retained menu callback",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 One 0 1 2 3 and Basic 0 1 have exact capacity and end arrows",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "revoked owner cannot use a retained unlock or revive old access",
+      "result": "success"
+    },
+    {
+      "suite": "test/one_journey_prior_compatibility_access_test.dart",
+      "name": "only explicit Reset preview clears a used local grant",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 empty and free Browse go to Profiles and Basic upsell goes to Plans",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 all seven options open existing destinations and preserve disclosure locks",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 actual actions order Journeys and never invent a review timer",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 available Continue beats waiting after mutual choices",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 preparing has no begun stage and retains readiness gates",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 question and Family next-step use actual stage wording",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 short return restores chosen place and options Back; bounded Basic clamp",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 unlocked Bio and Compatibility remain actual guarded destinations",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 blocked occupied place redacts identity and preserves End",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 retained callbacks refuse swipe, pushed-page and controls ABA",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 shared haptics one per enabled tap, no swipe or disabled pulse, Off respected",
+      "result": "success"
+    },
+    {
+      "suite": "test/visual/lock13_journey_tab_test.dart",
+      "name": "LOCK13 small phone and Larger Text keep bounded cards with reachable wrapped content",
+      "result": "success"
+    }
+  ],
+  "passed": 73,
+  "suite_counts": {
+    "test/journey_options_v3_layout_test.dart": 9,
+    "test/one_journey_inline_options_test.dart": 16,
+    "test/journey_options_row_geometry_test.dart": 16,
+    "test/visual/lock13_journey_tab_test.dart": 16,
+    "test/draft_journey_end_presentation_test.dart": 8,
+    "test/one_journey_prior_compatibility_access_test.dart": 8
+  },
+  "final_reporter_sha256": "65036664321f383c25caa4eee61ac8f6c5d5f86ebfe990874f71c11409d9ce75",
+  "broad_attempt_reporter_sha256": "3729e8701405e103ef4e8186c42e4c2244d03276e9688b3787a32434463db714",
+  "excluded_existing_fixture_failures": [
+    {
+      "name": "actual Profiles unlock survives request, mutual preparation and Journey menu without buying consent",
+      "reason": "Missing my-zyra-route-concept-my-requests finder before reaching Journey options"
+    },
+    {
+      "name": "used access for Sara never opens Aisha or spends again",
+      "reason": "Missing my-zyra-route-concept-my-requests finder before reaching Journey options"
+    }
+  ],
+  "selection": "All cases in five complete suites, eight cases in prior Compatibility suite; negative lookahead excludes only two stale My ZYRA entry fixtures. Hidden loading/setup/teardown are not counted.",
+  "first_run_corrections": [
+    "New name test exposed heading w200; name explicitly uses locked Light w300.",
+    "New CTA test incorrectly expected journeyGold; assertion corrected to LOCK14 V5 goldTextFill."
+  ],
+  "rejected_cli_attempt": "--exclude-name unsupported; it ran zero cases. Final run used --name negative lookahead.",
+  "raw_reporters_local_only": [
+    "REPORTS/EVIDENCE/LOCK13_V3_JOURNEY_OPTIONS_2026-10-31/tests_verified.jsonl",
+    "REPORTS/EVIDENCE/LOCK13_V3_JOURNEY_OPTIONS_2026-10-31/tests_broad_attempt.jsonl",
+    "REPORTS/EVIDENCE/LOCK13_V3_JOURNEY_OPTIONS_2026-10-31/tests_first_attempt.jsonl"
+  ]
+}

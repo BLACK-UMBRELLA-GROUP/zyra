@@ -1,0 +1,47 @@
+{
+  "queue": 57,
+  "lock": "13 V3",
+  "source_commit": "3341baf41a0c1ce1e1b380136876aedcbd7e6896",
+  "baseline_commit": "2882a7ecc2a208451cb1476bfa7d22a1fab848d3",
+  "flutter_version": "3.44.2",
+  "mode": "Flutter widget-test actual Founder preview sample renders, bundled Poppins, offline assets",
+  "target": "SOURCE/test/visual/lock13_journey_tab_test.dart",
+  "timestamp_utc": "2026-10-31T12:19:03.433630+00:00",
+  "screen": {
+    "logical": [
+      430,
+      932
+    ],
+    "physical": [
+      1290,
+      2796
+    ],
+    "dpr": 3
+  },
+  "driver": "tooling/no_git_driver.mjs (pinned SDK + exec-denial check PASS)",
+  "checks": {
+    "scoped_cases_passed": 73,
+    "suite_files": 6,
+    "full_suite_files": 5,
+    "selected_suite_files": 1,
+    "analyzer": "No issues found",
+    "format": "5 files, 0 changed",
+    "sdk_check": "5 pins, direct and nested exec denial PASS"
+  },
+  "renders": [
+    "j10_journey_options__sara.png",
+    "j11_journey_options__aisha.png",
+    "j12_journey_options__basic.png",
+    "j10_one_200pct_head.png",
+    "j10_one_200pct_end.png",
+    "j12_basic_200pct_head.png",
+    "j12_basic_200pct_end.png"
+  ],
+  "source_allowlist": [
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_options.dart",
+    "SOURCE/lib/dev/zyra_one_journey_options_page.dart",
+    "SOURCE/test/journey_options_v3_layout_test.dart",
+    "SOURCE/test/visual/lock13_journey_tab_test.dart"
+  ]
+}

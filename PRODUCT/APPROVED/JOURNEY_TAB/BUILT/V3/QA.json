@@ -1,0 +1,61 @@
+{
+  "queue": 57,
+  "builder_review": "Scoped contract checks PASS; parent visual/contract verification still required under OA-ZYRA-328. Founder alone approves product.",
+  "comparisons": [
+    "j10_journey_options__sara__master_beside_build.png",
+    "j11_journey_options__aisha__master_beside_build.png",
+    "j12_journey_options__basic__master_beside_build.png"
+  ],
+  "observed": {
+    "identity": "Owned DraftProfile surname/age/city/nationality formatter, actual current stage; photo 88 with circular gold ring, name 24 Light, uppercase stage, gold full-width Continue.",
+    "cards": "Three floating cards, bounded remaining height divided 4:1:2, all rows >=46. Locked rows muted with lock; End B84A42 with no trailing chevron. Old 38-circle icons remain only in still-used inline and sheet presenters.",
+    "callbacks": "Every V2 destination and account freshness / UI epoch / route / selected-person guard retained. Existing disclosure, readiness, entitlement, report and End confirmation policies unchanged.",
+    "large_text": "Whole page scroll owner at larger scale, long Compatibility label wraps; 430 and 320 wide 200 percent layout checks and actual 430x932 One/Basic head/end frames pass. Offscreen rows scroll into view.",
+    "differences_from_master": [
+      "Sara stage4 fixture has existing Compatibility reveal access; its actual row correctly has a chevron while illustrative j10/j12 show a lock. Aisha stage1 keeps both locks. Gates were preserved.",
+      "Retained production Poppins metrics and native Material icon glyphs differ from prototype letterforms/icons; full-name Light and specified sizes are used.",
+      "Existing Flutter test raster shadows appear as hard offset silhouettes; masters use soft blur. Shared shadow tokens were retained.",
+      "Actual shell retains its current tab bar placement, icon geometry and rectangular safe-area capture; masters include rounded black device framing.",
+      "Dividers span the existing row content width and native card padding; small vertical anchor/radius differences are visible in full-size comparisons."
+    ]
+  },
+  "refusals": [
+    {
+      "id": "OA-ZYRA-328",
+      "scope": "Do not redesign shared typography, shadows, navigation frame or change disclosure rules to force illustrative pixel parity under queue57."
+    },
+    {
+      "id": "OA-ZYRA-328",
+      "scope": "Do not repair two inherited My ZYRA entry test fixtures under Journey-options-only row. Exact failures are in CASE_LEDGER.json."
+    },
+    {
+      "id": "OA-ZYRA-317",
+      "scope": "Old member Tier3 routes retained; no old-member retirement authority in this row."
+    }
+  ],
+  "limits": [
+    "No full-app, whole-suite, all-accessibility or pixel-parity claim. Existing wider 37 failures not rerun.",
+    "Local Founder sample preview only; no native install/build/upload, server, signing, backend, migration or publish work."
+  ],
+  "read_accounting": {
+    "root_startup_text_bytes": 111706,
+    "method": "Actual required file/excerpt reads, including full queue scan (25858B), review search scan (16899B) and bounded review through stop line (11669B), not emitted-only queue excerpt. Later implementation source/excerpt reads separate.",
+    "master_bytes": 2014414,
+    "helper": {
+      "name": "journey_v3_tests",
+      "work": "Only new V3 component tests; no SDK/git",
+      "conservative_read_bytes": 1699700,
+      "tokens": "unavailable; no usage-log reads"
+    }
+  },
+  "disk": {
+    "built_pack_bytes_before_final_metadata": 5563928,
+    "local_raw_reporters_bytes": 139543,
+    "source_build_bytes": 359836014,
+    "free_bytes": 76546576384,
+    "compiled_evidence_files": 0,
+    "test_caches": "Retained in existing SOURCE/build; no compiled/source copies in evidence.",
+    "task_scratch": "Moved to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE57_JOURNEY_OPTIONS_V3_2026-10-31 after final commits."
+  },
+  "queue_staging": "git add -e retained exactly one addition: own row57 marked BUILT, because the locked row was not yet in HEAD; other designer/parent queue edits and QUESTIONS.md excluded."
+}

@@ -481,3 +481,19 @@ Replaced the locked Compatibility, Unlocks catalogue and account Safety layouts 
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. Validation:97 distinct scoped cases across8 suites; analyser and format clean. Four standard and seven200% text actual-shell frames plus four full-size master/build pairs and contact sheet are in UNITY_PASS/BUILT/V1. QA.json records native Flutter typography, safe-area/frame, shadow and anchor differences; no pixel-parity or full-app/a11y-clean claim. Two unrelated Profile-row fixture failures from the broader Membership visual suite are refused under OA-ZYRA-328; full inherited37 failures not rerun. Obsolete ring-specific store test moved to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE55_UNITY_V1_2026-10-31/, replaced with catalogue/ownership/reachability checks. Ordinary member routes remain under OA-ZYRA-317; parent visual/contract review remains OA-ZYRA-328. No later UNITY V2–V5 build, native delivery or backend work.
+
+
+## Queue 57 — Journey options LOCK13 V3 — 31 October 2026
+
+Replaced only the V2 Journey options page with its locked round identity head, full-width gold Continue and three floating cards. All seven V2 destinations, real stage/profile fields, readiness/disclosure/entitlement/account/route/epoch guards, shared feedback and End confirmation remain. Removed the page's single-card layout; the old 38-circle icons remain in still-used inline/sheet menus. No new source file or classifier exception.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 168,980 lines / 335 files | 169,082 lines / 335 files |
+| Developer/preview | 49,190 / 93 | 49,292 / 93 |
+| Founder planned app | 30,008 / 43 | 30,110 / 43 |
+| Tests | 216,034 / 508 | 216,511 / 509 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. Validation: 73 distinct scoped cases across six suites (five complete, eight selected prior-Compatibility cases); analyser, format and protected SDK check clean. Three430×932 @3x actual-shell renders, four200% head/end frames, three master/build pairs and contact sheet are in JOURNEY_TAB/BUILT/V3. CASE_LEDGER.json excludes loading/setup events and names two stale My ZYRA entry fixtures that fail before options; written refusal under OA-ZYRA-328 to repair those in this row. QA.json records retained Poppins/icon/shadow/frame differences and the actual Sara stage4 Compatibility unlock versus illustrative locked masters. No pixel-parity, full-app, whole-suite or all-accessibility claim; inherited wider37 failures not rerun. Parent visual/contract verification remains OA-ZYRA-328, old member retirement OA-ZYRA-317. No native delivery/backend work. Source3341baf.
