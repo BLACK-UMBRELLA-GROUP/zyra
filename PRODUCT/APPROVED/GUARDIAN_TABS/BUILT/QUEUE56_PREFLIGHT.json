@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "queue_line": 56,
+  "lock": "LOCK 8 V5",
+  "status": "QUESTION",
+  "record_stage": "Row 56 QUESTION; own Questions 8 and 9 recorded after GIT_RELEASE; no app build.",
+  "recorded_at": "2026-10-31T20:44:19Z",
+  "written_refusal": "No app build: the locked pack does not resolve the per-Journey projection or its stage-line colour. Do not invent state, permission authority, destination precedence or a design choice. This safe default is not approval.",
+  "brief": "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V5.md",
+  "built_from": null,
+  "inspected_pack": [
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/ARCHIVE/GUARDIAN_TABS_SPEC_2026-10-31_V5.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png"
+  ],
+  "bounded_conflict_lookup": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md:50",
+  "source_baseline": "Parent supplied pre-row68 baseline 13a90089b85b07f9a251da17f9a68abb162af1ad; row68 owns concurrent source mutations. No source manifest/hash captured by this task.",
+  "findings": [
+    {
+      "question": 8,
+      "issue": "Current-Journey projection and selected target are not specified across two independent sample stores.",
+      "established_contract": [
+        "Guardian review open/paused/continued already maps to 4 Family Review / 4 Paused by family / 5 Building a Life (lib/dev/zyra_one_journey_guardian_tabs.dart:109-115).",
+        "The Guardian tab currently renders one static Sara letter tile only when linked && state.main (same file:979-1045).",
+        "The shell's _guardianJourneys and _permittedGuardianJourneys project active model records and existing access (lib/dev/zyra_one_journey_concept_shell.dart:634-645).",
+        "_conceptGuardianJourney first chooses the permitted focus, falling back to Sara only when that focus is null (same file:5461-5470).",
+        "The existing capture asserts that local Family Review never advances the Seeker model (test/visual/lock8_guardian_tabs_capture_test.dart:128-131)."
+      ],
+      "unresolved": "The V5 brief requires one card/dot per current Journey and the existing Journey destination, but does not say how the separate seeded Sara review coexists with active model records, which card owns that review, or how a selected card and destination remain the same person. No new policy inferred.",
+      "proposed_register_row": "| 8 | 2026-10-31 | 56 | Which Journey records and review state should supply Guardian cards and their Open Journey targets when the separate Adam\u2013Sara review sample and active Seeker-model Journeys coexist? | A: Keep the established Adam\u2013Sara review sample and define how it coexists with independently modelled current Journeys; B: Supply a locked unified per-Journey sample projection with exact selection, stage/review precedence and existing destination mapping. Extracting the unchanged LOCK 13 card renderer is an implementation step, not permission to create either data policy or new Guardian access authority. | Keep 56 QUESTION and make no app change until the ZYRA chat supplies the exact projection; do not apply Sara\u2019s review to other people, infer a Journey from requests, or use a display card to grant View/Chat. The local review remains separate from the Seeker model. | | OPEN |"
+    },
+    {
+      "question": 9,
+      "issue": "Stage-line colour contradicts the masters.",
+      "established_contract": [
+        "V5 brief step 3 and V5/current V9 Journeys row specify gold small caps.",
+        "All three inspected g09 masters visibly show the stage line in white over the dark photo fade.",
+        "LOCK 14 V5 photo text remains white on dark fade."
+      ],
+      "unresolved": "Designer must reconcile the locked words and pictures; Codex has selected neither colour.",
+      "proposed_register_row": "| 9 | 2026-10-31 | 56 | Should the Guardian Journey card stage line be white as all three V5 masters and the app-colours photo-text rule show, or gold as the V5 brief and spec state? | A: Reconcile the LOCK 8 V5 brief/spec with the white masters and unchanged white-on-photo rule in LOCK 14 V5; B: Supply a Founder-approved gold colour and matching re-LOCKed masters/spec. | Keep 56 QUESTION and make no app change until the ZYRA chat reconciles the pack; neither option nor this default is design approval. Brief step 3 and the V5/current V9 Journeys row say gold; g09/g09b/g09c show white; APP_COLOURS_SPEC_CURRENT_VERSION_V5.md:50 keeps Journey photo text white. | | OPEN |"
+    }
+  ],
+  "implementation_reuse": {
+    "source": "lib/dev/zyra_one_journey_tab.dart:280-426",
+    "finding": "LOCK 13 full-photo visual renderer is the private _journey method. Extracting its unchanged body can provide shared reuse. The whole Seeker tab also owns unrelated capacity/header/options/free-place controls.",
+    "data_api": "ZyraJourneyTabCard at lines 16-31 supplies display data; it establishes neither stage nor Guardian authority.",
+    "not_a_design_blocker": "Private renderer extraction itself needs no new design, stage mapping or permission policy."
+  },
+  "retained_boundaries": [
+    "No Guardian action/admission/entitlement guards changed.",
+    "Basic caption, paid View/Chat and actual Main/Additional role need existing authority; a new card cannot grant access.",
+    "Retain _boundGuardianAction account/role/page/tab/UI/control/route ownership checks.",
+    "Ended Journeys currently opens the existing held preview action; no new archive permissions or page inferred.",
+    "Tier 3 member routes untouched.",
+    "No SDK/native/server/store/upgrade activity; no source or compiled evidence copies."
+  ],
+  "checks": {
+    "textual_pack_review": "complete",
+    "three_masters_viewed": true,
+    "existing_source_contracts_inspected": true,
+    "tests_run": 0,
+    "analyser_run": false,
+    "renders_run": 0,
+    "sdk_commands": 0,
+    "git_commands": "Preflight 0; only authorised handover status/add/commit/push after release.",
+    "limit": "No-code preflight refusal; tests/analyser/renders/code-size script not required or run. Row68 has exclusive SDK/source ownership."
+  },
+  "code_size": {
+    "before": "Not remeasured; row68 active.",
+    "after": "No code changes by row56.",
+    "delta_app_lines": 0,
+    "delta_preview_lines": 0,
+    "delta_founder_preview_lines": 0,
+    "delta_test_lines": 0
+  },
+  "disk": {
+    "masters_read_only": true,
+    "no_scratch_or_caches_created": true,
+    "compiled_artifacts_created": 0,
+    "deliverable": "This text JSON only; no built screenshot or master-beside-build claim."
+  },
+  "reading": {
+    "primary_startup_text_bytes": 179276,
+    "primary_startup_scope": "Mandatory and brief-pack text incl repeated streamed-prefix/accounting bytes; source/discovery scans excluded.",
+    "master_image_bytes": 4710338,
+    "helper": {
+      "name": "seeker_card_inventory",
+      "purpose": "Separate read-only inventory of LOCK 13 card reuse.",
+      "content_bytes": 151818,
+      "tokens": null,
+      "token_limit": "Unavailable; no usage logs read."
+    }
+  },
+  "rules_confirmed": [
+    "Founder Rule 10: no questions to Shakeel; record unresolved questions and skip this row.",
+    "Fable Addendum 4, 31 Oct 13:05 read; no upgrades, no schedule changes."
+  ],
+  "task_owned_commit_allowlist": [
+    "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/QUEUE56_PREFLIGHT.json",
+    "PRODUCT/APPROVED/BUILD_QUEUE.md:row 56 only",
+    "PRODUCT/APPROVED/QUESTIONS.md:own questions only after identifier recheck"
+  ],
+  "group_note": "Task 42 reserved after explicit GROUP_RELEASE; appended separately after ZYRA commit.",
+  "commits": "This preflight handover commit identifies the three-file allowlist; exact SHA returned to parent and Task 42.",
+  "remaining_limit": "ZYRA chat must reconcile Questions 8 and 9; row 56 remains unbuilt. No design approval inferred."
+}
