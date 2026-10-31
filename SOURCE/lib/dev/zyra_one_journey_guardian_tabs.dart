@@ -4,6 +4,7 @@ import '../widgets/zyra_floating_surface.dart';
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../theme/zyra_interaction_style.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_focus_dashboard.dart';
@@ -1204,14 +1205,17 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   };
 }
 
+// LOCK8 V4: this accepted sample connection is Adam/Noor, independent of
+// the currently selected Network person or supported Seeker.
 class ZyraGuardianPrivateChat extends StatefulWidget {
   const ZyraGuardianPrivateChat({
     super.key,
     required this.onSend,
     required this.onReport,
+    required this.onOptions,
     required this.canAct,
   });
-  final VoidCallback onSend, onReport;
+  final VoidCallback onSend, onReport, onOptions;
   final bool Function() canAct;
   @override
   State<ZyraGuardianPrivateChat> createState() =>
@@ -1220,76 +1224,342 @@ class ZyraGuardianPrivateChat extends StatefulWidget {
 
 class _ZyraGuardianPrivateChatState extends State<ZyraGuardianPrivateChat> {
   final _controller = TextEditingController();
+  final _messages = <String>[];
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
+  Widget _reportable(Widget child) {
+    final canAct = widget.canAct;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      key: _messages.isEmpty ? const ValueKey('guardian_chat_report') : null,
+      onLongPress: ZyraTapFeedback.onTap(
+        context,
+        widget.onReport,
+        canAct: () => mounted && canAct(),
+      ),
+      child: child,
+    );
+  }
+
   @override
-  Widget build(BuildContext context) => SafeArea(
-    bottom: false,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Noor's Main Guardian",
-                style: ZyraText.heading(
-                  size: 28,
-                ).copyWith(fontWeight: FontWeight.w300),
+  Widget build(BuildContext context) {
+    final canAct = widget.canAct;
+    final onSend = widget.onSend;
+    bool current() => mounted && canAct();
+    final feedback = context
+        .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
+    return ZyraTapFeedback(
+      level: feedback?.level ?? () => ZyraInteractionStyle.hapticLevel,
+      canAct: () => current() && (feedback?.canAct() ?? true),
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: CustomScrollView(
+                key: const ValueKey('guardian_chat_scroll'),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Guardian chat',
+                            style: ZyraText.heading(
+                              size: 28,
+                            ).copyWith(fontWeight: FontWeight.w300),
+                          ),
+                          const SizedBox(height: 20),
+                          ZyraFloatingSurface(
+                            radius: 18,
+                            child: Container(
+                              key: const ValueKey('guardian_chat_header'),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: ZyraColors.surfaceFill,
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(
+                                  color: ZyraColors.surfaceBorder,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 44,
+                                    height: 44,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: ZyraColors.journeyGold,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'N',
+                                      style: ZyraText.body(
+                                        size: 20,
+                                        color: ZyraColors.goldText,
+                                      ).copyWith(fontWeight: FontWeight.w200),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Noor’s Main Guardian",
+                                          style: ZyraText.body(size: 15),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          'ABOUT ADAM AND NOOR',
+                                          style: ZyraText.body(
+                                            size: 11,
+                                            color: ZyraColors.goldText,
+                                          ).copyWith(letterSpacing: 1.1),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  ZyraFloatingSurface(
+                                    circle: true,
+                                    child: IconButton(
+                                      key: const ValueKey(
+                                        'guardian_chat_options',
+                                      ),
+                                      tooltip: 'Guardian chat options',
+                                      style: IconButton.styleFrom(
+                                        backgroundColor: ZyraColors.surfaceFill,
+                                      ),
+                                      onPressed: ZyraTapFeedback.onTap(
+                                        context,
+                                        widget.onOptions,
+                                        canAct: () => current(),
+                                      ),
+                                      icon: const Icon(
+                                        Icons.more_horiz,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: _messages.isEmpty
+                        ? Center(
+                            child: _reportable(
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 28,
+                                  vertical: 28,
+                                ),
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                    maxWidth: 300,
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.lock_outline,
+                                        size: 24,
+                                        color: ZyraColors.foregroundSecondary,
+                                      ),
+                                      const SizedBox(height: 14),
+                                      Text(
+                                        'A private chat',
+                                        textAlign: TextAlign.center,
+                                        style: ZyraText.body(size: 15),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        "Only you and Noor’s Main Guardian see it. Keep it respectful — you can report anything here.",
+                                        textAlign: TextAlign.center,
+                                        style: ZyraText.subtext(
+                                          size: 13,
+                                        ).copyWith(height: 1.45),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                for (final message in _messages)
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: _reportable(
+                                      Container(
+                                        margin: const EdgeInsets.only(
+                                          left: 68,
+                                          top: 8,
+                                        ),
+                                        padding: const EdgeInsets.fromLTRB(
+                                          14,
+                                          10,
+                                          14,
+                                          10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: ZyraColors.journeyGold,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              message,
+                                              style: ZyraText.body(size: 13),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'now',
+                                              style: ZyraText.subtext(size: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 6),
-              Text('About Adam and Noor', style: ZyraText.subtext(size: 12)),
-            ],
-          ),
-        ),
-        const Spacer(),
-        GestureDetector(
-          key: const ValueKey('guardian_chat_report'),
-          onLongPress: ZyraTapFeedback.onTap(context, widget.onReport),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Icon(
-                  Icons.lock_outline,
-                  size: 21,
-                  color: ZyraColors.journeyGold,
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  'A private chat between the two Main Guardians. Only you two see it. Keep it respectful — you can report anything here.',
-                  textAlign: TextAlign.center,
-                  style: ZyraText.subtext(size: 13).copyWith(height: 1.45),
-                ),
-              ],
             ),
-          ),
+            ZyraFamilyMessageComposer(
+              controller: _controller,
+              busy: !current(),
+              contextEnabled: false,
+              selectedContext: null,
+              onChooseContext: () {},
+              onRemoveContext: () {},
+              onOpenContext: null,
+              hint: 'Message Noor’s Main Guardian',
+              privateGuardian: true,
+              onSend: () {
+                if (!current() || _controller.text.trim().isEmpty) return;
+                setState(() => _messages.add(_controller.text.trim()));
+                _controller.clear();
+                onSend();
+              },
+            ),
+          ],
         ),
-        const SizedBox(height: 40),
-        ZyraFamilyMessageComposer(
-          controller: _controller,
-          busy: !widget.canAct(),
-          contextEnabled: false,
-          selectedContext: null,
-          onChooseContext: () {},
-          onRemoveContext: () {},
-          onOpenContext: null,
-          hint: 'Message',
-          privateGuardian: true,
-          onSend: () {
-            if (widget.canAct() && _controller.text.trim().isNotEmpty) {
-              widget.onSend();
-              _controller.clear();
-            }
-          },
+      ),
+    );
+  }
+}
+
+class ZyraGuardianChatOptions extends StatelessWidget {
+  const ZyraGuardianChatOptions({
+    super.key,
+    required this.onReport,
+    required this.onBlock,
+    required this.onDone,
+  });
+  final VoidCallback onReport, onBlock, onDone;
+  @override
+  Widget build(BuildContext context) => Material(
+    color: ZyraColors.modalSheetSurface,
+    borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+    child: SafeArea(
+      top: false,
+      bottom: false,
+      child: SingleChildScrollView(
+        key: const ValueKey('guardian_chat_options_scroll'),
+        padding: const EdgeInsets.fromLTRB(23, 14, 23, 26),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: ZyraColors.ink(.16),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              'Guardian chat',
+              style: ZyraText.heading(
+                size: 22,
+              ).copyWith(fontWeight: FontWeight.w300),
+            ),
+            const SizedBox(height: 20),
+            ListTile(
+              key: const ValueKey('guardian_chat_options_report'),
+              contentPadding: EdgeInsets.zero,
+              minTileHeight: 48,
+              dense: true,
+              title: Text('Report a message', style: ZyraText.body(size: 15)),
+              trailing: const Icon(Icons.chevron_right, size: 14),
+              onTap: ZyraTapFeedback.onTap(context, onReport),
+            ),
+            Divider(color: ZyraColors.surfaceBorder, height: 1),
+            ListTile(
+              key: const ValueKey('guardian_chat_options_block'),
+              contentPadding: EdgeInsets.zero,
+              minTileHeight: 48,
+              dense: true,
+              title: Text(
+                'Block Noor’s Main Guardian',
+                style: ZyraText.body(size: 15, color: ZyraColors.destructive),
+              ),
+              trailing: const Icon(Icons.chevron_right, size: 14),
+              onTap: ZyraTapFeedback.onTap(context, onBlock),
+            ),
+            Divider(color: ZyraColors.surfaceBorder, height: 1),
+            const SizedBox(height: 16),
+            ZyraFloatingSurface(
+              gold: true,
+              child: FilledButton(
+                key: const ValueKey('guardian_chat_options_done'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: ZyraColors.actionFill,
+                  foregroundColor: ZyraColors.onAction,
+                  minimumSize: const Size.fromHeight(46),
+                ),
+                onPressed: ZyraTapFeedback.onTap(context, onDone),
+                child: const Text('Done'),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     ),
   );
 }

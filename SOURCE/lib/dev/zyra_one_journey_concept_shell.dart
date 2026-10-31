@@ -6524,22 +6524,108 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     if (accountAction != null) _accountDispatch(accountAction);
   }
 
-  bool Function() _guardianPrivateGuard(String page) {
+  bool Function() _guardianPrivateGuard(
+    String page, {
+    int Function()? expectedNavigatorStamp,
+    bool ownedModal = false,
+  }) {
     final revision = _uiRevision,
         controls = _devControlsEpoch,
-        routes = _devRouteStamp;
-    return () =>
-        _allowed &&
-        _guardianRole &&
-        !_devControlsVisible &&
-        _conceptHassanLinked &&
-        _conceptLinkedSeeker.isMain &&
-        _guardianMembership == 'Guardian One' &&
-        _guardianTabs.connection == ZyraGuardianConnection.accepted &&
-        revision == _uiRevision &&
-        controls == _devControlsEpoch &&
-        routes == _devRouteStamp &&
-        _page == page;
+        routes = _devRouteStamp,
+        tab = _tab;
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final connection = _guardianTabs;
+    var revoked = false;
+    return () {
+      if (revoked) return false;
+      final admitted =
+          mounted &&
+          (ownedModal
+              ? (widget.canActInOwnedDialog?.call() ?? _allowed)
+              : _allowed) &&
+          (ownedModal || _accountSession.current) &&
+          account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+          identical(connection, _guardianTabs) &&
+          _guardianRole &&
+          !_devControlsVisible &&
+          _conceptHassanLinked &&
+          _conceptLinkedSeeker.isMain &&
+          _guardianMembership == 'Guardian One' &&
+          _guardianTabs.connection == ZyraGuardianConnection.accepted &&
+          revision == _uiRevision &&
+          controls == _devControlsEpoch &&
+          (expectedNavigatorStamp?.call() ?? routes) == _devRouteStamp &&
+          tab == _tab &&
+          (ownedModal || ModalRoute.of(context)?.isCurrent == true) &&
+          _page == page;
+      if (!admitted) revoked = true;
+      return admitted;
+    };
+  }
+
+  void _blockGuardianConnection() => _act(() {
+    _guardianTabs.connection = ZyraGuardianConnection.blocked;
+    _pages.removeWhere(
+      (p) => p == 'guardian_private_chat' || p == 'guardian_chat_report',
+    );
+  });
+
+  Future<void> _guardianChatOptions() async {
+    var expectedStamp = _devRouteStamp;
+    final current = _guardianPrivateGuard(
+      'guardian_private_chat',
+      expectedNavigatorStamp: () => expectedStamp,
+    );
+    final owned = _guardianPrivateGuard(
+      'guardian_private_chat',
+      expectedNavigatorStamp: () => expectedStamp,
+      ownedModal: true,
+    );
+    if (!current()) return;
+    int? sheetStamp;
+    var consumed = false;
+    final pending = showModalBottomSheet<String>(
+      context: _tapContext,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black38,
+      builder: (sheetContext) {
+        bool admitted() =>
+            sheetContext.mounted &&
+            !consumed &&
+            ModalRoute.of(sheetContext)?.isCurrent == true &&
+            sheetStamp == _devRouteStamp &&
+            owned();
+        void choose(String action) {
+          if (!admitted()) return;
+          consumed = true;
+          Navigator.of(sheetContext).pop(action);
+          expectedStamp = _devRouteStamp;
+        }
+
+        return ZyraTapFeedback(
+          level: () => _accountSession.hapticLevel,
+          canAct: admitted,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(sheetContext).height * .9,
+            ),
+            child: ZyraGuardianChatOptions(
+              onReport: () => choose('report'),
+              onBlock: () => choose('block'),
+              onDone: () => choose('done'),
+            ),
+          ),
+        );
+      },
+    );
+    sheetStamp = _devRouteStamp;
+    expectedStamp = sheetStamp;
+    final action = await pending;
+    if (mounted) setState(() {});
+    if (!current()) return;
+    if (action == 'report') _open('guardian_chat_report');
+    if (action == 'block') _blockGuardianConnection();
   }
 
   Widget _guardianChatReport() {
@@ -6560,13 +6646,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           canSelect: current,
           onBlock: () {
             if (!current()) return;
-            _act(() {
-              _guardianTabs.connection = ZyraGuardianConnection.blocked;
-              _pages.removeWhere(
-                (p) =>
-                    p == 'guardian_private_chat' || p == 'guardian_chat_report',
-              );
-            });
+            _blockGuardianConnection();
           },
         ),
       ),
@@ -6575,11 +6655,16 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   Widget _guardianPrivateChat() {
     final current = _guardianPrivateGuard('guardian_private_chat');
-    if (!current()) return _unavailable();
+    if (!_guardianPrivateGuard('guardian_private_chat', ownedModal: true)()) {
+      return _unavailable();
+    }
     return ZyraGuardianPrivateChat(
       canAct: current,
+      onOptions: () {
+        if (current()) unawaited(_guardianChatOptions());
+      },
       onSend: () {
-        if (current()) _act(() => _notice = 'Messages send in the app.');
+        if (current()) _act(() {});
       },
       onReport: () {
         if (current()) _open('guardian_chat_report');

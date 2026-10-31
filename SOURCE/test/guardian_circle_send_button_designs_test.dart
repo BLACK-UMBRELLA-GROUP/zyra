@@ -65,7 +65,7 @@ void main() {
     expect(semantics.properties.button, isTrue);
     expect(semantics.properties.enabled, isTrue);
     expect(semantics.properties.label, 'Send message');
-    expect(semantics.properties.onTap, same(send));
+    expect(semantics.properties.onTap, isNotNull);
     semantics.properties.onTap!();
     expect(sends, 1);
   });

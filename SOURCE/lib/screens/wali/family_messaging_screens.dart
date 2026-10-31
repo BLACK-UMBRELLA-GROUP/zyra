@@ -2504,7 +2504,7 @@ class ZyraFamilyMessageComposer extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: ZyraColors.surfaceFill,
                   borderRadius: BorderRadius.circular(
-                    privateGuardian ? 14 : 20,
+                    privateGuardian ? 16 : 20,
                   ),
                   border: Border.all(
                     color: ZyraColors.surfaceBorder,

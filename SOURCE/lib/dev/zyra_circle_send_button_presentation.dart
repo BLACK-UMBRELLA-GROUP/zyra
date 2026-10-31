@@ -31,19 +31,17 @@ class ZyraCircleSendButton extends StatelessWidget {
       child: Tooltip(
         message: 'Send message',
         child: SizedBox(
-          width: privateGuardian ? 38 : 52,
-          height: privateGuardian ? 38 : 52,
+          width: privateGuardian ? 48 : 52,
+          height: privateGuardian ? 48 : 52,
           child: Material(
             color: Colors.transparent,
             borderRadius: radius,
             child: Ink(
               decoration: BoxDecoration(
                 borderRadius: radius,
-                color: privateGuardian ? ZyraColors.surfaceFill : null,
+                color: null,
                 border: Border.all(
-                  color: privateGuardian
-                      ? ZyraColors.surfaceBorder
-                      : gold.withValues(alpha: enabled ? .8 : .35),
+                  color: gold.withValues(alpha: enabled ? .8 : .35),
                   width: 1,
                 ),
               ),
@@ -63,9 +61,7 @@ class ZyraCircleSendButton extends StatelessWidget {
                         )
                       : ExcludeSemantics(
                           child: Icon(
-                            privateGuardian
-                                ? Icons.send_rounded
-                                : Icons.arrow_upward_rounded,
+                            Icons.arrow_upward_rounded,
                             size: privateGuardian ? 20 : 23,
                             color: gold.withValues(alpha: enabled ? 1 : .55),
                           ),

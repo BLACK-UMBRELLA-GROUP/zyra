@@ -198,7 +198,8 @@ void main() {
       await t.enterText(find.byType(TextField), 'Assalamu alaikum');
       await t.tap(find.byKey(const ValueKey('circle_send_button')));
       await h.flush();
-      expect(find.text('Messages send in the app.'), findsOneWidget);
+      expect(find.text('Assalamu alaikum'), findsOneWidget);
+      expect(find.text('A private chat'), findsNothing);
       await _mount(
         h,
         pages: ['guardian_connect'],
