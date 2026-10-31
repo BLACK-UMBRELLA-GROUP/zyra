@@ -1,0 +1,82 @@
+{
+  "queue": 55,
+  "lock": "22 V1",
+  "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
+  "recorded_at_utc": "2026-10-31T12:06:37.194706+00:00",
+  "scope": "Exact named read-only input allowlist only. No config, credential or blanket source scan. Current spec whole-file hash identifies retained V1 input carrier; V2-V5 excluded from implementation.",
+  "inputs": [
+    {
+      "role": "brief",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V1.md",
+      "bytes": 1480,
+      "sha256": "e6587e3198f41006f7611967a0ff9d544798d6365dd786b81954fd4418418532"
+    },
+    {
+      "role": "lock_record",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/LOCK_RECORD.md",
+      "bytes": 1861,
+      "sha256": "d8a2a267ba4768f5d843d4ee7f58c78e44e983a9c4d97ff1bd40a7212b7c7283"
+    },
+    {
+      "role": "current_spec_retaining_V1",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V5.md",
+      "bytes": 8942,
+      "sha256": "3137c4d6d282829819d4d3d4c6e67ad0a6d21499756acdf938a341cb3783c995"
+    },
+    {
+      "role": "archived_V1_spec",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/ARCHIVE/UNITY_PASS_SPEC_2026-10-31_V1.md",
+      "bytes": 3560,
+      "sha256": "178b84cf54f431ce2cd0126bec7c265c386e5c2db833e959e5c93db2ab27784a"
+    },
+    {
+      "role": "master",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x01_compatibility__locked.png",
+      "bytes": 691440,
+      "sha256": "57686ebc054e983d508158e573a07727dcd14cb627a57648ebdbe2c48ae6a1ca"
+    },
+    {
+      "role": "master",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x02_unlocks__seeker_one.png",
+      "bytes": 770340,
+      "sha256": "16ad653362a1d8d2c17becc71a5cc43aaad4bc70d98da4a39c19b8ad6ef698e8"
+    },
+    {
+      "role": "master",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x03_unlocks__seeker_basic.png",
+      "bytes": 772621,
+      "sha256": "5fa4fd954c3b536310d3a0433aa2c29273890cf5fa53959dbf521ddf99565a88"
+    },
+    {
+      "role": "master",
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x04_safety.png",
+      "bytes": 657140,
+      "sha256": "23006e82a9c21b43355b02e7fab0d128365c13e9d9d945364ea89ca5f3fb4b79"
+    },
+    {
+      "role": "named_baseline",
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/profile_membership_settings/compatibility_store__normal.png",
+      "bytes": 882112,
+      "sha256": "d4fc03854055364f858c2f2ffb541972501605b5672f33d6d97713b719757f7f"
+    },
+    {
+      "role": "named_baseline",
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/profile_membership_settings/safety__no_subject.png",
+      "bytes": 791133,
+      "sha256": "0fc9f15c7d50c9ec46e97a835a39d84085971db817ce7f76462f4bf52f237a4d"
+    },
+    {
+      "role": "named_baseline",
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/browse_and_requests/compatibility__locked_zero_unlocks.png",
+      "bytes": 878726,
+      "sha256": "39ca93d58c74b6ddb35bb3db6dfa9c90c9888893f817c8a0684a8aa2077410c9"
+    }
+  ],
+  "retained_V1_consistency": {
+    "selection": "Shared Monogram head, three V1 page table rows, section4 rules.",
+    "current_equals_archive": true,
+    "utf8_bytes": 2102,
+    "sha256": "23e34e94f9e8846546cb04b63b6bb6622a53c3bb0dbc02af7020c1d4d24f44ff",
+    "excluded": "Version-specific introduction/prototype reference, V2 Report profile, V3 empty states, V4 Settings/Edit profile and V5 Safety advice."
+  }
+}

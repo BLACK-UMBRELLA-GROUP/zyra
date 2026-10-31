@@ -1,0 +1,837 @@
+{
+  "queue": 55,
+  "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
+  "recorded_at_utc": "2026-10-31T12:07:39.459886+00:00",
+  "purpose": "Explicit executed file/case/result ledger for the already reported97 cases.",
+  "provenance": "Retained expanded logs report successful aggregate counts but parallel active-test progress exposes only64 distinct case names across the available successful/route logs. A bounded JSON-report replay of the same97 scoped cases was necessary to observe all names and results; no whole suite or wider37 failures rerun. No source change.",
+  "raw_log_home": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE55_UNITY_V1_2026-10-31/handover_work",
+  "runs": [
+    {
+      "log": "cases-main.jsonl",
+      "bytes": 58979,
+      "sha256": "e2e9c18673ee68fac8e88c7b2fc69dbf41523d58d0a819aab6a37d5e1d0728e0",
+      "success": true,
+      "cases": 93,
+      "elapsed_ms": 16336,
+      "method": "pinned no_git_driver.mjs flutter test --reporter json; last two runs use existing inline/ordinary-store name filters"
+    },
+    {
+      "log": "cases-inline.jsonl",
+      "bytes": 5677,
+      "sha256": "58eb94065c8fc23289c13395ea33226d86bfa03e8d65de0fda2f6e8fa169afee",
+      "success": true,
+      "cases": 1,
+      "elapsed_ms": 3078,
+      "method": "pinned no_git_driver.mjs flutter test --reporter json; last two runs use existing inline/ordinary-store name filters"
+    },
+    {
+      "log": "cases-member.jsonl",
+      "bytes": 6035,
+      "sha256": "df7174153e9ad766e661f009eb3e2c6b2ff8552fbcfe19c8a7e3e0957d65da64",
+      "success": true,
+      "cases": 3,
+      "elapsed_ms": 2892,
+      "method": "pinned no_git_driver.mjs flutter test --reporter json; last two runs use existing inline/ordinary-store name filters"
+    }
+  ],
+  "total": 97,
+  "passed": 97,
+  "failed": 0,
+  "skipped": 0,
+  "suites": {
+    "SOURCE/test/membership_management_screen_test.dart": 3,
+    "SOURCE/test/membership_wallet_visual_test.dart": 1,
+    "SOURCE/test/visual/lock22_unity_v1_capture_test.dart": 2,
+    "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart": 15,
+    "SOURCE/test/zyra_draft_compatibility_presentation_test.dart": 18,
+    "SOURCE/test/zyra_draft_compatibility_route_test.dart": 19,
+    "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart": 17,
+    "SOURCE/test/zyra_unlock_ownership_read_test.dart": 22
+  },
+  "columns": [
+    "file",
+    "case",
+    "result",
+    "registration_line",
+    "run_log",
+    "duration_ms"
+  ],
+  "cases": [
+    [
+      "SOURCE/test/membership_management_screen_test.dart",
+      "Basic never leaks into the Compatibility-only purchase page",
+      "PASS",
+      437,
+      "cases-member.jsonl",
+      455
+    ],
+    [
+      "SOURCE/test/membership_management_screen_test.dart",
+      "Membership Unlocks pill renders the held store inline",
+      "PASS",
+      733,
+      "cases-member.jsonl",
+      223
+    ],
+    [
+      "SOURCE/test/membership_management_screen_test.dart",
+      "standalone Unlocks Back wording and arrow each pop one route",
+      "PASS",
+      686,
+      "cases-member.jsonl",
+      187
+    ],
+    [
+      "SOURCE/test/membership_wallet_visual_test.dart",
+      "component: inline Halo focus keeps read-only balance and permanent access information",
+      "PASS",
+      452,
+      "cases-inline.jsonl",
+      541
+    ],
+    [
+      "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "LOCK22 V1 actual x01-x04 at text 1.0 and real unlock navigation",
+      "PASS",
+      60,
+      "cases-main.jsonl",
+      1440
+    ],
+    [
+      "SOURCE/test/visual/lock22_unity_v1_capture_test.dart",
+      "LOCK22 V1 actual x01-x04 at text 2.0 and real unlock navigation",
+      "PASS",
+      60,
+      "cases-main.jsonl",
+      723
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "Report fits Size(390.0, 844.0) with all reasons and no submission",
+      "PASS",
+      190,
+      "cases-main.jsonl",
+      112
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "Report fits Size(393.0, 852.0) with all reasons and no submission",
+      "PASS",
+      190,
+      "cases-main.jsonl",
+      52
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "Report fits Size(430.0, 932.0) with all reasons and no submission",
+      "PASS",
+      190,
+      "cases-main.jsonl",
+      51
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "Scan fits Size(390.0, 844.0) with a truthful disabled camera action",
+      "PASS",
+      168,
+      "cases-main.jsonl",
+      528
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "Scan fits Size(393.0, 852.0) with a truthful disabled camera action",
+      "PASS",
+      168,
+      "cases-main.jsonl",
+      29
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "Scan fits Size(430.0, 932.0) with a truthful disabled camera action",
+      "PASS",
+      168,
+      "cases-main.jsonl",
+      23
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "guard revocation rejects retained reason and secondary actions",
+      "PASS",
+      298,
+      "cases-main.jsonl",
+      83
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "large-text Report remains readable",
+      "PASS",
+      271,
+      "cases-main.jsonl",
+      98
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "large-text Scan remains readable",
+      "PASS",
+      271,
+      "cases-main.jsonl",
+      32
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "reasons only select locally and never enable submission",
+      "PASS",
+      229,
+      "cases-main.jsonl",
+      324
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "secondary actions remain explicit caller-owned actions",
+      "PASS",
+      368,
+      "cases-main.jsonl",
+      88
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "target replacement clears selection and revokes old delegates",
+      "PASS",
+      337,
+      "cases-main.jsonl",
+      128
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "target-free account Safety does not choose a previous person",
+      "PASS",
+      256,
+      "cases-main.jsonl",
+      39
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "utility display settles with reduced motion false",
+      "PASS",
+      390,
+      "cases-main.jsonl",
+      79
+    ],
+    [
+      "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "utility display settles with reduced motion true",
+      "PASS",
+      390,
+      "cases-main.jsonl",
+      73
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "changing the addressed person revokes the old result page",
+      "PASS",
+      463,
+      "cases-main.jsonl",
+      66
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "compact 200% Halo reader remains reachable reduced=false",
+      "PASS",
+      513,
+      "cases-main.jsonl",
+      48
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "compact 200% Halo reader remains reachable reduced=true",
+      "PASS",
+      513,
+      "cases-main.jsonl",
+      46
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked 0-credit page has no mounted score reader",
+      "PASS",
+      227,
+      "cases-main.jsonl",
+      627
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked 1-credit page has no mounted score reader",
+      "PASS",
+      227,
+      "cases-main.jsonl",
+      72
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked 5-credit page has no mounted score reader",
+      "PASS",
+      227,
+      "cases-main.jsonl",
+      57
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked Halo exposes no score or Guardian semantics",
+      "PASS",
+      249,
+      "cases-main.jsonl",
+      36
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked Halo long name and 200% text stay reachable Size(320.0, 568.0)",
+      "PASS",
+      280,
+      "cases-main.jsonl",
+      70
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked Halo long name and 200% text stay reachable Size(568.0, 320.0)",
+      "PASS",
+      280,
+      "cases-main.jsonl",
+      53
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked and Halo states stay within phone width Size(375.0, 812.0)",
+      "PASS",
+      483,
+      "cases-main.jsonl",
+      43
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked and Halo states stay within phone width Size(393.0, 852.0)",
+      "PASS",
+      483,
+      "cases-main.jsonl",
+      38
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "locked and Halo states stay within phone width Size(430.0, 932.0)",
+      "PASS",
+      483,
+      "cases-main.jsonl",
+      36
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "one grant swaps locked content for reader without replay or spend",
+      "PASS",
+      349,
+      "cases-main.jsonl",
+      131
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "positive balance cannot enable an absent unlock callback",
+      "PASS",
+      267,
+      "cases-main.jsonl",
+      33
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "quiet navigation jumps without a reveal animation: false",
+      "PASS",
+      434,
+      "cases-main.jsonl",
+      52
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "quiet navigation jumps without a reveal animation: true",
+      "PASS",
+      434,
+      "cases-main.jsonl",
+      39
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "reader navigates Overall plus six category pages by touch and swipe",
+      "PASS",
+      379,
+      "cases-main.jsonl",
+      364
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_presentation_test.dart",
+      "revealed page has only the fixed Halo reader and score preview semantics",
+      "PASS",
+      310,
+      "cases-main.jsonl",
+      138
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "Browse selected peer survives actual Back return",
+      "PASS",
+      324,
+      "cases-main.jsonl",
+      870
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "actual shell locked and revealed visual captures",
+      "PASS",
+      723,
+      "cases-main.jsonl",
+      173
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "compact 200% route remains reachable reduce=false",
+      "PASS",
+      830,
+      "cases-main.jsonl",
+      277
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "compact 200% route remains reachable reduce=true",
+      "PASS",
+      830,
+      "cases-main.jsonl",
+      275
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "different peer cannot receive a retained reveal",
+      "PASS",
+      569,
+      "cases-main.jsonl",
+      153
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "exact presets never accumulate and route changes retain used access",
+      "PASS",
+      356,
+      "cases-main.jsonl",
+      647
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "global account store never targets the last browsed peer",
+      "PASS",
+      586,
+      "cases-main.jsonl",
+      231
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "large-text fallback left-edge Back returns the same peer reduce=false",
+      "PASS",
+      874,
+      "cases-main.jsonl",
+      123
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "large-text fallback left-edge Back returns the same peer reduce=true",
+      "PASS",
+      874,
+      "cases-main.jsonl",
+      104
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "normal phone Size(375.0, 812.0) fits scores and the full Halo focus catalogue without scrolling",
+      "PASS",
+      741,
+      "cases-main.jsonl",
+      185
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "normal phone Size(393.0, 852.0) fits scores and the full Halo focus catalogue without scrolling",
+      "PASS",
+      741,
+      "cases-main.jsonl",
+      170
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "normal phone Size(430.0, 932.0) fits scores and the full Halo focus catalogue without scrolling",
+      "PASS",
+      741,
+      "cases-main.jsonl",
+      160
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "one action opens the fixed Halo reader once and keeps the peer selected",
+      "PASS",
+      437,
+      "cases-main.jsonl",
+      203
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "read-only store balance cannot bypass the exact unlock confirmation",
+      "PASS",
+      653,
+      "cases-main.jsonl",
+      228
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "returned route, zero balance and ABA reject retained delegates",
+      "PASS",
+      406,
+      "cases-main.jsonl",
+      338
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "revoked or disposed route never unlocks or emits haptics",
+      "PASS",
+      475,
+      "cases-main.jsonl",
+      155
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "role roundtrip discards route and retained actions",
+      "PASS",
+      550,
+      "cases-main.jsonl",
+      265
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "store and fresh routes preserve used access until explicit Reset preview",
+      "PASS",
+      506,
+      "cases-main.jsonl",
+      407
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "store terms are a real destination and back keeps the store",
+      "PASS",
+      690,
+      "cases-main.jsonl",
+      219
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "all eight retained included examples, forward and backward",
+      "PASS",
+      109,
+      "cases-main.jsonl",
+      401
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "balance 0 and membership One=false, default three and catalog prices",
+      "PASS",
+      66,
+      "cases-main.jsonl",
+      851
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "balance 0 and membership One=true, default three and catalog prices",
+      "PASS",
+      66,
+      "cases-main.jsonl",
+      142
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "balance 1 and membership One=false, default three and catalog prices",
+      "PASS",
+      66,
+      "cases-main.jsonl",
+      133
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "balance 1 and membership One=true, default three and catalog prices",
+      "PASS",
+      66,
+      "cases-main.jsonl",
+      163
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "balance 5 and membership One=false, default three and catalog prices",
+      "PASS",
+      66,
+      "cases-main.jsonl",
+      138
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "balance 5 and membership One=true, default three and catalog prices",
+      "PASS",
+      66,
+      "cases-main.jsonl",
+      146
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "old pack delegate cannot replay after fresh selection",
+      "PASS",
+      166,
+      "cases-main.jsonl",
+      47
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "owner revoked: retained pack, page and terms callbacks have no haptics or effect",
+      "PASS",
+      128,
+      "cases-main.jsonl",
+      48
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "reachable packs, pager and terms at Size(320.0, 568.0) text1.0",
+      "PASS",
+      184,
+      "cases-main.jsonl",
+      106
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "reachable packs, pager and terms at Size(320.0, 568.0) text2.0",
+      "PASS",
+      184,
+      "cases-main.jsonl",
+      103
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "reachable packs, pager and terms at Size(430.0, 932.0) text1.0",
+      "PASS",
+      184,
+      "cases-main.jsonl",
+      80
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "reachable packs, pager and terms at Size(430.0, 932.0) text2.0",
+      "PASS",
+      184,
+      "cases-main.jsonl",
+      88
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "reachable packs, pager and terms at Size(852.0, 393.0) text1.0",
+      "PASS",
+      184,
+      "cases-main.jsonl",
+      86
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "reachable packs, pager and terms at Size(852.0, 393.0) text2.0",
+      "PASS",
+      184,
+      "cases-main.jsonl",
+      82
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "unbounded membership embed scrolls its natural content",
+      "PASS",
+      205,
+      "cases-main.jsonl",
+      28
+    ],
+    [
+      "SOURCE/test/zyra_draft_compatibility_store_presentation_test.dart",
+      "unconfirmed balance does not claim zero Unlocks",
+      "PASS",
+      100,
+      "cases-main.jsonl",
+      59
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "Standard ownership does not manufacture Plus",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      3
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "bounded automatic_match grant read preserves permanent access",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "bounded paid_bundle grant read preserves permanent access",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "bounded paid_plus_bundle grant read preserves permanent access",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "bounded paid_plus_single grant read preserves permanent access",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "bounded paid_single grant read preserves permanent access",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      51
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "concurrent confirmed debit is not erased by an older empty read",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      4
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "empty is confirmed unowned; failed read stays unknown",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      5
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "epoch change rejects a late target grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "generation change rejects a late target grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      6
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "independent target read survives concurrent full hydration",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "malformed [{unlocked_id: 00000000-0000-4000-8000-00000000440a, unlock_type: paid_single}, {unlocked_id: 00000000-0000-4000-8000-00000000440b, unlock_type: paid_plus_single}] is unknown with no partial grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      1
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "malformed [{unlocked_id: 00000000-0000-4000-8000-00000000440a, unlock_type: unknown}] is unknown with no partial grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      1
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "malformed [{unlocked_id: 00000000-0000-4000-8000-00000000440b, unlock_type: paid_plus_single}] is unknown with no partial grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "malformed [{unlocked_id: null, unlock_type: paid_single}] is unknown with no partial grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "older failed read preserves a concurrently confirmed grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "older timed-out read preserves a concurrently confirmed grant",
+      "PASS",
+      322,
+      "cases-main.jsonl",
+      135
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "owner ABA change rejects a late target grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "owner change rejects a late target grant",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "read guard cannot be revived by a grant in a later epoch",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      2
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "sample and signed-out inputs do not start member reads",
+      "PASS",
+      null,
+      "cases-main.jsonl",
+      5
+    ],
+    [
+      "SOURCE/test/zyra_unlock_ownership_read_test.dart",
+      "target read times out without a late grant",
+      "PASS",
+      403,
+      "cases-main.jsonl",
+      6
+    ]
+  ]
+}

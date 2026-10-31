@@ -1,7 +1,7 @@
 {
   "queue": 55,
   "lock": "22 V1",
-  "status": "BUILT; parent visual/contract review pending OA-ZYRA-328",
+  "status": "BUILT; parent verification pending OA-ZYRA-328; final product approval/acceptance reserved to Shakeel",
   "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
   "built_from": {
     "brief": "PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V1.md",
@@ -48,10 +48,11 @@
       "Unknown ordinary balance omits the balance head instead of claiming zero; ordinary membership field comes from existing plan.",
       "Account Safety has no Submit report; targeted report remains draft-only with no transport.",
       "Larger text grows and scrolls; actual footer captures show controls fully reachable."
-    ]
+    ],
+    "case_results": "TEST_CASES_RESULTS.json:97 named executed cases,97 PASS,0 failures/skips; JSON replay required because expanded parallel logs omit many names."
   },
   "visual_comparison": {
-    "review": "Primary inspected x01-x04 masters and built pages, four large-text tops and compatibility/Unlocks footer captures. Parent comparison pending.",
+    "review": "Primary inspected x01-x04 masters and built pages, four large-text tops and compatibility/Unlocks footer captures. Parent verification pending; final product approval belongs to Shakeel.",
     "differences": [
       "Master has a drawn rounded phone border; actual capture is the existing rectangular shell frame with real top59/bottom34 safe-area insets.",
       "Native Poppins metrics, baseline weight, line wrapping and Material glyphs differ visibly from prototype raster; numeric 96pt circle,26pt light title,11pt caps and1.2 letter spacing follow V1.",
@@ -62,7 +63,7 @@
   },
   "limits": {
     "unrelated_seen": [
-      "Two Profile row targets/arrows compact false/true cases in broader membership_wallet_visual_test fail at their old Profile scroll finder, outside Unlocks. Written refusal to repair those unrelated fixtures in queue55; affected inline case separately passes."
+      "Two exact Profile row targets/arrows compact=false/true cases fail at test line391 via first arrow call401, seeking obsolete membership-manage; fixture mounts only Profile and uses actions.add, so no changed55 presenter is constructed or entered. PROFILE_FAILURE_TRIAGE.json records retained stack, finder and bounded source proof. Written refusal under OA-ZYRA-328; no exact old-baseline claim."
     ],
     "full_suite": "Inherited37 wider failures were not rerun or claimed green. No full-app/a11y-clean claim.",
     "native_backend": "No native build/install/upload/signing, auth, API, backend, entitlement or migration work.",
@@ -129,5 +130,18 @@
     "locked_master_bytes": 2891541,
     "helper": "unlocks_presenter, isolated store implementation and pager fix; 51001 startup bytes; no SDK/git; token totals unavailable in tools."
   },
-  "retirement": "Obsolete ring-specific store test moved to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE55_UNITY_V1_2026-10-31/; replaced by behaviour/ownership/reachability tests."
+  "retirement": "Obsolete ring-specific store test moved to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE55_UNITY_V1_2026-10-31/; replaced by behaviour/ownership/reachability tests.",
+  "input_hashes": "LOCK_INPUTS.json:11 named inputs; current retained V1 sections byte-match archived V1 selection.",
+  "handover_addendum": {
+    "source_changed": false,
+    "new_files": [
+      "TEST_CASES_RESULTS.json",
+      "LOCK_INPUTS.json",
+      "PROFILE_FAILURE_TRIAGE.json",
+      "HANDOVER_MANIFEST.json"
+    ],
+    "parent_action": "verification",
+    "product_approval": "Only Shakeel",
+    "additional_input_read_bytes": 3560
+  }
 }

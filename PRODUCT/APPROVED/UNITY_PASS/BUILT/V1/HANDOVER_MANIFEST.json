@@ -1,0 +1,121 @@
+{
+  "source_commit": "30ab177f5bb714a696d0e2c091ad06aaefd9f911",
+  "scope": "Exact owned BUILT/V1 files only; manifest excludes itself. SOURCE_MANIFEST remains the13-file committed source/tracker allowlist. RENDER_MANIFEST remains16 exact images. No configs or blanket source scans.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/BUILD.json",
+      "bytes": 446,
+      "sha256": "0dc002647e8c791605ab6b5ba0b36313f3b58f4fc814646399b67d0529bb1e15"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/LOCK_INPUTS.json",
+      "bytes": 3413,
+      "sha256": "881179a807648544c5d12296edf1b9428349c488ddb50eb690b753abc4255d31"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/PROFILE_FAILURE_TRIAGE.json",
+      "bytes": 4042,
+      "sha256": "4384c4416e2967efd3c7591cdabf0933c2ce2e3a87caa3dffe1f329e085f774a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/QA.json",
+      "bytes": 6563,
+      "sha256": "601e25b55f6bee2c4989e2e48aa58423c17374f53330d5c1d939551591e12d5e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/RENDER_MANIFEST.json",
+      "bytes": 4485,
+      "sha256": "757cb9a03e90fd775b417b9ff943dce33a030da5d7c2c5abdaf00635a1cdfe8d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/SOURCE_MANIFEST.json",
+      "bytes": 2689,
+      "sha256": "3f30e2f2ac5c4479524dc628ae4a0ad3cddc4ae63eda9680b8eaeee701c0de16"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/TEST_CASES_RESULTS.json",
+      "bytes": 23068,
+      "sha256": "0d4a459e5ea9e475e3ed0cbc27c782a446159aee5965a2e8212a47c49f152867"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01-x04__master_beside_build.png",
+      "bytes": 1036214,
+      "sha256": "343907ba140b6325e90ecca950d9f4ab5d5ce60530f272f0bfda54e7076d2812"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked.png",
+      "bytes": 389257,
+      "sha256": "c9d4731f73a81bf582e06ecf0e1b33d73a42f4e56a19e44f4e5575001d632f87"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked__master_beside_build.png",
+      "bytes": 901286,
+      "sha256": "5c9f0689f9b68f52d5402d62ed262525cecbf70f8fa167951fafb6f5005f240e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked__text200.png",
+      "bytes": 482415,
+      "sha256": "fc901f4665085dfc8431af447bac69868ad8791d05b57bef796a22b4ff364d90"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x01_compatibility__locked__text200__footer.png",
+      "bytes": 484532,
+      "sha256": "a4588fc6cb4941f4bb6774c08be8a6fc030a730e974c7ef914caf7a5c18bfb9b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one.png",
+      "bytes": 480872,
+      "sha256": "a643f01a750d109e07972889da6ef9dcb852fdfa1d154d15d431ee3cbebaaab8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one__master_beside_build.png",
+      "bytes": 1059714,
+      "sha256": "2db47e9ff1112bacf8f527b274b1b251e63a87b526f395548ee897d6bec79fd9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one__text200.png",
+      "bytes": 534957,
+      "sha256": "a74820ffce9cd72c61a42aebe2f2967370e25486f8f251182c2494072f48da9e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x02_unlocks__seeker_one__text200__footer.png",
+      "bytes": 537484,
+      "sha256": "aa1afe08b545b6fbd5af9e1edcc8ec37b8a985187a0d9136401bd0fef9aa7269"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic.png",
+      "bytes": 484504,
+      "sha256": "c2129c531e6f6dd127273fe7265fd6cafbf450f8fa4bad645183abb5c296ff71"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic__master_beside_build.png",
+      "bytes": 1066122,
+      "sha256": "345ca08e03255f0ad6eac423e6438665aae49660d95d22e0810e910cdac21f94"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic__text200.png",
+      "bytes": 542160,
+      "sha256": "c404c26e3a4d83d60a5799fea507b69518f374f388c6364c25e86b319ad882df"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x03_unlocks__seeker_basic__text200__footer.png",
+      "bytes": 543642,
+      "sha256": "2ea4f6cfe6b73c0fad773b92935898e63a0e5ce4922d08c49e9615a54188a21c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x04_safety.png",
+      "bytes": 297350,
+      "sha256": "5abe03fdef315bd34bac03e911893ec9880c63644d79bddc41cae58ed9a3d129"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x04_safety__master_beside_build.png",
+      "bytes": 765251,
+      "sha256": "692d17499c6d09331379968ed1258e6f3d040b6d392e0fda2f3b7b077534fd79"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V1/x04_safety__text200.png",
+      "bytes": 388389,
+      "sha256": "1e840cfbb01ce0ca6705d73c20b4600d7b9aefffb6b280af4ee982184f9c434a"
+    }
+  ]
+}

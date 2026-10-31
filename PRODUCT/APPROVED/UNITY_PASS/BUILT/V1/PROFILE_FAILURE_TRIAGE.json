@@ -1,0 +1,96 @@
+{
+  "queue": 55,
+  "action": "Written refusal under OA-ZYRA-328 to repair stale Profile component fixtures in this three-page build.",
+  "verdict": "Demonstrably outside queue55 layout execution: both fail before entering or constructing any changed55 presenter. No exact old-baseline reproduction claim.",
+  "cases": [
+    {
+      "file": "SOURCE/test/membership_wallet_visual_test.dart",
+      "case": "component: Profile row targets and arrows compact=false",
+      "registration_line": 361,
+      "failure_line": 391,
+      "caller_line": 401,
+      "exception": "StateError: Bad state: No element",
+      "finder": "find.byKey(ValueKey('membership-manage')) passed to tester.scrollUntilVisible(...,120)",
+      "log_line_ranges": [
+        145,
+        178
+      ]
+    },
+    {
+      "file": "SOURCE/test/membership_wallet_visual_test.dart",
+      "case": "component: Profile row targets and arrows compact=true",
+      "registration_line": 361,
+      "failure_line": 391,
+      "caller_line": 401,
+      "exception": "StateError: Bad state: No element",
+      "finder": "find.byKey(ValueKey('membership-manage')) passed to tester.scrollUntilVisible(...,120)",
+      "log_line_ranges": [
+        181,
+        214
+      ]
+    }
+  ],
+  "retained_log": {
+    "path": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE55_UNITY_V1_2026-10-31/work/scoped-round2.log",
+    "bytes": 41487,
+    "sha256": "246ea079e6441e735e51471887a9256f7d65d07549c176e8f0b2fd2d641b92b4"
+  },
+  "stack_locations": [
+    "package:flutter_test/src/controller.dart:2482:38 (dragUntilVisible / element lookup)",
+    "package:flutter_test/src/controller.dart:2439:7 (scrollUntilVisible)",
+    "SOURCE/test/membership_wallet_visual_test.dart:391:9 (arrow helper)",
+    "SOURCE/test/membership_wallet_visual_test.dart:401:26 (first awaited arrow)"
+  ],
+  "proof_before55": [
+    {
+      "file": "SOURCE/test/membership_wallet_visual_test.dart",
+      "lines": [
+        365,
+        389
+      ],
+      "fact": "The fixture mounts only ZyraConceptProfilePresentation. onAction is actions.add; onSwitchRole is empty. No Navigator or real account-action coordinator is supplied."
+    },
+    {
+      "file": "SOURCE/test/membership_wallet_visual_test.dart",
+      "lines": [
+        390,
+        403
+      ],
+      "fact": "The retained stack ends at the first await arrow(membership-manage), line401. It fails at the initial scroll, before subscriptions/unlocks arrow checks or any tap."
+    },
+    {
+      "file": "SOURCE/test/membership_wallet_visual_test.dart",
+      "lines": [
+        419,
+        432
+      ],
+      "fact": "The first tap would occur later at line424; even there the action callback only appends to the list and cannot navigate to Compatibility Unlocks."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "lines": [
+        127,
+        138
+      ],
+      "fact": "Profile _row generates ValueKey(concept_$id) and onTap merely calls the supplied onAction."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "lines": [
+        358,
+        367
+      ],
+      "fact": "Current Profile membership row id is membership, so its real key is concept_membership. The fixture still seeks membership-manage."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "lines": [
+        261,
+        435
+      ],
+      "fact": "Profile build composes its Profile header, cards and rows; it does not instantiate locked Compatibility, Unlocks catalogue or account Safety. Queue55 did not change this file."
+    }
+  ],
+  "limits": "This proves the failures occur before55 layout can execute. It does not establish the exact commit that first introduced the stale fixture, or prove a historical full baseline result. The Profile tests were not rerun or repaired; the relevant inline catalogue test passes and has an explicit JSON case result.",
+  "ownership": "Parent performs verification. Only Shakeel gives final product approval/acceptance."
+}
