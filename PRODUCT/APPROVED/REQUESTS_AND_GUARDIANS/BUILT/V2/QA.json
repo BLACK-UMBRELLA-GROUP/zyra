@@ -1,0 +1,139 @@
+{
+  "queue": 65,
+  "lock": "LOCK2 V2",
+  "scope": "Local Founder sample preview only",
+  "findings_disposition": {
+    "capacity_scope": "V2§2.5 has no capacity qualification. Capacities1–3 share the same choice, with each original capacity and Browse gate preserved. Basic still reserves at most1.",
+    "sender_cooldown": "Existing30-day Not-taken-up cooldown remains for sent requests. Received waiting cancellation creates received passive history, not a new sender restriction.",
+    "owned_dialog": "Exact owned confirmation has current owner/account, controls, UI/request intent and chosen attempt checks. An unrelated Navigator round trip, authority revocation, cancellation and replay end nothing.",
+    "failing_broader_suites": "All122 grouped into26 first-failure assertions/selectors across3 suites in BROADER_FAILURE_TRIAGE.json. No failing V2 business assertion; ordinary successful preparation before some legacy lookup failures is distinguished. No pre-change attribution. Written refusal OA-ZYRA-328."
+  },
+  "validation": {
+    "cases": 320,
+    "suites": 14,
+    "analyzer": "No issues found",
+    "format": "11 owned Dart files clean",
+    "protected_sdk": "Flutter3.44.2 pinned; direct and nested exec denial pass",
+    "network": "Offline harnesses reject any HttpClient; zero attempts asserted",
+    "full_suite_claim": false
+  },
+  "renders": {
+    "normal": 12,
+    "text200": 7,
+    "logical_size": [
+      430,
+      932
+    ],
+    "png_size": [
+      1290,
+      2796
+    ],
+    "mode": "Headless Flutter test raster at3x with actual ZyraApp theme, bundled Poppins/Syne, SF symbol fallback, prepared local sample photos; no iOS status bar",
+    "comparison": "Content, wording, action order and enabled/waiting/held/Past states compared against all12 named V2 masters. Existing app typography, spacing, shadows, back/navigation and button treatments retained as spec§1 requires. No pixel parity claim.",
+    "retained_differences": [
+      "Actual preparing pages keep the current small Journey header, history and options controls; prototype masters draw a larger heading.",
+      "Current Ivory floating surfaces use the app shadow and button treatments; masters are prototype drawings.",
+      "Past actual fixture has the new Hana You-let-it-go item dated Sent29Oct; prototype also draws two older sample histories and uses Sent today. No history was fabricated or existing Journey removed to match fixture decoration.",
+      "Received render fixtures block the unrelated seeded Amira request to isolate Hana; the unchanged default app may also show Amira. Sent Focus retains that unread request and now renders the actual1of3 count. Earlier captures showing Amira or1of2 were overwritten by final-source captures. The real Focus pager/navigation remain.",
+      "At200% text the existing tab presenter stacks Received/Sent/Past and body content scrolls. Real taps reach offscreen Demo confirms, Demo does-not-go-ahead, Keep my Journeys, Let it go, both readiness controls, Begin and paid Guardian agreement, with no layout exceptions. Captures retain their actual scroll positions."
+    ]
+  },
+  "limits": [
+    "No server/database/migration change, native build/install/upload/signing, or ordinary member-route retirement.",
+    "No new acceptance timeout; existing7-day server request expiry is untouched. Local preview has no timer and is not a server implementation.",
+    "Founder delivery remains held under parent QUESTIONS2. Parent visual/contract verification remains OA-ZYRA-328.",
+    "Parent row45/48 questions, later queue rows and designer/admin changes are preserved and not staged."
+  ],
+  "reading": {
+    "primary_startup_text_bytes": 124639,
+    "primary_startup_text_kb_decimal": 124.639,
+    "primary_startup_picture_bytes": 20064917,
+    "primary_note": "Includes the mandatory lessons and both the review prefix11,654B and an18,655B review scan to locate authorised addenda, plus28,558B queue scan. Source excerpt/rg input totals were not instrumented; no fabricated total-I/O or token count. File byte sizes are measured; aggregate stream I/O was not instrumented.",
+    "helper": {
+      "name": "capacity_model",
+      "purpose": "Disjoint model/snapshot and model-test implementation; primary alone ran SDK/git",
+      "startup_text_bytes": 78947,
+      "viewed_picture_bytes": 2922013,
+      "source_emitted_excerpts_bytes": 60347,
+      "tests_emitted_excerpts_bytes": 61595,
+      "tokens": "unavailable",
+      "total_io": "not instrumented; excerpt counts are not total I/O"
+    },
+    "parent_read_ahead": {
+      "mandatory_text_bytes": 192388,
+      "source_excerpt_bytes": 69119,
+      "test_excerpt_bytes": 26600,
+      "explicit_rg_input_source_bytes": 1404355,
+      "explicit_rg_input_test_bytes": 817427,
+      "includes_repeats": true,
+      "overread": "wholeMAP81,418B/fullreview16,074B in parent pre-read; not repeated here",
+      "tokens": "unavailable"
+    }
+  },
+  "disk": {
+    "render_png_bytes": 20445420,
+    "compiled_in_evidence": 0,
+    "source_copies_in_evidence": 0,
+    "task_scratch_and_regenerable_test_caches": "To move to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE65_V2_2026-10-31 after final checks; no deletions",
+    "initial_measurement_limit": "No pre-task cache byte baseline; moved amount reported as observed size, not growth.",
+    "moved_test_caches": [
+      {
+        "path": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE65_V2_2026-10-31/test_cache",
+        "bytes": 202969832
+      },
+      {
+        "path": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE65_V2_2026-10-31/unit_test_assets",
+        "bytes": 17007259
+      }
+    ],
+    "test_caches_moved_bytes": 219977091
+  },
+  "source_commit": "2ab4f6843d8782625ae206073f37db50b1c92889",
+  "code_size": {
+    "before": {
+      "app": [
+        169327,
+        336
+      ],
+      "developer_preview": [
+        49537,
+        94
+      ],
+      "founder_preview": [
+        30355,
+        44
+      ],
+      "tests": [
+        216863,
+        511
+      ]
+    },
+    "after": {
+      "app": [
+        169736,
+        336
+      ],
+      "developer_preview": [
+        49946,
+        94
+      ],
+      "founder_preview": [
+        30764,
+        44
+      ],
+      "tests": [
+        217931,
+        513
+      ]
+    },
+    "goldens": [
+      2612,
+      307
+    ],
+    "old_pause_restart_files": [
+      39,
+      1
+    ]
+  },
+  "broader_failure_triage": "BROADER_FAILURE_TRIAGE.json"
+}

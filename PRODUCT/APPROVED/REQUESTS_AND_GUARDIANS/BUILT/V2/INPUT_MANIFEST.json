@@ -1,0 +1,144 @@
+{
+  "explicit_locked_input_paths": [
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md",
+      "bytes": 2047,
+      "sha256": "a0004d6ba152b222c1d1e6c4241ec6ce7d014b79a75bff31a6302c01802266bb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/REQUESTS_AND_GUARDIANS_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 11990,
+      "sha256": "c3d17648b0ce615d2d3cc7e2f54f8207c6dd826a2169c9cc2c9fe66a2d4b870a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/LOCK_RECORD.md",
+      "bytes": 3423,
+      "sha256": "af1e41fe24c960036d38b987fdd9027e515a685c859e580bfc18b396dea04ecf"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/accept__both_full_choose.png",
+      "bytes": 769552,
+      "sha256": "65e2519ebe7f8c24ea407fc706f3009da5dca196446265f961c0fb6d3092baf5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/accept__both_full_nothing_chosen.png",
+      "bytes": 767138,
+      "sha256": "9b4da1c9e8e3b7f9b983961d9c08badd6ff57f23d4edf3cec046130899e85999"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/accept__both_full_waiting.png",
+      "bytes": 758859,
+      "sha256": "085508057e52ae11ea8c63894adf7f08c37bbd7059e679a6c6203b012ac7f1bc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/accept__both_space_preparing.png",
+      "bytes": 620996,
+      "sha256": "061a63c8b2b979a0a31f74c164664e2910c2dde8721205610bbca22acfedc1a2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/accept__other_full_waiting.png",
+      "bytes": 751456,
+      "sha256": "043752b68217da0120ac6a01eb8063ae8599ff7c9dd2a95dd4a91dbd1ebcaae2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/accept__you_full_choose.png",
+      "bytes": 792487,
+      "sha256": "5f512a35143918bc4d7f25e7fdc00ca7b8e26fb1059822f5d2c0f65e2fdb1de5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/my_zyra__accepted_choose_place.png",
+      "bytes": 805643,
+      "sha256": "46cb4d1a66d0fe81204987e09898f5a48ccb55c1dd85077b53200816299695db"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/preparing__both_ready.png",
+      "bytes": 620230,
+      "sha256": "5532a413ebab3ae70d08409f34cc31e513fc103d13369be6d2f175891654e4a2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/requests__past_let_go.png",
+      "bytes": 810865,
+      "sha256": "93e00de946c3a307d2d53400672e71dab4dcd8489ac3446f31b3238610092a24"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/sent__accepted_choose_place.png",
+      "bytes": 800418,
+      "sha256": "b4b220d37aa64032fd6dd97c90c3e20f46e05b3e1f15d6bc7a0728d1cae4647c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/sent__accepted_you_full.png",
+      "bytes": 732059,
+      "sha256": "fdb2353964a2e76bb7f91aef7042e057d7928a4ee4d909003e619c01c6b09bc6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/sent__waiting_demo_accept.png",
+      "bytes": 734200,
+      "sha256": "a3c4e124f85d217a36c59230662649593d6e1f604618bb41893200412dabef61"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/request_capacity__full_journey_chosen.png",
+      "bytes": 967718,
+      "sha256": "bddc9701921d8a41b800f118589f9e1dca61bea886c5c851a656ffc75f756ea6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/request_capacity__full_nothing_chosen.png",
+      "bytes": 966817,
+      "sha256": "026aa7b0aea204469d5c5f2f77b0662b171489ebfc39aa812d888ae0218d5c15"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__past.png",
+      "bytes": 887019,
+      "sha256": "f208b0ca3ab49d346a7e951675139fad74d3fc3514a13bdf9fd9453749fddab6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__past_empty.png",
+      "bytes": 771462,
+      "sha256": "ae39befd4f4f7b406370c0db8c9081f1f8cccdd8790bee8da90ce7fce888ae8c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__received.png",
+      "bytes": 812336,
+      "sha256": "9ad357e8e139db1be423086535ff1f9039b4f131f0896f062c5f91cdd55fbef8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__received_empty.png",
+      "bytes": 763796,
+      "sha256": "c3f7a53b6b465c16c1a0a18b123ac97f3063ed12ec7bcbdc12fae83bb66bc7e0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__received_expanded.png",
+      "bytes": 869342,
+      "sha256": "45ec739882ca46b709b9718b4a9444269e9abdb1014d0bb465c098abdef55bcf"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__sent.png",
+      "bytes": 812834,
+      "sha256": "8c0763acfb617c64545c37678a2501efa2af94ed3b8a8736c62ba39d133cb47b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__sent_empty.png",
+      "bytes": 760396,
+      "sha256": "23d300f8a11e82f06d38bd8e1fdfd077c88c5bb51b6a17bc3eb6a68fb542188c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/requests__sent_expanded.png",
+      "bytes": 877116,
+      "sha256": "5c20dc5269c68c6a8c07e639bbb7827f69bbef556f19d7057a088f77370ffb62"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/journey/journey__preparing.png",
+      "bytes": 875178,
+      "sha256": "e53ec638895920cbd607927e2723f6a7cb933c5fbdd4e589f509979df8c3b909"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/journey/journey__self_ready.png",
+      "bytes": 868573,
+      "sha256": "8f8a6ccce6bc57103f6896dc2f110e2c2a3869f663a96a58c7261954a51dd50a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/journey/journey__both_ready.png",
+      "bytes": 868427,
+      "sha256": "46bed0d59251081804e076ecd07b7f3067c3fafb2b98b514a2981b654bae072f"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "source_commit": "2ab4f6843d8782625ae206073f37db50b1c92889",
+  "source_manifest_sha256": "1858197c8db7ddd788673a41fc78fbde06aed8d674d1a4b51a42e6ba4dad5434",
+  "renders": [
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/CONTACT_SHEET.png",
+      "bytes": 956101,
+      "sha256": "283ec272263cfe1a8c0b133d4f278d738bde48c808ed7662fe534366ef0cd9eb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/LARGER_TEXT_CONTACT.png",
+      "bytes": 463023,
+      "sha256": "a5c11622de081894dd3dbe3e8ecd4edba66ebabbca7f9d158412ae11877c681e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_choose.png",
+      "bytes": 465096,
+      "sha256": "56c40e38689be3c651070195e2223268e49327ae35786ec3a4fb1a3b5451105a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_choose__master_beside_build.png",
+      "bytes": 1022009,
+      "sha256": "f7a1d8dff64d6fdb8620e941c437c68d2147b42811060348682c5083a0e3a702"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_choose__text200.png",
+      "bytes": 554167,
+      "sha256": "4572573028d7ed6b3c2a8333d8aebecd49a54656f53ded48e4c2866769e79a12"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_nothing_chosen.png",
+      "bytes": 461659,
+      "sha256": "f8d31efa86a8d1d1898b1ef7a49e5c87a55757957d241a4788992453e6cf8098"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_nothing_chosen__master_beside_build.png",
+      "bytes": 1015348,
+      "sha256": "e4b8f85e8a06968ad3c8af9d3f60bc8a1c8a2aae77162640c30277e4e31d34ed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_nothing_chosen__text200.png",
+      "bytes": 563521,
+      "sha256": "72754bf7369a794d18b026620670e18c62c9b709864c1b141850240d68b31676"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_waiting.png",
+      "bytes": 375117,
+      "sha256": "ec9da3fbb4d63cce0b65b005b8ae520503c4d5f50e9b14285e18d19206645ae0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_waiting__master_beside_build.png",
+      "bytes": 933759,
+      "sha256": "6d45210a1de3a76c4fe97655727216e4bbf2e0f3ae8c89ffaf633b0e685acaaa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_full_waiting__text200.png",
+      "bytes": 366017,
+      "sha256": "dc8e0e814dc2f56b3f4f9223a26d14d20128ae75fa90c34138e0f0fd937c61ae"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_space_preparing.png",
+      "bytes": 326111,
+      "sha256": "4e5e7830a432d09a530c57926019a724405c63e3536de70b32de747d1e96ff9d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__both_space_preparing__master_beside_build.png",
+      "bytes": 780358,
+      "sha256": "fd402fddb7f3364a4eb8b885470fcc8742ff442cd05f4d27e70e302a57865efa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__other_full_waiting.png",
+      "bytes": 368411,
+      "sha256": "376a0dad500a4631cc3e824a1cd4a2b466f864060c51632b0eca7ccdada27c48"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__other_full_waiting__master_beside_build.png",
+      "bytes": 918956,
+      "sha256": "75714bfc1c864c5459174c1d7b32b179651e610a6e292f2d48ed97c0a1e5d5ed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__you_full_choose.png",
+      "bytes": 472793,
+      "sha256": "59e9d2188c4f79fb3428adc5ce05d10a6e407336ff4510cf7ee6a08c8edeafe3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/accept__you_full_choose__master_beside_build.png",
+      "bytes": 1042266,
+      "sha256": "47f2648c22e0b34f4ba8493e77f515595ed024a23a836d96817c54d4439eaccc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/my_zyra__accepted_choose_place.png",
+      "bytes": 407678,
+      "sha256": "cc1bcb86ac02ad93d9091ba43b83bcfb7da92b5fdffdc259815f89defcf925d8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/my_zyra__accepted_choose_place__master_beside_build.png",
+      "bytes": 993523,
+      "sha256": "cb26dd4826fb07ddfdd8396a81cbc52a31dfe290fbc1e25841229bae47165495"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/preparing__both_ready.png",
+      "bytes": 320972,
+      "sha256": "2811d4a4f8e4357c2eba8ead44984a4bb757975fe4219f3336e7667fade768d9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/preparing__both_ready__master_beside_build.png",
+      "bytes": 773553,
+      "sha256": "6bb79ef5d558da80f3b6f9a510970f53ae14f8558479c1d1a9753fa2e78ed293"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/preparing__both_ready__text200.png",
+      "bytes": 356163,
+      "sha256": "a1c8886d5f08be12007cc48df22dbafe10d07ef4bd5886cff86ea3a9d164ce64"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/requests__past_let_go.png",
+      "bytes": 329660,
+      "sha256": "eb889626e7100769687613489649210b36b031a4601dad8f5366d9b5dea82551"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/requests__past_let_go__master_beside_build.png",
+      "bytes": 951308,
+      "sha256": "9651289ac099198d5d136e4e3df28d00771a566a11075eaa2a70f86ab7ce6e5c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/requests__past_let_go__text200.png",
+      "bytes": 356947,
+      "sha256": "e49fd23680caa7d4793804bfcba9c115eb0be40cf5da2e968153d547d89e539c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__accepted_choose_place.png",
+      "bytes": 483831,
+      "sha256": "fa0bb2d8fbe1e6520ed84887f29e8175d1973be0f52309186cb2c04b838aeea1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__accepted_choose_place__master_beside_build.png",
+      "bytes": 1056485,
+      "sha256": "203a80c7a16fc310d8df3c7e384aebca4890b06f2a0c59b89da408de76c4fa63"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__accepted_choose_place__text200.png",
+      "bytes": 557320,
+      "sha256": "defddf3d75cf8217a0c6280e3a25dc743fd65d7a1be2b6d3fd0f3ae2b112a45d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__accepted_you_full.png",
+      "bytes": 343667,
+      "sha256": "d800c8e6136b7c943712abd8d406638e29c9d660b2aab7f1c42601d505688338"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__accepted_you_full__master_beside_build.png",
+      "bytes": 873318,
+      "sha256": "34f3d4d94f713c58b39e4d5a847015c9c8669c961781705b3dfb179a0097a227"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__accepted_you_full__text200.png",
+      "bytes": 327946,
+      "sha256": "b7b71bd528f04e53e0858c10ad39dee941bb05dacd4ac412a96efdcbc69866f8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__waiting_demo_accept.png",
+      "bytes": 348823,
+      "sha256": "4ec8d0b34063037ca5bd3d63b60b8d2ec54a0a50c703de9453be2acc709055c0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V2/sent__waiting_demo_accept__master_beside_build.png",
+      "bytes": 879514,
+      "sha256": "ee76edc823f172f3b60c9b25ec5b86191ff2d3cea4f0fdf6ec1665c0a2179938"
+    }
+  ]
+}

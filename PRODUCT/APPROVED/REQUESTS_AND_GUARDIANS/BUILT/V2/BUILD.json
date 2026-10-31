@@ -1,0 +1,47 @@
+{
+  "queue": 65,
+  "lock": "LOCK2 V2",
+  "base_commit": "42ca2e34ae1957644663edc6209bfb0014256cac",
+  "source_commit": "2ab4f6843d8782625ae206073f37db50b1c92889",
+  "flutter_version": "3.44.2",
+  "build_mode": "headless Flutter test raster",
+  "target": "Actual local Founder preview,430x932 logical,3x,normal and200% text",
+  "timestamp_utc": "2026-10-31T12:53:29.090341+00:00",
+  "tests": {
+    "distinct": 320,
+    "suites": 14,
+    "all_selected_pass": true,
+    "final_render_cases": 14,
+    "full_app_claim": false
+  },
+  "normal_renders": 12,
+  "text200_renders": 7,
+  "compiled_outputs_in_evidence": 0,
+  "metadata": [
+    {
+      "path": "SOURCE_MANIFEST.json",
+      "sha256": "1858197c8db7ddd788673a41fc78fbde06aed8d674d1a4b51a42e6ba4dad5434"
+    },
+    {
+      "path": "INPUT_MANIFEST.json",
+      "sha256": "ee2cae10b55f648ee9e04e2c80a7dae1178010df1a9953246758f5d707cf5893"
+    },
+    {
+      "path": "RENDER_MANIFEST.json",
+      "sha256": "ddc944d3ce5e30a1f81868392704b0a221f1b224fb4ccf464f4d5c4551f3759a"
+    },
+    {
+      "path": "CASE_LEDGER.json",
+      "sha256": "40e9a67108f2d150cddbbb1e8e479bcb21591a02f3113b1390808f9c461ab554"
+    },
+    {
+      "path": "QA.json",
+      "sha256": "fa01d8b58c3ca963cc23b79048f16ca8f391ce1ae96575e77a5c8ff10db96099"
+    },
+    {
+      "path": "BROADER_FAILURE_TRIAGE.json",
+      "sha256": "0996264a5bc36e5ef7b6f4bde0783b59d51c6b3adfb53e85b0f1a7b54f5ba2d4"
+    }
+  ],
+  "native_delivery": "HELD; no native build/install performed"
+}

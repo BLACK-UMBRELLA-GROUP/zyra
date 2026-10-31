@@ -1,0 +1,395 @@
+{
+  "queue": 65,
+  "observed_failed_cases": 122,
+  "suite_counts": {
+    "test/one_journey_monthly_capacity_widget_test.dart": 30,
+    "test/view_request_draft_widget_test.dart": 77,
+    "test/one_journey_capacity_slots_test.dart": 15
+  },
+  "groups": [
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy concept_connections_title lookup",
+      "first_failure_source_line": 1274,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails on Journey root title before request acceptance.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "Journey title and three empty slots remain nav-safe 1.0",
+        "Journey title and three empty slots remain nav-safe 1.4",
+        "Journey title and three empty slots remain nav-safe 2.0"
+      ]
+    },
+    {
+      "suite": "test/one_journey_monthly_capacity_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraOneJourneyConnectionsPresentation lookup",
+      "first_failure_source_line": 438,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails at the prior monthly root-card presenter. Samples are seeded locally; no first failing acceptance/held/Focus/Begin assertion.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "monthly starts with three places and no fabricated Journey",
+        "empty Journey keeps three readable capacity slots at 1.0x",
+        "empty Journey keeps three readable capacity slots at 1.4x",
+        "empty Journey keeps three readable capacity slots at 2.0x",
+        "1 monthly preview Journeys each open their own person",
+        "2 monthly preview Journeys each open their own person",
+        "3 monthly preview Journeys each open their own person",
+        "monthly Browse remains available even while all three places are used",
+        "Basic refuses reduction below occupied places and keeps one place",
+        "one two and three monthly cards at 200% keep every Journey action reachable",
+        "locked portraits and actions remain reachable at 200 percent"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy Journey entry key draft_journey_draft-sara",
+      "first_failure_source_line": 443,
+      "first_failure_observed": "Actual: _KeyWidgetFinder:<Found 0 widgets with key [<'draft_journey_draft-sara'>]: []>",
+      "reaches_changed65_logic": "No65 acceptance is attempted: _fillJourney seeds an Active sample then looks up the prior card entry.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "Basic draft-guardian-hassan has view but no chat including forged local writes",
+        "Basic draft-guardian-yusuf has view but no chat including forged local writes",
+        "fictional hide excludes Browse but retains ended archive without stale writes",
+        "fictional block excludes Browse but retains ended archive without stale writes",
+        "blocked active Journey retains capacity but has redacted safe End action",
+        "locked card compatibility follows both reveal choices without computing a score",
+        "Salam comes first and both compatibility choices are required",
+        "Guardian gate and all eight stages remain meaningful",
+        "preview exposes no Pause; End stays deliberate, retains history and reset is draft-only",
+        "own Profile Preview has visible and accessible Back; Ended archive lives only in My ZYRA",
+        "removing the actual Main Guardian revokes all local linked context and stale loaders",
+        "Guardian permission choices stay linked and chat needs view",
+        "stale Guardian grants refuse after navigation",
+        "stale Guardian grants refuse after stage progress",
+        "stale Guardian grants refuse after end"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraQuietDashboard lookup/assertion",
+      "first_failure_source_line": 1500,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "First failing assertion concerns the old dashboard renderer. Current Focus and its V2 accepted-waiting route are covered by passing Focus guards/new actual-shell cases; no failing V2 business assertion occurs here.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "blocked received request keeps its record but hides identity"
+      ]
+    },
+    {
+      "suite": "test/one_journey_monthly_capacity_widget_test.dart",
+      "assertion_or_selector": "Legacy concept_connections_page_0 Scrollable",
+      "first_failure_source_line": 514,
+      "first_failure_observed": "Actual: _DescendantWidgetFinder:<Found 0 widgets with type \"Scrollable\" descending from widgets with key [String <'concept_connections_page_0'>]: []>",
+      "reaches_changed65_logic": "Fails while locating/scanning the retired monthly list surface, before target actions.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "1 monthly Journeys fill available canvas on iphone430",
+        "2 monthly Journeys fill available canvas on iphone430",
+        "3 monthly Journeys fill available canvas on iphone430",
+        "1 monthly Journeys fill available canvas on iphone393",
+        "2 monthly Journeys fill available canvas on iphone393",
+        "3 monthly Journeys fill available canvas on iphone393",
+        "1 monthly Journeys fill available canvas on phone390",
+        "2 monthly Journeys fill available canvas on phone390",
+        "3 monthly Journeys fill available canvas on phone390"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy My ZYRA route key my-zyra-route-concept-my-requests",
+      "first_failure_source_line": 443,
+      "first_failure_observed": "Actual: _KeyWidgetFinder:<Found 0 widgets with key [<'my-zyra-route-concept-my-requests'>]: []>",
+      "reaches_changed65_logic": "The requests driver stops at the old My ZYRA entry key before accept, held choice or Begin.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "blocked sent request keeps its record but hides identity",
+        "whole-app portraitCard standard neutral Browse keeps decisions deliberate",
+        "whole-app portraitCard compact140 neutral Browse keeps decisions deliberate",
+        "whole-app portraitCard compact200 neutral Browse keeps decisions deliberate",
+        "Requests has two swipe pages and Introductions is a separate leaf standard reduce=false",
+        "Requests has two swipe pages and Introductions is a separate leaf standard reduce=true",
+        "Requests has two swipe pages and Introductions is a separate leaf compact200 reduce=false",
+        "Requests has two swipe pages and Introductions is a separate leaf compact200 reduce=true",
+        "Requests downward scroll below the reading origin does not close reduce=false",
+        "Requests Sent profile Back returns one level with its selected tab reduce=false",
+        "Requests downward scroll below the reading origin does not close reduce=true",
+        "Requests Sent profile Back returns one level with its selected tab reduce=true",
+        "Introductions accessible dismiss returns to My ZYRA with its captured Back return",
+        "Introductions accessible custom Back returns to My ZYRA with its captured Back return",
+        "Introductions accessible system Back returns to My ZYRA with its captured Back return",
+        "fresh inactive Requests card actions cannot act behind another tab",
+        "Browse shares current navigation, full fake names and offline photos",
+        "Current photo taps cycle the filtered Browse without expanding at reduce=false",
+        "Current photo taps cycle the filtered Browse without expanding at reduce=true",
+        "Current photo cycling leaves inline invitation state untouched",
+        "Current bounded invitation double taps use only current delegates",
+        "Browse arrows move exactly one eligible profile per actual tap",
+        "sent invitation stays in Browse after each other eligible profile is seen",
+        "Next after Back replays the viewed profile before new profiles",
+        "fresh Back is disabled and never exposes an unviewed profile",
+        "local reset clears seen Browse profiles without sending",
+        "Basic accepted request reserves its place; readiness is mutual and deliberate",
+        "received requests follow the same mutual preparation",
+        "cancellation and decline do not create a Journey",
+        "compact 320\u00d7568 at scale 1.0 stays scroll reachable",
+        "compact 320\u00d7568 at scale 1.4 stays scroll reachable",
+        "compact 320\u00d7568 at scale 2.0 stays scroll reachable",
+        "actions expose labelled current-app targets and tokens",
+        "fresh whole-app real-font candidates are not approval_standard_final",
+        "fresh whole-app real-font candidates are not approval_compact140_final",
+        "fresh whole-app real-font candidates are not approval_compact200_final"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraQuietDashboard lookup/assertion",
+      "first_failure_source_line": 1623,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "First failing assertion concerns the old dashboard renderer. Current Focus and its V2 accepted-waiting route are covered by passing Focus guards/new actual-shell cases; no failing V2 business assertion occurs here.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "Hide preserves request counts and item attention while My ZYRA clears its tab badge"
+      ]
+    },
+    {
+      "suite": "test/one_journey_capacity_slots_test.dart",
+      "assertion_or_selector": "Legacy ZyraOneJourneyConnectionsPresentation lookup",
+      "first_failure_source_line": 117,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Some snapshot fixtures call ordinary acceptReceived successfully before mounting. The first failure is the old presenter lookup, not admission/occupancy/Begin; these model paths pass in the38-case V2 suite.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "one, two and three Journeys keep the same three compact slots",
+        "zero Basic Journeys keeps one awaiting and two guarded upgrades",
+        "Basic locked slots open Membership without granting places",
+        "preparing places remain occupied cards",
+        "active places remain occupied cards"
+      ]
+    },
+    {
+      "suite": "test/one_journey_capacity_slots_test.dart",
+      "assertion_or_selector": "Legacy ZyraOneJourneyConnectionsPresentation lookup",
+      "first_failure_source_line": 272,
+      "first_failure_observed": "Actual: _TypeWidgetFinder:<Found 0 widgets with type \"ZyraOneJourneyConnectionsPresentation\": []>",
+      "reaches_changed65_logic": "Some snapshot fixtures call ordinary acceptReceived successfully before mounting. The first failure is the old presenter lookup, not admission/occupancy/Begin; these model paths pass in the38-case V2 suite.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "zero One Journeys shows three inert awaiting slots"
+      ]
+    },
+    {
+      "suite": "test/one_journey_capacity_slots_test.dart",
+      "assertion_or_selector": "Legacy Awaiting/upgrade slot lookup",
+      "first_failure_source_line": 402,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails while locating the old slot for visibility, before tapping its action.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "One one-Journey compact 200-percent slots remain readable",
+        "One zero-Journey compact 200-percent slots remain readable",
+        "Basic one-Journey compact 200-percent slots remain readable",
+        "Basic zero-Journey compact 200-percent slots remain readable"
+      ]
+    },
+    {
+      "suite": "test/one_journey_capacity_slots_test.dart",
+      "assertion_or_selector": "Legacy concept_expanded_journey_draft-sara lookup",
+      "first_failure_source_line": 439,
+      "first_failure_observed": "Actual: _KeyWidgetFinder:<Found 0 widgets with key [<'concept_expanded_journey_draft-sara'>]: []>",
+      "reaches_changed65_logic": "Current options entry is tapped, then the first failure expects the prior inline expanded renderer. No V2 acceptance/held/Begin mutation is asserted.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "expanded Journey options replace slots without losing return"
+      ]
+    },
+    {
+      "suite": "test/one_journey_capacity_slots_test.dart",
+      "assertion_or_selector": "Legacy concept_journey_upgrade_slot_1 lookup",
+      "first_failure_source_line": 458,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails obtaining the old Basic upgrade callback before guard invocation; Basic capacity1 V2 paths are tested separately.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "retained Basic one-Journey upgrade is inert after route withdrawal",
+        "retained Basic zero-Journey upgrade is inert after route withdrawal"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraQuietDashboard lookup/assertion",
+      "first_failure_source_line": 942,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "First failing assertion concerns the old dashboard renderer. Current Focus and its V2 accepted-waiting route are covered by passing Focus guards/new actual-shell cases; no failing V2 business assertion occurs here.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "stale request segments and single-page Dashboard routes refuse navigation ABA",
+        "simplified My ZYRA is one guarded information page standard",
+        "simplified My ZYRA is one guarded information page compact140",
+        "simplified My ZYRA is one guarded information page compact200",
+        "Browse is view-only; requests are deliberate, not automatic likes"
+      ]
+    },
+    {
+      "suite": "test/one_journey_capacity_slots_test.dart",
+      "assertion_or_selector": "Legacy concept_journey_upgrade_slot_1 lookup",
+      "first_failure_source_line": 481,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails obtaining the old Basic upgrade callback before guard invocation; Basic capacity1 V2 paths are tested separately.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "covered, denied and disposed Basic one-Journey upgrade callbacks are inert",
+        "covered, denied and disposed Basic zero-Journey upgrade callbacks are inert"
+      ]
+    },
+    {
+      "suite": "test/one_journey_monthly_capacity_widget_test.dart",
+      "assertion_or_selector": "Legacy my-zyra-quiet-scroll-0 owner",
+      "first_failure_source_line": 170,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails in the old My ZYRA request route scroll driver, before V2 actions.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "monthly controls keep Portrait and single My ZYRA without Save or Pause"
+      ]
+    },
+    {
+      "suite": "test/one_journey_monthly_capacity_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraOneJourneyConnectionsPresentation lookup",
+      "first_failure_source_line": 316,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails at the prior monthly root-card presenter. Samples are seeded locally; no first failing acceptance/held/Focus/Begin assertion.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "monthly Journey progress remains separate for each person",
+        "Portrait split is locked with no chooser and no local state reset",
+        "locked single and two cards retain three-slot rectangles",
+        "locked cards preserve outer geometry on iphone393",
+        "locked cards preserve outer geometry on phone390"
+      ]
+    },
+    {
+      "suite": "test/one_journey_monthly_capacity_widget_test.dart",
+      "assertion_or_selector": "Legacy concept_connections_page_0 Scrollable",
+      "first_failure_source_line": 182,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Fails while locating/scanning the retired monthly list surface, before target actions.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "locked cards preserve actual stages states and member data"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraQuietDashboard lookup/assertion",
+      "first_failure_source_line": 2341,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "First failing assertion concerns the old dashboard renderer. Current Focus and its V2 accepted-waiting route are covered by passing Focus guards/new actual-shell cases; no failing V2 business assertion occurs here.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "local notification dispatcher routes requests to My ZYRA and focus to Journey"
+      ]
+    },
+    {
+      "suite": "test/one_journey_monthly_capacity_widget_test.dart",
+      "assertion_or_selector": "Legacy draft_journey_draft-sara entry",
+      "first_failure_source_line": 149,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "Active scenario seeded; fails before exercising retained entry/options callback.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "locked card and remaining controls refuse stale owner after revocation",
+        "locked card and remaining controls refuse stale owner after ABA",
+        "locked card and remaining controls refuse stale owner after account generation"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraQuietDashboard lookup/assertion",
+      "first_failure_source_line": 2483,
+      "first_failure_observed": "StateError: No element at the first widget lookup",
+      "reaches_changed65_logic": "First failing assertion concerns the old dashboard renderer. Current Focus and its V2 accepted-waiting route are covered by passing Focus guards/new actual-shell cases; no failing V2 business assertion occurs here.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "simplified My ZYRA retained navigation refuses page ABA",
+        "simplified My ZYRA retained navigation refuses role ABA",
+        "simplified My ZYRA retained navigation refuses account generation"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraOneJourneyConnectionsActiveCard count",
+      "first_failure_source_line": 830,
+      "first_failure_observed": "Actual: _TypeWidgetFinder:<Found 0 widgets with type \"ZyraOneJourneyConnectionsActiveCard\": []>",
+      "reaches_changed65_logic": "Active sample seeding is followed by the prior card renderer assertion, before options/acceptance assertions.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "locked card addressed options keep both Journeys read-only standard",
+        "locked card addressed options keep both Journeys read-only compact140",
+        "locked card addressed options keep both Journeys read-only compact200",
+        "locked card dismissed compatibility handlers refuse after role ABA and preserve a fresh addressed page",
+        "locked card open compatibility inline options refuse revoked authorization intent",
+        "locked card dismissed guardians handlers refuse after role ABA and preserve a fresh addressed page",
+        "locked card open guardians inline options refuse revoked authorization intent"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraQuietDashboard lookup/assertion",
+      "first_failure_source_line": 3412,
+      "first_failure_observed": "Actual: _TypeWidgetFinder:<Found 0 widgets with type \"ZyraQuietDashboard\": []>",
+      "reaches_changed65_logic": "First failing assertion concerns the old dashboard renderer. Current Focus and its V2 accepted-waiting route are covered by passing Focus guards/new actual-shell cases; no failing V2 business assertion occurs here.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "Retained Current photo tap cannot affect a changed invitation or route"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Browse disabled icon colour expectation",
+      "first_failure_source_line": 3610,
+      "first_failure_observed": "Actual: Color:<Color(alpha: 0.2800, red: 0.2431, green: 0.1804, blue: 0.1176, colorSpace: ColorSpace.sRGB)>",
+      "reaches_changed65_logic": "Unrelated Browse ten-visit navigation colour assertion; no accept/held/Begin assertion.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "Back stops at ten visits and Next replays the exact ten"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy Awaiting a Journey three-slot copy",
+      "first_failure_source_line": 3728,
+      "first_failure_observed": "Actual: _TextWidgetFinder:<Found 0 widgets with text \"Awaiting a Journey\": []>",
+      "reaches_changed65_logic": "Empty Journey root renderer assertion; no request acceptance.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "Connections shows only the current Journey; activity belongs to My ZYRA"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Legacy ZyraOneProfileAvatar lookup",
+      "first_failure_source_line": 3775,
+      "first_failure_observed": "Actual: _TypeWidgetFinder:<Found 0 widgets with type \"ZyraOneProfileAvatar\": []>",
+      "reaches_changed65_logic": "Profile tab avatar assertion; no request acceptance.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "shared account widgets and My ZYRA keep sample destinations local"
+      ]
+    },
+    {
+      "suite": "test/view_request_draft_widget_test.dart",
+      "assertion_or_selector": "Guardian Code Scan code label expectation",
+      "first_failure_source_line": 4180,
+      "first_failure_observed": "Actual: _TextWidgetFinder:<Found 0 widgets with text \"Scan code\": []>",
+      "reaches_changed65_logic": "Guardian Code page label assertion; no request acceptance.",
+      "disposition": "Written refusal OA-ZYRA-328: update wider legacy renderer/entry expectations separately; no product workaround or LOCK change under65.",
+      "cases": [
+        "Guardian plus reuses the Code page while Guardian-role invitations stay held and Circle stays working"
+      ]
+    }
+  ],
+  "conclusion": "All122 first failures accounted for by source location and observed assertion. None fails a V2 waiting/held/acceptance/Begin business assertion. Several ordinary preparation fixtures execute successfully before a later legacy presenter lookup fails; that distinction is explicit above. No pre-change run proves these failures inherited, and no such claim is made. Relevant17-case route suite and320 exact scoped cases pass, including real owned-dialog admission/revocation/ABA, Basic1 place, both-full hold, snapshots and Begin. No unresolved LOCK behavior found; no QUESTION required.",
+  "scope": "Triage uses the existing regression JSON and bounded source-line reads only; no wider rerun solely for counts."
+}

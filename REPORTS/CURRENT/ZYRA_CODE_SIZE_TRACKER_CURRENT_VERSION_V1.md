@@ -513,3 +513,19 @@ Added the locked Seeker advice page, with the five exact tips, separate report-i
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py (before = queue57 recorded baseline). 107 distinct scoped cases across10 suites pass; CASE_LEDGER.json names each case and selected Browse subset. Standard430×932 advice has zero scroll extent and both actions plus the complete emergency line visible;200% at430×932 and320×568 reaches all tips/actions/footer without layout exceptions. Three actual x07 frames and the full-size master/build pair are in UNITY_PASS/BUILT/V5; prior V1 evidence retained. QA.json records native typography, shadow and frame differences; no pixel-parity or full-app claim. Known older Membership/My ZYRA fixtures and wider37 failures not rerun or repaired; written scope refusal under OA-ZYRA-328. Parent visual/contract verification remains OA-ZYRA-328, ordinary member retirement OA-ZYRA-317. Local Founder sample only; no backend/native delivery.
+
+
+## Queue 65 — Requests capacity LOCK2 V2 — 31 October 2026
+
+Added local accepted-waiting and exact-attempt held endings, the neutral received waiting cards, sent accepted Choose a place/Let it go, Focus routing, and guarded End confirmation. Both people must have space before preparation; waiting takes no place. Capacities1–3 retain their existing limit and Browse entitlement. Begin still requires mutual readiness, Main leadership and the existing paid Additional Guardian agreement. Only sent Not-taken-up requests receive the unchanged30-day sender cooldown. No new timeout or server rule. Existing files remain in both preview classifications; no classifier change.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,327 lines / 336 files | 169,736 lines / 336 files |
+| Developer/preview | 49,537 / 94 | 49,946 / 94 |
+| Founder planned app | 30,355 / 44 | 30,764 / 44 |
+| Tests | 216,863 / 511 | 217,931 / 513 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. 320 distinct scoped cases across14 suites pass, with the final14 actual-shell cases recaptured after the final model change. Analyser, format and protected SDK checks clean.12 standard430×932 frames,7 at200% text,12 full-size master/build pairs and contacts are in REQUESTS_AND_GUARDIANS/BUILT/V2. CASE_LEDGER.json names every case and122 observed failures in3 wider older widget suites; their repair is refused under OA-ZYRA-328, with no pre-change attribution or whole-app pass claim. The relevant17-case capacity route suite is current and passes. QA.json states retained component/frame and Past fixture differences, actual large-text hit-test paths, source hashes, reading costs and limits. Only queue65 changes; parent questions/queue edits preserved. Ordinary member retirement remains OA-ZYRA-317 and parent visual/contract verification OA-ZYRA-328. No backend or native delivery.

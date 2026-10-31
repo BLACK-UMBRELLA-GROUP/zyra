@@ -1,0 +1,62 @@
+{
+  "scope": "Explicit task-owned code/test allowlist only; excludes local configs, ignored credentials and unrelated files",
+  "base_commit": "42ca2e34ae1957644663edc6209bfb0014256cac",
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "bytes": 11188,
+      "sha256": "a7e286c14de897be7ad7048512d2d4ff918c93065ac7ee899a31cc38fd87267c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 324527,
+      "sha256": "b6ffd9031f034323caea30d14f7ac71fd9a935aac78f4965842ce790db4d9847"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "bytes": 25055,
+      "sha256": "465b00c11d46deec582014e1212fd4417758db413c48c84fdad3fd86b479cabc"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_capacity_choice.dart",
+      "bytes": 10910,
+      "sha256": "a1a529ff01e75671b365def56284b4d0a00ebb7b3eabb239ac74d33a70ba67e0"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "bytes": 66040,
+      "sha256": "2439b9012045b275d1137496a35135cd2fd84ac0b8937a808e7813285f84caee"
+    },
+    {
+      "path": "SOURCE/test/one_journey_full_capacity_flow_test.dart",
+      "bytes": 29688,
+      "sha256": "6c2f332499701f497d120ec792157b7f9ca10bdf4324755cf95be4681ded16c6"
+    },
+    {
+      "path": "SOURCE/test/one_journey_full_capacity_model_test.dart",
+      "bytes": 17863,
+      "sha256": "ee7ebb89b548e5036670aaabbfb6290cead25c3bb3fa0bc4a5fbed7e357f525a"
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_accepted_activity_test.dart",
+      "bytes": 7092,
+      "sha256": "405960036f8dcb31592ae2edc0995c4a912be89b5f12b1cf57c20e20e9fa4d1c"
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_model_test.dart",
+      "bytes": 55819,
+      "sha256": "25c9fda323fb142518fd7ad2c52272de4f1e9a041dd7faac27cee74d38d86773"
+    },
+    {
+      "path": "SOURCE/test/request_capacity_v2_flow_test.dart",
+      "bytes": 16310,
+      "sha256": "0ec3bfcd2c31ef7e28a860ca4ef877d023180249371439994745f8542f2ff056"
+    },
+    {
+      "path": "SOURCE/test/request_capacity_v2_model_test.dart",
+      "bytes": 22569,
+      "sha256": "4c9c5905165079c1a472a72696595a9f51ca423a1b6b858d4aba69238e9082c3"
+    }
+  ],
+  "source_commit": "2ab4f6843d8782625ae206073f37db50b1c92889"
+}
