@@ -150,7 +150,7 @@
     ]
   },
   "source_manifest_tracking_audit": {
-    "method": "Metadata only: manifest paths, Git index and exact SOURCE/.gitignore lines36/40. No config contents or protected folder inspected.",
+    "method": "This verification used manifest paths, Git index metadata and exact SOURCE/.gitignore lines36/40. Neither config file was reopened for this audit. The initial automatic manifest generator read both ignored local config files as bytes to compute SHA-256; no values were displayed. Their hash/size entries were then removed.",
     "manifest_entries": 372,
     "all_entries_tracked": true,
     "tracked_config_sources": [
@@ -165,6 +165,9 @@
       "SOURCE/lib/config/supabase_config.dart"
     ],
     "ignored_or_untracked_entries": 0,
-    "content_scan_claim": false
+    "content_scan_claim": false,
+    "automatic_hashing_read_ignored_config_bytes": true,
+    "config_values_displayed": false,
+    "future_manifest_policy": "Use a task-owned staged/committed path allowlist before reading any source bytes; do not blanket-enumerate and hash the lib tree."
   }
 }
