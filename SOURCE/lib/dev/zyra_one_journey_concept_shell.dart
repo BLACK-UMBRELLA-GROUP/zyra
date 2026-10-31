@@ -2775,7 +2775,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       surname: person.surname,
       details: '${person.age} · ${person.city}',
       nationality: zyraBrowseNationalityLabel(person.nationalityCode) ?? '—',
-      ethnicity: zyraBrowseEthnicityLabel(person.ethnicityCode) ?? '—',
+      stageNumber: _model.stateFor(person.id) == DraftJourneyState.preparing
+          ? 0
+          : (_model.stageFor(person.id)?.order ?? 1),
+      stageLabel: _model.stateFor(person.id) == DraftJourneyState.preparing
+          ? _stateLabel(DraftJourneyState.preparing)
+          : _model.stageFor(person.id)?.label ??
+                _stateLabel(_model.stateFor(person.id)!),
       photo: _photos?.forIndex(draftProfiles.indexOf(person)).firstOrNull,
       onContinue: () => dispatch(() => _journey(person.id)),
       options: ZyraConceptJourneyOptions(

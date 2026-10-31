@@ -57,7 +57,9 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
   final bool lockedPage;
 
   @override
-  Widget build(BuildContext context) => inline
+  Widget build(BuildContext context) => lockedPage
+      ? _cards(context)
+      : inline
       ? Material(
           type: MaterialType.transparency,
           child: LayoutBuilder(
@@ -73,9 +75,9 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
                   final painter = TextPainter(
                     text: TextSpan(
                       text: entry.$3,
-                      style: DefaultTextStyle.of(context).style.merge(
-                        ZyraText.button(size: lockedPage ? 15 : 13),
-                      ),
+                      style: DefaultTextStyle.of(
+                        context,
+                      ).style.merge(ZyraText.button(size: 13)),
                     ),
                     textDirection: Directionality.of(context),
                     textScaler: MediaQuery.textScalerOf(context),
@@ -90,8 +92,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
               if (readable &&
                   labelsFit &&
                   constraints.maxHeight.isFinite &&
-                  constraints.maxHeight >=
-                      rows.length * (lockedPage ? 60 : 56)) {
+                  constraints.maxHeight >= rows.length * 56) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [for (final row in rows) Expanded(child: row)],
@@ -163,6 +164,79 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
           ),
         );
 
+  Widget _cards(BuildContext context) => Material(
+    type: MaterialType.transparency,
+    child: LayoutBuilder(
+      builder: (context, bounds) {
+        final groups = [
+          _entries.take(4).toList(),
+          [_entries[4]],
+          _entries.skip(5).toList(),
+        ];
+        final stretch =
+            bounds.hasBoundedHeight &&
+            bounds.maxHeight >= _entries.length * 46 + 28;
+        Widget card(int index) => ZyraFloatingSurface(
+          radius: 20,
+          circle: false,
+          gold: false,
+          child: Container(
+            key: ValueKey(
+              'journey_options_${['main', 'guardians', 'actions'][index]}_card_$id',
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: ZyraColors.surfaceFill,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: ZyraColors.surfaceBorder, width: .6),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var i = 0; i < groups[index].length; i++)
+                  if (stretch)
+                    Expanded(
+                      child: _row(
+                        groups[index][i].$1,
+                        groups[index][i].$2,
+                        groups[index][i].$3,
+                        groups[index][i].$4,
+                        first: i == 0,
+                      ),
+                    )
+                  else
+                    _row(
+                      groups[index][i].$1,
+                      groups[index][i].$2,
+                      groups[index][i].$3,
+                      groups[index][i].$4,
+                      first: i == 0,
+                    ),
+              ],
+            ),
+          ),
+        );
+        final content = Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < groups.length; i++) ...[
+              if (i > 0) const SizedBox(height: 14),
+              if (stretch)
+                Expanded(flex: groups[i].length, child: card(i))
+              else
+                card(i),
+            ],
+          ],
+        );
+        return !stretch && bounds.hasBoundedHeight
+            ? ZyraShadowScrollView(child: content)
+            : content;
+      },
+    ),
+  );
+
   List<Widget> get _rows => [
     for (final entry in _entries) _row(entry.$1, entry.$2, entry.$3, entry.$4),
   ];
@@ -220,8 +294,9 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
     ZyraConceptJourneyOption option,
     IconData icon,
     String title,
-    String detail,
-  ) {
+    String detail, {
+    bool first = false,
+  }) {
     final locked = switch (option) {
       ZyraConceptJourneyOption.bio => !canViewBio,
       ZyraConceptJourneyOption.compatibility => !canViewCompatibility,
@@ -252,40 +327,62 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
           child: Container(
             constraints: BoxConstraints(
               minHeight: lockedPage
-                  ? 60
+                  ? 46
                   : inline
                   ? 56
                   : 62,
             ),
-            padding: EdgeInsets.symmetric(vertical: inline ? 5 : 10),
+            padding: EdgeInsets.symmetric(
+              vertical: lockedPage
+                  ? 10
+                  : inline
+                  ? 5
+                  : 10,
+            ),
             decoration: BoxDecoration(
               border: Border(
-                top: BorderSide(color: ZyraColors.ink(.12), width: .6),
+                top: BorderSide(
+                  color: lockedPage && first
+                      ? Colors.transparent
+                      : ZyraColors.ink(.12),
+                  width: .6,
+                ),
               ),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: option == ZyraConceptJourneyOption.end
-                        ? ZyraColors.destructive.withValues(alpha: .09)
-                        : ZyraColors.ink(.09),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
+                if (lockedPage)
+                  Icon(
                     icon,
-                    size: 18,
+                    size: 20,
                     color: option == ZyraConceptJourneyOption.end
                         ? ZyraColors.destructive
                         : locked
-                        ? ZyraColors.ink(.42)
-                        : ZyraColors.foreground,
+                        ? ZyraColors.ink(.4)
+                        : ZyraColors.journeyGold,
+                  )
+                else
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: option == ZyraConceptJourneyOption.end
+                          ? ZyraColors.destructive.withValues(alpha: .09)
+                          : ZyraColors.ink(.09),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      icon,
+                      size: 18,
+                      color: option == ZyraConceptJourneyOption.end
+                          ? ZyraColors.destructive
+                          : locked
+                          ? ZyraColors.ink(.42)
+                          : ZyraColors.foreground,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 12),
+                SizedBox(width: lockedPage ? 16 : 12),
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -310,15 +407,16 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(
-                  locked ? Icons.lock_outline : Icons.chevron_right,
-                  key: locked
-                      ? ValueKey('draft_options_${option.name}_locked_$id')
-                      : null,
-                  semanticLabel: locked ? '$title locked' : null,
-                  size: 18,
-                  color: ZyraColors.ink(.4),
-                ),
+                if (!lockedPage || option != ZyraConceptJourneyOption.end)
+                  Icon(
+                    locked ? Icons.lock_outline : Icons.chevron_right,
+                    key: locked
+                        ? ValueKey('draft_options_${option.name}_locked_$id')
+                        : null,
+                    semanticLabel: locked ? '$title locked' : null,
+                    size: 18,
+                    color: ZyraColors.ink(.4),
+                  ),
               ],
             ),
           ),

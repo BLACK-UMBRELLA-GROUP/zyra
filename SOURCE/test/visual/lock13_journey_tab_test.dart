@@ -21,7 +21,7 @@ import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'baseline_capture_support.dart';
 
 const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
-const evidence = '$root/REPORTS/EVIDENCE/LOCK13_JOURNEY_TAB_2026-10-30';
+const evidence = '$root/REPORTS/EVIDENCE/LOCK13_V3_JOURNEY_OPTIONS_2026-10-31';
 const capture = bool.fromEnvironment('ZYRA_LOCK13_CAPTURE');
 Finder k(String id) => find.byKey(ValueKey(id));
 const sara = 'draft-sara';
@@ -75,7 +75,7 @@ void main() {
     final h = BaselineHarness(
       t,
       group: 'lock13_journey_tab',
-      outputRoot: '$root/PRODUCT/APPROVED/JOURNEY_TAB/BUILT',
+      outputRoot: '$root/PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3',
       evidenceRoot: evidence,
       flatOutput: true,
     );
@@ -180,7 +180,7 @@ void main() {
       h.assertPage('journey_options');
       expect(find.byType(ZyraShellNavigation), findsOneWidget);
       expect(find.byType(ZyraConceptJourneyOptionsButton), findsNothing);
-      expect(t.getSize(k('journey_options_photo_$sara')), const Size(104, 104));
+      expect(t.getSize(k('journey_options_photo_$sara')), const Size(88, 88));
       expect(
         t.getSize(k('draft_journey_$sara')).height,
         greaterThanOrEqualTo(44),
@@ -188,18 +188,110 @@ void main() {
       for (final choice in ZyraConceptJourneyOption.values) {
         expect(
           t.getSize(k('draft_options_${choice.name}_$sara')).height,
-          greaterThanOrEqualTo(60),
+          greaterThanOrEqualTo(46),
         );
       }
       final card = t.getRect(k('journey_options_card_$sara'));
       expect(
         card.bottom,
-        closeTo(t.getRect(k('draft_options_end_$sara')).bottom + 12, .01),
+        closeTo(t.getRect(k('draft_options_end_$sara')).bottom + .6, .01),
       );
       await cap(h, 'j08_one__journey_options');
       expect(find.byIcon(Icons.favorite), findsNothing);
     },
   );
+
+  testWidgets('LOCK13 V3 actual Sara Aisha and Basic options captures', (
+    t,
+  ) async {
+    for (final basic in [false, true]) {
+      final m = fixture(basic ? 1 : 2, basic: basic);
+      faith(m, sara);
+      final h = await mount(t, basic ? 1 : 2, basic: basic, model: m);
+      for (final id in basic ? [sara] : [sara, aisha]) {
+        if (id == aisha) await h.tap('journey_tab_next');
+        await h.tap('draft_journey_options_$id');
+        final page = t.widget<ZyraOneJourneyOptionsPage>(
+          find.byType(ZyraOneJourneyOptionsPage),
+        );
+        expect(page.id, id);
+        expect(page.stageNumber, id == sara ? 4 : 1);
+        expect(
+          find.text(id == sara ? 'Sara Ahmed' : 'Aisha Khan'),
+          findsOneWidget,
+        );
+        expect(t.takeException(), isNull);
+        if (const bool.fromEnvironment('ZYRA_LOCK13_V3_CAPTURE')) {
+          final name = basic
+              ? 'j12_journey_options__basic'
+              : id == sara
+              ? 'j10_journey_options__sara'
+              : 'j11_journey_options__aisha';
+          await h.capture(
+            'journey',
+            name,
+            name,
+            'Actual V3 options; existing model disclosure gates and owned sample profile fields.',
+            fileName: '$name.png',
+          );
+        }
+        await h.tap('draft_journey_$id');
+        h.assertPage('journey');
+        expect(h.latest.personId, id);
+        await t.binding.handlePopRoute();
+        await h.flush();
+        await t.binding.handlePopRoute();
+        await h.flush();
+      }
+    }
+  });
+
+  testWidgets('LOCK13 V3 actual 200 percent One and Basic scroll head to End', (
+    t,
+  ) async {
+    for (final basic in [false, true]) {
+      final m = fixture(1, basic: basic);
+      faith(m, sara);
+      final h = BaselineHarness(
+        t,
+        group: 'lock13_journey_options_v3_large',
+        outputRoot: '$root/PRODUCT/APPROVED/JOURNEY_TAB/BUILT/V3',
+        evidenceRoot: evidence,
+        flatOutput: true,
+        textScale: 2,
+      );
+      await h.mount(
+        tab: 1,
+        model: m,
+        initialSeekerBasic: basic,
+        seekerMembership: basic ? 'Seeker Basic' : 'Seeker One',
+      );
+      await h.tap('draft_journey_options_$sara');
+      final name = basic ? 'j12_basic' : 'j10_one';
+      if (const bool.fromEnvironment('ZYRA_LOCK13_V3_CAPTURE')) {
+        await h.capture(
+          'journey',
+          name,
+          '200pct_head',
+          'Actual V3 200 percent head and whole-page reading fallback.',
+          fileName: '${name}_200pct_head.png',
+        );
+      }
+      await Scrollable.ensureVisible(t.element(k('draft_options_end_$sara')));
+      await h.flush();
+      expect(k('draft_options_end_$sara').hitTestable(), findsOneWidget);
+      expect(t.takeException(), isNull);
+      if (const bool.fromEnvironment('ZYRA_LOCK13_V3_CAPTURE')) {
+        await h.capture(
+          'journey',
+          name,
+          '200pct_end',
+          'Actual V3 200 percent rows scrolled to End above retained tabs.',
+          fileName: '${name}_200pct_end.png',
+        );
+      }
+    }
+  });
 
   testWidgets(
     'LOCK13 One 0 1 2 3 and Basic 0 1 have exact capacity and end arrows',

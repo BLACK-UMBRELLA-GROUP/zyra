@@ -14,61 +14,62 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
     required this.surname,
     required this.details,
     required this.nationality,
-    required this.ethnicity,
+    required this.stageNumber,
+    required this.stageLabel,
     required this.photo,
     required this.onContinue,
     required this.options,
   });
-  final String id, firstName, surname, details, nationality, ethnicity;
+  final String id, firstName, surname, details, nationality, stageLabel;
+  final int stageNumber;
   final String? photo;
   final VoidCallback onContinue;
   final Widget options;
 
-  Widget _identity() => Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _identity() => Column(
     children: [
-      ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: SizedBox(
-          key: ValueKey('journey_options_photo_$id'),
-          width: 104,
-          height: 104,
+      Container(
+        key: ValueKey('journey_options_photo_$id'),
+        width: 88,
+        height: 88,
+        padding: const EdgeInsets.all(1),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: ZyraColors.journeyGold.withValues(alpha: .7),
+          ),
+        ),
+        child: ClipOval(
           child: photo == null
               ? const Icon(Icons.person_outline, size: 40)
               : ZyraProfileImage(photo!),
         ),
       ),
-      const SizedBox(width: 12),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              firstName,
-              style: ZyraText.heading(size: 22).copyWith(height: 1.2),
-            ),
-            Text(
-              surname,
-              style: ZyraText.heading(
-                size: 16,
-                color: ZyraColors.ink(.7),
-              ).copyWith(height: 1.2),
-            ),
-            const SizedBox(height: 5),
-            for (final line in [
-              details,
-              'Nationality: $nationality',
-              'Ethnicity: $ethnicity',
-            ])
-              Text(
-                line,
-                style: ZyraText.body(
-                  size: 13,
-                  color: ZyraColors.ink(.7),
-                ).copyWith(height: 1.3),
-              ),
-          ],
-        ),
+      const SizedBox(height: 12),
+      Text(
+        '$firstName $surname'.trim(),
+        textAlign: TextAlign.center,
+        style: ZyraText.heading(
+          size: 24,
+        ).copyWith(height: 1.2, fontWeight: FontWeight.w300),
+      ),
+      const SizedBox(height: 8),
+      Text(
+        'STAGE $stageNumber OF 8 · ${stageLabel.toUpperCase()}',
+        textAlign: TextAlign.center,
+        style: ZyraText.body(
+          size: 11,
+          color: ZyraColors.goldText,
+        ).copyWith(height: 1.3, letterSpacing: 1.2),
+      ),
+      const SizedBox(height: 10),
+      Text(
+        '$details · $nationality',
+        textAlign: TextAlign.center,
+        style: ZyraText.body(
+          size: 13,
+          color: ZyraColors.mutedText,
+        ).copyWith(height: 1.3),
       ),
     ],
   );
@@ -85,16 +86,22 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
         child: ZyraFloatingSurface(
           radius: 999,
           circle: false,
-          gold: false,
+          gold: true,
           child: Container(
-            constraints: const BoxConstraints(minHeight: 41),
+            constraints: const BoxConstraints(minHeight: 44),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: ZyraColors.surfaceFill,
+              color: ZyraColors.goldTextFill,
               borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: ZyraColors.surfaceBorder),
             ),
-            child: Text('Continue Journey', style: ZyraText.button(size: 14)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Text(
+                'Continue Journey',
+                textAlign: TextAlign.center,
+                style: ZyraText.button(size: 14, color: ZyraColors.espresso),
+              ),
+            ),
           ),
         ),
       ),
@@ -109,52 +116,43 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Journey', style: ZyraText.heading(size: 26)),
-          const SizedBox(height: 16),
+          Text(
+            'Journey',
+            style: ZyraText.heading(size: 26).copyWith(height: 1.2),
+          ),
+          const SizedBox(height: 22),
           Expanded(
-            child: ZyraFloatingSurface(
-              radius: 20,
-              circle: false,
-              gold: false,
-              child: Container(
-                key: ValueKey('journey_options_card_$id'),
-                padding: const EdgeInsets.all(11),
-                decoration: BoxDecoration(
-                  color: ZyraColors.surfaceFill,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: ZyraColors.journeyGold.withValues(alpha: .6),
-                  ),
-                ),
-                child: LayoutBuilder(
-                  builder: (context, bounds) {
-                    final reading =
-                        MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-                        MediaQuery.boldTextOf(context) ||
-                        bounds.maxHeight < 600;
-                    final header = [
-                      _identity(),
-                      const SizedBox(height: 14),
-                      _continue(context),
-                      const SizedBox(height: 12),
-                    ];
-                    return reading
-                        ? ZyraShadowScrollView(
-                            key: ValueKey('journey_options_scroll_$id'),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [...header, options],
-                            ),
-                          )
-                        : Column(
+            child: SizedBox(
+              key: ValueKey('journey_options_card_$id'),
+              child: LayoutBuilder(
+                builder: (context, bounds) {
+                  final reading =
+                      MediaQuery.textScalerOf(context).scale(1) > 1 ||
+                      MediaQuery.boldTextOf(context) ||
+                      bounds.maxHeight < 700 ||
+                      bounds.maxWidth < 350;
+                  final header = [
+                    _identity(),
+                    const SizedBox(height: 12),
+                    _continue(context),
+                    const SizedBox(height: 12),
+                  ];
+                  return reading
+                      ? ZyraShadowScrollView(
+                          key: ValueKey('journey_options_scroll_$id'),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              ...header,
-                              Expanded(child: options),
-                            ],
-                          );
-                  },
-                ),
+                            children: [...header, options],
+                          ),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ...header,
+                            Expanded(child: options),
+                          ],
+                        );
+                },
               ),
             ),
           ),
